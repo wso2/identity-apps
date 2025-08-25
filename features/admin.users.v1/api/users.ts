@@ -92,6 +92,7 @@ export const getUsersList = (
  * @param attributes - The attributes to be returned.
  * @param domain - The user store domain name.
  * @param excludedAttributes - The attributes to be excluded.
+ * @param shouldFetch - Whether to fetch the data or not. True by default.
  * @returns `RequestResultInterface<Data, Error>`
  */
 export const useUsersList = (

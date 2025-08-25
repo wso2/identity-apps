@@ -84,6 +84,15 @@ export const common: CommonNS = {
                 }
             }
         },
+        "operationTypes": {
+            "addRole": "Rolle hinzufügen",
+            "addUser": "Benutzer hinzufügen",
+            "all": "Alle Vorgänge",
+            "deleteRole": "Rolle löschen",
+            "deleteUser": "Benutzer löschen",
+            "selfRegisterUser": "Benutzer selbst registrieren",
+            "updateRolesOfUser": "Benutzerrollen aktualisieren"
+        },
         "placeholders": {
             "emptyApprovalFilter": {
                 "action": "Alle anzeigen",
@@ -114,12 +123,19 @@ export const common: CommonNS = {
             },
             "searchApprovals": "Nach Workflow-Namen suchen"
         },
+        "propertyMessages": {
+            "assignedUsersDeleted": "Die zugewiesenen Benutzer wurden gelöscht.",
+            "roleDeleted": "Die Rolle wurde gelöscht.",
+            "selfRegistration": "Self Registration",
+            "unassignedUsersDeleted": "Die nicht zugewiesenen Benutzer wurden gelöscht."
+        },
         "subTitle": "Überprüfen Sie die betrieblichen Aufgaben, die Ihre Genehmigung erfordern",
         "title": "Genehmigungen"
     },
     "approve": "Genehmigen",
     "approved": "Genehmigt",
     "apps": "Anwendungen",
+    "assignYourself": "Weisen Sie sich selbst zu",
     "assignee": "Beauftragter",
     "assignees": "Beauftragte",
     "asyncOperationErrorMessage": {
@@ -140,7 +156,6 @@ export const common: CommonNS = {
         "heading": "Etwas ist schief gelaufen",
         "primaryActionText": "Laden Sie die App neu"
     },
-    "claim": "Beanspruchen",
     "clear": "klar",
     "clientId": "Kunden ID",
     "close": "Schließen",
@@ -220,6 +235,7 @@ export const common: CommonNS = {
     "noResultsFound": "Keine Ergebnisse gefunden",
     "okay": "Okay",
     "operatingSystem": "Betriebssystem",
+    "operationType": "Operationstyp",
     "operations": "Betrieb",
     "organizationName": "{{orgName}} Organisation",
     "overview": "Überblick",
@@ -240,7 +256,6 @@ export const common: CommonNS = {
     "register": "Registrieren",
     "reject": "Ablehnen",
     "rejected": "Abgelehnt",
-    "release": "Veröffentlichung",
     "remove": "Entfernen",
     "removeAll": "Alles entfernen",
     "required": "Dies ist erforderlich.",
@@ -278,6 +293,7 @@ export const common: CommonNS = {
     "terminateSession": "Sitzung beenden",
     "tooShort": "Zu kurz",
     "type": "Art",
+    "unassign": "Zuweisung aufheben",
     "unpin": "Lösen Sie den Stift",
     "unpinned": "Losgelöst",
     "update": "Aktualisieren",

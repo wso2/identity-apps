@@ -254,6 +254,7 @@
                         </div>
                         <div>
                             <input type="hidden" name="sp" value="<%=Encode.forHtmlAttribute(request.getParameter("sp"))%>"/>
+                            <input type="hidden" name="spId" value="<%=Encode.forHtmlAttribute(request.getParameter("spId"))%>"/>
                         </div>
                         <%
                             }

@@ -577,9 +577,9 @@ export const claims: ClaimsNS = {
             },
             subAttributes: {
                 label: "The sub-attributes of the attribute",
-                placeholder: "Select subattributes",
+                placeholder: "Select sub-attributes",
                 validationError: "At least one sub-attribute must be provided.",
-                validationErrorMessage: "Sub-attributes are required for complex data types."
+                validationErrorMessage: "Sub-attributes are required for the Object data type."
             },
             supportedByDefault: {
                 label: "Display this attribute on the user's profile"

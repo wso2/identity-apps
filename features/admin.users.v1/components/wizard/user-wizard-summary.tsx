@@ -38,6 +38,7 @@ interface AddUserWizardSummaryProps extends IdentifiableComponentInterface {
     username: string;
     password: string;
     isPasswordBased: boolean;
+    hasWorkflowAssociations?: boolean;
 }
 
 /**
@@ -54,6 +55,7 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
         username,
         password,
         isPasswordBased,
+        hasWorkflowAssociations = false,
         [ "data-componentid" ]: componentId
     } = props;
 
@@ -77,7 +79,7 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
     }, [ tenantDomain, currentOrganization ]);
 
     useEffect(() => {
-        !isPasswordBased && generateInvitationLink();
+        !isPasswordBased && !hasWorkflowAssociations && generateInvitationLink();
     }, []);
 
     const generateInvitationLink = ():void => {
@@ -169,7 +171,12 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
                                         <Icon name="info circle" size="large"/>
                                     </Grid.Column>
                                     <Grid.Column width={ 15 } className="pt-0 pb-0">
-                                        { t("extensions:manage.features.user.addUser.summary.passwordWarningMessage") }
+                                        { hasWorkflowAssociations
+                                            ? t("extensions:manage.features.user.addUser.summary" +
+                                                ".passwordWarningMessageWithWorkFlow")
+                                            : t("extensions:manage.features.user.addUser.summary" +
+                                                ".passwordWarningMessage")
+                                        }
                                     </Grid.Column>
                                 </Grid>
                             </Message>

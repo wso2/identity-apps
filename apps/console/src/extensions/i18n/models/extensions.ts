@@ -2840,6 +2840,7 @@ export interface Extensions {
                             accountHasBeenCreated: string;
                         };
                         passwordWarningMessage: string;
+                        passwordWarningMessageWithWorkFlow: string;
                         password: string;
                         username: string;
                     }
@@ -3285,6 +3286,7 @@ export interface Extensions {
                         updateRole: {
                             error: NotificationItem;
                             genericError: NotificationItem;
+                            pendingApproval: NotificationItem;
                             success: NotificationItem;
                         };
                     }

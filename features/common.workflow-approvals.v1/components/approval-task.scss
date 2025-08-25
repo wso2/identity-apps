@@ -16,24 +16,29 @@
  * under the License.
  */
 
-.rich-text-with-translation-container {
-    position: relative;
+.approval-task-properties {
+    &-container {
+        max-width: 100%;
+        overflow-x: auto;
+    }
 
-    .rich-text-translation-icon-button {
-        position: absolute;
-        top: 99.5px;
-        right: 8px;
-        z-index: 1000;
-        padding: 4px;
-        width: 24px;
-        height: 24px;
-        border: 1px solid var(--oxygen-palette-divider);
-        border-radius: var(--oxygen-shape-borderRadius);
-        background-color: var(--oxygen-palette-background-paper);
+    &-table {
+        table-layout: fixed;
+        width: 100%;
 
-        &:hover {
-            background-color: var(--oxygen-palette-action-hover);
-            border-color: var(--oxygen-palette-action-selected);
+        .key-cell {
+            width: 30%;
+            word-break: break-word;
+        }
+
+        .values-cell {
+            width: 70% !important;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+
+            .text-value {
+                margin: 0.5em 0;
+            }
         }
     }
 }

@@ -84,6 +84,15 @@ export const common: CommonNS = {
                 }
             }
         },
+        operationTypes: {
+            "addRole": "ロールを追加",
+            "addUser": "ユーザーを追加",
+            "all": "すべての操作",
+            "deleteRole": "ロールを削除",
+            "deleteUser": "ユーザーを削除",
+            "selfRegisterUser": "ユーザーの自己登録",
+            "updateRolesOfUser": "ロールのユーザーを更新"
+        },
         "placeholders": {
             "emptyApprovalFilter": {
                 "action": "すべて表示",
@@ -114,12 +123,19 @@ export const common: CommonNS = {
             },
             "searchApprovals": "ワークフロー名で検索"
         },
+        propertyMessages: {
+            assignedUsersDeleted: "割り当てられたユーザー/sは削除されています。",
+            roleDeleted: "役割が削除されました。",
+            selfRegistration: "自己登録",
+            unassignedUsersDeleted: "割り当てられていないユーザー/sは削除されています。"
+        },
         "subTitle": "承認を必要とする運用タスクを確認します",
         "title": "承認"
     },
     "approve": "承認する",
     "approved": "承認済み",
     "apps": "アプリ",
+    "assignYourself": "自分に割り当てる",
     "assignee": "譲受人",
     "assignees": "譲受人",
     "asyncOperationErrorMessage": {
@@ -140,7 +156,6 @@ export const common: CommonNS = {
         "heading": "何かがうまくいかなかった",
         "primaryActionText": "アプリをリロードします"
     },
-    "claim": "請求",
     "clear": "クリア",
     "clientId": "クライアントID",
     "close": "近い",
@@ -220,6 +235,7 @@ export const common: CommonNS = {
     "noResultsFound": "結果が見つかりません",
     "okay": "わかった",
     "operatingSystem": "オペレーティング·システム",
+    "operationType": "操作タイプ",
     "operations": "オペレーション",
     "organizationName": "{{orgName}} 組織",
     "overview": "概要",
@@ -240,7 +256,6 @@ export const common: CommonNS = {
     "register": "登録する",
     "reject": "拒否する",
     "rejected": "拒否されました",
-    "release": "リリース",
     "remove": "取り除く",
     "removeAll": "すべて削除する",
     "required": "これが必要です。",
@@ -278,6 +293,7 @@ export const common: CommonNS = {
     "terminateSession": "セッションを終了します",
     "tooShort": "短すぎる",
     "type": "タイプ",
+    "unassign": "割り当て解除",
     "unpin": "運品",
     "unpinned": "インプインしていない",
     "update": "アップデート",

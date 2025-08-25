@@ -817,7 +817,7 @@
                 "scopes": {
                     "create": [],
                     "delete": [],
-                    "feature": [],
+                    "feature": ["console:flows"],
                     "read": [],
                     "update": []
                 }
@@ -1656,7 +1656,8 @@
                 "featureFlags": [],
                 "scopes": {
                     "create": [
-                        "internal_user_mgt_create"
+                        "internal_user_mgt_create",
+                        "internal_workflow_association_view"
                     ],
                     "delete": [
                         "internal_user_mgt_delete"
@@ -1816,6 +1817,7 @@
                 "branding",
                 "consoleSettings",
                 "emailTemplates",
+                "flows",
                 "gettingStarted",
                 "governanceConnectors",
                 "groups",

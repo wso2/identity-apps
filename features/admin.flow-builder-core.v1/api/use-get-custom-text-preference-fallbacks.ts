@@ -20,6 +20,8 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { I18nConstants } from "@wso2is/admin.core.v1/constants/i18n-constants";
 import { PreviewScreenType } from "@wso2is/common.branding.v1/models/branding-preferences";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import cloneDeep from "lodash-es/cloneDeep";
+import { useMemo } from "react";
 import useSWR, { SWRResponse } from "swr";
 import { CustomTextPreferenceResult } from "../models/custom-text-preference";
 
@@ -84,9 +86,13 @@ const useGetCustomTextPreferenceFallbacks = (
     shouldFetch: boolean = true
 ): CustomTextPreferenceResult => {
     // Create cache key based on all parameters.
-    const cacheKey: string = shouldFetch
-        ? `custom-text-preference-multiple-fallbacks-${JSON.stringify(screens.sort())}-${locale}`
-        : null;
+    const cacheKey: string = useMemo(() => {
+        const sortedScreens: PreviewScreenType[] = cloneDeep(screens).sort();
+
+        return shouldFetch
+            ? `custom-text-preference-multiple-fallbacks-${JSON.stringify(sortedScreens)}-${locale}`
+            : null;
+    }, [ screens, locale, shouldFetch ]);
 
     const {
         data,

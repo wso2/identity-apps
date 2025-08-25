@@ -998,7 +998,8 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: ClaimManagementConstants.EMPTY_STRING
+                title: ClaimManagementConstants.EMPTY_STRING,
+                width: 2
             }
         ];
     };

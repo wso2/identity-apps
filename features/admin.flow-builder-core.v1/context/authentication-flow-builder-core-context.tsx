@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { CustomTextPreferenceScreenMetaInterface } from "@wso2is/admin.branding.v1/models/custom-text-preference";
 import { PreviewScreenType } from "@wso2is/common.branding.v1/models/branding-preferences";
 import { Claim } from "@wso2is/core/models";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
@@ -45,6 +44,10 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      * The heading for the element properties panel.
      */
     resourcePropertiesPanelHeading: ReactNode;
+    /**
+     * The primary i18n screen for the flow.
+     */
+    primaryI18nScreen: PreviewScreenType;
     /**
      * Indicates whether the element panel is open.
      */
@@ -135,17 +138,13 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      */
     isI18nSubmitting?: boolean;
     /**
-     * Screen metadata for custom text preferences.
-     */
-    screenMeta?: { [key in PreviewScreenType]?: CustomTextPreferenceScreenMetaInterface };
-    /**
-     * Function to check if a given i18n key is custom for the specified screen type.
+     * Function to check if a given i18n key is custom.
      *
-     * @param screenType - The screen type to check.
      * @param key - The i18n key to check.
-     * @returns True if the i18n key is custom for the specified screen type, false otherwise.
+     * @param excludePrimaryScreen - Whether to exclude the primary screen from the check.
+     * @returns True if the i18n key is custom, false otherwise.
      */
-    isCustomI18nKey?: (screenType: PreviewScreenType, key: string) => boolean;
+    isCustomI18nKey?: (key: string, excludePrimaryScreen?: boolean) => boolean;
     /**
      * Supported locales for the custom text preferences.
      */
@@ -176,6 +175,7 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
         lastInteractedStepId: "",
         metadata: null,
         onResourceDropOnCanvas: () => {},
+        primaryI18nScreen: PreviewScreenType.COMMON,
         resourcePropertiesPanelHeading: null,
         selectedAttributes: {},
         setIsOpenResourcePropertiesPanel: () => {},

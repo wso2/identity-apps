@@ -376,6 +376,9 @@
 
         SelfRegisterApi selfRegisterApi = new SelfRegisterApi();
         String responseContent = selfRegisterApi.mePostCall(selfUserRegistrationRequest, requestHeaders);
+        if (IdentityManagementEndpointConstants.PENDING_APPROVAL.equals(responseContent)) {
+            request.setAttribute("pendingApproval", "true");
+        }
 
         // Extract userId from response if available
         String userId = "";

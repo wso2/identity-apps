@@ -123,6 +123,9 @@ interface AddUserBasicProps extends IdentifiableComponentInterface {
     setBasicDetailsLoading?: (toggle: boolean) => void;
     selectedUserStoreId: string;
     connectorProperties: ConnectorPropertyInterface[];
+    hasWorkflowAssociations?: boolean;
+    askPasswordOption: string;
+    setAskPasswordOption: (option: string) => void;
 }
 
 /**
@@ -148,6 +151,9 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
     selectedUserStoreId,
     isBasicDetailsLoading,
     connectorProperties,
+    hasWorkflowAssociations = false,
+    askPasswordOption,
+    setAskPasswordOption,
     [ "data-componentid" ]: componentId = "add-user-basic"
 }: AddUserBasicProps): ReactElement => {
     const { t } = useTranslation();
@@ -164,8 +170,6 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
     const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
     const systemReservedUserStores: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.systemReservedUserStores);
-
-    const [ askPasswordOption, setAskPasswordOption ] = useState<string>(userConfig.defautlAskPasswordOption);
     const [ passwordConfig, setPasswordConfig ] = useState<ValidationFormInterface>(undefined);
     const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
     const [ userStore, setUserStore ] = useState<string>(selectedUserStoreId);
@@ -649,10 +653,18 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
      * This will set the ask password option as OFFLINE if email verification is not enabled or email is not required.
      */
     useEffect(() => {
-        if (!emailVerificationEnabled || !isEmailRequired) {
-            setAskPasswordOption(AskPasswordOptionTypes.OFFLINE);
+        if (!hasWorkflowAssociations) {
+            if (userConfig.defautlAskPasswordOption === AskPasswordOptionTypes.OFFLINE
+                || !emailVerificationEnabled || !isEmailRequired) {
+                setAskPasswordOption(AskPasswordOptionTypes.OFFLINE);
+            }
+        } else if (emailVerificationEnabled && isEmailRequired) {
+            setAskPasswordOption(AskPasswordOptionTypes.EMAIL);
         } else {
-            setAskPasswordOption(userConfig.defautlAskPasswordOption);
+            setAskPasswordOption(userConfig?.defautlAskPasswordOption !== AskPasswordOptionTypes.OFFLINE
+                ? userConfig?.defautlAskPasswordOption
+                : null
+            );
         }
     }, [ isEmailRequired ]);
 
@@ -1119,7 +1131,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                             name={ mobileSchema.name }
                             label={ fieldName }
                             placeholder={ t("user:forms.addUserForm.inputs.generic.placeholder", { label: fieldName }) }
-                            initialValue={ profileInfo.get(mobileSchema?.name) }
+                            initialValue={ profileInfo?.get(mobileSchema?.name) }
                             validate={ (value: string) => {
                                 if (isEmpty(value)) {
                                     return t("user:forms.addUserForm.inputs.generic.validations.empty", {
@@ -1134,6 +1146,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                                     ? mobileSchema.maxLength
                                     : ProfileConstants.CLAIM_VALUE_MAX_LENGTH
                             }
+                            validateFields={ [] }
                             data-componentid={ resolvedComponentId }
                             required
                         />
@@ -1332,6 +1345,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                                                     return "First Name cannot contain the forward slash (/) character.";
                                                 }
                                             } }
+                                            validateFields={ [] }
                                             data-testid="user-mgt-add-user-form-firstName-input"
                                             data-componentid="user-mgt-add-user-form-firstName-input"
                                         />
@@ -1361,6 +1375,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                                                     return "Last Name cannot contain the forward slash (/) character.";
                                                 }
                                             } }
+                                            validateFields={ [] }
                                             data-testid="user-mgt-add-user-form-lastName-input"
                                             data-componentid="user-mgt-add-user-form-lastName-input"
                                         />
@@ -1385,6 +1400,9 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                                         <InputLabel
                                             id="pw-options-radio-buttons-group-label"
                                             htmlFor="pw-options-radio-buttons-group"
+                                            data-componentid={
+                                                "user-mgt-add-user-form-pw-options-radio-buttons-group-label"
+                                            }
                                         >
                                             { t("user:forms.addUserForm.buttons.radioButton.label") }
                                         </InputLabel>
@@ -1404,6 +1422,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                                                     label={ askPasswordOptionData.label }
                                                     value={ askPasswordOptionData.value }
                                                     control={ <MuiRadio /> }
+                                                    data-testid={ askPasswordOptionData["data-testid"] }
                                                 />
 
                                                 { passwordOption === askPasswordOptionData.value && (
@@ -1426,6 +1445,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                                                             isMultipleEmailAndMobileNumberEnabled }
                                                         isDistinctAttributeProfilesDisabled={
                                                             isDistinctAttributeProfilesDisabled }
+                                                        hasWorkflowAssociations = { hasWorkflowAssociations }
                                                     />
                                                 ) }
 
@@ -1433,6 +1453,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                                                     label={ createPasswordOptionData.label }
                                                     value={ createPasswordOptionData.value }
                                                     control={ <MuiRadio /> }
+                                                    data-testid={ createPasswordOptionData["data-testid"] }
                                                 />
                                             </RadioGroup>
                                         </FormControl>
@@ -1442,12 +1463,14 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                                             type="hidden"
                                             name="passwordOption"
                                             initialValue={ passwordOption }
+                                            validateFields={ [] }
                                         />
 
                                         { passwordOption === createPasswordOptionData.value && (
                                             <CreatePasswordOption
                                                 passwordConfig={ passwordConfig }
                                                 passwordRegex={ passwordRegex }
+                                                data-componentid="user-mgt-add-user-form-create-password-option"
                                             />
                                         ) }
                                     </Grid.Column>

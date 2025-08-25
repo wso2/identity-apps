@@ -1,5 +1,65 @@
 # @wso2is/identity-apps-core
 
+## 3.2.10
+
+### Patch Changes
+
+- [#8895](https://github.com/wso2/identity-apps/pull/8895) [`0f88d232396239ed2255f3291b8f6d0f21580a22`](https://github.com/wso2/identity-apps/commit/0f88d232396239ed2255f3291b8f6d0f21580a22) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Honor sp param in invite user to set password flow redirection
+
+* [#8895](https://github.com/wso2/identity-apps/pull/8895) [`d624fd4a2b4b192ced2ebb957bdef208f8062baf`](https://github.com/wso2/identity-apps/commit/d624fd4a2b4b192ced2ebb957bdef208f8062baf) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Handle workflow approvals during self registration flow
+
+## 3.2.9
+
+### Patch Changes
+
+- [#8882](https://github.com/wso2/identity-apps/pull/8882) [`d525ac825b35aaa506e5bd2dddff3964c55b7640`](https://github.com/wso2/identity-apps/commit/d525ac825b35aaa506e5bd2dddff3964c55b7640) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Add missing space in Sign in With SSO page
+
+## 3.2.8
+
+### Patch Changes
+
+- [#8873](https://github.com/wso2/identity-apps/pull/8873) [`e875def38dfad7da4cd0e3863576e8b8996e1681`](https://github.com/wso2/identity-apps/commit/e875def38dfad7da4cd0e3863576e8b8996e1681) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Fix Auto login is not working for email otp based password reset flow
+
+* [#8881](https://github.com/wso2/identity-apps/pull/8881) [`f74bbdc8f5a9f64802fd09bc3aa8dd90a4c5ce29`](https://github.com/wso2/identity-apps/commit/f74bbdc8f5a9f64802fd09bc3aa8dd90a4c5ce29) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Handle ask password expired OTP error seperatly
+
+- [#8880](https://github.com/wso2/identity-apps/pull/8880) [`7837e94f649b953c23c98fce5d7ffdec00bea849`](https://github.com/wso2/identity-apps/commit/7837e94f649b953c23c98fce5d7ffdec00bea849) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Update email username regex to support consecutive special characters
+
+## 3.2.7
+
+### Patch Changes
+
+- [#8853](https://github.com/wso2/identity-apps/pull/8853) [`02fd308f1a443d7e0fa09245092eb221031c1269`](https://github.com/wso2/identity-apps/commit/02fd308f1a443d7e0fa09245092eb221031c1269) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Fix app branding not getting applied to Username recovery channel selection page
+
+## 3.2.6
+
+### Patch Changes
+
+- [#8841](https://github.com/wso2/identity-apps/pull/8841) [`0c503282a49b4b7c25480a3f41148993f67cf67b`](https://github.com/wso2/identity-apps/commit/0c503282a49b4b7c25480a3f41148993f67cf67b) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Start tenant flow when the impersonator role creation
+
+## 3.2.5
+
+### Patch Changes
+
+- [#8835](https://github.com/wso2/identity-apps/pull/8835) [`b4a2dc7d7232befe0f8ec89481bb356cbe1f5e3a`](https://github.com/wso2/identity-apps/commit/b4a2dc7d7232befe0f8ec89481bb356cbe1f5e3a) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Add tldts lib to accounts webapp
+
+## 3.2.4
+
+### Patch Changes
+
+- [#8831](https://github.com/wso2/identity-apps/pull/8831) [`5cc28e43546f220dc2ce8e6f208f2af4aaa195c9`](https://github.com/wso2/identity-apps/commit/5cc28e43546f220dc2ce8e6f208f2af4aaa195c9) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue where the reCAPTCHA widget was not rendering in flows
+
+## 3.2.3
+
+### Patch Changes
+
+- [#8817](https://github.com/wso2/identity-apps/pull/8817) [`045a0cb57b0816879206072b724571240f904773`](https://github.com/wso2/identity-apps/commit/045a0cb57b0816879206072b724571240f904773) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Enhance the i18n configuration editor UX
+
+## 3.2.2
+
+### Patch Changes
+
+- [#8805](https://github.com/wso2/identity-apps/pull/8805) [`901fe3d4c0722d647b7d15caefce88790a5b2ef8`](https://github.com/wso2/identity-apps/commit/901fe3d4c0722d647b7d15caefce88790a5b2ef8) Thanks [@KD23243](https://github.com/KD23243)! - Refactor dynamic portal URL handling
+
 ## 3.2.1
 
 ### Patch Changes

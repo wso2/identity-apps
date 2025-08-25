@@ -1,5 +1,65 @@
 # @wso2is/i18n
 
+## 2.30.11
+
+### Patch Changes
+
+- [#8906](https://github.com/wso2/identity-apps/pull/8906) [`d2761e6e3c810878c8579d0aa7a293b888adbd82`](https://github.com/wso2/identity-apps/commit/d2761e6e3c810878c8579d0aa7a293b888adbd82) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Unify workflow approval operationType usages and UI improvements
+
+## 2.30.10
+
+### Patch Changes
+
+- [#8901](https://github.com/wso2/identity-apps/pull/8901) [`a02d2b8776914b009cc8ac36c6ceae9d93709e23`](https://github.com/wso2/identity-apps/commit/a02d2b8776914b009cc8ac36c6ceae9d93709e23) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Ensure approval requests with invalid user data are properly validated and handled without throwing errors.
+
+## 2.30.9
+
+### Patch Changes
+
+- [#8899](https://github.com/wso2/identity-apps/pull/8899) [`cf987dbe97b9a088ce55076aa3648d40eac68a24`](https://github.com/wso2/identity-apps/commit/cf987dbe97b9a088ce55076aa3648d40eac68a24) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Disable the attribute profile configuration view for the complex data type attributes
+
+## 2.30.8
+
+### Patch Changes
+
+- [#8895](https://github.com/wso2/identity-apps/pull/8895) [`d624fd4a2b4b192ced2ebb957bdef208f8062baf`](https://github.com/wso2/identity-apps/commit/d624fd4a2b4b192ced2ebb957bdef208f8062baf) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Handle workflow approvals during self registration flow
+
+## 2.30.7
+
+### Patch Changes
+
+- [#8887](https://github.com/wso2/identity-apps/pull/8887) [`3a401177e32564dd474b97799b1110c664097453`](https://github.com/wso2/identity-apps/commit/3a401177e32564dd474b97799b1110c664097453) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Enhance the UX for i18n configuration in the flow builder
+
+## 2.30.6
+
+### Patch Changes
+
+- [#8881](https://github.com/wso2/identity-apps/pull/8881) [`f74bbdc8f5a9f64802fd09bc3aa8dd90a4c5ce29`](https://github.com/wso2/identity-apps/commit/f74bbdc8f5a9f64802fd09bc3aa8dd90a4c5ce29) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Handle ask password expired OTP error seperatly
+
+* [#8869](https://github.com/wso2/identity-apps/pull/8869) [`b9823e4b2efa2a4ec79bc293e63cfd89d77d98e3`](https://github.com/wso2/identity-apps/commit/b9823e4b2efa2a4ec79bc293e63cfd89d77d98e3) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add the flow card to the sub-organization home page
+
+## 2.30.5
+
+### Patch Changes
+
+- [#8854](https://github.com/wso2/identity-apps/pull/8854) [`2949da402d28355b1b9eadd56c812ed06e03b028`](https://github.com/wso2/identity-apps/commit/2949da402d28355b1b9eadd56c812ed06e03b028) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix workflow related issues in user creation.
+
+* [#8861](https://github.com/wso2/identity-apps/pull/8861) [`8aeeadc47933a0bfd63eafa2bde41754b7678f3f`](https://github.com/wso2/identity-apps/commit/8aeeadc47933a0bfd63eafa2bde41754b7678f3f) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Improve the UX of account linking configurations
+
+## 2.30.4
+
+### Patch Changes
+
+- [#8784](https://github.com/wso2/identity-apps/pull/8784) [`bca8a75d72251f1a779fcf8881dc44e18c6286ca`](https://github.com/wso2/identity-apps/commit/bca8a75d72251f1a779fcf8881dc44e18c6286ca) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Update domain field label to Organization Handle and remove mandatory mark from Organization Name
+
+* [#8821](https://github.com/wso2/identity-apps/pull/8821) [`a25397ebd2b019b935fc58a5fb2c8b40d5e93937`](https://github.com/wso2/identity-apps/commit/a25397ebd2b019b935fc58a5fb2c8b40d5e93937) Thanks [@Malith-19](https://github.com/Malith-19)! - Handle the workflow engagement scenario when administrator assignments for the existing user.
+
+## 2.30.3
+
+### Patch Changes
+
+- [#8817](https://github.com/wso2/identity-apps/pull/8817) [`045a0cb57b0816879206072b724571240f904773`](https://github.com/wso2/identity-apps/commit/045a0cb57b0816879206072b724571240f904773) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Enhance the i18n configuration editor UX
+
 ## 2.30.2
 
 ### Patch Changes

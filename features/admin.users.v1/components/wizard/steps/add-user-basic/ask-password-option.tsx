@@ -49,6 +49,7 @@ interface AskPasswordOptionPropsInterface extends IdentifiableComponentInterface
     isMultipleEmailAndMobileNumberEnabled: boolean;
     isDistinctAttributeProfilesDisabled: boolean;
     localClaims: Claim[];
+    hasWorkflowAssociations?: boolean;
 }
 
 /**
@@ -67,6 +68,7 @@ const AskPasswordOption: FunctionComponent<AskPasswordOptionPropsInterface> = ({
     isMultipleEmailAndMobileNumberEnabled,
     isDistinctAttributeProfilesDisabled,
     localClaims,
+    hasWorkflowAssociations = false,
     ["data-componentid"]: componentId = "ask-password-option"
 }: AskPasswordOptionPropsInterface): ReactElement => {
     const { t } = useTranslation();
@@ -181,6 +183,14 @@ const AskPasswordOption: FunctionComponent<AskPasswordOptionPropsInterface> = ({
         return null;
     };
 
+    const renderOfflineAskPasswordOptionPopupContent = (): ReactElement => {
+        if (hasWorkflowAssociations) {
+            return t("user:modals.addUserWizard.askPassword.offlineInviteUnavailableWithWorkflow");
+        }
+
+        return null;
+    };
+
     /**
      * Get the message icon based on the verification option.
      *
@@ -268,11 +278,29 @@ const AskPasswordOption: FunctionComponent<AskPasswordOptionPropsInterface> = ({
                             />
                         )
                 }
-                <Menu.Item
-                    name={ t("user:modals.addUserWizard.askPassword.inviteOffline") }
-                    active={ selectedAskPasswordOption === AskPasswordOptionTypes.OFFLINE }
-                    onClick={ () => onAskPasswordOptionChange(AskPasswordOptionTypes.OFFLINE) }
-                />
+                { hasWorkflowAssociations ? (
+                    <Popup
+                        basic
+                        inverted
+                        position="top center"
+                        content={ renderOfflineAskPasswordOptionPopupContent() }
+                        hoverable
+                        trigger={
+                            (
+                                <Menu.Item
+                                    name={ t("user:modals.addUserWizard.askPassword.inviteOffline") }
+                                    disabled
+                                />
+                            )
+                        }
+                    />
+                ) : (
+                    <Menu.Item
+                        name={ t("user:modals.addUserWizard.askPassword.inviteOffline") }
+                        active={ selectedAskPasswordOption === AskPasswordOptionTypes.OFFLINE }
+                        onClick={ () => onAskPasswordOptionChange(AskPasswordOptionTypes.OFFLINE) }
+                    />
+                ) }
             </Menu>
 
             { selectedAskPasswordOption === AskPasswordOptionTypes.EMAIL && (
@@ -287,7 +315,7 @@ const AskPasswordOption: FunctionComponent<AskPasswordOptionPropsInterface> = ({
                 </Grid.Row>
             ) }
 
-            { selectedAskPasswordOption === AskPasswordOptionTypes.OFFLINE && (
+            { selectedAskPasswordOption === AskPasswordOptionTypes.OFFLINE && !hasWorkflowAssociations && (
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } computer={ 10 }>
                         <Message

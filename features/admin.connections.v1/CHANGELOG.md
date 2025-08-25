@@ -1,5 +1,17 @@
 # @wso2is/admin.connections.v1
 
+## 2.34.3
+
+### Patch Changes
+
+- [#8861](https://github.com/wso2/identity-apps/pull/8861) [`8aeeadc47933a0bfd63eafa2bde41754b7678f3f`](https://github.com/wso2/identity-apps/commit/8aeeadc47933a0bfd63eafa2bde41754b7678f3f) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Improve the UX of account linking configurations
+
+- Updated dependencies [[`2949da402d28355b1b9eadd56c812ed06e03b028`](https://github.com/wso2/identity-apps/commit/2949da402d28355b1b9eadd56c812ed06e03b028), [`8aeeadc47933a0bfd63eafa2bde41754b7678f3f`](https://github.com/wso2/identity-apps/commit/8aeeadc47933a0bfd63eafa2bde41754b7678f3f)]:
+  - @wso2is/i18n@2.30.5
+  - @wso2is/admin.connections.v1@2.34.3
+  - @wso2is/admin.core.v1@2.49.20
+  - @wso2is/admin.roles.v2@2.27.193
+
 ## 2.34.2
 
 ### Patch Changes

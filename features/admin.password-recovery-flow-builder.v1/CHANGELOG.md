@@ -1,5 +1,80 @@
 # @wso2is/admin.password-recovery-flow-builder.v1
 
+## 1.1.15
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.23
+  - @wso2is/admin.flow-builder-core.v1@0.10.15
+  - @wso2is/admin.server-configurations.v1@2.35.36
+
+## 1.1.14
+
+### Patch Changes
+
+- Updated dependencies [[`3a401177e32564dd474b97799b1110c664097453`](https://github.com/wso2/identity-apps/commit/3a401177e32564dd474b97799b1110c664097453)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.14
+  - @wso2is/admin.core.v1@2.49.22
+  - @wso2is/admin.server-configurations.v1@2.35.35
+
+## 1.1.13
+
+### Patch Changes
+
+- Updated dependencies [[`f74bbdc8f5a9f64802fd09bc3aa8dd90a4c5ce29`](https://github.com/wso2/identity-apps/commit/f74bbdc8f5a9f64802fd09bc3aa8dd90a4c5ce29), [`22bb1c8d3316674ef956514f77821d4b72549ca8`](https://github.com/wso2/identity-apps/commit/22bb1c8d3316674ef956514f77821d4b72549ca8)]:
+  - @wso2is/admin.server-configurations.v1@2.35.34
+  - @wso2is/admin.claims.v1@2.29.1
+  - @wso2is/admin.core.v1@2.49.21
+  - @wso2is/admin.flow-builder-core.v1@0.10.13
+
+## 1.1.12
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.20
+  - @wso2is/admin.flow-builder-core.v1@0.10.12
+  - @wso2is/admin.server-configurations.v1@2.35.33
+
+## 1.1.11
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.19
+  - @wso2is/admin.flow-builder-core.v1@0.10.11
+  - @wso2is/admin.server-configurations.v1@2.35.32
+
+## 1.1.10
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.18
+  - @wso2is/admin.flow-builder-core.v1@0.10.10
+  - @wso2is/admin.server-configurations.v1@2.35.31
+
+## 1.1.9
+
+### Patch Changes
+
+- Updated dependencies [[`9b7331bb91d14db49ed732d6b73d1867856abd27`](https://github.com/wso2/identity-apps/commit/9b7331bb91d14db49ed732d6b73d1867856abd27), [`da8bbbec473b49de9353b44420f33265e7061df6`](https://github.com/wso2/identity-apps/commit/da8bbbec473b49de9353b44420f33265e7061df6)]:
+  - @wso2is/admin.core.v1@2.49.17
+  - @wso2is/admin.flow-builder-core.v1@0.10.9
+  - @wso2is/admin.server-configurations.v1@2.35.30
+
+## 1.1.8
+
+### Patch Changes
+
+- [#8817](https://github.com/wso2/identity-apps/pull/8817) [`045a0cb57b0816879206072b724571240f904773`](https://github.com/wso2/identity-apps/commit/045a0cb57b0816879206072b724571240f904773) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Enhance the i18n configuration editor UX
+
+- Updated dependencies [[`045a0cb57b0816879206072b724571240f904773`](https://github.com/wso2/identity-apps/commit/045a0cb57b0816879206072b724571240f904773)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.8
+  - @wso2is/admin.core.v1@2.49.16
+  - @wso2is/admin.server-configurations.v1@2.35.29
+
 ## 1.1.7
 
 ### Patch Changes

@@ -505,10 +505,17 @@ public class AppPortalUtils {
 
         RoleManagementService roleManagementService = AppsCommonDataHolder.getInstance().getRoleManagementServiceV2();
         try {
+            PrivilegedCarbonContext.startTenantFlow();
+            PrivilegedCarbonContext privilegedCarbonContext = PrivilegedCarbonContext.getThreadLocalCarbonContext();
+            privilegedCarbonContext.setTenantId(tenantId);
+            privilegedCarbonContext.setTenantDomain(tenantDomain);
+            privilegedCarbonContext.setUsername(appOwner);
             roleManagementService.addRole(IMPERSONATE_ROLE_NAME, Collections.emptyList(), Collections.emptyList(),
                 permissions, APPLICATION, appId, tenantDomain);
         } catch (IdentityRoleManagementException e) {
             throw new IdentityApplicationManagementException("Error occurred while creating impersonator role.");
+        } finally {
+            PrivilegedCarbonContext.endTenantFlow();
         }
     }
 

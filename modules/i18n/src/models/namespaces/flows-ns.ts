@@ -71,18 +71,29 @@ export interface flowsNS {
             };
             textPropertyField: {
                 i18nCard: {
+                    chip: {
+                        commonScreen: {
+                            label: string;
+                        };
+                    };
+                    commonKeyWarning: string;
                     configure: string;
-                    configureTitle: string;
+                    createTitle: string;
                     i18nKey: string;
+                    i18nKeyInputHint: string;
+                    i18nKeyInputPlaceholder: string;
                     language: string;
                     languageText: string;
                     languageTextPlaceholder: string;
-                    screenName: string;
-                    selectOrAddI18nKey: string;
                     selectI18nKey: string;
                     selectLanguage: string;
-                    selectScreenName: string;
                     title: string;
+                    tooltip: {
+                        addNewTranslation: string;
+                        commonKeyTooltip: string;
+                        editExistingTranslation: string;
+                    };
+                    updateTitle: string;
                 };
                 placeholder: string;
                 tooltip: {
@@ -124,12 +135,6 @@ export interface flowsNS {
                 };
             };
             flowMetadataFetch: {
-                genericError: {
-                    description: string;
-                    message: string;
-                };
-            };
-            screenMetaFetch: {
                 genericError: {
                     description: string;
                     message: string;

@@ -235,7 +235,6 @@ const ConsoleSharedAccess: FunctionComponent<ConsoleSharedAccessPropsInterface> 
         setRoleSelections({});
         setSelectedRoles([ administratorRole?.Resources[0] ]);
         setInitialSelectedRoles([ administratorRole?.Resources[0] ]);
-        mutateOriginalOrganizationTree();
         setClearAdvancedRoleSharing(false);
     };
 
