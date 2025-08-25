@@ -233,6 +233,7 @@ export const common: CommonNS = {
     "new": "新しい",
     "next": "次",
     "noResultsFound": "結果が見つかりません",
+    "none": "なし",
     "okay": "わかった",
     "operatingSystem": "オペレーティング·システム",
     "operationType": "操作タイプ",

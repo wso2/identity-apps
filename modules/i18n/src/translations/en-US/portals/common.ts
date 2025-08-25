@@ -233,6 +233,7 @@ export const common: CommonNS = {
     new: "New",
     next: "Next",
     noResultsFound: "No results found",
+    none: "None",
     okay: "Okay",
     operatingSystem: "Operating system",
     operationType: "Operation Type",
