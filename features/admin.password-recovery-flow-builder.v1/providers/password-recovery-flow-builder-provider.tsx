@@ -52,24 +52,29 @@ export type PasswordRecoveryFlowBuilderProviderProps = PropsWithChildren<unknown
  */
 const PasswordRecoveryFlowBuilderProvider: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
     children
-}: PropsWithChildren<PasswordRecoveryFlowBuilderProviderProps>): ReactElement => (
-    <AuthenticationFlowBuilderCoreProvider
-        ElementFactory={ ElementFactory }
-        ResourceProperties={ ResourceProperties }
-        flowType={ FlowTypes.PASSWORD_RECOVERY }
-        screenTypes={ [
-            PreviewScreenType.PASSWORD_RECOVERY,
-            PreviewScreenType.COMMON,
-            PreviewScreenType.PASSWORD_RESET,
-            PreviewScreenType.PASSWORD_RESET_SUCCESS,
-            PreviewScreenType.EMAIL_OTP,
-            PreviewScreenType.SMS_OTP,
-            PreviewScreenType.EMAIL_LINK_EXPIRY
-        ] }
-    >
-        <FlowContextWrapper>{ children }</FlowContextWrapper>
-    </AuthenticationFlowBuilderCoreProvider>
-);
+}: PropsWithChildren<PasswordRecoveryFlowBuilderProviderProps>): ReactElement => {
+
+    const screensList: PreviewScreenType[] = useMemo(() => ([
+        PreviewScreenType.PASSWORD_RECOVERY,
+        PreviewScreenType.COMMON,
+        PreviewScreenType.PASSWORD_RESET,
+        PreviewScreenType.PASSWORD_RESET_SUCCESS,
+        PreviewScreenType.EMAIL_OTP,
+        PreviewScreenType.SMS_OTP,
+        PreviewScreenType.EMAIL_LINK_EXPIRY
+    ]), []);
+
+    return (
+        <AuthenticationFlowBuilderCoreProvider
+            ElementFactory={ ElementFactory }
+            ResourceProperties={ ResourceProperties }
+            flowType={ FlowTypes.PASSWORD_RECOVERY }
+            screenTypes={ screensList }
+        >
+            <FlowContextWrapper>{ children }</FlowContextWrapper>
+        </AuthenticationFlowBuilderCoreProvider>
+    );
+};
 
 /**
  * This component wraps the flow context and provides necessary functions and state.

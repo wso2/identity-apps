@@ -23,7 +23,7 @@ import { PreviewScreenType } from "@wso2is/common.branding.v1/models/branding-pr
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useReactFlow } from "@xyflow/react";
-import React, { FC, PropsWithChildren, ReactElement, useState } from "react";
+import React, { FC, PropsWithChildren, ReactElement, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import configureRegistrationFlow from "../api/configure-registration-flow";
@@ -48,22 +48,27 @@ export type RegistrationFlowBuilderProviderProps = PropsWithChildren<unknown>;
  */
 const RegistrationFlowBuilderProvider: FC<RegistrationFlowBuilderProviderProps> = ({
     children
-}: PropsWithChildren<RegistrationFlowBuilderProviderProps>): ReactElement => (
-    <AuthenticationFlowBuilderCoreProvider
-        ElementFactory={ ElementFactory }
-        ResourceProperties={ ResourceProperties }
-        flowType={ FlowTypes.REGISTRATION }
-        screenTypes={ [
-            PreviewScreenType.SIGN_UP,
-            PreviewScreenType.COMMON,
-            PreviewScreenType.EMAIL_LINK_EXPIRY,
-            PreviewScreenType.EMAIL_OTP,
-            PreviewScreenType.SMS_OTP
-        ] }
-    >
-        <FlowContextWrapper>{ children }</FlowContextWrapper>
-    </AuthenticationFlowBuilderCoreProvider>
-);
+}: PropsWithChildren<RegistrationFlowBuilderProviderProps>): ReactElement => {
+
+    const screensList: PreviewScreenType[] = useMemo(() => ([
+        PreviewScreenType.SIGN_UP,
+        PreviewScreenType.COMMON,
+        PreviewScreenType.EMAIL_LINK_EXPIRY,
+        PreviewScreenType.EMAIL_OTP,
+        PreviewScreenType.SMS_OTP
+    ]), []);
+
+    return (
+        <AuthenticationFlowBuilderCoreProvider
+            ElementFactory={ ElementFactory }
+            ResourceProperties={ ResourceProperties }
+            flowType={ FlowTypes.REGISTRATION }
+            screenTypes={ screensList }
+        >
+            <FlowContextWrapper>{ children }</FlowContextWrapper>
+        </AuthenticationFlowBuilderCoreProvider>
+    );
+};
 
 /**
  * This component wraps the flow context and provides necessary functions and state.
