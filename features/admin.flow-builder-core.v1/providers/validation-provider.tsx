@@ -49,13 +49,7 @@ const ValidationProvider = ({
      */
     const addNotification: (notification: Notification) => void = useCallback((notification: Notification): void => {
         setNotifications((prev: Map<string, Notification>) => new Map(prev).set(notification.getId(), notification));
-        setSelectedNotification((prev: Notification) => {
-            if (notification.getId() === prev?.getId()) {
-                return notification;
-            }
-
-            return prev;
-        });
+        setSelectedNotification(notification);
     }, []);
 
     /**

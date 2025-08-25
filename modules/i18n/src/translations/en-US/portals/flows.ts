@@ -21,8 +21,8 @@ export const flows: flowsNS = {
     askPassword: {
         breadcrumb: "Edit Invited User Registration Flow",
         labels: {
-            disableFlow: "Disable invited user registration",
-            enableFlow: "Enable invited user registration"
+            disableFlow: "Disable",
+            enableFlow: "Enable"
         },
         notifications: {
             disableFlow: {
@@ -233,8 +233,8 @@ export const flows: flowsNS = {
     label: "Flows",
     passwordRecovery: {
         labels: {
-            disableFlow: "Disable password recovery",
-            enableFlow: "Enable password recovery"
+            disableFlow: "Disable",
+            enableFlow: "Enable"
         },
         name: "Password Recovery Flow Builder",
         notifications: {
@@ -273,8 +273,8 @@ export const flows: flowsNS = {
     registrationFlow: {
         breadcrumb: "Edit Registration Flow",
         labels: {
-            disableFlow: "Disable registration",
-            enableFlow: "Enable registration"
+            disableFlow: "Disable",
+            enableFlow: "Enable"
         },
         notifications: {
             disableFlow: {

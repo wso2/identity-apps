@@ -194,7 +194,7 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
-                gap={ 2 }
+                gap={ 4 }
             >
                 <ValidationStatusLabels />
                 <Box display="flex" alignItems="center">
