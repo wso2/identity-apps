@@ -359,12 +359,6 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
             data-testid={ `${testId}-page-layout` }
         >
             <div className="workflow-requests-page-content">
-                <ActiveFiltersBar
-                    filters={ activeFilters }
-                    onRemove={ removeFilter }
-                    onClearAll={ clearAllFilters }
-                    data-componentid="workflow-requests-active-filters-bar"
-                />
                 <WorkflowRequestsFilter
                     status={ status }
                     setStatus={ setStatus }
@@ -379,7 +373,14 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
                     searchWorkflowRequests={ searchWorkflowRequests }
                     loading={ isWorkflowInstancesLoading }
                 />
-
+                { !isEmpty(activeFilters) && (
+                    <ActiveFiltersBar
+                        filters={ activeFilters }
+                        onRemove={ removeFilter }
+                        onClearAll={ clearAllFilters }
+                        data-componentid="workflow-requests-active-filters-bar"
+                    />
+                ) }
                 <ListLayout
                     currentListSize={ workflowRequests.length }
                     listItemLimit={ limit }
