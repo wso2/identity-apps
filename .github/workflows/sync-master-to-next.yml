@@ -14,7 +14,7 @@ env:
   BASE_BRANCH: master
   TARGET_BRANCH: next
   FORK_REPO: wso2-iam-bot/identity-apps
-  GH_TOKEN: ${{ secrets.PR_AUTOMATION_BOT_TOKEN }}
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   sync:
