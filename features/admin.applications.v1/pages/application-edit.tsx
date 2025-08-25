@@ -180,12 +180,11 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     );
 
     useEffect(() => {
-        if (application && applicationInboundConfigs) {
+        if (application && applicationInboundConfigs && !application?.advancedConfigurations?.fragment) {
             const isAppOutdated: boolean = ApplicationManagementUtils.isApplicationOutdated(
                 application?.applicationVersion, true);
-            const isSharedApp: boolean = !application?.advancedConfigurations?.fragment;
 
-            setDisplayBanner(isAppOutdated && isSharedApp);
+            setDisplayBanner(isAppOutdated);
         }
     }, [ application, applicationInboundConfigs ]);
 
