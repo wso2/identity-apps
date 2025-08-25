@@ -13,7 +13,8 @@ permissions:
 env:
   BASE_BRANCH: master
   TARGET_BRANCH: next
-  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  FORK_REPO: wso2-iam-bot/identity-apps
+  GH_TOKEN: ${{ secrets.PR_AUTOMATION_BOT_TOKEN }}
 
 jobs:
   sync:
@@ -28,8 +29,8 @@ jobs:
 
       - name: Set up Git
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "wso2-iam-bot"
+          git config user.email "wso2-iam-bot@users.noreply.github.com"
 
       - name: Create or reset sync branch from target
         run: |
@@ -94,8 +95,10 @@ jobs:
             git cherry-pick $commit || git cherry-pick --skip
           done
 
-      - name: Push sync branch (force update)
-        run: git push origin HEAD:"$SYNC_BRANCH" --force
+      - name: Push sync branch to fork
+        run: |
+          git remote add fork https://x-access-token:${{ secrets.PR_AUTOMATION_BOT_TOKEN }}@github.com/${{ env.FORK_REPO }}.git
+          git push fork HEAD:"$SYNC_BRANCH" --force
 
       - name: Fetch target branch
         run: git fetch origin $TARGET_BRANCH:$TARGET_BRANCH || true
@@ -123,7 +126,7 @@ jobs:
             # Check for existing open PR
             EXISTING_PR=$(gh pr list \
               --base "${{ env.TARGET_BRANCH }}" \
-              --head "$SYNC_BRANCH" \
+              --head "wso2-iam-bot:$SYNC_BRANCH" \
               --state open \
               --json number \
               -q '.[0].number')
@@ -133,7 +136,7 @@ jobs:
             else
               gh pr create \
                 --base "${{ env.TARGET_BRANCH }}" \
-                --head "$SYNC_BRANCH" \
+                --head "wso2-iam-bot:$SYNC_BRANCH" \
                 --title "[Sync][${{ env.BASE_BRANCH }} -> ${{ env.TARGET_BRANCH }}][#${LAST_PR}]: $PR_TITLE" \
                 --body "$PR_BODY"
             fi
