@@ -234,6 +234,7 @@ export const common: CommonNS = {
     new: "புதிய",
     next: "அடுத்தது",
     noResultsFound: "முடிவுகள் எதுவும் இல்லை",
+    none: "இல்லை",
     okay: "சரி",
     operatingSystem: "இயங்கு தளம்",
     operationType: "செயலாக்க வகை",
