@@ -1,5 +1,25 @@
 # @wso2is/admin.core.v1
 
+## 2.49.30
+
+### Patch Changes
+
+- [#8902](https://github.com/wso2/identity-apps/pull/8902) [`f16f1d0eafc338a9ebee7f2e630019cfaeee7724`](https://github.com/wso2/identity-apps/commit/f16f1d0eafc338a9ebee7f2e630019cfaeee7724) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - remove IS related logos from console
+
+* [#8867](https://github.com/wso2/identity-apps/pull/8867) [`0c714793f572a0e1566e9aae0d4ce767823e1a9d`](https://github.com/wso2/identity-apps/commit/0c714793f572a0e1566e9aae0d4ce767823e1a9d) Thanks [@jeradrutnam](https://github.com/jeradrutnam)! - Improve organization nested search feature
+
+* Updated dependencies [[`e5f908600ad89f3b78477ad4e5752f2e17e3ca20`](https://github.com/wso2/identity-apps/commit/e5f908600ad89f3b78477ad4e5752f2e17e3ca20), [`0c714793f572a0e1566e9aae0d4ce767823e1a9d`](https://github.com/wso2/identity-apps/commit/0c714793f572a0e1566e9aae0d4ce767823e1a9d)]:
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.22
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.22
+  - @wso2is/admin.registration-flow-builder.v1@0.10.4
+  - @wso2is/admin.server-configurations.v1@2.35.43
+  - @wso2is/admin.organizations.v1@2.27.5
+  - @wso2is/i18n@2.30.15
+  - @wso2is/forms@2.3.25
+  - @wso2is/admin.flow-builder-core.v1@0.10.22
+  - @wso2is/admin.actions.v1@1.14.4
+  - @wso2is/admin.session-management.v1@2.25.210
+
 ## 2.49.29
 
 ### Patch Changes

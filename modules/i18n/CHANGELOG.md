@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.30.15
+
+### Patch Changes
+
+- [#8867](https://github.com/wso2/identity-apps/pull/8867) [`0c714793f572a0e1566e9aae0d4ce767823e1a9d`](https://github.com/wso2/identity-apps/commit/0c714793f572a0e1566e9aae0d4ce767823e1a9d) Thanks [@jeradrutnam](https://github.com/jeradrutnam)! - Improve organization nested search feature
+
 ## 2.30.14
 
 ### Patch Changes
