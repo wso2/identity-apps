@@ -414,7 +414,7 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
         <Grid
             container
             xs={ 12 }
-            className="roles-selective-share-container"
+            className="roles-selective-share-all-roles-container"
         >
             {
                 isApplicationOrganizationTreeFetchRequestLoading ? (

@@ -339,7 +339,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                                 : isCheckBoxField(inputField)
                                     ? tempForm.set(inputField.name, [])
                                     : isToggleField(inputField)
-                                        ? tempForm.set(inputField.name, "false")
+                                        ? tempForm.set(inputField.name, inputField.defaultChecked ?? "false")
                                         : tempForm.set(inputField.name, "");
 
                         initialValues.current.set(inputField.name, inputField.value);

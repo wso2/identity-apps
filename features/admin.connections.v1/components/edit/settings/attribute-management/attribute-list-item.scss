@@ -1,0 +1,19 @@
+.attribute-list-item {
+
+    .table-cell {
+    
+        display: flex;
+        flex-direction: column;
+
+        .table-cell-input {
+            width: 100%;
+        }
+    }
+
+    .error-label {
+
+        width: fit-content;
+    }
+
+}
+

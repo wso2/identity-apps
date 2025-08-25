@@ -435,13 +435,16 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
             return (
                 <FinalFormField
                     component={ CheckboxFieldAdapter }
-                    initialValue={ initialValue ?? false }
+                    initialValue={
+                        typeof initialValue === "string"
+                            ? initialValue.toLowerCase() === "true"
+                            : !!initialValue
+                    }
                     ariaLabel={ fieldLabel }
                     label={ fieldLabel }
                     name={ fieldName }
                     readOnly={ isReadOnly || isUpdating }
                     disabled={ isReadOnly || isUpdating }
-                    required={ isRequired }
                     data-componentid={ fieldComponentId }
                 />
             );
@@ -450,13 +453,16 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
             return (
                 <FinalFormField
                     component={ SwitchFieldAdapter }
-                    initialValue={ initialValue ?? false }
+                    initialValue={
+                        typeof initialValue === "string"
+                            ? initialValue.toLowerCase() === "true"
+                            : !!initialValue
+                    }
                     ariaLabel={ fieldLabel }
                     label={ fieldLabel }
                     name={ fieldName }
                     readOnly={ isReadOnly || isUpdating }
                     disabled={ isReadOnly || isUpdating }
-                    required={ isRequired }
                     data-componentid={ fieldComponentId }
                 />
             );

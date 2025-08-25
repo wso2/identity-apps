@@ -170,6 +170,7 @@ export interface ToolbarPluginProps extends IdentifiableComponentInterface, HTML
     alignment?: boolean;
     typography?: boolean;
     link?: boolean;
+    disabled?: boolean;
 }
 
 /**
@@ -184,6 +185,7 @@ const ToolbarPlugin: FunctionComponent<ToolbarPluginProps> = ({
     alignment = true,
     typography = true,
     link = true,
+    disabled = false,
     className
 }: ToolbarPluginProps): ReactElement => {
 
@@ -358,7 +360,7 @@ const ToolbarPlugin: FunctionComponent<ToolbarPluginProps> = ({
                 { history && (
                     <>
                         <IconButton
-                            disabled={ !canUndo }
+                            disabled={ !canUndo || disabled }
                             onClick={ () => {
                                 editor.dispatchCommand(UNDO_COMMAND, undefined);
                             } }
@@ -367,7 +369,7 @@ const ToolbarPlugin: FunctionComponent<ToolbarPluginProps> = ({
                             <ArrowCounterClockwiseIcon height={ 16 } width={ 16 } />
                         </IconButton>
                         <IconButton
-                            disabled={ !canRedo }
+                            disabled={ !canRedo || disabled }
                             onClick={ () => {
                                 editor.dispatchCommand(REDO_COMMAND, undefined);
                             } }
@@ -384,6 +386,7 @@ const ToolbarPlugin: FunctionComponent<ToolbarPluginProps> = ({
                             disableRipple
                             variant="text"
                             color="secondary"
+                            disabled={ disabled }
                             onClick={ handleTypographyMenuOpen }
                             endIcon={ <ChevronDownIcon /> }
                         >
@@ -426,10 +429,11 @@ const ToolbarPlugin: FunctionComponent<ToolbarPluginProps> = ({
             >
                 { bold && (
                     <IconButton
+                        disabled={ disabled }
                         onClick={ () => {
                             editor.dispatchCommand(FORMAT_TEXT_COMMAND, "bold");
                         } }
-                        className={ classNames({ active: isBold }) }
+                        className={ classNames({ active: isBold && !disabled }) }
                         aria-label="Format Bold"
                     >
                         <BoldIcon height={ 16 } width={ 16 } />
@@ -437,10 +441,11 @@ const ToolbarPlugin: FunctionComponent<ToolbarPluginProps> = ({
                 ) }
                 { italic && (
                     <IconButton
+                        disabled={ disabled }
                         onClick={ () => {
                             editor.dispatchCommand(FORMAT_TEXT_COMMAND, "italic");
                         } }
-                        className={ classNames({ active: isItalic }) }
+                        className={ classNames({ active: isItalic && !disabled }) }
                         aria-label="Format Italics"
                     >
                         <ItalicIcon height={ 16 } width={ 16 } />
@@ -448,10 +453,11 @@ const ToolbarPlugin: FunctionComponent<ToolbarPluginProps> = ({
                 ) }
                 { underline && (
                     <IconButton
+                        disabled={ disabled }
                         onClick={ () => {
                             editor.dispatchCommand(FORMAT_TEXT_COMMAND, "underline");
                         } }
-                        className={ classNames({ active: isUnderline }) }
+                        className={ classNames({ active: isUnderline && !disabled }) }
                         aria-label="Format Underline"
                     >
                         <UnderlineIcon height={ 16 } width={ 16 } />
@@ -459,8 +465,9 @@ const ToolbarPlugin: FunctionComponent<ToolbarPluginProps> = ({
                 ) }
                 { link && (
                     <IconButton
+                        disabled={ disabled }
                         onClick={ () => insertLink() }
-                        className={ classNames({ active: isLink }) }
+                        className={ classNames({ active: isLink && !disabled }) }
                         aria-label="Format Link"
                     >
                         <LinkIcon />
@@ -469,37 +476,41 @@ const ToolbarPlugin: FunctionComponent<ToolbarPluginProps> = ({
                 { alignment && (
                     <>
                         <IconButton
+                            disabled={ disabled }
                             onClick={ () => {
                                 editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "left");
                             } }
-                            className={ classNames({ active: selectedAlignment === 1 }) }
+                            className={ classNames({ active: selectedAlignment === 1 && !disabled }) }
                             aria-label="Left Align"
                         >
                             <LeftAlignIcon height={ 16 } width={ 16 } />
                         </IconButton>
                         <IconButton
+                            disabled={ disabled }
                             onClick={ () => {
                                 editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "center");
                             } }
-                            className={ classNames({ active: selectedAlignment === 2 }) }
+                            className={ classNames({ active: selectedAlignment === 2 && !disabled }) }
                             aria-label="Center Align"
                         >
                             <CenterAlignIcon height={ 16 } width={ 16 } />
                         </IconButton>
                         <IconButton
+                            disabled={ disabled }
                             onClick={ () => {
                                 editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "right");
                             } }
-                            className={ classNames({ active: selectedAlignment === 3 }) }
+                            className={ classNames({ active: selectedAlignment === 3 && !disabled }) }
                             aria-label="Right Align"
                         >
                             <RightAlignIcon height={ 16 } width={ 16 } />
                         </IconButton>
                         <IconButton
+                            disabled={ disabled }
                             onClick={ () => {
                                 editor.dispatchCommand(FORMAT_ELEMENT_COMMAND, "justify");
                             } }
-                            className={ classNames({ active: selectedAlignment === 4 }) }
+                            className={ classNames({ active: selectedAlignment === 4 && !disabled }) }
                             aria-label="Justify Align"
                         >
                             <JustifyAlignIcon height={ 16 } width={ 16 } />

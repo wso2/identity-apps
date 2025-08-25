@@ -33,8 +33,6 @@ class AskPasswordFlowExecutorConstants {
      */
     private constructor() {}
 
-    public static readonly PASSWORD_ONBOARD_EXECUTOR: string = "PasswordOnboardExecutor";
-
     public static readonly PASSWORD_PROVISIONING_EXECUTOR: string = "PasswordProvisioningExecutor";
 
     public static readonly EMAIL_OTP_EXECUTOR: string = "EmailOTPExecutor";
@@ -42,6 +40,8 @@ class AskPasswordFlowExecutorConstants {
     public static readonly USER_RESOLVE_EXECUTOR: string = "UserResolveExecutor";
 
     public static readonly GOOGLE_SIGNUP_EXECUTOR: string = "GoogleSignupExecutor";
+
+    public static readonly CONFIRMATION_CODE_VALIDATION_EXECUTOR: string = "ConfirmationCodeValidationExecutor";
 }
 
 export default AskPasswordFlowExecutorConstants;

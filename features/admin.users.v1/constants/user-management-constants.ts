@@ -34,7 +34,8 @@ export enum UserFeatureDictionaryKeys {
     UserRoles = "USER_ROLES",
     UserSharedProfiles = "USER_SHARED_PROFILES",
     UserImpersonation = "USER_IMPERSONATION",
-    UserLegacyProfile = "USER_LEGACY_PROFILE"
+    UserLegacyProfile = "USER_LEGACY_PROFILE",
+    UserLegacyAddUser = "USER_LEGACY_ADD_USER"
 }
 
 /**
@@ -86,7 +87,8 @@ export class UserManagementConstants {
         .set("USER_ROLES", "users.edit.roles")
         .set("USER_SHARED_PROFILES", "users.updateSharedProfiles")
         .set("USER_IMPERSONATION", "users.user.impersonation")
-        .set(UserFeatureDictionaryKeys.UserLegacyProfile, "users.profile.legacy");
+        .set(UserFeatureDictionaryKeys.UserLegacyProfile, "users.profile.legacy")
+        .set(UserFeatureDictionaryKeys.UserLegacyAddUser, "users.add.legacy");
 
     // API errors
     public static readonly USER_INFO_UPDATE_ERROR: string = "Could not update the user information.";
@@ -481,7 +483,9 @@ export const RECOVERY_SCENARIO_TO_RECOVERY_OPTION_TYPE_MAP: Record<string, strin
     [RecoveryScenario.ADMIN_FORCED_PASSWORD_RESET_VIA_EMAIL_LINK]: [ RecoveryOptionTypes.LINK ],
     [RecoveryScenario.ADMIN_FORCED_PASSWORD_RESET_VIA_OTP]: [ RecoveryOptionTypes.CODE ],
     [RecoveryScenario.ADMIN_FORCED_PASSOWRD_RESET_VIA_SMS_OTP]: [ RecoveryOptionTypes.CODE ],
-    [RecoveryScenario.ASK_PASSWORD]: [ RecoveryOptionTypes.LINK ]
+    [RecoveryScenario.ASK_PASSWORD]: [ RecoveryOptionTypes.LINK ],
+    [RecoveryScenario.ASK_PASSWORD_VIA_EMAIL_OTP]: [ RecoveryOptionTypes.CODE ],
+    [RecoveryScenario.ASK_PASSWORD_VIA_SMS_OTP]: [ RecoveryOptionTypes.CODE ]
 };
 
 /**

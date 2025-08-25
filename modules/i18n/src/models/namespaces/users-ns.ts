@@ -407,6 +407,10 @@ export interface usersNS {
                 message: string;
                 description: string;
             };
+            pendingApproval: {
+                message: string;
+                description: string;
+            };
             success: {
                 message: string;
                 description: string;

@@ -20,6 +20,7 @@ import { CircleInfoIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import "./hint.scss";
+import PlaceholderComponent from "./adapters/placeholder-component";
 
 /**
  * Props interface of {@link Hint}
@@ -42,7 +43,9 @@ export const Hint: FunctionComponent<HintPropsInterface> = ({
 }: HintPropsInterface): ReactElement => (
     <div className="composer-input-field-hint-container">
         <CircleInfoIcon />
-        <span>{ hint }</span>
+        <PlaceholderComponent value={ hint }>
+            <span>{ hint }</span>
+        </PlaceholderComponent>
     </div>
 );
 

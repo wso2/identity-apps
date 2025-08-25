@@ -21,10 +21,11 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Input, Label, Table } from "semantic-ui-react";
-import { 
+import {
     ConnectionClaimInterface,
-    ConnectionCommonClaimMappingInterface 
+    ConnectionCommonClaimMappingInterface
 } from "../../../../models/connection";
+import "./attribute-list-item.scss";
 
 interface AttributeListItemPropInterface extends TestableComponentInterface {
     attribute: ConnectionClaimInterface;
@@ -40,7 +41,7 @@ interface AttributeListItemPropInterface extends TestableComponentInterface {
 /**
  * Selected Attribute list item.
  *
- * @param props AttributeListItemPropInterface
+ * @param props - AttributeListItemPropInterface
  */
 export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface> = (
     props: AttributeListItemPropInterface
@@ -57,8 +58,9 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
 
     const { t } = useTranslation();
 
-    const handleClaimMapping = (e) => {
-        const mappingValue = e.target.value;
+    const handleClaimMapping = (e: { target: { value: string; }; }) => {
+        const mappingValue: string = e.target.value;
+
         updateMapping({
             claim: attribute,
             mappedValue: mappingValue
@@ -66,13 +68,13 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
     };
 
     return (
-        <Table.Row data-testid={ testId }>
+        <Table.Row data-testid={ testId } className="attribute-list-item">
             <Table.Cell>
                 { attribute?.displayName }
             </Table.Cell>
             {
                 <>
-                    <Table.Cell error={ isEmpty(mapping) }>
+                    <Table.Cell error={ isEmpty(mapping) } className="table-cell" >
                         <Input
                             placeholder={ placeholder }
                             value={ isEmpty(mapping) ? "" : mapping }
@@ -80,12 +82,17 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                             required
                             data-testid={ `${ testId }-input` }
                             readOnly={ isReadOnly }
+                            fluid
+                            className="table-cell-input"
                         />
                         { isEmpty(mapping) &&
                         (
                             <Label
-                                basic color="red"
-                                pointing="left">
+                                basic
+                                color="red"
+                                pointing="above"
+                                className="error-label"
+                            >
                                 { t("authenticationProvider:forms.attributeSettings." +
                                     "attributeListItem.validation.empty") }
                             </Label>

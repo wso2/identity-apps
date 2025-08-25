@@ -55,6 +55,7 @@ import PluginRegistry from "../../plugins/plugin-registry";
 import generateResourceId from "../../utils/generate-resource-id";
 import ResourcePanel from "../resource-panel/resource-panel";
 import ElementPropertiesPanel from "../resource-property-panel/resource-property-panel";
+import ValidationPanel from "../validation-panel/validation-panel";
 
 /**
  * Props interface of {@link DecoratedVisualFlow}
@@ -428,6 +429,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
                             { ...rest }
                         />
                     </ElementPropertiesPanel>
+                    <ValidationPanel />
                 </ResourcePanel>
             </DragDropProvider>
         </div>

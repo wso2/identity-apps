@@ -914,6 +914,48 @@ export interface AuthenticationProviderNS {
             };
         };
         jitProvisioning: {
+            accountLinkingAttributes: {
+                heading: string;
+                infoNotification: string;
+                linkAccountIf: string;
+                equals: string;
+                noneOption: {
+                    label: string;
+                    description: string;
+                };
+                matchRule: {
+                    federatedAttribute: {
+                        label: string;
+                        placeholder: string;
+                    };
+                    localAttribute: {
+                        label: string;
+                        placeholder: string;
+                    };
+                };
+            };
+            attributeSyncMethod: {
+                hint: string;
+                label: string;
+                options: {
+                    overrideAll: {
+                        label: string;
+                        description: string;
+                    };
+                    none: {
+                        label: string;
+                        description: string;
+                    };
+                    preserveLocal: {
+                        label: string;
+                        description: string;
+                    };
+                };
+            };
+            associateLocalUser: {
+                hint: string;
+                label: string;
+            };
             enableJITProvisioning: {
                 hint: string;
                 label: string;
@@ -934,9 +976,10 @@ export interface AuthenticationProviderNS {
                     3: string;
                 };
             };
-            associateLocalUser: {
+            skipJITForNoRuleMatch: {
                 hint: string;
                 label: string;
+                infoMessage: string;
             };
         };
         roleMapping: {
@@ -1914,6 +1957,16 @@ export interface AuthenticationProviderNS {
             error: {
                 description: string;
                 message: string;
+            };
+        };
+        getLocalClaims: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
             };
         };
     };

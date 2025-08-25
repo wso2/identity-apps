@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.8.5
+
+### Patch Changes
+
+- [#8684](https://github.com/wso2/identity-apps/pull/8684) [`edccbba95dd635e0a6f016e2e99f037594cc4196`](https://github.com/wso2/identity-apps/commit/edccbba95dd635e0a6f016e2e99f037594cc4196) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issue with rendering MUI popovers on Semantic modals
+
 ## 2.8.4
 
 ### Patch Changes

@@ -35,6 +35,7 @@ const DropdownFormField: FunctionComponent<DropdownFormFieldPropsInterface> = (
         isUpdating,
         isReadOnly,
         isRequired,
+        validateFields,
         isMultiSelect = false,
         ["data-componentid"]: componentId = "dropdown-form-field"
     }: DropdownFormFieldPropsInterface
@@ -64,6 +65,7 @@ const DropdownFormField: FunctionComponent<DropdownFormFieldPropsInterface> = (
             name={ fieldName }
             label={ fieldLabel }
             validate={ validateField }
+            validateFields={ validateFields }
             placeholder={ t("user:profile.forms.generic.inputs.dropdownPlaceholder", { fieldName: fieldLabel }) }
             options={ dropdownOptions?.map(({ label, value }: LabelValue) => {
                 return {

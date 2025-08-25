@@ -154,6 +154,12 @@ export const user: userNS = {
                         empty: "First name is a required field"
                     }
                 },
+                generic: {
+                    placeholder: "Enter the {{label}}",
+                    validations: {
+                        empty: "{{label}} is a required field"
+                    }
+                },
                 lastName: {
                     label: "Last Name",
                     placeholder: "Enter the last name",
@@ -230,7 +236,8 @@ export const user: userNS = {
                 inviteOffline: "Invite offline",
                 inviteViaEmail: "Invite via email",
                 inviteViaSMS: "Invite via SMS",
-                mobileNumberAlreadyExists: "Mobile number is required for SMS OTP, please enable mobile number attribute from <1>Attributes</1>."
+                mobileNumberAlreadyExists: "Mobile number is required for SMS OTP, enable mobile number attribute from <1>Attributes</1>.",
+                offlineInviteUnavailableWithWorkflow: "Inviting users offline is disabled because workflow approval is required for user creation."
             },
             buttons: {
                 next: "Next",

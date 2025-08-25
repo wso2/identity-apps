@@ -1,5 +1,51 @@
 # @wso2is/myaccount
 
+## 2.23.7
+
+### Patch Changes
+
+- [#8904](https://github.com/wso2/identity-apps/pull/8904) [`cb25f14b943535c548a6e0f859d1dd97e50fd0a2`](https://github.com/wso2/identity-apps/commit/cb25f14b943535c548a6e0f859d1dd97e50fd0a2) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Unify workflow approval operationType usages and UI improvements
+
+- Updated dependencies [[`cb25f14b943535c548a6e0f859d1dd97e50fd0a2`](https://github.com/wso2/identity-apps/commit/cb25f14b943535c548a6e0f859d1dd97e50fd0a2)]:
+  - @wso2is/common.workflow-approvals.v1@1.0.5
+  - @wso2is/i18n@2.30.12
+
+## 2.23.6
+
+### Patch Changes
+
+- [#8872](https://github.com/wso2/identity-apps/pull/8872) [`5d3b1a8fcebb3c61a4050be5ed55b8975e11d902`](https://github.com/wso2/identity-apps/commit/5d3b1a8fcebb3c61a4050be5ed55b8975e11d902) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Ensure approval requests with invalid user data are properly validated and handled without throwing errors.
+
+- Updated dependencies [[`13a47749f0f9eb970803c9e8ac40870a8fe1415a`](https://github.com/wso2/identity-apps/commit/13a47749f0f9eb970803c9e8ac40870a8fe1415a), [`5d3b1a8fcebb3c61a4050be5ed55b8975e11d902`](https://github.com/wso2/identity-apps/commit/5d3b1a8fcebb3c61a4050be5ed55b8975e11d902)]:
+  - @wso2is/i18n@2.30.8
+  - @wso2is/common.workflow-approvals.v1@1.0.4
+
+## 2.23.5
+
+### Patch Changes
+
+- [#8810](https://github.com/wso2/identity-apps/pull/8810) [`30e7b1d044f156879ec320347726ff45a665ee43`](https://github.com/wso2/identity-apps/commit/30e7b1d044f156879ec320347726ff45a665ee43) Thanks [@brionmario](https://github.com/brionmario)! - Fix maven release issues
+
+## 2.23.4
+
+### Patch Changes
+
+- [#8808](https://github.com/wso2/identity-apps/pull/8808) [`000789ba3448965fcbc11edff269ed2148f13a3c`](https://github.com/wso2/identity-apps/commit/000789ba3448965fcbc11edff269ed2148f13a3c) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the nexus release issue
+
+* [#8804](https://github.com/wso2/identity-apps/pull/8804) [`420dba817530ced6f3c850b999b352c71c864977`](https://github.com/wso2/identity-apps/commit/420dba817530ced6f3c850b999b352c71c864977) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the nexus release issue
+
+## 2.23.3
+
+### Patch Changes
+
+- [#8802](https://github.com/wso2/identity-apps/pull/8802) [`5c600756c157b3ed80bdbdce440eaeff576a4037`](https://github.com/wso2/identity-apps/commit/5c600756c157b3ed80bdbdce440eaeff576a4037) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the nexus release issue
+
+## 2.23.2
+
+### Patch Changes
+
+- [#8754](https://github.com/wso2/identity-apps/pull/8754) [`54edb88a66524a1547b3522a8fa0b6277bd9b3c7`](https://github.com/wso2/identity-apps/commit/54edb88a66524a1547b3522a8fa0b6277bd9b3c7) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix rendering issue in My Account user profile
+
 ## 2.23.1
 
 ### Patch Changes

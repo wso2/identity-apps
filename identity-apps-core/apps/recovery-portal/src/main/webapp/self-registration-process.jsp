@@ -119,7 +119,9 @@
             applicationAccessUrl = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain, sp);
         }
     } catch (Exception e) {
-        spId = "";
+        spId = (StringUtils.isBlank(spId) || (request.getParameter("spId") != "null" ))? 
+                    Encode.forJava(request.getParameter("spId")) : 
+                    "";
     }
 
     Boolean isValidCallBackURL = false;
@@ -376,6 +378,9 @@
 
         SelfRegisterApi selfRegisterApi = new SelfRegisterApi();
         String responseContent = selfRegisterApi.mePostCall(selfUserRegistrationRequest, requestHeaders);
+        if (IdentityManagementEndpointConstants.PENDING_APPROVAL.equals(responseContent)) {
+            request.setAttribute("pendingApproval", "true");
+        }
 
         // Extract userId from response if available
         String userId = "";

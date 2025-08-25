@@ -828,6 +828,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     const resolveAttributeSupportedByDefaultRow = (): ReactElement => {
         const isSupportedByDefaultCheckboxDisabled: boolean = isReadOnly || isSubOrganization() || !hasMapping
+            || dataType === ClaimDataType.COMPLEX
             || (
                 accountVerificationEnabled
                 && selfRegistrationEnabled
@@ -994,6 +995,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     const resolveAttributeRequiredRow = (): ReactElement => {
         const isRequiredCheckboxDisabled: boolean = isReadOnly || isSubOrganization() || !hasMapping
+            || dataType === ClaimDataType.COMPLEX
             || (
                 accountVerificationEnabled
                 && selfRegistrationEnabled
@@ -1074,7 +1076,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     };
 
     const resolveAttributeReadOnlyRow = (): ReactElement => {
-        const isReadOnlyCheckboxDisabled: boolean = isReadOnly || isSubOrganization() || !hasMapping;
+        const isReadOnlyCheckboxDisabled: boolean = isReadOnly || isSubOrganization() || !hasMapping
+            || dataType === ClaimDataType.COMPLEX;
 
         return (
             <TableRow hideBorder>

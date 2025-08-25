@@ -20,6 +20,8 @@ export interface oidcScopesNS {
     back: string;
     viewAttributes: string;
     manageAttributes: string;
+    updateScope: string,
+    viewScope: string,
     buttons: {
         addScope: string;
     };

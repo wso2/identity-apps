@@ -122,7 +122,10 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
         setIsTryItApplicationSearchRequestLoading
     ] = useState<boolean>(false);
 
-    const { organizationType, isSubOrganization } = useGetCurrentOrganizationType();
+    const {
+        organizationType,
+        isSubOrganization
+    } = useGetCurrentOrganizationType();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -139,6 +142,9 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
         `name eq ${ TryItApplicationConstants.DISPLAY_NAME }`,
         saasFeatureStatus !== FeatureStatus.DISABLED
     );
+
+    const subOrgFlowCardEnabled: boolean = isSubOrganization() &&
+        !featureConfig?.flows?.disabledFeatures.includes("flows.homePage.tile");
 
     useEffect(() => {
         checkTryItApplicationExistence();
@@ -241,9 +247,9 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
             stretched
             mobile={ 16 }
             tablet={ 16 }
-            computer={ 8 }
-            largeScreen={ 8 }
-            widescreen={ 8 }
+            computer={ subOrgFlowCardEnabled ? 5 : 8 }
+            largeScreen={ subOrgFlowCardEnabled ? 5 : 8 }
+            widescreen={ subOrgFlowCardEnabled ? 5 : 8 }
         >
             <Card
                 fluid
@@ -291,9 +297,9 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
             stretched
             mobile={ 16 }
             tablet={ 16 }
-            computer={ 8 }
-            largeScreen={ 8 }
-            widescreen={ 8 }
+            computer={ subOrgFlowCardEnabled ? 5 : 8 }
+            largeScreen={ subOrgFlowCardEnabled ? 5 : 8 }
+            widescreen={ subOrgFlowCardEnabled ? 5 : 8 }
         >
             <Card
                 fluid
@@ -494,6 +500,55 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
         </Grid.Row>
     );
 
+    const renderSubOrgFlowsCard = (): ReactElement => (
+        <Grid.Column
+            stretched
+            mobile={ 16 }
+            tablet={ 16 }
+            computer={ 5 }
+            largeScreen={ 5 }
+            widescreen={ 5 }
+        >
+            <Card
+                fluid
+                className="basic-card no-hover getting-started-card social-connections-card"
+            >
+                <Card.Content extra className="description-container">
+                    <div className="card-heading mb-1">
+                        <Heading as="h2">
+                            { t("console:common.quickStart.sections.customizeFlows.heading") }
+                        </Heading>
+                    </div>
+                    <Text muted>
+                        { t("console:common.quickStart.sections.customizeFlows.description") }
+                    </Text>
+                </Card.Content>
+                <Card.Content style={ { borderTop: "none" } } className="illustration-container">
+                    <GenericIcon
+                        style={ {
+                            height: "170px",
+                            width: "207.17px"
+                        } }
+                        transparent
+                        className="social-connections-animated-illustration mb-5"
+                        icon={ getGettingStartedCardIllustrations().flowComposer }
+                    />
+                </Card.Content>
+                <Card.Content extra className="action-container">
+                    <CardExpandedNavigationButton
+                        data-testid="develop-getting-started-page-cutomize-flows"
+                        data-componentid="develop-getting-started-page-cutomize-flows"
+                        onClick={ () => history.push(AppConstants.getPaths().get("FLOWS")) }
+                        text={ t("console:common.quickStart.sections.customizeFlows.actions.setup") }
+                        icon="angle right"
+                        iconPlacement="right"
+                        className="primary-action-button"
+                    />
+                </Card.Content>
+            </Card>
+        </Grid.Column>
+    );
+
     return (
         <div className="advance-user-view-cards-wrapper">
             <div className="greeting">
@@ -576,18 +631,25 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                         stretched
                         mobile={ 16 }
                         tablet={ 16 }
-                        computer={ 10 }
-                        largeScreen={ 10 }
-                        widescreen={ 10 }
+                        computer={ subOrgFlowCardEnabled ? 16 : 10 }
+                        largeScreen={ subOrgFlowCardEnabled ? 16 : 10 }
+                        widescreen={ subOrgFlowCardEnabled ? 16 : 10 }
                     >
                         <Grid stackable>
-                            <Grid.Row columns={ 2 }>
+                            <Grid.Row columns={ subOrgFlowCardEnabled ? 3 : 2 }>
                                 <Show when={ featureConfig?.users?.scopes?.read }>
                                     { renderManageUsersCard() }
                                 </Show>
                                 <Show when={ featureConfig?.identityProviders?.scopes?.read }>
                                     { renderConnectionsCard() }
                                 </Show>
+                                {
+                                    subOrgFlowCardEnabled && (
+                                        <Show when={ featureConfig?.flows?.scopes?.read }>
+                                            { renderSubOrgFlowsCard() }
+                                        </Show>
+                                    )
+                                }
                             </Grid.Row>
                             {
                                 !featureConfig?.flows?.disabledFeatures.includes("flows.homePage.tile") &&

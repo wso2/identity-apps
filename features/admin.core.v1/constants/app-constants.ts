@@ -448,7 +448,7 @@ export class AppConstants {
             [ "PASSWORD_RECOVERY_FLOW_BUILDER",
                 `${ AppConstants.getDeveloperViewBasePath() }/edit-password-recovery-flow` ],
             [ "INVITE_USER_PASSWORD_SETUP_FLOW_BUILDER",
-                `${ AppConstants.getDeveloperViewBasePath() }/edit-invite-user-registration-flow` ],
+                `${ AppConstants.getDeveloperViewBasePath() }/edit-invited-user-registration-flow` ],
             [ "AGENTS", `${AppConstants.getAdminViewBasePath()}/agents` ],
             [ "AGENT_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/agents/:id` ]
         ]);
@@ -523,7 +523,8 @@ export class AppConstants {
         "consoleSettings",
         "apiResources",
         "approvals",
-        "workflows"
+        "workflows",
+        "flows"
     ];
 
     /**

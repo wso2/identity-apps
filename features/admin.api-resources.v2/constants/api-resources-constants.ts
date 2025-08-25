@@ -79,7 +79,8 @@ export enum APIResourceType {
     MANAGEMENT = "management",
     ORGANIZATION = "organization",
     BUSINESS = "business",
-    MCP = "MCP"
+    MCP = "MCP",
+    CUSTOM = "custom",
 }
 
 /*

@@ -32,9 +32,6 @@ PACKAGES=$1
 GITHUB_RUN_NUMBER=$2
 # Variable to determine whether the current release is a hotfix
 IS_HOTFIX=$3
-# Optional pre-release identifier (e.g., "next")
-PRE_RELEASE=$4
-
 # The release branch name.
 RELEASE_BRANCH=release-action-$GITHUB_RUN_NUMBER
 
@@ -64,7 +61,7 @@ process_console_package() {
         echo "Next Hotfix number: $next_hotfix_no"
 
         releaseVersion=$search_tag-$next_hotfix_no
-        echo "Hotfix release tag: $releaseVersion"
+        echo "Hotfix release tag: $tag"
     fi
 
     goToRootDirectory &&
@@ -106,7 +103,7 @@ process_myaccount_package() {
         echo "Next Hotfix number: $next_hotfix_no"
 
         releaseVersion=$search_tag-$next_hotfix_no
-        echo "Hotfix release tag: $releaseVersion"
+        echo "Hotfix release tag: $tag"
     fi
 
     goToRootDirectory &&
@@ -148,7 +145,7 @@ process_java_apps_package() {
         echo "Next Hotfix number: $next_hotfix_no"
 
         releaseVersion=$search_tag-$next_hotfix_no
-        echo "Hotfix release tag: $releaseVersion"
+        echo "Hotfix release tag: $tag"
     fi
 
     goToRootDirectory &&
@@ -221,12 +218,6 @@ create_and_checkout_release_branch
 for package in $(echo "$PACKAGES" | jq -c '.[]'); do
     name=$(echo "$package" | jq -r '.name')
     version=$(echo "$package" | jq -r '.version')
-
-    # For pre-releases
-    if [ -n "$PRE_RELEASE" ]; then
-        version="${version}-${PRE_RELEASE}"
-        echo "Pre-release version: $version"
-    fi
 
     case "$name" in
     "@wso2is/console")

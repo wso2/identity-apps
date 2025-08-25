@@ -16,10 +16,14 @@
  * under the License.
  */
 
+import Code from "@oxygen-ui/react/Code";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import DOMPurify from "dompurify";
 import parse from "html-react-parser";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import { Trans, useTranslation } from "react-i18next";
+import PlaceholderComponent from "./placeholder-component";
+import useRequiredFields, { RequiredFieldInterface } from "../../../../hooks/use-required-fields";
 import { CommonElementFactoryPropsInterface } from "../common-element-factory";
 import "./rich-text-adapter.scss";
 
@@ -48,13 +52,44 @@ export type RichTextAdapterPropsInterface = IdentifiableComponentInterface & Com
 const RichTextAdapter: FunctionComponent<RichTextAdapterPropsInterface> = ({
     resource
 }: RichTextAdapterPropsInterface): ReactElement => {
+    const { t } = useTranslation();
+
+    const generalMessage: ReactElement = useMemo(() => {
+        return (
+            <Trans
+                i18nKey="flows:core.validation.fields.richText.general"
+                values={ { id: resource.id } }
+            >
+                Required fields are not properly configured for the rich text with ID{ " " }
+                <Code>{ resource.id }</Code>.
+            </Trans>
+        );
+    }, [ resource?.id ]);
+
+    const fields: RequiredFieldInterface[] = useMemo(() => {
+        return [
+            {
+                errorMessage: t("flows:core.validation.fields.richText.text"),
+                name: "text"
+            }
+        ];
+    }, [ t ]);
+
+    useRequiredFields(
+        resource,
+        generalMessage,
+        fields
+    );
+
     const sanitizedHtml: string = DOMPurify.sanitize(resource?.config?.text || "", {
         ADD_ATTR: [ "target" ]
     });
 
     return (
         <div className="rich-text-content">
-            { parse(sanitizedHtml) }
+            <PlaceholderComponent value={ resource?.config?.text }>
+                { parse(sanitizedHtml) }
+            </PlaceholderComponent>
         </div>
     );
 };

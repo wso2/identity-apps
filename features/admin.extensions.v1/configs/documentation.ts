@@ -158,6 +158,11 @@ export const getDocumentationLinksExtension = (): DocumentationLinksExtensionInt
                                 addAllRequestedClaimsInJWTAccessToken: {
                                     documentationLink: undefined
                                 }
+                            },
+                            version300: {
+                                linkedLocalAccountAttributeHandling: {
+                                    documentationLink: undefined
+                                }
                             }
                         }
                     },

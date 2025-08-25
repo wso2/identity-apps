@@ -17,6 +17,8 @@
  */
 
 import Autocomplete, {
+    AutocompleteChangeDetails,
+    AutocompleteChangeReason,
     AutocompleteRenderGetTagProps,
     AutocompleteRenderInputParams
 } from "@oxygen-ui/react/Autocomplete";
@@ -32,6 +34,7 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import debounce from "lodash-es/debounce";
+import isEmpty from "lodash-es/isEmpty";
 import React, {
     ChangeEvent,
     FunctionComponent,
@@ -55,7 +58,8 @@ import "./console-roles-share-with-all.scss";
 interface ConsoleRolesShareWithAllPropsInterface extends IdentifiableComponentInterface {
     selectedRoles: RolesInterface[];
     setSelectedRoles: (roles: RolesInterface[]) => void;
-    administratorRole: RolesInterface
+    administratorRole: RolesInterface,
+    onRoleChange: (role: RolesInterface, isSelected: boolean) => void;
 }
 
 /**
@@ -70,7 +74,8 @@ const ConsoleRolesShareWithAll: FunctionComponent<ConsoleRolesShareWithAllPropsI
         ["data-componentid"]: componentId = "console-roles-share-with-all",
         administratorRole,
         selectedRoles,
-        setSelectedRoles
+        setSelectedRoles,
+        onRoleChange
     } = props;
 
     const applicationsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
@@ -125,11 +130,27 @@ const ConsoleRolesShareWithAll: FunctionComponent<ConsoleRolesShareWithAllPropsI
         }
     }, [ consoleRolesFetchRequestError ]);
 
-    const handleRolesOnChange = (value: RolesInterface[]): void => {
+    const handleRolesOnChange = (
+        value: RolesInterface[],
+        reason: AutocompleteChangeReason,
+        details: AutocompleteChangeDetails<RolesInterface>
+    ): void => {
         setSelectedRoles([ administratorRole,
             ...value.filter((role: RolesInterface) =>
                 role.displayName !== ConsoleRolesOnboardingConstants.ADMINISTRATOR)
         ]);
+
+        const role: RolesInterface = details.option;
+
+        if (isEmpty(role)) {
+            return;
+        }
+
+        if (reason === "selectOption") {
+            onRoleChange(role, true);
+        } else if (reason === "removeOption") {
+            onRoleChange(role, false);
+        }
     };
 
     return (
@@ -143,8 +164,13 @@ const ConsoleRolesShareWithAll: FunctionComponent<ConsoleRolesShareWithAllPropsI
                 placeholder={ t("consoleSettings:sharedAccess.modes.shareWithSelectedPlaceholder") }
                 options={ consoleRoles?.Resources ?? [] }
                 value={ selectedRoles }
-                onChange={ (_event: SyntheticEvent, value: RolesInterface[]) => {
-                    handleRolesOnChange(value);
+                onChange={ (
+                    _event: SyntheticEvent,
+                    value: RolesInterface[],
+                    reason: AutocompleteChangeReason,
+                    details: AutocompleteChangeDetails<RolesInterface>
+                ) => {
+                    handleRolesOnChange(value, reason, details);
                 } }
                 disabled={ isReadOnly }
                 getOptionDisabled={ (option: RolesInterface) => {

@@ -19,6 +19,7 @@
 import { LabelValue } from "@wso2is/core/models";
 import { FinalFormField, RadioGroupFieldAdapter } from "@wso2is/form";
 import React, { FunctionComponent, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import { RadioGroupFormFieldPropsInterface } from "../../../models/ui";
 
 /**
@@ -37,7 +38,17 @@ const RadioGroupFormField: FunctionComponent<RadioGroupFormFieldPropsInterface> 
         ["data-componentid"]: componentId = "radio-group-form-field"
     }: RadioGroupFormFieldPropsInterface
 ): ReactElement => {
-    const radioOptions: LabelValue[] = schema.canonicalValues ?? [];
+    const { t } = useTranslation();
+
+    let radioOptions: LabelValue[] = schema.canonicalValues ?? [];
+
+    if (!isRequired) {
+        // Add an empty value option when the field is optional.
+        radioOptions = [
+            { label: t("common:none"), value: "" },
+            ...radioOptions
+        ];
+    }
 
     return (
         <FinalFormField

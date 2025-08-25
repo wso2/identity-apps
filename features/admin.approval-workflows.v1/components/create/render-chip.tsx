@@ -17,6 +17,7 @@
  */
 
 import Chip, { ChipProps } from "@oxygen-ui/react/Chip";
+import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useState } from "react";
 import { ChipMoreDetails } from "./chip-more-details";
@@ -68,6 +69,19 @@ const RenderChip: FunctionComponent<RenderChipInterface> = (
 
     const [ popoverAnchorEl, setPopoverAnchorEl ] = useState<Element>(null);
 
+    // Build comprehensive audience display for popover
+    const audienceDisplay: string = (() => {
+        if (!audience) return "";
+
+        let display: string = audience;
+
+        if (audience?.toUpperCase() === RoleAudienceTypes.APPLICATION && option?.audience?.display) {
+            display += ` | ${option.audience.display}`;
+        }
+
+        return display;
+    })();
+
     /**
      * Handles the mouse enter event of the chip.
      *
@@ -104,7 +118,7 @@ const RenderChip: FunctionComponent<RenderChipInterface> = (
                             onPopoverClose={ handleChipMouseLeave }
                             primaryText={ primaryText }
                             secondaryText={ secondaryText }
-                            audience={ audience }
+                            audience={ audienceDisplay }
                         />
                     )
                     : null

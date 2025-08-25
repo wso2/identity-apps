@@ -21,6 +21,8 @@ import parse from "html-react-parser";
 import PropTypes from "prop-types";
 import React, { useMemo } from "react";
 import { useGlobalContext } from "../../hooks/use-global-context";
+import { useTranslations } from "../../hooks/use-translations";
+import { resolveElementText } from "../../utils/i18n-utils";
 import "./rich-text-field-adapter.css";
 
 DOMPurify.addHook("afterSanitizeAttributes", (node) => {
@@ -36,6 +38,7 @@ DOMPurify.addHook("afterSanitizeAttributes", (node) => {
 const RichTextAdapter = ({ component }) => {
     const { config } = component;
     const { contextData } = useGlobalContext();
+    const { translations } = useTranslations();
 
     /**
      * Get nested object value using dot notation key path.
@@ -90,7 +93,8 @@ const RichTextAdapter = ({ component }) => {
 
     // Resolve placeholders in the HTML content before sanitizing.
     const sanitizedHtml = useMemo(() => {
-        const resolvedHtml = resolvePlaceholders(config.text || "");
+        const i18nText = resolveElementText(translations, config.text);
+        const resolvedHtml = resolvePlaceholders(i18nText || "");
 
         return DOMPurify.sanitize(resolvedHtml, {
             ADD_ATTR: [ "target" ]

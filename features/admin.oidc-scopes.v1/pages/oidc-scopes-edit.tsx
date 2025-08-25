@@ -49,6 +49,7 @@ import {
     Label,
     Placeholder
 } from "semantic-ui-react";
+import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { getOIDCScopeDetails, updateOIDCScopeDetails } from "../api";
 import { EditOIDCScope } from "../components";
 import { OIDCScopesManagementConstants } from "../constants";
@@ -123,6 +124,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
         const [ sortByStrategy, setSortByStrategy ] = useState<DropdownItemProps>(SORT_BY[ 0 ]);
         const [ attributeSearchQuery, setAttributeSearchQuery ] = useState<string>("");
         const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+        const { isSubOrganization } = useGetCurrentOrganizationType();
 
         const initialRender: MutableRefObject<boolean> = useRef(true);
 
@@ -427,7 +429,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
 
         return (
             <PageLayout
-                pageTitle="Update Scope"
+                pageTitle={ isSubOrganization() ? t("oidcScopes:viewScope") : t("oidcScopes:updateScope") }
                 isLoading={ isScopeRequestLoading || isAttributeRequestLoading }
                 title={ scope.displayName }
                 contentTopMargin={ true }
@@ -448,7 +450,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                 bottomMargin={ false }
                 data-testid={ `${ testId }-page-layout` }
             >
-                <Header>Update Scope</Header>
+                <Header>{ isSubOrganization() ? t("oidcScopes:viewScope") : t("oidcScopes:updateScope") }</Header>
                 <EmphasizedSegment className="padded very">
                     <Grid>
                         <Grid.Row columns={ 1 }>
@@ -528,7 +530,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                 </EmphasizedSegment>
                 <Divider hidden />
                 {
-                    OIDCScopesManagementConstants.OIDC_READONLY_SCOPES.includes(scope?.name)
+                    OIDCScopesManagementConstants.OIDC_READONLY_SCOPES.includes(scope?.name) || isSubOrganization()
                         ? <Header>{ t("oidcScopes:viewAttributes") }</Header>
                         : <Header>{ t("oidcScopes:manageAttributes") }</Header>
                 }

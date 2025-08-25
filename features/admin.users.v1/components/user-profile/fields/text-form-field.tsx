@@ -35,6 +35,7 @@ const TextFormField: FunctionComponent<TextFormFieldPropsInterface> = (
         isRequired,
         maxLength,
         validator,
+        validateFields,
         placeholder,
         type = "text",
         ["data-componentid"]: componentId = "text-form-field"
@@ -65,6 +66,7 @@ const TextFormField: FunctionComponent<TextFormFieldPropsInterface> = (
                 { fieldName: fieldLabel })
             }
             validate={ (value: string) => validator ? validator(value) : undefined }
+            validateFields={ validateFields }
             maxLength={ maxLength }
             readOnly={ isReadOnly || isUpdating }
             required={ isRequired }

@@ -43,6 +43,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Icon, List, PaginationProps } from "semantic-ui-react";
+import { mutate } from "swr";
 import { useAPIResources } from "../api";
 import { APIResourcesList } from "../components";
 import { AddAPIResource } from "../components/wizard";
@@ -99,13 +100,13 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const apiResourcesEndpoint: string = useSelector((state: AppState) => state?.config?.endpoints?.apiResources);
     const { organizationType } = useGetCurrentOrganizationType();
 
     const {
         data: apiResourcesListData,
         isLoading: isAPIResourcesListLoading,
-        error: apiResourcesFetchRequestError,
-        mutate: mutateAPIResourcesFetchRequest
+        error: apiResourcesFetchRequestError
     } = useAPIResources(after, before, filter, true, attributes);
 
     /**
@@ -173,7 +174,13 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
      */
     useEffect(() => {
         if (isListUpdated) {
-            mutateAPIResourcesFetchRequest();
+            mutate(
+                (key: string) => typeof key === "string" && (key as string).includes(apiResourcesEndpoint),
+                undefined,
+                {
+                    revalidate: true
+                }
+            );
             setListUpdated(false);
         }
     }, [ isListUpdated ]);
@@ -440,7 +447,7 @@ const APIResourcesPage: FunctionComponent<APIResourcesPageInterface> = (
                             onAPIResourceDelete={ onAPIResourceDelete }
                             onSearchQueryClear={ handleSearchQueryClear }
                             searchQuery={ searchQuery }
-                            categoryId="custom"
+                            categoryId={ APIResourceType.CUSTOM }
                             onEmptyListPlaceholderActionClicked={ () => setShowWizard(true) }
                         />)
 

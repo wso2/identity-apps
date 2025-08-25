@@ -76,7 +76,7 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
         isLoading: isAuthorizedOrganizationListRequestLoading,
         error: authorizedListFetchRequestError
     } = useAuthorizedOrganizationsList(filterQuery, 10, null, null,
-        ApplicationManagementConstants.CONSOLE_APP_NAME, false);
+        ApplicationManagementConstants.CONSOLE_APP_NAME, true);
 
     /**
      * Handles the authorized list fetch request error.

@@ -30,6 +30,7 @@ on:
 
 env:
     GH_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
+    IS_RELEASE_MODE: true  # 🚀 WSO2 Identity Server release mode is currently activated - patches only on master, minor/patch on next branch
 
 jobs:
     check-changeset:
@@ -72,7 +73,7 @@ jobs:
                         console.log("COMMENT_OWNER: " + comment.user.login);
 
                         // Identify the changeset comment by its heading.
-                        if (comment.body.includes("🦋 Changeset detected") || comment.body.includes("⚠️ No Changeset found")) {
+                        if (comment.body.includes("🦋 Changeset detected") || comment.body.includes("⚠️ No Changeset found") || comment.body.includes("❌ Invalid Changeset detected")) {
                             console.log("COMMENT_ID_TO_DELETE: " + comment.id);
 
                             // Remove the changeset comment using the comment ID.
@@ -93,6 +94,7 @@ jobs:
                     const PR_NUMBER = Number(fs.readFileSync('./PR_NUMBER', 'utf8').trim());
                     const REPO_OWNER = context.repo.owner;
                     const REPO_NAME = context.repo.repo;
+                    const IS_RELEASE_MODE = process.env.IS_RELEASE_MODE === 'true';
 
                     const files = await github.pulls.listFiles({
                         owner: REPO_OWNER,
@@ -104,13 +106,54 @@ jobs:
                     console.log("CHANGED_FILES_URL: https://api.github.com/repos/" + REPO_NAME + "/pulls/" + PR_NUMBER + "/files");
                     console.log("CHANGED_FILES:", CHANGED_FILES);
 
-                    const CHANGES_COUNT = CHANGED_FILES.filter(filename => /^\.changeset\/.*\.md$/.test(filename)).length;
+                    const CHANGESET_FILES = CHANGED_FILES.filter(filename => /^\.changeset\/.*\.md$/.test(filename));
+                    const CHANGES_COUNT = CHANGESET_FILES.length;
                     console.log("CHANGES_COUNT:", CHANGES_COUNT);
+                    console.log("IS_RELEASE_MODE:", IS_RELEASE_MODE);
+
+                    let invalidChangesets = [];
+                    
+                    // Check for major/minor changesets in release mode (master branch)
+                    if (IS_RELEASE_MODE && CHANGES_COUNT > 0) {
+                        for (const changesetFile of CHANGESET_FILES) {
+                            try {
+                                const fileResponse = await github.repos.getContent({
+                                    owner: REPO_OWNER,
+                                    repo: REPO_NAME,
+                                    path: changesetFile,
+                                    ref: `refs/pull/${PR_NUMBER}/head`
+                                });
+                                
+                                const content = Buffer.from(fileResponse.data.content, 'base64').toString('utf8');
+                                console.log("CHANGESET_CONTENT:", changesetFile, content);
+                                
+                                // Parse changeset frontmatter to check for major/minor releases
+                                const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
+                                if (frontmatterMatch) {
+                                    const frontmatter = frontmatterMatch[1];
+                                    if (frontmatter.includes(': major') || frontmatter.includes(': minor')) {
+                                        invalidChangesets.push({
+                                            file: changesetFile,
+                                            type: frontmatter.includes(': major') ? 'major' : 'minor'
+                                        });
+                                    }
+                                }
+                            } catch (error) {
+                                console.log("Error reading changeset file:", changesetFile, error.message);
+                            }
+                        }
+                    }
 
                     let COMMENT;
                     if (CHANGES_COUNT > 0) {
-                        console.log("Changeset detected");
-                        COMMENT = `<h3>🦋 Changeset detected</h3><p><b>The changes in this PR will be included in the next version bump.</b></p><p>Not sure what this means? <a href="https://github.com/changesets/changesets/blob/master/docs/adding-a-changeset.md">Click here to learn what changesets are</a>.</p>`;
+                        if (IS_RELEASE_MODE && invalidChangesets.length > 0) {
+                            console.log("Invalid changesets detected in release mode:", invalidChangesets);
+                            const invalidFiles = invalidChangesets.map(cs => `- \`${cs.file}\` (${cs.type})`).join('\n');
+                            COMMENT = `<h3>❌ Invalid Changeset detected</h3><p><b>🚀 WSO2 Identity Server release mode is currently activated!</b></p><p>The following changesets contain major/minor versions, but the master branch only allows patch releases:</p>\n${invalidFiles}\n<p><b>📋 Action Required:</b></p><ul><li>🔧 Update these changesets to use patch versions only, OR</li><li>🎯 Target the <code>next</code> branch for minor/major releases</li></ul><p>📚 Refer <a href="https://github.com/wso2/identity-apps/blob/master/docs/release/README.md">Release Documentation</a> to learn about our release strategy.</p>`;
+                        } else {
+                            console.log("Changeset detected");
+                            COMMENT = `<h3>🦋 Changeset detected</h3><p><b>The changes in this PR will be included in the next version bump.</b></p><p>Not sure what this means? <a href="https://github.com/changesets/changesets/blob/master/docs/adding-a-changeset.md">Click here to learn what changesets are</a>.</p>`;
+                        }
                     } else {
                         console.log("No changeset detected");
                         COMMENT = `<h3>⚠️ No Changeset found</h3>Merging this PR will not cause a version bump for any packages. If these changes should not result in a new version, you're good to go.</p><p><b>If these changes should result in a version bump, you need to add a changeset.</b></p><p>Refer <a href="https://github.com/wso2/identity-apps/blob/master/docs/release/README.md">Release Documentation</a> to learn how to add a changeset.`;

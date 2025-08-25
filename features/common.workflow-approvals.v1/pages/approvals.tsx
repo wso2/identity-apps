@@ -89,8 +89,13 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
         },
         {
             key: 4,
-            text: t("common:completed"),
-            value: ApprovalStatus.COMPLETED
+            text: t("common:approved"),
+            value: ApprovalStatus.APPROVED
+        },
+        {
+            key: 5,
+            text: t("common:rejected"),
+            value: ApprovalStatus.REJECTED
         }
     ];
 
@@ -226,18 +231,18 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
      * @returns A semantic color instance.
      */
     const resolveApprovalTagColor = (
-        status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED | ApprovalStatus.BLOCKED |
-        ApprovalStatus.ALL
+        status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.BLOCKED |
+        ApprovalStatus.APPROVED | ApprovalStatus.REJECTED
     ): SemanticCOLORS => {
         switch (status) {
             case ApprovalStatus.READY:
                 return "yellow";
             case ApprovalStatus.RESERVED:
                 return "orange";
-            case ApprovalStatus.COMPLETED:
+            case ApprovalStatus.APPROVED:
                 return "green";
-            case ApprovalStatus.ALL:
-                return "blue";
+            case ApprovalStatus.REJECTED:
+                return "red";
             case ApprovalStatus.BLOCKED:
                 return "red";
             default:
@@ -309,7 +314,7 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
         if (changeValue.length > 0) {
             const searchResult: ApprovalTaskListItemInterface[] = approvals
                 .filter((item: ApprovalTaskListItemInterface) =>
-                    item.name.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1
+                    item.taskType?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1
                 );
 
             setTempApprovals(searchResult);

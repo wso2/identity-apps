@@ -2820,6 +2820,7 @@ export const extensions: Extensions = {
                     inputLabel: {
                         alphanumericUsername: "Username",
                         alphanumericUsernamePlaceholder: "Enter the username",
+                        email: "Email",
                         emailUsername: "Username (Email)"
                     },
                     inviteUserTooltip: {
@@ -2871,6 +2872,7 @@ export const extensions: Extensions = {
                         password: "Password",
                         passwordWarningMessage: "Make sure to copy the password or the invitation before" +
                             " you proceed. You won't see them again!",
+                        passwordWarningMessageWithWorkFlow: "Make sure to copy the password or the invitation before you proceed. You won't see them again! Share this invitation only after the user creation workflow has been approved. The user will not be able to access the account beforehand.",
                         username: "Username"
                     },
                     validation: {
@@ -3754,7 +3756,8 @@ export const extensions: Extensions = {
                             expiryTime: {
                                 label: "Invitation link/OTP expiry time",
                                 placeholder: "Enter expiry time in minutes",
-                                hint: "Set the time span that the password setup invitation link / OTP would be valid, in minutes. (For infinite validity period, set -1. Setting 0 will cause immediate expiry of the invitation)",
+                                hint: "Set the time span that the password setup invitation link / OTP would be valid, in minutes.",
+                                hintSub: "(For infinite validity period, set -1. Setting 0 will cause immediate expiry of the invitation)",
                                 validations: {
                                     invalid: "Recovery link/OTP expiry time should be an integer.",
                                     empty: "Recovery link/OTP expiry time cannot be empty.",
@@ -3937,6 +3940,10 @@ export const extensions: Extensions = {
                             genericError: {
                                 description: "An error occurred while adding the administrator.",
                                 message: "Error Adding Administrator"
+                            },
+                            pendingApproval: {
+                                description: "The administrator role update is accepted and is pending approval.",
+                                message: "Administrator Role Pending Approval"
                             },
                             success: {
                                 description: "Successfully added administrator.",

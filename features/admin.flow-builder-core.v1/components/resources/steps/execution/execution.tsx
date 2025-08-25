@@ -23,7 +23,9 @@ import { useTranslation } from "react-i18next";
 import ExecutionMinimal from "./execution-minimal";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
+import useValidationStatus from "../../../../hooks/use-validation-status";
 import { ExecutionTypes, Step } from "../../../../models/steps";
+import { ValidationErrorBoundary } from "../../../validation-panel/validation-error-boundary";
 import { CommonStepFactoryPropsInterface } from "../common-step-factory";
 import View from "../view/view";
 
@@ -44,6 +46,7 @@ const Execution: FC<ExecutionPropsInterface> = memo(({
     resource
 }: ExecutionPropsInterface): ReactElement => {
     const { setLastInteractedResource, setLastInteractedStepId } = useAuthenticationFlowBuilderCore();
+    const { setOpenValidationPanel, setSelectedNotification } = useValidationStatus();
     const { t } = useTranslation();
 
     const components: Element[] = data?.components as Element[] || [];
@@ -93,23 +96,30 @@ const Execution: FC<ExecutionPropsInterface> = memo(({
     };
 
     return (
-        components && components.length > 0
-            ? (
-                <View
-                    heading={ resolveExecutionName((data?.action as any)?.executor?.name) }
-                    data={ data }
-                    enableSourceHandle={ true }
-                    droppableAllowedTypes={ VisualFlowConstants.FLOW_BUILDER_STATIC_CONTENT_ALLOWED_RESOURCE_TYPES }
-                    onActionPanelDoubleClick={
-                        () => {
-                            setLastInteractedStepId(id);
-                            setLastInteractedResource(fullResource);
-                        }
-                    }
-                    resource={ fullResource }
-                />
-            )
-            : <ExecutionMinimal id={ id } data={ data } resource={ fullResource } />
+        <ValidationErrorBoundary disableErrorBoundaryOnHover={ false } resource={ resource }>
+            {
+                components && components.length > 0
+                    ? (
+                        <View
+                            heading={ resolveExecutionName((data?.action as any)?.executor?.name) }
+                            data={ data }
+                            enableSourceHandle={ true }
+                            droppableAllowedTypes={
+                                VisualFlowConstants.FLOW_BUILDER_STATIC_CONTENT_ALLOWED_RESOURCE_TYPES }
+                            onActionPanelDoubleClick={
+                                () => {
+                                    setOpenValidationPanel(false);
+                                    setSelectedNotification(null);
+                                    setLastInteractedStepId(id);
+                                    setLastInteractedResource(fullResource);
+                                }
+                            }
+                            resource={ fullResource }
+                        />
+                    )
+                    : <ExecutionMinimal id={ id } data={ data } resource={ fullResource } />
+            }
+        </ValidationErrorBoundary>
     );
 }, (prevProps: ExecutionPropsInterface, nextProps: ExecutionPropsInterface) => {
     return prevProps.id === nextProps.id &&

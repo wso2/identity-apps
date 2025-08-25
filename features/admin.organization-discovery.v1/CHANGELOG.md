@@ -1,5 +1,16 @@
 # @wso2is/admin.organization-discovery.v1
 
+## 2.25.206
+
+### Patch Changes
+
+- [#8714](https://github.com/wso2/identity-apps/pull/8714) [`e6c21c4ba21bc599c3ee02a2718b0dd90cc7dda0`](https://github.com/wso2/identity-apps/commit/e6c21c4ba21bc599c3ee02a2718b0dd90cc7dda0) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Fix discovery config PUT call to include defaultParam
+
+- Updated dependencies [[`e50f90cf4e4904c4d257e4b9b04623097934f9fa`](https://github.com/wso2/identity-apps/commit/e50f90cf4e4904c4d257e4b9b04623097934f9fa), [`d4b01de50e296f0dffdc9c4aacf2fcb74c402b09`](https://github.com/wso2/identity-apps/commit/d4b01de50e296f0dffdc9c4aacf2fcb74c402b09)]:
+  - @wso2is/admin.core.v1@2.49.1
+  - @wso2is/i18n@2.28.1
+  - @wso2is/admin.organizations.v1@2.27.1
+
 ## 2.25.205
 
 ### Patch Changes

@@ -339,7 +339,7 @@ export class GovernanceConnectorUtils {
                             .replace(
                                 ":connectorId",
                                 ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID),
-                        testId: "invite-user-to-set-password-card"
+                        testId: "invited-user-to-set-password-card"
                     }
                 ],
                 displayOrder: 1,

@@ -19,6 +19,7 @@
 import Button from "@oxygen-ui/react/Button";
 import useAuthenticationFlowBuilderCore from
     "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
+import useValidationStatus from "@wso2is/admin.flow-builder-core.v1/hooks/use-validation-status";
 import useGetFlowConfig from "@wso2is/admin.flows.v1/api/use-get-flow-config";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import useRegistrationFlowBuilder from "@wso2is/admin.registration-flow-builder.v1/hooks/use-registration-flow-builder";
@@ -39,6 +40,7 @@ import "./floating-publish-button.scss";
 const FloatingPublishButton = (): ReactElement => {
     const { t } = useTranslation();
     const { isResourcePropertiesPanelOpen } = useAuthenticationFlowBuilderCore();
+    const { openValidationPanel, isValid } = useValidationStatus();
     const { data: flowConfig, error: flowConfigError } = useGetFlowConfig(FlowTypes.REGISTRATION);
     const dispatch: Dispatch = useDispatch();
     const { isPublishing, onPublish } = useRegistrationFlowBuilder();
@@ -58,10 +60,13 @@ const FloatingPublishButton = (): ReactElement => {
 
     return (
         <Button
-            className={ classNames("floating-publish-button", { transition: isResourcePropertiesPanelOpen }) }
+            className={ classNames("floating-publish-button", {
+                transition: isResourcePropertiesPanelOpen || openValidationPanel
+            }) }
             variant="contained"
             loading={ isPublishing }
             onClick={ onPublish }
+            disabled={ !isValid }
         >
             { flowConfig?.isEnabled ? t("common:publish") : t("common:saveDraft") }
         </Button>

@@ -22,7 +22,7 @@ import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import startCase from "lodash-es/startCase";
 import React, { ChangeEvent, FunctionComponent, ReactElement } from "react";
-import RichText from "./rich-text/rich-text";
+import RichTextWithTranslation from "./rich-text/rich-text-with-translation";
 import { ElementTypes } from "../../models/elements";
 import { Resource } from "../../models/resources";
 
@@ -72,7 +72,7 @@ const CommonStepPropertyFactory: FunctionComponent<CommonStepPropertyFactoryProp
     if (propertyKey === "text") {
         if (resource.type === ElementTypes.RichText) {
             return (
-                <RichText
+                <RichTextWithTranslation
                     onChange={ (html: string) => onChange(propertyKey, html, resource) }
                     resource={ resource }
                     { ...rest }

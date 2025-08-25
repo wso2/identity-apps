@@ -169,7 +169,7 @@
                                             "action": {
                                                 "type": "EXECUTOR",
                                                 "executor": {
-                                                    "name": "PasswordOnboardExecutor"
+                                                    "name": "PasswordProvisioningExecutor"
                                                 },
                                                 "next": "USER_ONBOARD"
                                             }
@@ -296,7 +296,7 @@
                                             "action": {
                                                 "type": "EXECUTOR",
                                                 "executor": {
-                                                    "name": "PasswordOnboardExecutor"
+                                                    "name": "PasswordProvisioningExecutor"
                                                 },
                                                 "next": "USER_ONBOARD"
                                             }

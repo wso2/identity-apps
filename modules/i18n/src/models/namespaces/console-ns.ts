@@ -275,6 +275,13 @@ export interface ConsoleNS {
                     description: string;
                     heading: string;
                 };
+                customizeFlows: {
+                    actions: {
+                        setup: string;
+                    };
+                    description: string;
+                    heading: string;
+                };
                 asgardeoTryIt: {
                     errorMessages: {
                         appCreateGeneric: {

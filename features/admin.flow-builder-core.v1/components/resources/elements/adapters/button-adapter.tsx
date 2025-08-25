@@ -17,10 +17,14 @@
  */
 
 import Button, { ButtonProps } from "@oxygen-ui/react/Button";
+import Code from "@oxygen-ui/react/Code";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Handle, Position } from "@xyflow/react";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import { Trans, useTranslation } from "react-i18next";
+import PlaceholderComponent from "./placeholder-component";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
+import useRequiredFields, { RequiredFieldInterface } from "../../../../hooks/use-required-fields";
 import { ButtonVariants } from "../../../../models/elements";
 import { CommonElementFactoryPropsInterface } from "../common-element-factory";
 import "./button-adapter.scss";
@@ -39,6 +43,43 @@ export type ButtonAdapterPropsInterface = IdentifiableComponentInterface & Commo
 const ButtonAdapter: FunctionComponent<ButtonAdapterPropsInterface> = ({
     resource
 }: ButtonAdapterPropsInterface): ReactElement => {
+    const { t } = useTranslation();
+
+    const generalMessage: ReactElement = useMemo(() => {
+        return (
+            <Trans
+                i18nKey="flows:core.validation.fields.button.general"
+                values={ { id: resource.id } }
+            >
+                Required fields are not properly configured for the button with ID{ " " }
+                <Code>{ resource.id }</Code>.
+            </Trans>
+        );
+    }, [ resource?.id ]);
+
+    const fields: RequiredFieldInterface[] = useMemo(() => {
+        return [
+            {
+                errorMessage: t("flows:core.validation.fields.button.action"),
+                name: "action"
+            },
+            {
+                errorMessage: t("flows:core.validation.fields.button.text"),
+                name: "text"
+            },
+            {
+                errorMessage: t("flows:core.validation.fields.button.variant"),
+                name: "variant"
+            }
+        ];
+    }, []);
+
+    useRequiredFields(
+        resource,
+        generalMessage,
+        fields
+    );
+
     let config: ButtonProps = {};
     let image: string = "";
 
@@ -84,7 +125,7 @@ const ButtonAdapter: FunctionComponent<ButtonAdapterPropsInterface> = ({
                 }
                 { ...config }
             >
-                { resource?.config?.text }
+                <PlaceholderComponent value={ resource?.config?.text } />
             </Button>
             <Handle
                 id={ `${resource?.id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}` }

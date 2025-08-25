@@ -16,10 +16,13 @@
  * under the License.
  */
 
+import Code from "@oxygen-ui/react/Code";
 import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import PhoneNumberInput from "@oxygen-ui/react/PhoneNumberInput";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import { Trans, useTranslation } from "react-i18next";
+import useRequiredFields, { RequiredFieldInterface } from "../../../../../hooks/use-required-fields";
 import { CommonElementFactoryPropsInterface } from "../../common-element-factory";
 import { Hint } from "../../hint";
 
@@ -36,24 +39,59 @@ export type PhoneNumberInputAdapterPropsInterface = IdentifiableComponentInterfa
  */
 export const PhoneNumberInputAdapter: FunctionComponent<PhoneNumberInputAdapterPropsInterface> = ({
     resource
-}: PhoneNumberInputAdapterPropsInterface): ReactElement => (
-    <>
-        <PhoneNumberInput
-            className={ resource.config?.className }
-            label={ resource.config?.label }
-            placeholder={ resource.config?.placeholder || "" }
-            InputLabelProps={ {
-                required: resource.config?.required
-            } }
-        />
-        {
-            resource.config?.hint && (
-                <FormHelperText>
-                    <Hint hint={ resource.config?.hint } />
-                </FormHelperText>
-            )
-        }
-    </>
-);
+}: PhoneNumberInputAdapterPropsInterface): ReactElement => {
+    const { t } = useTranslation();
+
+    const generalMessage: ReactElement = useMemo(() => {
+        return (
+            <Trans
+                i18nKey="flows:core.validation.fields.phoneNumberInput.general"
+                values={ { id: resource.id } }
+            >
+                Required fields are not properly configured for the phone number field with ID{ " " }
+                <Code>{ resource.id }</Code>.
+            </Trans>
+        );
+    }, [ resource?.id ]);
+
+    const fields: RequiredFieldInterface[] = useMemo(() => {
+        return [
+            {
+                errorMessage: t("flows:core.validation.fields.phoneNumberInput.label"),
+                name: "label"
+            },
+            {
+                errorMessage: t("flows:core.validation.fields.phoneNumberInput.identifier"),
+                name: "identifier"
+            }
+        ];
+    }, [ t ]);
+
+    useRequiredFields(
+        resource,
+        generalMessage,
+        fields
+    );
+
+    return (
+        <>
+            <PhoneNumberInput
+                className={ resource.config?.className }
+                label={ resource.config?.label }
+                placeholder={ resource.config?.placeholder || "" }
+                InputLabelProps={ {
+                    required: resource.config?.required
+                } }
+            />
+            {
+                resource.config?.hint && (
+                    <FormHelperText>
+                        <Hint hint={ resource.config?.hint } />
+                    </FormHelperText>
+                )
+            }
+        </>
+    );
+};
 
 export default PhoneNumberInputAdapter;

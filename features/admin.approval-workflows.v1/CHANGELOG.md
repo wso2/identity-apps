@@ -1,5 +1,43 @@
 # @wso2is/admin.approval-workflows.v1
 
+## 1.0.11
+
+### Patch Changes
+
+- [#8846](https://github.com/wso2/identity-apps/pull/8846) [`3ea5e7533eebed91dd875e099359efe8243bffc5`](https://github.com/wso2/identity-apps/commit/3ea5e7533eebed91dd875e099359efe8243bffc5) Thanks [@Malith-19](https://github.com/Malith-19)! - Add the component-id for the workflow step add button.
+
+## 1.0.10
+
+### Patch Changes
+
+- [#8837](https://github.com/wso2/identity-apps/pull/8837) [`3c066e68e021957c486fd53615e560c022e7b40a`](https://github.com/wso2/identity-apps/commit/3c066e68e021957c486fd53615e560c022e7b40a) Thanks [@Malith-19](https://github.com/Malith-19)! - Remove the default/primary user store domain value for the user list fetch in the workflow approval users list.
+
+- Updated dependencies [[`e7b40575b430919d3c9f6a62926458504b3890cf`](https://github.com/wso2/identity-apps/commit/e7b40575b430919d3c9f6a62926458504b3890cf), [`c85207f4642f15c825154d660dd23099da6ed8f0`](https://github.com/wso2/identity-apps/commit/c85207f4642f15c825154d660dd23099da6ed8f0), [`3c066e68e021957c486fd53615e560c022e7b40a`](https://github.com/wso2/identity-apps/commit/3c066e68e021957c486fd53615e560c022e7b40a), [`553ab26a5dec586fe4a6df9c5741d911d3991017`](https://github.com/wso2/identity-apps/commit/553ab26a5dec586fe4a6df9c5741d911d3991017)]:
+  - @wso2is/admin.users.v1@2.36.4
+  - @wso2is/admin.roles.v2@2.27.192
+  - @wso2is/admin.core.v1@2.49.21
+
+## 1.0.9
+
+### Patch Changes
+
+- [#8791](https://github.com/wso2/identity-apps/pull/8791) [`6071ecb8f9c65a33e07d970a60182abf70cd00ee`](https://github.com/wso2/identity-apps/commit/6071ecb8f9c65a33e07d970a60182abf70cd00ee) Thanks [@Malith-19](https://github.com/Malith-19)! - Change the workflows icon and modify the check icon in the workflow step.
+
+- Updated dependencies [[`595a1eeaf80a2f63c9162f47fc287fd4538f4f6c`](https://github.com/wso2/identity-apps/commit/595a1eeaf80a2f63c9162f47fc287fd4538f4f6c), [`6071ecb8f9c65a33e07d970a60182abf70cd00ee`](https://github.com/wso2/identity-apps/commit/6071ecb8f9c65a33e07d970a60182abf70cd00ee)]:
+  - @wso2is/admin.users.v1@2.36.3
+  - @wso2is/admin.core.v1@2.49.17
+  - @wso2is/admin.roles.v2@2.27.190
+
+## 1.0.8
+
+### Patch Changes
+
+- [#8709](https://github.com/wso2/identity-apps/pull/8709) [`dda87f32ccc576670afb8ad197b1d9d239f1207d`](https://github.com/wso2/identity-apps/commit/dda87f32ccc576670afb8ad197b1d9d239f1207d) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Improve approval workflow UI and provide rbac support for workflow instance and approval workflow configuration
+
+- Updated dependencies [[`3bd7ab28cdcc2a312da7de834793fec190706641`](https://github.com/wso2/identity-apps/commit/3bd7ab28cdcc2a312da7de834793fec190706641), [`dda87f32ccc576670afb8ad197b1d9d239f1207d`](https://github.com/wso2/identity-apps/commit/dda87f32ccc576670afb8ad197b1d9d239f1207d)]:
+  - @wso2is/i18n@2.28.2
+  - @wso2is/admin.core.v1@2.49.3
+
 ## 1.0.7
 
 ### Patch Changes

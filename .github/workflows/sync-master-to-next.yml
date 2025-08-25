@@ -1,0 +1,140 @@
+name: 🔄 Sync PRs from master to next
+
+on:
+  push:
+    branches:
+      - master
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  BASE_BRANCH: master
+  TARGET_BRANCH: next
+  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    if: github.repository == 'wso2/identity-apps'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Set up Git
+        run: |
+          git config user.name "wso2-iam-bot"
+          git config user.email "wso2-iam-bot@users.noreply.github.com"
+
+      - name: Create or reset sync branch from target
+        run: |
+          # Create dynamic sync branch name
+          SYNC_BRANCH="sync-to-${{ env.TARGET_BRANCH }}-${{ github.run_id }}"
+          echo "SYNC_BRANCH=$SYNC_BRANCH" >> $GITHUB_ENV
+
+          git fetch origin $TARGET_BRANCH
+          git checkout $TARGET_BRANCH
+          git checkout -B "$SYNC_BRANCH"
+
+      - name: Fetch last merged PR into ${{ env.BASE_BRANCH }}
+        id: last_pr
+        run: |
+          LAST_PR=$(gh pr list \
+            --base ${{ env.BASE_BRANCH }} \
+            --state merged \
+            --limit 1 \
+            --json number,mergedAt \
+            -q '.[0].number')
+
+          if [ -z "$LAST_PR" ]; then
+            echo "No merged PRs found in ${{ env.BASE_BRANCH }}. Exiting."
+            exit 0
+          fi
+
+          echo "LAST_PR=$LAST_PR" >> $GITHUB_ENV
+          echo "Last merged PR into ${{ env.BASE_BRANCH }}: #$LAST_PR"
+
+      - name: Get commits from last PR
+        id: commits
+        run: |
+          COMMITS=$(gh pr view $LAST_PR --json commits -q '.commits[].oid' | tr '\n' ' ')
+          if [ -z "$COMMITS" ]; then
+            echo "No commits found in PR #$LAST_PR. Exiting."
+            exit 0
+          fi
+          echo "COMMITS=$COMMITS" >> $GITHUB_ENV
+          echo "Commits to consider: $COMMITS"
+
+      - name: Cherry-pick commits (skip [skip ci], workflow files, pom.xml only)
+        run: |
+          for commit in $COMMITS; do
+            MESSAGE=$(git log -1 --pretty=%B $commit)
+            FILES_CHANGED=$(git diff-tree --no-commit-id --name-only -r $commit)
+
+            if [[ "$MESSAGE" =~ \[skip\ ci\] ]]; then
+              echo "Skipping $commit because of [skip ci]"
+              continue
+            fi
+
+            if echo "$FILES_CHANGED" | grep -q "^.github/workflows/"; then
+              echo "Skipping $commit because it modifies a workflow"
+              continue
+            fi
+
+            if ! echo "$FILES_CHANGED" | grep -v -E "pom\.xml" | grep -q '.'; then
+              echo "Skipping $commit because it only modifies pom.xml files"
+              continue
+            fi
+
+            git cherry-pick $commit || git cherry-pick --skip
+          done
+
+      - name: Push sync branch (force update)
+        run: git push origin HEAD:"$SYNC_BRANCH" --force
+
+      - name: Fetch target branch
+        run: git fetch origin $TARGET_BRANCH:$TARGET_BRANCH || true
+
+      - name: Create or update pull request
+        run: |
+          COMMITS_ON_BRANCH=$(git log ${{ env.TARGET_BRANCH }}..HEAD --oneline || true)
+          if [ -z "$COMMITS_ON_BRANCH" ]; then
+            echo "No commits to sync. Skipping PR creation."
+          else
+            # Get the last merged PR number and title on BASE_BRANCH
+            LAST_PR=$(gh pr list --base ${{ env.BASE_BRANCH }} --state merged --limit 1 --json number -q '.[0].number')
+            PR_TITLE=$(gh pr view $LAST_PR --json title -q '.title')
+            PR_AUTHOR=$(gh pr view $LAST_PR --json author -q '.author.login')
+
+            # Prepare PR body
+            PR_BODY="🤖 **Auto-sync from ${{ env.BASE_BRANCH }}**
+
+          This PR automatically syncs the changes from #${LAST_PR} to the \`${{ env.TARGET_BRANCH }}\` branch.
+
+          **Original PR:** https://github.com/${{ github.repository }}/pull/${LAST_PR}
+          **Author:** @${PR_AUTHOR}
+          **Workflow run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+            # Check for existing open PR
+            EXISTING_PR=$(gh pr list \
+              --base "${{ env.TARGET_BRANCH }}" \
+              --head "$SYNC_BRANCH" \
+              --state open \
+              --json number \
+              -q '.[0].number')
+
+            if [ -n "$EXISTING_PR" ]; then
+              echo "PR #$EXISTING_PR already exists. Updating branch."
+            else
+              gh pr create \
+                --base "${{ env.TARGET_BRANCH }}" \
+                --head "$SYNC_BRANCH" \
+                --title "[Sync][${{ env.BASE_BRANCH }} -> ${{ env.TARGET_BRANCH }}][#${LAST_PR}]: $PR_TITLE" \
+                --body "$PR_BODY"
+            fi
+          fi
