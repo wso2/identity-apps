@@ -16,10 +16,8 @@
  * under the License.
  */
 
-import { Theme, alpha, styled } from "@mui/material/styles";
 import { TreeViewBaseItem } from "@mui/x-tree-view/models";
 import { RichTreeView } from "@mui/x-tree-view/RichTreeView";
-import { TreeItem, treeItemClasses } from "@mui/x-tree-view/TreeItem";
 import Alert from "@oxygen-ui/react/Alert";
 import Autocomplete, {
     AutocompleteChangeDetails,
@@ -78,55 +76,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import "./selective-org-share-with-selective-roles.scss";
 import { DropdownProps } from "semantic-ui-react";
-
-const CustomTreeItem: typeof TreeItem = styled(TreeItem)(({ theme }: { theme: Theme }) => ({
-    color: theme.palette.grey[200],
-    [`& .${treeItemClasses.content}`]: {
-        "&.Mui-focused": {
-            backgroundColor: alpha(theme.palette.primary.main, 0.2)
-        },
-        "&.Mui-selected .Mui-focused": {
-            backgroundColor: alpha(theme.palette.primary.main, 0.2)
-        },
-        "&.Mui-selected:hover": {
-            backgroundColor: alpha(theme.palette.primary.main, 0.2)
-        },
-        "&[data-selected]": {
-            backgroundColor: "transparent"
-        },
-        "&[data-selected][data-focused]": {
-            backgroundColor: alpha(theme.palette.primary.main, 0.2)
-        },
-        borderRadius: theme.spacing(0.5),
-        margin: theme.spacing(0.2, 0),
-        padding: theme.spacing(0.5, 1),
-        position: "relative"
-    },
-    [`& .${treeItemClasses.iconContainer}`]: {
-        backgroundColor: theme.palette.primary.dark,
-        borderRadius: "50%",
-        padding: theme.spacing(0, 1.2),
-        ...theme.applyStyles("light", {
-            backgroundColor: alpha(theme.palette.primary.main, 0.25)
-        }),
-        ...theme.applyStyles("dark", {
-            color: theme.palette.primary.contrastText
-        })
-    },
-    [`& .${treeItemClasses.groupTransition}`]: {
-        borderLeft: `1px dashed ${alpha(theme.palette.text.primary, 0.4)}`,
-        marginLeft: 16,
-        paddingLeft: 18,
-        position: "relative"
-    },
-    // Hide horizontal connector for items that have expand icons (have children)
-    [`&:has(.${treeItemClasses.iconContainer}) .${treeItemClasses.content}::before`]: {
-        display: "none"
-    },
-    ...theme.applyStyles("light", {
-        color: theme.palette.grey[800]
-    })
-}));
+import { CustomTreeItem } from "./custom-tree-item";
 
 interface SelectiveOrgShareWithSelectiveRolesProps extends IdentifiableComponentInterface {
     applicationId: string;
