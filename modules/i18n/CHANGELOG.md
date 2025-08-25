@@ -1,5 +1,35 @@
 # @wso2is/i18n
 
+## 2.30.11
+
+### Patch Changes
+
+- [#8906](https://github.com/wso2/identity-apps/pull/8906) [`d2761e6e3c810878c8579d0aa7a293b888adbd82`](https://github.com/wso2/identity-apps/commit/d2761e6e3c810878c8579d0aa7a293b888adbd82) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Unify workflow approval operationType usages and UI improvements
+
+## 2.30.10
+
+### Patch Changes
+
+- [#8901](https://github.com/wso2/identity-apps/pull/8901) [`a02d2b8776914b009cc8ac36c6ceae9d93709e23`](https://github.com/wso2/identity-apps/commit/a02d2b8776914b009cc8ac36c6ceae9d93709e23) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Ensure approval requests with invalid user data are properly validated and handled without throwing errors.
+
+## 2.30.9
+
+### Patch Changes
+
+- [#8899](https://github.com/wso2/identity-apps/pull/8899) [`cf987dbe97b9a088ce55076aa3648d40eac68a24`](https://github.com/wso2/identity-apps/commit/cf987dbe97b9a088ce55076aa3648d40eac68a24) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Disable the attribute profile configuration view for the complex data type attributes
+
+## 2.30.8
+
+### Patch Changes
+
+- [#8895](https://github.com/wso2/identity-apps/pull/8895) [`d624fd4a2b4b192ced2ebb957bdef208f8062baf`](https://github.com/wso2/identity-apps/commit/d624fd4a2b4b192ced2ebb957bdef208f8062baf) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Handle workflow approvals during self registration flow
+
+## 2.30.7
+
+### Patch Changes
+
+- [#8887](https://github.com/wso2/identity-apps/pull/8887) [`3a401177e32564dd474b97799b1110c664097453`](https://github.com/wso2/identity-apps/commit/3a401177e32564dd474b97799b1110c664097453) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Enhance the UX for i18n configuration in the flow builder
+
 ## 2.30.6
 
 ### Patch Changes

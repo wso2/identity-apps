@@ -138,13 +138,13 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      */
     isI18nSubmitting?: boolean;
     /**
-     * Function to check if a given i18n key is custom for the specified screen type.
+     * Function to check if a given i18n key is custom.
      *
-     * @param screenType - The screen type to check.
      * @param key - The i18n key to check.
-     * @returns True if the i18n key is custom for the specified screen type, false otherwise.
+     * @param excludePrimaryScreen - Whether to exclude the primary screen from the check.
+     * @returns True if the i18n key is custom, false otherwise.
      */
-    isCustomI18nKey?: (screenType: PreviewScreenType, key: string) => boolean;
+    isCustomI18nKey?: (key: string, excludePrimaryScreen?: boolean) => boolean;
     /**
      * Supported locales for the custom text preferences.
      */

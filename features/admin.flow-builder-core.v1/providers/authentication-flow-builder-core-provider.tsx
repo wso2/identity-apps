@@ -310,12 +310,14 @@ const AuthenticationFlowBuilderCoreProvider = ({
             }, [ textPreference, tenantDomain ]);
 
     /**
-     * Function to check if a given i18n key is custom for the specified screen type.
+     * Function to check if a given i18n key is custom.
      */
-    const isCustomI18nKey: (screenType: PreviewScreenType, key: string) => boolean = useCallback(
-        (screenType: PreviewScreenType, key: string): boolean => {
-            return fallbackTextPreference?.[screenType]?.[key] ? false : true;
-        }, [ fallbackTextPreference ]);
+    const isCustomI18nKey: (key: string, excludePrimaryScreen?: boolean) => boolean = useCallback(
+        (key: string, excludePrimaryScreen: boolean = true): boolean => {
+            return fallbackTextPreference ? Object.keys(fallbackTextPreference).every(
+                (screenType: PreviewScreenType) => (screenType === primaryI18nScreen && excludePrimaryScreen)
+                    || !fallbackTextPreference[screenType][key]) : false;
+        }, [ fallbackTextPreference, primaryI18nScreen ]);
 
     return (
         <ReactFlowProvider>

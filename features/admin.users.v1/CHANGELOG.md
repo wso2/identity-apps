@@ -1,5 +1,17 @@
 # @wso2is/admin.users.v1
 
+## 2.36.7
+
+### Patch Changes
+
+- [#8909](https://github.com/wso2/identity-apps/pull/8909) [`5cd6e6aa931500aca10ed8e56c004dca8585f82f`](https://github.com/wso2/identity-apps/commit/5cd6e6aa931500aca10ed8e56c004dca8585f82f) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix user add wizard hidden issue when workflow feature is enabled.
+
+- Updated dependencies [[`5cd6e6aa931500aca10ed8e56c004dca8585f82f`](https://github.com/wso2/identity-apps/commit/5cd6e6aa931500aca10ed8e56c004dca8585f82f)]:
+  - @wso2is/admin.users.v1@2.36.7
+  - @wso2is/admin.core.v1@2.49.23
+  - @wso2is/admin.roles.v2@2.27.195
+  - @wso2is/admin.server-configurations.v1@2.35.36
+
 ## 2.36.6
 
 ### Patch Changes

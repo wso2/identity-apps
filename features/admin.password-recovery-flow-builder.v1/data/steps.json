@@ -6,21 +6,8 @@
         "version": "0.1.0",
         "deprecated": false,
         "display": {
-            "label": "Blank View",
-            "image": "https://www.svgrepo.com/show/448632/step.svg",
-            "showOnResourcePanel": true
-        },
-        "config": {}
-    },
-    {
-        "resourceType": "STEP",
-        "category": "INTERFACE",
-        "type": "VIEW",
-        "version": "0.1.0",
-        "deprecated": false,
-        "display": {
-            "label": "Email OTP View",
-            "image": "https://www.svgrepo.com/show/387455/email-down.svg",
+            "label": "User Resolve View",
+            "image": "https://www.svgrepo.com/show/532362/user.svg",
             "showOnResourcePanel": true
         },
         "config": {},
@@ -32,7 +19,7 @@
                     "type": "TYPOGRAPHY",
                     "variant": "H3",
                     "config": {
-                        "text": "Verify OTP"
+                        "text": "Forgot Password?"
                     }
                 },
                 {
@@ -43,16 +30,24 @@
                     "components": [
                         {
                             "id": "{{ID}}",
+                            "category": "DISPLAY",
+                            "type": "RICH_TEXT",
+                            "config": {
+                                "text": "<h5 class=\"rich-text-heading-h5 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">We've got you covered. Enter your username to begin resetting your password.</span></h5>"
+                            }
+                        },
+                        {
+                            "id": "{{ID}}",
                             "category": "FIELD",
                             "type": "INPUT",
-                            "variant": "OTP",
+                            "variant": "TEXT",
                             "config": {
                                 "type": "text",
                                 "hint": "",
-                                "identifier": "otp",
-                                "label": "Enter the code sent to your email",
+                                "label": "Username",
                                 "required": true,
-                                "placeholder": ""
+                                "placeholder": "Enter your username",
+                                "identifier": "http://wso2.org/claims/username"
                             }
                         },
                         {
@@ -62,14 +57,14 @@
                             "variant": "PRIMARY",
                             "config": {
                                 "type": "submit",
-                                "text": "Verify"
+                                "text": "Send Reset Link"
                             },
                             "action": {
                                 "type": "EXECUTOR",
                                 "executor": {
-                                    "name": "EmailOTPExecutor"
+                                    "name": "UserResolveExecutor"
                                 },
-                                "next": ""
+                                "next": "End"
                             }
                         }
                     ]
@@ -84,8 +79,8 @@
         "version": "0.1.0",
         "deprecated": false,
         "display": {
-            "label": "SMS OTP View",
-            "image": "https://www.svgrepo.com/show/455832/mobile-message.svg",
+            "label": "Reset Password View",
+            "image": "https://www.svgrepo.com/show/489073/password.svg",
             "showOnResourcePanel": true
         },
         "config": {},
@@ -97,7 +92,7 @@
                     "type": "TYPOGRAPHY",
                     "variant": "H3",
                     "config": {
-                        "text": "Verify OTP"
+                        "text": "Reset Password"
                     }
                 },
                 {
@@ -110,14 +105,14 @@
                             "id": "{{ID}}",
                             "category": "FIELD",
                             "type": "INPUT",
-                            "variant": "OTP",
+                            "variant": "PASSWORD",
                             "config": {
-                                "type": "text",
+                                "identifier": "password",
+                                "type": "password",
                                 "hint": "",
-                                "identifier": "otp",
-                                "label": "Enter the code sent to your mobile",
-                                "required": true,
-                                "placeholder": ""
+                                "label": "Password",
+                                "required": false,
+                                "placeholder": "Enter your password"
                             }
                         },
                         {
@@ -127,45 +122,19 @@
                             "variant": "PRIMARY",
                             "config": {
                                 "type": "submit",
-                                "text": "Verify"
+                                "text": "Continue"
                             },
                             "action": {
                                 "type": "EXECUTOR",
                                 "executor": {
-                                    "name": "SMSOTPExecutor"
+                                    "name": "PasswordProvisioningExecutor"
                                 },
-                                "next": ""
+                                "next": "End"
                             }
                         }
                     ]
                 }
             ]
         }
-    },
-    {
-        "resourceType": "STEP",
-        "category": "DECISION",
-        "type": "RULE",
-        "version": "0.1.0",
-        "deprecated": false,
-        "display": {
-            "label": "Rule",
-            "image": "https://www.svgrepo.com/show/413199/decide.svg",
-            "showOnResourcePanel": false
-        },
-        "config": {}
-    },
-    {
-        "resourceType": "STEP",
-        "category": "WORKFLOW",
-        "type": "EXECUTION",
-        "version": "0.1.0",
-        "deprecated": false,
-        "display": {
-            "label": "Execution",
-            "image": "https://www.svgrepo.com/show/476381/play.svg",
-            "showOnResourcePanel": false
-        },
-        "config": {}
     }
 ]

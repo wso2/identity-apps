@@ -24,7 +24,7 @@
  *
  * @example
  * ```typescript
- * const executor = RegistrationFlowExecutorConstants.PASSWORD_ONBOARD_EXECUTOR;
+ * const executor = RegistrationFlowExecutorConstants.PASSWORD_PROVISIONING_EXECUTOR;
  * ```
  */
 class RegistrationFlowExecutorConstants {
@@ -33,7 +33,11 @@ class RegistrationFlowExecutorConstants {
      */
     private constructor() {}
 
+<<<<<<< HEAD
     public static readonly PASSWORD_PROVISIONING_EXECUTOR: string = "PasswordProvisioningExecutor";
+=======
+    public static readonly PASSWORD_PROVISIONING_EXECUTOR: string = "passwordProvisioningExecutor";
+>>>>>>> 1e7974899fc4abb35307b39243477765aadff1b5
 
     public static readonly EMAIL_OTP_EXECUTOR: string = "EmailOTPExecutor";
 

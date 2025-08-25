@@ -1,5 +1,64 @@
 # @wso2is/console
 
+## 2.78.14
+
+### Patch Changes
+
+- [#8909](https://github.com/wso2/identity-apps/pull/8909) [`5cd6e6aa931500aca10ed8e56c004dca8585f82f`](https://github.com/wso2/identity-apps/commit/5cd6e6aa931500aca10ed8e56c004dca8585f82f) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix user add wizard hidden issue when workflow feature is enabled.
+
+- Updated dependencies [[`5cd6e6aa931500aca10ed8e56c004dca8585f82f`](https://github.com/wso2/identity-apps/commit/5cd6e6aa931500aca10ed8e56c004dca8585f82f)]:
+  - @wso2is/admin.users.v1@2.36.7
+  - @wso2is/admin.agents.v1@1.0.40
+  - @wso2is/admin.core.v1@2.49.23
+  - @wso2is/admin.roles.v2@2.27.195
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.15
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.15
+  - @wso2is/admin.server-configurations.v1@2.35.36
+
+## 2.78.13
+
+### Patch Changes
+
+- [#8906](https://github.com/wso2/identity-apps/pull/8906) [`d2761e6e3c810878c8579d0aa7a293b888adbd82`](https://github.com/wso2/identity-apps/commit/d2761e6e3c810878c8579d0aa7a293b888adbd82) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Unify workflow approval operationType usages and UI improvements
+
+- Updated dependencies [[`d2761e6e3c810878c8579d0aa7a293b888adbd82`](https://github.com/wso2/identity-apps/commit/d2761e6e3c810878c8579d0aa7a293b888adbd82)]:
+  - @wso2is/common.workflow-approvals.v1@1.0.5
+  - @wso2is/admin.workflow-requests.v1@1.0.3
+  - @wso2is/i18n@2.30.11
+
+## 2.78.12
+
+### Patch Changes
+
+- [#8901](https://github.com/wso2/identity-apps/pull/8901) [`a02d2b8776914b009cc8ac36c6ceae9d93709e23`](https://github.com/wso2/identity-apps/commit/a02d2b8776914b009cc8ac36c6ceae9d93709e23) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Ensure approval requests with invalid user data are properly validated and handled without throwing errors.
+
+- Updated dependencies [[`a02d2b8776914b009cc8ac36c6ceae9d93709e23`](https://github.com/wso2/identity-apps/commit/a02d2b8776914b009cc8ac36c6ceae9d93709e23)]:
+  - @wso2is/common.workflow-approvals.v1@1.0.4
+  - @wso2is/i18n@2.30.10
+
+## 2.78.11
+
+### Patch Changes
+
+- [#8899](https://github.com/wso2/identity-apps/pull/8899) [`4a182e9ad58ea66d72a1b33387fb15f3851ed44f`](https://github.com/wso2/identity-apps/commit/4a182e9ad58ea66d72a1b33387fb15f3851ed44f) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Disable attribute profile configuratuon for the object data type attributes
+
+- Updated dependencies [[`cf987dbe97b9a088ce55076aa3648d40eac68a24`](https://github.com/wso2/identity-apps/commit/cf987dbe97b9a088ce55076aa3648d40eac68a24)]:
+  - @wso2is/admin.claims.v1@2.29.2
+  - @wso2is/i18n@2.30.9
+
+## 2.78.10
+
+### Patch Changes
+
+- [#8887](https://github.com/wso2/identity-apps/pull/8887) [`3a401177e32564dd474b97799b1110c664097453`](https://github.com/wso2/identity-apps/commit/3a401177e32564dd474b97799b1110c664097453) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Enhance the UX for i18n configuration in the flow builder
+
+- Updated dependencies [[`3a401177e32564dd474b97799b1110c664097453`](https://github.com/wso2/identity-apps/commit/3a401177e32564dd474b97799b1110c664097453)]:
+  - @wso2is/i18n@2.30.7
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.14
+  - @wso2is/admin.core.v1@2.49.22
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.14
+  - @wso2is/admin.server-configurations.v1@2.35.35
+
 ## 2.78.9
 
 ### Patch Changes

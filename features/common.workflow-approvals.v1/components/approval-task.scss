@@ -16,14 +16,29 @@
  * under the License.
  */
 
-.flow-builder-execution {
+.approval-task-properties {
+    &-container {
+        max-width: 100%;
+        overflow-x: auto;
+    }
 
-    &.apple,
-    &.github,
-    &.confirmation-code,
-    &.magic-link {
-        img {
-            filter: invert(100%);
+    &-table {
+        table-layout: fixed;
+        width: 100%;
+
+        .key-cell {
+            width: 30%;
+            word-break: break-word;
+        }
+
+        .values-cell {
+            width: 70% !important;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+
+            .text-value {
+                margin: 0.5em 0;
+            }
         }
     }
 }

@@ -84,6 +84,15 @@ export const common: CommonNS = {
                 }
             }
         },
+        operationTypes: {
+            addRole: "Agregar rol",
+            addUser: "Agregar usuario",
+            all: "Todas las operaciones",
+            deleteRole: "Eliminar rol",
+            deleteUser: "Eliminar usuario",
+            selfRegisterUser: "Auto registro",
+            updateRolesOfUser: "Actualizar roles de usuario"
+        },
         placeholders: {
             emptyApprovalFilter: {
                 action: "Ver todo",
@@ -114,12 +123,19 @@ export const common: CommonNS = {
             },
             searchApprovals: "Buscar por nombre de flujo de trabajo"
         },
+        propertyMessages: {
+            assignedUsersDeleted: "Los usuarios asignados han sido eliminados.",
+            roleDeleted: "La función ha sido eliminada.",
+            selfRegistration: "Auto registro",
+            unassignedUsersDeleted: "Los usuarios no asignados han sido eliminados."
+        },
         subTitle: "Revise las tareas operativas que requieren su aprobación",
         title: "Aprobaciones"
     },
     approve: "Aprobar",
     approved: "Aprobado",
     apps: "Aplicaciones",
+    assignYourself: "Asigne a sí mismo",
     assignee: "Cesionario",
     assignees: "cesionarios",
     asyncOperationErrorMessage: {
@@ -140,7 +156,6 @@ export const common: CommonNS = {
         heading: "Algo salió mal",
         primaryActionText: "Recargar la aplicación"
     },
-    claim: "Afirmar",
     clear: "Claro",
     clientId: "Identificación del cliente",
     close: "Cerrar",
@@ -220,6 +235,7 @@ export const common: CommonNS = {
     noResultsFound: "No se han encontrado resultados",
     okay: "Okey",
     operatingSystem: "Sistema operativo",
+    operationType: "Tipo de operación",
     operations: "Operaciones",
     organizationName: "organización {{orgName}}",
     overview: "Descripción general",
@@ -240,7 +256,6 @@ export const common: CommonNS = {
     register: "Registrarse",
     reject: "Rechazar",
     rejected: "Rechazado",
-    release: "Liberación",
     remove: "Eliminar",
     removeAll: "Eliminar todo",
     required: "Esto es requerido.",
@@ -278,6 +293,7 @@ export const common: CommonNS = {
     terminateSession: "Terminar sesión",
     tooShort: "Demasiado corto",
     type: "Escribe",
+    unassign: "Desasignar",
     unpin: "Desprender",
     unpinned: "Sin fijar",
     update: "Actualizar",
