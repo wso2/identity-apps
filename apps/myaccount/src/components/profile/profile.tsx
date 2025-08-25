@@ -21,6 +21,7 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled, resolveUserstore } from "@wso2is/core/helpers";
 import {
     AlertLevels,
+    ClaimDataType,
     PatchOperationRequest,
     ProfileSchemaInterface,
     SBACInterface,
@@ -765,6 +766,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             if (!resolveSupportedByDefaultValue) {
                 return false;
             }
+        }
+
+        // If the attribute is a complex type, it should not be displayed.
+        if (schema.type?.toLowerCase() === ClaimDataType.COMPLEX.toLowerCase() &&
+        schema.schemaUri !== ProfileConstants.SCIM2_CORE_USER_SCHEMA_ATTRIBUTES.emails &&
+        schema.schemaUri !== ProfileConstants.SCIM2_CORE_USER_SCHEMA_ATTRIBUTES.mobile) {
+            return false;
         }
 
         return true;
