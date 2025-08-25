@@ -31,6 +31,7 @@ import {
 } from "@wso2is/form";
 import moment from "moment";
 import React, { FunctionComponent, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import updateSelfOrganization from "../../api/update-self-organization";
@@ -69,6 +70,7 @@ const EditSelfOrganizationForm: FunctionComponent<EditSelfOrganizationFormProps>
     ...rest
 }: EditSelfOrganizationFormProps): ReactElement => {
     const dispatch: Dispatch = useDispatch();
+    const { t } = useTranslation();
 
     const { data: organization, mutate: mutateOrganization } = useGetSelfOrganization();
 
@@ -99,9 +101,11 @@ const EditSelfOrganizationForm: FunctionComponent<EditSelfOrganizationFormProps>
             .then(() => {
                 dispatch(
                     addAlert({
-                        description: "Organization updated successfully",
+                        description: t("tenants:editSelfOrganization.notifications" +
+                            ".updateOrganization.success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: "Update Successful"
+                        message: t("tenants:editSelfOrganization.notifications" +
+                            ".updateOrganization.success.message")
                     })
                 );
                 mutateOrganization();
@@ -110,9 +114,11 @@ const EditSelfOrganizationForm: FunctionComponent<EditSelfOrganizationFormProps>
             .catch(() => {
                 dispatch(
                     addAlert({
-                        description: "An error occurred while updating the organization",
+                        description: t("tenants:editSelfOrganization.notifications" +
+                            ".updateOrganization.error.description"),
                         level: AlertLevels.ERROR,
-                        message: "Update Failed"
+                        message: t("tenants:editSelfOrganization.notifications" +
+                            ".updateOrganization.error.message")
                     })
                 );
             });
@@ -129,7 +135,7 @@ const EditSelfOrganizationForm: FunctionComponent<EditSelfOrganizationFormProps>
         };
 
         if (!values.name) {
-            errors.name = "Organization name is required";
+            errors.name = t("tenants:editSelfOrganization.form.fields.organizationName.validations.required");
         }
 
         return errors;
@@ -166,12 +172,15 @@ const EditSelfOrganizationForm: FunctionComponent<EditSelfOrganizationFormProps>
                             data-componentid={ `${componentId}-id` }
                             name="id"
                             type="text"
-                            label="Organization ID"
+                            label={ t("tenants:editSelfOrganization.form.fields.organizationId.label") }
                             component={ TextFieldAdapter }
                             readOnly={ true }
                             InputProps={ {
                                 endAdornment: (
-                                    <Tooltip title="Copy">
+                                    <Tooltip
+                                        title={ t("tenants:editSelfOrganization.form.fields" +
+                                            ".organizationId.hint") }
+                                    >
                                         <div>
                                             <IconButton
                                                 aria-label="Copy ID"
@@ -198,8 +207,8 @@ const EditSelfOrganizationForm: FunctionComponent<EditSelfOrganizationFormProps>
                             data-componentid={ `${componentId}-name` }
                             name="name"
                             type="text"
-                            label="Organization Name"
-                            placeholder="Enter organization name"
+                            label={ t("tenants:editSelfOrganization.form.fields.organizationName.label") }
+                            placeholder={ t("tenants:editSelfOrganization.form.fields.organizationName.placeholder") }
                             component={ TextFieldAdapter }
                             maxLength={ 100 }
                             minLength={ 0 }
@@ -214,7 +223,7 @@ const EditSelfOrganizationForm: FunctionComponent<EditSelfOrganizationFormProps>
                             data-componentid={ `${componentId}-org-handle` }
                             name="orgHandle"
                             type="text"
-                            label="Organization Handle"
+                            label={ t("tenants:editSelfOrganization.form.fields.organizationHandle.label") }
                             component={ TextFieldAdapter }
                             readOnly={ true }
                         />
@@ -228,7 +237,7 @@ const EditSelfOrganizationForm: FunctionComponent<EditSelfOrganizationFormProps>
                             data-componentid={ `${componentId}-created` }
                             name="created"
                             type="text"
-                            label="Created"
+                            label={ t("tenants:editSelfOrganization.form.fields.created.label") }
                             component={ TextFieldAdapter }
                             readOnly={ true }
                         />
@@ -242,7 +251,7 @@ const EditSelfOrganizationForm: FunctionComponent<EditSelfOrganizationFormProps>
                             data-componentid={ `${componentId}-last-modified` }
                             name="lastModified"
                             type="text"
-                            label="Last Modified"
+                            label={ t("tenants:editSelfOrganization.form.fields.lastModified.label") }
                             component={ TextFieldAdapter }
                             readOnly={ true }
                         />
@@ -254,7 +263,7 @@ const EditSelfOrganizationForm: FunctionComponent<EditSelfOrganizationFormProps>
                             color="primary"
                             type="submit"
                         >
-                            Save
+                            { t("tenants:editSelfOrganization.actions.save.label") }
                         </Button>
                     </form>
                 );

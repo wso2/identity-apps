@@ -19,6 +19,7 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import { Card } from "semantic-ui-react";
 import EditSelfOrganizationForm from "../components/edit-self-organization/edit-self-organization-form";
 import "./edit-self-organization-page.scss";
@@ -38,11 +39,13 @@ const EditSelfOrganizationPage: FunctionComponent<EditSelfOrganizationPageProps>
     ["data-componentid"]: componentId = "organization-edit-page"
 }: EditSelfOrganizationPageProps): ReactElement => {
 
+    const { t } = useTranslation();
+
     return (
         <PageLayout
-            pageTitle="Edit Organizations"
-            title="Edit Organization"
-            description="View and manage organization details"
+            pageTitle={ t("tenants:editSelfOrganization.title") }
+            title={ t("tenants:editSelfOrganization.title") }
+            description={ t("tenants:editSelfOrganization.subtitle") }
             data-componentid={ `${componentId}-page-layout` }
             bottomMargin={ false }
             className="edit-self-organization-page"

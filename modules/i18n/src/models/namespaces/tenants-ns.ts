@@ -188,6 +188,51 @@ export interface TenantsNS {
         };
         subtitle: string;
     };
+    editSelfOrganization: {
+        actions: {
+            save: {
+                label: string;
+            };
+        };
+        form: {
+            fields: {
+                created: {
+                    label: string;
+                };
+                lastModified: {
+                    label: string;
+                };
+                organizationHandle: {
+                    label: string;
+                };
+                organizationId: {
+                    hint: string;
+                    label: string;
+                };
+                organizationName: {
+                    label: string;
+                    placeholder: string;
+                    validations: {
+                        required: string;
+                    };
+                };
+            };
+        };
+        notifications: {
+            updateOrganization: {
+                error: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+        };
+        subtitle: string;
+        title: string;
+    };
     editTenant: {
         actions: {
             save: {
