@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.30.14
+
+### Patch Changes
+
+- [#8913](https://github.com/wso2/identity-apps/pull/8913) [`5d7958b1625fd704690304050c9c36314fe6c0ee`](https://github.com/wso2/identity-apps/commit/5d7958b1625fd704690304050c9c36314fe6c0ee) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix inconsistency in radio group field in Console
+
 ## 2.30.13
 
 ### Patch Changes

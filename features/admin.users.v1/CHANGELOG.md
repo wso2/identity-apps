@@ -1,5 +1,18 @@
 # @wso2is/admin.users.v1
 
+## 2.36.8
+
+### Patch Changes
+
+- [#8913](https://github.com/wso2/identity-apps/pull/8913) [`5d7958b1625fd704690304050c9c36314fe6c0ee`](https://github.com/wso2/identity-apps/commit/5d7958b1625fd704690304050c9c36314fe6c0ee) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix inconsistency in radio group field in Console
+
+- Updated dependencies [[`5d7958b1625fd704690304050c9c36314fe6c0ee`](https://github.com/wso2/identity-apps/commit/5d7958b1625fd704690304050c9c36314fe6c0ee)]:
+  - @wso2is/admin.users.v1@2.36.8
+  - @wso2is/i18n@2.30.14
+  - @wso2is/admin.core.v1@2.49.29
+  - @wso2is/admin.roles.v2@2.27.197
+  - @wso2is/admin.server-configurations.v1@2.35.42
+
 ## 2.36.7
 
 ### Patch Changes
