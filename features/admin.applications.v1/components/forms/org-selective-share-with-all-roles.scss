@@ -17,13 +17,13 @@
  */
 
 .roles-selective-share-all-roles-container {
-    margin-top: 1rem;
-    border: none;
+    border: 1px solid var(--oxygen-palette-grey-300);
+    border-radius: var(--oxygen-shape-borderRadius);
+    padding: 10px;
 
     .roles-selective-share-all-roles {
+        border-radius: var(--oxygen-shape-borderRadius);
         height: 300px;
         overflow: auto;
-        background-color: var(--oxygen-palette-grey-100);
-        border-radius: var(--oxygen-shape-borderRadius);
     }
 }
