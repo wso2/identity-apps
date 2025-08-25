@@ -79,21 +79,26 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
         },
         {
             key: 2,
+            text: t("common:pending"),
+            value: ApprovalStatus.PENDING
+        },
+        {
+            key: 3,
             text: t("common:reserved"),
             value: ApprovalStatus.RESERVED
         },
         {
-            key: 3,
+            key: 4,
             text: t("common:ready"),
             value: ApprovalStatus.READY
         },
         {
-            key: 4,
+            key: 5,
             text: t("common:approved"),
             value: ApprovalStatus.APPROVED
         },
         {
-            key: 5,
+            key: 6,
             text: t("common:rejected"),
             value: ApprovalStatus.REJECTED
         }
@@ -128,7 +133,15 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
     const getApprovals = (shallowUpdate: boolean = false): void => {
         setApprovalListRequestLoading(true);
 
-        fetchPendingApprovals(null, null, filterStatus, approvalsUrl)
+        const statusArray: string[] = [];
+
+        if (filterStatus === ApprovalStatus.PENDING) {
+            statusArray.push(ApprovalStatus.READY, ApprovalStatus.RESERVED);
+        } else {
+            statusArray.push(filterStatus);
+        }
+
+        fetchPendingApprovals(null, null, statusArray, approvalsUrl)
             .then((response: ApprovalTaskListItemInterface[]) => {
                 if (!shallowUpdate) {
                     setApprovals(response);
@@ -303,30 +316,6 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
             });
     };
 
-    /**
-     * Search the approvals list.
-     *
-     * @param event - event
-     */
-    const searchApprovalList = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const changeValue: string = event.target.value;
-
-        if (changeValue.length > 0) {
-            const searchResult: ApprovalTaskListItemInterface[] = approvals
-                .filter((item: ApprovalTaskListItemInterface) =>
-                    item.taskType?.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1
-                );
-
-            setTempApprovals(searchResult);
-
-            if (searchResult.length === 0) {
-                setSearchResult(0);
-            }
-        } else {
-            setTempApprovals(approvals);
-        }
-    };
-
     return (
         <PageLayout
             title={ t("common:approvalsPage.title") }
@@ -345,7 +334,7 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
                 totalListSize={ approvals.length }
                 isLoading={ isApprovalListRequestLoading }
                 data-componentid={ `${ componentId }-list-layout` }
-                rightActionPanel={
+                leftActionPanel={
                     (<Dropdown
                         data-componentid={ `${ componentId }-status-filter-dropdown` }
                         selection
@@ -353,20 +342,6 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
                         onChange={ handleFilterStatusChange }
                         value={ filterStatus }
                     />)
-                }
-                leftActionPanel={
-                    (<div className="advanced-search-wrapper aligned-left fill-default">
-                        <Input
-                            className="advanced-search with-add-on"
-                            data-componentid={ `${ componentId }-list-search-input` }
-                            icon="search"
-                            iconPosition="left"
-                            onChange={ searchApprovalList }
-                            placeholder={ t("common:approvalsPage.placeholders.searchApprovals") }
-                            floated="right"
-                            size="small"
-                        />
-                    </div>)
                 }
             >
                 <ApprovalsList
