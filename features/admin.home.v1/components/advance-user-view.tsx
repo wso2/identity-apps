@@ -58,6 +58,7 @@ import { Button, Card, Grid, Placeholder } from "semantic-ui-react";
 import { CardExpandedNavigationButton } from "./card-expanded-navigation-button";
 import { DynamicApplicationContextCard } from "./dynamic-application-context-card";
 import { FeatureCarousel } from "./new-feature-announcement/new-feature-announcement";
+import { UserSurveyBanner } from "./user-survey-banner/user-survey-banner";
 import { getGettingStartedCardIllustrations } from "../configs/ui";
 import HomeConstants from "../constants/home-constants";
 
@@ -103,6 +104,9 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
 
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
 
+    const isUserSurveyBannerEnabled: boolean = useSelector((state: AppState) => {
+        return state?.config?.ui?.userSurveyBanner?.enabled;
+    });
     const showFeatureAnnouncementBanner: boolean = !homeFeatureConfig?.disabledFeatures?.includes(
         HomeConstants.FEATURE_DICTIONARY.FEATURE_ANNOUNCEMENT
     );
@@ -531,6 +535,10 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
             ) }
 
             <br />
+
+            { isUserSurveyBannerEnabled && !isSubOrganization() && (
+                <UserSurveyBanner />
+            ) }
 
             { showFeatureAnnouncementBanner && !isSubOrganization() && (
                 <Show featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>

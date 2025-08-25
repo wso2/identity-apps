@@ -292,6 +292,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             isSAASDeployment: undefined,
             isSignatureValidationCertificateAliasEnabled: undefined,
             isTrustedAppConsentRequired: undefined,
+            isUserSurveyBannerEnabled: undefined,
             listAllAttributeDialects: undefined,
             multiTenancy: {
                 isTenantDomainDotExtensionMandatory: true,
@@ -316,6 +317,12 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 name: "",
                 path: "",
                 styleSheets: null
+            },
+            userSurveyBanner: {
+                description: "",
+                enabled: false,
+                title: "",
+                url: ""
             }
         }
     };

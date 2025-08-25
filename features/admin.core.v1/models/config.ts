@@ -460,6 +460,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     isRequestPathAuthenticationEnabled?: boolean;
     /**
+     * Flag to check whether to show the user survey banner.
+     */
+    isUserSurveyBannerEnabled?: boolean;
+    /**
      * Flag to check whether to list all the attribute dialects
      */
     listAllAttributeDialects?: boolean;
@@ -607,6 +611,15 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Terms of service URL.
      */
     termsOfUseUrl?: string;
+    /**
+     * User survey banner configurations.
+     */
+    userSurveyBanner: {
+        description: string;
+        enabled: boolean;
+        title: string;
+        url: string;
+    };
 }
 
 /**
