@@ -828,7 +828,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
 
         const attributeValue: unknown = extractAttributeValue(schema);
 
-        if (schema.type !== ClaimDataType.BOOLEAN && isEmpty(attributeValue)) {
+        if (schema.type?.toLowerCase() !== ClaimDataType.BOOLEAN.toLocaleLowerCase() && isEmpty(attributeValue)) {
             // If the profile UI is in read only mode, the empty field should not be displayed.
             if (isReadOnlyMode) {
                 return false;
@@ -840,6 +840,13 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
             if (resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA) {
                 return false;
             }
+        }
+
+        // If the attribute is a complex type, it should not be displayed.
+        if (schema.type?.toLowerCase() === ClaimDataType.COMPLEX.toLowerCase() &&
+        schema.schemaUri !== ProfileConstants.SCIM2_CORE_USER_SCHEMA_ATTRIBUTES.emails &&
+        schema.schemaUri !== ProfileConstants.SCIM2_CORE_USER_SCHEMA_ATTRIBUTES.mobile) {
+            return false;
         }
 
         return true;
