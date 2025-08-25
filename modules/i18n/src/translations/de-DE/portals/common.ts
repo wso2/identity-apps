@@ -302,6 +302,7 @@ export const common: CommonNS = {
     "verified": "Verifiziert",
     "verify": "Überprüfen",
     "view": "Aussicht",
+    "viewDetails": "Details ansehen",
     "weak": "Schwach",
     "weakPassword": "Die Passwortstärke sollte zumindest gut sein."
 };
