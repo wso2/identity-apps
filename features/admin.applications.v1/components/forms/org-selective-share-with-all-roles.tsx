@@ -22,7 +22,7 @@ import Box from "@oxygen-ui/react/Box";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import Grid from "@oxygen-ui/react/Grid";
 import LinearProgress from "@oxygen-ui/react/LinearProgress";
-import Typography from "@oxygen-ui/react/Typography";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import useGetOrganizations from "@wso2is/admin.organizations.v1/api/use-get-organizations";
@@ -30,8 +30,10 @@ import {
     OrganizationInterface,
     OrganizationLinkInterface
 } from "@wso2is/admin.organizations.v1/models/organizations";
+import { CustomTreeItem } from "@wso2is/common.ui.shared-access.v1/components/custom-tree-item";
 import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { EmptyPlaceholder } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
     Dispatch as ReactDispatch,
@@ -44,10 +46,10 @@ import { useTranslation } from "react-i18next";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import "./roles-selective-share.scss";
 import useGetApplicationShare from "../../api/use-get-application-share";
 import { ApplicationInterface } from "../../models/application";
 import { getChildrenOfOrganization, updateTreeWithChildren } from "../../utils/shared-access";
+import "./org-selective-share-with-all-roles.scss";
 
 interface OrgSelectiveShareWithAllRolesProps extends IdentifiableComponentInterface {
     application: ApplicationInterface;
@@ -476,6 +478,9 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
                                         } }
                                         checkboxSelection={ true }
                                         multiSelect={ true }
+                                        slots={ {
+                                            item: CustomTreeItem
+                                        } }
                                     />
                                 ) : (
                                     <Box
@@ -486,9 +491,13 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
                                         alignItems="center"
                                         height="100%"
                                     >
-                                        <Typography variant="body1">
-                                            { t("organizations:placeholders.emptyList.subtitles.0") }
-                                        </Typography>
+                                        <EmptyPlaceholder
+                                            className="p-0"
+                                            data-componentid={ `${componentId}-empty-list-placeholder` }
+                                            image={ getEmptyPlaceholderIllustrations().emptyList }
+                                            imageSize="mini"
+                                            subtitle={ [ t("organizations:placeholders.emptyList.subtitles.0") ] }
+                                        />
                                     </Box>
                                 )
                             }
