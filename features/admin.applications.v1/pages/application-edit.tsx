@@ -183,8 +183,9 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         if (application && applicationInboundConfigs) {
             const isAppOutdated: boolean = ApplicationManagementUtils.isApplicationOutdated(
                 application?.applicationVersion, true);
+            const isSharedApp: boolean = !application?.advancedConfigurations?.fragment;
 
-            setDisplayBanner(isAppOutdated);
+            setDisplayBanner(isAppOutdated && isSharedApp);
         }
     }, [ application, applicationInboundConfigs ]);
 
@@ -1022,7 +1023,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                 ApplicationManagementUtils.isApplicationOutdated(
                                     moderatedApplicationData?.applicationVersion,
                                     moderatedApplicationData?.clientId
-                                    && !isEmpty(moderatedApplicationData?.clientId)) && (
+                                    && !isEmpty(moderatedApplicationData?.clientId)) &&
+                                    !application?.advancedConfigurations?.fragment && (
                                     <>
                                         <Label
                                             className="outdated-app-label"
