@@ -20,6 +20,10 @@
     .OxygenRichText-editor-root {
         position: relative;
 
+        &.error {
+            border-color: var(--oxygen-palette-error-main);
+        }
+
         .OxygenRichText-editor-input {
             min-height: 150px;
             max-height: 300px;

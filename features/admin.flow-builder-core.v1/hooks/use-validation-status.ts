@@ -16,18 +16,22 @@
  * under the License.
  */
 
-.floating-publish-button {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+import { useContext } from "react";
+import { ValidationContext, ValidationContextProps } from "../context/validation-context";
 
-    &.transition {
-        transform: translateX(calc(-1 * var(--wso2is-flow-builder-element-property-panel-width)));
+/**
+ * Custom hook to access the validation status context.
+ *
+ * @returns The validation context props.
+ */
+const useValidationStatus = (): ValidationContextProps => {
+    const context: ValidationContextProps = useContext(ValidationContext);
+
+    if (!context) {
+        throw new Error("useValidationStatus must be used within a ValidationProvider");
     }
 
-    &.MuiButton-containedPrimary.Mui-disabled {
-        opacity: 0.5;
-        color: var(--oxygen-palette-primary-contrastText);
-    }
-}
+    return context;
+};
+
+export default useValidationStatus;
