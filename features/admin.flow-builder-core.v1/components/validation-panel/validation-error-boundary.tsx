@@ -100,26 +100,22 @@ export const ValidationErrorBoundary: FunctionComponent<PropsWithChildren<Valida
         return null;
     }, [ hasNotification, selectedNotification ]);
 
-    if (!hasNotification) {
-        return children as ReactElement;
-    }
-
     return (
         <div
             className={ classNames(
-                "validation-error-boundary",
                 {
-                    active: active && disableErrorBoundaryOnHover,
-                    [ notificationType ]: hasNotification && notificationType,
-                    padded: !disableErrorBoundaryOnHover
+                    active: hasNotification && active && disableErrorBoundaryOnHover,
+                    [ notificationType ]: hasNotification && !!notificationType,
+                    padded: hasNotification && !disableErrorBoundaryOnHover,
+                    "validation-error-boundary": hasNotification
                 }
             ) }
             data-componentid={ componentId }
-            onMouseOver={ () => disableErrorBoundaryOnHover && setActive(true) }
-            onMouseOut={ () => disableErrorBoundaryOnHover && setActive(false) }
+            onMouseOver={ () => hasNotification && disableErrorBoundaryOnHover && setActive(true) }
+            onMouseOut={ () => hasNotification && disableErrorBoundaryOnHover && setActive(false) }
         >
             { hasNotification && !(active && disableErrorBoundaryOnHover) && (
-                <ExclamationIcon key={ resource.id } size={ 24 } />
+                <ExclamationIcon size={ 24 } />
             ) }
             { children }
         </div>
