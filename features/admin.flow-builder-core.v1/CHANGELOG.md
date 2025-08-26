@@ -1,5 +1,14 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.10.24
+
+### Patch Changes
+
+- [#8948](https://github.com/wso2/identity-apps/pull/8948) [`c9d4cf136ad0b0e1ec7e8ecf9519a5deb9216d55`](https://github.com/wso2/identity-apps/commit/c9d4cf136ad0b0e1ec7e8ecf9519a5deb9216d55) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Improve the validation UI
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.32
+
 ## 0.10.23
 
 ### Patch Changes

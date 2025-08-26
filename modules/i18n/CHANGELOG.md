@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.30.16
+
+### Patch Changes
+
+- [#8948](https://github.com/wso2/identity-apps/pull/8948) [`c9d4cf136ad0b0e1ec7e8ecf9519a5deb9216d55`](https://github.com/wso2/identity-apps/commit/c9d4cf136ad0b0e1ec7e8ecf9519a5deb9216d55) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Improve the validation UI
+
 ## 2.30.15
 
 ### Patch Changes
