@@ -1,5 +1,17 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.10.2
+
+### Patch Changes
+
+- [#8930](https://github.com/wso2/identity-apps/pull/8930) [`b529161acbc55547c6387ba2bb807ffb13d3ab92`](https://github.com/wso2/identity-apps/commit/b529161acbc55547c6387ba2bb807ffb13d3ab92) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue with the password provisioning executor name
+
+* [#8920](https://github.com/wso2/identity-apps/pull/8920) [`e7781877e9c752fe2ef3197ed5d7248e8ade2085`](https://github.com/wso2/identity-apps/commit/e7781877e9c752fe2ef3197ed5d7248e8ade2085) Thanks [@KD23243](https://github.com/KD23243)! - Improve flow builder
+
+* Updated dependencies [[`e7781877e9c752fe2ef3197ed5d7248e8ade2085`](https://github.com/wso2/identity-apps/commit/e7781877e9c752fe2ef3197ed5d7248e8ade2085)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.16
+  - @wso2is/admin.core.v1@2.49.24
+
 ## 0.10.1
 
 ### Patch Changes

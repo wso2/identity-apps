@@ -1,5 +1,17 @@
 # @wso2is/common.ui.shared-access.v1
 
+## 0.1.2
+
+### Patch Changes
+
+- [#8941](https://github.com/wso2/identity-apps/pull/8941) [`4a74f6faccce7d7be3efc395bf335923bbd15caf`](https://github.com/wso2/identity-apps/commit/4a74f6faccce7d7be3efc395bf335923bbd15caf) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix UX issues in the role sharing UI
+
+- Updated dependencies [[`4a74f6faccce7d7be3efc395bf335923bbd15caf`](https://github.com/wso2/identity-apps/commit/4a74f6faccce7d7be3efc395bf335923bbd15caf), [`f05649aba0a4ad148fb30ed30f080f0f0c950df4`](https://github.com/wso2/identity-apps/commit/f05649aba0a4ad148fb30ed30f080f0f0c950df4)]:
+  - @wso2is/admin.applications.v1@2.37.3
+  - @wso2is/admin.roles.v2@2.27.196
+  - @wso2is/admin.console-settings.v1@2.25.222
+  - @wso2is/admin.core.v1@2.49.24
+
 ## 0.1.1
 
 ### Patch Changes
