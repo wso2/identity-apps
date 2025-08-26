@@ -531,7 +531,7 @@ importers:
         specifier: ^2.25.204
         version: link:../../features/admin.certificates.v1
       '@wso2is/admin.claims.v1':
-        specifier: ^2.29.2
+        specifier: ^2.29.3
         version: link:../../features/admin.claims.v1
       '@wso2is/admin.connections.v1':
         specifier: ^2.34.4
@@ -5105,7 +5105,7 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.claims.v1':
-        specifier: ^2.29.2
+        specifier: ^2.29.3
         version: 'link:'
       '@wso2is/admin.core.v1':
         specifier: ^2.49.23

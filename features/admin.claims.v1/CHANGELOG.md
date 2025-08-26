@@ -1,5 +1,14 @@
 # @wso2is/admin.claims.v1
 
+## 2.29.3
+
+### Patch Changes
+
+- [#8956](https://github.com/wso2/identity-apps/pull/8956) [`e5510759b56c76ec6284450f654d2ac975b5f6e1`](https://github.com/wso2/identity-apps/commit/e5510759b56c76ec6284450f654d2ac975b5f6e1) Thanks [@Malith-19](https://github.com/Malith-19)! - Fix the inconsistent padding in the claims, additional property tab.
+
+- Updated dependencies [[`e5510759b56c76ec6284450f654d2ac975b5f6e1`](https://github.com/wso2/identity-apps/commit/e5510759b56c76ec6284450f654d2ac975b5f6e1)]:
+  - @wso2is/admin.claims.v1@2.29.3
+
 ## 2.29.2
 
 ### Patch Changes
