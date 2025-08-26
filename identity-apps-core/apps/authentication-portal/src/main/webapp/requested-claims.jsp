@@ -175,6 +175,7 @@
 
                                 // Extract claim properties.
                                 String inputType = null;
+                                Boolean isMultiValued = false;
                                 LocalClaim localClaim = null;
                                 List<CanonicalValue> canonicalValues = null;
                                 
@@ -188,6 +189,7 @@
 
                                     // Get canonical values for dropdowns and radio groups
                                     canonicalValues = localClaim.getCanonicalValues();
+                                    isMultiValued = localClaim.getMultiValued();
                                 }
                             %>
                                 <div class="mt-3">
@@ -220,7 +222,7 @@
                                                 <jsp:param name="claim" value="<%=Encode.forHtmlAttribute(claim)%>"/>
                                             </jsp:include>
                                         </div>
-                                    <% } else if (INPUT_TYPE_DATE_PICKER.equals(inputType)) { %>
+                                    <% } else if (!isMultiValued && INPUT_TYPE_DATE_PICKER.equals(inputType)) { %>
                                         <div class="mt-1">
                                             <div class="ui calendar" id="date_picker_<%=Encode.forHtmlAttribute(claim.replaceAll("[^a-zA-Z0-9]", "_"))%>">
                                                 <div class="ui input left icon" style="width: 100%;">
@@ -235,7 +237,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    <% } else if (INPUT_TYPE_CHECKBOX.equals(inputType)) { %>
+                                    <% } else if (!isMultiValued && INPUT_TYPE_CHECKBOX.equals(inputType)) { %>
                                         <div class="mt-1">
                                             <div class="ui checkbox">
                                                 <input type="checkbox"
@@ -250,7 +252,7 @@
                                                 </label>
                                             </div>
                                         </div>
-                                    <% } else if (INPUT_TYPE_TOGGLE.equals(inputType)) { %>
+                                    <% } else if (!isMultiValued && INPUT_TYPE_TOGGLE.equals(inputType)) { %>
                                         <div class="mt-1">
                                             <div class="ui toggle checkbox">
                                                 <input type="checkbox"
@@ -266,7 +268,7 @@
                                                 </label>
                                             </div>
                                         </div>
-                                    <% } else if (INPUT_TYPE_DROPDOWN.equals(inputType)) { %>
+                                    <% } else if (!isMultiValued && INPUT_TYPE_DROPDOWN.equals(inputType)) { %>
                                         <div class="mt-1">
                                             <select name="claim_mand_<%=Encode.forHtmlAttribute(claim)%>"
                                                     id="claim_mand_<%=Encode.forHtmlAttribute(claim)%>"
@@ -289,7 +291,7 @@
                                                 %>
                                             </select>
                                         </div>
-                                    <% } else if (INPUT_TYPE_RADIO_GROUP.equals(inputType)) { %>
+                                    <% } else if (!isMultiValued && INPUT_TYPE_RADIO_GROUP.equals(inputType)) { %>
                                         <div class="mt-1">
                                             <div class="ui form">
                                                 <div class="grouped fields">
@@ -315,7 +317,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    <% } else if (INPUT_TYPE_NUMBER.equals(inputType)) { %>
+                                    <% } else if (!isMultiValued && INPUT_TYPE_NUMBER.equals(inputType)) { %>
                                         <div class="mt-1">
                                             <input type="number"
                                                 name="claim_mand_<%=Encode.forHtmlAttribute(claim)%>"
