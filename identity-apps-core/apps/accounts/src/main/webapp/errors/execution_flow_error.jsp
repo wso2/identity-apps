@@ -59,13 +59,22 @@
     String confirmationCode = request.getParameter("confirmation");
 
     // Build the registration portal URL
-    String registrationPortalURL = String.format("%s?spId=%s&sp=%s&flowType=%s&confirmation=%s",
-            request.getParameter("PORTAL_URL"),
-            spId,
-            Encode.forUriComponent(sp),
-            flowType,
-            confirmationCode);
+    String registrationPortalURL = null;
+    String portalUrlParam = request.getParameter("PORTAL_URL");
+    if (portalUrlParam != null
+            && !portalUrlParam.isBlank()
+            && !"null".equalsIgnoreCase(portalUrlParam.trim())
+            && !"undefined".equalsIgnoreCase(portalUrlParam.trim())) {
 
+        registrationPortalURL = String.format(
+                "%s?spId=%s&sp=%s&flowType=%s&confirmation=%s",
+                portalUrlParam.trim(),
+                spId,
+                Encode.forUriComponent(sp),
+                flowType,
+                confirmationCode
+        );
+    }
 
     if (StringUtils.isNotEmpty(errorMessage) || StringUtils.isNotEmpty(errorDescription)) {
         if (StringUtils.isNotEmpty(errorMessage)) {
@@ -159,8 +168,7 @@
                 <p class="portal-tagline-description">
                     <%= errorDescription %>
                 </p>
-                <% if (StringUtils.isNotEmpty(registrationPortalURL) && 
-                    StringUtils.isNotEmpty(request.getParameter("PORTAL_URL"))) { %>
+                <% if (StringUtils.isNotEmpty(registrationPortalURL)) { %>
                     <button class="ui primary basic button"
                         onclick="location.href='<%= IdentityManagementEndpointUtil.getURLEncodedCallback(registrationPortalURL) %>';">
                         <%= i18n(resourceBundle, customText, "sign.up.try.again.button") %>
