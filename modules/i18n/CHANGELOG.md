@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.30.12
+
+### Patch Changes
+
+- [#8941](https://github.com/wso2/identity-apps/pull/8941) [`4a74f6faccce7d7be3efc395bf335923bbd15caf`](https://github.com/wso2/identity-apps/commit/4a74f6faccce7d7be3efc395bf335923bbd15caf) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix UX issues in the role sharing UI
+
 ## 2.30.11
 
 ### Patch Changes

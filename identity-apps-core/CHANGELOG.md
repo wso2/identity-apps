@@ -1,5 +1,15 @@
 # @wso2is/identity-apps-core
 
+## 3.2.11
+
+### Patch Changes
+
+- [#8935](https://github.com/wso2/identity-apps/pull/8935) [`ba1f6a87ded87c38bd239fb86a423deb89b36b9a`](https://github.com/wso2/identity-apps/commit/ba1f6a87ded87c38bd239fb86a423deb89b36b9a) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Fix SMS otp captcha connector
+
+* [#8938](https://github.com/wso2/identity-apps/pull/8938) [`8adab1535c575720ac17cf8568c464dccbd14b20`](https://github.com/wso2/identity-apps/commit/8adab1535c575720ac17cf8568c464dccbd14b20) Thanks [@KD23243](https://github.com/KD23243)! - Update portal URL logic for password recovery flow
+
+- [#8920](https://github.com/wso2/identity-apps/pull/8920) [`e7781877e9c752fe2ef3197ed5d7248e8ade2085`](https://github.com/wso2/identity-apps/commit/e7781877e9c752fe2ef3197ed5d7248e8ade2085) Thanks [@KD23243](https://github.com/KD23243)! - Improve flow builder
+
 ## 3.2.10
 
 ### Patch Changes

@@ -1,5 +1,33 @@
 # @wso2is/console
 
+## 2.78.15
+
+### Patch Changes
+
+- [#8941](https://github.com/wso2/identity-apps/pull/8941) [`4a74f6faccce7d7be3efc395bf335923bbd15caf`](https://github.com/wso2/identity-apps/commit/4a74f6faccce7d7be3efc395bf335923bbd15caf) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix UX issues in the role sharing UI
+
+* [#8930](https://github.com/wso2/identity-apps/pull/8930) [`b529161acbc55547c6387ba2bb807ffb13d3ab92`](https://github.com/wso2/identity-apps/commit/b529161acbc55547c6387ba2bb807ffb13d3ab92) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue with the password provisioning executor name
+
+- [#8950](https://github.com/wso2/identity-apps/pull/8950) [`a544451b250c775ed35f5d243701d78d524dca7b`](https://github.com/wso2/identity-apps/commit/a544451b250c775ed35f5d243701d78d524dca7b) Thanks [@NutharaNR](https://github.com/NutharaNR)! - UI logic to avoid displaying complex type attributes.
+
+* [#8920](https://github.com/wso2/identity-apps/pull/8920) [`e7781877e9c752fe2ef3197ed5d7248e8ade2085`](https://github.com/wso2/identity-apps/commit/e7781877e9c752fe2ef3197ed5d7248e8ade2085) Thanks [@KD23243](https://github.com/KD23243)! - Improve flow builder
+
+- [#8931](https://github.com/wso2/identity-apps/pull/8931) [`0971bed0d3fe718959a3bc6f2c27187c4140564e`](https://github.com/wso2/identity-apps/commit/0971bed0d3fe718959a3bc6f2c27187c4140564e) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Fix invited user registration initiation depending on legacy config
+
+* [#8951](https://github.com/wso2/identity-apps/pull/8951) [`f05649aba0a4ad148fb30ed30f080f0f0c950df4`](https://github.com/wso2/identity-apps/commit/f05649aba0a4ad148fb30ed30f080f0f0c950df4) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Add alert on new role creation under applications when a workflow is defined.
+
+* Updated dependencies [[`4a74f6faccce7d7be3efc395bf335923bbd15caf`](https://github.com/wso2/identity-apps/commit/4a74f6faccce7d7be3efc395bf335923bbd15caf), [`b529161acbc55547c6387ba2bb807ffb13d3ab92`](https://github.com/wso2/identity-apps/commit/b529161acbc55547c6387ba2bb807ffb13d3ab92), [`a544451b250c775ed35f5d243701d78d524dca7b`](https://github.com/wso2/identity-apps/commit/a544451b250c775ed35f5d243701d78d524dca7b), [`e7781877e9c752fe2ef3197ed5d7248e8ade2085`](https://github.com/wso2/identity-apps/commit/e7781877e9c752fe2ef3197ed5d7248e8ade2085), [`0971bed0d3fe718959a3bc6f2c27187c4140564e`](https://github.com/wso2/identity-apps/commit/0971bed0d3fe718959a3bc6f2c27187c4140564e), [`f05649aba0a4ad148fb30ed30f080f0f0c950df4`](https://github.com/wso2/identity-apps/commit/f05649aba0a4ad148fb30ed30f080f0f0c950df4)]:
+  - @wso2is/admin.applications.v1@2.37.3
+  - @wso2is/i18n@2.30.12
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.16
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.16
+  - @wso2is/admin.server-configurations.v1@2.35.37
+  - @wso2is/admin.users.v1@2.36.8
+  - @wso2is/admin.roles.v2@2.27.196
+  - @wso2is/admin.console-settings.v1@2.25.222
+  - @wso2is/admin.agents.v1@1.0.41
+  - @wso2is/admin.core.v1@2.49.24
+
 ## 2.78.14
 
 ### Patch Changes

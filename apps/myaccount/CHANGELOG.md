@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.24.4
+
+### Patch Changes
+
+- [#8950](https://github.com/wso2/identity-apps/pull/8950) [`a544451b250c775ed35f5d243701d78d524dca7b`](https://github.com/wso2/identity-apps/commit/a544451b250c775ed35f5d243701d78d524dca7b) Thanks [@NutharaNR](https://github.com/NutharaNR)! - UI logic to avoid displaying complex type attributes.
+
+- Updated dependencies [[`4a74f6faccce7d7be3efc395bf335923bbd15caf`](https://github.com/wso2/identity-apps/commit/4a74f6faccce7d7be3efc395bf335923bbd15caf)]:
+  - @wso2is/i18n@2.30.12
+
 ## 2.24.3
 
 ### Patch Changes
