@@ -119,7 +119,7 @@ export interface ProfileFieldFormPropsInterface<T>
     handleSubmit: (schemaName: string, value: FormValue) => void;
 }
 
-export interface TextFieldFormPropsInterface extends ProfileFieldFormPropsInterface<string> {
+export interface TextFieldFormPropsInterface extends ProfileFieldFormPropsInterface<string | number> {
     /**
      * Callback to validate the field. If not provided, the default validation will be used.
      * In the default validation, the value will be validated against the schema regex.
