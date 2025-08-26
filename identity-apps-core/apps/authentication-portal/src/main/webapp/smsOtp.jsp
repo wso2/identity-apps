@@ -115,6 +115,12 @@
         <script src="js/html5shiv.min.js"></script>
         <script src="js/respond.min.js"></script>
         <![endif]-->
+
+        <style>
+            :root {
+                --otp-digits: <%= otpLength %>;
+            }
+        </style>
     </head>
 
     <body class="login-portal layout sms-otp-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
@@ -184,51 +190,34 @@
                                     </label>
                                 <% } %>
 
-                                <% if (authenticators.equals(LOCAL_SMS_OTP_AUTHENTICATOR_ID) && otpLength <= 6) { %>
-                                    <div class="sms-otp-fields equal width fields">
+                                <div class="field multi-code-otp-input-field">
+                                    <% if (authenticators.equals(LOCAL_SMS_OTP_AUTHENTICATOR_ID) && otpLength <= 6) { %>
                                         <input
-                                            hidden
                                             type="text"
                                             id="OTPCode"
-                                            name="OTPcode"
-                                            class="form-control"
-                                            placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "verification.code")%>"
-                                        >
-                                        <% for (int index = 1; index <= otpLength;) {
-                                            String previousStringIndex = null;
-                                            if (index != 1) {
-                                                previousStringIndex = "pincode-" + (index - 1);
-                                            }
-                                            String currentStringIndex = "pincode-" + index;
-                                            index++;
-                                            String nextStringIndex = null;
-                                            if (index != (otpLength + 1)) {
-                                                nextStringIndex = "pincode-" + index;
-                                            }
-                                        %>
-                                            <div class="field mt-5">
-                                                <input
-                                                    class="text-center p-1 pb-3 pt-3"
-                                                    id=<%= currentStringIndex %>
-                                                    name=<%= currentStringIndex %>
-                                                    onkeyup="movetoNext(this, '<%= nextStringIndex %>', '<%= previousStringIndex %>')"
-                                                    tabindex="1"
-                                                    placeholder="·"
-                                                    autofocus
-                                                    maxlength="1"
-                                                    autocomplete="off"
-                                                    type="text"
-                                                    inputmode=<%= isOnlyNumeric ? "numeric" : "text" %>
-                                                >
-                                            </div>
-                                        <% } %>
-                                    </div>
-                                <% } else { %>
-                                    <div class="ui fluid icon input addon-wrapper">
-                                        <input type="text" id='OTPCode' name="OTPcode" size='30' autocomplete="off"/>
-                                        <i id="password-eye" class="eye icon right-align password-toggle slash" onclick="showOTPCode()"></i>
-                                    </div>
-                                <% } %>
+                                            name="OTPCode"
+                                            class="multi-code-otp-input"
+                                            spellcheck="false"
+                                            autocomplete="one-time-code"
+                                            inputmode=<%= isOnlyNumeric ? "numeric" : "text" %>
+                                            maxlength="<%= otpLength %>"
+                                            pattern="[0-9]{<%= otpLength %>}"
+                                            aria-label="Enter the <%= otpLength %>-digit code sent to your mobile phone" />
+                                    <% } else { %>
+                                        <div class="ui fluid icon input addon-wrapper">
+                                            <input
+                                                type="text"
+                                                id='OTPCode'
+                                                name="OTPcode"
+                                                size="30"
+                                                autocomplete="one-time-code"
+                                                placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "verification.code")%>"
+                                                spellcheck="false"
+                                                aria-label="Enter the <%= otpLength %>-digit code sent to your mobile phone" />
+                                            <i id="password-eye" class="eye icon right-align password-toggle slash" onclick="showOTPCode()"></i>
+                                        </div>
+                                    <% } %>
+                                </div>
                             </div>
 
                                   <input type="hidden" name="sessionDataKey"
@@ -327,105 +316,64 @@
         <% } %>
 
         <script type="text/javascript">
-            var insightsTenantIdentifier = "<%=userTenant%>";
-            var otpLength = "<%=otpLength%>";
+            var insightsTenantIdentifier = "<%= userTenant %>";
+            var otpLength = "<%= otpLength %>";
 
-            function movetoNext(current, nextFieldID, previousID) {
-                var key = event.keyCode || event.charCode;
-                if(key == 8 || key == 46) {
-                    if (previousID != null && previousID != 'null') {
-                        document.getElementById(previousID).focus();
-                    }
-                } else {
-                    if (nextFieldID != null && nextFieldID != 'null' && current.value.length >= current.maxLength) {
-                        document.getElementById(nextFieldID).focus();
+            var OTPInput = document.getElementById('OTPCode');
+            var tokenSubmitField = document.getElementById('token');
+            var submitBtn = document.getElementById('subButton');
+
+            OTPInput.addEventListener('input', (e) => {
+                if (<%= isOnlyNumeric %>) {
+                    e.target.value = e.target.value.replace(/\D/g, '');
+                }
+
+                OTPInput.style.setProperty('--_otp-digit', OTPInput.selectionStart)
+
+                if (submitBtn) {
+                    if (otpLength <= 6) {
+                        if (OTPInput.value.length === otpLength) {
+                            OTPInput.focus();
+                            tokenSubmitField.value = OTPInput.value;
+                            submitBtn.disabled = false;
+                        } else {
+                            tokenSubmitField.value = null;
+                            submitBtn.disabled = true;
+                        }
+                    } else {
+                        if (OTPInput.value.length > 0) {
+                            OTPInput.focus();
+                            tokenSubmitField.value = OTPInput.value;
+                            submitBtn.disabled = false;
+                        } else {
+                            tokenSubmitField.value = null;
+                            submitBtn.disabled = true;
+                        }
                     }
                 }
-            }
+            });
+
+            OTPInput.addEventListener('keypress', (e) => {
+                if (<%= isOnlyNumeric %>) {
+                    const char = String.fromCharCode(e.which);
+
+                    if (!/[0-9]/.test(char)) {
+                        e.preventDefault();
+                    }
+                }
+            });
 
             function sub() {
+                var token = OTPInput.value;
 
-                var token = null;
-                var hasNullDigit = false;
+                if (tokenSubmitField.value === null) return;
 
-                for(var i = 1; i <= otpLength; i++){
-                    var currentDigit = document.getElementById("pincode-"+i).value;
-                    if(!currentDigit || currentDigit == null || currentDigit == 'null') {
-                        hasNullDigit = true;
-                        break;
-                    }
-                    if(i === 1) {
-                        token = currentDigit;
-                    } else {
-                        token += currentDigit;
-                    }
-                }
+                trackEvent("authentication-portal-sms-otp-click-continue", {
+                    "tenant": insightsTenantIdentifier != "null" ? insightsTenantIdentifier : ""
+                });
 
-                document.getElementById('OTPCode').value = token;
-
-                if (!hasNullDigit) {
-                    trackEvent("authentication-portal-sms-otp-click-continue", {
-                        "tenant": insightsTenantIdentifier != "null" ? insightsTenantIdentifier : ""
-                    });
-                    // Disable during the initial submission to prevent double submissions.
-                    document.getElementById("subButton").disabled = true;
-                    document.getElementById("codeForm").submit();
-                }
-
-            }
-
-            // Handle paste events
-    	    function handlePaste(e) {
-     	        var clipboardData, value;
-
-                // Stop data get being pasted into element
-                e.stopPropagation();
-                e.preventDefault();
-
-                // Get pasted data via clipboard API
-                clipboardData = e.clipboardData || window.clipboardData;
-                value = clipboardData.getData('Text').trim();
-                
-                var isValid = true;
-                var firstInput = document.getElementById('pincode-1');
-                var isOnlyNumeric = firstInput && firstInput.getAttribute('inputmode') === 'numeric';
-                
-                if (isOnlyNumeric) {
-                    isValid = /^\d+$/.test(value);
-                } else {
-                    isValid = value.length > 0;
-                }
-                
-                if (isValid) {
-                    value = value.substring(0, otpLength);
-                    
-                    for (let n = 0; n < value.length && n < otpLength; ++n) {
-                        $("#pincode-" + (n+1)).val(value[n]);
-                    }
-                    
-                    if (value.length < otpLength) {
-                        $("#pincode-" + (value.length + 1)).focus();
-                    } else {
-                        $("#pincode-" + otpLength).focus();
-                        var hasNullDigit = false;
-                        for (let i = 1; i <= otpLength; i++) {
-                            if (!$("#pincode-" + i).val()) {
-                                hasNullDigit = true;
-                                break;
-                            }
-                        }
-                        
-                        if (!hasNullDigit) {
-                            document.getElementById("subButton").disabled = false;
-                        }
-                    }
-                }
-            }
-
-            for (let i = 1; i <= otpLength; i++) {
-                if (document.getElementById('pincode-' + i)) {
-                    document.getElementById('pincode-' + i).addEventListener('paste', handlePaste);
-                }
+                submitBtn.disabled = true;
+                document.getElementById("codeForm").submit();
             }
 
             $(document).ready(function () {
@@ -435,7 +383,7 @@
                             e.preventDefault();
                             console.warn("Prevented a possible double submit event");
                         } else {
-                            var code = document.getElementById("OTPCode").value;
+                            var code = OTPInput.value;
                             var resendFlagElement = document.getElementById("resendCode");
                             var isResend = resendFlagElement.value;
                             if (code == "" && isResend == "false") {

@@ -178,7 +178,7 @@
 
         <style>
             :root {
-                --otp-digits: <%=otpLength%>;
+                --otp-digits: <%= otpLength %>;
             }
         </style>
     </head>
@@ -235,9 +235,8 @@
                                     spellcheck="false"
                                     autocomplete="one-time-code"
                                     inputmode="numeric"
-                                    maxlength="<%=otpLength%>"
-                                    onkeypress="return (event.charCode !=8 && event.charCode == 0 || (event.charCode >= 48 && event.charCode <= 57))"
-                                    pattern="\d{<%=otpLength%>}" />
+                                    maxlength="<%= otpLength %>"
+                                    pattern="[0-9]{<%= otpLength %>}" />
                             </div>
 
                             <input id="sessionDataKey" type="hidden" name="sessionDataKey"
@@ -329,14 +328,16 @@
         <% } %>
 
         <script type="text/javascript">
-            var insightsTenantIdentifier = "<%=userTenant%>";
-            var otpLength = <%=otpLength%>;
+            var insightsTenantIdentifier = "<%= userTenant %>";
+            var otpLength = <%= otpLength %>;
 
             var OTPInput = document.getElementById('otp-input');
             var tokenSubmitField = document.getElementById('token');
             var submitBtn = document.getElementById('subButton');
 
-            OTPInput.addEventListener('input', () => {
+            OTPInput.addEventListener('input', (e) => {
+                e.target.value = e.target.value.replace(/\D/g, '');
+
                 OTPInput.style.setProperty('--_otp-digit', OTPInput.selectionStart)
 
                 if (submitBtn) {
@@ -348,6 +349,14 @@
                         tokenSubmitField.value = null;
                         submitBtn.disabled = true;
                     }
+                }
+            });
+
+            OTPInput.addEventListener('keypress', (e) => {
+                const char = String.fromCharCode(e.which);
+
+                if (!/[0-9]/.test(char)) {
+                    e.preventDefault();
                 }
             });
 
