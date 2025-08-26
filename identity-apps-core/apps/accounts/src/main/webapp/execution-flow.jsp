@@ -308,7 +308,7 @@
                     if (error && error.code) {
                         const errorDetails = getI18nKeyForError(error.code, flowType);
                         let portal_url = authPortalURL + "/register";
-                        if (flowType === "INVITED_USER_REGISTRATION" || flowType === "PASSWORD_RECOVERY") {
+                        if (flowType === "PASSWORD_RECOVERY") {
                             portal_url = authPortalURL + "/recovery";
                         }
                         const errorPageURL = authPortalURL + "/error?" + "ERROR_MSG="
