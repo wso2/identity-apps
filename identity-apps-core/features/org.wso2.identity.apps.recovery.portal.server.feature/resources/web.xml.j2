@@ -90,6 +90,14 @@
             <param-value>{{ identity_mgt.user_self_registration.enable_detailed_api_response }}</param-value>
         </context-param>
     {% endif %}
+    <!-- *************** Username Regex Violation Error Message Configuration ********************** -->
+    {% if user_store.properties.UsernameJavaRegExViolationErrorMsg is defined %}
+        <context-param>
+            <param-name>UsernameJavaRegExViolationErrorMsg</param-name>
+            <param-value>{{ user_store.properties.UsernameJavaRegExViolationErrorMsg }}</param-value>
+        </context-param>
+    {% endif %}
+    <!-- *************** Username Regex Violation Error Message Configuration ********************** -->
     <!-- *************** End of Global configurations ********************** -->
     <!--  End of Custom Page configurations -->
     <context-param>
