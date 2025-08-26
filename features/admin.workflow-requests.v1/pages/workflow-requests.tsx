@@ -57,7 +57,7 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
 ): ReactElement => {
 
     const {
-        ["data-testid"]: testId
+        ["data-testid"]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -357,7 +357,7 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
             title={ t("pages:workflowRequestsPage.title") }
             pageTitle={ t("pages:workflowRequestsPage.title") }
             description={ t("pages:workflowRequestsPage.subTitle") }
-            data-testid={ `${testId}-page-layout` }
+            data-testid={ `${componentId}-page-layout` }
         >
             <div className="workflow-requests-page-content">
                 <WorkflowRequestsFilter
@@ -379,7 +379,7 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
                         filters={ activeFilters }
                         onRemove={ removeFilter }
                         onClearAll={ clearAllFilters }
-                        data-componentid="workflow-requests-active-filters-bar"
+                        data-componentid={ `${componentId}-active-filters-bar` }
                     />
                 ) }
                 <ListLayout
