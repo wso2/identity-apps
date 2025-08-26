@@ -316,6 +316,13 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 name: "",
                 path: "",
                 styleSheets: null
+            },
+            userSurveyBanner: {
+                buttonText: "",
+                description: "",
+                enabled: false,
+                title: "",
+                url: ""
             }
         }
     };

@@ -46,6 +46,7 @@
         "@wso2is/react-components": "^2.9.16",
         "axios": "^0.19.2",
         "classnames": "^2.2.6",
+        "dompurify": "^3.0.9",
         "i18next": "^21.9.1",
         "moment": "^2.24.0",
         "react-helmet": "^5.2.1",
