@@ -1,5 +1,19 @@
 # @wso2is/admin.roles.v2
 
+## 2.27.196
+
+### Patch Changes
+
+- [#8951](https://github.com/wso2/identity-apps/pull/8951) [`f05649aba0a4ad148fb30ed30f080f0f0c950df4`](https://github.com/wso2/identity-apps/commit/f05649aba0a4ad148fb30ed30f080f0f0c950df4) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Add alert on new role creation under applications when a workflow is defined.
+
+- Updated dependencies [[`4a74f6faccce7d7be3efc395bf335923bbd15caf`](https://github.com/wso2/identity-apps/commit/4a74f6faccce7d7be3efc395bf335923bbd15caf), [`b529161acbc55547c6387ba2bb807ffb13d3ab92`](https://github.com/wso2/identity-apps/commit/b529161acbc55547c6387ba2bb807ffb13d3ab92), [`a544451b250c775ed35f5d243701d78d524dca7b`](https://github.com/wso2/identity-apps/commit/a544451b250c775ed35f5d243701d78d524dca7b), [`0971bed0d3fe718959a3bc6f2c27187c4140564e`](https://github.com/wso2/identity-apps/commit/0971bed0d3fe718959a3bc6f2c27187c4140564e)]:
+  - @wso2is/admin.applications.v1@2.37.3
+  - @wso2is/i18n@2.30.12
+  - @wso2is/admin.server-configurations.v1@2.35.37
+  - @wso2is/admin.users.v1@2.36.8
+  - @wso2is/admin.agents.v1@1.0.41
+  - @wso2is/admin.core.v1@2.49.24
+
 ## 2.27.195
 
 ### Patch Changes
