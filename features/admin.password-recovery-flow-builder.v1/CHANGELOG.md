@@ -1,5 +1,16 @@
 # @wso2is/admin.password-recovery-flow-builder.v1
 
+## 1.1.24
+
+### Patch Changes
+
+- [#8948](https://github.com/wso2/identity-apps/pull/8948) [`c9d4cf136ad0b0e1ec7e8ecf9519a5deb9216d55`](https://github.com/wso2/identity-apps/commit/c9d4cf136ad0b0e1ec7e8ecf9519a5deb9216d55) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Improve the validation UI
+
+- Updated dependencies [[`c9d4cf136ad0b0e1ec7e8ecf9519a5deb9216d55`](https://github.com/wso2/identity-apps/commit/c9d4cf136ad0b0e1ec7e8ecf9519a5deb9216d55)]:
+  - @wso2is/admin.server-configurations.v1@2.35.45
+  - @wso2is/admin.flow-builder-core.v1@0.10.24
+  - @wso2is/admin.core.v1@2.49.32
+
 ## 1.1.23
 
 ### Patch Changes

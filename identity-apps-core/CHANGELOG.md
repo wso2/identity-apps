@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 3.1.19
+
+### Patch Changes
+
+- [#8936](https://github.com/wso2/identity-apps/pull/8936) [`a430f9c41a0fedda5923929069a9f09ca36cb703`](https://github.com/wso2/identity-apps/commit/a430f9c41a0fedda5923929069a9f09ca36cb703) Thanks [@KD23243](https://github.com/KD23243)! - Update portal URL logic for invited registration flow
+
+* [#8934](https://github.com/wso2/identity-apps/pull/8934) [`e685f60e93e3824bb351a1700e7f220ef7265c8e`](https://github.com/wso2/identity-apps/commit/e685f60e93e3824bb351a1700e7f220ef7265c8e) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Add Captcha element to SMS OTP Page
+
 ## 3.1.18
 
 ### Patch Changes
