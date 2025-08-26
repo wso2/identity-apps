@@ -75,7 +75,7 @@ export const fetchPendingApprovals = (
 
         requestConfig = {
             ...requestConfig,
-            url: `${approvalsUrl}?${baseParams}&${statusParams}`
+            url: `${approvalsUrl}?${baseParams ? baseParams + "&" : ""}${statusParams}`
         };
         delete requestConfig.params;
     }
