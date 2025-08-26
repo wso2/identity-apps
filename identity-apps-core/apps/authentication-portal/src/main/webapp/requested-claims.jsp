@@ -20,10 +20,18 @@
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.STATUS" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.STATUS_MSG" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.CONFIGURATION_ERROR" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ClaimRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.LocalClaim" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.CanonicalValue" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.InputFormat" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ClaimRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.Arrays" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page import="java.io.File" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
@@ -33,6 +41,10 @@
 
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
+
+<%!
+    private Log log = LogFactory.getLog(this.getClass());
+%>
 
 <%
     String[] missingClaimList = null;
@@ -59,6 +71,29 @@
             displayNamesOfMissingClaims.put(displayName.split("\\|")[0],displayName.split("\\|")[1]);
         }
     }
+
+    // Define input types constants
+    final String INPUT_TYPE_TEXT = "text_input";
+    final String INPUT_TYPE_NUMBER = "number_input";
+    final String INPUT_TYPE_CHECKBOX = "checkbox";
+    final String INPUT_TYPE_TOGGLE = "toggle";
+    final String INPUT_TYPE_DROPDOWN = "dropdown";
+    final String INPUT_TYPE_RADIO_GROUP = "radio_group";
+    final String INPUT_TYPE_DATE_PICKER = "date_picker";
+
+    // Get claim properties dynamically using ClaimRetrievalClient
+    Map<String, LocalClaim> claimPropertiesOfMissingClaims = new HashMap<String, LocalClaim>();
+    
+    if (missingClaimList != null && missingClaimList.length > 0) {
+        try {
+            ClaimRetrievalClient claimRetrievalClient = new ClaimRetrievalClient();
+            List<String> claimURIs = Arrays.asList(missingClaimList);
+            claimPropertiesOfMissingClaims = claimRetrievalClient.getLocalClaimsByURIs(tenantDomain, claimURIs);
+        } catch (ClaimRetrievalClientException e) {
+            log.error("Error retrieving local claim details for missing claims: ", e);
+        }
+    }
+
     if (request.getParameter(Constants.REQUEST_PARAM_SP) != null) {
         appName = request.getParameter(Constants.REQUEST_PARAM_SP);
     }
@@ -135,16 +170,35 @@
                                 if (claim.contains("claims/dob")) {
                                     claimDisplayName = AuthenticationEndpointUtil.i18n(resourceBundle, "dob.yyyy.mm.dd");
                                 }
+
+                                // Extract claim properties.
+                                String inputType = null;
+                                LocalClaim localClaim = null;
+                                List<CanonicalValue> canonicalValues = null;
+                                
+                                localClaim = claimPropertiesOfMissingClaims.get(claim);
+                                if (localClaim != null) {
+                                    // Get input type from InputFormat
+                                    InputFormat inputFormat = localClaim.getInputFormat();
+                                    if (inputFormat != null && inputFormat.getInputType() != null) {
+                                        inputType = inputFormat.getInputType().toLowerCase();
+                                    }
+
+                                    // Get canonical values for dropdowns and radio groups
+                                    canonicalValues = localClaim.getCanonicalValues();
+                                }
                             %>
                                 <div class="mt-3">
-                                    <label for="claim_mand_<%=Encode.forHtmlAttribute(claim)%>"
-                                        style="font-size: 0.9em; color: grey;"
-                                        data-testid="request-claims-page-form-field-<%=Encode.forHtmlAttribute(claim)%>-label">
-                                        <%=AuthenticationEndpointUtil.i18nBase64(resourceBundle, claimDisplayName)%>
-                                    </label>
+                                    <% if (!INPUT_TYPE_CHECKBOX.equals(inputType) && !INPUT_TYPE_TOGGLE.equals(inputType)) { %>
+                                        <label for="claim_mand_<%=Encode.forHtmlAttribute(claim)%>"
+                                            style="font-size: 0.9em; color: grey;"
+                                            data-testid="request-claims-page-form-field-<%=Encode.forHtmlAttribute(claim)%>-label">
+                                            <%=AuthenticationEndpointUtil.i18nBase64(resourceBundle, claimDisplayName)%>
+                                        </label>
+                                    <% } %>
                                     <% if (claim.contains("claims/dob")) { %>
                                         <div class="mt-1">
-                                            <div class="ui calendar" id="date_picker">
+                                            <div class="ui calendar" id="date_picker_<%=Encode.forHtmlAttribute(claim.replaceAll("[^a-zA-Z0-9]", "_"))%>">
                                                 <div class="ui input left icon" style="width: 100%;">
                                                     <i class="calendar icon"></i>
                                                     <input type="text"
@@ -157,20 +211,118 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="mt-1" id="val_claim_mand_<%=Encode.forHtmlAttribute(claim)%>" style="display: none;">
-                                            <i class="red exclamation circle fitted icon"></i>
-                                            <span class="validation-error-message"></span>
-                                        </div>
-                                    <% } else if (claim.contains("claims/country")) {  %>
+                                    <% } else if (claim.contains("claims/country")) { %>
                                         <div class="mt-1">
                                             <jsp:include page="includes/country-dropdown.jsp">
                                                 <jsp:param name="required" value="required"/>
                                                 <jsp:param name="claim" value="<%=Encode.forHtmlAttribute(claim)%>"/>
                                             </jsp:include>
                                         </div>
-                                        <div class="mt-1" id="val_claim_mand_<%=Encode.forHtmlAttribute(claim)%>" style="display: none;">
-                                            <i class="red exclamation circle fitted icon"></i>
-                                            <span class="validation-error-message"></span>
+                                    <% } else if (INPUT_TYPE_DATE_PICKER.equals(inputType)) { %>
+                                        <div class="mt-1">
+                                            <div class="ui calendar" id="date_picker_<%=Encode.forHtmlAttribute(claim.replaceAll("[^a-zA-Z0-9]", "_"))%>">
+                                                <div class="ui input left icon" style="width: 100%;">
+                                                    <i class="calendar icon"></i>
+                                                    <input type="text"
+                                                        autocomplete="off"
+                                                        data-testid="request-claims-page-form-field-claim-<%=Encode.forHtmlAttribute(claim)%>-input"
+                                                        id="claim_mand_<%=Encode.forHtmlAttribute(claim)%>"
+                                                        name="claim_mand_<%=Encode.forHtmlAttribute(claim)%>"
+                                                        placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter")%> <%=AuthenticationEndpointUtil.i18nBase64(resourceBundle, claimDisplayName)%>"
+                                                        required="required">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <% } else if (INPUT_TYPE_CHECKBOX.equals(inputType)) { %>
+                                        <div class="mt-1">
+                                            <div class="ui checkbox">
+                                                <input type="checkbox"
+                                                    name="claim_mand_<%=Encode.forHtmlAttribute(claim)%>"
+                                                    id="claim_mand_<%=Encode.forHtmlAttribute(claim)%>"
+                                                    data-testid="request-claims-page-form-field-claim-<%=Encode.forHtmlAttribute(claim)%>-input"
+                                                    value="true">
+                                                 <label for="claim_mand_<%=Encode.forHtmlAttribute(claim)%>"
+                                                    style="font-size: 0.9em; color: grey;"
+                                                    data-testid="request-claims-page-form-field-<%=Encode.forHtmlAttribute(claim)%>-label">
+                                                    <%=AuthenticationEndpointUtil.i18nBase64(resourceBundle, claimDisplayName)%>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    <% } else if (INPUT_TYPE_TOGGLE.equals(inputType)) { %>
+                                        <div class="mt-1">
+                                            <div class="ui toggle checkbox">
+                                                <input type="checkbox"
+                                                    name="claim_mand_<%=Encode.forHtmlAttribute(claim)%>"
+                                                    id="claim_mand_<%=Encode.forHtmlAttribute(claim)%>"
+                                                    data-testid="request-claims-page-form-field-claim-<%=Encode.forHtmlAttribute(claim)%>-input"
+                                                    value="true"
+                                                    data-off-value="false">
+                                                <label for="claim_mand_<%=Encode.forHtmlAttribute(claim)%>"
+                                                    style="font-size: 0.9em; color: grey;"
+                                                    data-testid="request-claims-page-form-field-<%=Encode.forHtmlAttribute(claim)%>-label">
+                                                    <%=AuthenticationEndpointUtil.i18nBase64(resourceBundle, claimDisplayName)%>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    <% } else if (INPUT_TYPE_DROPDOWN.equals(inputType)) { %>
+                                        <div class="mt-1">
+                                            <select name="claim_mand_<%=Encode.forHtmlAttribute(claim)%>"
+                                                    id="claim_mand_<%=Encode.forHtmlAttribute(claim)%>"
+                                                    class="ui dropdown"
+                                                    required="required"
+                                                    data-testid="request-claims-page-form-field-claim-<%=Encode.forHtmlAttribute(claim)%>-input"
+                                                    placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "select")%> <%=AuthenticationEndpointUtil.i18nBase64(resourceBundle, claimDisplayName)%>"
+                                                    >
+                                                <%
+                                                    // Render dropdown options from canonical values
+                                                    if (canonicalValues != null && !canonicalValues.isEmpty()) {
+                                                        for (CanonicalValue option : canonicalValues) {
+                                                            String optionLabel = option.getLabel();
+                                                            String optionValue = option.getValue();
+                                                %>
+                                                            <option value="<%=Encode.forHtmlAttribute(optionValue)%>"><%=Encode.forHtmlContent(optionLabel)%></option>
+                                                <%
+                                                        }
+                                                    }
+                                                %>
+                                            </select>
+                                        </div>
+                                    <% } else if (INPUT_TYPE_RADIO_GROUP.equals(inputType)) { %>
+                                        <div class="mt-1">
+                                            <div class="ui form">
+                                                <div class="grouped fields">
+                                                    <%
+                                                        if (canonicalValues != null && !canonicalValues.isEmpty()) {
+                                                            int radioIndex = 0;
+                                                            for (CanonicalValue option : canonicalValues) {
+                                                                String optionLabel = option.getLabel();
+                                                                String optionValue = option.getValue();
+                                                                String radioId = Encode.forHtmlAttribute(claim.replaceAll("[^a-zA-Z0-9]", "_")) + "_" + radioIndex;
+                                                    %>
+                                                                <div class="field">
+                                                                    <div class="ui radio checkbox">
+                                                                        <input type="radio" name="claim_mand_<%=Encode.forHtmlAttribute(claim)%>" value="<%=Encode.forHtmlAttribute(optionValue)%>" id="<%=radioId%>">
+                                                                        <label for="<%=radioId%>"><%=Encode.forHtmlContent(optionLabel)%></label>
+                                                                    </div>
+                                                                </div>
+                                                    <%
+                                                                radioIndex++;
+                                                            }
+                                                        }
+                                                    %>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <% } else if (INPUT_TYPE_NUMBER.equals(inputType)) { %>
+                                        <div class="mt-1">
+                                            <input type="number"
+                                                name="claim_mand_<%=Encode.forHtmlAttribute(claim)%>"
+                                                id="claim_mand_<%=Encode.forHtmlAttribute(claim)%>"
+                                                required="required"
+                                                data-testid="request-claims-page-form-field-claim-<%=Encode.forHtmlAttribute(claim)%>-input"
+                                                placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter")%> <%=AuthenticationEndpointUtil.i18nBase64(resourceBundle, claimDisplayName)%>"
+                                                step="any"
+                                            />
                                         </div>
                                     <% } else { %>
                                         <div class="mt-1">
@@ -182,11 +334,11 @@
                                                 placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "enter")%> <%=AuthenticationEndpointUtil.i18nBase64(resourceBundle, claimDisplayName)%>"
                                             />
                                         </div>
-                                        <div class="mt-1" id="val_claim_mand_<%=Encode.forHtmlAttribute(claim)%>" style="display: none;">
-                                            <i class="red exclamation circle fitted icon"></i>
-                                            <span class="validation-error-message"></span>
-                                        </div>
                                     <% } %>
+                                    <div class="mt-1" id="val_claim_mand_<%=Encode.forHtmlAttribute(claim)%>" style="display: none;">
+                                        <i class="red exclamation circle fitted icon"></i>
+                                        <span class="validation-error-message"></span>
+                                    </div>
                                 </div>
                             <% } %>
                             <input type="hidden"
@@ -242,9 +394,52 @@
 
     function validateForm() {
         var isValid = true;
+        var processedRadioGroups = new Set();
+        
+        // Handle unchecked checkboxes and toggles by setting their value to "false".
+        $("input[type='checkbox'][name^='claim_mand_']").each(function () {
+            var claimId = $(this).attr("name");
+            if (!$(this).is(":checked")) {
+                // Create a hidden input with value "false" for unchecked checkboxes/toggles.
+                if ($("input[name='" + claimId + "_unchecked']").length === 0) {
+                    $("<input>").attr({
+                        type: "hidden",
+                        name: claimId,
+                        value: "false"
+                    }).appendTo("#claimForm");
+                }
+            } else {
+                // Remove any existing hidden input if checkbox is checked
+                $("input[name='" + claimId + "'][type='hidden']").remove();
+            }
+        });
+        
         $("input[name^='claim_mand_']").each(function () {
             var claimId = $(this).attr("name");
             var claimValue = $(this).val();
+            var inputType = $(this).attr("type");
+
+            if (inputType === "checkbox") {
+                // For checkboxes and toggles, no validation error if unchecked.
+                return;
+            }
+
+            if (inputType === "radio") {
+                // For radio groups, check if any radio with the same name is selected.
+                var radioGroupName = $(this).attr("name");
+                if (!processedRadioGroups.has(radioGroupName)) {
+                    processedRadioGroups.add(radioGroupName);
+                    if ($("input[name='" + radioGroupName + "']:checked").length === 0) {
+                        $("[id='val_" + claimId + "'] .validation-error-message").text(
+                            "<%=AuthenticationEndpointUtil.i18n(resourceBundle, "For.required.fields.cannot.be.empty")%>"
+                        );
+                        $("[id='val_" + claimId + "']").show();
+                        isValid = false;
+                    }
+                }
+                return;
+            }
+
             if (!claimValue) {
                 $("[id='val_" + claimId + "'] .validation-error-message").text(
                     "<%=AuthenticationEndpointUtil.i18n(resourceBundle, "For.required.fields.cannot.be.empty")%>"
@@ -258,9 +453,22 @@
 
     $(document).ready(function () {
 
-        $("input[name^='claim_mand_']").on("input", function () {
+        $("input[name^='claim_mand_']").on("input change", function () {
             var claimId = $(this).attr("name");
-            if ($(this).val()) {
+            var inputType = $(this).attr("type");
+
+            if (inputType === "checkbox") {
+                // Hide validation when checkbox is checked.
+                if ($(this).is(":checked")) {
+                    $("[id='val_" + claimId + "']").hide();
+                }
+            } else if (inputType === "radio") {
+                // Hide validation when any radio in the group is selected.
+                var radioGroupName = $(this).attr("name");
+                if ($("input[name='" + radioGroupName + "']:checked").length > 0) {
+                    $("[id='val_" + claimId + "']").hide();
+                }
+            } else if ($(this).val()) {
                 $("[id='val_" + claimId + "']").hide();
             }
         });
@@ -281,7 +489,7 @@
     });
 
     /**
-     * Event handler and trigger for #date_picker element.
+     * Event handler and trigger for date picker elements.
      * This is a extension we've added to facilitate a ui
      * calendar for Semantic-UI. The extension files are
      * added manually to lib/ directory of authentication
@@ -293,7 +501,7 @@
      *
      * [1] https://github.com/mdehoog/Semantic-UI-Calendar#settings
      */
-    $("#date_picker").calendar({
+    $("[id^='date_picker']").calendar({
         type: 'date',
         formatter: {
             date: function (date, settings) {
