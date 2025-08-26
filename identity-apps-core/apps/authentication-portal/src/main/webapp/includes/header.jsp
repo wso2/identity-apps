@@ -190,9 +190,56 @@
 <script src="libs/jquery_3.6.0/jquery-3.6.0.min.js"></script>
 
 <style type="text/css">
+    :root {
+        --otp-digits: 6;
+    }
+
     .grecaptcha-badge {
         bottom: 55px !important;
     }
+
+    .multi-code-otp-input-field {
+        text-align: center;
+        margin-top: 2.5em !important;
+    }
+
+    .multi-code-otp-input[autocomplete=one-time-code],
+    .multi-code-otp-input[autocomplete=one-time-code]:focus {
+        --otp-ls: 1.5ch;
+        --otp-gap: 1.2;
+        --_otp-bgsz: calc(var(--otp-ls) + 1ch);
+        --_otp-digit: 0;
+
+        all: unset;
+        background: linear-gradient(90deg, var(--otp-bg, #BBB) calc(var(--otp-gap) * var(--otp-ls)), transparent 0),
+            linear-gradient(90deg, var(--otp-bg, #EEE) calc(var(--otp-gap) * var(--otp-ls)), transparent 0) !important;
+        background-position: calc(var(--_otp-digit) * var(--_otp-bgsz)) 0, 0 0 !important;
+        background-repeat: no-repeat, repeat-x !important;
+        background-size: var(--_otp-bgsz) 100% !important;
+        caret-color: #222;
+        clip-path: inset(0% calc(var(--otp-ls) / 2) 0% 0%);
+        font-family: ui-monospace, monospace !important;
+        font-size: 1.5em !important;
+        inline-size: calc(var(--otp-digits) * var(--_otp-bgsz));
+        letter-spacing: calc(var(--otp-ls));
+        padding-block: var(--otp-pb, 1ch);
+        padding-inline-start: calc(((var(--otp-ls) - 1ch) / 2) * var(--otp-gap));
+        border: none !important;
+        overflow-x: hidden !important;
+        border-radius: 0 !important;
+        padding: .5rem 0 .5rem .38ch !important;
+        width: calc(var(--otp-ls) * var(--otp-digits) + 1ch * var(--otp-digits)) !important;
+        margin: 0 auto 0 15px !important;
+        text-align: left;
+    }
+
+    [dir=rtl] .multi-code-otp-input[autocomplete=one-time-code],
+    [dir=rtl] .multi-code-otp-input[autocomplete=one-time-code]:focus {
+        text-align: right;
+        padding: .5rem .38ch .5rem 0 !important;
+        margin: 0 15px 0 auto !important;
+    }
+
     @media only screen and (max-width: 767px) {
         .grecaptcha-badge {
             bottom: 100px !important;
