@@ -220,7 +220,8 @@
 
     Integer userNameValidityStatusCode = usernameValidityResponse.getInt("code");
     String errorCode = String.valueOf(userNameValidityStatusCode);
-    String usernameErrorMessage = application.getInitParameter("UsernameJavaRegExViolationErrorMsg");
+    Boolean isUsernameErrorMessageEnabled = Boolean.parseBoolean(IdentityUtil.getProperty("SelfRegistration.EnableUsernameRegexViolationErrorMsg"));
+    String usernameErrorMessage = usernameValidityResponse.has("message") ? usernameValidityResponse.getString("message") : null;
 
     if (!SelfRegistrationStatusCodes.CODE_USER_NAME_AVAILABLE.equalsIgnoreCase(userNameValidityStatusCode.toString())) {
         if (allowchangeusername) {
@@ -254,10 +255,10 @@
                 errorMsg = "Username '" + username + "' is already taken.";
             } else if (SelfRegistrationStatusCodes.CODE_USER_NAME_INVALID.equalsIgnoreCase(errorCode)) {
                 // Attempt to fetch the username regex violation error message from deployment.toml
-                if (StringUtils.isBlank(usernameErrorMessage)) {
-                    errorMsg = user.getUsername() + " is an invalid user name. Please pick a valid username.";
+                if (isUsernameErrorMessageEnabled && StringUtils.isNotBlank(usernameErrorMessage)) {
+                    errorMsg = usernameErrorMessage.toString();
                 } else {
-                    errorMsg = usernameErrorMessage;
+                    errorMsg = user.getUsername() + " is an invalid user name. Please pick a valid username.";
                 }
             } else {
                 errorMsg = errorMsg + " To fix this issue, please contact the administrator.";
