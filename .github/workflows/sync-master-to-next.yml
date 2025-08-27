@@ -46,6 +46,12 @@ jobs:
           repository: ${{ github.repository }}
           run-id: ${{ github.event.workflow_run.id }}
 
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
       - name: Get merged PR information
         id: trigger_info
         run: |
@@ -128,13 +134,6 @@ jobs:
           SYNC_BRANCH="sync-pr-${PR_NUMBER}-to-next"
           echo "SYNC_BRANCH=$SYNC_BRANCH" >> $GITHUB_ENV
           echo "Sync branch for PR #$PR_NUMBER: $SYNC_BRANCH"
-
-      - name: Checkout repository
-        if: steps.trigger_info.outputs.skip_sync != 'true'
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          fetch-tags: true
 
       - name: Set up Git
         if: steps.trigger_info.outputs.skip_sync != 'true'
