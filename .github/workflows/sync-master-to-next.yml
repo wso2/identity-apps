@@ -1,12 +1,17 @@
+# This workflow will sync PRs from the master branch to the next branch.
+
 name: 🔄 Sync PRs from master to next
 
 on:
   workflow_run:
     workflows: ["💡 PR Merged"]
     types: [completed]
-
-# Allow concurrent sync workflows since each PR uses its own branch
-# concurrency: removed to allow parallel processing
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: 'PR number to sync to next branch'
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -16,16 +21,24 @@ env:
   BASE_BRANCH: master
   TARGET_BRANCH: next
   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # Skip conditions for PRs (comma-separated arrays)
+  SKIP_AUTHORS: ""
+  SKIP_TITLE_PATTERNS: "[Release] [GitHub Action],[skip ci]"
 
 jobs:
   sync:
     runs-on: ubuntu-latest
     if: >
       github.repository == 'wso2/identity-apps' &&
-      github.event.workflow_run.event == 'pull_request' &&
-      github.event.workflow_run.conclusion == 'success'
+      (
+        (github.event_name == 'workflow_run' &&
+         github.event.workflow_run.event == 'pull_request' &&
+         github.event.workflow_run.conclusion == 'success') ||
+        github.event_name == 'workflow_dispatch'
+      )
     steps:
-      - name: 📥 Download PR Number Artifact
+      - name: 📥 Download PR Number Artifact (for workflow_run)
+        if: github.event_name == 'workflow_run'
         uses: actions/download-artifact@v4
         with:
           name: pr-number
@@ -36,11 +49,80 @@ jobs:
       - name: Get merged PR information
         id: trigger_info
         run: |
-          # Get the PR number from the artifact
-          PR_NUMBER=$(cat ./PR_NUMBER)
-          echo "PR Number from artifact: $PR_NUMBER"
+          # Get PR number based on trigger type
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            PR_NUMBER="${{ github.event.inputs.pr_number }}"
+            echo "Using manual PR number: $PR_NUMBER"
+          else
+            # Get the PR number from the artifact (workflow_run trigger)
+            PR_NUMBER=$(cat ./PR_NUMBER)
+            echo "PR Number from artifact: $PR_NUMBER"
+          fi
+
           echo "PR_NUMBER=$PR_NUMBER" >> $GITHUB_ENV
           echo "SYNC_MODE=pr" >> $GITHUB_ENV
+
+          # Verify PR exists and is merged
+          PR_STATE=$(gh pr view $PR_NUMBER --json state -q '.state')
+          if [[ "$PR_STATE" != "MERGED" ]]; then
+            echo "Error: PR #$PR_NUMBER is not merged (state: $PR_STATE)"
+            exit 1
+          fi
+
+          # Get PR details to check if we should skip it
+          PR_TITLE=$(gh pr view $PR_NUMBER --json title -q '.title')
+          PR_AUTHOR=$(gh pr view $PR_NUMBER --json author -q '.author.login')
+
+          # Check skip conditions using environment variables (support arrays)
+          SKIP_AUTHORS="${{ env.SKIP_AUTHORS }}"
+          SKIP_TITLE_PATTERNS="${{ env.SKIP_TITLE_PATTERNS }}"
+
+          # Convert comma-separated values to arrays
+          IFS=',' read -ra AUTHORS_ARRAY <<< "$SKIP_AUTHORS"
+          IFS=',' read -ra TITLE_PATTERNS_ARRAY <<< "$SKIP_TITLE_PATTERNS"
+
+          # Check if PR title matches any skip pattern
+          SKIP_TITLE=false
+          for pattern in "${TITLE_PATTERNS_ARRAY[@]}"; do
+            if [[ "$PR_TITLE" == *"$pattern"* ]]; then
+              SKIP_TITLE=true
+              break
+            fi
+          done
+
+          # If we have skip authors configured, check both author and title
+          # If no skip authors configured, just check title
+          SHOULD_SKIP=false
+          if [[ -n "$SKIP_AUTHORS" && "$SKIP_AUTHORS" != "" ]]; then
+            # Check if PR author should be skipped
+            SKIP_AUTHOR=false
+            for author in "${AUTHORS_ARRAY[@]}"; do
+              if [[ "$PR_AUTHOR" == "$author" ]]; then
+                SKIP_AUTHOR=true
+                break
+              fi
+            done
+            # Skip if both author and title conditions are met
+            if [[ "$SKIP_AUTHOR" == "true" && "$SKIP_TITLE" == "true" ]]; then
+              SHOULD_SKIP=true
+            fi
+          else
+            # No specific authors to skip, just check title patterns
+            if [[ "$SKIP_TITLE" == "true" ]]; then
+              SHOULD_SKIP=true
+            fi
+          fi
+
+          # Skip PR if conditions are met (but allow override for manual trigger)
+          if [[ "$SHOULD_SKIP" == "true" && "${{ github.event_name }}" != "workflow_dispatch" ]]; then
+            echo "Skipping sync for PR #$PR_NUMBER from $PR_AUTHOR with title: $PR_TITLE"
+            echo "skip_sync=true" >> $GITHUB_OUTPUT
+            exit 0
+          elif [[ "$SHOULD_SKIP" == "true" && "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "⚠️ Warning: PR #$PR_NUMBER matches skip conditions but proceeding due to manual trigger"
+          fi
+
+          echo "skip_sync=false" >> $GITHUB_OUTPUT
 
           # Create unique sync branch name for this PR
           SYNC_BRANCH="sync-pr-${PR_NUMBER}-to-next"
@@ -48,17 +130,20 @@ jobs:
           echo "Sync branch for PR #$PR_NUMBER: $SYNC_BRANCH"
 
       - name: Checkout repository
+        if: steps.trigger_info.outputs.skip_sync != 'true'
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           fetch-tags: true
 
       - name: Set up Git
+        if: steps.trigger_info.outputs.skip_sync != 'true'
         run: |
           git config user.name "wso2-iam-bot"
           git config user.email "wso2-iam-bot@users.noreply.github.com"
 
       - name: Get PR commits
+        if: steps.trigger_info.outputs.skip_sync != 'true'
         run: |
           # Get all commits from this specific PR
           COMMITS=$(gh pr view $PR_NUMBER --json commits -q '.commits[].oid' | tr '\n' ' ')
@@ -66,6 +151,7 @@ jobs:
           echo "Commits from PR #$PR_NUMBER: $COMMITS"
 
       - name: Create sync branch
+        if: steps.trigger_info.outputs.skip_sync != 'true'
         run: |
           # Validate that SYNC_BRANCH is set
           if [ -z "$SYNC_BRANCH" ]; then
@@ -82,7 +168,8 @@ jobs:
           git checkout $TARGET_BRANCH
           git checkout -b "$SYNC_BRANCH"
 
-      - name: Cherry-pick commits (skip [skip ci], workflow files, pom.xml only)
+      - name: Cherry-pick commits
+        if: steps.trigger_info.outputs.skip_sync != 'true'
         run: |
           if [ -z "$COMMITS_TO_SYNC" ]; then
             echo "No commits to sync."
@@ -94,24 +181,6 @@ jobs:
               continue
             fi
 
-            MESSAGE=$(git log -1 --pretty=%B $commit)
-            FILES_CHANGED=$(git diff-tree --no-commit-id --name-only -r $commit)
-
-            if [[ "$MESSAGE" =~ \[skip\ ci\] ]]; then
-              echo "Skipping $commit because of [skip ci]"
-              continue
-            fi
-
-            if echo "$FILES_CHANGED" | grep -q "^.github/workflows/"; then
-              echo "Skipping $commit because it modifies a workflow"
-              continue
-            fi
-
-            if ! echo "$FILES_CHANGED" | grep -v -E "pom\.xml" | grep -q '.'; then
-              echo "Skipping $commit because it only modifies pom.xml files"
-              continue
-            fi
-
             echo "Cherry-picking commit $commit: $(git log -1 --oneline $commit)"
             git cherry-pick $commit || {
               echo "Cherry-pick failed for $commit. Attempting to skip..."
@@ -120,12 +189,15 @@ jobs:
           done
 
       - name: Push sync branch (force update)
+        if: steps.trigger_info.outputs.skip_sync != 'true'
         run: git push origin HEAD:"$SYNC_BRANCH" --force
 
       - name: Fetch target branch
+        if: steps.trigger_info.outputs.skip_sync != 'true'
         run: git fetch origin $TARGET_BRANCH:$TARGET_BRANCH || true
 
       - name: Create or update pull request
+        if: steps.trigger_info.outputs.skip_sync != 'true'
         run: |
           COMMITS_ON_BRANCH=$(git log ${{ env.TARGET_BRANCH }}..HEAD --oneline || true)
           if [ -z "$COMMITS_ON_BRANCH" ]; then
