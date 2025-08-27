@@ -1,5 +1,13 @@
 # @wso2is/i18n
 
+## 2.30.13
+
+### Patch Changes
+
+- [#8976](https://github.com/wso2/identity-apps/pull/8976) [`792df3f87946cfef5c088c1c84c44529b213d82e`](https://github.com/wso2/identity-apps/commit/792df3f87946cfef5c088c1c84c44529b213d82e) Thanks [@github-actions](https://github.com/apps/github-actions)! - Fix missed Role V3 check in Console Settings
+
+* [#8844](https://github.com/wso2/identity-apps/pull/8844) [`5590133b214246a0f6483628368e1169d6a56896`](https://github.com/wso2/identity-apps/commit/5590133b214246a0f6483628368e1169d6a56896) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Generate organization handle by prioritising the sanitised value and fix UI glitch
+
 ## 2.30.12
 
 ### Patch Changes
