@@ -1,5 +1,15 @@
 # @wso2is/myaccount
 
+## 2.24.5
+
+### Patch Changes
+
+- [#8970](https://github.com/wso2/identity-apps/pull/8970) [`f2aa237899a4ce8c247af90ce599ad675ee7d93d`](https://github.com/wso2/identity-apps/commit/f2aa237899a4ce8c247af90ce599ad675ee7d93d) Thanks [@github-actions](https://github.com/apps/github-actions)! - Fix an issue with number input in My Account
+
+- Updated dependencies [[`792df3f87946cfef5c088c1c84c44529b213d82e`](https://github.com/wso2/identity-apps/commit/792df3f87946cfef5c088c1c84c44529b213d82e), [`5590133b214246a0f6483628368e1169d6a56896`](https://github.com/wso2/identity-apps/commit/5590133b214246a0f6483628368e1169d6a56896)]:
+  - @wso2is/i18n@2.30.13
+  - @wso2is/admin.organizations.v1@2.27.4
+
 ## 2.24.4
 
 ### Patch Changes

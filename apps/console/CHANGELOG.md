@@ -1,5 +1,24 @@
 # @wso2is/console
 
+## 2.78.17
+
+### Patch Changes
+
+- [#8976](https://github.com/wso2/identity-apps/pull/8976) [`792df3f87946cfef5c088c1c84c44529b213d82e`](https://github.com/wso2/identity-apps/commit/792df3f87946cfef5c088c1c84c44529b213d82e) Thanks [@github-actions](https://github.com/apps/github-actions)! - Fix missed Role V3 check in Console Settings
+
+* [#8844](https://github.com/wso2/identity-apps/pull/8844) [`5590133b214246a0f6483628368e1169d6a56896`](https://github.com/wso2/identity-apps/commit/5590133b214246a0f6483628368e1169d6a56896) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Generate organization handle by prioritising the sanitised value and fix UI glitch
+
+* Updated dependencies [[`792df3f87946cfef5c088c1c84c44529b213d82e`](https://github.com/wso2/identity-apps/commit/792df3f87946cfef5c088c1c84c44529b213d82e), [`5590133b214246a0f6483628368e1169d6a56896`](https://github.com/wso2/identity-apps/commit/5590133b214246a0f6483628368e1169d6a56896)]:
+  - @wso2is/admin.console-settings.v1@2.25.223
+  - @wso2is/i18n@2.30.13
+  - @wso2is/admin.organizations.v1@2.27.4
+  - @wso2is/admin.actions.v1@1.14.3
+  - @wso2is/admin.session-management.v1@2.25.209
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.17
+  - @wso2is/admin.core.v1@2.49.25
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.17
+  - @wso2is/admin.server-configurations.v1@2.35.38
+
 ## 2.78.16
 
 ### Patch Changes
