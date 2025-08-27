@@ -537,7 +537,7 @@ importers:
         specifier: ^2.34.4
         version: link:../../features/admin.connections.v1
       '@wso2is/admin.console-settings.v1':
-        specifier: ^2.25.223
+        specifier: ^2.25.224
         version: link:../../features/admin.console-settings.v1
       '@wso2is/admin.core.v1':
         specifier: ^2.49.32
@@ -678,7 +678,7 @@ importers:
         specifier: ^2.3.25
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.30.16
+        specifier: ^2.30.17
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.21
@@ -997,7 +997,7 @@ importers:
         specifier: ^2.3.23
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.30.12
+        specifier: ^2.30.17
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.17
@@ -5977,7 +5977,7 @@ importers:
         specifier: ^2.3.22
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.30.16
+        specifier: ^2.30.17
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.16
