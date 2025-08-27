@@ -37,7 +37,7 @@
         flex-direction: row;
         justify-content: space-between;
         padding: var(--wso2is-home-section-padding);
-        max-width: 68%;
+        max-width: 65%;
 
         h3 {
             font-size: 22px;
@@ -70,6 +70,16 @@
     .login-box {
         position: absolute;
         right: 20px;
+        top: 15px;
+
+        svg {
+            width: 480px;
+        }
+    }
+
+    .survey-box {
+        position: absolute;
+        right: 2px;
         top: 15px;
 
         svg {

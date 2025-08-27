@@ -48,6 +48,7 @@ import { useSelector } from "react-redux";
 import { Grid, Message, Modal } from "semantic-ui-react";
 import BackgroundBlob from "./background-blob.png";
 import SignUpBox from "./sign-up-box";
+import SurveyBox from "./survey-box";
 import { ReactComponent as PreviewFeaturesIcon } from "../../../themes/default/assets/images/icons/flask-icon.svg";
 import "./new-feature-announcement.scss";
 
@@ -126,12 +127,14 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
                     </Typography>
                 </Box>
             </Box>
-            <Box
-                className="login-box-overlay"
-                sx={ {
-                    backgroundImage: `url(${BackgroundBlob})`
-                } }
-            ></Box>
+            { id !== "user-survey" ? (
+                <Box
+                    className="login-box-overlay"
+                    sx={ {
+                        backgroundImage: `url(${BackgroundBlob})`
+                    } }
+                />
+            ) : null }
             { illustration }
             <Box className="new-feature-announcement-actions">
                 { isEnabled ? (
@@ -221,6 +224,9 @@ export const FeatureCarousel = () => {
             buttonText: userSurveyButtonText,
             description: userSurveyDescription,
             id: "user-survey",
+            illustration: <Box className="survey-box">
+                <SurveyBox />
+            </Box>,
             onTryOut: () => {
                 window.open(userSurveyURL, "_blank", "noopener,noreferrer");
             },
