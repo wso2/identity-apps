@@ -167,7 +167,7 @@ export const users: usersNS = {
     notifications: {
         addUser: {
             error: {
-                description: "{{description}}",
+                description: "An error occurred while adding the user.",
                 message: "Error adding the new user"
             },
             genericError: {
