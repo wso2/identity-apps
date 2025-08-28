@@ -38,13 +38,13 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  *
  * @param limit - Maximum number of records to return.
  * @param offset - Number of records to skip for pagination
- * @param status - Approval task's status to filter tasks by their status.
+ * @param statuses - Array of approval task statuses to filter tasks by their status.
  * @returns A promise containing the response.
  */
 export const fetchPendingApprovals = (
-    limit: number,
-    offset: number,
-    status: string,
+    limit: number | null,
+    offset: number | null,
+    statuses: string[],
     approvalsUrl: string
 ): Promise<ApprovalTaskListItemInterface[]> => {
     let requestConfig: HttpRequestConfig = {
@@ -55,22 +55,33 @@ export const fetchPendingApprovals = (
         method: HttpMethods.GET,
         params: {
             limit,
-            offset,
-            status
+            offset
         },
         url: approvalsUrl
     };
 
-    // To fetch all the approvals from the api, the status
-    // has to set to null.
-    if (status === ApprovalStatus.ALL) {
+    // Handle status filtering.
+    if (Array.isArray(statuses) && statuses.length > 0 && !statuses.includes(ApprovalStatus.ALL)) {
+        // For multiple statuses, we need to construct query parameters manually
+        // since axios doesn't handle multiple same-named params.
+        const statusParams: string =
+                statuses.map((status: string) => `status=${encodeURIComponent(status)}`).join("&");
+
+        const baseParamsObj: Record<string, string> = {};
+
+        if (limit !== null) {
+            baseParamsObj.limit = limit.toString();
+        }
+        if (offset !== null) {
+            baseParamsObj.offset = offset.toString();
+        }
+        const baseParams: string = new URLSearchParams(baseParamsObj).toString();
+
         requestConfig = {
             ...requestConfig,
-            params: {
-                ...requestConfig.params,
-                status: null
-            }
+            url: `${approvalsUrl}?${baseParams ? baseParams + "&" : ""}${statusParams}`
         };
+        delete requestConfig.params;
     }
 
     return httpClient(requestConfig)
