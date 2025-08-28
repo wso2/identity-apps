@@ -267,7 +267,7 @@ const SurveyBox: FunctionComponent<SurveyBoxProps> = ({
         <path d="M404.633 76.2148C404.633 77.649 403.47 78.812 402.036 78.812C400.601 78.812 399.438 77.649 399.438 76.2148C399.438 74.7807 400.601 73.6177 402.036 73.6177C403.47 73.6177 404.633 74.7807 404.633 76.2148Z" fill="white"/>
         <path d="M415.954 78.812C417.388 78.812 418.551 77.6492 418.551 76.2148C418.551 74.7805 417.388 73.6177 415.954 73.6177C414.519 73.6177 413.356 74.7805 413.356 76.2148C413.356 77.6492 414.519 78.812 415.954 78.812Z" fill="white"/>
         <defs>
-            <filter id="filter0_d_2955_3727" x="167.074" y="45.0903" width="131.423" height="229.228" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+            <filter id="filter0_d_2955_3727" x="167.074" y="45.0903" width="131.423" height="229.228" filterUnits="userSpaceOnUse" colorInterpolationFilters="sRGB">
                 <feFlood floodOpacity="0" result="BackgroundImageFix"/>
                 <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
                 <feOffset dy="4"/>
