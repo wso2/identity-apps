@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,33 +22,49 @@ export class ImpersonationConfigConstants {
 
     private constructor() { }
 
-	public static readonly IMPERSONATION_CONFIG_FETCH_ERROR_CODE: string = "IC-00001";
+    public static readonly IMPERSONATION_CONFIG_FETCH_ERROR_CODE: string = "IC-00001";
     public static readonly IMPERSONATION_CONFIG_FETCH_INVALID_STATUS_CODE_ERROR_CODE: string = "IC-00002";
-	public static readonly IMPERSONATION_CONFIG_UPDATE_ERROR_CODE: string = "IC-00003";
-	public static readonly DEFAULT_SUBJECT_TOKEN_EXPIRY_TIME: number = 180;
+    public static readonly IMPERSONATION_CONFIG_UPDATE_ERROR_CODE: string = "IC-00003";
+    public static readonly IMPERSONATION_CONFIG_REVERT_INVALID_STATUS_CODE_ERROR_CODE: string = "IC-00004";
+    public static readonly IMPERSONATION_CONFIG_REVERT_ERROR_CODE: string = "IC-00005";
+    public static readonly DEFAULT_SUBJECT_TOKEN_EXPIRY_TIME: number = 180;
 
-	public static ErrorMessages: {
+    public static ErrorMessages: {
         IMPERSONATION_CONFIG_FETCH_ERROR_CODE: IdentityAppsError;
         IMPERSONATION_CONFIG_FETCH_INVALID_STATUS_CODE_ERROR_CODE: IdentityAppsError;
         IMPERSONATION_CONFIG_UPDATE_ERROR_CODE: IdentityAppsError;
+        IMPERSONATION_CONFIG_REVERT_INVALID_STATUS_CODE_ERROR_CODE: IdentityAppsError;
+        IMPERSONATION_CONFIG_REVERT_ERROR_CODE: IdentityAppsError;
     } = {
-        IMPERSONATION_CONFIG_FETCH_ERROR_CODE: new IdentityAppsError(
-            ImpersonationConfigConstants.IMPERSONATION_CONFIG_FETCH_ERROR_CODE,
-            "An error occurred while fetching the Impersonation configurations.",
-            "Error while fetching the Impersonation configurations",
-            null
-        ),
-        IMPERSONATION_CONFIG_FETCH_INVALID_STATUS_CODE_ERROR_CODE: new IdentityAppsError(
-            ImpersonationConfigConstants.IMPERSONATION_CONFIG_FETCH_INVALID_STATUS_CODE_ERROR_CODE,
-            "Received an invalid status code while fetching the Impersonation configurations.",
-            "Invalid Status Code while fetching the Impersonation configurations",
-            null
-        ),
-        IMPERSONATION_CONFIG_UPDATE_ERROR_CODE: new IdentityAppsError(
-            ImpersonationConfigConstants.IMPERSONATION_CONFIG_UPDATE_ERROR_CODE,
-            "An error occurred while updating the Impersonation configurations.",
-            "Error while updating the Impersonation configurations",
-            null
-        )
-    };
+            IMPERSONATION_CONFIG_FETCH_ERROR_CODE: new IdentityAppsError(
+                ImpersonationConfigConstants.IMPERSONATION_CONFIG_FETCH_ERROR_CODE,
+                "An error occurred while fetching the Impersonation configurations.",
+                "Error while fetching the Impersonation configurations",
+                null
+            ),
+            IMPERSONATION_CONFIG_FETCH_INVALID_STATUS_CODE_ERROR_CODE: new IdentityAppsError(
+                ImpersonationConfigConstants.IMPERSONATION_CONFIG_FETCH_INVALID_STATUS_CODE_ERROR_CODE,
+                "Received an invalid status code while fetching the Impersonation configurations.",
+                "Invalid Status Code while fetching the Impersonation configurations",
+                null
+            ),
+            IMPERSONATION_CONFIG_REVERT_ERROR_CODE: new IdentityAppsError(
+                ImpersonationConfigConstants.IMPERSONATION_CONFIG_REVERT_ERROR_CODE,
+                "An error occurred while reverting the impersonation configurations.",
+                "Error while reverting the impersonation configurations",
+                null
+            ),
+            IMPERSONATION_CONFIG_REVERT_INVALID_STATUS_CODE_ERROR_CODE: new IdentityAppsError(
+                ImpersonationConfigConstants.IMPERSONATION_CONFIG_REVERT_INVALID_STATUS_CODE_ERROR_CODE,
+                "Received an invalid status code while reverting the impersonation configurations.",
+                "Invalid Status Code while reverting the impersonation configurations.",
+                null
+            ),
+            IMPERSONATION_CONFIG_UPDATE_ERROR_CODE: new IdentityAppsError(
+                ImpersonationConfigConstants.IMPERSONATION_CONFIG_UPDATE_ERROR_CODE,
+                "An error occurred while updating the Impersonation configurations.",
+                "Error while updating the Impersonation configurations",
+                null
+            )
+        };
 }

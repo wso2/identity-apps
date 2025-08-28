@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,13 +25,14 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
-import { ContentLoader, EmphasizedSegment, PageLayout } from "@wso2is/react-components";
+import { ContentLoader, DangerZone, DangerZoneGroup, EmphasizedSegment, PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Ref } from "semantic-ui-react";
 import {
+    revertImpersonationConfigurations,
     updateImpersonationConfigurations,
     useImpersonationConfig
 } from "../api/impersonation-configuration";
@@ -147,6 +148,34 @@ export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConf
         });
     };
 
+    const onConfigRevert = () => {
+        setIsSubmitting(true);
+        revertImpersonationConfigurations().then(() => {
+            dispatch(
+                addAlert({
+                    description: t("impersonation:notifications." +
+                    "revertConfiguration.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("impersonation:notifications." +
+                    "revertConfiguration.success.message")
+                })
+            );
+        }).catch(() => {
+            dispatch(
+                addAlert({
+                    description: t("impersonation:notifications." +
+                    "revertConfiguration.error.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("impersonation:notifications." +
+                    "revertConfiguration.error.message")
+                })
+            );
+        }).finally(() => {
+            setIsSubmitting(false);
+            mutateImpersonationConfig();
+        });
+    };
+
     const onBackButtonClick = (): void => {
         history.push(AppConstants.getPaths().get("LOGIN_AND_REGISTRATION"));
     };
@@ -215,6 +244,19 @@ export const ImpersonationConfigurationPage: FunctionComponent<ImpersonationConf
                                     )
                                 }
                             </EmphasizedSegment>
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column width={ 16 }>
+                            <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
+                                <DangerZone
+                                    actionTitle={ t("governanceConnectors:dangerZone.actionTitle") }
+                                    header= { t("governanceConnectors:dangerZone.heading") }
+                                    subheader= { t("governanceConnectors:dangerZone.subHeading") }
+                                    onActionClick={ () => onConfigRevert() }
+                                    data-testid={ `${ componentId }-danger-zone` }
+                                />
+                            </DangerZoneGroup>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
