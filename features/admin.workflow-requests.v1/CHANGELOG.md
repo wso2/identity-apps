@@ -1,5 +1,16 @@
 # @wso2is/admin.workflow-requests.v1
 
+## 1.0.4
+
+### Patch Changes
+
+- [#8983](https://github.com/wso2/identity-apps/pull/8983) [`7034f90a6dea9af1071ba43368a686940086e233`](https://github.com/wso2/identity-apps/commit/7034f90a6dea9af1071ba43368a686940086e233) Thanks [@github-actions](https://github.com/apps/github-actions)! - Introduce pending state for approval tasks and fix UI alignment issue in workflow request filtering
+
+- Updated dependencies [[`cea2b371eed0000a90ba9de9f57343548e0e62b9`](https://github.com/wso2/identity-apps/commit/cea2b371eed0000a90ba9de9f57343548e0e62b9), [`91ed5fb92bc4707c1c2a0c90778132e920b55a67`](https://github.com/wso2/identity-apps/commit/91ed5fb92bc4707c1c2a0c90778132e920b55a67), [`7034f90a6dea9af1071ba43368a686940086e233`](https://github.com/wso2/identity-apps/commit/7034f90a6dea9af1071ba43368a686940086e233)]:
+  - @wso2is/admin.core.v1@2.49.26
+  - @wso2is/i18n@2.30.14
+  - @wso2is/common.workflow-approvals.v1@1.0.6
+
 ## 1.0.3
 
 ### Patch Changes
