@@ -233,6 +233,7 @@ export const common: CommonNS = {
     new: "නවතම",
     next: "ඊළඟ ",
     noResultsFound: "ප්‍රතිඵල හමු නොවීය",
+    none: "කිසිවක් නැත",
     okay: "හරි",
     operatingSystem: "මෙහෙයුම් පද්ධතිය",
     operationType: "ක්‍රියාකාරී වර්ගය",
