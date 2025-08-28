@@ -80,9 +80,6 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     const hasGovernanceConnectorReadPermission: boolean = useRequiredScopes(
         featureConfig?.governanceConnectors?.scopes?.read
     );
-    const hasOrganizationDiscoveryReadPermission: boolean = useRequiredScopes(
-        featureConfig?.organizationDiscovery?.scopes?.read
-    );
     const hasResidentOutboundProvisioningFeaturePermission: boolean = useRequiredScopes(
         featureConfig?.residentOutboundProvisioning?.scopes?.feature
     );
@@ -98,9 +95,6 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
 
         const refinedConnectorCategories: Array<any> = [];
 
-        const isOrganizationDiscoveryEnabled: boolean = featureConfig?.organizationDiscovery?.enabled
-            && hasOrganizationDiscoveryReadPermission;
-
         const isResidentOutboundProvisioningEnabled: boolean = featureConfig?.residentOutboundProvisioning?.enabled
             && hasResidentOutboundProvisioningFeaturePermission;
 
@@ -109,11 +103,6 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
             && hasInternalNotificationSendingReadPermission;
 
         for (const category of originalConnectors) {
-            if (!isOrganizationDiscoveryEnabled
-                    && category.id === ServerConfigurationsConstants.ORGANIZATION_SETTINGS_CATEGORY_ID) {
-                continue;
-            }
-
             if (!isResidentOutboundProvisioningEnabled
                     && category.id === ServerConfigurationsConstants.PROVISIONING_SETTINGS_CATEGORY_ID) {
                 continue;
@@ -129,7 +118,8 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                     return false;
                 }
 
-                if (isSubOrganization() && connector.id === ServerConfigurationsConstants.SIFT_CONNECTOR_ID) {
+                if (isSubOrganization() && (connector.id === ServerConfigurationsConstants.SIFT_CONNECTOR_ID ||
+                    connector.id === ServerConfigurationsConstants.EMAIL_DOMAIN_DISCOVERY)) {
                     return false;
                 }
 
