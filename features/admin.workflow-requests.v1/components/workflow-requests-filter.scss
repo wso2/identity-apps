@@ -47,6 +47,7 @@ $font-size-large: 14px;
     @include box-shadow(0 1px 3px $shadow-light);
     padding: $spacing-md $spacing-lg 0 $spacing-lg;
     min-height: unset;
+    padding-left: 0 !important;
 
     .ui.dropdown {
         font-size: $font-size-large !important;
@@ -102,20 +103,18 @@ $font-size-large: 14px;
     }
 
     .fields {
-        display: flex;
-        flex-wrap: nowrap;
-        gap: 0;
-        align-items: flex-end;
-        margin: 0 !important;
+        display: table-row;
+        table-layout: fixed;
         width: 100%;
+        border-spacing: 0 5px;
+        margin: 0 !important;
         padding: 0 !important;
-        justify-content: space-between;
-        gap: 2px;
     }
 
     .field {
-        flex: 1;
-        min-width: 160px;
+        display: table-cell;
+        width: 25%;
+        vertical-align: bottom;
         margin: 0 !important;
         padding: 0 !important;
 
