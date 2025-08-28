@@ -69,8 +69,12 @@ export const fetchPendingApprovals = (
 
         const baseParamsObj: Record<string, string> = {};
 
-        if (limit !== null) baseParamsObj.limit = limit.toString();
-        if (offset !== null) baseParamsObj.offset = offset.toString();
+        if (limit !== null) {
+            baseParamsObj.limit = limit.toString();
+        }
+        if (offset !== null) {
+            baseParamsObj.offset = offset.toString();
+        }
         const baseParams: string = new URLSearchParams(baseParamsObj).toString();
 
         requestConfig = {
