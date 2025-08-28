@@ -27,7 +27,8 @@
     justify-content: space-between;
     align-items: flex-start;
     flex-shrink: 0;
-    background: linear-gradient(92deg, #FFF3E6 1.5%, #FAF9F8 59.25%);
+    background: radial-gradient(circle at calc(100% - 200px) calc(100% + 60px), #ff7c00 0%, transparent 30%), linear-gradient(92deg, #FFF3E6 1.5%, #FAF9F8 59.25%);
+    border: .05rem solid #ffdebf;
     margin-bottom: var(--oxygen-spacing-3);
     position: relative;
     overflow: hidden;
@@ -79,11 +80,24 @@
 
     .survey-box {
         position: absolute;
-        right: 2px;
-        top: 15px;
+        right: 20px;
 
         svg {
-            width: 480px;
+            width: 400px;
+            max-width: 100%;
+            height: auto; 
+        }
+    }
+
+    .ai-agent-box {
+        position: absolute;
+        right: 80px;
+        top: -8px;
+
+        svg {
+            width: 270px; 
+            max-width: 100%;
+            height: auto; 
         }
     }
 

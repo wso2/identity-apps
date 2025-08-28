@@ -46,7 +46,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid, Message, Modal } from "semantic-ui-react";
-import BackgroundBlob from "./background-blob.png";
+import AIAgentBox from "./ai-agent-box";
 import SignUpBox from "./sign-up-box";
 import SurveyBox from "./survey-box";
 import { ReactComponent as PreviewFeaturesIcon } from "../../../themes/default/assets/images/icons/flask-icon.svg";
@@ -127,14 +127,6 @@ const NewFeatureAnnouncement: FunctionComponent<NewFeatureAnnouncementProps> = (
                     </Typography>
                 </Box>
             </Box>
-            { id !== "user-survey" ? (
-                <Box
-                    className="login-box-overlay"
-                    sx={ {
-                        backgroundImage: `url(${BackgroundBlob})`
-                    } }
-                />
-            ) : null }
             { illustration }
             <Box className="new-feature-announcement-actions">
                 { isEnabled ? (
@@ -235,6 +227,9 @@ export const FeatureCarousel = () => {
         agentFeatureConfig?.enabled && {
             description: "Extend your identity management to autonomous agents and AI systems",
             id: "agents",
+            illustration: <Box className="ai-agent-box">
+                <AIAgentBox />
+            </Box>,
             isEnabled: isAgentManagementFeatureEnabledForOrganization,
             isEnabledStatusLoading: false,
             onTryOut: () => {
@@ -323,7 +318,7 @@ export const FeatureCarousel = () => {
                     } }
                 >
                     <NewFeatureAnnouncement
-                        id={ features[currentIndex].id }
+                        id={ features[currentIndex]?.id }
                         title={ features[currentIndex]?.title }
                         description={ features[currentIndex]?.description }
                         illustration={ features[currentIndex]?.illustration }
