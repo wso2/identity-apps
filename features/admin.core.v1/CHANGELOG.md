@@ -1,5 +1,22 @@
 # @wso2is/admin.core.v1
 
+## 2.49.26
+
+### Patch Changes
+
+- [#8954](https://github.com/wso2/identity-apps/pull/8954) [`cea2b371eed0000a90ba9de9f57343548e0e62b9`](https://github.com/wso2/identity-apps/commit/cea2b371eed0000a90ba9de9f57343548e0e62b9) Thanks [@Lakshan-Banneheke](https://github.com/Lakshan-Banneheke)! - Add User Survey Banner
+
+- Updated dependencies [[`91ed5fb92bc4707c1c2a0c90778132e920b55a67`](https://github.com/wso2/identity-apps/commit/91ed5fb92bc4707c1c2a0c90778132e920b55a67), [`7034f90a6dea9af1071ba43368a686940086e233`](https://github.com/wso2/identity-apps/commit/7034f90a6dea9af1071ba43368a686940086e233)]:
+  - @wso2is/admin.users.v1@2.36.9
+  - @wso2is/i18n@2.30.14
+  - @wso2is/common.workflow-approvals.v1@1.0.6
+  - @wso2is/admin.flow-builder-core.v1@0.10.18
+  - @wso2is/admin.agents.v1@1.0.42
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.18
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.18
+  - @wso2is/admin.server-configurations.v1@2.35.39
+  - @wso2is/admin.roles.v2@2.27.197
+
 ## 2.49.25
 
 ### Patch Changes

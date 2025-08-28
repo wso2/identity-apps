@@ -1,5 +1,13 @@
 # @wso2is/i18n
 
+## 2.30.14
+
+### Patch Changes
+
+- [#8978](https://github.com/wso2/identity-apps/pull/8978) [`91ed5fb92bc4707c1c2a0c90778132e920b55a67`](https://github.com/wso2/identity-apps/commit/91ed5fb92bc4707c1c2a0c90778132e920b55a67) Thanks [@github-actions](https://github.com/apps/github-actions)! - Fix inconsistency in radio group field in Console
+
+* [#8983](https://github.com/wso2/identity-apps/pull/8983) [`7034f90a6dea9af1071ba43368a686940086e233`](https://github.com/wso2/identity-apps/commit/7034f90a6dea9af1071ba43368a686940086e233) Thanks [@github-actions](https://github.com/apps/github-actions)! - Introduce pending state for approval tasks and fix UI alignment issue in workflow request filtering
+
 ## 2.30.13
 
 ### Patch Changes
