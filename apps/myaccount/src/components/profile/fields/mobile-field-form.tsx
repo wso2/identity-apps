@@ -383,6 +383,18 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
+        // Set the first mobile number as primary.
+        if (sortedMobileNumbersList.length === 0) {
+            data.Operations.push({
+                op: "replace",
+                value: {
+                    [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
+                        { type: "mobile", value: mobileNumber }
+                    ]
+                }
+            });
+        }
+
         if (schema.extended && schema.multiValued) {
             // In case of switching from single-valued to multi-valued
             // `sortedMobileNumbersList` will contain the single valued mobile number as well.

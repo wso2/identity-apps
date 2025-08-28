@@ -245,7 +245,7 @@ const EmailFieldForm: FunctionComponent<EmailFieldFormPropsInterface> = ({
                                 { renderVerifiedIcon() }
                             </div>
                         ) }
-                        { emailAddress.isPrimary && (
+                        { !emailAddress.isVerificationPending && emailAddress.isPrimary && (
                             <div
                                 className="verified-icon"
                                 data-componentid={
@@ -373,6 +373,25 @@ const EmailFieldForm: FunctionComponent<EmailFieldFormPropsInterface> = ({
             Operations: [],
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
+
+        // If the email address list is empty, add the new email address as the primary.
+        if (sortedEmailAddressesList.length === 0) {
+            const updatedEmailsList: (string | MultiValue)[] = [];
+
+            for (const emailAddress of profileDetails?.profileInfo?.emails) {
+                if (typeof emailAddress === "object") {
+                    updatedEmailsList.push(emailAddress);
+                }
+            }
+            updatedEmailsList.push(emailAddress);
+
+            data.Operations.push({
+                op: "replace",
+                value: {
+                    [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")]: updatedEmailsList
+                }
+            });
+        }
 
         if (schema.extended && schema.multiValued) {
             // In case of switching from single-valued to multi-valued
@@ -587,6 +606,7 @@ const EmailFieldForm: FunctionComponent<EmailFieldFormPropsInterface> = ({
                                                 )
                                             }
                                             {
+                                                !emailAddress.isVerificationPending &&
                                                 emailAddress.isPrimary && (
                                                     <div
                                                         className="verified-icon"
