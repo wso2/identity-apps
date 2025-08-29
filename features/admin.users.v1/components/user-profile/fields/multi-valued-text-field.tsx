@@ -67,6 +67,7 @@ const MultiValuedTextField: FunctionComponent<MultiValuedTextFieldPropsInterface
 
     const form: FormApi<Record<string, any>, Partial<Record<string, any>>> = useForm();
     const addFieldRef: MutableRefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
+    const addFieldName: string = `${schema.name}-add-field`;
 
     const {
         input: { value: fieldValue },
@@ -75,6 +76,9 @@ const MultiValuedTextField: FunctionComponent<MultiValuedTextFieldPropsInterface
 
     const [ validationError, setValidationError ] = useState<string>();
 
+    /**
+     * Initialize the form field with initial values.
+     */
     useEffect(() => {
         form.batch(() => {
             form.change(fieldName, initialValue);
@@ -83,11 +87,62 @@ const MultiValuedTextField: FunctionComponent<MultiValuedTextFieldPropsInterface
         });
     }, []);
 
+    /**
+     * Cleanup function to cancel the debounced validation on unmount.
+     */
+    useEffect(() => {
+        return () => validateInputFieldValue.cancel();
+    }, []);
+
+    /**
+     * Handles the form submission to add the value from the input field to the multi-valued field.
+     * Adds a listener to the form's submit event. So, the value typed in the input field can be
+     * picked up when the form is submitting.
+     */
+    useEffect(() => {
+        const formElement: HTMLFormElement | undefined = addFieldRef.current?.form;
+
+        if (!formElement) {
+            return;
+        }
+
+        /**
+         * Handles the form submission to add the value from the input field to the multi-valued field.
+         */
+        const onFormSubmitCapture = () => {
+            const draftValue: string = addFieldRef?.current?.value;
+            const newValue: string = (draftValue ?? "").trim();
+
+            if (!newValue) {
+                return;
+            }
+
+            const validationError: string = validateValue(newValue);
+
+            // If there is a validation error, value is not added.
+            if (validationError) {
+                return;
+            }
+
+            handleAddValue(newValue);
+        };
+
+        formElement.addEventListener("submit", onFormSubmitCapture, true);
+
+        return () => {
+            formElement.removeEventListener("submit", onFormSubmitCapture, true);
+        };
+    }, [ fieldName, fieldValue, addFieldName, form ]);
+
     const valueList: string[] = useMemo(() => {
         return Array.isArray(fieldValue) ? fieldValue : [];
     }, [ fieldValue ]);
 
     const validateValue = (value: string): string => {
+        if (isEmpty(value) && !isRequired) {
+            return undefined;
+        }
+
         if (!RegExp(schema?.regEx).test(value)) {
             return t("users:forms.validation.formatError", { field: fieldLabel });
         }
@@ -102,17 +157,29 @@ const MultiValuedTextField: FunctionComponent<MultiValuedTextFieldPropsInterface
         []
     );
 
-    const handleAddValue = (): void => {
-        const newValue: string = addFieldRef?.current?.value;
+    /**
+     * Handles the addition of a new value to the multi-valued field.
+     * If the value is provided, it will be added to the field. And it assumes the validation is already done.
+     * If the value is not provided, it will use the value from the input field. And validates it.
+     *
+     * @param value - The value to be added.
+     */
+    const handleAddValue = (value: string = ""): void => {
+        let newValue: string = value;
 
+        // If the new value is empty, use the value from the input field.
         if (isEmpty(newValue)) {
-            return;
-        }
+            newValue = addFieldRef?.current?.value;
 
-        const validationError: string = validateValue(newValue);
+            if (isEmpty(newValue)) {
+                return;
+            }
 
-        if (!isEmpty(validationError)) {
-            return;
+            const validationError: string = validateValue(newValue);
+
+            if (!isEmpty(validationError)) {
+                return;
+            }
         }
 
         const existingValues: string[] = fieldValue ?? [];
@@ -129,7 +196,7 @@ const MultiValuedTextField: FunctionComponent<MultiValuedTextFieldPropsInterface
                         data-componentid={ `${componentId}-multivalue-add-icon` }
                         size="large"
                         disabled={ isUpdating || !isEmpty(validationError) || valueList.length >= maxValueLimit }
-                        onClick={ handleAddValue }
+                        onClick={ () => handleAddValue() }
                     >
                         <PlusIcon />
                     </IconButton>
@@ -149,7 +216,7 @@ const MultiValuedTextField: FunctionComponent<MultiValuedTextFieldPropsInterface
             <Grid xs={ 12 }>
                 <TextField
                     inputRef={ addFieldRef }
-                    name={ `${schema.name}-add-field` }
+                    name={ addFieldName }
                     type={ type }
                     label={ fieldLabel }
                     margin="dense"
