@@ -615,6 +615,16 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     termsOfUseUrl?: string;
     /**
+     * User survey banner configurations.
+     */
+    userSurveyBanner: {
+        buttonText: string;
+        description: string;
+        enabled: boolean;
+        title: string;
+        url: string;
+    };
+    /**
      * Flow execution configurations.
      */
     flowExecution: {
