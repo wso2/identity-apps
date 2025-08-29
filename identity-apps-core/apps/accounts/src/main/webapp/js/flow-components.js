@@ -66,5 +66,7 @@ window.FlowComponents.getDefaultComponentsForFlowType = function(flowType, conte
     switch(flowType) {
         case "REGISTRATION":
             return window.FlowComponents.getDefaultSuccessComponents(contextPath);
+        default:
+            return [];
     }
 };
