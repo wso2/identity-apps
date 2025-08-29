@@ -42,17 +42,13 @@ function handleTimeOut(_idleSecondsCounter: number, _sessionAgeCounter: number,
         const currentURL: URL = new URL(window.location.href);
 
         // If the URL already has the timeout warning search para, delete it first.
-        if (currentURL && currentURL.searchParams && currentURL.searchParams.get(CommonConstants.SESSION_TIMEOUT_WARNING_URL_SEARCH_PARAM_KEY) !== null) {
+        if (
+            currentURL &&
+            currentURL.searchParams &&
+            currentURL.searchParams.get(CommonConstants.SESSION_TIMEOUT_WARNING_URL_SEARCH_PARAM_KEY) !== null
+        ) {
             currentURL.searchParams.delete(CommonConstants.SESSION_TIMEOUT_WARNING_URL_SEARCH_PARAM_KEY);
         }
-
-        const existingSearchParams: string = currentURL.search;
-
-        // NOTE: This variable is used for push state.
-        // If already other search params are available simply append using `&`,
-        // otherwise just add the param using `?`.
-        const searchParam: string =
-            existingSearchParams + (existingSearchParams ? "&" : "?") + CommonConstants.SESSION_TIMEOUT_WARNING_URL_SEARCH_PARAM_KEY + "=" + "true";
 
         // Append the search param to the URL object.
         currentURL.searchParams.append(CommonConstants.SESSION_TIMEOUT_WARNING_URL_SEARCH_PARAM_KEY, "true");
@@ -67,7 +63,7 @@ function handleTimeOut(_idleSecondsCounter: number, _sessionAgeCounter: number,
             url: currentURL.href
         };
 
-        window.history.pushState(state, null, searchParam);
+        window.history.pushState(state, null, currentURL.href);
 
         dispatchEvent(new MessageEvent("session-timeout", { data: state }));
     }
