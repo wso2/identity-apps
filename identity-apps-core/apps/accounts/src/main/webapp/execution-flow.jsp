@@ -306,16 +306,21 @@
 
                 useEffect(() => {
                     if (error && error.code) {
-                        const errorDetails = getI18nKeyForError(error.code, flowType);
+                        const errorDetails = getI18nKeyForError(error.code, flowType, error.description);
                         let portal_url = authPortalURL + "/register";
                         if (flowType === "PASSWORD_RECOVERY") {
                             portal_url = authPortalURL + "/recovery";
                         }
-                        const errorPageURL = authPortalURL + "/error?" + "ERROR_MSG="
+                        let errorPageURL = authPortalURL + "/error?" + "ERROR_MSG="
                             + errorDetails.message + "&" + "ERROR_DESC=" + errorDetails.description + "&" + "SP_ID="
                             + "<%= Encode.forJavaScript(spId) %>" + "&" + "flowType=" + flowType + "&" + "confirmation="
-                            + "<%= Encode.forJavaScript(confirmationCode) %>" + "&" +
-                            "PORTAL_URL=" + portal_url + "&SP=" + "<%= Encode.forJavaScript(sp) %>";
+                            + "<%= Encode.forJavaScript(confirmationCode) %>" + "&";
+                        
+                        if (errorDetails.portalUrlStatus === "true") {
+                            errorPageURL += "PORTAL_URL=" + portal_url + "&";
+                        }
+                        
+                        errorPageURL += "SP=" + "<%= Encode.forJavaScript(sp) %>";
 
                         window.location.href = errorPageURL;
                     }

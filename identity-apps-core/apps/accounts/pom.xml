@@ -164,7 +164,7 @@
                     </webResources>
                     <warName>accounts</warName>
                     <packagingExcludes>WEB-INF/lib/commons-logging*.jar</packagingExcludes>
-                    <packagingExcludes>org/wso2/carbon/identity/application/authentication/endpoint/i18n/*
+                    <packagingExcludes>org/wso2/carbon/identity/application/accounts/endpoint/i18n/*
                     </packagingExcludes>
                 </configuration>
             </plugin>
