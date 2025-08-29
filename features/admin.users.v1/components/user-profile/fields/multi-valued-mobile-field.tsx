@@ -103,6 +103,7 @@ const MultiValuedMobileField: FunctionComponent<MultiValuedMobileFieldPropsInter
 
     const form: FormApi<Record<string, any>, Partial<Record<string, any>>> = useForm();
     const addFieldRef: MutableRefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
+    const addFieldName: string = `${schema.name}-add-field`;
 
     const mobileNumbersFieldName: string = `${schema.schemaId}.${schema.name}`;
     const mobileFieldName: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE");
@@ -208,7 +209,58 @@ const MultiValuedMobileField: FunctionComponent<MultiValuedMobileFieldPropsInter
         pendingMobileFieldValue
     ]);
 
+    /**
+     * Cleanup function to cancel the debounced validation on unmount.
+     */
+    useEffect(() => {
+        return () => validateInputFieldValue.cancel();
+    }, []);
+
+    /**
+     * Handles the form submission to add the value from the input field to the multi-valued field.
+     * Adds a listener to the form's submit event. So, the value typed in the input field can be
+     * picked up when the form is submitting.
+     */
+    useEffect(() => {
+        const formElement: HTMLFormElement | undefined = addFieldRef.current?.form;
+
+        if (!formElement) {
+            return;
+        }
+
+        /**
+         * Handles the form submission to add the value from the input field to the multi-valued field.
+         */
+        const onFormSubmitCapture = () => {
+            const draftValue: string = addFieldRef?.current?.value;
+            const newValue: string = (draftValue ?? "").trim();
+
+            if (!newValue) {
+                return;
+            }
+
+            const validationError: string = validateMobileNumber(newValue);
+
+            // If there is a validation error, value is not added.
+            if (validationError) {
+                return;
+            }
+
+            handleAddMobileNumber(newValue);
+        };
+
+        formElement.addEventListener("submit", onFormSubmitCapture, true);
+
+        return () => {
+            formElement.removeEventListener("submit", onFormSubmitCapture, true);
+        };
+    }, [ mobileFieldValue, mobileNumbersFieldValue, addFieldName, form ]);
+
     const validateMobileNumber = (value: string): string => {
+        if (isEmpty(value)) {
+            return undefined;
+        }
+
         if (!RegExp(primarySchema?.regEx).test(value)) {
             return t("users:forms.validation.formatError", { field: primarySchema.displayName });
         }
@@ -223,17 +275,21 @@ const MultiValuedMobileField: FunctionComponent<MultiValuedMobileFieldPropsInter
         []
     );
 
-    const handleAddMobileNumber = (): void => {
-        const newMobileNumber: string = addFieldRef?.current?.value;
+    const handleAddMobileNumber = (mobileNumber: string = ""): void => {
+        let newMobileNumber: string = mobileNumber;
 
-        if (isEmpty(newMobileNumber)) {
-            return;
-        }
+        if (isEmpty(mobileNumber)) {
+            newMobileNumber = addFieldRef?.current?.value;
 
-        const validationError: string = validateMobileNumber(newMobileNumber);
+            if (isEmpty(newMobileNumber)) {
+                return;
+            }
 
-        if (!isEmpty(validationError)) {
-            return;
+            const validationError: string = validateMobileNumber(newMobileNumber);
+
+            if (!isEmpty(validationError)) {
+                return;
+            }
         }
 
         form.batch(() => {
@@ -259,7 +315,7 @@ const MultiValuedMobileField: FunctionComponent<MultiValuedMobileFieldPropsInter
                             !isEmpty(validationError) ||
                             sortedMobileNumbersList.length >= maxValueLimit
                         }
-                        onClick={ handleAddMobileNumber }
+                        onClick={ () => handleAddMobileNumber() }
                     >
                         <PlusIcon />
                     </IconButton>
@@ -295,7 +351,7 @@ const MultiValuedMobileField: FunctionComponent<MultiValuedMobileFieldPropsInter
             <Grid xs={ 12 }>
                 <TextField
                     inputRef={ addFieldRef }
-                    name={ `${schema.name}-add-field` }
+                    name={ addFieldName }
                     type="text"
                     label={ fieldLabel }
                     margin="dense"
