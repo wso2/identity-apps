@@ -16,10 +16,13 @@
  * under the License.
  */
 
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Card } from "semantic-ui-react";
 import EditSelfOrganizationForm from "../components/edit-self-organization/edit-self-organization-form";
 import "./edit-self-organization-page.scss";
@@ -41,22 +44,45 @@ const EditSelfOrganizationPage: FunctionComponent<EditSelfOrganizationPageProps>
 
     const { t } = useTranslation();
 
+    const organizationsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.organizations
+    );
+    const hasOrganizationUpdatePermissions: boolean = useRequiredScopes(organizationsFeatureConfig?.scopes?.update);
+
     return (
-        <PageLayout
-            pageTitle={ t("tenants:editSelfOrganization.title") }
-            title={ t("tenants:editSelfOrganization.title") }
-            description={ t("tenants:editSelfOrganization.subtitle") }
-            data-componentid={ `${componentId}-page-layout` }
-            bottomMargin={ false }
-            className="edit-self-organization-page"
-        >
-            <Card
-                data-componentid={ componentId }
-                className="edit-self-organization-content"
+        hasOrganizationUpdatePermissions ? (
+            <PageLayout
+                pageTitle={ t("tenants:editSelfOrganization.title") }
+                title={ t("tenants:editSelfOrganization.title") }
+                description={ t("tenants:editSelfOrganization.subtitle") }
+                data-componentid={ `${componentId}-page-layout` }
+                bottomMargin={ false }
+                className="edit-self-organization-page"
             >
-                <EditSelfOrganizationForm data-componentid={ `${componentId}-form` } />
-            </Card>
-        </PageLayout>
+                <Card
+                    data-componentid={ componentId }
+                    className="edit-self-organization-content"
+                >
+                    <EditSelfOrganizationForm data-componentid={ `${componentId}-form` } readOnly={ false } />
+                </Card>
+            </PageLayout>
+        ) : (
+            <PageLayout
+                pageTitle={ t("tenants:editSelfOrganization.readOnly.title") }
+                title={ t("tenants:editSelfOrganization.readOnly.title") }
+                description={ t("tenants:editSelfOrganization.readOnly.subtitle") }
+                data-componentid={ `${componentId}-page-layout` }
+                bottomMargin={ false }
+                className="edit-self-organization-page"
+            >
+                <Card
+                    data-componentid={ componentId }
+                    className="edit-self-organization-content"
+                >
+                    <EditSelfOrganizationForm data-componentid={ `${componentId}-form` } />
+                </Card>
+            </PageLayout>
+        )
     );
 };
 

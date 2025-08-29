@@ -236,7 +236,11 @@ export const tenants: TenantsNS = {
                 }
             }
         },
-        subtitle: "View and manage organization details",
+        readOnly: {
+            subtitle: "Browse organization information",
+            title: "Organization Details"
+        },
+        subtitle: "Manage organization details",
         title: "Edit Organization"
     },
     editTenant: {
@@ -404,6 +408,9 @@ export const tenants: TenantsNS = {
             },
             manage: {
                 label: "Manage Root Organizations"
+            },
+            view: {
+                label: "View Organization"
             }
         }
     },

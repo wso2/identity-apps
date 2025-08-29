@@ -46,6 +46,10 @@ export type EditSelfOrganizationFormProps = IdentifiableComponentInterface & {
      * Callback to trigger when the form is submitted.
      */
     onSubmit?: () => void;
+    /**
+     * Flag to render the form in read-only mode.
+     */
+    readOnly?: boolean;
 };
 
 export type EditSelfOrganizationFormValues = {
@@ -67,6 +71,7 @@ export type EditSelfOrganizationFormErrors = Partial<EditSelfOrganizationFormVal
 const EditSelfOrganizationForm: FunctionComponent<EditSelfOrganizationFormProps> = ({
     ["data-componentid"]: componentId = "edit-self-organization-form",
     onSubmit,
+    readOnly = true,
     ...rest
 }: EditSelfOrganizationFormProps): ReactElement => {
     const dispatch: Dispatch = useDispatch();
@@ -203,7 +208,7 @@ const EditSelfOrganizationForm: FunctionComponent<EditSelfOrganizationFormProps>
                             width={ 16 }
                             className="text-field-container"
                             ariaLabel="name"
-                            required={ true }
+                            required={ !readOnly }
                             data-componentid={ `${componentId}-name` }
                             name="name"
                             type="text"
@@ -212,6 +217,7 @@ const EditSelfOrganizationForm: FunctionComponent<EditSelfOrganizationFormProps>
                             component={ TextFieldAdapter }
                             maxLength={ 100 }
                             minLength={ 0 }
+                            readOnly={ readOnly }
                         />
 
                         <FinalFormField
@@ -256,15 +262,17 @@ const EditSelfOrganizationForm: FunctionComponent<EditSelfOrganizationFormProps>
                             readOnly={ true }
                         />
 
-                        <Button
-                            autoFocus
-                            className="edit-self-organization-form-submit-button"
-                            variant="contained"
-                            color="primary"
-                            type="submit"
-                        >
-                            { t("tenants:editSelfOrganization.actions.save.label") }
-                        </Button>
+                        { !readOnly &&
+                            (<Button
+                                autoFocus
+                                className="edit-self-organization-form-submit-button"
+                                variant="contained"
+                                color="primary"
+                                type="submit"
+                            >
+                                { t("tenants:editSelfOrganization.actions.save.label") }
+                            </Button>)
+                        }
                     </form>
                 );
             } }

@@ -230,6 +230,10 @@ export interface TenantsNS {
                 };
             };
         };
+        readOnly: {
+            subtitle: string;
+            title: string;
+        }
         subtitle: string;
         title: string;
     };
@@ -397,6 +401,9 @@ export interface TenantsNS {
                 label: string;
             };
             manage: {
+                label: string;
+            };
+            view: {
                 label: string;
             };
         };

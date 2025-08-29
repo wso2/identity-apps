@@ -24,6 +24,7 @@ import {
     BuildingAltIcon,
     BuildingCircleCheckIcon,
     BuildingPenIcon,
+    EyeIcon,
     HierarchyIcon,
     PenToSquareIcon,
     PlusIcon
@@ -151,6 +152,8 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
     });
 
     const hasOrganizationReadPermissions: boolean = useRequiredScopes(organizationsFeatureConfig?.scopes?.read);
+    const hasOrganizationUpdatePermissions: boolean = useRequiredScopes(organizationsFeatureConfig?.scopes?.update);
+    const hasTenantsReadPermissions: boolean = useRequiredScopes(tenantsFeatureConfig?.scopes?.read);
 
     const isMakingTenantsDefaultEnabled: boolean = useSelector((state: AppState) => {
         return !state?.config?.ui?.features?.tenants?.disabledFeatures?.includes(
@@ -677,12 +680,23 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                 } }
                 data-compnentid="edit-self-organization"
             >
-                <PenToSquareIcon />
-                { t("tenants:tenantDropdown.options.edit.label") }
+                {
+                    hasOrganizationUpdatePermissions ? (
+                        <>
+                            <PenToSquareIcon />
+                            { t("tenants:tenantDropdown.options.edit.label") }
+                        </>
+                    ) : (
+                        <>
+                            <EyeIcon />
+                            { t("tenants:tenantDropdown.options.view.label") }
+                        </>
+                    )
+                }
             </Dropdown.Item>
         );
 
-        if (isManagingTenantsFromDropdownEnabled && isSuperOrganization()) {
+        if (hasTenantsReadPermissions && isManagingTenantsFromDropdownEnabled && isSuperOrganization()) {
             options.push(
                 <Dropdown.Item
                     className="action-panel"
