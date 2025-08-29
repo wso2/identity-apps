@@ -180,6 +180,13 @@ function getI18nKeyForError(errorCode, flowType) {
                 description: "orchestration.flow.error.disabled.flow.description"
             };
 
+        case "FE-60012":
+
+            return {
+                message: "orchestration.flow.error.preUpdatePassword.action.failure.message",
+                description: "orchestration.flow.error.preUpdatePassword.action.failure.description"
+            };
+
         default:
 
             return {
