@@ -39,12 +39,11 @@ function handleTimeOut(_idleSecondsCounter: number, _sessionAgeCounter: number,
     SESSION_REFRESH_TIMEOUT: number, IDLE_TIMEOUT: number, IDLE_WARNING_TIMEOUT: number): number {
 
     if (_idleSecondsCounter === IDLE_WARNING_TIMEOUT || _idleSecondsCounter >= IDLE_TIMEOUT) {
-        const warningSearchParamKey: string = "session_timeout_warning";
         const currentURL: URL = new URL(window.location.href);
 
         // If the URL already has the timeout warning search para, delete it first.
-        if (currentURL && currentURL.searchParams && currentURL.searchParams.get(warningSearchParamKey) !== null) {
-            currentURL.searchParams.delete(warningSearchParamKey);
+        if (currentURL && currentURL.searchParams && currentURL.searchParams.get(CommonConstants.SESSION_TIMEOUT_WARNING_URL_SEARCH_PARAM_KEY) !== null) {
+            currentURL.searchParams.delete(CommonConstants.SESSION_TIMEOUT_WARNING_URL_SEARCH_PARAM_KEY);
         }
 
         const existingSearchParams: string = currentURL.search;
@@ -53,10 +52,10 @@ function handleTimeOut(_idleSecondsCounter: number, _sessionAgeCounter: number,
         // If already other search params are available simply append using `&`,
         // otherwise just add the param using `?`.
         const searchParam: string =
-            existingSearchParams + (existingSearchParams ? "&" : "?") + warningSearchParamKey + "=" + "true";
+            existingSearchParams + (existingSearchParams ? "&" : "?") + CommonConstants.SESSION_TIMEOUT_WARNING_URL_SEARCH_PARAM_KEY + "=" + "true";
 
         // Append the search param to the URL object.
-        currentURL.searchParams.append(warningSearchParamKey, "true");
+        currentURL.searchParams.append(CommonConstants.SESSION_TIMEOUT_WARNING_URL_SEARCH_PARAM_KEY, "true");
 
         const state: {
             idleTimeout: number;
