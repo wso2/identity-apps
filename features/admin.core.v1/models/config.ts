@@ -607,6 +607,16 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Terms of service URL.
      */
     termsOfUseUrl?: string;
+    /**
+     * User survey banner configurations.
+     */
+    userSurveyBanner: {
+        buttonText: string;
+        description: string;
+        enabled: boolean;
+        title: string;
+        url: string;
+    };
 }
 
 /**
