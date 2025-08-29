@@ -9626,6 +9626,9 @@ importers:
       classnames:
         specifier: ^2.2.6
         version: 2.5.1
+      dompurify:
+        specifier: ^3.0.9
+        version: 3.2.4
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
