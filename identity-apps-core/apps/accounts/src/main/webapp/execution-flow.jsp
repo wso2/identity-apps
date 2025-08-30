@@ -170,6 +170,7 @@
     <script src="${pageContext.request.contextPath}/js/react-ui-core.min.js"></script>
     <script type="text/javascript" src="js/error-utils.js"></script>
     <script type="text/javascript" src="js/constants.js"></script>
+    <script type="text/javascript" src="js/flow-components.js"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -357,6 +358,17 @@
                             }
 
                             localStorage.clear();
+
+                            if (flow.type === "VIEW" && flow.data) {
+                                const components = flow.data.components || [];
+                                // If components array is empty, use default components.
+                                if (components.length === 0) {
+                                    const contextPath = "${pageContext.request.contextPath}";
+                                    const defaultComponents = getDefaultComponentsForFlowType(flowType, contextPath);
+                                    flow.data.components = defaultComponents;
+                                }
+                                return false;
+                            }
 
                             if (flow.data.redirectURL !== null) {
                                 window.location.href = flow.data.redirectURL;
