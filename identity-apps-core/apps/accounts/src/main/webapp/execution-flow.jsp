@@ -358,19 +358,14 @@
                             }
 
                             localStorage.clear();
-                            setUserAssertion(null);
 
                             if (flow.type === "VIEW" && flow.data) {
                                 const components = flow.data.components || [];
-
                                 // If components array is empty, use default components.
                                 if (components.length === 0) {
                                     const contextPath = "${pageContext.request.contextPath}";
-                                    const defaultComponents = window.FlowComponents.getDefaultComponentsForFlowType(flowType, contextPath);
+                                    const defaultComponents = getDefaultComponentsForFlowType(flowType, contextPath);
                                     flow.data.components = defaultComponents;
-                                    setComponents(defaultComponents);
-                                } else {
-                                    setComponents(components);
                                 }
                                 return false;
                             }

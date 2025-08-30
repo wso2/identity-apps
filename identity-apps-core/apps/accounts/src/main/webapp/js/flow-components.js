@@ -17,16 +17,11 @@
  */
 
 /**
- * Default components configuration for flow completion
- */
-window.FlowComponents = window.FlowComponents || {};
-
-/**
  * Get default components for successful registration completion
  * @param {string} contextPath - The application context path
  * @returns {Array} Array of default component configurations
  */
-window.FlowComponents.getDefaultSuccessComponents = function(contextPath) {
+function getDefaultSuccessComponents(contextPath) {
     return [
         {
             "id": "display_heading_rich_text",
@@ -62,10 +57,11 @@ window.FlowComponents.getDefaultSuccessComponents = function(contextPath) {
  * @param {string} contextPath - The application context path
  * @returns {Array} Array of default component configurations
  */
-window.FlowComponents.getDefaultComponentsForFlowType = function(flowType, contextPath) {
+function getDefaultComponentsForFlowType(flowType, contextPath) {
+    
     switch(flowType) {
         case "REGISTRATION":
-            return window.FlowComponents.getDefaultSuccessComponents(contextPath);
+            return getDefaultSuccessComponents(contextPath);
         default:
             return [];
     }
