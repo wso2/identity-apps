@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 3.2.12
+
+### Patch Changes
+
+- [#8992](https://github.com/wso2/identity-apps/pull/8992) [`3509afc953a96c40495d24b7578aeb7525ffc8a2`](https://github.com/wso2/identity-apps/commit/3509afc953a96c40495d24b7578aeb7525ffc8a2) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add default static content to handle flow completion with view step
+
+* [#8987](https://github.com/wso2/identity-apps/pull/8987) [`7d3937c2da23f1a2d4f855980ef7caa88bee3efb`](https://github.com/wso2/identity-apps/commit/7d3937c2da23f1a2d4f855980ef7caa88bee3efb) Thanks [@github-actions](https://github.com/apps/github-actions)! - Properly skip `Console` from `getRegistrationPortalUrl`
+
 ## 3.2.11
 
 ### Patch Changes
