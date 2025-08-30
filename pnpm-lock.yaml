@@ -663,7 +663,7 @@ importers:
         specifier: ^0.2.0
         version: link:../../features/common.ui.v1
       '@wso2is/common.workflow-approvals.v1':
-        specifier: ^1.0.5
+        specifier: ^1.0.6
         version: link:../../features/common.workflow-approvals.v1
       '@wso2is/core':
         specifier: ^2.12.0
@@ -678,7 +678,7 @@ importers:
         specifier: ^2.3.25
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.30.17
+        specifier: ^2.30.18
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.21
@@ -988,7 +988,7 @@ importers:
         specifier: ^0.2.0
         version: link:../../features/common.ui.v1
       '@wso2is/common.workflow-approvals.v1':
-        specifier: ^1.0.5
+        specifier: ^1.0.6
         version: link:../../features/common.workflow-approvals.v1
       '@wso2is/core':
         specifier: ^2.11.0
@@ -997,7 +997,7 @@ importers:
         specifier: ^2.3.23
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.30.17
+        specifier: ^2.30.18
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.17
@@ -20718,7 +20718,7 @@ importers:
         specifier: ^2.3.22
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.30.12
+        specifier: ^2.30.18
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.16
@@ -22282,7 +22282,7 @@ importers:
         specifier: ^2.3.22
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.30.12
+        specifier: ^2.30.18
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.16

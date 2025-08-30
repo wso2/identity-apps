@@ -1,5 +1,17 @@
 # @wso2is/myaccount
 
+## 2.23.10
+
+### Patch Changes
+
+- [#8942](https://github.com/wso2/identity-apps/pull/8942) [`1ef71598fd981195fb66939727d7c9e1a34ef76d`](https://github.com/wso2/identity-apps/commit/1ef71598fd981195fb66939727d7c9e1a34ef76d) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Introduce pending state for approval tasks and fix UI alignment issue in workflow request filtering
+
+* [#8796](https://github.com/wso2/identity-apps/pull/8796) [`fce4f826deb71eebf44dc3294dc61d41ac4f1b12`](https://github.com/wso2/identity-apps/commit/fce4f826deb71eebf44dc3294dc61d41ac4f1b12) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issue in multi-value email/mobile fields
+
+* Updated dependencies [[`1ef71598fd981195fb66939727d7c9e1a34ef76d`](https://github.com/wso2/identity-apps/commit/1ef71598fd981195fb66939727d7c9e1a34ef76d)]:
+  - @wso2is/common.workflow-approvals.v1@1.0.6
+  - @wso2is/i18n@2.30.18
+
 ## 2.23.9
 
 ### Patch Changes
