@@ -999,6 +999,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                             placeholder={ t("extensions:manage.features.user.addUser.inputLabel" +
                                 ".alphanumericUsernamePlaceholder") }
                             validate={ validate }
+                            validateFields={ [] }
                             maxLength={ 60 }
                             helperText={ usernameFieldHint }
                             data-testid="user-mgt-add-user-form-username-input"
@@ -1074,6 +1075,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                 placeholder={ t("user:forms.addUserForm.inputs.email.placeholder") }
                 required={ isEmailRequired }
                 validate={ validate }
+                validateFields={ [] }
                 maxLength={ 60 }
                 listen={ handleEmailEmpty }
                 data-testid={ emailFieldComponentId }
