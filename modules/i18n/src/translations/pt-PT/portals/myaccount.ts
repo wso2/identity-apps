@@ -1241,6 +1241,7 @@ export const myAccount: MyAccountNS = {
                             popup: "Contate o administrador para atualizar seu {{fieldName}}"
                         },
                         validations: {
+                            duplicate: "{{fieldName}} não pode ter valores duplicados",
                             empty: "{{fieldName}} é um campo obrigatório",
                             invalidFormat: "The {{fieldName}} não está no formato correto"
                         }
