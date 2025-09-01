@@ -27,6 +27,7 @@ import { FormSpyRenderProps, useForm } from "react-final-form";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import { generatePassword } from "../../../../utils/generate-password.utils";
+import "./create-password-option.scss";
 
 /**
  * User add wizard create password field component props interface.
