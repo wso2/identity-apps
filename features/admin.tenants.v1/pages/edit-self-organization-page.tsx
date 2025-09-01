@@ -24,8 +24,8 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Card } from "semantic-ui-react";
-import EditSelfOrganizationForm from "../components/edit-self-organization/edit-self-organization-form";
 import "./edit-self-organization-page.scss";
+import EditSelfOrganizationForm from "../components/edit-self-organization/edit-self-organization-form";
 
 /**
  * Props type of {@link EditSelfOrganizationPage}

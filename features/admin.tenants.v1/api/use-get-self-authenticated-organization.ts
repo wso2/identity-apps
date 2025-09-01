@@ -26,15 +26,12 @@ import { HttpMethods } from "@wso2is/core/models";
 import { OrganizationSelfResponse } from "../models/tenants";
 
 /**
- * Hook to get the current organization details.
- *
- * This function calls the GET method of the following endpoint to get the self organization details.
- * - `https://{serverUrl}/t/{tenantDomain}/o/api/server/v1/organizations/self`
+ * Hook to get the current authenticated organization details.
  *
  * @param shouldFetch - Should fetch the data.
- * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
+ * @returns A response object containing the data, error, isLoading, isValidating, mutate.
  */
-const useGetSelfOrganization = <Data = OrganizationSelfResponse, Error = RequestErrorInterface>
+const useGetSelfAuthenticatedOrganization = <Data = OrganizationSelfResponse, Error = RequestErrorInterface>
     (shouldFetch: boolean = true): RequestResultInterface<Data, Error> => {
 
     const requestConfig: RequestConfigInterface = {
@@ -59,4 +56,4 @@ const useGetSelfOrganization = <Data = OrganizationSelfResponse, Error = Request
     };
 };
 
-export default useGetSelfOrganization;
+export default useGetSelfAuthenticatedOrganization;

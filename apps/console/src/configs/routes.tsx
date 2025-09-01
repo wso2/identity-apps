@@ -19,6 +19,7 @@
 import {
     ArrowRightToBracketPencilIcon,
     BuildingIcon,
+    BuildingPenIcon,
     DocumentCheckIcon,
     EnvelopeGearIcon,
     EnvelopeIcon,
@@ -1761,33 +1762,35 @@ export const getFullScreenViewRoutes = (): RouteInterface[] => {
 export const getDefaultLayoutRoutes = (): RouteInterface[] => {
     return [
         {
+            component: lazy(() => import("@wso2is/admin.tenants.v1/pages/edit-self-organization-page")),
+            exact: true,
+            icon: {
+                icon: <BuildingPenIcon />
+            },
+            id: "organizations",
+            order: 0,
+            path: AppConstants.getPaths().get("EDIT_SELF_ORGANIZATION"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
             children: [
                 {
                     component: lazy(() => import("@wso2is/admin.tenants.v1/pages/system-settings-page")),
                     exact: true,
                     icon: null,
                     id: "systemSettings",
-                    order: 3,
+                    order: 2,
                     path: AppConstants.getPaths().get("SYSTEM_SETTINGS"),
                     protected: true,
                     showOnSidePanel: true
-                },
-                {
-                    component: lazy(() => import("@wso2is/admin.tenants.v1/pages/edit-self-organization-page")),
-                    exact: true,
-                    icon: null,
-                    id: "editSelfOrganization",
-                    order: 1,
-                    path: AppConstants.getPaths().get("EDIT_SELF_ORGANIZATION"),
-                    protected: true,
-                    showOnSidePanel: false
                 },
                 {
                     component: lazy(() => import("@wso2is/admin.tenants.v1/pages/edit-tenant-page")),
                     exact: true,
                     icon: null,
                     id: "editRootOrganization",
-                    order: 2,
+                    order: 1,
                     path: AppConstants.getPaths().get("EDIT_TENANT"),
                     protected: true,
                     showOnSidePanel: false

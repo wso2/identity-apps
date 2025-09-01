@@ -18,32 +18,25 @@
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { store } from "@wso2is/admin.core.v1/store";
+import { OrganizationPatchData } from "@wso2is/admin.organizations.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 
 /**
- * Interface for patch operation.
- */
-interface PatchOperation {
-    operation: "REPLACE" | "ADD" | "REMOVE";
-    path: string;
-    value?: any;
-}
-
-/**
- * Get an axios instance.
+ * Get an HTTP client instance.
  */
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
- * Update self organization details.
+ * Update details of the currently authenticated organization.
  *
- * @param operations - Array of patch operations to apply.
- * @returns Promise containing the response.
+ * @param operations - Array of patch operations to apply to the organization.
+ * @returns Promise containing the updated organization response.
  */
-const updateSelfOrganization = (operations: PatchOperation[]): Promise<any> => {
+const updateSelfAuthenticatedOrganization = (operations: OrganizationPatchData[]): Promise<any> => {
+
     const requestConfig: any = {
         data: operations,
         headers: {
@@ -73,4 +66,4 @@ const updateSelfOrganization = (operations: PatchOperation[]): Promise<any> => {
         });
 };
 
-export default updateSelfOrganization;
+export default updateSelfAuthenticatedOrganization;

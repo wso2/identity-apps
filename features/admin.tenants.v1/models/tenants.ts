@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { ORGANIZATION_TYPE } from "@wso2is/admin.organizations.v1/constants";
+
 /**
  * Represents a tenant.
  */
@@ -199,7 +201,7 @@ export interface OrganizationSelfResponse {
     /**
      * The type of the organization.
      */
-    type: string;
+    type: ORGANIZATION_TYPE;
     /**
      * Whether the organization has child organizations.
      */

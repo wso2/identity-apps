@@ -18,5 +18,4 @@
 
 export * from "./add-modal";
 export * from "./dropdown";
-export * from "./edit-self-organization";
 export * from "./forms";

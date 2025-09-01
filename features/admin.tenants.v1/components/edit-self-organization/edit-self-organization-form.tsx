@@ -16,10 +16,12 @@
  * under the License.
  */
 
+import { CircularProgress } from "@mui/material";
 import Button from "@oxygen-ui/react/Button";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import { CopyIcon } from "@oxygen-ui/react-icons";
+import { OrganizationPatchData } from "@wso2is/admin.organizations.v1/models";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CommonUtils } from "@wso2is/core/utils";
@@ -34,14 +36,14 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import updateSelfOrganization from "../../api/update-self-organization";
-import useGetSelfOrganization from "../../api/use-get-self-organization";
+import updateSelfAuthenticatedOrganization from "../../api/update-self-authenticated-organization";
+import useGetSelfAuthenticatedOrganization from "../../api/use-get-self-authenticated-organization";
 import "./edit-self-organization-form.scss";
 
 /**
  * Props interface of {@link EditSelfOrganizationForm}
  */
-export type EditSelfOrganizationFormProps = IdentifiableComponentInterface & {
+type EditSelfOrganizationFormProps = IdentifiableComponentInterface & {
     /**
      * Callback to trigger when the form is submitted.
      */
@@ -52,7 +54,7 @@ export type EditSelfOrganizationFormProps = IdentifiableComponentInterface & {
     readOnly?: boolean;
 };
 
-export type EditSelfOrganizationFormValues = {
+type EditSelfOrganizationFormValues = {
     id: string;
     name: string;
     orgHandle: string;
@@ -60,13 +62,13 @@ export type EditSelfOrganizationFormValues = {
     lastModified: string;
 };
 
-export type EditSelfOrganizationFormErrors = Partial<EditSelfOrganizationFormValues>;
+type EditSelfOrganizationFormErrors = Partial<EditSelfOrganizationFormValues>;
 
 /**
- * Component to hold the self organization details edit/update form.
+ * Component to hold the currently authenticated organization details edit form.
  *
  * @param props - Props injected to the component.
- * @returns Self organization edit form component.
+ * @returns Currently authenticated organization edit form component.
  */
 const EditSelfOrganizationForm: FunctionComponent<EditSelfOrganizationFormProps> = ({
     ["data-componentid"]: componentId = "edit-self-organization-form",
@@ -77,7 +79,7 @@ const EditSelfOrganizationForm: FunctionComponent<EditSelfOrganizationFormProps>
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const { data: organization, mutate: mutateOrganization } = useGetSelfOrganization();
+    const { data: organization, mutate: mutateOrganization } = useGetSelfAuthenticatedOrganization();
 
     const formatDate = (dateString: string): string => {
         if (!dateString) return "";
@@ -86,23 +88,19 @@ const EditSelfOrganizationForm: FunctionComponent<EditSelfOrganizationFormProps>
     };
 
     /**
-     * Handles the self organization update form submit action.
+     * Handles the currently authenticated organization update form submit action.
+     *
      * @param values - Form values.
      */
     const handleSubmit = (values: EditSelfOrganizationFormValues): void => {
-        const operations: Array<{
-            operation: "REPLACE";
-            path: string;
-            value: string;
-        }> = [
-            {
-                operation: "REPLACE" as const,
-                path: "/name",
-                value: values.name
-            }
-        ];
 
-        updateSelfOrganization(operations)
+        const operations: OrganizationPatchData = {
+            operation: "REPLACE",
+            path: "/name",
+            value: values.name
+        };
+
+        updateSelfAuthenticatedOrganization([ operations ])
             .then(() => {
                 dispatch(
                     addAlert({
@@ -130,16 +128,18 @@ const EditSelfOrganizationForm: FunctionComponent<EditSelfOrganizationFormProps>
     };
 
     /**
-     * Handles the form level validation.
+     * Handles the currently authenticated organization form level validation.
+     *
      * @param values - Form values.
      * @returns Form errors.
      */
     const handleValidate = (values: EditSelfOrganizationFormValues): EditSelfOrganizationFormErrors => {
+
         const errors: EditSelfOrganizationFormErrors = {
             name: undefined
         };
 
-        if (!values.name) {
+        if (!values.name || values.name.trim() === "") {
             errors.name = t("tenants:editSelfOrganization.form.fields.organizationName.validations.required");
         }
 
@@ -147,17 +147,17 @@ const EditSelfOrganizationForm: FunctionComponent<EditSelfOrganizationFormProps>
     };
 
     if (!organization) {
-        return <div>Loading...</div>;
+        return <CircularProgress size={ 30 } />;
     }
 
     return (
         <FinalForm
             initialValues={ {
-                created: formatDate(organization.created),
-                id: organization.id,
-                lastModified: formatDate(organization.lastModified),
-                name: organization.name,
-                orgHandle: organization.orgHandle || ""
+                created: formatDate(organization?.created),
+                id: organization?.id,
+                lastModified: formatDate(organization?.lastModified),
+                name: organization?.name,
+                orgHandle: organization?.orgHandle || ""
             } }
             keepDirtyOnReinitialize={ true }
             onSubmit={ handleSubmit }
