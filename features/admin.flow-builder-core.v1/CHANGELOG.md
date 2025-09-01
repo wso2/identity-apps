@@ -1,5 +1,14 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.10.26
+
+### Patch Changes
+
+- [#8995](https://github.com/wso2/identity-apps/pull/8995) [`235a20ab055e6a2864af8f6d959513bfb086e25c`](https://github.com/wso2/identity-apps/commit/235a20ab055e6a2864af8f6d959513bfb086e25c) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Resolve issue on edge creation after node deletion.
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.34
+
 ## 0.10.25
 
 ### Patch Changes
