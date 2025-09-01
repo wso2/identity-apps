@@ -353,12 +353,8 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
     const onConfigRevert = () => {
         setIsSubmitting(true);
         const revertRequest: RevertGovernanceConnectorConfigInterface = {
-            properties: []
+            properties: connector?.properties?.map((property: ConnectorPropertyInterface) => property.name)
         };
-
-        connector?.properties?.forEach((property: ConnectorPropertyInterface) => {
-            revertRequest.properties.push(property.name);
-        });
 
         revertGovernanceConnectorProperties(categoryId, connectorId, revertRequest)
             .then(() => {
