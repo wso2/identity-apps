@@ -1,5 +1,20 @@
 # @wso2is/console
 
+## 2.77.33
+
+### Patch Changes
+
+- [#8997](https://github.com/wso2/identity-apps/pull/8997) [`99940bc83b3fa4370de6b8bb608f1d1b41c5957f`](https://github.com/wso2/identity-apps/commit/99940bc83b3fa4370de6b8bb608f1d1b41c5957f) Thanks [@Malith-19](https://github.com/Malith-19)! - Fix unnecessary username validations.
+
+- Updated dependencies [[`99940bc83b3fa4370de6b8bb608f1d1b41c5957f`](https://github.com/wso2/identity-apps/commit/99940bc83b3fa4370de6b8bb608f1d1b41c5957f)]:
+  - @wso2is/admin.users.v1@2.36.10
+  - @wso2is/admin.agents.v1@1.0.45
+  - @wso2is/admin.core.v1@2.49.33
+  - @wso2is/admin.roles.v2@2.27.200
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.25
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.25
+  - @wso2is/admin.server-configurations.v1@2.35.46
+
 ## 2.77.32
 
 ### Patch Changes
