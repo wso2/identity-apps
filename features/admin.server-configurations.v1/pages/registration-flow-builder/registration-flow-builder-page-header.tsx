@@ -26,6 +26,9 @@ import Typography from "@oxygen-ui/react/Typography";
 import { ArrowLeftIcon } from "@oxygen-ui/react-icons";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import ValidationStatusLabels from
+    "@wso2is/admin.flow-builder-core.v1/components/validation-panel/validation-status-labels";
+import useValidationStatus from "@wso2is/admin.flow-builder-core.v1/hooks/use-validation-status";
 import updateFlowConfig from "@wso2is/admin.flows.v1/api/update-flow-config";
 import useGetFlowConfig from "@wso2is/admin.flows.v1/api/use-get-flow-config";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
@@ -64,6 +67,7 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
     ["data-componentid"]: componentId = "registration-flow-builder-page-header"
 }: RegistrationFlowBuilderPageHeaderProps): ReactElement => {
     const { onPublish } = useRegistrationFlowBuilder();
+    const { isValid } = useValidationStatus();
     const {
         data: flowConfig,
         mutate: mutateFlowConfig,
@@ -188,23 +192,32 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
             </Box>
             <Box
                 display="flex"
-                justifyContent="flex-end"
+                justifyContent="center"
                 alignItems="center"
+                gap={ 4 }
             >
-                <Tooltip
-                    title={
-                        flowConfig?.isEnabled
-                            ? t("flows:registrationFlow.tooltip.disableFlow")
-                            : t("flows:registrationFlow.tooltip.enableFlow")
-                    }
-                >
-                    <Switch
-                        checked={ flowConfig?.isEnabled || false }
-                        onChange={ handleToggleFlow }
-                        disabled={ isFlowConfigUpdating }
-                        data-componentid={ `${componentId}-toggle-switch` }
-                    />
-                </Tooltip>
+                <ValidationStatusLabels />
+                <Box display="flex" alignItems="center">
+                    <Typography>
+                        { flowConfig?.isEnabled
+                            ? t("flows:registrationFlow.labels.disableFlow")
+                            : t("flows:registrationFlow.labels.enableFlow") }
+                    </Typography>
+                    <Tooltip
+                        title={
+                            flowConfig?.isEnabled
+                                ? t("flows:registrationFlow.tooltip.disableFlow")
+                                : t("flows:registrationFlow.tooltip.enableFlow")
+                        }
+                    >
+                        <Switch
+                            checked={ flowConfig?.isEnabled || false }
+                            onChange={ handleToggleFlow }
+                            disabled={ isFlowConfigUpdating || (!flowConfig?.isEnabled && !isValid) }
+                            data-componentid={ `${componentId}-toggle-switch` }
+                        />
+                    </Tooltip>
+                </Box>
             </Box>
         </Box>
     );

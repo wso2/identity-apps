@@ -1,0 +1,110 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+.flow-builder-resource-property-panel-i18n-configuration {
+    &.card-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: transparent;
+        z-index: 1300;
+
+        .card {
+            position: absolute;
+            width: 370px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            border: 1px solid var(--oxygen-palette-divider);
+            border-radius: var(--oxygen-shape-borderRadius);
+            background-color: var(--oxygen-palette-background-paper);
+            z-index: 1301;
+            padding: 0;
+
+            .card-header {
+                border-bottom: 1px solid var(--oxygen-palette-divider);
+                padding: 16px;
+
+                .MuiCardHeader-title {
+                    font-size: 1rem;
+                    font-weight: 500;
+                    margin-right: 5px;
+                }
+            }
+
+            .card-content {
+                margin: 10px 0;
+                padding: 16px 24px;
+                max-height: 550px;
+                overflow-y: auto;
+
+                &.scrolled {
+                    padding-right: 8px;
+                }
+            }
+
+            .card-actions {
+                justify-content: flex-end;
+                padding: 24px;
+                padding-top: 0;
+
+                .oxygen-button {
+                    min-width: auto;
+
+                    &.MuiButton-containedPrimary.Mui-disabled {
+                        opacity: 0.5;
+                        color: var(--oxygen-palette-primary-contrastText);
+                    }
+                }
+            }
+
+            .i18n-config-container {
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+
+                &.loading {
+                    justify-content: center;
+                    align-items: center;
+                    padding: 2rem;
+                }
+            }
+        }
+    }
+
+    .option-item {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        padding: 5px 10px;
+
+        .option-text {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .delete-icon-button {
+            color: var(--oxygen-palette-error-main);
+        }
+    }
+
+    .branding-link {
+        cursor: pointer;
+    }
+}

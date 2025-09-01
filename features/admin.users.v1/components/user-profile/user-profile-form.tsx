@@ -690,13 +690,9 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                     }
                 }
             } else {
-                const isExtendedSchema: boolean = (profileData.schemas as string[]).includes(fieldName);
-                let decodedFieldName: string = fieldName;
-
-                if (isExtendedSchema) {
-                    // Replace back the __DOT__ with dots.
-                    decodedFieldName = fieldName.replace(/__DOT__/g, ".");
-                }
+                // Replace back the __DOT__ with dots.
+                const decodedFieldName: string = fieldName.replace(/__DOT__/g, ".");
+                const isExtendedSchema: boolean = (profileData.schemas as string[]).includes(decodedFieldName);
 
                 /**
                  * Following logics map the values from the form with the dirty fields and
@@ -728,13 +724,22 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                 // For each path, build and push a patch op:
                 attributePaths.forEach((path: string) => {
                     // Build the fullPath ex: "urn:scim:wso2:schema.country".
-                    const fullPath: string = `${decodedFieldName}.${path}`;
+                    const fullPath: string = `${fieldName}.${path}`;
                     // Grab the value at that path from the form values.
                     const leafValue: unknown = get(values, fullPath, "");
                     // Build { fieldName: { …nested… } }, e.g. { urn:…: { country: "Argentina" } }
                     const opValue: Record<string, any> = {};
 
                     set(opValue, fullPath, leafValue);
+
+                    // Since the field name is encoded with __DOT__,
+                    // we need to add the decoded field name to the opValue.
+                    // This is only for schema ID keys.
+                    // Ex: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
+                    if (isExtendedSchema && decodedFieldName !== fieldName) {
+                        opValue[decodedFieldName] = opValue[fieldName];
+                        delete opValue[fieldName];
+                    }
 
                     data.Operations.push({
                         op: "replace",
@@ -823,7 +828,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
 
         const attributeValue: unknown = extractAttributeValue(schema);
 
-        if (schema.type !== ClaimDataType.BOOLEAN && isEmpty(attributeValue)) {
+        if (schema.type?.toLowerCase() !== ClaimDataType.BOOLEAN.toLowerCase() && isEmpty(attributeValue)) {
             // If the profile UI is in read only mode, the empty field should not be displayed.
             if (isReadOnlyMode) {
                 return false;
@@ -835,6 +840,13 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
             if (resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA) {
                 return false;
             }
+        }
+
+        // If the attribute is a complex type, it should not be displayed.
+        if (schema.type?.toLowerCase() === ClaimDataType.COMPLEX.toLowerCase() &&
+            schema.schemaUri !== ProfileConstants.SCIM2_CORE_USER_SCHEMA_ATTRIBUTES.emails &&
+            schema.schemaUri !== ProfileConstants.SCIM2_CORE_USER_SCHEMA_ATTRIBUTES.mobile) {
+            return false;
         }
 
         return true;

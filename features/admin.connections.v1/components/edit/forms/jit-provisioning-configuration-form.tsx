@@ -17,25 +17,43 @@
  */
 
 import { Show } from "@wso2is/access-control";
+import useGetAllLocalClaims from "@wso2is/admin.claims.v1/api/use-get-all-local-claims";
+import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { identityProviderConfig, userstoresConfig } from "@wso2is/admin.extensions.v1";
-import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
-import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, FormValue, Forms } from "@wso2is/forms";
-import { Code, DocumentationLink, Hint, Message, useDocumentation } from "@wso2is/react-components";
+import { AlertLevels, Claim, TestableComponentInterface, UniquenessScope } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { Field, FormValue, Forms, RadioChild } from "@wso2is/forms";
+import {
+    Code,
+    DocumentationLink,
+    Hint,
+    Link,
+    Message,
+    SecondaryButton,
+    Text,
+    Tooltip,
+    useDocumentation
+} from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { Button, DropdownItemProps, Grid } from "semantic-ui-react";
+import { Trans, useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
+import { Button, Divider, DropdownItemProps, Grid, Header, Icon, Segment } from "semantic-ui-react";
 import {
     ConnectionInterface,
+    JITProvisioningAccountLinkingAttributeMappingInterface,
     JITProvisioningResponseInterface,
+    SupportedAttributeSyncMethods,
     SupportedJITProvisioningSchemes
 } from "../../../models/connection";
+import "./jit-provisioning-configuration-form.scss";
 
 /**
  *  Just-in time provisioning configurations for the IdP.
@@ -56,7 +74,12 @@ enum JITProvisioningConstants {
     PROVISIONING_USER_STORE_DOMAIN_KEY = "provisioningUserstoreDomain",
     PROVISIONING_SCHEME_TYPE_KEY = "provisioningScheme",
     ASSOCIATE_LOCAL_USER = "associateLocalUser",
-    ATTRIBUTE_SYNC_METHOD ="attributeSyncMethod"
+    ATTRIBUTE_SYNC_METHOD = "attributeSyncMethod",
+    SKIP_JIT_FOR_NO_RULE_MATCH = "skipJITForNoRuleMatch",
+    FIRST_MATCH_RULE_FEDERATED_ATTRIBUTE = "firstMatchRuleFederatedAttribute",
+    FIRST_MATCH_RULE_LOCAL_ATTRIBUTE = "firstMatchRuleLocalAttribute",
+    FALLBACK_MATCH_RULE_FEDERATED_ATTRIBUTE = "fallbackMatchRuleFederatedAttribute",
+    FALLBACK_MATCH_RULE_LOCAL_ATTRIBUTE = "fallbackMatchRuleLocalAttribute"
 }
 
 /**
@@ -79,7 +102,8 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
-    const { isSubOrganization } = useGetCurrentOrganizationType();
+    const dispatch: Dispatch = useDispatch();
+    const enableIdentityClaims: boolean = useSelector((state: AppState) => state?.config?.ui?.enableIdentityClaims);
     const {
         isLoading: isUserStoreListFetchRequestLoading,
         isUserStoreReadOnly,
@@ -87,11 +111,31 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         userStoresList
     } = useUserStores();
 
+    const {
+        data: localClaims,
+        isLoading: isLocalClaimsLoading,
+        error: localClaimsError
+    } = useGetAllLocalClaims({
+        "exclude-identity-claims": !enableIdentityClaims,
+        filter: null,
+        limit: null,
+        offset: null,
+        sort: null
+    });
+
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName ?? userstoresConfig.primaryUserstoreName);
 
     const [ isJITProvisioningEnabled, setIsJITProvisioningEnabled ] = useState<boolean>(false);
+    const [ isAssociateLocalUserEnabled, setIsAssociateLocalUserEnabled ] = useState<boolean>(false);
+    const [ fallbackLinkingRuleEnabled, setFallbackLinkingRuleEnabled ] = useState<boolean>(
+        !!initialValues?.accountLookupAttributeMappings?.[1]);
+    const [ firstMatchRuleStatus, setFirstMatchRuleStatus ] = useState<boolean>(
+        !!initialValues?.accountLookupAttributeMappings?.[0]);
+    const [ firstMappedLocalAttribute, setFirstMappedLocalAttribute ] = useState<string | undefined>(
+        initialValues?.accountLookupAttributeMappings?.[0]?.localAttribute || ""
+    );
 
     const userStoreOptions: DropdownItemProps[] = useMemo(() => {
         const storeOptions: DropdownItemProps[] = [
@@ -122,6 +166,66 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         return storeOptions;
     }, [ isUserStoreListFetchRequestLoading, userStoresList ]);
 
+    /**
+     * Build the dropdown options for account linking attribute mappings.
+     */
+    const localClaimsOptions: DropdownItemProps[] = useMemo(() => {
+        if (!localClaims) {
+            return [];
+        }
+
+        const options: DropdownItemProps[] = [
+            {
+                content: (
+                    <div className="jit-provisioning-local-claim-dropdown-option">
+                        <Text className="primary-text">
+                            { t("authenticationProvider:" +
+                                "forms.jitProvisioning.accountLinkingAttributes.noneOption.label") }
+                        </Text>
+                        <Text className="secondary-text" muted>
+                            { t("authenticationProvider:" +
+                                "forms.jitProvisioning.accountLinkingAttributes.noneOption.description") }
+                        </Text>
+                    </div>
+                ),
+                key: "none",
+                text: t("authenticationProvider:" +
+                    "forms.jitProvisioning.accountLinkingAttributes.noneOption.label"),
+                value: ""
+            }
+        ];
+
+        const claimOptions: DropdownItemProps[] = localClaims.map((claim: Claim) => {
+            if ((!claim.uniquenessScope || claim.uniquenessScope === UniquenessScope.NONE) &&
+                claim.claimURI !== ClaimManagementConstants.USER_NAME_CLAIM_URI) {
+                return null;
+            }
+
+            return {
+                content: (
+                    <div className="jit-provisioning-local-claim-dropdown-option">
+                        <Text className="primary-text">{ claim.displayName }</Text>
+                        <Text className="secondary-text" muted>{ claim.claimURI }</Text>
+                    </div>
+                ),
+                key: claim.claimURI,
+                text: claim.claimURI,
+                value: claim.claimURI
+            };
+        }).filter((option: DropdownItemProps) => option !== null);
+
+        return options.concat(claimOptions);
+    }, [ localClaims ]);
+
+    /**
+     * Filter out the first mapped local attribute.
+     */
+    const filteredLocalClaimsOptions: DropdownItemProps[] = useMemo(() => {
+        return localClaimsOptions.filter((option: DropdownItemProps) => {
+            return option.value !== firstMappedLocalAttribute;
+        });
+    }, [ localClaimsOptions, firstMappedLocalAttribute ]);
+
     useEffect(() => {
         mutateUserStoreList();
     }, []);
@@ -130,7 +234,23 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         if (initialValues?.isEnabled) {
             setIsJITProvisioningEnabled(initialValues?.isEnabled);
         }
+        if (initialValues?.associateLocalUser) {
+            setIsAssociateLocalUserEnabled(initialValues?.associateLocalUser);
+        }
     }, [ initialValues ]);
+
+    /**
+     * Error handling for local claims fetch.
+     */
+    useEffect(() => {
+        if (localClaimsError) {
+            dispatch(addAlert({
+                description: t("authenticationProvider:notifications.getLocalClaims.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("authenticationProvider:notifications.getLocalClaims.genericError.message")
+            }));
+        }
+    }, [ localClaimsError, dispatch ]);
 
     /**
      * Prepare form values for submitting.
@@ -139,7 +259,42 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
      * @returns
      */
     const updateConfiguration = (values: any): any => {
+        const accountLookupAttributeMappings: JITProvisioningAccountLinkingAttributeMappingInterface[] = [];
+
+        const firstMatchRuleFederatedAttr: string = values.get(
+            JITProvisioningConstants.FIRST_MATCH_RULE_FEDERATED_ATTRIBUTE
+        );
+        const firstMatchRuleLocalAttr: string = values.get(
+            JITProvisioningConstants.FIRST_MATCH_RULE_LOCAL_ATTRIBUTE
+        );
+
+        if (firstMatchRuleFederatedAttr && firstMatchRuleLocalAttr) {
+            accountLookupAttributeMappings.push({
+                federatedAttribute: firstMatchRuleFederatedAttr,
+                localAttribute: firstMatchRuleLocalAttr
+            });
+        }
+
+        if (fallbackLinkingRuleEnabled) {
+            const fallbackMatchRuleFederatedAttr: string = values.get(
+                JITProvisioningConstants.FALLBACK_MATCH_RULE_FEDERATED_ATTRIBUTE
+            );
+            const fallbackMatchRuleLocalAttr: string = values.get(
+                JITProvisioningConstants.FALLBACK_MATCH_RULE_LOCAL_ATTRIBUTE
+            );
+
+            if (fallbackMatchRuleFederatedAttr && fallbackMatchRuleLocalAttr) {
+                accountLookupAttributeMappings.push({
+                    federatedAttribute: fallbackMatchRuleFederatedAttr,
+                    localAttribute: fallbackMatchRuleLocalAttr
+                });
+            }
+        }
+
         return {
+            accountLookupAttributeMappings: accountLookupAttributeMappings
+                ? accountLookupAttributeMappings
+                : initialValues?.accountLookupAttributeMappings || [],
             associateLocalUser: values.get(JITProvisioningConstants.ASSOCIATE_LOCAL_USER)
                 ?.includes(JITProvisioningConstants.ASSOCIATE_LOCAL_USER) ?? initialValues?.associateLocalUser,
             attributeSyncMethod: values?.get(
@@ -151,6 +306,9 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
             scheme: values.get(
                 JITProvisioningConstants.PROVISIONING_SCHEME_TYPE_KEY
             ) ?? initialValues?.scheme,
+            skipJITForLookupFailure: values.get(JITProvisioningConstants.SKIP_JIT_FOR_NO_RULE_MATCH)
+                ?.includes(JITProvisioningConstants.SKIP_JIT_FOR_NO_RULE_MATCH)
+                ?? initialValues?.skipJITForLookupFailure,
             userstore: values.get(
                 JITProvisioningConstants.PROVISIONING_USER_STORE_DOMAIN_KEY
             ) ?? initialValues.userstore
@@ -178,13 +336,40 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         value: SupportedJITProvisioningSchemes.PROVISION_SILENTLY
     } ];
 
+    const supportedAttributeSyncMethods: RadioChild[] = [ {
+        hint: {
+            content: t("authenticationProvider:" +
+            "forms.jitProvisioning.attributeSyncMethod.options.overrideAll.description")
+        },
+        label: t("authenticationProvider:" +
+            "forms.jitProvisioning.attributeSyncMethod.options.overrideAll.label"),
+        value: SupportedAttributeSyncMethods.OVERRIDE_ALL
+    }, {
+        hint: {
+            content: t("authenticationProvider:" +
+            "forms.jitProvisioning.attributeSyncMethod.options.none.description")
+        },
+        label: t("authenticationProvider:" +
+            "forms.jitProvisioning.attributeSyncMethod.options.none.label"),
+        value: SupportedAttributeSyncMethods.NONE
+    }, {
+        hint: {
+            content: t("authenticationProvider:" +
+            "forms.jitProvisioning.attributeSyncMethod.options.preserveLocal.description")
+        },
+        label: t("authenticationProvider:" +
+            "forms.jitProvisioning.attributeSyncMethod.options.preserveLocal.label"),
+        value: SupportedAttributeSyncMethods.PRESERVE_LOCAL
+    } ];
+
     const ProxyModeConflictMessage: ReactElement = (
         <div
-            style={ { animationDuration: "350ms" } }
             className={ classNames("ui image warning scale transition", {
                 "hidden animating out": isJITProvisioningEnabled,
                 "visible animating in": !isJITProvisioningEnabled
-            }) }>
+            }) }
+            style={ { animationDuration: "350ms" } }
+        >
             <Message
                 data-componentid="proxy-mode-conflict-warning-message"
                 data-testid="proxy-mode-conflict-warning-message"
@@ -209,14 +394,75 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
         </div>
     );
 
+    /**
+     * Handles the navigation to the local attributes section.
+     */
+    const handleLocalAttributeSectionNavigation = () => {
+        history.push(AppConstants.getPaths().get("LOCAL_CLAIMS"));
+    };
+
+    /**
+     * Renders the info circle for local attribute configuration.
+     */
+    const renderInfoCircle = (): ReactElement => {
+        return (
+            <Tooltip
+                trigger={
+                    <Icon name="info circle" color="grey" size="small" />
+                }
+                content={ (
+                    <Trans
+                        i18nKey="authenticationProvider:forms.jitProvisioning.accountLinkingAttributes.infoNotification"
+                    >
+                        The local attribute dropdown displays attributes that have uniqueness
+                        constraints enabled. To configure additional attributes for linking, configure uniqueness
+                        settings in the <Link
+                            onClick={ handleLocalAttributeSectionNavigation }
+                            external={ false }
+                        >
+                            local attributes
+                        </Link> section.
+                    </Trans>
+                ) }
+                hoverable
+            />
+        );
+    };
+
+    /**
+     * Check the existence of first match rule attributes.
+     */
+    const handleFirstMatchRuleStatus = (values: Map<string, string>)  => {
+        const firstMatchRuleFederatedAttr: string = values.get(
+            JITProvisioningConstants.FIRST_MATCH_RULE_FEDERATED_ATTRIBUTE
+        );
+        const firstMatchRuleLocalAttr: string = values.get(
+            JITProvisioningConstants.FIRST_MATCH_RULE_LOCAL_ATTRIBUTE
+        );
+
+        if (firstMatchRuleLocalAttr) {
+            setFirstMappedLocalAttribute(firstMatchRuleLocalAttr);
+        }
+
+        if (firstMatchRuleFederatedAttr && firstMatchRuleLocalAttr) {
+            if (!firstMatchRuleStatus) {
+                setFirstMatchRuleStatus(true);
+            }
+        } else {
+            if (firstMatchRuleStatus) {
+                setFirstMatchRuleStatus(false);
+            }
+        }
+    };
+
     return (
         <Forms onSubmit={ (values: Map<string, FormValue>) => onSubmit(updateConfiguration(values)) }>
-            <Grid>
+            <Grid className="jit-provisioning-configuration-form">
                 {
                     identityProviderConfig?.jitProvisioningSettings?.enableJitProvisioningField?.show
                     && (
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 7 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                 <Field
                                     name={ JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY }
                                     label=""
@@ -236,8 +482,8 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                         );
                                     } }
                                     children={ [ {
-                                        label: t("authenticationProvider:forms." +
-                                            "jitProvisioning.enableJITProvisioning.label"),
+                                        label: t("authenticationProvider:" +
+                                            "forms.jitProvisioning.enableJITProvisioning.label"),
                                         value: JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY
                                     } ] }
                                     data-testid={ `${ testId }-is-enable` }
@@ -256,44 +502,11 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                     )
                 }
                 {
-                    isSubOrganization()
-                    && identityProviderConfig?.jitProvisioningSettings?.enableAssociateLocalUserField?.show
-                    && (
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 7 }>
-                                <Field
-                                    name={ JITProvisioningConstants.ASSOCIATE_LOCAL_USER }
-                                    label=""
-                                    required={ false }
-                                    disabled={ !isJITProvisioningEnabled }
-                                    requiredErrorMessage=""
-                                    value={
-                                        initialValues?.associateLocalUser
-                                            ? [ JITProvisioningConstants.ASSOCIATE_LOCAL_USER ]
-                                            : []
-                                    }
-                                    type="checkbox"
-                                    children={ [ {
-                                        label: t("authenticationProvider:forms." +
-                                            "jitProvisioning.associateLocalUser.label"),
-                                        value: JITProvisioningConstants.ASSOCIATE_LOCAL_USER
-                                    } ] }
-                                    data-testid={ `${ testId }-is-enable` }
-                                    readOnly={ isReadOnly }
-                                />
-                                <Hint>
-                                    { t("authenticationProvider:forms." +
-                                        "jitProvisioning.associateLocalUser.hint") }
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
-                    )
-                }
-                {
-                    identityProviderConfig?.jitProvisioningSettings?.userstoreDomainField?.show
+                    identityProviderConfig?.jitProvisioningSettings?.userstoreDomainField?.show &&
+                        isJITProvisioningEnabled
                         ? (
                             <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 7 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                     <Field
                                         name={ JITProvisioningConstants.PROVISIONING_USER_STORE_DOMAIN_KEY }
                                         label={
@@ -322,10 +535,11 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                         : <Fragment />
                 }
                 {
-                    identityProviderConfig?.jitProvisioningSettings?.provisioningSchemeField?.show
+                    identityProviderConfig?.jitProvisioningSettings?.provisioningSchemeField?.show &&
+                        isJITProvisioningEnabled
                         ? (
                             <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 7 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                     <Fragment>
                                         <Field
                                             required={ false }
@@ -353,6 +567,361 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                             </Grid.Row>
                         )
                         : <Fragment />
+                }
+                {
+                    identityProviderConfig?.jitProvisioningSettings?.attributeSyncMethodField?.show &&
+                        isJITProvisioningEnabled && (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                <Fragment>
+                                    <Field
+                                        required={ false }
+                                        requiredErrorMessage=""
+                                        label={ t("authenticationProvider:" +
+                                            "forms.jitProvisioning.attributeSyncMethod.label") }
+                                        name={ JITProvisioningConstants.ATTRIBUTE_SYNC_METHOD }
+                                        default={
+                                            initialValues?.attributeSyncMethod
+                                                ? initialValues?.attributeSyncMethod
+                                                : SupportedAttributeSyncMethods.PRESERVE_LOCAL
+                                        }
+                                        type="radio"
+                                        children={ supportedAttributeSyncMethods }
+                                        disabled={ !isJITProvisioningEnabled }
+                                        data-testid={ `${ testId }-attribute-sync-method` }
+                                        readOnly={ isReadOnly }
+                                    />
+                                    <Hint>
+                                        { t("authenticationProvider:" +
+                                            "forms.jitProvisioning.attributeSyncMethod.hint") }
+                                    </Hint>
+                                </Fragment>
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                }
+                {
+                    identityProviderConfig?.jitProvisioningSettings?.accountLinkingAttributesSection?.show &&
+                        isJITProvisioningEnabled && (
+                        <>
+                            <Grid.Row>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                    <Header size="small">
+                                        { t("authenticationProvider:" +
+                                            "forms.jitProvisioning.accountLinkingAttributes.heading") }
+                                    </Header>
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row className="pb-0">
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                    <Field
+                                        name={ JITProvisioningConstants.ASSOCIATE_LOCAL_USER }
+                                        required={ false }
+                                        disabled={ !isJITProvisioningEnabled }
+                                        value={
+                                            initialValues?.associateLocalUser
+                                                ? [ JITProvisioningConstants.ASSOCIATE_LOCAL_USER ]
+                                                : []
+                                        }
+                                        type="checkbox"
+                                        listen={ (values: Map<string, FormValue>) => {
+                                            setIsAssociateLocalUserEnabled(
+                                                values
+                                                    .get(JITProvisioningConstants.ASSOCIATE_LOCAL_USER)
+                                                    ?.includes(JITProvisioningConstants.ASSOCIATE_LOCAL_USER) || false
+                                            );
+                                        } }
+                                        children={ [ {
+                                            label: t("authenticationProvider:" +
+                                                "forms.jitProvisioning.associateLocalUser.label"),
+                                            value: JITProvisioningConstants.ASSOCIATE_LOCAL_USER
+                                        } ] }
+                                        data-componentid={ `${ testId }-associate-local-user` }
+                                        readOnly={ isReadOnly }
+                                    />
+                                    <Hint>
+                                        { t("authenticationProvider:" +
+                                            "forms.jitProvisioning.associateLocalUser.hint") }
+                                    </Hint>
+                                </Grid.Column>
+                            </Grid.Row>
+                            {
+                                identityProviderConfig?.jitProvisioningSettings?.skipJITForNoRuleMatchField?.show &&
+                                            isJITProvisioningEnabled && isAssociateLocalUserEnabled && (
+                                    <>
+                                        <Grid.Row className="nested-section">
+                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                                <Field
+                                                    name={ JITProvisioningConstants.SKIP_JIT_FOR_NO_RULE_MATCH }
+                                                    required={ false }
+                                                    value={
+                                                        initialValues?.skipJITForLookupFailure
+                                                            ? [ JITProvisioningConstants.SKIP_JIT_FOR_NO_RULE_MATCH ]
+                                                            : []
+                                                    }
+                                                    type="checkbox"
+                                                    children={ [ {
+                                                        label: t("authenticationProvider:" +
+                                                            "forms.jitProvisioning.skipJITForNoRuleMatch.label"),
+                                                        value: JITProvisioningConstants.SKIP_JIT_FOR_NO_RULE_MATCH
+                                                    } ] }
+                                                    data-componentid={ `${ testId }-skip-jit-for-no-rule-match` }
+                                                    readOnly={ isReadOnly }
+                                                    disabled={
+                                                        !isJITProvisioningEnabled || !isAssociateLocalUserEnabled
+                                                    }
+                                                />
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                        <Grid.Row className="nested-section pt-0">
+                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                                <Message
+                                                    type="info"
+                                                    size="small"
+                                                >
+                                                    <Icon name="info circle" />
+                                                    {
+                                                        t("authenticationProvider:" +
+                                                            "forms.jitProvisioning.skipJITForNoRuleMatch.infoMessage")
+                                                    }
+                                                </Message>
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                        <Grid.Row>
+                                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                                <Header size="tiny" color="grey">
+                                                    { t("authenticationProvider:" +
+                                                        "forms.jitProvisioning." +
+                                                        "accountLinkingAttributes.linkAccountIf") }
+                                                </Header>
+                                                <Segment padded>
+                                                    <Grid>
+                                                        <Grid.Row columns={ 1 }>
+                                                            <Grid.Column>
+                                                                <Field
+                                                                    name={
+                                                                        JITProvisioningConstants
+                                                                            .FIRST_MATCH_RULE_FEDERATED_ATTRIBUTE
+                                                                    }
+                                                                    label={ t("authenticationProvider:" +
+                                                                        "forms.jitProvisioning." +
+                                                                        "accountLinkingAttributes." +
+                                                                        "matchRule.federatedAttribute.label") }
+                                                                    required={ false }
+                                                                    type="text"
+                                                                    placeholder={ t("authenticationProvider:" +
+                                                                        "forms.jitProvisioning." +
+                                                                        "accountLinkingAttributes.matchRule." +
+                                                                        "federatedAttribute.placeholder")
+                                                                    }
+                                                                    value={
+                                                                        initialValues
+                                                                            ?.accountLookupAttributeMappings?.[0]
+                                                                            ?.federatedAttribute || ""
+                                                                    }
+                                                                    data-componentid={
+                                                                        testId + "-first-match-rule-federated-attribute"
+                                                                    }
+                                                                    readOnly={ isReadOnly }
+                                                                    disabled={
+                                                                        !isJITProvisioningEnabled
+                                                                        || !isAssociateLocalUserEnabled
+                                                                    }
+                                                                    listen={ handleFirstMatchRuleStatus }
+                                                                />
+                                                            </Grid.Column>
+                                                            <Grid.Column>
+                                                                <Header
+                                                                    size="tiny"
+                                                                    className="attribute-equals-header"
+                                                                    color="grey"
+                                                                >
+                                                                    { t("authenticationProvider:" +
+                                                                        "forms.jitProvisioning." +
+                                                                        "accountLinkingAttributes.equals") }
+                                                                </Header>
+                                                            </Grid.Column>
+                                                            <Grid.Column>
+                                                                <Field
+                                                                    name={
+                                                                        JITProvisioningConstants
+                                                                            .FIRST_MATCH_RULE_LOCAL_ATTRIBUTE
+                                                                    }
+                                                                    label={
+                                                                        (
+                                                                            <>
+                                                                                { t("authenticationProvider:forms.jit" +
+                                                                                    "Provisioning.accountLinking" +
+                                                                                    "Attributes.matchRule." +
+                                                                                    "localAttribute.label") }
+                                                                                {
+                                                                                    renderInfoCircle()
+                                                                                }
+                                                                            </>
+                                                                        )
+                                                                    }
+                                                                    required={ false }
+                                                                    type="dropdown"
+                                                                    placeholder={ t("authenticationProvider:" +
+                                                                        "forms.jitProvisioning." +
+                                                                        "accountLinkingAttributes." +
+                                                                        "matchRule.localAttribute.placeholder") }
+                                                                    value={
+                                                                        initialValues
+                                                                            ?.accountLookupAttributeMappings?.[0]
+                                                                            ?.localAttribute || ""
+                                                                    }
+                                                                    children={ localClaimsOptions }
+                                                                    loading={ isLocalClaimsLoading }
+                                                                    data-componentid={
+                                                                        `${ testId }-first-match-rule-local-attribute`
+                                                                    }
+                                                                    readOnly={ isReadOnly }
+                                                                    disabled={
+                                                                        !isJITProvisioningEnabled ||
+                                                                        !isAssociateLocalUserEnabled
+                                                                    }
+                                                                    listen={ handleFirstMatchRuleStatus }
+                                                                />
+                                                            </Grid.Column>
+                                                        </Grid.Row>
+                                                    </Grid>
+                                                </Segment>
+                                                <Divider horizontal>
+                                                    {
+                                                        <SecondaryButton
+                                                            type="button"
+                                                            className="flex-center-button"
+                                                            onClick={ () =>
+                                                                setFallbackLinkingRuleEnabled(
+                                                                    !fallbackLinkingRuleEnabled
+                                                                ) }
+                                                        >
+                                                            {
+                                                                fallbackLinkingRuleEnabled ? (
+                                                                    <Icon  name="minus" size="small" />
+                                                                ) : (
+                                                                    <Icon name="plus" size="small" />
+                                                                )
+                                                            }
+                                                            OR
+                                                        </SecondaryButton>
+                                                    }
+                                                </Divider>
+                                                {
+                                                    fallbackLinkingRuleEnabled && (
+                                                        <Segment padded>
+                                                            <Grid>
+                                                                <Grid.Row columns={ 1 }>
+                                                                    <Grid.Column>
+                                                                        <Field
+                                                                            name={
+                                                                                JITProvisioningConstants[
+                                                                                    "FALLBACK_MATCH_RULE" +
+                                                                                    "_FEDERATED_ATTRIBUTE"
+                                                                                ]
+                                                                            }
+                                                                            label={ t("authenticationProvider:" +
+                                                                                "forms.jitProvisioning." +
+                                                                                "accountLinkingAttributes." +
+                                                                                "matchRule.federatedAttribute.label") }
+                                                                            required={ false }
+                                                                            type="text"
+                                                                            placeholder={ t("authenticationProvider:" +
+                                                                                "forms.jitProvisioning.account" +
+                                                                                "LinkingAttributes.matchRule" +
+                                                                                ".federatedAttribute.placeholder")
+                                                                            }
+                                                                            value={
+                                                                                initialValues
+                                                                                    ?.accountLookupAttributeMappings
+                                                                                    ?.[1]
+                                                                                    ?.federatedAttribute || ""
+                                                                            }
+                                                                            data-componentid={
+                                                                                testId + "-fallback-match-rule"
+                                                                                + "-federated-attribute"
+                                                                            }
+                                                                            readOnly={ isReadOnly }
+                                                                            disabled={
+                                                                                !isJITProvisioningEnabled
+                                                                                || !isAssociateLocalUserEnabled
+                                                                                || !firstMatchRuleStatus
+                                                                            }
+                                                                        />
+                                                                    </Grid.Column>
+                                                                    <Grid.Column>
+                                                                        <Header
+                                                                            size="tiny"
+                                                                            className="attribute-equals-header"
+                                                                            color="grey"
+                                                                        >
+                                                                            { t("authenticationProvider:" +
+                                                                                "forms.jitProvisioning." +
+                                                                                "accountLinkingAttributes.equals") }
+                                                                        </Header>
+                                                                    </Grid.Column>
+                                                                    <Grid.Column>
+                                                                        <Field
+                                                                            name={
+                                                                                JITProvisioningConstants
+                                                                                    .FALLBACK_MATCH_RULE_LOCAL_ATTRIBUTE
+                                                                            }
+                                                                            label={
+                                                                                (
+                                                                                    <>
+                                                                                        { t(
+                                                                                            "authenticationProvider:" +
+                                                                                            "forms.jitProvisioning." +
+                                                                                            "accountLinking" +
+                                                                                            "Attributes.matchRule." +
+                                                                                            "localAttribute.label"
+                                                                                        ) }
+                                                                                        {
+                                                                                            renderInfoCircle()
+                                                                                        }
+                                                                                    </>
+                                                                                )
+                                                                            }
+                                                                            required={ false }
+                                                                            type="dropdown"
+                                                                            placeholder={ t("authenticationProvider:" +
+                                                                                "forms.jitProvisioning." +
+                                                                                "accountLinkingAttributes." +
+                                                                                "matchRule.localAttribute.placeholder")
+                                                                            }
+                                                                            value={
+                                                                                initialValues
+                                                                                    ?.accountLookupAttributeMappings
+                                                                                    ?.[1]
+                                                                                    ?.localAttribute || ""
+                                                                            }
+                                                                            children={ filteredLocalClaimsOptions }
+                                                                            loading={ isLocalClaimsLoading }
+                                                                            data-componentid={
+                                                                                testId +
+                                                                                "-fallback-match-rule-local-attribute"
+                                                                            }
+                                                                            readOnly={ isReadOnly }
+                                                                            disabled={
+                                                                                !isJITProvisioningEnabled
+                                                                                || !isAssociateLocalUserEnabled
+                                                                                || !firstMatchRuleStatus
+                                                                            }
+                                                                        />
+                                                                    </Grid.Column>
+                                                                </Grid.Row>
+                                                            </Grid>
+                                                        </Segment>
+                                                    )
+                                                }
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    </>
+                                )
+                            }
+                        </>
+                    )
                 }
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 7 }>

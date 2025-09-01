@@ -23,6 +23,7 @@ import Button from "@oxygen-ui/react/Button";
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     ConfirmationModal,
@@ -56,6 +57,7 @@ import useGetDefaultEventProfile from "../api/use-get-default-event-profile";
 import useGetWebhookById from "../api/use-get-webhook-by-id";
 import useGetWebhooksMetadata from "../api/use-get-webhooks-metadata";
 import WebhookConfigForm from "../components/webhook-config-form";
+import { WebhooksConstants } from "../constants/webhooks-constants";
 import useWebhookNavigation from "../hooks/use-webhook-navigation";
 import { WebhookChannelConfigInterface } from "../models/event-profile";
 import {
@@ -113,6 +115,12 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
     const [ isDeletingWebhook, setIsDeletingWebhook ] = useState<boolean>(false);
     const [ isRetrying, setIsRetrying ] = useState<boolean>(false);
 
+    // Disable webhook event profiles
+    const showWebhookSessionEventHandler: boolean = isFeatureEnabled(
+        webhooksFeatureConfig, WebhooksConstants.FEATURE_DICTIONARY.get("SESSION_EVENT_HANDLER"));
+    const showWebhookTokenEventHandler: boolean = isFeatureEnabled(
+        webhooksFeatureConfig, WebhooksConstants.FEATURE_DICTIONARY.get("TOKEN_EVENT_HANDLER"));
+
     // API hooks
     const {
         data: webhook,
@@ -141,15 +149,25 @@ const WebhookEditPage: FunctionComponent<WebhookEditPageInterface> = ({
     const isLoading: boolean = isWebhookLoading || isEventProfileLoading || isWebhooksMetadataLoading;
 
     const channelConfigs: WebhookChannelConfigInterface[] = useMemo(() => {
-        return eventProfile
-            ? mapEventProfileApiToUI(eventProfile).map((config: any) => ({
+        if (!eventProfile) {
+            return [];
+        }
+
+        const featureFlags: Record<string, boolean> = {
+            [WebhooksConstants.WEBHOOKS_SESSION_EVENT_SCHEMA]: showWebhookSessionEventHandler,
+            [WebhooksConstants.WEBHOOKS_TOKEN_EVENT_SCHEMA]: showWebhookTokenEventHandler
+        };
+
+        return mapEventProfileApiToUI(eventProfile)
+            .map((config: WebhookChannelConfigInterface): WebhookChannelConfigInterface => ({
                 channelUri: config.channelUri,
                 description: config.description ?? "",
                 key: config.key,
                 name: config.name ?? ""
             }))
-            : [];
-    }, [ eventProfile ]);
+            .filter((config: WebhookChannelConfigInterface) => featureFlags[config.channelUri] !== false);
+    }, [ eventProfile, showWebhookSessionEventHandler, showWebhookTokenEventHandler ]);
+
 
     const webhookInitialValues: WebhookConfigFormPropertyInterface = useMemo(() => {
         const baseFormValues: WebhookConfigFormPropertyInterface = {

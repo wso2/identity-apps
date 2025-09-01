@@ -451,6 +451,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                         ApplicationManagementUtils
                                             .isApplicationOutdated(app.applicationVersion,
                                                 app.clientId != undefined && !isEmpty(app.clientId))
+                                            && !app?.advancedConfigurations?.fragment
                                             && (<Grid>
                                                 <div>
                                                     <Label

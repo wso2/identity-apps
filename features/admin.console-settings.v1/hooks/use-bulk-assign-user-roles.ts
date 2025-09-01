@@ -23,7 +23,7 @@ import { updateRoleDetails, updateUsersForRole } from "@wso2is/admin.roles.v2/ap
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { PayloadInterface, PayloadRolesV3Interface } from "@wso2is/admin.users.v1/models/user";
 import { FeatureAccessConfigInterface, RolesInterface } from "@wso2is/core/models";
-import { AxiosError } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import { useSelector } from "react-redux";
 
 /**
@@ -75,6 +75,9 @@ const useBulkAssignAdministratorRoles = (): UseBulkAssignAdministratorRolesInter
      * @param onAdministratorRoleAssignSuccess - Success callback.
      */
 
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
+    );
     const roleAssignmentFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.roleAssignments);
     const hasRoleV3UpdateScopes: boolean = useRequiredScopes(roleAssignmentFeatureConfig?.scopes?.update);
@@ -82,55 +85,58 @@ const useBulkAssignAdministratorRoles = (): UseBulkAssignAdministratorRolesInter
     const updateUserRoleAssignmentFunction: (
         roleId: string,
         data: PayloadInterface | PayloadRolesV3Interface | PatchRoleDataInterface
-    ) => Promise<void> = hasRoleV3UpdateScopes ? updateUsersForRole : updateRoleDetails;
+    ) => Promise<void> = userRolesV3FeatureEnabled && hasRoleV3UpdateScopes ? updateUsersForRole : updateRoleDetails;
 
     const assignAdministratorRoles = async (
         user: UserBasicInterface,
         roles: RolesInterface[],
         onAdministratorRoleAssignError: (error: AxiosError) => void,
-        onAdministratorRoleAssignSuccess: () => void
+        onAdministratorRoleAssignSuccess: (responses: AxiosResponse[]) => void
     ) => {
-        const payload: PayloadRolesV3Interface | PayloadInterface = hasRoleV3UpdateScopes ? {
-            Operations: [
-                {
-                    op: "add",
-                    value: [
+        const payload: PayloadRolesV3Interface | PayloadInterface =
+            userRolesV3FeatureEnabled && hasRoleV3UpdateScopes
+                ? {
+                    Operations: [
                         {
-                            display: user.userName,
-                            value: user.id
+                            op: "add",
+                            value: [
+                                {
+                                    display: user.userName,
+                                    value: user.id
+                                }
+                            ]
                         }
-                    ]
+                    ],
+                    schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
                 }
-            ],
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
-        } : {
-            Operations: [
-                {
-                    op: "add",
-                    value: {
-                        users: [
-                            {
-                                display: user.userName,
-                                value: user.id
+                : {
+                    Operations: [
+                        {
+                            op: "add",
+                            value: {
+                                users: [
+                                    {
+                                        display: user.userName,
+                                        value: user.id
+                                    }
+                                ]
                             }
-                        ]
-                    }
-                }
-            ],
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
-        };
+                        }
+                    ],
+                    schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+                };
 
         const roleIds: string[] = roles.map((role: RolesInterface) => role.id);
 
-        const updateRolePromises: Promise<void>[] = roleIds.map((roleId: string) => {
+        const updateRolePromises: Promise<any>[] = roleIds.map((roleId: string) => {
             return updateUserRoleAssignmentFunction(roleId, payload);
         });
 
         try {
             // Wait for all role update promises to resolve or reject.
-            await Promise.all(updateRolePromises);
+            const responses: AxiosResponse[] = await Promise.all(updateRolePromises);
 
-            onAdministratorRoleAssignSuccess();
+            onAdministratorRoleAssignSuccess(responses);
         } catch (error) {
             onAdministratorRoleAssignError(error);
         }
@@ -146,9 +152,9 @@ const useBulkAssignAdministratorRoles = (): UseBulkAssignAdministratorRolesInter
     const unassignAdministratorRoles = async (
         user: UserBasicInterface,
         onAdministratorRoleUnassignError: (error: AxiosError) => void,
-        onAdministratorRoleUnassignSuccess: () => void
+        onAdministratorRoleUnassignSuccess: (responses: AxiosResponse[]) => void
     ) => {
-        const payload: PatchRoleDataInterface = hasRoleV3UpdateScopes ? {
+        const payload: PatchRoleDataInterface = userRolesV3FeatureEnabled && hasRoleV3UpdateScopes ? {
             Operations: [
                 {
                     op: "remove",
@@ -170,15 +176,15 @@ const useBulkAssignAdministratorRoles = (): UseBulkAssignAdministratorRolesInter
 
         const roleIds: string[] = user.roles.map((role: UserRoleInterface) => role.value);
 
-        const updateRolePromises: Promise<void>[] = roleIds.map((roleId: string) => {
+        const updateRolePromises: Promise<any>[] = roleIds.map((roleId: string) => {
             return updateUserRoleAssignmentFunction(roleId, payload);
         });
 
         try {
             // Wait for all role update promises to resolve or reject.
-            await Promise.all(updateRolePromises);
+            const responses: AxiosResponse[] = await Promise.all(updateRolePromises);
 
-            onAdministratorRoleUnassignSuccess();
+            onAdministratorRoleUnassignSuccess(responses);
         } catch (error) {
             onAdministratorRoleUnassignError(error);
         }

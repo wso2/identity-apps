@@ -84,6 +84,15 @@ export const common: CommonNS = {
                 }
             }
         },
+        operationTypes: {
+            addRole: "භූමිකාව එක් කරන්න",
+            addUser: "පරිශීලකයෙකු එක් කරන්න",
+            all: "සියලු ක්‍රියාකාරකම්",
+            deleteRole: "භූමිකාව මකන්න",
+            deleteUser: "පරිශීලකයෙකු මකන්න",
+            selfRegisterUser: "ස්වයං ලියාපදිංචි පරිශීලක",
+            updateRolesOfUser: "භූමිකාවේ පරිශීලකයන් යාවත්කාලීන කරන්න"
+        },
         placeholders: {
             emptyApprovalFilter: {
                 action: "සියල්ල බලන්න",
@@ -114,12 +123,19 @@ export const common: CommonNS = {
             },
             searchApprovals: "කාර්ය ප්‍රවාහ නාමයෙන් සොයන්න"
         },
+        propertyMessages: {
+            assignedUsersDeleted: "පවරා ඇති පරිශීලකයන් මකා දමා ඇත.",
+            roleDeleted: "මෙම භූමිකාව මකා දමා ඇත.",
+            selfRegistration: "ස්වයං ලියාපදිංචිය",
+            unassignedUsersDeleted: "පවරා නොමැති පරිශීලකයන් මකා දමා ඇත."
+        },
         subTitle: "අනුමැතිය අවශ්‍ය මෙහෙයුම් කාර්යයන් සමාලෝචනය කරන්න",
         title: "අනුමත කිරීම්"
     },
-
     approve: "අනුමත කරන්න",
+    approved: "අනුමත කරන ලදි",
     apps: "ඇප්ස්",
+    assignYourself: "ඔබම පවරන්න",
     assignee: "පැවරුම්කරු",
     assignees: "පැවරුම්කරුවන්",
     asyncOperationErrorMessage: {
@@ -140,7 +156,6 @@ export const common: CommonNS = {
         heading: "මොකක්හරි වැරැද්දක් වෙලා",
         primaryActionText: "යෙදුම නැවත පූරණය කරන්න"
     },
-    claim: "හිමිකම",
     clear: "මකන්න",
     clientId: "සේවාලාභී හැඳුනුම්පත",
     close: "වසන්න",
@@ -218,11 +233,14 @@ export const common: CommonNS = {
     new: "නවතම",
     next: "ඊළඟ ",
     noResultsFound: "ප්‍රතිඵල හමු නොවීය",
+    none: "කිසිවක් නැත",
     okay: "හරි",
     operatingSystem: "මෙහෙයුම් පද්ධතිය",
+    operationType: "ක්‍රියාකාරී වර්ගය",
     operations: "මෙහෙයුම්",
     organizationName: "{{orgName}} සංවිධානය",
     overview: "දළ විශ්ලේෂණය",
+    pending: "අසම්පූර්ණ",
     personalInfo: "පෞද්ගලික තොරතුරු",
     pin: "තබා ගන්න",
     pinned: "තබා ඇත",
@@ -238,8 +256,8 @@ export const common: CommonNS = {
     ready: "සූදානම්",
     regenerate: "නැවත උත්පාදනය කරන්න",
     register: "ලියාපදිංචි වන්න",
-    reject: "ප්\u200Dරතික්ෂේප කරන්න",
-    release: "මුදා හැරීම",
+    reject: "ප්‍රතික්ෂේප කරන්න",
+    rejected: "ප්‍රතික්ෂේප කරන ලදි",
     remove: "ඉවත් කරන්න",
     removeAll: "සියල්ල ඉවත් කරන්න",
     required: "මෙය අවශ්‍ය වේ",
@@ -277,6 +295,7 @@ export const common: CommonNS = {
     terminateSession: "සැසිය අවසන් කරන්න",
     tooShort: "බොහෝ කෙටි",
     type: "වර්ගය",
+    unassign: "පැවරීම ඉවත් කරන්න",
     unpin: "ඉවත් කරන්න",
     unpinned: "ඉවත් කරන ලදි",
     update: "යාවත්කාලීන කරන්න",
@@ -284,6 +303,7 @@ export const common: CommonNS = {
     verified: "තහවුරු කර ඇත",
     verify: "සත්‍යාපනය කරන්න",
     view: "බලන්න",
+    viewDetails: "විස්තර පෙන්වන්න",
     weak: "දුර්වලයි",
     weakPassword: "මුරපදයේ ශක්තිය අවම වශයෙන් හොඳ විය යුතුය."
 };

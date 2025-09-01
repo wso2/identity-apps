@@ -22,13 +22,13 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout } from "@wso2is/react-components";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, PaginationProps } from "semantic-ui-react";
 import { useGetWorkflowInstances } from "../api/use-get-workflow-instances";
-import { deleteWorkflowInstance } from "../api/workflow-requests";
 import ActiveFiltersBar from "../components/active-filters-bar";
 import WorkflowRequestsFilter from "../components/workflow-requests-filter";
 import WorkflowRequestsList from "../components/workflow-requests-list";
@@ -57,7 +57,7 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
 ): ReactElement => {
 
     const {
-        ["data-testid"]: testId
+        ["data-testid"]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -80,8 +80,7 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
     const {
         data: workflowInstancesData,
         isLoading: isWorkflowInstancesLoading,
-        error: workflowInstancesError,
-        mutate: mutateWorkflowInstances
+        error: workflowInstancesError
     } = useGetWorkflowInstances(limit, offset, filterString, true);
 
     useEffect(() => {
@@ -324,49 +323,6 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
         // The hook will automatically refetch when filterString changes
     };
 
-    // Delete workflow request
-    const deleteWorkflowRequest = (id: string): void => {
-        deleteWorkflowInstance(id)
-            .then(() => {
-                dispatch(addAlert({
-                    description: t(
-                        "approvalWorkflows:notifications.deleteWorkflowRequest.success.description"
-                    ),
-                    level: AlertLevels.SUCCESS,
-                    message: t(
-                        "approvalWorkflows:notifications.deleteWorkflowRequest.success.message"
-                    )
-                }));
-                mutateWorkflowInstances();
-                history.push(AppConstants.getPaths().get("WORKFLOW_REQUESTS"));
-
-            })
-            .catch((error: any) => {
-                if (error.response && error.response.data && error.response.data.detail) {
-                    dispatch(addAlert({
-                        description: t(
-                            "approvalWorkflows:notifications.deleteWorkflowRequest.genericError.description",
-                            { description: error.response.data.detail }
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            "approvalWorkflows:notifications.deleteWorkflowRequest.genericError.message"
-                        )
-                    }));
-                } else {
-                    dispatch(addAlert({
-                        description: t(
-                            "approvalWorkflows:notifications.deleteWorkflowRequest.genericError.description"
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            "approvalWorkflows:notifications.deleteWorkflowRequest.genericError.message"
-                        )
-                    }));
-                }
-            });
-    };
-
     /**
      * Handles pagination change.
      *
@@ -401,15 +357,9 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
             title={ t("pages:workflowRequestsPage.title") }
             pageTitle={ t("pages:workflowRequestsPage.title") }
             description={ t("pages:workflowRequestsPage.subTitle") }
-            data-testid={ `${testId}-page-layout` }
+            data-testid={ `${componentId}-page-layout` }
         >
             <div className="workflow-requests-page-content">
-                <ActiveFiltersBar
-                    filters={ activeFilters }
-                    onRemove={ removeFilter }
-                    onClearAll={ clearAllFilters }
-                    data-componentid="workflow-requests-active-filters-bar"
-                />
                 <WorkflowRequestsFilter
                     status={ status }
                     setStatus={ setStatus }
@@ -424,7 +374,14 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
                     searchWorkflowRequests={ searchWorkflowRequests }
                     loading={ isWorkflowInstancesLoading }
                 />
-
+                { !isEmpty(activeFilters) && (
+                    <ActiveFiltersBar
+                        filters={ activeFilters }
+                        onRemove={ removeFilter }
+                        onClearAll={ clearAllFilters }
+                        data-componentid={ `${componentId}-active-filters-bar` }
+                    />
+                ) }
                 <ListLayout
                     currentListSize={ workflowRequests.length }
                     listItemLimit={ limit }
@@ -439,9 +396,6 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
                     <WorkflowRequestsList
                         workflowRequestsList={ workflowRequests }
                         isLoading={ isWorkflowInstancesLoading }
-                        handleWorkflowRequestDelete={ (workflowRequest: WorkflowInstanceListItemInterface) => {
-                            if (workflowRequest) deleteWorkflowRequest(workflowRequest.workflowInstanceId);
-                        } }
                         handleWorkflowRequestView={
                             (workflowRequest: WorkflowInstanceListItemInterface) =>
                                 history.push(

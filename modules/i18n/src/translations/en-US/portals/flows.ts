@@ -19,7 +19,11 @@ import { flowsNS } from "../../../models";
 
 export const flows: flowsNS = {
     askPassword: {
-        breadcrumb: "Edit Invite User Registration Flow",
+        breadcrumb: "Edit Invited User Registration Flow",
+        labels: {
+            disableFlow: "Disable",
+            enableFlow: "Enable"
+        },
         notifications: {
             disableFlow: {
                 genericError: {
@@ -69,12 +73,38 @@ export const flows: flowsNS = {
                     urlTypeLabel: "URL Type"
                 },
                 placeholder: "Enter rich text content here..."
-            }
-        },
-        errors: {
-            flowMetadataFetch: {
-                description: "An error occurred while fetching the flow metadata.",
-                message: "Flow Metadata Fetch Error"
+            },
+            textPropertyField: {
+                i18nCard: {
+                    chip: {
+                        commonScreen: {
+                            label: "Common"
+                        }
+                    },
+                    commonKeyWarning: "You are editing a shared translation key that affects multiple pages across the system. Changes will be reflected on all pages that use this key.",
+                    configure: "More",
+                    createTitle: "Create Translations",
+                    i18nKey: "Translation key",
+                    i18nKeyInputHint: "Translation key will be prefixed with '{{newI18nKeyPrefix}}' and added to the {{primaryI18nScreen}} screen",
+                    i18nKeyInputPlaceholder: "Enter a new translation key",
+                    language: "Language",
+                    languageText: "Translation",
+                    languageTextPlaceholder: "Enter text for the selected language",
+                    selectI18nKey: "Select a translation key",
+                    selectLanguage: "Select language",
+                    title: "Translations - {{propertyKey}}",
+                    tooltip: {
+                        addNewTranslation: "Add a new translation",
+                        commonKeyTooltip: "This is a shared translation key used across multiple end user facing pages",
+                        editExistingTranslation: "Update an existing translation"
+                    },
+                    updateTitle: "Update Translations"
+                },
+                placeholder: "Enter {{propertyName}}",
+                tooltip: {
+                    configureTranslation: "Configure translation",
+                    enableBrandingRequired: "Enable branding to update translations. <1>Go to Branding</1>"
+                }
             }
         },
         executions: {
@@ -89,10 +119,123 @@ export const flows: flowsNS = {
                 microsoft: "Microsoft",
                 passkeyEnrollment: "Enroll Passkey"
             }
+        },
+        notificationPanel: {
+            emptyMessages: {
+                errors: "No errors found.",
+                info: "No information messages found.",
+                warnings: "No warnings found."
+            },
+            header: "Notifications",
+            tabs: {
+                errors: "Errors",
+                info: "Info",
+                warnings: "Warnings"
+            }
+        },
+        notifications: {
+            brandingPreferenceFetch: {
+                genericError: {
+                    description: "An error occurred while fetching the branding preferences.",
+                    message: "Branding Preference Fetch Error"
+                }
+            },
+            customTextPreferenceMetaFetch: {
+                genericError: {
+                    description: "An error occurred while fetching the custom text preference metadata.",
+                    message: "Custom Text Preference Meta Fetch Error"
+                }
+            },
+            fallbackTextPreferenceFetch: {
+                genericError: {
+                    description: "An error occurred while fetching the fallback text preferences.",
+                    message: "Fallback Text Preference Fetch Error"
+                }
+            },
+            flowMetadataFetch: {
+                genericError: {
+                    description: "An error occurred while fetching the flow metadata.",
+                    message: "Flow Metadata Fetch Error"
+                }
+            },
+            textPreferenceFetch: {
+                genericError: {
+                    description: "An error occurred while fetching the custom text preferences.",
+                    message: "Text Preference Fetch Error"
+                }
+            },
+            updateI18nKey: {
+                genericError: {
+                    description: "An error occurred while updating the custom text in the flow.",
+                    message: "Update Custom Text Error"
+                },
+                success: {
+                    description: "Successfully updated the custom text in the flow.",
+                    message: "Update Custom Text Success"
+                }
+            }
+        },
+        validation: {
+            fields: {
+                button: {
+                    action: "Button must have an action type defined for proper functionality.",
+                    general: "Required fields are not properly configured for the button with ID <1>{{id}}</1>.",
+                    text: "Button must have text to be displayed to users.",
+                    variant: "Button must have a variant defined for proper styling."
+                },
+                checkbox: {
+                    general: "Required fields are not properly configured for the checkbox field with ID <1>{{id}}</1>.",
+                    identifier: "Checkbox field must be mapped to an attribute for data collection.",
+                    label: "Checkbox field must have a label to be displayed to users."
+                },
+                divider: {
+                    general: "Required fields are not properly configured for the divider with ID <1>{{id}}</1>.",
+                    variant: "Divider must have a variant defined for proper styling and orientation."
+                },
+                image: {
+                    general: "Required fields are not properly configured for the image with ID <1>{{id}}</1>.",
+                    src: "Image must have a source URL to be displayed to users.",
+                    variant: "Image must have a variant defined for proper styling and layout."
+                },
+                input: {
+                    general: "Required fields are not properly configured for the input field with ID <1>{{id}}</1>.",
+                    identifier: "Input field must be mapped to an attribute for data collection.",
+                    label: "Input field must have a label to be displayed to users."
+                },
+                otpInput: {
+                    general: "Required fields are not properly configured for the OTP input field with ID <1>{{id}}</1>.",
+                    label: "OTP input field must have a label to guide users."
+                },
+                phoneNumberInput: {
+                    general: "Required fields are not properly configured for the phone number field with ID <1>{{id}}</1>.",
+                    identifier: "Phone number field must be mapped to an attribute for data collection.",
+                    label: "Phone number field must have a label to be displayed to users."
+                },
+                richText: {
+                    general: "Required fields are not properly configured for the rich text with ID <1>{{id}}</1>.",
+                    text: "Rich text must have content to be displayed to users."
+                },
+                typography: {
+                    general: "Required fields are not properly configured for the typography with ID <1>{{id}}</1>.",
+                    text: "Typography must have text content to be displayed to users.",
+                    variant: "Typography must have a variant defined for proper text styling."
+                }
+            }
+        },
+        validationStatusLabels: {
+            error: "Error",
+            errors: "Errors",
+            info: "Info",
+            warning: "Warning",
+            warnings: "Warnings"
         }
     },
     label: "Flows",
     passwordRecovery: {
+        labels: {
+            disableFlow: "Disable",
+            enableFlow: "Enable"
+        },
         name: "Password Recovery Flow Builder",
         notifications: {
             disableFlow: {
@@ -129,6 +272,10 @@ export const flows: flowsNS = {
     },
     registrationFlow: {
         breadcrumb: "Edit Registration Flow",
+        labels: {
+            disableFlow: "Disable",
+            enableFlow: "Enable"
+        },
         notifications: {
             disableFlow: {
                 genericError: {

@@ -18,9 +18,9 @@
 
 import {
     DatabaseDocumentIcon,
-    KeyFlowIcon,
     PaletteIcon,
-    SquareUserIcon
+    SquareUserIcon,
+    UserFlowIcon
 } from "@oxygen-ui/react-icons";
 import { FeatureStatus } from "@wso2is/access-control";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
@@ -276,7 +276,7 @@ export class RouteUtils {
         };
 
         const workflows: Omit<RouteInterface, "showOnSidePanel"> = {
-            icon: KeyFlowIcon,
+            icon: UserFlowIcon,
             id: "workflows",
             name: "Workflows",
             order: 3
@@ -405,7 +405,7 @@ export class RouteUtils {
             },
             {
                 category: workflows,
-                id: "workflowRequests",
+                id: "workflowInstances",
                 order: 9,
                 parent: workflows,
                 selected: history.location.pathname.includes("/workflow-requests")

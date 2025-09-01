@@ -167,7 +167,7 @@ export const users: usersNS = {
     notifications: {
         addUser: {
             error: {
-                description: "{{description}}",
+                description: "An error occurred while adding the user.",
                 message: "Error adding the new user"
             },
             genericError: {
@@ -327,6 +327,10 @@ export const users: usersNS = {
             genericError: {
                 description: "Couldn't revoke the admin privileges.",
                 message: "Something went wrong"
+            },
+            pendingApproval: {
+                description: "The admin privileges revoke is accepted and pending approval.",
+                message: "Admin privileges revoke pending approval"
             },
             success: {
                 description: "Successfully revoked the admin privileges.",

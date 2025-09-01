@@ -650,10 +650,14 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                             ? t("claims:list.placeholders.emptyList.title.local")
                             : isDialect(list)
                                 ? t("claims:list.placeholders.emptyList.title.dialect")
-                                : t(
-                                    "claims:list.placeholders.emptyList.title.external",
-                                    { type: resolveType(attributeType, true) }
-                                )
+                                : isSubOrganization()
+                                    ? t("claims:list.placeholders.emptyList.title.readOnlyDialect",
+                                        { type: resolveType(attributeType, true) }
+                                    )
+                                    : t(
+                                        "claims:list.placeholders.emptyList.title.external",
+                                        { type: resolveType(attributeType, true) }
+                                    )
                     }
                     subtitle={ [
 
@@ -994,7 +998,8 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: ClaimManagementConstants.EMPTY_STRING
+                title: ClaimManagementConstants.EMPTY_STRING,
+                width: 2
             }
         ];
     };

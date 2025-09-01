@@ -26,7 +26,7 @@ import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@ws
 import { addAlert } from "@wso2is/core/store";
 import { AutocompleteFieldAdapter, FinalForm, FinalFormField, FormRenderProps } from "@wso2is/form";
 import { Heading, Hint, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
-import { AxiosError } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -148,12 +148,23 @@ const AddExistingUserWizard: FunctionComponent<AddExistingUserWizardPropsInterfa
                     });
                 }
             },
-            () => {
-                dispatch(addAlert({
-                    description: t("extensions:manage.users.wizard.addAdmin.internal.updateRole.success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("extensions:manage.users.wizard.addAdmin.internal.updateRole.success.message")
-                }));
+            (responses?: AxiosResponse[]) => {
+                if (responses?.[0].status === 202) {
+                    dispatch(addAlert({
+                        description: t("extensions:manage.users.wizard.addAdmin.internal.updateRole." +
+                            "pendingApproval.description"),
+                        level: AlertLevels.WARNING,
+                        message: t("extensions:manage.users.wizard.addAdmin.internal.updateRole." +
+                            "pendingApproval.message")
+                    }));
+                } else {
+                    dispatch(addAlert({
+                        description: t("extensions:manage.users.wizard.addAdmin." +
+                            "internal.updateRole.success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("extensions:manage.users.wizard.addAdmin.internal.updateRole.success.message")
+                    }));
+                }
                 onSuccess();
                 onClose(null, null);
             }

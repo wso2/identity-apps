@@ -336,6 +336,8 @@
             "actions": {
                 "disabledFeatures": [
                     "actions.types.list.preRegistration",
+                    "actions.types.list.preUpdatePassword.headersAndParameters",
+                    "actions.types.list.preUpdateProfile.headersAndParameters",
                     "actions.types.org.list.preIssueAccessToken",
                     "actions.types.org.list.preRegistration"
                 ],
@@ -504,13 +506,39 @@
                     ]
                 }
             },
+            "approvalWorkflows": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [
+                        "internal_workflow_association_create",
+                        "internal_workflow_create"
+                    ],
+                    "delete": [
+                        "internal_workflow_association_delete",
+                        "internal_workflow_delete"
+                    ],
+                    "feature": [
+                        "console:approvalWorkflows"
+                    ],
+                    "read": [
+                        "internal_workflow_association_view",
+                        "internal_workflow_view"
+                    ],
+                    "update": [
+                        "internal_workflow_association_update",
+                        "internal_workflow_update"
+                    ]
+                }
+            },
             "approvals": {
                 "disabledFeatures": [],
                 "enabled": true,
                 "featureFlags": [],
                 "scopes": {
                     "feature": [
-                        "console:workflows"
+                        "console:users"
                     ],
                     "read": [
                         "internal_approval_task_view"
@@ -789,7 +817,7 @@
                 "scopes": {
                     "create": [],
                     "delete": [],
-                    "feature": [],
+                    "feature": ["console:flows"],
                     "read": [],
                     "update": []
                 }
@@ -1620,12 +1648,16 @@
                 }
             },
             "users": {
-                "disabledFeatures": [],
+                "disabledFeatures": [
+                    "users.add.legacy",
+                    "users.profile.legacy"
+                ],
                 "enabled": true,
                 "featureFlags": [],
                 "scopes": {
                     "create": [
-                        "internal_user_mgt_create"
+                        "internal_user_mgt_create",
+                        "internal_workflow_association_view"
                     ],
                     "delete": [
                         "internal_user_mgt_delete"
@@ -1671,29 +1703,19 @@
                     ]
                 }
             },
-             "workflows": {
+            "workflowInstances": {
                 "disabledFeatures": [],
                 "enabled": true,
                 "featureFlags": [],
                 "scopes": {
-                    "create": [
-                        "internal_workflow_association_create",
-                        "internal_workflow_create"
-                    ],
                     "delete": [
-                        "internal_workflow_association_delete",
-                        "internal_workflow_delete"
+                        "internal_workflow_instance_delete"
                     ],
                     "feature": [
-                        "console:workflows"
+                        "console:workflowInstances"
                     ],
                     "read": [
-                        "internal_workflow_association_view",
-                        "internal_workflow_view"
-                    ],
-                    "update": [
-                        "internal_workflow_association_update",
-                        "internal_workflow_update"
+                        "internal_workflow_instance_view"
                     ]
                 }
             },
@@ -1789,16 +1811,19 @@
                 "admin-forced-password-reset",
                 "apiResources",
                 "applications",
+                "approvalWorkflows",
                 "approvals",
                 "attributeDialects",
                 "branding",
                 "consoleSettings",
                 "emailTemplates",
+                "flows",
                 "gettingStarted",
                 "governanceConnectors",
                 "groups",
                 "identityProviders",
                 "loginAndRegistration",
+                "oidcScopes",
                 "organizations",
                 "password-recovery",
                 "roles",
@@ -1809,7 +1834,8 @@
                 "userStores",
                 "username-recovery",
                 "users",
-                "workflows"
+                "workflowInstanceDetails",
+                "workflowInstances"
             ]
         },
         "selfAppIdentifier": "Console",

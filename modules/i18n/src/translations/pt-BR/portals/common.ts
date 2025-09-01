@@ -84,6 +84,15 @@ export const common: CommonNS = {
                 }
             }
         },
+        operationTypes: {
+            addRole: "Adicionar Função",
+            addUser: "Adicionar Utilizador",
+            all: "Todas as Operações",
+            deleteRole: "Eliminar Função",
+            deleteUser: "Eliminar Utilizador",
+            selfRegisterUser: "Auto-registo de Utilizador",
+            updateRolesOfUser: "Actualizar Funções do Utilizador"
+        },
         placeholders: {
             emptyApprovalFilter: {
                 action: "Ver todos",
@@ -114,11 +123,19 @@ export const common: CommonNS = {
             },
             searchApprovals: "Pesquisar por nome de fluxo de trabalho"
         },
+        propertyMessages: {
+            assignedUsersDeleted: "Os usuários atribuídos foram excluídos.",
+            roleDeleted: "A função foi excluída.",
+            selfRegistration: "Auto registro",
+            unassignedUsersDeleted: "Os usuários não atribuídos foram excluídos."
+        },
         subTitle: "Revise as tarefas operacionais que requerem sua aprovação",
         title: "Aprovações"
     },
     approve: "Aprovar",
+    approved: "Aprovado",
     apps: "Apps",
+    assignYourself: "Atribuir a si mesmo",
     assignee: "Cessionário",
     assignees: "Cessionários",
     asyncOperationErrorMessage: {
@@ -139,7 +156,6 @@ export const common: CommonNS = {
         heading: "Algo deu errado",
         primaryActionText: "Recarregar o App"
     },
-    claim: "Claim",
     clear: "Limpar",
     clientId: "ID do Cliente",
     close: "Fechar",
@@ -217,11 +233,14 @@ export const common: CommonNS = {
     new: "Novo",
     next: "Próximo",
     noResultsFound: "Nenhum resultado encontrado",
+    none: "Nenhum",
     okay: "Ok",
     operatingSystem: "Sistema operacional",
+    operationType: "Tipo de Operação",
     operations: "Operações",
     organizationName: "Organização {{orgName}}",
     overview: "Visão Geral",
+    pending: "Pendente",
     personalInfo: "Informação Pessoal",
     pin: "Fixar",
     pinned: "Fixado",
@@ -238,7 +257,7 @@ export const common: CommonNS = {
     regenerate: "Regenerar",
     register: "Registrar",
     reject: "Rejeitar",
-    release: "Lançamento",
+    rejected: "Rejeitado",
     remove: "Remover",
     removeAll: "Remover todos",
     required: "Isto é necessário.",
@@ -276,6 +295,7 @@ export const common: CommonNS = {
     terminateSession: "Encerrar sessão",
     tooShort: "Muito curto",
     type: "Tipo",
+    unassign: "Desatribuir",
     unpin: "Desafixar",
     unpinned: "Desafixado",
     update: "Atualizar",
@@ -283,6 +303,7 @@ export const common: CommonNS = {
     verified: "Verificada",
     verify: "Verificar",
     view: "Visualizar",
+    viewDetails: "Ver Detalhes",
     weak: "Fraco",
     weakPassword: "A força da senha deve ser pelo menos boa."
 };

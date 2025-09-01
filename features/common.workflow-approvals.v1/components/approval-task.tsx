@@ -34,6 +34,8 @@ import {
     Table
 } from "semantic-ui-react";
 import { ApprovalStatus, ApprovalTaskDetails } from "../models";
+import "./approval-task.scss";
+import { getOperationTypeTranslationKey } from "../utils/approval-utils";
 
 /**
  * Prop-types for the approvals edit page component.
@@ -65,7 +67,8 @@ interface ApprovalTaskComponentPropsInterface extends IdentifiableComponentInter
      * @param status - Status of the approval.
      */
     resolveApprovalTagColor?: (
-        status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED | ApprovalStatus.BLOCKED
+        status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.BLOCKED |
+            ApprovalStatus.APPROVED | ApprovalStatus.REJECTED
     ) => SemanticCOLORS;
     /**
      * Specifies if the form is submitting
@@ -97,6 +100,61 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
     const { t } = useTranslation();
     const { isMobileViewport } = useMediaContext();
 
+    const USERS_TO_BE_ADDED_PROPERTY: string = "Users to be Added";
+    const USERS_TO_BE_DELETED_PROPERTY: string = "Users to be Deleted";
+    const ROLE_NAME_PROPERTY: string = "Role Name";
+    const SELF_ARBITRARY_ATTRIBUTE_PROPERTY_PREFIX: string = "self_arbitrary_attr_";
+    const roleUserAssignmentPropertyKeys: string[] = [ USERS_TO_BE_ADDED_PROPERTY, USERS_TO_BE_DELETED_PROPERTY ];
+    const hiddenProperties: string[] = [ "Created Time", "Last Modified Time", "Location", "Claims", "Resource Type" ];
+
+    /**
+     * Filters and returns valid username values from a comma-separated string.
+     *
+     * @param value - Comma-separated string of usernames.
+     * @returns Array of valid usernames.
+     */
+    const filterValidUsernamePropertyValues = (value: string): string[] => {
+        return value.split(",")
+            .map((username: string) => username.trim())
+            .filter((username: string) => {
+                return username &&
+                       username !== "null" &&
+                       username !== "undefined" &&
+                       username !== "[]" &&
+                       username !== "";
+            });
+    };
+
+    /**
+     * Checks if the approval task user related properties have valid users.
+     */
+    const hasValidUsers: boolean = React.useMemo(() => {
+        if (!approval?.properties) return true;
+
+        const userProperties: { key: string, value: string }[] = approval.properties.filter(
+            (prop: { key: string, value: string }) => roleUserAssignmentPropertyKeys.includes(prop?.key)
+        );
+
+        if (userProperties.length === 0) return true;
+
+        return userProperties.some((prop: { key: string, value: string }) => {
+            const validUsernames: string[] = filterValidUsernamePropertyValues(prop.value);
+
+            return validUsernames.length > 0;
+        });
+    }, [ approval?.properties ]);
+
+    /**
+     * Checks if any resource (like role) has been deleted.
+     */
+    const isResourceDeleted: boolean = React.useMemo(() => {
+        if (!approval?.properties) return false;
+
+        return approval.properties.some((prop: { key: string, value: string }) => {
+            return prop.key === ROLE_NAME_PROPERTY && prop.value === "";
+        });
+    }, [ approval?.properties ]);
+
     /**
      * Removes unnecessary commas at the end of property values and splits
      * up the claim values.
@@ -111,9 +169,15 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
      * @returns A cleaned up string.
      */
     const populateProperties = (key: string, value: string): string | JSX.Element => {
-        if (key === "Claims") {
+        if (key === ROLE_NAME_PROPERTY && value === "") {
+            value = t("common:approvalsPage.propertyMessages.roleDeleted");
+        }
+
+        if (hiddenProperties.includes(key) || value === "[]" || value === ""
+            || key.startsWith(SELF_ARBITRARY_ATTRIBUTE_PROPERTY_PREFIX)) {
             return;
         }
+
         if (key === "ClaimsUI") {
             // Remove the curly braces at the start and end of the value.
             value = value.replace(/^\{|\}$/g, "").trim();
@@ -150,8 +214,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
             );
         }
 
-        if (key === "Roles" || key == "Permissions" || key === "Groups" || key === "Users" ||
-            key === "Users to be Added" || key === "Users to be Deleted") {
+        if (key === "Roles" || key == "Permissions" || key === "Groups" || key === "Users") {
             value = value.replace(/^\[|\]$/g, "").trim();
 
             try {
@@ -180,14 +243,39 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
             }
         }
 
+        // Check if usernames are valid.
+        if (roleUserAssignmentPropertyKeys.includes(key)) {
+            const validUsernames: string[] = filterValidUsernamePropertyValues(value);
+
+            if (validUsernames.length > 0) {
+                value = validUsernames.join(", ");
+            } else {
+                if (key === USERS_TO_BE_ADDED_PROPERTY) {
+                    value = t("common:approvalsPage.propertyMessages.assignedUsersDeleted");
+                } else if (key === USERS_TO_BE_DELETED_PROPERTY) {
+                    value = t("common:approvalsPage.propertyMessages.unassignedUsersDeleted");
+                }
+            }
+        }
+
+        // Change "REQUEST ID" to "Workflow Request ID".
+        if (key === "REQUEST ID") {
+            key = "Workflow Request ID";
+        }
+
         // Handle other properties that don't need special formatting.
         return (
             <Table.Row key={ key }>
                 <Table.Cell className="key-cell">
                     { key }
                 </Table.Cell>
-                <Table.Cell collapsing className="values-cell">
-                    <Text truncate>{ value.endsWith(",") ? value.slice(0, -1) : value }</Text>
+                <Table.Cell
+                    collapsing={ false }
+                    className="values-cell"
+                >
+                    <Text className="text-value">
+                        { value.endsWith(",") ? value.slice(0, -1) : value }
+                    </Text>
                 </Table.Cell>
             </Table.Row>
         );
@@ -200,20 +288,23 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
      * @returns A table containing the list of properties.
      */
     const propertiesTable = (properties: { key: string, value: string }[]): JSX.Element => (
-        <Table celled compact className="approval-tasks-table" verticalAlign="top">
-            <Table.Body>
-                {
-                    properties.map((property: { key: string, value: string }) => (
-                        property.key && property.value
-                            ? (
-                                populateProperties(property.key, property.value)
-                            )
-                            : null
-                    )
-                    )
-                }
-            </Table.Body>
-        </Table>
+        <div className="approval-task-properties-container">
+            <Table
+                celled
+                compact
+                className="approval-task-properties-table"
+            >
+                <Table.Body>
+                    {
+                        properties.map((property: { key: string, value: string }) => (
+                            property.key && (property.key === ROLE_NAME_PROPERTY || property.value)
+                                ? populateProperties(property.key, property.value)
+                                : null
+                        ))
+                    }
+                </Table.Body>
+            </Table>
+        </div>
     );
 
     /**
@@ -236,7 +327,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                                 onCloseApprovalTaskModal();
                             } }
                         >
-                            { t("common:claim") }
+                            { t("common:assignYourself") }
                         </Button>
                     )
                     : editingApproval?.taskStatus === ApprovalStatus.RESERVED
@@ -250,7 +341,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                                     onCloseApprovalTaskModal();
                                 } }
                             >
-                                { t("common:release") }
+                                { t("common:unassign") }
                             </Button>
                         )
                         : null
@@ -258,35 +349,60 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
             {
                 editingApproval?.taskStatus != ApprovalStatus.BLOCKED
                     ? (
-                        <Button
-                            primary
-                            className="mb-1x"
-                            fluid={ isMobileViewport }
-                            onClick={ () => {
-                                updateApprovalStatus(editingApproval.id, ApprovalStatus.APPROVE);
-                                onCloseApprovalTaskModal();
-                            } }
-                            loading={ isSubmitting }
-                            disabled={ isSubmitting }
-                        >
-                            { t("common:approve") }
-                        </Button>
+                        <>
+                            <Button
+                                primary
+                                className="mb-1x"
+                                fluid={ isMobileViewport }
+                                onClick={ () => {
+                                    updateApprovalStatus(editingApproval.id, ApprovalStatus.APPROVE);
+                                    onCloseApprovalTaskModal();
+                                } }
+                                loading={ isSubmitting }
+                                disabled={ isSubmitting || !hasValidUsers || isResourceDeleted }
+                            >
+                                { t("common:approve") }
+                            </Button>
+                            <Button
+                                negative
+                                className="mb-1x"
+                                fluid={ isMobileViewport }
+                                onClick={ () => {
+                                    updateApprovalStatus(editingApproval.id, ApprovalStatus.REJECT);
+                                    onCloseApprovalTaskModal();
+                                } }
+                            >
+                                { t("common:reject") }
+                            </Button>
+                        </>
                     )
                     : null
             }
-            <Button
-                negative
-                className="mb-1x"
-                fluid={ isMobileViewport }
-                onClick={ () => {
-                    updateApprovalStatus(editingApproval.id, ApprovalStatus.REJECT);
-                    onCloseApprovalTaskModal();
-                } }
-            >
-                { t("common:reject") }
-            </Button>
         </>
     );
+
+    const renderPropertyRow = (key: string, value: string): ReactElement => {
+        return (
+            <Grid.Row>
+                <Grid.Column>
+                    <List.Content>
+                        <Grid padded>
+                            <Grid.Row columns={ 2 }>
+                                <Grid.Column width={ 3 }>
+                                    { key }
+                                </Grid.Column>
+                                <Grid.Column width={ 12 }>
+                                    <List.Description>
+                                        { value }
+                                    </List.Description>
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                    </List.Content>
+                </Grid.Column>
+            </Grid.Row>
+        );
+    };
 
     return (
         <Modal
@@ -303,7 +419,18 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                                 circular
                                 size="mini"
                                 className="micro spaced-right"
-                                color={ resolveApprovalTagColor(approval?.taskStatus) }
+                                color={
+                                    resolveApprovalTagColor &&
+                                    (
+                                        approval?.taskStatus === ApprovalStatus.READY ||
+                                        approval?.taskStatus === ApprovalStatus.RESERVED ||
+                                        approval?.taskStatus === ApprovalStatus.APPROVED ||
+                                        approval?.taskStatus === ApprovalStatus.REJECTED ||
+                                        approval?.taskStatus === ApprovalStatus.BLOCKED
+                                    )
+                                        ? resolveApprovalTagColor(approval?.taskStatus)
+                                        : undefined
+                                }
                             />
 
                             { t("common:approvalsPage.modals.subHeader") }
@@ -312,103 +439,30 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                 </Header>
             </Modal.Header>
             <Modal.Content>
-                <Grid.Row>
-                    <Grid.Column>
-                        <List.Content>
-                            <Grid padded>
-                                <Grid.Row columns={ 2 }>
-                                    <Grid.Column width={ 3 }>
-                                        { t("common:createdOn") }
-                                    </Grid.Column>
-                                    <Grid.Column width={ 12 }>
-                                        <List.Description>
-                                            {
-                                                moment(parseInt(approval?.createdTimeInMillis,
-                                                    10)).format("lll")
-                                            }
-                                        </List.Description>
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                        </List.Content>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row>
-                    <Grid.Column>
-                        <List.Content>
-                            <Grid padded>
-                                <Grid.Row columns={ 2 }>
-                                    <Grid.Column width={ 3 }>
-                                        { t("common:description") }
-                                    </Grid.Column>
-                                    <Grid.Column width={ 12 }>
-                                        <List.Description>
-                                            {
-                                                approval?.description
-                                                    ? approval?.description
-                                                    : t("common:approvalsPage.modals.description")
-                                            }
-                                        </List.Description>
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                        </List.Content>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row>
-                    <Grid.Column>
-                        <List.Content>
-                            <Grid padded>
-                                <Grid.Row columns={ 2 }>
-                                    <Grid.Column width={ 3 }>
-                                        { t("common:priority") }
-                                    </Grid.Column>
-                                    <Grid.Column width={ 12 }>
-                                        <List.Description>
-                                            { approval?.priority }
-                                        </List.Description>
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                        </List.Content>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row>
-                    <Grid.Column>
-                        <List.Content>
-                            <Grid padded>
-                                <Grid.Row columns={ 2 }>
-                                    <Grid.Column width={ 3 }>
-                                        { t("common:initiator") }
-                                    </Grid.Column>
-                                    <Grid.Column width={ 12 }>
-                                        <List.Description>
-                                            { approval?.initiator }
-                                        </List.Description>
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                        </List.Content>
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row>
-                    <Grid.Column>
-                        <List.Content>
-                            <Grid padded>
-                                <Grid.Row columns={ 2 }>
-                                    <Grid.Column width={ 3 }>
-                                        { t("common:approvalStatus") }
-                                    </Grid.Column>
-                                    <Grid.Column width={ 12 }>
-                                        <List.Description>
-                                            { approval?.approvalStatus }
-                                        </List.Description>
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                        </List.Content>
-                    </Grid.Column>
-                </Grid.Row>
+                {
+                    renderPropertyRow(t("common:createdOn"),
+                        moment(parseInt(approval?.createdTimeInMillis, 10)).format("lll")
+                    )
+                }
+                {
+                    renderPropertyRow(t("common:description"),
+                        approval?.description
+                            ? approval?.description
+                            : t("common:approvalsPage.modals.description")
+                    )
+                }
+                {
+                    renderPropertyRow(t("common:initiator"),
+                        approval?.initiator ?? t("common:approvalsPage.propertyMessages.selfRegistration"))
+                }
+                {
+                    renderPropertyRow(t("common:operationType"),
+                        t(getOperationTypeTranslationKey(approval?.operationType ?? ""))
+                    )
+                }
+                {
+                    renderPropertyRow(t("common:approvalStatus"), approval?.approvalStatus)
+                }
                 {
                     approval?.properties
                         ? (
@@ -446,7 +500,8 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                                 { t("common:cancel") }
                             </LinkButton>
                             {
-                                approval?.taskStatus !== ApprovalStatus.COMPLETED
+                                approval?.taskStatus !== ApprovalStatus.APPROVED &&
+                                approval?.taskStatus !== ApprovalStatus.REJECTED
                                     ? (
                                         <>{ approvalActions(approval) }</>
                                     )

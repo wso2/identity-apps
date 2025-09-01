@@ -55,7 +55,7 @@ const TextFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
      * Resolves the current schema value to the form value.
      * @returns schema form value
      */
-    const resolveProfileInfoSchemaValue = (schema: ProfileSchemaInterface): string => {
+    const resolveProfileInfoSchemaValue = (schema: ProfileSchemaInterface): string | number => {
         /**
          * Remove the user-store-name prefix from the userName
          * Match case applies only for secondary user-store.
@@ -64,12 +64,38 @@ const TextFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
          * USER-STORE/userNameString to userNameString
          */
         if (schema.name === usernameClaim) {
-            return getUserNameWithoutDomain(initialValue);
+            return getUserNameWithoutDomain(String(initialValue));
+        }
+
+        /**
+         * Type check to avoid rendering issues.
+         */
+        if (typeof initialValue === "object") {
+            return "";
         }
 
         return initialValue;
     };
 
+    /**
+     * Checks whether the initial value is empty.
+     * If the initial value is a number, then it is not empty.
+     * Else the initial value is validated via isEmpty function from lodash.
+     */
+    const isInitialValueEmpty = (): boolean => {
+        if (Number.isSafeInteger(initialValue)) {
+            return false;
+        }
+
+        return isEmpty(initialValue);
+    };
+
+    /**
+     * Validates the field value and updates the validation object.
+     *
+     * @param value - Field value.
+     * @param validation - Field validation object to be updated with error messages.
+     */
     const validateField = (value: string, validation: Validation): void => {
         if (onValidate) {
             onValidate(value, validation);
@@ -226,7 +252,7 @@ const TextFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
                 <Grid.Column mobile={ 8 } computer={ 10 }>
                     <List.Content>
                         <List.Description className="with-max-length">
-                            { isEmpty(initialValue) ? (
+                            { isInitialValueEmpty() ? (
                                 <EmptyValueField
                                     schema={ schema }
                                     fieldLabel={ fieldLabel }

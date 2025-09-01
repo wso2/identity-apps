@@ -42,6 +42,12 @@
         <param-name>ServiceProviderApp-/oauth2_consent.do</param-name>
         <param-value>http://localhost:8080/authenticationendpoint/oauth2_consent.do</param-value>
     </context-param-->
+    {% if localization.prioritize_param is defined %}
+        <context-param>
+            <param-name>isLocalizationParamPrioritized</param-name>
+            <param-value>{{ localization.prioritize_param }}</param-value>
+        </context-param>
+    {% endif %}
     {% if downtime_banner.enabled is defined %}
         <context-param>
             <param-name>isDowntimeBannerEnabled</param-name>
@@ -367,10 +373,7 @@
         {"name": "org_handle.do", "jsp": "/org_handle.jsp", "url": "/org_handle.do"},
         {"name": "org_discovery.do", "jsp": "/org_discovery.jsp", "url": "/org_discovery.do"},
         {"name": "select_org.do", "jsp": "/select_org.jsp", "url": "/select_org.do"},
-        {"name": "verify.do", "jsp": "/sms_otp_verify.jsp", "url": "/verify.do"},
-        {"name": "register.do", "jsp": "/execution-flow.jsp", "url": "/register.do"},
-        {"name": "recovery.do", "jsp": "/execution-flow.jsp", "url": "/recovery.do"},
-        {"name": "execution_flow_error.do", "jsp": "/errors/execution_flow_error.jsp", "url": "/execution_flow_error.do"}
+        {"name": "verify.do", "jsp": "/sms_otp_verify.jsp", "url": "/verify.do"}
     ] %}
     {% for servlet_item in default_servlets %}
         {% set key_name = servlet_item['name'] %}

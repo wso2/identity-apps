@@ -966,7 +966,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     icon: {
                         icon: getSidePanelIcons().childIcon
                     },
-                    id: "registrationFlowBuilder",
+                    id: "flows",
                     path: AppConstants.getPaths().get("REGISTRATION_FLOW_BUILDER"),
                     protected: true,
                     showOnSidePanel: false
@@ -1348,7 +1348,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             icon: {
                 icon: <LogsDocumentIcon fill="black" className="icon" />
             },
-            id: "workflowRequests",
+            id: "workflowInstances",
             name: "pages:workflowRequestsPage.title",
             order: 9,
             path: AppConstants.getPaths().get("WORKFLOW_REQUESTS"),
@@ -1359,11 +1359,11 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             category: "extensions:manage.sidePanel.categories.workflows",
             component: lazy(() =>
                 import("@wso2is/admin.workflow-requests.v1").then((module: any) => ({
-                    default: module.WorkflowRequestDetails
+                    default: module.WorkflowRequestDetailsPage
                 }))
             ),
             exact: true,
-            id: "workflowRequestDetails",
+            id: "workflowInstanceDetails",
             name: "console:manage.features.workflowRequests.details.header",
             path: `${AppConstants.getPaths().get("WORKFLOW_REQUESTS")}/:id`,
             protected: true,

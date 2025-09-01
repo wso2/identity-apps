@@ -24,5 +24,10 @@
 
     &.transition {
         transform: translateX(calc(-1 * var(--wso2is-flow-builder-element-property-panel-width)));
+
+        &.MuiButton-containedPrimary.Mui-disabled {
+            opacity: 0.5;
+            color: var(--oxygen-palette-primary-contrastText);
+        }
     }
 }

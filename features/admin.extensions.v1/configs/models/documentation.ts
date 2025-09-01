@@ -161,6 +161,11 @@ interface ApplicationsDocumentationLinksInterface {
                     addAllRequestedClaimsInJWTAccessToken: {
                         documentationLink: string;
                     }
+                },
+                version300: {
+                    linkedLocalAccountAttributeHandling: {
+                        documentationLink: string;
+                    }
                 }
             }
         }
