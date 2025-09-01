@@ -322,11 +322,20 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
                     const remainingEdges: Edge[] = acc.filter((edge: Edge) => !connectedEdges.includes(edge));
 
                     const createdEdges: Edge[] = incomers.flatMap(({ id: source }: { id: string }) =>
-                        outgoers.map(({ id: target }: { id: string }) => ({
-                            id: `${source}->${target}`,
-                            source,
-                            target
-                        }))
+                        outgoers.map(({ id: target }: { id: string }) => {
+                            // Find the edge from incomer to the node being deleted
+                            const edge: Edge = connectedEdges.find(
+                                (e: Edge) => e.source === source && e.target === node.id
+                            );
+
+                            return {
+                                id: `${edge.source}->${target}`,
+                                source,
+                                sourceHandle: edge?.sourceHandle,
+                                target,
+                                type: edge?.type
+                            };
+                        })
                     );
 
                     return [ ...remainingEdges, ...createdEdges ];
