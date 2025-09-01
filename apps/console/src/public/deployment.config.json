@@ -1752,6 +1752,13 @@
         "theme": {
             "name": "wso2is"
         },
-        "useRoleClaimAsGroupClaim": false
+        "useRoleClaimAsGroupClaim": false,
+        "userSurveyBanner": {
+            "buttonText": "Take the 5-Minute Survey",
+            "description": "We value your feedback on WSO2 Identity Server. Complete the survey to help us improve your experience, and receive a <b>$25 Amazon voucher</b> as a token of our appreciation. Survey closes on 20th September, 2025",
+            "enabled": true,
+            "title": "Shape the Future of Identity Server!",
+            "url": "https://docs.google.com/forms/d/e/1FAIpQLSe6Dr_8QmHQmPI1zj07aYVSDPzNbay7Ss3SMsEBTCCaXLPnUw/viewform"
+        }
     }
 }
