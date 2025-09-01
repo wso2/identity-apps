@@ -1,5 +1,17 @@
 # @wso2is/admin.applications.v1
 
+## 2.37.4
+
+### Patch Changes
+
+- [#8998](https://github.com/wso2/identity-apps/pull/8998) [`8af64631edf11d7dc248fe6721af87f2ebc3363f`](https://github.com/wso2/identity-apps/commit/8af64631edf11d7dc248fe6721af87f2ebc3363f) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Hide outdated applications banner for shared apps.
+
+- Updated dependencies [[`75d5944403511cada310b64c759a440dccd5da04`](https://github.com/wso2/identity-apps/commit/75d5944403511cada310b64c759a440dccd5da04)]:
+  - @wso2is/admin.users.v1@2.36.10
+  - @wso2is/admin.core.v1@2.49.27
+  - @wso2is/admin.server-configurations.v1@2.35.40
+  - @wso2is/admin.roles.v2@2.27.198
+
 ## 2.37.3
 
 ### Patch Changes

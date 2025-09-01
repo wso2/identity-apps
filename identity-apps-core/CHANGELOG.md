@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.2.13
+
+### Patch Changes
+
+- [#8985](https://github.com/wso2/identity-apps/pull/8985) [`06a7c83526efd137d8ecf6cd6f5221183f7198b5`](https://github.com/wso2/identity-apps/commit/06a7c83526efd137d8ecf6cd6f5221183f7198b5) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Fix application branding not applied issues
+
 ## 3.2.12
 
 ### Patch Changes
