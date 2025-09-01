@@ -112,6 +112,17 @@ const EditSelfOrganizationForm: FunctionComponent<EditSelfOrganizationFormProps>
                     })
                 );
                 mutateOrganization();
+
+                // Dispatch custom event to notify other components of organization update.
+                const organizationUpdateEvent: CustomEvent = new CustomEvent("organization-updated", {
+                    detail: {
+                        newName: values.name,
+                        success: true
+                    }
+                });
+
+                window.dispatchEvent(organizationUpdateEvent);
+
                 onSubmit && onSubmit();
             })
             .catch(() => {

@@ -250,6 +250,23 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
         getOrganizationData();
     }, [ organizationType ]);
 
+    /**
+     * Listen for current authenticated organization updates from the organization edit form.
+     */
+    useEffect(() => {
+        const handleOrganizationUpdate = (event: CustomEvent) => {
+            if (event.detail?.success) {
+                setOrganizationName(event.detail?.newName);
+            }
+        };
+
+        window.addEventListener("organization-updated", handleOrganizationUpdate as EventListener);
+
+        return () => {
+            window.removeEventListener("organization-updated", handleOrganizationUpdate as EventListener);
+        };
+    }, []);
+
     useEffect(() => {
 
         if (!currentTenant){
