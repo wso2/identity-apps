@@ -784,6 +784,7 @@ export interface MyAccountNS {
                         validations: {
                             empty: string;
                             invalidFormat: string;
+                            duplicate: string;
                         };
                     };
                     dropdown: {

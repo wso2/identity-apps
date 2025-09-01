@@ -37,7 +37,7 @@ import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@w
 import { Popup, Button as SemanticButton, useMediaContext } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
-import React, { Dispatch, FunctionComponent, ReactElement, useMemo, useState } from "react";
+import React, { Dispatch, FunctionComponent, ReactElement, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid, Icon, List } from "semantic-ui-react";
@@ -258,7 +258,14 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
         );
     };
 
-    const validateField = (value: string): string | undefined => {
+    const validateField: (value: string) => string | undefined = useCallback((value: string) => {
+        // Check for duplicate mobile numbers.
+        if (sortedMobileNumbersList?.some((mobileNumber: SortedMobileNumber) => mobileNumber.value === value)) {
+            return t("myAccount:components.profile.forms.generic.inputs.validations.duplicate", {
+                fieldName: fieldLabel
+            });
+        }
+
         let regEx: string = schema.regEx;
 
         // Validate multi-valued mobile numbers
@@ -274,7 +281,7 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
         }
 
         return undefined;
-    };
+    }, [ sortedMobileNumbersList ]);
 
     const handleVerifyMobile = (mobileNumber: string): void => {
         setIsProfileUpdating(true);

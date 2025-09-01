@@ -135,8 +135,12 @@ const MultiValuedTextField: FunctionComponent<MultiValuedTextFieldPropsInterface
     }, [ fieldValue ]);
 
     const validateValue = (value: string): string => {
+        if (valueList?.includes(value)) {
+            return t("commonUsers:forms.profile.generic.validation.duplicate", { field: fieldLabel });
+        }
+
         if (!RegExp(schema?.regEx).test(value)) {
-            return t("users:forms.validation.formatError", { field: fieldLabel });
+            return t("commonUsers:forms.profile.generic.validation.invalidFormat", { field: fieldLabel });
         }
 
         return undefined;
@@ -146,7 +150,7 @@ const MultiValuedTextField: FunctionComponent<MultiValuedTextFieldPropsInterface
         debounce((value: string) => {
             setValidationError(validateValue(value));
         }, 500),
-        []
+        [ valueList ]
     );
 
     /**
