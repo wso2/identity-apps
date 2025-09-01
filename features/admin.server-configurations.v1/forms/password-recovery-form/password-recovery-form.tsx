@@ -34,6 +34,7 @@ import { Field, Form } from "@wso2is/form";
 import { RadioChild } from "@wso2is/forms";
 import { Heading, Hint, Link, Message } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
+import classNames from "classnames";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -91,6 +92,8 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
 
     const showSmsOtpPwdRecoveryFeatureStatusChip: boolean =
         useSelector((state: AppState) => state?.config?.ui?.showSmsOtpPwdRecoveryFeatureStatusChip);
+    const enableLegacyFlows: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.flowExecution?.enableLegacyFlows);
 
     /**
      * Flattens and resolved form initial values and field metadata.
@@ -327,7 +330,8 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                 ? values.smsOtpLength
                 : initialConnectorValues?.smsOtpLength,
             "Recovery.Notification.Password.OTP.SendOTPInEmail": emailRecoveryOption !== undefined
-                ? (emailRecoveryOption === EmailRecoveryOption.EMAIL_OTP && values.enableEmailBasedRecovery)
+                ? (emailRecoveryOption === EmailRecoveryOption.EMAIL_OTP &&
+                    (values.enableEmailBasedRecovery || !enableLegacyFlows))
                 : initialConnectorValues?.enableEmailOtpBasedRecovery,
             "Recovery.Notification.Password.OTP.UseLowercaseCharactersInOTP":
                 values.passwordRecoveryOtpUseLowercase !== undefined
@@ -341,7 +345,8 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     ? values.passwordRecoveryOtpUseUppercase
                     : initialConnectorValues?.passwordRecoveryOtpUseUppercase,
             "Recovery.Notification.Password.emailLink.Enable": emailRecoveryOption !== undefined
-                ? (emailRecoveryOption === EmailRecoveryOption.EMAIL_LINK && values.enableEmailBasedRecovery)
+                ? (emailRecoveryOption === EmailRecoveryOption.EMAIL_LINK &&
+                    (values.enableEmailBasedRecovery || !enableLegacyFlows))
                 : initialConnectorValues?.enableEmailLinkBasedRecovery,
             "Recovery.Notification.Password.smsOtp.Enable": values.enableSMSBasedRecovery !== undefined
                 ? !!values.enableSMSBasedRecovery
@@ -358,8 +363,445 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
         return null;
     }
 
+    if (enableLegacyFlows) {
+        return (
+            <div
+                className={ classNames("connector-form password-recovery-form", {
+                    "legacy": enableLegacyFlows
+                }) }
+            >
+                <Form
+                    id={ FORM_ID }
+                    initialValues={ initialConnectorValues }
+                    onSubmit={ (values: Record<string, any>) => onSubmit(getUpdatedConfigurations(values)) }
+                    validate={ validateForm }
+                    uncontrolledForm={ false }
+                >
+                    <Heading as="h4">
+                        { t("extensions:manage.serverConfigurations.accountRecovery." +
+                                "passwordRecovery.recoveryOptionHeading") as ReactNode }
+                    </Heading>
+                    <Heading as="h5">
+                        { t("extensions:manage.serverConfigurations.accountRecovery." +
+                                "passwordRecovery.recoveryOptionSubHeadingEmail") as ReactNode }
+                    </Heading>
+                    <Field.Checkbox
+                        ariaLabel="enableEmailBasedRecovery"
+                        name="enableEmailBasedRecovery"
+                        label={ t("extensions:manage.serverConfigurations.accountRecovery." +
+                                    "passwordRecovery.form.fields.enableEmailBasedRecovery.label") }
+                        required={ false }
+                        readOnly={ readOnly }
+                        width={ 10 }
+                        disabled={ !isConnectorEnabled }
+                        defaultValue={ isEmailRecoveryEnabled }
+                        listen={ (value: boolean) => setIsEmailRecoveryEnabled(value) }
+                        data-testid={ `${ testId }-email-based-recovery` }
+                        data-componentid={ `${ testId }-email-based-recovery` }
+                    />
+                    <Hint>
+                        { t("extensions:manage.serverConfigurations.accountRecovery." +
+                                "passwordRecovery.form.fields.enableEmailBasedRecovery.hint") as ReactNode }
+                    </Hint>
+                    {
+                        enableLegacyFlows && (
+                            <Heading as="h6">
+                                { t("extensions:manage.serverConfigurations.accountRecovery." +
+                                "passwordRecovery.form.fields.emailRecoveryOptions.header") }
+                            </Heading>
+                        )
+                    }
+                    {
+                        EMAIL_RECOVERY_RADIO_OPTIONS.map((option: RadioChild) => enableLegacyFlows && (
+                            <Field.Radio
+                                key={ option.value }
+                                ariaLabel={ t(option.label) }
+                                label={ t(option.label) }
+                                name="emailRecoveryOption"
+                                type="radio"
+                                value={ option.value }
+                                checked={ emailRecoveryOption === option.value }
+                                listen={ () => setEmailRecoveryOption(option.value) }
+                                disabled={ !isEmailRecoveryEnabled || !isConnectorEnabled }
+                                readOnly={ readOnly }
+                                data-componentid={ `${ testId }-email-recovery-option-${ option.value }` }
+                            />
+                        ))
+                    }
+                    <Field.Checkbox
+                        ariaLabel="notifyRecoverySuccess"
+                        name="notifySuccess"
+                        label={ t("extensions:manage.serverConfigurations.accountRecovery." +
+                            "passwordRecovery.form.fields.notifySuccess.label") }
+                        required={ false }
+                        readOnly={ readOnly }
+                        width={ 10 }
+                        disabled={ (!isEmailRecoveryEnabled && enableLegacyFlows) || !isConnectorEnabled }
+                        data-testid={ `${ testId }-notify-success` }
+                        data-componentid={ `${ testId }-notify-success` }
+                    />
+                    <Hint>
+                        { t("extensions:manage.serverConfigurations.accountRecovery." +
+                                "passwordRecovery.form.fields.notifySuccess.hint") as ReactNode }
+                    </Hint>
+                    <Field.Input
+                        ariaLabel="expiryTime"
+                        inputType="number"
+                        name="expiryTime"
+                        min={
+                            GovernanceConnectorConstants.PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS
+                                .EXPIRY_TIME_MIN_VALUE
+                        }
+                        max={
+                            GovernanceConnectorConstants.PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS
+                                .EXPIRY_TIME_MAX_VALUE
+                        }
+                        label={ t("extensions:manage.serverConfigurations.accountRecovery." +
+                                    "passwordRecovery.form.fields.expiryTime.label") }
+                        placeholder={ t("extensions:manage.serverConfigurations.accountRecovery." +
+                                            "passwordRecovery.form.fields.expiryTime.placeholder") }
+                        required={ false }
+                        maxLength={
+                            GovernanceConnectorConstants
+                                .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MAX_LENGTH
+                        }
+                        minLength={
+                            GovernanceConnectorConstants
+                                .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_LENGTH
+                        }
+                        readOnly={ readOnly }
+                        width={ 10 }
+                        labelPosition="right"
+                        disabled={ (!isEmailRecoveryEnabled && enableLegacyFlows) || !isConnectorEnabled }
+                        data-testid={ `${ testId }-link-expiry-time` }
+                        data-componentid={ `${ testId }-link-expiry-time` }
+                    >
+                        <input/>
+                        <label className="ui label">mins</label>
+                    </Field.Input>
+                    <Hint>
+                        { t("extensions:manage.serverConfigurations.accountRecovery." +
+                                "passwordRecovery.form.fields.expiryTime.hint") as ReactNode }
+                    </Hint>
+
+                    <Heading as="h5">
+                        { t("extensions:manage.serverConfigurations.accountRecovery." +
+                                "passwordRecovery.recoveryOptionSubHeadingSMS") as ReactNode }
+                        {
+                            showSmsOtpPwdRecoveryFeatureStatusChip && enableLegacyFlows &&
+                            (<Chip
+                                label={ t(FeatureStatusLabel.BETA) }
+                                className="oxygen-menu-item-chip oxygen-chip-beta" />)
+                        }
+                    </Heading>
+                    {
+                        enableLegacyFlows && (
+                            <Message info>
+                                <Icon name="info circle" />
+                                <Trans
+                                    i18nKey={
+                                        "extensions:manage.serverConfigurations.accountRecovery." +
+                                        "passwordRecovery.form.smsProviderWarning"
+                                    }
+                                >
+                                    Ensure that an
+                                    <Link
+                                        external={ false }
+                                        onClick={ () => {
+                                            history.push(
+                                                AppConstants.getPaths().get("SMS_PROVIDER")
+                                            );
+                                        } }
+                                    >SMS Provider
+                                    </Link>
+                                    &nbsp;is configured for the OTP feature to work properly.
+                                </Trans>
+                            </Message>
+                        )
+                    }
+                    {
+                        enableLegacyFlows && (
+                            <Field.Checkbox
+                                ariaLabel="enableSMSBasedRecovery"
+                                name="enableSMSBasedRecovery"
+                                label={ t("extensions:manage.serverConfigurations.accountRecovery." +
+                                            "passwordRecovery.form.fields.enableSMSBasedRecovery.label") }
+                                required={ false }
+                                readOnly={ readOnly }
+                                width={ 10 }
+                                disabled={ !isConnectorEnabled }
+                                listen={ (value: boolean) => setIsSMSRecoveryEnabled(value) }
+                                data-testid={ `${ testId }-sms-based-recovery` }
+                                data-componentid={ `${ testId }-sms-based-recovery` }
+                            />
+                        )
+                    }
+                    {
+                        enableLegacyFlows && (
+                            <Hint>
+                                { t("extensions:manage.serverConfigurations.accountRecovery." +
+                                        "passwordRecovery.form.fields.enableSMSBasedRecovery.hint") as ReactNode }
+                            </Hint>
+                        )
+                    }
+                    <Field.Input
+                        ariaLabel="smsOtpExpiryTime"
+                        inputType="number"
+                        name="smsOtpExpiryTime"
+                        min={
+                            GovernanceConnectorConstants.PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS
+                                .EXPIRY_TIME_MIN_VALUE
+                        }
+                        max={
+                            GovernanceConnectorConstants.PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS
+                                .SMS_OTP_EXPIRY_TIME_MAX_VALUE
+                        }
+                        label={ t("extensions:manage.serverConfigurations.accountRecovery." +
+                                    "passwordRecovery.form.fields.smsOtpExpiryTime.label") }
+                        placeholder={ t("extensions:manage.serverConfigurations.accountRecovery." +
+                                            "passwordRecovery.form.fields.smsOtpExpiryTime.placeholder") }
+                        required={ false }
+                        maxLength={
+                            GovernanceConnectorConstants
+                                .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.SMS_OTP_EXPIRY_TIME_MAX_LENGTH
+                        }
+                        minLength={
+                            GovernanceConnectorConstants
+                                .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MIN_LENGTH
+                        }
+                        readOnly={ readOnly }
+                        width={ 10 }
+                        labelPosition="right"
+                        disabled={ (!isSMSRecoveryEnabled && enableLegacyFlows) || !isConnectorEnabled }
+                        data-testid={ `${ testId }-sms-otp-expiry-time` }
+                        data-componentid={ `${ testId }-sms-otp-expiry-time` }
+                    >
+                        <input/>
+                        <label className="ui label">mins</label>
+                    </Field.Input>
+                    <Hint>
+                        { t("extensions:manage.serverConfigurations.accountRecovery." +
+                                "passwordRecovery.form.fields.smsOtpExpiryTime.hint") as ReactNode }
+                    </Hint>
+                    <Divider/>
+                    <Heading as="h4">
+                        { t("extensions:manage.serverConfigurations.accountRecovery." +
+                                "passwordRecovery.otpConfigHeading") as ReactNode }
+                        {
+                            showSmsOtpPwdRecoveryFeatureStatusChip &&
+                            (<Chip
+                                label={ t(FeatureStatusLabel.BETA) }
+                                className="oxygen-menu-item-chip oxygen-chip-beta" />)
+                        }
+                    </Heading>
+                    <Field.Checkbox
+                        ariaLabel="passwordRecoveryOtpUseUppercase"
+                        name="passwordRecoveryOtpUseUppercase"
+                        label= { t("extensions:manage.serverConfigurations.accountRecovery." +
+                            "passwordRecovery.form.fields.passwordRecoveryOtpUseUppercase.label") }
+                        required={ false }
+                        readOnly={ readOnly }
+                        width={ 10 }
+                        // Disabling the last enabled option is not allowed
+                        disabled={ !isConnectorEnabled
+                            || (isUpperCaseEnabled && !isLowerCaseEnabled && !isNumericEnabled) }
+                        listen={ (value: boolean) => setIsUpperCaseEnabled(value) }
+                        data-testid={ `${ testId }-sms-otp-uppercase` }
+                        data-componentid={ `${ testId }-sms-otp-uppercase` }
+                    />
+                    <Hint>
+                        { t("extensions:manage.serverConfigurations.accountRecovery." +
+                                "passwordRecovery.form.fields.passwordRecoveryOtpUseUppercase.hint") as ReactNode }
+                    </Hint>
+                    <Field.Checkbox
+                        ariaLabel="passwordRecoveryOtpUseLowercase"
+                        name="passwordRecoveryOtpUseLowercase"
+                        label= { t("extensions:manage.serverConfigurations.accountRecovery." +
+                        "passwordRecovery.form.fields.passwordRecoveryOtpUseLowercase.label") }
+                        required={ false }
+                        readOnly={ readOnly }
+                        width={ 10 }
+                        // Disabling the last enabled option is not allowed
+                        disabled={ !isConnectorEnabled
+                            || (!isUpperCaseEnabled && isLowerCaseEnabled && !isNumericEnabled) }
+                        listen={ (value: boolean) => setIsLowerCaseEnabled(value) }
+                        data-testid={ `${ testId }-sms-otp-lowercase` }
+                        data-componentid={ `${ testId }-sms-otp-lowercase` }
+                    />
+                    <Hint>
+                        { t("extensions:manage.serverConfigurations.accountRecovery." +
+                                "passwordRecovery.form.fields.passwordRecoveryOtpUseLowercase.hint") as ReactNode }
+                    </Hint>
+                    <Field.Checkbox
+                        ariaLabel="passwordRecoveryOtpUseNumeric"
+                        name="passwordRecoveryOtpUseNumeric"
+                        label= { t("extensions:manage.serverConfigurations.accountRecovery." +
+                            "passwordRecovery.form.fields.passwordRecoveryOtpUseNumeric.label") }
+                        required={ false }
+                        readOnly={ readOnly }
+                        width={ 10 }
+                        // Disabling the last enabled option is not allowed
+                        disabled={ !isConnectorEnabled
+                            || (!isUpperCaseEnabled && !isLowerCaseEnabled && isNumericEnabled) }
+                        listen={ (value: boolean) => setIsNumericEnabled(value) }
+                        data-testid={ `${ testId }-sms-otp-numeric` }
+                        data-componentid={ `${ testId }-sms-otp-numeric` }
+                    />
+                    <Hint>
+                        { t("extensions:manage.serverConfigurations.accountRecovery." +
+                                "passwordRecovery.form.fields.passwordRecoveryOtpUseNumeric.hint") as ReactNode }
+                    </Hint>
+                    <Field.Input
+                        ariaLabel="otpLength"
+                        inputType="number"
+                        name="smsOtpLength"
+                        min={
+                            GovernanceConnectorConstants.PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS
+                                .SMS_OTP_CODE_LENGTH_MIN_VALUE
+                        }
+                        max={
+                            GovernanceConnectorConstants.PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS
+                                .SMS_OTP_CODE_LENGTH_MAX_VALUE
+                        }
+                        label= { t("extensions:manage.serverConfigurations.accountRecovery." +
+                                        "passwordRecovery.form.fields.passwordRecoveryOtpLength.label") }
+                        placeholder="OTP Length"
+                        required={ false }
+                        maxLength={
+                            GovernanceConnectorConstants
+                                .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.SMS_OTP_CODE_LENGTH_MAX_LENGTH
+                        }
+                        minLength={
+                            GovernanceConnectorConstants
+                                .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.SMS_OTP_CODE_LENGTH_MIN_LENGTH
+                        }
+                        readOnly={ readOnly }
+                        width={ 10 }
+                        labelPosition="right"
+                        disabled={ !isConnectorEnabled }
+                        data-testid={ `${ testId }-otp-length` }
+                        data-componentid={ `${ testId }-otp-length` }
+                    >
+                        <input/>
+                        <label className="ui label">characters</label>
+                    </Field.Input>
+                    <Hint>
+                        { t("extensions:manage.serverConfigurations.accountRecovery." +
+                                "passwordRecovery.form.fields.passwordRecoveryOtpLength.hint") as ReactNode }
+                    </Hint>
+                    <Divider/>
+                    <Heading as="h4">
+                        { t("extensions:manage.serverConfigurations.accountRecovery." +
+                                "passwordRecovery.failedAttemptConfigHeading") as ReactNode }
+                        {
+                            showSmsOtpPwdRecoveryFeatureStatusChip &&
+                            (<Chip
+                                label={ t(FeatureStatusLabel.BETA) }
+                                className="oxygen-menu-item-chip oxygen-chip-beta" />)
+                        }
+                    </Heading>
+                    <Field.Input
+                        ariaLabel="maxFailedAttemptCount"
+                        inputType="number"
+                        name="maxFailedAttemptCount"
+                        min={
+                            GovernanceConnectorConstants.PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS
+                                .MAX_FAILED_ATTEMPT_COUNT_MIN_VALUE
+                        }
+                        max={
+                            GovernanceConnectorConstants.PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS
+                                .MAX_FAILED_ATTEMPT_COUNT_MAX_VALUE
+                        }
+                        label={ t("extensions:manage.serverConfigurations.accountRecovery." +
+                            "passwordRecovery.form.fields.maxFailedAttemptCount.label") }
+                        placeholder={ t("extensions:manage.serverConfigurations.accountRecovery." +
+                            "passwordRecovery.form.fields.maxFailedAttemptCount.placeholder") }
+                        required={ false }
+                        maxLength={
+                            GovernanceConnectorConstants
+                                .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.MAX_FAILED_ATTEMPT_COUNT_MAX_LENGTH
+                        }
+                        minLength={
+                            GovernanceConnectorConstants
+                                .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.MAX_FAILED_ATTEMPT_COUNT_MIN_LENGTH
+                        }
+                        readOnly={ readOnly }
+                        width={ 10 }
+                        labelPosition="right"
+                        disabled={ !isConnectorEnabled }
+                        data-testid={ `${ testId }-max-fail-attempt-count` }
+                        data-componentid={ `${ testId }-max-fail-attempt-count` }
+                    >
+                        <input/>
+                        <label className="ui label">attempts</label>
+                    </Field.Input>
+                    <Hint>
+                        { t("extensions:manage.serverConfigurations.accountRecovery." +
+                                "passwordRecovery.form.fields.maxFailedAttemptCount.hint") as ReactNode }
+                    </Hint>
+                    <Field.Input
+                        ariaLabel="maxResendCount"
+                        inputType="number"
+                        name="maxResendCount"
+                        min={
+                            GovernanceConnectorConstants.PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS
+                                .MAX_RESEND_COUNT_MIN_VALUE
+                        }
+                        max={
+                            GovernanceConnectorConstants.PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS
+                                .MAX_RESEND_COUNT_MAX_VALUE
+                        }
+                        label={ t("extensions:manage.serverConfigurations.accountRecovery." +
+                            "passwordRecovery.form.fields.maxResendCount.label") }
+                        placeholder={ t("extensions:manage.serverConfigurations.accountRecovery." +
+                            "passwordRecovery.form.fields.maxResendCount.placeholder") }
+                        required={ false }
+                        maxLength={
+                            GovernanceConnectorConstants
+                                .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.MAX_RESEND_COUNT_MAX_LENGTH
+                        }
+                        minLength={
+                            GovernanceConnectorConstants
+                                .PASSWORD_RECOVERY_FORM_FIELD_CONSTRAINTS.MAX_RESEND_COUNT_MIN_LENGTH
+                        }
+                        readOnly={ readOnly }
+                        width={ 10 }
+                        labelPosition="right"
+                        disabled={ !isConnectorEnabled }
+                        data-testid={ `${ testId }-otp-resend-count` }
+                        data-componentid={ `${ testId }-otp-resend-count` }
+                    >
+                        <input/>
+                        <label className="ui label">attempts</label>
+                    </Field.Input>
+                    <Hint>
+                        { t("extensions:manage.serverConfigurations.accountRecovery." +
+                                "passwordRecovery.form.fields.maxResendCount.hint") as ReactNode }
+                    </Hint>
+                    <Field.Button
+                        form={ FORM_ID }
+                        size="small"
+                        buttonType="primary_btn"
+                        ariaLabel="Password Recovery update button"
+                        name="update-button"
+                        data-testid={ `${ testId }-submit-button` }
+                        data-componentid={ `${ testId }-submit-button` }
+                        disabled={ isSubmitting }
+                        loading={ isSubmitting }
+                        label={ t("common:update") }
+                        hidden={ !isConnectorEnabled || readOnly }
+                    />
+                </Form>
+            </div>
+        );
+    }
+
     return (
-        <div className="connector-form password-recovery-form">
+        <div
+            className={ classNames("connector-form password-recovery-form", {
+                "legacy": enableLegacyFlows
+            }) }
+        >
             <Form
                 id={ FORM_ID }
                 initialValues={ initialConnectorValues }
@@ -367,38 +809,59 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                 validate={ validateForm }
                 uncontrolledForm={ false }
             >
-                <Heading as="h4">
-                    { t("extensions:manage.serverConfigurations.accountRecovery." +
-                            "passwordRecovery.recoveryOptionHeading") as ReactNode }
-                </Heading>
+                {
+                    enableLegacyFlows ? (
+                        <Heading as="h4">
+                            { t("extensions:manage.serverConfigurations.accountRecovery." +
+                                    "passwordRecovery.recoveryOptionHeading") as ReactNode }
+                        </Heading>
+                    ) : (
+                        <Heading as="h4">
+                            { t("extensions:manage.serverConfigurations.accountRecovery." +
+                                    "passwordRecovery.flowsRecoveryOptionHeading") }
+                        </Heading>
+                    )
+                }
                 <Heading as="h5">
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.recoveryOptionSubHeadingEmail") as ReactNode }
                 </Heading>
-                <Field.Checkbox
-                    ariaLabel="enableEmailBasedRecovery"
-                    name="enableEmailBasedRecovery"
-                    label={ t("extensions:manage.serverConfigurations.accountRecovery." +
-                                "passwordRecovery.form.fields.enableEmailBasedRecovery.label") }
-                    required={ false }
-                    readOnly={ readOnly }
-                    width={ 10 }
-                    disabled={ !isConnectorEnabled }
-                    defaultValue={ isEmailRecoveryEnabled }
-                    listen={ (value: boolean) => setIsEmailRecoveryEnabled(value) }
-                    data-testid={ `${ testId }-email-based-recovery` }
-                    data-componentid={ `${ testId }-email-based-recovery` }
-                />
-                <Hint>
-                    { t("extensions:manage.serverConfigurations.accountRecovery." +
-                            "passwordRecovery.form.fields.enableEmailBasedRecovery.hint") as ReactNode }
-                </Hint>
-                <Heading as="h6">
-                    { t("extensions:manage.serverConfigurations.accountRecovery." +
-                    "passwordRecovery.form.fields.emailRecoveryOptions.header") }
-                </Heading>
                 {
-                    EMAIL_RECOVERY_RADIO_OPTIONS.map((option: RadioChild) => (
+                    enableLegacyFlows && (
+                        <Field.Checkbox
+                            ariaLabel="enableEmailBasedRecovery"
+                            name="enableEmailBasedRecovery"
+                            label={ t("extensions:manage.serverConfigurations.accountRecovery." +
+                                        "passwordRecovery.form.fields.enableEmailBasedRecovery.label") }
+                            required={ false }
+                            readOnly={ readOnly }
+                            width={ 10 }
+                            disabled={ !isConnectorEnabled }
+                            defaultValue={ isEmailRecoveryEnabled }
+                            listen={ (value: boolean) => setIsEmailRecoveryEnabled(value) }
+                            data-testid={ `${ testId }-email-based-recovery` }
+                            data-componentid={ `${ testId }-email-based-recovery` }
+                        />
+                    )
+                }
+                {
+                    enableLegacyFlows && (
+                        <Hint>
+                            { t("extensions:manage.serverConfigurations.accountRecovery." +
+                                    "passwordRecovery.form.fields.enableEmailBasedRecovery.hint") as ReactNode }
+                        </Hint>
+                    )
+                }
+                {
+                    enableLegacyFlows && (
+                        <Heading as="h6">
+                            { t("extensions:manage.serverConfigurations.accountRecovery." +
+                            "passwordRecovery.form.fields.emailRecoveryOptions.header") }
+                        </Heading>
+                    )
+                }
+                {
+                    EMAIL_RECOVERY_RADIO_OPTIONS.map((option: RadioChild) => enableLegacyFlows && (
                         <Field.Radio
                             key={ option.value }
                             ariaLabel={ t(option.label) }
@@ -408,13 +871,12 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                             value={ option.value }
                             checked={ emailRecoveryOption === option.value }
                             listen={ () => setEmailRecoveryOption(option.value) }
-                            disabled={ !isEmailRecoveryEnabled }
+                            disabled={ !isEmailRecoveryEnabled || !isConnectorEnabled }
                             readOnly={ readOnly }
                             data-componentid={ `${ testId }-email-recovery-option-${ option.value }` }
                         />
                     ))
                 }
-                <br/>
                 <Field.Checkbox
                     ariaLabel="notifyRecoverySuccess"
                     name="notifySuccess"
@@ -423,7 +885,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     required={ false }
                     readOnly={ readOnly }
                     width={ 10 }
-                    disabled={ !isEmailRecoveryEnabled }
+                    disabled={ (!isEmailRecoveryEnabled && enableLegacyFlows) || !isConnectorEnabled }
                     data-testid={ `${ testId }-notify-success` }
                     data-componentid={ `${ testId }-notify-success` }
                 />
@@ -459,7 +921,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     readOnly={ readOnly }
                     width={ 10 }
                     labelPosition="right"
-                    disabled={ !isEmailRecoveryEnabled }
+                    disabled={ (!isEmailRecoveryEnabled && enableLegacyFlows) || !isConnectorEnabled }
                     data-testid={ `${ testId }-link-expiry-time` }
                     data-componentid={ `${ testId }-link-expiry-time` }
                 >
@@ -475,52 +937,62 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.recoveryOptionSubHeadingSMS") as ReactNode }
                     {
-                        showSmsOtpPwdRecoveryFeatureStatusChip &&
+                        showSmsOtpPwdRecoveryFeatureStatusChip && enableLegacyFlows &&
                         (<Chip
                             label={ t(FeatureStatusLabel.BETA) }
                             className="oxygen-menu-item-chip oxygen-chip-beta" />)
                     }
                 </Heading>
                 {
-                    <Message info>
-                        <Icon name="info circle" />
-                        <Trans
-                            i18nKey={
-                                "extensions:manage.serverConfigurations.accountRecovery." +
-                                "passwordRecovery.form.smsProviderWarning"
-                            }
-                        >
-                            Ensure that an
-                            <Link
-                                external={ false }
-                                onClick={ () => {
-                                    history.push(
-                                        AppConstants.getPaths().get("SMS_PROVIDER")
-                                    );
-                                } }
-                            >SMS Provider
-                            </Link>
-                            &nbsp;is configured for the OTP feature to work properly.
-                        </Trans>
-                    </Message>
+                    enableLegacyFlows && (
+                        <Message info>
+                            <Icon name="info circle" />
+                            <Trans
+                                i18nKey={
+                                    "extensions:manage.serverConfigurations.accountRecovery." +
+                                    "passwordRecovery.form.smsProviderWarning"
+                                }
+                            >
+                                Ensure that an
+                                <Link
+                                    external={ false }
+                                    onClick={ () => {
+                                        history.push(
+                                            AppConstants.getPaths().get("SMS_PROVIDER")
+                                        );
+                                    } }
+                                >SMS Provider
+                                </Link>
+                                &nbsp;is configured for the OTP feature to work properly.
+                            </Trans>
+                        </Message>
+                    )
                 }
-                <Field.Checkbox
-                    ariaLabel="enableSMSBasedRecovery"
-                    name="enableSMSBasedRecovery"
-                    label={ t("extensions:manage.serverConfigurations.accountRecovery." +
-                                "passwordRecovery.form.fields.enableSMSBasedRecovery.label") }
-                    required={ false }
-                    readOnly={ readOnly }
-                    width={ 10 }
-                    disabled={ !isConnectorEnabled }
-                    listen={ (value: boolean) => setIsSMSRecoveryEnabled(value) }
-                    data-testid={ `${ testId }-sms-based-recovery` }
-                    data-componentid={ `${ testId }-sms-based-recovery` }
-                />
-                <Hint>
-                    { t("extensions:manage.serverConfigurations.accountRecovery." +
-                            "passwordRecovery.form.fields.enableSMSBasedRecovery.hint") as ReactNode }
-                </Hint>
+                {
+                    enableLegacyFlows && (
+                        <Field.Checkbox
+                            ariaLabel="enableSMSBasedRecovery"
+                            name="enableSMSBasedRecovery"
+                            label={ t("extensions:manage.serverConfigurations.accountRecovery." +
+                                        "passwordRecovery.form.fields.enableSMSBasedRecovery.label") }
+                            required={ false }
+                            readOnly={ readOnly }
+                            width={ 10 }
+                            disabled={ !isConnectorEnabled }
+                            listen={ (value: boolean) => setIsSMSRecoveryEnabled(value) }
+                            data-testid={ `${ testId }-sms-based-recovery` }
+                            data-componentid={ `${ testId }-sms-based-recovery` }
+                        />
+                    )
+                }
+                {
+                    enableLegacyFlows && (
+                        <Hint>
+                            { t("extensions:manage.serverConfigurations.accountRecovery." +
+                                    "passwordRecovery.form.fields.enableSMSBasedRecovery.hint") as ReactNode }
+                        </Hint>
+                    )
+                }
                 <Field.Input
                     ariaLabel="smsOtpExpiryTime"
                     inputType="number"
@@ -549,7 +1021,7 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                     readOnly={ readOnly }
                     width={ 10 }
                     labelPosition="right"
-                    disabled={ !isSMSRecoveryEnabled }
+                    disabled={ (!isSMSRecoveryEnabled && enableLegacyFlows) || !isConnectorEnabled }
                     data-testid={ `${ testId }-sms-otp-expiry-time` }
                     data-componentid={ `${ testId }-sms-otp-expiry-time` }
                 >

@@ -3354,6 +3354,7 @@ export const extensions: Extensions = {
                     recoveryOptionSubHeadingEmail: "Email",
                     recoveryOptionSubHeadingSMS: "SMS OTP",
                     recoveryOptionHeading: "Recovery Option Selection",
+                    flowsRecoveryOptionHeading: "Recovery Option Configurations",
                     otpConfigHeading: "OTP Code Configuration",
                     failedAttemptConfigHeading: "Recovery Attempts Limitation",
                     connectorDescription: "Enable self-service password recovery for users " + "on the login page.",

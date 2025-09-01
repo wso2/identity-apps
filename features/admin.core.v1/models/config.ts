@@ -607,6 +607,12 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Terms of service URL.
      */
     termsOfUseUrl?: string;
+    /**
+     * Flow execution configurations.
+     */
+    flowExecution: {
+        enableLegacyFlows: boolean;
+    };
 }
 
 /**

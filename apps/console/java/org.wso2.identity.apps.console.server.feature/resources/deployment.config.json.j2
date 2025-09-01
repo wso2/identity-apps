@@ -2472,6 +2472,9 @@
             {% if branding_configuration.custom_content.max_file_size is defined %}
             "maxFileSize": {{ branding_configuration.custom_content.max_file_size }}
             {% endif %}
+        },
+        "flowExecution": {
+            "enableLegacyFlows": {{ flow_execution.enable_legacy_flows }}
         }
     }
 }

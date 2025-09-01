@@ -1731,6 +1731,9 @@
                 }
             }
         },
+        "flowExecution": {
+            "enableLegacyFlows": true
+        },
         "governanceConnectors": {
             "loginAttempts": {
                 "disabledFeatures": []

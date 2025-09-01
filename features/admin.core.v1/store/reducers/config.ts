@@ -241,6 +241,9 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 userStores: null,
                 users: null
             },
+            flowExecution: {
+                enableLegacyFlows: true
+            },
             googleOneTapEnabledTenants: [],
             gravatarConfig: {
                 defaultImage: "",

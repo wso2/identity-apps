@@ -2890,6 +2890,7 @@ export interface Extensions {
                     recoveryOptionSubHeadingEmail: string;
                     recoveryOptionSubHeadingSMS: string;
                     recoveryOptionHeading: string;
+                    flowsRecoveryOptionHeading: string;
                     otpConfigHeading: string;
                     failedAttemptConfigHeading: string;
                     connectorDescription: string;

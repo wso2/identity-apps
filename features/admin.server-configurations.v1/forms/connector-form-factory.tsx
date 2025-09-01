@@ -166,7 +166,7 @@ export const ConnectorFormFactory: FunctionComponent<ConnectorFormFactoryInterfa
                 <AskPasswordForm
                     onSubmit={ onSubmit }
                     initialValues={ initialValues }
-                    isConnectorEnabled={ true }
+                    isConnectorEnabled={ isConnectorEnabled }
                     readOnly={ !hasConnectorUpdatePermission }
                     isSubmitting={ isSubmitting }
                 />

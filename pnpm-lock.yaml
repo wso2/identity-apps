@@ -16940,6 +16940,9 @@ importers:
       '@wso2is/access-control':
         specifier: ^3.3.20
         version: link:../../modules/access-control
+      '@wso2is/admin.ask-password-flow-builder.v1':
+        specifier: workspace:^
+        version: link:../admin.ask-password-flow-builder.v1
       '@wso2is/admin.core.v1':
         specifier: ^2.49.32
         version: link:../admin.core.v1
@@ -16961,6 +16964,9 @@ importers:
       '@wso2is/admin.organizations.v1':
         specifier: ^2.27.5
         version: link:../admin.organizations.v1
+      '@wso2is/admin.password-recovery-flow-builder.v1':
+        specifier: workspace:^
+        version: link:../admin.password-recovery-flow-builder.v1
       '@wso2is/admin.server-configurations.v1':
         specifier: ^2.35.45
         version: 'link:'

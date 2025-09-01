@@ -17,11 +17,17 @@
  */
 
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
+import InvitedRegistrationFlowBuilderBanner from
+    "@wso2is/admin.ask-password-flow-builder.v1/components/ask-password-flow-builder-banner";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import {  AppState  } from "@wso2is/admin.core.v1/store";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/server-configuration";
+import useGetFlowConfigs from "@wso2is/admin.flows.v1/api/use-get-flow-configs";
+import { FlowConfigInterface, FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
+import PasswordRecoveryFlowBuilderBanner from
+    "@wso2is/admin.password-recovery-flow-builder.v1/components/password-recovery-flow-builder-banner";
 import RegistrationFlowBuilderBanner
     from "@wso2is/admin.registration-flow-builder.v1/components/registration-flow-builder-banner";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
@@ -42,6 +48,7 @@ import React, {
     ReactElement,
     SyntheticEvent,
     useEffect,
+    useMemo,
     useRef,
     useState
 } from "react";
@@ -49,7 +56,6 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Grid, Icon, Message, Ref } from "semantic-ui-react";
-import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import {
     getConnectorDetails,
     revertGovernanceConnectorProperties,
@@ -93,8 +99,10 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
 
     const applicationFeatureConfig: FeatureConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.applications);
-    const registrationFlowBuilderFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state?.config?.ui?.features?.registrationFlowBuilder);
+    const flowsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.flows);
+    const enableLegacyFlows: boolean = useSelector((state: AppState) =>
+        state?.config?.ui?.flowExecution?.enableLegacyFlows);
 
     const [ isConnectorRequestLoading, setConnectorRequestLoading ] = useState<boolean>(false);
     const [ connector, setConnector ] = useState<GovernanceConnectorInterface>(undefined);
@@ -104,13 +112,69 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ enableBackButton, setEnableBackButton ] = useState<boolean>(true);
 
-    const { isSubOrganization } = useGetCurrentOrganizationType();
     const hasGovernanceConnectorsUpdatePermissions: boolean
         = useRequiredScopes(applicationFeatureConfig?.governanceConnectors?.scopes?.update);
-    const hasRegistrationFlowBuilderViewPermissions: boolean
-        = useRequiredScopes(registrationFlowBuilderFeatureConfig?.scopes?.read);
+    const hasFlowsViewPermissions: boolean = useRequiredScopes(flowsFeatureConfig?.scopes?.read);
     const path: string[] = history.location.pathname.split("/");
     const type: string = path[ path.length - 3 ];
+    const { data: flowConfigs, isLoading: isLoadingFlowConfig, error: flowConfigError } = useGetFlowConfigs();
+
+    /**
+     * Checks if the new composer based registration flow is enabled.
+     */
+    const registrationFlowEnabled: boolean = useMemo(() => {
+        if (!flowConfigs) {
+            return false;
+        }
+
+        let enabled: boolean = false;
+
+        flowConfigs.forEach((config: FlowConfigInterface) => {
+            if (config.flowType === FlowTypes.REGISTRATION) {
+                enabled = config.isEnabled;
+            }
+        });
+
+        return enabled;
+    }, [ flowConfigs ]);
+
+    /**
+     * Checks if the new composer based password recovery flow is enabled.
+     */
+    const passwordRecoveryFlowEnabled: boolean = useMemo(() => {
+        if (!flowConfigs) {
+            return false;
+        }
+
+        let enabled: boolean = false;
+
+        flowConfigs.forEach((config: FlowConfigInterface) => {
+            if (config.flowType === FlowTypes.PASSWORD_RECOVERY) {
+                enabled = config.isEnabled;
+            }
+        });
+
+        return enabled;
+    }, [ flowConfigs ]);
+
+    /**
+     * Checks if the new composer based invited registration flow is enabled.
+     */
+    const invitedRegistrationFlowEnabled: boolean = useMemo(() => {
+        if (!flowConfigs) {
+            return false;
+        }
+
+        let enabled: boolean = false;
+
+        flowConfigs.forEach((config: FlowConfigInterface) => {
+            if (config.flowType === FlowTypes.INVITED_USER_REGISTRATION) {
+                enabled = config.isEnabled;
+            }
+        });
+
+        return enabled;
+    }, [ flowConfigs ]);
 
     useEffect(() => {
         // If Governance Connector update permission is not available, prevent from trying to load the connectors.
@@ -119,7 +183,20 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
         }
 
         loadConnectorDetails();
-    }, []);
+    }, [ flowConfigs ]);
+
+    // Show error message if flow configs error occurs.
+    useEffect(() => {
+        if (flowConfigError) {
+            dispatch(
+                addAlert({
+                    description: t("flows:registrationFlow.notifications.fetchFlowConfig.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("flows:registrationFlow.notifications.fetchFlowConfig.genericError.message")
+                })
+            );
+        }
+    }, [ flowConfigError ]);
 
     /**
      * Handles the back button click event.
@@ -441,7 +518,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
                     (property: ConnectorPropertyInterface) => property.name === resolveConnectorToggleProperty(response)
                 );
 
-                setEnableForm(enableProperty ? enableProperty?.value === "true" : true);
+                setEnableForm(enableProperty ? enableProperty?.value === "true" : resolveDefaultFormState(response));
             })
             .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.detail) {
@@ -700,7 +777,11 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             case ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID:
                 return ServerConfigurationsConstants.ACCOUNT_LOCK_ENABLE;
             case ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID:
-                return ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE;
+                if (enableLegacyFlows) {
+                    return ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE;
+                }
+
+                return null;
             case ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID:
                 return ServerConfigurationsConstants.RE_CAPTCHA_AFTER_MAX_FAILED_ATTEMPTS_ENABLE;
             case ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_CONNECTOR_ID:
@@ -708,9 +789,43 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             case ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID:
                 return ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_ENABLE;
             case ServerConfigurationsConstants.USER_EMAIL_VERIFICATION_CONNECTOR_ID:
-                return ServerConfigurationsConstants.EMAIL_VERIFICATION_ENABLED;
+                if (enableLegacyFlows) {
+                    return ServerConfigurationsConstants.EMAIL_VERIFICATION_ENABLED;
+                }
+
+                return null;
             default:
                 return null;
+        }
+    };
+
+    /**
+     * Resolves the default form state for a given connector.
+     * @param connector - The connector to resolve the form state for.
+     * @returns The default form state.
+     */
+    const resolveDefaultFormState = (connector: GovernanceConnectorInterface): boolean => {
+        switch(connector?.id) {
+            case ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID:
+                if (!enableLegacyFlows) {
+                    return registrationFlowEnabled;
+                }
+
+                return true;
+            case ServerConfigurationsConstants.USER_EMAIL_VERIFICATION_CONNECTOR_ID:
+                if (!enableLegacyFlows) {
+                    return invitedRegistrationFlowEnabled;
+                }
+
+                return true;
+            case ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID:
+                if (!enableLegacyFlows) {
+                    return passwordRecoveryFlowEnabled;
+                }
+
+                return true;
+            default:
+                return true;
         }
     };
 
@@ -789,19 +904,31 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
      * @returns Feature enhancement banner.
      */
     const renderFeatureEnhancementBanner = (): ReactElement => {
-        if (connector.id === ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID) {
-            if (isSubOrganization() || !registrationFlowBuilderFeatureConfig?.enabled ||
-                    !hasRegistrationFlowBuilderViewPermissions) {
+        switch(connector?.id) {
+            case ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID:
+                if (!flowsFeatureConfig?.enabled || !hasFlowsViewPermissions) {
+                    return null;
+                }
+
+                return <RegistrationFlowBuilderBanner />;
+            case ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID:
+                if (!flowsFeatureConfig?.enabled || !hasFlowsViewPermissions) {
+                    return null;
+                }
+
+                return <PasswordRecoveryFlowBuilderBanner />;
+            case ServerConfigurationsConstants.USER_EMAIL_VERIFICATION_CONNECTOR_ID:
+                if (!flowsFeatureConfig?.enabled || !hasFlowsViewPermissions) {
+                    return null;
+                }
+
+                return <InvitedRegistrationFlowBuilderBanner />;
+            default:
                 return null;
-            }
-
-            return <RegistrationFlowBuilderBanner />;
         }
-
-        return null;
     };
 
-    return !isConnectorRequestLoading && connectorId ? (
+    return !isConnectorRequestLoading && !isLoadingFlowConfig && connectorId ? (
         <PageLayout
             title={ resolveConnectorTitle(connector) }
             description={ resolveConnectorDescription(connector) }
@@ -854,7 +981,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             </Ref>
         </PageLayout>
     ) : (
-        <GridLayout isLoading={ isConnectorRequestLoading } className={ "pt-5" } />
+        <GridLayout isLoading={ isConnectorRequestLoading || isLoadingFlowConfig } className={ "pt-5" } />
     );
 };
 

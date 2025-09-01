@@ -18,6 +18,10 @@
 
 export interface flowsNS {
     askPassword: {
+        banner: {
+            description: string;
+            title: string;
+        };
         breadcrumb: string;
         labels: {
             disableFlow: string;
@@ -151,6 +155,12 @@ export interface flowsNS {
                     message: string;
                 };
             };
+            flowConfigsFetch: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
             flowMetadataFetch: {
                 genericError: {
                     description: string;
@@ -231,6 +241,10 @@ export interface flowsNS {
     };
     label?: string;
     passwordRecovery: {
+        banner: {
+            description: string;
+            title: string;
+        };
         labels: {
             disableFlow: string;
             enableFlow: string;
