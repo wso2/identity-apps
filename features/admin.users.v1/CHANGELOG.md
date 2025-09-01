@@ -1,5 +1,17 @@
 # @wso2is/admin.users.v1
 
+## 2.36.10
+
+### Patch Changes
+
+- [#9001](https://github.com/wso2/identity-apps/pull/9001) [`75d5944403511cada310b64c759a440dccd5da04`](https://github.com/wso2/identity-apps/commit/75d5944403511cada310b64c759a440dccd5da04) Thanks [@github-actions](https://github.com/apps/github-actions)! - Fix unnecessary username validations.
+
+- Updated dependencies [[`75d5944403511cada310b64c759a440dccd5da04`](https://github.com/wso2/identity-apps/commit/75d5944403511cada310b64c759a440dccd5da04)]:
+  - @wso2is/admin.users.v1@2.36.10
+  - @wso2is/admin.core.v1@2.49.27
+  - @wso2is/admin.server-configurations.v1@2.35.40
+  - @wso2is/admin.roles.v2@2.27.198
+
 ## 2.36.9
 
 ### Patch Changes
