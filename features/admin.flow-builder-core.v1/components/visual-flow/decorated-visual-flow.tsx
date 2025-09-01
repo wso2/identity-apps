@@ -326,7 +326,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
                         outgoers.map(({ id: target }: { id: string }) => {
                             // Find the edge from incomer to the node being deleted
                             const edge: Edge = connectedEdges.find(
-                                (e: any) => e.source === source && e.target === node.id
+                                (e: Edge) => e.source === source && e.target === node.id
                             );
 
                             return {
