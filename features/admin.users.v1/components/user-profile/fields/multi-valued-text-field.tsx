@@ -138,9 +138,13 @@ const MultiValuedTextField: FunctionComponent<MultiValuedTextFieldPropsInterface
         return Array.isArray(fieldValue) ? fieldValue : [];
     }, [ fieldValue ]);
 
-    const validateValue = (value: string): string => {
+    const validateValue: (value: string) => string = useCallback((value: string) => {
         if (isEmpty(value) && !isRequired) {
             return undefined;
+        }
+
+        if (valueList?.includes(value)) {
+            return t("users:forms.validation.duplicateError", { field: fieldLabel });
         }
 
         if (!RegExp(schema?.regEx).test(value)) {
@@ -148,13 +152,13 @@ const MultiValuedTextField: FunctionComponent<MultiValuedTextFieldPropsInterface
         }
 
         return undefined;
-    };
+    }, [ valueList ]);
 
     const validateInputFieldValue: DebouncedFunc<(value: string) => void> = useCallback(
         debounce((value: string) => {
             setValidationError(validateValue(value));
         }, 500),
-        []
+        [ valueList ]
     );
 
     /**

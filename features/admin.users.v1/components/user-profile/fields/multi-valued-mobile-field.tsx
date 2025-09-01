@@ -256,9 +256,13 @@ const MultiValuedMobileField: FunctionComponent<MultiValuedMobileFieldPropsInter
         };
     }, [ mobileFieldValue, mobileNumbersFieldValue, addFieldName, form ]);
 
-    const validateMobileNumber = (value: string): string => {
+    const validateMobileNumber: (value: string) => string = useCallback((value: string) => {
         if (isEmpty(value)) {
             return undefined;
+        }
+
+        if (mobileNumbersFieldValue?.includes(value)) {
+            return t("users:forms.validation.duplicateError", { field: fieldLabel });
         }
 
         if (!RegExp(primarySchema?.regEx).test(value)) {
@@ -266,13 +270,13 @@ const MultiValuedMobileField: FunctionComponent<MultiValuedMobileFieldPropsInter
         }
 
         return undefined;
-    };
+    }, [ mobileNumbersFieldValue ]);
 
     const validateInputFieldValue: DebouncedFunc<(value: string) => void> = useCallback(
         debounce((value: string) => {
             setValidationError(validateMobileNumber(value));
         }, 500),
-        []
+        [ mobileNumbersFieldValue ]
     );
 
     const handleAddMobileNumber = (mobileNumber: string = ""): void => {

@@ -274,19 +274,23 @@ const MultiValuedEmailField: FunctionComponent<MultiValuedEmailFieldPropsInterfa
         pendingEmailAddressesFieldValue
     ]);
 
-    const validateEmail = (value: string): string => {
+    const validateEmail: (value: string) => string = useCallback((value: string) => {
+        if (emailAddressesFieldValue?.includes(value)) {
+            return t("users:forms.validation.duplicateError", { field: fieldLabel });;
+        }
+
         if (!RegExp(primaryEmailSchema?.regEx).test(value)) {
             return t("users:forms.validation.formatError", { field: fieldLabel });
         }
 
         return undefined;
-    };
+    }, [ emailAddressesFieldValue ]);
 
     const validateInputFieldValue: DebouncedFunc<(value: string) => void> = useCallback(
         debounce((value: string) => {
             setValidationError(validateEmail(value));
         }, 500),
-        []
+        [ emailAddressesFieldValue ]
     );
 
     const handleAddEmail = (emailAddress: string = ""): void => {

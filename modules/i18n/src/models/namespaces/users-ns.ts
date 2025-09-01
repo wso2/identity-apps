@@ -235,6 +235,7 @@ export interface usersNS {
         validation: {
             formatError: string;
             dateFormatError: string;
+            duplicateError: string;
             mobileFormatError: string;
             futureDateError: string;
         };
