@@ -104,10 +104,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
     const featureConfig: FeatureConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features
     );
-    const isOrgHandleFeatureEnabled: boolean = isFeatureEnabled(
-        featureConfig.organizations,
-        "organizations.orgHandle"
-    );
+    const isOrgHandleFeatureEnabled: boolean = isFeatureEnabled(featureConfig.organizations, "organizationHandle");
 
     const submitOrganization = async (values: OrganizationAddFormProps): Promise<Record<string, string> | void> => {
 
