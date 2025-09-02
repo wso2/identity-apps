@@ -1239,6 +1239,7 @@ export const myAccount: MyAccountNS = {
                             popup: "මෙම ක්ෂේත්‍රය යාවත්කාලීන කිරීමට පරිපාලක අමතන්න {{fieldName}}"
                         },
                         validations: {
+                            duplicate: "{{fieldName}} හි අනුපිටපත් අගයන් තිබිය නොහැක",
                             empty: "{{fieldName}} අත්\u200Dයවශ්\u200Dය ක්ෂේත්\u200Dරයකි",
                             invalidFormat: "ඇතුළත් කළ {{fieldName}} ආකෘතිය වැරදිය"
                         }

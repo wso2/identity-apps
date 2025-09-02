@@ -36,7 +36,7 @@ import { PatchOperationRequest } from "@wso2is/core/models";
 import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
 import { Popup, Button as SemanticButton, useMediaContext } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Grid, Icon, List } from "semantic-ui-react";
@@ -289,7 +289,13 @@ const EmailFieldForm: FunctionComponent<EmailFieldFormPropsInterface> = ({
         );
     };
 
-    const validateField = (value: string): string | undefined => {
+    const validateField: (value: string) => string | undefined = useCallback((value: string) => {
+        // Check for duplicate email addresses.
+        if (sortedEmailAddressesList?.some((emailAddress: SortedEmailAddress) => emailAddress.value === value)) {
+            return t("myAccount:components.profile.forms.generic.inputs.validations.duplicate", {
+                fieldName: fieldLabel });
+        }
+
         let regEx: string = schema.regEx;
 
         // Validate multi-valued email addresses
@@ -303,7 +309,7 @@ const EmailFieldForm: FunctionComponent<EmailFieldFormPropsInterface> = ({
         }
 
         return undefined;
-    };
+    }, [ sortedEmailAddressesList ]);
 
     const handleVerifyEmail = (emailAddress: string): void => {
         setIsProfileUpdating(true);
