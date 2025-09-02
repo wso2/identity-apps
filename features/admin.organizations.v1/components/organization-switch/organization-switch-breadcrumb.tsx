@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -103,6 +103,23 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     useEffect(() => {
         mutateOrganizationBreadCrumbFetchRequest();
     }, [ organizationId ]);
+
+    /**
+     * Listen for current authenticated organization updates from the organization edit form.
+     */
+    useEffect(() => {
+        const handleOrganizationUpdate = (event: CustomEvent) => {
+            if (event.detail?.success) {
+                mutateOrganizationBreadCrumbFetchRequest();
+            }
+        };
+
+        window.addEventListener("organization-updated", handleOrganizationUpdate as EventListener);
+
+        return () => {
+            window.removeEventListener("organization-updated", handleOrganizationUpdate as EventListener);
+        };
+    }, []);
 
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
 
