@@ -3,4 +3,4 @@
 "@wso2is/console": patch
 ---
 
-Remove usages roles v2 api based on server config.
+Remove usages of roles v2 api based on server config.
