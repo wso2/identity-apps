@@ -70,6 +70,7 @@ const RoleEditPage: FunctionComponent<RoleEditPagePropsInterface> = (
         mutate: mutateRoleObjectV3,
         isValidating: isRoleDetailsRequestValidatingV3
     } = useGetRoleByIdV3(userRolesV3FeatureEnabled ? roleId : null);
+
     const roleObject: any = useMemo(
         () => userRolesV3FeatureEnabled ? roleObjectV3 : roleObjectV2,
         [ roleObjectV2, roleObjectV3, userRolesV3FeatureEnabled ]
