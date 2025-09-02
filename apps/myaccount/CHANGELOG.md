@@ -1,5 +1,17 @@
 # @wso2is/myaccount
 
+## 2.24.7
+
+### Patch Changes
+
+- [#9012](https://github.com/wso2/identity-apps/pull/9012) [`27758d0441159dd04168561caa3e2624020c87a5`](https://github.com/wso2/identity-apps/commit/27758d0441159dd04168561caa3e2624020c87a5) Thanks [@github-actions](https://github.com/apps/github-actions)! - Improve multi valued fields in user profile
+
+- Updated dependencies [[`103dc78848886bb10668320272116ad0c2a4e809`](https://github.com/wso2/identity-apps/commit/103dc78848886bb10668320272116ad0c2a4e809), [`27758d0441159dd04168561caa3e2624020c87a5`](https://github.com/wso2/identity-apps/commit/27758d0441159dd04168561caa3e2624020c87a5), [`ce8bec19996950f0124628b39f96396f215af6b8`](https://github.com/wso2/identity-apps/commit/ce8bec19996950f0124628b39f96396f215af6b8), [`b43fec85ee6c44ecd06e32635de992d3152c7382`](https://github.com/wso2/identity-apps/commit/b43fec85ee6c44ecd06e32635de992d3152c7382)]:
+  - @wso2is/admin.organizations.v1@2.27.5
+  - @wso2is/i18n@2.30.15
+  - @wso2is/common.ui.profile.v1@0.1.1
+  - @wso2is/forms@2.3.25
+
 ## 2.24.6
 
 ### Patch Changes

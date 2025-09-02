@@ -1,5 +1,11 @@
 # @wso2is/forms
 
+## 2.3.25
+
+### Patch Changes
+
+- [#9016](https://github.com/wso2/identity-apps/pull/9016) [`b43fec85ee6c44ecd06e32635de992d3152c7382`](https://github.com/wso2/identity-apps/commit/b43fec85ee6c44ecd06e32635de992d3152c7382) Thanks [@github-actions](https://github.com/apps/github-actions)! - Improve organization nested search feature
+
 ## 2.3.24
 
 ### Patch Changes

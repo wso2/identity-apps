@@ -1,5 +1,15 @@
 # @wso2is/i18n
 
+## 2.30.15
+
+### Patch Changes
+
+- [#8928](https://github.com/wso2/identity-apps/pull/8928) [`103dc78848886bb10668320272116ad0c2a4e809`](https://github.com/wso2/identity-apps/commit/103dc78848886bb10668320272116ad0c2a4e809) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Provide self organization name update via console UI
+
+* [#9012](https://github.com/wso2/identity-apps/pull/9012) [`ce8bec19996950f0124628b39f96396f215af6b8`](https://github.com/wso2/identity-apps/commit/ce8bec19996950f0124628b39f96396f215af6b8) Thanks [@github-actions](https://github.com/apps/github-actions)! - Improve multi valued fields in user profile
+
+- [#9016](https://github.com/wso2/identity-apps/pull/9016) [`b43fec85ee6c44ecd06e32635de992d3152c7382`](https://github.com/wso2/identity-apps/commit/b43fec85ee6c44ecd06e32635de992d3152c7382) Thanks [@github-actions](https://github.com/apps/github-actions)! - Improve organization nested search feature
+
 ## 2.30.14
 
 ### Patch Changes
