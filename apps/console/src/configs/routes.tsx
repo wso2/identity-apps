@@ -19,6 +19,7 @@
 import {
     ArrowRightToBracketPencilIcon,
     BuildingIcon,
+    BuildingPenIcon,
     DocumentCheckIcon,
     EnvelopeGearIcon,
     EnvelopeIcon,
@@ -1760,6 +1761,18 @@ export const getFullScreenViewRoutes = (): RouteInterface[] => {
  */
 export const getDefaultLayoutRoutes = (): RouteInterface[] => {
     return [
+        {
+            component: lazy(() => import("@wso2is/admin.tenants.v1/pages/edit-self-organization-page")),
+            exact: true,
+            icon: {
+                icon: <BuildingPenIcon />
+            },
+            id: "organizations",
+            order: 0,
+            path: AppConstants.getPaths().get("EDIT_SELF_ORGANIZATION"),
+            protected: true,
+            showOnSidePanel: true
+        },
         {
             children: [
                 {

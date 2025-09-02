@@ -192,7 +192,56 @@ export const tenants: TenantsNS = {
             hint: "If you try to login to <1>{{domain}}</1> organization's Console using the same browser, you will have to logout from this active session first.",
             label: "Console URL"
         },
-        subtitle: "Crated on {{date}}"
+        subtitle: "Created on {{date}}"
+    },
+    editSelfOrganization: {
+        actions: {
+            save: {
+                label: "Save"
+            }
+        },
+        form: {
+            fields: {
+                created: {
+                    label: "Created"
+                },
+                lastModified: {
+                    label: "Last Modified"
+                },
+                organizationHandle: {
+                    label: "Organization Handle"
+                },
+                organizationId: {
+                    hint: "Copy the organization ID to clipboard",
+                    label: "Organization ID"
+                },
+                organizationName: {
+                    label: "Organization Name",
+                    placeholder: "Enter organization name",
+                    validations: {
+                        required: "Organization name is required"
+                    }
+                }
+            }
+        },
+        notifications: {
+            updateOrganization: {
+                error: {
+                    description: "An error occurred while updating the organization",
+                    message: "Update Failed"
+                },
+                success: {
+                    description: "Organization updated successfully",
+                    message: "Update Successful"
+                }
+            }
+        },
+        readOnly: {
+            subtitle: "Browse organization information",
+            title: "Organization Details"
+        },
+        subtitle: "Manage organization details",
+        title: "Edit Organization"
     },
     editTenant: {
         actions: {
@@ -354,8 +403,14 @@ export const tenants: TenantsNS = {
     },
     tenantDropdown: {
         options: {
+            edit: {
+                label: "Edit Organization"
+            },
             manage: {
                 label: "Manage Root Organizations"
+            },
+            view: {
+                label: "View Organization"
             }
         }
     },
