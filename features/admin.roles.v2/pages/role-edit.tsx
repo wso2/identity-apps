@@ -26,7 +26,7 @@ import { AppState } from "@wso2is/admin.core.v1/store/index";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, TabPageLayout } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
@@ -53,21 +53,9 @@ const RoleEditPage: FunctionComponent<RoleEditPagePropsInterface> = (
 
     const [ roleId, setRoleId ] = useState<string>(undefined);
     const [ currentActiveTabIndex, setCurrentActiveTabIndex ] = useState<number>(0);
-
-    /**
-     * Get Role data from URL id
-     */
-    useEffect(() => {
-        const path: string[] = history.location.pathname.split("/");
-        const roleId: string = path[ path.length - 1 ];
-
-        setRoleId(roleId);
-    }, []);
-
     const userRolesV3FeatureEnabled: boolean = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
     );
-    const [ roleObject, setRoleObject ] = useState<any>(undefined);
     const {
         data: roleObjectV2,
         isLoading: isRoleDetailsRequestLoadingV2,
@@ -82,17 +70,20 @@ const RoleEditPage: FunctionComponent<RoleEditPagePropsInterface> = (
         mutate: mutateRoleObjectV3,
         isValidating: isRoleDetailsRequestValidatingV3
     } = useGetRoleByIdV3(userRolesV3FeatureEnabled ? roleId : null);
+    const roleObject: any = useMemo(
+        () => userRolesV3FeatureEnabled ? roleObjectV3 : roleObjectV2,
+        [ roleObjectV2, roleObjectV3, userRolesV3FeatureEnabled ]
+    );
 
     /**
-     * Set the role object based on the feature flag.
+     * Get Role data from URL id
      */
     useEffect(() => {
-        if (userRolesV3FeatureEnabled) {
-            setRoleObject(roleObjectV3);
-        } else {
-            setRoleObject(roleObjectV2);
-        }
-    }, [ roleObjectV2, roleObjectV3, userRolesV3FeatureEnabled ]);
+        const path: string[] = history.location.pathname.split("/");
+        const roleId: string = path[ path.length - 1 ];
+
+        setRoleId(roleId);
+    }, []);
 
     /**
      * Handle if any error occurs while fetching the role details.
