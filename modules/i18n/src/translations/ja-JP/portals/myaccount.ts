@@ -1208,6 +1208,7 @@ export const myAccount: MyAccountNS = {
                             "popup": "管理者に連絡して{{fieldName}}を更新します"
                         },
                         "validations": {
+                            "duplicate": "{{fieldName}}は重複する値を持つことはできません",
                             "empty": "{{fieldName}}は必須フィールドです",
                             "invalidFormat": "入力された{{fieldName}}の形式は正しくありません"
                         }

@@ -138,6 +138,7 @@ export const users: usersNS = {
         validation: {
             dateFormatError: "The format of the {{field}} entered is incorrect. Valid format is " +
                 "YYYY-MM-DD.",
+            duplicateError: "{{field}} can not have duplicate values.",
             formatError: "The format of the {{field}} entered is incorrect.",
             futureDateError: "The date you entered for the {{field}} field is invalid.",
             mobileFormatError: "The format of the {{field}} entered is incorrect.  Valid format is " +

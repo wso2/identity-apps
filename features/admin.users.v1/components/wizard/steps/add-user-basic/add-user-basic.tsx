@@ -50,7 +50,6 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import { ProfileUtils } from "@wso2is/core/utils";
 import {
-    AnyObject,
     FinalForm,
     FinalFormField,
     FormRenderProps,
@@ -164,6 +163,8 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
 
     const dispatch: Dispatch = useDispatch();
 
+    const submitButtonRef: MutableRefObject<HTMLButtonElement> = useRef<HTMLButtonElement>(null);
+
     const profileSchemas: ProfileSchemaInterface[] = useSelector(
         (state: AppState) => state.profile.profileSchemas);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
@@ -182,10 +183,6 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchemaInterface[]>();
 
     const triggerSubmitRef: MutableRefObject<boolean> = useRef<boolean>(triggerSubmit);
-
-    let formSubmit: (
-        event?: Partial<Pick<React.SyntheticEvent, "preventDefault" | "stopPropagation">>
-    ) => Promise<AnyObject | undefined> | undefined;
 
     const isDistinctAttributeProfilesDisabled: boolean = featureConfig?.attributeDialects?.disabledFeatures?.includes(
         ClaimManagementConstants.DISTINCT_ATTRIBUTE_PROFILES_FEATURE_FLAG
@@ -343,14 +340,14 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
 
     useEffect(() => {
         if (!triggerSubmitRef.current && triggerSubmit) {
-            formSubmit();
+            // Trigger the form submission.
+            submitButtonRef.current?.click();
         }
 
         triggerSubmitRef.current = triggerSubmit;
     }, [ triggerSubmit ]);
 
     /**
-     *
      * It toggles user summary, password creation prompt, offline status according to password options.
      */
     useEffect(() => {
@@ -1274,15 +1271,17 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
         );
     }
 
+    /**
+     * Note: This form is submitted programmatically using a hidden button.
+     * This is required to ensure that the submit listener is triggered correctly. So, the multi-value fields
+     * are properly submitted by picking up the add field value as well.
+     */
     return (
         <FinalForm
             onSubmit={ handleFormSubmit }
             data-testid="user-mgt-add-user-form"
             data-componentid="user-mgt-add-user-form"
             render={ ({ handleSubmit, form }: FormRenderProps) => {
-                // To trigger form submission externally.
-                formSubmit = handleSubmit;
-
                 return (
                     <form onSubmit={ handleSubmit }>
                         <Grid>
@@ -1479,6 +1478,12 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                                 </Grid.Row>
                             ) }
                         </Grid>
+                        { /** This hidden button is used to submit the form programmatically */ }
+                        <button
+                            type="submit"
+                            ref={ submitButtonRef }
+                            hidden
+                        />
                     </form>
                 );
             } }

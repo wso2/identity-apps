@@ -1208,6 +1208,7 @@ export const myAccount: MyAccountNS = {
                             "popup": "联系管理员以更新您的{{fieldName}}"
                         },
                         "validations": {
+                            "duplicate": "{{fieldName}} 不能有重複的值",
                             "empty": "{{fieldName}}是必需的字段",
                             "invalidFormat": "输入的{{fieldName}}的格式不正确"
                         }
