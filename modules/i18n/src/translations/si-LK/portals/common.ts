@@ -303,6 +303,7 @@ export const common: CommonNS = {
     verified: "තහවුරු කර ඇත",
     verify: "සත්‍යාපනය කරන්න",
     view: "බලන්න",
+    viewDetails: "විස්තර පෙන්වන්න",
     weak: "දුර්වලයි",
     weakPassword: "මුරපදයේ ශක්තිය අවම වශයෙන් හොඳ විය යුතුය."
 };
