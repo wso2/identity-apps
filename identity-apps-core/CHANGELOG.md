@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.1.21
+
+### Patch Changes
+
+- [#8993](https://github.com/wso2/identity-apps/pull/8993) [`522947c4b9ea12953452fd56835d0c079469f202`](https://github.com/wso2/identity-apps/commit/522947c4b9ea12953452fd56835d0c079469f202) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Handle email OTP based verification pending scenario
+
 ## 3.1.20
 
 ### Patch Changes
