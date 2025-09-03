@@ -181,11 +181,15 @@
         <% 
             String failedUsername = request.getParameter("failedUsername");
             boolean isEmailVerification = IdentityCoreConstants.USER_EMAIL_NOT_VERIFIED_ERROR_CODE.equals(errorCode);
+            boolean isEmailOTPVerification = IdentityCoreConstants.USER_EMAIL_OTP_NOT_VERIFIED_ERROR_CODE.equals(errorCode);
         %>
         <% if (StringUtils.isNotBlank(failedUsername)) { %>
             window.location.href = "login.do?resend_username=<%=Encode.forHtml(URLEncoder.encode(failedUsername, UTF_8))%>"
             <% if (isEmailVerification) { %>
             + "&isEmailVerification=true"
+            <% } %>
+            <% if (isEmailOTPVerification) { %>
+            + "&isEmailOTPVerification=true"
             <% } %>
             + "&<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>";
         <% } %>
@@ -323,7 +327,8 @@
     String spId = "";
     String recoveryScenarioProp = "RecoveryScenario";
     String emailVerificationScenario = "EMAIL_VERIFICATION";
-
+    String emailOTPVerificationScenario = "EMAIL_VERIFICATION_OTP";
+    
     try {
         if (sp.equals("My Account")) {
             spId = "My_Account";
@@ -359,6 +364,12 @@
             PropertyDTO recoveryScenarioProperty = new PropertyDTO();
             recoveryScenarioProperty.setKey(recoveryScenarioProp);
             recoveryScenarioProperty.setValue(emailVerificationScenario);
+            properties.add(recoveryScenarioProperty);
+        } else if (request.getParameter("isEmailOTPVerification") != null
+            && Boolean.parseBoolean(request.getParameter("isEmailOTPVerification"))) {
+            PropertyDTO recoveryScenarioProperty = new PropertyDTO();
+            recoveryScenarioProperty.setKey(recoveryScenarioProp);
+            recoveryScenarioProperty.setValue(emailOTPVerificationScenario);
             properties.add(recoveryScenarioProperty);
         }
 
@@ -425,7 +436,8 @@
         </div>
     <% }
 } else if (Boolean.parseBoolean(loginFailed) &&
-        !errorCode.equals(IdentityCoreConstants.USER_ACCOUNT_NOT_CONFIRMED_ERROR_CODE) && !errorCode.equals(IdentityCoreConstants.USER_EMAIL_NOT_VERIFIED_ERROR_CODE)) {
+        !errorCode.equals(IdentityCoreConstants.USER_ACCOUNT_NOT_CONFIRMED_ERROR_CODE) && !errorCode.equals(IdentityCoreConstants.USER_EMAIL_NOT_VERIFIED_ERROR_CODE)
+            && !errorCode.equals(IdentityCoreConstants.USER_EMAIL_OTP_NOT_VERIFIED_ERROR_CODE)) {
     if (StringUtils.equals(request.getParameter("errorCode"),
             IdentityCoreConstants.ADMIN_FORCED_USER_PASSWORD_RESET_VIA_EMAIL_LINK_ERROR_CODE) &&
             StringUtils.equals(request.getParameter("t"), "carbon.super") &&
@@ -520,8 +532,46 @@
     <%
         }
     %>
-<% } %>
-
+<% } else if (Boolean.parseBoolean(loginFailed) && errorCode.equals(IdentityCoreConstants.USER_EMAIL_OTP_NOT_VERIFIED_ERROR_CODE) && request.getParameter("resend_username") == null) { %>
+    <div class="ui visible warning message" id="error-msg" data-testid="login-page-error-message">
+        
+        <h5 class="ui heading"><strong><%= AuthenticationEndpointUtil.i18n(resourceBundle, "no.email.confirmation.mail.heading") %></strong></h5>
+        
+        <%= AuthenticationEndpointUtil.i18n(resourceBundle, Encode.forJava(errorMessage)) %>
+        
+        <div class="ui divider hidden"></div>
+        
+        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "generic.no.confirmation.mail.otp")%>
+        
+        <a id="registerLink"
+            href="javascript:showResendReCaptcha();"
+            data-testid="login-page-resend-confirmation-email-link"
+        >
+            <%=StringEscapeUtils.escapeHtml4(AuthenticationEndpointUtil.i18n(resourceBundle, "resend.mail"))%>
+        </a>
+    </div>
+    <div class="ui divider hidden"></div>
+    <%
+        if (reCaptchaResendEnabled) {
+            String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+    %>
+        <div class="field">
+            <div class="g-recaptcha"
+                data-sitekey="<%=Encode.forHtmlAttribute(reCaptchaKey)%>"
+                data-testid="register-page-g-recaptcha"
+                data-bind="registerLink"
+                data-callback="showResendReCaptcha"
+                data-theme="light"
+                data-tabindex="-1"
+            >
+            </div>
+        </div>
+    <%
+        }
+    %>
+<%
+    }
+%>
 <% if (isAdminAdvisoryBannerEnabledInTenant) { %>
     <div class="ui warning message" data-componentid="login-page-admin-session-advisory-banner">
         <%=Encode.forHtmlContent(adminAdvisoryBannerContentOfTenant)%>
