@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.2.15
+
+### Patch Changes
+
+- [#9026](https://github.com/wso2/identity-apps/pull/9026) [`697ba6a67cd532170c8a5578b4b0452c18ed624f`](https://github.com/wso2/identity-apps/commit/697ba6a67cd532170c8a5578b4b0452c18ed624f) Thanks [@github-actions](https://github.com/apps/github-actions)! - Allow custom username validation error message in self-registration page and add i18n to error page
+
 ## 3.2.14
 
 ### Patch Changes
