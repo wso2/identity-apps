@@ -194,7 +194,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
      * Listen for base name changes and updated the layout routes.
      */
     useEffect(() => {
-        if (isApplicationsPageVisible === undefined || !config) {
+        if (isApplicationsPageVisible === undefined || !config || allowedScopes === undefined) {
             return;
         }
 
