@@ -2945,7 +2945,7 @@ importers:
         specifier: ^2.35.45
         version: link:../admin.server-configurations.v1
       '@wso2is/admin.subscription.v1':
-        specifier: ^1.5.204
+        specifier: workspace:^
         version: link:../admin.subscription.v1
       '@wso2is/admin.template-core.v1':
         specifier: ^1.5.158
