@@ -1,26 +1,24 @@
 {
     "private": true,
-    "name": "@wso2is/common.ui.profile.v1",
-    "version": "0.1.1",
-    "description": "Common user profile UI related tools, components, and utilities for Admin & Self-care apps of WSO2 Identity Server.",
+    "name": "@wso2is/common.users.v1",
+    "version": "0.0.0",
+    "description": "Users related common tools, components, and utilities for Admin & Self-care apps of WSO2 Identity Server.",
     "author": "WSO2",
     "license": "Apache-2.0",
-    "homepage": "https://github.com/wso2/identity-apps/tree/master/features/common.ui.profile.v1#readme",
+    "homepage": "https://github.com/wso2/identity-apps/tree/master/features/common.users.v1#readme",
     "bugs": {
         "url": "https://github.com/wso2/identity-apps/issues"
     },
     "repository": {
         "type": "git",
         "url": "https://github.com/wso2/identity-apps",
-        "directory": "features/common.ui.profile.v1"
+        "directory": "features/common.users.v1"
     },
     "keywords": [
         "wso2",
         "identity-server",
         "features",
-        "common.ui",
-        "common.ui.profile",
-        "v1"
+        "common.users"
     ],
     "dependencies": {
         "@oxygen-ui/react": "^2.4.6",
