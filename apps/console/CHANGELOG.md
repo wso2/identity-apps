@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.77.37
+
+### Patch Changes
+
+- [#9022](https://github.com/wso2/identity-apps/pull/9022) [`ae7f142e91e36fe3aba2788a0bfd68b895db82a8`](https://github.com/wso2/identity-apps/commit/ae7f142e91e36fe3aba2788a0bfd68b895db82a8) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Rename feature: features/common.ui.profile.v1 -> features/common.users.v1
+
 ## 2.77.36
 
 ### Patch Changes
