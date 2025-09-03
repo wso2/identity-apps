@@ -36,6 +36,7 @@
         "@wso2is/admin.secrets.v1": "^2.25.204",
         "@wso2is/admin.impersonation.v1": "^1.6.204",
         "@wso2is/admin.server-configurations.v1": "^2.35.45",
+        "@wso2is/admin.subscription.v1": "workspace:^",
         "@wso2is/admin.users.v1": "^2.34.8",
         "@wso2is/admin.userstores.v1": "^2.27.36",
         "@wso2is/admin.wsfed-configuration.v1": "^2.25.205",
