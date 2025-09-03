@@ -24,9 +24,10 @@ import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { userConfig } from "@wso2is/admin.extensions.v1/configs/user";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { useServerConfigs } from "@wso2is/admin.server-configurations.v1";
-import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
+import { ACCOUNT_LOCK_REASON_MAP, UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { UserListInterface } from "@wso2is/admin.users.v1/models/user";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { getUserNameWithoutDomain, isFeatureEnabled } from "@wso2is/core/helpers";
@@ -41,6 +42,7 @@ import {
     DataTable,
     EmptyPlaceholder,
     LinkButton,
+    Popup,
     TableActionsInterface,
     TableColumnInterface,
     UserAvatar,
@@ -51,9 +53,15 @@ import moment from "moment";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Header, Label, ListItemProps, SemanticICONS } from "semantic-ui-react";
-import useConsoleRoles from "../../../hooks/use-console-roles";
+import { Header, Icon, Label, ListItemProps, SemanticICONS } from "semantic-ui-react";
 import "./administrators-table.scss";
+import {
+    ReactComponent as RemoveCircleSolidIcon
+} from "../../../../themes/default/assets/images/icons/solid-icons/remove-circle.svg";
+import {
+    ReactComponent as RoundedLockSolidIcon
+} from "../../../../themes/default/assets/images/icons/solid-icons/rounded-lock.svg";
+import useConsoleRoles from "../../../hooks/use-console-roles";
 
 /**
  * Props interface of {@link AdministratorsTable}
@@ -177,6 +185,60 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
     const hasUserDeletePermission: boolean = useRequiredScopes(featureConfig?.scopes?.delete);
 
     /**
+     * Returns a locked icon if the account is locked.
+     * Returns a cross icon if the account is disabled.
+     *
+     * @param user - each admin user belonging to a row of the table.
+     * @returns the locked icon.
+     */
+    const resolveAccountStatus = (user: UserBasicInterface): ReactNode => {
+        const accountLocked: boolean = user[userConfig.userProfileSchema]?.accountLocked === "true" ||
+            user[userConfig.userProfileSchema]?.accountLocked === true;
+        const accountDisabled: boolean = user[userConfig.userProfileSchema]?.accountDisabled === "true" ||
+            user[userConfig.userProfileSchema]?.accountDisabled === true;
+        const accountLockedReason: string = user[userConfig.userProfileSchema]?.lockedReason;
+
+        const accountLockedReasonContent: string = ACCOUNT_LOCK_REASON_MAP[accountLockedReason]
+            ?? ACCOUNT_LOCK_REASON_MAP["DEFAULT"];
+
+        if (accountDisabled) {
+            return (
+                <Popup
+                    trigger={ (
+                        <Icon
+                            className="disabled-icon"
+                            size="small"
+                        >
+                            <RemoveCircleSolidIcon/>
+                        </Icon>
+                    ) }
+                    content={ t("user:profile.accountDisabled") }
+                    inverted
+                />
+            );
+        }
+
+        if (accountLocked) {
+            return (
+                <Popup
+                    trigger={ (
+                        <Icon
+                            className="locked-icon"
+                            size="small"
+                        >
+                            <RoundedLockSolidIcon/>
+                        </Icon>
+                    ) }
+                    content={ t(accountLockedReasonContent) }
+                    inverted
+                />
+            );
+        }
+
+        return null;
+    };
+
+    /**
      * Resolves data table columns.
      *
      * @returns the columns of the accepted admin users table.
@@ -212,6 +274,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
                                 spaced="right"
                                 data-suppress=""
                             />
+                            { resolveAccountStatus(user) }
                             <Header.Content>
                                 { header }
                                 { resolveMyselfLabel(user) }
