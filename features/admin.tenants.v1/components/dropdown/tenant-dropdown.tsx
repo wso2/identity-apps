@@ -179,8 +179,9 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
     const featureConfig: FeatureConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features
     );
-    const isOrgHandleFeatureEnabled: boolean = isFeatureEnabled(
-        featureConfig.organizations,"organizations.orgHandle"
+    const isOrgHandleFeatureEnabled: boolean = isFeatureEnabled(featureConfig.organizations, "organizationHandle");
+    const isOrgDisplayNameFeatureEnabled: boolean = isFeatureEnabled(
+        featureConfig.organizations, "organizationDisplayName"
     );
 
     const [ tenantAssociations, setTenantAssociations ] = useState<TenantAssociationsInterface>(undefined);
@@ -689,29 +690,31 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
             });
         }
 
-        options.push(
-            <Dropdown.Item
-                className="action-panel"
-                onClick={ (): void => {
-                    history.push(AppConstants.getPaths().get("EDIT_SELF_ORGANIZATION"));
-                } }
-                data-compnentid="edit-self-organization"
-            >
-                {
-                    hasOrganizationUpdatePermissions ? (
-                        <>
-                            <PenToSquareIcon />
-                            { t("tenants:tenantDropdown.options.edit.label") }
-                        </>
-                    ) : (
-                        <>
-                            <EyeIcon />
-                            { t("tenants:tenantDropdown.options.view.label") }
-                        </>
-                    )
-                }
-            </Dropdown.Item>
-        );
+        if (isOrgDisplayNameFeatureEnabled) {
+            options.push(
+                <Dropdown.Item
+                    className="action-panel"
+                    onClick={ (): void => {
+                        history.push(AppConstants.getPaths().get("EDIT_SELF_ORGANIZATION"));
+                    } }
+                    data-compnentid="edit-self-organization"
+                >
+                    {
+                        hasOrganizationUpdatePermissions ? (
+                            <>
+                                <PenToSquareIcon />
+                                { t("tenants:tenantDropdown.options.edit.label") }
+                            </>
+                        ) : (
+                            <>
+                                <EyeIcon />
+                                { t("tenants:tenantDropdown.options.view.label") }
+                            </>
+                        )
+                    }
+                </Dropdown.Item>
+            );
+        }
 
         if (hasTenantsReadPermissions && isManagingTenantsFromDropdownEnabled && isSuperOrganization()) {
             options.push(
