@@ -30,11 +30,16 @@ import { getAllLocalClaims, updateAClaim } from "@wso2is/admin.claims.v1/api/cla
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { getConnectorDetails, updateGovernanceConnector } from "@wso2is/admin.server-configurations.v1/api";
+import {
+    getConnectorDetails,
+    revertGovernanceConnectorProperties,
+    updateGovernanceConnector
+} from "@wso2is/admin.server-configurations.v1/api";
 import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
+    RevertGovernanceConnectorConfigInterface,
     UpdateGovernanceConnectorConfigInterface
 } from "@wso2is/admin.server-configurations.v1/models";
 import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-management-utils";
@@ -49,7 +54,14 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
-import { ConfirmationModal, ContentLoader, EmphasizedSegment, Message, PageLayout } from "@wso2is/react-components";
+import {
+    ConfirmationModal,
+    ContentLoader,
+    DangerZone,
+    DangerZoneGroup,
+    EmphasizedSegment,
+    Message,
+    PageLayout } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -309,6 +321,52 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
                 })
             );
         }
+    };
+
+    const handleRevertSuccess = () => {
+        dispatch(
+            addAlert({
+                description: t(
+                    "governanceConnectors:notifications.revertConnector.success.description"),
+                level: AlertLevels.SUCCESS,
+                message: t(
+                    "governanceConnectors:notifications.revertConnector.success.message"
+                )
+            })
+        );
+    };
+
+    const handleRevertError = () => {
+        dispatch(
+            addAlert({
+                description: t(
+                    "governanceConnectors:notifications.revertConnector.error.description"
+                ),
+                level: AlertLevels.ERROR,
+                message: t(
+                    "governanceConnectors:notifications.revertConnector.error.message"
+                )
+            })
+        );
+    };
+
+    const onConfigRevert = () => {
+        setIsSubmitting(true);
+        const revertRequest: RevertGovernanceConnectorConfigInterface = {
+            properties: connector?.properties?.map((property: ConnectorPropertyInterface) => property.name)
+        };
+
+        revertGovernanceConnectorProperties(categoryId, connectorId, revertRequest)
+            .then(() => {
+                handleRevertSuccess();
+                loadConnectorDetails();
+            })
+            .catch(() => {
+                handleRevertError();
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+            });
     };
 
     const updateConnector = (updatedConnectorData: any, checkedClaims: string[]) => {
@@ -641,6 +699,17 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
                                         />
                                     </Form>
                                 </EmphasizedSegment>
+                            </Grid>
+                            <Grid className="mt-3">
+                                <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
+                                    <DangerZone
+                                        actionTitle={ t("governanceConnectors:dangerZone.actionTitle") }
+                                        header= { t("governanceConnectors:dangerZone.heading") }
+                                        subheader= { t("governanceConnectors:dangerZone.subHeading") }
+                                        onActionClick={ () => onConfigRevert() }
+                                        data-testid={ `${ componentId }-danger-zone` }
+                                    />
+                                </DangerZoneGroup>
                             </Grid>
                         </PageLayout>
                     ) : (
