@@ -383,6 +383,7 @@ export interface approvalWorkflowsNS {
         last12Hours: string;
         last24Hours: string;
         last2Days: string;
+        last3Days: string;
         last7Days: string;
         last14Days: string;
         last30Days: string;
@@ -401,5 +402,24 @@ export interface approvalWorkflowsNS {
         operationType: string;
         createdTimeRange: string;
         updatedTimeRange: string;
+        predefinedFilters: string;
+    };
+    predefinedFilters: {
+        all: string;
+        allDescription: string;
+        pendingUserOperations: string;
+        pendingUserOperationsDescription: string;
+        pendingRoleOperations: string;
+        pendingRoleOperationsDescription: string;
+        recentApprovals: string;
+        recentApprovalsDescription: string;
+        recentRejections: string;
+        recentRejectionsDescription: string;
+        failedOperations: string;
+        failedOperationsDescription: string;
+        myPendingTasks: string;
+        myPendingTasksDescription: string;
+        highPriorityPending: string;
+        highPriorityPendingDescription: string;
     };
 }

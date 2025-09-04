@@ -82,3 +82,32 @@ export enum WorkflowInstanceRequestType {
     ALL_TASKS = "ALL_TASKS",
     MY_TASKS = "MY_TASKS"
 }
+
+/**
+ * Interface for complex predefined filter combinations.
+ */
+export interface PredefinedFilter {
+    key: string;
+    text: string;
+    value: string;
+    status?: WorkflowInstanceStatus;
+    operationType?: WorkflowInstanceOperationType;
+    timeRange?: number;
+    description?: string;
+}
+
+/**
+ * Enum for predefined complex filters.
+ *
+ * @readonly
+ */
+export enum PredefinedFilterType {
+    ALL = "ALL",
+    PENDING_USER_OPERATIONS = "PENDING_USER_OPERATIONS",
+    PENDING_ROLE_OPERATIONS = "PENDING_ROLE_OPERATIONS",
+    RECENT_APPROVALS = "RECENT_APPROVALS",
+    RECENT_REJECTIONS = "RECENT_REJECTIONS",
+    FAILED_OPERATIONS = "FAILED_OPERATIONS",
+    MY_PENDING_TASKS = "MY_PENDING_TASKS",
+    HIGH_PRIORITY_PENDING = "HIGH_PRIORITY_PENDING"
+}

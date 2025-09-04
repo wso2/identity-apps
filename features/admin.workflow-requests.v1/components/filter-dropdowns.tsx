@@ -20,6 +20,8 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Dropdown, DropdownProps } from "semantic-ui-react";
 import {
+    PredefinedFilter,
+    PredefinedFilterType,
     WorkflowInstanceOperationType,
     WorkflowInstanceRequestType,
     WorkflowInstanceStatus
@@ -167,6 +169,101 @@ export const WorkflowRequestOperationTypeDropdown: React.FC<FilterDropdownProps>
             placeholder={ placeholder }
             text={ placeholder }
             className="workflow-requests-filter-dropdown"
+            style={ style }
+        />
+    );
+};
+
+interface PredefinedFilterDropdownProps extends FilterDropdownProps {
+    onFilterApply: (filter: PredefinedFilter) => void;
+}
+
+export const WorkflowRequestsPredefinedFiltersDropdown: React.FC<PredefinedFilterDropdownProps> =
+({ value, onChange, style, placeholder, onFilterApply, ..._rest }: PredefinedFilterDropdownProps) => {
+    const { t } = useTranslation([ "approvalWorkflows" ]);
+    
+    const predefinedFilters: PredefinedFilter[] = [
+        {
+            description: t("approvalWorkflows:predefinedFilters.pendingUserOperationsDescription"),
+            key: PredefinedFilterType.PENDING_USER_OPERATIONS,
+            operationType: WorkflowInstanceOperationType.ADD_USER,
+            status: WorkflowInstanceStatus.PENDING,
+            text: t("approvalWorkflows:predefinedFilters.pendingUserOperations"),
+            value: PredefinedFilterType.PENDING_USER_OPERATIONS
+        },
+        {
+            description: t("approvalWorkflows:predefinedFilters.pendingRoleOperationsDescription"),
+            key: PredefinedFilterType.PENDING_ROLE_OPERATIONS,
+            operationType: WorkflowInstanceOperationType.ADD_ROLE,
+            status: WorkflowInstanceStatus.PENDING,
+            text: t("approvalWorkflows:predefinedFilters.pendingRoleOperations"),
+            value: PredefinedFilterType.PENDING_ROLE_OPERATIONS
+        },
+        {
+            description: t("approvalWorkflows:predefinedFilters.recentApprovalsDescription"),
+            key: PredefinedFilterType.RECENT_APPROVALS,
+            status: WorkflowInstanceStatus.APPROVED,
+            text: t("approvalWorkflows:predefinedFilters.recentApprovals"),
+            timeRange: 7,
+            value: PredefinedFilterType.RECENT_APPROVALS
+        },
+        {
+            description: t("approvalWorkflows:predefinedFilters.recentRejectionsDescription"),
+            key: PredefinedFilterType.RECENT_REJECTIONS,
+            status: WorkflowInstanceStatus.REJECTED,
+            text: t("approvalWorkflows:predefinedFilters.recentRejections"),
+            timeRange: 168,
+            value: PredefinedFilterType.RECENT_REJECTIONS
+        },
+        {
+            description: t("approvalWorkflows:predefinedFilters.failedOperationsDescription"),
+            key: PredefinedFilterType.FAILED_OPERATIONS,
+            status: WorkflowInstanceStatus.FAILED,
+            text: t("approvalWorkflows:predefinedFilters.failedOperations"),
+            value: PredefinedFilterType.FAILED_OPERATIONS
+        },
+        {
+            description: t("approvalWorkflows:predefinedFilters.highPriorityPendingDescription"),
+            key: PredefinedFilterType.HIGH_PRIORITY_PENDING,
+            status: WorkflowInstanceStatus.PENDING,
+            text: t("approvalWorkflows:predefinedFilters.highPriorityPending"),
+            timeRange: 72,
+            value: PredefinedFilterType.HIGH_PRIORITY_PENDING
+        }
+    ];
+
+    const handleFilterChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
+        const selectedFilter: PredefinedFilter | undefined = predefinedFilters.find(
+            (filter: PredefinedFilter) => filter.value === data.value
+        );
+
+        if (selectedFilter) {
+            onFilterApply(selectedFilter);
+        }
+        onChange(event, data);
+    };
+
+    // Use plain text options only (no bold titles or descriptions)
+    const dropdownOptions: Array<{
+        key: string;
+        text: string;
+        value: string;
+    }> = predefinedFilters.map((filter: PredefinedFilter) => ({
+        key: filter.key,
+        text: filter.text,
+        value: filter.value
+    }));
+
+    return (
+        <Dropdown
+            selection
+            search
+            options={ dropdownOptions }
+            value={ value }
+            onChange={ handleFilterChange }
+            placeholder={ placeholder }
+            text={ placeholder }
+            className="workflow-requests-filter-dropdown predefined-filters-dropdown"
             style={ style }
         />
     );
