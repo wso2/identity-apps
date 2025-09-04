@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 2.78.22
+
+### Patch Changes
+
+- [#9003](https://github.com/wso2/identity-apps/pull/9003) [`0d59326e3a58873b96b6638c03d5140ad5ea2c9c`](https://github.com/wso2/identity-apps/commit/0d59326e3a58873b96b6638c03d5140ad5ea2c9c) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add UI to configure and revert impersonation configurations in sub-orgs and to hide sift connector in sub-orgs when predefined.
+
+* [#9029](https://github.com/wso2/identity-apps/pull/9029) [`be07e5f25394a7e0f06f41997ed51c226027a03c`](https://github.com/wso2/identity-apps/commit/be07e5f25394a7e0f06f41997ed51c226027a03c) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Rename feature: features/common.ui.profile.v1 -> features/common.users.v1
+
+* Updated dependencies [[`0d59326e3a58873b96b6638c03d5140ad5ea2c9c`](https://github.com/wso2/identity-apps/commit/0d59326e3a58873b96b6638c03d5140ad5ea2c9c)]:
+  - @wso2is/admin.server-configurations.v1@2.35.43
+  - @wso2is/admin.impersonation.v1@1.6.205
+  - @wso2is/i18n@2.30.16
+
 ## 2.78.21
 
 ### Patch Changes
