@@ -24,7 +24,7 @@
  * @param {string} errorCode - The error code (e.g., "60001")
  * @returns {object} The i18n keys for the given error code.
  */
-function getI18nKeyForError(errorCode, flowType) {
+function getI18nKeyForError(errorCode, flowType, errorMessage) {
     switch (errorCode) {
         case "FE-60001":
 
@@ -37,14 +37,16 @@ function getI18nKeyForError(errorCode, flowType) {
 
             return {
                 message: "sign.up.error.username.not.provided.message",
-                description: "sign.up.error.username.not.provided.description"
+                description: "sign.up.error.username.not.provided.description",
+                portalUrlStatus: "true"
             };
 
         case "FE-60003":
 
             return {
                 message: "sign.up.error.username.already.exists.message",
-                description: "sign.up.error.username.already.exists.description"
+                description: "sign.up.error.username.already.exists.description",
+                portalUrlStatus: "true"
             };
 
         case "FE-60004":
@@ -56,8 +58,8 @@ function getI18nKeyForError(errorCode, flowType) {
                 };
             } else if (flowType === "INVITED_USER_REGISTRATION") {
                 return {
-                    message: "invite.user.registration.flow.error.undefined.flow.id.message",
-                    description: "invite.user.registration.flow.error.undefined.flow.id.description"
+                    message: "invited.user.registration.flow.error.undefined.flow.id.message",
+                    description: "invited.user.registration.flow.error.undefined.flow.id.description"
                 };
             } else if( flowType === "PASSWORD_RECOVERY") {
                 return {
@@ -74,7 +76,8 @@ function getI18nKeyForError(errorCode, flowType) {
 
             return {
                 message: "sign.up.error.invalid.username.message", 
-                description: "sign.up.error.invalid.username.description" 
+                description: "sign.up.error.invalid.username.description",
+                portalUrlStatus: "true"
             };
 
         case "FE-60006":
@@ -82,22 +85,32 @@ function getI18nKeyForError(errorCode, flowType) {
             if( flowType === "USER_REGISTRATION") { 
                 return {
                     message: "sign.up.error.failed.message",
-                    description: "sign.up.error.failed.description"
+                    description: "sign.up.error.failed.description",
+                    portalUrlStatus: "true"
                 };
             } else if (flowType === "INVITED_USER_REGISTRATION") {
+                if (errorMessage.startsWith("Invalid Code")) {
+                    return {
+                        message: "invited.user.registration.flow.error.invalid.code.message",
+                        description: "invited.user.registration.flow.error.invalid.code.description"
+                    };
+                }
                 return {
-                    message: "invite.user.registration.failed.message",
-                    description: "invite.user.registration.failed.description"
+                    message: "invited.user.registration.failed.message",
+                    description: "invited.user.registration.failed.description",
+                    portalUrlStatus: "true"
                 };
             } else if( flowType === "PASSWORD_RECOVERY") {
                 return {
                     message: "password.reset.failed.message",
-                    description: "password.reset.failed.description"
+                    description: "password.reset.failed.description",
+                    portalUrlStatus: "true"
                 };
             }        
             return {
                 message: "orchestration.flow.error.failed.message",
-                description: "orchestration.flow.error.failed.description"
+                description: "orchestration.flow.error.failed.description",
+                portalUrlStatus: "true"
             };
             
 
@@ -106,29 +119,34 @@ function getI18nKeyForError(errorCode, flowType) {
             if( flowType === "USER_REGISTRATION") {
                 return {
                     message: "sign.up.error.request.processing.failed.message",
-                    description: "sign.up.error.request.processing.failed.description"
+                    description: "sign.up.error.request.processing.failed.description",
+                    portalUrlStatus: "true"
                 };
             } else if (flowType === "INVITED_USER_REGISTRATION") {
                 return {
-                    message: "invite.user.registration.error.request.processing.failed.message",
-                    description: "invite.user.registration.error.request.processing.failed.description"
+                    message: "invited.user.registration.error.request.processing.failed.message",
+                    description: "invited.user.registration.error.request.processing.failed.description",
+                    portalUrlStatus: "true"
                 };
             } else if( flowType === "PASSWORD_RECOVERY") {
                 return {
                     message: "password.reset.error.request.processing.failed.message",
-                    description: "password.reset.error.request.processing.failed.description"
+                    description: "password.reset.error.request.processing.failed.description",
+                    portalUrlStatus: "true"
                 };
             }   
             return {
                 message: "orchestration.flow.error.request.processing.failed.message",
-                description: "orchestration.flow.error.request.processing.failed.description"
+                description: "orchestration.flow.error.request.processing.failed.description",
+                portalUrlStatus: "true"
             };
 
         case "FE-60008":
 
             return {
                 message: "orchestration.flow.error.invalid.user.input.message",
-                description: "orchestration.flow.error.invalid.user.input.description"
+                description: "orchestration.flow.error.invalid.user.input.description",
+                portalUrlStatus: "true"
             };
 
         case "FE-60009":
@@ -142,28 +160,32 @@ function getI18nKeyForError(errorCode, flowType) {
 
             return {
                 message: "orchestration.flow.error.invalid.captcha.message",
-                description: "orchestration.flow.error.invalid.captcha.description"
+                description: "orchestration.flow.error.invalid.captcha.description",
+                portalUrlStatus: "true"
             };
 
         case "FE-60011":
 
             return {
                 message: "orchestration.flow.error.no.flowType.message",
-                description: "orchestration.flow.error.no.flowType.description"
+                description: "orchestration.flow.error.no.flowType.description",
+                portalUrlStatus: "true"
             };
 
         case "FE-60101":
     
             return {
                 message: "orchestration.flow.error.dynamic.portal.not.enabled.message",
-                description: "orchestration.flow.error.dynamic.portal.not.enabled.description"
+                description: "orchestration.flow.error.dynamic.portal.not.enabled.description",
+                portalUrlStatus: "true"
             };
 
         case "FE-60102":
         
             return {
                 message: "orchestration.flow.error.self.registration.not.enabled.message",
-                description: "orchestration.flow.error.self.registration.not.enabled.description"
+                description: "orchestration.flow.error.self.registration.not.enabled.description",
+                portalUrlStatus: "true"
             };
 
         case "FE-60103":
@@ -177,21 +199,24 @@ function getI18nKeyForError(errorCode, flowType) {
         
             return {
                 message: "orchestration.flow.error.disabled.flow.message",
-                description: "orchestration.flow.error.disabled.flow.description"
+                description: "orchestration.flow.error.disabled.flow.description",
+                portalUrlStatus: "true"
             };
 
         case "FE-60012":
 
             return {
                 message: "orchestration.flow.error.preUpdatePassword.action.failure.message",
-                description: "orchestration.flow.error.preUpdatePassword.action.failure.description"
+                description: "orchestration.flow.error.preUpdatePassword.action.failure.description",
+                portalUrlStatus: "true"
             };
 
         default:
 
             return {
                 message: "orchestration.flow.error.failed.message",
-                description: "orchestration.flow.error.failed.description"
+                description: "orchestration.flow.error.failed.description",
+                portalUrlStatus: "true"
             };
     }
 }
