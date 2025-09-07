@@ -23,11 +23,13 @@ import Stack from "@oxygen-ui/react/Stack";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography/Typography";
 import { CopyIcon, GlobeIcon } from "@oxygen-ui/react-icons";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { generatePassword, getConfiguration } from "@wso2is/admin.users.v1/utils/generate-password.utils";
 import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-management-utils";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api/validation-config";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models/validation-config";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CommonUtils } from "@wso2is/core/utils";
@@ -106,6 +108,11 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
     const passwordValidationConfig: ValidationFormInterface = useMemo((): ValidationFormInterface => {
         return getConfiguration(validationData);
     }, [ validationData ]);
+
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const isOrgDisplayNameFeatureEnabled: boolean = isFeatureEnabled(
+        featureConfig.organizations, "organizationDisplayName"
+    );
 
     /**
      * Handles the form submit action.
@@ -333,38 +340,40 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
                         onSubmit={ handleSubmit }
                         className="edit-tenant-form"
                     >
-                        <FinalFormField
-                            key="organizationName"
-                            width={ 16 }
-                            className="text-field-container"
-                            ariaLabel="organizationName"
-                            required={ false }
-                            data-componentid={ `${componentId}-organization-name` }
-                            name="organizationName"
-                            type="text"
-                            label={ t("tenants:common.form.fields.organizationName.label") }
-                            component={ TextFieldAdapter }
-                            readOnly={ true }
-                            InputProps={ {
-                                endAdornment: (
-                                    <Tooltip title="Copy">
-                                        <div>
-                                            <IconButton
-                                                aria-label="Reset field to default"
-                                                className="reset-field-to-default-adornment"
-                                                onClick={ async () => {
-                                                    await CommonUtils.copyTextToClipboard(tenant?.name);
-                                                } }
-                                                edge="end"
-                                            >
-                                                <CopyIcon size={ 12 } />
-                                            </IconButton>
-                                        </div>
-                                    </Tooltip>
-                                ),
-                                readOnly: true
-                            } }
-                        />
+                        { isOrgDisplayNameFeatureEnabled && (
+                            <FinalFormField
+                                key="organizationName"
+                                width={ 16 }
+                                className="text-field-container"
+                                ariaLabel="organizationName"
+                                required={ false }
+                                data-componentid={ `${componentId}-organization-name` }
+                                name="organizationName"
+                                type="text"
+                                label={ t("tenants:common.form.fields.organizationName.label") }
+                                component={ TextFieldAdapter }
+                                readOnly={ true }
+                                InputProps={ {
+                                    endAdornment: (
+                                        <Tooltip title="Copy">
+                                            <div>
+                                                <IconButton
+                                                    aria-label="Reset field to default"
+                                                    className="reset-field-to-default-adornment"
+                                                    onClick={ async () => {
+                                                        await CommonUtils.copyTextToClipboard(tenant?.name);
+                                                    } }
+                                                    edge="end"
+                                                >
+                                                    <CopyIcon size={ 12 } />
+                                                </IconButton>
+                                            </div>
+                                        </Tooltip>
+                                    ),
+                                    readOnly: true
+                                } }
+                            />
+                        ) }
                         <FinalFormField
                             key="organizationHandle"
                             width={ 16 }
