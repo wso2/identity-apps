@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.23.13
+
+### Patch Changes
+
+- [#9032](https://github.com/wso2/identity-apps/pull/9032) [`f9dd0922950b0b6b63a6c6cd64e09ca81f0869fa`](https://github.com/wso2/identity-apps/commit/f9dd0922950b0b6b63a6c6cd64e09ca81f0869fa) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Stop loading overview tab before loading scopes.
+
 ## 2.23.12
 
 ### Patch Changes

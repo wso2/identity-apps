@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.1.23
+
+### Patch Changes
+
+- [#8962](https://github.com/wso2/identity-apps/pull/8962) [`48ce5ed8fb60d047a974e3a9fab0a3121eea2646`](https://github.com/wso2/identity-apps/commit/48ce5ed8fb60d047a974e3a9fab0a3121eea2646) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Remove imp api resource registration.
+
 ## 3.1.22
 
 ### Patch Changes
