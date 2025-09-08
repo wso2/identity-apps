@@ -120,18 +120,8 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             type="negative"
             open={ confirmDelete }
             assertion={ dialect.dialectURI }
-            assertionHint={ (
-                /**
-                 * TODO: Trans component with strong tags doesn't seem to
-                 * work here properly, hence removed for now.
-                 *
-                 * Need to find the root cause and fix this.
-                 */
-                <p>
-                    Please type <strong>{ dialect.dialectURI }</strong> to confirm.
-                </p>
-            ) }
-            assertionType="input"
+            assertionHint={ t("claims:dialects.confirmations.hint") }
+            assertionType="checkbox"
             primaryAction={ t("claims:dialects.confirmations.action") }
             secondaryAction={ t("common:cancel") }
             onSecondaryActionClick={ (): void => setConfirmDelete(false) }
