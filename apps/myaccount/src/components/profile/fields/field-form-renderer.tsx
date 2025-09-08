@@ -35,7 +35,6 @@ import SingleEmailFieldForm from "./single-email-field-form";
 import SingleMobileFieldForm from "./single-mobile-field-form";
 import SwitchFieldForm from "./switch-field-form";
 import TextFieldForm from "./text-field-form";
-import { CommonConstants } from "../../../constants";
 import { SCIMConfigs as SCIMExtensionConfigs } from "../../../extensions/configs/scim";
 import { ProfilePatchOperationValue } from "../../../models/profile";
 import { ProfileFieldFormRendererPropsInterface } from "../../../models/profile-ui";
@@ -49,6 +48,7 @@ const ProfileFieldFormRenderer: FunctionComponent<
         flattenedProfileSchema,
         fieldLabel,
         isActive,
+        formId,
         initialValue,
         flattenedProfileData,
         isEditable,
@@ -68,7 +68,7 @@ const ProfileFieldFormRenderer: FunctionComponent<
     const dispatch: Dispatch<any> = useDispatch();
 
     const onEditClicked = (): void => {
-        dispatch(setActiveForm(CommonConstants.PERSONAL_INFO + fieldSchema.name));
+        dispatch(setActiveForm(formId));
     };
 
     const onEditCancelClicked = (): void => {

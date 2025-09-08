@@ -641,16 +641,22 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         const resolvedRequiredValue: boolean = schema?.profiles?.endUser?.required ?? schema.required;
 
         const initialValue: unknown = extractAttributeValue(flattenedProfileData, schema);
+        const formId: string = `${ CommonConstants.PERSONAL_INFO }-${ schema.schemaUri ?? "" }-${ schema.name }`;
 
         return (
-            <List.Item key={ schema.name } className="inner-list-item" data-testid={ `${testId}-schema-list-item` }>
+            <List.Item
+                key={ `${schema.schemaUri ?? ""}-${schema.name}` }
+                className="inner-list-item"
+                data-testid={ `${testId}-schema-list-item` }
+            >
                 <ProfileFieldFormRenderer
                     fieldLabel={ fieldLabel }
                     initialValue={ initialValue as string | number | boolean | string[] }
                     fieldSchema={ schema }
                     flattenedProfileSchema={ flattenedProfileSchema }
                     flattenedProfileData={ flattenedProfileData }
-                    isActive={ activeForm === CommonConstants.PERSONAL_INFO + schema.name }
+                    formId={ formId }
+                    isActive={ activeForm === formId }
                     isEditable={ !isFieldReadOnly }
                     isRequired={ resolvedRequiredValue }
                     setIsProfileUpdating={ (isUpdating: boolean) => setIsProfileUpdating(isUpdating) }
