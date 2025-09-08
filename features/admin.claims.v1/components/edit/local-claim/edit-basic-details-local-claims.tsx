@@ -54,6 +54,7 @@ import {
     ClaimDialect,
     ClaimInputFormat,
     ExternalClaim,
+    LabelValue,
     ProfileSchemaInterface,
     SharedProfileValueResolvingMethod,
     TestableComponentInterface,
@@ -246,12 +247,20 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             value: ClaimDataType.BOOLEAN
         },
         {
+            text: t("claims:local.forms.dataType.options.object"),
+            value: ClaimDataType.COMPLEX
+        },
+        {
+            text: t("claims:local.forms.dataType.options.date"),
+            value: ClaimDataType.DATE
+        },
+        {
             text: t("claims:local.forms.dataType.options.dateTime"),
             value: ClaimDataType.DATE_TIME
         },
         {
-            text: t("claims:local.forms.dataType.options.object"),
-            value: ClaimDataType.COMPLEX
+            text: t("claims:local.forms.dataType.options.epoch"),
+            value: ClaimDataType.EPOCH
         }
     ];
 
@@ -305,7 +314,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
         if (claim?.canonicalValues && Array.isArray(claim.canonicalValues)) {
             setCanonicalValues(
-                claim.canonicalValues.map((item: any) => ({
+                claim.canonicalValues.map((item: LabelValue) => ({
                     key: item.label,
                     value: item.value
                 }))
@@ -939,8 +948,27 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         );
     };
 
-    const setDefaultInputTypeForDataType = (dataType: ClaimDataType, multiValued: boolean): void => {
+    const isInputTypeValidForDataType = (
+        inputType: string,
+        dataType: ClaimDataType,
+        multiValued: boolean
+    ): boolean => {
+        const validOptions: DropDownItemInterface[] = resolveInputFormatOptions(dataType, multiValued);
 
+        return validOptions.some((option: DropDownItemInterface) => option.value === inputType);
+    };
+
+    const setDefaultInputTypeForDataType = (dataType: ClaimDataType, multiValued: boolean): void => {
+        // If current inputType is valid for the new dataType and multiValued combination, keep it
+        const currentInputType: string | undefined = claim?.inputFormat?.inputType;
+
+        if (currentInputType && isInputTypeValidForDataType(currentInputType, dataType, multiValued)) {
+            setInputType(currentInputType);
+
+            return;
+        }
+
+        // Otherwise, set to appropriate default
         switch (dataType) {
             case ClaimDataType.OPTIONS:
                 setInputType(multiValued ? ClaimInputFormat.MULTI_SELECT_DROPDOWN : ClaimInputFormat.DROPDOWN);
@@ -964,7 +992,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             }
         ];
 
-        if (dataType === ClaimDataType.DATE_TIME) {
+        if (dataType === ClaimDataType.DATE) {
             return [
                 ...textInputOption,
                 {
@@ -1322,15 +1350,36 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             event: React.SyntheticEvent<HTMLElement, Event>,
                             data: { value: string }
                         ) => {
-                            setSubAttributes([]);
-                            setCanonicalValues([]);
-                            setDataType(data.value);
-                            setDefaultInputTypeForDataType(data.value as ClaimDataType, multiValued);
-                            if (data.value === ClaimDataType.COMPLEX || data.value === ClaimDataType.BOOLEAN
-                                || data.value === ClaimDataType.DATE_TIME
-                            ) {
-                                setMultiValued(false);
+                            if (data.value === ClaimDataType.COMPLEX) {
+                                setSubAttributes(claim?.subAttributes ?? []);
+                            } else {
+                                setSubAttributes([]);
                             }
+
+                            if (data.value === ClaimDataType.OPTIONS) {
+                                setCanonicalValues(claim?.canonicalValues?.map((item: LabelValue) => ({
+                                    key: item.label,
+                                    value: item.value
+                                })));
+                            } else {
+                                setCanonicalValues([]);
+                            }
+
+                            setDataType(data.value);
+
+                            let newMultiValued: boolean;
+
+                            if (data.value === ClaimDataType.COMPLEX || data.value === ClaimDataType.BOOLEAN
+                                || data.value === ClaimDataType.DATE || data.value === ClaimDataType.DATE_TIME
+                                || data.value === ClaimDataType.EPOCH) {
+                                newMultiValued = false;
+                                setMultiValued(false);
+                            } else {
+                                newMultiValued = claim?.multiValued;
+                                setMultiValued(claim?.multiValued);
+                            }
+
+                            setDefaultInputTypeForDataType(data.value as ClaimDataType, newMultiValued);
                         } }
                     />
 
@@ -1416,8 +1465,11 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         hint={ isSystemClaim
                             ? t("claims:local.forms.multiValuedSystemClaimHint")
                             : t("claims:local.forms.multiValuedHint") }
-                        readOnly={ isSubOrganization() || isSystemClaim || isReadOnly
-                            || dataType === ClaimDataType.COMPLEX || dataType === ClaimDataType.BOOLEAN
+                        readOnly={
+                            isSubOrganization() || isSystemClaim || isReadOnly ||
+                            dataType === ClaimDataType.COMPLEX || dataType === ClaimDataType.BOOLEAN ||
+                            dataType === ClaimDataType.DATE || dataType === ClaimDataType.DATE_TIME ||
+                            dataType === ClaimDataType.EPOCH
                         }
                         listen={ (checked: boolean) => {
                             setMultiValued(checked);

@@ -474,8 +474,10 @@ export const claims: ClaimsNS = {
                 label: "Data Type",
                 options: {
                     boolean: "Boolean",
+                    date: "Date",
                     dateTime: "DateTime",
                     decimal: "Decimal",
+                    epoch: "Epoch",
                     integer: "Integer",
                     object: "Object",
                     options: "Options",
