@@ -58,7 +58,7 @@ interface SortedEmailAddress {
     isVerificationPending?: boolean;
 }
 
-const EmailFieldForm: FunctionComponent<EmailFieldFormPropsInterface> = ({
+const MultiEmailFieldForm: FunctionComponent<EmailFieldFormPropsInterface> = ({
     fieldSchema: schema,
     fieldLabel,
     initialValue,
@@ -783,4 +783,4 @@ const EmailFieldForm: FunctionComponent<EmailFieldFormPropsInterface> = ({
     );
 };
 
-export default EmailFieldForm;
+export default MultiEmailFieldForm;
