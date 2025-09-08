@@ -536,7 +536,7 @@ export const claims: ClaimsNS = {
             profiles: {
                 administratorConsole: "Administrator Console",
                 attributeConfigurations: {
-                    description: "Configure attribute profiles for different flows.",
+                    description: "Configure attribute profiles for different flows. Controls UI presentation only; does not enforce backend validation.",
                     title: "Attribute Configurations"
                 },
                 displayByDefault: "Display",
