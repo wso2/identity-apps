@@ -90,6 +90,10 @@ export interface ProfileFieldFormRendererPropsInterface<T> extends IdentifiableC
      * Whether the profile is updating or not.
      */
     isUpdating: boolean;
+    /**
+     * Unique form id for the field form. Used to identify the active form in the redux state.
+     */
+    formId: string;
 }
 
 export interface ProfileFieldFormPropsInterface<T>
@@ -101,6 +105,7 @@ export interface ProfileFieldFormPropsInterface<T>
         | "isMobileVerificationEnabled"
         | "flattenedProfileSchema"
         | "flattenedProfileData"
+        | "formId"
     > {
     /**
      * Callback to trigger the edit mode.
