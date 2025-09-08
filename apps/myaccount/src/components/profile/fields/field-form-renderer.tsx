@@ -210,7 +210,7 @@ const ProfileFieldFormRenderer: FunctionComponent<
                 ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES")];
         const primaryEmailAddress: string = flattenedProfileData[
             ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")] as string;
-		// Extract the pending email address.
+        // Extract the pending email address.
         // { "urn:scim:wso2:schema": { pendingEmails: [value: <email_address>] } }
         const pendingEmailAddress: string = (flattenedProfileData[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA][
             ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PENDING_EMAILS")
