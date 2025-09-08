@@ -22,7 +22,7 @@
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.CONFIGURATION_ERROR" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ClaimRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.LocalClaim" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.CanonicalValue" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.LabelValue" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.InputFormat" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ClaimRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
@@ -177,7 +177,7 @@
                                 String inputType = null;
                                 Boolean isMultiValued = false;
                                 LocalClaim localClaim = null;
-                                List<CanonicalValue> canonicalValues = null;
+                                List<LabelValue> canonicalValues = null;
                                 
                                 localClaim = claimPropertiesOfMissingClaims.get(claim);
                                 if (localClaim != null) {
@@ -280,7 +280,7 @@
                                                 <%
                                                     // Render dropdown options from canonical values
                                                     if (canonicalValues != null && !canonicalValues.isEmpty()) {
-                                                        for (CanonicalValue option : canonicalValues) {
+                                                        for (LabelValue option : canonicalValues) {
                                                             String optionLabel = option.getLabel();
                                                             String optionValue = option.getValue();
                                                 %>
@@ -298,7 +298,7 @@
                                                     <%
                                                         if (canonicalValues != null && !canonicalValues.isEmpty()) {
                                                             int radioIndex = 0;
-                                                            for (CanonicalValue option : canonicalValues) {
+                                                            for (LabelValue option : canonicalValues) {
                                                                 String optionLabel = option.getLabel();
                                                                 String optionValue = option.getValue();
                                                                 String radioId = Encode.forHtmlAttribute(claim.replaceAll("[^a-zA-Z0-9]", "_")) + "_" + radioIndex;
