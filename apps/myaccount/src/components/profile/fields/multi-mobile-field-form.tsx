@@ -48,7 +48,7 @@ import { profileConfig as profileExtensionConfig } from "../../../extensions/con
 import { SCIMConfigs as SCIMExtensionConfigs } from "../../../extensions/configs/scim";
 import { AuthStateInterface } from "../../../models/auth";
 import { MultiValue, ProfilePatchOperationValue, ProfileSchema } from "../../../models/profile";
-import { MobileFieldFormPropsInterface } from "../../../models/profile-ui";
+import { MultiMobileFieldFormPropsInterface } from "../../../models/profile-ui";
 import { AppState } from "../../../store";
 import { getProfileInformation } from "../../../store/actions/authenticate";
 import { addAlert, setActiveForm } from "../../../store/actions/global";
@@ -63,7 +63,7 @@ interface SortedMobileNumber {
     isVerified?: boolean;
 }
 
-const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
+const MultiMobileFieldForm: FunctionComponent<MultiMobileFieldFormPropsInterface> = ({
     fieldSchema: schema,
     flattenedProfileSchema,
     fieldLabel,
@@ -81,7 +81,7 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
     triggerUpdate,
     setIsProfileUpdating,
     ["data-componentid"]: testId = "mobile-field-form"
-}: MobileFieldFormPropsInterface): ReactElement => {
+}: MultiMobileFieldFormPropsInterface): ReactElement => {
     const { t } = useTranslation();
     const { isMobileViewport } = useMediaContext();
     const dispatch: Dispatch<any> = useDispatch();
@@ -818,4 +818,4 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
     );
 };
 
-export default MobileFieldForm;
+export default MultiMobileFieldForm;

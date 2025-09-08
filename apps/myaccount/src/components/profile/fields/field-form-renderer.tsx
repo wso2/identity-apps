@@ -27,8 +27,8 @@ import CountryFieldForm from "./country-field-form";
 import DOBFieldForm from "./dob-field-form";
 import DropdownFieldForm from "./dropdown-field-form";
 import LocaleFieldForm from "./locale-field-form";
-import MobileFieldForm from "./mobile-field-form";
 import MultiEmailFieldForm from "./multi-email-field-form";
+import MultiMobileFieldForm from "./multi-mobile-field-form";
 import MultiValueFieldForm from "./multi-valued-field-form";
 import RadioFieldForm from "./radio-field-form";
 import SingleEmailFieldForm from "./single-email-field-form";
@@ -268,7 +268,7 @@ const ProfileFieldFormRenderer: FunctionComponent<
             ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE")] as string;
 
         return (
-            <MobileFieldForm
+            <MultiMobileFieldForm
                 fieldSchema={ fieldSchema }
                 flattenedProfileSchema={ flattenedProfileSchema }
                 initialValue={ initialValue as string[] }

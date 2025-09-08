@@ -45,7 +45,7 @@ import MultiValueDeleteConfirmationModal from "./multi-value-delete-confirmation
 import { SCIMConfigs as SCIMExtensionConfigs } from "../../../extensions/configs/scim";
 import { AuthStateInterface } from "../../../models/auth";
 import { MultiValue, ProfilePatchOperationValue, ProfileSchema } from "../../../models/profile";
-import { EmailFieldFormPropsInterface } from "../../../models/profile-ui";
+import { MultiEmailFieldFormPropsInterface } from "../../../models/profile-ui";
 import { AppState } from "../../../store";
 import { EditSection } from "../../shared/edit-section";
 
@@ -58,7 +58,7 @@ interface SortedEmailAddress {
     isVerificationPending?: boolean;
 }
 
-const MultiEmailFieldForm: FunctionComponent<EmailFieldFormPropsInterface> = ({
+const MultiEmailFieldForm: FunctionComponent<MultiEmailFieldFormPropsInterface> = ({
     fieldSchema: schema,
     fieldLabel,
     initialValue,
@@ -76,7 +76,7 @@ const MultiEmailFieldForm: FunctionComponent<EmailFieldFormPropsInterface> = ({
     triggerUpdate,
     setIsProfileUpdating,
     ["data-componentid"]: testId = "email-field-form"
-}: EmailFieldFormPropsInterface): ReactElement => {
+}: MultiEmailFieldFormPropsInterface): ReactElement => {
     const { t } = useTranslation();
     const { isMobileViewport } = useMediaContext();
 

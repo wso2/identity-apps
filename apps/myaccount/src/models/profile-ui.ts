@@ -170,7 +170,8 @@ export interface SingleEmailFieldFormPropsInterface
     triggerUpdate: (data: PatchOperationRequest<ProfilePatchOperationValue>, clearActiveForm?: boolean) => void;
 }
 
-export interface EmailFieldFormPropsInterface extends Omit<ProfileFieldFormPropsInterface<string[]>, "handleSubmit"> {
+export interface MultiEmailFieldFormPropsInterface extends
+    Omit<ProfileFieldFormPropsInterface<string[]>, "handleSubmit"> {
     /**
      * Whether the verification is enabled or not.
      */
@@ -211,7 +212,8 @@ export interface SingleMobileFieldFormPropsInterface
     triggerUpdate: (data: PatchOperationRequest<ProfilePatchOperationValue>, clearActiveForm?: boolean) => void;
 }
 
-export interface MobileFieldFormPropsInterface extends Omit<ProfileFieldFormPropsInterface<string[]>, "handleSubmit"> {
+export interface MultiMobileFieldFormPropsInterface extends
+    Omit<ProfileFieldFormPropsInterface<string[]>, "handleSubmit"> {
     /**
      * Primary mobile number.
      */
