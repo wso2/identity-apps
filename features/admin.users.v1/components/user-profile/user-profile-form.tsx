@@ -20,7 +20,6 @@ import Button from "@oxygen-ui/react/Button";
 import Grid from "@oxygen-ui/react/Grid";
 import TextField from "@oxygen-ui/react/TextField";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { commonConfig as commonExtensionConfig } from "@wso2is/admin.extensions.v1";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
@@ -126,7 +125,9 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
     const attributeDialectsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features?.attributeDialects
     );
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+    const usersFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.users
+    );
 
     const [ isUpdating, setIsUpdating ] = useState<boolean>(false);
 
@@ -139,7 +140,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
     );
 
     const hideReadonlyAttributesWhenEmpty: boolean = isFeatureEnabled(
-        featureConfig?.users,
+        usersFeatureConfig,
         UserManagementConstants.FEATURE_DICTIONARY.get("HIDE_READ_ONLY_ATTRIBUTES_WHEN_EMPTY")
     );
 
