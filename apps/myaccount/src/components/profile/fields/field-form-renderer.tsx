@@ -26,9 +26,9 @@ import CheckboxGroupFieldForm from "./checkbox-group-field-form";
 import CountryFieldForm from "./country-field-form";
 import DOBFieldForm from "./dob-field-form";
 import DropdownFieldForm from "./dropdown-field-form";
-import EmailFieldForm from "./email-field-form";
 import LocaleFieldForm from "./locale-field-form";
 import MobileFieldForm from "./mobile-field-form";
+import MultiEmailFieldForm from "./multi-email-field-form";
 import MultiValueFieldForm from "./multi-valued-field-form";
 import RadioFieldForm from "./radio-field-form";
 import SingleEmailFieldForm from "./single-email-field-form";
@@ -215,7 +215,7 @@ const ProfileFieldFormRenderer: FunctionComponent<
         ] as string[])?.[0]?.["value"];
 
         return (
-            <EmailFieldForm
+            <MultiEmailFieldForm
                 fieldSchema={ fieldSchema }
                 initialValue={ initialValue as string[] }
                 verifiedEmailAddresses={ verifiedEmailAddresses }
