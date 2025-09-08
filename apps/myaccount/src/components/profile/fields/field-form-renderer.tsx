@@ -266,8 +266,6 @@ const ProfileFieldFormRenderer: FunctionComponent<
                 ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS")];
         const primaryMobile: string = flattenedProfileData[
             ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE")] as string;
-        const pendingMobileNumber: string = flattenedProfileData[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA][
-            ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PENDING_MOBILE")];
 
         return (
             <MobileFieldForm
@@ -276,7 +274,6 @@ const ProfileFieldFormRenderer: FunctionComponent<
                 initialValue={ initialValue as string[] }
                 primaryMobileNumber={ primaryMobile }
                 verifiedMobileNumbers={ verifiedMobileNumbers }
-                pendingMobileNumber={ pendingMobileNumber }
                 fieldLabel={ fieldLabel }
                 isActive={ isActive }
                 isEditable={ isEditable }
