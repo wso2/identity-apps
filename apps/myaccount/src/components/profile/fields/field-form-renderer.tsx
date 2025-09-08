@@ -315,7 +315,6 @@ const ProfileFieldFormRenderer: FunctionComponent<
     const inputType: ClaimInputFormat = fieldSchema.inputFormat?.inputType ?? ClaimInputFormat.TEXT_INPUT;
 
     if (isMultiValuedSchema && isExtendedSchema) {
-        // Prepare initial value list from comma separated string.
         const valueList: string[] = (initialValue ?? []) as string[];
 
         switch (inputType) {
