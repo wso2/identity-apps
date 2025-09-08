@@ -35,7 +35,6 @@ import { getProfileInformation } from "../../../store/actions/authenticate";
 import { setActiveForm } from "../../../store/actions/global";
 import { EditSection } from "../../shared/edit-section";
 import MobileUpdateWizardV2 from "../../shared/mobile-update-wizard-v2/mobile-update-wizard-v2";
-
 import "./field-form.scss";
 
 const SingleMobileFieldForm: FunctionComponent<SingleMobileFieldFormPropsInterface> = ({
