@@ -101,7 +101,7 @@ import {
 import "./add-user-basic.scss";
 
 /**
- * Proptypes for the add user component.
+ * Proptypes for the add user basic details component.
  */
 interface AddUserBasicProps extends IdentifiableComponentInterface {
     initialValues: any;
@@ -128,9 +128,7 @@ interface AddUserBasicProps extends IdentifiableComponentInterface {
 }
 
 /**
- * Add user basic component.
- *
- * @returns ReactElement
+ * Basic user details form component used in the add user wizard.
  */
 export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
     initialValues,
@@ -1469,6 +1467,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
 
                                         { passwordOption === createPasswordOptionData.value && (
                                             <CreatePasswordOption
+                                                initialValue={ initialValues?.newPassword }
                                                 passwordConfig={ passwordConfig }
                                                 passwordRegex={ passwordRegex }
                                                 data-componentid="user-mgt-add-user-form-create-password-option"
