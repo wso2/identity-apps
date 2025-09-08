@@ -207,8 +207,17 @@ export interface SingleMobileFieldFormPropsInterface
 }
 
 export interface MobileFieldFormPropsInterface extends Omit<ProfileFieldFormPropsInterface<string[]>, "handleSubmit"> {
+    /**
+     * Primary mobile number.
+     */
     primaryMobileNumber: string;
+    /**
+     * Verified mobile numbers list.
+     */
     verifiedMobileNumbers: string[];
+    /**
+     * Pending mobile number.
+     */
     pendingMobileNumber: string;
     /**
      * Whether the verification is enabled or not.
