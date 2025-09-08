@@ -30,7 +30,6 @@ import { AuthStateInterface } from "../../../models/auth";
 import { MultiValue, ProfilePatchOperationValue } from "../../../models/profile";
 import { SingleEmailFieldFormPropsInterface } from "../../../models/profile-ui";
 import { AppState } from "../../../store";
-
 import "./field-form.scss";
 
 /**
