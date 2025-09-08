@@ -216,10 +216,6 @@ export interface MobileFieldFormPropsInterface extends Omit<ProfileFieldFormProp
      */
     verifiedMobileNumbers: string[];
     /**
-     * Pending mobile number.
-     */
-    pendingMobileNumber: string;
-    /**
      * Whether the verification is enabled or not.
      */
     isVerificationEnabled: boolean;
