@@ -1,5 +1,16 @@
 # @wso2is/admin.applications.v1
 
+## 2.37.5
+
+### Patch Changes
+
+- [#9020](https://github.com/wso2/identity-apps/pull/9020) [`022fc3d4dcfa52537df082053bf3cbb2e8751214`](https://github.com/wso2/identity-apps/commit/022fc3d4dcfa52537df082053bf3cbb2e8751214) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix premium label issue in conditional auth panel
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.37
+  - @wso2is/admin.roles.v2@2.27.203
+  - @wso2is/admin.server-configurations.v1@2.35.50
+
 ## 2.37.4
 
 ### Patch Changes
