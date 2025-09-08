@@ -50,7 +50,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import ProfileFormFieldRenderer from "./fields/form-field-renderer";
 import { updateUserInfo } from "../../api/users";
-import { UserManagementConstants } from "../../constants";
+import { UserFeatureDictionaryKeys, UserManagementConstants } from "../../constants";
 import { AccountConfigSettingsInterface, PatchUserOperationValue } from "../../models/user";
 import {
     getDisplayOrder,
@@ -141,7 +141,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
 
     const hideReadonlyAttributesWhenEmpty: boolean = isFeatureEnabled(
         usersFeatureConfig,
-        UserManagementConstants.FEATURE_DICTIONARY.get("HIDE_READ_ONLY_ATTRIBUTES_WHEN_EMPTY")
+        UserManagementConstants.FEATURE_DICTIONARY.get(UserFeatureDictionaryKeys.HideReadOnlyAttributesWhenEmpty)
     );
 
     const oneTimePassword: string = profileData[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.oneTimePassword;
