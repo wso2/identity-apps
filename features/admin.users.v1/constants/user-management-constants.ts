@@ -87,6 +87,7 @@ export class UserManagementConstants {
         .set("USER_ROLES", "users.edit.roles")
         .set("USER_SHARED_PROFILES", "users.updateSharedProfiles")
         .set("USER_IMPERSONATION", "users.user.impersonation")
+        .set("HIDE_READ_ONLY_ATTRIBUTES_WHEN_EMPTY", "profile.hideReadonlyAttributesWhenEmpty")
         .set(UserFeatureDictionaryKeys.UserLegacyProfile, "users.profile.legacy")
         .set(UserFeatureDictionaryKeys.UserLegacyAddUser, "users.add.legacy");
 
