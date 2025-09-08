@@ -457,16 +457,19 @@
 
     $(document).ready(function () {
 
+        $("input[name^='claim_mand_http://wso2.org/claims/dob']").on("click", function () {
+            $("[id='val_claim_mand_http://wso2.org/claims/dob']").hide();
+        });
+
+        $("input[name^='claim_mand_http://wso2.org/claims/country']").on("change", function () {
+            $("[id='val_claim_mand_http://wso2.org/claims/country']").hide();
+        });
+
         $("input[name^='claim_mand_']").on("input change", function () {
             var claimId = $(this).attr("name");
             var inputType = $(this).attr("type");
 
-            if (inputType === "checkbox") {
-                // Hide validation when checkbox is checked.
-                if ($(this).is(":checked")) {
-                    $("[id='val_" + claimId + "']").hide();
-                }
-            } else if (inputType === "radio") {
+            if (inputType === "radio") {
                 // Hide validation when any radio in the group is selected.
                 var radioGroupName = $(this).attr("name");
                 if ($("input[name='" + radioGroupName + "']:checked").length > 0) {
@@ -475,14 +478,6 @@
             } else if ($(this).val()) {
                 $("[id='val_" + claimId + "']").hide();
             }
-        });
-
-        $("input[name^='claim_mand_http://wso2.org/claims/dob']").on("click", function () {
-            $("[id='val_claim_mand_http://wso2.org/claims/dob']").hide();
-        });
-
-        $("input[name^='claim_mand_http://wso2.org/claims/country']").on("change", function () {
-            $("[id='val_claim_mand_http://wso2.org/claims/country']").hide();
         });
 
         $("#claimForm").submit(function (e) {
@@ -523,6 +518,14 @@
                 }
                 var year = date.getFullYear();
                 return year + DATE_SEPARATOR + month + DATE_SEPARATOR + day;
+            }
+        },
+        onChange: function(date, text, mode) {
+            // Hide validation when a date is selected from the calendar.
+            var input = $(this).find('input[name^="claim_mand_"]');
+            if (input.length > 0) {
+                var claimId = input.attr("name");
+                $("[id='val_" + claimId + "']").hide();
             }
         }
     });
