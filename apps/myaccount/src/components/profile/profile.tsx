@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { extractAttributeValue, getFlattenedInitialValues } from "@wso2is/common.users.v1/utils/profile-utils";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled, resolveUserstore } from "@wso2is/core/helpers";
@@ -23,6 +24,7 @@ import {
     AlertLevels,
     ClaimDataType,
     PatchOperationRequest,
+    ProfileInfoInterface,
     ProfileSchemaInterface,
     SBACInterface,
     TestableComponentInterface
@@ -30,7 +32,6 @@ import {
 import { ProfileUtils } from "@wso2is/core/utils";
 import { Message } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
-import isArray from "lodash-es/isArray";
 import isEmpty from "lodash-es/isEmpty";
 import React, { Dispatch, FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -45,7 +46,6 @@ import { AppConstants, CommonConstants, ProfileConstants as MyAccountProfileCons
 import {
     AlertInterface,
     AuthStateInterface,
-    BasicProfileInterface,
     FeatureConfigInterface,
     PreferenceConnectorResponse,
     PreferenceProperty,
@@ -93,13 +93,6 @@ const HIDDEN_ATTRIBUTES: string[] = [
 ];
 
 /**
- * Interface for the canonical attributes.
- */
-interface CanonicalAttribute {
-    [key: string]: string;
-}
-
-/**
  * Prop types for the basic details component.
  * Also see {@link Profile.defaultProps}
  */
@@ -134,7 +127,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     const isMultipleEmailsAndMobileConfigEnabled: boolean = uiConfig?.isMultipleEmailsAndMobileNumbersEnabled;
     const primaryUserStoreDomainName: string = uiConfig?.primaryUserStoreDomainName;
     const isProfileUsernameReadonly: boolean = uiConfig?.isProfileUsernameReadonly;
-    const userSchemaURI: string = uiConfig?.userSchemaURI;
 
     const [ isProfileUpdating, setIsProfileUpdating ] = useState<boolean>(false);
     const [ isPreferencesLoading, setIsPreferencesLoading ] = useState<boolean>(true);
@@ -324,193 +316,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     }, []);
 
     /**
-     * This also maps profile info to the schema.
-     */
-    const mappedProfileInfo: Map<string, string> = useMemo(() => {
-        if (
-            !isEmpty(flattenedProfileSchema) &&
-            !isEmpty(profileDetails) &&
-            !isEmpty(profileDetails.profileInfo) &&
-            !isLoading
-        ) {
-            const tempProfileInfo: Map<string, string> = new Map<string, string>();
-
-            flattenedProfileSchema.forEach((schema: ProfileSchema) => {
-                // this splits for the sub-attributes
-                const schemaNames: string[] = schema.name.split(".");
-
-                let isCanonical: boolean = false;
-
-                // this splits for the canonical types
-                const schemaNamesCanonicalType: string[] = schemaNames[0].split("#");
-
-                if (schemaNamesCanonicalType.length !== 1) {
-                    isCanonical = true;
-                }
-
-                if (schemaNames.length === 1) {
-                    if (schemaNames[0] === "emails") {
-                        if (isEmailVerificationEnabled &&
-                            profileDetails?.profileInfo?.pendingEmails?.length > 0) {
-                            // If there is a verification pending email,
-                            // then it will be shown as the primary email.
-                            tempProfileInfo.set(schema.name,
-                                profileDetails.profileInfo.pendingEmails[0].value as string);
-                        } else {
-                            const primaryEmail: string = !isEmpty(profileDetails.profileInfo[schemaNames[0]])
-                                ? profileDetails.profileInfo[schemaNames[0]]?.find(
-                                    (subAttribute: string) => typeof subAttribute === "string")
-                                : "";
-
-                            // Set the primary email value.
-                            tempProfileInfo.set(schema.name, primaryEmail);
-                        }
-                    } else {
-                        if (schema.extended) {
-                            const schemaURIs: string[] = [
-                                ProfileConstants.SCIM2_ENT_USER_SCHEMA,
-                                ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA,
-                                userSchemaURI
-                            ];
-
-                            for (const schemaURI of schemaURIs) {
-                                if (profileDetails?.profileInfo[schemaURI]?.[schemaNames[0]]) {
-                                    const multiValuedAttributes: string[] = [
-                                        EMAIL_ADDRESSES_ATTRIBUTE,
-                                        MOBILE_NUMBERS_ATTRIBUTE,
-                                        VERIFIED_EMAIL_ADDRESSES_ATTRIBUTE,
-                                        VERIFIED_MOBILE_NUMBERS_ATTRIBUTE
-                                    ];
-
-                                    if (
-                                        (schemaURI === ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA &&
-                                            multiValuedAttributes.includes(schemaNames[0])) ||
-                                        (schemaURI === ProfileConstants.SCIM2_ENT_USER_SCHEMA && schema.multiValued) ||
-                                        (schemaURI === userSchemaURI && schema.multiValued)
-                                    ) {
-                                        const attributeValue: string | string[] =
-                                            profileDetails?.profileInfo[schemaURI]?.[schemaNames[0]];
-
-                                        const formattedValue: string = Array.isArray(attributeValue)
-                                            ? attributeValue.join(",")
-                                            : "";
-
-                                        tempProfileInfo.set(schema.name, formattedValue);
-
-                                        return;
-                                    }
-
-                                    tempProfileInfo.set(
-                                        schema.name,
-                                        profileDetails?.profileInfo[schemaURI]?.[schemaNames[0]] ?? ""
-                                    );
-
-                                    return;
-                                }
-                            }
-                        }
-                        tempProfileInfo.set(schema.name, profileDetails.profileInfo[schemaNames[0]]);
-                    }
-                } else {
-                    if (schemaNames[0] === "name") {
-                        tempProfileInfo.set(schema.name, profileDetails.profileInfo[schemaNames[0]][schemaNames[1]]);
-                    } else if (isCanonical) {
-                        let indexOfType: number = -1;
-
-                        profileDetails?.profileInfo[schemaNamesCanonicalType[0]]?.forEach(
-                            (canonical: CanonicalAttribute) => {
-                                if (schemaNamesCanonicalType[1] === canonical?.type) {
-                                    indexOfType = profileDetails?.profileInfo[schemaNamesCanonicalType[0]].indexOf(
-                                        canonical
-                                    );
-                                }
-                            }
-                        );
-
-                        if (indexOfType > -1) {
-                            const subValue: string =
-                                profileDetails?.profileInfo[schemaNamesCanonicalType[0]][indexOfType][schemaNames[1]];
-
-                            if (schemaNamesCanonicalType[0] === "addresses") {
-                                tempProfileInfo.set(schema.name, subValue);
-                            }
-                        }
-                    } else {
-                        if (
-                            schema.extended &&
-                            schema.schemaId === ProfileConstants.SCIM2_ENT_USER_SCHEMA &&
-                            profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaNames[0]]
-                        ) {
-                            const attributeValue: string | string[] =
-                                profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaNames[0]][
-                                    schemaNames[1]
-                                ];
-
-                            if (schema.multiValued) {
-                                const formattedValue: string = Array.isArray(attributeValue)
-                                    ? attributeValue.join(",")
-                                    : "";
-
-                                tempProfileInfo.set(schema.name, formattedValue);
-                            } else {
-                                tempProfileInfo.set(schema.name, (attributeValue as string) ?? "");
-                            }
-                        } else if (
-                            schema.extended &&
-                            schema.schemaId === ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA &&
-                            profileDetails?.profileInfo[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.[schemaNames[0]]
-                        ) {
-                            tempProfileInfo.set(
-                                schema.name,
-                                profileDetails.profileInfo[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA][schemaNames[0]][
-                                    schemaNames[1]
-                                ] ?? ""
-                            );
-                        } else if (
-                            schema.extended &&
-                            schema.schemaId === userSchemaURI &&
-                            profileDetails?.profileInfo[userSchemaURI]?.[schemaNames[0]]
-                        ) {
-                            const attributeValue: string | string[] =
-                                profileDetails?.profileInfo[userSchemaURI]?.[schemaNames[0]][schemaNames[1]];
-
-                            if (schema.multiValued) {
-                                const formattedValue: string = Array.isArray(attributeValue)
-                                    ? attributeValue.join(",")
-                                    : "";
-
-                                tempProfileInfo.set(schema.name, formattedValue);
-                            } else {
-                                tempProfileInfo.set(schema.name, (attributeValue as string) ?? "");
-                            }
-                        } else {
-                            const subValue: BasicProfileInterface =
-                                profileDetails.profileInfo[schemaNames[0]] &&
-                                profileDetails.profileInfo[schemaNames[0]].find(
-                                    (subAttribute: BasicProfileInterface) => subAttribute.type === schemaNames[1]
-                                );
-
-                            if (schemaNames[0] === "addresses") {
-                                tempProfileInfo.set(schema.name, subValue ? subValue.formatted : "");
-                            } else {
-                                tempProfileInfo.set(schema.name, subValue ? subValue.value : "");
-                            }
-                        }
-                    }
-                }
-            });
-
-            if (isArray(profileDetails.profileInfo.pendingEmails) && profileDetails.profileInfo.pendingEmails[0]) {
-                const { value: pendingEmail } = profileDetails.profileInfo.pendingEmails[0];
-
-                tempProfileInfo.set("pendingEmails.value", pendingEmail);
-            }
-
-            return tempProfileInfo;
-        }
-    }, [ flattenedProfileSchema, profileDetails.profileInfo ]);
-
-    /**
      * Check if multiple emails and mobile numbers feature is enabled.
      */
     const isMultipleEmailsAndMobileNumbersEnabled: boolean = useMemo(() => {
@@ -561,6 +366,26 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     }, [ profileDetails, flattenedProfileSchema ]);
 
     /**
+     * Flatten the profile data for the form.
+     * Refer to the `getFlattenedInitialValues` function for more details.
+     */
+    const flattenedProfileData: Record<string, unknown> = useMemo(() => {
+        return getFlattenedInitialValues(
+            (profileDetails.profileInfo as unknown) as ProfileInfoInterface,
+            flattenedProfileSchema,
+            isMultipleEmailsAndMobileNumbersEnabled,
+            isEmailVerificationEnabled,
+            isMobileVerificationEnabled
+        );
+    }, [
+        profileDetails.profileInfo,
+        flattenedProfileSchema,
+        isMultipleEmailsAndMobileNumbersEnabled,
+        isEmailVerificationEnabled,
+        isMobileVerificationEnabled
+    ]);
+
+    /**
      * This useMemo identifies external claims that are mapped to the same local claim
      * between the Enterprise schema and the WSO2 System schema.
      *
@@ -574,7 +399,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      * Identified Enterprise claims are then excluded from the user profile UI to avoid redundancy.
      */
     const duplicatedUserClaims: string[] = useMemo(() => {
-        if (isEmpty(mappedProfileInfo) || isEmpty(flattenedProfileSchema)) {
+        if (isEmpty(flattenedProfileData) || isEmpty(flattenedProfileSchema)) {
             return;
         }
 
@@ -595,8 +420,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                 return;
             }
 
-            const enterpriseValue: string = mappedProfileInfo.get(enterpriseClaim.name) ?? null;
-            const systemValue: string = mappedProfileInfo.get(systemClaim.name) ?? null;
+            const enterpriseValue: string = flattenedProfileData[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
+                ?.[enterpriseClaim.name] ?? null;
+            const systemValue: string = flattenedProfileData[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]
+                ?.[systemClaim.name] ?? null;
 
             if (enterpriseValue === systemValue) {
                 duplicatedEnterpriseClaims.push(enterpriseClaim.name);
@@ -604,7 +431,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
         });
 
         return duplicatedEnterpriseClaims;
-    }, [ flattenedProfileSchema, mappedProfileInfo ]);
+    }, [ flattenedProfileSchema, flattenedProfileData ]);
 
     /**
      * Check if email address is displayed as a separate field.
@@ -613,11 +440,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      * of username validation switched from custom username to email.
      */
     const isEmailFieldVisible: boolean =
-        !isEmpty(mappedProfileInfo) &&
+        !isEmpty(flattenedProfileData) &&
         (usernameConfig?.enableValidator === "true" ||
             getUserNameWithoutDomain(
-                mappedProfileInfo.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME"))
-            ) !== mappedProfileInfo.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")));
+                flattenedProfileData[ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME")] as string
+            ) !== flattenedProfileData[ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")]);
 
     /**
      * Handles the profile update.
@@ -686,30 +513,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
     };
 
     /**
-     * The email address stored in "emails" is the primary email address.
-     * @returns The email address stored in "emails".
-     */
-    const getExistingPrimaryEmail = (): string => {
-        return (
-            profileDetails.profileInfo[EMAIL_ATTRIBUTE] &&
-            Array.isArray(profileDetails.profileInfo[EMAIL_ATTRIBUTE]) &&
-            profileDetails.profileInfo[EMAIL_ATTRIBUTE].find((subAttribute: string) => typeof subAttribute === "string")
-        );
-    };
-
-    /**
      * Check whether the value is empty or not.
      * @param schema - Profile schema
      * @returns boolean - Whether value is empty or not.
      */
     const isValueEmpty = (schema: ProfileSchema): boolean => {
-        if (schema.name === EMAIL_ADDRESSES_ATTRIBUTE) {
-            return isEmpty(mappedProfileInfo.get(schema.name)) && isEmpty(getExistingPrimaryEmail());
-        } else if (schema.name === MOBILE_NUMBERS_ATTRIBUTE) {
-            return isEmpty(mappedProfileInfo.get(schema.name)) && isEmpty(mappedProfileInfo.get(MOBILE_ATTRIBUTE));
-        }
 
-        return isEmpty(mappedProfileInfo.get(schema.name));
+        return isEmpty(extractAttributeValue(flattenedProfileData, schema));
     };
 
     /**
@@ -827,13 +637,16 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
             schema.name === USERNAME_ATTRIBUTE;
         const resolvedRequiredValue: boolean = schema?.profiles?.endUser?.required ?? schema.required;
 
+        const initialValue: unknown = extractAttributeValue(flattenedProfileData, schema);
+
         return (
             <List.Item key={ schema.name } className="inner-list-item" data-testid={ `${testId}-schema-list-item` }>
                 <ProfileFieldFormRenderer
                     fieldLabel={ fieldLabel }
-                    initialValue={ mappedProfileInfo.get(schema.name) }
+                    initialValue={ initialValue as string | number | boolean | string[] }
                     fieldSchema={ schema }
                     flattenedProfileSchema={ flattenedProfileSchema }
+                    flattenedProfileData={ flattenedProfileData }
                     isActive={ activeForm === CommonConstants.PERSONAL_INFO + schema.name }
                     isEditable={ !isFieldReadOnly }
                     isRequired={ resolvedRequiredValue }
@@ -842,7 +655,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     isUpdating={ isProfileUpdating }
                     data-componentid={ testId }
                     triggerUpdate={ handleProfileUpdate }
-                    profileInfo={ mappedProfileInfo }
                     isEmailVerificationEnabled={ isEmailVerificationEnabled }
                     isMobileVerificationEnabled={ isMobileVerificationEnabled }
                 />
@@ -876,7 +688,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     !isSCIMEnabled ? t("myAccount:components.profile.placeholders.SCIMDisabled.heading") : null
                 }
             >
-                { (isLoading || !mappedProfileInfo) && (
+                { (isLoading || !flattenedProfileData) && (
                     <Container className="p-4">
                         <Placeholder>
                             <Placeholder.Line />
@@ -896,7 +708,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                         />
                     </Container>
                 ) }
-                { !isLoading && hasLocalAccount && mappedProfileInfo && (
+                { !isLoading && hasLocalAccount && flattenedProfileData && (
                     <List
                         divided={ true }
                         verticalAlign="middle"

@@ -19,7 +19,6 @@
 import { ProfileConstants } from "@wso2is/core/constants";
 import { ClaimInputFormat, PatchOperationRequest } from "@wso2is/core/models";
 import { FormValue } from "@wso2is/forms";
-import isEmpty from "lodash-es/isEmpty";
 import React, { Dispatch, FunctionComponent, ReactElement } from "react";
 import { useDispatch } from "react-redux";
 import CheckboxFieldForm from "./checkbox-field-form";
@@ -32,6 +31,8 @@ import LocaleFieldForm from "./locale-field-form";
 import MobileFieldForm from "./mobile-field-form";
 import MultiValueFieldForm from "./multi-valued-field-form";
 import RadioFieldForm from "./radio-field-form";
+import SingleEmailFieldForm from "./single-email-field-form";
+import SingleMobileFieldForm from "./single-mobile-field-form";
 import SwitchFieldForm from "./switch-field-form";
 import TextFieldForm from "./text-field-form";
 import { CommonConstants } from "../../../constants";
@@ -49,13 +50,13 @@ const ProfileFieldFormRenderer: FunctionComponent<
         fieldLabel,
         isActive,
         initialValue,
+        flattenedProfileData,
         isEditable,
         isRequired,
         setIsProfileUpdating,
         isLoading,
         isUpdating,
         triggerUpdate,
-        profileInfo,
         isEmailVerificationEnabled,
         isMobileVerificationEnabled,
         [ "data-componentid" ]: componentId
@@ -168,19 +169,24 @@ const ProfileFieldFormRenderer: FunctionComponent<
         );
     }
 
-    // Render and handle email addresses in a different manner.
+    // Render single valued email address field.
     if (
         [
             SCIMExtensionConfigs.scimUserSchema.emails,
-            SCIMExtensionConfigs.scimUserSchema.emailsHome,
-            SCIMExtensionConfigs.scimSystemSchema.emailAddresses
+            SCIMExtensionConfigs.scimUserSchema.emailsHome
         ].includes(fieldSchema.schemaUri)
     ) {
+        // Extract the pending email address.
+        // { "urn:scim:wso2:schema": { pendingEmails: [value: <email_address>] } }
+        const pendingEmailAddress: string = (flattenedProfileData[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA][
+            ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PENDING_EMAILS")
+        ] as string[])?.[0]?.["value"];
+
         return (
-            <EmailFieldForm
+            <SingleEmailFieldForm
                 fieldSchema={ fieldSchema }
                 initialValue={ initialValue as string }
-                profileInfo={ profileInfo }
+                pendingEmailAddress={ pendingEmailAddress }
                 fieldLabel={ fieldLabel }
                 isActive={ isActive }
                 isEditable={ isEditable }
@@ -197,19 +203,80 @@ const ProfileFieldFormRenderer: FunctionComponent<
         );
     }
 
+    // Render and handle email addresses in a different manner.
+    if (fieldSchema.schemaUri === SCIMExtensionConfigs.scimSystemSchema.emailAddresses) {
+        const verifiedEmailAddresses: string[] =
+            flattenedProfileData[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA][
+                ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES")];
+        const primaryEmailAddress: string = flattenedProfileData[
+            ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")] as string;
+        const pendingEmailAddress: string = (flattenedProfileData[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA][
+            ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PENDING_EMAILS")
+        ] as string[])?.[0]?.["value"];
+
+        return (
+            <EmailFieldForm
+                fieldSchema={ fieldSchema }
+                initialValue={ initialValue as string[] }
+                verifiedEmailAddresses={ verifiedEmailAddresses }
+                primaryEmailAddress={ primaryEmailAddress }
+                pendingEmailAddress={ pendingEmailAddress }
+                fieldLabel={ fieldLabel }
+                isActive={ isActive }
+                isEditable={ isEditable }
+                onEditClicked={ onEditClicked }
+                onEditCancelClicked={ onEditCancelClicked }
+                isRequired={ isRequired }
+                setIsProfileUpdating={ setIsProfileUpdating }
+                isLoading={ isLoading }
+                isUpdating={ isUpdating }
+                data-componentid={ componentId }
+                isVerificationEnabled={ isEmailVerificationEnabled }
+                triggerUpdate={ triggerUpdate }
+            />
+        );
+    }
+
+    // Render single valued mobile number field.
+    if (fieldSchema.schemaUri === SCIMExtensionConfigs.scimUserSchema.phoneNumbersMobile) {
+        return (
+            <SingleMobileFieldForm
+                fieldSchema={ fieldSchema }
+                initialValue={ initialValue as string }
+                fieldLabel={ fieldLabel }
+                isActive={ isActive }
+                isEditable={ isEditable }
+                onEditClicked={ onEditClicked }
+                onEditCancelClicked={ onEditCancelClicked }
+                isRequired={ isRequired }
+                setIsProfileUpdating={ setIsProfileUpdating }
+                isLoading={ isLoading }
+                isUpdating={ isUpdating }
+                data-componentid={ componentId }
+                isVerificationEnabled={ isMobileVerificationEnabled }
+                triggerUpdate={ triggerUpdate }
+            />
+        );
+    }
+
     // Render and handle phone numbers in a different manner.
-    if (
-        [
-            SCIMExtensionConfigs.scimUserSchema.phoneNumbersMobile,
-            SCIMExtensionConfigs.scimSystemSchema.mobileNumbers
-        ].includes(fieldSchema.schemaUri)
-    ) {
+    if (fieldSchema.schemaUri === SCIMExtensionConfigs.scimSystemSchema.mobileNumbers) {
+        const verifiedMobileNumbers: string[] =
+            flattenedProfileData[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA][
+                ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS")];
+        const primaryMobile: string = flattenedProfileData[
+            ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE")] as string;
+        const pendingMobileNumber: string = flattenedProfileData[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA][
+            ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PENDING_MOBILE")];
+
         return (
             <MobileFieldForm
                 fieldSchema={ fieldSchema }
                 flattenedProfileSchema={ flattenedProfileSchema }
-                initialValue={ initialValue as string }
-                profileInfo={ profileInfo }
+                initialValue={ initialValue as string[] }
+                primaryMobileNumber={ primaryMobile }
+                verifiedMobileNumbers={ verifiedMobileNumbers }
+                pendingMobileNumber={ pendingMobileNumber }
                 fieldLabel={ fieldLabel }
                 isActive={ isActive }
                 isEditable={ isEditable }
@@ -250,9 +317,7 @@ const ProfileFieldFormRenderer: FunctionComponent<
 
     if (isMultiValuedSchema && isExtendedSchema) {
         // Prepare initial value list from comma separated string.
-        const valueList: string[] = isEmpty(initialValue)
-            ? []
-            : (initialValue as string).split(",");
+        const valueList: string[] = (initialValue ?? []) as string[];
 
         switch (inputType) {
             case ClaimInputFormat.MULTI_SELECT_DROPDOWN:
