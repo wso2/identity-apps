@@ -71,10 +71,9 @@ export interface ProfileFieldFormRendererPropsInterface<T> extends IdentifiableC
      */
     triggerUpdate: (data: PatchOperationRequest<ProfilePatchOperationValue>, clearActiveForm?: boolean) => void;
     /**
-     * Mapped user profile data. This is used in the email, mobile number fields.
-     * Ex: Retrieve the primary email address.
+     * Flattened profile data.
      */
-    profileInfo: Map<string, string>;
+    flattenedProfileData: Record<string, unknown>;
     /**
      * Whether email verification is enabled or not.
      */
@@ -101,6 +100,7 @@ export interface ProfileFieldFormPropsInterface<T>
         | "isEmailVerificationEnabled"
         | "isMobileVerificationEnabled"
         | "flattenedProfileSchema"
+        | "flattenedProfileData"
     > {
     /**
      * Callback to trigger the edit mode.
@@ -146,11 +146,53 @@ export interface CountryFieldFormPropsInterface extends ProfileFieldFormPropsInt
 
 export interface LocaleFieldFormPropsInterface extends ProfileFieldFormPropsInterface<string> {}
 
-export interface EmailFieldFormPropsInterface extends Omit<ProfileFieldFormPropsInterface<string>, "handleSubmit"> {
+export interface SingleEmailFieldFormPropsInterface
+    extends Omit<ProfileFieldFormPropsInterface<string>, "handleSubmit"> {
     /**
-     * Mapped user profile data.
+     * Whether the verification is enabled or not.
      */
-    profileInfo: Map<string, string>;
+    isVerificationEnabled: boolean;
+    /**
+     * Verification pending email address.
+     */
+    pendingEmailAddress: string;
+    /**
+     * Callback to trigger the update.
+     *
+     * @param data - Patch operation data.
+     * @param clearActiveForm - Whether to clear the active form or not.
+     */
+    triggerUpdate: (data: PatchOperationRequest<ProfilePatchOperationValue>, clearActiveForm?: boolean) => void;
+}
+
+export interface EmailFieldFormPropsInterface extends Omit<ProfileFieldFormPropsInterface<string[]>, "handleSubmit"> {
+    /**
+     * Whether the verification is enabled or not.
+     */
+    isVerificationEnabled: boolean;
+    /**
+     * Primary email address.
+     */
+    primaryEmailAddress: string;
+    /**
+     * Verified email addresses list.
+     */
+    verifiedEmailAddresses: string[];
+    /**
+     * Verification pending email address.
+     */
+    pendingEmailAddress: string;
+    /**
+     * Callback to trigger the update.
+     *
+     * @param data - Patch operation data.
+     * @param clearActiveForm - Whether to clear the active form or not.
+     */
+    triggerUpdate: (data: PatchOperationRequest<ProfilePatchOperationValue>, clearActiveForm?: boolean) => void;
+}
+
+export interface SingleMobileFieldFormPropsInterface
+    extends Omit<ProfileFieldFormPropsInterface<string>, "handleSubmit"> {
     /**
      * Whether the verification is enabled or not.
      */
@@ -164,11 +206,10 @@ export interface EmailFieldFormPropsInterface extends Omit<ProfileFieldFormProps
     triggerUpdate: (data: PatchOperationRequest<ProfilePatchOperationValue>, clearActiveForm?: boolean) => void;
 }
 
-export interface MobileFieldFormPropsInterface extends Omit<ProfileFieldFormPropsInterface<string>, "handleSubmit"> {
-    /**
-     * Mapped user profile data.
-     */
-    profileInfo: Map<string, string>;
+export interface MobileFieldFormPropsInterface extends Omit<ProfileFieldFormPropsInterface<string[]>, "handleSubmit"> {
+    primaryMobileNumber: string;
+    verifiedMobileNumbers: string[];
+    pendingMobileNumber: string;
     /**
      * Whether the verification is enabled or not.
      */

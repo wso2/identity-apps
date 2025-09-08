@@ -42,7 +42,6 @@ import { useSelector } from "react-redux";
 import { Grid, Icon, List } from "semantic-ui-react";
 import EmptyValueField from "./empty-value-field";
 import MultiValueDeleteConfirmationModal from "./multi-value-delete-confirmation-modal";
-import TextFieldForm from "./text-field-form";
 import { SCIMConfigs as SCIMExtensionConfigs } from "../../../extensions/configs/scim";
 import { AuthStateInterface } from "../../../models/auth";
 import { MultiValue, ProfilePatchOperationValue, ProfileSchema } from "../../../models/profile";
@@ -63,7 +62,9 @@ const EmailFieldForm: FunctionComponent<EmailFieldFormPropsInterface> = ({
     fieldSchema: schema,
     fieldLabel,
     initialValue,
-    profileInfo,
+    primaryEmailAddress,
+    verifiedEmailAddresses,
+    pendingEmailAddress,
     isEditable,
     isActive,
     isRequired,
@@ -81,11 +82,9 @@ const EmailFieldForm: FunctionComponent<EmailFieldFormPropsInterface> = ({
 
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
 
-    const verifiedEmailAddresses: string[] = profileInfo.get(ProfileConstants
-        .SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_EMAIL_ADDRESSES"))?.split(",") ?? [];
-    const primaryEmailAddress: string = profileInfo.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS"));
-    const emailAddressesList: string[] = isEmpty(initialValue) ? [] : initialValue?.split(",");
+    const emailAddressesList: string[] = initialValue ?? [];
 
+    // Track the selected email address for deleting.
     const [ selectedEmailAddress, setSelectedEmailAddress ] = useState<SortedEmailAddress>();
 
     const primaryEmailSchema: ProfileSchema = useMemo(
@@ -117,7 +116,7 @@ const EmailFieldForm: FunctionComponent<EmailFieldFormPropsInterface> = ({
     }, [ primaryEmailAddress, verifiedEmailAddresses, isPrimaryEmailVerified ]);
 
     const isVerificationPending = (emailAddress: string): boolean => {
-        return profileInfo.get("pendingEmails.value") === emailAddress;
+        return pendingEmailAddress === emailAddress;
     };
 
     const isVerified = (emailAddress: string): boolean => {
@@ -172,35 +171,29 @@ const EmailFieldForm: FunctionComponent<EmailFieldFormPropsInterface> = ({
             <Popup
                 name="pending-email-popup"
                 size="tiny"
-                trigger={
-                    (<Icon
+                trigger={ (
+                    <Icon
                         name="info circle"
                         color="yellow"
-                    />)
-                }
-                header={
-                    t("myAccount:components.profile.messages." +
-                                "emailConfirmation.header")
-                }
+                    />
+                ) }
+                header={ t("myAccount:components.profile.messages.emailConfirmation.header") }
                 inverted
             />
         );
     };
 
     const renderVerifiedIcon= (): ReactElement => {
-
         return (
             <Popup
                 name="verified-popup"
                 size="tiny"
-                trigger={
-                    (
-                        <Icon
-                            name="check"
-                            color="green"
-                        />
-                    )
-                }
+                trigger={ (
+                    <Icon
+                        name="check"
+                        color="green"
+                    />
+                ) }
                 header= { t("common:verified") }
                 inverted
             />
@@ -245,7 +238,7 @@ const EmailFieldForm: FunctionComponent<EmailFieldFormPropsInterface> = ({
                                 { renderVerifiedIcon() }
                             </div>
                         ) }
-                        { !emailAddress.isVerificationPending && emailAddress.isPrimary && (
+                        { emailAddress.isPrimary && (
                             <div
                                 className="verified-icon"
                                 data-componentid={
@@ -265,27 +258,16 @@ const EmailFieldForm: FunctionComponent<EmailFieldFormPropsInterface> = ({
     };
 
     const renderFieldContent = (): ReactElement => {
-        if (schema.extended && schema.multiValued) {
-            return (
-                <Select
-                    className="multi-attribute-dropdown"
-                    value={ sortedEmailAddressesList[0]?.value }
-                    disableUnderline
-                    variant="standard"
-                    data-componentid={ `${testId}-${schema.name.replace(".", "-")}-readonly-dropdown` }
-                >
-                    { getMultiEmailMenuItems() }
-                </Select>
-            );
-        }
-
         return (
-            <List.Content>
-                <List.Description className="with-max-length">
-                    { initialValue }
-                    { isVerificationPending(initialValue) && renderPendingVerificationIcon() }
-                </List.Description>
-            </List.Content>
+            <Select
+                className="multi-attribute-dropdown"
+                value={ sortedEmailAddressesList[0]?.value }
+                disableUnderline
+                variant="standard"
+                data-componentid={ `${testId}-${schema.name.replace(".", "-")}-readonly-dropdown` }
+            >
+                { getMultiEmailMenuItems() }
+            </Select>
         );
     };
 
@@ -495,62 +477,6 @@ const EmailFieldForm: FunctionComponent<EmailFieldFormPropsInterface> = ({
         triggerUpdate(data, false);
     };
 
-    const handleSingleEmailUpdate = (_: string, value: string): void => {
-        setIsProfileUpdating(true);
-
-        const data: PatchOperationRequest<ProfilePatchOperationValue> = {
-            Operations: [],
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
-        };
-
-        const updatedEmailsList: (string | MultiValue)[] = [];
-
-        for (const emailAddress of profileDetails?.profileInfo?.emails) {
-            if (typeof emailAddress === "object") {
-                updatedEmailsList.push(emailAddress);
-            }
-        }
-        updatedEmailsList.push(value);
-
-        data.Operations.push({
-            op: "replace",
-            value: {
-                [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")]: updatedEmailsList
-            }
-        });
-
-        data.Operations.push({
-            op: "replace",
-            value: {
-                [ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA] : {
-                    [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFY_EMAIL")] : true
-                }
-            }
-        });
-
-        triggerUpdate(data);
-    };
-
-    if (isActive && schema.schemaUri !== SCIMExtensionConfigs.scimSystemSchema.emailAddresses) {
-        return (
-            <TextFieldForm
-                fieldSchema={ schema }
-                initialValue={ initialValue }
-                fieldLabel={ fieldLabel }
-                isActive={ isActive }
-                isEditable={ isEditable }
-                onEditClicked={ onEditClicked }
-                onEditCancelClicked={ onEditCancelClicked }
-                isRequired={ isRequired }
-                setIsProfileUpdating={ setIsProfileUpdating }
-                isLoading={ isLoading }
-                isUpdating={ isUpdating }
-                data-componentid={ testId }
-                handleSubmit={ handleSingleEmailUpdate }
-            />
-        );
-    }
-
     const renderEmailAddressesTable = (): ReactElement => {
         return (
             <TableContainer
@@ -612,7 +538,6 @@ const EmailFieldForm: FunctionComponent<EmailFieldFormPropsInterface> = ({
                                                 )
                                             }
                                             {
-                                                !emailAddress.isVerificationPending &&
                                                 emailAddress.isPrimary && (
                                                     <div
                                                         className="verified-icon"

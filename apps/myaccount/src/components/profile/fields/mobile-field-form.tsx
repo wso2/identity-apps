@@ -43,7 +43,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Grid, Icon, List } from "semantic-ui-react";
 import EmptyValueField from "./empty-value-field";
 import MultiValueDeleteConfirmationModal from "./multi-value-delete-confirmation-modal";
-import TextFieldForm from "./text-field-form";
 import { updateProfileInfo } from "../../../api/profile";
 import { profileConfig as profileExtensionConfig } from "../../../extensions/configs/profile";
 import { SCIMConfigs as SCIMExtensionConfigs } from "../../../extensions/configs/scim";
@@ -69,7 +68,8 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
     flattenedProfileSchema,
     fieldLabel,
     initialValue,
-    profileInfo,
+    primaryMobileNumber,
+    verifiedMobileNumbers,
     isEditable,
     isActive,
     isRequired,
@@ -88,10 +88,7 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
 
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
 
-    const mobileNumbersList: string[] = isEmpty(initialValue) ? [] : initialValue?.split(",");
-    const verifiedMobileNumbers: string[] = profileInfo.get(ProfileConstants
-        .SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS"))?.split(",") ?? [];
-    const primaryMobileNumber: string = profileInfo.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE"));
+    const mobileNumbersList: string[] = initialValue ?? [];
 
     const [ selectedMobileNumber, setSelectedMobileNumber ] = useState<SortedMobileNumber>();
     const [ isMobileUpdateModalOpen, setIsMobileUpdateModalOpen ] = useState<boolean>(false);
@@ -498,42 +495,6 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
         triggerUpdate(data, false);
     };
 
-    const handleSingleMobileUpdate = (_: string, value: string): void => {
-        setIsProfileUpdating(true);
-
-        const data: PatchOperationRequest<ProfilePatchOperationValue> = {
-            Operations: [],
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
-        };
-
-        const updatedMobileList: MultiValue[] = [];
-
-        for (const mobileNumber of profileDetails?.profileInfo?.phoneNumbers) {
-            if (mobileNumber.type !== "mobile") {
-                updatedMobileList.push(mobileNumber);
-            }
-        }
-        updatedMobileList.push({ type: "mobile", value });
-
-        data.Operations.push({
-            op: "replace",
-            value: {
-                [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: updatedMobileList
-            }
-        });
-
-        data.Operations.push({
-            op: "replace",
-            value: {
-                [ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA] : {
-                    [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFY_MOBILE")] : true
-                }
-            }
-        });
-
-        triggerUpdate(data);
-    };
-
     const handleMobileUpdateModalClose = (isRevalidate: boolean = false) => {
         setIsMobileUpdateModalOpen(false);
         setIsProfileUpdating(false);
@@ -544,103 +505,6 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
             dispatch(setActiveForm(null));
         }
     };
-
-    if (isActive && schema.schemaUri !== SCIMExtensionConfigs.scimSystemSchema.mobileNumbers) {
-        if (isVerificationEnabled) {
-            return (
-                <EditSection data-testid={ `${testId}-schema-mobile-editing-section` }>
-                    <p>{ t("myAccount:components.profile.messages.mobileVerification.content") }</p>
-                    <Grid padded={ true }>
-                        <Grid.Row columns={ 2 }>
-                            <Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
-                                <List.Content>{ fieldLabel }</List.Content>
-                            </Grid.Column>
-                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
-                                <List.Content>
-                                    <List.Description className="with-max-length">
-                                        {
-                                            profileInfo.get(schema.name)
-                                                ? profileInfo.get(schema.name)
-                                                : (
-                                                    <a
-                                                        className="placeholder-text"
-                                                        tabIndex={ 0 }
-                                                        onClick={ () => setIsMobileUpdateModalOpen(true) }
-                                                        onKeyPress={ (
-                                                            { key }: React.KeyboardEvent<HTMLAnchorElement>
-                                                        ) => {
-                                                            if (key === "Enter") {
-                                                                setIsMobileUpdateModalOpen(true);
-                                                            }
-                                                        } }
-                                                        data-testid={
-                                                            `${testId}-schema-mobile-editing-section-${
-                                                                schema.name.replace(".", "-")
-                                                            }-placeholder`
-                                                        }
-                                                    >
-                                                        { t("myAccount:components.profile.forms.generic." +
-                                                                    "inputs.placeholder", {
-                                                            fieldName: fieldLabel.toLowerCase() })
-                                                        }
-                                                    </a>
-                                                )
-                                        }
-                                    </List.Description>
-                                </List.Content>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 2 }>
-                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 2 }>
-                                <Button variant="contained" onClick={ () => setIsMobileUpdateModalOpen(true) }>
-                                    { t("common:update").toString() }
-                                </Button>
-                            </Grid.Column>
-                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 2 }>
-                                <Button
-                                    onClick={ onEditCancelClicked }
-                                >
-                                    { t("common:cancel").toString() }
-                                </Button>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-
-                    <MobileUpdateWizardV2
-                        initialValue={ initialValue }
-                        isOpen={ isMobileUpdateModalOpen }
-                        onClose={ handleMobileUpdateModalClose }
-                        onCancel={ () => {
-                            setIsMobileUpdateModalOpen(false);
-                            setIsProfileUpdating(false);
-                            onEditCancelClicked();
-                        } }
-                        isMultiValued={ false }
-                        isMobileRequired={ isRequired }
-                        data-testid={ `${testId}-mobile-verification-wizard` }
-                    />
-                </EditSection>
-            );
-        }
-
-        return (
-            <TextFieldForm
-                fieldSchema={ schema }
-                initialValue={ initialValue }
-                fieldLabel={ fieldLabel }
-                isActive={ isActive }
-                isEditable={ isEditable }
-                onEditClicked={ onEditClicked }
-                onEditCancelClicked={ onEditCancelClicked }
-                isRequired={ isRequired }
-                setIsProfileUpdating={ setIsProfileUpdating }
-                isLoading={ isLoading }
-                isUpdating={ isUpdating }
-                data-componentid={ testId }
-                handleSubmit={ handleSingleMobileUpdate }
-            />
-        );
-    }
 
     const renderMobileNumbersTable = (): ReactElement => {
         return (
@@ -871,7 +735,6 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
                 </Grid>
 
                 <MobileUpdateWizardV2
-                    initialValue={ initialValue }
                     isOpen={ isMobileUpdateModalOpen }
                     onClose={ handleMobileUpdateModalClose }
                     onCancel={ (isRevalidate: boolean = false) => {
