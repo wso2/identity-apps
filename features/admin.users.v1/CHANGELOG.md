@@ -1,5 +1,17 @@
 # @wso2is/admin.users.v1
 
+## 2.36.13
+
+### Patch Changes
+
+- [#8718](https://github.com/wso2/identity-apps/pull/8718) [`5024d8b9992e7d0e8c080abdeb656d6d4364bddb`](https://github.com/wso2/identity-apps/commit/5024d8b9992e7d0e8c080abdeb656d6d4364bddb) Thanks [@CDevmina](https://github.com/CDevmina)! - Show the edit disclaimer only for users managed by the parent organization (no longer shown for other read-only users).
+
+- Updated dependencies [[`5024d8b9992e7d0e8c080abdeb656d6d4364bddb`](https://github.com/wso2/identity-apps/commit/5024d8b9992e7d0e8c080abdeb656d6d4364bddb)]:
+  - @wso2is/admin.users.v1@2.36.13
+  - @wso2is/admin.core.v1@2.49.38
+  - @wso2is/admin.roles.v2@2.27.204
+  - @wso2is/admin.server-configurations.v1@2.35.51
+
 ## 2.36.12
 
 ### Patch Changes
