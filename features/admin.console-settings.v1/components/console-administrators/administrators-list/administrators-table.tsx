@@ -191,7 +191,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
      * @param user - each admin user belonging to a row of the table.
      * @returns the locked icon.
      */
-    const resolveAccountStatus = (user: UserBasicInterface): ReactNode => {
+    const resolveUserAccountStatusIcon = (user: UserBasicInterface): ReactNode => {
         const accountLocked: boolean = user[userConfig.userProfileSchema]?.accountLocked === "true" ||
             user[userConfig.userProfileSchema]?.accountLocked === true;
         const accountDisabled: boolean = user[userConfig.userProfileSchema]?.accountDisabled === "true" ||
@@ -274,7 +274,7 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
                                 spaced="right"
                                 data-suppress=""
                             />
-                            { resolveAccountStatus(user) }
+                            { resolveUserAccountStatusIcon(user) }
                             <Header.Content>
                                 { header }
                                 { resolveMyselfLabel(user) }
