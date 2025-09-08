@@ -534,7 +534,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
 
         const resolvedMutabilityValue: string = schema?.profiles?.endUser?.mutability ?? schema.mutability;
 
+        // Hide non-boolean empty attributes if the profile is read-only or the attribute is read-only.
+        // Boolean attributes will be displayed in read-only mode even if they are empty.
         if (
+            schema.type?.toLowerCase() !== ClaimDataType.BOOLEAN.toLowerCase() &&
             isValueEmpty(schema) &&
             (isProfileReadOnly || resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA)
         ) {
