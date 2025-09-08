@@ -307,7 +307,6 @@ export const attributeConfig: AttributeConfig = {
     showCustomAttributeMapping: true,
     showCustomDialectInSCIM: true,
     systemClaims: [
-        "http://wso2.org/claims/externalid",
         "http://wso2.org/claims/userid",
         "http://wso2.org/claims/created",
         "http://wso2.org/claims/modified",

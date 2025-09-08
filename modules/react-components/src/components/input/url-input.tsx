@@ -911,7 +911,9 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                 ) }
                 { urlState && urlState.split(",").map((url) => {
                     if (url !== "") {
-                        if (skipValidation || skipInternalValidation) {
+                        const isRegexWrapper: boolean = /^regexp=\(.+\)$/.test(url);
+
+                        if (skipValidation || skipInternalValidation || isRegexWrapper) {
                             return (
                                 <Grid.Row key={ url } className={ "urlComponentTagRow" }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ computerSize }>
