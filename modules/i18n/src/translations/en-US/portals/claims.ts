@@ -74,7 +74,7 @@ export const claims: ClaimsNS = {
             content: "If you delete this attribute mapping, all the associated {{type}} attributes will "
                 + "also be deleted. Please proceed with caution.",
             header: "Are you sure?",
-            hint: "Please type <1>{{confirm}}</1> to confirm.",
+            hint: "Please confirm your action.",
             message: "This action is irreversible and will permanently delete the selected attribute " +
                 "mapping."
         },
