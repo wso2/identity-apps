@@ -2031,8 +2031,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         setCallBackUrls(url);
 
                                         const initialUrl: string = initialValues?.callbackURLs?.toString()
-                                            ? ApplicationManagementUtils.buildCallBackURLWithSeparator(
-                                                initialValues.callbackURLs.toString())
+                                            ? ApplicationManagementUtils.normalizeCallbackUrlsFromRegExp(
+                                                initialValues.callbackURLs.toString(), isMobileApplication)
                                             : "";
 
                                         if (initialUrl !== url) {
@@ -2048,8 +2048,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     required={ true }
                                     value={
                                         initialValues?.callbackURLs?.toString()
-                                            ? ApplicationManagementUtils.buildCallBackURLWithSeparator(
-                                                initialValues.callbackURLs.toString())
+                                            ? ApplicationManagementUtils.normalizeCallbackUrlsFromRegExp(
+                                                initialValues.callbackURLs.toString(), isMobileApplication)
                                             : ""
                                     }
                                     placeholder={
