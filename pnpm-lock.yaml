@@ -19306,6 +19306,9 @@ importers:
       '@wso2is/admin.validation.v1':
         specifier: ^2.27.144
         version: link:../admin.validation.v1
+      '@wso2is/common.users.v1':
+        specifier: workspace:^
+        version: link:../common.users.v1
       '@wso2is/core':
         specifier: ^2.12.0
         version: link:../../modules/core
@@ -43960,8 +43963,6 @@ packages:
       webpack: '*'
     peerDependenciesMeta:
       webpack:
-        optional: true
-      webpack-sources:
         optional: true
     dependencies:
       webpack: 5.84.1(@swc/core@1.3.99)(esbuild@0.18.20)(webpack-cli@4.10.0)

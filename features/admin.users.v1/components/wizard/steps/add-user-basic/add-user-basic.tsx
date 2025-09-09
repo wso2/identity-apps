@@ -37,14 +37,13 @@ import { USERSTORE_REGEX_PROPERTIES } from "@wso2is/admin.userstores.v1/constant
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem, UserStoreProperty } from "@wso2is/admin.userstores.v1/models";
 import { ValidationDataInterface, ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
+import { getFlattenedInitialValues } from "@wso2is/common.users.v1/utils/profile-utils";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     Claim,
     IdentifiableComponentInterface,
-    MultiValueAttributeInterface,
-    ProfileInfoInterface,
     ProfileSchemaInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -88,7 +87,6 @@ import {
 } from "../../../../constants";
 import {
     BasicUserDetailsInterface,
-    SubValueInterface,
     UserListInterface
 } from "../../../../models/user";
 import {
@@ -97,7 +95,6 @@ import {
     getUsernameConfiguration,
     isFieldDisplayableInUserCreationWizard
 } from "../../../../utils";
-
 import "./add-user-basic.scss";
 
 /**
@@ -168,7 +165,6 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
     const profileSchemas: ProfileSchemaInterface[] = useSelector(
         (state: AppState) => state.profile.profileSchemas);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
     const systemReservedUserStores: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.systemReservedUserStores);
     const [ passwordConfig, setPasswordConfig ] = useState<ValidationFormInterface>(undefined);
@@ -452,199 +448,16 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
         setProfileSchema(filteredSchemas);
     }, [ profileSchemas ]);
 
-    /**
-     * The following function maps profile details to the SCIM schemas.
-     *
-     * @param proSchema - ProfileSchema
-     * @param userInfo - BasicProfileInterface
-     */
-    const mapUserToSchema = (
-        proSchema: ProfileSchemaInterface[], userInfo: ProfileInfoInterface
-    ): Map<string, string> => {
-        if (!isEmpty(proSchema) && !isEmpty(userInfo)) {
-            const tempProfileInfo: Map<string, string> = new Map<string, string>();
-
-            proSchema.forEach((schema: ProfileSchemaInterface) => {
-                const schemaNames: string[] = schema.name.split(".");
-
-                if (schemaNames.length === 1) {
-                    if (schemaNames[0] === "emails") {
-                        const emailSchema: string = schemaNames[0];
-
-                        if(ProfileUtils.isStringArray(userInfo[emailSchema])) {
-                            const emails: any[] = userInfo[emailSchema];
-                            const primaryEmail: string = emails.find((subAttribute: any) =>
-                                typeof subAttribute === "string");
-
-                            // Set the primary email value.
-                            tempProfileInfo.set(schema.name, primaryEmail);
-                        }
-                    } else {
-                        const schemaName:string = schemaNames[0];
-
-                        // System Schema
-                        if (schema.extended
-                            && userInfo[userConfig.userProfileSchema]?.[schemaNames[0]]
-                        ) {
-                            if (UserManagementConstants.MULTI_VALUED_ATTRIBUTES.includes(schemaNames[0])) {
-                                const attributeValue: string | string[] =
-                                    userInfo[userConfig.userProfileSchema]?.[schemaNames[0]];
-                                const formattedValue: string = Array.isArray(attributeValue)
-                                    ? attributeValue.join(",")
-                                    : "";
-
-                                tempProfileInfo.set(schema.name, formattedValue);
-
-                                return;
-                            }
-                            tempProfileInfo.set(
-                                schema.name, userInfo[userConfig.userProfileSchema][schemaNames[0]]
-                            );
-
-                            return;
-                        }
-
-                        // Enterprise Schema
-                        if (schema.extended
-                            && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaNames[0]]
-                        ) {
-                            if (schema.multiValued) {
-                                const attributeValue: string | string[] =
-                                    userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaNames[0]];
-                                const formattedValue: string = Array.isArray(attributeValue)
-                                    ? attributeValue.join(",")
-                                    : "";
-
-                                tempProfileInfo.set(schema.name, formattedValue);
-
-                                return;
-                            }
-                            tempProfileInfo.set(
-                                schema.name, userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]
-                            );
-
-                            return;
-                        }
-
-                        // Custom Schema
-                        if (
-                            schema.extended
-                            && userInfo?.[userSchemaURI]?.[schemaNames[0]]
-                        ) {
-                            if (schema.multiValued) {
-                                const attributeValue: string | string[] = userInfo[userSchemaURI]?.[schemaNames[0]];
-                                const formattedValue: string = Array.isArray(attributeValue)
-                                    ? attributeValue.join(",")
-                                    : "";
-
-                                tempProfileInfo.set(schema.name, formattedValue);
-
-                                return;
-                            }
-                            tempProfileInfo.set(
-                                schema.name, userInfo[userSchemaURI][schemaNames[0]]
-                            );
-
-                            return;
-                        }
-                        tempProfileInfo.set(schema.name, userInfo[schemaName]);
-                    }
-                } else {
-                    if (schemaNames[0] === "name") {
-                        const nameSchema: string = schemaNames[0];
-                        const givenNameSchema: string = schemaNames[1];
-
-                        givenNameSchema && userInfo[nameSchema] &&
-                            userInfo[nameSchema][givenNameSchema] && (
-                            tempProfileInfo.set(schema.name, userInfo[nameSchema][givenNameSchema])
-                        );
-                    } else {
-                        const schemaName: string = schemaNames[0];
-                        const schemaSecondaryProperty: string = schemaNames[1];
-
-                        const userProfileSchema: string = userInfo
-                            ?.[userConfig.userProfileSchema]?.[schemaName]
-                            ?.[schemaSecondaryProperty];
-
-                        const enterpriseSchema: string = userInfo
-                            ?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaName]
-                            ?.[schemaSecondaryProperty];
-
-                        const customSchema: string = userInfo
-                            ?.[userSchemaURI]?.[schemaName]
-                            ?.[schemaSecondaryProperty];
-
-                        if (schema.extended && (userProfileSchema || enterpriseSchema || customSchema)) {
-                            if (userProfileSchema) {
-                                tempProfileInfo.set(schema.name, userProfileSchema);
-                            } else if (enterpriseSchema && schema.multiValued) {
-                                tempProfileInfo.set(schema.name,
-                                    Array.isArray(enterpriseSchema) ? enterpriseSchema.join(",") : "");
-                            } else if (enterpriseSchema) {
-                                tempProfileInfo.set(schema.name, enterpriseSchema);
-                            } else if (customSchema && schema.multiValued) {
-                                tempProfileInfo.set(schema.name,
-                                    Array.isArray(customSchema) ? customSchema.join(",") : "");
-                            } else if (customSchema) {
-                                tempProfileInfo.set(schema.name, customSchema);
-                            }
-                        } else {
-                            const subValue: SubValueInterface = userInfo[schemaName] &&
-                                Array.isArray(userInfo[schemaName]) &&
-                                userInfo[schemaName]
-                                    .find((subAttribute: MultiValueAttributeInterface) =>
-                                        subAttribute.type === schemaSecondaryProperty);
-
-                            if (schemaName.includes("addresses")) {
-                                // Ex: addresses#home.streetAddress
-                                const addressSubSchema: string = schema?.name?.split(".")[1];
-                                const addressSchemaArray: string[] = schemaName?.split("#");
-
-                                if (addressSchemaArray.length > 1) {
-                                    // Ex: addresses#home
-                                    const addressSchema: string = addressSchemaArray[0];
-                                    const addressType: string = addressSchemaArray[1];
-
-                                    const subValue: SubValueInterface = userInfo[addressSchema] &&
-                                        Array.isArray(userInfo[addressSchema]) &&
-                                        userInfo[addressSchema]
-                                            .find((subAttribute: MultiValueAttributeInterface) =>
-                                                subAttribute.type === addressType);
-
-                                    tempProfileInfo.set(
-                                        schema.name,
-                                        (subValue && subValue[addressSubSchema]) ? subValue[addressSubSchema] : ""
-                                    );
-                                } else {
-                                    tempProfileInfo.set(
-                                        schema.name,
-                                        subValue ? subValue.formatted : ""
-                                    );
-                                }
-                            } else {
-                                tempProfileInfo.set(
-                                    schema.name,
-                                    subValue ? subValue.value : ""
-                                );
-                            }
-                        }
-                    }
-                }
-            });
-
-            return tempProfileInfo;
-        }
-    };
-
     /*
     * This map the user data to schema using initial values of the wizard.
     * This is used to persist wizard data when the user clicks on the back button.
     */
-    const profileInfo: Map<string, string> = useMemo(() => {
-        if (isAttributeProfileForUserCreationEnabled) {
-            return mapUserToSchema(profileSchema, initialValues);
+    const flattenedInitialValues: Record<string, unknown> = useMemo(() => {
+        if (isAttributeProfileForUserCreationEnabled && profileSchema) {
+            return getFlattenedInitialValues(
+                initialValues ?? {}, profileSchema, isMultipleEmailAndMobileNumberEnabled, false, false);
         }
-    }, [ profileSchema, initialValues ]);
+    }, [ profileSchema, initialValues, isMultipleEmailAndMobileNumberEnabled ]);
 
     /**
      * This will set the ask password option as OFFLINE if email verification is not enabled or email is not required.
@@ -1033,11 +846,12 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                 <MultiValuedEmailField
                     schema={ emailAddressesSchema }
                     primaryEmailSchema={ primaryEmailSchema }
-                    primaryEmailAddress={ profileInfo?.get(EMAIL_ATTRIBUTE) }
+                    primaryEmailAddress={ flattenedInitialValues[EMAIL_ATTRIBUTE] as string }
                     fieldLabel={ t("user:profile.fields." +
                         emailAddressesSchema.name.replace(".", "_"), { defaultValue: emailAddressesSchema.displayName }
                     ) }
-                    emailAddressesList={ profileInfo?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [] }
+                    emailAddressesList={ flattenedInitialValues[
+                        ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.[EMAIL_ADDRESSES_ATTRIBUTE] ?? [] }
                     maxValueLimit={ ProfileConstants.MAX_EMAIL_ADDRESSES_ALLOWED }
                     data-componentid={ emailFieldComponentId }
                     data-testid={ emailFieldComponentId }
@@ -1103,8 +917,9 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                                 mobileNumbersSchema.name.replace(".", "_"), {
                                 defaultValue: mobileNumbersSchema.displayName }
                             ) }
-                            primaryMobileNumber={ profileInfo?.get(MOBILE_ATTRIBUTE) }
-                            mobileNumbersList={ profileInfo?.get(MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [] }
+                            primaryMobileNumber={ flattenedInitialValues[MOBILE_ATTRIBUTE] as string }
+                            mobileNumbersList={ flattenedInitialValues[
+                                ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.[MOBILE_NUMBERS_ATTRIBUTE] ?? [] }
                             maxValueLimit={ ProfileConstants.MAX_EMAIL_ADDRESSES_ALLOWED }
                             isUpdating={ isBasicDetailsLoading }
                             data-componentid={ `${ componentId }-${ mobileNumbersSchema.name }-input` }
@@ -1130,7 +945,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                             name={ mobileSchema.name }
                             label={ fieldName }
                             placeholder={ t("user:forms.addUserForm.inputs.generic.placeholder", { label: fieldName }) }
-                            initialValue={ profileInfo?.get(mobileSchema?.name) }
+                            initialValue={ flattenedInitialValues?.[mobileSchema.name] as string }
                             validate={ (value: string) => {
                                 if (isEmpty(value)) {
                                     return t("user:forms.addUserForm.inputs.generic.validations.empty", {
@@ -1178,7 +993,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                 <Grid.Column mobile={ 16 } computer={ 10 }>
                     <DynamicFieldRenderer
                         schema={ schema }
-                        initialValues={ profileInfo ?? new Map<string, string>() }
+                        initialValues={ flattenedInitialValues }
                         isUpdating={ false }
                         data-componentid={ `${componentId}-profile-form` }
                     />

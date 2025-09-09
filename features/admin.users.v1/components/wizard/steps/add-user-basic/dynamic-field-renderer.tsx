@@ -45,7 +45,7 @@ interface DynamicFieldRendererPropsInterface extends IdentifiableComponentInterf
     /**
      * Flattened initial values.
      */
-    initialValues: Map<string, string>;
+    initialValues: Record<string, unknown>;
     /**
      * Whether the user profile is being updated.
      */
@@ -106,7 +106,7 @@ const DynamicFieldRenderer: FunctionComponent<DynamicFieldRendererPropsInterface
             <CountryField
                 fieldLabel={ fieldLabel }
                 fieldName={ `${encodedSchemaId}.${schema.name}` }
-                initialValue={ initialValues.get(schema.name) }
+                initialValue={ initialValues[encodedSchemaId]?.[schema.name] as string }
                 isUpdating={ isUpdating }
                 isRequired={ isRequired }
                 validator={ genericValidator }
@@ -124,7 +124,7 @@ const DynamicFieldRenderer: FunctionComponent<DynamicFieldRendererPropsInterface
             <LocaleField
                 fieldLabel={ fieldLabel }
                 fieldName={ schema.name }
-                initialValue={ initialValues.get(schema.name) }
+                initialValue={ initialValues[schema.name] as string }
                 isUpdating={ isUpdating }
                 isRequired={ isRequired }
                 validator={ genericValidator }
@@ -142,7 +142,7 @@ const DynamicFieldRenderer: FunctionComponent<DynamicFieldRendererPropsInterface
             <TextFormField
                 fieldName={ `${encodedSchemaId}.${schema.name}` }
                 fieldLabel={ fieldLabel }
-                initialValue={ initialValues.get(schema.name) }
+                initialValue={ initialValues[encodedSchemaId]?.[schema.name] as string }
                 validator={ genericValidator }
                 validateFields={ [] }
                 placeholder="YYYY-MM-DD"
@@ -157,23 +157,20 @@ const DynamicFieldRenderer: FunctionComponent<DynamicFieldRendererPropsInterface
     const inputType: ClaimInputFormat = schema.inputFormat?.inputType ?? ClaimInputFormat.TEXT_INPUT;
     const isMultiValued: boolean = schema.multiValued;
     let fieldName: string = schema.name;
-    let initialValue: unknown = initialValues.get(schema.name);
+    let initialValue: unknown = initialValues?.[schema.name];
 
-    if (isMultiValued) {
-        // For multi-valued attributes, values are comma separated.
-        // Prepare the initial value as an array.
-        initialValue = (initialValues.get(schema.name) as string)?.split(",");
-    }
-
-    /**
-     * For extended SCIM schemas, the field name is prefixed with the schema ID.
-     * Ex: "urn:scim:wso2:schema.country"
-     */
     if (schema.extended) {
+        initialValue = initialValues?.[encodedSchemaId]?.[schema.name];
+        /**
+         * For extended SCIM schemas, the field name is prefixed with the schema ID.
+         * Ex: "urn:scim:wso2:schema.country"
+         */
         fieldName = `${encodedSchemaId}.${schema.name}`;
     }
 
     if (isMultiValued) {
+        initialValue = initialValue ?? [];
+
         switch (inputType) {
             case ClaimInputFormat.CHECKBOX_GROUP:
                 return (
