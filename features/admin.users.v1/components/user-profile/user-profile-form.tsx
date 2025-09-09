@@ -50,6 +50,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import ProfileFormFieldRenderer from "./fields/form-field-renderer";
 import { updateUserInfo } from "../../api/users";
+import { UserFeatureDictionaryKeys, UserManagementConstants } from "../../constants";
 import { AccountConfigSettingsInterface, PatchUserOperationValue } from "../../models/user";
 import {
     getDisplayOrder,
@@ -124,6 +125,9 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
     const attributeDialectsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features?.attributeDialects
     );
+    const usersFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.users
+    );
 
     const [ isUpdating, setIsUpdating ] = useState<boolean>(false);
 
@@ -133,6 +137,11 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
     const isDistinctAttributeProfilesFeatureEnabled: boolean = isFeatureEnabled(
         attributeDialectsFeatureConfig,
         ClaimManagementConstants.DISTINCT_ATTRIBUTE_PROFILES_FEATURE_FLAG
+    );
+
+    const hideReadonlyAttributesWhenEmpty: boolean = isFeatureEnabled(
+        usersFeatureConfig,
+        UserManagementConstants.FEATURE_DICTIONARY.get(UserFeatureDictionaryKeys.HideReadOnlyAttributesWhenEmpty)
     );
 
     const oneTimePassword: string = profileData[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.oneTimePassword;
@@ -837,7 +846,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
             const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
 
             // If the schema is read only, the empty field should not be displayed.
-            if (resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA) {
+            if (hideReadonlyAttributesWhenEmpty && resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA) {
                 return false;
             }
         }
