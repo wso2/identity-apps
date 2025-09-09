@@ -2944,6 +2944,9 @@ importers:
       '@wso2is/admin.server-configurations.v1':
         specifier: ^2.35.40
         version: link:../admin.server-configurations.v1
+      '@wso2is/admin.subscription.v1':
+        specifier: workspace:^
+        version: link:../admin.subscription.v1
       '@wso2is/admin.template-core.v1':
         specifier: ^1.5.158
         version: link:../admin.template-core.v1
@@ -43957,8 +43960,6 @@ packages:
       webpack: '*'
     peerDependenciesMeta:
       webpack:
-        optional: true
-      webpack-sources:
         optional: true
     dependencies:
       webpack: 5.84.1(@swc/core@1.3.99)(esbuild@0.18.20)(webpack-cli@4.10.0)
