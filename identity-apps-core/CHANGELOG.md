@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.2.17
+
+### Patch Changes
+
+- [#8862](https://github.com/wso2/identity-apps/pull/8862) [`6fbb1e9e613429cf1d478a01963dac60255f2ad3`](https://github.com/wso2/identity-apps/commit/6fbb1e9e613429cf1d478a01963dac60255f2ad3) Thanks [@Lashen1227](https://github.com/Lashen1227)! - add error messages for pre-update password validation in multiple languages
+
 ## 3.2.16
 
 ### Patch Changes

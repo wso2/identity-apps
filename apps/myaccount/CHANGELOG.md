@@ -1,5 +1,20 @@
 # @wso2is/myaccount
 
+## 2.24.9
+
+### Patch Changes
+
+- [#9035](https://github.com/wso2/identity-apps/pull/9035) [`1d1fe76d9d3f71a83630566c3bb1bb4b5ab6e441`](https://github.com/wso2/identity-apps/commit/1d1fe76d9d3f71a83630566c3bb1bb4b5ab6e441) Thanks [@github-actions](https://github.com/apps/github-actions)! - Stop loading overview tab before loading scopes.
+
+* [#9049](https://github.com/wso2/identity-apps/pull/9049) [`05f44475ebd8157f81a305fbf3759864a98fbb47`](https://github.com/wso2/identity-apps/commit/05f44475ebd8157f81a305fbf3759864a98fbb47) Thanks [@github-actions](https://github.com/apps/github-actions)! - Fix issues in My Account user profile
+  - Refactors how user profile data is flattened and passed down to input fields
+  - Implements separate components for single-value email address and single-value mobile number fields.
+  - Centralizes profile data flattening logic to the common feature module - `common.users.v1`.
+  - Fixes an issue with not displaying boolean attribute fields in read-only mode.
+* Updated dependencies [[`46843ac068fbf0891d0682018eac93efc78c6db8`](https://github.com/wso2/identity-apps/commit/46843ac068fbf0891d0682018eac93efc78c6db8), [`05f44475ebd8157f81a305fbf3759864a98fbb47`](https://github.com/wso2/identity-apps/commit/05f44475ebd8157f81a305fbf3759864a98fbb47)]:
+  - @wso2is/i18n@2.30.17
+  - @wso2is/common.users.v1@1.0.1
+
 ## 2.24.8
 
 ### Patch Changes
