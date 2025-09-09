@@ -56,7 +56,7 @@ import {
     SelectFieldAdapter,
     TextFieldAdapter
 } from "@wso2is/form";
-import { FormSpy } from "@wso2is/form/src";
+import { FormApi, FormSpy } from "@wso2is/form/src";
 import { FormValue } from "@wso2is/forms";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
@@ -106,6 +106,7 @@ import "./add-user-basic.scss";
 interface AddUserBasicProps extends IdentifiableComponentInterface {
     initialValues: any;
     triggerSubmit: boolean;
+    setTriggerSubmit: () => void;
     emailVerificationEnabled: boolean;
     onSubmit: (values: BasicUserDetailsInterface) => void;
     requestedPasswordOption?: PasswordOptionTypes;
@@ -133,6 +134,7 @@ interface AddUserBasicProps extends IdentifiableComponentInterface {
 export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
     initialValues,
     triggerSubmit,
+    setTriggerSubmit,
     emailVerificationEnabled,
     onSubmit,
     isUserstoreRequired,
@@ -1256,6 +1258,26 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
         onSubmit(decodedFormValues);
     };
 
+    /**
+     * Handles the submit button click.
+     * Responsible for resetting the submit state in the parent component if there are validation errors. And also
+     * submitting the form if there are no validation errors.
+     *
+     * @param form - The form API.
+     * @param hasValidationErrors - Whether the form has validation errors.
+     */
+    const onSubmitClick = (form: FormApi, hasValidationErrors: boolean): void => {
+        if (hasValidationErrors) {
+            // If there are validation errors, do not submit the form.
+            // Reset the trigger submit state in the parent component.
+            setTriggerSubmit();
+
+            return;
+        }
+
+        form.submit();
+    };
+
     if (isUserStoreRequestLoading || isUserStoreRequestValidating || isAttributesRequestLoading) {
         return (
             <OxygenGrid container spacing={ 3 }>
@@ -1279,7 +1301,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
             onSubmit={ handleFormSubmit }
             data-testid="user-mgt-add-user-form"
             data-componentid="user-mgt-add-user-form"
-            render={ ({ handleSubmit, form }: FormRenderProps) => {
+            render={ ({ handleSubmit, form, hasValidationErrors }: FormRenderProps) => {
                 return (
                     <form onSubmit={ handleSubmit }>
                         <Grid>
@@ -1479,8 +1501,8 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                         </Grid>
                         { /** This hidden button is used to submit the form programmatically */ }
                         <button
-                            type="submit"
                             ref={ submitButtonRef }
+                            onClick={ () => onSubmitClick(form, hasValidationErrors) }
                             hidden
                         />
                     </form>
