@@ -70,7 +70,7 @@ const PasswordRecoveryFlowBuilderBanner: FC<PasswordRecoveryFlowBuilderBannerPro
                         <span className="text-gradient primary">{ t("flows:passwordRecovery.name") }</span>
                         <FeatureFlagLabel
                             featureFlags={ flowsFeatureAIConfig?.featureFlags }
-                            featureKey={ FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.FLOWS_TYPES_REGISTRATION }
+                            featureKey={ FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.FLOWS_TYPES_PASSWORD_RECOVERY }
                             type="chip"
                         />
                     </Typography>
@@ -80,7 +80,7 @@ const PasswordRecoveryFlowBuilderBanner: FC<PasswordRecoveryFlowBuilderBannerPro
                     </Typography>
                 </Box>
                 <Button
-                    onClick={ () => history.push(AppConstants.getPaths().get("REGISTRATION_FLOW_BUILDER")) }
+                    onClick={ () => history.push(AppConstants.getPaths().get("PASSWORD_RECOVERY_FLOW_BUILDER")) }
                     color="primary"
                     variant="contained"
                 >
