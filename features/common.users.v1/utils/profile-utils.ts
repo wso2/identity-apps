@@ -223,20 +223,22 @@ export const getFlattenedInitialValues = (
         profileData, isMultipleEmailAndMobileNumberEnabled, isEmailVerificationEnabled, isMobileVerificationEnabled);
     const _flattenedInitialValues: Record<string, unknown> = {};
 
-    _flattenedInitialValues["id"] = preparedInitialValues.id;
-
-    for (const schemaId of profileData.schemas) {
-        if (schemaId === ProfileConstants.SCIM2_CORE_USER_SCHEMA) {
-            continue;
-        }
-        // Replace dots with __DOT__ to avoid issues with dot separated field names.
-        _flattenedInitialValues[schemaId.toString().replace(/\./g, "__DOT__")] = {};
+    if (preparedInitialValues.id) {
+        _flattenedInitialValues["id"] = preparedInitialValues.id;
     }
 
     for (const schema of flattenedProfileSchema) {
-        const schemaNameParts: string[] = schema.name.split(".");
+        const schemaId: string = schema.schemaId;
         // Replace dots with __DOT__ to avoid issues with dot separated field names.
-        const encodedSchemaId: string = schema.schemaId.replace(/\./g, "__DOT__");
+        const encodedSchemaId: string = schemaId?.replace(/\./g, "__DOT__");
+
+        // Initialize the schema container if it doesn't exist and it's not the core user schema.
+        if (schemaId !== ProfileConstants.SCIM2_CORE_USER_SCHEMA
+            && !Object.hasOwn(_flattenedInitialValues, encodedSchemaId)) {
+            _flattenedInitialValues[encodedSchemaId] = {};
+        }
+
+        const schemaNameParts: string[] = schema.name.split(".");
 
         if (!schema.extended &&
             (schemaNameParts[0] === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS") ||
@@ -439,6 +441,10 @@ export const getFlattenedInitialValues = (
                 }
             }
         }
+    }
+
+    if (!Object.hasOwn(_flattenedInitialValues, ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA)) {
+        _flattenedInitialValues[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA] = {};
     }
 
     _flattenedInitialValues[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA][
