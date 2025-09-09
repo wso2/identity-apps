@@ -6,4 +6,4 @@
 "@wso2is/myaccount": patch
 ---
 
-Introduce SELF_REGISTER_USER opeartion type to workflow
+Introduce SELF_REGISTER_USER operation type to workflow
