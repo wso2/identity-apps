@@ -67,6 +67,7 @@ export enum WorkflowInstanceStatus {
 export enum WorkflowInstanceOperationType {
     ALL = "ALL",
     ADD_USER = "ADD_USER",
+    SELF_REGISTER_USER = "SELF_REGISTER_USER",
     DELETE_USER = "DELETE_USER",
     UPDATE_ROLES_OF_USERS = "UPDATE_ROLES_OF_USERS",
     ADD_ROLE = "ADD_ROLE",
