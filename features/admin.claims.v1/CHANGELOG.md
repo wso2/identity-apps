@@ -1,5 +1,20 @@
 # @wso2is/admin.claims.v1
 
+## 2.29.4
+
+### Patch Changes
+
+- [#9042](https://github.com/wso2/identity-apps/pull/9042) [`5beb8d0682573cdd09dd83a16b213a34b47831f1`](https://github.com/wso2/identity-apps/commit/5beb8d0682573cdd09dd83a16b213a34b47831f1) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Add checkbox instead of input format for delete confimation modal.
+
+- Updated dependencies [[`5beb8d0682573cdd09dd83a16b213a34b47831f1`](https://github.com/wso2/identity-apps/commit/5beb8d0682573cdd09dd83a16b213a34b47831f1), [`b39c23eb0446afefdbea872ee3b0cf6d5370671f`](https://github.com/wso2/identity-apps/commit/b39c23eb0446afefdbea872ee3b0cf6d5370671f)]:
+  - @wso2is/admin.claims.v1@2.29.4
+  - @wso2is/i18n@2.30.21
+  - @wso2is/admin.extensions.v1@2.40.3
+  - @wso2is/react-components@2.9.22
+  - @wso2is/admin.users.v1@2.36.14
+  - @wso2is/admin.core.v1@2.49.39
+  - @wso2is/admin.server-configurations.v1@2.35.52
+
 ## 2.29.3
 
 ### Patch Changes
