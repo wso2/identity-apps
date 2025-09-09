@@ -19,7 +19,10 @@
 import Button from "@oxygen-ui/react/Button";
 import Grid from "@oxygen-ui/react/Grid";
 import TextField from "@oxygen-ui/react/TextField";
-import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
+import {
+    ClaimFeatureDictionaryKeys,
+    ClaimManagementConstants
+} from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { commonConfig as commonExtensionConfig } from "@wso2is/admin.extensions.v1";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
@@ -138,10 +141,19 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
         attributeDialectsFeatureConfig,
         ClaimManagementConstants.DISTINCT_ATTRIBUTE_PROFILES_FEATURE_FLAG
     );
+    const getUserIDFromSCIMUser: boolean = isFeatureEnabled(
+        attributeDialectsFeatureConfig,
+        ClaimManagementConstants.FEATURE_DICTIONARY.get(ClaimFeatureDictionaryKeys.hideUserIdDisplayConfigurations)
+    );
 
     const hideReadonlyAttributesWhenEmpty: boolean = isFeatureEnabled(
         usersFeatureConfig,
         UserManagementConstants.FEATURE_DICTIONARY.get(UserFeatureDictionaryKeys.HideReadOnlyAttributesWhenEmpty)
+    );
+
+    const UseDefaultLabelsAndOrder: boolean = isFeatureEnabled(
+        usersFeatureConfig,
+        UserManagementConstants.FEATURE_DICTIONARY.get(UserFeatureDictionaryKeys.UseDefaultLabelsAndOrder)
     );
 
     const oneTimePassword: string = profileData[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.oneTimePassword;
@@ -154,7 +166,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
     const flattenedProfileSchema: ProfileSchemaInterface[] = useMemo(() => {
         const sortedSchemas: ProfileSchemaInterface[] = ProfileUtils.flattenSchemas([ ...profileSchemas ]).sort(
             (a: ProfileSchemaInterface, b: ProfileSchemaInterface) => {
-                return getDisplayOrder(a) - getDisplayOrder(b);
+                return getDisplayOrder(a, UseDefaultLabelsAndOrder) - getDisplayOrder(b, UseDefaultLabelsAndOrder);
             }
         );
 
@@ -875,7 +887,8 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                     >
                         <Grid container spacing={ 3 }>
 
-                            { profileData.id && (
+                            { profileData.id &&
+                            getUserIDFromSCIMUser && (
                                 <Grid xs={ 12 }>
                                     <FinalFormField
                                         key="userID"
@@ -909,6 +922,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                                                 isUpdating={ isUpdating }
                                                 setIsUpdating={ (isUpdating: boolean) => setIsUpdating(isUpdating) }
                                                 onUserUpdated={ onUserUpdated }
+                                                UseDefaultLabelsAndOrder={ UseDefaultLabelsAndOrder }
                                                 data-componentid={ `${componentId}-profile-form` }
                                             />
                                         </Grid>

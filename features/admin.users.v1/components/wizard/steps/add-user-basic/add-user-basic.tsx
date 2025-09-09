@@ -83,6 +83,7 @@ import {
     AttributeDataType,
     HiddenFieldNames,
     PasswordOptionTypes,
+    UserFeatureDictionaryKeys,
     UserManagementConstants
 } from "../../../../constants";
 import {
@@ -186,6 +187,10 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
     const isAttributeProfileForUserCreationEnabled: boolean = isFeatureEnabled(
         featureConfig?.users,
         UserManagementConstants.ATTRIBUTE_PROFILES_FOR_USER_CREATION_FEATURE_FLAG
+    );
+    const useDefaultLabelsAndOrder: boolean = isFeatureEnabled(
+        featureConfig?.users,
+        UserManagementConstants.FEATURE_DICTIONARY.get(UserFeatureDictionaryKeys.UseDefaultLabelsAndOrder)
     );
     const isMultipleEmailAndMobileNumberEnabled: boolean = UIConfig?.isMultipleEmailsAndMobileNumbersEnabled;
     const EMAIL_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS");
@@ -295,6 +300,24 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
             return emailAttribute?.regEx;
         }
     }, [ fetchedAttributes ]);
+
+    const usernameLabel: string = fetchedAttributes?.find(
+        (attribute: Claim) =>
+            attribute?.[ClaimManagementConstants.CLAIM_URI_ATTRIBUTE_KEY] ===
+            ClaimManagementConstants.USER_NAME_CLAIM_URI
+    )?.displayName;
+
+    const firstNameLabel: string = fetchedAttributes?.find(
+        (attribute: Claim) =>
+            attribute?.[ClaimManagementConstants.CLAIM_URI_ATTRIBUTE_KEY] ===
+            ClaimManagementConstants.FIRST_NAME_CLAIM_URI
+    )?.displayName;
+
+    const lastNameLabel: string = fetchedAttributes?.find(
+        (attribute: Claim) =>
+            attribute?.[ClaimManagementConstants.CLAIM_URI_ATTRIBUTE_KEY] ===
+            ClaimManagementConstants.LAST_NAME_CLAIM_URI
+    )?.displayName;
 
     const readWriteUserStoresList: DropdownItemProps[] = useMemo(() => {
         const storeOptions: DropdownItemProps[] = [
@@ -803,7 +826,10 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                     <Grid.Column mobile={ 16 } computer={ 10 }>
                         <FinalFormField
                             component={ TextFieldAdapter }
-                            label={ t("extensions:manage.features.user.addUser.inputLabel.alphanumericUsername") }
+                            label={ useDefaultLabelsAndOrder ?
+                                t("extensions:manage.features.user.addUser.inputLabel.alphanumericUsername") :
+                                usernameLabel
+                            }
                             name="username"
                             initialValue={ initialValues?.userName }
                             placeholder={ t("extensions:manage.features.user.addUser.inputLabel" +
@@ -1160,7 +1186,11 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                                     <Grid.Column mobile={ 16 } computer={ 10 }>
                                         <FinalFormField
                                             component={ TextFieldAdapter }
-                                            label={ t("user:forms.addUserForm.inputs.firstName.label") }
+                                            label={
+                                                useDefaultLabelsAndOrder ?
+                                                    t("user:forms.addUserForm.inputs.firstName.label") :
+                                                    firstNameLabel
+                                            }
                                             name="firstName"
                                             initialValue={ initialValues?.firstName }
                                             placeholder={ t(
@@ -1192,7 +1222,11 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                                     <Grid.Column mobile={ 16 } computer={ 10 }>
                                         <FinalFormField
                                             component={ TextFieldAdapter }
-                                            label={ t("user:forms.addUserForm.inputs.lastName.label") }
+                                            label={
+                                                useDefaultLabelsAndOrder ?
+                                                    t("user:forms.addUserForm.inputs.lastName.label") :
+                                                    lastNameLabel
+                                            }
                                             name="lastName"
                                             initialValue={ initialValues?.lastName }
                                             placeholder={ t("user:forms.addUserForm.inputs." +
