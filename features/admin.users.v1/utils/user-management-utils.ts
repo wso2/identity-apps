@@ -464,13 +464,21 @@ export const constructPatchOperationForMultiValuedVerifiedAttribute = ({
  * @param schema - SCIM profile schema.
  * @returns the display order of the schema.
  */
-export const getDisplayOrder = (schema: ProfileSchemaInterface): number => {
-    if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME")) return 0;
+export const getDisplayOrder = (
+    schema: ProfileSchemaInterface,
+    useDefaultLabelsAndOrder: boolean = true
+): number => {
+    if (
+        useDefaultLabelsAndOrder &&
+        schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME")
+    ) return 0;
     if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_ADDRESSES")
         && (!schema.displayOrder || schema.displayOrder == "0")) return 6;
     if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE_NUMBERS")
         && (!schema.displayOrder || schema.displayOrder == "0")) return 7;
-    if (!schema.displayOrder || schema.displayOrder == "0") return Number.MAX_SAFE_INTEGER;
+    if (useDefaultLabelsAndOrder &&
+        (!schema.displayOrder || schema.displayOrder == "0")
+    ) return Number.MAX_SAFE_INTEGER;
 
     return schema.displayOrder ? parseInt(schema.displayOrder, 10) : Number.MAX_SAFE_INTEGER;
 };
