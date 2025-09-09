@@ -1237,8 +1237,6 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                 }
 
                 decodedFormValues[key] = convertedValues;
-            } else {
-                decodedFormValues[key] = values[key];
             }
         }
 
