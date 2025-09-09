@@ -225,16 +225,14 @@
 
     Integer userNameValidityStatusCode = usernameValidityResponse.getInt("code");
     String errorCode = String.valueOf(userNameValidityStatusCode);
-    String usernameErrorMessage = usernameValidityResponse.has("message") ? usernameValidityResponse.getString("message") : null;
 
     if (!SelfRegistrationStatusCodes.CODE_USER_NAME_AVAILABLE.equalsIgnoreCase(userNameValidityStatusCode.toString())) {
         if (allowchangeusername) {
             request.setAttribute("error", true);
             request.setAttribute("errorCode", userNameValidityStatusCode);
-            if (usernameValidityResponse.has("message")) {
-                if (usernameValidityResponse.get("message") instanceof String) {
-                    request.setAttribute("errorMessage", usernameValidityResponse.getString("message"));
-                }
+            if (usernameValidityResponse.has("message") &&
+                usernameValidityResponse.get("message") instanceof String) {
+                request.setAttribute("errorMessage", usernameValidityResponse.getString("message"));
             }
             request.getRequestDispatcher("register.do").forward(request, response);
         } else if (!skipSignUpEnableCheck
@@ -272,8 +270,10 @@
                     // If there is no i18n entry for the error message, check if there is a custom error message
                     // UsernameJavaRegExViolationErrorMsg configured in deployment.toml
                     // Else, use the default error message
-                    if (StringUtils.isNotBlank(usernameErrorMessage)) {
-                        errorMsg = usernameErrorMessage;
+                    if (usernameValidityResponse.has("message") &&
+                        usernameValidityResponse.get("message") instanceof String &&
+                        StringUtils.isNotBlank(usernameValidityResponse.getString("message"))) {
+                        errorMsg = usernameValidityResponse.getString("message");
                     } else {
                         errorMsg = user.getUsername() + " " + i18n(recoveryResourceBundle, customText,
                             "invalid.username.pick.a.valid.username");
