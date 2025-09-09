@@ -829,6 +829,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             content: (
                 <AddUserBasic
                     triggerSubmit={ submitGeneralSettings }
+                    setTriggerSubmit={ setSubmitGeneralSettings }
                     initialValues={ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] }
                     emailVerificationEnabled={ emailVerificationEnabled }
                     onSubmit={ (values: AddUserWizardStateInterface) =>
