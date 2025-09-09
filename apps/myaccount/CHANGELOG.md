@@ -1,5 +1,19 @@
 # @wso2is/myaccount
 
+## 2.23.14
+
+### Patch Changes
+
+- [#9038](https://github.com/wso2/identity-apps/pull/9038) [`262799599950b401142f81c161fc26bbf688ee9c`](https://github.com/wso2/identity-apps/commit/262799599950b401142f81c161fc26bbf688ee9c) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in My Account user profile
+  - Refactors how user profile data is flattened and passed down to input fields
+  - Implements separate components for single-value email address and single-value mobile number fields.
+  - Centralizes profile data flattening logic to the common feature module - `common.users.v1`.
+  - Fixes an issue with not displaying boolean attribute fields in read-only mode.
+- Updated dependencies [[`5beb8d0682573cdd09dd83a16b213a34b47831f1`](https://github.com/wso2/identity-apps/commit/5beb8d0682573cdd09dd83a16b213a34b47831f1), [`b39c23eb0446afefdbea872ee3b0cf6d5370671f`](https://github.com/wso2/identity-apps/commit/b39c23eb0446afefdbea872ee3b0cf6d5370671f), [`262799599950b401142f81c161fc26bbf688ee9c`](https://github.com/wso2/identity-apps/commit/262799599950b401142f81c161fc26bbf688ee9c)]:
+  - @wso2is/i18n@2.30.21
+  - @wso2is/react-components@2.9.22
+  - @wso2is/common.users.v1@1.0.1
+
 ## 2.23.13
 
 ### Patch Changes
