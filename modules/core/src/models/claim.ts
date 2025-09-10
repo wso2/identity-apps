@@ -204,6 +204,8 @@ export enum ClaimDataType {
     DECIMAL = "decimal",
     BOOLEAN = "boolean",
     DATE_TIME = "date_time",
+    DATE = "date",
+    EPOCH = "epoch",
     COMPLEX = "complex",
     OPTIONS = "options",
     TEXT = "text"
