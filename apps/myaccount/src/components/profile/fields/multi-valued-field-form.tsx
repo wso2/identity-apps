@@ -173,7 +173,11 @@ const MultiValueFieldForm = <T extends string | number>({
                     <List.Content>
                         <List.Description className="with-max-length">
                             { isEmpty(initialValue) ? (
-                                <EmptyValueField schema={ schema } fieldLabel={ fieldLabel } />
+                                <EmptyValueField
+                                    schema={ schema }
+                                    fieldLabel={ fieldLabel }
+                                    onEditClicked={ onEditClicked }
+                                />
                             ) : (
                                 renderInactiveFieldContent()
                             ) }

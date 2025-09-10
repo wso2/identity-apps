@@ -201,6 +201,7 @@ const CheckboxGroupFieldForm: FunctionComponent<CheckboxGroupFieldFormPropsInter
                                         "myAccount:components.profile.forms.generic.dropdown.placeholder",
                                         { fieldName: fieldLabel.toLowerCase() }
                                     ) }
+                                    onEditClicked={ onEditClicked }
                                 />
                             ) : (
                                 renderInactiveFieldContent()

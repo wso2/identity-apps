@@ -205,6 +205,7 @@ const CountryFieldForm: FunctionComponent<CountryFieldFormPropsInterface> = ({
                                         "myAccount:components.profile.forms.countryChangeForm." +
                                         "inputs.country.placeholder"
                                     ) }
+                                    onEditClicked={ onEditClicked }
                                 />
                             ) : (
                                 initialValue
