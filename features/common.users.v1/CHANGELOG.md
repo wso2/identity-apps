@@ -1,5 +1,11 @@
 # @wso2is/common.users.v1
 
+## 1.0.2
+
+### Patch Changes
+
+- [#9071](https://github.com/wso2/identity-apps/pull/9071) [`86b2067eb6497615f50e0b1bb832c5391435e251`](https://github.com/wso2/identity-apps/commit/86b2067eb6497615f50e0b1bb832c5391435e251) Thanks [@github-actions](https://github.com/apps/github-actions)! - Fix attribute mapping issues in Add User wizard
+
 ## 1.0.1
 
 ### Patch Changes

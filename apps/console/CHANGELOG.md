@@ -1,5 +1,20 @@
 # @wso2is/console
 
+## 2.78.25
+
+### Patch Changes
+
+- [#9071](https://github.com/wso2/identity-apps/pull/9071) [`86b2067eb6497615f50e0b1bb832c5391435e251`](https://github.com/wso2/identity-apps/commit/86b2067eb6497615f50e0b1bb832c5391435e251) Thanks [@github-actions](https://github.com/apps/github-actions)! - Fix attribute mapping issues in Add User wizard
+
+- Updated dependencies [[`86b2067eb6497615f50e0b1bb832c5391435e251`](https://github.com/wso2/identity-apps/commit/86b2067eb6497615f50e0b1bb832c5391435e251)]:
+  - @wso2is/admin.users.v1@2.36.14
+  - @wso2is/admin.agents.v1@1.0.48
+  - @wso2is/admin.core.v1@2.49.33
+  - @wso2is/admin.roles.v2@2.27.203
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.25
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.25
+  - @wso2is/admin.server-configurations.v1@2.35.46
+
 ## 2.78.24
 
 ### Patch Changes
