@@ -1,5 +1,15 @@
 # @wso2is/admin.ask-password-flow-builder.v1
 
+## 1.1.33
+
+### Patch Changes
+
+- Updated dependencies [[`71f768b8146f5c9d6bf6f7aa6b0d92785b3f44cb`](https://github.com/wso2/identity-apps/commit/71f768b8146f5c9d6bf6f7aa6b0d92785b3f44cb)]:
+  - @wso2is/admin.claims.v1@2.29.5
+  - @wso2is/admin.core.v1@2.49.41
+  - @wso2is/admin.flow-builder-core.v1@0.10.33
+  - @wso2is/admin.server-configurations.v1@2.35.54
+
 ## 1.1.32
 
 ### Patch Changes

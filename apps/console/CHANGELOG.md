@@ -1,5 +1,23 @@
 # @wso2is/console
 
+## 2.77.42
+
+### Patch Changes
+
+- [#8966](https://github.com/wso2/identity-apps/pull/8966) [`71f768b8146f5c9d6bf6f7aa6b0d92785b3f44cb`](https://github.com/wso2/identity-apps/commit/71f768b8146f5c9d6bf6f7aa6b0d92785b3f44cb) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Honor claim input formats in complete your profile page
+
+* [#9052](https://github.com/wso2/identity-apps/pull/9052) [`00860d487e6a193e990def381194598ebe326452`](https://github.com/wso2/identity-apps/commit/00860d487e6a193e990def381194598ebe326452) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix attribute mapping issues in Add User wizard
+
+* Updated dependencies [[`71f768b8146f5c9d6bf6f7aa6b0d92785b3f44cb`](https://github.com/wso2/identity-apps/commit/71f768b8146f5c9d6bf6f7aa6b0d92785b3f44cb), [`00860d487e6a193e990def381194598ebe326452`](https://github.com/wso2/identity-apps/commit/00860d487e6a193e990def381194598ebe326452)]:
+  - @wso2is/admin.claims.v1@2.29.5
+  - @wso2is/admin.users.v1@2.36.16
+  - @wso2is/admin.agents.v1@1.0.52
+  - @wso2is/admin.core.v1@2.49.41
+  - @wso2is/admin.roles.v2@2.27.207
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.33
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.33
+  - @wso2is/admin.server-configurations.v1@2.35.54
+
 ## 2.77.41
 
 ### Patch Changes
