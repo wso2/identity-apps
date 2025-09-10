@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.12.1
+
+### Patch Changes
+
+- [#9044](https://github.com/wso2/identity-apps/pull/9044) [`dbb426ffe2e66c56d9f49ad2f9ed733651cc56ba`](https://github.com/wso2/identity-apps/commit/dbb426ffe2e66c56d9f49ad2f9ed733651cc56ba) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Provide the date and epoch data type support
+
 ## 2.12.0
 
 ### Minor Changes
