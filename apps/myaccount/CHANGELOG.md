@@ -1,5 +1,15 @@
 # @wso2is/myaccount
 
+## 2.24.10
+
+### Patch Changes
+
+- [#9067](https://github.com/wso2/identity-apps/pull/9067) [`9ff50832f85b8714104bdcc065fee2e533a65802`](https://github.com/wso2/identity-apps/commit/9ff50832f85b8714104bdcc065fee2e533a65802) Thanks [@github-actions](https://github.com/apps/github-actions)! - Introduce SELF_REGISTER_USER operation type to workflow
+
+- Updated dependencies [[`5258878ab5fafd8ffcbb60c7cc9e2bce03c96bd3`](https://github.com/wso2/identity-apps/commit/5258878ab5fafd8ffcbb60c7cc9e2bce03c96bd3), [`9ff50832f85b8714104bdcc065fee2e533a65802`](https://github.com/wso2/identity-apps/commit/9ff50832f85b8714104bdcc065fee2e533a65802)]:
+  - @wso2is/react-components@2.9.22
+  - @wso2is/common.workflow-approvals.v1@1.0.7
+
 ## 2.24.9
 
 ### Patch Changes

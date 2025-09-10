@@ -1,5 +1,11 @@
 # @wso2is/react-components
 
+## 2.9.22
+
+### Patch Changes
+
+- [#9051](https://github.com/wso2/identity-apps/pull/9051) [`5258878ab5fafd8ffcbb60c7cc9e2bce03c96bd3`](https://github.com/wso2/identity-apps/commit/5258878ab5fafd8ffcbb60c7cc9e2bce03c96bd3) Thanks [@github-actions](https://github.com/apps/github-actions)! - Display regex values added via API in app and profile fixes.
+
 ## 2.9.21
 
 ### Patch Changes

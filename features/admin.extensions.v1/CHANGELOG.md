@@ -1,5 +1,19 @@
 # @wso2is/admin.extensions.v1
 
+## 2.40.3
+
+### Patch Changes
+
+- [#9051](https://github.com/wso2/identity-apps/pull/9051) [`5258878ab5fafd8ffcbb60c7cc9e2bce03c96bd3`](https://github.com/wso2/identity-apps/commit/5258878ab5fafd8ffcbb60c7cc9e2bce03c96bd3) Thanks [@github-actions](https://github.com/apps/github-actions)! - Display regex values added via API in app and profile fixes.
+
+- Updated dependencies [[`5258878ab5fafd8ffcbb60c7cc9e2bce03c96bd3`](https://github.com/wso2/identity-apps/commit/5258878ab5fafd8ffcbb60c7cc9e2bce03c96bd3)]:
+  - @wso2is/admin.applications.v1@2.37.6
+  - @wso2is/react-components@2.9.22
+  - @wso2is/admin.users.v1@2.36.13
+  - @wso2is/admin.core.v1@2.49.32
+  - @wso2is/admin.roles.v2@2.27.202
+  - @wso2is/admin.server-configurations.v1@2.35.45
+
 ## 2.40.2
 
 ### Patch Changes
