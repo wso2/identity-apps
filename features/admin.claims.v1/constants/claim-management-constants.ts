@@ -23,8 +23,8 @@ import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
  * Keys used in feature dictionary.
  */
 export enum ClaimFeatureDictionaryKeys {
-    mobileVerificationByPrivilegedUsers = "MOBILE_VERIFICATION_BY_PRIVILEGED_USERS",
-    hideUserIdDisplayConfigurations = "HIDE_USER_ID_DISPLAY_CONFIGURATIONS"
+    MobileVerificationByPrivilegedUsers = "MOBILE_VERIFICATION_BY_PRIVILEGED_USERS",
+    HideUserIdDisplayConfigurations = "HIDE_USER_ID_DISPLAY_CONFIGURATIONS"
 }
 
 /**
@@ -44,11 +44,11 @@ export class ClaimManagementConstants {
      */
     public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
         .set(
-            ClaimFeatureDictionaryKeys.mobileVerificationByPrivilegedUsers,
+            ClaimFeatureDictionaryKeys.MobileVerificationByPrivilegedUsers,
             "attributeVerification.mobileVerificationByPrivilegedUser"
         )
         .set(
-            ClaimFeatureDictionaryKeys.hideUserIdDisplayConfigurations,
+            ClaimFeatureDictionaryKeys.HideUserIdDisplayConfigurations,
             "attributeDialects.userID.general.hideDisplayConfigurations"
         );
 

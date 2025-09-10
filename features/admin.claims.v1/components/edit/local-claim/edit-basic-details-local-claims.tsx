@@ -165,7 +165,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     const hideUserIdDisplayConfigurations: boolean = isFeatureEnabled(
         featureConfig?.attributeDialects,
-        ClaimManagementConstants.FEATURE_DICTIONARY.get(ClaimFeatureDictionaryKeys.hideUserIdDisplayConfigurations)
+        ClaimManagementConstants.FEATURE_DICTIONARY.get(ClaimFeatureDictionaryKeys.HideUserIdDisplayConfigurations)
     );
 
     const useDefaultLabelsAndOrder: boolean = isFeatureEnabled(
@@ -839,8 +839,21 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     };
 
     const resolveAttributeSupportedByDefaultRow = (): ReactElement => {
+
+        /**
+         * This function checks whether the supported by default checkboxes should be disabled.
+         *
+         * @param isAdminConsole - Is display option for admin console.
+         * @returns Is checkbox disabled.
+         */
         const isSupportedByDefaultCheckboxDisabled = (isAdminConsole?: boolean): boolean => {
+
+            // If hideUserIdDisplayConfigurations is true, disable the checkbox for user id claim.
+            // Refer issue - https://github.com/wso2/product-is/issues/24906
             if (!hideUserIdDisplayConfigurations && claim?.claimURI === ClaimManagementConstants.USER_ID_CLAIM_URI) {
+                // Disable only the admin console checkbox as the support is only tested in Admin Console for now.
+                // Further supported can be given under effort tracked
+                // with issue - https://github.com/wso2/product-is/issues/25482
                 if (isAdminConsole) {
                     return false;
                 }
@@ -1161,7 +1174,16 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         );
     };
 
-    const displayNameReadOnly = (): boolean => {
+    /**
+     * Check if the display name field should be read-only.
+     *
+     * @returns boolean - True if the display name field should be read-only, false otherwise.
+     */
+    const isDisplayNameReadOnly = (): boolean => {
+
+        // If we are not using default labels and order, the display name field is editable for
+        // user ID and username claims.
+        // Refer issue - https://github.com/wso2/product-is/issues/24906
         if (!useDefaultLabelsAndOrder && (claim?.claimURI === ClaimManagementConstants.USER_ID_CLAIM_URI
             || claim?.claimURI === ClaimManagementConstants.USER_NAME_CLAIM_URI)) {
             return false;
@@ -1173,7 +1195,15 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         return isReadOnly || isSubOrganization();
     };
 
+    /**
+     * Check if the attribute configurations section should be shown.
+     *
+     * @returns boolean - Whether to show attribute configurations section.
+     */
     const showAttributeConfigurations = (): boolean => {
+
+        // Show for user ID claim when hideUserIdDisplayConfigurations is false.
+        // Refer issue - https://github.com/wso2/product-is/issues/24906
         if (!hideUserIdDisplayConfigurations && claim?.claimURI === ClaimManagementConstants.USER_ID_CLAIM_URI) {
             return true;
         }
@@ -1186,8 +1216,22 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             !isAgentAttribute;
     };
 
+    /**
+     * Check if the update button should be shown.
+     *
+     * @returns boolean - Whether to show the update button.
+     */
     const showUpdateButton = (): boolean => {
-        if (!useDefaultLabelsAndOrder && claim?.claimURI === ClaimManagementConstants.USER_NAME_CLAIM_URI) {
+
+        // Show for username and user ID claims when useDefaultLabelsAndOrder is false.
+        // Refer issue - https://github.com/wso2/product-is/issues/24906
+        if (!useDefaultLabelsAndOrder && (claim?.claimURI === ClaimManagementConstants.USER_ID_CLAIM_URI
+            || claim?.claimURI === ClaimManagementConstants.USER_NAME_CLAIM_URI)) {
+            return true;
+        }
+
+        // Show for user ID claim when hideUserIdDisplayConfigurations is false.
+        if (!hideUserIdDisplayConfigurations && claim?.claimURI === ClaimManagementConstants.USER_ID_CLAIM_URI) {
             return true;
         }
 
@@ -1242,7 +1286,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         maxLength={ 30 }
                         minLength={ 1 }
                         hint={ t("claims:local.forms.nameHint") }
-                        readOnly={ displayNameReadOnly() }
+                        readOnly={ isDisplayNameReadOnly() }
                     />
                     <Field.Textarea
                         ariaLabel="description"
