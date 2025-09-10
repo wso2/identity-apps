@@ -301,23 +301,29 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
         }
     }, [ fetchedAttributes ]);
 
-    const usernameLabel: string = fetchedAttributes?.find(
-        (attribute: Claim) =>
-            attribute?.[ClaimManagementConstants.CLAIM_URI_ATTRIBUTE_KEY] ===
-            ClaimManagementConstants.USER_NAME_CLAIM_URI
-    )?.displayName;
+    const usernameLabel: string = useMemo(() => {
+        return fetchedAttributes?.find(
+            (attribute: Claim) =>
+                attribute?.[ClaimManagementConstants.CLAIM_URI_ATTRIBUTE_KEY] ===
+                ClaimManagementConstants.USER_NAME_CLAIM_URI
+        )?.displayName;
+    }, [ fetchedAttributes ]);
 
-    const firstNameLabel: string = fetchedAttributes?.find(
-        (attribute: Claim) =>
-            attribute?.[ClaimManagementConstants.CLAIM_URI_ATTRIBUTE_KEY] ===
-            ClaimManagementConstants.FIRST_NAME_CLAIM_URI
-    )?.displayName;
+    const firstNameLabel: string = useMemo(() => {
+        return fetchedAttributes?.find(
+            (attribute: Claim) =>
+                attribute?.[ClaimManagementConstants.CLAIM_URI_ATTRIBUTE_KEY] ===
+                ClaimManagementConstants.FIRST_NAME_CLAIM_URI
+        )?.displayName;
+    }, [ fetchedAttributes ]);
 
-    const lastNameLabel: string = fetchedAttributes?.find(
-        (attribute: Claim) =>
-            attribute?.[ClaimManagementConstants.CLAIM_URI_ATTRIBUTE_KEY] ===
-            ClaimManagementConstants.LAST_NAME_CLAIM_URI
-    )?.displayName;
+    const lastNameLabel: string = useMemo(() => {
+        return fetchedAttributes?.find(
+            (attribute: Claim) =>
+                attribute?.[ClaimManagementConstants.CLAIM_URI_ATTRIBUTE_KEY] ===
+                ClaimManagementConstants.LAST_NAME_CLAIM_URI
+        )?.displayName;
+    }, [ fetchedAttributes ]);
 
     const readWriteUserStoresList: DropdownItemProps[] = useMemo(() => {
         const storeOptions: DropdownItemProps[] = [

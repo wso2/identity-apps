@@ -79,7 +79,7 @@ interface ProfileFormFieldRendererPropsInterface extends IdentifiableComponentIn
      * Whether to use attribute labels and order from the backend.
      * If true, uses the default display name and orders.
      */
-    UseDefaultLabelsAndOrder?: boolean;
+    useDefaultLabelsAndOrder?: boolean;
     /**
      * Callback to be fired when the user profile update is initiated/completed.
      * @param isUpdating - Whether the user profile is being updated.
@@ -111,12 +111,12 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
     onUserUpdated,
     isReadOnlyMode,
     isUserManagedByParentOrg,
-    UseDefaultLabelsAndOrder = true,
+    useDefaultLabelsAndOrder = true,
     ["data-componentid"]: componentId = "profile-form-field-renderer"
 }: ProfileFormFieldRendererPropsInterface): ReactElement => {
     const { t } = useTranslation();
 
-    const fieldLabel: string = UseDefaultLabelsAndOrder ?
+    const fieldLabel: string = useDefaultLabelsAndOrder ?
         t("user:profile.fields." + schema.name.replace(".", "_"), {
             defaultValue: schema.displayName
         }) : schema.displayName;

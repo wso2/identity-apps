@@ -143,7 +143,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
     );
     const getUserIDFromSCIMUser: boolean = isFeatureEnabled(
         attributeDialectsFeatureConfig,
-        ClaimManagementConstants.FEATURE_DICTIONARY.get(ClaimFeatureDictionaryKeys.hideUserIdDisplayConfigurations)
+        ClaimManagementConstants.FEATURE_DICTIONARY.get(ClaimFeatureDictionaryKeys.HideUserIdDisplayConfigurations)
     );
 
     const hideReadonlyAttributesWhenEmpty: boolean = isFeatureEnabled(
@@ -151,7 +151,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
         UserManagementConstants.FEATURE_DICTIONARY.get(UserFeatureDictionaryKeys.HideReadOnlyAttributesWhenEmpty)
     );
 
-    const UseDefaultLabelsAndOrder: boolean = isFeatureEnabled(
+    const useDefaultLabelsAndOrder: boolean = isFeatureEnabled(
         usersFeatureConfig,
         UserManagementConstants.FEATURE_DICTIONARY.get(UserFeatureDictionaryKeys.UseDefaultLabelsAndOrder)
     );
@@ -166,7 +166,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
     const flattenedProfileSchema: ProfileSchemaInterface[] = useMemo(() => {
         const sortedSchemas: ProfileSchemaInterface[] = ProfileUtils.flattenSchemas([ ...profileSchemas ]).sort(
             (a: ProfileSchemaInterface, b: ProfileSchemaInterface) => {
-                return getDisplayOrder(a, UseDefaultLabelsAndOrder) - getDisplayOrder(b, UseDefaultLabelsAndOrder);
+                return getDisplayOrder(a, useDefaultLabelsAndOrder) - getDisplayOrder(b, useDefaultLabelsAndOrder);
             }
         );
 
@@ -922,7 +922,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                                                 isUpdating={ isUpdating }
                                                 setIsUpdating={ (isUpdating: boolean) => setIsUpdating(isUpdating) }
                                                 onUserUpdated={ onUserUpdated }
-                                                UseDefaultLabelsAndOrder={ UseDefaultLabelsAndOrder }
+                                                useDefaultLabelsAndOrder={ useDefaultLabelsAndOrder }
                                                 data-componentid={ `${componentId}-profile-form` }
                                             />
                                         </Grid>
