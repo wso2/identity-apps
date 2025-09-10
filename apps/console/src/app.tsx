@@ -46,7 +46,7 @@ import { AGENT_USERSTORE_ID } from "@wso2is/admin.userstores.v1/constants/user-s
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import UserStoresProvider from "@wso2is/admin.userstores.v1/providers/user-stores-provider";
-import { AppConstants as CommonAppConstants } from "@wso2is/core/constants";
+import { AppConstants as CommonAppConstants, CommonConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
 import { RouteInterface, StorageIdentityAppsSettingsInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
@@ -372,7 +372,32 @@ export const App = ({
 
                     history.push(AppConstants.getAppLogoutPath());
                 } else {
-                    window.history.replaceState(null, null, window.location.pathname);
+                    // List of query parameters and hash fragments to remove from the URL when the silent
+                    // sign-in is successful. e.g. session timeout related query params.
+                    const paramsToRemove: string[] = [ CommonConstants.SESSION_TIMEOUT_WARNING_URL_SEARCH_PARAM_KEY ];
+                    const hashesToRemove: string[] = [];
+
+                    const url: URL = new URL(window.location.href);
+
+                    paramsToRemove.forEach((param: string) => {
+                        url.searchParams.delete(param);
+                    });
+
+                    let hash: string = url.hash;
+
+                    if (hash && hash.startsWith("#")) {
+                        const hashParams: URLSearchParams = new URLSearchParams(hash.substring(1));
+
+                        hashesToRemove.forEach((param: string) => {
+                            hashParams.delete(param);
+                        });
+
+                        hash = hashParams.toString() ? `#${hashParams.toString()}` : "";
+                    }
+
+                    const moderatedUrl: string = `${url.pathname}${url.search}${hash}`;
+
+                    window.history.replaceState(window.history.state, null, moderatedUrl);
                 }
             })
             .catch(() => {
