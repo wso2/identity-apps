@@ -17,31 +17,25 @@
  */
 
 import { IdentifiableComponentInterface, ProfileSchemaInterface } from "@wso2is/core/models";
-import React, { Dispatch, FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { CommonConstants } from "../../../constants/common-constants";
-import { setActiveForm } from "../../../store/actions";
 
 interface EmptyValueFieldPropsInterface extends IdentifiableComponentInterface {
     schema: ProfileSchemaInterface;
     fieldLabel: string;
     placeholderText?: string;
+    onEditClicked: () => void;
 }
 
 const EmptyValueField: FunctionComponent<EmptyValueFieldPropsInterface> = (
     {
         schema,
         fieldLabel,
-        placeholderText
+        placeholderText,
+        onEditClicked
     }: EmptyValueFieldPropsInterface
 ): ReactElement => {
     const { t } = useTranslation();
-    const dispatch: Dispatch<any> = useDispatch();
-
-    const onEdit = () => {
-        dispatch(setActiveForm(CommonConstants.PERSONAL_INFO + schema.name));
-    };
 
     return (
         <a
@@ -49,10 +43,10 @@ const EmptyValueField: FunctionComponent<EmptyValueFieldPropsInterface> = (
             tabIndex={ 0 }
             onKeyPress={ (e: React.KeyboardEvent<HTMLAnchorElement>) => {
                 if (e.key === "Enter") {
-                    onEdit();
+                    onEditClicked();
                 }
             } }
-            onClick={ onEdit }
+            onClick={ onEditClicked }
             data-testid={
                 `profile-schema-mobile-editing-section-${schema.name.replace(".", "-")}-placeholder` }
         >

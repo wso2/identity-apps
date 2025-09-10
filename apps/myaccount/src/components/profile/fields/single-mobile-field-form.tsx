@@ -225,7 +225,11 @@ const SingleMobileFieldForm: FunctionComponent<SingleMobileFieldFormPropsInterfa
                     <List.Content>
                         <List.Description className="with-max-length">
                             { isEmpty(initialValue) ? (
-                                <EmptyValueField schema={ schema } fieldLabel={ fieldLabel } />
+                                <EmptyValueField
+                                    schema={ schema }
+                                    fieldLabel={ fieldLabel }
+                                    onEditClicked={ onEditClicked }
+                                />
                             ) : (
                                 renderFieldContent()
                             ) }
