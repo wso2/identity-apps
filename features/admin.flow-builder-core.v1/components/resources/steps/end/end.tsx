@@ -22,35 +22,35 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Handle, Node, Position } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement, memo } from "react";
 import { CommonStepFactoryPropsInterface } from "../common-step-factory";
-import "./done.scss";
+import "./end.scss";
 
 /**
- * Props interface of {@link Done}
+ * Props interface of {@link End}
  */
-export type DonePropsInterface = CommonStepFactoryPropsInterface & IdentifiableComponentInterface & Node;
+export type EndPropsInterface = CommonStepFactoryPropsInterface & IdentifiableComponentInterface & Node;
 
 /**
- * Done Node component.
+ * End Node component.
  * This is a custom node supported by react flow renderer library.
  * See {@link https://reactflow.dev/docs/api/node-types/} for its documentation
  * and {@link https://reactflow.dev/examples/custom-node/} for an example
  *
  * @param props - Props injected to the component.
- * @returns Done node component.
+ * @returns End node component.
  */
-const Done: FunctionComponent = memo(({
-    ["data-componentid"]: componentId = "done",
+const End: FunctionComponent = memo(({
+    ["data-componentid"]: componentId = "end",
     data
-}: DonePropsInterface): ReactElement => {
+}: EndPropsInterface): ReactElement => {
     return (
         <div data-componentid={ componentId }>
             <Fab
-                aria-label="done"
-                className="done"
+                aria-label="end"
+                className="end"
                 variant="circular"
-                data-componentid={ `${componentId}-done-node` }
+                data-componentid={ `${componentId}-end-node` }
             >
-                <CheckIcon data-componentid={ `${componentId}-done-node-check-icon` } />
+                <CheckIcon data-componentid={ `${componentId}-end-node-check-icon` } />
             </Fab>
             <Handle type="target" position={ Position.Left } />
             {
@@ -60,8 +60,8 @@ const Done: FunctionComponent = memo(({
             }
         </div>
     );
-}, (prevProps: DonePropsInterface, nextProps: DonePropsInterface) => {
+}, (prevProps: EndPropsInterface, nextProps: EndPropsInterface) => {
     return prevProps.data?.end === nextProps.data?.end;
 });
 
-export default Done;
+export default End;

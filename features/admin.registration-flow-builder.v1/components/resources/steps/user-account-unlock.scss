@@ -17,7 +17,7 @@
  */
 
  :root {
-    --wso2is-flow-builder-done-step-icon-color: var(--oxygen-customComponents-Chip-properties-new-border-color);;
+    --wso2is-flow-builder-end-step-icon-color: var(--oxygen-customComponents-Chip-properties-new-border-color);;
 }
 
 .user-account-unlock.MuiFab-root {
@@ -35,7 +35,7 @@
 
     svg {
         path {
-            stroke: var(--wso2is-flow-builder-done-step-icon-color);
+            stroke: var(--wso2is-flow-builder-end-step-icon-color);
         }
     }
 }
