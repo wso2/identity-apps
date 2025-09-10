@@ -1227,7 +1227,9 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             setCanonicalValues([]);
                             setDataType(data.value);
                             setDefaultInputTypeForDataType(data.value as ClaimDataType, multiValued);
-                            if (data.value === ClaimDataType.COMPLEX || data.value === ClaimDataType.BOOLEAN) {
+                            if (data.value === ClaimDataType.COMPLEX || data.value === ClaimDataType.BOOLEAN
+                                || data.value === ClaimDataType.DATE_TIME
+                            ) {
                                 setMultiValued(false);
                             }
                         } }
