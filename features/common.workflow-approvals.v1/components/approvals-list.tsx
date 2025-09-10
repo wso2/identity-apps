@@ -329,6 +329,8 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
         switch (taskType) {
             case "ADD_USER":
                 return "user creation request";
+            case "SELF_REGISTER_USER":
+                return "user self-registration request";
             case "DELETE_USER":
                 return "user removal request";
             case "ADD_ROLE":
