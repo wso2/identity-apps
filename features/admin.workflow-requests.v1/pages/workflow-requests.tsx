@@ -153,6 +153,8 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
                         return t("approvalWorkflows:operationType.all");
                     case WorkflowInstanceOperationType.ADD_USER:
                         return t("approvalWorkflows:operationType.createUser");
+                    case WorkflowInstanceOperationType.SELF_REGISTER_USER:
+                        return t("common:approvalsPage.operationTypes.selfRegisterUser");
                     case WorkflowInstanceOperationType.DELETE_USER:
                         return t("approvalWorkflows:operationType.deleteUser");
                     case WorkflowInstanceOperationType.UPDATE_ROLES_OF_USERS:
