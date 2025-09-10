@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.2.18
+
+### Patch Changes
+
+- [#9061](https://github.com/wso2/identity-apps/pull/9061) [`0329b7ac403348ddbdb4f0da5cf6973da27033be`](https://github.com/wso2/identity-apps/commit/0329b7ac403348ddbdb4f0da5cf6973da27033be) Thanks [@github-actions](https://github.com/apps/github-actions)! - Fix JSON deserialisation error during self-registration username validation
+
 ## 3.2.17
 
 ### Patch Changes
