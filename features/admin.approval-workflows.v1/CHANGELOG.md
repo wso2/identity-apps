@@ -1,5 +1,17 @@
 # @wso2is/admin.approval-workflows.v1
 
+## 1.0.12
+
+### Patch Changes
+
+- [#9055](https://github.com/wso2/identity-apps/pull/9055) [`bc710b1e036147d8880a739ec5259d234e6c0b0a`](https://github.com/wso2/identity-apps/commit/bc710b1e036147d8880a739ec5259d234e6c0b0a) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Introduce SELF_REGISTER_USER operation type to workflow
+
+- Updated dependencies [[`e2fc86c51bf6e720ed865a81e13fae036dd1f049`](https://github.com/wso2/identity-apps/commit/e2fc86c51bf6e720ed865a81e13fae036dd1f049)]:
+  - @wso2is/i18n@2.30.22
+  - @wso2is/admin.users.v1@2.36.15
+  - @wso2is/admin.core.v1@2.49.40
+  - @wso2is/admin.roles.v2@2.27.206
+
 ## 1.0.11
 
 ### Patch Changes
