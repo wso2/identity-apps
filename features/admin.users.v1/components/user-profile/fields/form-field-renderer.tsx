@@ -76,6 +76,11 @@ interface ProfileFormFieldRendererPropsInterface extends IdentifiableComponentIn
      */
     isUserManagedByParentOrg: boolean;
     /**
+     * Whether to use attribute labels and order from the backend.
+     * If true, uses the default display name and orders.
+     */
+    useDefaultLabelsAndOrder?: boolean;
+    /**
      * Callback to be fired when the user profile update is initiated/completed.
      * @param isUpdating - Whether the user profile is being updated.
      */
@@ -106,13 +111,15 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
     onUserUpdated,
     isReadOnlyMode,
     isUserManagedByParentOrg,
+    useDefaultLabelsAndOrder = true,
     ["data-componentid"]: componentId = "profile-form-field-renderer"
 }: ProfileFormFieldRendererPropsInterface): ReactElement => {
     const { t } = useTranslation();
 
-    const fieldLabel: string = t("user:profile.fields." + schema.name.replace(".", "_"), {
-        defaultValue: schema.displayName
-    });
+    const fieldLabel: string = useDefaultLabelsAndOrder ?
+        t("user:profile.fields." + schema.name.replace(".", "_"), {
+            defaultValue: schema.displayName
+        }) : schema.displayName;
     const fieldComponentId: string = `${ componentId }-${ schema.name }`;
     // Replace dots with __DOT__ to avoid issues with dot separated field names.
     const encodedSchemaId: string = schema.schemaId.replace(/\./g, "__DOT__");
