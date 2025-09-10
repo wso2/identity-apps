@@ -19,7 +19,7 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Node } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
-import Done from "./done/done";
+import End from "./end/end";
 import Start from "./start/start";
 import { StaticStepTypes } from "../../../models/steps";
 
@@ -49,11 +49,11 @@ export const CommonStaticStepFactory: FunctionComponent<CommonStaticStepFactoryP
     }
 
     if (type === StaticStepTypes.UserOnboard) {
-        return <Done data-componentid={ componentId } { ...rest } />;
+        return <End data-componentid={ componentId } { ...rest } />;
     }
 
     if (type === StaticStepTypes.End) {
-        return <Done data-componentid={ componentId } { ...rest } />;
+        return <End data-componentid={ componentId } { ...rest } />;
     }
 
     return null;
