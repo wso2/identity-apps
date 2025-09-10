@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.1.25
+
+### Patch Changes
+
+- [#9053](https://github.com/wso2/identity-apps/pull/9053) [`62f89c99c542316cbede7b473e1f477a7c7e8c71`](https://github.com/wso2/identity-apps/commit/62f89c99c542316cbede7b473e1f477a7c7e8c71) Thanks [@savindi7](https://github.com/savindi7)! - Add language switcher to SAML login page.
+
 ## 3.1.24
 
 ### Patch Changes

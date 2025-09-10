@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.30.22
+
+### Patch Changes
+
+- [#9046](https://github.com/wso2/identity-apps/pull/9046) [`e2fc86c51bf6e720ed865a81e13fae036dd1f049`](https://github.com/wso2/identity-apps/commit/e2fc86c51bf6e720ed865a81e13fae036dd1f049) Thanks [@BimsaraBodaragama](https://github.com/BimsaraBodaragama)! - Update Attribute Configuration description.
+
 ## 2.30.21
 
 ### Patch Changes
