@@ -39,11 +39,13 @@ import {
     ServerConfigurationsConstants,
     getConnectorDetails } from "@wso2is/admin.server-configurations.v1";
 import { getProfileSchemas } from "@wso2is/admin.users.v1/api";
+import { UserFeatureDictionaryKeys, UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-management-utils";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
@@ -59,7 +61,6 @@ import {
 } from "@wso2is/core/models";
 import { Property } from "@wso2is/core/src/models";
 import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
-
 import { Field, Form } from "@wso2is/form";
 import { DropDownItemInterface } from "@wso2is/form/src";
 import { DynamicField , KeyValue } from "@wso2is/forms";
@@ -92,7 +93,7 @@ import { Dispatch } from "redux";
 import { Divider, Grid, Icon, Form as SemanticForm } from "semantic-ui-react";
 import { deleteAClaim, getExternalClaims, updateAClaim } from "../../../api";
 import useGetClaimDialects from "../../../api/use-get-claim-dialects";
-import { ClaimManagementConstants } from "../../../constants";
+import { ClaimFeatureDictionaryKeys, ClaimManagementConstants } from "../../../constants";
 import "./edit-basic-details-local-claims.scss";
 
 /**
@@ -161,6 +162,17 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const isUpdatingSharedProfilesEnabled: boolean = !featureConfig?.attributeDialects?.disabledFeatures?.includes(
         "attributeDialects.sharedProfileValueResolvingMethod"
     );
+
+    const hideUserIdDisplayConfigurations: boolean = isFeatureEnabled(
+        featureConfig?.attributeDialects,
+        ClaimManagementConstants.FEATURE_DICTIONARY.get(ClaimFeatureDictionaryKeys.HideUserIdDisplayConfigurations)
+    );
+
+    const useDefaultLabelsAndOrder: boolean = isFeatureEnabled(
+        featureConfig?.users,
+        UserManagementConstants.FEATURE_DICTIONARY.get(UserFeatureDictionaryKeys.UseDefaultLabelsAndOrder)
+    );
+
     const [ hideSpecialClaims, setHideSpecialClaims ] = useState<boolean>(true);
     const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
     const [ connector, setConnector ] = useState<GovernanceConnectorInterface>(undefined);
@@ -827,15 +839,36 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     };
 
     const resolveAttributeSupportedByDefaultRow = (): ReactElement => {
-        const isSupportedByDefaultCheckboxDisabled: boolean = isReadOnly || isSubOrganization() || !hasMapping
-            || dataType === ClaimDataType.COMPLEX
-            || (
-                accountVerificationEnabled
-                && selfRegistrationEnabled
-                && claim?.claimURI ===
-                    ClaimManagementConstants.EMAIL_CLAIM_URI
-                && usernameConfig?.enableValidator === "true"
-            );
+
+        /**
+         * This function checks whether the supported by default checkboxes should be disabled.
+         *
+         * @param isAdminConsole - Is display option for admin console.
+         * @returns Is checkbox disabled.
+         */
+        const isSupportedByDefaultCheckboxDisabled = (isAdminConsole?: boolean): boolean => {
+
+            // If hideUserIdDisplayConfigurations is true, disable the checkbox for user id claim.
+            // Refer issue - https://github.com/wso2/product-is/issues/24906
+            if (!hideUserIdDisplayConfigurations && claim?.claimURI === ClaimManagementConstants.USER_ID_CLAIM_URI) {
+                // Disable only the admin console checkbox as the support is only tested in Admin Console for now.
+                // Further supported can be given under effort tracked
+                // with issue - https://github.com/wso2/product-is/issues/25482
+                if (isAdminConsole) {
+                    return false;
+                }
+
+                return true;
+            }
+
+            return isReadOnly || isSubOrganization() || !hasMapping
+                || (
+                    accountVerificationEnabled
+                    && selfRegistrationEnabled
+                    && claim?.claimURI === ClaimManagementConstants.EMAIL_CLAIM_URI
+                    && usernameConfig?.enableValidator === "true"
+                );
+        };
 
         return (
             <TableRow>
@@ -858,7 +891,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         defaultValue={ claim?.profiles?.console?.supportedByDefault ?? claim?.supportedByDefault }
                         data-componentid={
                             `${ testId }-form-console-supported-by-default-checkbox` }
-                        readOnly={ isSupportedByDefaultCheckboxDisabled }
+                        readOnly={ isSupportedByDefaultCheckboxDisabled(true) }
                         {
                             ...( isConsoleRequired
                                 ? { checked: true }
@@ -874,7 +907,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         name="endUserSupportedByDefault"
                         defaultValue={ claim?.profiles?.endUser?.supportedByDefault ?? claim?.supportedByDefault }
                         data-componentid={ `${ testId }-form-end-user-supported-by-default-checkbox` }
-                        readOnly={ isSupportedByDefaultCheckboxDisabled }
+                        readOnly={ isSupportedByDefaultCheckboxDisabled() }
                         {
                             ...( isEndUserRequired
                                 ? { checked: true }
@@ -892,7 +925,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             claim?.supportedByDefault }
                         data-componentid={
                             `${ testId }-form-self-registration-supported-by-default-checkbox` }
-                        readOnly={ isSupportedByDefaultCheckboxDisabled }
+                        readOnly={ isSupportedByDefaultCheckboxDisabled() }
                         {
                             ...( isSelfRegistrationRequired
                                 ? { checked: true }
@@ -1141,6 +1174,70 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         );
     };
 
+    /**
+     * Check if the display name field should be read-only.
+     *
+     * @returns boolean - True if the display name field should be read-only, false otherwise.
+     */
+    const isDisplayNameReadOnly = (): boolean => {
+
+        // If we are not using default labels and order, the display name field is editable for
+        // user ID and username claims.
+        // Refer issue - https://github.com/wso2/product-is/issues/24906
+        if (!useDefaultLabelsAndOrder && (claim?.claimURI === ClaimManagementConstants.USER_ID_CLAIM_URI
+            || claim?.claimURI === ClaimManagementConstants.USER_NAME_CLAIM_URI)) {
+            return false;
+        }
+        if (claim?.claimURI === ClaimManagementConstants.USER_ID_CLAIM_URI) {
+            return true;
+        }
+
+        return isReadOnly || isSubOrganization();
+    };
+
+    /**
+     * Check if the attribute configurations section should be shown.
+     *
+     * @returns boolean - Whether to show attribute configurations section.
+     */
+    const showAttributeConfigurations = (): boolean => {
+
+        // Show for user ID claim when hideUserIdDisplayConfigurations is false.
+        // Refer issue - https://github.com/wso2/product-is/issues/24906
+        if (!hideUserIdDisplayConfigurations && claim?.claimURI === ClaimManagementConstants.USER_ID_CLAIM_URI) {
+            return true;
+        }
+
+        return !isDistinctAttributeProfilesDisabled &&
+            claim &&
+            !hideSpecialClaims &&
+            mappingChecked &&
+            claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI &&
+            !isAgentAttribute;
+    };
+
+    /**
+     * Check if the update button should be shown.
+     *
+     * @returns boolean - Whether to show the update button.
+     */
+    const showUpdateButton = (): boolean => {
+
+        // Show for username and user ID claims when useDefaultLabelsAndOrder is false.
+        // Refer issue - https://github.com/wso2/product-is/issues/24906
+        if (!useDefaultLabelsAndOrder && (claim?.claimURI === ClaimManagementConstants.USER_ID_CLAIM_URI
+            || claim?.claimURI === ClaimManagementConstants.USER_NAME_CLAIM_URI)) {
+            return true;
+        }
+
+        // Show for user ID claim when hideUserIdDisplayConfigurations is false.
+        if (!hideUserIdDisplayConfigurations && claim?.claimURI === ClaimManagementConstants.USER_ID_CLAIM_URI) {
+            return true;
+        }
+
+        return !hideSpecialClaims && !isSubOrganization();
+    };
+
     return (
         <>
             { confirmDelete && deleteConfirmation() }
@@ -1189,8 +1286,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         maxLength={ 30 }
                         minLength={ 1 }
                         hint={ t("claims:local.forms.nameHint") }
-                        readOnly={ isSubOrganization() || isReadOnly }
-
+                        readOnly={ isDisplayNameReadOnly() }
                     />
                     <Field.Textarea
                         ariaLabel="description"
@@ -1208,7 +1304,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         minLength={ 3 }
                         data-testid={ `${ testId }-form-description-input` }
                         hint={ t("claims:local.forms.descriptionHint") }
-                        readOnly={ isSubOrganization() || isReadOnly }
+                        readOnly={ isSubOrganization() ||
+                            isReadOnly ||
+                            claim.claimURI === ClaimManagementConstants.USER_ID_CLAIM_URI
+                        }
                     />
                     <Field.Dropdown
                         ariaLabel={ t("claims:local.forms.dataType.label") }
@@ -1346,8 +1445,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             } }
                         />
                     ) }
-                    { !attributeConfig.localAttributes.createWizard.showRegularExpression && !hideSpecialClaims
-                        && (
+                    {
+                        !attributeConfig.localAttributes.createWizard.showRegularExpression &&
+                        !hideSpecialClaims &&
+                        claim.claimURI !== ClaimManagementConstants.USER_ID_CLAIM_URI && (
                             <Field.Input
                                 ariaLabel="regularExpression"
                                 inputType="default"
@@ -1589,9 +1690,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     }
                     {
                         // Hides on groups claim
-                        !isDistinctAttributeProfilesDisabled && claim && !hideSpecialClaims && mappingChecked
-                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI &&
-                            !isAgentAttribute && (
+                        showAttributeConfigurations() && (
                             <>
                                 <Divider />
                                 <Heading as="h4">
@@ -1621,12 +1720,12 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                             {
                                                 // Hides on user_id, username claims
                                                 !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
-                                                    && claim.claimURI !== ClaimManagementConstants.USER_ID_CLAIM_URI
                                                     && claim.claimURI !== ClaimManagementConstants.USER_NAME_CLAIM_URI
                                                     && resolveAttributeSupportedByDefaultRow()
                                             }
                                             {
                                                 !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
+                                                    && claim.claimURI !== ClaimManagementConstants.USER_ID_CLAIM_URI
                                                     && attributeConfig.editAttributes.showRequiredCheckBox
                                                     && resolveAttributeRequiredRow()
                                             }
@@ -1645,8 +1744,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         )
                     }
                     {
-                        !hideSpecialClaims && !isSubOrganization() &&
-                        (
+                        showUpdateButton() && (
                             <Show
                                 when={ featureConfig?.attributeDialects?.scopes?.update }
                             >

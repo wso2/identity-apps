@@ -36,7 +36,8 @@ export enum UserFeatureDictionaryKeys {
     UserImpersonation = "USER_IMPERSONATION",
     UserLegacyProfile = "USER_LEGACY_PROFILE",
     UserLegacyAddUser = "USER_LEGACY_ADD_USER",
-    HideReadOnlyAttributesWhenEmpty = "HIDE_READ_ONLY_ATTRIBUTES_WHEN_EMPTY"
+    HideReadOnlyAttributesWhenEmpty = "HIDE_READ_ONLY_ATTRIBUTES_WHEN_EMPTY",
+    UseDefaultLabelsAndOrder = "USE_DEFAULT_LABELS_AND_ORDER"
 }
 
 /**
@@ -90,7 +91,8 @@ export class UserManagementConstants {
         .set("USER_IMPERSONATION", "users.user.impersonation")
         .set(UserFeatureDictionaryKeys.HideReadOnlyAttributesWhenEmpty, "profile.hideReadonlyAttributesWhenEmpty")
         .set(UserFeatureDictionaryKeys.UserLegacyProfile, "users.profile.legacy")
-        .set(UserFeatureDictionaryKeys.UserLegacyAddUser, "users.add.legacy");
+        .set(UserFeatureDictionaryKeys.UserLegacyAddUser, "users.add.legacy")
+        .set(UserFeatureDictionaryKeys.UseDefaultLabelsAndOrder, "users.profile.useDefaultLabelsAndOrder");
 
     // API errors
     public static readonly USER_INFO_UPDATE_ERROR: string = "Could not update the user information.";

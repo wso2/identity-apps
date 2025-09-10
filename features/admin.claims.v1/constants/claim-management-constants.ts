@@ -20,6 +20,14 @@
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 
 /**
+ * Keys used in feature dictionary.
+ */
+export enum ClaimFeatureDictionaryKeys {
+    MobileVerificationByPrivilegedUsers = "MOBILE_VERIFICATION_BY_PRIVILEGED_USERS",
+    HideUserIdDisplayConfigurations = "HIDE_USER_ID_DISPLAY_CONFIGURATIONS"
+}
+
+/**
  * Class containing claim constants.
  */
 export class ClaimManagementConstants {
@@ -35,7 +43,14 @@ export class ClaimManagementConstants {
      * Set of keys used to enable/disable features.
      */
     public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
-        .set("MOBILE_VERIFICATION_BY_PRIVILEGED_USERS", "attributeVerification.mobileVerificationByPrivilegedUser");
+        .set(
+            ClaimFeatureDictionaryKeys.MobileVerificationByPrivilegedUsers,
+            "attributeVerification.mobileVerificationByPrivilegedUser"
+        )
+        .set(
+            ClaimFeatureDictionaryKeys.HideUserIdDisplayConfigurations,
+            "attributeDialects.userID.general.hideDisplayConfigurations"
+        );
 
     /**
      * Claim URI Attribute key.
@@ -224,6 +239,8 @@ export class ClaimManagementConstants {
     public static readonly MOBILE_CLAIM_URI: string = "http://wso2.org/claims/mobile";
     public static readonly MOBILE_NUMBERS_CLAIM_URI: string = "http://wso2.org/claims/mobileNumbers";
     public static readonly VERIFIED_MOBILE_NUMBERS_CLAIM_URI: string = "http://wso2.org/claims/verifiedMobileNumbers";
+    public static readonly FIRST_NAME_CLAIM_URI: string = "http://wso2.org/claims/givenname";
+    public static readonly LAST_NAME_CLAIM_URI: string = "http://wso2.org/claims/lastname";
 
     public static readonly GROUPS_CLAIM_NAME: string = "groups";
     public static readonly ROLES_CLAIM_NAME: string = "roles";
