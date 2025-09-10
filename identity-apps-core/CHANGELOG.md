@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.1.27
+
+### Patch Changes
+
+- [#8959](https://github.com/wso2/identity-apps/pull/8959) [`d6d117c56471105ff62bf740303bbf136176da6f`](https://github.com/wso2/identity-apps/commit/d6d117c56471105ff62bf740303bbf136176da6f) Thanks [@KD23243](https://github.com/KD23243)! - Update invite user registration error messages and keys
+
 ## 3.1.26
 
 ### Patch Changes

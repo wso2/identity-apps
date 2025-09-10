@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.23.17
+
+### Patch Changes
+
+- [#9072](https://github.com/wso2/identity-apps/pull/9072) [`4f9d9e29ea9e5620e6d3198514f7db431591ec92`](https://github.com/wso2/identity-apps/commit/4f9d9e29ea9e5620e6d3198514f7db431591ec92) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issue with empty field in My Account user profile
+
 ## 2.23.16
 
 ### Patch Changes
