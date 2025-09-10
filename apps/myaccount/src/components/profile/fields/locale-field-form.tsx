@@ -251,6 +251,7 @@ const LocaleFieldForm: FunctionComponent<LocaleFieldFormPropsInterface> = ({
                                         "myAccount:components.profile.forms.generic.dropdown.placeholder",
                                         { fieldName: fieldLabel.toLowerCase() }
                                     ) }
+                                    onEditClicked={ onEditClicked }
                                 />
                             ) : (
                                 initialValue
