@@ -34,6 +34,11 @@ import "./create-password-option.scss";
  */
 interface CreatePasswordOptionPropsInterface extends IdentifiableComponentInterface {
     /**
+     * Initial password value. Will be used to set the value of the password field when navigating back and forth
+     * in the wizard.
+     */
+    initialValue: string;
+    /**
      * Password validation configuration.
      */
     passwordConfig: ValidationFormInterface;
@@ -53,6 +58,7 @@ interface CreatePasswordOptionPropsInterface extends IdentifiableComponentInterf
  * Else, the password will be validated against the `passwordRegex`.
  */
 const CreatePasswordOption: FunctionComponent<CreatePasswordOptionPropsInterface> = ({
+    initialValue,
     passwordConfig,
     passwordRegex,
     ["data-componentid"]: componentId = "create-password-option"
@@ -102,6 +108,7 @@ const CreatePasswordOption: FunctionComponent<CreatePasswordOptionPropsInterface
                             type="password"
                             className="addon-field-wrapper full-width"
                             name={ newPasswordFieldName }
+                            initialValue={ initialValue }
                             label={ t("user:forms.addUserForm.inputs.newPassword.label") }
                             placeholder={ t("user:forms.addUserForm.inputs.newPassword.placeholder") }
                             required={ true }
