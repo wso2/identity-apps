@@ -257,6 +257,7 @@ const TextFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
                                     schema={ schema }
                                     fieldLabel={ fieldLabel }
                                     placeholderText={ placeholderText }
+                                    onEditClicked={ onEditClicked }
                                 />
                             ) : (
                                 resolveProfileInfoSchemaValue(schema)

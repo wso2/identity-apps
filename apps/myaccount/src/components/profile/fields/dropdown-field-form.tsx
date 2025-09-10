@@ -228,6 +228,7 @@ const DropdownFieldForm: FunctionComponent<DropdownFieldFormPropsInterface> = ({
                                         "myAccount:components.profile.forms.generic.dropdown.placeholder",
                                         { fieldName: fieldLabel.toLowerCase() }
                                     ) }
+                                    onEditClicked={ onEditClicked }
                                 />
                             ) : (
                                 renderInactiveFieldContent()

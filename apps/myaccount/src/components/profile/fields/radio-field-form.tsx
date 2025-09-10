@@ -172,6 +172,7 @@ const RadioFieldForm: FunctionComponent<RadioFieldFormPropsInterface> = ({
                                         "myAccount:components.profile.forms.generic.dropdown.placeholder",
                                         { fieldName: fieldLabel.toLowerCase() }
                                     ) }
+                                    onEditClicked={ onEditClicked }
                                 />
                             ) : (
                                 selectedOption?.label
