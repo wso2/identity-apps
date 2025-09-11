@@ -274,7 +274,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                     enabled: false
                 }
             },
-            isAdminDataSeparationNoticeEnabled: undefined,
+            isAdminNoticeEnabled: undefined,
             isClaimUniquenessValidationEnabled: undefined,
             isClientSecretHashEnabled: undefined,
             isCookieConsentBannerEnabled: undefined,
