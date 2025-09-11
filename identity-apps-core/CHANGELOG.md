@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.1.29
+
+### Patch Changes
+
+- [#9105](https://github.com/wso2/identity-apps/pull/9105) [`5c09616fc16bbdd13b5adb1090cf5137cfbf5f4a`](https://github.com/wso2/identity-apps/commit/5c09616fc16bbdd13b5adb1090cf5137cfbf5f4a) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Handle flow completion properly when workflow is engaged
+
 ## 3.1.28
 
 ### Patch Changes
