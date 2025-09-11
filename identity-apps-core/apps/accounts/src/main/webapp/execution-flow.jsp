@@ -198,9 +198,9 @@
                 const confirmationCode = "<%= Encode.forJavaScript(confirmationCode) != null ? Encode.forJavaScript(confirmationCode) : null %>";
                 const flowType = "<%= Encode.forJavaScript(flowType) != null ? Encode.forJavaScript(flowType) : null %>";
                 const mlt = "<%= Encode.forJavaScript(mlt) != null ? Encode.forJavaScript(mlt) : null %>";
-                const flowId = "<%= Encode.forJavaScript(flowId) != null ? Encode.forJavaScript(flowId) : null %>";
                 const spId = "<%= !StringUtils.isBlank(spId) && spId != "null" ? Encode.forJavaScript(spId) : "new-application" %>";
 
+                const [ flowId, setFlowId ] = useState("<%= Encode.forJavaScript(flowId) != null ? Encode.forJavaScript(flowId) : null %>");
                 const [ flowData, setFlowData ] = useState(null);
                 const [ components, setComponents ] = useState([]);
                 const [ loading, setLoading ] = useState(true);
@@ -226,16 +226,18 @@
                 }, [code, state]);
 
                 useEffect(() => {
-                    if (mlt !== "null" && flowId !== "null") {
+                    if (mlt !== "null" && state !== "null") {
+                        const savedFlowId = localStorage.getItem(state);
+                        localStorage.removeItem(state);
                         setPostBody({
-                            flowId: flowId,
+                            flowId: savedFlowId,
                             actionId: "",
                             inputs: {
                                 mlt
                             }
                         });
                     }
-                }, [mlt, flowId]);
+                }, [mlt, state]);
 
                 useEffect(() => {
                     if (confirmationCode !== "null" && !confirmationEffectDone) {
@@ -291,11 +293,7 @@
                             return;
                         }
 
-                        if (data.type == "VIEW") {
-                            setComponents(data.data.components || []);
-                        } else {
-                            handleStepType(data);
-                        }
+                        handleStepType(data);
                         setFlowData(data);
                     })
                     .catch((err) => {
@@ -340,6 +338,13 @@
                         inputs: providedInputs
                     });
                 }
+
+                const handleViewStep = (flow) => {
+                    if (!flow) return;
+                    if (flow.flowId && flow.data && flow.data.additionalData && flow.data.additionalData.state) {
+                        localStorage.setItem(flow.data.additionalData.state, flow.flowId);
+                    }
+                };
 
                 const handleFlowStatus = (flow) => {
                     if (!flow) return false;
@@ -388,6 +393,10 @@
                 const handleStepType = (flow) => {
                     if (!flow) return false;
                     switch (flow.type) {
+                        case "VIEW":
+                            handleViewStep(flow);
+                            setComponents(flow.data.components || []);
+                            break;
                         case "REDIRECTION":
                             setLoading(true);
                             window.location.href = flow.data.redirectURL;
