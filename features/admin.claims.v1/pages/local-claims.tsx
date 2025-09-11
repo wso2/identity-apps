@@ -27,9 +27,10 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { filterList } from "@wso2is/admin.core.v1/utils/filter-list";
 import { sortList } from "@wso2is/admin.core.v1/utils/sort-list";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertLevels, Claim, ClaimsGetParams, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, Claim, ClaimsGetParams, Property, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { DocumentationLink, ListLayout, PageLayout, PrimaryButton, useDocumentation } from "@wso2is/react-components";
@@ -40,6 +41,7 @@ import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getADialect } from "../api";
 import { AddLocalClaims, ClaimsList, ListType } from "../components";
+import { ClaimManagementConstants } from "../constants";
 
 /**
  * Props for the Local Claims page.
@@ -63,6 +65,7 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     /**
      * Sets the attributes by which the list can be sorted
@@ -124,8 +127,22 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
         };
 
         getAllLocalClaims(params).then((response: Claim[]) => {
-            setClaims(response);
-            setFilteredClaims(sortList(response, sortBy.value as string, sortOrder));
+            const sanitizedList: Claim[] = response?.filter((claim: Claim) => {
+                // Check if the attribute is an agent schema attribute.
+                const isAgentAttribute: boolean = claim?.properties?.find(
+                    (property: Property) => property.key === ClaimManagementConstants.AGENT_CLAIM_PROPERTY_NAME
+                )?.value === "true";
+
+                // Hide agent schema attributes in sub-organizations.
+                if (isSubOrganization() && isAgentAttribute) {
+                    return false;
+                }
+
+                return true;
+            });
+
+            setClaims(sanitizedList);
+            setFilteredClaims(sortList(sanitizedList, sortBy.value as string, sortOrder));
         }).catch((error: IdentityAppsApiException) => {
             dispatch(addAlert(
                 {
