@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.77.46
+
+### Patch Changes
+
+- [#9090](https://github.com/wso2/identity-apps/pull/9090) [`55d51174f90c6b2d8c908862a643a1e1fa0e1d7c`](https://github.com/wso2/identity-apps/commit/55d51174f90c6b2d8c908862a643a1e1fa0e1d7c) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Hide agent schema and claims for sub organizations
+
+- Updated dependencies [[`55d51174f90c6b2d8c908862a643a1e1fa0e1d7c`](https://github.com/wso2/identity-apps/commit/55d51174f90c6b2d8c908862a643a1e1fa0e1d7c)]:
+  - @wso2is/admin.claims.v1@2.29.8
+
 ## 2.77.45
 
 ### Patch Changes
