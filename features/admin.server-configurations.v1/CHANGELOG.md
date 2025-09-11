@@ -1,5 +1,14 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.35.48
+
+### Patch Changes
+
+- [#9093](https://github.com/wso2/identity-apps/pull/9093) [`84927a67a97d5a58112b4a901f100ea9bee30c53`](https://github.com/wso2/identity-apps/commit/84927a67a97d5a58112b4a901f100ea9bee30c53) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add condition to show Ask Password toggle.
+
+- Updated dependencies [[`84927a67a97d5a58112b4a901f100ea9bee30c53`](https://github.com/wso2/identity-apps/commit/84927a67a97d5a58112b4a901f100ea9bee30c53)]:
+  - @wso2is/admin.server-configurations.v1@2.35.48
+
 ## 2.35.47
 
 ### Patch Changes
