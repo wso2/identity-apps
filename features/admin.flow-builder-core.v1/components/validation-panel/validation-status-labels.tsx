@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Badge from "@oxygen-ui/react/Badge";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -63,61 +64,76 @@ const ValidationStatusLabels: FunctionComponent<ValidationStatusLabelsPropsInter
             alignItems="center"
             data-componentid={ componentId }
             className="flow-builder-validation-status-labels"
-            gap={ 1 }
+            gap={ 2 }
         >
             {
                 infoCount > 0 && (
-                    <Button
+                    <Badge
+                        badgeContent={ infoCount }
                         color="info"
-                        variant="contained"
-                        className="info-button"
-                        onClick={ () => {
-                            setCurrentActiveTab(2);
-                            setIsOpenResourcePropertiesPanel(false);
-                            setSelectedNotification(null);
-                            setOpenValidationPanel(true);
-                        } }
                     >
-                        { `${infoCount} ${t("flows:core.validationStatusLabels.info")}` }
-                    </Button>
+                        <Button
+                            color="info"
+                            variant="text"
+                            className="info-button"
+                            onClick={ () => {
+                                setCurrentActiveTab(2);
+                                setIsOpenResourcePropertiesPanel(false);
+                                setSelectedNotification(null);
+                                setOpenValidationPanel(true);
+                            } }
+                        >
+                            { t("flows:core.validationStatusLabels.info") }
+                        </Button>
+                    </Badge>
                 )
             }
             {
                 warningCount > 0 && (
-                    <Button
+                    <Badge
+                        badgeContent={ warningCount }
                         color="warning"
-                        variant="contained"
-                        className="warning-button"
-                        onClick={ () => {
-                            setCurrentActiveTab(1);
-                            setIsOpenResourcePropertiesPanel(false);
-                            setSelectedNotification(null);
-                            setOpenValidationPanel(true);
-                        } }
                     >
-                        { warningCount === 1 ?
-                            `1 ${t("flows:core.validationStatusLabels.warning")}` :
-                            `${warningCount} ${t("flows:core.validationStatusLabels.warnings")}` }
-                    </Button>
+                        <Button
+                            color="warning"
+                            variant="text"
+                            className="warning-button"
+                            onClick={ () => {
+                                setCurrentActiveTab(1);
+                                setIsOpenResourcePropertiesPanel(false);
+                                setSelectedNotification(null);
+                                setOpenValidationPanel(true);
+                            } }
+                        >
+                            { warningCount === 1 ?
+                                t("flows:core.validationStatusLabels.warning") :
+                                t("flows:core.validationStatusLabels.warnings") }
+                        </Button>
+                    </Badge>
                 )
             }
             {
                 errorCount > 0 && (
-                    <Button
+                    <Badge
+                        badgeContent={ errorCount }
                         color="error"
-                        variant="contained"
-                        className="error-button"
-                        onClick={ () => {
-                            setCurrentActiveTab(0);
-                            setIsOpenResourcePropertiesPanel(false);
-                            setSelectedNotification(null);
-                            setOpenValidationPanel(true);
-                        } }
                     >
-                        { errorCount === 1 ?
-                            `1 ${t("flows:core.validationStatusLabels.error")}` :
-                            `${errorCount} ${t("flows:core.validationStatusLabels.errors")}` }
-                    </Button>
+                        <Button
+                            color="error"
+                            variant="text"
+                            className="error-button"
+                            onClick={ () => {
+                                setCurrentActiveTab(0);
+                                setIsOpenResourcePropertiesPanel(false);
+                                setSelectedNotification(null);
+                                setOpenValidationPanel(true);
+                            } }
+                        >
+                            { errorCount === 1 ?
+                                t("flows:core.validationStatusLabels.error") :
+                                t("flows:core.validationStatusLabels.errors") }
+                        </Button>
+                    </Badge>
                 )
             }
         </Box>
