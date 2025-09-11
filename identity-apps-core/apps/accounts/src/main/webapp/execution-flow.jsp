@@ -197,9 +197,9 @@
                 const state = "<%= Encode.forJavaScript(state) != null ? Encode.forJavaScript(state) : null %>";
                 const confirmationCode = "<%= Encode.forJavaScript(confirmationCode) != null ? Encode.forJavaScript(confirmationCode) : null %>";
                 const mlt = "<%= Encode.forJavaScript(mlt) != null ? Encode.forJavaScript(mlt) : null %>";
+                const flowId = "<%= Encode.forJavaScript(flowId) != null ? Encode.forJavaScript(flowId) : null %>";
                 const spId = "<%= !StringUtils.isBlank(spId) && spId != "null" ? Encode.forJavaScript(spId) : "new-application" %>";
 
-                const [ flowId, setFlowId ] = useState("<%= Encode.forJavaScript(flowId) != null ? Encode.forJavaScript(flowId) : null %>");
                 const [ flowData, setFlowData ] = useState(null);
                 const [ components, setComponents ] = useState([]);
                 const [ loading, setLoading ] = useState(true);
