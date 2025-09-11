@@ -108,6 +108,7 @@ const MultiMobileFieldForm: FunctionComponent<MultiMobileFieldFormPropsInterface
     const isPrimaryMobileVerified: boolean = String(profileDetails?.profileInfo
         ?.[SCIMExtensionConfigs?.scim?.systemSchema]
         ?.[ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_VERIFIED")]) === "true";
+
     // Merge the verified primary mobile number with the verified list.
     const mergedVerifiedMobileNumbers: string[] = useMemo(() => {
         if (
@@ -115,7 +116,7 @@ const MultiMobileFieldForm: FunctionComponent<MultiMobileFieldFormPropsInterface
             !verifiedMobileNumbers?.includes(primaryMobileNumber) &&
             isPrimaryMobileVerified
         ) {
-            return [ ...verifiedMobileNumbers, primaryMobileNumber ];
+            return [ ...(verifiedMobileNumbers ?? []), primaryMobileNumber ];
         } else {
             return verifiedMobileNumbers;
         }
