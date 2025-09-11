@@ -22,8 +22,8 @@ import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
-
 import { SCIMConfigs, attributeConfig } from "@wso2is/admin.extensions.v1";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { AGENT_USERSTORE_ID } from "@wso2is/admin.userstores.v1/constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
@@ -46,7 +46,6 @@ import { RouteChildrenProps } from "react-router";
 import { Dispatch } from "redux";
 import { Image, StrictTabProps } from "semantic-ui-react";
 import ExternalDialectEditPage from "./external-dialect-edit";
-import { } from "../components";
 import { ClaimManagementConstants } from "../constants";
 import { resolveType } from "../utils";
 
@@ -82,6 +81,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
 
         const { t } = useTranslation();
         const { getLink } = useDocumentation();
+        const { isSubOrganization } = useGetCurrentOrganizationType();
 
         const [ isLoading, setIsLoading ] = useState(true);
         const [ dialects, setDialects ] = useState<ClaimDialect[]>(null);
@@ -434,37 +434,41 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
             if (type === ClaimManagementConstants.SCIM) {
                 const panes: StrictTabProps[ "panes" ] = [];
 
-                ClaimManagementConstants.SCIM_TABS.forEach((tab: {
-                    name: string;
-                    uri: string;
-                    isAttributeButtonEnabled: boolean;
-                    attributeButtonText: string;
-                }) => {
-                    if (!SCIMConfigs.hideCore1Schema || SCIMConfigs.scim.core1Schema !== tab.uri) {
-                        const dialect: ClaimDialect = dialects?.find(
-                            (dialect: ClaimDialect) => dialect.dialectURI === tab.uri
-                        );
-
-                        dialect &&
-                            panes.push({
-                                menuItem: tab.name,
-                                render: () => (
-                                    <ResourceTab.Pane controlledSegmentation attached={ false }>
-                                        <ExternalDialectEditPage
-                                            id={ dialect.id }
-                                            attributeUri={ tab.uri }
-                                            attributeType={ type }
-                                            mappedLocalClaims={ mappedLocalclaims }
-                                            updateMappedClaims={ setTriggerFetchMappedClaims }
-                                            updateDialects={ setTriggerFetchDialects }
-                                            isAttributeButtonEnabled={ tab.isAttributeButtonEnabled }
-                                            attributeButtonText= { t(tab.attributeButtonText) }
-                                        />
-                                    </ResourceTab.Pane>
-                                )
-                            });
+                for (const tab of ClaimManagementConstants.SCIM_TABS) {
+                    // Hide SCIM Core 1.0 tab based on extension config.
+                    if (SCIMConfigs.scim.core1Schema === tab.uri && SCIMConfigs.hideCore1Schema) {
+                        continue;
                     }
-                });
+
+                    // Hide agent schema for sub organizations.
+                    if (isSubOrganization() && ClaimManagementConstants.AGENT_SCIM_SCHEMA_MAPPING.includes(tab.uri)) {
+                        continue;
+                    }
+
+                    const dialect: ClaimDialect = dialects?.find(
+                        (dialect: ClaimDialect) => dialect.dialectURI === tab.uri
+                    );
+
+                    if (dialect) {
+                        panes.push({
+                            menuItem: tab.name,
+                            render: () => (
+                                <ResourceTab.Pane controlledSegmentation attached={ false }>
+                                    <ExternalDialectEditPage
+                                        id={ dialect.id }
+                                        attributeUri={ tab.uri }
+                                        attributeType={ type }
+                                        mappedLocalClaims={ mappedLocalclaims }
+                                        updateMappedClaims={ setTriggerFetchMappedClaims }
+                                        updateDialects={ setTriggerFetchDialects }
+                                        isAttributeButtonEnabled={ tab.isAttributeButtonEnabled }
+                                        attributeButtonText= { t(tab.attributeButtonText) }
+                                    />
+                                </ResourceTab.Pane>
+                            )
+                        });
+                    }
+                }
 
                 if (attributeConfig.showCustomDialectInSCIM) {
                     const dialect: ClaimDialect = dialects?.find((dialect: ClaimDialect) =>
