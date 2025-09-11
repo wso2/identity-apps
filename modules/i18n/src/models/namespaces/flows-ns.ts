@@ -19,6 +19,10 @@
 export interface flowsNS {
     askPassword: {
         breadcrumb: string;
+        labels: {
+            disableFlow: string;
+            enableFlow: string;
+        };
         notifications: {
             disableFlow: {
                 genericError: {
@@ -115,6 +119,19 @@ export interface flowsNS {
                 magicLink: string;
             };
         };
+        notificationPanel: {
+            emptyMessages: {
+                errors: string;
+                info: string;
+                warnings: string;
+            };
+            header: string;
+            tabs: {
+                errors: string;
+                info: string;
+                warnings: string;
+            };
+        };
         notifications: {
             brandingPreferenceFetch: {
                 genericError: {
@@ -157,9 +174,67 @@ export interface flowsNS {
                 };
             };
         };
+        validation: {
+            fields: {
+                button: {
+                    action: string;
+                    general: string;
+                    text: string;
+                    variant: string;
+                };
+                checkbox: {
+                    general: string;
+                    identifier: string;
+                    label: string;
+                };
+                divider: {
+                    general: string;
+                    variant: string;
+                };
+                image: {
+                    general: string;
+                    src: string;
+                    variant: string;
+                };
+                input: {
+                    general: string;
+                    identifier: string;
+                    label: string;
+                };
+                otpInput: {
+                    general: string;
+                    label: string;
+                };
+                phoneNumberInput: {
+                    general: string;
+                    identifier: string;
+                    label: string;
+                };
+                richText: {
+                    general: string;
+                    text: string;
+                };
+                typography: {
+                    general: string;
+                    text: string;
+                    variant: string;
+                };
+            };
+        };
+        validationStatusLabels: {
+            error: string;
+            errors: string;
+            info: string;
+            warning: string;
+            warnings: string;
+        };
     };
     label?: string;
     passwordRecovery: {
+        labels: {
+            disableFlow: string;
+            enableFlow: string;
+        };
         name: string;
         notifications: {
             disableFlow: {
@@ -196,6 +271,10 @@ export interface flowsNS {
     };
     registrationFlow: {
         breadcrumb: string;
+        labels: {
+            disableFlow: string;
+            enableFlow: string;
+        };
         notifications: {
             disableFlow: {
                 genericError: {

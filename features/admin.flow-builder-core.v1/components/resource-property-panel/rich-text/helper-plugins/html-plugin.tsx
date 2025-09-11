@@ -50,6 +50,7 @@ const DIR_LTR_CLASS: string = "\" dir=\"ltr\"";
 const DIR_LTR: string = "dir=\"ltr\"";
 const CLASS_NAME_PLACEHOLDER: string = "{{className}}";
 const ADDITIONAL_CLASSES: string = `class="${CLASS_NAME_PLACEHOLDER}"`;
+const EMPTY_CONTENT: string = "<p class=\"rich-text-paragraph\"><br></p>";
 
 /**
  * This enum represents the different types of updates that can occur in the editor.
@@ -137,7 +138,7 @@ const HTMLPlugin = ({ onChange, resource, disabled }: HTMLPluginProps): ReactEle
 
             const processedHTML: string = preProcessHTML(htmlString);
 
-            onChange(processedHTML);
+            onChange(processedHTML === EMPTY_CONTENT ? "" : processedHTML);
         });
     };
 

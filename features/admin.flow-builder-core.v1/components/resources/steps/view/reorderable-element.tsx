@@ -26,11 +26,13 @@ import React, { FunctionComponent, MouseEvent, MutableRefObject, ReactElement, S
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
 import useComponentDelete from "../../../../hooks/use-component-delete";
+import useValidationStatus from "../../../../hooks/use-validation-status";
 import { Element } from "../../../../models/elements";
 import { EventTypes } from "../../../../models/extension";
 import PluginRegistry from "../../../../plugins/plugin-registry";
 import Handle from "../../../dnd/handle";
 import Sortable, { SortableProps } from "../../../dnd/sortable";
+import ValidationErrorBoundary from "../../../validation-panel/validation-error-boundary";
 
 /**
  * Props interface of {@link ReorderableElement}
@@ -101,6 +103,7 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
         setLastInteractedStepId,
         setIsOpenResourcePropertiesPanel
     } = useAuthenticationFlowBuilderCore();
+    const { setOpenValidationPanel, setSelectedNotification } = useValidationStatus();
 
     /**
      * Handles the opening of the property panel for the resource.
@@ -110,6 +113,8 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
     const handlePropertyPanelOpen = (event: MouseEvent): void => {
 
         event.stopPropagation();
+        setOpenValidationPanel(false);
+        setSelectedNotification(null);
         setLastInteractedStepId(stepId);
         setLastInteractedResource(element);
     };
@@ -137,34 +142,36 @@ export const ReorderableElement: FunctionComponent<ReorderableComponentPropsInte
             accept={ [ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID ] }
             { ...rest }
         >
-            <Box
-                display="flex"
-                alignItems="center"
-                className={ classNames("reorderable-component", className) }
-                data-componentid={ `${componentId}-${element.type}` }
-                onDoubleClick={ handlePropertyPanelOpen }
-            >
-                <Box className="flow-builder-dnd-actions">
-                    <Handle label="Drag" cursor="grab" ref={ handleRef }>
-                        <GridDotsVerticalIcon />
-                    </Handle>
-                    <Handle
-                        label="Edit"
-                        onClick={ handlePropertyPanelOpen }
-                    >
-                        <PencilIcon />
-                    </Handle>
-                    <Handle
-                        label="Delete"
-                        onClick={ handleElementDelete }
-                    >
-                        <TrashIcon />
-                    </Handle>
+            <ValidationErrorBoundary resource={ element } key={ element.id }>
+                <Box
+                    display="flex"
+                    alignItems="center"
+                    className={ classNames("reorderable-component", className) }
+                    data-componentid={ `${componentId}-${element.type}` }
+                    onDoubleClick={ handlePropertyPanelOpen }
+                >
+                    <Box className="flow-builder-dnd-actions">
+                        <Handle label="Drag" cursor="grab" ref={ handleRef }>
+                            <GridDotsVerticalIcon />
+                        </Handle>
+                        <Handle
+                            label="Edit"
+                            onClick={ handlePropertyPanelOpen }
+                        >
+                            <PencilIcon />
+                        </Handle>
+                        <Handle
+                            label="Delete"
+                            onClick={ handleElementDelete }
+                        >
+                            <TrashIcon />
+                        </Handle>
+                    </Box>
+                    <div className="flow-builder-step-content-form-field-content">
+                        <ElementFactory stepId={ stepId } resource={ element } />
+                    </div>
                 </Box>
-                <div className="flow-builder-step-content-form-field-content">
-                    <ElementFactory stepId={ stepId } resource={ element } />
-                </div>
-            </Box>
+            </ValidationErrorBoundary>
         </Sortable>
     );
 };

@@ -17,6 +17,7 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
+import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import IconButton from "@oxygen-ui/react/IconButton";
 import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import TextField from "@oxygen-ui/react/TextField";
@@ -27,6 +28,7 @@ import startCase from "lodash-es/startCase";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import I18nConfigurationCard from "./i18n-configuration-card";
+import useValidationStatus from "../../hooks/use-validation-status";
 import { Resource } from "../../models/resources";
 import "./text-property-field.scss";
 
@@ -76,6 +78,7 @@ const TextPropertyField: FunctionComponent<TextPropertyFieldPropsInterface> = ({
     const { t } = useTranslation();
     const [ isI18nCardOpen, setIsI18nCardOpen ] = useState<boolean>(false);
     const iconButtonRef: React.RefObject<HTMLButtonElement> = useRef<HTMLButtonElement>(null);
+    const { selectedNotification } = useValidationStatus();
 
     /**
      * Check if the property value matches the i18n pattern.
@@ -87,6 +90,19 @@ const TextPropertyField: FunctionComponent<TextPropertyFieldPropsInterface> = ({
 
         return i18nPattern.test(propertyValue.trim());
     }, [ propertyValue ]);
+
+    /**
+     * Get the error message for the text property field.
+     */
+    const errorMessage: string = useMemo(() => {
+        const key: string = `${resource?.id}_${propertyKey}`;
+
+        if (selectedNotification?.hasResourceFieldNotification(key)) {
+            return selectedNotification?.getResourceFieldNotification(key);
+        }
+
+        return "";
+    }, [ resource, selectedNotification ]);
 
     /**
      * Handles the toggle of the i18n configuration card.
@@ -109,6 +125,7 @@ const TextPropertyField: FunctionComponent<TextPropertyFieldPropsInterface> = ({
                 label={ startCase(propertyKey) }
                 defaultValue={ propertyValue }
                 value={ isI18nPattern ? "" : undefined }
+                error={ !!errorMessage }
                 onChange={ (e: ChangeEvent<HTMLInputElement>) =>
                     onChange(`config.${propertyKey}`, e.target.value, resource)
                 }
@@ -145,6 +162,13 @@ const TextPropertyField: FunctionComponent<TextPropertyFieldPropsInterface> = ({
                 } }
                 { ...rest }
             />
+            {
+                errorMessage &&  (
+                    <FormHelperText error>
+                        { errorMessage }
+                    </FormHelperText>
+                )
+            }
             {
                 isI18nPattern && (
                     <div className="text-property-field-i18n-placeholder">

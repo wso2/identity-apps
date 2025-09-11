@@ -18,10 +18,13 @@
 
 import FormHelperText from "@mui/material/FormHelperText";
 import Box from "@oxygen-ui/react/Box";
+import Code from "@oxygen-ui/react/Code";
 import InputLabel from "@oxygen-ui/react/InputLabel";
 import OutlinedInput from "@oxygen-ui/react/OutlinedInput";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import { Trans, useTranslation } from "react-i18next";
+import useRequiredFields, { RequiredFieldInterface } from "../../../../../hooks/use-required-fields";
 import { CommonElementFactoryPropsInterface } from "../../common-element-factory";
 import Hint from "../../hint";
 import PlaceholderComponent from "../placeholder-component";
@@ -40,6 +43,35 @@ export type OTPInputAdapterPropsInterface = IdentifiableComponentInterface & Com
 export const OTPInputAdapter: FunctionComponent<OTPInputAdapterPropsInterface> = ({
     resource
 }: OTPInputAdapterPropsInterface): ReactElement => {
+    const { t } = useTranslation();
+
+    const generalMessage: ReactElement = useMemo(() => {
+        return (
+            <Trans
+                i18nKey="flows:core.validation.fields.otpInput.general"
+                values={ { id: resource.id } }
+            >
+                Required fields are not properly configured for the OTP input field with ID{ " " }
+                <Code>{ resource.id }</Code>.
+            </Trans>
+        );
+    }, [ resource?.id ]);
+
+    const fields: RequiredFieldInterface[] = useMemo(() => {
+        return [
+            {
+                errorMessage: t("flows:core.validation.fields.otpInput.label"),
+                name: "label"
+            }
+        ];
+    }, []);
+
+    useRequiredFields(
+        resource,
+        generalMessage,
+        fields
+    );
+
     return (
         <div className={ resource.config?.className }>
             <InputLabel htmlFor="otp-input-adapter" required={ resource.config?.required } disableAnimation>

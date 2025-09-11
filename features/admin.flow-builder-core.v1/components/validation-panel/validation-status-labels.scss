@@ -16,18 +16,11 @@
  * under the License.
  */
 
-.floating-publish-button {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-    &.transition {
-        transform: translateX(calc(-1 * var(--wso2is-flow-builder-element-property-panel-width)));
-    }
-
-    &.MuiButton-containedPrimary.Mui-disabled {
-        opacity: 0.5;
-        color: var(--oxygen-palette-primary-contrastText);
+.flow-builder-validation-status-labels {
+    .error-button,
+    .warning-button,
+    .info-button {
+        border-radius: 16px;
+        padding: 0px 8px;
     }
 }
