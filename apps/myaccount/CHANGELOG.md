@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.24.13
+
+### Patch Changes
+
+- [#9103](https://github.com/wso2/identity-apps/pull/9103) [`1d0e699afde26c1677e8419296da4e0a15f18b0a`](https://github.com/wso2/identity-apps/commit/1d0e699afde26c1677e8419296da4e0a15f18b0a) Thanks [@github-actions](https://github.com/apps/github-actions)! - Fix null pointer issue in multi email/mobile fields
+
 ## 2.24.12
 
 ### Patch Changes
