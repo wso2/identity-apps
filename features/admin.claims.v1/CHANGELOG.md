@@ -1,5 +1,23 @@
 # @wso2is/admin.claims.v1
 
+## 2.29.5
+
+### Patch Changes
+
+- [#9083](https://github.com/wso2/identity-apps/pull/9083) [`df82db7c6492490ebdb26d74e079b0cc94bd0b1a`](https://github.com/wso2/identity-apps/commit/df82db7c6492490ebdb26d74e079b0cc94bd0b1a) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add support to reflect display name and display order of basic details.
+
+* [#9070](https://github.com/wso2/identity-apps/pull/9070) [`205c8bd9286363c023f7d7782cd2fe427dfc9bf8`](https://github.com/wso2/identity-apps/commit/205c8bd9286363c023f7d7782cd2fe427dfc9bf8) Thanks [@github-actions](https://github.com/apps/github-actions)! - Honor claim input formats in complete your profile page
+
+- [#9084](https://github.com/wso2/identity-apps/pull/9084) [`534c01d85c3df90749f1556a8a0124aa22a36f48`](https://github.com/wso2/identity-apps/commit/534c01d85c3df90749f1556a8a0124aa22a36f48) Thanks [@github-actions](https://github.com/apps/github-actions)! - Provide the date and epoch data type support
+
+- Updated dependencies [[`8f4120bb1aba978337914a973e1a89abe0971354`](https://github.com/wso2/identity-apps/commit/8f4120bb1aba978337914a973e1a89abe0971354), [`df82db7c6492490ebdb26d74e079b0cc94bd0b1a`](https://github.com/wso2/identity-apps/commit/df82db7c6492490ebdb26d74e079b0cc94bd0b1a), [`205c8bd9286363c023f7d7782cd2fe427dfc9bf8`](https://github.com/wso2/identity-apps/commit/205c8bd9286363c023f7d7782cd2fe427dfc9bf8), [`534c01d85c3df90749f1556a8a0124aa22a36f48`](https://github.com/wso2/identity-apps/commit/534c01d85c3df90749f1556a8a0124aa22a36f48), [`c77885b61fa734ec69b6cad77ff74ead2fd45193`](https://github.com/wso2/identity-apps/commit/c77885b61fa734ec69b6cad77ff74ead2fd45193)]:
+  - @wso2is/admin.server-configurations.v1@2.35.47
+  - @wso2is/i18n@2.30.18
+  - @wso2is/admin.claims.v1@2.29.5
+  - @wso2is/admin.users.v1@2.36.15
+  - @wso2is/core@2.12.1
+  - @wso2is/admin.core.v1@2.49.34
+
 ## 2.29.4
 
 ### Patch Changes

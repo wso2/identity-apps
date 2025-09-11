@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.2.19
+
+### Patch Changes
+
+- [#9070](https://github.com/wso2/identity-apps/pull/9070) [`205c8bd9286363c023f7d7782cd2fe427dfc9bf8`](https://github.com/wso2/identity-apps/commit/205c8bd9286363c023f7d7782cd2fe427dfc9bf8) Thanks [@github-actions](https://github.com/apps/github-actions)! - Honor claim input formats in complete your profile page
+
 ## 3.2.18
 
 ### Patch Changes

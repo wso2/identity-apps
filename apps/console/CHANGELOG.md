@@ -1,5 +1,38 @@
 # @wso2is/console
 
+## 2.78.26
+
+### Patch Changes
+
+- [#9087](https://github.com/wso2/identity-apps/pull/9087) [`8f4120bb1aba978337914a973e1a89abe0971354`](https://github.com/wso2/identity-apps/commit/8f4120bb1aba978337914a973e1a89abe0971354) Thanks [@github-actions](https://github.com/apps/github-actions)! - Introduce a validation layer with basic validations for flow builders
+
+* [#9064](https://github.com/wso2/identity-apps/pull/9064) [`4f33466c43474760eed9eff14eb8af4bdd34d0de`](https://github.com/wso2/identity-apps/commit/4f33466c43474760eed9eff14eb8af4bdd34d0de) Thanks [@github-actions](https://github.com/apps/github-actions)! - Fix URL fragments getting lost during session refresh / recovery
+
+- [#9034](https://github.com/wso2/identity-apps/pull/9034) [`ff3e752e8b11f1d02a2f0190a78ca786bda97263`](https://github.com/wso2/identity-apps/commit/ff3e752e8b11f1d02a2f0190a78ca786bda97263) Thanks [@github-actions](https://github.com/apps/github-actions)! - Provide revert UI to custom alternate login identifier page.
+
+* [#9088](https://github.com/wso2/identity-apps/pull/9088) [`85e07317eb89942ecd7443399733d89108fe6070`](https://github.com/wso2/identity-apps/commit/85e07317eb89942ecd7443399733d89108fe6070) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add support for removing notifications when elements are deleted
+
+- [#9083](https://github.com/wso2/identity-apps/pull/9083) [`df82db7c6492490ebdb26d74e079b0cc94bd0b1a`](https://github.com/wso2/identity-apps/commit/df82db7c6492490ebdb26d74e079b0cc94bd0b1a) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add support to reflect display name and display order of basic details.
+
+* [#9070](https://github.com/wso2/identity-apps/pull/9070) [`205c8bd9286363c023f7d7782cd2fe427dfc9bf8`](https://github.com/wso2/identity-apps/commit/205c8bd9286363c023f7d7782cd2fe427dfc9bf8) Thanks [@github-actions](https://github.com/apps/github-actions)! - Honor claim input formats in complete your profile page
+
+- [#9084](https://github.com/wso2/identity-apps/pull/9084) [`534c01d85c3df90749f1556a8a0124aa22a36f48`](https://github.com/wso2/identity-apps/commit/534c01d85c3df90749f1556a8a0124aa22a36f48) Thanks [@github-actions](https://github.com/apps/github-actions)! - Provide the date and epoch data type support
+
+* [#9089](https://github.com/wso2/identity-apps/pull/9089) [`c77885b61fa734ec69b6cad77ff74ead2fd45193`](https://github.com/wso2/identity-apps/commit/c77885b61fa734ec69b6cad77ff74ead2fd45193) Thanks [@github-actions](https://github.com/apps/github-actions)! - Improve the validation UI
+
+* Updated dependencies [[`8f4120bb1aba978337914a973e1a89abe0971354`](https://github.com/wso2/identity-apps/commit/8f4120bb1aba978337914a973e1a89abe0971354), [`ff3e752e8b11f1d02a2f0190a78ca786bda97263`](https://github.com/wso2/identity-apps/commit/ff3e752e8b11f1d02a2f0190a78ca786bda97263), [`85e07317eb89942ecd7443399733d89108fe6070`](https://github.com/wso2/identity-apps/commit/85e07317eb89942ecd7443399733d89108fe6070), [`df82db7c6492490ebdb26d74e079b0cc94bd0b1a`](https://github.com/wso2/identity-apps/commit/df82db7c6492490ebdb26d74e079b0cc94bd0b1a), [`205c8bd9286363c023f7d7782cd2fe427dfc9bf8`](https://github.com/wso2/identity-apps/commit/205c8bd9286363c023f7d7782cd2fe427dfc9bf8), [`534c01d85c3df90749f1556a8a0124aa22a36f48`](https://github.com/wso2/identity-apps/commit/534c01d85c3df90749f1556a8a0124aa22a36f48), [`c77885b61fa734ec69b6cad77ff74ead2fd45193`](https://github.com/wso2/identity-apps/commit/c77885b61fa734ec69b6cad77ff74ead2fd45193)]:
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.26
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.26
+  - @wso2is/admin.server-configurations.v1@2.35.47
+  - @wso2is/i18n@2.30.18
+  - @wso2is/admin.alternative-login-identifier.v1@1.5.206
+  - @wso2is/admin.claims.v1@2.29.5
+  - @wso2is/admin.users.v1@2.36.15
+  - @wso2is/core@2.12.1
+  - @wso2is/admin.core.v1@2.49.34
+  - @wso2is/admin.agents.v1@1.0.49
+  - @wso2is/admin.roles.v2@2.27.204
+
 ## 2.78.25
 
 ### Patch Changes
