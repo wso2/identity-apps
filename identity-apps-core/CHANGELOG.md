@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 3.1.28
+
+### Patch Changes
+
+- [#9095](https://github.com/wso2/identity-apps/pull/9095) [`8ab2b7cebfe65e91fe0c01782ac489c788034ea9`](https://github.com/wso2/identity-apps/commit/8ab2b7cebfe65e91fe0c01782ac489c788034ea9) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Fix magiclink flow relying on flowId query param
+
+* [#9057](https://github.com/wso2/identity-apps/pull/9057) [`08728cc956f8bb7569d69f9812d174fa1e01a4ef`](https://github.com/wso2/identity-apps/commit/08728cc956f8bb7569d69f9812d174fa1e01a4ef) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Add missing i18n resources and consume flowType from response
+
 ## 3.1.27
 
 ### Patch Changes
