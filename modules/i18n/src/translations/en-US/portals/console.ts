@@ -292,6 +292,15 @@ export const console: ConsoleNS = {
                     "Let your users log in to your applications with an Identity Provider of " + "their choice",
                     heading: "Add social login"
                 },
+                adminNotice: {
+                    title: "Permission change in <1>Editor - Users</1> and <2>Editor - Applications</2> console roles",
+                    description: "Effective from [date], we are changing some of the key permission changes in " +
+                        "<1>Editor - Users</1> and <2>Editor - Applications</2> console roles.",
+                    instructions: [
+                        "<1>Editor - Users</1> role will no longer have access to role meta data editing and permission changes.",
+                        "<1>Editor - Applications</1> role will no longer have access to role assignments to users and groups."
+                    ]
+                },
                 integrateApps: {
                     actions: {
                         create: "Register Application",
