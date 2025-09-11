@@ -18,50 +18,60 @@
 
 /**
  * Get default components for successful registration completion
+ * @param {string} accountStatus - The status of the account (e.g., ACCOUNT_LOCKED, PENDING_APPROVAL, etc.)
  * @param {string} contextPath - The application context path
  * @returns {Array} Array of default component configurations
  */
-function getDefaultSuccessComponents(contextPath) {
-    return [
-        {
-            "id": "display_heading_rich_text",
-            "category": "DISPLAY",
-            "type": "RICH_TEXT",
-            "config": {
-                "text": "<h1 class=\"rich-text-heading-h1 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Almost there!</span></h1>"
-            }
-        },
-        {
-            "id": "display_image",
-            "category": "DISPLAY",
-            "type": "IMAGE",
-            "variant": "IMAGE_BLOCK",
-            "config": {
-                "src": contextPath + "/libs/themes/wso2is/assets/images/illustrations/account-creation-success.svg"
-            }
-        },
-        {
-            "id": "display_body_rich_text",
-            "category": "DISPLAY",
-            "type": "RICH_TEXT",
-            "config": {
-                "text": "<h4 class=\"rich-text-heading-h4 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Check your inbox to activate your account and get started.</span></h4>"
-            }
-        }
-    ];
+function getDefaultSuccessComponents(accountStatus, contextPath) {
+    switch (accountStatus) {
+        case "ACCOUNT_LOCKED":
+            return [
+                {
+                    "id": "display_heading_rich_text",
+                    "category": "DISPLAY",
+                    "type": "RICH_TEXT",
+                    "config": {
+                        "text": "<h2 class=\"rich-text-heading-h2 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">You're almost there!</span></h2><p class=\"rich-text-paragraph\"><br></p><h5 class=\"rich-text-heading-h5 rich-text-align-center\"><br><span class=\"rich-text-pre-wrap\">Check your inbox for the activation link to unlock your account and get started.</span></h5>"
+                    }
+                }
+            ];
+        case "PENDING_APPROVAL":
+            return [
+                {
+                    "id": "display_heading_rich_text",
+                    "category": "DISPLAY",
+                    "type": "RICH_TEXT",
+                    "config": {
+                        "text": "<h2 class=\"rich-text-heading-h2 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Registration Submitted!</span></h2><p class=\"rich-text-paragraph\"><br></p><h5 class=\"rich-text-heading-h5 rich-text-align-center\"><br><span class=\"rich-text-pre-wrap\">Your account is pending approval. You'll be notified once an administrator reviews your request.</span></h5>"
+                    }
+                }
+            ];
+        default:
+            return [
+                {
+                    "id": "display_heading_rich_text",
+                    "category": "DISPLAY",
+                    "type": "RICH_TEXT",
+                    "config": {
+                        "text": "<h2 class=\"rich-text-heading-h2 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Registration Successful!</span></h2><p class=\"rich-text-paragraph\"><br></p><h5 class=\"rich-text-heading-h5 rich-text-align-center\"><br><span class=\"rich-text-pre-wrap\">You can now sign in with your new account.</span></h5>"
+                    }
+                }
+            ];
+    }
 };
 
 /**
  * Get default components for different flow types
  * @param {string} flowType - The type of flow (REGISTRATION, PASSWORD_RECOVERY, etc.)
+ * @param {string} accountStatus - The status of the account (e.g., ACCOUNT_LOCKED, PENDING_APPROVAL, etc.)
  * @param {string} contextPath - The application context path
  * @returns {Array} Array of default component configurations
  */
-function getDefaultComponentsForFlowType(flowType, contextPath) {
-    
-    switch(flowType) {
+function getDefaultComponentsForFlowType(flowType, accountStatus, contextPath) {
+
+    switch (flowType) {
         case "REGISTRATION":
-            return getDefaultSuccessComponents(contextPath);
+            return getDefaultSuccessComponents(accountStatus, contextPath);
         default:
             return [];
     }

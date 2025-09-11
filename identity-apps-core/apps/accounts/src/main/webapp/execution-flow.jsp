@@ -376,7 +376,8 @@
                                 // If components array is empty, use default components.
                                 if (components.length === 0) {
                                     const contextPath = "${pageContext.request.contextPath}";
-                                    const defaultComponents = getDefaultComponentsForFlowType(flowType, contextPath);
+                                    const accountStatus = flow.data.additionalData?.accountStatus;
+                                    const defaultComponents = getDefaultComponentsForFlowType(flowType, accountStatus, contextPath);
                                     flow.data.components = defaultComponents;
                                 }
                                 return false;
