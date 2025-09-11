@@ -48,6 +48,8 @@ import useAuthenticationFlow from "@wso2is/admin.login-flow-builder.v1/hooks/use
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils";
 import { deleteSecret, getSecretList } from "@wso2is/admin.secrets.v1/api/secret";
+import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
+import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
 import AddSecretWizard from "@wso2is/admin.secrets.v1/components/add-secret-wizard";
 import { ADAPTIVE_SCRIPT_SECRETS } from "@wso2is/admin.secrets.v1/constants/secrets.common";
 import { GetSecretListResponse, SecretModel } from "@wso2is/admin.secrets.v1/models/secret";
@@ -223,6 +225,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const hasSecretMgtCreatePermissions: boolean = useRequiredScopes(featureConfig?.secretsManagement?.scopes?.create);
     const hasSecretMgtReadPermissions: boolean = useRequiredScopes(featureConfig?.secretsManagement?.scopes?.read);
 
+    const { tierName }: UseSubscriptionInterface = useSubscription();
+
     /**
      * Calls method to load secrets to secret list.
      */
@@ -272,7 +276,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      */
     useEffect(() => {
         if (adaptiveFeatureStatus === FeatureStatus.ENABLED
-            && adaptiveFeatureTags?.includes(FeatureTags.PREMIUM)) {
+            && adaptiveFeatureTags?.includes(FeatureTags.PREMIUM)
+            && tierName === TenantTier.FREE) {
             setIsPremiumFeature(true);
         }
     }, []);
