@@ -196,7 +196,6 @@
                 const code = "<%= Encode.forJavaScript(code) != null ? Encode.forJavaScript(code) : null %>";
                 const state = "<%= Encode.forJavaScript(state) != null ? Encode.forJavaScript(state) : null %>";
                 const confirmationCode = "<%= Encode.forJavaScript(confirmationCode) != null ? Encode.forJavaScript(confirmationCode) : null %>";
-                const flowType = "<%= Encode.forJavaScript(flowType) != null ? Encode.forJavaScript(flowType) : null %>";
                 const mlt = "<%= Encode.forJavaScript(mlt) != null ? Encode.forJavaScript(mlt) : null %>";
                 const flowId = "<%= Encode.forJavaScript(flowId) != null ? Encode.forJavaScript(flowId) : null %>";
                 const spId = "<%= !StringUtils.isBlank(spId) && spId != "null" ? Encode.forJavaScript(spId) : "new-application" %>";
@@ -209,6 +208,7 @@
                 const [ flowError, setFlowError ] = useState(undefined);
                 const [confirmationEffectDone, setConfirmationEffectDone] = useState(false);
                 const [userAssertion, setUserAssertion] = useState(null);
+                const [flowType, setFlowType] = useState("<%= Encode.forJavaScript(flowType) != null ? Encode.forJavaScript(flowType) : null %>");
 
                 useEffect(() => {
                     const savedFlowId = localStorage.getItem("flowId");
@@ -278,6 +278,9 @@
                     })
                     .then((data) => {
                         if (data.error) {
+                            if (data.error.flowType) {
+                                setFlowType(data.error.flowType);
+                            }
                             setError(data.error);
 
                             return;
@@ -285,6 +288,10 @@
 
                         if (data.flowId) {
                             localStorage.setItem("flowId", data.flowId);
+                        }
+
+                        if (data.flowType) {
+                            setFlowType(data.flowType);
                         }
 
                         const isFlowEnded = handleFlowStatus(data);
