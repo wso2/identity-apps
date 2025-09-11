@@ -18,13 +18,6 @@
 
 import { ServerConfigurationsConstants } from "./server-configurations-constants";
 
-/**
- * Keys used in feature dictionary.
- */
-export enum GovernanceConnectorFeatureDictionaryKeys {
-    HIDE_INVITED_USER_REGISTRATION_TOGGLE = "hideInvitedUserRegistrationToggle"
-}
-
 export class AskPasswordFormConstants {
 
     /**
@@ -46,14 +39,4 @@ export class AskPasswordFormConstants {
         ServerConfigurationsConstants.ASK_PASSWORD_OTP_USE_UPPERCASE,
         ServerConfigurationsConstants.ASK_PASSWORD_OTP_LENGTH
     ];
-
-    /**
-     * Feature dictionary for governance connectors.
-     * Key: Feature dictionary key.
-     * Value: Corresponding config key in deployment config.
-     */
-    public static readonly featureDictionary: Record<string, string> = {
-        [GovernanceConnectorFeatureDictionaryKeys.HIDE_INVITED_USER_REGISTRATION_TOGGLE]:
-            "governanceConnectors.invitedUserRegistration.enableDisableControl"
-    };
 }
