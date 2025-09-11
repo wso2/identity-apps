@@ -1,5 +1,19 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.10.26
+
+### Patch Changes
+
+- [#9087](https://github.com/wso2/identity-apps/pull/9087) [`8f4120bb1aba978337914a973e1a89abe0971354`](https://github.com/wso2/identity-apps/commit/8f4120bb1aba978337914a973e1a89abe0971354) Thanks [@github-actions](https://github.com/apps/github-actions)! - Introduce a validation layer with basic validations for flow builders
+
+* [#9088](https://github.com/wso2/identity-apps/pull/9088) [`85e07317eb89942ecd7443399733d89108fe6070`](https://github.com/wso2/identity-apps/commit/85e07317eb89942ecd7443399733d89108fe6070) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add support for removing notifications when elements are deleted
+
+- [#9089](https://github.com/wso2/identity-apps/pull/9089) [`c77885b61fa734ec69b6cad77ff74ead2fd45193`](https://github.com/wso2/identity-apps/commit/c77885b61fa734ec69b6cad77ff74ead2fd45193) Thanks [@github-actions](https://github.com/apps/github-actions)! - Improve the validation UI
+
+- Updated dependencies [[`534c01d85c3df90749f1556a8a0124aa22a36f48`](https://github.com/wso2/identity-apps/commit/534c01d85c3df90749f1556a8a0124aa22a36f48)]:
+  - @wso2is/core@2.12.1
+  - @wso2is/admin.core.v1@2.49.34
+
 ## 0.10.25
 
 ### Patch Changes

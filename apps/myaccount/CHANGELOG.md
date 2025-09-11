@@ -1,5 +1,17 @@
 # @wso2is/myaccount
 
+## 2.24.12
+
+### Patch Changes
+
+- [#9064](https://github.com/wso2/identity-apps/pull/9064) [`4f33466c43474760eed9eff14eb8af4bdd34d0de`](https://github.com/wso2/identity-apps/commit/4f33466c43474760eed9eff14eb8af4bdd34d0de) Thanks [@github-actions](https://github.com/apps/github-actions)! - Fix URL fragments getting lost during session refresh / recovery
+
+* [#9078](https://github.com/wso2/identity-apps/pull/9078) [`6b0c44bfc32a49e8668baf5b02c9eb5e96330f74`](https://github.com/wso2/identity-apps/commit/6b0c44bfc32a49e8668baf5b02c9eb5e96330f74) Thanks [@github-actions](https://github.com/apps/github-actions)! - Fix issue with empty field in My Account user profile
+
+* Updated dependencies [[`8f4120bb1aba978337914a973e1a89abe0971354`](https://github.com/wso2/identity-apps/commit/8f4120bb1aba978337914a973e1a89abe0971354), [`534c01d85c3df90749f1556a8a0124aa22a36f48`](https://github.com/wso2/identity-apps/commit/534c01d85c3df90749f1556a8a0124aa22a36f48), [`c77885b61fa734ec69b6cad77ff74ead2fd45193`](https://github.com/wso2/identity-apps/commit/c77885b61fa734ec69b6cad77ff74ead2fd45193)]:
+  - @wso2is/i18n@2.30.18
+  - @wso2is/core@2.12.1
+
 ## 2.24.11
 
 ### Patch Changes
