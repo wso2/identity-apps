@@ -56,7 +56,7 @@ import {
     revertGovernanceConnectorProperties,
     updateGovernanceConnector
 } from "../api/governance-connectors";
-import { AskPasswordFormConstants, GovernanceConnectorFeatureDictionaryKeys } from "../constants";
+import { GovernanceConnectorConstants, GovernanceConnectorFeatureDictionaryKeys } from "../constants";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import { ConnectorFormFactory } from "../forms";
 import {
@@ -119,7 +119,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
 
     const showInvitedUserRegistrationToggle: boolean = isFeatureEnabled(
         governanceConnectorsFeatureConfig,
-        AskPasswordFormConstants.featureDictionary[
+        GovernanceConnectorConstants.featureDictionary[
             GovernanceConnectorFeatureDictionaryKeys.HIDE_INVITED_USER_REGISTRATION_TOGGLE
         ]
     );
