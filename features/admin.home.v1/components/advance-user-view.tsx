@@ -41,9 +41,7 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config"; //
 import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state"; // No specific rule found
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
-import
-AdminDataSeparationNotice
-    from "@wso2is/admin.extensions.v1/configs/components/admin-data-separation-notice/admin-data-separation-notice";
+import AdminNotice from "@wso2is/admin.extensions.v1/configs/components/admin-notice/admin-notice";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -52,7 +50,7 @@ import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/co
 import { GenericIcon, Heading, Popup, Text } from "@wso2is/react-components";
 import axios from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Card, Grid, Placeholder } from "semantic-ui-react";
 import { CardExpandedNavigationButton } from "./card-expanded-navigation-button";
@@ -106,16 +104,16 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
     const showFeatureAnnouncementBanner: boolean = !homeFeatureConfig?.disabledFeatures?.includes(
         HomeConstants.FEATURE_DICTIONARY.FEATURE_ANNOUNCEMENT
     );
-    const isAdminDataSeparationNoticeEnabled: boolean = useSelector((state: AppState) => {
-        return state?.config?.ui?.isAdminDataSeparationNoticeEnabled;
+    const isAdminNoticeEnabled: boolean = useSelector((state: AppState) => {
+        return state?.config?.ui?.isAdminNoticeEnabled;
     });
+    const [ adminNoticeEnabled, setAdminNoticeEnabled ] = useState<boolean>(false);
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateListItemInterface>(null);
     const [ isPlaygroundExist, setisPlaygroundExist ] = useState(undefined);
     const [ showWizardLogin, setShowWizardLogin ] = useState<boolean>(false);
     const [ inboundProtocolConfig, setInboundProtocolConfig ] = useState<any>(undefined);
-    const [ isAdminDataSeparationBannerEnabled, setIsAdminDataSeparationBannerEnabled ] = useState<boolean>(true);
 
     const [
         isTryItApplicationSearchRequestLoading,
@@ -580,9 +578,37 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                 </Heading>
             </div>
 
-            { isAdminDataSeparationNoticeEnabled && isAdminDataSeparationBannerEnabled &&
-                organizationType !== OrganizationType.SUBORGANIZATION && (
-                <AdminDataSeparationNotice setDisplayBanner={ setIsAdminDataSeparationBannerEnabled } />
+            { isAdminNoticeEnabled && adminNoticeEnabled && (
+                <AdminNotice
+                    title={ (
+                        <Trans i18nKey={ "console:common.quickStart.sections.adminNotice.title" }>
+                            Permission change in <b>Editor - Users</b> and <b>Editor - Applications</b> console roles
+                        </Trans>
+                    ) }
+                    description={ (
+                        <Trans i18nKey={ "console:common.quickStart.sections.adminNotice.description" }>
+                            Effective from [date], we are changing some of the key permission changes in 
+                            <b>Editor - Users</b> and <b>Editor - Applications</b> console roles.
+                        </Trans>
+                    ) }
+                    instructions={ [
+                        <Trans
+                            key="admin-notice-instruction-0"
+                            i18nKey={ "console:common.quickStart.sections.adminNotice.instructions.0" }
+                        >
+                            <b>Editor - Users</b> role will no longer have access to role meta data editing
+                            and permission changes.
+                        </Trans>,
+                        <Trans
+                            key="admin-notice-instruction-1"
+                            i18nKey={ "console:common.quickStart.sections.adminNotice.instructions.1" }
+                        >
+                            <b>Editor - Applications</b> role will no longer have access to role assignments
+                            to users and groups.
+                        </Trans>
+                    ] }
+                    setDisplayBanner={ setAdminNoticeEnabled }
+                />
             ) }
 
             <br />

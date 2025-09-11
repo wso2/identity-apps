@@ -428,9 +428,9 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     identityProviderTemplates: IdentityProviderTemplatesConfigInterface;
     /**
-     * Should the admin data separation notice be enabled.
+     * Should the admin notice be enabled.
      */
-    isAdminDataSeparationNoticeEnabled?: boolean;
+    isAdminNoticeEnabled?: boolean;
     /**
      * Should default dialects be allowed for editing.
      */

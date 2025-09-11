@@ -240,6 +240,11 @@ export interface ConsoleNS {
                     description: string;
                     heading: string;
                 };
+                adminNotice: {
+                    title: string;
+                    description: string;
+                    instructions: string[];
+                };
                 integrateApps: {
                     actions: {
                         create: string;
