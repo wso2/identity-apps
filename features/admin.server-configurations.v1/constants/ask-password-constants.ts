@@ -54,6 +54,6 @@ export class AskPasswordFormConstants {
      */
     public static readonly featureDictionary: Record<string, string> = {
         [GovernanceConnectorFeatureDictionaryKeys.HIDE_INVITED_USER_REGISTRATION_TOGGLE]:
-            "governanceConnectors.invitedUserRegistration.showToggle"
+            "governanceConnectors.invitedUserRegistration.enableDisableControl"
     };
 }
