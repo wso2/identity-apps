@@ -274,7 +274,10 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                     enabled: false
                 }
             },
-            isAdminNoticeEnabled: undefined,
+            adminNotice: {
+                enabled: undefined,
+                plannedRollOutDate: undefined
+            },
             isClaimUniquenessValidationEnabled: undefined,
             isClientSecretHashEnabled: undefined,
             isCookieConsentBannerEnabled: undefined,

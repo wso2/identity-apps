@@ -293,13 +293,13 @@ export const console: ConsoleNS = {
                     heading: "Add social login"
                 },
                 adminNotice: {
-                    title: "Permission change in <1>Editor - Users</1> and <2>Editor - Applications</2> console roles",
-                    description: "Effective from [date], we are changing some of the key permission changes in " +
-                        "<1>Editor - Users</1> and <2>Editor - Applications</2> console roles.",
-                    instructions: [
-                        "<1>Editor - Users</1> role will no longer have access to role meta data editing and permission changes.",
-                        "<1>Editor - Applications</1> role will no longer have access to role assignments to users and groups."
-                    ]
+                    title: "Changes to Console Role Permissions",
+                    description: "Starting <1>{{date}}</1>, we are updating some of the permissions in "
+                        + "the <3>Editor - Users</3> and <5>Editor - Applications</5>.",
+                    instructions: {
+                        0: "<1>Editor - Users</1>: No longer able to edit role metadata or change permissions.",
+                        1: "<1>Editor - Applications</1>: No longer able to assign roles to users or groups."
+                    }
                 },
                 integrateApps: {
                     actions: {
