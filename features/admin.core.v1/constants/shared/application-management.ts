@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -371,14 +371,12 @@ export class ApplicationManagementConstants {
      * Form element constraints.
      */
     public static readonly FORM_FIELD_CONSTRAINTS: {
-        APP_DESCRIPTION_PATTERN: RegExp;
         APP_NAME_MAX_LENGTH: number;
         APP_NAME_PATTERN: RegExp;
     } = {
-        APP_DESCRIPTION_PATTERN: new RegExp("^[a-zA-Z0-9.+=!$#()@&%*~_-]+(?: [a-zA-Z0-9.+=!$#()@&%*~_-]+)*$", "gm"),
-        APP_NAME_MAX_LENGTH: 50,
-        APP_NAME_PATTERN: new RegExp("^[a-zA-Z0-9._-]+(?: [a-zA-Z0-9._-]+)*$")
-    };
+            APP_NAME_MAX_LENGTH: 50,
+            APP_NAME_PATTERN: new RegExp("^[a-zA-Z0-9._-]+(?: [a-zA-Z0-9._-]+)*$")
+        };
 
     public static readonly CONDITIONAL_AUTH_TOUR_STATUS_STORAGE_KEY: string = "isConditionalAuthTourViewed";
 

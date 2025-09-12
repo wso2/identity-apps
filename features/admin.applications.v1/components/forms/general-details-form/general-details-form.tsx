@@ -467,23 +467,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     };
 
     /**
-     * Application Description validation.
-     *
-     * @param description - Application Description.
-     * @returns Description validation.
-     */
-    const validateDescription = (description: string): string | void => {
-
-        const isValid: boolean = description && !!description.match(
-            ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_DESCRIPTION_PATTERN
-        );
-
-        if (!isValid) {
-            return "Please enter a valid input.";
-        }
-    };
-
-    /**
      * Access URL may have placeholders like `${UserTenantHint}`, or `${organizationIdHint}`.
      * This function validates the Access URL after removing those placeholders.
      *
@@ -625,7 +608,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                         }
                                         value={ description }
                                         readOnly={ readOnly }
-                                        validation ={ (value: string) => validateDescription(value.toString().trim()) }
                                         maxLength={ 300 }
                                         minLength={ 3 }
                                         data-testid={ `${ testId }-application-description-textarea` }
