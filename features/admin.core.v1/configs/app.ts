@@ -388,6 +388,10 @@ export class Config {
      */
     public static getUIConfig(): UIConfigInterface {
         return {
+            adminNotice: {
+                enabled: window[ "AppUtils" ]?.getConfig()?.ui?.adminNotice?.enabled,
+                plannedRollOutDate: window[ "AppUtils" ]?.getConfig()?.ui?.adminNotice?.plannedRollOutDate
+            },
             administratorRoleDisplayName: window[ "AppUtils" ]?.getConfig()?.ui?.administratorRoleDisplayName ??
                 UIConstants.ADMINISTRATOR_ROLE_DISPLAY_NAME,
             announcements: window[ "AppUtils" ]?.getConfig()?.ui?.announcements,
@@ -428,7 +432,6 @@ export class Config {
             hiddenUserStores: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenUserStores,
             i18nConfigs: window[ "AppUtils" ]?.getConfig()?.ui?.i18nConfigs,
             identityProviderTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.identityProviderTemplates,
-            isAdminNoticeEnabled:window[ "AppUtils" ]?.getConfig()?.ui?.isAdminNoticeEnabled,
             isClaimUniquenessValidationEnabled:
                 window[ "AppUtils" ]?.getConfig()?.ui?.isClaimUniquenessValidationEnabled ?? false,
             isClientSecretHashEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isClientSecretHashEnabled,

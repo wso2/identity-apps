@@ -397,6 +397,13 @@ export interface MultiTenancyConfigInterface {
  */
 export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfigInterface> {
     /**
+     * Should the admin notice be enabled.
+     */
+    adminNotice?: {
+        enabled: boolean;
+        plannedRollOutDate: string;
+    };
+    /**
      * How should the application templates be loaded.
      * If `LOCAL` is selected, app will resort to in app templates.
      * `REMOTE` will fetch templates from the template management REST API.
@@ -427,10 +434,6 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Configurations for IDP templates.
      */
     identityProviderTemplates: IdentityProviderTemplatesConfigInterface;
-    /**
-     * Should the admin notice be enabled.
-     */
-    isAdminNoticeEnabled?: boolean;
     /**
      * Should default dialects be allowed for editing.
      */
