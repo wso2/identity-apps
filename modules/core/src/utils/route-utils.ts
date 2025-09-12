@@ -226,4 +226,69 @@ export class RouteUtils {
 
         return activeRoute;
     }
+
+    /**
+     * Checks if the current version is greater than or equal to the minimum version.
+     *
+     * @param currentVersion - Current version.
+     * @param minVersion - Minimum version.
+     * @returns Is current version greater than or equal to the minimum version.
+     */
+    private static isVersionGreaterOrEqual = (currentVersion: string, minVersion: string): boolean => {
+        if (!currentVersion || !minVersion) {
+            return false;
+        }
+
+        const currentVersionParts: number[] = currentVersion.replace("v", "").split(".").map(Number);
+        const minVersionParts: number[] = minVersion.replace("v", "").split(".").map(Number);
+
+        for (let i: number = 0; i < Math.max(currentVersionParts.length, minVersionParts.length); i++) {
+            const v1: number = currentVersionParts[i] || 0;
+            const v2: number = minVersionParts[i] || 0;
+
+            if (v1 > v2) {
+                return true;
+            }
+            if (v1 < v2) {
+                return false;
+            }
+        }
+
+        return true;
+    };
+
+    /**
+     * Get the enabled routes for a sub-organization based on it's version.
+     * organizationRouteConfig will have a format such as "routeName": "v1.0.0".
+     * Each key will be a route and the value will be the minimum org version required for that route to be enabled.
+     *
+     * @param organizationRouteConfig - Organization route config.
+     * @param organizationVersion - Organization version.
+     * @returns Enabled routes.
+     */
+    public static getOrganizationEnabledRoutes(organizationRouteConfig: Record<string, string> | string[],
+        organizationVersion: string): string[] {
+
+        const enabledRoutes: string[] = [];
+
+        // If the organization route config is an array, return it as is to support existing format.
+        if (Array.isArray(organizationRouteConfig)) {
+            return organizationRouteConfig;
+        }
+
+        if (!organizationVersion) {
+            // Return all v0.0.0 routes if org version is not available.
+            return Object.keys(organizationRouteConfig).filter(
+                (route: string) => organizationRouteConfig[route] === "v0.0.0"
+            );
+        }
+
+        for (const [ route, minVersion ] of Object.entries(organizationRouteConfig)) {
+            if (RouteUtils.isVersionGreaterOrEqual(organizationVersion, minVersion)) {
+                enabledRoutes.push(route);
+            }
+        }
+
+        return enabledRoutes;
+    }
 }

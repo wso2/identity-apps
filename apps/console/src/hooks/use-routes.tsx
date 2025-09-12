@@ -33,6 +33,7 @@ import {
 } from "@wso2is/admin.core.v1/store/actions/routes";
 import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import useGetSelfAuthenticatedOrganization from "@wso2is/admin.tenants.v1/api/use-get-self-authenticated-organization";
 import { RouteInterface } from "@wso2is/core/models";
 import { RouteUtils as CommonRouteUtils } from "@wso2is/core/utils";
 import isEmpty from "lodash-es/isEmpty";
@@ -69,9 +70,12 @@ const useRoutes = (params: UseRoutesParams): useRoutesInterface => {
     const loggedUserName: string = useSelector((state: AppState) => state.profile.profileInfo.userName);
     const superAdmin: string = useSelector((state: AppState) => state.organization.superAdmin);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+    const isAuthenticated: boolean = useSelector((state: AppState) => state?.auth?.isAuthenticated);
     const isGroupAndRoleSeparationEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isGroupAndRoleSeparationEnabled);
     const routesConfig: RouteConfigInterface = useSelector((state: AppState) => state.config.ui.routes);
+
+    const { data: organization } = useGetSelfAuthenticatedOrganization(isAuthenticated);
 
     /**
      * Filter the routes based on the user roles and permissions.
@@ -133,7 +137,8 @@ const useRoutes = (params: UseRoutesParams): useRoutesInterface => {
         };
 
         const allowedRoutes: string[] = window["AppUtils"].getConfig().organizationName
-            ? routesConfig?.organizationEnabledRoutes
+            ? CommonRouteUtils.getOrganizationEnabledRoutes(routesConfig?.organizationEnabledRoutes,
+                organization?.version)
             : undefined;
 
         const [

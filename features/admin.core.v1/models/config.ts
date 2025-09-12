@@ -706,7 +706,7 @@ export interface ResourceEndpointsInterface {
 }
 
 export interface RouteConfigInterface {
-    organizationEnabledRoutes: string[];
+    organizationEnabledRoutes: Record<string, string>;
 }
 
 /**
