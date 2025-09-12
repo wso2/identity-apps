@@ -1,5 +1,15 @@
 # @wso2is/identity-apps-core
 
+## 3.2.20
+
+### Patch Changes
+
+- [#9107](https://github.com/wso2/identity-apps/pull/9107) [`a7eb9668a6e17f7ca62178c0e57196813929bbf0`](https://github.com/wso2/identity-apps/commit/a7eb9668a6e17f7ca62178c0e57196813929bbf0) Thanks [@github-actions](https://github.com/apps/github-actions)! - Handle flow completion properly when workflow is engaged
+
+* [#9102](https://github.com/wso2/identity-apps/pull/9102) [`1b2dd944ec640feed8013c412f034176214ad1ec`](https://github.com/wso2/identity-apps/commit/1b2dd944ec640feed8013c412f034176214ad1ec) Thanks [@github-actions](https://github.com/apps/github-actions)! - Fix magiclink flow relying on flowId query param
+
+- [#9101](https://github.com/wso2/identity-apps/pull/9101) [`22ae52a58d66dcae633f8f4aac96bbaf1cf40c68`](https://github.com/wso2/identity-apps/commit/22ae52a58d66dcae633f8f4aac96bbaf1cf40c68) Thanks [@github-actions](https://github.com/apps/github-actions)! - Add missing i18n resources and consume flowType from response
+
 ## 3.2.19
 
 ### Patch Changes
