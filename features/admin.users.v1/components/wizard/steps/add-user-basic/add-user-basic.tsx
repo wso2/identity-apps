@@ -56,7 +56,7 @@ import {
     SelectFieldAdapter,
     TextFieldAdapter
 } from "@wso2is/form";
-import { FormApi, FormSpy } from "@wso2is/form/src";
+import { FormSpy } from "@wso2is/form/src";
 import { FormValue } from "@wso2is/forms";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
@@ -133,7 +133,6 @@ interface AddUserBasicProps extends IdentifiableComponentInterface {
 export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
     initialValues,
     triggerSubmit,
-    setTriggerSubmit,
     emailVerificationEnabled,
     onSubmit,
     isUserstoreRequired,
@@ -161,8 +160,6 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
     const { isUserStoreReadOnly, userStoresList } = useUserStores();
 
     const dispatch: Dispatch = useDispatch();
-
-    const submitButtonRef: MutableRefObject<HTMLButtonElement> = useRef<HTMLButtonElement>(null);
 
     const profileSchemas: ProfileSchemaInterface[] = useSelector(
         (state: AppState) => state.profile.profileSchemas);
