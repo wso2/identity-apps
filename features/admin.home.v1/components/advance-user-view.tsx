@@ -105,9 +105,12 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
         HomeConstants.FEATURE_DICTIONARY.FEATURE_ANNOUNCEMENT
     );
     const isAdminNoticeEnabled: boolean = useSelector((state: AppState) => {
-        return state?.config?.ui?.isAdminNoticeEnabled;
+        return state?.config?.ui?.adminNotice?.enabled;
     });
-    const [ adminNoticeEnabled, setAdminNoticeEnabled ] = useState<boolean>(false);
+    const plannedRollOutDate: string = useSelector((state: AppState) => {
+        return state?.config?.ui?.adminNotice?.plannedRollOutDate;
+    });
+    const [ adminNoticeEnabled, setAdminNoticeEnabled ] = useState<boolean>(isAdminNoticeEnabled);
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateListItemInterface>(null);
@@ -527,29 +530,31 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                 <AdminNotice
                     title={ (
                         <Trans i18nKey={ "console:common.quickStart.sections.adminNotice.title" }>
-                            Permission change in <b>Editor - Users</b> and <b>Editor - Applications</b> console roles
+                            Changes to Console Role Permissions
                         </Trans>
                     ) }
                     description={ (
-                        <Trans i18nKey={ "console:common.quickStart.sections.adminNotice.description" }>
-                            Effective from [date], we are changing some of the key permission changes in 
-                            <b>Editor - Users</b> and <b>Editor - Applications</b> console roles.
+                        <Trans
+                            i18nKey={ "console:common.quickStart.sections.adminNotice.description" }
+                            tOptions={ { date: plannedRollOutDate } }>
+                            Starting <b>{ plannedRollOutDate }</b>, we are updating some of the permissions in
+                            the <b>Editor - Users</b> and <b>Editor - Applications</b>.
                         </Trans>
                     ) }
                     instructions={ [
                         <Trans
-                            key="admin-notice-instruction-0"
+                            components={ { 1: <b /> } }
                             i18nKey={ "console:common.quickStart.sections.adminNotice.instructions.0" }
+                            key="admin-notice-instruction-0"
                         >
-                            <b>Editor - Users</b> role will no longer have access to role meta data editing
-                            and permission changes.
+                            <b>Editor - Users</b>: No longer able to edit role metadata or change permissions.
                         </Trans>,
                         <Trans
-                            key="admin-notice-instruction-1"
+                            components={ { 1: <b /> } }
                             i18nKey={ "console:common.quickStart.sections.adminNotice.instructions.1" }
+                            key="admin-notice-instruction-1"
                         >
-                            <b>Editor - Applications</b> role will no longer have access to role assignments
-                            to users and groups.
+                            <b>Editor - Applications</b>: No longer able to assign roles to users or groups.
                         </Trans>
                     ] }
                     setDisplayBanner={ setAdminNoticeEnabled }

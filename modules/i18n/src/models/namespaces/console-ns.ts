@@ -243,7 +243,10 @@ export interface ConsoleNS {
                 adminNotice: {
                     title: string;
                     description: string;
-                    instructions: string[];
+                    instructions: {
+                        0: string;
+                        1: string;
+                    }
                 };
                 integrateApps: {
                     actions: {

@@ -27,7 +27,6 @@ import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, useState } from "react";
-import { Trans } from "react-i18next";
 import { Icon } from "semantic-ui-react";
 
 /**
