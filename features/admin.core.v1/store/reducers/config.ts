@@ -204,6 +204,10 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
         },
         i18n: null,
         ui: {
+            adminNotice: {
+                enabled: undefined,
+                plannedRollOutDate: undefined
+            },
             announcements: [],
             appCopyright: "",
             appLogo: {
@@ -273,10 +277,6 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 microsoft: {
                     enabled: false
                 }
-            },
-            adminNotice: {
-                enabled: undefined,
-                plannedRollOutDate: undefined
             },
             isClaimUniquenessValidationEnabled: undefined,
             isClientSecretHashEnabled: undefined,
