@@ -49,6 +49,7 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import { ProfileUtils } from "@wso2is/core/utils";
 import {
+    AnyObject,
     FinalForm,
     FinalFormField,
     FormRenderProps,
@@ -363,10 +364,14 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
         resolveNamefieldAttributes();
     }, []);
 
+    let formSubmit: (
+        event?: Partial<Pick<React.SyntheticEvent, "preventDefault" | "stopPropagation">>
+    ) => Promise<AnyObject | undefined> | undefined;
+
     useEffect(() => {
         if (!triggerSubmitRef.current && triggerSubmit) {
             // Trigger the form submission.
-            submitButtonRef.current?.click();
+            formSubmit();
         }
 
         triggerSubmitRef.current = triggerSubmit;
@@ -1103,26 +1108,6 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
         onSubmit(decodedFormValues);
     };
 
-    /**
-     * Handles the submit button click.
-     * Responsible for resetting the submit state in the parent component if there are validation errors. And also
-     * submitting the form if there are no validation errors.
-     *
-     * @param form - The form API.
-     * @param hasValidationErrors - Whether the form has validation errors.
-     */
-    const onSubmitClick = (form: FormApi, hasValidationErrors: boolean): void => {
-        if (hasValidationErrors) {
-            // If there are validation errors, do not submit the form.
-            // Reset the trigger submit state in the parent component.
-            setTriggerSubmit();
-
-            return;
-        }
-
-        form.submit();
-    };
-
     if (isUserStoreRequestLoading || isUserStoreRequestValidating || isAttributesRequestLoading) {
         return (
             <OxygenGrid container spacing={ 3 }>
@@ -1146,7 +1131,10 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
             onSubmit={ handleFormSubmit }
             data-testid="user-mgt-add-user-form"
             data-componentid="user-mgt-add-user-form"
-            render={ ({ handleSubmit, form, hasValidationErrors }: FormRenderProps) => {
+            render={ ({ handleSubmit, form }: FormRenderProps) => {
+                // To trigger form submission externally.
+                formSubmit = handleSubmit;
+
                 return (
                     <form onSubmit={ handleSubmit }>
                         <Grid>
@@ -1352,12 +1340,6 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                                 </Grid.Row>
                             ) }
                         </Grid>
-                        { /** This hidden button is used to submit the form programmatically */ }
-                        <button
-                            ref={ submitButtonRef }
-                            onClick={ () => onSubmitClick(form, hasValidationErrors) }
-                            hidden
-                        />
                     </form>
                 );
             } }

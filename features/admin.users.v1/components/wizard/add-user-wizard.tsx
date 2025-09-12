@@ -275,11 +275,12 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
         // The user is created in the organization.
         wizardStepArray.push(...filterSteps([ WizardStepsFormTypes.BASIC_DETAILS ]));
-        setSubmitStep(WizardStepsFormTypes.BASIC_DETAILS);
+        let finalSubmitStep: WizardStepsFormTypes = WizardStepsFormTypes.BASIC_DETAILS;
+
         // If groups are present, show the group selection step.
         if (fixedGroupList?.length > 0) {
             wizardStepArray.push(...filterSteps([ WizardStepsFormTypes.GROUP_LIST ]));
-            setSubmitStep(WizardStepsFormTypes.GROUP_LIST);
+            finalSubmitStep = WizardStepsFormTypes.GROUP_LIST;
         }
 
         // If the summary step is enabled, show the summary step.
@@ -289,6 +290,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             ]));
         }
 
+        setSubmitStep(finalSubmitStep);
         setWizardSteps(wizardStepArray);
         setIsStepsUpdated(true);
     }, [
