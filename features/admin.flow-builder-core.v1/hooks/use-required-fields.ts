@@ -17,11 +17,14 @@
  */
 
 import cloneDeep from "lodash-es/cloneDeep";
+import get from "lodash-es/get";
 import { ReactElement, useEffect } from "react";
 import useValidationStatus from "./use-validation-status";
 import ValidationConstants from "../constants/validation-constants";
 import Notification, { NotificationType } from "../models/notification";
 import { Resource } from "../models/resources";
+
+const IDP_NAME_PLACEHOLDER: string = "{{IDP_NAME}}";
 
 /**
  * Interface for the required field.
@@ -55,7 +58,8 @@ const useRequiredFields = (
         fields.forEach((field: RequiredFieldInterface) => {
             const errorId: string = buildErrorId();
 
-            if (!resource?.config[field.name] && !resource?.[field.name]) {
+            if (!resource?.config?.[field.name] && !resource?.[field.name]
+                && !getNestedProperty(resource, field.name)) {
                 if (!getNotification(errorId)) {
                     const error: Notification = new Notification(errorId, generalMessage, NotificationType.ERROR);
 
@@ -88,6 +92,23 @@ const useRequiredFields = (
             }
         });
     }, [ resource, fields, generalMessage, getNotification ]);
+
+    /**
+     * Checks if a nested property exists in an object.
+     *
+     * @param obj - The object to check.
+     * @param path - The path to the nested property.
+     * @returns True if the property exists, false otherwise.
+     */
+    const getNestedProperty = (obj: Resource, path: string): string => {
+        if (!resource || !path.includes(".")) {
+            return "";
+        }
+
+        const value: string = get(obj, path, null);
+
+        return (value === IDP_NAME_PLACEHOLDER) ? "" : value;
+    };
 
     /**
      * Cleanup function to remove notifications on unmount.

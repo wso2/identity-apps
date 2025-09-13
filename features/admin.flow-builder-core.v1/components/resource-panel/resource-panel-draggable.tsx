@@ -40,6 +40,7 @@ const ResourcePanelDraggable: FunctionComponent<ResourcePanelDraggablePropsInter
     resource,
     onAdd,
     type = "draggable",
+    disabled = false,
     ...rest
 }: ResourcePanelDraggablePropsInterface): ReactElement => (
     <Draggable
@@ -48,9 +49,10 @@ const ResourcePanelDraggable: FunctionComponent<ResourcePanelDraggablePropsInter
         data={ { dragged: resource } }
         type={ resource.type }
         accept={ [ resource.type ] }
+        disabled={ disabled }
         { ...rest }
     >
-        <ResourcePanelItem resource={ resource } type={ type } onAdd={ onAdd } />
+        <ResourcePanelItem resource={ resource } type={ type } onAdd={ onAdd } disabled={ disabled } />
     </Draggable>
 );
 

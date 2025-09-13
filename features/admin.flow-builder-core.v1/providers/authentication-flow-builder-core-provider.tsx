@@ -109,7 +109,11 @@ const AuthenticationFlowBuilderCoreProvider = ({
     const [ language, setLanguage ] = useState<string>(I18nConstants.DEFAULT_FALLBACK_LANGUAGE);
     const [ isI18nSubmitting, setIsI18nSubmitting ] = useState<boolean>(false);
 
-    const { data: flowMetadata, error: flowMetadataError } = useGetMetadata(flowType, !!flowType);
+    const {
+        data: flowMetadata,
+        error: flowMetadataError,
+        isLoading: isFlowMetadataLoading
+    } = useGetMetadata(flowType, !!flowType);
     const {
         data: textPreference,
         error: textPreferenceFetchError,
@@ -332,6 +336,7 @@ const AuthenticationFlowBuilderCoreProvider = ({
                         customTextPreferenceMetaLoading,
                     isBrandingEnabled,
                     isCustomI18nKey,
+                    isFlowMetadataLoading,
                     isI18nSubmitting,
                     isResourcePanelOpen,
                     isResourcePropertiesPanelOpen,

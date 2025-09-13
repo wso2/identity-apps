@@ -153,6 +153,10 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      * Indicates whether branding is enabled for the organization.
      */
     isBrandingEnabled?: boolean;
+    /**
+     * Indicates whether the flow metadata is still loading.
+     */
+    isFlowMetadataLoading?: boolean;
 }
 
 /**
@@ -168,6 +172,7 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
         i18nTextLoading: false,
         isBrandingEnabled: false,
         isCustomI18nKey: () => false,
+        isFlowMetadataLoading: false,
         isResourcePanelOpen: true,
         isResourcePropertiesPanelOpen: false,
         language: "",

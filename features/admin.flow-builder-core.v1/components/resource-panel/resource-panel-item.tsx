@@ -49,6 +49,10 @@ export interface ResourcePanelItemProps
      * @param resource - Added resource.
      */
     onAdd?: (resource: Resource) => void;
+    /**
+     * Flag to disable the panel item.
+     */
+    disabled?: boolean;
 }
 
 /**
@@ -63,6 +67,7 @@ const ResourcePanelItem: FunctionComponent<ResourcePanelItemProps> = ({
     resource,
     type = "static",
     onAdd,
+    disabled = false,
     ...rest
 }: ResourcePanelItemProps): ReactElement => (
     <>
@@ -93,6 +98,7 @@ const ResourcePanelItem: FunctionComponent<ResourcePanelItemProps> = ({
                                 <IconButton
                                     className="flow-builder-element-panel-item-add-button"
                                     onClick={ () => onAdd(resource) }
+                                    disabled={ disabled }
                                 >
                                     <PlusIcon size={ 14 } />
                                 </IconButton>
