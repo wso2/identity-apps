@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.30.19
+
+### Patch Changes
+
+- [#9111](https://github.com/wso2/identity-apps/pull/9111) [`8d78bad97c1129733401534c8fcf34e2527c2485`](https://github.com/wso2/identity-apps/commit/8d78bad97c1129733401534c8fcf34e2527c2485) Thanks [@github-actions](https://github.com/apps/github-actions)! - Onboard admin notice component.
+
 ## 2.30.18
 
 ### Patch Changes

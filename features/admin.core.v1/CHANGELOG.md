@@ -1,5 +1,21 @@
 # @wso2is/admin.core.v1
 
+## 2.49.35
+
+### Patch Changes
+
+- [#8932](https://github.com/wso2/identity-apps/pull/8932) [`aff80782974da7d297c2cf97a13a148293824b13`](https://github.com/wso2/identity-apps/commit/aff80782974da7d297c2cf97a13a148293824b13) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - remove IS related logos from console
+
+* [#9111](https://github.com/wso2/identity-apps/pull/9111) [`8d78bad97c1129733401534c8fcf34e2527c2485`](https://github.com/wso2/identity-apps/commit/8d78bad97c1129733401534c8fcf34e2527c2485) Thanks [@github-actions](https://github.com/apps/github-actions)! - Onboard admin notice component.
+
+* Updated dependencies [[`8d78bad97c1129733401534c8fcf34e2527c2485`](https://github.com/wso2/identity-apps/commit/8d78bad97c1129733401534c8fcf34e2527c2485)]:
+  - @wso2is/admin.extensions.v1@2.40.4
+  - @wso2is/i18n@2.30.19
+  - @wso2is/admin.flow-builder-core.v1@0.10.27
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.27
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.27
+  - @wso2is/admin.server-configurations.v1@2.35.49
+
 ## 2.49.34
 
 ### Patch Changes

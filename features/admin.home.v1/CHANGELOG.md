@@ -1,5 +1,16 @@
 # @wso2is/admin.home.v1
 
+## 1.7.27
+
+### Patch Changes
+
+- [#9111](https://github.com/wso2/identity-apps/pull/9111) [`8d78bad97c1129733401534c8fcf34e2527c2485`](https://github.com/wso2/identity-apps/commit/8d78bad97c1129733401534c8fcf34e2527c2485) Thanks [@github-actions](https://github.com/apps/github-actions)! - Onboard admin notice component.
+
+- Updated dependencies [[`aff80782974da7d297c2cf97a13a148293824b13`](https://github.com/wso2/identity-apps/commit/aff80782974da7d297c2cf97a13a148293824b13), [`8d78bad97c1129733401534c8fcf34e2527c2485`](https://github.com/wso2/identity-apps/commit/8d78bad97c1129733401534c8fcf34e2527c2485)]:
+  - @wso2is/admin.core.v1@2.49.35
+  - @wso2is/admin.extensions.v1@2.40.4
+  - @wso2is/i18n@2.30.19
+
 ## 1.7.26
 
 ### Patch Changes
