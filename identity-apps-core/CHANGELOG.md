@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.2.21
+
+### Patch Changes
+
+- [#8932](https://github.com/wso2/identity-apps/pull/8932) [`aff80782974da7d297c2cf97a13a148293824b13`](https://github.com/wso2/identity-apps/commit/aff80782974da7d297c2cf97a13a148293824b13) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - remove IS related logos from console
+
 ## 3.2.20
 
 ### Patch Changes
