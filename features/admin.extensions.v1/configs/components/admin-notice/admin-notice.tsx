@@ -24,33 +24,50 @@ import List from "@oxygen-ui/react/List";
 import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import Typography from "@oxygen-ui/react/Typography";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, useState } from "react";
-import { Trans } from "react-i18next";
-import { useSelector } from "react-redux";
 import { Icon } from "semantic-ui-react";
 
 /**
- * Props interface of {@link AdminDataSeparationNotice}
+ * Props interface of {@link AdminNotice}
  */
-export interface AdminDataSeparationNoticeProps extends IdentifiableComponentInterface {
+export interface AdminNoticeProps extends IdentifiableComponentInterface {
 
+    /**
+     * Title of the notice.
+     */
+    title: ReactElement;
+    /**
+     * Description of the notice.
+     */
+    description: ReactElement;
+    /**
+     * Instructions related to the notice.
+     */
+    instructions: ReactElement[];
+    /**
+     * Function to set the display state of the banner.
+     */
     setDisplayBanner?: (display: boolean) => void;
 }
 
 /**
- * Section to display new feature announcements.
+ * Section to display announcements.
  *
  * @param props - Props injected to the component.
- * @returns AdminDataSeparationNotice component.
+ * @returns AdminNotice component.
  */
-const AdminDataSeparationNotice: FunctionComponent<AdminDataSeparationNoticeProps> = ({
-    setDisplayBanner
-}: AdminDataSeparationNoticeProps): ReactElement => {
+const AdminNotice: FunctionComponent<AdminNoticeProps> = (props: AdminNoticeProps): ReactElement => {
 
-    const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
+    const {
+        title,
+        description,
+        instructions,
+        setDisplayBanner,
+        [ "data-componentid" ]: componentId
+    } = props;
+
     const [ viewDetails, setViewDetails ] = useState<boolean>(true);
 
     /**
@@ -68,53 +85,33 @@ const AdminDataSeparationNotice: FunctionComponent<AdminDataSeparationNoticeProp
                         listStyleType: "disc",
                         pl: 4
                     } }>
-                    <ListItem
-                        component="li"
-                        disablePadding
-                        sx={ {
-                            display: "list-item",
-                            listStylePosition: "inherit",
-                            listStyleType: "inherit",
-                            wordBreak: "break-word"
-                        } }
-                    >
-                        <ListItemText>
-                            <Typography variant="body1">
-                                <Trans>
-                                    Admin users can continue to sign in to both the EU and US regions
-                                    using the same credentials. However, <strong>password changes made
-                                    in one region will not be synced with the other</strong>. For example,
-                                    if an admin resets their password in the EU region, it will not
-                                    be reflected in the US region.
-                                </Trans>
-                            </Typography>
-                        </ListItemText>
-                    </ListItem>
-                    <ListItem
-                        component="li"
-                        disablePadding
-                        sx={ {
-                            display: "list-item",
-                            listStylePosition: "inherit",
-                            listStyleType: "inherit",
-                            wordBreak: "break-word"
-                        } }
-                    >
-                        <ListItemText>
-                            <Typography variant="body1">
-                                <Trans>
-                                    <strong>Billing and subscription data</strong> related to accounts
-                                    will be <strong>managed independently within each region.</strong>
-                                </Trans>
-                            </Typography>
-                        </ListItemText>
-                    </ListItem>
+                    {
+                        instructions.map((instruction: ReactElement, index: number) => (
+                            <ListItem
+                                key={ index }
+                                component="li"
+                                disablePadding
+                                sx={ {
+                                    display: "list-item",
+                                    listStylePosition: "inherit",
+                                    listStyleType: "inherit",
+                                    wordBreak: "break-word"
+                                } }
+                            >
+                                <ListItemText>
+                                    <Typography variant="body1">
+                                        { instruction }
+                                    </Typography>
+                                </ListItemText>
+                            </ListItem>
+                        ))
+                    }
                 </List>
             </Box>
         );
     };
 
-    const classes: any = classNames( { "admin-data-alert-expanded-view": viewDetails } );
+    const classes: any = classNames( { "admin-data-alert-expanded-view" : viewDetails } );
 
     return (
         <Alert
@@ -128,9 +125,7 @@ const AdminDataSeparationNotice: FunctionComponent<AdminDataSeparationNoticeProp
             } }
         >
             <AlertTitle className="alert-title" variant="h5">
-                <Trans components={ { strong: <strong /> } }>
-                    Changes to Admin Data Handling
-                </Trans>
+                <strong>{ title }</strong>
             </AlertTitle>
 
             <Box
@@ -148,7 +143,7 @@ const AdminDataSeparationNotice: FunctionComponent<AdminDataSeparationNoticeProp
             >
                 <Button
                     className="banner-view-hide-details"
-                    data-componentid="outdated-app-view-details-button"
+                    data-componentid={ componentId + "-view-details-button" }
                     size="small"
                     onClick={ () => setViewDetails(!viewDetails) }
                     sx={ {
@@ -171,11 +166,7 @@ const AdminDataSeparationNotice: FunctionComponent<AdminDataSeparationNoticeProp
             </Box>
 
             <Typography variant="body1" sx={ { mt: 1 } }>
-                <Trans>
-                    As of <strong>June 27, 2025</strong>, we have
-                    introduced <strong>region-based separation of admin user data</strong> in { productName } to
-                    meet compliance and data residency requirements.
-                </Trans>
+                { description }
             </Typography>
 
             { viewDetails && resolveBannerViewDetails() }
@@ -184,4 +175,4 @@ const AdminDataSeparationNotice: FunctionComponent<AdminDataSeparationNoticeProp
     );
 };
 
-export default AdminDataSeparationNotice;
+export default AdminNotice;
