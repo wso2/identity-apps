@@ -200,6 +200,7 @@ export const flows: flowsNS = {
                 input: {
                     general: "Required fields are not properly configured for the input field with ID <1>{{id}}</1>.",
                     identifier: "Input field must be mapped to an attribute for data collection.",
+                    idpName: "Connection is required and must be selected.",
                     label: "Input field must have a label to be displayed to users."
                 },
                 otpInput: {
