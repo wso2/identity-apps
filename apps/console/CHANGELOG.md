@@ -1,5 +1,18 @@
 # @wso2is/console
 
+## 2.78.30
+
+### Patch Changes
+
+- [#9114](https://github.com/wso2/identity-apps/pull/9114) [`d6c6703f9619deee2213b65ecabd091696080df6`](https://github.com/wso2/identity-apps/commit/d6c6703f9619deee2213b65ecabd091696080df6) Thanks [@github-actions](https://github.com/apps/github-actions)! - Fix the auto-selection functionality of the connections and add validation
+
+- Updated dependencies [[`d6c6703f9619deee2213b65ecabd091696080df6`](https://github.com/wso2/identity-apps/commit/d6c6703f9619deee2213b65ecabd091696080df6)]:
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.28
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.28
+  - @wso2is/i18n@2.30.20
+  - @wso2is/admin.core.v1@2.49.36
+  - @wso2is/admin.server-configurations.v1@2.35.50
+
 ## 2.78.29
 
 ### Patch Changes
