@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { FormHelperText } from "@mui/material";
 import Alert from "@oxygen-ui/react/Alert";
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import Stack from "@oxygen-ui/react/Stack";
@@ -28,9 +29,11 @@ import {
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
 import useAuthenticationFlowBuilderCore from
     "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
+import useValidationStatus from "@wso2is/admin.flow-builder-core.v1/hooks/use-validation-status";
 import { ExecutorConnectionInterface } from "@wso2is/admin.flow-builder-core.v1/models/metadata";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useMemo } from "react";
+import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo } from "react";
+import "./federation-properties.scss";
 
 /**
  * Props interface of {@link FederationProperties}
@@ -52,6 +55,20 @@ const FederationProperties: FunctionComponent<FederationPropertiesPropsInterface
     onChange
 }: FederationPropertiesPropsInterface): ReactElement => {
     const { metadata } = useAuthenticationFlowBuilderCore();
+    const { selectedNotification } = useValidationStatus();
+
+    /**
+     * Get the error message for the identifier field.
+     */
+    const errorMessage: string = useMemo(() => {
+        const key: string = `${resource?.id}_data.action.executor.meta.idpName`;
+
+        if (selectedNotification?.hasResourceFieldNotification(key)) {
+            return selectedNotification?.getResourceFieldNotification(key);
+        }
+
+        return "";
+    }, [ resource, selectedNotification ]);
 
     /**
      * Find available connections for the current executor.
@@ -69,40 +86,25 @@ const FederationProperties: FunctionComponent<FederationPropertiesPropsInterface
      * Resolve current selected value for the connection.
      */
     const selectedValue: string = useMemo(() => {
-        if (!resource?.data?.action?.executor?.meta?.idpName) {
-            return "";
+        if (!resource?.data?.action?.executor?.meta?.idpName ||
+            resource?.data?.action?.executor?.meta?.idpName === IDP_NAME_PLACEHOLDER) {
+            return null;
         }
 
         return availableConnections.find(
             (connection: string) =>
                 connection === resource?.data?.action?.executor?.meta?.idpName
-        ) || "";
+        ) || null;
     }, [ availableConnections, resource?.data?.action?.executor?.meta?.idpName ]);
-
-    /**
-     * If the IDP name is a placeholder, set the first available connection as the default.
-     */
-    useEffect(() => {
-        if (resource?.data?.action?.executor?.meta?.idpName !== IDP_NAME_PLACEHOLDER
-            || availableConnections.length < 0) {
-            return;
-        }
-
-        const timeoutId: ReturnType<typeof setTimeout> = setTimeout(() => {
-            onChange("action.executor.meta.idpName", availableConnections[0], resource);
-        }, 500);
-
-        return () => clearTimeout(timeoutId);
-    }, [ resource.data?.action?.executor?.meta?.idpName, availableConnections ]);
 
     const handleCreateConnection = (): void => {
         history.push(AppConstants.getPaths().get("CONNECTION_TEMPLATES"));
     };
 
     return (
-        <Stack gap={ 2 } data-componentid={ componentId }>
+        <Stack gap={ 2 } data-componentid={ componentId } className="flow-builder-execution-federation-properties">
             <Typography variant="body2">
-                Select a connection from the following list to link it with the password recovery flow.
+                Select a connection from the following list to link it with the invited registration flow.
             </Typography>
             <Autocomplete
                 disablePortal
@@ -111,19 +113,31 @@ const FederationProperties: FunctionComponent<FederationPropertiesPropsInterface
                 getOptionLabel={ (connection: string) => connection }
                 sx={ { width: "100%" } }
                 renderInput={ (params: AutocompleteRenderInputParams) => (
-                    <TextField { ...params } label="Connection" placeholder="Select a connection" />
+                    <TextField
+                        { ...params }
+                        label="Connection"
+                        placeholder="Select a connection"
+                        error={ !!errorMessage }
+                    />
                 ) }
                 placeholder="Select a connection"
                 value={ selectedValue }
                 onChange={ (_: ChangeEvent<HTMLInputElement>, connection: string) => {
-                    onChange("action.executor.meta.idpName", connection, resource);
+                    onChange("action.executor.meta.idpName", connection === null ? "" : connection, resource);
                 } }
             />
+            {
+                errorMessage && (
+                    <FormHelperText error>
+                        { errorMessage }
+                    </FormHelperText>
+                )
+            }
             { !availableConnections?.length && (
                 <Alert severity="warning" data-componentid={ `${componentId}-no-connections-warning` }>
                     No connections available. Please create a
                     <a style={ { cursor: "pointer" } } onClick={ handleCreateConnection }> connection </a>
-                    to link with the password recovery flow.
+                    to link with the invited registration flow.
                 </Alert>
             ) }
         </Stack>

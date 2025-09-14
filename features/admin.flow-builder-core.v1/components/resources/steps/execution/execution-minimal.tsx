@@ -29,7 +29,7 @@ import { CommonStepFactoryPropsInterface } from "../common-step-factory";
 /**
  * Props interface of {@link ExecutionMinimal}
  */
-export type ExecutionMinimalPropsInterface = Pick<CommonStepFactoryPropsInterface, "id" | "data" | "resource"> &
+export type ExecutionMinimalPropsInterface = Pick<CommonStepFactoryPropsInterface, "resource"> &
     IdentifiableComponentInterface;
 
 /**
@@ -39,8 +39,6 @@ export type ExecutionMinimalPropsInterface = Pick<CommonStepFactoryPropsInterfac
  * @returns Execution (Minimal) node component.
  */
 const ExecutionMinimal: FC<ExecutionMinimalPropsInterface> = ({
-    id,
-    data,
     resource,
     ["data-componentid"]: componentId = "minimal-execution"
 }: ExecutionMinimalPropsInterface): ReactElement => {
@@ -55,19 +53,19 @@ const ExecutionMinimal: FC<ExecutionMinimalPropsInterface> = ({
                 color: (theme as any).colorSchemes.dark.palette.text.primary
             } }
             onClick={ () => {
-                setLastInteractedStepId(id);
+                setLastInteractedStepId(resource.id);
                 setLastInteractedResource(resource);
             } }
         >
             <Handle
                 type="target"
-                id={ `${id}${VisualFlowConstants.FLOW_BUILDER_PREVIOUS_HANDLE_SUFFIX}` }
+                id={ `${resource.id}${VisualFlowConstants.FLOW_BUILDER_PREVIOUS_HANDLE_SUFFIX}` }
                 position={ Position.Left }
             />
-            <ExecutionFactory data={ data } />
+            <ExecutionFactory resource={ resource } />
             <Handle
                 type="source"
-                id={ `${id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}` }
+                id={ `${resource.id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}` }
                 position={ Position.Right }
             />
         </Card>
