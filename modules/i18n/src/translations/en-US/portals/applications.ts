@@ -1066,7 +1066,14 @@ export const applications: ApplicationsNS = {
                                 totp: {
                                     description: "Enable additional authentication layer with Time "
                                         + "based OTP.",
-                                    heading: "Add TOTP as a second factor"
+                                    heading: "Add TOTP as a second factor",
+                                    info: {
+                                        totpWithIdentifierFirstEnabled: "TOTP authenticator with Identifier First handler is configured.",
+                                        totpWithIdentifierFirstEnabledMessage: "Configuring TOTP authenticator " +
+                                        "with Identifier First handler is not recommended as <2>TOTP progressive enrollment</2> is " +
+                                        "enabled by default. You can disable TOTP progressive enrollment through " +
+                                        " <4> Conditional Authentication</4> script."
+                                    }
                                 },
                                 usernameless: {
                                     description: "Enable users to log in using a passkey, FIDO security key or "

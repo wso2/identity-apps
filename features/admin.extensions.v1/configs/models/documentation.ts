@@ -217,6 +217,7 @@ interface ApplicationsDocumentationLinksInterface {
         },
         signInMethod: {
             fido: string;
+            totp: string;
         };
         singlePageApplication: {
             quickStart: {
