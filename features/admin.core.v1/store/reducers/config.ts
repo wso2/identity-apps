@@ -270,6 +270,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             isSAASDeployment: undefined,
             isSignatureValidationCertificateAliasEnabled: undefined,
             isTrustedAppConsentRequired: undefined,
+            isWSFedProtocolTemplateEnabled: undefined,
             listAllAttributeDialects: undefined,
             passwordPolicyConfigs: null,
             primaryUserStoreDomainName: "",
