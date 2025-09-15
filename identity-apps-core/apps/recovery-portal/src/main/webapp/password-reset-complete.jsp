@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2016-2024, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2016-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -66,7 +66,7 @@
     String ERROR_CODE = "errorCode";
     String PASSWORD_RESET_PAGE = "password-reset.jsp";
     String AUTO_LOGIN_COOKIE_NAME = "ALOR";
-    String AUTO_LOGIN_FLOW_TYPE = "RECOVERY";
+    String AUTO_LOGIN_FLOW_TYPE = "ACCOUNT_RECOVERY";
     String AUTO_LOGIN_COOKIE_DOMAIN = "AutoLoginCookieDomain";
     String USERSTORE_DOMAIN = "userstoredomain";
     String RECOVERY_TYPE_INVITE = "invite";
@@ -80,7 +80,7 @@
             IdentityManagementEndpointUtil.getStringValue(request.getSession().getAttribute("confirmationKey"));
     String newPassword = request.getParameter("reset-password");
     String callback = request.getParameter("callback");
-    String spId = request.getParameter("spId");
+    String spId = Encode.forJava(request.getParameter("spId"));
     if (StringUtils.isBlank(spId)) {
         spId = (String)request.getAttribute("spId");
     }
@@ -89,32 +89,32 @@
         sp = (String)request.getAttribute("sp");
     }
     String userStoreDomain = request.getParameter(USERSTORE_DOMAIN);
-    String type = request.getParameter("type");
+    String type = Encode.forJava(request.getParameter("type"));
     String orgId = request.getParameter("orgid");
     String username = null;
-    String tenantAwareUsername = null;
     String applicationName = null;
     boolean useRecoveryV2API = Boolean.parseBoolean((String)request.getAttribute("useRecoveryV2API"));
     String tenantDomainFromQuery = request.getParameter("tenantDomainFromQuery");
     if (StringUtils.isNotBlank(tenantDomainFromQuery)) {
         tenantDomain = tenantDomainFromQuery;
     }
-
+    String cookieDomain = application.getInitParameter(AUTO_LOGIN_COOKIE_DOMAIN);
     PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
     ApplicationDataRetrievalClient applicationDataRetrieval = new ApplicationDataRetrievalClient();
     Boolean isAutoLoginEnable = preferenceRetrievalClient.checkAutoLoginAfterPasswordRecoveryEnabled(tenantDomain);
 
     if (StringUtils.isNotBlank(callback) &&
         StringUtils.isNotBlank(userStoreDomain)) {
-        if (StringUtils.isNotBlank(sp)) {
+        if (StringUtils.isNotBlank(sp) && !StringUtils.equalsIgnoreCase(sp, "null")) {
             applicationName = sp;
         } else if (callback.contains(CONSOLE_APP_NAME.toLowerCase())) {
             applicationName = CONSOLE_APP_NAME;
-        } else if (callback.contains(MY_ACCOUNT_APP_NAME.toLowerCase().replaceAll("\\s+", ""))) {
+        } else if (callback.contains(MY_ACCOUNT_APP_NAME.toLowerCase().replaceAll("\\s+", "")) ||
+                isUserPortalUrl(callback, tenantDomain, application)) {
             applicationName = MY_ACCOUNT_APP_NAME;
         }
     } else {
-            if (StringUtils.isNotBlank(spId)) {
+        if (StringUtils.isNotBlank(spId) && !StringUtils.equalsIgnoreCase(spId, "null")) {
             try {
                 if (spId.equals(MY_ACCOUNT_APP_ID)) {
                     applicationName = MY_ACCOUNT_APP_NAME;
@@ -124,6 +124,8 @@
             } catch (Exception e) {
                 // Ignored and fallback to my account page url.
             }
+        } else if (isUserPortalUrl(callback, tenantDomain, application)) {
+            applicationName = MY_ACCOUNT_APP_NAME;
         }
     }
 
@@ -169,6 +171,13 @@
             resetRequest.setFlowConfirmationCode(flowConfirmationCode);
             resetRequest.setPassword(request.getParameter("reset-password"));
             ResetResponse resetResponse = recoveryApiV2.resetUserPassword(resetRequest, tenantDomain, requestHeaders);
+            if (StringUtils.isBlank(username)) {
+                username = Encode.forJava(request.getParameter("username"));
+            }
+            if (isAutoLoginEnable && StringUtils.isNotBlank(username) && StringUtils.isNotBlank(tenantDomain)) {
+                handleAutoLogin(request, response, username, userStoreDomain, tenantDomain, 
+                    AUTO_LOGIN_FLOW_TYPE, AUTO_LOGIN_COOKIE_NAME, cookieDomain);
+            }
         } catch (ApiException e) {
             if (!StringUtils.isBlank(username)) {
                 request.setAttribute("username", username);
@@ -211,28 +220,8 @@
             userStoreDomain = user.getRealm();
 
             if (isAutoLoginEnable) {
-                if (StringUtils.isNotBlank(userStoreDomain)) {
-                    tenantAwareUsername = userStoreDomain + "/" + username + "@" + tenantDomain;
-                }
-
-                String cookieDomain = application.getInitParameter(AUTO_LOGIN_COOKIE_DOMAIN);
-                JSONObject contentValueInJson = new JSONObject();
-                contentValueInJson.put("username", tenantAwareUsername);
-                contentValueInJson.put("createdTime", System.currentTimeMillis());
-                contentValueInJson.put("flowType", AUTO_LOGIN_FLOW_TYPE);
-                if (StringUtils.isNotBlank(cookieDomain)) {
-                    contentValueInJson.put("domain", cookieDomain);
-                }
-                String content = contentValueInJson.toString();
-
-                JSONObject cookieValueInJson = new JSONObject();
-                cookieValueInJson.put("content", content);
-                String signature = Base64.getEncoder().encodeToString(IdentityUtil.signWithTenantKey(content, tenantDomain));
-                cookieValueInJson.put("signature", signature);
-                String cookieValue = Base64.getEncoder().encodeToString(cookieValueInJson.toString().getBytes());
-
-                IdentityManagementEndpointUtil.setCookie(request, response, AUTO_LOGIN_COOKIE_NAME, cookieValue,
-                    300, SameSiteCookie.NONE, "/", cookieDomain);
+                handleAutoLogin(request, response, username, userStoreDomain, tenantDomain, 
+                    AUTO_LOGIN_FLOW_TYPE, AUTO_LOGIN_COOKIE_NAME, cookieDomain);
             }
         } catch (ApiException e) {
 
@@ -286,6 +275,50 @@
     session.invalidate();
 %>
 
+<%!
+    private boolean isUserPortalUrl(String callback, String tenantDomain, ServletContext application) {
+
+        String userPortalUrl = IdentityManagementEndpointUtil.getUserPortalUrl(
+                application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL),
+                tenantDomain);
+        return StringUtils.equals(callback, userPortalUrl);
+    }
+
+    private void handleAutoLogin(
+        HttpServletRequest request, HttpServletResponse response,
+        String username, String userStoreDomain, String tenantDomain,
+        String autoLoginFlowType, String autoLoginCookieName, 
+        String cookieDomain
+    ) throws Exception {
+        
+        String tenantAwareUsername;
+        if (StringUtils.isNotBlank(userStoreDomain)) {
+            tenantAwareUsername = userStoreDomain + "/" + username + "@" + tenantDomain;
+        } else {
+            tenantAwareUsername = username + "@" + tenantDomain;
+        }
+        JSONObject contentValueInJson = new JSONObject();
+        contentValueInJson.put("username", tenantAwareUsername);
+        contentValueInJson.put("createdTime", System.currentTimeMillis());
+        contentValueInJson.put("flowType", autoLoginFlowType);
+        if (StringUtils.isNotBlank(cookieDomain)) {
+            contentValueInJson.put("domain", cookieDomain);
+        }
+        String content = contentValueInJson.toString();
+
+        JSONObject cookieValueInJson = new JSONObject();
+        cookieValueInJson.put("content", content);
+        String signature = Base64.getEncoder().encodeToString(IdentityUtil.signWithTenantKey(content, tenantDomain));
+        cookieValueInJson.put("signature", signature);
+        String cookieValue = Base64.getEncoder().encodeToString(cookieValueInJson.toString().getBytes());
+
+        IdentityManagementEndpointUtil.setCookie(request, response, autoLoginCookieName, cookieValue, 
+            300, SameSiteCookie.NONE, "/", cookieDomain);
+    }
+%>
+
+<% request.setAttribute("pageName", "password-reset-complete"); %>
+
 <%-- Data for the layout from the page --%>
 <%
     layoutData.put("isResponsePage", true);
@@ -305,7 +338,7 @@
     <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout">
+<body class="login-portal layout" data-response-type="success" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader" >
             <%-- product-title --%>

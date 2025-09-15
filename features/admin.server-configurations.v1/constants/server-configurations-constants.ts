@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -188,6 +188,12 @@ export class ServerConfigurationsConstants {
     public static readonly WSO2_ANALYTICS_ENGINE_CONNECTOR_CATEGORY_ID: string = "YW5hbHl0aWNzLWVuZ2luZQ";
 
     /**
+	 * This is a dummy connector ID to be used to display a new card in login and registration section
+     * for registration flow builder.
+	 */
+    public static readonly REGISTRATION_FLOW_BUILDER_CONNECTOR_ID: string = "REGISTRATION_FLOW_BUILDER";
+
+    /**
      * User email verification API Keyword constants.
      */
     public static readonly EMAIL_VERIFICATION_ENABLED: string = "EmailVerification.Enable";
@@ -243,6 +249,7 @@ export class ServerConfigurationsConstants {
         "Recovery.Question.Password.Forced.Enable";
 
     public static readonly RECOVERY_EMAIL_LINK_ENABLE: string = "Recovery.Notification.Password.emailLink.Enable";
+    public static readonly RECOVERY_EMAIL_OTP_ENABLE: string = "Recovery.Notification.Password.OTP.SendOTPInEmail";
     public static readonly RECOVERY_SMS_OTP_ENABLE: string = "Recovery.Notification.Password.smsOtp.Enable";
     public static readonly RECOVERY_OTP_USE_UPPERCASE: string =
         "Recovery.Notification.Password.OTP.UseUppercaseCharactersInOTP";
@@ -266,6 +273,7 @@ export class ServerConfigurationsConstants {
     public static readonly ORGANIZATION_SELF_SERVICE: string = "organization-self-service";
     public static readonly SELF_SIGNUP: string = "self-sign-up";
     public static readonly SSO_LOGIN_RECAPTCHA: string = "sso.login.recaptcha";
+    public static readonly EMAIL_VERIFICATION: string = "user-email-verification";
 
     /**
 	 * Login policies - account locking API Keyword constants.
@@ -281,6 +289,7 @@ export class ServerConfigurationsConstants {
     public static readonly ACCOUNT_LOCK_INTERNAL_NOTIFICATION_MANAGEMENT: string =
         "account.lock.handler.notification.manageInternally";
 
+    public static readonly ACCOUNT_LOCK_TIME_DEFAULT: string = "5";
     public static readonly NOTIFY_USER_ON_ACCOUNT_LOCK_INCREMENT: string =
         "account.lock.handler.notification.notifyOnLockIncrement";
 
@@ -346,8 +355,14 @@ export class ServerConfigurationsConstants {
     public static readonly CONFIGS_UPDATE_REQUEST_INVALID_STATUS_CODE_ERROR: string = "Received an invalid status " +
 		"code while updating the configurations.";
 
+    public static readonly CONFIGS_REVERT_REQUEST_INVALID_STATUS_CODE_ERROR: string = "Received an invalid status " +
+        "code while reverting the configurations to default.";
+
     public static readonly CONFIGS_UPDATE_REQUEST_ERROR: string = "An error occurred while updating the " +
 		"configurations.";
+
+    public static readonly CONFIGS_REVERT_REQUEST_ERROR: string = "An error occurred while reverting the " +
+        "configurations to default.";
 
     public static readonly ADMIN_ADVISORY_BANNER_CONFIGS_UPDATE_REQUEST_ERROR: string = "An error occurred " +
         "while updating the admin advisory banner configurations.";
@@ -364,9 +379,10 @@ export class ServerConfigurationsConstants {
    */
     public static readonly ACCOUNT_MANAGEMENT_CATEGORY_ID: string = "QWNjb3VudCBNYW5hZ2VtZW50";
     public static readonly ADMIN_FORCE_PASSWORD_RESET_CONNECTOR_ID: string = "YWRtaW4tZm9yY2VkLXBhc3N3b3JkLXJlc2V0";
-    public static readonly RECOVERY_LINK_PASSWORD_RESET: string = "Recovery.AdminPasswordReset.RecoveryLink";
-    public static readonly OTP_PASSWORD_RESET: string = "Recovery.AdminPasswordReset.OTP";
-    public static readonly OFFLINE_PASSWORD_RESET: string = "Recovery.AdminPasswordReset.Offline";
+    public static readonly ADMIN_FORCE_PASSWORD_RESET_EMAIL_LINK: string = "Recovery.AdminPasswordReset.RecoveryLink";
+    public static readonly ADMIN_FORCE_PASSWORD_RESET_EMAIL_OTP: string = "Recovery.AdminPasswordReset.OTP";
+    public static readonly ADMIN_FORCE_PASSWORD_RESET_SMS_OTP: string = "Recovery.AdminPasswordReset.SMSOTP";
+    public static readonly ADMIN_FORCE_PASSWORD_RESET_OFFLINE: string = "Recovery.AdminPasswordReset.Offline";
     public static readonly ADMIN_FORCED_PASSWORD_RESET_EXPIRY_TIME: string = "Recovery.AdminPasswordReset.ExpiryTime";
 
     public static readonly MULTI_ATTRIBUTE_CLAIM_LIST: string = "account-multiattributelogin-handler-allowedattributes";
@@ -410,6 +426,7 @@ export class ServerConfigurationsConstants {
     public static readonly OUTBOUND_PROVISIONING_SETTINGS_CONNECTOR_ID: string = "outbound-provisioning-settings";
     public static readonly NOTIFICATION_SETTINGS_CATEGORY_ID: string = "notification-settings";
     public static readonly NOTIFICATION_SETTINGS_CONNECTOR_ID: string = "internal-notification-settings";
+    public static readonly ACCOUNT_MANAGEMENT_CUSTOM_CATEGORY_ID: string = "account-management";
 
     /**
 	 * Multi Attribute Login Constants.
@@ -428,6 +445,15 @@ export class ServerConfigurationsConstants {
     public static readonly ORGANIZATION_SELF_SERVICE_ENABLE: string = "Organization.SelfService.Enable";
     public static readonly ASK_PASSWORD_CONNECTOR_ID: string = "dXNlci1lbWFpbC12ZXJpZmljYXRpb24";
     public static readonly ASK_PASSWORD_ENABLE: string = "EmailVerification.Enable";
+    public static readonly ASK_PASSWORD_EMAIL_OTP: string = "EmailVerification.AskPassword.EmailOTP";
+    public static readonly ASK_PASSWORD_SMS_OTP: string = "EmailVerification.AskPassword.SMSOTP";
+    public static readonly ASK_PASSWORD_OTP_EXPIRY_TIME: string = "EmailVerification.AskPassword.ExpiryTime";
+    public static readonly ASK_PASSWORD_ACCOUNT_ACTIVATION: string = "EmailVerification.AskPassword.AccountActivation";
+    public static readonly ASK_PASSWORD_LOCK_ON_CREATION: string = "EmailVerification.LockOnCreation";
+    public static readonly ASK_PASSWORD_OTP_USE_UPPERCASE: string = "EmailVerification.OTP.UseUppercaseCharactersInOTP";
+    public static readonly ASK_PASSWORD_OTP_USE_LOWERCASE: string = "EmailVerification.OTP.UseLowercaseCharactersInOTP";
+    public static readonly ASK_PASSWORD_OTP_USE_NUMERIC: string = "EmailVerification.OTP.UseNumbersInOTP";
+    public static readonly ASK_PASSWORD_OTP_LENGTH: string = "EmailVerification.OTP.OTPLength";
 
     /**
      * Account Management Catergory Constants.
@@ -435,12 +461,17 @@ export class ServerConfigurationsConstants {
     public static readonly ADMIN_FORCED_PASSWORD_RESET: string = "YWRtaW4tZm9yY2VkLXBhc3N3b3JkLXJlc2V0";
     public static readonly PRIVATE_KEY_JWT_CLIENT_AUTH: string = "private-key-jwt-configuration";
 
-    public static readonly LOGIN_ATTEMPT_SECURITY: string = "login-attempt-security";
-
     /**
 	 * Organization Settings Category Constants.
 	 */
     public static readonly ORGANIZATION_SETTINGS_CATEGORY_ID: string = "organization-settings";
     public static readonly EMAIL_DOMAIN_DISCOVERY: string = "ZW1haWwtZG9tYWluLWRpc2NvdmVyeQ==";
     public static readonly IMPERSONATION: string = "impersonation";
+
+    /**
+     * Login Security Category Constants.
+    */
+    public static readonly SIFT_CONNECTOR_ID: string = "c2lmdC1jb25maWd1cmF0aW9u";
+    public static readonly LOGIN_ATTEMPT_SECURITY: string = "login-attempt-security";
+    public static readonly SIFT_CONNECTOR_API_KEY_PROPERTY: string = "__secret__.sift.api.key";
 }

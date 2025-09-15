@@ -17,14 +17,12 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    filterList,
-    sortList
-} from "@wso2is/admin.core.v1";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { filterList } from "@wso2is/admin.core.v1/utils/filter-list";
+import { sortList } from "@wso2is/admin.core.v1/utils/sort-list";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, Certificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";

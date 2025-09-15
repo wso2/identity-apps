@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2019-2024, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -45,6 +45,9 @@
     }
 %>
 
+<%-- Custom styles --%>
+<link href="css/product-footer.css" rel="stylesheet">
+
 <%-- footer --%>
 <footer class="footer">
     <div class="ui container fluid">
@@ -70,7 +73,7 @@
                     <% } %>
                 </a>
             </div>
-            <div class="right menu">
+            <div class="right menu centered-flex-wrap">
             <%
                 if (!StringUtils.isBlank(privacyPolicyURL)) {
             %>
@@ -104,8 +107,8 @@
                 List<String> langSwitcherEnabledServlets = Arrays.asList("/oauth2_login.do", "/oauth2_error.do",
                     "/confirmregistration.do", "/confirmrecovery.do", "/claims.do", "/oauth2_consent.do",
                     "/fido2-auth.jsp", "/fido2-identifierfirst.jsp", "/fido2-enroll.jsp", "/fido2-passkey-status.jsp",
-                    "/fido2-error.jsp", "/email_otp.do", "/org_name.do", "/org_discovery.do", "/retry.do", "/totp_enroll.do",
-                    "/backup_code.do", "/device.do", "/error.do");
+                    "/fido2-error.jsp", "/email_otp.do", "/org_name.do", "/org_handle.do", "/org_discovery.do", "/retry.do", "/totp_enroll.do",
+                    "/backup_code.do", "/device.do", "/error.do", "/samlsso_login.do");
                 if (langSwitcherEnabledServlets.contains(request.getServletPath())) {
                     File languageSwitcherFile = new File(getServletContext().getRealPath("extensions/language-switcher.jsp"));
                     if (languageSwitcherFile.exists()) {

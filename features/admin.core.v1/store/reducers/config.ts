@@ -23,7 +23,7 @@ import {
     FeatureConfigInterface,
     ServiceResourceEndpointsInterface,
     UIConfigInterface
-} from "../../models";
+} from "../../models/config";
 
 /**
  * Initial state for the common config reducer.
@@ -39,6 +39,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             __experimental__platformIdP: null,
             accountApp: {
                 basePath: "",
+                centralAppPath: "",
                 displayName: "",
                 path: "",
                 tenantQualifiedPath: ""
@@ -55,6 +56,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             appHomePath: "",
             appLoginPath: "",
             appLogoutPath: "",
+            centralDeploymentEnabled: undefined,
             clientHost: "",
             clientID: "",
             clientOrigin: "",
@@ -72,10 +74,12 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             idpConfigs: null,
             loginCallbackUrl: "",
             organizationPrefix: "",
+            regionSelectionEnabled: undefined,
             serverHost: "",
             serverOrigin: "",
             superTenant: "",
             tenant: "",
+            tenantContext: null,
             tenantPath: "",
             tenantPrefix: ""
         },
@@ -86,9 +90,11 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             accountRecovery: "",
             actions: "",
             adminAdvisoryBanner: "",
+            apiRoot: "",
             applicationTemplate: "",
             applicationTemplateMetadata: "",
             applications: "",
+            asyncStatus: "",
             authenticatorTags: "",
             authenticators: "",
             brandingPreference: "",
@@ -103,9 +109,11 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             clientCertificates: "",
             createSecret: "",
             createSecretType: "",
+            customAuthenticators: "",
             dcrConfiguration: "",
             deleteSecret: "",
             deleteSecretType: "",
+            deploymentUnits: "",
             entitlementPoliciesApi: "",
             entitlementPolicyCombiningAlgorithmApi: "",
             entitlementPolicyPublishApi: "",
@@ -113,10 +121,12 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             extensions: "",
             externalClaims: "",
             fidoConfigs: "",
+            flowMeta: "",
             getSecret: "",
             getSecretList: "",
             getSecretType: "",
             governanceConnectorCategories: "",
+            groupMetadata: "",
             groups: "",
             guests: "",
             guestsList: "",
@@ -138,14 +148,18 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             passwordPolicy: "",
             permission: "",
             publicCertificates: "",
+            remoteLogPublishEndpoint: "",
             remoteLogging: "",
             requestPathAuthenticators: "",
+            resendCode: "",
             resourceTypes: "",
             roles: "",
             rolesV2: "",
+            rolesV3: "",
             rolesWithoutOrgPath: "",
             rootOrganization: "",
             rootUsersOrganization: "",
+            rulesMetaData: "",
             saml2Configurations: "",
             saml2Meta: "",
             schemas: "",
@@ -166,7 +180,10 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             usersSuperOrganization: "",
             validationServiceMgt: "",
             validationServiceMgtSubOrg: "",
-            wellKnown: ""
+            wellKnown: "",
+            workflowAssociations: "",
+            workflowInstances: "",
+            workflows: ""
         },
         features: {
             applications: null,
@@ -187,6 +204,10 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
         },
         i18n: null,
         ui: {
+            adminNotice: {
+                enabled: undefined,
+                plannedRollOutDate: undefined
+            },
             announcements: [],
             appCopyright: "",
             appLogo: {
@@ -196,17 +217,21 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             appName: "",
             appTitle: "",
             applicationTemplateLoadingStrategy: undefined,
+            asyncOperationStatusPollingInterval: null,
             connectionResourcesUrl: "",
             cookiePolicyUrl: "",
+            customContent: {},
             emailTemplates: {
                 defaultLogoUrl: "",
                 defaultWhiteLogoUrl: ""
             },
             enableCustomEmailTemplates: undefined,
+            enableOldUIForEmailProvider: undefined,
             features: {
                 applications: null,
                 approvals: null,
                 attributeDialects: null,
+                attributeVerification: null,
                 certificates: null,
                 emailTemplates: null,
                 governanceConnectors: null,
@@ -272,16 +297,25 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             isTrustedAppConsentRequired: undefined,
             isWSFedProtocolTemplateEnabled: undefined,
             listAllAttributeDialects: undefined,
+            multiTenancy: {
+                isTenantDomainDotExtensionMandatory: true,
+                tenantDomainIllegalCharactersRegex: "",
+                tenantDomainRegex: ""
+            },
             passwordPolicyConfigs: null,
             primaryUserStoreDomainName: "",
             privacyPolicyConfigs: null,
             productName: "",
             productVersionConfig: null,
+            routes: {
+                organizationEnabledRoutes: []
+            },
             selfAppIdentifier: "",
             showAppSwitchButton: undefined,
             showSmsOtpPwdRecoveryFeatureStatusChip: undefined,
             showStatusLabelForNewAuthzRuntimeFeatures: undefined,
             systemAppsIdentifiers: [],
+            systemReservedUserStores: [],
             theme: {
                 name: "",
                 path: "",

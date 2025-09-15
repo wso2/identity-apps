@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -150,6 +150,12 @@ export interface organizationsNS {
                 description: string;
             };
         };
+        getConfiguration: {
+            error: {
+                description: string;
+                message: string;
+            }
+        };
         getOrganizationList: {
             error: {
                 message: string;
@@ -204,6 +210,11 @@ export interface organizationsNS {
                 ariaLabel: string;
             };
             name: {
+                label: string;
+                placeholder: string;
+                ariaLabel: string;
+            };
+            orgHandle: {
                 label: string;
                 placeholder: string;
                 ariaLabel: string;
@@ -263,6 +274,22 @@ export interface organizationsNS {
                 };
                 label: string;
                 placeholder: string;
+            };
+            orgHandle: {
+                errors: {
+                    generationFailed: string;
+                }
+                label: string;
+                placeholder: string;
+                tooltip: string;
+                validation: {
+                    duplicate: string;
+                    empty: string;
+                    invalidFirstCharacter: string;
+                    invalidLength: string;
+                    invalidPattern: string;
+                    mandatoryExtension: string;
+                };
             };
             description: {
                 label: string;

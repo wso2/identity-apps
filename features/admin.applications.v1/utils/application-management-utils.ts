@@ -17,7 +17,9 @@
  */
 
 /* eslint-disable @typescript-eslint/typedef */
-import { DocPanelUICardInterface, store } from "@wso2is/admin.core.v1";
+import { DocPanelUICardInterface } from "@wso2is/admin.core.v1/models/help-panel";
+import { store } from "@wso2is/admin.core.v1/store";
+import { PatternConstants } from "@wso2is/core/constants";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
@@ -425,6 +427,43 @@ export class ApplicationManagementUtils {
         }
 
         return url;
+    };
+
+    /**
+     * Remove regexp wrapper only if the inner parts are valid HTTP(S) URLs.
+     * If any part is not a valid URL, return the original string unchanged.
+     *
+     * @param url - Callback URLs.
+     * @returns Prepared callback URL.
+     */
+    public static normalizeCallbackUrlsFromRegExp = (raw: string, isMobile: boolean = false): string => {
+        const wrapper: RegExp = /^regexp=\((.*)\)$/;
+        const match: RegExpMatchArray | null = raw.match(wrapper);
+
+        if (!match) return raw;
+
+        const inner: string = match[1];
+        const parts: string[] = inner.split("|").map(part => part.trim()).filter(Boolean);
+
+        const isHttpUrl = (urlString: string): boolean => {
+            try {
+                const url = new URL(urlString);
+
+                return url.protocol === "http:" || url.protocol === "https:";
+            } catch {
+                return false;
+            }
+        };
+
+        const isMobileDeepLink = (urlString: string): boolean =>
+            PatternConstants.MOBILE_DEEP_LINK_URL_REGEX_PATTERN.test(urlString);
+
+        const isValidPart = (urlString: string): boolean =>
+            isHttpUrl(urlString) || (isMobile && isMobileDeepLink(urlString));
+
+        const allValid = parts.length > 0 && parts.every(isValidPart);
+
+        return allValid ? parts.join(",") : raw;
     };
 
     /**

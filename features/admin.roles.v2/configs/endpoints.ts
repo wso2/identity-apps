@@ -30,11 +30,10 @@ export const getRolesResourceEndpoints = (
     serverHost: string
 ): RolesResourceEndpointsInterface => {
     return {
-        // TODO: This need to be removed once this endpoint is moved to the API resources feature.
-        apiResources: `${serverHost}/api/server/v1/api-resources`,
         permission: `${serverHostWithOrgPath}/api/server/v1/permission-management/permissions`,
         roles: `${serverHostWithOrgPath}/scim2/Roles`,
         rolesV2: `${serverHostWithOrgPath}/scim2/v2/Roles`,
+        rolesV3: `${serverHostWithOrgPath}/scim2/v3/Roles`,
         rolesWithoutOrgPath: `${serverHost}/scim2/Roles`
     };
 };

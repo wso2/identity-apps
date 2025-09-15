@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,6 +22,7 @@ import { OrganizationAction, OrganizationActionTypes } from "../actions/types/or
 
 const initialState: OrganizationReducerStateInterface = {
     organizationType: OrganizationType.SUPER_ORGANIZATION,
+    userOrganizationHandle: "",
     userOrganizationId: ""
 };
 
@@ -39,6 +40,11 @@ export const organizationReducer = (
             return {
                 ...state,
                 userOrganizationId: action.payload
+            };
+        case OrganizationActionTypes.SET_USER_ORGANIZATION_HANDLE:
+            return {
+                ...state,
+                userOrganizationHandle: action.payload
             };
         default:
             return {

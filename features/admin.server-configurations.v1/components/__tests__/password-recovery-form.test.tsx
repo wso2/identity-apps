@@ -120,14 +120,14 @@ describe("PasswordRecoveryForm", () => {
             { ...initialProps }
             data-componentid="password-recovery-edit-form" />);
 
-        expect(screen.getByTestId(`${data_component_id}-email-link-based-recovery`)).toBeInTheDocument();
+        expect(screen.getByTestId(`${data_component_id}-email-based-recovery`)).toBeInTheDocument();
     });
 
     it("Recovery option selection checkboxes are checkable.", async () => {
 
         render(<PasswordRecoveryConfigurationForm { ...initialProps } />);
         const emailCheckbox: HTMLInputElement | null =
-            screen.getByTestId(`${data_component_id}-email-link-based-recovery`).querySelector("input");
+            screen.getByTestId(`${data_component_id}-email-based-recovery`).querySelector("input");
         const smsCheckbox: HTMLInputElement | null =
             screen.getByTestId(`${data_component_id}-sms-based-recovery`).querySelector("input");
 

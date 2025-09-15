@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models";
+import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Code, CopyInputField, DocumentationLink, Heading, Message, useDocumentation } from "@wso2is/react-components";

@@ -120,7 +120,7 @@ const useProspectiveAdministrators = (
         };
 
         const isOwner = (user: UserBasicInterface): boolean => {
-            return user[SCIMConfigs.scim.enterpriseSchema]?.userAccountType === UserAccountTypes.OWNER;
+            return user[SCIMConfigs.scim.systemSchema]?.userAccountType === UserAccountTypes.OWNER;
         };
 
         clonedUserList.Resources = clonedUserList?.Resources?.map((resource: UserBasicInterface) => {

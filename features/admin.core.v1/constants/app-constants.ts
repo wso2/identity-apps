@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -261,7 +261,6 @@ export class AppConstants {
      * @returns All the app paths as a map.
      */
     public static getPaths(): Map<string, string> {
-
         const paths: Map<string, string> = new Map<string, string>([
             [ "GETTING_STARTED", `${ AppConstants.getDeveloperViewBasePath() }/getting-started` ],
             [ "ADMIN_OVERVIEW", `${ AppConstants.getAdminViewBasePath() }/overview` ],
@@ -289,6 +288,15 @@ export class AppConstants {
                 `${ AppConstants.getDeveloperViewBasePath() }/applications/:id:tabName`
             ],
             [ "APPROVALS", `${ AppConstants.getAdminViewBasePath() }/approvals` ],
+            [ "APPROVAL_WORKFLOWS",`${ AppConstants.getAdminViewBasePath() }/workflows` ],
+            [ "APPROVAL_WORKFLOW_CREATE",`${ AppConstants.getAdminViewBasePath() }/create-workflow` ],
+            [ "APPROVAL_WORKFLOW_EDIT",`${ AppConstants.getAdminViewBasePath() }/workflows/:id` ],
+            [ "APPROVAL_WORKFLOW_ASSOCIATIONS",`${ AppConstants.getAdminViewBasePath() }/workflow-associations` ],
+            [ "APPROVAL_WORKFLOW_ASSOCIATION_CREATE",
+                `${ AppConstants.getAdminViewBasePath() }/create-workflow-associations` ],
+            [ "APPROVAL_WORKFLOW_ASSOCIATIONS_EDIT",
+                `${ AppConstants.getAdminViewBasePath() }/workflow-associations/:id` ],
+            [ "WORKFLOW_REQUESTS", `${ AppConstants.getAdminViewBasePath() }/workflow-requests` ],
             [ "BRANDING", `${ AppConstants.getDeveloperViewBasePath() }/branding` ],
             [ "CERTIFICATES", `${ AppConstants.getAdminViewBasePath() }/certificates` ],
             [ "CLAIM_DIALECTS", `${ AppConstants.getAdminViewBasePath() }/attributes-and-mappings` ],
@@ -307,10 +315,13 @@ export class AppConstants {
             [ "ORGANIZATION_DISCOVERY_DOMAINS", `${AppConstants.getAdminViewBasePath()}/email-domain-discovery` ],
             [ "UPDATE_ORGANIZATION_DISCOVERY_DOMAINS", `${AppConstants.getAdminViewBasePath()}/email-domain-edit/:id` ],
             [ "EMAIL_PROVIDER", `${ AppConstants.getDeveloperViewBasePath() }/email-provider` ],
+            [ "NOTIFICATION_CHANNELS", `${ AppConstants.getDeveloperViewBasePath() }/notification-channels` ],
             [ "EMAIL_AND_SMS", `${ AppConstants.getDeveloperViewBasePath() }/email-and-sms` ],
             [ "EMAIL_MANAGEMENT", `${ AppConstants.getDeveloperViewBasePath() }/email-management` ],
             [ "SMS_PROVIDER", `${ AppConstants.getDeveloperViewBasePath() }/sms-provider` ],
             [ "SMS_MANAGEMENT", `${ AppConstants.getDeveloperViewBasePath() }/sms-management` ],
+            [ "PUSH_PROVIDER", `${ AppConstants.getDeveloperViewBasePath() }/push-provider` ],
+            [ "FLOWS", `${ AppConstants.getDeveloperViewBasePath() }/flows` ],
             [ "EMAIL_TEMPLATE_TYPES", `${ AppConstants.getAdminViewBasePath() }/email-templates` ],
             [ "EMAIL_TEMPLATES", `${ AppConstants.getAdminViewBasePath() }/email-templates/:templateTypeId` ],
             [
@@ -323,11 +334,13 @@ export class AppConstants {
                     AppConstants.EMAIL_TEMPLATE_ADD_URL_PARAM }`
             ],
             [ "EXTERNAL_DIALECT_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-attribute-mappings/:id` ],
+            [ "REGISTRATION_FLOW_BUILDER", `${ AppConstants.getMainViewBasePath() }/edit-self-registration-flow` ],
             [ "GROUPS", `${ AppConstants.getAdminViewBasePath() }/groups` ],
             [ "GROUP_EDIT", `${ AppConstants.getAdminViewBasePath() }/groups/:id` ],
             [ "IDP", `${ AppConstants.getDeveloperViewBasePath() }/connections` ],
             [ "IDP_TEMPLATES", `${ AppConstants.getDeveloperViewBasePath() }/connections/templates` ],
             [ "IDP_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/connections/:id` ],
+            [ "AUTH_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/authenticators/:id` ],
             [ "IDVP", `${ AppConstants.getDeveloperViewBasePath() }/identity-verification-providers` ],
             [ "IDVP_TEMPLATES",
                 `${ AppConstants.getDeveloperViewBasePath() }/identity-verification-providers/templates`
@@ -339,6 +352,8 @@ export class AppConstants {
             [ "LOGIN", window["AppUtils"]?.getConfig()?.routes.login ],
             [ "LOGIN_AND_REGISTRATION", `${ AppConstants.getDeveloperViewBasePath() }/login-and-registration` ],
             [ "ACTIONS", `${ AppConstants.getDeveloperViewBasePath() }/actions` ],
+            [ "WEBHOOKS", `${ AppConstants.getDeveloperViewBasePath() }/webhooks` ],
+            [ "WEBHOOK_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/webhooks/:id` ],
             [ "SCIM_MAPPING", `${ AppConstants.getAdminViewBasePath() }/attribute-mappings/scim` ],
             [ "LOGOUT", window["AppUtils"]?.getConfig()?.routes.logout ],
             [ "OIDC_SCOPES", `${ AppConstants.getAdminViewBasePath() }/oidc-scopes` ],
@@ -391,6 +406,10 @@ export class AppConstants {
                 `${AppConstants.getAdminViewBasePath()}/edit-alternative-login-identifier` ],
             [ "INSIGHTS", `${AppConstants.getAdminViewBasePath()}/insights` ],
             [ "REMOTE_LOGGING", `${AppConstants.getAdminViewBasePath()}/server/logs` ],
+            [ "LOGS", `${ AppConstants.getAdminViewBasePath() }/logs` ],
+            [ "LOG_SETTINGS", `${ AppConstants.getAdminViewBasePath() }/log-settings` ],
+            [ "LOG_SETTINGS_AUDIT", `${ AppConstants.getAdminViewBasePath() }/log-settings/audit` ],
+            [ "LOG_SETTINGS_DIAGNOSTICS", `${ AppConstants.getAdminViewBasePath() }/log-settings/diagnostics` ],
             [ "SESSION_MANAGEMENT",
                 `${AppConstants.getAdminViewBasePath()}/login-and-registration/session-management` ],
             [ "SAML2_CONFIGURATION",
@@ -402,18 +421,36 @@ export class AppConstants {
                 `${AppConstants.getAdminViewBasePath()}/login-and-registration/wsfed-configuration` ],
             [ "INTERNAL_NOTIFICATION_SENDING",
                 `${AppConstants.getAdminViewBasePath()}/login-and-registration/internal-notification-sending` ],
+            [ "ACCOUNT_DISABLE",
+                `${AppConstants.getAdminViewBasePath()}/login-and-registration/account-disable` ],
             [ "OUTBOUND_PROVISIONING_SETTINGS",
                 `${AppConstants.getAdminViewBasePath()}/outbound-provisioning-settings` ],
             [ "IMPERSONATION", `${AppConstants.getAdminViewBasePath()}/login-and-registration/impersonation` ],
             [ "ACTIONS",
                 `${AppConstants.getAdminViewBasePath()}/actions` ],
+            [ "WEBHOOKS",
+                `${AppConstants.getAdminViewBasePath()}/webhooks` ],
+            [ "WEBHOOK_SETTINGS", `${ AppConstants.getDeveloperViewBasePath() }/webhook-settings` ],
             [ "PRE_ISSUE_ACCESS_TOKEN_EDIT",
-                `${ AppConstants.getAdminViewBasePath()}/actions/pre-issue-access-token` ],
+                `${AppConstants.getAdminViewBasePath()}/actions/pre-issue-access-token` ],
+            [ "PRE_UPDATE_PASSWORD_EDIT",
+                `${AppConstants.getAdminViewBasePath()}/actions/pre-update-password` ],
+            [ "PRE_UPDATE_PROFILE_EDIT",
+                `${AppConstants.getAdminViewBasePath()}/actions/pre-update-profile` ],
             [ "TENANTS", `${AppConstants.getDefaultLayoutBasePath()}/organizations` ],
             [ "EDIT_TENANT", `${AppConstants.getDefaultLayoutBasePath()}/organizations/:id` ],
+            [ "EDIT_SELF_ORGANIZATION", `${AppConstants.getDefaultLayoutBasePath()}/organizations/self` ],
             [ "SYSTEM_SETTINGS", `${AppConstants.getDefaultLayoutBasePath()}/organizations/system-settings` ],
             [ "POLICY_ADMINISTRATION", `${AppConstants.getAdminViewBasePath()}/policy-administration` ],
-            [ "EDIT_POLICY", `${AppConstants.getAdminViewBasePath()}/policy-administration/edit-policy/:id` ]
+            [ "EDIT_POLICY", `${AppConstants.getAdminViewBasePath()}/policy-administration/edit-policy/:id` ],
+            [ "MCP_SERVERS", `${ AppConstants.getDeveloperViewBasePath() }/mcp-servers` ],
+            [ "MCP_SERVER_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/mcp-servers/:id` ],
+            [ "PASSWORD_RECOVERY_FLOW_BUILDER",
+                `${ AppConstants.getDeveloperViewBasePath() }/edit-password-recovery-flow` ],
+            [ "INVITE_USER_PASSWORD_SETUP_FLOW_BUILDER",
+                `${ AppConstants.getDeveloperViewBasePath() }/edit-invited-user-registration-flow` ],
+            [ "AGENTS", `${AppConstants.getAdminViewBasePath()}/agents` ],
+            [ "AGENT_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/agents/:id` ]
         ]);
 
         return paths;
@@ -484,7 +521,10 @@ export class AppConstants {
         "governanceConnectors",
         "branding",
         "consoleSettings",
-        "apiResources"
+        "apiResources",
+        "approvals",
+        "workflows",
+        "flows"
     ];
 
     /**
@@ -517,6 +557,11 @@ export class AppConstants {
      * Route id of the console settings page.
      */
     public static readonly CONSOLE_SETTINGS_ROUTE: string = "consoleSettings";
+
+    /**
+     * Route id of the console settings page.
+     */
+    public static readonly AGENTS_ROUTE: string = "agents";
 
     /**
      * Name of the root node

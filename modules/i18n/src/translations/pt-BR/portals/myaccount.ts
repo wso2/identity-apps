@@ -506,6 +506,13 @@ export const myAccount: MyAccountNS = {
                 },
                 tooltip: "Apps"
             },
+            dropdown: {
+                footer: {
+                    cookiePolicy: "Cookies",
+                    privacyPolicy: "Privacidade",
+                    termsOfService: "Termos"
+                }
+            },
             organizationLabel: "Esta conta é gerenciada por"
         },
         linkedAccounts: {
@@ -641,7 +648,7 @@ export const myAccount: MyAccountNS = {
                 deleteHint: "Remover",
                 description: "Você pode usar o aplicativo autenticador para obter códigos de verificação para autenticação de dois fatores.",
                 enableHint: "Habilitar/Desabilitar Autenticador TOTP",
-                heading: "Aplicativo Autenticador",
+                heading: "Autenticador TOTP",
                 hint: "Visualizar",
                 modals: {
                     delete: {
@@ -864,6 +871,7 @@ export const myAccount: MyAccountNS = {
                         tryWithOlderDevice: "Você também pode tentar novamente com uma chave de segurança/biometria mais antiga."
                     }
                 },
+                noPassKeyMessage: "Você ainda não tem nenhuma chave de acesso registrada.",
                 notifications: {
                     removeDevice: {
                         error: {
@@ -909,6 +917,61 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 tryButton: "Tente uma chave de segurança/biometria mais antiga"
+            },
+            "pushAuthenticatorApp": {
+                "addHint": "Configurar",
+                "configuredDescription": "Você pode usar os prompts de login gerados pelo seu aplicativo autenticador configurado para autenticação de dois fatores. Se você não tiver acesso ao aplicativo, pode configurar um novo aplicativo autenticador aqui.",
+                "deleteHint": "Remover",
+                "description": "Você pode usar o aplicativo autenticador push para receber prompts de login como notificações push para autenticação de dois fatores.",
+                "heading": "Autenticador Push",
+                "hint": "Ver",
+                "modals": {
+                    "deviceDeleteConfirmation": {
+                        "assertionHint": "Por favor, confirme sua ação.",
+                        "content": "Essa ação é irreversível e removerá o dispositivo permanentemente.",
+                        "description": "Se você remover este dispositivo, pode não conseguir entrar novamente na sua conta. Por favor, prossiga com cautela.",
+                        "heading": "Você tem certeza?"
+                    },
+                    "scan": {
+                        "additionNote": "O código QR foi adicionado ao seu perfil com sucesso!",
+                        "done": "Sucesso! Agora você pode usar seu aplicativo autenticador push para autenticação de dois fatores.",
+                        "heading": "Configurar o aplicativo autenticador push",
+                        "messageBody": "Você pode encontrar uma lista de aplicativos autenticadores disponíveis aqui.",
+                        "subHeading": "Escaneie o código QR abaixo usando o aplicativo autenticador push"
+                    }
+                },
+                "notifications": {
+                    "delete": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "Algo deu errado"
+                        },
+                        "genericError": {
+                            "description": "Ocorreu um erro ao remover o dispositivo registrado",
+                            "message": "Algo deu errado"
+                        },
+                        "success": {
+                            "description": "O dispositivo registrado foi removido com sucesso",
+                            "message": "Dispositivo removido com sucesso"
+                        }
+                    },
+                    "deviceListFetchError": {
+                        "error": {
+                            "description": "Ocorreu um erro ao recuperar os dispositivos registrados para autenticação push",
+                            "message": "Algo deu errado"
+                        }
+                    },
+                    "initError": {
+                        "error": {
+                            "description": "{{error}}",
+                            "message": "Algo deu errado"
+                        },
+                        "genericError": {
+                            "description": "Ocorreu um erro ao recuperar o código QR",
+                            "message": "Algo deu errado"
+                        }
+                    }
+                }
             },
             smsOtp: {
                 descriptions: {
@@ -1005,157 +1068,6 @@ export const myAccount: MyAccountNS = {
                     profileText: "Detalhes do seu perfil pessoal",
                     readOnlyDescription:"VVisualizar seu perfil",
                     userSourceText: "(Cadastrado via {{source}})"
-                }
-            }
-        },
-        privacy: {
-            about: {
-                description: "WSO2 Identity Server (referido como “WSO2 IS” nesta política) é um servidor de gerenciamento de identidade e direitos de código aberto baseado em padrões e especificações abertas.",
-                heading: "Sobre WSO2 Identity Server"
-            },
-            privacyPolicy: {
-                collectionOfPersonalInfo: {
-                    description: {
-                        list1: {
-                            0: "WSO2 IS usa seu endereço IP para detectar tentativas suspeitas de login em sua conta.",
-                            1: "WSO2 IS usa atributos como seu nome, sobrenome, etc., para fornecer uma experiência de usuário rica e personalizada.",
-                            2: "WSO2 IS usa suas perguntas e respostas de segurança apenas para permitir a recuperação da conta."
-                        },
-                        para1: "WSO2 IS coleta suas informações apenas para atender às suas necessidades de acesso. Por exemplo:"
-                    },
-                    heading: "Coleta de informações pessoais",
-                    trackingTechnologies: {
-                        description: {
-                            list1: {
-                                0: "Coletando informações da página de perfil do usuário onde você insere seus dados pessoais.",
-                                1: "Rastreando seu endereço IP com solicitação HTTP, cabeçalhos HTTP e TCP/IP.",
-                                2: "Rastreando suas informações geográficas com o endereço IP.",
-                                3: "Rastreando seu histórico de login com cookies do navegador. Por favor, veja nossa {{cookiePolicyLink}} para mais informações."
-                            },
-                            para1: "WSO2 IS coleta suas informações por:"
-                        },
-                        heading: "Tecnologias de Rastreamento"
-                    }
-                },
-                description: {
-                    para1: "Esta política descreve como WSO2 IS captura suas informações pessoais, os propósitos da coleta e informações sobre a retenção de suas informações pessoais.",
-                    para2: "Por favor, note que esta política é apenas para referência e é aplicável ao software como um produto. WSO2 LLC. e seus desenvolvedores não têm acesso às informações mantidas dentro do WSO2 IS. Por favor, veja a seção <1>aviso legal</1> para mais informações.",
-                    para3: "Entidades, organizações ou indivíduos que controlam o uso e administração do WSO2 IS devem criar suas próprias políticas de privacidade definindo a maneira como os dados são controlados ou processados pela respectiva entidade, organização ou indivíduo."
-                },
-                disclaimer: {
-                    description: {
-                        list1: {
-                            0: "WSO2, seus funcionários, parceiros e afiliados não têm acesso e não requerem, armazenam, processam ou controlam nenhum dos dados, incluindo dados pessoais contidos no WSO2 IS. Todos os dados, incluindo dados pessoais, são controlados e processados pela entidade ou indivíduo que executa o WSO2 IS. WSO2, seus funcionários, parceiros e afiliados não são um processador de dados ou um controlador de dados dentro do significado de quaisquer regulamentos de privacidade de dados. WSO2 não fornece quaisquer garantias ou assume qualquer responsabilidade ou obrigação em conexão com a legalidade ou a maneira e propósitos para os quais o WSO2 IS é usado por tais entidades ou pessoas.",
-                            1: "Esta política de privacidade é para fins informativos da entidade ou pessoas que executam o WSO2 IS e define os processos e funcionalidades contidos no WSO2 IS em relação à proteção de dados pessoais. É responsabilidade das entidades e pessoas que executam o WSO2 IS criar e administrar suas próprias regras e processos governando os dados pessoais dos usuários, e tais regras e processos podem alterar as políticas de uso, armazenamento e divulgação contidas aqui. Portanto, os usuários devem consultar a entidade ou pessoas que executam o WSO2 IS para sua própria política de privacidade para detalhes que governam os dados pessoais dos usuários."
-                        }
-                    },
-                    heading: "Aviso Legal"
-                },
-                disclosureOfPersonalInfo: {
-                    description: "O WSO2 IS só divulga informações pessoais para as aplicações relevantes (também conhecidas como Provedor de Serviço) que estão registradas com o WSO2 IS. Essas aplicações são registradas pelo administrador de identidade da sua entidade ou organização. As informações pessoais são divulgadas apenas para os fins para os quais foram coletadas (ou para um uso identificado como consistente com esse propósito), conforme controlado por tais Provedores de Serviços, a menos que você tenha consentido de outra forma ou quando é exigido por lei.",
-                    heading: "Divulgação de informações pessoais",
-                    legalProcess: {
-                        description: "Observe que a organização, entidade ou indivíduo que opera o WSO2 IS pode ser compelido a divulgar suas informações pessoais com ou sem o seu consentimento quando é exigido por lei, seguindo um processo legal e devido.",
-                        heading: "Processo legal"
-                    }
-                },
-                heading: "Política de Privacidade",
-                moreInfo: {
-                    changesToPolicy: {
-                        description: {
-                            para1: "Versões atualizadas do WSO2 IS podem conter alterações nesta política e revisões desta política serão incluídas nessas atualizações. Tais mudanças só se aplicam a usuários que optarem por usar versões atualizadas.",
-                            para2: "A organização que opera o WSO2 IS pode revisar a Política de Privacidade de tempos em tempos. Você pode encontrar a política mais recente com o respectivo link fornecido pela organização que opera o WSO2 IS. A organização notificará quaisquer alterações na política de privacidade através de nossos canais públicos oficiais."
-                        },
-                        heading: "Mudanças nesta política"
-                    },
-                    contactUs: {
-                        description: {
-                            para1: "Por favor, entre em contato com a WSO2 se você tiver alguma dúvida ou preocupação em relação a esta política de privacidade."
-                        },
-                        heading: "Fale conosco"
-                    },
-                    heading: "Mais informações",
-                    yourChoices: {
-                        description: {
-                            para1: "Se você já tem uma conta de usuário no WSO2 IS, você tem o direito de desativar sua conta se achar que esta política de privacidade é inaceitável para você.",
-                            para2: "Se você não tem uma conta e não concorda com nossa política de privacidade, você pode optar por não criar uma."
-                        },
-                        heading: "Suas escolhas"
-                    }
-                },
-                storageOfPersonalInfo: {
-                    heading: "Armazenamento de informações pessoais",
-                    howLong: {
-                        description: {
-                            list1: {
-                                0: "Senha atual",
-                                1: "Senhas usadas anteriormente"
-                            },
-                            para1: "O WSO2 IS retém seus dados pessoais enquanto você for um usuário ativo de nosso sistema. Você pode atualizar seus dados pessoais a qualquer momento usando os portais de autoatendimento fornecidos.",
-                            para2: "O WSO2 IS pode manter segredos hash para fornecer um nível adicional de segurança. Isso inclui:"
-                        },
-                        heading: "Quanto tempo suas informações pessoais são retidas"
-                    },
-                    requestRemoval: {
-                        description: {
-                            para1: "Você pode solicitar ao administrador para excluir sua conta. O administrador é o administrador da organização na qual você está registrado, ou o super-administrador se você não usar o recurso de organização.",
-                            para2: "Além disso, você pode solicitar a anonimização de todos os vestígios de suas atividades que o WSO2 IS possa ter retido em logs, bancos de dados ou armazenamentos analíticos."
-                        },
-                        heading: "Como solicitar a remoção de suas informações pessoais"
-                    },
-                    where: {
-                        description: {
-                            para1: "O WSO2 IS armazena suas informações pessoais em bancos de dados seguros. O WSO2 IS exerce medidas de segurança aceitas na indústria para proteger o banco de dados onde suas informações pessoais são mantidas. O WSO2 IS, como produto, não transfere nem compartilha seus dados com terceiros ou locais.",
-                            para2: "O WSO2 IS pode usar criptografia para manter seus dados pessoais com um nível adicional de segurança."
-                        },
-                        heading: "Onde suas informações pessoais são armazenadas"
-                    }
-                },
-                useOfPersonalInfo: {
-                    description: {
-                        list1: {
-                            0: "Para fornecer uma experiência de usuário personalizada, o WSO2 IS usa seu nome e fotos de perfil enviadas.",
-                            1: "Para proteger sua conta de acessos não autorizados ou tentativas de hacking, o WSO2 IS usa Cabeçalhos HTTP ou TCP/IP.",
-                            2: "Prover dados estatísticos para fins analíticos sobre melhorias no desempenho do sistema. O WSO2 IS não manterá nenhuma informação pessoal após cálculos estatísticos. Portanto, o relatório estatístico não tem meios de identificar uma pessoa individual."
-                        },
-                        para1: "O WSO2 IS usará suas informações pessoais apenas para os fins para os quais foram coletadas (ou para um uso identificado como consistente com esse propósito).",
-                        para2: "OO WSO2 IS usa suas informações pessoais apenas para os seguintes propósitos.",
-                        subList1: {
-                            heading: "Isso inclui:",
-                            list: {
-                                0: "Endereço IP",
-                                1: "Impressão digital do navegador",
-                                2: "Cookies"
-                            }
-                        },
-                        subList2: {
-                            heading: "O WSO2 IS pode usar:",
-                            list: {
-                                0: "Endereço IP para obter informações geográficas",
-                                1: "Impressão digital do navegador para determinar a tecnologia e/ou versão do navegador"
-                            }
-                        }
-                    },
-                    heading: "Uso de informações pessoais"
-                },
-                whatIsPersonalInfo: {
-                    description: {
-                        list1: {
-                            0: "Seu nome de usuário (exceto nos casos em que o nome de usuário criado pelo seu empregador está sob contrato)",
-                            1: "Sua data de nascimento/idade",
-                            2: "Endereço IP usado para fazer login",
-                            3: "Seu ID de dispositivo se você usar um dispositivo (por exemplo, telefone ou tablet) para fazer login"
-                        },
-                        list2: {
-                            0: "Cidade/País de onde originou a conexão TCP/IP",
-                            1: "Horário do dia em que você fez login (ano, mês, semana, hora ou minuto)",
-                            2: "Tipo de dispositivo que você usou para fazer login (por exemplo, telefone ou tablet)",
-                            3: "Sistema operacional e informações genéricas do navegador"
-                        },
-                        para1: "O WSO2 IS considera qualquer coisa relacionada a você, e pela qual você pode ser identificado, como suas informações pessoais. Isso inclui, mas não está limitado a:",
-                        para2: "No entanto, o WSO2 IS também coleta as seguintes informações que não são consideradas informações pessoais, mas são usadas apenas para fins <1>estatísticos</1>. A razão para isso é que essas informações não podem ser usadas para rastrear você."
-                    },
-                    heading: "O que é informação pessoal?"
                 }
             }
         },
@@ -1289,6 +1201,9 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 generic: {
+                    dropdown: {
+                        placeholder: "Selecione seu {{fieldName}}"
+                    },
                     inputs: {
                         placeholder: "Insira seu {{fieldName}}",
                         readonly: {
@@ -1296,9 +1211,13 @@ export const myAccount: MyAccountNS = {
                             popup: "Contate o administrador para atualizar seu {{fieldName}}"
                         },
                         validations: {
+                            duplicate: "{{fieldName}} não pode ter valores duplicados",
                             empty: "{{fieldName}} é um campo obrigatório",
                             invalidFormat: "O formato do {{fieldName}} inserido está incorreto"
                         }
+                    },
+                    radioGroup: {
+                        optionNone: "Nenhum"
                     }
                 },
                 mobileChangeForm: {
@@ -1354,6 +1273,12 @@ export const myAccount: MyAccountNS = {
                 }
             },
             modals: {
+                customMultiAttributeDeleteConfirmation: {
+                    assertionHint: "Por favor, confirme sua ação.",
+                    content: "Esta ação é irreversível e excluirá permanentemente o valor selecionado.",
+                    description: "Se você excluir este valor selecionado, ele será removido permanentemente do seu perfil.",
+                    heading: "Tem certeza?"
+                },
                 emailAddressDeleteConfirmation: {
                     assertionHint: "Por favor, confirme sua ação.",
                     content: "Esta ação é irreversível e excluirá permanentemente o endereço de e -mail.",
@@ -1465,6 +1390,41 @@ export const myAccount: MyAccountNS = {
                     success: {
                         description: "O arquivo contendo os detalhes necessários do perfil do usuário começou a ser baixado",
                         message: "Download dos detalhes do perfil do usuário iniciado"
+                    }
+                }
+            }
+        },
+        selfSignUp: {
+            preference: {
+                notifications: {
+                    error: {
+                        description: "{{description}}.",
+                        message: "Erro ao recuperar a preferência de auto-cadastro"
+                    },
+                    genericError: {
+                        description: "Ocorreu um erro ao recuperar a preferência de auto-cadastro.",
+                        message: "Algo deu errado"
+                    },
+                    success: {
+                        description: "Preferência de auto-cadastro recuperada com sucesso.",
+                        message: "Recuperação da preferência de auto-cadastro bem-sucedida"
+                    }
+                }
+            }
+        },
+        systemNotificationAlert: {
+            resend: "Reenviar",
+            selfSignUp: {
+                awaitingAccountConfirmation: "Sua conta ainda não está ativa. Enviamos um " +
+                    "link de ativação para o seu endereço de e-mail cadastrado. Precisa de um novo link?",
+                notifications: {
+                    resendError: {
+                        description: "Ocorreu um erro ao reenviar o e-mail de confirmação da conta.",
+                        message: "Algo deu errado"
+                    },
+                    resendSuccess: {
+                        description: "E-mail de confirmação de conta reenviado com sucesso.",
+                        message: "E-mail de confirmação de conta reenviado com sucesso"
                     }
                 }
             }

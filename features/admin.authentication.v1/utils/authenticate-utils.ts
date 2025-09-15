@@ -17,7 +17,7 @@
  */
 
 import { AuthParams, AuthReactConfig, ResponseMode, SPAUtils, Storage } from "@asgardeo/auth-react";
-import { Config } from "@wso2is/admin.core.v1";
+import { Config } from "@wso2is/admin.core.v1/configs/app";
 import { TokenConstants } from "@wso2is/core/constants";
 import { UserAgentParser } from "@wso2is/core/helpers";
 import { StringUtils } from "@wso2is/core/utils";

@@ -18,5 +18,8 @@
 
 export { default as FeatureGateConstants } from "./constants/feature-gate-constants";
 export { default as useGetAllFeatures } from "./api/use-get-all-features";
+export { default as FeatureFlagLabel } from "./components/feature-flag-label";
+export { default as useFeatureFlag } from "./hooks/use-feature-flag";
+export { default as FeatureFlagConstants } from "./constants/feature-flag-constants";
 export * from "./configs/endpoints";
 export * from "./models/feature-status";

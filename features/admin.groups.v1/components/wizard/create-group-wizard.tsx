@@ -18,10 +18,14 @@
 
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
-import { AppConstants, AppState, AssignRoles, RolePermissions, history } from "@wso2is/admin.core.v1";
-import { EventPublisher } from "@wso2is/admin.core.v1/utils";
-import { commonConfig } from "@wso2is/admin.extensions.v1/configs";
-import { updateRole } from "@wso2is/admin.roles.v2/api";
+import { AssignRoles } from "@wso2is/admin.core.v1/components/roles";
+import { RolePermissions } from "@wso2is/admin.core.v1/components/roles/role-permissions";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
+import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
+import { assignGroupstoRoles, updateRoleDetails } from "@wso2is/admin.roles.v2/api";
 import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
 import { RoleConstants } from "@wso2is/admin.roles.v2/constants";
 import {
@@ -29,8 +33,8 @@ import {
     PatchRoleDataInterface,
     RolesV2Interface
 } from "@wso2is/admin.roles.v2/models/roles";
-import { UserBasicInterface } from "@wso2is/admin.users.v1/models";
-import { CONSUMER_USERSTORE, PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import { UserBasicInterface } from "@wso2is/admin.users.v1/models/user";
+import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -49,8 +53,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AddGroupUsers } from "./group-assign-users";
-import { createGroup } from "../../api";
-import { getGroupsWizardStepIcons } from "../../configs";
+import { createGroup } from "../../api/groups";
+import { getGroupsWizardStepIcons } from "../../configs/ui";
 import {
     CreateGroupInterface,
     CreateGroupMemberInterface,
@@ -73,6 +77,10 @@ interface CreateGroupProps extends IdentifiableComponentInterface {
      * Callback for the group create event.
      */
     onCreate: () => void;
+    /**
+     * Selected user store.
+     */
+    userSelectedUserStore: string;
     /**
      * Initial step of the wizard.
      */
@@ -101,15 +109,13 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
         showStepper,
         requiredSteps,
         onCreate,
+        userSelectedUserStore,
         [ "data-componentid" ]: componentId
     } = props;
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
-
-    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
 
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
     const [ submitRoleList, setSubmitRoleList ] = useTrigger();
@@ -118,8 +124,8 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
     const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
     const [ wizardSteps, setWizardSteps ] = useState<WizardStepInterface[]>(undefined);
-    const [ selectedUserStore, setSelectedUserStore ] = useState<string>(
-        commonConfig?.primaryUserstoreOnly ? primaryUserStoreDomainName : CONSUMER_USERSTORE);
+    const [ selectedUserStore, setSelectedUserStore ] = useState<string>(userSelectedUserStore ??
+        userstoresConfig.primaryUserstoreName);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isWizardActionDisabled, setIsWizardActionDisabled ] = useState<boolean>(true);
     const [ selectedRoleId, setSelectedRoleId ] = useState<string>();
@@ -152,6 +158,13 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
     } = useApplicationList(null, null, null, "name eq Console");
 
     const consoleId: string = filteredApplicationList?.applications[0]?.id;
+
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
+    );
+
+    const roleUpdateFunction: (roleId: string, roleData: PatchRoleDataInterface) => Promise<AxiosResponse> =
+        userRolesV3FeatureEnabled ? assignGroupstoRoles : updateRoleDetails;
 
     const {
         data: fetchedRoleList,
@@ -304,19 +317,24 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
                 const roleData: PatchRoleDataInterface = {
                     "Operations": [ {
                         "op": "add",
-                        "value": {
-                            "groups": [ {
+                        "value": userRolesV3FeatureEnabled
+                            ? [ {
                                 "display": createdGroup.displayName,
                                 "value": createdGroup.id
                             } ]
-                        }
+                            : {
+                                "groups": [ {
+                                    "display": createdGroup.displayName,
+                                    "value": createdGroup.id
+                                } ]
+                            }
                     } ],
                     "schemas": [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
                 };
 
                 if (rolesList?.length > 0) {
                     Promise.all(rolesList.map((roleId: string) => {
-                        return updateRole(roleId, roleData);
+                        return roleUpdateFunction(roleId, roleData);
                     })).then(() => {
                         dispatch(
                             addAlert({
@@ -584,10 +602,12 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
                         ? " - " + wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.groupName
                         :""
                 }
-                <Heading as="h6">Create new group and add users to the group.</Heading>
+                <Heading as="h6">
+                    { t("groups:groupCreateWizard.subHeading") }
+                </Heading>
             </Modal.Header>
             {
-                showStepper && !isRoleReadOnly && (
+                showStepper && !isRoleReadOnly && WIZARD_STEPS?.length > 1 && (
                     <Modal.Content className="steps-container">
                         <Steps.Group
                             current={ currentStep }
@@ -666,5 +686,5 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
 
 CreateGroupWizard.defaultProps = {
     initStep: 0,
-    showStepper: false
+    showStepper: true
 };

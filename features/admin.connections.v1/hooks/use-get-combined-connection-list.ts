@@ -134,6 +134,14 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
             ))
         ));
 
+        // Add Custom Local Authenticators to the list.
+        combinedData.push(...(fetchedAuthenticatorsList
+            .filter((authenticator: ConnectionInterface) => (
+                authenticator.type === AuthenticatorTypes.LOCAL &&
+                ConnectionsManagementUtils.IsCustomAuthenticator(authenticator)
+            ))
+        ));
+
         if (fetchedIdVPsListResponse?.identityVerificationProviders) {
             // Manipulate the IdVPs list to match the UI.
             for (const idVP of fetchedIdVPsListResponse.identityVerificationProviders) {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,13 +16,15 @@
  * under the License.
  */
 
-import { getTechnologyLogos } from "@wso2is/admin.core.v1";
+import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs/ui";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
-import { Claim, TestableComponentInterface } from "@wso2is/core/models";
+import { Claim, ClaimDataType, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { GenericIcon, Hint, InlineEditInput, Message, Popup } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Card, Grid, Icon, Label } from "semantic-ui-react";
 import { ClaimManagementConstants } from "../../../constants";
 
@@ -90,6 +92,8 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
     const [ oidcMapping, setOidcMapping ] = useState<string>(values?.get("oidc")?.toString());
     const [ scimMapping, setScimMapping ] = useState<string>(values?.get("scim")?.toString());
     const [ isScimMappingRemoved, setIsScimMappingRemoved ] = useState<boolean>(false);
+
+    const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
 
     const nameField: React.MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
     const claimField: React.MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
@@ -161,13 +165,27 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
             onSubmit={ (values: Map<string, FormValue>) => {
                 const data: Claim
                  = {
+                     canonicalValues: values.get("canonicalValues")
+                         ? ((values.get("canonicalValues") as unknown) as { key: string; value: string }[])
+                             .map((item: { key: string; value: string }) => ({
+                                 label: item.key,
+                                 value: item.value
+                             }))
+                         : [],
                      claimURI: claimURIBase + "/" + values.get("claimURI").toString().trim(),
+                     dataType: values.get("dataType")?.toString() === ClaimDataType.STRING
+                         ? ((values.get("canonicalValues") as string[]).length > 0
+                             ? ClaimDataType.OPTIONS
+                             : ClaimDataType.TEXT)
+                         : values.get("dataType")?.toString(),
                      description: values.get("description")?.toString(),
                      displayName: values.get("name").toString(),
                      displayOrder: values.get("displayOrder") ? parseInt(values.get("displayOrder")?.toString()) : 0,
+                     multiValued: values.get("multiValued")?.length > 0,
                      readOnly: values.get("readOnly")?.length > 0,
                      regEx: values.get("regularExpression")?.toString(),
                      required: values.get("required")?.length > 0,
+                     subAttributes: values.get("subAttributes") as string[] || [],
                      supportedByDefault: values.get("supportedByDefault")?.length > 0
                  };
 
@@ -217,8 +235,8 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                         loading={ validateMapping }
                                         listen={ (values: Map<string, FormValue>) => {
                                             setClaimID(values.get("claimURI").toString());
-                                            setOidcMapping(values.get("claimURI").toString().replace(/\./g,""));
-                                            setScimMapping(values.get("claimURI").toString().replace(/\./g,""));
+                                            setOidcMapping(values.get("claimURI").toString());
+                                            setScimMapping(values.get("claimURI").toString());
                                             setIsScimMappingRemoved(false);
                                         } }
                                         onMouseOver={ () => {
@@ -237,7 +255,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                             let isAttributeValid: boolean = true;
 
                                             // TODO : Discuss on max characters for attribute name
-                                            if (!value.match(/^\w+$/) || value.length > 30) {
+                                            if (!value.match(/^\w+(\.\w+)?$/) || value.length > 30) {
                                                 isAttributeValid = false;
                                             }
 
@@ -348,9 +366,8 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                         </Grid.Column>
                                                         <Grid.Column width={ 11 }>
                                                             <InlineEditInput
-                                                                maxLength={ 30 }
+                                                                maxLength={ 50 }
                                                                 text={ oidcMapping }
-                                                                validation="^[A-za-z0-9#_]+$"
                                                                 errorHandler={ (status: boolean) => {
                                                                     setShowOIDCMappingError(status);
                                                                 } }
@@ -397,7 +414,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                                                 <Grid.Column width={ 11 }>
                                                                     <InlineEditInput
                                                                         maxLength={ 30 }
-                                                                        textPrefix="urn:scim:wso2:schema:"
+                                                                        textPrefix={ `${userSchemaURI}:` }
                                                                         validation="^[a-zA-Z0-9_.-]*$"
                                                                         errorHandler={ (status: boolean) => {
                                                                             setShowScimMappingError(status);

@@ -58,7 +58,7 @@ export interface TenantProviderProps {
      * Callback to be fired on un-successful tenant enable.
      */
     onTenantEnableError?: () => void;
-};
+}
 
 /**
  * This component provides tenant-related context to its children.
@@ -273,7 +273,7 @@ const TenantProvider = ({
                     primaryAction={ t("tenants:confirmationModals.disableTenant.primaryAction") }
                     secondaryAction={ t("tenants:confirmationModals.disableTenant.secondaryAction") }
                     onSecondaryActionClick={ (): void => setShowDisableConfirmationModal(false) }
-                    onPrimaryActionClick={ (): void => handleTenantStatusUpdateConfirmation(disablingTenant) }
+                    onPrimaryActionClick={ async () => await handleTenantStatusUpdateConfirmation(disablingTenant) }
                     closeOnDimmerClick={ false }
                 >
                     <ConfirmationModal.Header data-componentid="tenant-disable-confirmation-modal-header">

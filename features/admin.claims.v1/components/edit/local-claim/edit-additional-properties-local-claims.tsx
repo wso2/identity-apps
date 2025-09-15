@@ -17,8 +17,12 @@
  */
 
 import { Show, useRequiredScopes } from "@wso2is/access-control";
-import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, Claim, Property, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -77,6 +81,8 @@ export const EditAdditionalPropertiesLocalClaims:
             featureConfig?.attributeDialects?.scopes?.update
         );
 
+        const { isSubOrganization } = useGetCurrentOrganizationType();
+
         const { UIConfig } = useUIConfig();
 
         const isReadOnly: boolean = !hasAttributeUpdatePermissions;
@@ -84,7 +90,8 @@ export const EditAdditionalPropertiesLocalClaims:
         const filteredClaimProperties: Property[] = useMemo(() => {
             if (claim?.properties) {
                 const properties: Property[] = claim.properties.filter((property: Property) => {
-                    return property.key !== ClaimManagementConstants.SYSTEM_CLAIM_PROPERTY_NAME;
+                    return property.key !== ClaimManagementConstants.SYSTEM_CLAIM_PROPERTY_NAME
+                        && property.key !== ClaimManagementConstants.AGENT_CLAIM_PROPERTY_NAME;
                 });
 
                 return properties;
@@ -94,7 +101,7 @@ export const EditAdditionalPropertiesLocalClaims:
         }, [ claim ]);
 
         return (
-            <EmphasizedSegment>
+            <EmphasizedSegment padded="very">
                 <Grid>
                     <Grid.Row columns={ 1 }>
                         <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
@@ -206,28 +213,30 @@ export const EditAdditionalPropertiesLocalClaims:
                                         });
                                 } }
                                 data-testid={ `${ testId }-form-properties-dynamic-field` }
-                                readOnly={ isReadOnly }
+                                readOnly={ isSubOrganization() || isReadOnly }
                             />
                         </Grid.Column>
                     </Grid.Row>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column width={ 6 }>
-                            <Show
-                                when={ featureConfig?.attributeDialects?.scopes?.update }
-                            >
-                                <PrimaryButton
-                                    onClick={ () => {
-                                        setSubmit();
-                                    } }
-                                    data-testid={ `${ testId }-submit-button` }
-                                    loading={ isSubmitting }
-                                    disabled={ isSubmitting }
+                    { !isSubOrganization() && (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column width={ 6 }>
+                                <Show
+                                    when={ featureConfig?.attributeDialects?.scopes?.update }
                                 >
-                                    { t("common:update") }
-                                </PrimaryButton>
-                            </Show>
-                        </Grid.Column>
-                    </Grid.Row>
+                                    <PrimaryButton
+                                        onClick={ () => {
+                                            setSubmit();
+                                        } }
+                                        data-testid={ `${ testId }-submit-button` }
+                                        loading={ isSubmitting }
+                                        disabled={ isSubmitting }
+                                    >
+                                        { t("common:update") }
+                                    </PrimaryButton>
+                                </Show>
+                            </Grid.Column>
+                        </Grid.Row>
+                    ) }
                 </Grid>
             </EmphasizedSegment>
         );

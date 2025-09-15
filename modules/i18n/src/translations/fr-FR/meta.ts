@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,12 +21,13 @@ import { LocaleMeta } from "../../models";
 
 export const meta: LocaleMeta = {
     code: "fr-FR",
+    direction: "ltr",
     flag: "fr",
     name: "Français (France)",
     namespaces: [
         I18nModuleConstants.COMMON_NAMESPACE,
         I18nModuleConstants.MY_ACCOUNT_NAMESPACE,
-        I18nModuleConstants.EXTENSIONS_NAMESPACE
-
+        I18nModuleConstants.EXTENSIONS_NAMESPACE,
+        I18nModuleConstants.COMMON_USERS_NAMESPACE
     ]
 };

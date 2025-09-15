@@ -17,10 +17,15 @@
  */
 
 import { DroppableContainer, GetDragItemProps, useDnD  } from "@oxygen-ui/react/dnd";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import {
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
+import {
+    EmptyPlaceholder
+} from "@wso2is/react-components";
 import React, { ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import PolicyListDraggableNode from "./policy-list-draggable-node";
 import PolicyListNode from "./policy-list-node";
 import { PolicyInterface } from "../models/policies";
@@ -31,11 +36,30 @@ interface PolicyListProps extends IdentifiableComponentInterface {
     policies?: PolicyInterface[]; // Use PolicyInterface[]
     containerId: string;
     isDraggable?: boolean; // Add a prop to control drag functionality
-    mutateInactivePolicyList?: () => void;
-    mutateActivePolicyList?: () => void;
-    setInactivePolicies?: React.Dispatch<React.SetStateAction<PolicyInterface[]>>;
-    setPageInactive?: React.Dispatch<React.SetStateAction<number>>;
-    setHasMoreInactivePolicies?: React.Dispatch<React.SetStateAction<boolean>>;
+    /**
+     * Delete an active policy.
+     *
+     * @param policyId - The policy ID.
+     */
+    deleteActivePolicy?: (policyId: string) => void;
+    /**
+     * Delete an inactive policy.
+     *
+     * @param policyId - The policy ID.
+     */
+    deleteInactivePolicy?: (policyId: string) => void;
+    /**
+     * Deactivate a policy.
+     *
+     * @param policyId - The policy ID.
+     */
+    deactivatePolicy?: (policyId: string) => void;
+    /**
+     * Activate a policy.
+     *
+     * @param policyId - The policy ID.
+     */
+    activatePolicy?: (policyId: string) => void;
 }
 
 
@@ -43,70 +67,84 @@ interface PolicyListProps extends IdentifiableComponentInterface {
 export const PolicyList: React.FunctionComponent<PolicyListProps> = ({
     onDrop,
     policies = [],
-    mutateInactivePolicyList, setInactivePolicies,
-    setPageInactive,
-    setHasMoreInactivePolicies,
-    mutateActivePolicyList,
+    deleteActivePolicy,
+    deleteInactivePolicy,
+    activatePolicy,
+    deactivatePolicy,
     containerId,
     isDraggable = true // Default to draggable
 }: PolicyListProps): ReactElement => {
+    const { t } = useTranslation();
     const { generateComponentId } = useDnD();
 
     const renderDraggableList = () => (
-        <DroppableContainer
-            nodes={ policies }
-            onDrop={ () => onDrop?.(containerId) }
-        >
-            { ({
-                nodes,
-                getDragItemProps
-            }: {
+        policies.length === 0 ? (
+            <EmptyPlaceholder
+                image={ getEmptyPlaceholderIllustrations().emptySearch }
+                imageSize="tiny"
+                title={ t("policyAdministration:activePoliciesPlaceholder.title") }
+                subtitle={ [ t("policyAdministration:activePoliciesPlaceholder.subtitle") ] }
+                data-componentid={ "active-policy-list-empty-search-placeholder-icon" }
+            />
+        ) : (
+            <DroppableContainer
+                nodes={ policies }
+                onDrop={ () => onDrop(containerId) }
+            >
+                { ({
+                    nodes,
+                    getDragItemProps
+                }: {
                 nodes: PolicyInterface[];
                 getDragItemProps: GetDragItemProps;
             }) =>
-                nodes.map((policy: PolicyInterface, index: number) => {
-                    const {
-                        className: dragItemClassName,
-                        ...otherDragItemProps
-                    } = getDragItemProps(index);
+                    nodes.map((policy: PolicyInterface, index: number) => {
+                        const {
+                            className: dragItemClassName,
+                            ...otherDragItemProps
+                        } = getDragItemProps(index);
 
-                    return (
-                        <div
-                            key={ policy.policyId }
-                            className={ dragItemClassName }
-                            { ...otherDragItemProps }
-                        >
-                            <PolicyListDraggableNode
-                                policy={ policy }
-                                data-componentid={ generateComponentId() }
-                                mutateActivePolicyList={ mutateActivePolicyList }
-                                mutateInactivePolicyList={ mutateInactivePolicyList }
-                                setPageInactive={ setPageInactive }
-                                setInactivePolicies={ setInactivePolicies }
-                                setHasMoreInactivePolicies={ setHasMoreInactivePolicies }
-
-                            />
-                        </div>
-                    );
-                })
-            }
-        </DroppableContainer>
+                        return (
+                            <div
+                                key={ policy.policyId }
+                                className={ dragItemClassName }
+                                { ...otherDragItemProps }
+                                draggable={ false }
+                            >
+                                <PolicyListDraggableNode
+                                    policy={ policy }
+                                    data-componentid={ generateComponentId() }
+                                    onDelete={ deleteActivePolicy }
+                                    onDeactivate={ deactivatePolicy }
+                                />
+                            </div>
+                        );
+                    })
+                }
+            </DroppableContainer>
+        )
     );
 
     const renderStaticList = () => (
         <div className="policy-inactive-list">
-            { policies.map((policy: PolicyInterface) => (
+            { policies.length === 0 ? (
+                <EmptyPlaceholder
+                    image={ getEmptyPlaceholderIllustrations().emptyList }
+                    imageSize="tiny"
+                    title={ t("policyAdministration:inactivePoliciesPlaceholder.title") }
+                    subtitle={ [ t("policyAdministration:inactivePoliciesPlaceholder.subtitle") ] }
+                    data-componentid={ "inactive-policy-list-empty-search-placeholder-icon" }
+                />
+            ) : ( policies.map((policy: PolicyInterface) => (
                 <PolicyListNode
                     key={ policy.policyId }
                     policy={ policy }
                     data-componentid={ generateComponentId() }
-                    mutateInactivePolicyList={ mutateInactivePolicyList }
-                    mutateActivePolicyList={ mutateActivePolicyList }
-                    setInactivePolicies={ setInactivePolicies }
-                    setPageInactive={ setPageInactive }
-                    setHasMoreInactivePolicies={ setHasMoreInactivePolicies }
+                    onDelete={ deleteInactivePolicy }
+                    onActivate={ activatePolicy }
                 />
-            )) }
+            ))
+            ) }
         </div>
     );
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -43,11 +43,12 @@ import { AppConstants } from "../constants/app-constants";
 import { CommonConstants } from "../constants/common-constants";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models/app-config";
 import { getProfileInformation, resolveIdpURLSAfterTenantResolves } from "../store/actions/authenticate";
-import { setOrganizationType, setUserOrganizationId } from "../store/actions/organization";
+import { setOrganizationType, setUserOrganizationHandle, setUserOrganizationId } from "../store/actions/organization";
 
 const AUTHORIZATION_ENDPOINT: string = "authorization_endpoint";
 const TOKEN_ENDPOINT: string = "token_endpoint";
 const OIDC_SESSION_IFRAME_ENDPOINT: string = "oidc_session_iframe_endpoint";
+const LOGOUT_URL: string = "sign_out_url";
 
 /**
  * Props interface of {@link useSignIn}
@@ -117,10 +118,9 @@ const useSignIn = (): UseSignInInterface => {
         const tenantDomain: string = transformTenantDomain(
             AuthenticateUtils.deriveTenantDomainFromSubject(response.sub)
         );
-        const isFirstLevelOrg: boolean = !idToken.user_org
-                || idToken.org_name === tenantDomain
-                || ((idToken.user_org === idToken.org_id) && idToken.org_name === tenantDomain);
         const userOrganizationId: string = idToken.user_org;
+        const userOrganizationHandle: string = idToken.org_handle;
+        const isFirstLevelOrg: boolean = !userOrganizationId;
 
         const __experimental__platformIdP: {
             enabled: boolean;
@@ -163,6 +163,7 @@ const useSignIn = (): UseSignInInterface => {
         dispatch(setOrganizationType(orgType));
         window["AppUtils"].updateOrganizationType(orgType);
         dispatch(setUserOrganizationId(userOrganizationId));
+        dispatch(setUserOrganizationHandle(userOrganizationHandle));
 
         // Update the app base name with the newly resolved tenant.
         window["AppUtils"].updateTenantQualifiedBaseName(tenantDomain);
@@ -268,6 +269,31 @@ const useSignIn = (): UseSignInInterface => {
                         idToken.org_id
                     )
                 });
+
+                // This is a temporary fix to handle the logout redirection for sub-org logins.
+                // This should be supported by the SDK itself to change the post logout redirect URL.
+                // Tracker: https://github.com/asgardeo/asgardeo-auth-react-sdk/issues/278
+                const isSwitchedFromRootOrg: boolean = getUserOrgInLocalStorage() === "undefined";
+
+                if (orgType === OrganizationType.SUBORGANIZATION && !isSwitchedFromRootOrg) {
+                    Object.entries(sessionStorage).forEach(([ key, value ]: [ key: string, value: string ]) => {
+                        if (key.startsWith(LOGOUT_URL) && key.includes(window["AppUtils"]?.getConfig()?.clientID)) {
+                            const _signOutRedirectURL: URL = new URL(value);
+
+                            const postLogoutRedirectUri: string = _signOutRedirectURL
+                                ?.searchParams?.get("post_logout_redirect_uri");
+
+                            if (postLogoutRedirectUri) {
+                                _signOutRedirectURL?.searchParams?.set(
+                                    "post_logout_redirect_uri",
+                                    window["AppUtils"]?.getConfig()?.clientOriginWithTenant
+                                );
+
+                                sessionStorage.setItem(key, _signOutRedirectURL.href);
+                            }
+                        }
+                    });
+                }
             })
             .catch((error: AsgardeoAuthException) => {
                 throw error;

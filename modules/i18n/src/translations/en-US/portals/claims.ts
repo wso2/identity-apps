@@ -19,6 +19,10 @@ import { ClaimsNS } from "../../../models";
 
 export const claims: ClaimsNS = {
     attributeMappings: {
+        agent: {
+            description: "The SCIM protocol representation for AI agent attributes used in agent identity management APIs.",
+            heading: "SCIM 2.0 for AI Agents"
+        },
         axschema: {
             description: "The Attribute Exchange Schema (axschema) representation "
                 + "for user attributes.",
@@ -39,7 +43,7 @@ export const claims: ClaimsNS = {
             heading: "OpenID Connect"
         },
         scim: {
-            description: "The SCIM2 protocol representation for user "
+            description: "The SCIM2 protocol representation for "
                 + "attributes that will be used in the SCIM2 API.",
             heading: "SCIM 2.0"
         }
@@ -70,7 +74,7 @@ export const claims: ClaimsNS = {
             content: "If you delete this attribute mapping, all the associated {{type}} attributes will "
                 + "also be deleted. Please proceed with caution.",
             header: "Are you sure?",
-            hint: "Please type <1>{{confirm}}</1> to confirm.",
+            hint: "Please confirm your action.",
             message: "This action is irreversible and will permanently delete the selected attribute " +
                 "mapping."
         },
@@ -183,6 +187,10 @@ export const claims: ClaimsNS = {
         },
         sections: {
             manageAttributeMappings: {
+                agent: {
+                    description: "The SCIM protocol representation for AI agent attributes used in agent identity management APIs.",
+                    heading: "SCIM 2.0 for AI Agents"
+                },
                 custom: {
                     description: "Communicate information about the user via custom mappings.",
                     heading: "Custom Attribute Mapping"
@@ -378,7 +386,8 @@ export const claims: ClaimsNS = {
                 title: {
                     dialect: "Add an Attribute Mapping",
                     external: "Add an {{type}} Attribute",
-                    local: "Add an Attribute"
+                    local: "Add an Attribute",
+                    readOnlyDialect: "No {{type}} Attributes Added"
                 }
             },
             emptySearch: {
@@ -451,6 +460,30 @@ export const claims: ClaimsNS = {
                 placeholder: "Enter an attribute name",
                 requiredErrorMessage: "Attribute name is required"
             },
+            canonicalValues: {
+                hint: "Provide the allowed values for the attribute.",
+                keyLabel: "Display Value",
+                keyRequiredErrorMessage: "Display value is required",
+                validationError: "At least one option must be provided.",
+                validationErrorMessage: "No options provided.",
+                valueLabel: "Value",
+                valueRequiredErrorMessage: "Value is required"
+            },
+            dataType: {
+                hint: "The data type of the attribute.",
+                label: "Data Type",
+                options: {
+                    boolean: "Boolean",
+                    date: "Date",
+                    dateTime: "DateTime",
+                    decimal: "Decimal",
+                    epoch: "Epoch",
+                    integer: "Integer",
+                    object: "Object",
+                    options: "Options",
+                    text: "Text"
+                }
+            },
             description: {
                 label: "Description",
                 placeholder: "Enter a description",
@@ -469,6 +502,28 @@ export const claims: ClaimsNS = {
                 disabledConfigInfo: "Please note that below section is disabled as there is no " +
                     "external claim mapping found for this claim attribute."
             },
+            inputFormat: {
+                hint: "The input format of the attribute.",
+                label: "Input Format",
+                options: {
+                    checkBoxGroup: "Checkbox Group",
+                    checkbox: "Checkbox",
+                    datePicker: "Date Picker",
+                    dropdown: "Dropdown",
+                    multiSelectDropdown: "Multi-Select Dropdown",
+                    numberInput: "Number Input",
+                    radioGroup: "Radio Group",
+                    textArea: "Text Area",
+                    textInput: "Text Input",
+                    toggle: "Toggle"
+                }
+            },
+            multiValued: {
+                label: "Allow multiple values for this attribute",
+                placeholder: "Select a user attribute"
+            },
+            multiValuedHint: "Select this option if the attribute can have multiple values.",
+            multiValuedSystemClaimHint: "Indicate whether the attribute supports multiple values.",
             name: {
                 label: "Attribute Display Name",
                 placeholder: "Enter the display name",
@@ -480,6 +535,22 @@ export const claims: ClaimsNS = {
                 }
             },
             nameHint: "The display name of the attribute in the user profile.",
+            profiles: {
+                administratorConsole: "Administrator Console",
+                attributeConfigurations: {
+                    description: "Define how attributes appear and behave in different flows. These settings control only the user interface. They do not affect backend or API validation.",
+                    title: "Attribute Configurations"
+                },
+                displayByDefault: "Display",
+                displayByDefaultHint: "If selected, this attribute will be displayed by default in the profile. Required attributes must be displayed.",
+                endUserProfile: "End-User Profile",
+                readonly: "Read-only",
+                readonlyHint: "If this is selected, the value of this attribute is read-only in the profile. Be sure to select this option if the attribute value is system-defined.",
+                required: "Required",
+                requiredHint: "If selected, the user must specify a value for this attribute in the profile. Read-only attributes cannot be marked as required.",
+                selfRegistration: "Self-Registration",
+                selfRegistrationReadOnlyHint: "Read-only configuration is not applicable in the self-registration profile."
+            },
             readOnly: {
                 label: "Make this attribute read-only on the user's profile"
             },
@@ -497,6 +568,21 @@ export const claims: ClaimsNS = {
             "attribute on the profile.",
             requiredWarning: "To make the email attribute not display and not required on the user's profile, " +
                 "you need to disable account verification for your organization.",
+            sharedProfileValueResolvingMethod: {
+                hint: "When a user's profile is shared across multiple organizations, the value of this attribute will be taken from the selected source.",
+                label: "Select Source for Attribute Value of Shared Users",
+                options: {
+                    fromFirstFoundInHierarchy: "From First Found in Hierarchy",
+                    fromOrigin: "From Origin",
+                    fromSharedProfile: "From Shared Profile"
+                }
+            },
+            subAttributes: {
+                label: "The sub-attributes of the attribute",
+                placeholder: "Select sub-attributes",
+                validationError: "At least one sub-attribute must be provided.",
+                validationErrorMessage: "Sub-attributes are required for the Object data type."
+            },
             supportedByDefault: {
                 label: "Display this attribute on the user's profile"
             },

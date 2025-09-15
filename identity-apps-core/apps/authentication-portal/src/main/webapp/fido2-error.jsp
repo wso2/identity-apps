@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -44,10 +44,12 @@
 
             if (errorMessage.equalsIgnoreCase("provisioned.user.not.found")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "provisioned.user.not.found");
-            } 
+            }
         }
     }
 %>
+
+<% request.setAttribute("pageName", "fido2-error"); %>
 
 <%-- Data for the layout from the page --%>
 <%
@@ -77,7 +79,7 @@
         <jsp:include page="includes/analytics.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout authentication-portal-layout">
+<body class="login-portal layout authentication-portal-layout" data-response-type="error" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>">
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
@@ -109,7 +111,7 @@
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "need.help.contact.us")%>
                         <a href="mailto:<%= StringEscapeUtils.escapeHtml4(supportEmail) %>" target="_blank">
                             <span class="orange-text-color button"><%= StringEscapeUtils.escapeHtml4(supportEmail) %></span>
-                        </a> 
+                        </a>
                     </p>
                     <div class="ui divider hidden"></div>
                 </div>

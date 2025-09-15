@@ -22,7 +22,7 @@ import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import Link from "@oxygen-ui/react/Link";
 import Skeleton from "@oxygen-ui/react/Skeleton";
 import Tooltip from "@oxygen-ui/react/Tooltip";
-import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/server-configuration";

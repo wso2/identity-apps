@@ -40,9 +40,11 @@ import {
     GithubAuthenticatorForm,
     GoogleAuthenticatorForm,
     MicrosoftAuthenticatorForm,
+    PushAuthenticatorForm,
     SMSOTPAuthenticatorForm
 } from "../authenticators";
 import { SamlAuthenticatorSettingsForm } from "../authenticators/saml-authenticator-form";
+
 /**
  * Proptypes for the authenticator form factory component.
  */
@@ -268,6 +270,20 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     triggerSubmit={ triggerSubmit }
                     enableSubmitButton={ enableSubmitButton }
                     data-componentid={ testId }
+                    showCustomProperties={ showCustomProperties }
+                    readOnly={ isReadOnly }
+                    isSubmitting={ isSubmitting }
+                />
+            );
+        case LocalAuthenticatorConstants.AUTHENTICATOR_IDS.PUSH_AUTHENTICATOR_ID:
+            return (
+                <PushAuthenticatorForm
+                    initialValues={ initialValues }
+                    metadata={ metadata }
+                    onSubmit={ onSubmit }
+                    triggerSubmit={ triggerSubmit }
+                    enableSubmitButton={ enableSubmitButton }
+                    data-testid={ testId }
                     showCustomProperties={ showCustomProperties }
                     readOnly={ isReadOnly }
                     isSubmitting={ isSubmitting }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -42,6 +42,7 @@ const addComponentModalProps: AddOrganizationModalPropsInterface = {
 describe("UTC-1.0 - [Organization Management Feature] - Add Organization Modal", () => {
     const addOrganizationMock: jest.SpyInstance = jest.spyOn(api, "addOrganization");
     const getOrganizationsMock: jest.SpyInstance = jest.spyOn(api, "getOrganizations");
+    const checkOrgHandleAvailability: jest.SpyInstance = jest.spyOn(api, "checkOrgHandleAvailability");
 
     addOrganizationMock.mockImplementation(() => Promise.resolve(addOrganizationMockResponse));
 
@@ -52,6 +53,8 @@ describe("UTC-1.0 - [Organization Management Feature] - Add Organization Modal",
 
         return Promise.resolve(getOrganizationsEmptyMockResponse);
     });
+
+    checkOrgHandleAvailability.mockImplementation(() => Promise.resolve({ available: true }));
 
     test("UTC-1.1 - Test if the parent name is shown in the subheading", () => {
         render(
@@ -97,6 +100,13 @@ describe("UTC-1.0 - [Organization Management Feature] - Add Organization Modal",
             within(screen.getByTestId("organization-create-wizard-organization-name-input")).getByRole("textbox"),
             { target: { value: "Organization Two" } }
         );
+
+        const orgHandleInput: HTMLInputElement
+            = within(screen.getByTestId("organization-create-wizard-organization-handle-input")).getByRole("textbox");
+
+        await waitFor(() => {
+            expect(orgHandleInput.value).toEqual(expect.stringContaining("organizationtwo"));
+        });
 
         fireEvent.click(screen.getByTestId("organization-create-wizard-next-button"));
 

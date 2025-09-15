@@ -1,15 +1,23 @@
 <%--
- ~
- ~ Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
- ~
- ~ This software is the property of WSO2 LLC. and its suppliers, if any.
- ~ Dissemination of any information or reproduction of any material contained
- ~ herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
- ~ You may not alter or remove any copyright or other notice from copies of this content.
- ~
+  ~ Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
+  ~
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
 --%>
 
 <%@ page import="org.apache.commons.collections.CollectionUtils" %>
+<%@ page import="org.apache.commons.collections.MapUtils" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
@@ -25,6 +33,7 @@
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Set" %>
 <%@ page import="org.json.JSONArray" %>
+<%@ page import="org.json.JSONException" %>
 <%@ page import="org.json.JSONObject" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
@@ -62,12 +71,27 @@
     }
 
     boolean displayScopes = Boolean.parseBoolean(getServletContext().getInitParameter("displayScopes"));
+
+    final Map<String, String> authorizationDetailsToBeDisplayed = new HashMap<>();
+    try {
+        final String authorizationDetailsParam = request.getParameter("authorization_details");
+        if (StringUtils.isNotBlank(authorizationDetailsParam)) {
+            final JSONArray authorizationDetails  = new JSONArray(authorizationDetailsParam);
+            for (int index = 0; index < authorizationDetails.length(); index++) {
+                JSONObject authorizationDetail = authorizationDetails.getJSONObject(index);
+
+                // Check if consent description is not empty, otherwise use type.
+                final String description = authorizationDetail.optString("_description", authorizationDetail.getString("type"));
+                final String authorizationDetailId = "authorization_detail_id_" + authorizationDetail.getString("_id");
+                authorizationDetailsToBeDisplayed.put(authorizationDetailId, description);
+            }
+        }
+    } catch (JSONException e) {
+        // Ignore the error
+    }
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("containerSize", "medium");
-%>
+<% request.setAttribute("pageName", "oauth2-authz"); %>
 
 <!doctype html>
 <html lang="en-US">
@@ -82,7 +106,7 @@
         <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout authentication-portal-layout">
+<body class="login-portal layout authentication-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
 
     <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
         <jsp:include page="extensions/timeout.jsp"/>
@@ -230,6 +254,45 @@
 
                         <%
                                 }
+                            }
+                        %>
+
+                        <%
+                            if (MapUtils.isNotEmpty(authorizationDetailsToBeDisplayed)) {
+                        %>
+                            <div style="text-align: left;">
+                                <div class="claim-list ui list">
+                                    <div class="item mt-2">
+                                        <i aria-hidden="true" class="circle tiny icon primary consent-item-bullet" id="Authorization Details Types"></i>
+                                        <div class="content mt-2">
+                                            <div class="header light-font">
+                                                <%= i18n(resourceBundle, customText, "requested.authorization.details") %>
+                                            </div>
+                                        </div>
+                                        <div class="content light-font">
+                                            <div class="border-gray margin-bottom-double">
+                                                <div class="claim-list">
+                                                    <%
+                                                        for (Map.Entry<String, String> authorizationDetailEntry : authorizationDetailsToBeDisplayed.entrySet()) {
+                                                    %>
+                                                        <div class="mt-1 pl-2">
+                                                            <div class="ui checkbox" style="display: flex">
+                                                                <input type="checkbox" class="hidden" name="<%=authorizationDetailEntry.getKey()%>" id="<%=authorizationDetailEntry.getKey()%>" />
+                                                                <label id="<%=authorizationDetailEntry.getKey()%>" for="<%=authorizationDetailEntry.getKey()%>">
+                                                                    <%=Encode.forHtml(authorizationDetailEntry.getValue())%>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    <%
+                                                        }
+                                                    %>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <%
                             }
                         %>
 

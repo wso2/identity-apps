@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AppState } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs";
 import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-management-utils";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
@@ -161,7 +161,7 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
             .find((schema: ProfileSchemaInterface) => (schema.name === "emails"));
 
         if (emailSchema) {
-            setEmailRequired(emailSchema.required);
+            setEmailRequired(emailSchema.profiles?.selfRegistration?.required ?? emailSchema.required);
         }
     }, []);
 
@@ -238,7 +238,6 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
             if (property.name === ACCOUNT_CONFIRMATION) {
                 if (property.value === "false") {
                     setEnableAccountConfirmation(false);
-                    setAutoLoginOptionAvailable(true);
                     resolvedInitialFormValues = {
                         ...resolvedInitialFormValues,
                         signUpConfirmation: false
@@ -266,6 +265,11 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                 };
             }
         });
+
+        if ((get(resolvedInitialFormValues, ACCOUNT_CONFIRMATION) === "false") &&
+        (get(resolvedInitialFormValues, LOCK_ON_CREATION) === "false")) {
+            setAutoLoginOptionAvailable(true);
+        }
 
         if ((get(resolvedInitialFormValues, "SelfRegistration.SendConfirmationOnCreation") === "true") ||
         (get(resolvedInitialFormValues, "SelfRegistration.LockOnCreation") === "true")) {
@@ -336,6 +340,7 @@ export const SelfRegistrationForm: FunctionComponent<SelfRegistrationFormPropsIn
                 "accountActivateImmediately",
                 "verificationLinkExpiryTime",
                 "showUsernameUnavailability",
+                "SelfRegistration.ShowUsernameUnavailability",
                 "signUpConfirmation",
                 "notifyAccountConfirmation",
                 "SelfRegistration.LockOnCreation",

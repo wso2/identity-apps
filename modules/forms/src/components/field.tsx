@@ -185,7 +185,7 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                         type={ inputField.type }
                         placeholder={ inputField.placeholder }
                         name={ inputField.name }
-                        value={ form.get(inputField.name) || "" }
+                        value={ passedProps?.controlled ? passedProps.value : form.get(inputField.name) || "" }
                         onBlur={ (event: React.KeyboardEvent) => {
                             handleBlur(event, inputField.name);
                         } }
@@ -240,11 +240,18 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                             ...rest
                         } = radio;
 
+                        const radioLabel = hint && hint.content ? (
+                            <label>
+                                { label }
+                                <Icon name="info circle" size="small" color="grey" className="ml-1" />
+                            </label>
+                        ) : label;
+
                         const field = (
                             <Form.Field key={ index }>
                                 <Radio
                                     { ...filteredProps }
-                                    label={ label }
+                                    label={ radioLabel }
                                     name={ inputField.name }
                                     value={ value }
                                     checked={ form.get(inputField.name) === value }

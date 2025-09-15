@@ -37,15 +37,19 @@ import org.wso2.carbon.identity.application.mgt.ApplicationConstants;
 import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
 import org.wso2.carbon.identity.application.mgt.ApplicationMgtUtil;
 import org.wso2.carbon.identity.core.URLBuilderException;
+import org.wso2.carbon.identity.core.util.IdentityTenantUtil;
 import org.wso2.carbon.identity.core.util.IdentityUtil;
 import org.wso2.carbon.identity.oauth.IdentityOAuthAdminException;
 import org.wso2.carbon.identity.oauth.OAuthUtil;
+import org.wso2.carbon.identity.oauth.common.OAuthConstants;
 import org.wso2.carbon.identity.oauth.dto.OAuthConsumerAppDTO;
 import org.wso2.carbon.identity.oauth2.OAuth2Constants;
 import org.wso2.carbon.identity.organization.management.service.constant.OrganizationManagementConstants;
 import org.wso2.carbon.identity.organization.management.service.exception.OrganizationManagementException;
 import org.wso2.carbon.identity.role.mgt.core.RoleConstants;
+import org.wso2.carbon.identity.role.v2.mgt.core.RoleManagementService;
 import org.wso2.carbon.identity.role.v2.mgt.core.exception.IdentityRoleManagementException;
+import org.wso2.carbon.identity.role.v2.mgt.core.model.Permission;
 import org.wso2.carbon.identity.role.v2.mgt.core.model.RoleBasicInfo;
 import org.wso2.carbon.stratos.common.beans.TenantInfoBean;
 import org.wso2.carbon.user.core.UserRealm;
@@ -76,6 +80,10 @@ import static org.wso2.identity.apps.common.util.AppPortalConstants.DISPLAY_NAME
 import static org.wso2.identity.apps.common.util.AppPortalConstants.EMAIL_CLAIM_URI;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_ACCOUNT_SWITCH;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_ORGANIZATION_SWITCH;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_TOKEN_EXCHANGE;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.IMPERSONATE_ORG_SCOPE_NAME;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.IMPERSONATE_ROLE_NAME;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.IMPERSONATE_SCOPE_NAME;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_AUTH2_TYPE;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_CONFIG_TYPE;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.MYACCOUNT_APP;
@@ -119,18 +127,40 @@ public class AppPortalUtils {
             StringUtils.isNotEmpty(IdentityUtil.getProperty(CONSOLE_PORTAL_PATH))) {
             portalPath = IdentityUtil.getProperty(CONSOLE_PORTAL_PATH);
         }
+        String consolePortalPathForMyAccount = portalPath;
         if (MYACCOUNT_APP.equals(applicationName) &&
             StringUtils.isNotEmpty(IdentityUtil.getProperty(MYACCOUNT_PORTAL_PATH))) {
             portalPath = IdentityUtil.getProperty(MYACCOUNT_PORTAL_PATH);
+            consolePortalPathForMyAccount = IdentityUtil.getProperty(CONSOLE_PORTAL_PATH);
         }
         if (!portalPath.startsWith("/")) {
             portalPath = "/" + portalPath;
+            consolePortalPathForMyAccount = "/" + consolePortalPathForMyAccount;
+        }
+        if (consolePortalPathForMyAccount.contains("(\\?fidp=PlatformIDP)?$")) {
+            // This is needed to create impersonation callback URL regex.
+            // Do not use this to create console callback URL.
+            consolePortalPathForMyAccount = consolePortalPathForMyAccount.replace("(\\?fidp=PlatformIDP)?$", "");
         }
         String callbackUrl = IdentityUtil.getServerURL(portalPath, true, true);
+        String consoleCallbackUrlForMyAccount = IdentityUtil.getServerURL(consolePortalPathForMyAccount,
+            true, true);
+        String appendedConsoleCallBackURLRegex = StringUtils.EMPTY;
         try {
             // Update the callback URL properly if origin is configured for the portal app.
             callbackUrl = ApplicationMgtUtil.replaceUrlOriginWithPlaceholders(callbackUrl);
             callbackUrl = ApplicationMgtUtil.resolveOriginUrlFromPlaceholders(callbackUrl, applicationName);
+
+            // Add console url when impersonation is enabled.
+            if (MYACCOUNT_APP.equals(applicationName)) {
+                consoleCallbackUrlForMyAccount = ApplicationMgtUtil.replaceUrlOriginWithPlaceholders(
+                    consoleCallbackUrlForMyAccount);
+                consoleCallbackUrlForMyAccount = ApplicationMgtUtil.resolveOriginUrlFromPlaceholders(
+                    consoleCallbackUrlForMyAccount, CONSOLE_APP);
+                appendedConsoleCallBackURLRegex = "|" + consoleCallbackUrlForMyAccount.replace(
+                    consolePortalPathForMyAccount,
+                    consolePortalPathForMyAccount + "/resources/users/init-impersonate.html");
+            }
         } catch (URLBuilderException e) {
             throw new IdentityOAuthAdminException("Server encountered an error while building callback URL with " +
                 "placeholders for the server URL", e);
@@ -139,13 +169,21 @@ public class AppPortalUtils {
             callbackUrl = "regexp=(" + callbackUrl
                 + "|" + callbackUrl.replace(portalPath, "/t/carbon.super" + portalPath)
                 + "|" + callbackUrl.replace(portalPath, "/t/carbon.super/o/(.*)" + portalPath)
+                + appendedConsoleCallBackURLRegex
                 + ")";
         } else {
             callbackUrl = "regexp=(" + callbackUrl.replace(portalPath, "/t/(.*)" + portalPath)
                 + "|" + callbackUrl.replace(portalPath, "/t/(.*)/o/(.*)" + portalPath)
+                + appendedConsoleCallBackURLRegex
                 + ")";
         }
         oAuthConsumerAppDTO.setCallbackUrl(callbackUrl);
+        // Enable subject token response type for my account.
+        if (MYACCOUNT_APP.equals(applicationName)) {
+            oAuthConsumerAppDTO.setSubjectTokenEnabled(true);
+            oAuthConsumerAppDTO.setSubjectTokenExpiryTime(
+                OAuthConstants.OIDCConfigProperties.SUBJECT_TOKEN_EXPIRY_TIME_VALUE);
+        }
         oAuthConsumerAppDTO.setBypassClientCredentials(true);
         if (grantTypes != null && !grantTypes.isEmpty()) {
             oAuthConsumerAppDTO.setGrantTypes(String.join(" ", grantTypes));
@@ -253,6 +291,9 @@ public class AppPortalUtils {
         if (!CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME && CONSOLE_APP.equals(appName)) {
             shareApplication(tenantDomain, tenantId, appId, appName, appOwner);
         }
+        if (MYACCOUNT_APP.equals(appName)) {
+            addImpersonatorRole(appOwner, appId, tenantId, tenantDomain);
+        }
     }
 
     /**
@@ -262,7 +303,7 @@ public class AppPortalUtils {
      * @param tenantId     tenant id.
      * @throws IdentityApplicationManagementException      IdentityApplicationManagementException.
      * @throws IdentityOAuthAdminException                 IdentityOAuthAdminException.
-     * @throws org.wso2.carbon.user.api.UserStoreException UserStoreException.
+     * @throws UserStoreException UserStoreException.
      */
     public static void initiatePortals(String tenantDomain, int tenantId)
         throws IdentityApplicationManagementException, IdentityOAuthAdminException,
@@ -283,7 +324,6 @@ public class AppPortalUtils {
      * @param tenantInfoBean tenant info bean.
      * @throws IdentityApplicationManagementException      IdentityApplicationManagementException.
      * @throws IdentityOAuthAdminException                 IdentityOAuthAdminException.
-     * @throws org.wso2.carbon.user.api.UserStoreException UserStoreException.
      */
     public static void initiatePortals(TenantInfoBean tenantInfoBean)
         throws IdentityApplicationManagementException, IdentityOAuthAdminException {
@@ -307,10 +347,15 @@ public class AppPortalUtils {
                     grantTypes = Arrays.asList(AUTHORIZATION_CODE, REFRESH_TOKEN, GRANT_TYPE_ACCOUNT_SWITCH,
                         GRANT_TYPE_ORGANIZATION_SWITCH);
                 }
+                // Enable token-exchange grant type for my account.
+                if (MYACCOUNT_APP.equals(appPortal.getName())) {
+                    grantTypes = Arrays.asList(AUTHORIZATION_CODE, REFRESH_TOKEN, GRANT_TYPE_ACCOUNT_SWITCH,
+                    GRANT_TYPE_TOKEN_EXCHANGE);
+                }
                 List<String> allowedGrantTypes = Arrays.asList(AppsCommonDataHolder.getInstance()
                     .getOAuthAdminService().getAllowedGrantTypes());
                 grantTypes = grantTypes.stream().filter(allowedGrantTypes::contains).collect(Collectors.toList());
-                String consumerKey = appPortal.getConsumerKey();
+                String consumerKey = resolveClientID(appPortal.getConsumerKey(), tenantInfoBean.getTenantDomain());
                 try {
                     AppPortalUtils.createOAuth2Application(appPortal.getName(), appPortal.getPath(), consumerKey,
                         consumerSecret, tenantInfoBean.getAdmin(), tenantInfoBean.getTenantId(),
@@ -418,6 +463,45 @@ public class AppPortalUtils {
             throw new IdentityApplicationManagementException("Failed to share system application.", e);
         } finally {
             IdentityApplicationManagementUtil.removeAllowUpdateSystemApplicationThreadLocal();
+            PrivilegedCarbonContext.endTenantFlow();
+        }
+    }
+
+    /**
+     * Resolve tenant qualified client ID.
+     *
+     * @param consumerKey consumer key.
+     * @param tenantDomain tenant domain.
+     * @return client ID.
+     */
+    public static String resolveClientID(String consumerKey, String tenantDomain) {
+
+        if (IdentityTenantUtil.isTenantQualifiedUrlsEnabled() || SUPER_TENANT_DOMAIN_NAME.equals(tenantDomain)) {
+            return consumerKey;
+        } else {
+            return consumerKey + "_" + tenantDomain;
+        }
+    }
+
+    private static void addImpersonatorRole(String appOwner, String appId, int tenantId, String tenantDomain)
+        throws IdentityApplicationManagementException {
+
+        List<Permission> permissions = new ArrayList<>();
+        permissions.add(new Permission(IMPERSONATE_SCOPE_NAME));
+        permissions.add(new Permission(IMPERSONATE_ORG_SCOPE_NAME));
+
+        RoleManagementService roleManagementService = AppsCommonDataHolder.getInstance().getRoleManagementServiceV2();
+        try {
+            PrivilegedCarbonContext.startTenantFlow();
+            PrivilegedCarbonContext privilegedCarbonContext = PrivilegedCarbonContext.getThreadLocalCarbonContext();
+            privilegedCarbonContext.setTenantId(tenantId);
+            privilegedCarbonContext.setTenantDomain(tenantDomain);
+            privilegedCarbonContext.setUsername(appOwner);
+            roleManagementService.addRole(IMPERSONATE_ROLE_NAME, Collections.emptyList(), Collections.emptyList(),
+                permissions, APPLICATION, appId, tenantDomain);
+        } catch (IdentityRoleManagementException e) {
+            throw new IdentityApplicationManagementException("Error occurred while creating impersonator role.");
+        } finally {
             PrivilegedCarbonContext.endTenantFlow();
         }
     }

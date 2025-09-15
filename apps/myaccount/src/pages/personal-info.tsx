@@ -17,6 +17,10 @@
  */
 
 import { ProfileConstants } from "@wso2is/core/constants";
+/**
+ * `useRequiredScopes` is not supported for myaccount.
+ */
+// eslint-disable-next-line no-restricted-imports
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Message, PageLayout } from "@wso2is/react-components";
@@ -24,7 +28,9 @@ import React, { Dispatch, FunctionComponent, ReactElement, useEffect, useState }
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
-import { FederatedAssociations, LinkedAccounts, Profile, ProfileExport } from "../components";
+import { FederatedAssociations, LinkedAccounts, ProfileExport } from "../components";
+import { LegacyProfile } from "../components/profile/legacy-profile";
+import { Profile } from "../components/profile/profile";
 import { AppConstants } from "../constants";
 import { commonConfig } from "../extensions";
 import { SCIMConfigs } from "../extensions/configs/scim";
@@ -65,6 +71,12 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
     const isReadOnlyUser: string = useSelector((state: AppState) => state
         .authenticationInformation.profileInfo.isReadOnly);
     const hasLocalAccount: boolean = useSelector((state: AppState) => state.authenticationInformation.hasLocalAccount);
+
+    const isLegacyProfileEnabled: boolean = isFeatureEnabled(
+        accessConfig?.personalInfo,
+        AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_LEGACY_PROFILE")
+    );
+
     // IDP by which the user initially signed up.
     const [ userSourceIdp, setUserSourceIdp ] = useState<string>("");
 
@@ -84,11 +96,11 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
             return;
         }
         // Verifies if the user is a user without local credentials.
-        const localCredentialExist: string = profileDetails?.profileInfo?.[SCIMConfigs.scim.customEnterpriseSchema]?.
+        const localCredentialExist: string = profileDetails?.profileInfo?.[SCIMConfigs.scim.systemSchema]?.
             [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("LOCAL_CREDENTIAL_EXISTS")];
 
         // Requires to validate if user is logged in from different IDP other than the source IDP.
-        setUserSourceIdp(profileDetails?.profileInfo?.[SCIMConfigs.scim.customEnterpriseSchema]?.
+        setUserSourceIdp(profileDetails?.profileInfo?.[SCIMConfigs.scim.systemSchema]?.
             [ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("IDP_TYPE")]);
 
         if (localCredentialExist && localCredentialExist == "false") {
@@ -138,11 +150,19 @@ const PersonalInfoPage:  FunctionComponent<PersonalInfoPagePropsInterface> = (
                     && (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 }>
-                                <Profile
-                                    isNonLocalCredentialUser={ isNonLocalCredentialUser }
-                                    featureConfig={ accessConfig }
-                                    onAlertFired={ handleAlerts }
-                                />
+                                { isLegacyProfileEnabled ? (
+                                    <LegacyProfile
+                                        isNonLocalCredentialUser={ isNonLocalCredentialUser }
+                                        featureConfig={ accessConfig }
+                                        onAlertFired={ handleAlerts }
+                                    />
+                                ) : (
+                                    <Profile
+                                        isNonLocalCredentialUser={ isNonLocalCredentialUser }
+                                        featureConfig={ accessConfig }
+                                        onAlertFired={ handleAlerts }
+                                    />
+                                ) }
                             </Grid.Column>
                         </Grid.Row>
                     )

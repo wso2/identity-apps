@@ -1,5 +1,237 @@
 # @wso2is/react-components
 
+## 2.9.22
+
+### Patch Changes
+
+- [#9041](https://github.com/wso2/identity-apps/pull/9041) [`b39c23eb0446afefdbea872ee3b0cf6d5370671f`](https://github.com/wso2/identity-apps/commit/b39c23eb0446afefdbea872ee3b0cf6d5370671f) Thanks [@savindi7](https://github.com/savindi7)! - Display regex values added via API in app and profile fixes.
+
+## 2.9.21
+
+### Patch Changes
+
+- [#8415](https://github.com/wso2/identity-apps/pull/8415) [`0235fc45576bbb5c944e34b85ef9ef00df8beb92`](https://github.com/wso2/identity-apps/commit/0235fc45576bbb5c944e34b85ef9ef00df8beb92) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Refactor Pre Issue Access Token Action with support for allowedHeaders and allowedParameters
+
+## 2.9.20
+
+### Patch Changes
+
+- [#8399](https://github.com/wso2/identity-apps/pull/8399) [`6cd3709a83f510af1d60a1ffbb031efaffcf8589`](https://github.com/wso2/identity-apps/commit/6cd3709a83f510af1d60a1ffbb031efaffcf8589) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Fix danger zone styling issue.
+
+## 2.9.19
+
+### Patch Changes
+
+- [#8386](https://github.com/wso2/identity-apps/pull/8386) [`8a615eefa4248f2f55f5548e4e93a7f80a598c77`](https://github.com/wso2/identity-apps/commit/8a615eefa4248f2f55f5548e4e93a7f80a598c77) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Fix danger zone styling issue.
+
+## 2.9.18
+
+### Patch Changes
+
+- [#8361](https://github.com/wso2/identity-apps/pull/8361) [`a9880345857174580b19327b59ad2a194c0b59e2`](https://github.com/wso2/identity-apps/commit/a9880345857174580b19327b59ad2a194c0b59e2) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Support infinite scrolling in organization list in application share
+
+## 2.9.17
+
+### Patch Changes
+
+- [#8301](https://github.com/wso2/identity-apps/pull/8301) [`b29ed7869a11e35df46b23027e7302ae64fabc39`](https://github.com/wso2/identity-apps/commit/b29ed7869a11e35df46b23027e7302ae64fabc39) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Provide RTL Support for MyAccount
+
+## 2.9.16
+
+### Patch Changes
+
+- [#8238](https://github.com/wso2/identity-apps/pull/8238) [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump oxygen-ui version to 2.4.2
+
+## 2.9.15
+
+### Patch Changes
+
+- [#8209](https://github.com/wso2/identity-apps/pull/8209) [`a4d837f3c5f9eab3e85d6b8d9c665285dad7a0ac`](https://github.com/wso2/identity-apps/commit/a4d837f3c5f9eab3e85d6b8d9c665285dad7a0ac) Thanks [@amanda-ariyaratne](https://github.com/amanda-ariyaratne)! - Fix pagination issues in user listing page
+
+## 2.9.14
+
+### Patch Changes
+
+- [#8116](https://github.com/wso2/identity-apps/pull/8116) [`09d8b338d4b54547c052364326779f2575ac365f`](https://github.com/wso2/identity-apps/commit/09d8b338d4b54547c052364326779f2575ac365f) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Onboard impersonation feature.
+
+- Updated dependencies [[`09d8b338d4b54547c052364326779f2575ac365f`](https://github.com/wso2/identity-apps/commit/09d8b338d4b54547c052364326779f2575ac365f)]:
+  - @wso2is/theme@2.7.8
+  - @wso2is/core@2.7.8
+
+## 2.9.13
+
+### Patch Changes
+
+- [#7993](https://github.com/wso2/identity-apps/pull/7993) [`2aca657fd60a32bf39a7d608f4d65eace3a99b95`](https://github.com/wso2/identity-apps/commit/2aca657fd60a32bf39a7d608f4d65eace3a99b95) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Improve user assignment UI in roles edit page and improvements to transfer components
+
+- Updated dependencies [[`b0d1cfa9142126be2870b6af6ef8fd1b99788cd9`](https://github.com/wso2/identity-apps/commit/b0d1cfa9142126be2870b6af6ef8fd1b99788cd9), [`2aca657fd60a32bf39a7d608f4d65eace3a99b95`](https://github.com/wso2/identity-apps/commit/2aca657fd60a32bf39a7d608f4d65eace3a99b95)]:
+  - @wso2is/theme@2.7.5
+
+## 2.9.12
+
+### Patch Changes
+
+- Updated dependencies [[`04fdeac1d019db974616a0845dfda84aa353d582`](https://github.com/wso2/identity-apps/commit/04fdeac1d019db974616a0845dfda84aa353d582)]:
+  - @wso2is/core@2.7.0
+
+## 2.9.11
+
+### Patch Changes
+
+- [#7701](https://github.com/wso2/identity-apps/pull/7701) [`f9752f1420e185f1a37ea267fb7edd336b8722ce`](https://github.com/wso2/identity-apps/commit/f9752f1420e185f1a37ea267fb7edd336b8722ce) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Trigger patch release to all packages to prepare for RC
+
+- Updated dependencies [[`f9752f1420e185f1a37ea267fb7edd336b8722ce`](https://github.com/wso2/identity-apps/commit/f9752f1420e185f1a37ea267fb7edd336b8722ce)]:
+  - @wso2is/core@2.6.5
+  - @wso2is/theme@2.6.11
+
+## 2.9.10
+
+### Patch Changes
+
+- Updated dependencies [[`6c74317ac2e2ce9dcc9dc924eb9be20dd976fd92`](https://github.com/wso2/identity-apps/commit/6c74317ac2e2ce9dcc9dc924eb9be20dd976fd92)]:
+  - @wso2is/theme@2.6.10
+
+## 2.9.9
+
+### Patch Changes
+
+- Updated dependencies [[`ccb0b6b1e6bc018a9dcea67ab2aa1f6856971578`](https://github.com/wso2/identity-apps/commit/ccb0b6b1e6bc018a9dcea67ab2aa1f6856971578)]:
+  - @wso2is/core@2.6.4
+
+## 2.9.8
+
+### Patch Changes
+
+- Updated dependencies [[`4fd677f7cfdef94cf0a01f9b0ada0671aeeb4831`](https://github.com/wso2/identity-apps/commit/4fd677f7cfdef94cf0a01f9b0ada0671aeeb4831)]:
+  - @wso2is/theme@2.6.9
+
+## 2.9.7
+
+### Patch Changes
+
+- [#7541](https://github.com/wso2/identity-apps/pull/7541) [`8cebca0336f5769f65fda60960b78d8404049301`](https://github.com/wso2/identity-apps/commit/8cebca0336f5769f65fda60960b78d8404049301) Thanks [@brionmario](https://github.com/brionmario)! - Make the `ui_lang` & `accepts-cookies` preference cookies `Secure`
+
+* [#7547](https://github.com/wso2/identity-apps/pull/7547) [`25472cb2e3404df1f97bfcadb50740ca5af8a951`](https://github.com/wso2/identity-apps/commit/25472cb2e3404df1f97bfcadb50740ca5af8a951) Thanks [@brionmario](https://github.com/brionmario)! - - Bump `@oxygen-ui` version.
+  - Fix https://github.com/wso2/product-is/issues/22470
+  - Fix https://github.com/wso2/product-is/issues/22471
+* Updated dependencies [[`8cebca0336f5769f65fda60960b78d8404049301`](https://github.com/wso2/identity-apps/commit/8cebca0336f5769f65fda60960b78d8404049301), [`602921db40f920071cc38ccf8735f048a9486ebb`](https://github.com/wso2/identity-apps/commit/602921db40f920071cc38ccf8735f048a9486ebb), [`25472cb2e3404df1f97bfcadb50740ca5af8a951`](https://github.com/wso2/identity-apps/commit/25472cb2e3404df1f97bfcadb50740ca5af8a951)]:
+  - @wso2is/core@2.6.3
+  - @wso2is/theme@2.6.8
+
+## 2.9.6
+
+### Patch Changes
+
+- [#7523](https://github.com/wso2/identity-apps/pull/7523) [`8161cc441a1cf598f59f50e26d55527a1eb07cc7`](https://github.com/wso2/identity-apps/commit/8161cc441a1cf598f59f50e26d55527a1eb07cc7) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Enable account disable feature in console
+
+- Updated dependencies [[`863e421af246486a4d00034666ff3d64c13f37ce`](https://github.com/wso2/identity-apps/commit/863e421af246486a4d00034666ff3d64c13f37ce), [`8161cc441a1cf598f59f50e26d55527a1eb07cc7`](https://github.com/wso2/identity-apps/commit/8161cc441a1cf598f59f50e26d55527a1eb07cc7)]:
+  - @wso2is/theme@2.6.7
+
+## 2.9.5
+
+### Patch Changes
+
+- [#7123](https://github.com/wso2/identity-apps/pull/7123) [`0aca53b8d7f18b9d8488911500b86c7178eb9be6`](https://github.com/wso2/identity-apps/commit/0aca53b8d7f18b9d8488911500b86c7178eb9be6) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Ingore regex pattern matching for inbound OAuth apps
+
+- Updated dependencies [[`0aca53b8d7f18b9d8488911500b86c7178eb9be6`](https://github.com/wso2/identity-apps/commit/0aca53b8d7f18b9d8488911500b86c7178eb9be6)]:
+  - @wso2is/core@2.6.2
+
+## 2.9.4
+
+### Patch Changes
+
+- [#7490](https://github.com/wso2/identity-apps/pull/7490) [`2c831ff7dc0a263fc0ed20b4599f4a13dd4dc6df`](https://github.com/wso2/identity-apps/commit/2c831ff7dc0a263fc0ed20b4599f4a13dd4dc6df) Thanks [@brionmario](https://github.com/brionmario)! - Remove `Go to Console` link from root organization actions and show a URL instead
+
+  **Reason**: There are issues in having a `Go to Console` link and we can't properly workaround this without first resolving https://github.com/wso2/product-is/issues/22615
+
+- Updated dependencies [[`6994a4d6ef9d39263556cb06ece735cd72c96bf5`](https://github.com/wso2/identity-apps/commit/6994a4d6ef9d39263556cb06ece735cd72c96bf5)]:
+  - @wso2is/theme@2.6.6
+
+## 2.9.3
+
+### Patch Changes
+
+- Updated dependencies [[`79babcaf1edcd195d6da04f39903056b106b1c32`](https://github.com/wso2/identity-apps/commit/79babcaf1edcd195d6da04f39903056b106b1c32)]:
+  - @wso2is/theme@2.6.5
+
+## 2.9.2
+
+### Patch Changes
+
+- Updated dependencies [[`bb8c0b38541fe6bb367f74621b4c27587d82ebdd`](https://github.com/wso2/identity-apps/commit/bb8c0b38541fe6bb367f74621b4c27587d82ebdd)]:
+  - @wso2is/core@2.6.1
+
+## 2.9.1
+
+### Patch Changes
+
+- [#7332](https://github.com/wso2/identity-apps/pull/7332) [`4da42930c024dedb5002867b82928df3198c5546`](https://github.com/wso2/identity-apps/commit/4da42930c024dedb5002867b82928df3198c5546) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove barrel files from @wso2is/admin.core.v1 module
+
+- Updated dependencies [[`4da42930c024dedb5002867b82928df3198c5546`](https://github.com/wso2/identity-apps/commit/4da42930c024dedb5002867b82928df3198c5546)]:
+  - @wso2is/theme@2.6.4
+
+## 2.9.0
+
+### Minor Changes
+
+- [#7353](https://github.com/wso2/identity-apps/pull/7353) [`b67d22c81d5c8be72c09abd36ed829a88fb22a4b`](https://github.com/wso2/identity-apps/commit/b67d22c81d5c8be72c09abd36ed829a88fb22a4b) Thanks [@brionmario](https://github.com/brionmario)! - Integrate `tldts` to derive the `domain` name
+
+### Patch Changes
+
+- Updated dependencies [[`b67d22c81d5c8be72c09abd36ed829a88fb22a4b`](https://github.com/wso2/identity-apps/commit/b67d22c81d5c8be72c09abd36ed829a88fb22a4b)]:
+  - @wso2is/core@2.6.0
+
+## 2.8.27
+
+### Patch Changes
+
+- [#7370](https://github.com/wso2/identity-apps/pull/7370) [`9b6fe9141f5260d6e3760298badd6e0f6c7ec499`](https://github.com/wso2/identity-apps/commit/9b6fe9141f5260d6e3760298badd6e0f6c7ec499) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Add UI support for Push notification based authentication
+
+- Updated dependencies [[`9b6fe9141f5260d6e3760298badd6e0f6c7ec499`](https://github.com/wso2/identity-apps/commit/9b6fe9141f5260d6e3760298badd6e0f6c7ec499)]:
+  - @wso2is/theme@2.6.3
+
+## 2.8.26
+
+### Patch Changes
+
+- Updated dependencies [[`92a6766086071fd5e0986f91803804783b9159bf`](https://github.com/wso2/identity-apps/commit/92a6766086071fd5e0986f91803804783b9159bf)]:
+  - @wso2is/core@2.5.9
+
+## 2.8.25
+
+### Patch Changes
+
+- Updated dependencies [[`689dcc45ad43831b2805c3b91f04bdd254e1a7ef`](https://github.com/wso2/identity-apps/commit/689dcc45ad43831b2805c3b91f04bdd254e1a7ef)]:
+  - @wso2is/theme@2.6.2
+
+## 2.8.24
+
+### Patch Changes
+
+- Updated dependencies [[`31b4e92ae73fea1372a03f9aa0511f062030e44f`](https://github.com/wso2/identity-apps/commit/31b4e92ae73fea1372a03f9aa0511f062030e44f)]:
+  - @wso2is/core@2.5.8
+
+## 2.8.23
+
+### Patch Changes
+
+- Updated dependencies [[`3811ae3d223db8bf4fa5315f61d19a11aecc32a9`](https://github.com/wso2/identity-apps/commit/3811ae3d223db8bf4fa5315f61d19a11aecc32a9)]:
+  - @wso2is/theme@2.6.1
+
+## 2.8.22
+
+### Patch Changes
+
+- Updated dependencies [[`50b9ac91f7ff1da3f2e9d3d4ec99a84ff16f3523`](https://github.com/wso2/identity-apps/commit/50b9ac91f7ff1da3f2e9d3d4ec99a84ff16f3523), [`abf5c953b8f48db5cdb855e75f5c1b847d1e42f0`](https://github.com/wso2/identity-apps/commit/abf5c953b8f48db5cdb855e75f5c1b847d1e42f0)]:
+  - @wso2is/core@2.5.7
+
+## 2.8.21
+
+### Patch Changes
+
+- Updated dependencies [[`4497e3e2a3ec1ea0ca94aad71d3bd8580e3f1b98`](https://github.com/wso2/identity-apps/commit/4497e3e2a3ec1ea0ca94aad71d3bd8580e3f1b98)]:
+  - @wso2is/core@2.5.6
+
 ## 2.8.20
 
 ### Patch Changes

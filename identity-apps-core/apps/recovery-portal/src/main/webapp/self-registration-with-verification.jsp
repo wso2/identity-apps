@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2016-2024, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2016-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -24,6 +24,7 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.constants.SelfRegistrationStatusCodes" %>
@@ -234,18 +235,16 @@
     if (hasPurposes) {
         defaultPurposeCatId = selfRegistrationMgtClient.getDefaultPurposeId(user.getTenantDomain());
         uniquePIIs = IdentityManagementEndpointUtil.getUniquePIIs(purposes);
-        if (MapUtils.isNotEmpty(uniquePIIs)) {
-            piisConfigured = true;
-        }
     }
 
     List<Claim> claimsList;
     UsernameRecoveryApi usernameRecoveryApi = new UsernameRecoveryApi();
     try {
-        claimsList = usernameRecoveryApi.claimsGet(user.getTenantDomain(), false);
+        claimsList = usernameRecoveryApi.claimsGet(user.getTenantDomain(), false, "selfRegistration");
         uniquePIIs = IdentityManagementEndpointUtil.fillPiisWithClaimInfo(uniquePIIs, claimsList);
-        if (uniquePIIs != null) {
+        if (MapUtils.isNotEmpty(uniquePIIs)) {
             claims = uniquePIIs.values().toArray(new Claim[0]);
+            piisConfigured = true;
         }
         IdentityManagementEndpointUtil.addReCaptchaHeaders(request, usernameRecoveryApi.getApiClient().getResponseHeaders());
 
@@ -315,6 +314,8 @@
     }
 %>
 
+<% request.setAttribute("pageName", "self-registration-with-verification"); %>
+
 <!doctype html>
 <html lang="en-US">
 <head>
@@ -338,7 +339,7 @@
     %>
     <link rel="stylesheet" href="libs/addons/calendar.min.css"/>
 </head>
-<body class="login-portal layout recovery-layout">
+<body class="login-portal layout recovery-layout" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
@@ -373,9 +374,43 @@
 
                             <div class="">
                                 <% if (error) { %>
-                                <div class="ui negative message" id="server-error-msg">
-                                    <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
-                                </div>
+                                    <% if ( SelfRegistrationStatusCodes.ERROR_CODE_DUPLICATE_CLAIM_VALUE.equals(errorCodeFromRequest)) {
+                                        String[] splitErrorMsg = errorMsg.split("for");
+                                        String[] attributeList = splitErrorMsg[1].split("are|is")[0].trim().split(",");
+                                        String attributeString = " ";
+                                        String finalMessage = "";
+                                        for (int i = 0; i < attributeList.length; i++) {
+                                            attributeString = attributeString + IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, attributeList[i].trim());
+
+                                            if (i < attributeList.length - 1) {
+                                                attributeString = attributeString + (", ");
+                                            } else {
+                                                attributeString = attributeString + (" ");
+                                            }
+                                        }
+
+                                        if (errorMsg.contains("is")) {
+                                            finalMessage = new StringBuilder()
+                                                .append(i18n(recoveryResourceBundle, customText, "values.defined.for"))
+                                                .append(attributeString)
+                                                .append(i18n(recoveryResourceBundle, customText, "are.already.used.by.different.users"))
+                                                .toString();
+                                        }   else {
+                                            finalMessage = new StringBuilder()
+                                                .append(i18n(recoveryResourceBundle, customText, "values.defined.for"))
+                                                .append(attributeString)
+                                                .append(i18n(recoveryResourceBundle, customText, "are.already.used.by.different.users"))
+                                                .toString();
+                                        }
+                                    %>
+                                        <div class="ui negative message" id="server-error-msg">
+                                            <%=finalMessage%>
+                                        </div>
+                                    <% } else { %>
+                                        <div class="ui negative message" id="server-error-msg">
+                                            <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
+                                        </div>
+                                    <% } %>
                                 <% } %>
 
                                 <div class="ui negative message" id="error-msg" hidden="hidden">
@@ -399,15 +434,21 @@
                                     if (firstNamePII != null) {
                                         String firstNameValue = request.getParameter(IdentityManagementEndpointConstants.ClaimURIs.FIRST_NAME_CLAIM);
                                 %>
-                                    <div class="two fields">
-                                        <div id="firstNameField" class="field">
-                                            <label class="control-label"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "First.name")%>*</label>
+                                    <div <% if (lastNamePII != null) { %> class="two fields mb-0" <%} %> >
+                                        <div id="firstNameField"
+                                        <% if (firstNamePII.getRequired()) { %> class="field form-group required" <%}
+                                                else {%> class="field"<%}%>>
+                                            <label class="control-label">
+                                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "First.name")%>
+                                            </label>
                                             <input id="firstNameUserInput" type="text" name="http://wso2.org/claims/givenname" class="form-control"
                                                 <% if (firstNamePII.getRequired() || !piisConfigured) {%> required <%}%>
                                                 <% if (skipSignUpEnableCheck && StringUtils.isNotEmpty(firstNameValue)) { %> disabled <% } %>
                                                 <% if (StringUtils.isNotEmpty(firstNameValue)) { %>
                                                 value="<%= Encode.forHtmlAttribute(firstNameValue)%>"<% } %>
-                                                placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "First.name")%>*"/>
+                                                placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "First.name")%>
+                                                <% if (firstNamePII.getRequired() || !piisConfigured) { %>*<% } %>"
+                                            />
                                             <div class="mt-1" id="firstname-error-msg" hidden="hidden">
                                                 <i class="red exclamation circle fitted icon"></i>
                                                 <span class="validation-error-message" id="firstname-error-msg-text"></span>
@@ -420,14 +461,19 @@
                                                 String lastNameValue =
                                                         request.getParameter(IdentityManagementEndpointConstants.ClaimURIs.LAST_NAME_CLAIM);
                                         %>
-                                        <div id="lastNameField" class="field">
-                                            <label class="control-label"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Last.name")%>*</label>
+                                        <div id="lastNameField"
+                                        <% if (lastNamePII.getRequired()) { %> class="field form-group required" <% }
+                                                else { %> class="field form-group"<% } %>>
+                                            <label class="control-label">
+                                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Last.name")%>
+                                            </label>
                                             <input id="lastNameUserInput" type="text" name="http://wso2.org/claims/lastname" class="form-control"
                                                 <% if (lastNamePII.getRequired() || !piisConfigured) {%> required <%}%>
                                                 <% if (skipSignUpEnableCheck && StringUtils.isNotEmpty(lastNameValue)) { %> disabled <% } %>
                                                 <% if (StringUtils.isNotEmpty(lastNameValue)) { %>
                                                 value="<%= Encode.forHtmlAttribute(lastNameValue)%>"<% } %>
-                                                placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Last.name")%>*"
+                                                placeholder="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Last.name")%>
+                                                <% if (lastNamePII.getRequired() || !piisConfigured) { %>*<% } %>"
                                             />
                                             <div class="mt-1" id="lastname-error-msg" hidden="hidden">
                                                 <i class="red exclamation circle fitted icon"></i>
@@ -613,17 +659,17 @@
                                                 !(claim.getReadOnly() != null ? claim.getReadOnly() : false)) {
                                             String claimURI = claim.getUri();
                                             String claimValue = request.getParameter(claimURI);
+                                            String[] claimFields = claimURI.split("/");
+                                            String claimName = claimFields[claimFields.length-1];
+                                            String claimFieldID = claimName + "_field";
+                                            String claimErrorMsg = claimName + "_error";
+                                            String claimErrorMsgText = claimName + "_error_text";
                                 %>
-                                    <div class="field">
-                                    <% if (claim.getRequired()) { %>
-                                        <label class="control-label">
-                                            <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, claim.getDisplayName())%>*
-                                        </label>
-                                    <% } else { %>
+                                    <div  id="<%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, claimFieldID)%>"
+                                        <% if (claim.getRequired()) { %> class="field form-group required" <%} else {%> class="field"<%}%>  >
                                         <label class="control-label">
                                             <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, claim.getDisplayName())%>
                                         </label>
-                                    <% } %>
                                     <% if(StringUtils.equals(claim.getUri(), "http://wso2.org/claims/country")) {%>
                                         <div class="ui fluid search selection dropdown"  id="country-dropdown"
                                             data-testid="country-dropdown">
@@ -637,7 +683,9 @@
                                                 value="<%= Encode.forHtmlAttribute(claimValue)%>"<%}%>
                                             />
                                             <i class="dropdown icon"></i>
-                                            <div class="default text">Enter Country</div>
+                                            <div class="default text">
+                                                <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, claim.getDisplayName())%>
+                                            </div>
                                             <div class="menu">
                                                 <c:forEach items="<%=getCountryList()%>" var="country">
                                                     <div class="item" data-value="${country.value}">
@@ -645,6 +693,34 @@
                                                         ${country.value}
                                                     </div>
                                                 </c:forEach>
+                                            </div>
+                                        </div>
+                                    <% } else if (StringUtils.equals(claim.getUri(), "http://wso2.org/claims/local")) { %>
+                                        <div class="ui fluid search selection dropdown" id="local-dropdown" data-testid="local-dropdown">
+                                            <input type="hidden" id="local-input" name="<%= Encode.forHtmlAttribute(claimURI) %>"
+                                                <% if (claim.getRequired()) { %>
+                                                    required
+                                                <% }%>
+                                                <% if (skipSignUpEnableCheck && StringUtils.isNotEmpty(claimValue)) {%> disabled <%}%>
+                                                <% if (StringUtils.isNotEmpty(claimValue)) { %>
+                                                value="<%= Encode.forHtmlAttribute(claimValue) %>"<% } %>
+                                            />
+                                            <i class="dropdown icon"></i>
+                                            <div class="default text">
+                                                <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, claim.getDisplayName())%>
+                                            </div>
+                                            <div class="menu">
+                                                <%
+                                                    List<Map<String, String>> localeList = getLocaleList(application);
+                                                    for (Map<String, String> localeItem : localeList) {
+                                                %>
+                                                    <div class="item" data-value="<%= localeItem.get(LOCALE_CODE_KEY) %>">
+                                                        <i class="<%= localeItem.get(FLAG_CODE_KEY).toLowerCase() %> flag"></i>
+                                                        <%= localeItem.get(DISPLAY_NAME_KEY) %>
+                                                    </div>
+                                                <%
+                                                    }
+                                                %>
                                             </div>
                                         </div>
                                     <% } else if (StringUtils.equals(claim.getUri(), "http://wso2.org/claims/dob")) { %>
@@ -774,6 +850,9 @@
                                 <div class="ui divider hidden"></div>
                                 <div class="field">
                                     <div class="g-recaptcha"
+                                        data-size="invisible"
+                                        data-bind="registrationSubmit"
+                                        data-callback="onCompleted"
                                         data-sitekey="<%=Encode.forHtmlAttribute(reCaptchaKey)%>"
                                         data-theme="light"
                                     >
@@ -807,7 +886,7 @@
                                         <%=i18n(recoveryResourceBundle, customText, "sign.up.button")%>
                                     </button>
                                 </div>
-                                <% if (!skipSignUpEnableCheck) { %>
+                                <% if (!skipSignUpEnableCheck && AuthenticationEndpointUtil.isSchemeSafeURL(callback)) { %>
                                     <div class="ui divider hidden"></div>
                                     <div class="buttons mt-2">
                                         <div class="field external-link-container text-small">
@@ -914,7 +993,7 @@
     </div>
 
     <script type="text/javascript" src="libs/handlebars.min-v4.7.7.js"></script>
-    <script type="text/javascript" src="libs/jstree/dist/jstree.min.js"></script>
+    <script type="text/javascript" src="libs/jstree/src/jstree.js"></script>
     <script type="text/javascript" src="libs/jstree/src/jstree-actions.js"></script>
     <script type="text/javascript" src="js/consent_template_1.js"></script>
     <script type="text/javascript" src="js/consent_template_2.js"></script>
@@ -1035,6 +1114,10 @@
             window.history.back();
         }
 
+        function onCompleted() {
+            $('#register').submit();
+        }
+
         $(document).ready(function () {
 
             passwordField.keyup(function() {
@@ -1071,6 +1154,7 @@
             var agreementChk = $(".agreement-checkbox input");
             var registrationBtn = $("#registrationSubmit");
             var countryDropdown = $("#country-dropdown");
+            var localDropdown = $("#local-dropdown");
 
             if (agreementChk.length > 0) {
                 registrationBtn.prop("disabled", true).addClass("disabled");
@@ -1085,6 +1169,12 @@
 
             countryDropdown.dropdown('hide');
             $("> input.search", countryDropdown).attr("role", "presentation");
+
+            localDropdown.dropdown({
+                onChange: function (value) {
+                    $("#local-input").val(value);
+                }
+            });
 
             $("#date_picker").calendar({
                 type: 'date',
@@ -1239,11 +1329,11 @@
                 }
                 %>
 
-                $('<input />').attr('type', 'hidden')
-                    .attr('name', "consent")
-                    .attr('value', JSON.stringify(receipt))
-                    .appendTo('#register');
                 if (canSubmit) {
+                    $('<input />').attr('type', 'hidden')
+                        .attr('name', "consent")
+                        .attr('value', JSON.stringify(receipt))
+                        .appendTo('#register');
                     self.submit();
                 }
 
@@ -1289,15 +1379,15 @@
             if (hasPurposes) {
                 if(consentDisplayType == "template") {
                     %>
-            renderReceiptDetailsFromTemplate(<%= Encode.forJava(purposes) %>);
+            renderReceiptDetailsFromTemplate(JSON.parse("<%= Encode.forJava(purposes) %>"));
             <%
                 } else if (consentDisplayType == "tree") {
             %>
-            renderReceiptDetails(<%= Encode.forJava(purposes)%>);
+            renderReceiptDetails(JSON.parse("<%= Encode.forJava(purposes) %>"));
             <%
                 } else if (consentDisplayType == "row"){
             %>
-            renderReceiptDetailsFromRows(<%= Encode.forJava(purposes)%>);
+            renderReceiptDetailsFromRows(JSON.parse("<%= Encode.forJava(purposes) %>"));
             <%
                 }
             }
@@ -1597,7 +1687,7 @@
                 var rowTemplate =
                     '{{#purposes}}' +
                     '<div class="ui bulleted list">' +
-                    '<div class="item"><span>{{purpose}} {{#if description}}<i id="description" class="info circle icon" data-variation="inverted" data-content="{{description}}" data-placement="right"/>{{/if}}</span></div></div>' +
+                    '<div class="item"><span>{{purpose}} {{#if description}}<span id="description-{{purposeId}}" data-tooltip="{{description}}"" data-inverted=""><i class="info circle icon"></i></span>{{/if}}</span></div></div>' +
                     '<div class="ui form">' +
                     '{{#grouped_each 2 piiCategories}}' +
                     '{{#each this }}' +
@@ -1641,7 +1731,7 @@
             var firstname_error_msg_text = $("#firstname-error-msg-text");
             var firstname_field= $("#firstNameField");
 
-            if ( firstNameUserInput.value.trim() === "" )  {
+            if (firstNameUserInput != null && firstNameUserInput.value.trim() === "" && firstNameUserInput.required)  {
                 firstname_error_msg_text.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "required")%>");
                 firstname_error_msg.show();
                 $("html, body").animate({scrollTop: firstname_error_msg.offset().top}, 'slow');
@@ -1659,7 +1749,7 @@
             var lastname_error_msg_text = $("#lastname-error-msg-text");
             var lastname_field= $("#lastNameField");
 
-            if ( lastNameUserInput.value.trim() === "" )  {
+            if (lastNameUserInput != null && lastNameUserInput.value.trim() === "" && lastNameUserInput.required)  {
                 lastname_error_msg_text.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "required")%>");
                 lastname_error_msg.show();
                 $("html, body").animate({scrollTop: lastname_error_msg.offset().top}, 'slow');
@@ -2094,8 +2184,8 @@
             var firstNameUserInput = document.getElementById("firstNameUserInput");
             var lastNameUserInput = document.getElementById("lastNameUserInput");
 
-            if ( (!!firstNameUserInput &&  firstNameUserInput.value.trim() == "")
-                || ( !!lastNameUserInput && lastNameUserInput.value.trim() == ""))  {
+            if ( (!!firstNameUserInput &&  firstNameUserInput.value.trim() == "" && firstNameUserInput.required)
+                || ( !!lastNameUserInput && lastNameUserInput.value.trim() == "" && lastNameUserInput.required)) {
                 return false;
             }
 

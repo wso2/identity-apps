@@ -1,0 +1,31 @@
+{
+    "flows": [
+        {
+            "id": "registration",
+            "heading": "Self Registration",
+            "description": "Build a customized user onboarding experience with registration steps tailored to your organization.",
+            "featureStatusKey": "flows.types.list.registration",
+            "path": "REGISTRATION_FLOW_BUILDER",
+            "type": "REGISTRATION",
+            "disabled": false
+        },
+        {
+            "id": "password-recovery",
+            "heading": "Password Recovery",
+            "description": "Configure secure multi-step recovery flows for users who forget their password or are locked out.",
+            "featureStatusKey": "flows.types.list.passwordRecovery",
+            "path": "PASSWORD_RECOVERY_FLOW_BUILDER",
+            "type": "PASSWORD_RECOVERY",
+            "disabled": false
+        },
+        {
+            "id": "invited-user-to-set-password",
+            "heading": "Invited User Registration",
+            "description": "Set up flows to onboard users invited by an administrator, guiding them to set their password and activate their account.",
+            "featureStatusKey": "flows.types.list.inviteUserToSetPassword",
+            "path": "INVITE_USER_PASSWORD_SETUP_FLOW_BUILDER",
+            "type": "INVITED_USER_REGISTRATION",
+            "disabled": false
+        }
+    ]
+}

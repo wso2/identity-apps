@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com).
+ * Copyright (c) 2022-2025, WSO2 LLC. (http://www.wso2.com).
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -19,10 +19,10 @@
 package org.wso2.identity.apps.taglibs.layout.controller;
 
 import org.wso2.identity.apps.taglibs.layout.controller.core.LocalTemplateEngine;
+import org.wso2.identity.apps.taglibs.layout.controller.processor.LayoutContentProcessor;
+import org.wso2.identity.apps.taglibs.layout.controller.processor.LegacyLayoutFileProcessor;
 
-import java.io.PrintWriter;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,6 +40,9 @@ public class MainTagHandler extends TagSupport {
     private Map<String, Object> data = new HashMap<>();
     private boolean compile = false;
     private LocalTemplateEngine engine = null;
+
+    private LayoutContentProcessor layoutProcessor;
+    private LegacyLayoutFileProcessor legacyProcessor;
 
     /**
      * Set the name of the layout.
@@ -83,68 +86,57 @@ public class MainTagHandler extends TagSupport {
 
     /**
      * This method will execute when the starting point of the "main" tag is reached.
+     * based on the nature of layout content switches between legacy or the default rendering.
      *
-     * @return int -> SKIP_BODY, EVAL_BODY_INCLUDE, EVAL_BODY_BUFFERED.
-     * @throws JspException
+     * @throws JspException .
      */
     public int doStartTag() throws JspException {
 
-        engine = new LocalTemplateEngine();
-        try {
-            if (compile) {
-                String rawLayoutFilePath = layoutFileRelativePath.replaceFirst(".ser", ".html");
-                engine.execute(layoutName,
-                        layoutFileRelativePath.startsWith("http") ? new URL(rawLayoutFilePath) :
-                                pageContext.getServletContext().getResource(rawLayoutFilePath), data,
-                        new PrintWriter(pageContext.getOut()));
-            } else {
-                engine.executeWithoutCompile(layoutName,
-                        layoutFileRelativePath.startsWith("http") ? new URL(layoutFileRelativePath) :
-                                pageContext.getServletContext().getResource(layoutFileRelativePath), data,
-                        new PrintWriter(pageContext.getOut()));
+        if (isLikelyRelativePath(layoutFileRelativePath)) {
+            engine = new LocalTemplateEngine();
+            legacyProcessor = new LegacyLayoutFileProcessor(engine, compile, pageContext,
+                layoutName, layoutFileRelativePath, data);
+            return legacyProcessor.startLegacyLayoutRendering();
+        } else {
+            layoutProcessor = new LayoutContentProcessor(pageContext, layoutFileRelativePath);
+            try {
+                return layoutProcessor.processLayoutUntilNextComponent();
+            } catch (IOException e) {
+                throw new JspException("Error processing layout HTML.", e);
             }
-        } catch (MalformedURLException e) {
-            throw new JspException("Can't create a URL to the given relative path", e);
         }
-        if (engine.getExecutor().componentExecutionEnabled()) {
-            pageContext.setAttribute(Constant.COMPONENT_NAME_STORING_VAR, engine.getExecutor().getComponentName());
-            engine.getExecutor().deactivateComponent();
-            return EVAL_BODY_INCLUDE;
-        }
-        return SKIP_BODY;
     }
 
     /**
      * This method will execute after each body execution of the "main" tag.
+     * based on the nature of layout content switches between legacy or the default rendering.
      *
-     * @return int -> EVAL_BODY_AGAIN, SKIP_BODY.
      * @throws JspException
      */
     public int doAfterBody() throws JspException {
 
-        try {
-            if (compile) {
-                String rawLayoutFilePath = layoutFileRelativePath.replaceFirst(".ser", ".html");
-                engine.execute(layoutName,
-                        layoutFileRelativePath.startsWith("http") ? new URL(rawLayoutFilePath) :
-                                pageContext.getServletContext().getResource(rawLayoutFilePath), data,
-                        new PrintWriter(pageContext.getOut()));
-            } else {
-                engine.executeWithoutCompile(layoutName,
-                        layoutFileRelativePath.startsWith("http") ? new URL(layoutFileRelativePath) :
-                                pageContext.getServletContext().getResource(layoutFileRelativePath), data,
-                        new PrintWriter(pageContext.getOut()));
+        if (isLikelyRelativePath(layoutFileRelativePath)) {
+            if (legacyProcessor == null) {
+                throw new IllegalStateException("Legacy layout processor not initialized.");
             }
-        } catch (MalformedURLException e) {
-            throw new JspException("Can't create a URL to the given relative path", e);
+            return legacyProcessor.continueLegacyLayoutRendering();
+        } else {
+            if (layoutProcessor == null) {
+                throw new IllegalStateException("Layout content processor not initialized.");
+            }
+            try {
+                return layoutProcessor.processRemainingLayoutAfterComponent();
+            } catch (IOException e) {
+                throw new JspException("Error processing layout HTML.", e);
+            }
         }
-        if (engine.getExecutor().componentExecutionEnabled()) {
-            pageContext.setAttribute(Constant.COMPONENT_NAME_STORING_VAR, engine.getExecutor().getComponentName());
-            engine.getExecutor().deactivateComponent();
-            return EVAL_BODY_AGAIN;
-        }
-        pageContext.removeAttribute(Constant.COMPONENT_NAME_STORING_VAR);
-        return SKIP_BODY;
+    }
+
+    private boolean isLikelyRelativePath(String input) {
+
+        return input != null && (input.startsWith("http") || input.startsWith("https") ||
+            input.endsWith(".html") || input.endsWith(".ser")
+        );
     }
 
     /**
@@ -156,7 +148,11 @@ public class MainTagHandler extends TagSupport {
         layoutFileRelativePath = null;
         data = null;
         engine = null;
+        if (layoutProcessor != null) {
+            layoutProcessor.release();
+        }
+        legacyProcessor = null;
+        layoutProcessor = null;
         super.release();
     }
-
 }

@@ -334,10 +334,50 @@ export interface AuthenticationProviderNS {
                     hint: string;
                     label: string;
                     placeholder: string;
+                    unit: string;
                     validations: {
                         required: string;
                         invalid: string;
                         range: string;
+                    };
+                };
+            };
+            push: {
+                hint: string;
+                allowedResendAttemptsCount: {
+                    hint: string;
+                    label: string;
+                    placeholder: string;
+                    validations: {
+                        required: string;
+                        invalid: string;
+                        range: string;
+                    };
+                    unit: string;
+                };
+                resendInterval: {
+                    hint: string;
+                    label: string;
+                    placeholder: string;
+                    validations: {
+                        required: string;
+                        invalid: string;
+                        range: string;
+                    };
+                    unit: string;
+                };
+                enableNumberChallenge: {
+                    hint: string;
+                    label: string;
+                    validations: {
+                        required: string;
+                    };
+                };
+                enableProgressiveEnrollment: {
+                    hint: string;
+                    label: string;
+                    validations: {
+                        required: string;
                     };
                 };
             };
@@ -874,6 +914,48 @@ export interface AuthenticationProviderNS {
             };
         };
         jitProvisioning: {
+            accountLinkingAttributes: {
+                heading: string;
+                infoNotification: string;
+                linkAccountIf: string;
+                equals: string;
+                noneOption: {
+                    label: string;
+                    description: string;
+                };
+                matchRule: {
+                    federatedAttribute: {
+                        label: string;
+                        placeholder: string;
+                    };
+                    localAttribute: {
+                        label: string;
+                        placeholder: string;
+                    };
+                };
+            };
+            attributeSyncMethod: {
+                hint: string;
+                label: string;
+                options: {
+                    overrideAll: {
+                        label: string;
+                        description: string;
+                    };
+                    none: {
+                        label: string;
+                        description: string;
+                    };
+                    preserveLocal: {
+                        label: string;
+                        description: string;
+                    };
+                };
+            };
+            associateLocalUser: {
+                hint: string;
+                label: string;
+            };
             enableJITProvisioning: {
                 hint: string;
                 label: string;
@@ -894,9 +976,10 @@ export interface AuthenticationProviderNS {
                     3: string;
                 };
             };
-            associateLocalUser: {
+            skipJITForNoRuleMatch: {
                 hint: string;
                 label: string;
+                infoMessage: string;
             };
         };
         roleMapping: {
@@ -1876,6 +1959,16 @@ export interface AuthenticationProviderNS {
                 message: string;
             };
         };
+        getLocalClaims: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+        };
     };
     popups: {
         appStatus: {
@@ -2013,4 +2106,13 @@ export interface AuthenticationProviderNS {
             previous: string;
         };
     };
+    overrides: {
+        authenticators: {
+            customAuthenticators: {
+                pluginBased: {
+                    name: string;
+                }
+            }
+        }
+    }
 }

@@ -17,12 +17,13 @@
  */
 
 import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
-import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { RemoteUserStoreConstants } from "@wso2is/admin.remote-userstores.v1/constants/remote-user-stores-constants";
 import { RouteInterface } from "@wso2is/core/models";
 import { lazy } from "react";
 import { CommonConfig } from "./models";
 import { userstoresConfig } from "./userstores";
+import FeatureFlagConstants from "../../admin.feature-gate.v1/constants/feature-flag-constants";
 
 export const commonConfig: CommonConfig = {
     advancedSearchWithBasicFilters: {
@@ -94,6 +95,7 @@ export const commonConfig: CommonConfig = {
                 ],
                 component: lazy(() => import("@wso2is/admin.userstores.v1/pages/user-stores")),
                 exact: true,
+                featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.USER_STORES,
                 icon: {
                     icon: getSidePanelIcons().userStore
                 },

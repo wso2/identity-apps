@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import { AppState, ConfigReducerStateInterface, getCertificateIllustrations } from "@wso2is/admin.core.v1";
+import { getCertificateIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";

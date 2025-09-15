@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -15,15 +15,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import {
-    AppConstants,
-    SharedUserStoreConstants,
-    SharedUserStoreUtils,
-    UserStoreDetails,
-    UserStoreProperty,
-    history
-} from "@wso2is/admin.core.v1";
+
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { SharedUserStoreConstants } from "@wso2is/admin.core.v1/constants/user-store-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { groupConfig, userstoresConfig } from "@wso2is/admin.extensions.v1";
+import { useUserStoreRegEx } from "@wso2is/admin.userstores.v1/api/use-get-user-store-regex";
 import {
     AlertInterface,
     AlertLevels,
@@ -38,7 +36,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Form, Grid } from "semantic-ui-react";
-import { deleteGroupById, searchGroupList, updateGroupDetails } from "../../api";
+import { deleteGroupById, searchGroupList, updateGroupDetails } from "../../api/groups";
 import { GroupsInterface, PatchGroupDataInterface, SearchGroupInterface } from "../../models/groups";
 
 /**
@@ -92,7 +90,6 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
     const [ showGroupDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ labelText, setLableText ] = useState<string>("");
     const [ nameValue, setNameValue ] = useState<string>("");
-    const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     const userStore: string = groupObject?.displayName?.split("/")?.length > 1
@@ -101,6 +98,14 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
 
     const isUserstoreDeleteDisabled: boolean = !groupConfig?.allowGroupDeleteForRemoteUserstores
         && userStore !== userstoresConfig.primaryUserstoreName;
+
+    const {
+        data: userStoreRegEx,
+        isLoading: isUserStoreRegExLoading
+    } = useUserStoreRegEx(
+        userStore,
+        SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.RolenameRegEx
+    );
 
     useEffect(() => {
         if (groupObject && groupObject.displayName.indexOf("/") !== -1) {
@@ -111,46 +116,6 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
             setNameValue(groupObject.displayName);
         }
     }, [ groupObject ]);
-
-    /**
-     * The following function validates role name against the user store regEx.
-     */
-    const validateGroupNamePattern = async (): Promise<string> => {
-        let userStoreRegEx: string = "";
-
-        if (userStore !== userstoresConfig.primaryUserstoreName) {
-            await SharedUserStoreUtils.getUserStoreRegEx(userStore,
-                SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
-                .then((response: string) => {
-                    setRegExLoading(true);
-                    userStoreRegEx = response;
-                });
-        } else {
-            await SharedUserStoreUtils.getPrimaryUserStore()
-                .then((response: UserStoreDetails) => {
-                    setRegExLoading(true);
-                    if (response && response.properties) {
-                        userStoreRegEx = response?.properties?.filter((property: UserStoreProperty) => {
-                            return property.name === "RolenameJavaScriptRegEx";
-                        })[ 0 ].value;
-                    }
-                });
-        }
-
-        setRegExLoading(false);
-
-        return new Promise((
-            resolve: (value: string | PromiseLike<string>) => void,
-            reject: (reason?: any) => void
-        ) => {
-            if (userStoreRegEx !== "") {
-                resolve(userStoreRegEx);
-            } else {
-                reject("");
-            }
-        });
-
-    };
 
     /**
      * Dispatches the alert object to the redux store.
@@ -267,11 +232,8 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                                             if (value) {
                                                 let isGroupNameValid: boolean = true;
 
-                                                await validateGroupNamePattern()
-                                                    .then((regex: string) => {
-                                                        isGroupNameValid = SharedUserStoreUtils
-                                                            .validateInputAgainstRegEx(value, regex);
-                                                    });
+                                                isGroupNameValid = SharedUserStoreUtils
+                                                    .validateInputAgainstRegEx(value, userStoreRegEx);
 
                                                 if (!isGroupNameValid) {
                                                     validation.isValid = false;
@@ -321,7 +283,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                                                 ? `${ testId }-group-name-input`
                                                 : `${ testId }-role-name-input`
                                         }
-                                        loading={ isRegExLoading }
+                                        loading={ isUserStoreRegExLoading }
                                         readOnly={ isReadOnly }
                                     />
                                 </Form.Field>
@@ -342,7 +304,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                                                     ? `${ testId }-group-update-button`
                                                     : `${ testId }-role-update-button`
                                             }
-                                            disabled={ isRegExLoading || isSubmitting }
+                                            disabled={ isUserStoreRegExLoading || isSubmitting }
                                         >
                                             { t("roles:edit.basics.buttons.update") }
                                         </Button>

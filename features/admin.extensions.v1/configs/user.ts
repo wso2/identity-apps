@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,6 +23,7 @@ import { ProfileInfoInterface } from "@wso2is/core/models";
 import { User } from "./models";
 
 export const userConfig: User = {
+    allowImpersonationForPrimaryUserStore: true,
     bulkUserImportLimit: {
         fileSize: 500,
         inviteEmails: 50,
@@ -38,5 +39,9 @@ export const userConfig: User = {
     enableBulkImportSecondaryUserStore: true,
     enableUsernameValidation: false,
     hiddenItemsPerPageRemoteUserStoreDropdown: false,
-    userProfileSchema: ProfileConstants.SCIM2_ENT_USER_SCHEMA
+    userNameValidation: {
+        defaultRegex: "^[^\\s*?%]{3,50}$",
+        validateViaAPI: false
+    },
+    userProfileSchema: ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA
 };

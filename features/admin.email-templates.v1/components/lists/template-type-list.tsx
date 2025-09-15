@@ -16,7 +16,11 @@
  * under the License.
  */
 
-import { AppConstants, UIConstants, getEmptyPlaceholderIllustrations, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+
 import { LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import {
     AnimatedAvatar,

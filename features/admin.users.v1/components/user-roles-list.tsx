@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { AppState, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import {  getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { ReadOnlyRoleList } from "@wso2is/admin.roles.v2/components/readonly-role-list";
 import { APPLICATION_DOMAIN, DOMAIN_SEPARATOR, INTERNAL_DOMAIN } from "@wso2is/admin.roles.v2/constants";
 import {

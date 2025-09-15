@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AccessControlReducerStateInterface } from "../../models";
+import { AccessControlReducerStateInterface } from "../../models/reducer-state";
 import { AccessControlActionType, AccessControlActions } from "../actions/types/access-control";
  
 /**

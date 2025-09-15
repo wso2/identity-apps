@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -42,6 +42,7 @@ export interface ApplicationBasicInterface {
     issuer?: string;
     realm?: string;
     templateId?: string;
+    originalTemplateId?: string;
     /**
      * Version of the template used to create the application.
      */
@@ -269,6 +270,7 @@ export interface ApplicationAdvancedConfigurationsViewInterface {
 export interface AdvancedConfigurationsInterface {
     saas?: boolean;
     discoverableByEndUsers?: boolean;
+    discoverableGroups?: DiscoverableGroupInterface[];
     certificate?: CertificateInterface;
     skipLoginConsent?: boolean;
     skipLogoutConsent?: boolean;
@@ -364,6 +366,7 @@ export interface ApplicationTemplateListItemInterface {
      */
     subTemplatesSectionTitle?: string;
     previewOnly?: boolean;
+    originalTemplateId?: string;
 }
 
 export interface ApplicationTemplateGroupInterface {
@@ -773,6 +776,34 @@ export interface FederatedConflictWithSMSOTPReturnValueInterface {
     idpList: GenericAuthenticatorInterface[];
 }
 
+/**
+ * Interface representing the response for the application groups metadata endpoint.
+ */
+export interface GroupMetadataInterface {
+    /**
+     * Unique identifier for the group.
+     */
+    id: string;
+    /**
+     * Display name of the group.
+     */
+    name?: string;
+}
+
+/**
+ * Interface for the discoverable group in the application advanced configurations.
+ */
+export interface DiscoverableGroupInterface {
+    /**
+     * Domain name of the user store.
+     */
+    userStore: string;
+    /**
+     * List of groups.
+     */
+    groups: GroupMetadataInterface[];
+}
+
 export const emptyOIDCAppConfiguration = (): OIDCApplicationConfigurationInterface => ({
     authorizeEndpoint: "",
     endSessionEndpoint: "",
@@ -815,7 +846,10 @@ export enum ApplicationTemplateIdTypes {
     SAML_WEB_APPLICATION = "saml-web-application",
     MOBILE_APPLICATION = "mobile-application",
     M2M_APPLICATION = "m2m-application",
-    CUSTOM_APPLICATION = "custom-application"
+    CUSTOM_APPLICATION = "custom-application",
+    MCP_CLIENT_APPLICATION = "mcp-client-application",
+    REACT_APPLICATION = "react-application",
+    NEXT_JS_APPLICATION = "nextjs-application"
 }
 
 /**
@@ -888,6 +922,7 @@ export enum ApplicationTabTypes {
  */
 export interface idpInfoTypeInterface {
     id: string;
+    isLocalAuthenticator?: boolean;
     name: string;
     redirectTo?: string;
 }
@@ -898,4 +933,81 @@ export interface idpInfoTypeInterface {
 export enum SubjectTypes {
     PUBLIC = "public",
     PAIRWISE = "pairwise"
+}
+
+/**
+ * Interface to contain role audiences information
+ */
+export interface RoleAudiencesInterface {
+    display: string;
+    type: string;
+}
+
+export interface RoleSharingInterface {
+    displayName: string;
+    audience:  RoleAudiencesInterface;
+};
+
+/**
+ * Interface for sharing the application with all organizations.
+ */
+export interface ShareApplicationWithAllOrganizationsDataInterface {
+    applicationId: string;
+    policy: string;
+    roleSharing: {
+        mode: string;
+        roles?: RoleSharingInterface[];
+    }
+}
+
+/**
+ * Interface for unsharing the application with all organizations.
+ */
+export interface UnshareApplicationWithAllOrganizationsDataInterface {
+    applicationId: string;
+}
+
+/**
+ * Interface for shared organization and roles.
+ */
+export interface SharedOrganizationAndRolesInterface {
+    orgId: string;
+    policy: string;
+    roleSharing: {
+        mode: string;
+        roles: RoleSharingInterface[];
+    }
+}
+
+/**
+ * Interface for sharing the application with selected organization and roles.
+ */
+export interface ShareApplicationWithSelectedOrganizationsAndRolesDataInterface {
+    applicationId: string;
+    organizations: SharedOrganizationAndRolesInterface[];
+}
+
+/**
+ * Interface for the patch operation to share the application with selected organizations and roles.
+ */
+export interface ShareOrganizationsAndRolesPatchOperationInterface {
+    op: string;
+    path: string;
+    value: RoleSharingInterface[];
+}
+
+/**
+ * Interface for the patch data to share the application with selected organizations and roles.
+ */
+export interface ShareOrganizationsAndRolesPatchDataInterface {
+    applicationId: string;
+    Operations: ShareOrganizationsAndRolesPatchOperationInterface[];
+}
+
+/**
+ * Interface for unsharing the application from organizations.
+ */
+export interface UnshareOrganizationsDataInterface {
+    applicationId: string;
+    orgIds: string[];
 }

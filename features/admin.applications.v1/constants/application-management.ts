@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -46,7 +46,8 @@ export class ApplicationManagementConstants {
      */
     public static readonly APP_VERSION_1: string = "v1.0.0";
     public static readonly APP_VERSION_2: string = "v2.0.0";
-    public static readonly LATEST_VERSION: string = ApplicationManagementConstants.APP_VERSION_2;
+    public static readonly APP_VERSION_3: string = "v3.0.0";
+    public static readonly LATEST_VERSION: string = ApplicationManagementConstants.APP_VERSION_3;
 
     /**
      * Private constructor to avoid object instantiation from outside
@@ -85,7 +86,11 @@ export class ApplicationManagementConstants {
         .set("APPLICATIONS_SETTINGS", "applications.settings")
         .set("TRUSTED_APPS", "applications.trustedApps")
         .set("APPLICATION_ACCESSTOKEN_ATTRIBUTES", "applications.accessTokenAttributes")
-        .set("APPLICATION_OUTDATED_APP_BANNER", "applications.outdatedAppBanner");
+        .set("APPLICATION_OUTDATED_APP_BANNER", "applications.outdatedAppBanner")
+        .set("APPLICATION_EDIT_ACCESS_CONFIG_BACK_CHANNEL_LOGOUT",
+            "applications.edit.accessConfiguration.backChannelLogout")
+        .set("APPLICATION_SHARED_ACCESS_STATUS", "applications.sharedAccess.status")
+        .set("APPLICATION_ROLE_SHARING", "applications.sharedAccess.roleSharing");
 
     /**
      * Key for the URL search param for application state.
@@ -184,6 +189,9 @@ export class ApplicationManagementConstants {
     public static readonly UMA_TICKET: string = "urn:ietf:params:oauth:grant-type:uma-ticket";
     public static readonly DEVICE_GRANT: string = "urn:ietf:params:oauth:grant-type:device_code";
     public static readonly OAUTH2_TOKEN_EXCHANGE: string = "urn:ietf:params:oauth:grant-type:token-exchange";
+    public static readonly TOKEN_TYPE_ACCESS_TOKEN: string = "urn:ietf:params:oauth:token-type:access_token";
+    public static readonly TOKEN_TYPE_JWT_TOKEN: string = "urn:ietf:params:oauth:token-type:jwt";
+    public static readonly TOKEN_TYPE_ID_TOKEN: string = "urn:ietf:params:oauth:token-type:id_token";
     public static readonly ACCOUNT_SWITCH_GRANT: string = "account_switch";
     public static readonly CODE_TOKEN: string = "code token";
     public static readonly CODE_IDTOKEN: string = "code id_token";
@@ -358,7 +366,9 @@ export class ApplicationManagementConstants {
         FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.IPROOV_AUTHENTICATOR_NAME,
         FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.IPROOV_AUTHENTICATOR_ID,
         FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.DUO_AUTHENTICATOR_NAME,
-        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.DUO_AUTHENTICATOR_ID
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.DUO_AUTHENTICATOR_ID,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.PASSWORD_RESET_ENFORCER_AUTHENTICATOR_NAME,
+        FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.PASSWORD_RESET_ENFORCER_AUTHENTICATOR_ID
     ];
 
     // Known social authenticators.
@@ -429,24 +439,22 @@ export class ApplicationManagementConstants {
         ACCESS_URL_ALLOWED_PLACEHOLDERS: string[],
         ACCESS_URL_MAX_LENGTH: number,
         ACCESS_URL_MIN_LENGTH: number,
-        APP_DESCRIPTION_PATTERN: RegExp,
         APP_NAME_MAX_LENGTH: number,
         APP_NAME_PATTERN: RegExp
     } = {
-        ACCESS_URL_ALLOWED_PLACEHOLDERS: [
-            "\\${UserTenantHint}",
-            "\\${organizationIdHint}"
-        ],
-        ACCESS_URL_MAX_LENGTH: 1024,
-        ACCESS_URL_MIN_LENGTH: 3,
-        APP_DESCRIPTION_PATTERN: new RegExp("^[a-zA-Z0-9.+=!$#()@&%*~_-]+(?: [a-zA-Z0-9.+=!$#()@&%*~_-]+)*$", "gm"),
-        APP_NAME_MAX_LENGTH: 50,
-        APP_NAME_PATTERN: new RegExp("^[a-zA-Z0-9._-]+(?: [a-zA-Z0-9._-]+)*$")
-    };
+            ACCESS_URL_ALLOWED_PLACEHOLDERS: [
+                "\\${UserTenantHint}",
+                "\\${organizationIdHint}"
+            ],
+            ACCESS_URL_MAX_LENGTH: 1024,
+            ACCESS_URL_MIN_LENGTH: 3,
+            APP_NAME_MAX_LENGTH: 50,
+            APP_NAME_PATTERN: new RegExp("^[a-zA-Z0-9._-]+(?: [a-zA-Z0-9._-]+)*$")
+        };
 
     public static readonly CONDITIONAL_AUTH_TOUR_STATUS_STORAGE_KEY: string = "isConditionalAuthTourViewed";
 
-    public static readonly CONDITIONAL_AUTH_EDITOR_THEME_STORAGE_KEY: string = "conditionalAuthEditorTheme"
+    public static readonly CONDITIONAL_AUTH_EDITOR_THEME_STORAGE_KEY: string = "conditionalAuthEditorTheme";
 
     public static readonly CUSTOM_APPLICATION_OIDC: string = "custom-application-oidc";
 
@@ -469,6 +477,8 @@ export class ApplicationManagementConstants {
     public static readonly CHOREO_APP_TEMPLATE_ID: string = "choreo-apim-application-oidc";
 
     public static readonly IS_CHOREO_APP_SP_PROPERTY: string = "isChoreoApp";
+
+    public static readonly ORIGINAL_TEMPLATE_ID_PROPERTY: string = "originalTemplateId";
 
     public static readonly CUSTOM_APPLICATION_PROTOCOL_ORDER: Map<string, number> =
         new Map<string, number>([
@@ -524,10 +534,35 @@ export class ApplicationManagementConstants {
      * Login Flow tab index of My Account application in organization view.
      */
     public static readonly SUB_ORG_MY_ACCOUNT_LOGIN_FLOW_TAB: number = 0;
+
+    /**
+     * Default attribute name format for SAML attribute statement.
+     */
+    public static readonly DEFAULT_NAME_ATTRIBUTE_FORMAT: string = "urn:oasis:names:tc:SAML:2.0:attrname-format:basic";
+
+    /**
+     * Supported name formats for SAML attribute statement.
+     */
+    public static readonly SUPPORT_NAME_FORMATS: string[] = [
+        ApplicationManagementConstants.DEFAULT_NAME_ATTRIBUTE_FORMAT,
+        "urn:oasis:names:tc:SAML:2.0:attrname-format:uri"
+    ];
+
+    /**
+     * Application share type to send to async operation status poller.
+     */
+    public static readonly B2B_APPLICATION_SHARE: string = "B2B_APPLICATION_SHARE";
 }
 
 export enum ShareWithOrgStatus {
     TRUE,
     FALSE,
     UNDEFINED
+}
+
+export enum ApplicationShareUnitStatus {
+    FAILED = "FAILED",
+    SUCCESS = "SUCCESS",
+    PARTIALLY_COMPLETED = "PARTIALLY_COMPLETED",
+    ALL = "ALL"
 }

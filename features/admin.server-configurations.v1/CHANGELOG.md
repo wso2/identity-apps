@@ -1,5 +1,2598 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.35.58
+
+### Patch Changes
+
+- Updated dependencies [[`e48553420d4394a652d47e9e650f71fe2a9bea31`](https://github.com/wso2/identity-apps/commit/e48553420d4394a652d47e9e650f71fe2a9bea31)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.36
+  - @wso2is/i18n@2.30.25
+  - @wso2is/admin.core.v1@2.49.44
+  - @wso2is/admin.server-configurations.v1@2.35.58
+
+## 2.35.57
+
+### Patch Changes
+
+- Updated dependencies [[`a8411676d537cedabc4d306242f273446df8421b`](https://github.com/wso2/identity-apps/commit/a8411676d537cedabc4d306242f273446df8421b)]:
+  - @wso2is/admin.extensions.v1@2.40.4
+  - @wso2is/admin.core.v1@2.49.43
+  - @wso2is/i18n@2.30.24
+  - @wso2is/admin.flow-builder-core.v1@0.10.35
+  - @wso2is/admin.server-configurations.v1@2.35.57
+
+## 2.35.56
+
+### Patch Changes
+
+- [#9077](https://github.com/wso2/identity-apps/pull/9077) [`5cc324edf9485782f27679b9bd073843d9ddc771`](https://github.com/wso2/identity-apps/commit/5cc324edf9485782f27679b9bd073843d9ddc771) Thanks [@savindi7](https://github.com/savindi7)! - Add condition to show Ask Password toggle.
+
+- Updated dependencies [[`5cc324edf9485782f27679b9bd073843d9ddc771`](https://github.com/wso2/identity-apps/commit/5cc324edf9485782f27679b9bd073843d9ddc771)]:
+  - @wso2is/admin.server-configurations.v1@2.35.56
+
+## 2.35.55
+
+### Patch Changes
+
+- Updated dependencies [[`518532e0263494dda9ca5c7bc76876e459e5d9d0`](https://github.com/wso2/identity-apps/commit/518532e0263494dda9ca5c7bc76876e459e5d9d0), [`f44b9a13a8d53b9dfeb01046b320e9e327ab2b51`](https://github.com/wso2/identity-apps/commit/f44b9a13a8d53b9dfeb01046b320e9e327ab2b51)]:
+  - @wso2is/admin.users.v1@2.36.17
+  - @wso2is/admin.core.v1@2.49.42
+  - @wso2is/admin.flow-builder-core.v1@0.10.34
+  - @wso2is/admin.server-configurations.v1@2.35.55
+
+## 2.35.54
+
+### Patch Changes
+
+- Updated dependencies [[`00860d487e6a193e990def381194598ebe326452`](https://github.com/wso2/identity-apps/commit/00860d487e6a193e990def381194598ebe326452)]:
+  - @wso2is/admin.users.v1@2.36.16
+  - @wso2is/admin.core.v1@2.49.41
+  - @wso2is/admin.flow-builder-core.v1@0.10.33
+  - @wso2is/admin.server-configurations.v1@2.35.54
+
+## 2.35.53
+
+### Patch Changes
+
+- Updated dependencies [[`e2fc86c51bf6e720ed865a81e13fae036dd1f049`](https://github.com/wso2/identity-apps/commit/e2fc86c51bf6e720ed865a81e13fae036dd1f049)]:
+  - @wso2is/i18n@2.30.22
+  - @wso2is/admin.users.v1@2.36.15
+  - @wso2is/admin.core.v1@2.49.40
+  - @wso2is/admin.flow-builder-core.v1@0.10.32
+  - @wso2is/admin.server-configurations.v1@2.35.53
+
+## 2.35.52
+
+### Patch Changes
+
+- Updated dependencies [[`5beb8d0682573cdd09dd83a16b213a34b47831f1`](https://github.com/wso2/identity-apps/commit/5beb8d0682573cdd09dd83a16b213a34b47831f1), [`b39c23eb0446afefdbea872ee3b0cf6d5370671f`](https://github.com/wso2/identity-apps/commit/b39c23eb0446afefdbea872ee3b0cf6d5370671f)]:
+  - @wso2is/i18n@2.30.21
+  - @wso2is/admin.extensions.v1@2.40.3
+  - @wso2is/react-components@2.9.22
+  - @wso2is/admin.users.v1@2.36.14
+  - @wso2is/admin.core.v1@2.49.39
+  - @wso2is/admin.flow-builder-core.v1@0.10.31
+  - @wso2is/admin.server-configurations.v1@2.35.52
+
+## 2.35.51
+
+### Patch Changes
+
+- Updated dependencies [[`5024d8b9992e7d0e8c080abdeb656d6d4364bddb`](https://github.com/wso2/identity-apps/commit/5024d8b9992e7d0e8c080abdeb656d6d4364bddb)]:
+  - @wso2is/admin.users.v1@2.36.13
+  - @wso2is/admin.core.v1@2.49.38
+  - @wso2is/admin.flow-builder-core.v1@0.10.30
+  - @wso2is/admin.server-configurations.v1@2.35.51
+
+## 2.35.50
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.37
+  - @wso2is/admin.flow-builder-core.v1@0.10.29
+  - @wso2is/admin.server-configurations.v1@2.35.50
+
+## 2.35.49
+
+### Patch Changes
+
+- Updated dependencies [[`103dc78848886bb10668320272116ad0c2a4e809`](https://github.com/wso2/identity-apps/commit/103dc78848886bb10668320272116ad0c2a4e809), [`b9b2e2c0977296e1539cbdeb92ffcdf179be3b5b`](https://github.com/wso2/identity-apps/commit/b9b2e2c0977296e1539cbdeb92ffcdf179be3b5b), [`680cb06832a8b37d2c4a5613faee079d4b9cce97`](https://github.com/wso2/identity-apps/commit/680cb06832a8b37d2c4a5613faee079d4b9cce97), [`4d6c2276f7044df95b7bc98f2ae22f4020e3a1bb`](https://github.com/wso2/identity-apps/commit/4d6c2276f7044df95b7bc98f2ae22f4020e3a1bb)]:
+  - @wso2is/admin.organizations.v1@2.27.6
+  - @wso2is/admin.core.v1@2.49.36
+  - @wso2is/i18n@2.30.20
+  - @wso2is/admin.users.v1@2.36.12
+  - @wso2is/admin.flow-builder-core.v1@0.10.28
+  - @wso2is/admin.server-configurations.v1@2.35.49
+
+## 2.35.48
+
+### Patch Changes
+
+- Updated dependencies [[`1752ab19f88d09ce96562b9ef699922edbd15878`](https://github.com/wso2/identity-apps/commit/1752ab19f88d09ce96562b9ef699922edbd15878)]:
+  - @wso2is/admin.users.v1@2.36.11
+  - @wso2is/admin.core.v1@2.49.35
+  - @wso2is/admin.flow-builder-core.v1@0.10.27
+  - @wso2is/admin.server-configurations.v1@2.35.48
+
+## 2.35.47
+
+### Patch Changes
+
+- [#8870](https://github.com/wso2/identity-apps/pull/8870) [`9762181a82a5d633a1ec838c02d6e21653226974`](https://github.com/wso2/identity-apps/commit/9762181a82a5d633a1ec838c02d6e21653226974) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Add UI to configure and revert impersonation configurations in sub-orgs and to hide sift connector in sub-orgs when predefined.
+
+- Updated dependencies [[`235a20ab055e6a2864af8f6d959513bfb086e25c`](https://github.com/wso2/identity-apps/commit/235a20ab055e6a2864af8f6d959513bfb086e25c), [`9762181a82a5d633a1ec838c02d6e21653226974`](https://github.com/wso2/identity-apps/commit/9762181a82a5d633a1ec838c02d6e21653226974)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.26
+  - @wso2is/admin.server-configurations.v1@2.35.47
+  - @wso2is/i18n@2.30.19
+  - @wso2is/admin.core.v1@2.49.34
+
+## 2.35.46
+
+### Patch Changes
+
+- Updated dependencies [[`99940bc83b3fa4370de6b8bb608f1d1b41c5957f`](https://github.com/wso2/identity-apps/commit/99940bc83b3fa4370de6b8bb608f1d1b41c5957f)]:
+  - @wso2is/admin.users.v1@2.36.10
+  - @wso2is/admin.core.v1@2.49.33
+  - @wso2is/admin.flow-builder-core.v1@0.10.25
+  - @wso2is/admin.server-configurations.v1@2.35.46
+
+## 2.35.45
+
+### Patch Changes
+
+- [#8948](https://github.com/wso2/identity-apps/pull/8948) [`c9d4cf136ad0b0e1ec7e8ecf9519a5deb9216d55`](https://github.com/wso2/identity-apps/commit/c9d4cf136ad0b0e1ec7e8ecf9519a5deb9216d55) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Improve the validation UI
+
+- Updated dependencies [[`c9d4cf136ad0b0e1ec7e8ecf9519a5deb9216d55`](https://github.com/wso2/identity-apps/commit/c9d4cf136ad0b0e1ec7e8ecf9519a5deb9216d55)]:
+  - @wso2is/admin.server-configurations.v1@2.35.45
+  - @wso2is/admin.flow-builder-core.v1@0.10.24
+  - @wso2is/i18n@2.30.16
+  - @wso2is/admin.core.v1@2.49.32
+
+## 2.35.44
+
+### Patch Changes
+
+- Updated dependencies [[`05b73972a94081df337b757f4832a3e1dd9c13c4`](https://github.com/wso2/identity-apps/commit/05b73972a94081df337b757f4832a3e1dd9c13c4), [`468b301983900cd3e2eb38a5e13777a5062e24c7`](https://github.com/wso2/identity-apps/commit/468b301983900cd3e2eb38a5e13777a5062e24c7)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.23
+  - @wso2is/admin.users.v1@2.36.9
+  - @wso2is/admin.core.v1@2.49.31
+  - @wso2is/admin.server-configurations.v1@2.35.44
+
+## 2.35.43
+
+### Patch Changes
+
+- [#8927](https://github.com/wso2/identity-apps/pull/8927) [`e5f908600ad89f3b78477ad4e5752f2e17e3ca20`](https://github.com/wso2/identity-apps/commit/e5f908600ad89f3b78477ad4e5752f2e17e3ca20) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue with the password provisioning executor name
+
+- Updated dependencies [[`e5f908600ad89f3b78477ad4e5752f2e17e3ca20`](https://github.com/wso2/identity-apps/commit/e5f908600ad89f3b78477ad4e5752f2e17e3ca20), [`f16f1d0eafc338a9ebee7f2e630019cfaeee7724`](https://github.com/wso2/identity-apps/commit/f16f1d0eafc338a9ebee7f2e630019cfaeee7724), [`0c714793f572a0e1566e9aae0d4ce767823e1a9d`](https://github.com/wso2/identity-apps/commit/0c714793f572a0e1566e9aae0d4ce767823e1a9d)]:
+  - @wso2is/admin.server-configurations.v1@2.35.43
+  - @wso2is/admin.core.v1@2.49.30
+  - @wso2is/admin.organizations.v1@2.27.5
+  - @wso2is/i18n@2.30.15
+  - @wso2is/forms@2.3.25
+  - @wso2is/admin.flow-builder-core.v1@0.10.22
+
+## 2.35.42
+
+### Patch Changes
+
+- Updated dependencies [[`5d7958b1625fd704690304050c9c36314fe6c0ee`](https://github.com/wso2/identity-apps/commit/5d7958b1625fd704690304050c9c36314fe6c0ee)]:
+  - @wso2is/admin.users.v1@2.36.8
+  - @wso2is/i18n@2.30.14
+  - @wso2is/admin.core.v1@2.49.29
+  - @wso2is/admin.flow-builder-core.v1@0.10.21
+  - @wso2is/admin.server-configurations.v1@2.35.42
+
+## 2.35.41
+
+### Patch Changes
+
+- [#8912](https://github.com/wso2/identity-apps/pull/8912) [`22b67690629449b96755d90fdc92760ccc8abb4f`](https://github.com/wso2/identity-apps/commit/22b67690629449b96755d90fdc92760ccc8abb4f) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Introduce a validation layer with basic validations for flow builders
+
+- Updated dependencies [[`22b67690629449b96755d90fdc92760ccc8abb4f`](https://github.com/wso2/identity-apps/commit/22b67690629449b96755d90fdc92760ccc8abb4f), [`1b2ca9809c7019c625d854f511b90c4771394f31`](https://github.com/wso2/identity-apps/commit/1b2ca9809c7019c625d854f511b90c4771394f31), [`5590133b214246a0f6483628368e1169d6a56896`](https://github.com/wso2/identity-apps/commit/5590133b214246a0f6483628368e1169d6a56896)]:
+  - @wso2is/admin.server-configurations.v1@2.35.41
+  - @wso2is/admin.flow-builder-core.v1@0.10.20
+  - @wso2is/i18n@2.30.13
+  - @wso2is/admin.organizations.v1@2.27.4
+  - @wso2is/admin.core.v1@2.49.28
+
+## 2.35.40
+
+### Patch Changes
+
+- Updated dependencies [[`ec9a932898d5e2f91c444f9c0971d10b2097c7a2`](https://github.com/wso2/identity-apps/commit/ec9a932898d5e2f91c444f9c0971d10b2097c7a2)]:
+  - @wso2is/admin.users.v1@2.36.7
+  - @wso2is/admin.core.v1@2.49.27
+  - @wso2is/admin.flow-builder-core.v1@0.10.19
+  - @wso2is/admin.server-configurations.v1@2.35.40
+
+## 2.35.39
+
+### Patch Changes
+
+- Updated dependencies [[`b5f794ba71bc76d53b5d3af21b1bc8e9bbb7d544`](https://github.com/wso2/identity-apps/commit/b5f794ba71bc76d53b5d3af21b1bc8e9bbb7d544)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.18
+  - @wso2is/admin.core.v1@2.49.26
+  - @wso2is/admin.server-configurations.v1@2.35.39
+
+## 2.35.38
+
+### Patch Changes
+
+- [#8874](https://github.com/wso2/identity-apps/pull/8874) [`88dc5584f12d30f6ef073ad20c21a6684f7150c9`](https://github.com/wso2/identity-apps/commit/88dc5584f12d30f6ef073ad20c21a6684f7150c9) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - UI fixes for invite flow builder, multi attribute login and connections
+
+- Updated dependencies [[`1eab05a0ef55c85d355e4ce5ad3e2beda0fc439b`](https://github.com/wso2/identity-apps/commit/1eab05a0ef55c85d355e4ce5ad3e2beda0fc439b), [`88dc5584f12d30f6ef073ad20c21a6684f7150c9`](https://github.com/wso2/identity-apps/commit/88dc5584f12d30f6ef073ad20c21a6684f7150c9)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.17
+  - @wso2is/i18n@2.30.9
+  - @wso2is/admin.server-configurations.v1@2.35.38
+  - @wso2is/admin.core.v1@2.49.25
+
+## 2.35.37
+
+### Patch Changes
+
+- Updated dependencies [[`13a47749f0f9eb970803c9e8ac40870a8fe1415a`](https://github.com/wso2/identity-apps/commit/13a47749f0f9eb970803c9e8ac40870a8fe1415a), [`5d3b1a8fcebb3c61a4050be5ed55b8975e11d902`](https://github.com/wso2/identity-apps/commit/5d3b1a8fcebb3c61a4050be5ed55b8975e11d902)]:
+  - @wso2is/i18n@2.30.8
+  - @wso2is/admin.core.v1@2.49.24
+  - @wso2is/admin.flow-builder-core.v1@0.10.16
+  - @wso2is/admin.server-configurations.v1@2.35.37
+
+## 2.35.36
+
+### Patch Changes
+
+- [#8879](https://github.com/wso2/identity-apps/pull/8879) [`32b0012ca4b7c1e8cd4fbc4b7ef384d506ebc201`](https://github.com/wso2/identity-apps/commit/32b0012ca4b7c1e8cd4fbc4b7ef384d506ebc201) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Handle ask password OTP failure error code seperately and other bug fixes
+
+- Updated dependencies [[`f50873a66b47737ba9dc6defb0fc2755af30076b`](https://github.com/wso2/identity-apps/commit/f50873a66b47737ba9dc6defb0fc2755af30076b), [`4675a05c096477c15fc2ef512a3d5fdf2859ae30`](https://github.com/wso2/identity-apps/commit/4675a05c096477c15fc2ef512a3d5fdf2859ae30), [`32b0012ca4b7c1e8cd4fbc4b7ef384d506ebc201`](https://github.com/wso2/identity-apps/commit/32b0012ca4b7c1e8cd4fbc4b7ef384d506ebc201)]:
+  - @wso2is/i18n@2.30.7
+  - @wso2is/admin.users.v1@2.36.6
+  - @wso2is/admin.server-configurations.v1@2.35.36
+  - @wso2is/admin.core.v1@2.49.23
+  - @wso2is/admin.flow-builder-core.v1@0.10.15
+
+## 2.35.35
+
+### Patch Changes
+
+- Updated dependencies [[`33706651e183ad45a528afb8ec88cfa421dbf59c`](https://github.com/wso2/identity-apps/commit/33706651e183ad45a528afb8ec88cfa421dbf59c), [`a23a40032a016a310f8f22691029c83f364d5891`](https://github.com/wso2/identity-apps/commit/a23a40032a016a310f8f22691029c83f364d5891)]:
+  - @wso2is/admin.users.v1@2.36.5
+  - @wso2is/i18n@2.30.6
+  - @wso2is/admin.core.v1@2.49.22
+  - @wso2is/admin.flow-builder-core.v1@0.10.14
+  - @wso2is/admin.server-configurations.v1@2.35.35
+
+## 2.35.34
+
+### Patch Changes
+
+- Updated dependencies [[`e7b40575b430919d3c9f6a62926458504b3890cf`](https://github.com/wso2/identity-apps/commit/e7b40575b430919d3c9f6a62926458504b3890cf), [`c85207f4642f15c825154d660dd23099da6ed8f0`](https://github.com/wso2/identity-apps/commit/c85207f4642f15c825154d660dd23099da6ed8f0), [`3c066e68e021957c486fd53615e560c022e7b40a`](https://github.com/wso2/identity-apps/commit/3c066e68e021957c486fd53615e560c022e7b40a)]:
+  - @wso2is/admin.users.v1@2.36.4
+  - @wso2is/admin.core.v1@2.49.21
+  - @wso2is/admin.flow-builder-core.v1@0.10.13
+  - @wso2is/admin.server-configurations.v1@2.35.34
+
+## 2.35.33
+
+### Patch Changes
+
+- Updated dependencies [[`c387179c4549b6a51e05cc2abbd1dd46cd7aa62a`](https://github.com/wso2/identity-apps/commit/c387179c4549b6a51e05cc2abbd1dd46cd7aa62a)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.12
+  - @wso2is/i18n@2.30.4
+  - @wso2is/admin.core.v1@2.49.20
+  - @wso2is/admin.server-configurations.v1@2.35.33
+
+## 2.35.32
+
+### Patch Changes
+
+- Updated dependencies [[`4165b0b0cb3cb5c807eb87bba871e6d2ff773541`](https://github.com/wso2/identity-apps/commit/4165b0b0cb3cb5c807eb87bba871e6d2ff773541)]:
+  - @wso2is/admin.core.v1@2.49.19
+  - @wso2is/admin.flow-builder-core.v1@0.10.11
+  - @wso2is/admin.server-configurations.v1@2.35.32
+
+## 2.35.31
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.18
+  - @wso2is/admin.flow-builder-core.v1@0.10.10
+  - @wso2is/admin.server-configurations.v1@2.35.31
+
+## 2.35.30
+
+### Patch Changes
+
+- Updated dependencies [[`595a1eeaf80a2f63c9162f47fc287fd4538f4f6c`](https://github.com/wso2/identity-apps/commit/595a1eeaf80a2f63c9162f47fc287fd4538f4f6c), [`6071ecb8f9c65a33e07d970a60182abf70cd00ee`](https://github.com/wso2/identity-apps/commit/6071ecb8f9c65a33e07d970a60182abf70cd00ee)]:
+  - @wso2is/admin.users.v1@2.36.3
+  - @wso2is/admin.core.v1@2.49.17
+  - @wso2is/admin.flow-builder-core.v1@0.10.9
+  - @wso2is/admin.server-configurations.v1@2.35.30
+
+## 2.35.29
+
+### Patch Changes
+
+- Updated dependencies [[`7b3155d7c10c37eb4bd8efef0176aaea35451f09`](https://github.com/wso2/identity-apps/commit/7b3155d7c10c37eb4bd8efef0176aaea35451f09)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.8
+  - @wso2is/admin.core.v1@2.49.16
+  - @wso2is/admin.server-configurations.v1@2.35.29
+
+## 2.35.28
+
+### Patch Changes
+
+- Updated dependencies [[`ad47e073c8106102cb3d0ac9c3b0278d379468ea`](https://github.com/wso2/identity-apps/commit/ad47e073c8106102cb3d0ac9c3b0278d379468ea)]:
+  - @wso2is/admin.users.v1@2.36.2
+  - @wso2is/admin.core.v1@2.49.15
+  - @wso2is/admin.flow-builder-core.v1@0.10.7
+  - @wso2is/admin.server-configurations.v1@2.35.28
+
+## 2.35.27
+
+### Patch Changes
+
+- Updated dependencies [[`b679e7000c50875be56b6f95f79a125a8ed27a8a`](https://github.com/wso2/identity-apps/commit/b679e7000c50875be56b6f95f79a125a8ed27a8a), [`d4114cf60516154173cf3de2b73e82d36a63d7f3`](https://github.com/wso2/identity-apps/commit/d4114cf60516154173cf3de2b73e82d36a63d7f3), [`b91d5098d3d2eec02065069c8115ccac4b5cd29d`](https://github.com/wso2/identity-apps/commit/b91d5098d3d2eec02065069c8115ccac4b5cd29d)]:
+  - @wso2is/admin.organizations.v1@2.27.3
+  - @wso2is/i18n@2.30.3
+  - @wso2is/admin.flow-builder-core.v1@0.10.6
+  - @wso2is/admin.core.v1@2.49.14
+  - @wso2is/admin.server-configurations.v1@2.35.27
+
+## 2.35.26
+
+### Patch Changes
+
+- Updated dependencies [[`205047328ca8cd5191f32229f8744fd34f9cc105`](https://github.com/wso2/identity-apps/commit/205047328ca8cd5191f32229f8744fd34f9cc105)]:
+  - @wso2is/i18n@2.30.2
+  - @wso2is/admin.core.v1@2.49.13
+  - @wso2is/admin.flow-builder-core.v1@0.10.5
+  - @wso2is/admin.server-configurations.v1@2.35.26
+
+## 2.35.25
+
+### Patch Changes
+
+- Updated dependencies [[`db4dd1e47d03c3bb5cacee50ed593f1aa25ce498`](https://github.com/wso2/identity-apps/commit/db4dd1e47d03c3bb5cacee50ed593f1aa25ce498)]:
+  - @wso2is/admin.users.v1@2.36.1
+  - @wso2is/admin.core.v1@2.49.12
+  - @wso2is/admin.flow-builder-core.v1@0.10.4
+  - @wso2is/admin.server-configurations.v1@2.35.25
+
+## 2.35.24
+
+### Patch Changes
+
+- Updated dependencies [[`4bf5e4e4ffd0cb942efd86f8f5c9faf8cd8fd071`](https://github.com/wso2/identity-apps/commit/4bf5e4e4ffd0cb942efd86f8f5c9faf8cd8fd071)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.3
+  - @wso2is/admin.core.v1@2.49.11
+  - @wso2is/admin.server-configurations.v1@2.35.24
+
+## 2.35.23
+
+### Patch Changes
+
+- Updated dependencies [[`91477087e15cdf9b22d519e6151fb8d8a6c65156`](https://github.com/wso2/identity-apps/commit/91477087e15cdf9b22d519e6151fb8d8a6c65156), [`91477087e15cdf9b22d519e6151fb8d8a6c65156`](https://github.com/wso2/identity-apps/commit/91477087e15cdf9b22d519e6151fb8d8a6c65156)]:
+  - @wso2is/admin.users.v1@2.36.0
+  - @wso2is/i18n@2.30.1
+  - @wso2is/admin.core.v1@2.49.10
+  - @wso2is/admin.flow-builder-core.v1@0.10.2
+  - @wso2is/admin.server-configurations.v1@2.35.23
+
+## 2.35.22
+
+### Patch Changes
+
+- Updated dependencies [[`16d9641a33d0b04d76d751a81c50ce3ed0dddb18`](https://github.com/wso2/identity-apps/commit/16d9641a33d0b04d76d751a81c50ce3ed0dddb18)]:
+  - @wso2is/i18n@2.30.0
+  - @wso2is/admin.core.v1@2.49.9
+  - @wso2is/admin.flow-builder-core.v1@0.10.1
+  - @wso2is/admin.server-configurations.v1@2.35.22
+
+## 2.35.21
+
+### Patch Changes
+
+- Updated dependencies [[`e2d53eaf3a8c4d6bda03af358535864ce5c198d6`](https://github.com/wso2/identity-apps/commit/e2d53eaf3a8c4d6bda03af358535864ce5c198d6)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.0
+  - @wso2is/i18n@2.29.1
+  - @wso2is/admin.core.v1@2.49.8
+  - @wso2is/admin.flows.v1@1.0.18
+  - @wso2is/admin.server-configurations.v1@2.35.21
+
+## 2.35.20
+
+### Patch Changes
+
+- [#8712](https://github.com/wso2/identity-apps/pull/8712) [`e50f90cf4e4904c4d257e4b9b04623097934f9fa`](https://github.com/wso2/identity-apps/commit/e50f90cf4e4904c4d257e4b9b04623097934f9fa) Thanks [@KD23243](https://github.com/KD23243)! - Update terminology from "Invite User" to "Invited User" in flow orchestration
+
+- Updated dependencies [[`e50f90cf4e4904c4d257e4b9b04623097934f9fa`](https://github.com/wso2/identity-apps/commit/e50f90cf4e4904c4d257e4b9b04623097934f9fa), [`d4b01de50e296f0dffdc9c4aacf2fcb74c402b09`](https://github.com/wso2/identity-apps/commit/d4b01de50e296f0dffdc9c4aacf2fcb74c402b09)]:
+  - @wso2is/admin.server-configurations.v1@2.35.20
+  - @wso2is/admin.flows.v1@1.0.17
+  - @wso2is/admin.core.v1@2.49.1
+  - @wso2is/i18n@2.28.1
+  - @wso2is/admin.organizations.v1@2.27.1
+  - @wso2is/admin.flow-builder-core.v1@0.9.13
+
+## 2.35.19
+
+### Patch Changes
+
+- [#8705](https://github.com/wso2/identity-apps/pull/8705) [`6774168491d7efb7f3efd111ea4f4432f0cb8161`](https://github.com/wso2/identity-apps/commit/6774168491d7efb7f3efd111ea4f4432f0cb8161) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Address comments for Ask password email and SMS OTP support
+
+- Updated dependencies [[`6774168491d7efb7f3efd111ea4f4432f0cb8161`](https://github.com/wso2/identity-apps/commit/6774168491d7efb7f3efd111ea4f4432f0cb8161), [`0f788a7918a005c1f404a69cfc14d463a72ad55e`](https://github.com/wso2/identity-apps/commit/0f788a7918a005c1f404a69cfc14d463a72ad55e)]:
+  - @wso2is/admin.server-configurations.v1@2.35.19
+  - @wso2is/admin.users.v1@2.34.7
+  - @wso2is/admin.organizations.v1@2.27.0
+  - @wso2is/admin.core.v1@2.49.0
+  - @wso2is/core@2.12.0
+  - @wso2is/i18n@2.28.0
+
+## 2.35.18
+
+### Patch Changes
+
+- [#8569](https://github.com/wso2/identity-apps/pull/8569) [`1edda77d2e69f308e9c0f4c0930a7957efd5f2ee`](https://github.com/wso2/identity-apps/commit/1edda77d2e69f308e9c0f4c0930a7957efd5f2ee) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Invite user to set password configurations for SMS & Email OTP
+
+- Updated dependencies [[`1edda77d2e69f308e9c0f4c0930a7957efd5f2ee`](https://github.com/wso2/identity-apps/commit/1edda77d2e69f308e9c0f4c0930a7957efd5f2ee)]:
+  - @wso2is/admin.server-configurations.v1@2.35.18
+  - @wso2is/admin.extensions.v1@2.40.1
+  - @wso2is/admin.users.v1@2.34.6
+  - @wso2is/i18n@2.27.1
+  - @wso2is/admin.core.v1@2.48.2
+
+## 2.35.17
+
+### Patch Changes
+
+- Updated dependencies [[`3632b9dfe3fe2dbfd0a0d272b2bf1e1a43a6a523`](https://github.com/wso2/identity-apps/commit/3632b9dfe3fe2dbfd0a0d272b2bf1e1a43a6a523), [`64f8425138bf065e883f60fb9be275c435ba5f0d`](https://github.com/wso2/identity-apps/commit/64f8425138bf065e883f60fb9be275c435ba5f0d), [`6a5567d97fd49b6e1c1869f4509b631b41d6d9c6`](https://github.com/wso2/identity-apps/commit/6a5567d97fd49b6e1c1869f4509b631b41d6d9c6)]:
+  - @wso2is/admin.core.v1@2.48.0
+  - @wso2is/i18n@2.26.2
+  - @wso2is/admin.users.v1@2.34.5
+  - @wso2is/admin.flows.v1@1.0.16
+  - @wso2is/admin.flow-builder-core.v1@0.9.12
+  - @wso2is/admin.server-configurations.v1@2.35.17
+
+## 2.35.16
+
+### Patch Changes
+
+- Updated dependencies [[`f53aa7eec0893f28795ccb6afb92082be934a44c`](https://github.com/wso2/identity-apps/commit/f53aa7eec0893f28795ccb6afb92082be934a44c), [`c927fb9e513ddc042cde81251cde106ca0a09c32`](https://github.com/wso2/identity-apps/commit/c927fb9e513ddc042cde81251cde106ca0a09c32)]:
+  - @wso2is/admin.core.v1@2.46.42
+  - @wso2is/core@2.10.2
+  - @wso2is/admin.flow-builder-core.v1@0.9.11
+  - @wso2is/admin.server-configurations.v1@2.35.16
+
+## 2.35.15
+
+### Patch Changes
+
+- [#8656](https://github.com/wso2/identity-apps/pull/8656) [`6c3e55ec90a4c4ccd69c4e05ab8c1e4406fd3dd1`](https://github.com/wso2/identity-apps/commit/6c3e55ec90a4c4ccd69c4e05ab8c1e4406fd3dd1) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add steps for SMS OTP, Email OTP, Username & Password, and Passkeys
+
+- Updated dependencies [[`6c3e55ec90a4c4ccd69c4e05ab8c1e4406fd3dd1`](https://github.com/wso2/identity-apps/commit/6c3e55ec90a4c4ccd69c4e05ab8c1e4406fd3dd1)]:
+  - @wso2is/admin.flow-builder-core.v1@0.9.10
+  - @wso2is/admin.server-configurations.v1@2.35.15
+  - @wso2is/admin.core.v1@2.46.40
+
+## 2.35.14
+
+### Patch Changes
+
+- Updated dependencies [[`2b8df70c9f8acfbe2eeeb9a9d0053b107beb232b`](https://github.com/wso2/identity-apps/commit/2b8df70c9f8acfbe2eeeb9a9d0053b107beb232b)]:
+  - @wso2is/admin.flow-builder-core.v1@0.9.9
+  - @wso2is/admin.core.v1@2.46.38
+  - @wso2is/admin.server-configurations.v1@2.35.14
+
+## 2.35.13
+
+### Patch Changes
+
+- Updated dependencies [[`827bdf5a896acc202e411a9e8a6dfaaeaf0439fe`](https://github.com/wso2/identity-apps/commit/827bdf5a896acc202e411a9e8a6dfaaeaf0439fe)]:
+  - @wso2is/admin.flow-builder-core.v1@0.9.8
+  - @wso2is/i18n@2.25.6
+  - @wso2is/admin.core.v1@2.46.35
+  - @wso2is/admin.server-configurations.v1@2.35.13
+
+## 2.35.12
+
+### Patch Changes
+
+- Updated dependencies [[`c9834ab6efad973327ef6cfbbd558f5c88496f32`](https://github.com/wso2/identity-apps/commit/c9834ab6efad973327ef6cfbbd558f5c88496f32)]:
+  - @wso2is/admin.flow-builder-core.v1@0.9.7
+  - @wso2is/i18n@2.25.5
+  - @wso2is/admin.core.v1@2.46.34
+  - @wso2is/admin.server-configurations.v1@2.35.12
+
+## 2.35.11
+
+### Patch Changes
+
+- Updated dependencies [[`2e0c31a4c3f39f409ed3aa4b630007b81dea5bea`](https://github.com/wso2/identity-apps/commit/2e0c31a4c3f39f409ed3aa4b630007b81dea5bea)]:
+  - @wso2is/admin.flow-builder-core.v1@0.9.6
+  - @wso2is/i18n@2.25.4
+  - @wso2is/admin.core.v1@2.46.33
+  - @wso2is/admin.server-configurations.v1@2.35.11
+
+## 2.35.10
+
+### Patch Changes
+
+- [#8524](https://github.com/wso2/identity-apps/pull/8524) [`80a30c172e3931592b7fc6f4ac4900b25d754816`](https://github.com/wso2/identity-apps/commit/80a30c172e3931592b7fc6f4ac4900b25d754816) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Provide capability to configure and revert login & registration configurations in sub-organizations.
+
+- Updated dependencies [[`80a30c172e3931592b7fc6f4ac4900b25d754816`](https://github.com/wso2/identity-apps/commit/80a30c172e3931592b7fc6f4ac4900b25d754816), [`9d8a7df0c0602b2a58f37522a73d8428f35fdd17`](https://github.com/wso2/identity-apps/commit/9d8a7df0c0602b2a58f37522a73d8428f35fdd17)]:
+  - @wso2is/admin.server-configurations.v1@2.35.10
+  - @wso2is/admin.identity-providers.v1@2.26.207
+  - @wso2is/admin.validation.v1@2.27.145
+  - @wso2is/i18n@2.25.3
+  - @wso2is/admin.organizations.v1@2.26.211
+  - @wso2is/core@2.10.1
+  - @wso2is/admin.core.v1@2.46.30
+
+## 2.35.9
+
+### Patch Changes
+
+- Updated dependencies [[`e4bacc6f7fabba38a995428ea0b0bb785d2f1d35`](https://github.com/wso2/identity-apps/commit/e4bacc6f7fabba38a995428ea0b0bb785d2f1d35)]:
+  - @wso2is/admin.flows.v1@1.0.15
+  - @wso2is/admin.core.v1@2.46.26
+  - @wso2is/admin.flow-builder-core.v1@0.9.5
+  - @wso2is/admin.server-configurations.v1@2.35.9
+
+## 2.35.8
+
+### Patch Changes
+
+- Updated dependencies [[`32f809bf44aa79cd7c87144466915fc9c6438ca5`](https://github.com/wso2/identity-apps/commit/32f809bf44aa79cd7c87144466915fc9c6438ca5), [`79d24deec910ce3f4628decedd65c2f3bcddddfe`](https://github.com/wso2/identity-apps/commit/79d24deec910ce3f4628decedd65c2f3bcddddfe)]:
+  - @wso2is/admin.flow-builder-core.v1@0.9.4
+  - @wso2is/i18n@2.25.1
+  - @wso2is/admin.flows.v1@1.0.14
+  - @wso2is/admin.core.v1@2.46.25
+  - @wso2is/admin.server-configurations.v1@2.35.8
+
+## 2.35.7
+
+### Patch Changes
+
+- [#8579](https://github.com/wso2/identity-apps/pull/8579) [`7b50f9a554ba1672a0f5b94f918c3fd03ecac48e`](https://github.com/wso2/identity-apps/commit/7b50f9a554ba1672a0f5b94f918c3fd03ecac48e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Replace dynamic portal configuration with flow configuration API
+
+- Updated dependencies [[`7b50f9a554ba1672a0f5b94f918c3fd03ecac48e`](https://github.com/wso2/identity-apps/commit/7b50f9a554ba1672a0f5b94f918c3fd03ecac48e)]:
+  - @wso2is/admin.server-configurations.v1@2.35.7
+  - @wso2is/admin.core.v1@2.46.24
+
+## 2.35.6
+
+### Patch Changes
+
+- Updated dependencies [[`c95c6d9d0066555b78b0e851f1ca58dca67e0031`](https://github.com/wso2/identity-apps/commit/c95c6d9d0066555b78b0e851f1ca58dca67e0031)]:
+  - @wso2is/admin.flow-builder-core.v1@0.9.3
+  - @wso2is/admin.core.v1@2.46.23
+  - @wso2is/admin.server-configurations.v1@2.35.6
+
+## 2.35.5
+
+### Patch Changes
+
+- Updated dependencies [[`518889fccc67f829a5e497df54cfc6e238a06097`](https://github.com/wso2/identity-apps/commit/518889fccc67f829a5e497df54cfc6e238a06097)]:
+  - @wso2is/admin.flow-builder-core.v1@0.9.2
+  - @wso2is/admin.core.v1@2.46.18
+  - @wso2is/admin.server-configurations.v1@2.35.5
+
+## 2.35.4
+
+### Patch Changes
+
+- [#8560](https://github.com/wso2/identity-apps/pull/8560) [`241192e2ac434969b87b22e22ff794e9b5844451`](https://github.com/wso2/identity-apps/commit/241192e2ac434969b87b22e22ff794e9b5844451) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for generating the basic template using the self-registration connector configurations
+
+- Updated dependencies [[`241192e2ac434969b87b22e22ff794e9b5844451`](https://github.com/wso2/identity-apps/commit/241192e2ac434969b87b22e22ff794e9b5844451)]:
+  - @wso2is/admin.server-configurations.v1@2.35.4
+  - @wso2is/admin.flow-builder-core.v1@0.9.1
+  - @wso2is/admin.flows.v1@1.0.13
+  - @wso2is/i18n@2.24.18
+  - @wso2is/admin.core.v1@2.46.17
+  - @wso2is/core@2.9.5
+
+## 2.35.3
+
+### Patch Changes
+
+- [#8391](https://github.com/wso2/identity-apps/pull/8391) [`95a551badcc4414cea3f42eb8fd2de9fdb29dc26`](https://github.com/wso2/identity-apps/commit/95a551badcc4414cea3f42eb8fd2de9fdb29dc26) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - add self registration info banner for application login flow tab
+
+- Updated dependencies [[`95a551badcc4414cea3f42eb8fd2de9fdb29dc26`](https://github.com/wso2/identity-apps/commit/95a551badcc4414cea3f42eb8fd2de9fdb29dc26)]:
+  - @wso2is/admin.server-configurations.v1@2.35.3
+  - @wso2is/i18n@2.24.4
+
+## 2.35.2
+
+### Patch Changes
+
+- [#8303](https://github.com/wso2/identity-apps/pull/8303) [`b620bda0c39d43594a60b96579d54a645a877696`](https://github.com/wso2/identity-apps/commit/b620bda0c39d43594a60b96579d54a645a877696) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add fixes and improvements to registration orchestration flow
+
+- Updated dependencies [[`6427079247040e4ca2fae0edf2f2e4c570487b79`](https://github.com/wso2/identity-apps/commit/6427079247040e4ca2fae0edf2f2e4c570487b79), [`b620bda0c39d43594a60b96579d54a645a877696`](https://github.com/wso2/identity-apps/commit/b620bda0c39d43594a60b96579d54a645a877696)]:
+  - @wso2is/admin.feature-gate.v1@1.6.3
+  - @wso2is/admin.extensions.v1@2.38.3
+  - @wso2is/admin.core.v1@2.45.8
+  - @wso2is/i18n@2.23.10
+  - @wso2is/admin.server-configurations.v1@2.35.2
+
+## 2.35.1
+
+### Patch Changes
+
+- [#8238](https://github.com/wso2/identity-apps/pull/8238) [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump oxygen-ui version to 2.4.2
+
+- Updated dependencies [[`89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f`](https://github.com/wso2/identity-apps/commit/89e33fb2f5ebc6ae39c965d616aa7d7841a6ad1f), [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f)]:
+  - @wso2is/admin.core.v1@2.45.2
+  - @wso2is/admin.server-configurations.v1@2.35.1
+  - @wso2is/admin.identity-providers.v1@2.26.206
+  - @wso2is/admin.organizations.v1@2.26.205
+  - @wso2is/admin.feature-gate.v1@1.6.2
+  - @wso2is/admin.extensions.v1@2.38.2
+  - @wso2is/admin.validation.v1@2.27.144
+  - @wso2is/react-components@2.9.16
+  - @wso2is/admin.users.v1@2.32.5
+  - @wso2is/dynamic-forms@2.4.41
+  - @wso2is/form@2.7.1
+
+## 2.35.0
+
+### Minor Changes
+
+- [#7995](https://github.com/wso2/identity-apps/pull/7995) [`c639a98a6e09992cbb3e37c315ea507b8212bb35`](https://github.com/wso2/identity-apps/commit/c639a98a6e09992cbb3e37c315ea507b8212bb35) Thanks [@Malith-19](https://github.com/Malith-19)! - Update the forced password reset configuration page and force password reset modal message to support email Link and email OTP.
+
+### Patch Changes
+
+- Updated dependencies [[`988621e009d2cfb65e7a3200f82eaa7a10fdd716`](https://github.com/wso2/identity-apps/commit/988621e009d2cfb65e7a3200f82eaa7a10fdd716), [`c639a98a6e09992cbb3e37c315ea507b8212bb35`](https://github.com/wso2/identity-apps/commit/c639a98a6e09992cbb3e37c315ea507b8212bb35)]:
+  - @wso2is/core@2.7.4
+  - @wso2is/i18n@2.22.13
+  - @wso2is/admin.server-configurations.v1@2.35.0
+  - @wso2is/admin.users.v1@2.31.0
+
+## 2.34.4
+
+### Patch Changes
+
+- [#8067](https://github.com/wso2/identity-apps/pull/8067) [`6fbc0298456c0f38657c8cacd94116adc2f97030`](https://github.com/wso2/identity-apps/commit/6fbc0298456c0f38657c8cacd94116adc2f97030) Thanks [@Malith-19](https://github.com/Malith-19)! - Improve the connector edit page and username recovery form formmattings.
+
+- Updated dependencies [[`6fbc0298456c0f38657c8cacd94116adc2f97030`](https://github.com/wso2/identity-apps/commit/6fbc0298456c0f38657c8cacd94116adc2f97030), [`ef219b69cd4a6ddedc9bc9d9b27ecfb5de34f8c2`](https://github.com/wso2/identity-apps/commit/ef219b69cd4a6ddedc9bc9d9b27ecfb5de34f8c2)]:
+  - @wso2is/admin.server-configurations.v1@2.34.4
+  - @wso2is/admin.users.v1@2.30.128
+
+## 2.34.3
+
+### Patch Changes
+
+- [#7958](https://github.com/wso2/identity-apps/pull/7958) [`e4418cdc61d2d0740114f82b0c60274ebc78c401`](https://github.com/wso2/identity-apps/commit/e4418cdc61d2d0740114f82b0c60274ebc78c401) Thanks [@Malith-19](https://github.com/Malith-19)! - Add test component ids for password recovery form.
+
+- Updated dependencies [[`e4418cdc61d2d0740114f82b0c60274ebc78c401`](https://github.com/wso2/identity-apps/commit/e4418cdc61d2d0740114f82b0c60274ebc78c401)]:
+  - @wso2is/admin.server-configurations.v1@2.34.3
+
+## 2.34.2
+
+### Patch Changes
+
+- [#7947](https://github.com/wso2/identity-apps/pull/7947) [`8b6bf7c6048b61562bd933051cd35f6c344e7842`](https://github.com/wso2/identity-apps/commit/8b6bf7c6048b61562bd933051cd35f6c344e7842) Thanks [@savindi7](https://github.com/savindi7)! - Update governance connector names.
+
+- Updated dependencies [[`8b6bf7c6048b61562bd933051cd35f6c344e7842`](https://github.com/wso2/identity-apps/commit/8b6bf7c6048b61562bd933051cd35f6c344e7842), [`f7c26d3eff8818c63211d90c91d11b109710aaae`](https://github.com/wso2/identity-apps/commit/f7c26d3eff8818c63211d90c91d11b109710aaae)]:
+  - @wso2is/admin.server-configurations.v1@2.34.2
+  - @wso2is/i18n@2.22.6
+  - @wso2is/admin.validation.v1@2.27.142
+  - @wso2is/admin.users.v1@2.30.118
+
+## 2.34.1
+
+### Patch Changes
+
+- [#7901](https://github.com/wso2/identity-apps/pull/7901) [`d7eb376080cc93f307ce6f57b680d0cdd7d9fad5`](https://github.com/wso2/identity-apps/commit/d7eb376080cc93f307ce6f57b680d0cdd7d9fad5) Thanks [@Malith-19](https://github.com/Malith-19)! - Add password recovery email otp support.
+
+- Updated dependencies [[`d7eb376080cc93f307ce6f57b680d0cdd7d9fad5`](https://github.com/wso2/identity-apps/commit/d7eb376080cc93f307ce6f57b680d0cdd7d9fad5)]:
+  - @wso2is/admin.server-configurations.v1@2.34.1
+  - @wso2is/i18n@2.22.4
+
+## 2.34.0
+
+### Minor Changes
+
+- [#7891](https://github.com/wso2/identity-apps/pull/7891) [`29edf4fd3d7425985db9bb4103caf9d549e3570c`](https://github.com/wso2/identity-apps/commit/29edf4fd3d7425985db9bb4103caf9d549e3570c) Thanks [@brionmario](https://github.com/brionmario)! - Add feature announcement banner
+
+### Patch Changes
+
+- Updated dependencies [[`29edf4fd3d7425985db9bb4103caf9d549e3570c`](https://github.com/wso2/identity-apps/commit/29edf4fd3d7425985db9bb4103caf9d549e3570c)]:
+  - @wso2is/admin.server-configurations.v1@2.34.0
+  - @wso2is/admin.feature-gate.v1@1.6.0
+  - @wso2is/admin.core.v1@2.43.0
+
+## 2.33.4
+
+### Patch Changes
+
+- Updated dependencies [[`6f6564046f57869ddac09d6238fb4101bc1f9f86`](https://github.com/wso2/identity-apps/commit/6f6564046f57869ddac09d6238fb4101bc1f9f86)]:
+  - @wso2is/common.ui.v1@0.2.0
+  - @wso2is/admin.core.v1@2.42.4
+  - @wso2is/admin.server-configurations.v1@2.33.4
+
+## 2.33.3
+
+### Patch Changes
+
+- [#7859](https://github.com/wso2/identity-apps/pull/7859) [`c7ebf8dff43fc4b6bf76f6916bb56305216a223a`](https://github.com/wso2/identity-apps/commit/c7ebf8dff43fc4b6bf76f6916bb56305216a223a) Thanks [@brionmario](https://github.com/brionmario)! - - Update cursor in breadcrumb & panel items
+  - Fix widget property panel issues
+  - Fix navigation issues with widgets
+- Updated dependencies [[`c7ebf8dff43fc4b6bf76f6916bb56305216a223a`](https://github.com/wso2/identity-apps/commit/c7ebf8dff43fc4b6bf76f6916bb56305216a223a)]:
+  - @wso2is/admin.server-configurations.v1@2.33.3
+
+## 2.33.2
+
+### Patch Changes
+
+- [#7849](https://github.com/wso2/identity-apps/pull/7849) [`e0e4356f8fb7eae97613d21c65ba976d2c032d63`](https://github.com/wso2/identity-apps/commit/e0e4356f8fb7eae97613d21c65ba976d2c032d63) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add the registration flow builder card to the login and registration section
+
+- Updated dependencies [[`e0e4356f8fb7eae97613d21c65ba976d2c032d63`](https://github.com/wso2/identity-apps/commit/e0e4356f8fb7eae97613d21c65ba976d2c032d63)]:
+  - @wso2is/admin.server-configurations.v1@2.33.2
+  - @wso2is/admin.feature-gate.v1@1.4.204
+  - @wso2is/i18n@2.21.4
+
+## 2.33.1
+
+### Patch Changes
+
+- [#7831](https://github.com/wso2/identity-apps/pull/7831) [`57c8937653626be3a8f1e6b19ead521e1e7a5528`](https://github.com/wso2/identity-apps/commit/57c8937653626be3a8f1e6b19ead521e1e7a5528) Thanks [@brionmario](https://github.com/brionmario)! - Improve the Sign Up Composer
+
+- Updated dependencies [[`57c8937653626be3a8f1e6b19ead521e1e7a5528`](https://github.com/wso2/identity-apps/commit/57c8937653626be3a8f1e6b19ead521e1e7a5528)]:
+  - @wso2is/admin.server-configurations.v1@2.33.1
+
+## 2.33.0
+
+### Minor Changes
+
+- [#7653](https://github.com/wso2/identity-apps/pull/7653) [`a8ab43d1fb107db42ebcb9b4c894a6caa3368fe9`](https://github.com/wso2/identity-apps/commit/a8ab43d1fb107db42ebcb9b4c894a6caa3368fe9) Thanks [@brionmario](https://github.com/brionmario)! - - Refactor `UserPreferencesProvider` and move it to a new `common.ui.v1` package.
+  - Refactor the existing usages.
+  - Persist the side panel state in the local storage.
+  - https://github.com/wso2/product-is/issues/19315
+  - Close the Navbar when a fresh user tries out the new Self Sign Up composer.
+
+### Patch Changes
+
+- Updated dependencies [[`a8ab43d1fb107db42ebcb9b4c894a6caa3368fe9`](https://github.com/wso2/identity-apps/commit/a8ab43d1fb107db42ebcb9b4c894a6caa3368fe9)]:
+  - @wso2is/admin.server-configurations.v1@2.33.0
+  - @wso2is/admin.core.v1@2.41.0
+  - @wso2is/common.ui.v1@0.1.0
+
+## 2.32.128
+
+### Patch Changes
+
+- Updated dependencies [[`c78a6b3b4b54342fed9f06fceaef9aab27c53803`](https://github.com/wso2/identity-apps/commit/c78a6b3b4b54342fed9f06fceaef9aab27c53803)]:
+  - @wso2is/admin.extensions.v1@2.36.128
+  - @wso2is/admin.core.v1@2.40.6
+  - @wso2is/admin.identity-providers.v1@2.26.203
+  - @wso2is/admin.organizations.v1@2.26.203
+  - @wso2is/admin.server-configurations.v1@2.32.128
+  - @wso2is/admin.users.v1@2.30.113
+  - @wso2is/admin.validation.v1@2.27.141
+  - @wso2is/admin.feature-gate.v1@1.4.203
+
+## 2.32.127
+
+### Patch Changes
+
+- Updated dependencies [[`281011fd2fd4b725d41dfc37e1747f3688d6b0f1`](https://github.com/wso2/identity-apps/commit/281011fd2fd4b725d41dfc37e1747f3688d6b0f1), [`725295582b41eab8705a4e821d169499ced1c647`](https://github.com/wso2/identity-apps/commit/725295582b41eab8705a4e821d169499ced1c647)]:
+  - @wso2is/admin.users.v1@2.30.112
+  - @wso2is/i18n@2.21.2
+  - @wso2is/admin.extensions.v1@2.36.127
+  - @wso2is/admin.core.v1@2.40.5
+  - @wso2is/admin.identity-providers.v1@2.26.202
+  - @wso2is/admin.organizations.v1@2.26.202
+  - @wso2is/admin.validation.v1@2.27.140
+  - @wso2is/admin.server-configurations.v1@2.32.127
+  - @wso2is/admin.feature-gate.v1@1.4.202
+
+## 2.32.126
+
+### Patch Changes
+
+- Updated dependencies [[`152e91a6dd4848fe0fb0a0728a1e78fa97a88e12`](https://github.com/wso2/identity-apps/commit/152e91a6dd4848fe0fb0a0728a1e78fa97a88e12), [`b9163e60298aecf2d38e64752a00990387d3e512`](https://github.com/wso2/identity-apps/commit/b9163e60298aecf2d38e64752a00990387d3e512)]:
+  - @wso2is/i18n@2.21.1
+  - @wso2is/admin.users.v1@2.30.111
+  - @wso2is/admin.core.v1@2.40.4
+  - @wso2is/admin.extensions.v1@2.36.126
+  - @wso2is/admin.identity-providers.v1@2.26.201
+  - @wso2is/admin.organizations.v1@2.26.201
+  - @wso2is/admin.server-configurations.v1@2.32.126
+  - @wso2is/admin.validation.v1@2.27.139
+  - @wso2is/admin.feature-gate.v1@1.4.201
+
+## 2.32.125
+
+### Patch Changes
+
+- Updated dependencies [[`782800184a6f99a2c0f4d0bc2c6bcc857d063c5c`](https://github.com/wso2/identity-apps/commit/782800184a6f99a2c0f4d0bc2c6bcc857d063c5c)]:
+  - @wso2is/admin.users.v1@2.30.110
+  - @wso2is/admin.core.v1@2.40.3
+  - @wso2is/admin.extensions.v1@2.36.125
+  - @wso2is/admin.organizations.v1@2.26.200
+  - @wso2is/admin.server-configurations.v1@2.32.125
+  - @wso2is/admin.validation.v1@2.27.138
+  - @wso2is/admin.identity-providers.v1@2.26.200
+  - @wso2is/admin.feature-gate.v1@1.4.200
+
+## 2.32.124
+
+### Patch Changes
+
+- Updated dependencies [[`8f5a1aff4e9e2f833fbdfd26c267149980ab713c`](https://github.com/wso2/identity-apps/commit/8f5a1aff4e9e2f833fbdfd26c267149980ab713c)]:
+  - @wso2is/admin.core.v1@2.40.2
+  - @wso2is/admin.extensions.v1@2.36.124
+  - @wso2is/admin.feature-gate.v1@1.4.199
+  - @wso2is/admin.identity-providers.v1@2.26.199
+  - @wso2is/admin.organizations.v1@2.26.199
+  - @wso2is/admin.server-configurations.v1@2.32.124
+  - @wso2is/admin.users.v1@2.30.109
+  - @wso2is/admin.validation.v1@2.27.137
+
+## 2.32.123
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.40.1
+  - @wso2is/admin.extensions.v1@2.36.123
+  - @wso2is/admin.identity-providers.v1@2.26.198
+  - @wso2is/admin.organizations.v1@2.26.198
+  - @wso2is/admin.feature-gate.v1@1.4.198
+  - @wso2is/admin.server-configurations.v1@2.32.123
+  - @wso2is/admin.users.v1@2.30.108
+  - @wso2is/admin.validation.v1@2.27.136
+
+## 2.32.122
+
+### Patch Changes
+
+- Updated dependencies [[`04fdeac1d019db974616a0845dfda84aa353d582`](https://github.com/wso2/identity-apps/commit/04fdeac1d019db974616a0845dfda84aa353d582), [`6af3d7e6d134a33af3d3c78db354ad582b4e042b`](https://github.com/wso2/identity-apps/commit/6af3d7e6d134a33af3d3c78db354ad582b4e042b), [`197e2f76c9ec89c5080c1e52f74aa34a93931125`](https://github.com/wso2/identity-apps/commit/197e2f76c9ec89c5080c1e52f74aa34a93931125)]:
+  - @wso2is/admin.core.v1@2.40.0
+  - @wso2is/core@2.7.0
+  - @wso2is/i18n@2.21.0
+  - @wso2is/admin.extensions.v1@2.36.122
+  - @wso2is/admin.organizations.v1@2.26.197
+  - @wso2is/admin.users.v1@2.30.107
+  - @wso2is/admin.feature-gate.v1@1.4.197
+  - @wso2is/admin.identity-providers.v1@2.26.197
+  - @wso2is/admin.server-configurations.v1@2.32.122
+  - @wso2is/admin.validation.v1@2.27.135
+  - @wso2is/access-control@3.3.20
+  - @wso2is/dynamic-forms@2.4.40
+  - @wso2is/form@2.6.35
+  - @wso2is/forms@2.3.22
+  - @wso2is/react-components@2.9.12
+
+## 2.32.121
+
+### Patch Changes
+
+- [#7758](https://github.com/wso2/identity-apps/pull/7758) [`7e3fe5ae0d4985f1e72d02cb32cd76664d6bb2c6`](https://github.com/wso2/identity-apps/commit/7e3fe5ae0d4985f1e72d02cb32cd76664d6bb2c6) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Add documentation link to account disable connector
+
+- Updated dependencies [[`7e3fe5ae0d4985f1e72d02cb32cd76664d6bb2c6`](https://github.com/wso2/identity-apps/commit/7e3fe5ae0d4985f1e72d02cb32cd76664d6bb2c6)]:
+  - @wso2is/admin.server-configurations.v1@2.32.121
+  - @wso2is/admin.extensions.v1@2.36.121
+  - @wso2is/admin.core.v1@2.39.22
+  - @wso2is/admin.identity-providers.v1@2.26.196
+  - @wso2is/admin.users.v1@2.30.106
+  - @wso2is/admin.validation.v1@2.27.134
+  - @wso2is/admin.organizations.v1@2.26.196
+  - @wso2is/admin.feature-gate.v1@1.4.196
+
+## 2.32.120
+
+### Patch Changes
+
+- Updated dependencies [[`0d61257ef6c3cae8be7b9bd7be7cc6b54654b243`](https://github.com/wso2/identity-apps/commit/0d61257ef6c3cae8be7b9bd7be7cc6b54654b243)]:
+  - @wso2is/i18n@2.20.4
+  - @wso2is/admin.core.v1@2.39.21
+  - @wso2is/admin.extensions.v1@2.36.120
+  - @wso2is/admin.identity-providers.v1@2.26.195
+  - @wso2is/admin.organizations.v1@2.26.195
+  - @wso2is/admin.server-configurations.v1@2.32.120
+  - @wso2is/admin.users.v1@2.30.105
+  - @wso2is/admin.validation.v1@2.27.133
+  - @wso2is/admin.feature-gate.v1@1.4.195
+
+## 2.32.119
+
+### Patch Changes
+
+- Updated dependencies [[`ea321ccbcbb8a40339794b420fa8d9efee5deb67`](https://github.com/wso2/identity-apps/commit/ea321ccbcbb8a40339794b420fa8d9efee5deb67)]:
+  - @wso2is/admin.validation.v1@2.27.132
+  - @wso2is/admin.core.v1@2.39.20
+  - @wso2is/admin.extensions.v1@2.36.119
+  - @wso2is/admin.server-configurations.v1@2.32.119
+  - @wso2is/admin.users.v1@2.30.104
+  - @wso2is/admin.organizations.v1@2.26.194
+  - @wso2is/admin.identity-providers.v1@2.26.194
+  - @wso2is/admin.feature-gate.v1@1.4.194
+
+## 2.32.118
+
+### Patch Changes
+
+- Updated dependencies [[`1bb85bae9a71a678d1a955d4ae4ab9ff4b9375bc`](https://github.com/wso2/identity-apps/commit/1bb85bae9a71a678d1a955d4ae4ab9ff4b9375bc)]:
+  - @wso2is/admin.users.v1@2.30.103
+  - @wso2is/admin.core.v1@2.39.19
+  - @wso2is/admin.extensions.v1@2.36.118
+  - @wso2is/admin.organizations.v1@2.26.193
+  - @wso2is/admin.server-configurations.v1@2.32.118
+  - @wso2is/admin.validation.v1@2.27.131
+  - @wso2is/admin.identity-providers.v1@2.26.193
+  - @wso2is/admin.feature-gate.v1@1.4.193
+
+## 2.32.117
+
+### Patch Changes
+
+- Updated dependencies [[`b9724d43eb1b3ca457161f35d92944df1ba7649a`](https://github.com/wso2/identity-apps/commit/b9724d43eb1b3ca457161f35d92944df1ba7649a), [`6f2881510fbf5f6cf66e8cdbda001a8b3daa7887`](https://github.com/wso2/identity-apps/commit/6f2881510fbf5f6cf66e8cdbda001a8b3daa7887), [`698a0f90286bd0621ee7cdbd8209c68e7fcc5120`](https://github.com/wso2/identity-apps/commit/698a0f90286bd0621ee7cdbd8209c68e7fcc5120), [`1724eb611da9ff3d985ea8edd68047c97d75941b`](https://github.com/wso2/identity-apps/commit/1724eb611da9ff3d985ea8edd68047c97d75941b)]:
+  - @wso2is/i18n@2.20.3
+  - @wso2is/admin.core.v1@2.39.18
+  - @wso2is/admin.extensions.v1@2.36.117
+  - @wso2is/admin.identity-providers.v1@2.26.192
+  - @wso2is/admin.organizations.v1@2.26.192
+  - @wso2is/admin.server-configurations.v1@2.32.117
+  - @wso2is/admin.users.v1@2.30.102
+  - @wso2is/admin.validation.v1@2.27.130
+  - @wso2is/admin.feature-gate.v1@1.4.192
+
+## 2.32.116
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.17
+  - @wso2is/admin.extensions.v1@2.36.116
+  - @wso2is/admin.identity-providers.v1@2.26.191
+  - @wso2is/admin.organizations.v1@2.26.191
+  - @wso2is/admin.feature-gate.v1@1.4.191
+  - @wso2is/admin.server-configurations.v1@2.32.116
+  - @wso2is/admin.users.v1@2.30.101
+  - @wso2is/admin.validation.v1@2.27.129
+
+## 2.32.115
+
+### Patch Changes
+
+- Updated dependencies [[`0e488f4fe3a8e1c080e19b097deed1c0cdc5bc90`](https://github.com/wso2/identity-apps/commit/0e488f4fe3a8e1c080e19b097deed1c0cdc5bc90)]:
+  - @wso2is/admin.extensions.v1@2.36.115
+  - @wso2is/admin.users.v1@2.30.100
+  - @wso2is/i18n@2.20.2
+  - @wso2is/admin.core.v1@2.39.16
+  - @wso2is/admin.identity-providers.v1@2.26.190
+  - @wso2is/admin.organizations.v1@2.26.190
+  - @wso2is/admin.server-configurations.v1@2.32.115
+  - @wso2is/admin.validation.v1@2.27.128
+  - @wso2is/admin.feature-gate.v1@1.4.190
+
+## 2.32.114
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.15
+  - @wso2is/admin.extensions.v1@2.36.114
+  - @wso2is/admin.identity-providers.v1@2.26.189
+  - @wso2is/admin.organizations.v1@2.26.189
+  - @wso2is/admin.feature-gate.v1@1.4.189
+  - @wso2is/admin.server-configurations.v1@2.32.114
+  - @wso2is/admin.users.v1@2.30.99
+  - @wso2is/admin.validation.v1@2.27.127
+
+## 2.32.113
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.14
+  - @wso2is/admin.extensions.v1@2.36.113
+  - @wso2is/admin.identity-providers.v1@2.26.188
+  - @wso2is/admin.users.v1@2.30.98
+  - @wso2is/admin.organizations.v1@2.26.188
+  - @wso2is/admin.feature-gate.v1@1.4.188
+  - @wso2is/admin.server-configurations.v1@2.32.113
+  - @wso2is/admin.validation.v1@2.27.126
+
+## 2.32.112
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.13
+  - @wso2is/admin.extensions.v1@2.36.112
+  - @wso2is/admin.identity-providers.v1@2.26.187
+  - @wso2is/admin.organizations.v1@2.26.187
+  - @wso2is/admin.feature-gate.v1@1.4.187
+  - @wso2is/admin.server-configurations.v1@2.32.112
+  - @wso2is/admin.users.v1@2.30.97
+  - @wso2is/admin.validation.v1@2.27.125
+
+## 2.32.111
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.12
+  - @wso2is/admin.extensions.v1@2.36.111
+  - @wso2is/admin.identity-providers.v1@2.26.186
+  - @wso2is/admin.organizations.v1@2.26.186
+  - @wso2is/admin.feature-gate.v1@1.4.186
+  - @wso2is/admin.server-configurations.v1@2.32.111
+  - @wso2is/admin.users.v1@2.30.96
+  - @wso2is/admin.validation.v1@2.27.124
+
+## 2.32.110
+
+### Patch Changes
+
+- Updated dependencies [[`550d087571863f97af85e1f37a84582d230bbe94`](https://github.com/wso2/identity-apps/commit/550d087571863f97af85e1f37a84582d230bbe94), [`063fe9d369c650df20207653449962881bb3e963`](https://github.com/wso2/identity-apps/commit/063fe9d369c650df20207653449962881bb3e963), [`ae40c90f3a834fcbd18e7443ff348088e46457be`](https://github.com/wso2/identity-apps/commit/ae40c90f3a834fcbd18e7443ff348088e46457be)]:
+  - @wso2is/form@2.6.34
+  - @wso2is/i18n@2.20.1
+  - @wso2is/admin.core.v1@2.39.11
+  - @wso2is/admin.extensions.v1@2.36.110
+  - @wso2is/admin.identity-providers.v1@2.26.185
+  - @wso2is/admin.organizations.v1@2.26.185
+  - @wso2is/admin.server-configurations.v1@2.32.110
+  - @wso2is/admin.users.v1@2.30.95
+  - @wso2is/admin.validation.v1@2.27.123
+  - @wso2is/admin.feature-gate.v1@1.4.185
+
+## 2.32.109
+
+### Patch Changes
+
+- Updated dependencies [[`6e3c598e5c4d2b2bbd8cb5543ab3eea0fa4243df`](https://github.com/wso2/identity-apps/commit/6e3c598e5c4d2b2bbd8cb5543ab3eea0fa4243df)]:
+  - @wso2is/i18n@2.20.0
+  - @wso2is/admin.core.v1@2.39.10
+  - @wso2is/admin.extensions.v1@2.36.109
+  - @wso2is/admin.identity-providers.v1@2.26.184
+  - @wso2is/admin.organizations.v1@2.26.184
+  - @wso2is/admin.server-configurations.v1@2.32.109
+  - @wso2is/admin.users.v1@2.30.94
+  - @wso2is/admin.validation.v1@2.27.122
+  - @wso2is/admin.feature-gate.v1@1.4.184
+
+## 2.32.108
+
+### Patch Changes
+
+- Updated dependencies [[`d692c742aca6c9349ff7349b98e528cc5083803d`](https://github.com/wso2/identity-apps/commit/d692c742aca6c9349ff7349b98e528cc5083803d)]:
+  - @wso2is/admin.users.v1@2.30.93
+  - @wso2is/admin.core.v1@2.39.9
+  - @wso2is/admin.extensions.v1@2.36.108
+  - @wso2is/admin.organizations.v1@2.26.183
+  - @wso2is/admin.server-configurations.v1@2.32.108
+  - @wso2is/admin.validation.v1@2.27.121
+  - @wso2is/admin.identity-providers.v1@2.26.183
+  - @wso2is/admin.feature-gate.v1@1.4.183
+
+## 2.32.107
+
+### Patch Changes
+
+- [#7701](https://github.com/wso2/identity-apps/pull/7701) [`f9752f1420e185f1a37ea267fb7edd336b8722ce`](https://github.com/wso2/identity-apps/commit/f9752f1420e185f1a37ea267fb7edd336b8722ce) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Trigger patch release to all packages to prepare for RC
+
+- Updated dependencies [[`f9752f1420e185f1a37ea267fb7edd336b8722ce`](https://github.com/wso2/identity-apps/commit/f9752f1420e185f1a37ea267fb7edd336b8722ce)]:
+  - @wso2is/admin.core.v1@2.39.8
+  - @wso2is/admin.extensions.v1@2.36.107
+  - @wso2is/admin.feature-gate.v1@1.4.182
+  - @wso2is/admin.identity-providers.v1@2.26.182
+  - @wso2is/admin.organizations.v1@2.26.182
+  - @wso2is/admin.server-configurations.v1@2.32.107
+  - @wso2is/admin.users.v1@2.30.92
+  - @wso2is/admin.validation.v1@2.27.120
+  - @wso2is/access-control@3.3.19
+  - @wso2is/core@2.6.5
+  - @wso2is/dynamic-forms@2.4.39
+  - @wso2is/form@2.6.33
+  - @wso2is/forms@2.3.21
+  - @wso2is/i18n@2.19.21
+  - @wso2is/react-components@2.9.11
+  - @wso2is/theme@2.6.11
+  - @wso2is/validation@2.4.1
+
+## 2.32.106
+
+### Patch Changes
+
+- Updated dependencies [[`bc745eb2efbeee6f3ccc4356027a4d9f7b23e78d`](https://github.com/wso2/identity-apps/commit/bc745eb2efbeee6f3ccc4356027a4d9f7b23e78d)]:
+  - @wso2is/admin.users.v1@2.30.91
+  - @wso2is/admin.core.v1@2.39.7
+  - @wso2is/admin.extensions.v1@2.36.106
+  - @wso2is/admin.identity-providers.v1@2.26.181
+  - @wso2is/admin.organizations.v1@2.26.181
+  - @wso2is/admin.server-configurations.v1@2.32.106
+  - @wso2is/admin.validation.v1@2.27.119
+  - @wso2is/admin.feature-gate.v1@1.4.181
+
+## 2.32.105
+
+### Patch Changes
+
+- Updated dependencies [[`1166cdeb139983e4920a31dc43896628a869a5ef`](https://github.com/wso2/identity-apps/commit/1166cdeb139983e4920a31dc43896628a869a5ef)]:
+  - @wso2is/i18n@2.19.20
+  - @wso2is/admin.core.v1@2.39.6
+  - @wso2is/admin.extensions.v1@2.36.105
+  - @wso2is/admin.identity-providers.v1@2.26.180
+  - @wso2is/admin.organizations.v1@2.26.180
+  - @wso2is/admin.server-configurations.v1@2.32.105
+  - @wso2is/admin.users.v1@2.30.90
+  - @wso2is/admin.validation.v1@2.27.118
+  - @wso2is/admin.feature-gate.v1@1.4.180
+
+## 2.32.104
+
+### Patch Changes
+
+- Updated dependencies [[`27fcd8492da2d6dcf7ea022093bc5848232eb170`](https://github.com/wso2/identity-apps/commit/27fcd8492da2d6dcf7ea022093bc5848232eb170), [`d7fe5b9e9df9f8b23d71c04df5678c400e8e8498`](https://github.com/wso2/identity-apps/commit/d7fe5b9e9df9f8b23d71c04df5678c400e8e8498), [`864badf8609514cf84fafc6b43e75836db537f2c`](https://github.com/wso2/identity-apps/commit/864badf8609514cf84fafc6b43e75836db537f2c)]:
+  - @wso2is/admin.users.v1@2.30.89
+  - @wso2is/admin.validation.v1@2.27.117
+  - @wso2is/admin.core.v1@2.39.5
+  - @wso2is/admin.extensions.v1@2.36.104
+  - @wso2is/admin.organizations.v1@2.26.179
+  - @wso2is/admin.server-configurations.v1@2.32.104
+  - @wso2is/admin.feature-gate.v1@1.4.179
+  - @wso2is/admin.identity-providers.v1@2.26.179
+
+## 2.32.103
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.39.4
+  - @wso2is/admin.extensions.v1@2.36.103
+  - @wso2is/admin.identity-providers.v1@2.26.178
+  - @wso2is/admin.organizations.v1@2.26.178
+  - @wso2is/admin.feature-gate.v1@1.4.178
+  - @wso2is/admin.server-configurations.v1@2.32.103
+  - @wso2is/admin.users.v1@2.30.88
+  - @wso2is/admin.validation.v1@2.27.116
+
+## 2.32.102
+
+### Patch Changes
+
+- Updated dependencies [[`7307019fcddc8f82f59cf236a2ac4d698ae3d992`](https://github.com/wso2/identity-apps/commit/7307019fcddc8f82f59cf236a2ac4d698ae3d992)]:
+  - @wso2is/admin.extensions.v1@2.36.102
+  - @wso2is/admin.core.v1@2.39.3
+  - @wso2is/admin.identity-providers.v1@2.26.177
+  - @wso2is/admin.organizations.v1@2.26.177
+  - @wso2is/admin.server-configurations.v1@2.32.102
+  - @wso2is/admin.users.v1@2.30.87
+  - @wso2is/admin.validation.v1@2.27.115
+  - @wso2is/admin.feature-gate.v1@1.4.177
+
+## 2.32.101
+
+### Patch Changes
+
+- Updated dependencies [[`6bb877f16b0274c87924bf33316e865310ab98f9`](https://github.com/wso2/identity-apps/commit/6bb877f16b0274c87924bf33316e865310ab98f9)]:
+  - @wso2is/i18n@2.19.19
+  - @wso2is/admin.core.v1@2.39.2
+  - @wso2is/admin.extensions.v1@2.36.101
+  - @wso2is/admin.organizations.v1@2.26.176
+  - @wso2is/admin.users.v1@2.30.86
+  - @wso2is/admin.identity-providers.v1@2.26.176
+  - @wso2is/admin.server-configurations.v1@2.32.101
+  - @wso2is/admin.validation.v1@2.27.114
+  - @wso2is/admin.feature-gate.v1@1.4.176
+
+## 2.32.100
+
+### Patch Changes
+
+- Updated dependencies [[`08a178715b4ed016cfcb7ce04cad67ec68d392a4`](https://github.com/wso2/identity-apps/commit/08a178715b4ed016cfcb7ce04cad67ec68d392a4), [`50f5cf243b0d0ece263bb4ab5b1ce386ac45c5c5`](https://github.com/wso2/identity-apps/commit/50f5cf243b0d0ece263bb4ab5b1ce386ac45c5c5)]:
+  - @wso2is/admin.users.v1@2.30.85
+  - @wso2is/admin.core.v1@2.39.1
+  - @wso2is/admin.extensions.v1@2.36.100
+  - @wso2is/admin.identity-providers.v1@2.26.175
+  - @wso2is/admin.organizations.v1@2.26.175
+  - @wso2is/admin.server-configurations.v1@2.32.100
+  - @wso2is/admin.validation.v1@2.27.113
+  - @wso2is/admin.feature-gate.v1@1.4.175
+
+## 2.32.99
+
+### Patch Changes
+
+- Updated dependencies [[`b467e279a1973e67aaadf0586cb72a4dc1391c5f`](https://github.com/wso2/identity-apps/commit/b467e279a1973e67aaadf0586cb72a4dc1391c5f), [`47c768b2179f9768ebf9c858463e831ca4f079b3`](https://github.com/wso2/identity-apps/commit/47c768b2179f9768ebf9c858463e831ca4f079b3), [`785e8f986338acb7bff2eececf717b7c4f7c5575`](https://github.com/wso2/identity-apps/commit/785e8f986338acb7bff2eececf717b7c4f7c5575), [`e4657499f151f319f1dec5f2fe8166e590dde979`](https://github.com/wso2/identity-apps/commit/e4657499f151f319f1dec5f2fe8166e590dde979)]:
+  - @wso2is/admin.users.v1@2.30.84
+  - @wso2is/i18n@2.19.18
+  - @wso2is/admin.core.v1@2.39.0
+  - @wso2is/admin.extensions.v1@2.36.99
+  - @wso2is/admin.organizations.v1@2.26.174
+  - @wso2is/admin.validation.v1@2.27.112
+  - @wso2is/admin.server-configurations.v1@2.32.99
+  - @wso2is/admin.identity-providers.v1@2.26.174
+  - @wso2is/admin.feature-gate.v1@1.4.174
+
+## 2.32.98
+
+### Patch Changes
+
+- Updated dependencies [[`0afe5d5ec9fa5ab010b383b7fb0e841ad79a9988`](https://github.com/wso2/identity-apps/commit/0afe5d5ec9fa5ab010b383b7fb0e841ad79a9988), [`de5b007ec4edabb377f2c495a43554f09d0ec3c4`](https://github.com/wso2/identity-apps/commit/de5b007ec4edabb377f2c495a43554f09d0ec3c4)]:
+  - @wso2is/admin.users.v1@2.30.83
+  - @wso2is/admin.core.v1@2.38.42
+  - @wso2is/admin.extensions.v1@2.36.98
+  - @wso2is/admin.organizations.v1@2.26.173
+  - @wso2is/admin.server-configurations.v1@2.32.98
+  - @wso2is/admin.validation.v1@2.27.111
+  - @wso2is/admin.identity-providers.v1@2.26.173
+  - @wso2is/admin.feature-gate.v1@1.4.173
+
+## 2.32.97
+
+### Patch Changes
+
+- Updated dependencies [[`3e098ee7cace95919ee2ed56c4cd4bfbaea6873d`](https://github.com/wso2/identity-apps/commit/3e098ee7cace95919ee2ed56c4cd4bfbaea6873d), [`f7bb42d096766936209f550330a21b0d8b095dcb`](https://github.com/wso2/identity-apps/commit/f7bb42d096766936209f550330a21b0d8b095dcb)]:
+  - @wso2is/i18n@2.19.17
+  - @wso2is/admin.users.v1@2.30.82
+  - @wso2is/admin.core.v1@2.38.41
+  - @wso2is/admin.extensions.v1@2.36.97
+  - @wso2is/admin.identity-providers.v1@2.26.172
+  - @wso2is/admin.organizations.v1@2.26.172
+  - @wso2is/admin.server-configurations.v1@2.32.97
+  - @wso2is/admin.validation.v1@2.27.110
+  - @wso2is/admin.feature-gate.v1@1.4.172
+
+## 2.32.96
+
+### Patch Changes
+
+- Updated dependencies [[`a9c9a67492fbaf6a78e9bc0fa00f27ffb221b71d`](https://github.com/wso2/identity-apps/commit/a9c9a67492fbaf6a78e9bc0fa00f27ffb221b71d), [`6c74317ac2e2ce9dcc9dc924eb9be20dd976fd92`](https://github.com/wso2/identity-apps/commit/6c74317ac2e2ce9dcc9dc924eb9be20dd976fd92)]:
+  - @wso2is/admin.feature-gate.v1@1.4.171
+  - @wso2is/theme@2.6.10
+  - @wso2is/admin.core.v1@2.38.40
+  - @wso2is/admin.extensions.v1@2.36.96
+  - @wso2is/admin.server-configurations.v1@2.32.96
+  - @wso2is/admin.users.v1@2.30.81
+  - @wso2is/admin.organizations.v1@2.26.171
+  - @wso2is/admin.validation.v1@2.27.109
+  - @wso2is/admin.identity-providers.v1@2.26.171
+  - @wso2is/react-components@2.9.10
+  - @wso2is/dynamic-forms@2.4.38
+  - @wso2is/form@2.6.32
+
+## 2.32.95
+
+### Patch Changes
+
+- Updated dependencies [[`588d8475fc682f241b92a3ee7a8759fa7f2ce840`](https://github.com/wso2/identity-apps/commit/588d8475fc682f241b92a3ee7a8759fa7f2ce840)]:
+  - @wso2is/admin.users.v1@2.30.80
+  - @wso2is/i18n@2.19.16
+  - @wso2is/admin.core.v1@2.38.39
+  - @wso2is/admin.extensions.v1@2.36.95
+  - @wso2is/admin.organizations.v1@2.26.170
+  - @wso2is/admin.server-configurations.v1@2.32.95
+  - @wso2is/admin.validation.v1@2.27.108
+  - @wso2is/admin.identity-providers.v1@2.26.170
+  - @wso2is/admin.feature-gate.v1@1.4.170
+
+## 2.32.94
+
+### Patch Changes
+
+- Updated dependencies [[`64b957d696e6e3504f21bf8dac690edea49dee0a`](https://github.com/wso2/identity-apps/commit/64b957d696e6e3504f21bf8dac690edea49dee0a), [`54d830f55a940d7c8fb08ce733e8c09390ea9669`](https://github.com/wso2/identity-apps/commit/54d830f55a940d7c8fb08ce733e8c09390ea9669)]:
+  - @wso2is/admin.users.v1@2.30.79
+  - @wso2is/admin.core.v1@2.38.38
+  - @wso2is/admin.extensions.v1@2.36.94
+  - @wso2is/admin.identity-providers.v1@2.26.169
+  - @wso2is/admin.organizations.v1@2.26.169
+  - @wso2is/admin.server-configurations.v1@2.32.94
+  - @wso2is/admin.validation.v1@2.27.107
+  - @wso2is/admin.feature-gate.v1@1.4.169
+
+## 2.32.93
+
+### Patch Changes
+
+- Updated dependencies [[`484542389020cc30563621fcb420fd814214b121`](https://github.com/wso2/identity-apps/commit/484542389020cc30563621fcb420fd814214b121), [`84aeb0b9b3edd7c4d1db93631b4c73db50426525`](https://github.com/wso2/identity-apps/commit/84aeb0b9b3edd7c4d1db93631b4c73db50426525), [`ccb0b6b1e6bc018a9dcea67ab2aa1f6856971578`](https://github.com/wso2/identity-apps/commit/ccb0b6b1e6bc018a9dcea67ab2aa1f6856971578), [`97b2bd85075f00752190f276e496f272177b13ba`](https://github.com/wso2/identity-apps/commit/97b2bd85075f00752190f276e496f272177b13ba)]:
+  - @wso2is/admin.core.v1@2.38.37
+  - @wso2is/i18n@2.19.15
+  - @wso2is/admin.identity-providers.v1@2.26.168
+  - @wso2is/admin.feature-gate.v1@1.4.168
+  - @wso2is/admin.extensions.v1@2.36.93
+  - @wso2is/core@2.6.4
+  - @wso2is/admin.users.v1@2.30.78
+  - @wso2is/admin.organizations.v1@2.26.168
+  - @wso2is/admin.server-configurations.v1@2.32.93
+  - @wso2is/admin.validation.v1@2.27.106
+  - @wso2is/access-control@3.3.18
+  - @wso2is/dynamic-forms@2.4.37
+  - @wso2is/form@2.6.31
+  - @wso2is/forms@2.3.20
+  - @wso2is/react-components@2.9.9
+
+## 2.32.92
+
+### Patch Changes
+
+- Updated dependencies [[`28ce00c62618b523387d3b81812903b4028db804`](https://github.com/wso2/identity-apps/commit/28ce00c62618b523387d3b81812903b4028db804), [`dc82f34bd265ad68d8ddaeb857e91eccafe25c4f`](https://github.com/wso2/identity-apps/commit/dc82f34bd265ad68d8ddaeb857e91eccafe25c4f)]:
+  - @wso2is/i18n@2.19.14
+  - @wso2is/admin.users.v1@2.30.77
+  - @wso2is/admin.core.v1@2.38.36
+  - @wso2is/admin.extensions.v1@2.36.92
+  - @wso2is/admin.identity-providers.v1@2.26.167
+  - @wso2is/admin.organizations.v1@2.26.167
+  - @wso2is/admin.server-configurations.v1@2.32.92
+  - @wso2is/admin.validation.v1@2.27.105
+  - @wso2is/admin.feature-gate.v1@1.4.167
+
+## 2.32.91
+
+### Patch Changes
+
+- Updated dependencies [[`e324a36fca92e7d5226a5d7471652509f86f1c47`](https://github.com/wso2/identity-apps/commit/e324a36fca92e7d5226a5d7471652509f86f1c47)]:
+  - @wso2is/admin.users.v1@2.30.76
+  - @wso2is/admin.core.v1@2.38.35
+  - @wso2is/admin.extensions.v1@2.36.91
+  - @wso2is/admin.identity-providers.v1@2.26.166
+  - @wso2is/admin.organizations.v1@2.26.166
+  - @wso2is/admin.validation.v1@2.27.104
+  - @wso2is/admin.server-configurations.v1@2.32.91
+  - @wso2is/admin.feature-gate.v1@1.4.166
+
+## 2.32.90
+
+### Patch Changes
+
+- Updated dependencies [[`5df48682c36c54efb1142b9e4a254b5cd94e44a6`](https://github.com/wso2/identity-apps/commit/5df48682c36c54efb1142b9e4a254b5cd94e44a6), [`1e3945672189e694468cba5dc932f95c3ef8a16e`](https://github.com/wso2/identity-apps/commit/1e3945672189e694468cba5dc932f95c3ef8a16e)]:
+  - @wso2is/i18n@2.19.13
+  - @wso2is/admin.users.v1@2.30.75
+  - @wso2is/admin.core.v1@2.38.34
+  - @wso2is/admin.extensions.v1@2.36.90
+  - @wso2is/admin.identity-providers.v1@2.26.165
+  - @wso2is/admin.organizations.v1@2.26.165
+  - @wso2is/admin.validation.v1@2.27.103
+  - @wso2is/admin.server-configurations.v1@2.32.90
+  - @wso2is/admin.feature-gate.v1@1.4.165
+
+## 2.32.89
+
+### Patch Changes
+
+- Updated dependencies [[`f035717c13b4f7b38d903cfc571e7c73129aaf20`](https://github.com/wso2/identity-apps/commit/f035717c13b4f7b38d903cfc571e7c73129aaf20), [`38bc5ca0574d1632ffb432b198fc80596a8fe472`](https://github.com/wso2/identity-apps/commit/38bc5ca0574d1632ffb432b198fc80596a8fe472)]:
+  - @wso2is/form@2.6.30
+  - @wso2is/admin.organizations.v1@2.26.164
+  - @wso2is/admin.core.v1@2.38.33
+  - @wso2is/admin.extensions.v1@2.36.89
+  - @wso2is/admin.identity-providers.v1@2.26.164
+  - @wso2is/admin.server-configurations.v1@2.32.89
+  - @wso2is/admin.users.v1@2.30.74
+  - @wso2is/admin.validation.v1@2.27.102
+  - @wso2is/admin.feature-gate.v1@1.4.164
+
+## 2.32.88
+
+### Patch Changes
+
+- Updated dependencies [[`7262137d3207877ea593c9b95db6bda098e41702`](https://github.com/wso2/identity-apps/commit/7262137d3207877ea593c9b95db6bda098e41702), [`de1309533a723bd96043d1447a90f685bd307e5a`](https://github.com/wso2/identity-apps/commit/de1309533a723bd96043d1447a90f685bd307e5a)]:
+  - @wso2is/admin.core.v1@2.38.32
+  - @wso2is/admin.validation.v1@2.27.101
+  - @wso2is/admin.extensions.v1@2.36.88
+  - @wso2is/admin.identity-providers.v1@2.26.163
+  - @wso2is/admin.users.v1@2.30.73
+  - @wso2is/admin.feature-gate.v1@1.4.163
+  - @wso2is/admin.organizations.v1@2.26.163
+  - @wso2is/admin.server-configurations.v1@2.32.88
+
+## 2.32.87
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.31
+  - @wso2is/admin.extensions.v1@2.36.87
+  - @wso2is/admin.organizations.v1@2.26.162
+  - @wso2is/admin.users.v1@2.30.72
+  - @wso2is/admin.feature-gate.v1@1.4.162
+  - @wso2is/admin.identity-providers.v1@2.26.162
+  - @wso2is/admin.server-configurations.v1@2.32.87
+  - @wso2is/admin.validation.v1@2.27.100
+
+## 2.32.86
+
+### Patch Changes
+
+- Updated dependencies [[`e657fb2c52925745bbe1b72e8ee2c123c2892d6d`](https://github.com/wso2/identity-apps/commit/e657fb2c52925745bbe1b72e8ee2c123c2892d6d), [`f87912f707015c530d64ec344f20433f6e0fa485`](https://github.com/wso2/identity-apps/commit/f87912f707015c530d64ec344f20433f6e0fa485)]:
+  - @wso2is/admin.identity-providers.v1@2.26.161
+  - @wso2is/admin.users.v1@2.30.71
+  - @wso2is/i18n@2.19.12
+  - @wso2is/admin.core.v1@2.38.30
+  - @wso2is/admin.extensions.v1@2.36.86
+  - @wso2is/admin.organizations.v1@2.26.161
+  - @wso2is/admin.server-configurations.v1@2.32.86
+  - @wso2is/admin.validation.v1@2.27.99
+  - @wso2is/admin.feature-gate.v1@1.4.161
+
+## 2.32.85
+
+### Patch Changes
+
+- Updated dependencies [[`36ddeaa0617e495a35379ee5012f109082c5f511`](https://github.com/wso2/identity-apps/commit/36ddeaa0617e495a35379ee5012f109082c5f511)]:
+  - @wso2is/admin.extensions.v1@2.36.85
+  - @wso2is/admin.core.v1@2.38.29
+  - @wso2is/i18n@2.19.11
+  - @wso2is/admin.identity-providers.v1@2.26.160
+  - @wso2is/admin.organizations.v1@2.26.160
+  - @wso2is/admin.server-configurations.v1@2.32.85
+  - @wso2is/admin.users.v1@2.30.70
+  - @wso2is/admin.validation.v1@2.27.98
+  - @wso2is/admin.feature-gate.v1@1.4.160
+
+## 2.32.84
+
+### Patch Changes
+
+- Updated dependencies [[`0aa4f0fd6251b9a48a3ce6d6c2b6e66ebf1b90e8`](https://github.com/wso2/identity-apps/commit/0aa4f0fd6251b9a48a3ce6d6c2b6e66ebf1b90e8)]:
+  - @wso2is/admin.users.v1@2.30.69
+  - @wso2is/admin.core.v1@2.38.28
+  - @wso2is/admin.extensions.v1@2.36.84
+  - @wso2is/admin.identity-providers.v1@2.26.159
+  - @wso2is/admin.organizations.v1@2.26.159
+  - @wso2is/admin.server-configurations.v1@2.32.84
+  - @wso2is/admin.validation.v1@2.27.97
+  - @wso2is/admin.feature-gate.v1@1.4.159
+
+## 2.32.83
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.27
+  - @wso2is/admin.extensions.v1@2.36.83
+  - @wso2is/admin.feature-gate.v1@1.4.158
+  - @wso2is/admin.identity-providers.v1@2.26.158
+  - @wso2is/admin.organizations.v1@2.26.158
+  - @wso2is/admin.server-configurations.v1@2.32.83
+  - @wso2is/admin.users.v1@2.30.68
+  - @wso2is/admin.validation.v1@2.27.96
+
+## 2.32.82
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.26
+  - @wso2is/admin.extensions.v1@2.36.82
+  - @wso2is/admin.identity-providers.v1@2.26.157
+  - @wso2is/admin.organizations.v1@2.26.157
+  - @wso2is/admin.feature-gate.v1@1.4.157
+  - @wso2is/admin.server-configurations.v1@2.32.82
+  - @wso2is/admin.users.v1@2.30.67
+  - @wso2is/admin.validation.v1@2.27.95
+
+## 2.32.81
+
+### Patch Changes
+
+- Updated dependencies [[`968a51fa1d33112f4c40e65f3dd2e3a7576dae35`](https://github.com/wso2/identity-apps/commit/968a51fa1d33112f4c40e65f3dd2e3a7576dae35), [`4fd677f7cfdef94cf0a01f9b0ada0671aeeb4831`](https://github.com/wso2/identity-apps/commit/4fd677f7cfdef94cf0a01f9b0ada0671aeeb4831)]:
+  - @wso2is/admin.identity-providers.v1@2.26.156
+  - @wso2is/i18n@2.19.10
+  - @wso2is/theme@2.6.9
+  - @wso2is/admin.core.v1@2.38.25
+  - @wso2is/admin.extensions.v1@2.36.81
+  - @wso2is/admin.organizations.v1@2.26.156
+  - @wso2is/admin.server-configurations.v1@2.32.81
+  - @wso2is/admin.users.v1@2.30.66
+  - @wso2is/admin.validation.v1@2.27.94
+  - @wso2is/react-components@2.9.8
+  - @wso2is/admin.feature-gate.v1@1.4.156
+  - @wso2is/dynamic-forms@2.4.36
+  - @wso2is/form@2.6.29
+
+## 2.32.80
+
+### Patch Changes
+
+- Updated dependencies [[`fd3ca709e6182de5b74d1b49a2312c0154de6f4e`](https://github.com/wso2/identity-apps/commit/fd3ca709e6182de5b74d1b49a2312c0154de6f4e)]:
+  - @wso2is/admin.identity-providers.v1@2.26.155
+  - @wso2is/admin.core.v1@2.38.24
+  - @wso2is/admin.extensions.v1@2.36.80
+  - @wso2is/admin.organizations.v1@2.26.155
+  - @wso2is/admin.server-configurations.v1@2.32.80
+  - @wso2is/admin.users.v1@2.30.65
+  - @wso2is/admin.feature-gate.v1@1.4.155
+  - @wso2is/admin.validation.v1@2.27.93
+
+## 2.32.79
+
+### Patch Changes
+
+- Updated dependencies [[`1fcc6b498d66115c4ecada2fb204e9aa02b4f902`](https://github.com/wso2/identity-apps/commit/1fcc6b498d66115c4ecada2fb204e9aa02b4f902), [`b041a8138ec334f5b8ca43759811aef2701b4fef`](https://github.com/wso2/identity-apps/commit/b041a8138ec334f5b8ca43759811aef2701b4fef)]:
+  - @wso2is/admin.organizations.v1@2.26.154
+  - @wso2is/admin.extensions.v1@2.36.79
+  - @wso2is/admin.core.v1@2.38.23
+  - @wso2is/admin.feature-gate.v1@1.4.154
+  - @wso2is/admin.identity-providers.v1@2.26.154
+  - @wso2is/admin.server-configurations.v1@2.32.79
+  - @wso2is/admin.users.v1@2.30.64
+  - @wso2is/admin.validation.v1@2.27.92
+
+## 2.32.78
+
+### Patch Changes
+
+- [#7566](https://github.com/wso2/identity-apps/pull/7566) [`c1c517a789ccef7f8ce198bf61f4b49a43e83643`](https://github.com/wso2/identity-apps/commit/c1c517a789ccef7f8ce198bf61f4b49a43e83643) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in self registration form submission
+
+- Updated dependencies [[`c1c517a789ccef7f8ce198bf61f4b49a43e83643`](https://github.com/wso2/identity-apps/commit/c1c517a789ccef7f8ce198bf61f4b49a43e83643)]:
+  - @wso2is/admin.server-configurations.v1@2.32.78
+  - @wso2is/admin.core.v1@2.38.22
+  - @wso2is/admin.extensions.v1@2.36.78
+  - @wso2is/admin.identity-providers.v1@2.26.153
+  - @wso2is/admin.users.v1@2.30.63
+  - @wso2is/admin.validation.v1@2.27.91
+  - @wso2is/admin.organizations.v1@2.26.153
+  - @wso2is/admin.feature-gate.v1@1.4.153
+
+## 2.32.77
+
+### Patch Changes
+
+- Updated dependencies [[`ac5462d1d31e99e66511f1288f5d0d9227e848c8`](https://github.com/wso2/identity-apps/commit/ac5462d1d31e99e66511f1288f5d0d9227e848c8)]:
+  - @wso2is/i18n@2.19.9
+  - @wso2is/admin.core.v1@2.38.21
+  - @wso2is/admin.extensions.v1@2.36.77
+  - @wso2is/admin.identity-providers.v1@2.26.152
+  - @wso2is/admin.organizations.v1@2.26.152
+  - @wso2is/admin.server-configurations.v1@2.32.77
+  - @wso2is/admin.users.v1@2.30.62
+  - @wso2is/admin.validation.v1@2.27.90
+  - @wso2is/admin.feature-gate.v1@1.4.152
+
+## 2.32.76
+
+### Patch Changes
+
+- Updated dependencies [[`8e418341bb2598088ac90ed7ef745319960834cb`](https://github.com/wso2/identity-apps/commit/8e418341bb2598088ac90ed7ef745319960834cb)]:
+  - @wso2is/admin.users.v1@2.30.61
+  - @wso2is/admin.core.v1@2.38.20
+  - @wso2is/admin.extensions.v1@2.36.76
+  - @wso2is/admin.identity-providers.v1@2.26.151
+  - @wso2is/admin.organizations.v1@2.26.151
+  - @wso2is/admin.server-configurations.v1@2.32.76
+  - @wso2is/admin.validation.v1@2.27.89
+  - @wso2is/admin.feature-gate.v1@1.4.151
+
+## 2.32.75
+
+### Patch Changes
+
+- Updated dependencies [[`9959872b4af362b4d778edff0801e44eef29b86e`](https://github.com/wso2/identity-apps/commit/9959872b4af362b4d778edff0801e44eef29b86e), [`1e74483bdbff3abefae2187661d4d98640fc5479`](https://github.com/wso2/identity-apps/commit/1e74483bdbff3abefae2187661d4d98640fc5479)]:
+  - @wso2is/i18n@2.19.8
+  - @wso2is/admin.identity-providers.v1@2.26.150
+  - @wso2is/admin.core.v1@2.38.19
+  - @wso2is/admin.extensions.v1@2.36.75
+  - @wso2is/admin.organizations.v1@2.26.150
+  - @wso2is/admin.server-configurations.v1@2.32.75
+  - @wso2is/admin.users.v1@2.30.60
+  - @wso2is/admin.validation.v1@2.27.88
+  - @wso2is/admin.feature-gate.v1@1.4.150
+
+## 2.32.74
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.18
+  - @wso2is/admin.extensions.v1@2.36.74
+  - @wso2is/admin.identity-providers.v1@2.26.149
+  - @wso2is/admin.organizations.v1@2.26.149
+  - @wso2is/admin.feature-gate.v1@1.4.149
+  - @wso2is/admin.server-configurations.v1@2.32.74
+  - @wso2is/admin.users.v1@2.30.59
+  - @wso2is/admin.validation.v1@2.27.87
+
+## 2.32.73
+
+### Patch Changes
+
+- [#7547](https://github.com/wso2/identity-apps/pull/7547) [`25472cb2e3404df1f97bfcadb50740ca5af8a951`](https://github.com/wso2/identity-apps/commit/25472cb2e3404df1f97bfcadb50740ca5af8a951) Thanks [@brionmario](https://github.com/brionmario)! - - Bump `@oxygen-ui` version.
+  - Fix https://github.com/wso2/product-is/issues/22470
+  - Fix https://github.com/wso2/product-is/issues/22471
+- Updated dependencies [[`8cebca0336f5769f65fda60960b78d8404049301`](https://github.com/wso2/identity-apps/commit/8cebca0336f5769f65fda60960b78d8404049301), [`2d217e1db4e15705aff2c18a68fcb8e51f4db319`](https://github.com/wso2/identity-apps/commit/2d217e1db4e15705aff2c18a68fcb8e51f4db319), [`602921db40f920071cc38ccf8735f048a9486ebb`](https://github.com/wso2/identity-apps/commit/602921db40f920071cc38ccf8735f048a9486ebb), [`25472cb2e3404df1f97bfcadb50740ca5af8a951`](https://github.com/wso2/identity-apps/commit/25472cb2e3404df1f97bfcadb50740ca5af8a951)]:
+  - @wso2is/react-components@2.9.7
+  - @wso2is/core@2.6.3
+  - @wso2is/i18n@2.19.7
+  - @wso2is/theme@2.6.8
+  - @wso2is/admin.server-configurations.v1@2.32.73
+  - @wso2is/admin.identity-providers.v1@2.26.148
+  - @wso2is/admin.organizations.v1@2.26.148
+  - @wso2is/admin.feature-gate.v1@1.4.148
+  - @wso2is/admin.extensions.v1@2.36.73
+  - @wso2is/admin.validation.v1@2.27.86
+  - @wso2is/admin.users.v1@2.30.58
+  - @wso2is/admin.core.v1@2.38.17
+  - @wso2is/dynamic-forms@2.4.35
+  - @wso2is/form@2.6.28
+  - @wso2is/access-control@3.3.17
+  - @wso2is/forms@2.3.19
+
+## 2.32.72
+
+### Patch Changes
+
+- [#7540](https://github.com/wso2/identity-apps/pull/7540) [`253fc31ee468af168e95c7e22bfa180e71b409d8`](https://github.com/wso2/identity-apps/commit/253fc31ee468af168e95c7e22bfa180e71b409d8) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the state issue of the Self registration connector page
+
+- Updated dependencies [[`253fc31ee468af168e95c7e22bfa180e71b409d8`](https://github.com/wso2/identity-apps/commit/253fc31ee468af168e95c7e22bfa180e71b409d8)]:
+  - @wso2is/admin.server-configurations.v1@2.32.72
+  - @wso2is/admin.core.v1@2.38.16
+  - @wso2is/admin.extensions.v1@2.36.72
+  - @wso2is/admin.identity-providers.v1@2.26.147
+  - @wso2is/admin.users.v1@2.30.57
+  - @wso2is/admin.validation.v1@2.27.85
+  - @wso2is/admin.organizations.v1@2.26.147
+  - @wso2is/admin.feature-gate.v1@1.4.147
+
+## 2.32.71
+
+### Patch Changes
+
+- [#7523](https://github.com/wso2/identity-apps/pull/7523) [`8161cc441a1cf598f59f50e26d55527a1eb07cc7`](https://github.com/wso2/identity-apps/commit/8161cc441a1cf598f59f50e26d55527a1eb07cc7) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Enable account disable feature in console
+
+- Updated dependencies [[`4a8f0320d82b3c2ed9f26473e0d950a74a6080a8`](https://github.com/wso2/identity-apps/commit/4a8f0320d82b3c2ed9f26473e0d950a74a6080a8), [`d1bb49ef3881a4569df6ff2c976a250bb886e091`](https://github.com/wso2/identity-apps/commit/d1bb49ef3881a4569df6ff2c976a250bb886e091), [`863e421af246486a4d00034666ff3d64c13f37ce`](https://github.com/wso2/identity-apps/commit/863e421af246486a4d00034666ff3d64c13f37ce), [`2f4f0b8075af344cacad3a264545170aa0a151d7`](https://github.com/wso2/identity-apps/commit/2f4f0b8075af344cacad3a264545170aa0a151d7), [`8156ef36ebc15563e88b42477a2ce40a936d7add`](https://github.com/wso2/identity-apps/commit/8156ef36ebc15563e88b42477a2ce40a936d7add), [`8161cc441a1cf598f59f50e26d55527a1eb07cc7`](https://github.com/wso2/identity-apps/commit/8161cc441a1cf598f59f50e26d55527a1eb07cc7)]:
+  - @wso2is/i18n@2.19.6
+  - @wso2is/theme@2.6.7
+  - @wso2is/admin.users.v1@2.30.56
+  - @wso2is/admin.server-configurations.v1@2.32.71
+  - @wso2is/react-components@2.9.6
+  - @wso2is/admin.core.v1@2.38.15
+  - @wso2is/admin.extensions.v1@2.36.71
+  - @wso2is/admin.identity-providers.v1@2.26.146
+  - @wso2is/admin.organizations.v1@2.26.146
+  - @wso2is/admin.validation.v1@2.27.84
+  - @wso2is/dynamic-forms@2.4.34
+  - @wso2is/form@2.6.27
+  - @wso2is/admin.feature-gate.v1@1.4.146
+
+## 2.32.70
+
+### Patch Changes
+
+- Updated dependencies [[`b4cba28321177f383170ac4bb7b4d75ce7ca404b`](https://github.com/wso2/identity-apps/commit/b4cba28321177f383170ac4bb7b4d75ce7ca404b)]:
+  - @wso2is/admin.feature-gate.v1@1.4.145
+  - @wso2is/i18n@2.19.5
+  - @wso2is/admin.core.v1@2.38.14
+  - @wso2is/admin.extensions.v1@2.36.70
+  - @wso2is/admin.identity-providers.v1@2.26.145
+  - @wso2is/admin.organizations.v1@2.26.145
+  - @wso2is/admin.server-configurations.v1@2.32.70
+  - @wso2is/admin.users.v1@2.30.55
+  - @wso2is/admin.validation.v1@2.27.83
+
+## 2.32.69
+
+### Patch Changes
+
+- Updated dependencies [[`43ab5e89caf6862202104d13ecc45454c04c7fb0`](https://github.com/wso2/identity-apps/commit/43ab5e89caf6862202104d13ecc45454c04c7fb0)]:
+  - @wso2is/admin.users.v1@2.30.54
+  - @wso2is/forms@2.3.18
+  - @wso2is/admin.core.v1@2.38.13
+  - @wso2is/admin.extensions.v1@2.36.69
+  - @wso2is/admin.organizations.v1@2.26.144
+  - @wso2is/admin.server-configurations.v1@2.32.69
+  - @wso2is/admin.validation.v1@2.27.82
+  - @wso2is/admin.identity-providers.v1@2.26.144
+  - @wso2is/admin.feature-gate.v1@1.4.144
+
+## 2.32.68
+
+### Patch Changes
+
+- Updated dependencies [[`0aca53b8d7f18b9d8488911500b86c7178eb9be6`](https://github.com/wso2/identity-apps/commit/0aca53b8d7f18b9d8488911500b86c7178eb9be6), [`36688f8894c54be04e79e8d2f2c97ddba30f688d`](https://github.com/wso2/identity-apps/commit/36688f8894c54be04e79e8d2f2c97ddba30f688d), [`04be5207ce0c3539ae960f3417151baa3d5bcddd`](https://github.com/wso2/identity-apps/commit/04be5207ce0c3539ae960f3417151baa3d5bcddd)]:
+  - @wso2is/react-components@2.9.5
+  - @wso2is/core@2.6.2
+  - @wso2is/i18n@2.19.4
+  - @wso2is/admin.core.v1@2.38.12
+  - @wso2is/admin.extensions.v1@2.36.68
+  - @wso2is/admin.identity-providers.v1@2.26.143
+  - @wso2is/admin.organizations.v1@2.26.143
+  - @wso2is/admin.server-configurations.v1@2.32.68
+  - @wso2is/admin.users.v1@2.30.53
+  - @wso2is/admin.validation.v1@2.27.81
+  - @wso2is/dynamic-forms@2.4.33
+  - @wso2is/form@2.6.26
+  - @wso2is/admin.feature-gate.v1@1.4.143
+  - @wso2is/access-control@3.3.16
+  - @wso2is/forms@2.3.17
+
+## 2.32.67
+
+### Patch Changes
+
+- Updated dependencies [[`e1fd42a4d68b6b9c3d06c36b749fa46bb04c064d`](https://github.com/wso2/identity-apps/commit/e1fd42a4d68b6b9c3d06c36b749fa46bb04c064d)]:
+  - @wso2is/admin.core.v1@2.38.11
+  - @wso2is/admin.extensions.v1@2.36.67
+  - @wso2is/admin.feature-gate.v1@1.4.142
+  - @wso2is/admin.identity-providers.v1@2.26.142
+  - @wso2is/admin.organizations.v1@2.26.142
+  - @wso2is/admin.server-configurations.v1@2.32.67
+  - @wso2is/admin.users.v1@2.30.52
+  - @wso2is/admin.validation.v1@2.27.80
+
+## 2.32.66
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.10
+  - @wso2is/admin.extensions.v1@2.36.66
+  - @wso2is/admin.identity-providers.v1@2.26.141
+  - @wso2is/admin.organizations.v1@2.26.141
+  - @wso2is/admin.feature-gate.v1@1.4.141
+  - @wso2is/admin.server-configurations.v1@2.32.66
+  - @wso2is/admin.users.v1@2.30.51
+  - @wso2is/admin.validation.v1@2.27.79
+
+## 2.32.65
+
+### Patch Changes
+
+- Updated dependencies [[`6994a4d6ef9d39263556cb06ece735cd72c96bf5`](https://github.com/wso2/identity-apps/commit/6994a4d6ef9d39263556cb06ece735cd72c96bf5), [`2c831ff7dc0a263fc0ed20b4599f4a13dd4dc6df`](https://github.com/wso2/identity-apps/commit/2c831ff7dc0a263fc0ed20b4599f4a13dd4dc6df), [`a9231ac6175b28be3d696cb55004cca77191402e`](https://github.com/wso2/identity-apps/commit/a9231ac6175b28be3d696cb55004cca77191402e)]:
+  - @wso2is/theme@2.6.6
+  - @wso2is/react-components@2.9.4
+  - @wso2is/i18n@2.19.3
+  - @wso2is/admin.extensions.v1@2.36.65
+  - @wso2is/admin.identity-providers.v1@2.26.140
+  - @wso2is/admin.organizations.v1@2.26.140
+  - @wso2is/admin.server-configurations.v1@2.32.65
+  - @wso2is/admin.users.v1@2.30.50
+  - @wso2is/admin.validation.v1@2.27.78
+  - @wso2is/admin.core.v1@2.38.9
+  - @wso2is/dynamic-forms@2.4.32
+  - @wso2is/form@2.6.25
+  - @wso2is/admin.feature-gate.v1@1.4.140
+
+## 2.32.64
+
+### Patch Changes
+
+- Updated dependencies [[`ab6106079bb48bb3b4207aadf592a7cd3df6c4f2`](https://github.com/wso2/identity-apps/commit/ab6106079bb48bb3b4207aadf592a7cd3df6c4f2)]:
+  - @wso2is/admin.users.v1@2.30.49
+  - @wso2is/admin.core.v1@2.38.8
+  - @wso2is/admin.extensions.v1@2.36.64
+  - @wso2is/admin.organizations.v1@2.26.139
+  - @wso2is/admin.server-configurations.v1@2.32.64
+  - @wso2is/admin.validation.v1@2.27.77
+  - @wso2is/admin.identity-providers.v1@2.26.139
+  - @wso2is/admin.feature-gate.v1@1.4.139
+
+## 2.32.63
+
+### Patch Changes
+
+- Updated dependencies [[`480166a60002ab0a856aeada79fa3b7fb0a814ce`](https://github.com/wso2/identity-apps/commit/480166a60002ab0a856aeada79fa3b7fb0a814ce), [`79babcaf1edcd195d6da04f39903056b106b1c32`](https://github.com/wso2/identity-apps/commit/79babcaf1edcd195d6da04f39903056b106b1c32)]:
+  - @wso2is/admin.users.v1@2.30.48
+  - @wso2is/theme@2.6.5
+  - @wso2is/admin.core.v1@2.38.7
+  - @wso2is/admin.extensions.v1@2.36.63
+  - @wso2is/admin.organizations.v1@2.26.138
+  - @wso2is/admin.server-configurations.v1@2.32.63
+  - @wso2is/admin.validation.v1@2.27.76
+  - @wso2is/admin.identity-providers.v1@2.26.138
+  - @wso2is/react-components@2.9.3
+  - @wso2is/admin.feature-gate.v1@1.4.138
+  - @wso2is/dynamic-forms@2.4.31
+  - @wso2is/form@2.6.24
+
+## 2.32.62
+
+### Patch Changes
+
+- [#7494](https://github.com/wso2/identity-apps/pull/7494) [`bb8c0b38541fe6bb367f74621b4c27587d82ebdd`](https://github.com/wso2/identity-apps/commit/bb8c0b38541fe6bb367f74621b4c27587d82ebdd) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Use self registration attribute profile's required option to govern self registration verification
+
+- Updated dependencies [[`bb8c0b38541fe6bb367f74621b4c27587d82ebdd`](https://github.com/wso2/identity-apps/commit/bb8c0b38541fe6bb367f74621b4c27587d82ebdd)]:
+  - @wso2is/admin.server-configurations.v1@2.32.62
+  - @wso2is/core@2.6.1
+  - @wso2is/admin.core.v1@2.38.6
+  - @wso2is/admin.extensions.v1@2.36.62
+  - @wso2is/admin.identity-providers.v1@2.26.137
+  - @wso2is/admin.users.v1@2.30.47
+  - @wso2is/admin.validation.v1@2.27.75
+  - @wso2is/admin.feature-gate.v1@1.4.137
+  - @wso2is/admin.organizations.v1@2.26.137
+  - @wso2is/access-control@3.3.15
+  - @wso2is/dynamic-forms@2.4.30
+  - @wso2is/form@2.6.23
+  - @wso2is/forms@2.3.16
+  - @wso2is/i18n@2.19.2
+  - @wso2is/react-components@2.9.2
+
+## 2.32.61
+
+### Patch Changes
+
+- Updated dependencies [[`18a74388ea24649a45d9cf9cf47cee491bd7b216`](https://github.com/wso2/identity-apps/commit/18a74388ea24649a45d9cf9cf47cee491bd7b216), [`21db5cdc160709b1fde7b72025655976ce1b1f6f`](https://github.com/wso2/identity-apps/commit/21db5cdc160709b1fde7b72025655976ce1b1f6f)]:
+  - @wso2is/i18n@2.19.1
+  - @wso2is/admin.users.v1@2.30.46
+  - @wso2is/admin.core.v1@2.38.5
+  - @wso2is/admin.extensions.v1@2.36.61
+  - @wso2is/admin.identity-providers.v1@2.26.136
+  - @wso2is/admin.organizations.v1@2.26.136
+  - @wso2is/admin.server-configurations.v1@2.32.61
+  - @wso2is/admin.validation.v1@2.27.74
+  - @wso2is/admin.feature-gate.v1@1.4.136
+
+## 2.32.60
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.4
+  - @wso2is/admin.extensions.v1@2.36.60
+  - @wso2is/admin.organizations.v1@2.26.135
+  - @wso2is/admin.users.v1@2.30.45
+  - @wso2is/admin.identity-providers.v1@2.26.135
+  - @wso2is/admin.feature-gate.v1@1.4.135
+  - @wso2is/admin.server-configurations.v1@2.32.60
+  - @wso2is/admin.validation.v1@2.27.73
+
+## 2.32.59
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.3
+  - @wso2is/admin.extensions.v1@2.36.59
+  - @wso2is/admin.identity-providers.v1@2.26.134
+  - @wso2is/admin.organizations.v1@2.26.134
+  - @wso2is/admin.feature-gate.v1@1.4.134
+  - @wso2is/admin.server-configurations.v1@2.32.59
+  - @wso2is/admin.users.v1@2.30.44
+  - @wso2is/admin.validation.v1@2.27.72
+
+## 2.32.58
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.2
+  - @wso2is/admin.extensions.v1@2.36.58
+  - @wso2is/admin.identity-providers.v1@2.26.133
+  - @wso2is/admin.organizations.v1@2.26.133
+  - @wso2is/admin.users.v1@2.30.43
+  - @wso2is/admin.validation.v1@2.27.71
+  - @wso2is/admin.feature-gate.v1@1.4.133
+  - @wso2is/admin.server-configurations.v1@2.32.58
+
+## 2.32.57
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.38.1
+  - @wso2is/admin.extensions.v1@2.36.57
+  - @wso2is/admin.identity-providers.v1@2.26.132
+  - @wso2is/admin.organizations.v1@2.26.132
+  - @wso2is/admin.users.v1@2.30.42
+  - @wso2is/admin.validation.v1@2.27.70
+  - @wso2is/admin.feature-gate.v1@1.4.132
+  - @wso2is/admin.server-configurations.v1@2.32.57
+
+## 2.32.56
+
+### Patch Changes
+
+- Updated dependencies [[`48f29c2d78a19be905c80ccd0873130a1e9835f8`](https://github.com/wso2/identity-apps/commit/48f29c2d78a19be905c80ccd0873130a1e9835f8), [`5f74a67b842b049e740d0c006410c055249e5c0d`](https://github.com/wso2/identity-apps/commit/5f74a67b842b049e740d0c006410c055249e5c0d)]:
+  - @wso2is/admin.users.v1@2.30.41
+  - @wso2is/admin.core.v1@2.38.0
+  - @wso2is/i18n@2.19.0
+  - @wso2is/admin.extensions.v1@2.36.56
+  - @wso2is/admin.organizations.v1@2.26.131
+  - @wso2is/admin.server-configurations.v1@2.32.56
+  - @wso2is/admin.validation.v1@2.27.69
+  - @wso2is/admin.feature-gate.v1@1.4.131
+  - @wso2is/admin.identity-providers.v1@2.26.131
+
+## 2.32.55
+
+### Patch Changes
+
+- Updated dependencies [[`0fe45738f242dfe6672745d4203e9cf7dad2bde7`](https://github.com/wso2/identity-apps/commit/0fe45738f242dfe6672745d4203e9cf7dad2bde7)]:
+  - @wso2is/admin.core.v1@2.37.38
+  - @wso2is/admin.extensions.v1@2.36.55
+  - @wso2is/admin.feature-gate.v1@1.4.130
+  - @wso2is/admin.identity-providers.v1@2.26.130
+  - @wso2is/admin.organizations.v1@2.26.130
+  - @wso2is/admin.server-configurations.v1@2.32.55
+  - @wso2is/admin.users.v1@2.30.40
+  - @wso2is/admin.validation.v1@2.27.68
+
+## 2.32.54
+
+### Patch Changes
+
+- Updated dependencies [[`f8d897f936c4eaf890f0534abcce1aa66c7a5c95`](https://github.com/wso2/identity-apps/commit/f8d897f936c4eaf890f0534abcce1aa66c7a5c95)]:
+  - @wso2is/admin.core.v1@2.37.37
+  - @wso2is/admin.extensions.v1@2.36.54
+  - @wso2is/admin.identity-providers.v1@2.26.129
+  - @wso2is/admin.organizations.v1@2.26.129
+  - @wso2is/admin.feature-gate.v1@1.4.129
+  - @wso2is/admin.server-configurations.v1@2.32.54
+  - @wso2is/admin.users.v1@2.30.39
+  - @wso2is/admin.validation.v1@2.27.67
+
+## 2.32.53
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.36
+  - @wso2is/admin.extensions.v1@2.36.53
+  - @wso2is/admin.identity-providers.v1@2.26.128
+  - @wso2is/admin.organizations.v1@2.26.128
+  - @wso2is/admin.feature-gate.v1@1.4.128
+  - @wso2is/admin.server-configurations.v1@2.32.53
+  - @wso2is/admin.users.v1@2.30.38
+  - @wso2is/admin.validation.v1@2.27.66
+
+## 2.32.52
+
+### Patch Changes
+
+- Updated dependencies [[`c1567e073a5a1589496101d34019dea11f215949`](https://github.com/wso2/identity-apps/commit/c1567e073a5a1589496101d34019dea11f215949)]:
+  - @wso2is/admin.users.v1@2.30.37
+  - @wso2is/admin.core.v1@2.37.35
+  - @wso2is/admin.extensions.v1@2.36.52
+  - @wso2is/admin.organizations.v1@2.26.127
+  - @wso2is/admin.server-configurations.v1@2.32.52
+  - @wso2is/admin.validation.v1@2.27.65
+  - @wso2is/admin.identity-providers.v1@2.26.127
+  - @wso2is/admin.feature-gate.v1@1.4.127
+
+## 2.32.51
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.34
+  - @wso2is/admin.extensions.v1@2.36.51
+  - @wso2is/admin.organizations.v1@2.26.126
+  - @wso2is/admin.users.v1@2.30.36
+  - @wso2is/admin.identity-providers.v1@2.26.126
+  - @wso2is/admin.validation.v1@2.27.64
+  - @wso2is/admin.feature-gate.v1@1.4.126
+  - @wso2is/admin.server-configurations.v1@2.32.51
+
+## 2.32.50
+
+### Patch Changes
+
+- Updated dependencies [[`216ef9336657dee546fd212705ccc023e61fb923`](https://github.com/wso2/identity-apps/commit/216ef9336657dee546fd212705ccc023e61fb923)]:
+  - @wso2is/admin.users.v1@2.30.35
+  - @wso2is/i18n@2.18.3
+  - @wso2is/admin.core.v1@2.37.33
+  - @wso2is/admin.extensions.v1@2.36.50
+  - @wso2is/admin.organizations.v1@2.26.125
+  - @wso2is/admin.server-configurations.v1@2.32.50
+  - @wso2is/admin.validation.v1@2.27.63
+  - @wso2is/admin.identity-providers.v1@2.26.125
+  - @wso2is/admin.feature-gate.v1@1.4.125
+
+## 2.32.49
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.32
+  - @wso2is/admin.extensions.v1@2.36.49
+  - @wso2is/admin.feature-gate.v1@1.4.124
+  - @wso2is/admin.identity-providers.v1@2.26.124
+  - @wso2is/admin.organizations.v1@2.26.124
+  - @wso2is/admin.server-configurations.v1@2.32.49
+  - @wso2is/admin.users.v1@2.30.34
+  - @wso2is/admin.validation.v1@2.27.62
+
+## 2.32.48
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.31
+  - @wso2is/admin.extensions.v1@2.36.48
+  - @wso2is/admin.identity-providers.v1@2.26.123
+  - @wso2is/admin.organizations.v1@2.26.123
+  - @wso2is/admin.feature-gate.v1@1.4.123
+  - @wso2is/admin.server-configurations.v1@2.32.48
+  - @wso2is/admin.users.v1@2.30.33
+  - @wso2is/admin.validation.v1@2.27.61
+
+## 2.32.47
+
+### Patch Changes
+
+- Updated dependencies [[`991ff0e5349d6bc87f6b8d3559f84fcfe7953004`](https://github.com/wso2/identity-apps/commit/991ff0e5349d6bc87f6b8d3559f84fcfe7953004)]:
+  - @wso2is/admin.users.v1@2.30.32
+  - @wso2is/admin.core.v1@2.37.30
+  - @wso2is/admin.extensions.v1@2.36.47
+  - @wso2is/admin.organizations.v1@2.26.122
+  - @wso2is/admin.server-configurations.v1@2.32.47
+  - @wso2is/admin.validation.v1@2.27.60
+  - @wso2is/admin.identity-providers.v1@2.26.122
+  - @wso2is/admin.feature-gate.v1@1.4.122
+
+## 2.32.46
+
+### Patch Changes
+
+- Updated dependencies [[`18e8c1c6768f359ebfb0424152c6585df98249a5`](https://github.com/wso2/identity-apps/commit/18e8c1c6768f359ebfb0424152c6585df98249a5)]:
+  - @wso2is/admin.extensions.v1@2.36.46
+  - @wso2is/admin.core.v1@2.37.29
+  - @wso2is/admin.identity-providers.v1@2.26.121
+  - @wso2is/admin.organizations.v1@2.26.121
+  - @wso2is/admin.server-configurations.v1@2.32.46
+  - @wso2is/admin.users.v1@2.30.31
+  - @wso2is/admin.validation.v1@2.27.59
+  - @wso2is/admin.feature-gate.v1@1.4.121
+
+## 2.32.45
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.28
+  - @wso2is/admin.extensions.v1@2.36.45
+  - @wso2is/admin.identity-providers.v1@2.26.120
+  - @wso2is/admin.organizations.v1@2.26.120
+  - @wso2is/admin.feature-gate.v1@1.4.120
+  - @wso2is/admin.server-configurations.v1@2.32.45
+  - @wso2is/admin.users.v1@2.30.30
+  - @wso2is/admin.validation.v1@2.27.58
+
+## 2.32.44
+
+### Patch Changes
+
+- Updated dependencies [[`c9245493cf5b3ae0f02b13d85c3905223cfcb21d`](https://github.com/wso2/identity-apps/commit/c9245493cf5b3ae0f02b13d85c3905223cfcb21d)]:
+  - @wso2is/admin.organizations.v1@2.26.119
+  - @wso2is/admin.extensions.v1@2.36.44
+  - @wso2is/admin.core.v1@2.37.27
+  - @wso2is/admin.feature-gate.v1@1.4.119
+  - @wso2is/admin.identity-providers.v1@2.26.119
+  - @wso2is/admin.server-configurations.v1@2.32.44
+  - @wso2is/admin.users.v1@2.30.29
+  - @wso2is/admin.validation.v1@2.27.57
+
+## 2.32.43
+
+### Patch Changes
+
+- [#7332](https://github.com/wso2/identity-apps/pull/7332) [`4da42930c024dedb5002867b82928df3198c5546`](https://github.com/wso2/identity-apps/commit/4da42930c024dedb5002867b82928df3198c5546) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove barrel files from @wso2is/admin.core.v1 module
+
+- Updated dependencies [[`4da42930c024dedb5002867b82928df3198c5546`](https://github.com/wso2/identity-apps/commit/4da42930c024dedb5002867b82928df3198c5546), [`1aa2273fe1f0a066f9623e6b2a25833f277be7f9`](https://github.com/wso2/identity-apps/commit/1aa2273fe1f0a066f9623e6b2a25833f277be7f9)]:
+  - @wso2is/admin.server-configurations.v1@2.32.43
+  - @wso2is/admin.identity-providers.v1@2.26.118
+  - @wso2is/admin.organizations.v1@2.26.118
+  - @wso2is/admin.feature-gate.v1@1.4.118
+  - @wso2is/admin.extensions.v1@2.36.43
+  - @wso2is/admin.validation.v1@2.27.56
+  - @wso2is/react-components@2.9.1
+  - @wso2is/admin.users.v1@2.30.28
+  - @wso2is/admin.core.v1@2.37.26
+  - @wso2is/dynamic-forms@2.4.29
+  - @wso2is/theme@2.6.4
+  - @wso2is/form@2.6.22
+  - @wso2is/i18n@2.18.2
+
+## 2.32.42
+
+### Patch Changes
+
+- Updated dependencies [[`e6715bb83a7e674a02443f68ffdd71aeb82f64ed`](https://github.com/wso2/identity-apps/commit/e6715bb83a7e674a02443f68ffdd71aeb82f64ed), [`b4f965e293948682763b30059ee9dca47f9bc744`](https://github.com/wso2/identity-apps/commit/b4f965e293948682763b30059ee9dca47f9bc744), [`756bca6449a5f4092cbea1a27939cd2c95452c4c`](https://github.com/wso2/identity-apps/commit/756bca6449a5f4092cbea1a27939cd2c95452c4c)]:
+  - @wso2is/admin.users.v1@2.30.27
+  - @wso2is/admin.identity-providers.v1@2.26.117
+  - @wso2is/admin.validation.v1@2.27.55
+  - @wso2is/admin.core.v1@2.37.25
+  - @wso2is/i18n@2.18.1
+  - @wso2is/admin.extensions.v1@2.36.42
+  - @wso2is/admin.organizations.v1@2.26.117
+  - @wso2is/admin.server-configurations.v1@2.32.42
+  - @wso2is/admin.feature-gate.v1@1.4.117
+
+## 2.32.41
+
+### Patch Changes
+
+- Updated dependencies [[`6d6d70456efbff3725a566889de169fb91eba0a3`](https://github.com/wso2/identity-apps/commit/6d6d70456efbff3725a566889de169fb91eba0a3)]:
+  - @wso2is/i18n@2.18.0
+  - @wso2is/admin.core.v1@2.37.24
+  - @wso2is/admin.extensions.v1@2.36.41
+  - @wso2is/admin.identity-providers.v1@2.26.116
+  - @wso2is/admin.organizations.v1@2.26.116
+  - @wso2is/admin.server-configurations.v1@2.32.41
+  - @wso2is/admin.users.v1@2.30.26
+  - @wso2is/admin.validation.v1@2.27.54
+  - @wso2is/admin.feature-gate.v1@1.4.116
+
+## 2.32.40
+
+### Patch Changes
+
+- [#6997](https://github.com/wso2/identity-apps/pull/6997) [`487651a6db5cfa2b19468f9cb1219d7c23fad989`](https://github.com/wso2/identity-apps/commit/487651a6db5cfa2b19468f9cb1219d7c23fad989) Thanks [@sandushi](https://github.com/sandushi)! - Support the feature indefinitely lock user until admin unlocks
+
+- Updated dependencies [[`487651a6db5cfa2b19468f9cb1219d7c23fad989`](https://github.com/wso2/identity-apps/commit/487651a6db5cfa2b19468f9cb1219d7c23fad989)]:
+  - @wso2is/admin.server-configurations.v1@2.32.40
+  - @wso2is/admin.core.v1@2.37.23
+  - @wso2is/admin.extensions.v1@2.36.40
+  - @wso2is/admin.identity-providers.v1@2.26.115
+  - @wso2is/admin.users.v1@2.30.25
+  - @wso2is/admin.validation.v1@2.27.53
+  - @wso2is/admin.organizations.v1@2.26.115
+  - @wso2is/admin.feature-gate.v1@1.4.115
+
+## 2.32.39
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.22
+  - @wso2is/admin.extensions.v1@2.36.39
+  - @wso2is/admin.identity-providers.v1@2.26.114
+  - @wso2is/admin.organizations.v1@2.26.114
+  - @wso2is/admin.users.v1@2.30.24
+  - @wso2is/admin.validation.v1@2.27.52
+  - @wso2is/admin.feature-gate.v1@1.4.114
+  - @wso2is/admin.server-configurations.v1@2.32.39
+
+## 2.32.38
+
+### Patch Changes
+
+- Updated dependencies [[`b67d22c81d5c8be72c09abd36ed829a88fb22a4b`](https://github.com/wso2/identity-apps/commit/b67d22c81d5c8be72c09abd36ed829a88fb22a4b), [`985c81584c0d9d2a803b3ee12fc80d473249e341`](https://github.com/wso2/identity-apps/commit/985c81584c0d9d2a803b3ee12fc80d473249e341)]:
+  - @wso2is/react-components@2.9.0
+  - @wso2is/core@2.6.0
+  - @wso2is/i18n@2.17.0
+  - @wso2is/admin.core.v1@2.37.21
+  - @wso2is/admin.extensions.v1@2.36.38
+  - @wso2is/admin.identity-providers.v1@2.26.113
+  - @wso2is/admin.organizations.v1@2.26.113
+  - @wso2is/admin.server-configurations.v1@2.32.38
+  - @wso2is/admin.users.v1@2.30.23
+  - @wso2is/admin.validation.v1@2.27.51
+  - @wso2is/dynamic-forms@2.4.28
+  - @wso2is/form@2.6.21
+  - @wso2is/admin.feature-gate.v1@1.4.113
+  - @wso2is/access-control@3.3.14
+  - @wso2is/forms@2.3.15
+
+## 2.32.37
+
+### Patch Changes
+
+- Updated dependencies [[`bbfb046145fb557911950c923dc7dd08507f6822`](https://github.com/wso2/identity-apps/commit/bbfb046145fb557911950c923dc7dd08507f6822)]:
+  - @wso2is/admin.extensions.v1@2.36.37
+  - @wso2is/i18n@2.16.12
+  - @wso2is/admin.core.v1@2.37.20
+  - @wso2is/admin.identity-providers.v1@2.26.112
+  - @wso2is/admin.organizations.v1@2.26.112
+  - @wso2is/admin.server-configurations.v1@2.32.37
+  - @wso2is/admin.users.v1@2.30.22
+  - @wso2is/admin.validation.v1@2.27.50
+  - @wso2is/admin.feature-gate.v1@1.4.112
+
+## 2.32.36
+
+### Patch Changes
+
+- Updated dependencies [[`9b6fe9141f5260d6e3760298badd6e0f6c7ec499`](https://github.com/wso2/identity-apps/commit/9b6fe9141f5260d6e3760298badd6e0f6c7ec499)]:
+  - @wso2is/admin.identity-providers.v1@2.26.111
+  - @wso2is/react-components@2.8.27
+  - @wso2is/admin.core.v1@2.37.19
+  - @wso2is/theme@2.6.3
+  - @wso2is/form@2.6.20
+  - @wso2is/i18n@2.16.11
+  - @wso2is/admin.extensions.v1@2.36.36
+  - @wso2is/admin.organizations.v1@2.26.111
+  - @wso2is/admin.server-configurations.v1@2.32.36
+  - @wso2is/admin.users.v1@2.30.21
+  - @wso2is/admin.validation.v1@2.27.49
+  - @wso2is/dynamic-forms@2.4.27
+  - @wso2is/admin.feature-gate.v1@1.4.111
+
+## 2.32.35
+
+### Patch Changes
+
+- [#7404](https://github.com/wso2/identity-apps/pull/7404) [`f5eb7968aa0f8482f61b3d3fd8809dc82fb6457f`](https://github.com/wso2/identity-apps/commit/f5eb7968aa0f8482f61b3d3fd8809dc82fb6457f) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix minor issue in Sift connector update notification
+
+- Updated dependencies [[`f5eb7968aa0f8482f61b3d3fd8809dc82fb6457f`](https://github.com/wso2/identity-apps/commit/f5eb7968aa0f8482f61b3d3fd8809dc82fb6457f)]:
+  - @wso2is/admin.server-configurations.v1@2.32.35
+  - @wso2is/i18n@2.16.10
+  - @wso2is/admin.core.v1@2.37.18
+  - @wso2is/admin.extensions.v1@2.36.35
+  - @wso2is/admin.identity-providers.v1@2.26.110
+  - @wso2is/admin.users.v1@2.30.20
+  - @wso2is/admin.validation.v1@2.27.48
+  - @wso2is/admin.organizations.v1@2.26.110
+  - @wso2is/admin.feature-gate.v1@1.4.110
+
+## 2.32.34
+
+### Patch Changes
+
+- Updated dependencies [[`dcb12dbb4a3bd97ba51e0affdc255d35496db14f`](https://github.com/wso2/identity-apps/commit/dcb12dbb4a3bd97ba51e0affdc255d35496db14f)]:
+  - @wso2is/admin.feature-gate.v1@1.4.109
+  - @wso2is/admin.core.v1@2.37.17
+  - @wso2is/admin.extensions.v1@2.36.34
+  - @wso2is/admin.server-configurations.v1@2.32.34
+  - @wso2is/admin.users.v1@2.30.19
+  - @wso2is/admin.identity-providers.v1@2.26.109
+  - @wso2is/admin.organizations.v1@2.26.109
+  - @wso2is/admin.validation.v1@2.27.47
+
+## 2.32.33
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.16
+  - @wso2is/admin.extensions.v1@2.36.33
+  - @wso2is/admin.identity-providers.v1@2.26.108
+  - @wso2is/admin.organizations.v1@2.26.108
+  - @wso2is/admin.feature-gate.v1@1.4.108
+  - @wso2is/admin.server-configurations.v1@2.32.33
+  - @wso2is/admin.users.v1@2.30.18
+  - @wso2is/admin.validation.v1@2.27.46
+
+## 2.32.32
+
+### Patch Changes
+
+- Updated dependencies [[`651f2836dd609e7d87d67549b4d5faef2d7aee14`](https://github.com/wso2/identity-apps/commit/651f2836dd609e7d87d67549b4d5faef2d7aee14)]:
+  - @wso2is/i18n@2.16.9
+  - @wso2is/admin.core.v1@2.37.15
+  - @wso2is/admin.extensions.v1@2.36.32
+  - @wso2is/admin.identity-providers.v1@2.26.107
+  - @wso2is/admin.organizations.v1@2.26.107
+  - @wso2is/admin.server-configurations.v1@2.32.32
+  - @wso2is/admin.users.v1@2.30.17
+  - @wso2is/admin.validation.v1@2.27.45
+  - @wso2is/admin.feature-gate.v1@1.4.107
+
+## 2.32.31
+
+### Patch Changes
+
+- [#7394](https://github.com/wso2/identity-apps/pull/7394) [`6a86d803a5997538ab424336e29f7401c7fb3582`](https://github.com/wso2/identity-apps/commit/6a86d803a5997538ab424336e29f7401c7fb3582) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve Sift connector page
+
+- Updated dependencies [[`6a86d803a5997538ab424336e29f7401c7fb3582`](https://github.com/wso2/identity-apps/commit/6a86d803a5997538ab424336e29f7401c7fb3582)]:
+  - @wso2is/admin.server-configurations.v1@2.32.31
+  - @wso2is/admin.extensions.v1@2.36.31
+  - @wso2is/i18n@2.16.8
+  - @wso2is/admin.core.v1@2.37.14
+  - @wso2is/admin.identity-providers.v1@2.26.106
+  - @wso2is/admin.users.v1@2.30.16
+  - @wso2is/admin.validation.v1@2.27.44
+  - @wso2is/admin.organizations.v1@2.26.106
+  - @wso2is/admin.feature-gate.v1@1.4.106
+
+## 2.32.30
+
+### Patch Changes
+
+- [#7364](https://github.com/wso2/identity-apps/pull/7364) [`92a6766086071fd5e0986f91803804783b9159bf`](https://github.com/wso2/identity-apps/commit/92a6766086071fd5e0986f91803804783b9159bf) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Introduce configuration based feature status flag support
+
+- Updated dependencies [[`92a6766086071fd5e0986f91803804783b9159bf`](https://github.com/wso2/identity-apps/commit/92a6766086071fd5e0986f91803804783b9159bf)]:
+  - @wso2is/admin.server-configurations.v1@2.32.30
+  - @wso2is/admin.feature-gate.v1@1.4.105
+  - @wso2is/core@2.5.9
+  - @wso2is/admin.core.v1@2.37.13
+  - @wso2is/admin.extensions.v1@2.36.30
+  - @wso2is/admin.identity-providers.v1@2.26.105
+  - @wso2is/admin.users.v1@2.30.15
+  - @wso2is/admin.validation.v1@2.27.43
+  - @wso2is/admin.organizations.v1@2.26.105
+  - @wso2is/access-control@3.3.13
+  - @wso2is/dynamic-forms@2.4.26
+  - @wso2is/form@2.6.19
+  - @wso2is/forms@2.3.14
+  - @wso2is/i18n@2.16.7
+  - @wso2is/react-components@2.8.26
+
+## 2.32.29
+
+### Patch Changes
+
+- Updated dependencies [[`689dcc45ad43831b2805c3b91f04bdd254e1a7ef`](https://github.com/wso2/identity-apps/commit/689dcc45ad43831b2805c3b91f04bdd254e1a7ef)]:
+  - @wso2is/theme@2.6.2
+  - @wso2is/i18n@2.16.6
+  - @wso2is/admin.extensions.v1@2.36.29
+  - @wso2is/admin.identity-providers.v1@2.26.104
+  - @wso2is/admin.organizations.v1@2.26.104
+  - @wso2is/admin.server-configurations.v1@2.32.29
+  - @wso2is/admin.users.v1@2.30.14
+  - @wso2is/admin.validation.v1@2.27.42
+  - @wso2is/react-components@2.8.25
+  - @wso2is/admin.core.v1@2.37.12
+  - @wso2is/admin.feature-gate.v1@1.4.104
+  - @wso2is/dynamic-forms@2.4.25
+  - @wso2is/form@2.6.18
+
+## 2.32.28
+
+### Patch Changes
+
+- Updated dependencies [[`897424e026699eb987ff8a0fb473e6bba5f8c117`](https://github.com/wso2/identity-apps/commit/897424e026699eb987ff8a0fb473e6bba5f8c117), [`9e3977c9c5e90cbe454147b42b121aecc28d9ab9`](https://github.com/wso2/identity-apps/commit/9e3977c9c5e90cbe454147b42b121aecc28d9ab9)]:
+  - @wso2is/i18n@2.16.5
+  - @wso2is/admin.core.v1@2.37.11
+  - @wso2is/admin.extensions.v1@2.36.28
+  - @wso2is/admin.identity-providers.v1@2.26.103
+  - @wso2is/admin.organizations.v1@2.26.103
+  - @wso2is/admin.server-configurations.v1@2.32.28
+  - @wso2is/admin.users.v1@2.30.13
+  - @wso2is/admin.validation.v1@2.27.41
+  - @wso2is/admin.feature-gate.v1@1.4.103
+
+## 2.32.27
+
+### Patch Changes
+
+- Updated dependencies [[`fa707cce1d0e1a54a282a57bd137e047e6dd207e`](https://github.com/wso2/identity-apps/commit/fa707cce1d0e1a54a282a57bd137e047e6dd207e)]:
+  - @wso2is/admin.users.v1@2.30.12
+  - @wso2is/admin.core.v1@2.37.10
+  - @wso2is/admin.extensions.v1@2.36.27
+  - @wso2is/admin.identity-providers.v1@2.26.102
+  - @wso2is/admin.organizations.v1@2.26.102
+  - @wso2is/admin.validation.v1@2.27.40
+  - @wso2is/admin.server-configurations.v1@2.32.27
+  - @wso2is/admin.feature-gate.v1@1.4.102
+
+## 2.32.26
+
+### Patch Changes
+
+- Updated dependencies [[`0939ecb46c7e1d115924c6da953d2f575ebbf83a`](https://github.com/wso2/identity-apps/commit/0939ecb46c7e1d115924c6da953d2f575ebbf83a)]:
+  - @wso2is/i18n@2.16.4
+  - @wso2is/admin.core.v1@2.37.9
+  - @wso2is/admin.extensions.v1@2.36.26
+  - @wso2is/admin.identity-providers.v1@2.26.101
+  - @wso2is/admin.organizations.v1@2.26.101
+  - @wso2is/admin.server-configurations.v1@2.32.26
+  - @wso2is/admin.users.v1@2.30.11
+  - @wso2is/admin.validation.v1@2.27.39
+  - @wso2is/admin.feature-gate.v1@1.4.101
+
+## 2.32.25
+
+### Patch Changes
+
+- Updated dependencies [[`20852203b5868edd1045c8ea236955076b85cdfc`](https://github.com/wso2/identity-apps/commit/20852203b5868edd1045c8ea236955076b85cdfc)]:
+  - @wso2is/admin.core.v1@2.37.8
+  - @wso2is/i18n@2.16.3
+  - @wso2is/admin.extensions.v1@2.36.25
+  - @wso2is/admin.identity-providers.v1@2.26.100
+  - @wso2is/admin.organizations.v1@2.26.100
+  - @wso2is/admin.feature-gate.v1@1.4.100
+  - @wso2is/admin.server-configurations.v1@2.32.25
+  - @wso2is/admin.users.v1@2.30.10
+  - @wso2is/admin.validation.v1@2.27.38
+
+## 2.32.24
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.7
+  - @wso2is/admin.extensions.v1@2.36.24
+  - @wso2is/admin.feature-gate.v1@1.4.99
+  - @wso2is/admin.identity-providers.v1@2.26.99
+  - @wso2is/admin.organizations.v1@2.26.99
+  - @wso2is/admin.server-configurations.v1@2.32.24
+  - @wso2is/admin.users.v1@2.30.9
+  - @wso2is/admin.validation.v1@2.27.37
+
+## 2.32.23
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.6
+  - @wso2is/admin.extensions.v1@2.36.23
+  - @wso2is/admin.identity-providers.v1@2.26.98
+  - @wso2is/admin.organizations.v1@2.26.98
+  - @wso2is/admin.feature-gate.v1@1.4.98
+  - @wso2is/admin.server-configurations.v1@2.32.23
+  - @wso2is/admin.users.v1@2.30.8
+  - @wso2is/admin.validation.v1@2.27.36
+
+## 2.32.22
+
+### Patch Changes
+
+- Updated dependencies [[`dfe37eaa32b41e8102d8cbd923602cf71077b92f`](https://github.com/wso2/identity-apps/commit/dfe37eaa32b41e8102d8cbd923602cf71077b92f)]:
+  - @wso2is/admin.users.v1@2.30.7
+  - @wso2is/admin.core.v1@2.37.5
+  - @wso2is/admin.extensions.v1@2.36.22
+  - @wso2is/admin.organizations.v1@2.26.97
+  - @wso2is/admin.server-configurations.v1@2.32.22
+  - @wso2is/admin.validation.v1@2.27.35
+  - @wso2is/admin.identity-providers.v1@2.26.97
+  - @wso2is/admin.feature-gate.v1@1.4.97
+
+## 2.32.21
+
+### Patch Changes
+
+- Updated dependencies [[`365c0cf9158518f16d330a8b55173cf2cc673b46`](https://github.com/wso2/identity-apps/commit/365c0cf9158518f16d330a8b55173cf2cc673b46)]:
+  - @wso2is/admin.users.v1@2.30.6
+  - @wso2is/admin.core.v1@2.37.4
+  - @wso2is/admin.extensions.v1@2.36.21
+  - @wso2is/admin.identity-providers.v1@2.26.96
+  - @wso2is/admin.organizations.v1@2.26.96
+  - @wso2is/admin.server-configurations.v1@2.32.21
+  - @wso2is/admin.validation.v1@2.27.34
+  - @wso2is/admin.feature-gate.v1@1.4.96
+
+## 2.32.20
+
+### Patch Changes
+
+- Updated dependencies [[`31b4e92ae73fea1372a03f9aa0511f062030e44f`](https://github.com/wso2/identity-apps/commit/31b4e92ae73fea1372a03f9aa0511f062030e44f)]:
+  - @wso2is/admin.extensions.v1@2.36.20
+  - @wso2is/admin.users.v1@2.30.5
+  - @wso2is/admin.core.v1@2.37.3
+  - @wso2is/core@2.5.8
+  - @wso2is/admin.identity-providers.v1@2.26.95
+  - @wso2is/admin.organizations.v1@2.26.95
+  - @wso2is/admin.server-configurations.v1@2.32.20
+  - @wso2is/admin.validation.v1@2.27.33
+  - @wso2is/admin.feature-gate.v1@1.4.95
+  - @wso2is/access-control@3.3.12
+  - @wso2is/dynamic-forms@2.4.24
+  - @wso2is/form@2.6.17
+  - @wso2is/forms@2.3.13
+  - @wso2is/i18n@2.16.2
+  - @wso2is/react-components@2.8.24
+
+## 2.32.19
+
+### Patch Changes
+
+- Updated dependencies [[`5d39c0975774564423edebcb268291eb24932e23`](https://github.com/wso2/identity-apps/commit/5d39c0975774564423edebcb268291eb24932e23), [`3811ae3d223db8bf4fa5315f61d19a11aecc32a9`](https://github.com/wso2/identity-apps/commit/3811ae3d223db8bf4fa5315f61d19a11aecc32a9), [`7de99c9b05b5f11e8350796ba370d54e8b2dc181`](https://github.com/wso2/identity-apps/commit/7de99c9b05b5f11e8350796ba370d54e8b2dc181)]:
+  - @wso2is/i18n@2.16.1
+  - @wso2is/theme@2.6.1
+  - @wso2is/admin.core.v1@2.37.2
+  - @wso2is/admin.extensions.v1@2.36.19
+  - @wso2is/admin.identity-providers.v1@2.26.94
+  - @wso2is/admin.organizations.v1@2.26.94
+  - @wso2is/admin.server-configurations.v1@2.32.19
+  - @wso2is/admin.users.v1@2.30.4
+  - @wso2is/admin.validation.v1@2.27.32
+  - @wso2is/react-components@2.8.23
+  - @wso2is/admin.feature-gate.v1@1.4.94
+  - @wso2is/dynamic-forms@2.4.23
+  - @wso2is/form@2.6.16
+
+## 2.32.18
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.37.1
+  - @wso2is/admin.extensions.v1@2.36.18
+  - @wso2is/admin.identity-providers.v1@2.26.93
+  - @wso2is/admin.organizations.v1@2.26.93
+  - @wso2is/admin.feature-gate.v1@1.4.93
+  - @wso2is/admin.server-configurations.v1@2.32.18
+  - @wso2is/admin.users.v1@2.30.3
+  - @wso2is/admin.validation.v1@2.27.31
+
+## 2.32.17
+
+### Patch Changes
+
+- Updated dependencies [[`363aeec4c658628cf89027a9f81f52f545421842`](https://github.com/wso2/identity-apps/commit/363aeec4c658628cf89027a9f81f52f545421842), [`50b9ac91f7ff1da3f2e9d3d4ec99a84ff16f3523`](https://github.com/wso2/identity-apps/commit/50b9ac91f7ff1da3f2e9d3d4ec99a84ff16f3523), [`abf5c953b8f48db5cdb855e75f5c1b847d1e42f0`](https://github.com/wso2/identity-apps/commit/abf5c953b8f48db5cdb855e75f5c1b847d1e42f0)]:
+  - @wso2is/admin.core.v1@2.37.0
+  - @wso2is/i18n@2.16.0
+  - @wso2is/admin.users.v1@2.30.2
+  - @wso2is/core@2.5.7
+  - @wso2is/admin.extensions.v1@2.36.17
+  - @wso2is/admin.feature-gate.v1@1.4.92
+  - @wso2is/admin.identity-providers.v1@2.26.92
+  - @wso2is/admin.organizations.v1@2.26.92
+  - @wso2is/admin.server-configurations.v1@2.32.17
+  - @wso2is/admin.validation.v1@2.27.30
+  - @wso2is/access-control@3.3.11
+  - @wso2is/dynamic-forms@2.4.22
+  - @wso2is/form@2.6.15
+  - @wso2is/forms@2.3.12
+  - @wso2is/react-components@2.8.22
+
+## 2.32.16
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.36.1
+  - @wso2is/admin.extensions.v1@2.36.16
+  - @wso2is/admin.feature-gate.v1@1.4.91
+  - @wso2is/admin.identity-providers.v1@2.26.91
+  - @wso2is/admin.organizations.v1@2.26.91
+  - @wso2is/admin.server-configurations.v1@2.32.16
+  - @wso2is/admin.users.v1@2.30.1
+  - @wso2is/admin.validation.v1@2.27.29
+
+## 2.32.15
+
+### Patch Changes
+
+- Updated dependencies [[`066e6a556b348a29874119fdd30e7779e644db84`](https://github.com/wso2/identity-apps/commit/066e6a556b348a29874119fdd30e7779e644db84)]:
+  - @wso2is/admin.users.v1@2.30.0
+  - @wso2is/admin.core.v1@2.36.0
+  - @wso2is/admin.extensions.v1@2.36.15
+  - @wso2is/admin.identity-providers.v1@2.26.90
+  - @wso2is/admin.organizations.v1@2.26.90
+  - @wso2is/admin.validation.v1@2.27.28
+  - @wso2is/admin.server-configurations.v1@2.32.15
+  - @wso2is/admin.feature-gate.v1@1.4.90
+
+## 2.32.14
+
+### Patch Changes
+
+- Updated dependencies [[`cfe475febd8e3972a545cf12bb86e7fd08d344ea`](https://github.com/wso2/identity-apps/commit/cfe475febd8e3972a545cf12bb86e7fd08d344ea), [`f2c7a35ce347d4ac7e3e15f3f50404c9d701d212`](https://github.com/wso2/identity-apps/commit/f2c7a35ce347d4ac7e3e15f3f50404c9d701d212), [`f6939061baec44323111cd5a09164d1e7a441324`](https://github.com/wso2/identity-apps/commit/f6939061baec44323111cd5a09164d1e7a441324)]:
+  - @wso2is/admin.core.v1@2.35.27
+  - @wso2is/i18n@2.15.2
+  - @wso2is/admin.extensions.v1@2.36.14
+  - @wso2is/admin.feature-gate.v1@1.4.89
+  - @wso2is/admin.identity-providers.v1@2.26.89
+  - @wso2is/admin.organizations.v1@2.26.89
+  - @wso2is/admin.server-configurations.v1@2.32.14
+  - @wso2is/admin.users.v1@2.29.48
+  - @wso2is/admin.validation.v1@2.27.27
+
+## 2.32.13
+
+### Patch Changes
+
+- Updated dependencies [[`ad9d93a8a57e076b40ef78674ed0242e8bbeca91`](https://github.com/wso2/identity-apps/commit/ad9d93a8a57e076b40ef78674ed0242e8bbeca91)]:
+  - @wso2is/admin.organizations.v1@2.26.88
+  - @wso2is/admin.core.v1@2.35.26
+  - @wso2is/admin.extensions.v1@2.36.13
+  - @wso2is/admin.feature-gate.v1@1.4.88
+  - @wso2is/admin.identity-providers.v1@2.26.88
+  - @wso2is/admin.server-configurations.v1@2.32.13
+  - @wso2is/admin.users.v1@2.29.47
+  - @wso2is/admin.validation.v1@2.27.26
+
+## 2.32.12
+
+### Patch Changes
+
+- Updated dependencies [[`ed6e0a5dfe66c7ef786cff892008fd74fac10e2b`](https://github.com/wso2/identity-apps/commit/ed6e0a5dfe66c7ef786cff892008fd74fac10e2b)]:
+  - @wso2is/admin.validation.v1@2.27.25
+  - @wso2is/admin.users.v1@2.29.46
+  - @wso2is/admin.core.v1@2.35.25
+  - @wso2is/admin.extensions.v1@2.36.12
+  - @wso2is/admin.identity-providers.v1@2.26.87
+  - @wso2is/admin.organizations.v1@2.26.87
+  - @wso2is/admin.server-configurations.v1@2.32.12
+  - @wso2is/admin.feature-gate.v1@1.4.87
+
+## 2.32.11
+
+### Patch Changes
+
+- Updated dependencies [[`4497e3e2a3ec1ea0ca94aad71d3bd8580e3f1b98`](https://github.com/wso2/identity-apps/commit/4497e3e2a3ec1ea0ca94aad71d3bd8580e3f1b98)]:
+  - @wso2is/core@2.5.6
+  - @wso2is/i18n@2.15.1
+  - @wso2is/admin.core.v1@2.35.24
+  - @wso2is/admin.extensions.v1@2.36.11
+  - @wso2is/admin.identity-providers.v1@2.26.86
+  - @wso2is/admin.users.v1@2.29.45
+  - @wso2is/admin.feature-gate.v1@1.4.86
+  - @wso2is/admin.organizations.v1@2.26.86
+  - @wso2is/admin.server-configurations.v1@2.32.11
+  - @wso2is/admin.validation.v1@2.27.24
+  - @wso2is/access-control@3.3.10
+  - @wso2is/dynamic-forms@2.4.21
+  - @wso2is/form@2.6.14
+  - @wso2is/forms@2.3.11
+  - @wso2is/react-components@2.8.21
+
 ## 2.32.10
 
 ### Patch Changes

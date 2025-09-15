@@ -813,6 +813,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     hint: "The number of allowed OTP resend attempts.",
                     label: "Allowed OTP resend attempt count",
                     placeholder: "Enter allowed resend attempt count.",
+                    unit: "attempts",
                     validations: {
                         invalid: "Allowed OTP resend attempt count should be an integer.",
                         range: "Allowed OTP resend attempt count should be between 0 & 100.",
@@ -854,6 +855,45 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     label: "Use only numeric characters for OTP",
                     validations: {
                         required: "Use only numeric characters for OTP token is a required field."
+                    }
+                }
+            },
+            push: {
+                allowedResendAttemptsCount: {
+                    hint: "The number of allowed push notification resend attempts.",
+                    label: "Allowed push notification resend attempts",
+                    placeholder: "Enter allowed resend attempt count.",
+                    validations: {
+                        required: "Allowed push notification resend attempt count is a required field.",
+                        invalid: "Allowed push notification resend attempt count should be an integer.",
+                        range: "Allowed push notification resend attempt count should be between 0 & 10."
+                    },
+                    unit: "attempts"
+                },
+                hint: "Ensure that a <1>Push Provider</1> is configured for the push notifications to be sent.",
+                resendInterval: {
+                    hint: "The time interval between push notification resend attempts.",
+                    label: "Push notification resend interval",
+                    placeholder: "Enter resend interval in minutes.",
+                    validations: {
+                        required: "Push notification resend interval is a required field.",
+                        invalid: "Push notification resend interval should be an integer.",
+                        range: "Push notification resend interval should be between 1 & 10 minutes."
+                    },
+                    unit: "minutes"
+                },
+                enableNumberChallenge: {
+                    hint: "When enabled, users must confirm the number displayed in the application on their push authentication device to complete the sign in.",
+                    label: "Enable number challenge",
+                    validations: {
+                        required: "Enable number challenge is a required field."
+                    }
+                },
+                enableProgressiveEnrollment: {
+                    hint: "When enabled, users may enroll their devices for push authentication at the moment they log in to the application.",
+                    label: "Enable push notification device progressive enrollment",
+                    validations: {
+                        required: "Enablin push notification device progressive enrollment is required."
                     }
                 }
             }
@@ -911,11 +951,53 @@ export const authenticationProvider:AuthenticationProviderNS = {
             }
         },
         jitProvisioning: {
+            accountLinkingAttributes: {
+                heading: "Local account linking",
+                infoNotification: "The local attribute dropdown displays attributes that have uniqueness " +
+                    "constraints enabled. To configure additional attributes for linking, configure uniqueness " +
+                    "settings in the <1>local attributes</1> section.",
+                linkAccountIf: "Link account if",
+                noneOption: {
+                    label: "None",
+                    description: "Reset local attribute mapping"
+                },
+                matchRule: {
+                    federatedAttribute: {
+                        label: "Federated attribute",
+                        placeholder: "Enter federated attribute name"
+                    },
+                    localAttribute: {
+                        label: "Local attribute ",
+                        placeholder: "Select local attribute"
+                    }
+                },
+                equals: "equals"
+            },
+            attributeSyncMethod: {
+                hint: "Select the method used for syncing attributes between a JIT-provisioned " +
+                    "user account and a local user account.",
+                label: "Attribute synchronization method",
+                options: {
+                    overrideAll: {
+                        label: "Override all",
+                        description: "All attributes of the local user account will be overridden by " +
+                            "the attributes received from the external identity provider."
+                    },
+                    none: {
+                        label: "None",
+                        description: "None of the attributes received from the identity provider will " +
+                            "be synced with the local user account."
+                    },
+                    preserveLocal: {
+                        label: "Preserve local",
+                        description: "Only the attributes received from the identity provider will be " +
+                            "updated while other attributes of the local user account are preserved."
+                    }
+                }
+            },
             associateLocalUser: {
-                hint: "When enabled, users that are provisioned with this identity " +
-                    "provider will be linked to the local users who are already registered " +
-                    "with the same email address.",
-                label: "Associate provisioned users with existing local users"
+                hint: "When enabled, users log in with this identity provider are linked to existing local users. If no linking rules are set, the email address is used by default.",
+                label: "Enable local account linking"
             },
             enableJITProvisioning: {
                 disabledMessageContent: "You cannot disable the Just-in-Time User" +
@@ -938,6 +1020,14 @@ export const authenticationProvider:AuthenticationProviderNS = {
             provisioningUserStoreDomain: {
                 hint: "Select user store domain name to provision users.",
                 label: "User store domain to always provision users"
+            },
+            skipJITForNoRuleMatch: {
+                hint: "When enabled, if no local account is found using the attribute matching rules, " +
+                    "the user will be able to login without JIT provisioning. When disabled, " +
+                    "login will happen with JIT provisioning.",
+                label: "Skip user provisioning when no local account is found",
+                infoMessage: "If a matching local account is not found, a new account will be created by default. " +
+                    "This configuration allows you to override this behavior."
             }
         },
         outboundConnectorAccordion: {
@@ -1083,6 +1173,16 @@ export const authenticationProvider:AuthenticationProviderNS = {
             error: {
                 description: "You have reached the maximum number of connections allowed.",
                 message: "Failed to create the connection"
+            }
+        },
+        getLocalClaims: {
+            error: {
+                description: "{{ description }}",
+                message: "Failed to retrieve local claims"
+            },
+            genericError: {
+                description: "An error occurred while retrieving local claims for account lookup attribute mappings.",
+                message: "Failed to retrieve local claims"
             }
         },
         changeCertType: {
@@ -2093,6 +2193,15 @@ export const authenticationProvider:AuthenticationProviderNS = {
             finish: "Finish",
             next: "Next",
             previous: "Previous"
+        }
+    },
+    overrides: {
+        authenticators: {
+            customAuthenticators: {
+                pluginBased: {
+                    name: "Custom Authenticator (Plugin-based)"
+                }
+            }
         }
     }
 };

@@ -16,7 +16,8 @@
  * under the License.
  */
 import { URLFragmentTypes } from "@wso2is/admin.applications.v1/models/application";
-import { AppState, history } from "@wso2is/admin.core.v1";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {  ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";

@@ -26,10 +26,10 @@ import React, {
     ReactElement
 } from "react";
 import { useSelector } from "react-redux";
-import { BrandingPreferencesConstants } from "../../constants";
+import { BrandingPreferencesConstants } from "../../constants/branding-preferences-constants";
 import { CustomTextPreferenceConstants } from "../../constants/custom-text-preference-constants";
 import useBrandingPreference from "../../hooks/use-branding-preference";
-import { BrandingPreferenceMeta } from "../../meta";
+import { BrandingPreferenceMeta } from "../../meta/branding-preference-meta";
 
 /**
  * Proptypes for the product footer component of login screen skeleton.

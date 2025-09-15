@@ -19,7 +19,9 @@
 import { BasicUserInfo } from "@asgardeo/auth-react";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import useSignIn from "@wso2is/admin.authentication.v1/hooks/use-sign-in";
-import { AppConstants, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -74,7 +76,7 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
         isLoading: isAuthorizedOrganizationListRequestLoading,
         error: authorizedListFetchRequestError
     } = useAuthorizedOrganizationsList(filterQuery, 10, null, null,
-        ApplicationManagementConstants.CONSOLE_APP_NAME, false);
+        ApplicationManagementConstants.CONSOLE_APP_NAME, true);
 
     /**
      * Handles the authorized list fetch request error.

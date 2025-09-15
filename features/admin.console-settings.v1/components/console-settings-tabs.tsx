@@ -19,7 +19,7 @@
 import Tab from "@oxygen-ui/react/Tab";
 import TabPanel from "@oxygen-ui/react/TabPanel";
 import Tabs from "@oxygen-ui/react/Tabs";
-import { AppState } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
@@ -29,6 +29,7 @@ import ConsoleAdministrators from "./console-administrators/console-administrato
 import ConsoleLoginFlow from "./console-login-flow/console-login-flow";
 import ConsoleProtocol from "./console-protocol/console-protocol";
 import ConsoleRolesList from "./console-roles/console-roles-list";
+import ConsoleSharedAccess from "./console-shared-access/console-shared-access";
 import { ConsoleSettingsModes, ConsoleSettingsTabIDs } from "../models/ui";
 import "./console-settings-tabs.scss";
 
@@ -88,6 +89,8 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
         !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
             "consoleSettings.firstLevelOrgloginFlowConfiguration"
         );
+    const isSharedAccessDisabled: boolean =
+        consoleSettingsFeatureConfig?.disabledFeatures?.includes("consoleSettings.sharedAccess");
 
     const isLoginFlowEnabled: boolean = useMemo(() => {
         if (isSuperOrganization()) {
@@ -144,6 +147,16 @@ const ConsoleSettingsTabs: FunctionComponent<ConsoleSettingsTabsInterface> = (
                     label: t("consoleSettings:protocol.tabLabel"),
                     pane: <ConsoleProtocol />,
                     value: ConsoleSettingsTabIDs.PROTOCOL
+                },
+                !isSubOrganization() && !isSharedAccessDisabled && {
+                    className: "console-shared-access",
+                    "data-componentid": `${componentId}-tab-shared-access`,
+                    "data-tabid": ConsoleSettingsModes.SHARED_ACCESS,
+                    hidden: false,
+                    id: ConsoleSettingsModes.SHARED_ACCESS,
+                    label: t("consoleSettings:sharedAccess.tabLabel"),
+                    pane: <ConsoleSharedAccess />,
+                    value: ConsoleSettingsTabIDs.SHARED_ACCESS
                 }
             ]
                 .filter((tab: ConsoleSettingsTabInterface) => tab && !tab?.hidden)

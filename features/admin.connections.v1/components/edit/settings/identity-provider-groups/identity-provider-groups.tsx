@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,8 +17,9 @@
  */
 
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
-import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -42,6 +43,7 @@ import {
     ConnectionClaimMappingInterface,
     ConnectionInterface
 } from "../../../../models/connection";
+import { ConnectionsManagementUtils } from "../../../../utils/connection-utils";
 
 const FORM_ID: string = "idp-group-attributes-form";
 
@@ -88,7 +90,6 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
         [ "data-componentid" ]: componentId
     } = props;
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const { UIConfig } = useUIConfig();
     const dispatch: Dispatch = useDispatch();
@@ -123,10 +124,10 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
     const handleRetrieveError = (): void => {
         dispatch(
             addAlert({
-                description: t("extensions:console.identityProviderGroups.claimConfigs." +
+                description: t("idp:identityProviderGroups.claimConfigs." +
                     "notifications.fetchConfigs.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: t("extensions:console.identityProviderGroups.claimConfigs." +
+                message: t("idp:identityProviderGroups.claimConfigs." +
                     "notifications.fetchConfigs.genericError.message")
             })
         );
@@ -168,7 +169,7 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
         if (UIConfig.useRoleClaimAsGroupClaim) {
             return (
                 <Message
-                    header={ t("extensions:console.identityProviderGroups.claimConfigs.groupAttributeLabel") }
+                    header={ t("idp:identityProviderGroups.claimConfigs.groupAttributeLabel") }
                     content={
                         (<>
                             <p>
@@ -196,11 +197,11 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
         // Construct the default dialect group claim message.
         const defaultDialectMessage: ReactElement = (
             <Message
-                header={ t("extensions:console.identityProviderGroups.claimConfigs.groupAttributeLabel") }
+                header={ t("idp:identityProviderGroups.claimConfigs.groupAttributeLabel") }
                 content={ isOIDC ? (
                     <Trans
                         i18nKey={
-                            "extensions:console.identityProviderGroups.claimConfigs.groupAttributeMessageOIDC"
+                            "idp:identityProviderGroups.claimConfigs.groupAttributeMessageOIDC"
                         }
                         tOptions={ {
                             attribute: groupClaim
@@ -213,7 +214,7 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
                 ) : (
                     <Trans
                         i18nKey={
-                            "extensions:console.identityProviderGroups.claimConfigs.groupAttributeMessageSAML"
+                            "idp:identityProviderGroups.claimConfigs.groupAttributeMessageSAML"
                         }
                         tOptions={ {
                             attribute: groupClaim
@@ -228,6 +229,11 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
                 info
             />
         );
+
+        // Hide the info message if the connection is a custom federated authenticator.
+        if(ConnectionsManagementUtils.IsCustomAuthenticator(editingIDP.federatedAuthenticators?.authenticators[0])) {
+            return;
+        }
 
         /**
          * If the claim mappings are empty,
@@ -251,9 +257,9 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
                                 >
                                     <Form.Input
                                         name="groupAttribute"
-                                        label={ t("extensions:console.identityProviderGroups.claimConfigs." +
+                                        label={ t("idp:identityProviderGroups.claimConfigs." +
                                             "groupAttributeLabel") }
-                                        placeholder={ t("extensions:console.identityProviderGroups.claimConfigs." +
+                                        placeholder={ t("idp:identityProviderGroups.claimConfigs." +
                                             "groupAttributePlaceholder") }
                                         readOnly={ true }
                                         maxLength={ ConnectionUIConstants.GROUP_CLAIM_LENGTH.max }
@@ -286,7 +292,7 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
             && !UIConfig.isCustomClaimMappingMergeEnabled) {
             return (
                 <Message
-                    header={ t("extensions:console.identityProviderGroups.claimConfigs.groupAttributeLabel") }
+                    header={ t("idp:identityProviderGroups.claimConfigs.groupAttributeLabel") }
                     content={
                         (<p>
                             Please note that you have enabled custom attribute mapping, but have not added a custom
@@ -319,7 +325,6 @@ export const IdentityProviderGroupsTab: FunctionComponent<IdentityProviderGroups
                             idpId={ editingIDP?.id }
                             featureConfig={ featureConfig }
                             readOnly={ isReadOnly }
-                            allowedScopes={ allowedScopes }
                             isGroupListLoading={ false }
                         />
                     </EmphasizedSegment>

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { UploadCertificate } from "@wso2is/admin.core.v1";
+import { UploadCertificate } from "@wso2is/admin.core.v1/components/upload-certificate";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Certificate, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";

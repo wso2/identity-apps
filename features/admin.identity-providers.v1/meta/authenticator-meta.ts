@@ -24,7 +24,7 @@ import { AuthenticatorLabels } from "@wso2is/admin.connections.v1/models/authent
 import get from "lodash-es/get";
 import { ReactNode } from "react";
 import { getAuthenticatorIcons } from "../configs/ui";
-import { AuthenticatorCategories } from "../models";
+import { AuthenticatorCategories, LocalAuthenticatorInterface } from "../models";
 
 export class AuthenticatorMeta {
 
@@ -90,7 +90,10 @@ export class AuthenticatorMeta {
             "of active user sessions.",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
                 .X509_CERTIFICATE_AUTHENTICATOR_ID ]: "Authenticate clients using " +
-                "client certificates."
+                "client certificates.",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
+                .PUSH_AUTHENTICATOR_ID ]: "Two-factor authentication via " +
+                "mobile push notifications."
         }, authenticatorId);
     }
 
@@ -149,10 +152,30 @@ export class AuthenticatorMeta {
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
                 .MAGIC_LINK_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.magicLink,
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS
-                .BACKUP_CODE_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.backupCode
+                .BACKUP_CODE_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.backupCode,
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.PUSH_AUTHENTICATOR_ID ]: getAuthenticatorIcons()?.push
         }, authenticatorId);
 
         return icon ?? getAuthenticatorIcons().default;
+    }
+
+    /**
+     * Get Custom Authenticator Icon.
+     *
+     * Currently authenticator id is being used to fetch the respective authenticator icon.
+     * Existing function could not be used since the id and the name of
+     * custom authenticators are not pre defined.
+     * For custom local authenticators, it returns the authenticator's own image URI if available,
+     * or falls back to a default custom authenticator icon.
+     *
+     * @returns Custom Authenticator Icon.
+     */
+    public static getCustomAuthenticatorIcon(authenticator: LocalAuthenticatorInterface): string {
+        if (authenticator?.image) {
+            return authenticator.image;
+        }
+
+        return getAuthenticatorIcons()?.customAuthenticator;
     }
 
     /**
@@ -169,6 +192,7 @@ export class AuthenticatorMeta {
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.FIDO_AUTHENTICATOR_ID ]: "Predefined",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.MAGIC_LINK_AUTHENTICATOR_ID ]: "Predefined",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.TOTP_AUTHENTICATOR_ID ]: "Predefined",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.PUSH_AUTHENTICATOR_ID ]: "Predefined",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GOOGLE_OIDC_AUTHENTICATOR_ID ]: "Google",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GITHUB_AUTHENTICATOR_ID ]: "GitHub",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.FACEBOOK_AUTHENTICATOR_ID ]: "Facebook",
@@ -218,6 +242,7 @@ export class AuthenticatorMeta {
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.TOTP_AUTHENTICATOR_ID ]: "totp",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID ]: "sms-otp",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID ]: "email-otp",
+            [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.PUSH_AUTHENTICATOR_ID ]: "push",
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.IDENTIFIER_FIRST_AUTHENTICATOR_ID ]: "identifier-first",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GOOGLE_OIDC_AUTHENTICATOR_ID ]: "google",
             [ FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.GITHUB_AUTHENTICATOR_ID ]: "github",

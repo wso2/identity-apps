@@ -18,7 +18,7 @@
 
 import { AsgardeoSPAClient } from "@asgardeo/auth-react";
 import { HttpMethods } from "@wso2is/core/models";
-import { UserListInterface } from "../models";
+import { UserListInterface } from "../models/users";
 import { store } from "../store";
 
 /**

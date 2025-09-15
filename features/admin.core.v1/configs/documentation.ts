@@ -18,7 +18,7 @@
 
 // DO NOT SHORTEN THE IMPORT PATH as it could lead to circular dependencies.
 import { getDocumentationLinksExtension } from "@wso2is/admin.extensions.v1/configs/documentation";
-import { DocumentationLinksInterface } from "../models";
+import { DocumentationLinksInterface } from "../models/documentation";
 
 /**
  * Get all the Features documentation links.

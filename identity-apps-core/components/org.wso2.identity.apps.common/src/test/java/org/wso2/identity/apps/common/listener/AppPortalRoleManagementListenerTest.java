@@ -105,7 +105,9 @@ public class AppPortalRoleManagementListenerTest {
 
     @DataProvider(name = "preUpdateUserListOfRoleDataProvider")
     public Object[][] preUpdateUserListOfRoleDataProvider() {
-        return new Object[][]{
+
+        return new Object[][] {
+            
             // Test case where deletedUserIDList == null.
             {roleId, Collections.emptyList(), null, tenantDomain, isAdminRole, !isOrganization, adminUserId},
 
@@ -143,7 +145,7 @@ public class AppPortalRoleManagementListenerTest {
         when(roleManagementService.getRoleBasicInfoById(roleId, tenantDomain)).thenReturn(role);
         setRoleAttributes(isAdminRole);
 
-        // Call the method.
+        // Invoke pre-update method for updating the user list of a role.
         if (!isAdminRole || deletedUserIDList == null || isOrganization || !deletedUserIDList.contains(adminUserId)) {
             appPortalRoleManagementListener.preUpdateUserListOfRole(roleId, newUserIDList, deletedUserIDList,
                 tenantDomain);

@@ -57,6 +57,7 @@ import {
 import {
     ReactComponent as AdminOutlineIcon
 } from "../../themes/default/assets/images/icons/outline-icons/admin-outline.svg";
+import { ReactComponent as AgentOutlineIcon } from "../../themes/default/assets/images/icons/outline-icons/agent.svg";
 import {
     ReactComponent as AnalyticsIcon
 } from "../../themes/default/assets/images/icons/outline-icons/analytics.svg";
@@ -102,6 +103,9 @@ import {
 } from "../../themes/default/assets/images/icons/outline-icons/remote-logging.svg";
 import { ReactComponent as PinIcon } from "../../themes/default/assets/images/icons/pin-icon.svg";
 import { ReactComponent as PlugIcon } from "../../themes/default/assets/images/icons/plug-icon.svg";
+import {
+    ReactComponent as PushNotificationProviderIcon
+} from "../../themes/default/assets/images/icons/push-provider-icon.svg";
 import { ReactComponent as ScopeIcon } from "../../themes/default/assets/images/icons/scope.svg";
 import {
     ReactComponent as LockIconFilled
@@ -175,6 +179,9 @@ import { ReactComponent as PythonLogo } from "../../themes/default/assets/images
 import { ReactComponent as ReactLogo } from "../../themes/default/assets/images/technologies/react-logo.svg";
 import { ReactComponent as VueLogo } from "../../themes/default/assets/images/technologies/vue-logo.svg";
 import { ReactComponent as WindowsLogo } from "../../themes/default/assets/images/technologies/windows-logo.svg";
+import {
+    ReactComponent as MCPServersOutlineIcon
+} from "../../themes/wso2is/assets/images/icons/outline-icons/mcp-servers-outline.svg";
 
 /**
  * Typed interface of {@link getTechnologyLogos}
@@ -269,9 +276,11 @@ export type GetSidePanelIconsInterface = {
     identityProviders: FunctionComponent | ReactNode,
     identityVerificationProviders: FunctionComponent | ReactNode,
     jwtKey: FunctionComponent | ReactNode,
+    mcpServers: FunctionComponent | ReactNode,
     organization: FunctionComponent | ReactNode,
     organizationLegacy: FunctionComponent | ReactNode,
     overview: FunctionComponent | ReactNode,
+    push: FunctionComponent | ReactNode,
     remoteFetch: FunctionComponent | ReactNode,
     remoteLogging: FunctionComponent | ReactNode,
     roles: FunctionComponent | ReactNode,
@@ -282,7 +291,8 @@ export type GetSidePanelIconsInterface = {
     sms: FunctionComponent | ReactNode,
     userStore: FunctionComponent | ReactNode,
     users: FunctionComponent | ReactNode,
-    insights: FunctionComponent | ReactNode
+    insights: FunctionComponent | ReactNode,
+    agents: FunctionComponent | ReactNode,
 };
 
 /**
@@ -295,7 +305,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
     return {
         adminAdvisoryBanner: AdminAdvisoryBannerIcon,
         administrators: AdminOutlineIcon,
-        policyAdministration: AdminOutlineIcon,
+        agents: AgentOutlineIcon,
         apiResources: CloudConnectionOutlineIcon,
         appLogs: IDPMetadataIcon,
         applicationRoles: ApplicationRolesIcon,
@@ -323,10 +333,13 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
         identityVerificationProviders: IDVPOutlineIcon ,
         insights: AnalyticsIcon,
         jwtKey: JWTKey,
+        mcpServers: MCPServersOutlineIcon,
         organization: LDAPOutlineIcon,
         organizationLegacy: LDAPOutlineLegacyIcon,
         organizationRoles: OrganizationRolesIcon,
         overview: DashboardIcon,
+        policyAdministration: AdminOutlineIcon,
+        push: PushNotificationProviderIcon,
         remoteFetch: CodeForkIcon,
         remoteLogging: RemoteLoggingIcon,
         roles: BriefcaseIcon,

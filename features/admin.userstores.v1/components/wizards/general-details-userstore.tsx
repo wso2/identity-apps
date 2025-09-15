@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,16 +16,21 @@
  * under the License.
  */
 
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
 import { Button, Divider, Grid, Header, Icon } from "semantic-ui-react";
-import { getUserStores, testConnection } from "../../api";
-import { DISABLED, JDBC, USERSTORE_NAME_CHARACTER_LIMIT, USERSTORE_VALIDATION_REGEX_PATTERNS } from "../../constants";
+import { testConnection } from "../../api";
+import {
+    DISABLED,
+    JDBC,
+    TestButtonColor,
+    TestButtonIcon,
+    USERSTORE_NAME_CHARACTER_LIMIT,
+    USERSTORE_VALIDATION_REGEX_PATTERNS
+} from "../../constants";
+import useUserStores from "../../hooks/use-user-stores";
 import { PropertyAttribute, TestConnection, TypeProperty, UserStoreListItem, UserstoreType } from "../../models";
 import { validateInputWithRegex } from "../../utils/userstore-utils";
 
@@ -88,17 +93,7 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
 
     const { t } = useTranslation();
 
-    const dispatch: Dispatch = useDispatch();
-
-    /**
-     * Enum containing the icons a test connection button can have
-     */
-    enum TestButtonIcon {
-        TESTING = "spinner",
-        FAILED = "remove",
-        SUCCESSFUL = "check",
-        INITIAL = "bolt"
-    }
+    const { userStoresList } = useUserStores();
 
     /**
      * This returns of the icon for the test button.
@@ -116,16 +111,6 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
             return TestButtonIcon.INITIAL;
         }
     };
-
-    /**
-     * Enum containing the colors the test button can have
-     */
-    enum TestButtonColor {
-        TESTING,
-        INITIAL,
-        SUCCESSFUL,
-        FAILED
-    }
 
     /**
      * This finds the right color for the test button.
@@ -172,26 +157,7 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                             value={ values?.get("name")?.toString() }
                             data-testid={ `${ testId }-form-name-input` }
                             validation={ async (value: string, validation: Validation) => {
-                                let userStores: UserStoreListItem[] = null;
-
-                                try {
-                                    userStores = await getUserStores(null);
-                                } catch (error) {
-                                    dispatch(addAlert(
-                                        {
-                                            description: error?.description
-                                                || t("userstores:notifications." +
-                                                    "fetchUserstores.genericError" +
-                                                    ".description"),
-                                            level: AlertLevels.ERROR,
-                                            message: error?.message
-                                                || t("userstores:notifications." +
-                                                    "fetchUserstores.genericError.message")
-                                        }
-                                    ));
-                                }
-
-                                if (userStores.find((userstore: UserStoreListItem) => userstore.name === value)) {
+                                if (userStoresList?.find((userstore: UserStoreListItem) => userstore.name === value)) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(
                                         t("userstores:forms.general." +

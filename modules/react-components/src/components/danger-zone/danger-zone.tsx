@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,6 +35,10 @@ export interface DangerZoneProps extends TestableComponentInterface, Identifiabl
      */
     buttonText?: string;
     /**
+     * Danger zone style class name.
+     */
+    className?: string;
+    /**
      * Heading for the danger zone.
      */
     header: string;
@@ -55,6 +59,10 @@ export interface DangerZoneProps extends TestableComponentInterface, Identifiabl
      * Button disable state.
      */
     isButtonDisabled?: boolean;
+    /**
+     * Button loading state.
+     */
+    isButtonLoading?: boolean;
     /**
      * Button disable hint.
      */
@@ -79,6 +87,14 @@ export interface DangerZoneToggleProps {
      * ID of the toggle.
      */
     id?: string;
+    /**
+     * Disable state of the toggle.
+     */
+    disabled?: boolean;
+    /**
+     * Disable hint for the toggle.
+     */
+    disableHint?: string;
 }
 
 /**
@@ -95,24 +111,27 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
     const {
         actionTitle,
         buttonText,
+        className,
         header,
         subheader,
         onActionClick,
         toggle,
         isButtonDisabled,
+        isButtonLoading,
         buttonDisableHint,
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId
     } = props;
-
     const { isMobileViewport } = useMediaContext();
+    const defaultClassName = className ?? "danger-zone";
 
     return (
-        <Segment data-testid={ testId } data-componentid={ componentId } className="danger-zone" padded clearing>
+        <Segment data-testid={ testId } data-componentid={ componentId } className={ defaultClassName } padded clearing>
             <div className="header-wrapper">
                 <Header
                     as="h5"
                     color="red"
+                    className="header"
                     floated="left"
                     data-componentid={ `${ componentId }-header` }
                     data-testid={ `${ testId }-header` }
@@ -130,14 +149,24 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
             {
                 toggle
                     ? (
-                        <Checkbox
-                            toggle
-                            id={ toggle?.id }
-                            onChange={ toggle?.onChange }
-                            checked={ toggle?.checked }
-                            className="danger-zone toggle-switch"
-                            data-componentid={ `${ componentId }-toggle` }
-                            data-testid={ `${ testId }-toggle` }
+                        <Popup
+                            trigger={ (
+                                <Checkbox
+                                    toggle
+                                    id={ toggle?.id }
+                                    onChange={ toggle?.onChange }
+                                    checked={ toggle?.checked }
+                                    className={ defaultClassName + " toggle-switch" }
+                                    data-componentid={ `${ componentId }-toggle` }
+                                    data-testid={ `${ testId }-toggle` }
+                                    disabled={ toggle?.disabled }
+                                />
+                            ) }
+                            content={ toggle?.disableHint }
+                            position={ isMobileViewport ? "top center" : "top right" }
+                            size="mini"
+                            wide
+                            disabled={ !toggle?.disabled || !toggle?.disableHint }
                         />
                     )
                     : (
@@ -154,9 +183,12 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
                                         data-componentid={ componentId + "-delete-button" }
                                         data-testid={ testId + "-delete-button" }
                                         fluid={ isMobileViewport }
-                                        negative
+                                        negative={ !className }
+                                        primary={ !!className }
                                         onClick={ onActionClick }
                                         disabled={ isButtonDisabled }
+                                        loading={ isButtonLoading }
+                                        basic={ !!className }
                                     >
                                         { buttonText ?? actionTitle }
                                     </Button>

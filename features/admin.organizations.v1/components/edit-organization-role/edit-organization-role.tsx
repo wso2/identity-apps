@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import { AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { SBACInterface } from "@wso2is/core/models";
 import { ContentLoader, ResourceTab, ResourceTabPaneInterface } from "@wso2is/react-components";

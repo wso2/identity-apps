@@ -18,7 +18,9 @@
 
 import { useRequiredScopes } from "@wso2is/access-control";
 import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
-import { AppState, FeatureConfigInterface, history, store } from "@wso2is/admin.core.v1";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import {  FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import { UserStoreUtils } from "@wso2is/admin.extensions.v1/utils/user-store-utils";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";

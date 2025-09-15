@@ -25,24 +25,20 @@ import {
     useRequiredScopes
 } from "@wso2is/access-control";
 import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppState,
-    EventPublisher,
-    FeatureConfigInterface,
-    UIConstants,
-    UserBasicInterface,
-    UserRoleInterface,
-    UserStoreDetails,
-    history,
-    store
-} from "@wso2is/admin.core.v1";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
+import { AppState, store } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { getAgentConnections } from "@wso2is/admin.remote-userstores.v1/api/remote-user-stores";
 import { AgentConnectionInterface } from "@wso2is/admin.remote-userstores.v1/models/remote-user-stores";
 import { getRoleById, searchRoleList } from "@wso2is/admin.roles.v2/api/roles";
 import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants";
+import { useGetRoleByIdV3 } from "@wso2is/admin.roles.v2/hooks/use-get-role-by-id-v3";
 import { RolesV2Interface, SearchRoleInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { useServerConfigs } from "@wso2is/admin.server-configurations.v1";
 import { TenantInfo } from "@wso2is/admin.tenants.v1/models/tenant";
@@ -59,13 +55,13 @@ import {
     InvitationStatus,
     UserInviteInterface,
     UserListInterface
-} from "@wso2is/admin.users.v1/models";
+} from "@wso2is/admin.users.v1/models/user";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
-import { getUserStores } from "@wso2is/admin.userstores.v1/api";
 import {
-    CONSUMER_USERSTORE,
-    UserStoreManagementConstants
+    CONSUMER_USERSTORE
 } from "@wso2is/admin.userstores.v1/constants";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -85,7 +81,15 @@ import {
 import { AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
+import React, {
+    FunctionComponent,
+    ReactElement,
+    SyntheticEvent,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
@@ -153,6 +157,11 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
 
     const useOrgConfig: UseOrganizationConfigType = useOrganizationConfigV2;
 
+    const {
+        isLoading: isUserStoresListFetchRequestLoading,
+        userStoresList
+    } = useUserStores();
+
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const tenantedConsoleUrl: string = useSelector((state: AppState) => state?.config?.deployment?.clientHost);
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.username);
@@ -191,14 +200,12 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
     const [ remoteUserStoreId, setRemoteUserStoreId ] = useState<string>(null);
     const [ remoteUserStoreConnectionStatus, setRemoteUserStoreConnectionStatus ] = useState<boolean>(false);
     const [ isEnterpriseLoginEnabled, setIsEnterpriseLoginEnabled ] = useState<boolean>(false);
-    const [ isUserStoreListLoading, setUserStoreListLoading ] = useState<boolean>(false);
     const [ isUserStoreDropdownDisabled, setUserStoreDropdownDisabled ] = useState<boolean>(false);
     const [ isSelectedUserStoreReadOnly, setSelectedUserStoreReadOnly ] = useState<boolean>(false);
     const [ isUserStoreChanged, setUserStoreChanged ] = useState<boolean>(false);
     const [ isInternalAdminUserListFetchRequestLoading, setInternalAdminUserListFetchRequestLoading ] =
         useState<boolean>(false);
     const [ isInternalAdminsNextPageAvailable, setInternalAdminsNextPageAvailable ] = useState<boolean>(false);
-    const [ userStoreError, setUserStoreError ] = useState(false);
     const [ activeTabIndex, setActiveTabIndex ] = useState<number>(TabIndex.EXTERNAL_ADMINS);
     const [ userStoreList, setUserStoreList ] = useState<DropdownItemProps[]>([]);
     const [ adminRoleId, setAdminRoleId ] = useState<string>("");
@@ -216,6 +223,34 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
         startIndex: 0,
         totalResults: 0
     });
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
+    );
+
+    const { data: roleDataV3, error: roleErrorV3, mutate: mutateRoleV3 } =
+        useGetRoleByIdV3(userRolesV3FeatureEnabled ? adminRoleId : null);
+
+    // Create a function that uses the appropriate method based on the API version
+    const getRoleByIdFunction: (roleId: string) => Promise<AxiosResponse> = useCallback(
+        (roleId: string): Promise<AxiosResponse> => {
+            if (userRolesV3FeatureEnabled) {
+                return new Promise((resolve: (value: AxiosResponse) => void, reject: (reason?: any) => void) => {
+                    if (roleDataV3) {
+                        resolve({ data: roleDataV3 } as AxiosResponse);
+                    } else if (roleErrorV3) {
+                        reject(roleErrorV3);
+                    } else {
+                        mutateRoleV3().then((data: any) => {
+                            resolve({ data } as AxiosResponse);
+                        }).catch(reject);
+                    }
+                });
+            } else {
+                return getRoleById(roleId);
+            }
+        },
+        [ userRolesV3FeatureEnabled, roleDataV3, roleErrorV3, mutateRoleV3 ]
+    );
 
     const organizationName: string = store.getState().auth.tenantDomain;
 
@@ -277,12 +312,35 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
         error: serverConfigsFetchRequestError
     } = useServerConfigs();
 
+    useEffect(() => {
+        const readOnlyUserStoreArray: string[] = [];
+        const userStoreArray: DropdownItemProps[] = userStoresList?.filter(
+            (item: UserStoreListItem) => item.enabled).map(
+            (item: UserStoreListItem, index: number) => {
+                // Set readOnly userstores based on the type.
+                if (item.typeName === AdministratorConstants.READONLY_USERSTORE_TYPE_NAME) {
+                    readOnlyUserStoreArray.push(item.name.toUpperCase());
+                    setRemoteUserStoreId(item.id);
+                }
+
+                return {
+                    key: index,
+                    text: item.name.toUpperCase(),
+                    value: item.name.toUpperCase()
+                };
+            }
+        );
+
+        setUserStoreList(userStoreArray);
+        setReadOnlyUserStoresList(readOnlyUserStoreArray);
+        setUserStoreDropdownDisabled(userStoreArray.length <= 1);
+    }, [ isUserStoresListFetchRequestLoading, userStoresList ]);
+
     /**
      * Handles the invitation status option changes.
      */
     useEffect(() => {
         checkAdvancedUserManagementStatus();
-        getUserStoreList();
         getAdminRoleId();
         setAssociationType(getAssociationType(authUserTenants, currentOrganization));
 
@@ -700,66 +758,6 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
         return moderatedUsersList;
     };
 
-    const getUserStoreList = (): void => {
-        setUserStoreListLoading(true);
-
-        getUserStores({
-            "requiredAttributes": UserStoreManagementConstants.USER_STORE_PROPERTY_READ_ONLY
-        })
-            .then((response: UserStoreDetails[]) => {
-                const readOnlyUserStoreArray: string[] = [];
-                const userStoreArray: DropdownItemProps[] = response?.filter(
-                    (item: UserStoreDetails) => item.enabled).map(
-                    (item: UserStoreDetails, index: number) => {
-                        // Set readOnly userstores based on the type.
-                        if (item.typeName === AdministratorConstants.READONLY_USERSTORE_TYPE_NAME) {
-                            readOnlyUserStoreArray.push(item.name.toUpperCase());
-                            setRemoteUserStoreId(item.id);
-                        }
-
-                        return {
-                            key: index,
-                            text: item.name.toUpperCase(),
-                            value: item.name.toUpperCase()
-                        };
-                    }
-                );
-
-                setUserStoreError(false);
-                setUserStoreList(userStoreArray);
-                setReadOnlyUserStoresList(readOnlyUserStoreArray);
-                setUserStoreDropdownDisabled(userStoreArray.length <= 1);
-            }).catch((error: IdentityAppsApiException) => {
-                if (error?.response?.data?.description) {
-                    dispatch(addAlert({
-                        description: error?.response?.data?.description ?? error?.response?.data?.detail
-                            ?? t("userstores:notifications.fetchUserstores.genericError." +
-                                "description"),
-                        level: AlertLevels.ERROR,
-                        message: error?.response?.data?.message
-                            ?? t("userstores:notifications.fetchUserstores.genericError." +
-                                "message")
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: t("userstores:notifications.fetchUserstores.genericError." +
-                        "description"),
-                    level: AlertLevels.ERROR,
-                    message: t("userstores:notifications.fetchUserstores.genericError.message")
-                }));
-
-                setUserStoreError(true);
-
-                return;
-            })
-            .finally(() => {
-                setUserStoreListLoading(false);
-            });
-    };
-
     /**
      * Fetches the admin role id from database.
      */
@@ -969,7 +967,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
             totalResults: 0
         });
 
-        getRoleById(adminRoleId).then((response: AxiosResponse) => {
+        getRoleByIdFunction(adminRoleId).then((response: AxiosResponse) => {
             const adminList: UserRoleInterface[] = response?.data?.users;
 
             adminList.forEach((user: UserRoleInterface) => {
@@ -1398,8 +1396,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
                                 options={ userStoreList }
                                 onChange={ handleUserStoreChange }
                                 text={ selectedUserStore }
-                                loading={ isUserStoreListLoading }
-                                disabled={ userStoreError }
+                                loading={ isUserStoresListFetchRequestLoading }
                             />
                         ) : null
                 }
@@ -1435,9 +1432,6 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
                         closeWizard={ () => {
                             setShowExtenalAdminWizard(false);
                         } }
-                        updateList={ () => mutateGuestUserListFetchRequest() }
-                        rolesList={ [] }
-                        emailVerificationEnabled={ true }
                         onInvitationSendSuccessful={ () => {
                             mutateGuestUserListFetchRequest();
                             eventPublisher.publish("manage-users-finish-creating-collaborator-user");

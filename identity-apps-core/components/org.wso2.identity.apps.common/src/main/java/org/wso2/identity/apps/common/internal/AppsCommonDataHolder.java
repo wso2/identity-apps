@@ -18,8 +18,10 @@
 
 package org.wso2.identity.apps.common.internal;
 
+import org.wso2.carbon.identity.api.resource.collection.mgt.APIResourceCollectionManager;
 import org.wso2.carbon.identity.api.resource.mgt.APIResourceManager;
 import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
+import org.wso2.carbon.identity.application.mgt.AuthorizedAPIManagementService;
 import org.wso2.carbon.identity.oauth.OAuthAdminServiceImpl;
 import org.wso2.carbon.identity.organization.management.application.OrgApplicationManager;
 import org.wso2.carbon.identity.organization.management.service.OrganizationManagementInitialize;
@@ -47,12 +49,15 @@ public class AppsCommonDataHolder {
     private RoleManagementService roleManagementService;
 
     private APIResourceManager apiResourceManager;
+    private APIResourceCollectionManager apiResourceCollectionManager;
 
     private Set<String> systemAppConsumerKeys = new HashSet<>();
 
     private Set<String> systemApplications = new HashSet<>();
 
     private final Set<String> defaultApplications = new HashSet<>();
+
+    private AuthorizedAPIManagementService authorizedAPIManagementService;
 
     private boolean isOrganizationManagementEnabled;
 
@@ -222,6 +227,26 @@ public class AppsCommonDataHolder {
         return apiResourceManager;
     }
 
+    /**
+     * Set API resource collection manager.
+     *
+     * @param apiResourceCollectionManager APIResourceCollectionManager.
+     */
+    public void setAPIResourceCollectionManager(APIResourceCollectionManager apiResourceCollectionManager) {
+
+        this.apiResourceCollectionManager = apiResourceCollectionManager;
+    }
+
+    /**
+     * Get API resource collection manager.
+     *
+     * @return apiResourceCollectionManager.
+     */
+    public APIResourceCollectionManager getApiResourceCollectionManager() {
+
+        return apiResourceCollectionManager;
+    }
+
 
     /**
      * Set default applications.
@@ -241,5 +266,25 @@ public class AppsCommonDataHolder {
     public Set<String> getDefaultApplications() {
 
         return defaultApplications;
+    }
+
+    /**
+     * Returns the authorized API management service.
+     *
+     * @return The authorized API management service.
+     */
+    public AuthorizedAPIManagementService getAuthorizedAPIManagementService() {
+
+        return authorizedAPIManagementService;
+    }
+
+    /**
+     * Sets the authorized API management service.
+     *
+     * @param authorizedAPIManagementService The authorized API management service to set.
+     */
+    public void setAuthorizedAPIManagementService(AuthorizedAPIManagementService authorizedAPIManagementService) {
+
+        this.authorizedAPIManagementService = authorizedAPIManagementService;
     }
 }

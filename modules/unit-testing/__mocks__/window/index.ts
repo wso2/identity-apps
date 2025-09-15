@@ -18,5 +18,6 @@
 
 import "./app-utils";
 import "./document";
+import "./local-storage";
 import "./worker";
 import "./global-variables";

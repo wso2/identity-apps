@@ -22,22 +22,21 @@
     <parent>
         <groupId>org.wso2.identity.apps</groupId>
         <artifactId>identity-apps-core</artifactId>
-        <version>2.10.3-SNAPSHOT</version>
+        <version>3.1.30-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>login-portal-layouts</artifactId>
     <packaging>jar</packaging>
-    <name>Asgardeo Apps - Login Portal Layouts</name>
-    <url>https://asgardeo.io</url>
+    <name>WSO2 Identity Server Apps - Login Portal Layouts</name>
+    <url>http://wso2.org</url>
     <description>Layouts for the login portal pages</description>
 
     <dependencies>
         <dependency>
             <groupId>org.wso2.identity.apps</groupId>
             <artifactId>org.wso2.identity.apps.taglibs.layout.controller</artifactId>
-            <version>1.4.34</version>
         </dependency>
     </dependencies>
 

@@ -137,4 +137,56 @@ export class CookieStorageUtils {
 
         return undefined;
     }
+
+    /**
+     * Sets a cookie with the specified name, value, expiration duration, and optional domain.
+     *
+     * @param name - The name of the cookie.
+     * @param value - The value of the cookie.
+     * @param duration - An object specifying the duration for the cookie's expiration.
+     *                   Supports minutes, hours, and days.
+     *                   Defaults to 30 days if not provided.
+     * @param domain - (Optional) The domain for which the cookie is set. If not provided, sets a non-domain cookie.
+     * @param options - (Optional) Additional options for the cookie such as HttpOnly and Secure.
+     *
+     * @example
+     * // Set a cookie for 1 day, 2 hours, and 30 minutes
+     * `CookieStorageUtils.setCookie("language", "en", { days: 1, hours: 2, minutes: 30 }, ".example.com");`
+     *
+     * // Set a cookie for 15 minutes
+     * `CookieStorageUtils.setCookie("tempData", "value", { minutes: 15 });`
+     */
+    public static setCookie(
+        name: string,
+        value: string,
+        duration: { minutes?: number; hours?: number; days?: number } = { days: 30 },
+        domain?: string,
+        options?: { httpOnly?: boolean; secure?: boolean }
+    ): void {
+        const date: Date = new Date();
+
+        let expirationTime: number = 0;
+
+        if (duration.minutes) {
+            expirationTime += duration.minutes * 60 * 1000;
+        }
+        if (duration.hours) {
+            expirationTime += duration.hours * 60 * 60 * 1000;
+        }
+        if (duration.days) {
+            expirationTime += duration.days * 24 * 60 * 60 * 1000;
+        }
+
+        date.setTime(date.getTime() + expirationTime);
+
+        const expires: string = `; expires=${date.toUTCString()}`;
+        const domainString: string = domain ? `; domain=${domain}` : "";
+        const httpOnlyString: string = options?.httpOnly ? "; HttpOnly" : "";
+        const secureString: string = options?.secure ? "; Secure" : "";
+
+        const cookie: string = `${name}=${value ||
+            ""}${expires}${domainString}${httpOnlyString}${secureString}; path=/`;
+
+        document.cookie = cookie;
+    }
 }

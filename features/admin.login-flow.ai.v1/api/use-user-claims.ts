@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -33,7 +33,7 @@ const useUserClaims = (): {
 
     useEffect(() => {
         const params: ClaimsGetParams = {
-            "exclude-identity-claims": false,
+            "exclude-hidden-claims": true,
             filter: null,
             limit: null,
             offset: null,

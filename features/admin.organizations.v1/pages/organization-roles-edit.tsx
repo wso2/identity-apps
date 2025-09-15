@@ -16,7 +16,10 @@
  * under the License.
  */
 
-import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface  } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -47,7 +50,7 @@ const OrganizationRolesEdit: FunctionComponent = (): ReactElement => {
         setIsRoleDetailsRequestLoading(true);
 
         getOrganizationRoleById(currentOrganization.id, roleId)
-            .then(response => {
+            .then((response: any) => {
                 if (response.status === 200) {
                     setRoleObject(response.data);
                 }
@@ -67,8 +70,8 @@ const OrganizationRolesEdit: FunctionComponent = (): ReactElement => {
      * Get Role data from URL id
      */
     useEffect(() => {
-        const path = history.location.pathname.split("/");
-        const roleId = path[ path.length - 1 ];
+        const path: string[] = history.location.pathname.split("/");
+        const roleId: string = path[ path.length - 1 ];
 
         setRoleId(roleId);
         getRoleDetails(roleId);

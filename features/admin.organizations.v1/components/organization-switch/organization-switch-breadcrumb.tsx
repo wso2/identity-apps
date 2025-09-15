@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,8 +19,10 @@
 import { BasicUserInfo } from "@asgardeo/auth-react";
 import { CloneIcon } from "@oxygen-ui/react-icons";
 import useSignIn from "@wso2is/admin.authentication.v1/hooks/use-sign-in";
-import { AppConstants, AppState, OrganizationType } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { OrganizationType } from "@wso2is/admin.core.v1/constants/organization-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { organizationConfigs } from "@wso2is/admin.extensions.v1";
 import TenantDropdown from "@wso2is/admin.tenants.v1/components/dropdown/tenant-dropdown";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -101,6 +103,23 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     useEffect(() => {
         mutateOrganizationBreadCrumbFetchRequest();
     }, [ organizationId ]);
+
+    /**
+     * Listen for current authenticated organization updates from the organization edit form.
+     */
+    useEffect(() => {
+        const handleOrganizationUpdate = (event: CustomEvent) => {
+            if (event.detail?.success) {
+                mutateOrganizationBreadCrumbFetchRequest();
+            }
+        };
+
+        window.addEventListener("organization-updated", handleOrganizationUpdate as EventListener);
+
+        return () => {
+            window.removeEventListener("organization-updated", handleOrganizationUpdate as EventListener);
+        };
+    }, []);
 
     const isSubOrg: boolean = window[ "AppUtils" ].getConfig().organizationName;
 
@@ -322,7 +341,11 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
                 <>
                     { breadcrumbList?.map(
                         (breadcrumb: BreadcrumbItem, index: number) => {
-                            if (index === 0 && !isSAASDeployment) {
+                            // Hide the super organization breadcrumb for SAAS deployment.
+                            if (
+                                index === 0 &&
+                                !(isSAASDeployment && OrganizationUtils.isSuperOrganization(breadcrumb))
+                            ) {
                                 return (
                                     <>
                                         { generateSuperBreadcrumbItem(breadcrumb) }

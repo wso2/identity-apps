@@ -17,10 +17,11 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import { EventPublisher, FeatureConfigInterface } from "@wso2is/admin.core.v1";
-import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
 import { ListLayout, PrimaryButton } from "@wso2is/react-components";

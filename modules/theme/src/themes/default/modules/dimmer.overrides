@@ -21,6 +21,10 @@
     z-index: 1500;
 }
 
+.ui.page.dimmer {
+    display: flex !important;
+}
+
 .dimmable{
      &.circular{
          border-radius:50%;

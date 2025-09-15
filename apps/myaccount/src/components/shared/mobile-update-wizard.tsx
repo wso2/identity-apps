@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,7 @@
  */
 
 import { ProfileConstants } from "@wso2is/core/constants";
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { PatchOperationRequest, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms, Validation, useTrigger } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
 import { AxiosError, AxiosResponse } from "axios";
@@ -27,7 +27,8 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Message, Modal, Segment } from "semantic-ui-react";
 import { resendSMSOTPCode, updateProfileInfo, validateSMSOTPCode } from "../../api";
-import { AlertInterface, AlertLevels } from "../../models";
+import { ProfileConstants as MyAccountProfileConstants } from "../../constants";
+import { AlertInterface, AlertLevels, MultiValue, ProfilePatchOperationValue } from "../../models";
 import { getProfileInformation } from "../../store/actions";
 
 /**
@@ -40,18 +41,7 @@ interface MobileUpdateWizardProps extends TestableComponentInterface {
     currentMobileNumber: string;
     isMobileRequired: boolean;
     isMultipleEmailAndMobileNumberEnabled?: boolean;
-}
-
-/**
- * Interface for the operation object.
- */
-interface Operation {
-    op: string;
-    value: {
-        [key: string]: string | boolean
-        | Array<{ [key: string]: string | boolean }>
-        | { [key: string]: string | boolean };
-    };
+    subAttributes?: MultiValue[];
 }
 
 /**
@@ -71,6 +61,7 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
         currentMobileNumber,
         isMobileRequired,
         isMultipleEmailAndMobileNumberEnabled,
+        subAttributes,
         ["data-testid"]: testId
     } = props;
 
@@ -93,9 +84,9 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
     const isMobileVerificationPending = (updatedMobileNumber: string, userData:  Record<string, string>): boolean => {
         const PENDING_MOBILE_CLAIM: string = "pendingMobileNumber";
 
-        return userData && userData[ProfileConstants.SCIM2_ENT_USER_SCHEMA] &&
-            userData[ProfileConstants.SCIM2_ENT_USER_SCHEMA][PENDING_MOBILE_CLAIM] &&
-            userData[ProfileConstants.SCIM2_ENT_USER_SCHEMA][PENDING_MOBILE_CLAIM] === updatedMobileNumber;
+        return userData && userData[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA] &&
+            userData[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA][PENDING_MOBILE_CLAIM] &&
+            userData[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA][PENDING_MOBILE_CLAIM] === updatedMobileNumber;
 
     };
 
@@ -107,10 +98,7 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
     const handleUpdate = (mobileNumber: string) => {
 
         setIsSubmitting(true);
-        const data: {
-            Operations: Array<Operation>;
-            schemas: string[];
-        } = {
+        const data: PatchOperationRequest<ProfilePatchOperationValue> = {
             Operations: [
                 {
                     op: "replace",
@@ -120,16 +108,21 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
+        const filteredSubAttributes: MultiValue[] =
+            subAttributes?.filter((attr: MultiValue) => attr?.type !== MyAccountProfileConstants.MOBILE);
+
         data.Operations[0].value = {
             phoneNumbers: [
+                ...filteredSubAttributes,
                 {
                     type: "mobile",
                     value: mobileNumber
                 }
             ],
-            [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: { "verifyMobile": true }
+            [ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]: { "verifyMobile": true }
         };
-        updateProfileInfo(data).then((response: AxiosResponse) => {
+
+        updateProfileInfo(data as unknown as Record<string, unknown>).then((response: AxiosResponse) => {
             if (response.status === 200) {
                 // Re-fetch the profile information
                 dispatch(getProfileInformation(true));
@@ -381,7 +374,7 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
             <Segment basic textAlign="center">
                 <div className="modal-input">
                     <div className="svg-box">
-                        <svg className="circular positive-stroke">
+                        <svg className="circular positive-stroke" viewBox="0 0 150 150">
                             <circle
                                 className="path"
                                 cx="75"

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,7 @@
  */
 
 import { ApplicationBasicInterface } from "@wso2is/admin.applications.v1/models/application";
-import { CertificateConfigInterface } from "@wso2is/admin.connections.v1";
+import { CertificateConfigInterface, ExternalEndpoint } from "@wso2is/admin.connections.v1";
 import { GovernanceConnectorInterface } from "@wso2is/admin.server-configurations.v1/models";
 import { IdentifiableComponentInterface, LinkInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { FunctionComponent, SVGProps } from "react";
@@ -119,6 +119,7 @@ export interface FederatedAuthenticatorInterface extends CommonPluggableComponen
     name?: string;
     isEnabled?: boolean;
     isDefault?: boolean;
+    endpoint?: ExternalEndpoint;
     /**
      * The list of tags that the authenticator can be categorized under.
      */
@@ -439,6 +440,16 @@ export interface LocalAuthenticatorInterface extends CommonPluggableComponentInt
      */
     displayName?: string;
     /**
+     * Description of the local authenticator.
+     * This property is used only with custom local authenticators.
+     */
+    description?: string;
+    /**
+     * Image URI of the local authenticator.
+     * This property is used only with custom local authenticators.
+     */
+    image?: string;
+    /**
      * Is authenticator enabled.
      */
     isEnabled?: boolean;
@@ -446,7 +457,7 @@ export interface LocalAuthenticatorInterface extends CommonPluggableComponentInt
      * Authenticator Type.
      * @example [ LOCAL, REQUEST_PATH ]
      */
-    type?:  string;
+    type?: string;
     /**
      * Details endpoint.
      */
@@ -614,7 +625,10 @@ export enum AuthenticatorCategories {
     LOCAL = "LOCAL",
     SECOND_FACTOR = "SECOND_FACTOR",
     SOCIAL = "SOCIAL",
-    RECOVERY = "RECOVERY"
+    RECOVERY = "RECOVERY",
+    EXTERNAL = "EXTERNAL",
+    INTERNAL = "INTERNAL",
+    TWO_FACTOR_CUSTOM = "TWO_FACTOR_CUSTOM"
 }
 
 /**

@@ -17,7 +17,7 @@
  */
 
 import Button from "@oxygen-ui/react/Button";
-import { UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1";
+import { UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { useUsersList } from "@wso2is/admin.users.v1/api";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
@@ -236,7 +236,6 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                 <TransferComponent
                     compact
                     basic
-                    bordered
                     className="one-column-selection"
                     selectionComponent
                     searchPlaceholder={ t("groups:edit.users.searchUsers") }
@@ -251,6 +250,7 @@ export const AddGroupUserModal: FunctionComponent<AddGroupUserModalProps> = (
                 >
                     <TransferList
                         selectionComponent
+                        bordered={ true }
                         isListEmpty={ userList.length <= 0 }
                         isLoading={ isUserListFetchRequestLoading || isUserListFetchRequestValidating }
                         listType="unselected"

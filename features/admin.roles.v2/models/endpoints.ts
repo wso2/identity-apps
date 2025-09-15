@@ -20,11 +20,10 @@
  * Interface for the Role Management feature resource endpoints.
  */
 export interface RolesResourceEndpointsInterface {
-    // TODO: This need to be removed once this endpoint is moved to the API resources feature.
-    apiResources?: string;
     roles: string;
     // TODO: This need to be removed once the Role V2 endpoint is enabled.
     rolesV2: string;
+    rolesV3: string;
     permission: string;
     rolesWithoutOrgPath: string;
 }

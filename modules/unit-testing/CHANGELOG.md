@@ -1,5 +1,47 @@
 # @wso2is/unit-testing
 
+## 0.7.0
+
+### Minor Changes
+
+- [#8588](https://github.com/wso2/identity-apps/pull/8588) [`8294cbfd28e252ebb145a153d0e74106515a28b8`](https://github.com/wso2/identity-apps/commit/8294cbfd28e252ebb145a153d0e74106515a28b8) Thanks [@brionmario](https://github.com/brionmario)! - Extension model for i18n in Console & My Account
+
+## 0.6.5
+
+### Patch Changes
+
+- [#8506](https://github.com/wso2/identity-apps/pull/8506) [`cf84a990e2bcdb6ac7a47d64fc2271abdc3dec88`](https://github.com/wso2/identity-apps/commit/cf84a990e2bcdb6ac7a47d64fc2271abdc3dec88) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Fix unit test failure and add check for org handle autogeneration
+
+## 0.6.4
+
+### Patch Changes
+
+- [#8077](https://github.com/wso2/identity-apps/pull/8077) [`b6f5db8cd4722cb06c1608b0698c31ae5f6a5204`](https://github.com/wso2/identity-apps/commit/b6f5db8cd4722cb06c1608b0698c31ae5f6a5204) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Misc improvements required for AI agent management feature
+
+## 0.6.3
+
+### Patch Changes
+
+- [#8047](https://github.com/wso2/identity-apps/pull/8047) [`65f16ea68c15ad70f7be5db409bad7f45ab32aed`](https://github.com/wso2/identity-apps/commit/65f16ea68c15ad70f7be5db409bad7f45ab32aed) Thanks [@hwupathum](https://github.com/hwupathum)! - Update email template endpoint to use notification template API
+
+## 0.6.2
+
+### Patch Changes
+
+- [#7701](https://github.com/wso2/identity-apps/pull/7701) [`f9752f1420e185f1a37ea267fb7edd336b8722ce`](https://github.com/wso2/identity-apps/commit/f9752f1420e185f1a37ea267fb7edd336b8722ce) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Trigger patch release to all packages to prepare for RC
+
+## 0.6.1
+
+### Patch Changes
+
+- [#7332](https://github.com/wso2/identity-apps/pull/7332) [`4da42930c024dedb5002867b82928df3198c5546`](https://github.com/wso2/identity-apps/commit/4da42930c024dedb5002867b82928df3198c5546) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove barrel files from @wso2is/admin.core.v1 module
+
+## 0.6.0
+
+### Minor Changes
+
+- [#7353](https://github.com/wso2/identity-apps/pull/7353) [`b67d22c81d5c8be72c09abd36ed829a88fb22a4b`](https://github.com/wso2/identity-apps/commit/b67d22c81d5c8be72c09abd36ed829a88fb22a4b) Thanks [@brionmario](https://github.com/brionmario)! - Integrate `tldts` to derive the `domain` name
+
 ## 0.5.2
 
 ### Patch Changes

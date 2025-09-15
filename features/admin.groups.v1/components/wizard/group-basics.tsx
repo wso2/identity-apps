@@ -16,25 +16,23 @@
  * under the License.
  */
 
-import { AppState, SharedUserStoreConstants, SharedUserStoreUtils, UserStoreDetails } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { groupConfig, userstoresConfig } from "@wso2is/admin.extensions.v1";
-import { RootOnlyComponent } from "@wso2is/admin.organizations.v1/components/root-only-component";
-import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { getAUserStore, getUserStoreList } from "@wso2is/admin.userstores.v1/api/user-stores";
-import { UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants";
-import { UserStoreProperty } from "@wso2is/admin.userstores.v1/models";
-import { AlertLevels, IdentifiableComponentInterface, UserstoreListResponseInterface } from "@wso2is/core/models";
+import { useUserStoreRegEx } from "@wso2is/admin.userstores.v1/api/use-get-user-store-regex";
+import { USERSTORE_REGEX_PROPERTIES } from "@wso2is/admin.userstores.v1/constants";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
+import { UserStoreDropdownItem, UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { StringUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import { Code, Hint } from "@wso2is/react-components";
-import { AxiosResponse } from "axios";
-import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
+import { Hint } from "@wso2is/react-components";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { DropdownItemProps, Grid, GridColumn, GridRow } from "semantic-ui-react";
-import { searchGroupList } from "../../api";
+import { Grid, GridColumn, GridRow } from "semantic-ui-react";
+import { searchGroupList } from "../../api/groups";
 import { CreateGroupFormData, SearchGroupInterface } from "../../models/groups";
 
 /**
@@ -65,20 +63,64 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    const {
+        isLoading: isUserStoresLoading,
+        isUserStoreReadOnly,
+        mutateUserStoreList,
+        userStoresList
+    } = useUserStores();
 
-    const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
-        state?.config?.ui?.primaryUserStoreDomainName);
+    const systemReservedUserStores: string[] =
+        useSelector((state: AppState) => state?.config?.ui?.systemReservedUserStores);
 
-    const [ userStoreOptions, setUserStoresList ] = useState([]);
-    const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
     const [ basicDetails, setBasicDetails ] = useState<any>(null);
-
-    const { isSuperOrganization, isFirstLevelOrganization } = useGetCurrentOrganizationType();
 
     const groupName: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>();
 
+    const {
+        data: userStoreRegEx,
+        isLoading: isUserStoreRegExLoading
+    } = useUserStoreRegEx(
+        userStore,
+        USERSTORE_REGEX_PROPERTIES.RolenameRegEx
+    );
+
+    const userStoreOptions: UserStoreDropdownItem[] = useMemo(() => {
+        const storeOptions: UserStoreDropdownItem[] = [
+            {
+                key: -1,
+                text: userstoresConfig?.primaryUserstoreName,
+                value: userstoresConfig?.primaryUserstoreName
+            }
+        ];
+
+        if (userStoresList && !isUserStoresLoading) {
+            if (userStoresList?.length > 0) {
+                userStoresList
+                    ?.filter((userStore: UserStoreListItem) => !systemReservedUserStores?.includes(userStore.name))
+                    .forEach((store: UserStoreListItem, index: number) => {
+                        const isEnabled: boolean = store.enabled;
+                        const isReadOnly: boolean = isUserStoreReadOnly(store?.name);
+
+                        if (store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName
+                        && isEnabled && !isReadOnly) {
+                            const storeOption: UserStoreDropdownItem = {
+                                key: index,
+                                text: store.name,
+                                value: store.name
+                            };
+
+                            storeOptions.push(storeOption);
+                        }
+                    });
+            }
+        }
+
+        return storeOptions;
+    }, [ userStoresList, isUserStoresLoading ]);
+
     useEffect(() => {
-        getUserStores();
+        mutateUserStoreList();
     }, []);
 
     useEffect(() => {
@@ -96,115 +138,6 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
         const domain: string = values?.get("domain")?.toString();
 
         setUserStore(domain);
-    };
-
-    /**
-     * The following function validates role name against the user store regEx.
-     */
-    const validateGroupNamePattern = async (): Promise<string> => {
-
-        let userStoreRegEx: string = "";
-
-        if (userStore && !StringUtils.isEqualCaseInsensitive(userStore, primaryUserStoreDomainName)) {
-            await SharedUserStoreUtils.getUserStoreRegEx(userStore,
-                SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
-                .then((response: string) => {
-                    setRegExLoading(true);
-                    userStoreRegEx = response;
-                });
-        } else {
-            await SharedUserStoreUtils.getPrimaryUserStore().then((response: void | UserStoreDetails) => {
-                setRegExLoading(true);
-                if (response && response.properties) {
-                    userStoreRegEx = response?.properties?.filter((property: UserStoreProperty) => {
-                        return property.name === "RolenameJavaScriptRegEx";
-                    })[ 0 ].value;
-                }
-            });
-        }
-
-        setRegExLoading(false);
-
-        return new Promise((resolve: (value: string) => void, reject: (reason: string) => void) => {
-            if (userStoreRegEx !== "") {
-                resolve(userStoreRegEx);
-            } else {
-                reject("");
-            }
-        });
-    };
-
-    /**
-     * Check the given user store is Read/Write enabled.
-     *
-     * @param userStoreID - Userstore Id.
-     * @returns If the given userstore is Read/Write enabled or not.
-     */
-    const isUserStoreReadWrite = async (userStoreID: string): Promise<boolean> => {
-        try {
-            const response: UserStoreDetails = await getAUserStore(userStoreID);
-
-            return response?.properties?.some(({ name, value }: UserStoreProperty) =>
-                name === UserStoreManagementConstants.USER_STORE_PROPERTY_READ_ONLY && value === "false"
-            ) || false;
-        } catch (error) {
-            dispatch(addAlert({
-                description: t("userstores:notifications.fetchUserstores.genericError." +
-                    "description"),
-                level: AlertLevels.ERROR,
-                message: t("userstores:notifications.fetchUserstores.genericError.message")
-            }));
-
-            return false;
-        }
-    };
-
-
-    /**
-     * The following function fetch the user store list and set it to the state.
-     */
-    const getUserStores = async () => {
-        const storeOptions: DropdownItemProps[] = [
-            {
-                key: -1,
-                text: userstoresConfig.primaryUserstoreName,
-                value: userstoresConfig.primaryUserstoreName
-            }
-        ];
-
-        if (isSuperOrganization() || isFirstLevelOrganization()) {
-            try {
-                const response: AxiosResponse<UserstoreListResponseInterface[]> = await getUserStoreList();
-
-                const readWriteStores: UserstoreListResponseInterface[] = await Promise.all(response.data?.map(
-                    async (store: UserstoreListResponseInterface) => {
-                        const isReadWrite: boolean = await isUserStoreReadWrite(store.id);
-
-                        return isReadWrite ? store : null;
-                    }));
-
-                readWriteStores.filter(Boolean).forEach((store: UserstoreListResponseInterface, index: number) => {
-                    if (store) {
-                        storeOptions.push({
-                            key: index,
-                            text: store.name,
-                            value: store.name
-                        });
-                    }
-                });
-
-                setUserStoresList(storeOptions);
-            } catch (error) {
-                dispatch(addAlert({
-                    description: t(
-                        "userstores:notifications.fetchUserstores.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("userstores:notifications.fetchUserstores.genericError.message")
-                }));
-            }
-        } else {
-            setUserStoresList(storeOptions);
-        }
     };
 
     /**
@@ -231,26 +164,25 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                 {
                     groupConfig?.allowGroupAddForRemoteUserstores && (
                         <GridRow>
-                            <RootOnlyComponent>
-                                <GridColumn mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                    <Field
-                                        data-componentid={ `${ componentId }-domain-dropdown` }
-                                        type="dropdown"
-                                        label={ t("roles:addRoleWizard.forms.roleBasicDetails." +
-                                            "domain.label.group") }
-                                        name="domain"
-                                        children={ userStoreOptions }
-                                        placeholder={ t("roles:addRoleWizard." +
-                                            "forms.roleBasicDetails.domain.placeholder") }
-                                        requiredErrorMessage={ t("roles:addRoleWizard.forms." +
-                                            "roleBasicDetails.domain.validation.empty.group") }
-                                        required={ true }
-                                        element={ <div></div> }
-                                        listen={ handleDomainChange }
-                                        value={ initialValues?.basicDetails?.domain ?? userStoreOptions[ 0 ]?.value }
-                                    />
-                                </GridColumn>
-                            </RootOnlyComponent>
+                            <GridColumn mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                <Field
+                                    data-componentid={ `${ componentId }-domain-dropdown` }
+                                    type="dropdown"
+                                    label={ t("roles:addRoleWizard.forms.roleBasicDetails." +
+                                        "domain.label.group") }
+                                    name="domain"
+                                    children={ userStoreOptions }
+                                    placeholder={ t("roles:addRoleWizard." +
+                                        "forms.roleBasicDetails.domain.placeholder") }
+                                    requiredErrorMessage={ t("roles:addRoleWizard.forms." +
+                                        "roleBasicDetails.domain.validation.empty.group") }
+                                    required={ true }
+                                    element={ <div></div> }
+                                    listen={ handleDomainChange }
+                                    value={ initialValues?.basicDetails?.domain ?? userStore ??
+                                        userStoreOptions[ 0 ]?.value }
+                                />
+                            </GridColumn>
                         </GridRow>
                     )
                 }
@@ -271,15 +203,19 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                             validation={ async (value: string, validation: Validation) => {
                                 let isGroupNameValid: boolean = true;
 
-                                await validateGroupNamePattern().then((regex: string) => {
-                                    isGroupNameValid = SharedUserStoreUtils.validateInputAgainstRegEx(value, regex);
-                                });
+                                isGroupNameValid = SharedUserStoreUtils
+                                    .validateInputAgainstRegEx(value, userStoreRegEx);
 
                                 if (!isGroupNameValid) {
                                     validation.isValid = false;
-                                    validation.errorMessages.push(t("console:manage.features.businessGroups" +
-                                        ".fields.groupName.validations.invalid",
-                                    { type: "group" }));
+                                    if (userStoreRegEx === groupConfig.defaultUserstoreRegex) {
+                                        // If the userstore regex is the default regex, show the default error message.
+                                        validation.errorMessages.push(t(groupConfig?.groupPrimaryUserstoreRegexHint));
+                                    } else {
+                                        // If the userstore regex is a custom regex, show the custom regex.
+                                        validation.errorMessages.push(t("groups:groupCreateWizard" +
+                                            ".groupNameRegexCustomHint", { regex: userStoreRegEx }));;
+                                    }
                                 }
 
                                 const searchData: SearchGroupInterface = {
@@ -310,13 +246,10 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
 
                             } }
                             value={  initialValues?.basicDetails?.groupName }
-                            loading={ isRegExLoading }
+                            loading={ isUserStoreRegExLoading }
                         />
                         <Hint>
-                            A name for the group.
-                            { " " }
-                            Can contain between 3 to 30 alphanumeric characters, dashes (<Code>-</Code>),{ " " }
-                            and underscores (<Code>_</Code>).
+                            { t(groupConfig?.groupPrimaryUserstoreRegexHint) }
                         </Hint>
                     </GridColumn>
                 </GridRow>

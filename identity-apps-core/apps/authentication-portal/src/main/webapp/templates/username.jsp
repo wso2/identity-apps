@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2018, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2018-2025, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
   ~
   ~ WSO2 Inc. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -115,7 +115,7 @@
             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 form-group">
                 <div class="form-actions">
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "no.account")%>
-                    <a id="registerLink" href="<%=getRegistrationUrl(accountRegistrationEndpointURL, urlEncodedURL, encodedUrlParameters)%>">
+                    <a id="registerLink" href="<%=getRegistrationPortalUrl(accountRegistrationEndpointURL, urlEncodedURL, encodedUrlParameters)%>">
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "register.now")%>
                     </a>
                 </div>
@@ -133,9 +133,6 @@
 <%!
     private String getRecoverUsernameUrl(String identityMgtEndpointContext, String urlEncodedURL) {
         return identityMgtEndpointContext + "/recoverusername.do?callback=" + Encode.forHtmlAttribute(urlEncodedURL);
-    }
-    private String getRegistrationUrl(String accountRegistrationEndpointURL, String urlEncodedURL) {
-        return accountRegistrationEndpointURL + "?callback=" + Encode.forHtmlAttribute(urlEncodedURL);
     }
 %>
 <%-- /content --%>

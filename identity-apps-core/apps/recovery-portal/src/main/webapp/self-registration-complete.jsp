@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2016-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2016-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -78,11 +78,12 @@
     String tenantAwareUsername = Encode.forHtml(MultitenantUtils.getTenantAwareUsername(UserCoreUtil.removeDomainFromName(username)));
     boolean isEmailNotificationEnabled = false;
     String callback = (String) request.getAttribute("callback");
+    boolean isPendingApproval = false;
     String confirm = (String) request.getAttribute("confirm");
     String confirmLiteReg = (String) request.getAttribute("confirmLiteReg");
     String resendUsername = request.getParameter("username");
     String sp = Encode.forJava(request.getParameter("sp"));
-    String spId = request.getParameter("spId");
+    String spId = Encode.forJava(request.getParameter("spId"));
     String sessionDataKey = (String) request.getAttribute("sessionDataKey");
     String applicationAccessURLWithoutEncoding = null;
     String tenantedMyaccountURL = null;
@@ -91,6 +92,7 @@
     boolean accountVerification = false;
     Boolean autoLoginEnabled = false;
     String emailValue = request.getParameter("http://wso2.org/claims/emailaddress");
+    boolean isDetailedResponseEnabled = Boolean.parseBoolean(application.getInitParameter("isSelfRegistrationDetailedApiResponseEnabled"));
 
     /**
     * For SaaS application read from user tenant from parameters.
@@ -211,7 +213,19 @@
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
     }
+
+    String userId = (String) request.getAttribute("userId");
+
+    if (request.getAttribute("pendingApproval") != null) {
+        isPendingApproval = Boolean.parseBoolean((String) request.getAttribute("pendingApproval"));
+    }
 %>
+
+<% if (isDetailedResponseEnabled && StringUtils.isNotBlank(userId)) { %>
+    <input type="hidden" id="userId" name="userId" value="<%= Encode.forHtmlAttribute(userId) %>" />
+<% } %>
+
+<% request.setAttribute("pageName", "self-registration-complete"); %>
 
 <%-- Data for the layout from the page --%>
 <%
@@ -232,7 +246,7 @@
     <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout">
+<body class="login-portal layout" data-response-type="success" data-page="<%= request.getAttribute("pageName") %>">
     <script>
         function redirect(redirectURL) {
             var url = redirectURL;
@@ -286,7 +300,9 @@
             <layout:component componentName="MainSection" >
                 <div class="ui green segment mt-3 attached">
                         <h3 class="ui header text-center slogan-message mt-4 mb-6" data-testid="self-register-complete-page-header">
-                            <% if (StringUtils.isNotBlank(confirm)) { %>
+                            <% if (isPendingApproval) { %>
+                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "registration.submitted")%>
+                            <% } else if (StringUtils.isNotBlank(confirm)) { %>
                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "account.verified.successfully")%>
                             <% } else if (accountLockOnCreationEnabled) { %>
                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "you.are.almost.there")%>
@@ -298,9 +314,11 @@
                         <p class="portal-tagline-description">
                             <%
                             String url = "";
-                            if (StringUtils.isNotBlank(confirm)) { %>
+                            if (isPendingApproval) { %>
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "pending.account.approval")%>
+                            <% } else if (StringUtils.isNotBlank(confirm)) { %>
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "your.account.with.username")%>
-                                <b><%=resendUsername%></b>
+                                <b><%=Encode.forHtml(resendUsername)%></b>
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "has.been.verified.successfully")%>
                             <%
                                 if (!StringUtils.isBlank(sp) && sp.equals("My Account")) {
@@ -329,15 +347,32 @@
                             %>
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "check.your.inbox.at")%>
                                 <b><span id="maskedEmail"></span></b> <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "for.instructions.to.activate.your.account")%>
-                                <script>maskEmail('<%= emailValue %>');</script>
+                                <script>
+                                    <% if (StringUtils.isNotBlank(emailValue)) { %>
+                                        maskEmail('<%= Encode.forJavaScript(emailValue) %>');
+                                    <% } %>                                
+                                </script>
                                 </br></br>
                         <%
-                                if (showBackButton && StringUtils.isNotBlank(applicationAccessURLWithoutEncoding)) {
+                            if (showBackButton && StringUtils.isNotBlank(applicationAccessURLWithoutEncoding)) {
                         %>
-                                    <i class="caret left icon primary"></i>
-                                    <a href="<%= IdentityManagementEndpointUtil.getURLEncodedCallback(applicationAccessURLWithoutEncoding)%>">
-                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Back.to.application")%>
-                                    </a>
+                            <%
+                                if (!StringUtils.isBlank(sp) && sp.equals("My Account")) {
+                            %>
+                                <i class="caret left icon primary"></i>
+                                <a href="<%= IdentityManagementEndpointUtil.getURLEncodedCallback(tenantedMyaccountURL)%>">
+                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Go.to.MyAccount")%>
+                                </a>
+                            <%
+                                } else {
+                            %>
+                                <i class="caret left icon primary"></i>
+                                <a href="<%= IdentityManagementEndpointUtil.getURLEncodedCallback(applicationAccessURLWithoutEncoding)%>">
+                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"Back.to.application")%>
+                                </a>
+                            <%
+                                }
+                            %>
                         <%
                             } else {
                                 if (sp.equals("My Account")) {

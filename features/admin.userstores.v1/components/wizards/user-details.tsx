@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -44,10 +44,6 @@ interface UserDetailsPropsInterface extends TestableComponentInterface {
      * The properties to be shown in this component.
      */
     properties: TypeProperty[];
-    /**
-     * The type of the userstore.
-     */
-    type: string;
 }
 
 /**
@@ -64,7 +60,6 @@ export const UserDetails: FunctionComponent<UserDetailsPropsInterface> = (
         onSubmit,
         values,
         properties,
-        type,
         [ "data-testid" ]: testId
     } = props;
 
@@ -88,12 +83,6 @@ export const UserDetails: FunctionComponent<UserDetailsPropsInterface> = (
                                         return attribute.name === "type";
                                     })?.value === "boolean";
                                 const isRequired: boolean = !isEmpty(selectedTypeDetail?.defaultValue);
-
-                                // FIXME: Temp fix to hide the `ReadOnly` property from ReadOnly Userstores.
-                                // This should be handled in the backend and reverted from the UI.
-                                // Tracker: https://github.com/wso2/product-is/issues/19769#issuecomment-1957415262
-                                const isHidden: boolean = type === "UniqueIDReadOnlyLDAPUserStoreManager"
-                                    && selectedTypeDetail.name === "ReadOnly";
 
                                 if (toggle) {
                                     return (
@@ -122,7 +111,6 @@ export const UserDetails: FunctionComponent<UserDetailsPropsInterface> = (
                                                     ?? selectedTypeDetail.defaultValue
                                             }
                                             toggle
-                                            hidden={ isHidden }
                                             data-testid={ `${ testId }-form-toggle-${
                                                 selectedTypeDetail.name }` }
                                         />
@@ -154,7 +142,6 @@ export const UserDetails: FunctionComponent<UserDetailsPropsInterface> = (
                                             values?.get(selectedTypeDetail?.name)?.toString()
                                                 ?? selectedTypeDetail.defaultValue
                                         }
-                                        hidden={ isHidden }
                                         data-testid={ `${ testId }-form-text-input-${
                                             selectedTypeDetail.name }` }
                                     />

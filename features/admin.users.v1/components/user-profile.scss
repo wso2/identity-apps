@@ -16,48 +16,66 @@
  * under the License.
  */
 
- .multi-value-table {
-    .multi-value-table-data-row {
-        &:last-child td, &:last-child th {
-            border: none;
-        }
+.user-profile-form {
+    .form-field-container {
+        margin-bottom: 1.5rem;
+    }
 
-        .table-c1 {
-            display: flex;
-            flex-wrap: nowrap;
-            align-items: center;
-            font-size: 1rem;
-            padding: 0.2em 0;
-    
-            .c1-value{
-                margin-bottom: 0;
-                flex-shrink: 0;
-                padding-right: 12px;
-                min-width: 250px; 
-    
-                &.mobile-label {
-                    min-width: 150px; 
+    .multi-value-table {
+        .multi-value-table-data-row {
+            &:last-child td, &:last-child th {
+                border: none;
+            }
+
+            .table-c1 {
+                display: flex;
+                flex-wrap: nowrap;
+                align-items: center;
+                font-size: 1rem;
+                padding: 0.2em 0;
+
+                .c1-value{
+                    margin-bottom: 0;
+                    flex-shrink: 0;
+                    padding-right: 12px;
+                }
+
+                .verified-icon, .primary-icon {
+                    align-items: center;
+                    padding: 0 4px;
                 }
             }
-    
-            .verified-icon, .primary-icon {
-                align-items: center;
-                padding: 0 4px;
-            }
-        }
-    
-        .table-c2 {
-            display: flex;
-            flex-wrap: nowrap;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 4px;
-            padding: 0.2em 0;
 
-            .text-btn {
-                padding: 0px;
-                white-space: nowrap;
+            .table-c2 {
+                display: flex;
+                flex-wrap: nowrap;
+                align-items: center;
+                justify-content: flex-end;
+                gap: 4px;
+                padding: 0.2em 0;
+
+                .text-btn {
+                    padding: 0px;
+                    white-space: nowrap;
+                }
             }
         }
+    }
+
+    .verification-pending-icon {
+        position: absolute;
+        right: 0;
+        top: 0;
+        padding: 8px;
+        flex-direction: row;
+    }
+}
+
+.user-profile-alert {
+    .button.link-button {
+        padding: 0;
+        font-size: inherit;
+        margin-left: 0.2em;
+        font-weight: 500;
     }
 }

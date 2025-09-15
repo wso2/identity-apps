@@ -1,0 +1,110 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+ .ai-prompt-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    background-color: #f5f5f5;
+    padding: 16px;
+    border-radius: 32px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+
+    .ai-prompt-input-container {
+        background-color: var(--oxygen-palette-common-white);
+        border-top-left-radius: 2rem;
+        border-top-right-radius: 2rem;
+        display: flex;
+        align-items: center;
+        min-width: 600px;
+        padding: 14px 22px 12px;
+
+        .ai-prompt-input {
+            flex: 1;
+            color: #333;
+            font-size: 1rem;
+        }
+    }
+
+    .ai-prompt-actions-container {
+        justify-content: space-between;
+        background-color: var(--oxygen-palette-common-white);
+        border-bottom-left-radius: 2rem;
+        border-bottom-right-radius: 2rem;
+        display: flex;
+        align-items: center;
+        padding-bottom: 14px;
+        padding-top: 8px;
+        min-width: 600px;
+        padding-left: 16px;
+        padding-right: 16px;
+
+        .ai-prompt-suggestions-button {
+            border: 1px solid var(--oxygen-palette-divider);
+            color: #666;
+            margin-right: 0.5rem;
+            height: 40px;
+            font-size: 13px;
+
+            &:hover {
+                background-color: rgb(var(--oxygen-palette-primary-mainChannel) / var(--oxygen-palette-action-hoverOpacity));
+                border: var(--oxygen-palette-gradients-primary-stop2) 1px solid;
+            }
+        }
+
+        .ai-prompt-history-button {
+            border: 1px solid var(--oxygen-palette-divider);
+            color: #666;
+            font-size: 13px;
+            height: 40px;
+            margin-right: 0.5rem;
+            margin-left: 0;
+
+            &:hover {
+                background-color: rgb(var(--oxygen-palette-primary-mainChannel) / var(--oxygen-palette-action-hoverOpacity));
+                border: var(--oxygen-palette-gradients-primary-stop2) 1px solid;
+            }
+        }
+
+        .ai-prompt-submit-button {
+            float: right;
+            background: linear-gradient(270deg, var(--oxygen-palette-gradients-primary-stop2), var(--oxygen-palette-gradients-primary-stop1));
+            color: var(--oxygen-palette-common-white);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+
+            &.Mui-disabled {
+                background: rgb(178 80 0) !important;
+                cursor: not-allowed;
+                color: rgba(255, 255, 255, 0.5);
+            }
+        }
+    }
+
+    .ai-prompt-disclaimer { 
+        text-align: center;
+        color: #555;
+        margin: 8px 0px 0px;
+        max-width: 450px;  
+    }
+}

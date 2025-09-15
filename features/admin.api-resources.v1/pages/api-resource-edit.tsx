@@ -17,7 +17,9 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
-import { AppState, getEmptyPlaceholderIllustrations, history } from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";

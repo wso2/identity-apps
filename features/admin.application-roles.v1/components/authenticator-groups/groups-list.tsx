@@ -133,10 +133,10 @@ const GroupsList = (props: GroupsListProps): ReactElement => {
         if (originalAssignedGroups instanceof IdentityAppsApiException
                 || assignedGroupsFetchRequestError) {
             handleAlerts({
-                description: t("extensions:console.applicationRoles.authenticatorGroups.groupsList.notifications" +
+                description: t("applicationRoles:authenticatorGroups.groupsList.notifications" +
                     ".fetchAssignedGroups.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: t("extensions:console.applicationRoles.authenticatorGroups.groupsList.notifications" +
+                message: t("applicationRoles:authenticatorGroups.groupsList.notifications" +
                     ".fetchAssignedGroups.genericError.message")
             });
 
@@ -260,19 +260,19 @@ const GroupsList = (props: GroupsListProps): ReactElement => {
             data
         ).then(() => {
             handleAlerts({
-                description: t("extensions:console.applicationRoles.authenticatorGroups.groupsList.notifications" +
+                description: t("applicationRoles:authenticatorGroups.groupsList.notifications" +
                     ".updateAssignedGroups.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("extensions:console.applicationRoles.authenticatorGroups.groupsList.notifications" +
+                message: t("applicationRoles:authenticatorGroups.groupsList.notifications" +
                     ".updateAssignedGroups.success.message")
             });
             mutateAssignedGroups();
         }).catch(() => {
             handleAlerts({
-                description: t("extensions:console.applicationRoles.authenticatorGroups.groupsList.notifications" +
+                description: t("applicationRoles:authenticatorGroups.groupsList.notifications" +
                     ".updateAssignedGroups.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: t("extensions:console.applicationRoles.authenticatorGroups.groupsList.notifications" +
+                message: t("applicationRoles:authenticatorGroups.groupsList.notifications" +
                     ".updateAssignedGroups.genericError.message")
             });
         }).finally(() => {
@@ -341,7 +341,7 @@ const GroupsList = (props: GroupsListProps): ReactElement => {
                                 loading={ isSubmitting || isLoading }
                                 disabled={ isSubmitting || isLoading }
                             >
-                                { t("extensions:console.applicationRoles.authenticatorGroups.groupsList.assignGroups") }
+                                { t("applicationRoles:authenticatorGroups.groupsList.assignGroups") }
                             </PrimaryButton>
                         )
                     }

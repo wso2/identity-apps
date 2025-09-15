@@ -25,7 +25,6 @@ import Grid from "@oxygen-ui/react/Grid";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { GearIcon } from "@oxygen-ui/react-icons";
-import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     DocumentationLink,
@@ -33,13 +32,13 @@ import {
     PrimaryButton,
     useDocumentation
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Icon } from "semantic-ui-react";
 import { PolicyList } from "./policy-list";
 import { NewPolicyWizard } from "./wizard/new-policy-wizard";
-import { useGetAlgorithm } from "../api/use-get-algorithm";
+import { useGetEntitlementPolicyCombiningAlgorithm } from "../api/use-get-entitlement-policy-combining-algorithm";
 import { useGetPolicies } from "../api/use-get-policies";
 import EditPolicyAlgorithmModal from "../components/edit-policy-algorithm/edit-policy-algorithm";
 import "./policy-administration-page-layout.scss";
@@ -63,125 +62,95 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
+    const inactiveScrollRef: MutableRefObject<HTMLDivElement> = useRef(null);
+    const activeScrollRef: MutableRefObject<HTMLDivElement> = useRef(null);
+
     const [ showAlgorithmModal, setShowAlgorithmModal ] = useState<boolean>(false);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
-    const [ isAlgorithmLoading, setIsAlgorithmLoading  ] = useState<boolean>(false);
-    const [ selectedAlgorithm, setSelectedAlgorithm ] = useState<AlgorithmOption>();
+    const [ selectedAlgorithm, setSelectedAlgorithm ] = useState<AlgorithmOption>(null);
     const [ pageInactive, setPageInactive ] = useState<number>(0);
     const [ hasMoreInactivePolicies, setHasMoreInactivePolicies ] = useState<boolean>(true);
-    const [ inactivePolicies, setInactivePolicies ] = useState<PolicyInterface[]>([]);
+    const [ inactivePolicies, setInactivePolicies ] = useState<Map<string, PolicyInterface>>(
+        new Map<string, PolicyInterface>());
     const [ pageActive, setPageActive ] = useState<number>(0);
     const [ hasMoreActivePolicies, setHasMoreActivePolicies ] = useState<boolean>(true);
-    const [ activePolicies, setActivePolicies ] = useState<PolicyInterface[]>([]);
+    const [ activePolicies, setActivePolicies ] = useState<Map<string, PolicyInterface>>(
+        new Map<string, PolicyInterface>());
+    const [ searchQuery, setSearchQuery ] = useState<string>("");
+    const [ submittedSearchQuery, setSubmittedSearchQuery ] = useState<string>("");
+    const activePageRequestHistory: MutableRefObject<Map<number, boolean>> = useRef<Map<number, boolean>>(
+        new Map<number, boolean>());
+    const inactivePageRequestHistory: MutableRefObject<Map<number, boolean>> = useRef<Map<number, boolean>>(
+        new Map<number, boolean>());
 
     const {
         data: inactivePolicyArray,
-        isLoading: isLoadingInactivePolicies,
         error: inactivePolicyError,
-        mutate: mutateInactivePolicy
-    } = useGetPolicies(true, pageInactive, false, "*", "ALL");
+        mutate: mutateInactivePolicies
+    } = useGetPolicies(true, pageInactive, false, submittedSearchQuery, "ALL");
 
     const {
         data: activePolicyArray,
-        isLoading: isLoadingActivePolicies,
         error: activePolicyError,
-        mutate: mutateActivePolicy
-    } = useGetPolicies(true, pageActive, true, "*", "ALL");
+        mutate: mutateActivePolicies
+    } = useGetPolicies(true, pageActive, true, submittedSearchQuery, "ALL");
 
     const {
         data: algorithm,
-        isLoading: isLoadingAlgorithm,
-        error: getAlgorithmError,
+        isLoading: isAlgorithmLoading,
         mutate: mutateAlgorithm
-    } = useGetAlgorithm();
+    } = useGetEntitlementPolicyCombiningAlgorithm();
 
     useEffect(() => {
         if (algorithm) {
             const selectedAlgorithm: AlgorithmOption =
-                algorithmOptions.find((option: AlgorithmOption) => option.label === algorithm);
+                algorithmOptions.find((option: AlgorithmOption) => option.id === algorithm);
 
             setSelectedAlgorithm(selectedAlgorithm);
-            setIsAlgorithmLoading(false);
-        } else {
-            setIsAlgorithmLoading(true);
         }
     }, [ algorithm ]);
 
     useEffect(() => {
-        if (!inactivePolicyArray) {
+        if (!inactivePolicyArray?.policySet || !inactivePageRequestHistory.current.has(pageInactive)) {
+            inactivePageRequestHistory.current.set(pageInactive, true);
+
             return;
         }
 
-        const activePolicyIds: string[] = activePolicies.map(
-            ((activePolicy: PolicyInterface) => activePolicy.policyId)
-        );
+        const newInactivePolicies: Map<string, PolicyInterface> = pageInactive === 0
+            ? new Map<string, PolicyInterface>() : new Map(inactivePolicies);
 
-        const filteredInactivePolicies: PolicyInterface[] = (inactivePolicyArray.policySet ?? [])
-            .filter((policy: PolicyInterface) =>
-                policy !== null && !activePolicyIds.includes(policy.policyId)
-            );
+        inactivePolicyArray.policySet.forEach((policy: PolicyInterface) =>
+            newInactivePolicies.set(policy.policyId, policy));
+        setInactivePolicies(newInactivePolicies);
 
-        if (pageInactive === 0) {
-            setInactivePolicies(filteredInactivePolicies);
-        } else {
-            setInactivePolicies(
-                (prev: PolicyInterface[]): PolicyInterface[] => [ ...prev, ...filteredInactivePolicies ]
-            );
-        }
-
-        if ((pageInactive + 1) >= (inactivePolicyArray.numberOfPages ?? 1)) {
+        if ((pageInactive + 1) >= inactivePolicyArray.numberOfPages) {
             setHasMoreInactivePolicies(false);
+        } else {
+            setHasMoreInactivePolicies(true);
         }
-
-    }, [ inactivePolicyArray, activePolicyArray ]);
+    }, [ inactivePolicyArray ]);
 
     useEffect(() => {
-        if (!activePolicyArray){
+        if (!activePolicyArray?.policySet || !activePageRequestHistory.current.has(pageActive)){
+            activePageRequestHistory.current.set(pageActive, true);
+
             return;
         }
 
-        const rawActivePolicies: PolicyInterface[] = activePolicyArray.policySet?.filter(
-            (policy: PolicyInterface) => policy !== null) || [];
+        const newActivePolicies: Map<string, PolicyInterface> = pageActive === 0
+            ? new Map<string, PolicyInterface>() : new Map(activePolicies);
 
-        if (pageActive === 0) {
-            setActivePolicies(rawActivePolicies);
-        } else {
-            setActivePolicies((prev: PolicyInterface[]): PolicyInterface[] => [ ...prev, ...rawActivePolicies ]);
-        }
+        activePolicyArray.policySet.forEach((policy: PolicyInterface) =>
+            newActivePolicies.set(policy.policyId, policy));
+        setActivePolicies(newActivePolicies);
 
-        if ((pageActive + 1) >= (activePolicyArray.numberOfPages ?? 1)) {
+        if ((pageActive + 1) >= activePolicyArray.numberOfPages) {
             setHasMoreActivePolicies(false);
+        } else {
+            setHasMoreActivePolicies(true);
         }
-
     }, [ activePolicyArray ]);
-
-
-    useEffect(() => {
-        setPageInactive(0);
-        setHasMoreInactivePolicies(true);
-        setInactivePolicies([]);
-
-        setPageActive(0);
-        setHasMoreActivePolicies(true);
-        setActivePolicies([]);
-    }, []);
-
-    const handleListFilter = (query: string): void => {
-        // TODO: Add search functionality here
-    };
-
-    if (isLoadingActivePolicies || isLoadingInactivePolicies) {
-        return (
-            <PageLayout
-                pageTitle={ t("policyAdministration:title") }
-                title={ t("policyAdministration:title") }
-                description={ t("policyAdministration:subtitle") }
-                className="policy-administration-page"
-            >
-                <CircularProgress />
-            </PageLayout>
-        );
-    }
 
     if (activePolicyError || inactivePolicyError) {
         return (
@@ -204,6 +173,84 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
         setPageInactive((prevPage: number) => prevPage + 1);
     };
 
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setPageActive(0);
+        setPageInactive(0);
+        activeScrollRef.current.scrollTo({ behavior: "smooth", top: 0 });
+        inactiveScrollRef.current.scrollTo({ behavior: "smooth", top: 0 });
+        setSubmittedSearchQuery(searchQuery);
+    };
+
+    /**
+     * Handle deletion of a policy from the active policy list.
+     *
+     * @param policyId - The policy ID.
+     */
+    const handleDeleteActivePolicy = (policyId: string): void => {
+        const newActivePolicies: Map<string, PolicyInterface> = new Map(activePolicies);
+
+        newActivePolicies.delete(policyId);
+        setActivePolicies(newActivePolicies);
+        activePageRequestHistory.current = new Map<number, boolean>();
+        setPageActive(0);
+        mutateActivePolicies();
+    };
+
+    /**
+     * Handle deletion of a policy from the inactive policy list.
+     *
+     * @param policyId - The policy ID.
+     */
+    const handleDeleteInactivePolicy = (policyId: string): void => {
+        const newInactivePolicies: Map<string, PolicyInterface> = new Map(inactivePolicies);
+
+        newInactivePolicies.delete(policyId);
+        setInactivePolicies(newInactivePolicies);
+        inactivePageRequestHistory.current = new Map<number, boolean>();
+        setPageInactive(0);
+        mutateInactivePolicies();
+    };
+
+    /**
+     * Remove a policy from the active policy list and add it to the inactive policy list.
+     *
+     * @param policyId - The policy ID.
+     */
+    const handleDeactivatePolicy = (policyId: string): void => {
+        const newActivePolicies: Map<string, PolicyInterface> = new Map(activePolicies);
+        const newInactivePolicies: Map<string, PolicyInterface> = new Map(inactivePolicies);
+
+        newActivePolicies.delete(policyId);
+        newInactivePolicies.set(policyId, activePolicies.get(policyId));
+        setInactivePolicies(newInactivePolicies);
+        setActivePolicies(newActivePolicies);
+        activePageRequestHistory.current = new Map<number, boolean>();
+        setPageActive(0);
+        mutateActivePolicies();
+    };
+
+    /**
+     * Add a policy to the active policy list and remove it from the inactive policy list.
+     *
+     * @param policyId - The policy ID.
+     */
+    const handleActivatePolicy = (policyId: string): void => {
+        const newActivePolicies: Map<string, PolicyInterface> = new Map(activePolicies);
+        const newInactivePolicies: Map<string, PolicyInterface> = new Map(inactivePolicies);
+
+        newInactivePolicies.delete(policyId);
+        newActivePolicies.set(policyId, inactivePolicies.get(policyId));
+        setInactivePolicies(newInactivePolicies);
+        setActivePolicies(newActivePolicies);
+        inactivePageRequestHistory.current = new Map<number, boolean>();
+        setPageInactive(0);
+        mutateInactivePolicies();
+    };
+
+    const activePoliciesList: PolicyInterface[] = Array.from(activePolicies.values());
+    const inactivePoliciesList: PolicyInterface[] = Array.from(inactivePolicies.values());
+
     return (
         <PageLayout
             pageTitle={ "Policy Administration" }
@@ -216,24 +263,23 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
                     </DocumentationLink>
                 </>)
             }
-            action={ (
-                !(inactivePolicies?.length <= 0)) &&
+            action={
                 (
-                    <Grid container spacing={ 3 } alignItems={ "center" }>
+                    <Grid container spacing={ 9 } alignItems={ "center" }>
                         <Grid xs={ 6 }>
                             <Button
                                 variant={ "outlined" }
                                 className="policy-algorithm-btn"
                                 onClick={ () => setShowAlgorithmModal(true) }
                             >
-                                <GearIcon size={ 20 }/>
+                                <GearIcon className="gear-icon" size={ 20 }/>
                                 <Stack direction="column" className="algorithm-txt">
                                     <Typography variant="body1" noWrap>
                                         { t("policyAdministration:buttons.policyAlgorithm") }
                                     </Typography>
-                                    { !isAlgorithmLoading && selectedAlgorithm?.label && (
+                                    { !isAlgorithmLoading && (
                                         <Typography variant="body2">
-                                            { selectedAlgorithm.label }
+                                            { algorithm }
                                         </Typography>
                                     ) }
                                     { isAlgorithmLoading && <CircularProgress size={ 12 } /> }
@@ -256,29 +302,48 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
         >
             <Grid container>
                 <Grid xs={ 12 } sm={ 12 } md={ 12 } lg={ 12 } xl={ 12 }>
-                    <AdvancedSearchWithBasicFilters
-                        fill="white"
-                        onFilter={ handleListFilter }
-                        filterAttributeOptions={ [
-                            {
-                                key: 0,
-                                text: t("tenants:listing.advancedSearch.form.dropdown.filterAttributeOptions.domain"),
-                                value: "domainName"
-                            }
-                        ] }
+                    <form
+                        className="advance-search-form"
+                        onSubmit={ handleSubmit }
+                    >
+                        <div className="search-input-wrapper">
+                            <div className="search-box ui left icon input advanced-search">
+                                <input
+                                    autoComplete="off"
+                                    placeholder={ t("policyAdministration:advancedSearch.placeholder") }
+                                    maxLength={ 120 }
+                                    name="query"
+                                    type="text"
+                                    className="search-input fluid"
+                                    value={ searchQuery }
+                                    onChange={ (e: React.FormEvent<HTMLInputElement> ) =>
+                                        setSearchQuery((e.target as HTMLInputElement).value)
+                                    }
+                                    data-componentid={ `${componentId}-search-input` }
+                                />
+                                <Icon name="search" color="grey"/>
+                            </div>
+                            <input
+                                hidden
+                                type="submit"
+                                value="Submit"
+                                data-componentid={ `${componentId}-search-input-submit` }
+                            />
+                        </div>
+                    </form>
 
-                        placeholder={ t("policyAdministration:advancedSearch.placeholder") }
-                        defaultSearchAttribute={ "policyName" }
-                        defaultSearchOperator="co"
-                    />
                 </Grid>
             </Grid>
 
-            <Grid container spacing={ 2 } marginTop={ 2 } >
+            <Grid container spacing={ 2 } marginTop={ 2 }>
                 <Grid xs={ 6 }>
                     <DnDProvider>
                         <Typography variant="h5" className="policy-list-header">Active Policies</Typography>
-                        <Card id={ "active-policy-list-container" } className="policy-list-card">
+                        <Card
+                            ref={ activeScrollRef }
+                            id={ "active-policy-list-container" }
+                            className="policy-list-card"
+                        >
                             <InfiniteScroll
                                 next={ fetchMoreActivePolicies }
                                 hasMore={ hasMoreActivePolicies }
@@ -287,17 +352,17 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
                                         <CircularProgress />
                                     </div>)
                                 }
-                                dataLength={ activePolicies.length }
-                                scrollableTarget={ "active-policy-list-container" }
+                                dataLength={ activePoliciesList?.length }
+                                scrollableTarget="active-policy-list-container"
                                 style={ { overflow: "unset" } }
                             >
                                 <CardContent>
                                     <PolicyList
                                         containerId="1"
-                                        policies={ activePolicies }
+                                        policies={ activePoliciesList }
                                         isDraggable={ true }
-                                        mutateInactivePolicyList={ mutateInactivePolicy }
-                                        mutateActivePolicyList={ mutateActivePolicy }
+                                        deleteActivePolicy={ handleDeleteActivePolicy }
+                                        deactivatePolicy={ handleDeactivatePolicy }
                                     />
                                 </CardContent>
                             </InfiniteScroll>
@@ -306,7 +371,11 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
                 </Grid>
                 <Grid  xs={ 6 }>
                     <Typography variant="h5" className="policy-list-header">Inactive Policies</Typography>
-                    <Card id={ "inactive-policy-list-container" } className="policy-list-card">
+                    <Card
+                        ref={ inactiveScrollRef }
+                        id={ "inactive-policy-list-container" }
+                        className="policy-list-card"
+                    >
                         <InfiniteScroll
                             next={ fetchMoreInactivePolicies }
                             hasMore={ hasMoreInactivePolicies }
@@ -315,20 +384,17 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
                                     <CircularProgress />
                                 </div>)
                             }
-                            dataLength={ inactivePolicies?.length }
-                            scrollableTarget={ "inactive-policy-list-container" }
+                            dataLength={ inactivePoliciesList?.length }
+                            scrollableTarget="inactive-policy-list-container"
                             style={ { overflow: "unset" } }
                         >
                             <CardContent>
                                 <PolicyList
                                     containerId="2"
-                                    policies={ inactivePolicies }
+                                    policies={ inactivePoliciesList }
                                     isDraggable={ false }
-                                    mutateInactivePolicyList={ mutateInactivePolicy }
-                                    setInactivePolicies={ setInactivePolicies }
-                                    setPageInactive={ setPageInactive }
-                                    setHasMoreInactivePolicies={ setHasMoreInactivePolicies }
-                                    mutateActivePolicyList={ mutateActivePolicy }
+                                    deleteInactivePolicy={ handleDeleteInactivePolicy }
+                                    activatePolicy={ handleActivatePolicy }
                                 />
                             </CardContent>
                         </InfiniteScroll>
@@ -342,7 +408,16 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
                         data-componentid="group-mgt-create-group-wizard"
                         open={ showWizard }
                         closeWizard={ () => setShowWizard(false) }
-                        mutateInactivityList={ mutateInactivePolicy }
+                        mutateInactivityList={ () => {
+                            setPageInactive(0);
+                            setPageActive(0);
+                            setSubmittedSearchQuery("");
+                            setSearchQuery("");
+                            mutateInactivePolicies();
+                            mutateActivePolicies();
+                            activeScrollRef.current.scrollTo({ behavior: "smooth", top: 0 });
+                            inactiveScrollRef.current.scrollTo({ behavior: "smooth", top: 0 });
+                        } }
                     />
                 )
             }

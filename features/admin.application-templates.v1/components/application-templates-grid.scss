@@ -22,9 +22,14 @@
     justify-content: flex-start;
     align-items: flex-start;
     gap: 25px;
-    margin-bottom: 30px;
+    margin-bottom: 50px;
 
     .application-template-card-group-description {
         margin-top: -20px;
     }
+
+    .application-template-card-group-empty-title {
+        margin-top: -25px;
+    }
+    
 }

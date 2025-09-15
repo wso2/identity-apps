@@ -214,7 +214,10 @@ const TenantSwitchDropdown: FunctionComponent<TenantSwitchDropdownInterface> = (
     return (
         <>
             { showNewOrgWizard
-                && <AddTenantWizard openModal={ showNewOrgWizard } onCloseHandler={ closeNewOrgWizard } /> }
+                && (<AddTenantWizard
+                    openModal={ showNewOrgWizard }
+                    onCloseHandler={ closeNewOrgWizard }
+                    deploymentUnits={ undefined } />) }
             <Dropdown
                 onBlur={ resetTenantDropdown }
                 item

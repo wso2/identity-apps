@@ -16,19 +16,19 @@
  * under the License.
  */
 
-import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
 import {
     FederatedAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { AuthenticatorCategories } from "@wso2is/admin.connections.v1/models/authenticators";
 import { ConnectionsManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-utils";
-import { getGeneralIcons } from "@wso2is/admin.core.v1";
+import { getGeneralIcons } from "@wso2is/admin.core.v1/configs/ui";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import {
     FederatedAuthenticatorInterface,
     GenericAuthenticatorInterface
 } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
+import useAuthenticationFlow from "@wso2is/admin.login-flow-builder.v1/hooks/use-authentication-flow";
 import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils/organization";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, GenericIcon, Heading, LinkButton, Popup, Tooltip } from "@wso2is/react-components";

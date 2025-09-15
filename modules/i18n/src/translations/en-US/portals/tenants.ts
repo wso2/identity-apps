@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -70,18 +70,25 @@ export const tenants: TenantsNS = {
                     }
                 },
                 domain: {
-                    helperText: "Enter a unique domain name for your organization. The domain name should be in the format of <1>abc.com</1>.",
-                    label: "Domain",
-                    placeholder: "Enter a Domain name",
+                    helperText: "Enter a unique organization handle (domain) for your organization. Valid characters include lowercase letters, numbers, '.', '-', and '_'.",
+                    label: "Organization Handle (Domain)",
+                    placeholder: "Enter organization handle (domain)",
                     validations: {
-                        domainUnavailable: "A domain with the same name already exists.",
-                        required: "A domain name is required."
+                        domainInvalidCharPattern: "The organization handle (domain) contains one or more illegal characters.",
+                        domainInvalidPattern: "The organization handle (domain) doesn't match the valid pattern.",
+                        domainMandatoryExtension: "The organization handle (domain) should have a dot extension. E.g.: abc.com",
+                        domainStartingWithDot: "The organization handle (domain) cannot start with a dot.",
+                        domainUnavailable: "An organization with the same handle (domain) already exists.",
+                        required: "The organization handle (domain) is required."
                     }
                 },
                 email: {
                     label: "Email",
                     placeholder: "Enter the admin’s email address.",
                     validations: {
+                        invalid: "Please enter a valid email address. You can use alphanumeric " +
+                            "characters, unicode characters, underscores (_), dashes (-), periods (.), " +
+                            "and an at sign (@).",
                         required: "Email is required."
                     }
                 },
@@ -107,6 +114,14 @@ export const tenants: TenantsNS = {
                     placeholder: "Enter the admin’s last name.",
                     validations: {
                         required: "Last name is required."
+                    }
+                },
+                organizationName: {
+                    helperText: "Enter a unique name for your organization. Valid characters include letters (a–z, A–Z), numbers, spaces, periods (.), hyphens (-), and underscores (_). <bold>Keep this field blank to use the organization handle (domain) as the organization name.</bold>",
+                    label: "Organization Name",
+                    placeholder: "Enter organization name",
+                    validations: {
+                        invalidCharPattern: "The organization name contains one or more illegal characters."
                     }
                 },
                 password: {
@@ -164,9 +179,69 @@ export const tenants: TenantsNS = {
             secondaryAction: "Cancel"
         }
     },
+    deploymentUnits: {
+        label: "Region",
+        placeholder: "Select a region (e.g., US).",
+        validations: {
+            empty: "This is a required field."
+        }
+    },
     edit: {
         backButton: "Go back to Root Organizations",
-        subtitle: "Crated on {{date}}"
+        consoleURL: {
+            hint: "If you try to login to <1>{{domain}}</1> organization's Console using the same browser, you will have to logout from this active session first.",
+            label: "Console URL"
+        },
+        subtitle: "Created on {{date}}"
+    },
+    editSelfOrganization: {
+        actions: {
+            save: {
+                label: "Save"
+            }
+        },
+        form: {
+            fields: {
+                created: {
+                    label: "Created"
+                },
+                lastModified: {
+                    label: "Last Modified"
+                },
+                organizationHandle: {
+                    label: "Organization Handle"
+                },
+                organizationId: {
+                    hint: "Copy the organization ID to clipboard",
+                    label: "Organization ID"
+                },
+                organizationName: {
+                    label: "Organization Name",
+                    placeholder: "Enter organization name",
+                    validations: {
+                        required: "Organization name is required"
+                    }
+                }
+            }
+        },
+        notifications: {
+            updateOrganization: {
+                error: {
+                    description: "An error occurred while updating the organization",
+                    message: "Update Failed"
+                },
+                success: {
+                    description: "Organization updated successfully",
+                    message: "Update Successful"
+                }
+            }
+        },
+        readOnly: {
+            subtitle: "Browse organization information",
+            title: "Organization Details"
+        },
+        subtitle: "Manage organization details",
+        title: "Edit Organization"
     },
     editTenant: {
         actions: {
@@ -229,6 +304,10 @@ export const tenants: TenantsNS = {
             }
         }
     },
+    listDeploymentUnits: {
+        description: "An error occurred while fetching regions.",
+        message: "Unable to fetch regions"
+    },
     listing: {
         advancedSearch: {
             form: {
@@ -264,7 +343,7 @@ export const tenants: TenantsNS = {
             },
             subtitles: {
                 0: "There are no root organizations available at the moment.",
-                1: "Start with creating your first root organization. or configure system settings that applies to all the root organizations."
+                1: "Create your first root organization, or configure system settings that applies to all the root organizations."
             },
             title: "No groups assigned to the role."
         },
@@ -288,9 +367,6 @@ export const tenants: TenantsNS = {
                 edit: {
                     label: "Edit"
                 },
-                goToConsole: {
-                    label: "Go to Console"
-                },
                 more: {
                     label: "More"
                 }
@@ -311,7 +387,7 @@ export const tenants: TenantsNS = {
         deActivate: "Disable",
         deActivated: "Disabled"
     },
-    subtitle: "Configure and extend you server by creating new root level organizations in your workspace.",
+    subtitle: "Configure and manage your server by creating new root level organizations in your workspace.",
     systemSettings: {
         actions: {
             newTenant: {
@@ -327,8 +403,14 @@ export const tenants: TenantsNS = {
     },
     tenantDropdown: {
         options: {
+            edit: {
+                label: "Edit Organization"
+            },
             manage: {
                 label: "Manage Root Organizations"
+            },
+            view: {
+                label: "View Organization"
             }
         }
     },

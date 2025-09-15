@@ -26,6 +26,7 @@ if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
         contextPath: contextPathGlobal,
         isAdaptiveAuthenticationAvailable: isAdaptiveAuthenticationAvailable,
         isOrganizationManagementEnabled: isOrganizationManagementEnabled,
+        proxyContextPath: proxyContextPathGlobal,
         serverOrigin: serverOriginGlobal,
         superTenant: superTenantGlobal,
         tenantPrefix: tenantPrefixGlobal
@@ -38,24 +39,19 @@ function handleTimeOut(_idleSecondsCounter: number, _sessionAgeCounter: number,
     SESSION_REFRESH_TIMEOUT: number, IDLE_TIMEOUT: number, IDLE_WARNING_TIMEOUT: number): number {
 
     if (_idleSecondsCounter === IDLE_WARNING_TIMEOUT || _idleSecondsCounter >= IDLE_TIMEOUT) {
-        const warningSearchParamKey: string = "session_timeout_warning";
         const currentURL: URL = new URL(window.location.href);
 
         // If the URL already has the timeout warning search para, delete it first.
-        if (currentURL && currentURL.searchParams && currentURL.searchParams.get(warningSearchParamKey) !== null) {
-            currentURL.searchParams.delete(warningSearchParamKey);
+        if (
+            currentURL &&
+            currentURL.searchParams &&
+            currentURL.searchParams.get(CommonConstants.SESSION_TIMEOUT_WARNING_URL_SEARCH_PARAM_KEY) !== null
+        ) {
+            currentURL.searchParams.delete(CommonConstants.SESSION_TIMEOUT_WARNING_URL_SEARCH_PARAM_KEY);
         }
 
-        const existingSearchParams: string = currentURL.search;
-
-        // NOTE: This variable is used for push state.
-        // If already other search params are available simply append using `&`,
-        // otherwise just add the param using `?`.
-        const searchParam: string =
-            existingSearchParams + (existingSearchParams ? "&" : "?") + warningSearchParamKey + "=" + "true";
-
         // Append the search param to the URL object.
-        currentURL.searchParams.append(warningSearchParamKey, "true");
+        currentURL.searchParams.append(CommonConstants.SESSION_TIMEOUT_WARNING_URL_SEARCH_PARAM_KEY, "true");
 
         const state: {
             idleTimeout: number;
@@ -67,7 +63,7 @@ function handleTimeOut(_idleSecondsCounter: number, _sessionAgeCounter: number,
             url: currentURL.href
         };
 
-        window.history.pushState(state, null, searchParam);
+        window.history.pushState(state, null, currentURL.href);
 
         dispatchEvent(new MessageEvent("session-timeout", { data: state }));
     }
@@ -111,14 +107,29 @@ if (
 let _idleSecondsCounter: number = 0;
 let _sessionAgeCounter: number = 0;
 
-document.onclick = function() {
+/**
+ * This function is called when the user interacts with the page.
+ */
+const onUserInteraction = (): void => {
+    // If the user has been inactive for SESSION_REFRESH_TIMEOUT seconds,
+    // and the idle session warning is not yet displayed,
+    // refresh the session when the user starts interact with the page.
+    if (_idleSecondsCounter >= SESSION_REFRESH_TIMEOUT && _idleSecondsCounter < IDLE_WARNING_TIMEOUT) {
+        dispatchEvent(new MessageEvent(CommonConstants.SESSION_REFRESH_EVENT));
+    }
+
+    // Reset the idle seconds counter.
     _idleSecondsCounter = 0;
+};
+
+document.onclick = function() {
+    onUserInteraction();
 };
 document.onmousemove = function() {
-    _idleSecondsCounter = 0;
+    onUserInteraction();
 };
 document.onkeypress = function() {
-    _idleSecondsCounter = 0;
+    onUserInteraction();
 };
 
 // Run the timer in main thread if the browser doesn't support worker threads.

@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
 import { CertificateManagementConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {

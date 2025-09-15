@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { FeatureAccessConfigInterface, RolesInterface } from "@wso2is/core/models";
 import { TabPageLayout } from "@wso2is/react-components";

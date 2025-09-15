@@ -23,6 +23,8 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ReactElement } from "react";
 import AIText from "./ai-text";
 import AIBannerBackground from "../../themes/wso2is/assets/images/illustrations/ai-banner-background-white.svg";
+import AIBot
+    from "../../themes/wso2is/assets/images/illustrations/ai-bot.svg";
 import "./ai-banner.scss";
 
 /**
@@ -36,6 +38,7 @@ interface AIBannerProps extends IdentifiableComponentInterface {
     actionButtonText?: string;
     titleLabel?: ReactElement;
     readonly?: boolean;
+    hideAction?: boolean;
 }
 
 /**
@@ -50,14 +53,15 @@ const AIBanner = (props: AIBannerProps): ReactElement => {
         onActionButtonClick,
         readonly,
         title,
-        titleLabel
+        titleLabel,
+        hideAction
     } = props;
 
     return (
         <Box
-            className="ai-banner"
+            className={ `ai-banner ${ hideAction ? "unsubscribed" : "subscribed" }` }
             style={ {
-                backgroundImage: `url(${ AIBannerBackground })`
+                backgroundImage: hideAction ? `url(${ AIBot })` : `url(${ AIBannerBackground })`
             } }
         >
             <div className="ai-banner-text-container">
@@ -69,16 +73,14 @@ const AIBanner = (props: AIBannerProps): ReactElement => {
                     <AIText>
                         { aiText }
                     </AIText>
-                    {
-                        titleLabel
-                    }
+                    { titleLabel }
                 </Typography>
                 <Typography className="ai-banner-sub-heading">
                     { description }
                 </Typography>
             </div>
             {
-                onActionButtonClick && actionButtonText && (
+                onActionButtonClick && actionButtonText && !hideAction && (
                     <Button
                         onClick={ onActionButtonClick }
                         color="primary"

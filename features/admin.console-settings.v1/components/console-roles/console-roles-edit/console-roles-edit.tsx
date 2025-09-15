@@ -22,7 +22,8 @@ import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import { FeatureStatus, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import { useOrganizationConfigV2 } from "@wso2is/admin.administrators.v1/api/useOrganizationConfigV2";
 import { UseOrganizationConfigType } from "@wso2is/admin.administrators.v1/models/organization";
-import { AppState, OrganizationType, store } from "@wso2is/admin.core.v1";
+import { OrganizationType } from "@wso2is/admin.core.v1/constants/organization-constants";
+import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -107,6 +108,10 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
     const useOrgConfig: UseOrganizationConfigType = useOrganizationConfigV2;
 
     const saasFeatureStatus: FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
+
+    const isPrivilegedUsersToggleVisible: boolean = isFirstLevelOrganization() &&
+        isEnterpriseLoginEnabled &&
+        isPrivilegedUsersInConsoleSettingsEnabled;
 
     const {
         data: OrganizationConfig,
@@ -194,9 +199,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                 menuItem: t("roles:edit.menuItems.users"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
-                        { isFirstLevelOrganization() &&
-                            isEnterpriseLoginEnabled &&
-                            isPrivilegedUsersInConsoleSettingsEnabled && (
+                        { isPrivilegedUsersToggleVisible && (
                             <RadioGroup
                                 row
                                 aria-labelledby="console-administrators-radio-group"
@@ -222,6 +225,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                         ) }
 
                         <RoleUsersList
+                            isPrivilegedUsersToggleVisible={ isPrivilegedUsersToggleVisible }
                             isReadOnly={ !hasRolesUpdatePermissions }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }

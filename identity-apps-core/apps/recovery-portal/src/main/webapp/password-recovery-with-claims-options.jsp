@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -30,6 +30,8 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.recovery.v2.*" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.UsernameRecoveryApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.*" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="java.net.URISyntaxException" %>
 <%@ page import="java.io.File" %>
@@ -59,11 +61,28 @@
     boolean isChallengeQuestionsEnabled = false;
 
     boolean isEmailEnabled = false;
+    Boolean isEmailOtpBasedPasswordRecoveryEnabledByTenant = false;
     boolean isSMSOTPEnabled = false;
     String recoveryCode = "";
     String emailId = "";
     String smsOtpId = "";
     String screenValue = "";
+
+    try {
+        PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+        isEmailOtpBasedPasswordRecoveryEnabledByTenant =
+            preferenceRetrievalClient.checkEmailOTPBasedPasswordRecovery(tenantDomain);
+    } catch (PreferenceRetrievalClientException e) {
+        request.setAttribute("error", true);
+        request.setAttribute("errorMsg", IdentityManagementEndpointUtil
+                        .i18n(recoveryResourceBundle, "something.went.wrong.contact.admin"));
+        IdentityManagementEndpointUtil.addErrorInformation(request, e);
+        if (!StringUtils.isBlank(username)) {
+            request.setAttribute("username", username);
+        }
+        request.getRequestDispatcher("error.jsp").forward(request, response);
+        return;
+    }
 
     List<Claim> claims;
     UsernameRecoveryApi usernameRecoveryApi = new UsernameRecoveryApi();
@@ -183,10 +202,7 @@
     }
 %>
 
-<%-- Data for the layout from the page --%>
-<%
-    layoutData.put("containerSize", "medium");
-%>
+<% request.setAttribute("pageName", "password-recovery-with-claims-options"); %>
 
 <!doctype html>
 <html lang="en-US">
@@ -200,7 +216,7 @@
     <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout recovery-layout">
+<body class="login-portal layout recovery-layout" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
@@ -230,12 +246,16 @@
                     <form class="ui large form" method="post" action="verify.do" id="recoverDetailsForm">
                         <div class="segment" style="text-align: left;">
                         <% if (isNotificationBasedRecoveryEnabled) { %>
-                        <% if (isEmailEnabled) { %>
+                        <% if (isEmailEnabled) {
+                            String emailSendLabel = isEmailOtpBasedPasswordRecoveryEnabledByTenant
+                                                        ? "send.email.otp"
+                                                        : "send.email.link";
+                        %>
                             <div class="field">
                                 <div class="ui radio checkbox">
                                     <input type="radio" name="recoveryOption" value="<%=emailId%>" checked/>
                                     <label><%=IdentityManagementEndpointUtil.i18n
-                                            (recoveryResourceBundle,"send.email.link")%></label>
+                                            (recoveryResourceBundle, emailSendLabel)%></label>
                                 </div>
                             </div>
                         <%
@@ -284,6 +304,9 @@
                                 value="<%=Encode.forHtmlAttribute(tenantDomain) %>"/>
                             <input type="hidden" name="recoveryCode" value="<%=recoveryCode %>"/>
                             <input type="hidden" name="isPasswordRecoveryWithClaimsNotify" value="true">
+                            <input type="hidden" name="isEmailOtpBasedPasswordRecoveryEnabledByTenant"
+                                value="<%=isEmailOtpBasedPasswordRecoveryEnabledByTenant %>"/>
+                            <input type="hidden" name="recoveryStage" value="INITIATE"/>
                         </div>
                         <div class="ui divider hidden"></div>
                         <div class="align-right buttons">

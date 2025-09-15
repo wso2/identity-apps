@@ -18,7 +18,11 @@
 
 import { Show } from "@wso2is/access-control";
 import { getAllExternalClaims } from "@wso2is/admin.claims.v1/api";
-import { AppConstants, AppState, FeatureConfigInterface, history, sortList } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { sortList } from "@wso2is/admin.core.v1/utils/sort-list";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
 import { AlertLevels, ClaimDialect, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -72,6 +76,10 @@ interface ExternalDialectEditPageInterface extends TestableComponentInterface {
      * Update mapped claims on delete or edit
      */
     updateMappedClaims?: ReactDispatch<SetStateAction<boolean>>;
+    /**
+     * Update dialects on add
+     */
+    updateDialects?: ReactDispatch<SetStateAction<boolean>>;
 }
 
 /**
@@ -90,6 +98,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
         isAttributeButtonEnabled,
         attributeButtonText,
         updateMappedClaims,
+        updateDialects,
         [ "data-testid" ]: testId,
         id: dialectId
     } = props;
@@ -111,18 +120,8 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             type="negative"
             open={ confirmDelete }
             assertion={ dialect.dialectURI }
-            assertionHint={ (
-                /**
-                 * TODO: Trans component with strong tags doesn't seem to
-                 * work here properly, hence removed for now.
-                 *
-                 * Need to find the root cause and fix this.
-                 */
-                <p>
-                    Please type <strong>{ dialect.dialectURI }</strong> to confirm.
-                </p>
-            ) }
-            assertionType="input"
+            assertionHint={ t("claims:dialects.confirmations.hint") }
+            assertionType="checkbox"
             primaryAction={ t("claims:dialects.confirmations.action") }
             secondaryAction={ t("common:cancel") }
             onSecondaryActionClick={ (): void => setConfirmDelete(false) }
@@ -179,10 +178,6 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             });
     };
 
-    useEffect(() => {
-        dialectId && getDialect();
-    }, [ dialectId ]);
-
     /**
      * Fetch external claims.
      *
@@ -201,13 +196,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                 offset,
                 sort
             })
-                .then((response: ExternalClaim[]) => {
-                    // Hide identity claims in SCIM
-                    const claims: ExternalClaim[] = attributeConfig.attributeMappings.getExternalAttributes(
-                        attributeType,
-                        response
-                    );
-
+                .then((claims: ExternalClaim[]) => {
                     setClaims(sortList(claims, "claimURI", true));
                 })
                 .catch((error: any) => {
@@ -236,6 +225,13 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
     };
 
     useEffect(() => {
+        if (!dialectId) {
+            setDialect(null);
+            setClaims(undefined);
+
+            return;
+        }
+        getDialect();
         getExternalClaims();
     }, [ dialectId ]);
 
@@ -343,6 +339,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                 attributeUri={ attributeUri }
                 mappedLocalClaims={ mappedLocalClaims }
                 updateMappedClaims={ updateMappedClaims }
+                updateDialects={ updateDialects }
                 isAttributeButtonEnabled={ isAttributeButtonEnabled }
                 attributeButtonText={ attributeButtonText }
             />
@@ -351,6 +348,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
 
             {
                 attributeConfig.attributeMappings.showDangerZone
+                && dialect?.id
                 && !ClaimManagementConstants.SYSTEM_DIALECTS.includes(dialect?.id)
                 && (
                     <Grid>

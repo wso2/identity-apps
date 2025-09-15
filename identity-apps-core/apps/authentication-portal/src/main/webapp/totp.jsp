@@ -1,12 +1,19 @@
 <%--
- ~
- ~ Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
- ~
- ~ This software is the property of WSO2 LLC. and its suppliers, if any.
- ~ Dissemination of any information or reproduction of any material contained
- ~ herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
- ~ You may not alter or remove any copyright or other notice from copies of this content."
- ~
+  ~ Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
+  ~
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
 --%>
 
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
@@ -95,11 +102,13 @@
             errorMessage = Encode.forHtmlAttribute(request.getParameter(Constants.AUTH_FAILURE_MSG));
              if (errorMessage.equalsIgnoreCase("authentication.fail.message") ||
                      errorMessage.equalsIgnoreCase("login.fail.message")) {
-                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"error.retry");
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"error.invalid.expired.used.code.retry");
             }
         }
     }
 %>
+
+<% request.setAttribute("pageName", "totp"); %>
 
 <html lang="en-US">
     <head>
@@ -165,7 +174,7 @@
         </script>
     </head>
 
-    <body class="login-portal layout totp-portal-layout">
+    <body class="login-portal layout totp-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
         <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
             <jsp:include page="extensions/timeout.jsp"/>
         <% } else { %>
@@ -211,7 +220,7 @@
                             <div class="equal width fields">
                                     <div class="field mt-5">
                                         <input
-                                            class="text-center p-3"
+                                            class="text-center p-1 pb-3 pt-3"
                                             id="pincode-1"
                                             name="pincode-1"
                                             tabindex="1"
@@ -219,64 +228,76 @@
                                             maxlength="1"
                                             onkeyup="movetoNext(this, 'pincode-2', null)"
                                             autocomplete="off"
+                                            type="text"
+                                            inputmode="numeric"
                                             autofocus>
                                     </div>
                                     <div class="field mt-5">
                                         <input
-                                            class="text-center p-3"
+                                            class="text-center p-1 pb-3 pt-3"
                                             id="pincode-2"
                                             name="pincode-2"
                                             tabindex="2"
                                             placeholder="·"
                                             maxlength="1"
                                             onkeyup="movetoNext(this, 'pincode-3', 'pincode-1')"
-                                            autocomplete="off">
+                                            autocomplete="off"
+                                            type="text"
+                                            inputmode="numeric">
                                     </div>
                                     <div class="field mt-5">
                                         <input
-                                            class="text-center p-3"
+                                            class="text-center p-1 pb-3 pt-3"
                                             id="pincode-3"
                                             name="pincode-3"
                                             tabindex="3"
                                             placeholder="·"
                                             maxlength="1"
                                             onkeyup="movetoNext(this, 'pincode-4', 'pincode-2')"
-                                            autocomplete="off">
+                                            autocomplete="off"
+                                            type="text"
+                                            inputmode="numeric">
                                     </div>
                                     <div class="field mt-5">
                                         <input
-                                            class="text-center p-3"
+                                            class="text-center p-1 pb-3 pt-3"
                                             id="pincode-4"
                                             name="pincode-4"
                                             tabindex="4"
                                             placeholder="·"
                                             maxlength="1"
                                             onkeyup="movetoNext(this, 'pincode-5', 'pincode-3')"
-                                            autocomplete="off">
+                                            autocomplete="off"
+                                            type="text"
+                                            inputmode="numeric">
                                     </div>
                                     <div class="field mt-5">
                                         <input
-                                            class="text-center p-3"
+                                            class="text-center p-1 pb-3 pt-3"
                                             id="pincode-5"
                                             name="pincode-5"
                                             tabindex="5"
                                             placeholder="·"
                                             maxlength="1"
                                             onkeyup="movetoNext(this, 'pincode-6', 'pincode-4')"
-                                            autocomplete="off">
+                                            autocomplete="off"
+                                            type="text"
+                                            inputmode="numeric">
                                     </div>
                                     <div class="field mt-5">
                                         <input
-                                            class="text-center p-3"
+                                            class="text-center p-1 pb-3 pt-3"
                                             id="pincode-6"
                                             name="pincode-6"
                                             tabindex="6"
                                             placeholder="·"
                                             maxlength="1"
                                             onkeyup="movetoNext(this, null, 'pincode-5')"
-                                            autocomplete="off">
+                                            autocomplete="off"
+                                            type="text"
+                                            inputmode="numeric">
                                     </div>
-                                </div>
+                            </div>
 
                             <input id="sessionDataKey" type="hidden" name="sessionDataKey"
                                 value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>' />
@@ -402,16 +423,28 @@
                 e.preventDefault();
                 // Get pasted data via clipboard API
                 clipboardData = e.clipboardData || window.clipboardData;
-                value = clipboardData.getData('Text');
+                value = clipboardData.getData('Text').trim();
                 const reg = new RegExp(/^\d+$/);
                 if (reg.test(value)) {
-                    for (n = 0; n < 6; ++n) {
+                    value = value.substring(0, 6);
+                    
+                    for (let n = 0; n < value.length && n < 6; ++n) {
                         $("#pincode-" + (n+1)).val(value[n]);
-                        $("#pincode-" + (n+1)).focus();
+                    }
+                    
+                    if (value.length < 6) {
+                        $("#pincode-" + (value.length + 1)).focus();
+                    } else {
+                        $("#pincode-6").focus();
+                        $('#subButton').attr('disabled', false);
                     }
                 }
             }
-        document.getElementById('pincode-1').addEventListener('paste', handlePaste);
+            
+            // Add paste event listener to all input fields
+            for (let i = 1; i <= 6; i++) {
+                document.getElementById('pincode-' + i).addEventListener('paste', handlePaste);
+            }
             $('#subButton').attr('disabled', true);
             $('#pincode-6').on('keyup', function() {
                 if ($('#pincode-1').val() != '' && $('#pincode-2').val() != ''

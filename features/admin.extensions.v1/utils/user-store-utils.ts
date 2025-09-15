@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { getAUserStore } from "@wso2is/admin.core.v1/api";
-import { SharedUserStoreConstants } from "@wso2is/admin.core.v1/constants";
+import { getAUserStore } from "@wso2is/admin.core.v1/api/user-store";
+import { SharedUserStoreConstants } from "@wso2is/admin.core.v1/constants/user-store-constants";
 import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { UserStoreListItem, UserStorePostData, UserStoreProperty } from "@wso2is/admin.userstores.v1/models";

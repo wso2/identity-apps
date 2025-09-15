@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,15 +17,17 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { I18nConstants, store } from "@wso2is/admin.core.v1";
+import { I18nConstants } from "@wso2is/admin.core.v1/constants/i18n-constants";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { EmailManagementConstants } from "../constants/email-management-constants";
 import { EmailTemplate, EmailTemplateType } from "../models/email-templates";
 
 /**
@@ -73,12 +75,18 @@ export const useEmailTemplatesList = <Data = EmailTemplateType[], Error = Reques
  *
  * @param templateType - Template type.
  * @param locale - Locale of the template.
+ * @param fetchSystemTemplate - Should fetch the system template.
+ * @param fetchInheritedTemplate - Should fetch the inherited template.
+ * @param shouldFetch - Should fetch the data.
  *
  * @returns Email template.
  */
 export const useEmailTemplate = <Data = EmailTemplate, Error = RequestErrorInterface>(
     templateType: string,
-    locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE
+    locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE,
+    fetchSystemTemplate: boolean = false,
+    fetchInheritedTemplate: boolean = false,
+    shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
     const emailLocale: string = locale.replace("-", "_");
 
@@ -89,15 +97,27 @@ export const useEmailTemplate = <Data = EmailTemplate, Error = RequestErrorInter
         },
         method: HttpMethods.GET,
         url: store.getState().config.endpoints.emailManagement
-            + `/template-types/${ templateType }/templates/${ emailLocale }`
+            + `/template-types/${ templateType }/org-templates/${ emailLocale }`
     };
+
+    if (fetchInheritedTemplate) {
+        requestConfig.params = {
+            resolve: true
+        };
+    }
+
+    if (fetchSystemTemplate) {
+        requestConfig.url =
+            store.getState().config.endpoints.emailManagement +
+            `/template-types/${templateType}/system-templates/${EmailManagementConstants.DEAFULT_LOCALE_FORMATTED}`;
+    }
 
     const {
         data,
         error,
         isValidating,
         mutate
-    } = useRequest<Data, Error>(requestConfig,
+    } = useRequest<Data, Error>(shouldFetch ? requestConfig : null,
         {
             onErrorRetry: (error: AxiosError) => {
                 if (error.response.status === 404) {
@@ -134,7 +154,10 @@ export const updateEmailTemplate = (
 
     const requestConfig: AxiosRequestConfig = {
         data: {
-            ...emailTemplate
+            body: emailTemplate.body,
+            contentType: emailTemplate.contentType,
+            footer: emailTemplate.footer,
+            subject: emailTemplate.subject
         },
         headers: {
             "Accept": "application/json",
@@ -142,7 +165,7 @@ export const updateEmailTemplate = (
         },
         method: HttpMethods.PUT,
         url: store.getState().config.endpoints.emailManagement +
-            `/template-types/${ templateType }/templates/${ emailLocale }`
+            `/template-types/${ templateType }/org-templates/${ emailLocale }`
     };
 
     return httpClient(requestConfig)
@@ -184,7 +207,11 @@ export const createNewEmailTemplate = (
 
     const requestConfig: AxiosRequestConfig = {
         data: {
-            ...emailTemplate
+            body: emailTemplate.body,
+            contentType: emailTemplate.contentType,
+            footer: emailTemplate.footer,
+            locale: emailTemplate.id,
+            subject: emailTemplate.subject
         },
         headers: {
             "Accept": "application/json",
@@ -192,7 +219,7 @@ export const createNewEmailTemplate = (
         },
         method: HttpMethods.POST,
         url: store.getState().config.endpoints.emailManagement +
-            `/template-types/${ templateType }`
+            `/template-types/${ templateType }/org-templates`
     };
 
     return httpClient(requestConfig)
@@ -241,7 +268,7 @@ export const deleteEmailTemplate = (
         },
         method: HttpMethods.DELETE,
         url: store.getState().config.endpoints.emailManagement +
-            `/template-types/${ templateType }/templates/${ emailLocale }`
+            `/template-types/${ templateType }/org-templates/${ emailLocale }`
     };
 
     return httpClient(requestConfig)

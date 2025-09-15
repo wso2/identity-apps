@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AttributeSelectList } from "@wso2is/admin.core.v1";
+import { AttributeSelectList } from "@wso2is/admin.core.v1/components/attribute-select-list";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { useTrigger } from "@wso2is/forms";
 import {
@@ -50,9 +50,9 @@ interface AttributeSelectionWizardOtherDialectPropsInterface extends TestableCom
 /**
  * Other dialects attribute selection wizard component.
  *
- * @param {AttributeSelectionWizardOtherDialectPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns Attribute selection wizard
  */
 export const AttributeSelectionWizardOtherDialect:
     FunctionComponent<AttributeSelectionWizardOtherDialectPropsInterface> = (

@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2019-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -18,12 +18,23 @@
 
 <script src="libs/jquery_3.6.0/jquery-3.6.0.min.js"></script>
 <script src="libs/themes/wso2is/semantic.min.js"></script>
+<script src="libs/tldts-6.1.73.umd.min.js" async></script>
+<script src="util/url-utils.js" async></script>
 
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthContextAPIClient" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Arrays" %>
+
+<%-- Localization --%>
+<jsp:directive.include file="localize.jsp" />
+
+<%-- Include tenant context --%>
+<jsp:directive.include file="../tenant-resolve.jsp"/>
+
+<%-- Branding Preferences --%>
+<jsp:directive.include file="branding-preferences.jsp"/>
 
 <%
     // Determining whether the application user is going to login is Console, as the maintenance banner
@@ -70,10 +81,11 @@
      */
     function onCookieConsentClear(e) {
 
-        var cookieString = getCookieConsentCookieName() + "=true;max-age=31536000;path=/";
+        var cookieString = getCookieConsentCookieName() + "=true;max-age=31536000;path=/;Secure";
+        var domain = URLUtils.getDomain(window.location.href);
 
-        if (extractDomainFromHost()) {
-            cookieString = cookieString + ";domain=" + extractDomainFromHost();
+        if (domain) {
+            cookieString = cookieString + ";domain=" + domain;
         }
 
         document.cookie = cookieString;
@@ -112,31 +124,8 @@
 
         return false;
     }
-
-    /**
-     * Extracts the domain from the hostname.
-     * If parsing fails, undefined will be returned.
-     */
-    function extractDomainFromHost() {
-
-        var domain = undefined;
-
-        /**
-        * Extract the domain from the hostname.
-        * Ex: If sub.sample.domain.com is parsed, `domain.com` will be set as the domain.
-        */
-        try {
-            var hostnameTokens = window.location.hostname.split('.');
-
-            if (hostnameTokens.length > 1) {
-                domain = hostnameTokens.slice((hostnameTokens.length -2), hostnameTokens.length).join(".");
-            } else if (hostnameTokens.length == 1) {
-                domain = hostnameTokens[0];
-            }
-        } catch(e) {
-            // Couldn't parse the hostname.
-        }
-
-        return domain;
-    }
 </script>
+
+<% if (StringUtils.isNotBlank(jsContent)){ %>
+<script type="text/javascript"><%= jsContent %></script>
+<% } %>

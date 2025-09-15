@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,14 +25,34 @@ export interface Claim {
     dialectURI?: string;
     description: string;
     displayOrder: number;
+    multiValued: boolean;
+    dataType: string;
+    subAttributes?: string[];
+    canonicalValues?: LabelValue[];
     displayName: string;
     readOnly: boolean;
     regEx: string;
     required: boolean;
     supportedByDefault: boolean;
     uniquenessScope?: UniquenessScope;
+    inputFormat?: InputFormat
+    sharedProfileValueResolvingMethod?: SharedProfileValueResolvingMethod;
     attributeMapping?: AttributeMapping[];
     properties?: Property[];
+    profiles?: {
+        console?: AttributeProfileConfig;
+        endUser?: AttributeProfileConfig;
+        selfRegistration?: AttributeProfileConfig;
+    }
+}
+
+/**
+ * Interface for attribute profile configuration.
+ */
+export interface AttributeProfileConfig {
+    readOnly?: boolean;
+    required?: boolean;
+    supportedByDefault?: boolean;
 }
 
 /**
@@ -49,6 +69,22 @@ export interface AttributeMapping {
 export interface Property{
     key: string;
     value: string;
+}
+
+/**
+ * Type of label-value pair.
+ */
+export interface LabelValue {
+    label: string;
+    value: string;
+}
+
+/**
+ * Type of input format for claims in the UI.
+ * This is used to determine how the claim should be rendered in the UI.
+ */
+export interface InputFormat {
+    inputType: string;
 }
 
 /**
@@ -90,6 +126,8 @@ export interface ClaimsGetParams {
     sort: string;
     attributes?: string;
     "exclude-identity-claims"?: boolean;
+    "exclude-hidden-claims"?: boolean;
+    profile?: string;
 }
 
 /**
@@ -137,4 +175,64 @@ export enum UniquenessScope {
     NONE = "NONE",
     WITHIN_USERSTORE = "WITHIN_USERSTORE",
     ACROSS_USERSTORES = "ACROSS_USERSTORES"
+}
+
+/**
+ * Enum representing the method of resolving shared profile attribute values.
+ * - FROM_ORIGIN: Use the value from the originating organization.
+ * - FROM_SHARED_PROFILE: Use the value from the shared profile.
+ * - FROM_FIRST_FOUND_IN_HIERARCHY: Use the first value found in the organization hierarchy.
+ */
+export enum SharedProfileValueResolvingMethod {
+    FROM_ORIGIN = "FromOrigin",
+    FROM_SHARED_PROFILE = "FromSharedProfile",
+    FROM_FIRST_FOUND_IN_HIERARCHY = "FromFirstFoundInHierarchy"
+}
+
+/**
+ * Enum representing the data types of claims.
+ * - STRING: A string value.
+ * - INTEGER: An integer value.
+ * - DECIMAL: A decimal value.
+ * - BOOLEAN: A boolean value.
+ * - DATE_TIME: A date and time value.
+ * - COMPLEX: A complex value.
+ */
+export enum ClaimDataType {
+    STRING = "string",
+    INTEGER = "integer",
+    DECIMAL = "decimal",
+    BOOLEAN = "boolean",
+    DATE_TIME = "date_time",
+    DATE = "date",
+    EPOCH = "epoch",
+    COMPLEX = "complex",
+    OPTIONS = "options",
+    TEXT = "text"
+}
+
+/**
+ * Enum representing the input formats for claims in the UI.
+ * - DROPDOWN: A dropdown selection.
+ * - RADIO_GROUP: A group of radio buttons.
+ * - CHECKBOX_GROUP: A group of checkboxes.
+ * - MULTI_SELECT_DROPDOWN: A multi-select dropdown.
+ * - CHECKBOX: A checkbox input.
+ * - TEXT_INPUT: A single-line text input.
+ * - TEXTAREA: A multi-line text input.
+ * - DATE_PICKER: A date picker input.
+ * - NUMBER_INPUT: A numeric input field.
+ * - TOGGLE: A toggle switch input.
+ */
+export enum ClaimInputFormat {
+    DROPDOWN = "dropdown",
+    RADIO_GROUP = "radio_group",
+    CHECKBOX_GROUP = "checkbox_group",
+    MULTI_SELECT_DROPDOWN = "multi_select_dropdown",
+    CHECKBOX = "checkbox",
+    TEXT_INPUT = "text_input",
+    TEXTAREA = "textarea",
+    DATE_PICKER = "date_picker",
+    NUMBER_INPUT = "number_input",
+    TOGGLE = "toggle"
 }

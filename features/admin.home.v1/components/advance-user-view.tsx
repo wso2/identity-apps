@@ -17,7 +17,7 @@
  */
 
 import { GearIcon } from "@oxygen-ui/react-icons";
-import { FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
+import { FeatureAccessConfigInterface, FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
 import {
     getApplicationDetails,
     getInboundProtocolConfig,
@@ -35,14 +35,13 @@ import {
 } from "@wso2is/admin.applications.v1/models/application";
 import { ApplicationManagementUtils } from "@wso2is/admin.applications.v1/utils/application-management-utils";
 import getTryItClientId from "@wso2is/admin.applications.v1/utils/get-try-it-client-id";
-import {
-    AppConstants,
-    AppState,
-    ConfigReducerStateInterface,
-    EventPublisher,
-    FeatureConfigInterface,
-    history
-} from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config"; // No specific rule found
+import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state"; // No specific rule found
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
+import AdminNotice from "@wso2is/admin.extensions.v1/configs/components/admin-notice/admin-notice";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -51,12 +50,14 @@ import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/co
 import { GenericIcon, Heading, Popup, Text } from "@wso2is/react-components";
 import axios from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Card, Grid, Placeholder } from "semantic-ui-react";
 import { CardExpandedNavigationButton } from "./card-expanded-navigation-button";
 import { DynamicApplicationContextCard } from "./dynamic-application-context-card";
+import { FeatureCarousel } from "./new-feature-announcement/new-feature-announcement";
 import { getGettingStartedCardIllustrations } from "../configs/ui";
+import HomeConstants from "../constants/home-constants";
 
 /**
  * Proptypes for the overview page component.
@@ -91,20 +92,41 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
     const tenantDomain: string = useSelector((state: AppState) => state.auth.tenantDomain);
     const username: string = useSelector((state: AppState) => state.auth.fullName);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
+    const homeFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
+        return state?.config?.ui?.features?.gettingStarted;
+    });
+    const loginAndRegistrationFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
+        return state?.config?.ui?.features?.loginAndRegistration;
+    });
 
     const saasFeatureStatus : FeatureStatus = useCheckFeatureStatus(FeatureGateConstants.SAAS_FEATURES_IDENTIFIER);
+
+    const showFeatureAnnouncementBanner: boolean = !homeFeatureConfig?.disabledFeatures?.includes(
+        HomeConstants.FEATURE_DICTIONARY.FEATURE_ANNOUNCEMENT
+    );
+    const isAdminNoticeEnabled: boolean = useSelector((state: AppState) => {
+        return state?.config?.ui?.adminNotice?.enabled;
+    });
+    const plannedRollOutDate: string = useSelector((state: AppState) => {
+        return state?.config?.ui?.adminNotice?.plannedRollOutDate;
+    });
+    const [ adminNoticeEnabled, setAdminNoticeEnabled ] = useState<boolean>(isAdminNoticeEnabled);
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateListItemInterface>(null);
     const [ isPlaygroundExist, setisPlaygroundExist ] = useState(undefined);
     const [ showWizardLogin, setShowWizardLogin ] = useState<boolean>(false);
     const [ inboundProtocolConfig, setInboundProtocolConfig ] = useState<any>(undefined);
+
     const [
         isTryItApplicationSearchRequestLoading,
         setIsTryItApplicationSearchRequestLoading
     ] = useState<boolean>(false);
 
-    const { organizationType } = useGetCurrentOrganizationType();
+    const {
+        organizationType,
+        isSubOrganization
+    } = useGetCurrentOrganizationType();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -121,6 +143,9 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
         `name eq ${ TryItApplicationConstants.DISPLAY_NAME }`,
         saasFeatureStatus !== FeatureStatus.DISABLED
     );
+
+    const subOrgFlowCardEnabled: boolean = isSubOrganization() &&
+        !featureConfig?.flows?.disabledFeatures.includes("flows.homePage.tile");
 
     useEffect(() => {
         checkTryItApplicationExistence();
@@ -223,9 +248,9 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
             stretched
             mobile={ 16 }
             tablet={ 16 }
-            computer={ 8 }
-            largeScreen={ 8 }
-            widescreen={ 8 }
+            computer={ subOrgFlowCardEnabled ? 5 : 8 }
+            largeScreen={ subOrgFlowCardEnabled ? 5 : 8 }
+            widescreen={ subOrgFlowCardEnabled ? 5 : 8 }
         >
             <Card
                 fluid
@@ -273,9 +298,9 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
             stretched
             mobile={ 16 }
             tablet={ 16 }
-            computer={ 8 }
-            largeScreen={ 8 }
-            widescreen={ 8 }
+            computer={ subOrgFlowCardEnabled ? 5 : 8 }
+            largeScreen={ subOrgFlowCardEnabled ? 5 : 8 }
+            widescreen={ subOrgFlowCardEnabled ? 5 : 8 }
         >
             <Card
                 fluid
@@ -424,6 +449,107 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
         </Grid.Row>
     );
 
+    const renderFlowsCard = (): ReactElement => (
+        <Grid.Row>
+            <Grid.Column>
+                <Card
+                    fluid
+                    className="basic-card no-hover"
+                >
+                    <Card.Content>
+                        <div className="try-it-card">
+                            <div className="try-it-card-icon">
+                                <GenericIcon
+                                    style={ {
+                                        height: "91.3px",
+                                        width: "111.26px"
+                                    } }
+                                    floated="left"
+                                    transparent
+                                    icon={ getGettingStartedCardIllustrations().flowComposer }
+                                />
+                            </div>
+                            <div className="try-it-card-content">
+                                <div className="card-heading pt-3 mb-1">
+                                    <Heading as="h2">
+                                        Customize user flows
+                                    </Heading>
+                                </div>
+                                <Text muted>
+                                    Visually design and customize user flows with our no-code flow composer
+                                </Text>
+                            </div>
+                            <div className="try-it-card-actions">
+                                <Button
+                                    data-testid={
+                                        "develop-getting-started-page-cutomize-try-it"
+                                    }
+                                    data-componentid={
+                                        "develop-getting-started-page-cutomize-try-it"
+                                    }
+                                    onClick={ () => history.push(AppConstants.getPaths().get("FLOWS")) }
+                                    icon="angle right"
+                                    iconPlacement="right"
+                                    size="large"
+                                    className="primary-action-button ml-3"
+                                />
+                            </div>
+                        </div>
+                    </Card.Content>
+                </Card>
+            </Grid.Column>
+        </Grid.Row>
+    );
+
+    const renderSubOrgFlowsCard = (): ReactElement => (
+        <Grid.Column
+            stretched
+            mobile={ 16 }
+            tablet={ 16 }
+            computer={ 5 }
+            largeScreen={ 5 }
+            widescreen={ 5 }
+        >
+            <Card
+                fluid
+                className="basic-card no-hover getting-started-card social-connections-card"
+            >
+                <Card.Content extra className="description-container">
+                    <div className="card-heading mb-1">
+                        <Heading as="h2">
+                            { t("console:common.quickStart.sections.customizeFlows.heading") }
+                        </Heading>
+                    </div>
+                    <Text muted>
+                        { t("console:common.quickStart.sections.customizeFlows.description") }
+                    </Text>
+                </Card.Content>
+                <Card.Content style={ { borderTop: "none" } } className="illustration-container">
+                    <GenericIcon
+                        style={ {
+                            height: "170px",
+                            width: "207.17px"
+                        } }
+                        transparent
+                        className="social-connections-animated-illustration mb-5"
+                        icon={ getGettingStartedCardIllustrations().flowComposer }
+                    />
+                </Card.Content>
+                <Card.Content extra className="action-container">
+                    <CardExpandedNavigationButton
+                        data-testid="develop-getting-started-page-cutomize-flows"
+                        data-componentid="develop-getting-started-page-cutomize-flows"
+                        onClick={ () => history.push(AppConstants.getPaths().get("FLOWS")) }
+                        text={ t("console:common.quickStart.sections.customizeFlows.actions.setup") }
+                        icon="angle right"
+                        iconPlacement="right"
+                        className="primary-action-button"
+                    />
+                </Card.Content>
+            </Card>
+        </Grid.Column>
+    );
+
     return (
         <div className="advance-user-view-cards-wrapper">
             <div className="greeting">
@@ -454,6 +580,54 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                     }
                 </Heading>
             </div>
+
+            { isAdminNoticeEnabled && adminNoticeEnabled && (
+                <AdminNotice
+                    title={ (
+                        <Trans i18nKey={ "console:common.quickStart.sections.adminNotice.title" }>
+                            Changes to Console Role Permissions
+                        </Trans>
+                    ) }
+                    description={ (
+                        <Trans
+                            i18nKey={ "console:common.quickStart.sections.adminNotice.description" }
+                            tOptions={ { date: plannedRollOutDate } }>
+                            Starting <b>{ plannedRollOutDate }</b>, we are updating some of the permissions in
+                            the <b>Editor - Users</b> and <b>Editor - Applications</b>.
+                        </Trans>
+                    ) }
+                    instructions={ [
+                        <Trans
+                            components={ { 1: <b /> } }
+                            i18nKey={ "console:common.quickStart.sections.adminNotice.instructions.0" }
+                            key="admin-notice-instruction-0"
+                        >
+                            <b>Editor - Users</b>: No longer able to edit role metadata or change permissions.
+                        </Trans>,
+                        <Trans
+                            components={ { 1: <b /> } }
+                            i18nKey={ "console:common.quickStart.sections.adminNotice.instructions.1" }
+                            key="admin-notice-instruction-1"
+                        >
+                            <b>Editor - Applications</b>: No longer able to assign roles to users or groups.
+                        </Trans>
+                    ] }
+                    setDisplayBanner={ setAdminNoticeEnabled }
+                />
+            ) }
+
+            <br />
+
+            { showFeatureAnnouncementBanner && !isSubOrganization() && (
+                <Show featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
+                    <Show
+                        when={ loginAndRegistrationFeatureConfig?.scopes?.update }
+                        featureId={ FeatureGateConstants.PREVIEW_FEATURES_IDENTIFIER }
+                    >
+                        <FeatureCarousel />
+                    </Show>
+                </Show>
+            ) }
             <Grid stackable>
                 <Grid.Row columns={ 2 }>
                     {
@@ -488,19 +662,34 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                         stretched
                         mobile={ 16 }
                         tablet={ 16 }
-                        computer={ 10 }
-                        largeScreen={ 10 }
-                        widescreen={ 10 }
+                        computer={ subOrgFlowCardEnabled ? 16 : 10 }
+                        largeScreen={ subOrgFlowCardEnabled ? 16 : 10 }
+                        widescreen={ subOrgFlowCardEnabled ? 16 : 10 }
                     >
                         <Grid stackable>
-                            <Grid.Row columns={ 2 }>
+                            <Grid.Row columns={ subOrgFlowCardEnabled ? 3 : 2 }>
                                 <Show when={ featureConfig?.users?.scopes?.read }>
                                     { renderManageUsersCard() }
                                 </Show>
                                 <Show when={ featureConfig?.identityProviders?.scopes?.read }>
                                     { renderConnectionsCard() }
                                 </Show>
+                                {
+                                    subOrgFlowCardEnabled && (
+                                        <Show when={ featureConfig?.flows?.scopes?.read }>
+                                            { renderSubOrgFlowsCard() }
+                                        </Show>
+                                    )
+                                }
                             </Grid.Row>
+                            {
+                                !featureConfig?.flows?.disabledFeatures.includes("flows.homePage.tile") &&
+                                    !isSubOrganization() && (
+                                    <Show when={ featureConfig?.flows?.scopes?.read }>
+                                        { renderFlowsCard() }
+                                    </Show>
+                                )
+                            }
                             {
                                 organizationType !== OrganizationType.SUBORGANIZATION && (
                                     <Show

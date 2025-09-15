@@ -16,10 +16,6 @@
  * under the License.
  */
 
-import AuthenticationFlowBuilder
-    from "@wso2is/admin.authentication-flow-builder.v1/components/authentication-flow-builder";
-import AuthenticationFlowProvider
-    from "@wso2is/admin.authentication-flow-builder.v1/providers/authentication-flow-provider";
 import { AuthenticatorCreateWizardFactory } from "@wso2is/admin.connections.v1";
 import {
     CommonAuthenticatorConstants
@@ -30,8 +26,11 @@ import {
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { ConnectionsManagementUtils }
     from "@wso2is/admin.connections.v1/utils/connection-utils";
-import { AppConstants, EventPublisher, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import MicrosoftIDPTemplate
     from
     "@wso2is/admin.identity-providers.v1/data/identity-provider-templates/templates/microsoft/microsoft.json";
@@ -42,6 +41,10 @@ import {
 import {
     IdentityProviderManagementUtils
 } from "@wso2is/admin.identity-providers.v1/utils/identity-provider-management-utils";
+import AuthenticationFlowBuilder
+    from "@wso2is/admin.login-flow-builder.v1/components/authentication-flow-builder";
+import AuthenticationFlowProvider
+    from "@wso2is/admin.login-flow-builder.v1/providers/authentication-flow-provider";
 import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";

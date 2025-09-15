@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import { AdvancedSearchWithBasicFilters, UIConstants, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { IdentifiableComponentInterface, LoadableComponentInterface, RolesMemberInterface } from "@wso2is/core/models";
 import {
     AnimatedAvatar,
@@ -24,12 +26,11 @@ import {
     DataTable,
     EmptyPlaceholder,
     ListLayout,
-    TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
 import React, { ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Dropdown, DropdownItemProps, DropdownProps, Header, Label, SemanticICONS } from "semantic-ui-react";
+import { Dropdown, DropdownItemProps, DropdownProps, Header, Label } from "semantic-ui-react";
 import { RoleAudienceTypes } from "../constants";
 
 const DEFAULT_SEARCH_OPERATOR: string = "co";
@@ -278,19 +279,6 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
         ];
     };
 
-    /**
-     * Resolves data table actions.
-     */
-    const resolveTableActions = (): TableActionsInterface[] => {
-        return [
-            {
-                icon: (): SemanticICONS => "eye",
-                onClick: (): void => { return;},
-                popupText: (): string => t("common:view"),
-                renderer: "semantic-icon"
-            } ];
-    };
-
     return (
         <ListLayout
             advancedSearch={ (
@@ -346,7 +334,6 @@ export const ReadOnlyRoleList: React.FunctionComponent<ReadOnlyRoleListProps> = 
             <DataTable<RolesMemberInterface>
                 loadingStateOptions={ { imageType: "square" } }
                 columns={ resolveTableColumns() }
-                actions={ resolveTableActions() }
                 data={ finalRoleList }
                 onRowClick={ () => { return; } }
                 placeholders={ showPlaceholders() }

@@ -21,7 +21,8 @@ import Skeleton from "@oxygen-ui/react/Skeleton";
 import Stack from "@oxygen-ui/react/Stack";
 import useGetAllLocalClaims from "@wso2is/admin.claims.v1/api/use-get-all-local-claims";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
-import { AppState, sortList } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { sortList } from "@wso2is/admin.core.v1/utils/sort-list";
 import { patchUserStore, updateUserStoreAttributeMappings } from "@wso2is/admin.userstores.v1/api/user-stores";
 import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import {

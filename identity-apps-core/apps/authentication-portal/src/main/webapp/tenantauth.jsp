@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2014-2025, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
   ~
   ~ WSO2 Inc. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -149,7 +149,7 @@
             <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType)) { %>
             <button
                 type="submit"
-                onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(accountRegistrationEndpointURL, urlEncodedURL, urlParameters))%>';"
+                onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(getRegistrationPortalUrl(accountRegistrationEndpointURL, urlEncodedURL, urlParameters))%>';"
                 class="ui large button secondary"
                 id="registerLink"
                 role="button">

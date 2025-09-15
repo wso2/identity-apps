@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,19 +17,24 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { store } from "@wso2is/admin.core.v1";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { ValidationManagementConstants } from "../constants/validation-config-constants";
-import { ValidationConfInterface, ValidationDataInterface, ValidationFormInterface } from "../models";
+import {
+    RevertValidationConfigInterface,
+    ValidationConfInterface,
+    ValidationDataInterface,
+    ValidationFormInterface
+} from "../models";
 
 /**
  * Get an axios instance.
@@ -88,6 +93,48 @@ export const updateValidationConfigData = (
         .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 ValidationManagementConstants.CONFIGURATION_STATUS_UPDATE_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+export const revertValidationConfigData = (
+    fields: string[]
+): Promise<any> => {
+    const config: RevertValidationConfigInterface = {
+        fields: fields
+    };
+
+    const requestConfig: AxiosRequestConfig = {
+        data: config,
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: store.getState().config.endpoints.validationServiceMgt + "/revert"
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    ValidationManagementConstants.CONFIGURATION_REVERT_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                ValidationManagementConstants.CONFIGURATION_REVERT_ERROR,
                 error.stack,
                 error.code,
                 error.request,

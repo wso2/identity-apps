@@ -18,7 +18,7 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import Grid from "@oxygen-ui/react/Grid";
-import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { useTrigger } from "@wso2is/forms";

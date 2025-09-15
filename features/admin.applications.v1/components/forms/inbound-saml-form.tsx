@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,7 +18,8 @@
 
 import { ApplicationTabComponentsFilter } from
     "@wso2is/admin.application-templates.v1/components/application-tab-components-filter";
-import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
+import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { ApplicationTabIDs, applicationConfig, commonConfig } from "@wso2is/admin.extensions.v1";
 import { getAvailableNameIDFormats } from "@wso2is/admin.identity-providers.v1/components/utils/saml-idp-utils";
 import { TestableComponentInterface } from "@wso2is/core/models";
@@ -32,6 +33,7 @@ import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, us
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, Label } from "semantic-ui-react";
+import { ApplicationManagementConstants } from "../../constants/application-management";
 import {
     ApplicationInterface,
     CertificateInterface,
@@ -177,6 +179,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
     const keyEncryptionAlgorithm:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const attributeProfile:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const includeAttributesInResponse:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const attributeNameFormat:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const attributeConsumingServiceIndex:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const singleLogoutProfile:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const logoutMethod:MutableRefObject<HTMLElement> = useRef<HTMLElement>();
@@ -228,7 +231,8 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                     assertionConsumerUrls: assertionConsumerUrls.split(","),
                     attributeProfile: {
                         alwaysIncludeAttributesInResponse: values.get("attributeProfile").includes("enabled"),
-                        enabled: values.get("attributeProfile").includes("enabled")
+                        enabled: values.get("attributeProfile").includes("enabled"),
+                        nameFormat: values.get("attributeNameFormat")
                     },
                     defaultAssertionConsumerUrl: values.get("defaultAssertionConsumerUrl"),
                     enableAssertionQueryProfile:
@@ -236,7 +240,9 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                     idpEntityIdAlias: values.get("idpEntityIdAlias"),
                     issuer: values.get("issuer") || initialValues?.issuer,
                     requestValidation: {
-                        enableSignatureValidation: isCertAvailableForEncrypt && values.get("requestSignatureValidation")
+                        enableSignatureValidation: (isCertAvailableForEncrypt
+                            || isSignatureValidationCertificateAliasEnabled)
+                        && values.get("requestSignatureValidation")
                             .includes("enableSignatureValidation"),
                         signatureValidationCertAlias: values.get("signatureValidationCertAlias")
                     },
@@ -429,6 +435,10 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                 break;
             case "attributeConsumingServiceIndex":
                 attributeConsumingServiceIndex.current.scrollIntoView(options);
+
+                break;
+            case "attributeNameFormat":
+                attributeNameFormat.current.scrollIntoView(options);
 
                 break;
             case "singleLogoutProfile":
@@ -1523,6 +1533,36 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     </>
                                 )
                             }
+                            <Grid.Row
+                                columns={ 1 }
+                                data-componentid="application-edit-inbound-saml-form-attribute-name-format"
+                            >
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <Field
+                                        ref={ attributeNameFormat }
+                                        label={
+                                            t("applications:forms.inboundSAML.sections" +
+                                                ".attributeProfile.fields.attributeNameFormat.label")
+                                        }
+                                        name="attributeNameFormat"
+                                        type="dropdown"
+                                        default={ ApplicationManagementConstants.DEFAULT_NAME_ATTRIBUTE_FORMAT }
+                                        required={ false }
+                                        value={ initialValues?.attributeProfile?.nameFormat }
+                                        children={
+                                            ApplicationManagementConstants.SUPPORT_NAME_FORMATS.map((value: string) =>
+                                                ({ key: value, text: value, value: value }))
+                                        }
+                                        readOnly={ readOnly }
+                                        data-componentid=
+                                            "application-edit-inbound-saml-form-attribute-name-format-input"
+                                    />
+                                    <Hint>
+                                        { t("applications:forms.inboundSAML.sections.attributeProfile" +
+                                            ".fields.attributeNameFormat.hint") }
+                                    </Hint>
+                                </Grid.Column>
+                            </Grid.Row>
 
                             { /*Single Logout Profile*/ }
                             <Grid.Row
@@ -1932,8 +1972,9 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     <ApplicationCertificateWrapper
                                         protocol={ SupportedAuthProtocolTypes.SAML }
                                         deleteAllowed={ !(
-                                            initialValues?.requestValidation?.enableSignatureValidation ||
-                                            initialValues?.singleSignOnProfile?.assertion?.encryption?.enabled
+                                            (initialValues?.requestValidation?.enableSignatureValidation
+                                                && !isSignatureValidationCertificateAliasEnabled)
+                                            || initialValues?.singleSignOnProfile?.assertion?.encryption?.enabled
                                         ) }
                                         reasonInsideTooltipWhyDeleteIsNotAllowed={
                                             t("applications:forms." +

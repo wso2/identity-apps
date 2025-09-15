@@ -78,6 +78,21 @@ export interface MyAccountNS {
                 notifications?: Notification;
             }
         }
+        selfSignUp: {
+            preference?: {
+                notifications?: Notification;
+            }
+        },
+        systemNotificationAlert: {
+            resend: string;
+            selfSignUp: {
+                awaitingAccountConfirmation: string;
+                notifications: {
+                    resendSuccess: NotificationItem;
+                    resendError: NotificationItem;
+                }
+            }
+        }
         accountRecovery: {
             SMSRecovery: {
                 descriptions: {
@@ -316,6 +331,13 @@ export interface MyAccountNS {
                 tooltip: string;
             };
             organizationLabel: string;
+            dropdown: {
+                footer: {
+                    cookiePolicy: string;
+                    privacyPolicy: string;
+                    termsOfService: string;
+                };
+            };
         },
         linkedAccounts: {
             accountTypes: {
@@ -393,6 +415,7 @@ export interface MyAccountNS {
                     remove: string;
                     required: string;
                 };
+                noPassKeyMessage: string;
             };
             smsOtp: {
                 descriptions: {
@@ -466,6 +489,43 @@ export interface MyAccountNS {
                     };
                 };
             };
+            pushAuthenticatorApp: {
+                description: string;
+                configuredDescription:string;
+                heading: string;
+                hint: string;
+                addHint: string;
+                deleteHint: string;
+                modals: {
+                    scan: {
+                        heading: string;
+                        additionNote:string;
+                        done: string;
+                        messageBody: string;
+                        subHeading: string;
+                    };
+                    deviceDeleteConfirmation: {
+                        heading: string;
+                        assertionHint: string;
+                        description: string;
+                        content: string;
+                    }
+                };
+                notifications: {
+                    initError: {
+                        genericError: NotificationItem;
+                        error: NotificationItem;
+                    };
+                    delete: {
+                        genericError: NotificationItem;
+                        error: NotificationItem;
+                        success: NotificationItem;
+                    };
+                    deviceListFetchError: {
+                        error: NotificationItem;
+                    }
+                };
+            },
             backupCode: {
                 actions: {
                     add: string;
@@ -614,157 +674,6 @@ export interface MyAccountNS {
                 };
             };
         };
-        privacy: {
-            about: {
-                description: string;
-                heading: string;
-            };
-            privacyPolicy: {
-                collectionOfPersonalInfo: {
-                    description: {
-                        list1: {
-                            0: string;
-                            1: string;
-                            2: string;
-                        };
-                        para1: string;
-                    };
-                    heading: string;
-                    trackingTechnologies: {
-                        description: {
-                            list1: {
-                                0: string;
-                                1: string;
-                                2: string;
-                                3: string;
-                            };
-                            para1: string;
-                        };
-                        heading: string;
-                    };
-                };
-                description: {
-                    para1: string;
-                    para2: string;
-                    para3: string;
-                };
-                disclaimer: {
-                    description: {
-                        list1: {
-                            0: string;
-                            1: string;
-                        };
-                    };
-                    heading: string;
-                };
-                disclosureOfPersonalInfo: {
-                    description: string;
-                    heading: string;
-                    legalProcess: {
-                        description: string;
-                        heading: string;
-                    };
-                };
-                heading: string;
-                moreInfo: {
-                    changesToPolicy: {
-                        description: {
-                            para1: string;
-                            para2: string;
-                        };
-                        heading: string;
-                    };
-                    contactUs: {
-                        description: {
-                            para1: string;
-                        };
-                        heading: string;
-                    };
-                    heading: string;
-                    yourChoices: {
-                        description: {
-                            para1: string;
-                            para2: string;
-                        };
-                        heading: string;
-                    };
-                };
-                storageOfPersonalInfo: {
-                    heading: string;
-                    howLong: {
-                        description: {
-                            list1: {
-                                0: string;
-                                1: string;
-                            };
-                            para1: string;
-                            para2: string;
-                        };
-                        heading: string;
-                    };
-                    requestRemoval: {
-                        description: {
-                            para1: string;
-                            para2: string;
-                        };
-                        heading: string;
-                    };
-                    where: {
-                        description: {
-                            para1: string;
-                            para2: string;
-                        };
-                        heading: string;
-                    };
-                };
-                useOfPersonalInfo: {
-                    description: {
-                        list1: {
-                            0: string;
-                            1: string;
-                            2: string;
-                        };
-                        para1: string;
-                        para2: string;
-                        subList1: {
-                            heading: string;
-                            list: {
-                                0: string;
-                                1: string;
-                                2: string;
-                            };
-                        };
-                        subList2: {
-                            heading: string;
-                            list: {
-                                0: string;
-                                1: string;
-                            };
-                        };
-                    };
-                    heading: string;
-                };
-                whatIsPersonalInfo: {
-                    description: {
-                        list1: {
-                            0: string;
-                            1: string;
-                            2: string;
-                            3: string;
-                        };
-                        list2: {
-                            0: string;
-                            1: string;
-                            2: string;
-                            3: string;
-                        };
-                        para1: string;
-                        para2: string;
-                    };
-                    heading: string;
-                };
-            };
-        };
         profile: {
             actions: {
                 verifyEmail: string;
@@ -875,8 +784,15 @@ export interface MyAccountNS {
                         validations: {
                             empty: string;
                             invalidFormat: string;
+                            duplicate: string;
                         };
                     };
+                    dropdown: {
+                        placeholder: string;
+                    };
+                    radioGroup: {
+                        optionNone: string;
+                    }
                 };
                 emailChangeForm: {
                     inputs: {
@@ -961,18 +877,24 @@ export interface MyAccountNS {
                 };
             };
             modals: {
+                customMultiAttributeDeleteConfirmation: {
+                    assertionHint: string;
+                    content: string;
+                    description: string;
+                    heading: string;
+                };
                 emailAddressDeleteConfirmation: {
                     assertionHint: string;
                     content: string;
                     description: string;
                     heading: string;
-                },
+                };
                 mobileNumberDeleteConfirmation: {
                     assertionHint: string;
                     content: string;
                     description: string;
                     heading: string;
-                }
+                };
             },
             notifications: {
                 getProfileCompletion: Notification;

@@ -18,8 +18,10 @@
 
 import { APIResourcesConstants } from "@wso2is/admin.api-resources.v2/constants";
 import { APIResourceInterface } from "@wso2is/admin.api-resources.v2/models";
-import { FeatureConfigInterface, getEmptyPlaceholderIllustrations, history } from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { RequestErrorInterface } from "@wso2is/admin.core.v1/hooks/use-request";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
@@ -64,6 +66,10 @@ interface SubscribedAPIResourcesProps extends
      * Template ID.
      */
     templateId: string;
+    /**
+     * Original Template ID.
+     */
+    originalTemplateId?: string;
     /**
      * List of all API Resources
      */
@@ -119,6 +125,7 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
     const {
         appId,
         templateId,
+        originalTemplateId,
         allAPIResourcesListData,
         allAPIResourcesFetchRequestError,
         allAuthorizedScopes,
@@ -140,6 +147,10 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
         subscribedAPIResourcesFetchRequestError !=  null ;
 
     const { t } = useTranslation();
+
+    const resourceText: string = originalTemplateId === "mcp-client-application"
+        ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.genericResource")
+        : t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.apiResource");
 
     const [ activeSubscribedAPIResource, setActiveSubscribedAPIResource ] = useState<string>(null);
     const [ searchQuery, setSearchQuery ] = useState<string>(null);
@@ -191,10 +202,14 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
         if (currentAPIResourceScopeListFetchError) {
             dispatch(addAlert<AlertInterface>({
                 description: t("extensions:develop.apiResource.notifications.getAPIResources" +
-                    ".genericError.description"),
+                    ".genericError.description", {
+                    resourceText: resourceText
+                }),
                 level: AlertLevels.ERROR,
                 message: t("extensions:develop.apiResource.notifications.getAPIResources" +
-                    ".genericError.message")
+                    ".genericError.message", {
+                    resourceText: resourceText
+                })
             }));
         }
     }, [ currentAPIResourceScopeListFetchError ]);
@@ -214,11 +229,17 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
                     image={ getEmptyPlaceholderIllustrations().genericError }
                     imageSize="tiny"
                     title={ t("extensions:develop.applications.edit.sections.apiAuthorization.sections" +
-                        ".apiSubscriptions.placeHolderTexts.errorText.title") }
+                        ".apiSubscriptions.placeHolderTexts.errorText.title", {
+                        resourceText: resourceText
+                    }) }
                     subtitle={ [ t("extensions:develop.applications.edit.sections.apiAuthorization.sections" +
-                        ".apiSubscriptions.placeHolderTexts.errorText.subtitles.1"),
+                        ".apiSubscriptions.placeHolderTexts.errorText.subtitles.1", {
+                        resourceText: resourceText
+                    }),
                     t("extensions:develop.applications.edit.sections.apiAuthorization.sections" +
-                        ".apiSubscriptions.placeHolderTexts.errorText.subtitles.0") ] }
+                        ".apiSubscriptions.placeHolderTexts.errorText.subtitles.0", {
+                        resourceText: resourceText
+                    }) ] }
                     data-componentid={ `${componentId}-all-empty-placeholder-icon` }
                 />
             );
@@ -234,12 +255,16 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
                                 external={ false }
                             >
                                 { t("extensions:develop.applications.edit.sections.apiAuthorization.sections" +
-                                    ".apiSubscriptions.buttons.noAPIResourcesLink") }
+                                    ".apiSubscriptions.buttons.noAPIResourcesLink", {
+                                    resourceText: resourceText
+                                }) }
                             </Link> )
                     ) }
                     imageSize="tiny"
                     subtitle={ [ t("extensions:develop.applications.edit.sections.apiAuthorization.sections" +
-                        ".apiSubscriptions.placeHolderTexts.noAPIResources") ] }
+                        ".apiSubscriptions.placeHolderTexts.noAPIResources", {
+                        resourceText: resourceText
+                    }) ] }
                     data-componentid={ `${componentId}-sub-empty-placeholder-icon` }
                 />
             );
@@ -255,12 +280,16 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
                             >
                                 <Icon name="add" />
                                 { t("extensions:develop.applications.edit.sections.apiAuthorization.sections" +
-                                    ".apiSubscriptions.buttons.subAPIResource") }
+                                    ".apiSubscriptions.buttons.subAPIResource", {
+                                    resourceText: resourceText
+                                }) }
                             </PrimaryButton> )
                     ) }
                     imageSize="tiny"
                     subtitle={ [ t("extensions:develop.applications.edit.sections.apiAuthorization.sections" +
-                        ".apiSubscriptions.placeHolderTexts.emptyText") ] }
+                        ".apiSubscriptions.placeHolderTexts.emptyText", {
+                        resourceText: resourceText
+                    }) ] }
                     data-componentid={ `${componentId}-sub-empty-placeholder-icon` }
                 />
             );
@@ -268,16 +297,24 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
             return (
                 <EmptyPlaceholder
                     title={ t("extensions:develop.applications.edit.sections.apiAuthorization.sections" +
-                        ".apiSubscriptions.placeHolderTexts.emptySearch.title") }
+                        ".apiSubscriptions.placeHolderTexts.emptySearch.title", {
+                        resourceText: resourceText
+                    }) }
                     subtitle={ [ t("extensions:develop.applications.edit.sections.apiAuthorization.sections" +
-                        ".apiSubscriptions.placeHolderTexts.emptySearch.subTitle.0"),
+                        ".apiSubscriptions.placeHolderTexts.emptySearch.subTitle.0", {
+                        resourceText: resourceText
+                    }),
                     t("extensions:develop.applications.edit.sections.apiAuthorization.sections" +
-                        ".apiSubscriptions.placeHolderTexts.emptySearch.subTitle.1") ] }
+                        ".apiSubscriptions.placeHolderTexts.emptySearch.subTitle.1", {
+                        resourceText: resourceText
+                    }) ] }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     action={
                         (<LinkButton onClick={ clearSearchQuery }>
                             { t("extensions:develop.applications.edit.sections.apiAuthorization.sections" +
-                                ".apiSubscriptions.buttons.emptySearchButton") }
+                                ".apiSubscriptions.buttons.emptySearchButton", {
+                                resourceText: resourceText
+                            }) }
                         </LinkButton>)
                     }
                     imageSize="tiny"
@@ -366,7 +403,9 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
                 icon: "trash alternate",
                 onClick: () => setRemoveSubscribedAPIResource(subscribedAPIResource),
                 popoverText: t("extensions:develop.applications.edit.sections.apiAuthorization.sections" +
-                    ".apiSubscriptions.unsubscribeAPIResourcePopOver"),
+                    ".apiSubscriptions.unsubscribeAPIResourcePopOver", {
+                    resourceText: resourceText
+                }),
                 type: "icon"
             }
         ];
@@ -451,7 +490,15 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
                                             iconPosition="left"
                                             onChange={ searchSubscribedAPIResources }
                                             placeholder={ t("extensions:develop.applications.edit.sections." +
-                                                "apiAuthorization.sections.apiSubscriptions.search") }
+                                                "apiAuthorization.sections.apiSubscriptions.search", {
+                                                resourceText:  originalTemplateId ===
+                                                    ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION
+                                                    ? t("extensions:develop.applications.edit.sections.apiAuthorization"
+                                                        + ".resourceText.genericResource")
+                                                    : t("extensions:develop.applications.edit.sections.apiAuthorization"
+                                                        + ".resourceText.apiResource")
+
+                                            }) }
                                             floated="right"
                                             size="small"
                                             value={ searchQuery }

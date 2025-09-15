@@ -19,13 +19,13 @@
 import { getApplicationList } from "@wso2is/admin.applications.v1/api/application";
 import { ApplicationList } from "@wso2is/admin.applications.v1/components/application-list";
 import { ApplicationListInterface } from "@wso2is/admin.applications.v1/models/application";
-import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import {
     VerticalStepper,
     VerticalStepperStepInterface
 } from "@wso2is/admin.core.v1/components/vertical-stepper/vertical-stepper";
-import { AppConstants } from "@wso2is/admin.core.v1/constants";
-import { history } from "@wso2is/admin.core.v1/helpers";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import {
     IdentityProviderTemplateInterface
 } from "@wso2is/admin.identity-providers.v1/models/identity-provider";

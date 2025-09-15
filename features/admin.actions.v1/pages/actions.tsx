@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,13 +28,17 @@ import {
     ProfileFlowIcon,
     UserFlowIcon
 } from "@oxygen-ui/react-icons";
-import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
-import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
     FeatureAccessConfigInterface,
+    FeatureFlagsInterface,
     IdentifiableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -53,7 +57,12 @@ import { Dispatch } from "redux";
 import { Placeholder } from "semantic-ui-react";
 import useGetActionTypes from "../api/use-get-action-types";
 import { ActionsConstants } from "../constants/actions-constants";
-import { ActionType, ActionTypeCardInterface, ActionTypesCountInterface } from "../models/actions";
+import {
+    ActionType,
+    ActionTypeCardInterface,
+    ActionTypesCountInterface,
+    ActionTypesResponseInterface
+} from "../models/actions";
 import "./actions.scss";
 
 /**
@@ -78,11 +87,110 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
     const { getLink } = useDocumentation();
     const dispatch: Dispatch = useDispatch();
 
+    const { isSubOrganization } = useGetCurrentOrganizationType();
     const {
         data: actionTypesConfigs,
         isLoading: isActionTypesConfigsLoading,
         error: actionTypesConfigsRetrievalError
     } = useGetActionTypes();
+
+    const isActionTypeDisabled = (actionType: string): boolean => {
+        const prefix: string = isSubOrganization() ? "actions.types.org.list" : "actions.types.list";
+        const featureKey: string = `${prefix}.${actionType}`;
+
+        // Feature flag with COMING_SOON label is considered as a disabled action type.
+        return actionsFeatureConfig?.featureFlags?.some((featureFlag: FeatureFlagsInterface) =>
+            featureFlag.feature === featureKey && featureFlag.flag === ActionsConstants.ACTION_COMING_SOON_LABEL
+        );
+    };
+
+    const getFeatureFlagStatus = (actionType: string): string => {
+        const prefix: string = isSubOrganization() ? "actions.types.org.list" : "actions.types.list";
+
+        return `${prefix}.${actionType}`;
+    };
+
+    const actionTypesCardsInfo: ActionTypeCardInterface[] = [
+        {
+            description: t("actions:types.preIssueAccessToken.description.shortened"),
+            disabled: isActionTypeDisabled(ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_API_PATH),
+            featureStatusKey: getFeatureFlagStatus(ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_API_PATH),
+            heading: t("actions:types.preIssueAccessToken.heading"),
+            icon: <KeyFlowIcon size="small" className="icon"/>,
+            identifier: ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH,
+            route: isActionTypeDisabled(ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_API_PATH) ? undefined :
+                AppConstants.getPaths().get("PRE_ISSUE_ACCESS_TOKEN_EDIT"),
+            type: ActionType.PRE_ISSUE_ACCESS_TOKEN
+        },
+        {
+            description: t("actions:types.preUpdatePassword.description.shortened"),
+            disabled: isActionTypeDisabled(ActionsConstants.PRE_UPDATE_PASSWORD_API_PATH),
+            featureStatusKey: getFeatureFlagStatus(ActionsConstants.PRE_UPDATE_PASSWORD_API_PATH),
+            heading: t("actions:types.preUpdatePassword.heading"),
+            icon: <PadlockAsteriskFlowIcon size="small" className="icon"/>,
+            identifier: ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH,
+            route: isActionTypeDisabled(ActionsConstants.PRE_UPDATE_PASSWORD_API_PATH) ? undefined :
+                AppConstants.getPaths().get("PRE_UPDATE_PASSWORD_EDIT"),
+            type: ActionType.PRE_UPDATE_PASSWORD
+        },
+        {
+            description: t("actions:types.preUpdateProfile.description.shortened"),
+            disabled: isActionTypeDisabled(ActionsConstants.PRE_UPDATE_PROFILE_API_PATH),
+            featureStatusKey: getFeatureFlagStatus(ActionsConstants.PRE_UPDATE_PROFILE_API_PATH),
+            heading: t("actions:types.preUpdateProfile.heading"),
+            icon: <ProfileFlowIcon size="small" className="icon"/>,
+            identifier: ActionsConstants.PRE_UPDATE_PROFILE_URL_PATH,
+            route: isActionTypeDisabled(ActionsConstants.PRE_UPDATE_PROFILE_API_PATH) ? undefined :
+                AppConstants.getPaths().get("PRE_UPDATE_PROFILE_EDIT"),
+            type: ActionType.PRE_UPDATE_PROFILE
+        },
+        {
+            description: t("actions:types.preRegistration.description.shortened"),
+            disabled: isActionTypeDisabled(ActionsConstants.PRE_REGISTRATION_API_PATH),
+            featureStatusKey: getFeatureFlagStatus(ActionsConstants.PRE_REGISTRATION_API_PATH),
+            heading: t("actions:types.preRegistration.heading"),
+            icon: <UserFlowIcon size="small" className="icon"/>,
+            identifier: ActionsConstants.PRE_REGISTRATION_URL_PATH,
+            route: isActionTypeDisabled(ActionsConstants.PRE_REGISTRATION_API_PATH) ? undefined :
+                AppConstants.getPaths().get("PRE_UPDATE_REGISTRATION_EDIT"),
+            type: ActionType.PRE_REGISTRATION
+        }
+    ];
+
+    /**
+     * This useMemo is used to filter the action types returned in the API and disabled via feature flags.
+     */
+    const enabledActionTypeCards: ActionTypeCardInterface[] = useMemo((): ActionTypeCardInterface[] => {
+        if (!actionTypesConfigs) return;
+
+        const actionTypeToFeatureKeyMap: Record<string, string> = {
+            [ActionType.PRE_ISSUE_ACCESS_TOKEN]:  ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_API_PATH,
+            [ActionType.PRE_UPDATE_PASSWORD]: ActionsConstants.PRE_UPDATE_PASSWORD_API_PATH,
+            [ActionType.PRE_UPDATE_PROFILE]: ActionsConstants.PRE_UPDATE_PROFILE_API_PATH,
+            [ActionType.PRE_REGISTRATION]: ActionsConstants.PRE_REGISTRATION_API_PATH
+        };
+
+        const checkFeatureEnabledStatus = (actionType: string): boolean => {
+            const featureKey: string = actionTypeToFeatureKeyMap[actionType];
+
+            if (!featureKey) return false;
+            const prefix: string = isSubOrganization() ? "actions.types.org.list" : "actions.types.list";
+
+            return isFeatureEnabled(actionsFeatureConfig, `${prefix}.${featureKey}`);
+        };
+
+        const enabledTypes: string[] = actionTypesConfigs
+            .map((actionType: ActionTypesResponseInterface) => actionType.type)
+            .filter(checkFeatureEnabledStatus);
+
+        // If the organization is not a sub-organization, include pre-registration action type if enabled
+        // even it is not returned in the API.
+        if (!isSubOrganization() && isFeatureEnabled(actionsFeatureConfig, "actions.types.list.preRegistration")) {
+            enabledTypes.push(ActionType.PRE_REGISTRATION);
+        }
+
+        return actionTypesCardsInfo.filter((card: ActionTypeCardInterface) => enabledTypes.includes(card.type));
+    }, [ actionTypesConfigs, actionsFeatureConfig, isSubOrganization ]);
 
     const typeCounts: ActionTypesCountInterface = useMemo(() => {
         const actionTypeCounts: ActionTypesCountInterface = {};
@@ -144,22 +252,6 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
         }
     }, [ isActionTypesConfigsLoading, actionTypesConfigsRetrievalError ]);
 
-    const checkFeatureEnabledStatus = (actionType: string): boolean => {
-
-        switch (actionType) {
-            case ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH:
-                return isFeatureEnabled(actionsFeatureConfig, "actions.filterPreIssueAccessToken");
-            case ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH:
-                return isFeatureEnabled(actionsFeatureConfig, "actions.filterPreUpdatePassword");
-            case ActionsConstants.PRE_UPDATE_PROFILE_URL_PATH:
-                return isFeatureEnabled(actionsFeatureConfig, "actions.filterPreUpdateProfile");
-            case ActionsConstants.PRE_REGISTRATION_URL_PATH:
-                return isFeatureEnabled(actionsFeatureConfig, "actions.filterPreRegistration");
-            default:
-                return false;
-        }
-    };
-
     const resolveActionDescription = (): ReactNode => (
         <>
             { t("pages:actions.subTitle") }
@@ -173,15 +265,6 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
             </DocumentationLink>
         </>
     );
-
-    const resolveFeatureLabelClass = (featureStatus: FeatureStatusLabel): string => {
-        switch (featureStatus) {
-            case FeatureStatusLabel.BETA:
-                return "oxygen-chip-beta";
-            case FeatureStatusLabel.COMING_SOON:
-                return "oxygen-chip-coming-soon";
-        }
-    };
 
     const renderActionConfiguredStatus = (actionType: string): ReactElement => {
         let count: number = 0;
@@ -231,46 +314,6 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
                 </div>
             );
         }
-    };
-
-    const actionTypesCardsInfo = (): ActionTypeCardInterface[] => {
-        return [
-            {
-                description: t("actions:types.preIssueAccessToken.description.shortened"),
-                disabled: false,
-                featureStatusLabel: FeatureStatusLabel.BETA,
-                heading: t("actions:types.preIssueAccessToken.heading"),
-                icon: <KeyFlowIcon size="small" className="icon"/>,
-                identifier: ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH,
-                route: AppConstants.getPaths().get("PRE_ISSUE_ACCESS_TOKEN_EDIT")
-            },
-            {
-                description: t("actions:types.preUpdatePassword.description.shortened"),
-                disabled: true,
-                featureStatusLabel: FeatureStatusLabel.COMING_SOON,
-                heading: t("actions:types.preUpdatePassword.heading"),
-                icon: <PadlockAsteriskFlowIcon size="small" className="icon"/>,
-                identifier: ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH,
-                route: AppConstants.getPaths().get("PRE_UPDATE_PASSWORD_EDIT")
-            },
-            {
-                description: t("actions:types.preUpdateProfile.description.shortened"),
-                disabled: true,
-                featureStatusLabel: FeatureStatusLabel.COMING_SOON,
-                heading: t("actions:types.preUpdateProfile.heading"),
-                icon: <ProfileFlowIcon size="small" className="icon"/>,
-                identifier: ActionsConstants.PRE_UPDATE_PROFILE_URL_PATH,
-                route: AppConstants.getPaths().get("PRE_UPDATE_PROFILE_EDIT")
-            },
-            {
-                description: t("actions:types.preRegistration.description.shortened"),
-                disabled: true,
-                featureStatusLabel: FeatureStatusLabel.COMING_SOON,
-                heading: t("actions:types.preRegistration.heading"),
-                icon: <UserFlowIcon size="small" className="icon"/>,
-                identifier: ActionsConstants.PRE_REGISTRATION_URL_PATH,
-                route: AppConstants.getPaths().get("PRE_REGISTRATION_EDIT")
-            } ];
     };
 
     /**
@@ -331,8 +374,8 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
             { isActionTypesConfigsLoading ? renderLoadingPlaceholder() : (
                 <div className="action-types-grid-wrapper" data-componentid={ `${ _componentId }-grid` }>
                     <div className="action-types-grid">
-                        { actionTypesCardsInfo().map((cardProps: ActionTypeCardInterface) => {
-                            return checkFeatureEnabledStatus(cardProps.identifier) && (
+                        { enabledActionTypeCards?.map((cardProps: ActionTypeCardInterface) => {
+                            return (
                                 <Card
                                     key={ cardProps.identifier }
                                     className={ classNames("action-type", { "disabled": cardProps.disabled }) }
@@ -365,14 +408,11 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
                                             { !cardProps.disabled ?
                                                 renderActionConfiguredStatus(cardProps.identifier) : null }
                                         </div>
-                                        <div
-                                            className={ "ribbon " +
-                                                        resolveFeatureLabelClass(cardProps.featureStatusLabel) }
-                                        >
-                                            <span className="MuiChip-label">
-                                                { t(cardProps.featureStatusLabel) }
-                                            </span>
-                                        </div>
+                                        <FeatureFlagLabel
+                                            featureFlags={ actionsFeatureConfig?.featureFlags }
+                                            featureKey={ cardProps.featureStatusKey }
+                                            type="ribbon"
+                                        />
                                     </CardContent>
                                     <CardContent>
                                         <Typography variant="body2" color="text.secondary">

@@ -21,6 +21,7 @@ var startupConfig = {
     enableDefaultPreLoader: true,
     orgPrefix: "o",
     pathExtension: "",
+    proxyContextPathGlobal: "",
     serverUrl: "https://localhost:9443",
     serverUrlGlobal: "https://localhost:9443",
     subdomainApplication: false,

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -162,6 +162,11 @@ export class I18nModuleConstants {
     public static readonly ROLES_NAMESPACE: string = "roles";
 
     /**
+     * Roles namespace.
+     */
+    public static readonly APPLICATION_ROLES_NAMESPACE: string = "applicationRoles";
+
+    /**
      * Server configurations namespace.
      */
     public static readonly SERVER_CONFIGS_NAMESPACE: string = "serverConfigs";
@@ -190,6 +195,11 @@ export class I18nModuleConstants {
      * SMS Providers namespace.
      */
     public static readonly SMS_PROVIDERS_NAMESPACE: string = "smsProviders";
+
+    /**
+     * Push Templates namespace.
+     */
+    public static readonly PUSH_PROVIDERS_NAMESPACE: string = "pushProviders";
 
     /**
      * SMS Templates namespace.
@@ -330,6 +340,11 @@ export class I18nModuleConstants {
     public static readonly ACTIONS_NAMESPACE: string = "actions";
 
     /**
+     * Webhooks namespace.
+     */
+    public static readonly WEBHOOKS_NAMESPACE: string = "webhooks";
+
+    /**
      * Tenants namespace.
      */
     public static readonly TENANTS_NAMESPACE: string = "tenants";
@@ -343,4 +358,59 @@ export class I18nModuleConstants {
      * Remote User Stores namespace.
      */
     public static readonly REMOTE_USER_STORES_NAMESPACE: string = "remoteUserStores";
+
+    /**
+     * Custom Authentication namespace.
+     */
+    public static readonly CUSTOM_AUTHENTICATOR_NAMESPACE: string = "customAuthenticator";
+
+    /**
+     * Rules namespace.
+     */
+    public static readonly RULES_NAMESPACE: string = "rules";
+
+    /**
+     * Approval Workflows namespace.
+     */
+    public static readonly APPROVAL_WORKFLOWS_NAMESPACE: string = "approvalWorkflows";
+
+    /**
+     * Agents namespace.
+     */
+    public static readonly AGENTS_NAMESPACE: string = "agents";
+
+    /**
+     * Common Users namespace.
+     */
+    public static readonly COMMON_USERS_NAMESPACE: string = "commonUsers";
+
+    /**
+     * Constant representing the locale preference key.
+     * This key is used to store the user's language preference in cookies or local storage.
+     */
+    public static readonly PREFERENCE_STORAGE_KEY: string = "ui_lang";
+
+    /**
+     * Email Provider namespace.
+     */
+    public static readonly EMAIL_PROVIDERS_NAMESPACE: string = "emailProviders";
+
+    /**
+     * Flows namespace.
+     */
+    public static readonly FLOWS_NAMESPACE: string = "flows";
+
+    /**
+     * Constant representing the text direction handling attribute.
+     */
+    public static readonly TEXT_DIRECTION_ATTRIBUTE: string = "dir";
+
+}
+
+/**
+* Enum to define two Text Directions LTR & RTL.
+*/
+export enum TextDirection {
+    "LTR" = "ltr",
+    "RTL" = "rtl"
 }

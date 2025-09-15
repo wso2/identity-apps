@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs";
+import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs/ui";
 import { store } from "@wso2is/admin.core.v1/store";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";

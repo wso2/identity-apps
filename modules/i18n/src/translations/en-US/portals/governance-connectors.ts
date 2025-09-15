@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -217,6 +217,11 @@ export const governanceConnectors: governanceConnectorsNS = {
                             label: "Manage JIT provisioning purposes"
                         }
                     }
+                },
+                registrationFlowBuilder: {
+                    friendlyName: "Registration Flow",
+                    description: "Design and customize the user registration journey with a flexible, no-code " +
+                        "flow builder."
                 }
             }
         },
@@ -269,6 +274,28 @@ export const governanceConnectors: governanceConnectorsNS = {
                             label: "Max failed attempts for reCaptcha"
                         }
                     }
+                },
+                siftConnector: {
+                    properties: {
+                        name: "Fraud Detection",
+                        description: "Integrate Sift to detect and prevent fraudulent account logins.",
+                        siftConnectorApiKey: {
+                            label: "Sift API Key",
+                            placeholder: "Enter Sift API Key"
+                        }
+                    },
+                    notifications: {
+                        configurationUpdate: {
+                            error: {
+                                description: "An error occurred while updating the Sift configuration.",
+                                message: "Update Error"
+                            },
+                            success: {
+                                description: "Successfully updated the Sift configuration.",
+                                message: "Update Successful"
+                            }
+                        }
+                    }
                 }
             }
         },
@@ -295,6 +322,7 @@ export const governanceConnectors: governanceConnectorsNS = {
                 },
                 accountDisableHandler: {
                     friendlyName: "Account Disable",
+                    description: "Configure account disable settings.",
                     properties: {
                         accountDisableHandlerEnable: {
                             hint: "Allow an administrative user to disable user accounts",
@@ -303,6 +331,28 @@ export const governanceConnectors: governanceConnectorsNS = {
                         accountDisableHandlerNotificationManageInternally: {
                             hint: "Disable, if the client application handles notification sending",
                             label: "Manage notification sending internally"
+                        }
+                    },
+                    notifications: {
+                        configurationUpdate: {
+                            error: {
+                                description: "An error occurred while updating the account disable configuration.",
+                                message: "Update Error"
+                            },
+                            success: {
+                                description: "Successfully updated the account disable configuration.",
+                                message: "Update Successful"
+                            }
+                        },
+                        revertConfiguration: {
+                            success: {
+                                description: "Successfully reverted the account disable configuration.",
+                                message: "Revert Successful"
+                            },
+                            error: {
+                                description: "An error occurred while reverting the account disable configuration.",
+                                message: "Revert Error"
+                            }
                         }
                     }
                 },
@@ -559,32 +609,52 @@ export const governanceConnectors: governanceConnectorsNS = {
                     }
                 },
                 userClaimUpdate: {
-                    friendlyName: "User Attribute Change Verification",
+                    friendlyName: "Attribute Update Verification Settings",
+                    subTitle: "Configure verification & notification settings when updating user attributes.",
                     properties: {
                         userClaimUpdateEmailEnableVerification: {
-                            hint: "Trigger verification notifications for user's email addresses.",
+                            hint: "Send a verification email with a link to the new address when the email attribute is updated.",
                             label: "Enable user email verification"
                         },
                         userClaimUpdateEmailVerificationCodeExpiryTime: {
                             hint: "Validity time of the email confirmation link in minutes.",
-                            label: "Email verification on update link expiry time"
+                            label: "Email verification link expiration time"
                         },
                         userClaimUpdateEmailEnableNotification: {
-                            hint: "Trigger a notification to the existing email address when the user attempts to update the existing email address.",
-                            label: "Enable user email notification on update"
+                            hint: "Send a notification to the current email address when the user attempts to change the email attribute.",
+                            label: "Enable email update notifications"
                         },
                         userClaimUpdateMobileNumberEnableVerification: {
-                            hint: "Trigger verification SMS OTP for user's mobile numbers.",
+                            hint: "Send a verification SMS OTP to the new mobile number when the mobile attribute is updated.",
                             label: "Enable user mobile number verification"
                         },
                         userClaimUpdateMobileNumberVerificationCodeExpiryTime: {
                             hint: "Validity time of the mobile number confirmation OTP in minutes.",
-                            label: "Mobile number verification on update SMS OTP expiry time"
+                            label: "Mobile number verification SMS OTP expiration time"
                         },
                         userClaimUpdateMobileNumberEnableVerificationByPrivilegedUser: {
                             hint: "Allow privileged users to initiate mobile number verification on update.",
                             label: "Enable mobile number verification by privileged users"
                         }
+                    },
+                    update: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Update Error"
+                        },
+                        genericError: {
+                            description:
+                                "An error occurred while updating attribute verification configurations.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "Attribute verification configurations updated successfully.",
+                            message: "Update Successful."
+                        }
+                    },
+                    subHeadings: {
+                        emailConfiguration: "Email Configurations",
+                        mobileConfiguration: "Mobile Configurations"
                     }
                 }
             }
@@ -625,6 +695,11 @@ export const governanceConnectors: governanceConnectorsNS = {
                 title: "Internal Notification Sending"
             }
         }
+    },
+    dangerZone: {
+        actionTitle: "Revert",
+        heading: "Revert to default",
+        subHeading: "This action will discard all custom configurations on this page and restore the default settings."
     },
     disabled: "Disabled",
     enabled: "Enabled",
@@ -676,6 +751,16 @@ export const governanceConnectors: governanceConnectorsNS = {
             success: {
                 description: "{{ name }} configuration updated successfully.",
                 message: "Update Successful."
+            }
+        },
+        revertConnector: {
+            error: {
+                description: "An error occurred while reverting governance connector properties.",
+                message: "Revert Error"
+            },
+            success: {
+                description: "Successfully reverted the configuration to default.",
+                message: "Revert Successful."
             }
         }
     },

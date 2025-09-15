@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2019-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -72,6 +72,8 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp" />
 
+<% request.setAttribute("pageName", "fido2-auth"); %>
+
 <!doctype html>
 <html lang="en-US">
 <head>
@@ -95,7 +97,7 @@
         <jsp:include page="includes/analytics.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout authentication-portal-layout">
+<body class="login-portal layout authentication-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
     <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
         <jsp:include page="extensions/timeout.jsp"/>
     <% } else { %>
@@ -268,7 +270,8 @@
         if (StringUtils.isNotEmpty(myaccountUrl)) {
             myaccountUrl = myaccountUrl + "/t/" + tenantDomain;
         } else {
-            myaccountUrl = ServiceURLBuilder.create().setTenant(tenantDomain).build().getAbsolutePublicURL();
+            myaccountUrl = IdentityManagementEndpointUtil.getUserPortalUrl(
+                application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain);
         }
     %>
 

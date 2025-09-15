@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,28 +21,30 @@ import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography/Typography";
 import { GlobeIcon } from "@oxygen-ui/react-icons";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils";
-import { UserManagementConstants } from "@wso2is/admin.users.v1/constants/user-management-constants";
+import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { generatePassword, getConfiguration } from "@wso2is/admin.users.v1/utils/generate-password.utils";
 import getUsertoreUsernameValidationPattern from "@wso2is/admin.users.v1/utils/get-usertore-usernam-validation-pattern";
 import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-management-utils";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api/validation-config";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models/validation-config";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     FinalForm,
     FinalFormField,
     FormRenderProps,
-    FormSpy,
     MutableState,
     TextFieldAdapter,
     Tools,
     composeValidators
 } from "@wso2is/form";
-import { Hint, PasswordValidation } from "@wso2is/react-components";
+import { Hint } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
-import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
+import { FormState } from "final-form";
+import memoize from "lodash-es/memoize";
+import React, { FunctionComponent, ReactElement, useCallback, useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import getTenantDomainAvailability from "../../api/get-tenant-domain-availability";
@@ -61,9 +63,11 @@ export interface AddTenantFormProps extends IdentifiableComponentInterface {
     onSubmit?: (payload: AddTenantRequestPayload) => void;
 }
 
-export type AddTenantFormValues = Pick<Tenant, "domain" | "id"> & Omit<TenantOwner, "additionalDetails">;
+export type AddTenantFormValues = Omit<Pick<Tenant, "domain" | "id">, "name" | "domain">
+    & { organizationHandle: string; organizationName: string }
+    & Omit<TenantOwner, "additionalDetails" | "id">;
 
-export type AddTenantFromErrors = Partial<AddTenantFormValues>;
+export type AddTenantFormErrors = Partial<AddTenantFormValues>;
 
 /**
  * Component to hold the form to add a tenant.
@@ -81,8 +85,15 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
     const { data: validationData } = useValidationConfigData();
 
     const enableEmailDomain: boolean = useSelector((state: AppState) => state.config?.ui?.enableEmailDomain);
-
-    const [ isPasswordValid, setIsPasswordValid ] = useState<boolean>(false);
+    const tenantDomainRegex: string = useSelector(
+        (state: AppState) => state.config?.ui?.multiTenancy?.tenantDomainRegex
+    );
+    const tenantDomainIllegalCharactersRegex: string = useSelector(
+        (state: AppState) => state.config?.ui?.multiTenancy?.tenantDomainIllegalCharactersRegex
+    );
+    const isTenantDomainDotExtensionMandatory: boolean = useSelector(
+        (state: AppState) => state.config?.ui?.multiTenancy?.isTenantDomainDotExtensionMandatory
+    );
 
     const userNameValidationConfig: ValidationFormInterface = useMemo((): ValidationFormInterface => {
         return getUsernameConfiguration(validationData);
@@ -91,6 +102,11 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
     const passwordValidationConfig: ValidationFormInterface = useMemo((): ValidationFormInterface => {
         return getConfiguration(validationData);
     }, [ validationData ]);
+
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const isOrgDisplayNameFeatureEnabled: boolean = isFeatureEnabled(
+        featureConfig.organizations, "organizationDisplayName"
+    );
 
     /**
      * Form validator to validate the username against the userstore regex.
@@ -110,72 +126,95 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
     };
 
     /**
-     * Form validator to validate the username against the alphanumeric regex.
+     * Form validator to validate the organization handle (tenant domain) availability.
+     *
+     * @remarks
+     * Implements the same validation logic that's set in the backend.
+     * @see `https://github.com/wso2/carbon-multitenancy -> TenantMgtUtil.java -> validateDomain`
      * @param value - Input value.
      * @returns An error if the value is not valid else undefined.
      */
-    const validateAlphanumericUsername = (value: string): string | undefined => {
-        if (!value) {
-            return undefined;
-        }
+    const validateOrganizationHandle: (value: string) => Promise<string | undefined> = useCallback(
+        memoize(
+            async (value: string): Promise<string | undefined> => {
+                if (!value) {
+                    return undefined;
+                }
 
-        // Regular expression to validate having alphanumeric characters.
-        let regExpInvalidUsername: RegExp = new RegExp(UserManagementConstants.USERNAME_VALIDATION_REGEX);
+                if (isTenantDomainDotExtensionMandatory) {
+                    const lastIndexOfDot: number = value.lastIndexOf(".");
 
-        // Check if special characters enabled for username.
-        if (!userNameValidationConfig?.isAlphanumericOnly) {
-            regExpInvalidUsername = new RegExp(UserManagementConstants.USERNAME_VALIDATION_REGEX_WITH_SPECIAL_CHARS);
-        }
+                    if (lastIndexOfDot <= 0) {
+                        return t("tenants:common.form.fields.domain.validations.domainMandatoryExtension");
+                    }
+                }
 
-        if (
-            value.length < Number(userNameValidationConfig.minLength) ||
-            value.length > Number(userNameValidationConfig.maxLength)
-        ) {
-            return t("tenants:common.form.fields.username.validations.usernameLength", {
-                maxLength: userNameValidationConfig?.maxLength,
-                minLength: userNameValidationConfig?.minLength
-            });
-        } else if (!regExpInvalidUsername.test(value)) {
-            if (userNameValidationConfig?.isAlphanumericOnly) {
-                return t("tenants:common.form.fields.username.validations.usernameSymbols");
-            } else {
-                return t("tenants:common.form.fields.username.validations.usernameSpecialCharSymbols");
+                if (tenantDomainRegex) {
+                    const regex: RegExp = new RegExp(tenantDomainRegex);
+
+                    if (!regex.test(value)) {
+                        return t("tenants:common.form.fields.domain.validations.domainInvalidPattern");
+                    }
+                }
+
+                const indexOfDot: number = value.indexOf(".");
+
+                if (indexOfDot == 0) {
+                    return t("tenants:common.form.fields.domain.validations.domainStartingWithDot");
+                }
+
+                if (tenantDomainIllegalCharactersRegex) {
+                    const regex: RegExp = new RegExp(tenantDomainIllegalCharactersRegex);
+
+                    if (regex.test(value)) {
+                        return t("tenants:common.form.fields.domain.validations.domainInvalidCharPattern");
+                    }
+                }
+
+                let isAvailable: boolean = true;
+
+                try {
+                    isAvailable = await getTenantDomainAvailability(value);
+                } catch (error) {
+                    isAvailable = false;
+                }
+
+                if (!isAvailable) {
+                    return t("tenants:common.form.fields.domain.validations.domainUnavailable");
+                }
             }
-        }
-    };
+        ), []);
 
     /**
-     * Form validator to validate the tenant domain availability.
-     * @param value - Input value.
-     * @returns An error if the value is not valid else undefined.
+     * Form validator to validate the organization name format.
+     *
+     * @param orgName - Input organization name value.
+     * @returns An error if the organization name is not valid else undefined.
      */
-    const validateTenantDomainAvailability = async (value: string): Promise<string | undefined> => {
-        if (!value) {
-            return undefined;
-        }
+    const validateOrganizationName: (orgName: string) => Promise<string | undefined> = useCallback(
+        memoize(
+            async (orgName: string): Promise<string | undefined> => {
+                if (!orgName) {
+                    return undefined;
+                }
+                const regex: RegExp = new RegExp(TenantConstants.ORGANIZATION_NAME_REGEX);
 
-        let isAvailable: boolean = true;
-
-        try {
-            isAvailable = await getTenantDomainAvailability(value);
-        } catch (error) {
-            isAvailable = false;
-        }
-
-        if (!isAvailable) {
-            return t("tenants:common.form.fields.domain.validations.domainUnavailable");
-        }
-    };
+                if (regex.test(orgName)) {
+                    return t("tenants:common.form.fields.organizationName.validations.invalidCharPattern");
+                }
+            }
+        ), []);
 
     /**
      * Handles the form submit action.
      * @param values - Form values.
      */
     const handleSubmit = (values: AddTenantFormValues): void => {
-        const { domain, ...rest } = values;
+        const { organizationHandle, organizationName, ...rest } = values;
 
         const payload: AddTenantRequestPayload = {
-            domain,
+            domain: organizationHandle,
+            name: organizationName,
             owners: [
                 {
                     ...rest,
@@ -192,18 +231,18 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
      * @param values - Form values.
      * @returns Form errors.
      */
-    const handleValidate = (values: AddTenantFormValues): AddTenantFromErrors => {
-        const errors: AddTenantFromErrors = {
-            domain: undefined,
+    const handleValidate = (values: AddTenantFormValues): AddTenantFormErrors => {
+        const errors: AddTenantFormErrors = {
             email: undefined,
             firstname: undefined,
             lastname: undefined,
+            organizationHandle: undefined,
             password: undefined,
             username: undefined
         };
 
-        if (!values.domain) {
-            errors.domain = t("tenants:common.form.fields.domain.validations.required");
+        if (!values.organizationHandle) {
+            errors.organizationHandle = t("tenants:common.form.fields.domain.validations.required");
         }
 
         if (!values.firstname) {
@@ -216,12 +255,12 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
 
         if (!values.email) {
             errors.email = t("tenants:common.form.fields.email.validations.required");
+        } else if (!FormValidation.email(values.email)) {
+            errors.email = t("tenants:common.form.fields.email.validations.invalid");
         }
 
         if (!values.password) {
             errors.password = t("tenants:common.form.fields.password.validations.required");
-        } else if (!isPasswordValid) {
-            errors.password = "";
         }
 
         if (!values.username) {
@@ -247,15 +286,6 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                     data-componentid={ `${componentId}-username` }
                     name="username"
                     type={ enableEmailDomain ? "email" : "text" }
-                    helperText={
-                        (<Hint>
-                            <Typography variant="inherit">
-                                { enableEmailDomain
-                                    ? t("tenants:common.form.fields.emailUsername.helperText")
-                                    : t("tenants:common.form.fields.username.helperText") }
-                            </Typography>
-                        </Hint>)
-                    }
                     label={
                         enableEmailDomain
                             ? t("tenants:common.form.fields.emailUsername.label")
@@ -284,94 +314,14 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                 data-componentid={ `${componentId}-username` }
                 name="username"
                 type="text"
-                helperText={
-                    (<Hint>
-                        <Typography variant="inherit">
-                            { userNameValidationConfig?.isAlphanumericOnly
-                                ? t("tenants:common.form.fields.alphanumericUsername." + "validations.usernameHint", {
-                                    maxLength: userNameValidationConfig?.maxLength,
-                                    minLength: userNameValidationConfig?.minLength
-                                })
-                                : t(
-                                    "tenants:common.form.fields.alphanumericUsername." +
-                                          "validations.usernameSpecialCharHint",
-                                    {
-                                        maxLength: userNameValidationConfig?.maxLength,
-                                        minLength: userNameValidationConfig?.minLength
-                                    }
-                                ) }
-                        </Typography>
-                    </Hint>)
-                }
                 label={ t("tenants:common.form.fields.alphanumericUsername.label") }
                 placeholder={ t("tenants:common.form.fields.alphanumericUsername.placeholder") }
                 component={ TextFieldAdapter }
-                validate={ composeValidators(validateAlphanumericUsername) }
                 maxLength={ 100 }
                 minLength={ 0 }
             />
         );
     };
-
-    /**
-     * Renders the password validation criteria with the help of `PasswordValidation` component.
-     * @returns Password validation criteria.
-     */
-    const renderPasswordValidationCriteria = (): ReactElement => (
-        <FormSpy subscription={ { values: true } }>
-            { ({ values }: { values: AddTenantFormValues }) => (
-                <PasswordValidation
-                    password={ values?.password ?? "" }
-                    minLength={ Number(passwordValidationConfig.minLength) }
-                    maxLength={ Number(passwordValidationConfig.maxLength) }
-                    minNumbers={ Number(passwordValidationConfig.minNumbers) }
-                    minUpperCase={ Number(passwordValidationConfig.minUpperCaseCharacters) }
-                    minLowerCase={ Number(passwordValidationConfig.minLowerCaseCharacters) }
-                    minSpecialChr={ Number(passwordValidationConfig.minSpecialCharacters) }
-                    minUniqueChr={ Number(passwordValidationConfig.minUniqueCharacters) }
-                    maxConsecutiveChr={ Number(passwordValidationConfig.maxConsecutiveCharacters) }
-                    onPasswordValidate={ (isValid: boolean): void => {
-                        setIsPasswordValid(isValid);
-                    } }
-                    translations={ {
-                        case:
-                            Number(passwordValidationConfig?.minUpperCaseCharacters) > 0 &&
-                            Number(passwordValidationConfig?.minLowerCaseCharacters) > 0
-                                ? t("tenants:common.form.fields.password.validations.criteria.passwordCase", {
-                                    minLowerCase: passwordValidationConfig.minLowerCaseCharacters,
-                                    minUpperCase: passwordValidationConfig.minUpperCaseCharacters
-                                })
-                                : Number(passwordValidationConfig?.minUpperCaseCharacters) > 0
-                                    ? t("tenants:common.form.fields.password.validations.criteria.upperCase", {
-                                        minUpperCase: passwordValidationConfig.minUpperCaseCharacters
-                                    })
-                                    : t("tenants:common.form.fields.password.validations.criteria.lowerCase", {
-                                        minLowerCase: passwordValidationConfig.minLowerCaseCharacters
-                                    }),
-                        consecutiveChr: t(
-                            "tenants:common.form.fields.password.validations.criteria.consecutiveCharacters",
-                            {
-                                repeatedChr: passwordValidationConfig.maxConsecutiveCharacters
-                            }
-                        ),
-                        length: t("tenants:common.form.fields.password.validations.criteria.passwordLength", {
-                            max: passwordValidationConfig.maxLength,
-                            min: passwordValidationConfig.minLength
-                        }),
-                        numbers: t("tenants:common.form.fields.password.validations.criteria.passwordNumeric", {
-                            min: passwordValidationConfig.minNumbers
-                        }),
-                        specialChr: t("tenants:common.form.fields.password.validations.criteria.specialCharacter", {
-                            specialChr: passwordValidationConfig.minSpecialCharacters
-                        }),
-                        uniqueChr: t("tenants:common.form.fields.password.validations.criteria.uniqueCharacters", {
-                            uniqueChr: passwordValidationConfig.minUniqueCharacters
-                        })
-                    } }
-                />
-            ) }
-        </FormSpy>
-    );
 
     return (
         <FinalForm
@@ -402,32 +352,56 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                 }
             } }
             render={ ({ form, handleSubmit }: FormRenderProps) => {
+                const formState: FormState<AddTenantFormValues> =
+                    form.getState() as unknown as FormState<AddTenantFormValues>;
+
                 return (
                     <form
                         id={ TenantConstants.ADD_TENANT_FORM_ID }
                         onSubmit={ handleSubmit }
                         className="add-tenant-form"
                     >
+                        { isOrgDisplayNameFeatureEnabled && (
+                            <FinalFormField
+                                key="organizationName"
+                                width={ 16 }
+                                className="text-field-container"
+                                ariaLabel="organizationName"
+                                required={ false }
+                                data-componentid={ `${componentId}-organization-name` }
+                                name="organizationName"
+                                type="text"
+                                helperText={ (
+                                    <Hint>
+                                        <Typography variant="inherit">
+                                            <Trans
+                                                i18nKey="tenants:common.form.fields.organizationName.helperText"
+                                                components={ { bold: <span style={ { fontWeight: "bold" } } /> } }
+                                            />
+                                        </Typography>
+                                    </Hint>
+                                ) }
+                                label={ t("tenants:common.form.fields.organizationName.label") }
+                                placeholder={ t("tenants:common.form.fields.organizationName.placeholder") }
+                                component={ TextFieldAdapter }
+                                maxLength={ 100 }
+                                minLength={ 1 }
+                                validate={ validateOrganizationName }
+                            />
+                        ) }
                         <FinalFormField
-                            key="domain"
+                            key="organizationHandle"
                             width={ 16 }
                             className="text-field-container"
-                            ariaLabel="domain"
+                            ariaLabel="organizationHandle"
                             required={ true }
-                            data-componentid={ `${componentId}-domain` }
-                            name="domain"
+                            data-componentid={ `${componentId}-organizationHandle` }
+                            name="organizationHandle"
                             type="text"
                             helperText={
                                 (<Hint>
                                     <Typography variant="inherit">
-                                        <Trans i18nKey="tenants:common.form.fields.domain.helperText">
-                                            Enter a unique domain name for your organization. The domain name should be
-                                            in the format of
-                                            <Typography component="span" variant="inherit" fontWeight="bold">
-                                                example.com
-                                            </Typography>
-                                            .
-                                        </Trans>
+                                        { t("tenants:common.form.fields.domain.helperText") }
                                     </Typography>
                                 </Hint>)
                             }
@@ -441,7 +415,7 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                                     <GlobeIcon />
                                 </InputAdornment>)
                             }
-                            validate={ validateTenantDomainAvailability }
+                            validate={ validateOrganizationHandle }
                         />
                         <Typography variant="h5" className="add-tenant-form-sub-title">
                             { t("tenants:addTenant.form.adminDetails.title") }
@@ -504,7 +478,12 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                             <Stack
                                 spacing={ { sm: 2, xs: 1 } }
                                 direction={ { sm: "row", xs: "column" } }
-                                alignItems="flex-end"
+                                alignItems={
+                                    formState?.modified?.password &&
+                                        formState?.errors?.password &&
+                                        formState?.touched?.password
+                                        ? "center" : "flex-end"
+                                }
                             >
                                 <div className="inline-flex-field">
                                     <FinalFormField
@@ -529,7 +508,6 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                                     </Button>
                                 ) }
                             </Stack>
-                            { passwordValidationConfig && renderPasswordValidationCriteria() }
                         </Stack>
                     </form>
                 );

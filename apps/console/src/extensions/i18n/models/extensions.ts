@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,223 +20,12 @@ import { FormAttributes, Notification, NotificationItem } from "@wso2is/i18n";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface Extensions {
-    console: {
-        application: {
-            quickStart: {
-                technologySelectionWrapper: {
-                    subHeading: string;
-                    otherTechnology: string;
-                };
-                addUserOption: {
-                    description: string;
-                    hint: string;
-                    message: string;
-                };
-                spa: {
-                    customConfig: {
-                        heading: string;
-                        anySPATechnology: string;
-                        configurations: string;
-                        protocolConfig: string;
-                        serverEndpoints: string;
-                        clientId: string;
-                        baseUrl: string;
-                        redirectUrl: string;
-                        scope: string;
-                    };
-                    techSelection: {
-                        heading: string;
-                    };
-                };
-                twa: {
-                    common: {
-                        orAnyTechnology: string;
-                    };
-                    oidc: {
-                        customConfig: {
-                            heading: string;
-                            clientSecret: string;
-                        };
-                    };
-                    saml: {
-                        customConfig: {
-                            heading: string;
-                            issuer: string;
-                            acsUrl: string;
-                            idpEntityId: string;
-                            idpUrl: string;
-                        };
-                    };
-                };
-                m2m: {
-                    customConfig: {
-                        tokenEndpoint: string;
-                        tokenRequest: string;
-                        configurations: string;
-                    };
-                }
-            };
-        };
-        applicationRoles: {
-            assign: string;
-            assignGroupWizard: {
-                heading: string;
-                subHeading: string;
-            };
-            authenticatorGroups: {
-                goToConnections: string;
-                groupsList: {
-                    assignGroups: string;
-                    notifications: {
-                        fetchAssignedGroups: Notification;
-                        updateAssignedGroups: Notification;
-                    }
-                };
-                hint: string;
-                placeholder: {
-                    title: string;
-                    subTitle: {
-                        0: string;
-                        1: string;
-                    };
-                };
-            };
-            connectorGroups: {
-                placeholder: {
-                    title: string;
-                    subTitle: {
-                        0: string;
-                        1: string;
-                    };
-                };
-            };
-            heading: string;
-            subHeading: string;
-            roleGroups: {
-                assignGroup: string;
-                searchGroup: string;
-                placeholder: {
-                    title: string;
-                    subTitle: {
-                        0: string;
-                        1: string;
-                    };
-                };
-                notifications: {
-                    addGroups: Notification;
-                    fetchGroups: Notification;
-                };
-                confirmation: {
-                    deleteRole: {
-                        message: string;
-                        content: string;
-                    };
-                };
-            };
-            roleList: {
-                placeholder: {
-                    title: string;
-                    subTitle: {
-                        0: string;
-                        1: string;
-                    };
-                };
-            };
-            roleMapping: {
-                heading: string;
-                subHeading: string;
-                notifications: {
-                    sharedApplication: {
-                        error: NotificationItem;
-                    }
-                    updateRole: Notification;
-                };
-            };
-            roles: {
-                heading: string;
-                subHeading: string;
-                goBackToRoles: string;
-                orgRoles: {
-                    heading: string;
-                    subHeading: string;
-                };
-            };
-            searchApplication: string;
-        };
-        identityProviderGroups: {
-            claimConfigs: {
-                groupAttributeLabel: string;
-                groupAttributeHint: string;
-                groupAttributePlaceholder: string;
-                groupAttributeMessage1: string;
-                groupAttributeMessage2: string;
-                groupAttributeMessageOIDC: string;
-                groupAttributeMessageSAML: string;
-                notifications: {
-                    fetchConfigs: Notification;
-                };
-            };
-            createGroupWizard: {
-                groupNameLabel: string;
-                groupNamePlaceHolder: string;
-                groupNameHint: string;
-                subHeading: string;
-                notifications: {
-                    createIdentityProviderGroup: Notification;
-                    duplicateGroupError: Notification;
-                };
-            };
-            groupsList: {
-                confirmation: {
-                    deleteGroup: {
-                        message: string;
-                        content: string;
-                    };
-                };
-                newGroup: string;
-                noGroupsAvailable: string;
-                notifications: {
-                    fetchGroups: Notification;
-                    deleteGroup: Notification;
-                };
-                searchByName: string;
-            };
-        };
-        marketingConsent: {
-            heading: string;
-            description: string;
-            actions: {
-                subscribe: string;
-                decline: string;
-            },
-            notifications: {
-                errors: {
-                    fetch: {
-                        message: string;
-                        description: string;
-                    };
-                    update: {
-                        message: string;
-                        description: string;
-                    };
-                };
-            };
-        };
-        organizationInfo: {
-            heading: string;
-            subHeading: string;
-            orgId: {
-                label: string;
-                heading: string;
-                subHeading: string;
-            };
-            notifications: {
-                getConfiguration: Notification;
-            }
-        }
-    };
     develop: {
         apiResource: {
+            resourceTypes: {
+                api: string;
+                mcp: string;
+            },
             pageHeader: {
                 description: string;
                 subOrgDescription: string;
@@ -609,8 +398,15 @@ export interface Extensions {
                             };
                         };
                     };
+                    resourceAuthorization: {
+                        title: string;
+                    };
                     apiAuthorization: {
                         title: string;
+                        resourceText: {
+                            apiResource: string;
+                            genericResource: string;
+                        };
                         sections: {
                             apiSubscriptions: {
                                 heading: string;
@@ -1118,6 +914,11 @@ export interface Extensions {
                                 placeholder: string;
                             };
                             privacyPolicyURL: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                            };
+                            recoveryPortalURL: {
                                 hint: string;
                                 label: string;
                                 placeholder: string;
@@ -1848,6 +1649,12 @@ export interface Extensions {
                 }
             };
         };
+        emailAndSms: {
+            heading: string;
+            title: string;
+            description: string;
+            goBack: string;
+        };
         notificationChannel: {
             heading: string;
             title: string;
@@ -1967,6 +1774,29 @@ export interface Extensions {
                     };
                 };
             };
+            pushAuth: {
+                quickStart: {
+                    addLoginModal: {
+                        heading: string;
+                        subHeading: string;
+                    };
+                    connectApp: {
+                        description: string;
+                    };
+                    heading: string;
+                    subHeading: string;
+                    steps: {
+                        selectApplication: {
+                            content: string;
+                            heading: string;
+                        };
+                        selectPushAuth: {
+                            content: string;
+                            heading: string;
+                        };
+                    };
+                }
+            },
             facebook: {
                 quickStart: {
                     addLoginModal: {
@@ -2455,6 +2285,7 @@ export interface Extensions {
         };
         sidePanel: {
             apiResources: string;
+            mcpServers: string;
             branding: string;
             stylesAndText: string;
             monitor: string;
@@ -2609,6 +2440,16 @@ export interface Extensions {
     manage: {
         accountLogin: {
             notifications: {
+                revert: {
+                    error: {
+                        description: string;
+                        message: string;
+                    },
+                    success: {
+                        description: string;
+                        message: string;
+                    }
+                };
                 success: {
                     description: string;
                     message: string;
@@ -2697,6 +2538,7 @@ export interface Extensions {
                     makeDefaultOrganization: string;
                     backButton: string;
                     copyOrganizationId: string;
+                    copyOrganizationHandle: string;
                     copied: string;
                     tenantSearch: {
                         placeholder: string;
@@ -2934,9 +2776,14 @@ export interface Extensions {
                     inputLabel: {
                         alphanumericUsername: string;
                         alphanumericUsernamePlaceholder: string;
+                        email: string;
                         emailUsername: string;
                     }
-                    inviteUserTooltip: string;
+                    inviteUserTooltip: {
+                        emailLinkInviteTooltip: string;
+                        emailOTPInviteTooltip: string;
+                        smsOTPInviteTooltip: string;
+                    };
                     inviteUserOfflineTooltip: string;
                     inviteLink: {
                         error: {
@@ -2993,6 +2840,7 @@ export interface Extensions {
                             accountHasBeenCreated: string;
                         };
                         passwordWarningMessage: string;
+                        passwordWarningMessageWithWorkFlow: string;
                         password: string;
                         username: string;
                     }
@@ -3027,10 +2875,19 @@ export interface Extensions {
                             passwordRecoveryOtpUseLowercase: FormAttributes;
                             passwordRecoveryOtpUseNumeric: FormAttributes;
                             passwordRecoveryOtpLength: FormAttributes;
+                            emailRecoveryOptions: {
+                                header: string;
+                                emailLink: {
+                                    label: string;
+                                },
+                                emailOtp: {
+                                    label: string;
+                                }
+                            };
                         };
                         smsProviderWarning: string;
                     };
-                    recoveryOptionSubHeadingEmailLink: string;
+                    recoveryOptionSubHeadingEmail: string;
                     recoveryOptionSubHeadingSMS: string;
                     recoveryOptionHeading: string;
                     otpConfigHeading: string;
@@ -3053,6 +2910,31 @@ export interface Extensions {
                         recoveryOptionHeading: string;
                     },
                     heading: string;
+                };
+                forcedPasswordRecovery: {
+                    form: {
+                        fields: {
+                            enableEmailLinkBasedReset: {
+                                label: string;
+                            },
+                            enableEmailOTPBasedReset: {
+                                label: string;
+                            },
+                            enableSMSOTPBasedReset: {
+                                label: string;
+                            },
+                            expiryTime: {
+                                label: string;
+                                hint: string;
+                                placeholder: string;
+                            }
+                        },
+                        heading: {
+                            label: string;
+                            hint: string;
+                        }
+                        subheading: string;
+                    }
                 }
             };
             accountSecurity: {
@@ -3088,10 +2970,13 @@ export interface Extensions {
                             enable: FormAttributes;
                             maxFailedAttempts: FormAttributes;
                             notifyUserOnAccountLockIncrement: FormAttributes;
+                            lockAccountForSpecifiedTime: FormAttributes;
+                            lockAccountIndefiniteTime: FormAttributes;
                         };
                     };
                     info: string;
                     connectorDescription: string;
+                    accountLockDurationHeading: string;
                     heading: string;
                     notification: {
                         error: NotificationItem;
@@ -3147,7 +3032,15 @@ export interface Extensions {
                 label: string;
                 timeFormat: string;
             };
-            passwordValidationHeading: string;
+            passwordValidation: {
+                heading: string;
+                passwordValidationRegexLabel: string;
+                passwordValidationRegexHint: string;
+                passwordValidationRegexPlaceholder: string;
+                passwordValidationErrorLabel: string;
+                passwordValidationErrorHint: string;
+                passwordValidationErrorPlaceholder: string;
+            };
             userOnboarding: {
                 heading: string;
                 subHeading: string;
@@ -3173,6 +3066,35 @@ export interface Extensions {
                     subHeading: string;
                 };
                 inviteUserToSetPassword: {
+                    heading: string;
+                    form: {
+                        fields: {
+                            enableInviteUserToSetPassword: FormAttributes;
+                            enableEmailBasedAskPassword: FormAttributes;
+                            enableSMSBasedAskPassword: FormAttributes;
+                            emailAskPasswordOptions: {
+                                header: string;
+                                emailLink: {
+                                    label: string;
+                                },
+                                emailOtp: {
+                                    label: string;
+                                },
+                                smsOtp: {
+                                    label: string;
+                                }
+                            };
+                            expiryTime: FormAttributes;
+                            enableAccountActivationEmail: FormAttributes;
+                            enableAccountLockOnCreation: FormAttributes;
+                            askPasswordOtpUseUppercase: FormAttributes;
+                            askPasswordOtpUseLowercase: FormAttributes;
+                            askPasswordOtpUseNumeric: FormAttributes;
+                            askPasswordOtpLength: FormAttributes;
+                        };
+                    };
+                    otpConfigHeading: string;
+                    connectorDescription: string;
                     notification: {
                         error: NotificationItem;
                         success: NotificationItem;
@@ -3297,7 +3219,11 @@ export interface Extensions {
                 resetPassword: {
                     changePasswordModal: {
                         emailUnavailableWarning: string;
-                        emailResetWarning: string;
+                        emailResetWarning: {
+                            emailLink: string;
+                            emailOTP: string;
+                            smsOTP: string;
+                        }
                         passwordResetConfigDisabled: string;
                     };
                 };
@@ -3360,6 +3286,7 @@ export interface Extensions {
                         updateRole: {
                             error: NotificationItem;
                             genericError: NotificationItem;
+                            pendingApproval: NotificationItem;
                             success: NotificationItem;
                         };
                     }
@@ -3407,6 +3334,7 @@ export interface Extensions {
                 attributeManagement: string;
                 AccountManagement: string;
                 userManagement: string;
+                workflows: string;
                 organizationSettings: string;
             };
         };

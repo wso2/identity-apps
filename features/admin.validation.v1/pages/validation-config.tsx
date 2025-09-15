@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { AppConstants, history } from "@wso2is/admin.core.v1";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { getSettingsSectionIcons } from "@wso2is/admin.server-configurations.v1";
 import { SettingsSection } from "@wso2is/admin.server-configurations.v1/settings/settings-section";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";

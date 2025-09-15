@@ -23,10 +23,15 @@ import useRequest, {
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { HttpMethods } from "@wso2is/core/models";
+import merge from "lodash-es/merge";
+import useGetCustomTextPreferenceExtensionsMeta from "./use-get-custom-text-preference-extensions-meta";
 import { CustomTextPreferenceMeta } from "../models/custom-text-preference";
 
 /**
  * Hook to get the platform default branding preference text customization metadata from the distribution.
+ *
+ * @remarks Use the extensions hook to get additional locale data and if both main and extensions data exist,
+ * deep merge the entire objects.
  *
  * @param shouldFetch - Should fetch the data.
  * @returns SWR response object containing the data, error, isValidating, mutate.
@@ -52,11 +57,33 @@ const useGetCustomTextPreferenceMeta = <
         shouldRetryOnError: false
     });
 
+    const {
+        data: extensionsData,
+        error: extensionsError,
+        isValidating: extensionsIsValidating
+    } = useGetCustomTextPreferenceExtensionsMeta<Data, Error>(shouldFetch);
+
+    let mergedData: Data = data;
+
+    if (data && extensionsData) {
+        const mainData: CustomTextPreferenceMeta = data as CustomTextPreferenceMeta;
+        const extensionData: CustomTextPreferenceMeta = extensionsData as CustomTextPreferenceMeta;
+
+        mergedData = merge({}, mainData, extensionData, {
+            locales: Array.from(new Set([
+                ...(mainData.locales || []),
+                ...(extensionData.locales || [])
+            ]))
+        }) as Data;
+    } else if (!data && extensionsData) {
+        mergedData = extensionsData;
+    }
+
     return {
-        data,
-        error,
-        isLoading: !error && !data,
-        isValidating,
+        data: mergedData,
+        error: error || extensionsError,
+        isLoading: (!error && !data) || (!extensionsError && !extensionsData),
+        isValidating: isValidating || extensionsIsValidating,
         mutate
     };
 };

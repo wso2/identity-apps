@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,10 +35,113 @@ export const common: CommonNS = {
     applicationName: "ඇප් එකේ නම",
     applications: "ඇප්ස්",
     approvalStatus: "අනුමත කිරීමේ තත්වය",
+    approvals: "අනුමත කිරීම්",
+    approvalsPage: {
+        list: {
+            columns: {
+                actions: "ක්‍රියා",
+                name: "නම"
+            }
+        },
+        modals: {
+            description: "ඔබගේ අනුමැතිය අවශ්‍ය මෙහෙයුම් කාර්යයන් සමාලෝචනය කරන්න",
+            header: "අනුමත කිරීම්",
+            subHeader: "ඔබගේ අනුමැතිය අවශ්‍ය මෙහෙයුම් කාර්යයන් සමාලෝචනය කරන්න"
+        },
+        notifications: {
+            fetchApprovalDetails: {
+                error: {
+                    description: "{{description}}",
+                    message: "අනුමත කිරීමේ විස්තර ලබා ගැනීමට දෝෂයක්"
+                },
+                genericError: {
+                    description: "අනුමත කිරීමේ විස්තර ලබා ගැනීමට නොහැකි විය.",
+                    message: "යමක් වැරදී ඇත"
+                }
+            },
+            fetchPendingApprovals: {
+                error: {
+                    description: "{{description}}",
+                    message: "අනුමත කිරීම් ලබා ගැනීමට දෝෂයක්"
+                },
+                genericError: {
+                    description: "අනුමත කිරීම් ලබා ගැනීමට නොහැකි විය.",
+                    message: "යමක් වැරදී ඇත"
+                }
+            },
+            updatePendingApprovals: {
+                error: {
+                    description: "{{description}}",
+                    message: "අනුමත කිරීම යාවත්කාලීන කිරීමට දෝෂයක්"
+                },
+                genericError: {
+                    description: "පැවරුම්කරු අනුමත කිරීම යාවත්කාලීන කිරීමට නොහැකි විය.",
+                    message: "යමක් වැරදී ඇත"
+                },
+                success: {
+                    description: "අනුමත කිරීම සාර්ථකව යාවත්කාලීන කරන ලදී.",
+                    message: "යාවත්කාලීන කිරීම සාර්ථකයි"
+                }
+            }
+        },
+        operationTypes: {
+            addRole: "භූමිකාව එක් කරන්න",
+            addUser: "පරිශීලකයෙකු එක් කරන්න",
+            all: "සියලු ක්‍රියාකාරකම්",
+            deleteRole: "භූමිකාව මකන්න",
+            deleteUser: "පරිශීලකයෙකු මකන්න",
+            selfRegisterUser: "ස්වයං ලියාපදිංචි පරිශීලක",
+            updateRolesOfUser: "භූමිකාවේ පරිශීලකයන් යාවත්කාලීන කරන්න"
+        },
+        placeholders: {
+            emptyApprovalFilter: {
+                action: "සියල්ල බලන්න",
+                subtitles: {
+                    0: "{{status}} තත්වයේ දැනට කිසිදු අනුමැතියක් නොමැත.",
+                    1: "කරුණාකර {{status}} තත්වයේ ඔබට ඇති කාර්යයන් පරීක්ෂා කරන්න",
+                    2: "එහිදී ඒවා බලන්න."
+                },
+                title: "ප්‍රතිඵල කිසිවක් හමු නොවීය"
+            },
+            emptyApprovalList: {
+                action: "",
+                subtitles: {
+                    0: "සමාලෝචනය කිරීමට දැනට අනුමැතීන් නොමැත.",
+                    1: "කරුණාකර පද්ධතියේ මෙහෙයුම් පාලනය කිරීමට ඔබ වැඩපිළිවෙළක් එක් කර ඇතිදැයි පරීක්ෂා කරන්න.",
+                    2: ""
+                },
+                title: "අනුමත කිරීම් නොමැත"
+            },
+            emptySearchResults: {
+                action: "සියල්ල බලන්න",
+                subtitles: {
+                    0: "ඔබ සෙවූ මෙහෙයුම් කාර්යය අපට සොයාගත නොහැකි විය.",
+                    1: "කරුණාකර පද්ධතියේ එම නාමය ඇති මෙහෙයුම් කාර්යයන් තිබේදැයි පරීක්ෂා කරන්න.",
+                    2: ""
+                },
+                title: "අනුමත කිරීම් නොමැත"
+            },
+            searchApprovals: "කාර්ය ප්‍රවාහ නාමයෙන් සොයන්න"
+        },
+        propertyMessages: {
+            assignedUsersDeleted: "පවරා ඇති පරිශීලකයන් මකා දමා ඇත.",
+            roleDeleted: "මෙම භූමිකාව මකා දමා ඇත.",
+            selfRegistration: "ස්වයං ලියාපදිංචිය",
+            unassignedUsersDeleted: "පවරා නොමැති පරිශීලකයන් මකා දමා ඇත."
+        },
+        subTitle: "අනුමැතිය අවශ්‍ය මෙහෙයුම් කාර්යයන් සමාලෝචනය කරන්න",
+        title: "අනුමත කිරීම්"
+    },
     approve: "අනුමත කරන්න",
+    approved: "අනුමත කරන ලදි",
     apps: "ඇප්ස්",
+    assignYourself: "ඔබම පවරන්න",
     assignee: "පැවරුම්කරු",
     assignees: "පැවරුම්කරුවන්",
+    asyncOperationErrorMessage: {
+        description: "යමක් වැරදී ඇත.",
+        message: "අනපේක්ෂිත දෝෂයක් සිදු විය. කරුණාකර පසුව නැවත පරීක්ෂා කරන්න."
+    },
     authentication: "සත්‍යාපනය",
     authenticator: "සත්‍යාපකය",
     authenticator_plural: "සත්‍යාපක",
@@ -53,7 +156,6 @@ export const common: CommonNS = {
         heading: "මොකක්හරි වැරැද්දක් වෙලා",
         primaryActionText: "යෙදුම නැවත පූරණය කරන්න"
     },
-    claim: "හිමිකම",
     clear: "මකන්න",
     clientId: "සේවාලාභී හැඳුනුම්පත",
     close: "වසන්න",
@@ -69,6 +171,7 @@ export const common: CommonNS = {
     dangerZone: "අන්තරා කලාපය",
     darkMode: "අඳුරු තේමාව",
     delete: "මකන්න",
+    deprecated: "මෙම වින්‍යාසය අහෝසි කර ඇති අතර අනාගත නිකුතුවකින් ඉවත් කෙරෙනු ඇත.",
     description: "විස්තරය",
     deviceModel: "උපාංග ආකෘතිය",
     disable: "අක්‍රීය",
@@ -118,6 +221,7 @@ export const common: CommonNS = {
     metaAttributes: "අතිරේක ගුණාංග",
     minValidation: "මෙම අගය {{min}} ට වඩා වැඩි හෝ සමාන විය යුතුය.",
     minimize: "අවම කරන්න",
+    minutes: "මිනිත්තු",
     more: "තව",
     myAccount: "පුද්ගලික ගිණුම",
     name: "නම",
@@ -129,11 +233,14 @@ export const common: CommonNS = {
     new: "නවතම",
     next: "ඊළඟ ",
     noResultsFound: "ප්‍රතිඵල හමු නොවීය",
+    none: "කිසිවක් නැත",
     okay: "හරි",
     operatingSystem: "මෙහෙයුම් පද්ධතිය",
+    operationType: "ක්‍රියාකාරී වර්ගය",
     operations: "මෙහෙයුම්",
     organizationName: "{{orgName}} සංවිධානය",
     overview: "දළ විශ්ලේෂණය",
+    pending: "අසම්පූර්ණ",
     personalInfo: "පෞද්ගලික තොරතුරු",
     pin: "තබා ගන්න",
     pinned: "තබා ඇත",
@@ -145,11 +252,12 @@ export const common: CommonNS = {
     priority: "ප්\u200Dරමුඛතාවය",
     privacy: "රහස්\u200Dයතාවය",
     properties: "ගුණාංග",
+    publish: "ප්‍රකාශනය කරන්න",
     ready: "සූදානම්",
     regenerate: "නැවත උත්පාදනය කරන්න",
     register: "ලියාපදිංචි වන්න",
-    reject: "ප්\u200Dරතික්ෂේප කරන්න",
-    release: "මුදා හැරීම",
+    reject: "ප්‍රතික්ෂේප කරන්න",
+    rejected: "ප්‍රතික්ෂේප කරන ලදි",
     remove: "ඉවත් කරන්න",
     removeAll: "සියල්ල ඉවත් කරන්න",
     required: "මෙය අවශ්‍ය වේ",
@@ -160,10 +268,13 @@ export const common: CommonNS = {
     revokeAll: "සියල්ල අවලංගු කරන්න",
     samples: "සාම්පල",
     save: "සුරකින්න",
+    saveDraft: "තාවකාලිකව සුරකින්න",
     sdks: "SDKs",
     search: "සොයන්න",
     searching: "සොයමින්",
     security: "ආරක්ෂාව",
+    selectAll: "සියල්ල තෝරන්න",
+    selectNone: "කිසිවක් තෝරන්න",
     services: "සේවාවන්",
     settings: "සැකසුම්",
     setup: "සැලසුම",
@@ -184,6 +295,7 @@ export const common: CommonNS = {
     terminateSession: "සැසිය අවසන් කරන්න",
     tooShort: "බොහෝ කෙටි",
     type: "වර්ගය",
+    unassign: "පැවරීම ඉවත් කරන්න",
     unpin: "ඉවත් කරන්න",
     unpinned: "ඉවත් කරන ලදි",
     update: "යාවත්කාලීන කරන්න",
@@ -191,6 +303,7 @@ export const common: CommonNS = {
     verified: "තහවුරු කර ඇත",
     verify: "සත්‍යාපනය කරන්න",
     view: "බලන්න",
+    viewDetails: "විස්තර පෙන්වන්න",
     weak: "දුර්වලයි",
     weakPassword: "මුරපදයේ ශක්තිය අවම වශයෙන් හොඳ විය යුතුය."
 };

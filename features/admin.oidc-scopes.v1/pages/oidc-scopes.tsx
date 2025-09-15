@@ -18,7 +18,12 @@
 
 import { Show } from "@wso2is/access-control";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
-import { AppConstants, AppState, FeatureConfigInterface, UIConstants, history, sortList } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { sortList } from "@wso2is/admin.core.v1/utils/sort-list";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
@@ -28,6 +33,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Icon, Input } from "semantic-ui-react";
+import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { useOIDCScopesList } from "../api";
 import { OIDCScopeCreateWizard, OIDCScopeList } from "../components";
 import { OIDCScopesListInterface } from "../models";
@@ -80,6 +86,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
     const [ sortOrder, setSortOrder ] = useState<"ASC" | "DESC">("ASC");
     const [ sortByStrategy, setSortByStrategy ] = useState<DropdownItemProps>(SORT_BY[ 0 ]);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const {
         data: scopeList,
@@ -173,7 +180,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
         <PageLayout
             pageTitle="Scopes"
             action={
-                !isScopeListFetchRequestLoading &&
+                !isScopeListFetchRequestLoading && !isSubOrganization() &&
                 (
                     <Show
                         when={ featureConfig?.applications?.scopes?.create }

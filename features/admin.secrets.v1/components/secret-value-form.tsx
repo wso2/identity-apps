@@ -17,7 +17,8 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Hint, Popup } from "@wso2is/react-components";

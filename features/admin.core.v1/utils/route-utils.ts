@@ -19,15 +19,19 @@
 import {
     DatabaseDocumentIcon,
     PaletteIcon,
-    SquareUserIcon
+    SquareUserIcon,
+    UserFlowIcon
 } from "@oxygen-ui/react-icons";
 import { FeatureStatus } from "@wso2is/access-control";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { NavCategory, NavRouteInterface, RouteInterface } from "@wso2is/core/models";
 import groupBy from "lodash-es/groupBy";
 import sortBy from "lodash-es/sortBy";
-import { AppConstants } from "../constants";
-import { history } from "../helpers";
+import {
+    ReactComponent as ResourceServersIcon
+} from "../../themes/wso2is/assets/images/icons/outline-icons/resource-servers-outline.svg";
+import { AppConstants } from "../constants/app-constants";
+import { history } from "../helpers/history";
 
 /**
  * Utility class for application routes related operations.
@@ -254,6 +258,9 @@ export class RouteUtils {
 
     public static groupNavbarRoutes(routes: RouteInterface[], saasFeatureStatus?: FeatureStatus): NavRouteInterface[] {
 
+        const isMcpServersFeatureEnabled: boolean =
+            window["AppUtils"]?.getConfig()?.ui?.features?.mcpServers?.enabled;
+
         const userManagement: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: SquareUserIcon,
             id: "userManagement",
@@ -265,6 +272,20 @@ export class RouteUtils {
             icon: DatabaseDocumentIcon,
             id: "userAttributesAndStores",
             name: "User Attributes & Stores",
+            order: 2
+        };
+
+        const workflows: Omit<RouteInterface, "showOnSidePanel"> = {
+            icon: UserFlowIcon,
+            id: "workflows",
+            name: "Workflows",
+            order: 3
+        };
+
+        const resourceServers: Omit<RouteInterface, "showOnSidePanel"> = {
+            icon: ResourceServersIcon,
+            id: "resourceServers",
+            name: "Resources",
             order: 2
         };
 
@@ -360,12 +381,34 @@ export class RouteUtils {
                 category: build,
                 id: "apiResources",
                 order: 2,
+                parent: isMcpServersFeatureEnabled ? resourceServers : null,
                 selected: history.location.pathname.includes("/api-resources")
+            },
+            {
+                category: build,
+                id: "mcpServers",
+                order: 2,
+                parent: resourceServers,
+                selected: history.location.pathname.includes("/mcp-servers")
             },
             {
                 category: organizations,
                 id: "organizations",
                 selected: history.location.pathname.includes("/organizations")
+            },
+            {
+                category: workflows,
+                id: "approvalWorkflows",
+                order: 8,
+                parent: workflows,
+                selected: history.location.pathname.includes("/workflows")
+            },
+            {
+                category: workflows,
+                id: "workflowInstances",
+                order: 9,
+                parent: workflows,
+                selected: history.location.pathname.includes("/workflow-requests")
             },
             {
                 category: manage,
@@ -376,7 +419,7 @@ export class RouteUtils {
             {
                 category: manage,
                 id: "groups",
-                order: 1,
+                order: 2,
                 parent: userManagement
             },
             {
@@ -388,13 +431,13 @@ export class RouteUtils {
             {
                 category: manage,
                 id: "userRoles",
-                order: 2,
+                order: 3,
                 parent: userManagement
             },
             {
                 category: manage,
                 id: "userV1Roles",
-                order: 2,
+                order: 3,
                 parent: userManagement
             },
             {
@@ -402,6 +445,12 @@ export class RouteUtils {
                 id: "roles",
                 order: 2,
                 parent: userManagement
+            },
+            {
+                category: manage,
+                id: "agents",
+                order: 1,
+                selected: history.location.pathname.includes("/agents")
             },
             {
                 category: manage,
@@ -445,6 +494,11 @@ export class RouteUtils {
             },
             {
                 category: preferences,
+                id: "flows",
+                selected: history.location.pathname.includes("/flows")
+            },
+            {
+                category: preferences,
                 id: "loginAndRegistration",
                 selected: loginAndRegPathsToCheck.some((path: string) => history.location.pathname.startsWith(path))
             },
@@ -453,6 +507,9 @@ export class RouteUtils {
                 id: "notificationChannels",
                 selected: history.location.pathname === AppConstants.getPaths().get("EMAIL_PROVIDER") ||
                     history.location.pathname === AppConstants.getPaths().get("SMS_PROVIDER") ||
+                    history.location.pathname === AppConstants.getPaths().get("PUSH_PROVIDER") ||
+                    history.location.pathname === AppConstants.getPaths().get("NOTIFICATION_CHANNELS") ||
+                    // remove this when enabling push notification provider support
                     history.location.pathname === AppConstants.getPaths().get("EMAIL_AND_SMS")
             },
             {
@@ -488,8 +545,14 @@ export class RouteUtils {
             },
             {
                 category: extensions,
+                id: "webhooks",
+                order: 1,
+                selected: history.location.pathname.includes("/webhooks")
+            },
+            {
+                category: extensions,
                 id: "eventPublishing",
-                order: 1
+                order: 2
             }
         ];
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -63,6 +63,7 @@ export interface FeatureConfigInterface {
  */
 export interface ServiceResourceEndpointsInterface {
     applications: string;
+    approvals: string;
     associations: string;
     authorize: string;
     backupCode: string;
@@ -82,8 +83,8 @@ export interface ServiceResourceEndpointsInterface {
     mfaEnabledAuthenticators: string
     preference: string;
     profileSchemas: string;
+    push: string;
     sessions: string;
-    smsOtpResend: string;
     smsOtpValidate: string;
     token: string;
     totp: string;
@@ -94,6 +95,7 @@ export interface ServiceResourceEndpointsInterface {
     revoke: string;
     wellKnown: string;
     validationMgt: string;
+    verificationResend: string;
 
     /**
      * Swagger Documentation {@link https://docs.wso2.com/display/IS511/apidocs/Consent-management-apis/}
@@ -158,7 +160,7 @@ export interface UIConfigInterface extends CommonUIConfigInterface {
      * Config for enable MFA user wise.
      */
     enableMFAUserWise?: boolean;
-     /**
+    /**
      * Config for disable MFA for federated users.
      */
     disableMFAForFederatedUsers?: boolean;
@@ -174,7 +176,12 @@ export interface UIConfigInterface extends CommonUIConfigInterface {
      * Config to check whether the multiple emails and mobile numbers per user feature is enabled.
      */
     isMultipleEmailsAndMobileNumbersEnabled?: boolean;
-    }
+    /**
+     * Overridden Scim2 user schema URI.
+     * If the value is not overridden, the default SCIM2 user schema URI is returned.
+     */
+    userSchemaURI?: string;
+}
 
 /**
  * Interface for defining settings and configs of an external app.

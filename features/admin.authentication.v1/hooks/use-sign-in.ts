@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -24,7 +24,8 @@ import {
     useAuthContext
 } from "@asgardeo/auth-react";
 import { Config } from "@wso2is/admin.core.v1/configs/app";
-import { AppConstants, CommonConstants } from "@wso2is/admin.core.v1/constants";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { CommonConstants } from "@wso2is/admin.core.v1/constants/common-constants";
 import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-deployment-configs";
 import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
 import { DeploymentConfigInterface } from "@wso2is/admin.core.v1/models/config";
@@ -36,17 +37,17 @@ import {
     setIsFirstLevelOrganization,
     setOrganization,
     setOrganizationType,
+    setUserOrganizationHandle,
     setUserOrganizationId
 } from "@wso2is/admin.core.v1/store/actions/organization";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import useOrganizationSwitch from "@wso2is/admin.organizations.v1/hooks/use-organization-switch";
 import useOrganizations from "@wso2is/admin.organizations.v1/hooks/use-organizations";
-import { CONSUMER_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
+import { TenantListInterface } from "@wso2is/admin.tenants.v1/models/saas/tenants";
 import {
     AppConstants as CommonAppConstants,
     CommonConstants as CommonConstantsCore
 } from "@wso2is/core/constants";
-import { TenantListInterface } from "@wso2is/core/models";
 import { setDeploymentConfigs, setServiceResourceEndpoints, setSignIn } from "@wso2is/core/store";
 import {
     AuthenticateUtils as CommonAuthenticateUtils,
@@ -108,7 +109,6 @@ const useSignIn = (): UseSignInInterface => {
     const { setDeploymentConfig } = useDeploymentConfig();
 
     const {
-        transformTenantDomain,
         setUserOrgInLocalStorage,
         setOrgIdInLocalStorage,
         getUserOrgInLocalStorage,
@@ -255,7 +255,7 @@ const useSignIn = (): UseSignInInterface => {
         } = window["AppUtils"].getConfig()?.__experimental__platformIdP;
 
         if (__experimental__platformIdP?.enabled) {
-            isPrivilegedUser = idToken?.sub?.startsWith(`${ CONSUMER_USERSTORE }/`);
+            isPrivilegedUser = /^.+\//.test(idToken?.sub);
 
             if (idToken?.default_tenant && idToken.default_tenant !== "carbon.super") {
                 const redirectUrl: URL = new URL(
@@ -278,15 +278,10 @@ const useSignIn = (): UseSignInInterface => {
 
         const orgIdIdToken: string = idToken.org_id;
         const orgName: string = idToken.org_name;
+        const orgHandle: string = idToken.org_handle;
         const userOrganizationId: string = idToken.user_org;
-        const tenantDomainFromSubject: string = CommonAuthenticateUtils.deriveTenantDomainFromSubject(
-            response.sub
-        );
-        const isFirstLevelOrg: boolean = !idToken.user_org
-            || idToken.org_name === tenantDomainFromSubject
-            || ((idToken.user_org === idToken.org_id) && idToken.org_name === tenantDomainFromSubject);
-
-        const tenantDomain: string = isFirstLevelOrg ? transformTenantDomain(orgName) : orgIdIdToken;
+        const isFirstLevelOrg: boolean = !userOrganizationId;
+        const tenantDomain: string = orgHandle;
 
         const firstName: string = idToken?.given_name;
         const lastName: string = idToken?.family_name;
@@ -329,6 +324,7 @@ const useSignIn = (): UseSignInInterface => {
 
         dispatch(setOrganizationType(orgType));
         window["AppUtils"].updateOrganizationType(orgType);
+        dispatch(setUserOrganizationHandle(orgHandle));
         dispatch(setUserOrganizationId(userOrganizationId));
 
         if (window["AppUtils"].getConfig().organizationName || isFirstLevelOrg) {
@@ -345,6 +341,7 @@ const useSignIn = (): UseSignInInterface => {
                     id: orgId,
                     lastModified: new Date().toString(),
                     name: orgName,
+                    orgHandle: orgHandle,
                     parent: {
                         id: "",
                         ref: ""
@@ -459,6 +456,31 @@ const useSignIn = (): UseSignInInterface => {
                     ));
                 } catch(e) {
                     signOutRedirectURL = null;
+                }
+
+                // This is a temporary fix to handle the logout redirection for sub-org logins.
+                // This should be supported by the SDK itself to change the post logout redirect URL.
+                // Tracker: https://github.com/asgardeo/asgardeo-auth-react-sdk/issues/278
+                const isSwitchedFromRootOrg: boolean = getUserOrgInLocalStorage() === "undefined";
+
+                if (orgType === OrganizationType.SUBORGANIZATION && !isSwitchedFromRootOrg) {
+                    Object.entries(sessionStorage).forEach(([ key, value ]: [ key: string, value: string ]) => {
+                        if (key.startsWith(LOGOUT_URL) && key.includes(window["AppUtils"]?.getConfig()?.clientID)) {
+                            const _signOutRedirectURL: URL = new URL(value);
+
+                            const postLogoutRedirectUri: string = _signOutRedirectURL
+                                ?.searchParams?.get("post_logout_redirect_uri");
+
+                            if (postLogoutRedirectUri) {
+                                _signOutRedirectURL?.searchParams?.set(
+                                    "post_logout_redirect_uri",
+                                    window["AppUtils"]?.getConfig()?.clientOriginWithTenant
+                                );
+
+                                sessionStorage.setItem(key, _signOutRedirectURL.href);
+                            }
+                        }
+                    });
                 }
 
                 /**

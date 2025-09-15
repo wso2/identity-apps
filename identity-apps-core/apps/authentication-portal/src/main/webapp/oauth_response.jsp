@@ -1,16 +1,26 @@
 <%--
-~    Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
-~
-~    This software is the property of WSO2 Inc. and its suppliers, if any.
-~    Dissemination of any information or reproduction of any material contained
-~    herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
-~    You may not alter or remove any copyright or other notice from copies of this content."
+  ~ Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
+  ~
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
 --%>
 
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%
     request.setAttribute("ut", request.getAttribute("userTenantDomain"));
@@ -50,89 +60,85 @@
     String FONT_FAMILY_IMPORT_URL = "importURL";
     String TYPOGRAPHY_KEY = "typography";
 
-    if (!StringUtils.equals(spAppName, CONSOLE_APP_NAME)) {
-        if (theme != null) {
-            if (theme.has(COLORS_KEY)) {
+    if (theme != null) {
+        if (theme.has(COLORS_KEY)) {
 
-                JSONObject colorPalette = theme.optJSONObject(COLORS_KEY);
+            JSONObject colorPalette = theme.optJSONObject(COLORS_KEY);
 
-                if (colorPalette != null) {
-                    if (colorPalette.has(COLORS_PRIMARY_KEY)) {
-                        JSONObject primary = colorPalette.optJSONObject(COLORS_PRIMARY_KEY);
+            if (colorPalette != null) {
+                if (colorPalette.has(COLORS_PRIMARY_KEY)) {
+                    JSONObject primary = colorPalette.optJSONObject(COLORS_PRIMARY_KEY);
 
-                        if (primary != null) {
-                            if (primary.has(COLORS_MAIN_VARIANT_KEY)
-                                && !StringUtils.isBlank(primary.getString(COLORS_MAIN_VARIANT_KEY))) {
+                    if (primary != null) {
+                        if (primary.has(COLORS_MAIN_VARIANT_KEY)
+                            && !StringUtils.isBlank(primary.getString(COLORS_MAIN_VARIANT_KEY))) {
 
-                                primaryColorMain = primary.getString(COLORS_MAIN_VARIANT_KEY);
-                            }
-                        } else if (!StringUtils.isBlank(colorPalette.getString(COLORS_PRIMARY_KEY))) {
-                            primaryColorMain = colorPalette.getString(COLORS_PRIMARY_KEY);
+                            primaryColorMain = primary.getString(COLORS_MAIN_VARIANT_KEY);
+                        }
+                    } else if (!StringUtils.isBlank(colorPalette.getString(COLORS_PRIMARY_KEY))) {
+                        primaryColorMain = colorPalette.getString(COLORS_PRIMARY_KEY);
+                    }
+                }
+
+                if (colorPalette.has(COLORS_TEXT_KEY)) {
+                    JSONObject text = colorPalette.optJSONObject(COLORS_TEXT_KEY);
+
+                    if (text != null) {
+                        if (text.has(COLORS_PRIMARY_VARIANT_KEY)
+                            && !StringUtils.isBlank(text.getString(COLORS_PRIMARY_VARIANT_KEY))) {
+
+                            primaryTextColor = text.getString(COLORS_PRIMARY_VARIANT_KEY);
                         }
                     }
+                }
 
-                    if (colorPalette.has(COLORS_TEXT_KEY)) {
-                        JSONObject text = colorPalette.optJSONObject(COLORS_TEXT_KEY);
+                if (colorPalette.has(COLORS_BACKGROUND_KEY)) {
+                    JSONObject background = colorPalette.optJSONObject(COLORS_BACKGROUND_KEY);
 
-                        if (text != null) {
-                            if (text.has(COLORS_PRIMARY_VARIANT_KEY)
-                                && !StringUtils.isBlank(text.getString(COLORS_PRIMARY_VARIANT_KEY))) {
+                    if (background != null) {
+                        if (background.has(COLORS_BACKGROUND_BODY_KEY)) {
+                            JSONObject body = background.optJSONObject(COLORS_BACKGROUND_BODY_KEY);
 
-                                primaryTextColor = text.getString(COLORS_PRIMARY_VARIANT_KEY);
-                            }
-                        }
-                    }
+                            if (body != null) {
+                                if (body.has(COLORS_MAIN_VARIANT_KEY)
+                                    && !StringUtils.isBlank(body.getString(COLORS_MAIN_VARIANT_KEY))) {
 
-                    if (colorPalette.has(COLORS_BACKGROUND_KEY)) {
-                        JSONObject background = colorPalette.optJSONObject(COLORS_BACKGROUND_KEY);
-
-                        if (background != null) {
-                            if (background.has(COLORS_BACKGROUND_BODY_KEY)) {
-                                JSONObject body = background.optJSONObject(COLORS_BACKGROUND_BODY_KEY);
-
-                                if (body != null) {
-                                    if (body.has(COLORS_MAIN_VARIANT_KEY)
-                                        && !StringUtils.isBlank(body.getString(COLORS_MAIN_VARIANT_KEY))) {
-
-                                        bodyBackgroundColorMain = body.getString(COLORS_MAIN_VARIANT_KEY);
-                                    }
+                                    bodyBackgroundColorMain = body.getString(COLORS_MAIN_VARIANT_KEY);
                                 }
                             }
                         }
                     }
                 }
             }
+        }
 
-            if (theme.has(TYPOGRAPHY_KEY)) {
+        if (theme.has(TYPOGRAPHY_KEY)) {
 
-                JSONObject typography = theme.optJSONObject(TYPOGRAPHY_KEY);
+            JSONObject typography = theme.optJSONObject(TYPOGRAPHY_KEY);
 
-                if (typography != null) {
-                    if (typography.has(FONT_KEY)) {
-                        if (typography.getJSONObject(FONT_KEY).has(FONT_FAMILY_KEY)
-                            && !StringUtils.isBlank(typography.getJSONObject(FONT_KEY).getString(FONT_FAMILY_KEY))) {
+            if (typography != null) {
+                if (typography.has(FONT_KEY)) {
+                    if (typography.getJSONObject(FONT_KEY).has(FONT_FAMILY_KEY)
+                        && !StringUtils.isBlank(typography.getJSONObject(FONT_KEY).getString(FONT_FAMILY_KEY))) {
 
-                            typographyFontFamily = typography.getJSONObject(FONT_KEY).getString(FONT_FAMILY_KEY);
-                        }
-                        if (typography.getJSONObject(FONT_KEY).has(FONT_FAMILY_IMPORT_URL)
-                            && !StringUtils.isBlank(typography.getJSONObject(FONT_KEY).getString(FONT_FAMILY_IMPORT_URL))) {
+                        typographyFontFamily = typography.getJSONObject(FONT_KEY).getString(FONT_FAMILY_KEY);
+                    }
+                    if (typography.getJSONObject(FONT_KEY).has(FONT_FAMILY_IMPORT_URL)
+                        && !StringUtils.isBlank(typography.getJSONObject(FONT_KEY).getString(FONT_FAMILY_IMPORT_URL))) {
 
-                            typographyFontFamilyImportURL = typography.getJSONObject(FONT_KEY).getString(FONT_FAMILY_IMPORT_URL);
-                        }
+                        typographyFontFamilyImportURL = typography.getJSONObject(FONT_KEY).getString(FONT_FAMILY_IMPORT_URL);
                     }
                 }
             }
-        } else if (colors != null) {
-            if (colors.has("primary") && !StringUtils.isBlank(colors.getString("primary"))) {
-                primaryColorMain = colors.getString("primary");
-            }
         }
-    } else {
-        logoURL = productLogoURL;
-        logoAlt = productLogoAlt;
+    } else if (colors != null) {
+        if (colors.has("primary") && !StringUtils.isBlank(colors.getString("primary"))) {
+            primaryColorMain = colors.getString("primary");
+        }
     }
-
 %>
+
+<% request.setAttribute("pageName", "oauth-response"); %>
 
 <html>
 
@@ -502,7 +508,7 @@
     <% } %>
 </head>
 
-<body class="login-portal layout recovery-layout" onload="javascript:document.getElementById('oauth-response').submit()">
+<body class="login-portal layout recovery-layout" onload="javascript:document.getElementById('oauth-response').submit()" data-page="<%= request.getAttribute("pageName") %>">
     <div class="page-wrapper">
         <main class="center-segment registration-loader">
             <div class="ui container aligned middle aligned text-center">

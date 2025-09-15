@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -77,6 +77,10 @@ export interface UpdateGovernanceConnectorConfigInterface {
 	properties: UpdateGovernanceConnectorConfigPropertyInterface[];
 }
 
+export interface RevertGovernanceConnectorConfigInterface {
+	properties: string[];
+}
+
 export interface UpdateMultipleGovernanceConnectorsInterface {
 	operation: string;
 	connectors: UpdateGovernanceConnectorInterface[];
@@ -100,3 +104,9 @@ export interface GovernanceConnectorForOrgsInterface {
 	properties: string[]
 }
 
+export type ConnectorOverrideConfig = {
+    matchBy?: "id" | "name" | "friendlyName";
+    id?: string;
+    name?: string;
+    friendlyName?: string;
+} & Partial<Omit<GovernanceConnectorInterface, "id" | "name" | "friendlyName">>;

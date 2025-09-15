@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ClaimInputFormat, LabelValue } from "./claim";
 import { RolesMemberInterface } from "./roles";
 
 /**
@@ -131,6 +132,28 @@ export interface LinkedAccountInterface {
 }
 
 /**
+ * Schema response interface.
+ */
+export interface SchemaResponseInterface {
+    /**
+     * Name of the schema.
+     */
+    name: string;
+    /**
+     * Description of the schema.
+     */
+    description: string;
+    /**
+     * Attributes of the schema.
+     */
+    attributes: ProfileSchemaInterface[];
+    /**
+     * Identifier of the schema.
+     */
+    id: string;
+}
+
+/**
  * Profile schema interface.
  */
 export interface ProfileSchemaInterface {
@@ -150,6 +173,10 @@ export interface ProfileSchemaInterface {
      * Name of the attribute.
      */
     name: string;
+    /**
+     * Available values for the attribute.
+     */
+    canonicalValues?: LabelValue[];
     /**
      * Order to display.
      */
@@ -211,6 +238,28 @@ export interface ProfileSchemaInterface {
      */
     excludedUserStores?: string;
     /**
+     * Shared profile attribute value resolving method.
+     */
+    sharedProfileValueResolvingMethod?: string;
+    /**
+    * Supported by default. Used to display in the attribute in the UI.
+    */
+    supportedByDefault?: string;
+    /**
+     * Schema URI of the attribute.
+     */
+    schemaUri?: string;
+    /**
+     * Input format of the attribute.
+     */
+    inputFormat?: {
+        /**
+         * Input type of the attribute.
+         * @see {@link ClaimInputFormat}
+         */
+        inputType?: ClaimInputFormat;
+    };
+    /**
      * Schema attribute profiles
      */
     profiles?: {
@@ -225,7 +274,7 @@ export interface ProfileSchemaInterface {
         /**
          * Attribute profile for self registration
          */
-        selfRegister?: ProfileAttributeInterface;
+        selfRegistration?: ProfileAttributeInterface;
     }
 }
 

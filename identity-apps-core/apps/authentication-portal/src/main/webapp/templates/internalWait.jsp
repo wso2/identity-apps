@@ -44,6 +44,7 @@
     Object pollingEndpointData = null;
     String pollingRequestContentType = "application/x-www-form-urlencoded";
     int pollingInterval = 2;
+    boolean callbackOnFailure = false;
 
     // Read the data from request.
     Object requestDataObject = request.getAttribute("data");
@@ -93,6 +94,13 @@
                 }
             }
 
+            Object callbackOnFailureFlag = functionData.get("callbackOnFailure");
+            if (callbackOnFailureFlag instanceof Boolean) {
+                callbackOnFailure = (Boolean) callbackOnFailureFlag;
+            } else if (callbackOnFailureFlag instanceof String) {
+                callbackOnFailure = Boolean.parseBoolean((String) callbackOnFailureFlag);
+            }
+
             if ("POLLING".equals(type)) {
                 // Set the polling related parameters.
                 if (StringUtils.isNotBlank((String) functionData.get("pollingEndpoint"))) {
@@ -134,6 +142,9 @@
             var greeting = "<%= greeting %>";
             var message = "<%= message %>";
 
+            var callbackOnFailure = <%= callbackOnFailure %>;
+            var secondsLeft = parseInt("<%= timeout %>", 10);
+
             // Add the promptID value as a hidden input field in the form.
             var form = document.getElementById('myForm');
             if (promptId) {
@@ -155,8 +166,6 @@
 
             if ("FIXED_DELAY" === waitingType) {
                 // Set the countdown duration in seconds.
-                var secondsLeft = "<%= timeout %>";
-
                 countdownElement.innerText = secondsLeft;
 
                 // Start the countdown.
@@ -181,31 +190,30 @@
                 countdownElement.style.display = 'none';
 
                 // Set a handler to count for the max timeout.
-                var secondsLeft = "<%= timeout %>";
-
                 // Start the countdown.
                 var countdownIntervalHandler = setInterval(function() {
-
                     secondsLeft--;
-
                     // Check if the countdown is completed.
                     if (secondsLeft <= 0) {
                         clearInterval(countdownIntervalHandler);
                         greetingElement.style.display = 'none';
                         spinnerElement.style.display = 'none';
                         messageElement.style.display = 'none';
-
-                        window.location.replace("retry.do");
+                        if (callbackOnFailure) {
+                            handleSubmit('timeout', { failureReason: "TIMEOUT" });
+                        } else {
+                            window.location.replace("retry.do");
+                        }
                     }
                 }, 1000);
 
                 var pollingIntervalHandler = setInterval(function () {
-                    pollStatus(pollingIntervalHandler, countdownIntervalHandler, secondsLeft);
+                    pollStatus(pollingIntervalHandler, countdownIntervalHandler, secondsLeft, callbackOnFailure);
                 }, pollingInterval * 1000);
             }
         };
 
-        function pollStatus(pollingIntervalHandler, countdownIntervalHandler, secondsLeft) {
+        function pollStatus(pollingIntervalHandler, countdownIntervalHandler, secondsLeft, callbackOnFailure) {
 
             $.ajax({
                 type: "<%= pollingRequestMethod %>",
@@ -214,22 +222,21 @@
                 data: "<%= pollingEndpointData %>",
                 contentType: "<%= pollingRequestContentType %>",
                 success: function (res) {
-                    handlePollingStatus(res, pollingIntervalHandler, countdownIntervalHandler);
+                    handlePollingStatus(res, pollingIntervalHandler, countdownIntervalHandler, callbackOnFailure);
                 },
-                error: function (res) {
+                error: function (jqXHR, textStatus, errorThrown) {
                     window.clearInterval(pollingIntervalHandler);
                     window.clearInterval(countdownIntervalHandler);
-                    window.location.replace("retry.do");
-                },
-                failure: function (res) {
-                    window.clearInterval(pollingIntervalHandler);
-                    window.clearInterval(countdownIntervalHandler);
-                    window.location.replace("retry.do");
+                    if (callbackOnFailure) {
+                        handleSubmit('fail', { failureReason: "Polling request failed. HTTP Status: " + jqXHR.status });
+                    } else {
+                        window.location.replace("retry.do");
+                    }
                 }
             });
         }
 
-        function handlePollingStatus(res, pollingIntervalHandler, countdownIntervalHandler) {
+        function handlePollingStatus(res, pollingIntervalHandler, countdownIntervalHandler, callbackOnFailure) {
 
             if (res.status === 'PENDING') {
                 // Do nothing.
@@ -241,8 +248,42 @@
             } else {
                 window.clearInterval(pollingIntervalHandler);
                 window.clearInterval(countdownIntervalHandler);
-                window.location.replace("retry.do");
+
+                if (callbackOnFailure) {
+                    handleSubmit('fail', { failureReason: "Invalid status from the endpoint. Status: " + res?.status });
+                } else {
+                    window.location.replace("retry.do");
+                }
             }
+        }
+
+        function handleSubmit(action, details) {
+            var form = document.getElementById('myForm');
+
+            if (action && action !== 'success') {
+                var actionInput = document.createElement('input');
+                actionInput.type = 'hidden';
+                actionInput.name = 'action.' + action;
+                actionInput.value = 'true';
+                form.appendChild(actionInput);
+            }
+
+            if (details) {
+                for (var key in details) {
+                    if (Object.prototype.hasOwnProperty.call(details, key)) {
+                        var value = details[key];
+                        if (value !== undefined && value !== null) {
+                            var detailInput = document.createElement('input');
+                            detailInput.type = 'hidden';
+                            detailInput.name = 'promptResData.' + key;
+                            detailInput.value = value;
+                            form.appendChild(detailInput);
+                        }
+                    }
+                }
+            }
+
+            form.submit();
         }
     </script>
 

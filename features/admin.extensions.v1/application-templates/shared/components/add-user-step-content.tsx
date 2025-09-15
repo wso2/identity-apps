@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,9 +17,10 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
-import { AppConstants } from "@wso2is/admin.core.v1/constants";
-import { EventPublisher } from "@wso2is/admin.core.v1/utils";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { getUserDetails } from "@wso2is/admin.users.v1/api";
 import { AddConsumerUserWizard } from "@wso2is/admin.users.v1/components/wizard/add-consumer-user-wizard";
 import { ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
@@ -83,7 +84,7 @@ export const AddUserStepContent: FunctionComponent<AddUserStepContentPropsInterf
     return (
         <div data-testid={ testId } className="add-user-step">
             <Text>
-                <Trans i18nKey="extensions:console.application.quickStart.addUserOption.description">
+                <Trans i18nKey="applications:quickStart.addUserOption.description">
                     You need a <strong>user account</strong> to log in to the application.
                 </Trans>
             </Text>
@@ -91,7 +92,7 @@ export const AddUserStepContent: FunctionComponent<AddUserStepContentPropsInterf
                 when={ featureConfig?.users?.scopes?.create }
             >
                 <Text>
-                    <Trans i18nKey="extensions:console.application.quickStart.addUserOption.hint">
+                    <Trans i18nKey="applications:quickStart.addUserOption.hint">
                         If you don’t already have a user account, click the below button to create one.
                         Alternatively, go to
                         <a
@@ -144,7 +145,7 @@ export const AddUserStepContent: FunctionComponent<AddUserStepContentPropsInterf
                 notWhen={ featureConfig?.users?.scopes?.create }
             >
                 <Text compact>
-                    { t("extensions:console.application.quickStart.addUserOption.message") }
+                    { t("applications:quickStart.addUserOption.message") }
                 </Text>
             </Show>
             {

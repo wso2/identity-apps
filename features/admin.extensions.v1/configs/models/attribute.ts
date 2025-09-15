@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -72,7 +72,6 @@ export interface AttributeConfig {
             showSummary: boolean;
             identifyAsCustomAttrib: boolean;
         }
-        customDialectURI: string;
         oidcDialectURI: string;
         createCustomDialect: boolean;
         mapClaimToCustomDialect: boolean;
@@ -80,12 +79,7 @@ export interface AttributeConfig {
         getDialect: (dialectURI: string) => Promise<any>;
         isSCIMCustomDialectAvailable: () => Promise<string>;
         isUserStoresHidden: (hiddenUserStores: string[]) => Promise<any[]>;
-    }
-    defaultScimMapping: {
-        "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": Map<string, string>;
-        "urn:ietf:params:scim:schemas:core:2.0:User": Map<string, string>;
-        "urn:ietf:params:scim:schemas:core:2.0": Map<string, string>;
-    },
+    };
     systemClaims: string[];
     showCustomDialectInSCIM: boolean;
     isRowSelectable: (claim: Claim | ExternalClaim | ClaimDialect) => boolean;

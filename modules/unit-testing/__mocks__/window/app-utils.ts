@@ -438,6 +438,7 @@ interface CustomWindow extends Window {
                     }
                 },
                 hiddenUserStores: [],
+                systemReservedUserStores: [],
                 identityProviderTemplates: {
                     apple: {
                         enabled: true

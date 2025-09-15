@@ -26,13 +26,14 @@ import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/co
 import {
     ApplicationInterface,
     ApplicationTabTypes,
+    ApplicationTemplateIdTypes,
     additionalSpProperty
 } from "@wso2is/admin.applications.v1/models/application";
 import { SupportedAuthProtocolTypes } from "@wso2is/admin.applications.v1/models/application-inbound";
 import getTryItClientId from "@wso2is/admin.applications.v1/utils/get-try-it-client-id";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
-import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { ApplicationRoles } from "@wso2is/admin.roles.v2/components/application-roles";
 import { I18n } from "@wso2is/i18n";
 import {
@@ -141,6 +142,11 @@ export const applicationConfig: ApplicationConfig = {
         [ "m2m-application" ]: [
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
         ],
+        [ "mcp-client-application" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
+        ],
         [ "mobile-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
@@ -149,6 +155,25 @@ export const applicationConfig: ApplicationConfig = {
             ApplicationManagementConstants.DEVICE_GRANT,
             ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
             ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
+        ],
+        [ "nextjs-application" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
+            ApplicationManagementConstants.IMPLICIT_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE,
+            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
+        ],
+        [ "react-application" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.IMPLICIT_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
+        ],
+        [ "sub-organization-application" ]: [
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.PASSWORD,
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
         ]
     },
     attributeSettings: {
@@ -166,10 +191,18 @@ export const applicationConfig: ApplicationConfig = {
 
                 return allowedTemplates.includes(templateId);
             },
+            isMandateLinkedLocalAccountEnabled: (templateId: string): boolean => {
+                const allowedTemplates: string[] = [
+                    ApplicationManagementConstants.MOBILE,
+                    ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC,
+                    ApplicationManagementConstants.TRADITIONAL_WEB_APPLICATION_OIDC
+                ];
+
+                return allowedTemplates.includes(templateId);
+            },
             showIncludeTenantDomain: true,
             showIncludeUserstoreDomainRole: true,
             showIncludeUserstoreDomainSubject: true,
-            showMandateLinkedLocalAccount: false,
             showRoleAttribute: true,
             showRoleMapping: true,
             showSubjectAttribute: true,
@@ -255,13 +288,18 @@ export const applicationConfig: ApplicationConfig = {
                         index: application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
                             ? M2M_API_AUTHORIZATION_INDEX + tabExtensions.length
                             : API_AUTHORIZATION_INDEX + tabExtensions.length,
-                        menuItem: I18n.instance.t(
-                            "extensions:develop.applications.edit.sections.apiAuthorization.title"
-                        ),
+                        menuItem: application?.originalTemplateId === ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION
+                            ? I18n.instance.t(
+                                "extensions:develop.applications.edit.sections.resourceAuthorization.title"
+                            )
+                            : I18n.instance.t(
+                                "extensions:develop.applications.edit.sections.apiAuthorization.title"
+                            ),
                         render: () => (
                             <ResourceTab.Pane controlledSegmentation>
                                 <APIAuthorization
                                     templateId={ application?.templateId }
+                                    originalTemplateId={ application?.originalTemplateId }
                                     readOnly={ isReadOnly }
                                 />
                             </ResourceTab.Pane>
@@ -272,8 +310,6 @@ export const applicationConfig: ApplicationConfig = {
 
             // Enable the roles tab for supported templates when the api resources config is enabled.
             if (apiResourceFeatureEnabled
-                && (!application?.advancedConfigurations?.fragment || window["AppUtils"].getConfig().ui.features?.
-                    applicationRoles?.enabled)
                 && (
                     application?.advancedConfigurations?.fragment ||
                     (application?.templateId === ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC
@@ -297,7 +333,8 @@ export const applicationConfig: ApplicationConfig = {
                             <ResourceTab.Pane controlledSegmentation>
                                 <ApplicationRoles
                                     onUpdate={ onApplicationUpdate }
-                                    readOnly={ isReadOnly }
+                                    originalTemplateId={ application?.originalTemplateId }
+                                    readOnly={ isReadOnly || application?.advancedConfigurations?.fragment }
                                 />
                             </ResourceTab.Pane>
                         )
@@ -444,7 +481,6 @@ export const applicationConfig: ApplicationConfig = {
             "custom-application": []
         },
         shouldValidateCertificate: true,
-        showBackChannelLogout: true,
         showCertificates: true,
         showClientSecretMessage: false,
         showFrontChannelLogout: false,

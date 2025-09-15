@@ -17,19 +17,25 @@
  */
 
 import Avatar from "@oxygen-ui/react/Avatar";
+import Box from "@oxygen-ui/react/Box";
+import IconButton from "@oxygen-ui/react/IconButton";
+import TextField from "@oxygen-ui/react/TextField";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
+import { CopyIcon } from "@oxygen-ui/react-icons";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { PageLayout } from "@wso2is/react-components";
+import { CommonUtils } from "@wso2is/core/utils";
+import { Hint, PageLayout } from "@wso2is/react-components";
 import classNames from "classnames";
 import moment from "moment";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import useGetTenant from "../api/use-get-tenant";
 import useGetTenantOwner from "../api/use-get-tenant-owner";
 import EditTenant from "../components/edit-tenant/edit-tenant";
+import useTenantConsoleURL from "../hooks/use-tenant-console-url";
 import { Tenant, TenantOwner } from "../models/tenants";
 import TenantProvider from "../providers/tenant-provider";
 import "./edit-tenant-page.scss";
@@ -64,6 +70,7 @@ const EditTenantPage: FunctionComponent<EditTenantPageProps> = ({
         tenant?.owners[0]?.id,
         !!tenant
     );
+    const consoleURL: string | undefined = useTenantConsoleURL(tenant);
 
     /**
      * Merges the tenant and tenant owner data.
@@ -100,6 +107,7 @@ const EditTenantPage: FunctionComponent<EditTenantPageProps> = ({
             } }
         >
             <PageLayout
+                legacyGrid={ false }
                 pageTitle="Edit Root Organizations"
                 title={
                     (<div className="tenant-status">
@@ -144,6 +152,44 @@ const EditTenantPage: FunctionComponent<EditTenantPageProps> = ({
                 } }
                 className="tenant-edit-page"
                 bottomMargin={ false }
+                action={
+                    (<TextField
+                        label={
+                            (<Box>
+                                <span>{ t("tenants:edit.consoleURL.label") }</span>
+                                <Hint popup>
+                                    <Trans i18nKey="tenants:edit.consoleURL.hint" values={ { domain: tenant?.domain } }>
+                                        If you try to login to <strong>{ tenant?.domain }</strong> organization&apos;s
+                                        Console using the same browser, you will have to logout from this active
+                                        session first.
+                                    </Trans>
+                                </Hint>
+                            </Box>)
+                        }
+                        id="filled-start-adornment"
+                        InputProps={ {
+                            endAdornment: (
+                                <Tooltip title="Copy">
+                                    <div>
+                                        <IconButton
+                                            aria-label="Reset field to default"
+                                            className="reset-field-to-default-adornment"
+                                            onClick={ async () => {
+                                                await CommonUtils.copyTextToClipboard(consoleURL);
+                                            } }
+                                            edge="end"
+                                        >
+                                            <CopyIcon size={ 12 } />
+                                        </IconButton>
+                                    </div>
+                                </Tooltip>
+                            ),
+                            readOnly: true
+                        } }
+                        value={ consoleURL }
+                        className="console-url-copy-field"
+                    />)
+                }
             >
                 <EditTenant tenant={ mergedTenant } />
             </PageLayout>
@@ -152,4 +198,3 @@ const EditTenantPage: FunctionComponent<EditTenantPageProps> = ({
 };
 
 export default EditTenantPage;
-history;

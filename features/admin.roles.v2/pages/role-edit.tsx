@@ -26,7 +26,7 @@ import { AppState } from "@wso2is/admin.core.v1/store/index";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, TabPageLayout } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
@@ -35,6 +35,7 @@ import { Label } from "semantic-ui-react";
 import { useGetRoleById } from "../api";
 import { EditRole } from "../components/edit-role/edit-role";
 import { RoleAudienceTypes } from "../constants/role-constants";
+import { useGetRoleByIdV3 } from "../hooks/use-get-role-by-id-v3";
 
 type RoleEditPagePropsInterface = IdentifiableComponentInterface & RouteComponentProps;
 
@@ -52,6 +53,28 @@ const RoleEditPage: FunctionComponent<RoleEditPagePropsInterface> = (
 
     const [ roleId, setRoleId ] = useState<string>(undefined);
     const [ currentActiveTabIndex, setCurrentActiveTabIndex ] = useState<number>(0);
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
+    );
+    const {
+        data: roleObjectV2,
+        isLoading: isRoleDetailsRequestLoadingV2,
+        error: roleDetailsRequestErrorV2,
+        mutate: mutateRoleObjectV2,
+        isValidating: isRoleDetailsRequestValidatingV2
+    } = useGetRoleById(!userRolesV3FeatureEnabled ? roleId : null);
+    const {
+        data: roleObjectV3,
+        isLoading: isRoleDetailsRequestLoadingV3,
+        error: roleDetailsRequestErrorV3,
+        mutate: mutateRoleObjectV3,
+        isValidating: isRoleDetailsRequestValidatingV3
+    } = useGetRoleByIdV3(userRolesV3FeatureEnabled ? roleId : null);
+
+    const roleObject: any = useMemo(
+        () => userRolesV3FeatureEnabled ? roleObjectV3 : roleObjectV2,
+        [ roleObjectV2, roleObjectV3, userRolesV3FeatureEnabled ]
+    );
 
     /**
      * Get Role data from URL id
@@ -63,32 +86,24 @@ const RoleEditPage: FunctionComponent<RoleEditPagePropsInterface> = (
         setRoleId(roleId);
     }, []);
 
-    const {
-        data: roleObject,
-        isLoading: isRoleDetailsRequestLoading,
-        error: roleDetailsRequestError,
-        mutate: mutateRoleObject,
-        isValidating: isRoleDetailsRequestValidating
-    } = useGetRoleById(roleId);
-
     /**
      * Handle if any error occurs while fetching the role details.
      */
     useEffect(() => {
-        if(roleDetailsRequestError) {
+        if(roleDetailsRequestErrorV2 || roleDetailsRequestErrorV3) {
             dispatch(addAlert<AlertInterface>({
                 description: t("roles:notifications.fetchRole.genericError.description"),
                 level: AlertLevels.ERROR,
                 message: t("roles:notifications.fetchRole.genericError.message")
             }));
         }
-    }, [ roleDetailsRequestError ]);
+    }, [ roleDetailsRequestErrorV2, roleDetailsRequestErrorV3 ]);
 
     /**
      * Get the placeholders.
      */
     const getPlaceholders = (): ReactElement => {
-        if (roleDetailsRequestError) {
+        if (roleDetailsRequestErrorV2 || roleDetailsRequestErrorV3) {
             return (
                 <EmptyPlaceholder
                     subtitle={ [ t("roles:edit.placeholders.errorPlaceHolder.subtitles.0"),
@@ -112,7 +127,11 @@ const RoleEditPage: FunctionComponent<RoleEditPagePropsInterface> = (
      * @param activeTabIndex - Active tab index.
      */
     const onRoleUpdate = (activeTabIndex: number): void => {
-        mutateRoleObject();
+        if (userRolesV3FeatureEnabled) {
+            mutateRoleObjectV3();
+        } else {
+            mutateRoleObjectV2();
+        }
         setCurrentActiveTabIndex(activeTabIndex);
     };
 
@@ -124,12 +143,12 @@ const RoleEditPage: FunctionComponent<RoleEditPagePropsInterface> = (
     };
 
     return (
-        roleDetailsRequestError
+        (roleDetailsRequestErrorV2 || roleDetailsRequestErrorV3)
             ? getPlaceholders()
             : (
                 <TabPageLayout
                     data-componentid={ componentId }
-                    isLoading={ isRoleDetailsRequestLoading }
+                    isLoading={ isRoleDetailsRequestLoadingV2 || isRoleDetailsRequestLoadingV3 }
                     title={
                         roleObject && roleObject?.displayName
                             ? roleObject?.displayName
@@ -166,7 +185,8 @@ const RoleEditPage: FunctionComponent<RoleEditPagePropsInterface> = (
                     bottomMargin={ false }
                 >
                     <EditRole
-                        isLoading={ isRoleDetailsRequestLoading || isRoleDetailsRequestValidating }
+                        isLoading={ isRoleDetailsRequestLoadingV2 || isRoleDetailsRequestValidatingV2
+                            || isRoleDetailsRequestLoadingV3 || isRoleDetailsRequestValidatingV3 }
                         roleObject={ roleObject }
                         onRoleUpdate={ onRoleUpdate }
                         featureConfig={ featureConfig }

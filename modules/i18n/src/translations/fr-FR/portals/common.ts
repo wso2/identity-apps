@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,10 +35,113 @@ export const common: CommonNS = {
     applicationName: "Nom de l'application",
     applications: "Applications",
     approvalStatus: "Statut d'approbation",
+    approvals: "Approbations",
+    approvalsPage: {
+        list: {
+            columns: {
+                actions: "Actes",
+                name: "Nom"
+            }
+        },
+        modals: {
+            description: "Examinez les tâches opérationnelles nécessitant votre approbation",
+            header: "Approbations",
+            subHeader: "Examinez les tâches opérationnelles nécessitant votre approbation"
+        },
+        notifications: {
+            fetchApprovalDetails: {
+                error: {
+                    description: "{{description}}",
+                    message: "Erreur lors de la récupération des détails d'approbation"
+                },
+                genericError: {
+                    description: "Les détails d'approbation n'ont pas pu être récupérés.",
+                    message: "Une erreur s'est produite"
+                }
+            },
+            fetchPendingApprovals: {
+                error: {
+                    description: "{{description}}",
+                    message: "Erreur lors de la récupération des approbations en attente"
+                },
+                genericError: {
+                    description: "Les approbations en attente n'ont pas pu être récupérées.",
+                    message: "Une erreur s'est produite"
+                }
+            },
+            updatePendingApprovals: {
+                error: {
+                    description: "{{description}}",
+                    message: "Erreur lors de la mise à jour de l'approbation"
+                },
+                genericError: {
+                    description: "La demande d'approbation en attente n'a pas pu être mise à jour.",
+                    message: "Une erreur s'est produite"
+                },
+                success: {
+                    description: "La demande d'approbation a été mise à jour avec succès.",
+                    message: "Mise à jour réussie"
+                }
+            }
+        },
+        operationTypes: {
+            addRole: "Ajouter un rôle",
+            addUser: "Ajouter un utilisateur",
+            all: "Toutes les opérations",
+            deleteRole: "Supprimer un rôle",
+            deleteUser: "Supprimer un utilisateur",
+            selfRegisterUser: "Auto-enregistrement de l’utilisateur",
+            updateRolesOfUser: "Mettre à jour les utilisateurs du rôle"
+        },
+        placeholders: {
+            emptyApprovalFilter: {
+                action: "Voir tout",
+                subtitles: {
+                    0: "Il n'y a actuellement aucune approbation dans l'état {{status}}.",
+                    1: "Veuillez vérifier si vous avez des tâches dans l'état {{status}} pour",
+                    2: "les voir ici."
+                },
+                title: "Aucun résultat trouvé"
+            },
+            emptyApprovalList: {
+                action: "",
+                subtitles: {
+                    0: "Il n'y a actuellement aucune approbation à examiner.",
+                    1: "Veuillez vérifier si vous avez ajouté un flux de travail pour contrôler les opérations dans le système.",
+                    2: ""
+                },
+                title: "Aucune approbation"
+            },
+            emptySearchResults: {
+                action: "Voir tout",
+                subtitles: {
+                    0: "Nous n'avons pas pu trouver le flux de travail que vous avez recherché.",
+                    1: "Veuillez vérifier si vous avez un flux de travail avec ce nom dans",
+                    2: "le système."
+                },
+                title: "Aucune approbation"
+            },
+            searchApprovals: "Rechercher par nom de flux de travail"
+        },
+        propertyMessages: {
+            assignedUsersDeleted: "Les utilisateurs assignés ont été supprimés.",
+            roleDeleted: "Le rôle a été supprimé.",
+            selfRegistration: "Auto-enregistrement",
+            unassignedUsersDeleted: "Les utilisateurs non assignés ont été supprimés."
+        },
+        subTitle: "Examinez les tâches opérationnelles nécessitant votre approbation",
+        title: "Approbations"
+    },
     approve: "Approuver",
+    approved: "Approuvé",
     apps: "Applications",
+    assignYourself: "Assignez-vous",
     assignee: "Cessionnaire",
     assignees: "Contrôleurs",
+    asyncOperationErrorMessage: {
+        description: "Quelque chose s'est mal passé",
+        message: "Une erreur inattendue s'est produite. Veuillez réessayer ultérieurement."
+    },
     authentication: "Authentification",
     authenticator: "Authentificateur",
     authenticator_plural: "Authentificateurs",
@@ -54,7 +157,6 @@ export const common: CommonNS = {
         heading: "Quelque chose s'est mal passé",
         primaryActionText: "Recharger l'application"
     },
-    claim: "Claim",
     clear: "Effacer",
     clientId: "Identité du client",
     close: "Fermer",
@@ -70,6 +172,7 @@ export const common: CommonNS = {
     dangerZone: "Zone de danger",
     darkMode: "Mode sombre",
     delete: "Supprimer",
+    deprecated: "Cette configuration est obsolète et sera supprimée dans une version future.",
     description: "Description",
     deviceModel: "Modèle d'appareil",
     disable: "désactiver",
@@ -119,6 +222,7 @@ export const common: CommonNS = {
     metaAttributes: "Méta-attributs",
     minValidation: "Cette valeur doit être supérieure ou égale à {{min}}.",
     minimize: "Minimiser",
+    minutes: "mins",
     more: "Plus",
     myAccount: "Mon compte",
     name: "Nom",
@@ -130,11 +234,14 @@ export const common: CommonNS = {
     new: "Nouveau",
     next: "Suivant",
     noResultsFound: "Aucun résultat trouvé",
+    none: "Aucun",
     okay: "d'accord",
     operatingSystem: "Système d'exploitation",
+    operationType: "Type d'opération",
     operations: "Opérations",
     organizationName: "{{orgName}} organisation",
     overview: "Vue d'ensemble",
+    pending: "En attente",
     personalInfo: "Informations personnelles",
     pin: "Épingler",
     pinned: "Épinglé",
@@ -146,11 +253,12 @@ export const common: CommonNS = {
     priority: "Priorité",
     privacy: "Vie privée",
     properties: "Propriétés",
+    publish: "Publier",
     ready: "Prêt",
     regenerate: "Régénérer",
     register: "Inscrire",
     reject: "Rejeter",
-    release: "Version",
+    rejected: "Rejeté",
     remove: "Retirer",
     removeAll: "Tout retirer",
     required: "Ceci est nécessaire",
@@ -161,10 +269,13 @@ export const common: CommonNS = {
     revokeAll: "Tout révoquer",
     samples: "Exemples",
     save: "Sauvegarder",
+    saveDraft: "Enregistrer le brouillon",
     sdks: "SDKs",
     search: "Rechercher",
     searching: "Recherche",
     security: "Sécurité",
+    selectAll: "Sélectionnez tout",
+    selectNone: "Sélectionnez aucun",
     services: "Services",
     settings: "Paramètres",
     setup: "Installer",
@@ -185,6 +296,7 @@ export const common: CommonNS = {
     terminateSession: "Terminer la session",
     tooShort: "Trop court",
     type: "Type",
+    unassign: "Désassigner",
     unpin: "Détacher",
     unpinned: "Détaché",
     update: "Mettre à jour",
@@ -192,6 +304,7 @@ export const common: CommonNS = {
     verified: "Vérifié",
     verify: "Vérifier",
     view: "Voir",
+    viewDetails: "Voir les détails",
     weak: "Faible",
     weakPassword: "La force du mot de passe doit au moins être bonne."
 };

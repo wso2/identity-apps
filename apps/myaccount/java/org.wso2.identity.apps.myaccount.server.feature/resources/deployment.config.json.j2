@@ -121,6 +121,9 @@
     {% elif legacy_authz_runtime.enable is defined %}
     "isSaas": {{ legacy_authz_runtime.enable }},
     {% endif %}
+    {% if myaccount.proxy_context_path is defined %}
+    "proxyContextPath": "{{ myaccount.proxy_context_path }}",
+    {% endif %}
     "session": {
         {% if myaccount.session.params is defined %}
             {% for param, value in myaccount.session.params.items() %}
@@ -155,6 +158,7 @@
         "appTitle": "{{ myaccount.ui.app_title }}",
         "appName": "{{ myaccount.ui.app_name }}",
         "appLogoPath": "{{ myaccount.ui.app_logo_path }}",
+        "appMobileLogoPath": "{{ myaccount.ui.app_mobile_logo_path }}",
         "appWhiteLogoPath": "{{ myaccount.ui.app_white_logo_path }}",
         {% if myaccount.disable_mfa_for_super_tenant_user is defined %}
         "disableMFAforSuperTenantUser": "{{ myaccount.disable_mfa_for_super_tenant_user }}",
@@ -238,6 +242,37 @@
                         "read": [],
                         "update": [],
                         "delete": []
+                    {% endif %}
+                }
+            },
+            "approvals": {
+                "disabledFeatures": [
+                    {% if myaccount.approvals.disabled_features is defined %}
+                    {% for feature in myaccount.approvals.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ myaccount.approvals.enabled }},
+                "featureFlags": [
+                    {% if myaccount.approvals.feature_flags is defined %}
+                    {% for flag in myaccount.approvals.feature_flags %}
+                    "{{ flag }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "scopes": {
+                    {% if myaccount.approvals.scopes is defined %}
+                    {% for operation, scopes in myaccount.approvals.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "read": [],
+                        "update": [],
                     {% endif %}
                 }
             },
@@ -352,8 +387,10 @@
                 }
             }
         },
-        {% if myaccount.ui.is_cookie_consent_banner_enabled is defined %}
-        "isCookieConsentBannerEnabled": {{ myaccount.ui.is_cookie_consent_banner_enabled }},
+        {% set cookie_consent = myaccount.ui.is_cookie_consent_banner_enabled if myaccount.ui.is_cookie_consent_banner_enabled is defined
+            else ui.is_cookie_consent_banner_enabled %}
+        {% if cookie_consent is defined %}
+        "isCookieConsentBannerEnabled": {{ cookie_consent }},
         {% endif %}
         {% if myaccount.ui.cookie_policy_url is defined %}
         "cookiePolicyUrl": "{{ myaccount.ui.cookie_policy_url }}",
@@ -377,6 +414,9 @@
             {% endfor %}
             {% endif %}
         },
+        {% if scim2.custom_user_schema_uri is defined %}
+        "customUserSchemaURI": "{{ scim2.custom_user_schema_uri }}",
+        {% endif %}
         "privacyPolicyConfigs": {
             {% if myaccount.privacy_policy_configs.items() is defined %}
             {% for key, value in myaccount.privacy_policy_configs.items() %}

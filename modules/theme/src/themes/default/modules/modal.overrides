@@ -621,7 +621,7 @@
                         border: 1px solid #efefef;
                         background-color: #fbfbfb;
                         padding: 10px;
-                        border-radius: 3px;
+                        border-radius: 8px;
                         font-weight: 500;
                     }
                 }
@@ -671,7 +671,7 @@
                         border: 1px solid #efefef;
                         background-color: #fbfbfb;
                         padding: 10px;
-                        border-radius: 3px;
+                        border-radius: 8px;
                         font-weight: 500;
                     }
                 }

@@ -16,16 +16,16 @@
  * under the License.
  */
 
-import { Config } from "@wso2is/admin.core.v1/configs";
-import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { Config } from "@wso2is/admin.core.v1/configs/app";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { HttpMethods } from "@wso2is/core/models";
-import { BrandingModes } from "../constants";
-import { PredefinedLayouts } from "../meta";
+import { BrandingModes } from "../constants/branding-preferences-constants";
+import { PredefinedLayouts } from "../meta/layouts";
 
 /**
  * Hook to get the layout.

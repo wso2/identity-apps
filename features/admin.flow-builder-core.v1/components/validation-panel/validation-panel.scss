@@ -1,0 +1,106 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+:root {
+    --wso2is-flow-builder-validation-panel-width: 350px;
+}
+
+@mixin open {
+    width: var(--wso2is-flow-builder-validation-panel-width);
+    transition: width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;
+    overflow: hidden;
+}
+
+@mixin close {
+    width: 0;
+    transition: width 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;
+    overflow: hidden;
+}
+
+.flow-builder-validation-panel {
+    .flow-builder-validation-panel {
+        position: absolute;
+        width: var(--wso2is-flow-builder-validation-panel-width);
+        background: var(--oxygen-palette-common-white);
+        box-shadow: -3px 0px 20px 0 rgba(0, 0, 0, 0.06);
+        border-right: 1px solid #E8E8E8;
+        border-left: 1px solid #E8E8E8;
+
+        .flow-builder-validation-panel-header {
+            padding: var(--oxygen-spacing-1) var(--oxygen-spacing-2);
+            border-bottom: 1px solid var(--oxygen-palette-divider);
+        }
+
+        .flow-builder-validation-panel-content {
+            display: flex;
+            flex-direction: column;
+            height: calc(100% - 64px);
+
+            .validation-tabs {
+                border-bottom: 1px solid var(--oxygen-palette-divider);
+                min-height: 48px;
+            }
+
+            .validation-tab-panel {
+                flex: 1;
+                padding: 0;
+                overflow-y: auto;
+
+                .notification-item {
+                    width: 100%;
+
+                    .notification-action-button {
+                        padding: 0;
+                        width: auto;
+                        text-transform: none;
+                        font-size: 0.875rem;
+                        font-weight: 500;
+                        text-decoration: underline;
+                        margin-top: var(--oxygen-spacing-1);
+
+                        &:hover {
+                            background-color: transparent;
+                            text-decoration: underline;
+                            color: var(--oxygen-palette-primary-dark);
+                        }
+
+                        &.MuiButtonBase-root  {
+                            justify-content: flex-end;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    &:not(.open) {
+        @include close;
+
+        .MuiDrawer-paper {
+            @include close;
+        }
+    }
+
+    &.open {
+        @include open;
+
+        .MuiDrawer-paper {
+            @include open;
+        }
+    }
+}

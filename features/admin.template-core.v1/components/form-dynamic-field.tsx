@@ -16,15 +16,15 @@
  * under the License.
  */
 
-import { getCertificateIllustrations } from "@wso2is/admin.core.v1";
+import { getCertificateIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     CheckboxFieldAdapter,
     FilePickerAdapter,
     FinalFormField,
     FormApi,
-    SelectFieldAdapter,
-    TextFieldAdapter
+    TextFieldAdapter,
+    __DEPRECATED__SelectFieldAdapter
 } from "@wso2is/form";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
@@ -166,7 +166,7 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                             displayEmpty={ true }
                             label={ field?.label }
                             placeholder={ field?.placeholder }
-                            component={ SelectFieldAdapter }
+                            component={ __DEPRECATED__SelectFieldAdapter }
                             readOnly={ readOnly || field?.readOnly }
                             required={ field?.required }
                             options={ (field as DynamicDropdownFieldInterface)?.options }
@@ -197,6 +197,8 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                             (field as DynamicFilePickerFieldInterface)?.pasteAreaPlaceholderText }
                         uploadButtonText={ (field as DynamicFilePickerFieldInterface)?.uploadButtonText }
                         hidePasteOption={ (field as DynamicFilePickerFieldInterface)?.hidePasteOption }
+                        showFileAsList={ (field as DynamicFilePickerFieldInterface)?.showFileAsList }
+                        fileDisplayName={ (field as DynamicFilePickerFieldInterface)?.fileDisplayName }
                         placeholderIcon={ getCertificateIllustrations().uploadPlaceholder }
                         selectedIcon={ <Icon name="file alternate" size="huge"/> }
                         component={ FilePickerAdapter }
@@ -208,6 +210,7 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                                 </Hint>
                             ) : null
                         }
+                        onDelete={ (field as DynamicFilePickerFieldInterface)?.onDelete }
                     />
                 );
             default:

@@ -18,10 +18,8 @@
 
 import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
-import {
-    AppConstants,
-    history
-} from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
@@ -496,12 +494,11 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                     }
                 </Label>
             </Field.Input>
-            { /* TODO: Uncomment resend attempt count field once it's finalized.
-
             <Field.Input
                 ariaLabel="Allowed Resend Attempts"
                 inputType="number"
                 name="SmsOTP_ResendAttemptsCount"
+                labelPosition="right"
                 label={
                     t("authenticationProvider:forms.authenticatorSettings" +
                         ".smsOTP.allowedResendAttemptCount.label")
@@ -523,21 +520,33 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                 }
                 required={ true }
                 readOnly={ readOnly }
+                max={
+                    ConnectionUIConstants
+                        .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE
+                }
+                min={
+                    ConnectionUIConstants
+                        .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE
+                }
                 maxLength={
-                    IdentityProviderManagementConstants
+                    ConnectionUIConstants
                         .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH
                 }
                 minLength={
-                    IdentityProviderManagementConstants
+                    ConnectionUIConstants
                         .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MIN_LENGTH
                 }
                 width={ 12 }
                 data-testid={ `${ testId }-allowed-resend-attempt-count` }
             >
                 <input />
+                <Label>
+                    {
+                        t("authenticationProvider:forms.authenticatorSettings" +
+                            ".smsOTP.allowedResendAttemptCount.unit")
+                    }
+                </Label>
             </Field.Input>
-
-            */ }
             <Field.Button
                 form={ FORM_ID }
                 size="small"

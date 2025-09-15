@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!--
-  ~ Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+  ~ Copyright (c) 2014-2025, WSO2 LLC. (http://www.wso2.org).
   ~
-  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
@@ -158,6 +158,11 @@
     </listener>
 
     <servlet>
+        <servlet-name>create-account.do</servlet-name>
+        <jsp-file>/create-account.jsp</jsp-file>
+    </servlet>
+
+    <servlet>
         <servlet-name>retry.do</servlet-name>
         <jsp-file>/retry.jsp</jsp-file>
     </servlet>
@@ -240,16 +245,6 @@
     <servlet>
         <servlet-name>samlsso_notification.do</servlet-name>
         <jsp-file>/samlsso_notification.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>openid_login.do</servlet-name>
-        <jsp-file>/login.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>openid_profile.do</servlet-name>
-        <jsp-file>/openid_profile.jsp</jsp-file>
     </servlet>
 
     <servlet>
@@ -373,6 +368,11 @@
     </servlet>
 
     <servlet>
+        <servlet-name>org_handle.do</servlet-name>
+        <jsp-file>/org_handle.jsp</jsp-file>
+    </servlet>
+
+    <servlet>
         <servlet-name>org_discovery.do</servlet-name>
         <jsp-file>/org_discovery.jsp</jsp-file>
     </servlet>
@@ -443,6 +443,11 @@
     </servlet-mapping>
 
     <servlet-mapping>
+        <servlet-name>org_handle.do</servlet-name>
+        <url-pattern>/org_handle.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
         <servlet-name>org_discovery.do</servlet-name>
         <url-pattern>/org_discovery.do</url-pattern>
     </servlet-mapping>
@@ -460,6 +465,11 @@
     <servlet-mapping>
         <servlet-name>device_success.do</servlet-name>
         <url-pattern>/device_success.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>create-account.do</servlet-name>
+        <url-pattern>/create-account.do</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
@@ -540,16 +550,6 @@
     <servlet-mapping>
         <servlet-name>samlsso_notification.do</servlet-name>
         <url-pattern>/samlsso_notification.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>openid_login.do</servlet-name>
-        <url-pattern>/openid_login.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>openid_profile.do</servlet-name>
-        <url-pattern>/openid_profile.do</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { ORGANIZATION_TYPE } from "@wso2is/admin.organizations.v1/constants";
+
 /**
  * Represents a tenant.
  */
@@ -28,6 +30,10 @@ export interface Tenant<T = TenantOwner> {
      * The domain of the tenant.
      */
     domain: string;
+    /**
+     * The name of the tenant.
+     */
+    name?: string;
     /**
      * The owners of the tenant.
      */
@@ -77,7 +83,7 @@ export type AddTenantRequestPayload = Pick<Tenant<Omit<TenantOwner, "id"> & {
          */
         value: string;
     }[];
-}>, "domain" | "owners">;
+}>, "domain" | "name" | "owners">;
 
 /**
  * Represents an owner of a tenant.
@@ -153,4 +159,51 @@ export interface TenantListResponse {
      * The tenants list.
      */
     tenants: Tenant[];
+}
+
+/**
+ * Represents the response structure for retrieving details of the
+ * currently authenticated organization.
+ */
+export interface OrganizationSelfResponse {
+    /**
+     * The unique identifier of the organization.
+     */
+    id: string;
+    /**
+     * The name of the organization.
+     */
+    name: string;
+    /**
+     * The organization handle.
+     */
+    orgHandle: string;
+    /**
+     * The description of the organization.
+     */
+    description: string;
+    /**
+     * The status of the organization.
+     */
+    status: string;
+    /**
+     * The version of the organization.
+     */
+    version: string;
+    /**
+     * The date when the organization was created.
+     */
+    created: string;
+    /**
+     * The date when the organization was last modified.
+     */
+    lastModified: string;
+    /**
+     * The type of the organization.
+     */
+    type: ORGANIZATION_TYPE;
+    /**
+     * Whether the organization has child organizations.
+     */
+    hasChildren: boolean;
 }

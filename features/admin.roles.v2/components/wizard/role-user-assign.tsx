@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import { AppState, UIConstants, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { OrganizationManagementConstants } from "@wso2is/admin.organizations.v1/constants";
 import { getUsersList } from "@wso2is/admin.users.v1/api/users";
 import { UserBasicInterface, UserListInterface } from "@wso2is/admin.users.v1/models/user";

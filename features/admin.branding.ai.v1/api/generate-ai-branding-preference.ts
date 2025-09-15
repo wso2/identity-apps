@@ -37,13 +37,11 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  * @returns generated branding API response.
  */
 const generateBrandingPreference = (
-    websiteUrl: string,
-    tenantDomain: string
+    websiteUrl: string
 ): Promise<GenerateBrandingAPIResponseInterface> => {
 
     const requestConfig: AxiosRequestConfig = {
         data: {
-            tenant_domain: tenantDomain,
             website_url: websiteUrl
         },
         headers: {

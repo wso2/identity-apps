@@ -17,18 +17,17 @@
  */
 
 import { Show, useRequiredScopes } from "@wso2is/access-control";
-import {
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { getProfileSchemas } from "@wso2is/admin.users.v1/api";
-import { getUserStores } from "@wso2is/admin.userstores.v1/api/user-stores";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
@@ -69,6 +68,7 @@ import React,{
     SetStateAction,
     SyntheticEvent,
     useEffect,
+    useMemo,
     useRef,
     useState
 } from "react";
@@ -224,7 +224,6 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     const [ deleteConfirm, setDeleteConfirm ] = useState(false);
     const [ deleteType, setDeleteType ] = useState<ListType>(null);
     const [ deleteItem, setDeleteItem ] = useState<Claim | ExternalClaim | ClaimDialect>(null);
-    const [ userStores, setUserStores ] = useState<UserStoreListItem[]>([]);
     const [ editClaim, setEditClaim ] = useState("");
     const [ editExternalClaim, setEditExternalClaim ] = useState<AddExternalClaim>(undefined);
 
@@ -232,10 +231,22 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     const hasAttributeUpdatePermissions: boolean = useRequiredScopes(featureConfig?.attributeDialects?.scopes?.update);
     const hasAttributeDeletePermissions: boolean = useRequiredScopes(featureConfig?.attributeDialects?.scopes?.delete);
 
+    const { isSubOrganization } = useGetCurrentOrganizationType();
+    const { filterUserStores, userStoresList: userStores, mutateUserStoreList } = useUserStores();
+
+    const configuredUserStoreCount: number = useMemo(
+        () => filterUserStores(false, false, true, true)?.length,
+        [ userStores ]
+    );
+    const isReadOnly: boolean = !hasAttributeUpdatePermissions
+        || (isSubOrganization() && configuredUserStoreCount < 1);
+
     const dispatch: ThunkDispatch<AppState, any, any> = useDispatch();
 
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
+    const systemReservedUserStores: string[] = useSelector((state: AppState) =>
+        state?.config?.ui?.systemReservedUserStores);
 
     const [ submitExternalClaim, setSubmitExternalClaim ] = useTrigger();
 
@@ -246,6 +257,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     const { t } = useTranslation();
 
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
+
     const OIDC: string = "oidc";
 
     list?.forEach((_element: Claim | ExternalClaim | ClaimDialect | AddExternalClaim, index: number) => {
@@ -254,25 +266,8 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     });
 
     useEffect(() => {
-        if (isLocalClaim(list)) {
-            getUserStores(null)
-                .then((response: UserStoreListItem[]) => {
-                    setUserStores(response);
-                })
-                //TODO: [Type Fix] Throw proper generic error from API function.
-                .catch((error: any) => {
-                    dispatch(addAlert({
-                        description: error?.description
-                            ?? t("userstores:notifications.fetchUserstores.genericError" +
-                                ".description"),
-                        level: AlertLevels.ERROR,
-                        message: error?.message
-                            ?? t("userstores:notifications." +
-                            "fetchUserstores.genericError.message")
-                    }));
-                });
-        }
-    }, [ JSON.stringify(list) ]);
+        mutateUserStoreList();
+    }, []);
 
     /**
      * This check if the input claim is mapped to attribute from every userstore.
@@ -284,11 +279,13 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     const checkUserStoreMapping = (claim: Claim): string[] => {
         const userStoresNotSet: string[] = [];
 
-        userStores?.forEach((userStore: UserStoreListItem) => {
-            claim?.attributeMapping?.find((attribute: AttributeMapping) => {
-                return attribute.userstore.toLowerCase() === userStore.name.toLowerCase();
-            }) ?? userStoresNotSet.push(userStore.name);
-        });
+        userStores
+            ?.filter((userStore: UserStoreListItem) => !systemReservedUserStores?.includes(userStore.name))
+            ?.forEach((userStore: UserStoreListItem) => {
+                claim?.attributeMapping?.find((attribute: AttributeMapping) => {
+                    return attribute.userstore.toLowerCase() === userStore.name.toLowerCase();
+                }) ?? userStoresNotSet.push(userStore.name);
+            });
 
         claim?.attributeMapping?.find((attribute: AttributeMapping) => {
             return attribute.userstore === primaryUserStoreDomainName;
@@ -627,26 +624,25 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
         if (list?.length === 0) {
             return (
                 <EmptyPlaceholder
-                    action={ attributeConfig.attributesPlaceholderAddButton(attributeType)
-                        && (
-                            <Show when={ featureConfig?.oidcScopes?.scopes?.create }>
-                                <PrimaryButton
-                                    onClick={ onEmptyListPlaceholderActionClick }
-                                >
-                                    <Icon name="add"/>
-                                    {
-                                        isLocalClaim(list)
-                                            ?  t("claims:list.placeholders.emptyList." +
-                                                "action.local")
-                                            : isDialect(list)
-                                                ? t("claims:list.placeholders.emptyList." +
-                                                    "action.dialect", { type: resolveType(attributeType, true) })
-                                                : t("claims:list.placeholders." +
-                                            "emptyList.action.external", { type: resolveType(attributeType, true) })
-                                    }
-                                </PrimaryButton>
-                            </Show>
-                        ) }
+                    action={ (
+                        <Show when={ featureConfig?.oidcScopes?.scopes?.create }>
+                            <PrimaryButton
+                                onClick={ onEmptyListPlaceholderActionClick }
+                            >
+                                <Icon name="add"/>
+                                {
+                                    isLocalClaim(list)
+                                        ?  t("claims:list.placeholders.emptyList." +
+                                            "action.local")
+                                        : isDialect(list)
+                                            ? t("claims:list.placeholders.emptyList." +
+                                                "action.dialect", { type: resolveType(attributeType, true) })
+                                            : t("claims:list.placeholders." +
+                                        "emptyList.action.external", { type: resolveType(attributeType, true) })
+                                }
+                            </PrimaryButton>
+                        </Show>
+                    ) }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     title={
@@ -654,10 +650,14 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                             ? t("claims:list.placeholders.emptyList.title.local")
                             : isDialect(list)
                                 ? t("claims:list.placeholders.emptyList.title.dialect")
-                                : t(
-                                    "claims:list.placeholders.emptyList.title.external",
-                                    { type: resolveType(attributeType, true) }
-                                )
+                                : isSubOrganization()
+                                    ? t("claims:list.placeholders.emptyList.title.readOnlyDialect",
+                                        { type: resolveType(attributeType, true) }
+                                    )
+                                    : t(
+                                        "claims:list.placeholders.emptyList.title.external",
+                                        { type: resolveType(attributeType, true) }
+                                    )
                     }
                     subtitle={ [
 
@@ -998,7 +998,8 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: ClaimManagementConstants.EMPTY_STRING
+                title: ClaimManagementConstants.EMPTY_STRING,
+                width: 2
             }
         ];
     };
@@ -1016,15 +1017,15 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
         if (isLocalClaim(list)) {
             return [
                 {
-                    icon: (): SemanticICONS => !hasAttributeUpdatePermissions
+                    icon: (): SemanticICONS => isReadOnly
                         ? "eye"
                         : "pencil alternate",
                     onClick: (e: SyntheticEvent, claim: Claim | ExternalClaim | ClaimDialect): void => {
                         history.push(AppConstants.getPaths().get("LOCAL_CLAIMS_EDIT").replace(":id", claim?.id));
                     },
-                    popupText: (): string => hasAttributeUpdatePermissions
-                        ? t("common:edit")
-                        : t("common:view"),
+                    popupText: (): string => isReadOnly
+                        ? t("common:view")
+                        : t("common:edit"),
                     renderer: "semantic-icon"
                 },
                 attributeConfig.attributes.deleteAction && {
@@ -1150,7 +1151,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     const resolveTableRowClick = (e: SyntheticEvent, item: Claim | ExternalClaim | ClaimDialect | any): void => {
 
         //Disables inline edit if create scope is not available
-        if (!hasAttributeCreatePermissions) {
+        if (!hasAttributeUpdatePermissions) {
             return;
         }
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -77,6 +77,10 @@ export interface PaginationPropsInterface extends PaginationProps, IdentifiableC
      * Overrides the default Next button text.
      */
     nextButtonText?: string;
+    /**
+     * Limit for the list.
+     */
+    listItemLimit?: number;
     /**
      * Callback for items per page change.
      * @param event - Click event.
@@ -158,6 +162,7 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
         showPagesOnMinimalMode,
         totalPages,
         activePage: activePageProp,
+        listItemLimit,
         [ "data-componentid" ]: componentId,
         [ "data-testid" ]: testId,
         ...rest
@@ -170,6 +175,8 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
         },
         className
     );
+
+    const [ itemsPerPage, setItemsPerPage ] = useState<number>(itemsPerPageDropdownLowerLimit);
 
     useEffect(() => {
         if (activePageProp === undefined || activePageProp === null) {
@@ -186,6 +193,12 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
             setActivePage(1);
         }
     }, [ resetPagination ]);
+
+    useEffect(() => {
+        if (listItemLimit && listItemLimit > 0) {
+            setItemsPerPage(listItemLimit);
+        }
+    }, [ listItemLimit ]);
 
     const generatePageCountDropdownOptions = (): DropdownItemProps[] => {
         const options = [];
@@ -236,11 +249,12 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
                         data-testid={ `${ testId }-items-per-page-dropdown` }
                         className="labeled horizontal right page-limit-dropdown"
                         compact
-                        defaultValue={ itemsPerPageDropdownLowerLimit }
+                        value={ itemsPerPage ? itemsPerPage : itemsPerPageDropdownLowerLimit }
                         options={ generatePageCountDropdownOptions() }
                         onChange={ (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
                             resetAll();
                             onItemsPerPageDropdownChange(event, data);
+                            setItemsPerPage(data.value as number);
                         } }
                         selection
                     />

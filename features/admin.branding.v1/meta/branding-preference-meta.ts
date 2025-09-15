@@ -30,8 +30,8 @@ import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import { LAYOUTS } from "./layouts";
 import { THEMES, THEME_SWATCH_UI_CONFIGS } from "./themes";
-import { ThemeSwatchUIConfigsInterface } from "../components";
-import { BrandingPreferencesConstants } from "../constants";
+import { ThemeSwatchUIConfigsInterface } from "../components/design/theme-swatch/theme-swatch";
+import { BrandingPreferencesConstants } from "../constants/branding-preferences-constants";
 
 /**
  * Class for the Branding Preference Metadata.

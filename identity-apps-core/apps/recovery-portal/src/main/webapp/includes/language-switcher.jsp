@@ -23,12 +23,16 @@
 <%@ page import="java.io.File" %>
 <%@ page import="java.io.BufferedReader" %>
 <%@ page import="java.io.FileReader" %>
+<%@ page import="org.owasp.encoder.Encode" %>
 
 <%-- Localization --%>
 <jsp:directive.include file="localize.jsp" />
 
 <script src="libs/jquery_3.6.0/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
+    const isParamPrioritized = <%= isLocalizationParamPrioritized %>;
+    const userLocaleFromLocalize = "<%= Encode.forJavaScript(userLocale.toString()) %>";
+
     $(document).ready(function(){
         const languageDropdown = $("#language-selector-dropdown");
         const languageSelectionInput = $("#language-selector-input");
@@ -39,65 +43,49 @@
         $("> input.search", languageDropdown).attr("role", "presentation");
 
         // Set current lang value coming from cookie
-        const urlParams = new URLSearchParams(window.location.search);
         const localeFromCookie = getCookie("ui_lang");
-        var localeFromUrlParams = null;
-        if (urlParams.has('ui_locales')) {
-            localeFromUrlParams = encodeURIComponent(urlParams.get('ui_locales'));
-        }
-        const browserLocale = "<%= userLocale %>"
-        const computedLocale = computeLocale(localeFromCookie, localeFromUrlParams, browserLocale);
 
-        languageSelectionInput.val(computedLocale);
+        languageSelectionInput.val(userLocaleFromLocalize);
+        setUILocaleCookie(userLocaleFromLocalize);
 
-        const dataOption = $( "div[data-value='" + computedLocale + "']" );
+        const dataOption = $( "div[data-value='" + userLocaleFromLocalize + "']" );
         dataOption.addClass("active selected")
 
         selectedLanguageText.removeClass("default");
         selectedLanguageText.html(dataOption.html());
 
-        document.documentElement.lang = computedLocale;
+        document.documentElement.lang = userLocaleFromLocalize;
     });
-
-    /**
-     * Extracts the domain from the hostname.
-     * If parsing fails, undefined will be returned.
-     */
-    function extractDomainFromHost() {
-        let domain = undefined;
-        /**
-         * Extract the domain from the hostname.
-         * Ex: If sub.sample.domain.com is parsed, `domain.com` will be set as the domain.
-         */
-        try {
-            var hostnameTokens = window.location.hostname.split('.');
-
-            if (hostnameTokens.length > 1) {
-                domain = hostnameTokens.slice((hostnameTokens.length -2), hostnameTokens.length).join(".");
-            } else if (hostnameTokens.length == 1) {
-                domain = hostnameTokens[0];
-            }
-        } catch(e) {
-            // Couldn't parse the hostname.
-        }
-        return domain;
-    }
 
     /**
      * Creates a cookie with the given parameters, which lives within the given domain
      * @param name - Name of the cookie
      * @param value - Value to be stored
      * @param days - Expiry days
+     * @param options - Additional options for the cookie such as `httpOnly` and `secure.
      */
-    function setCookie(name, value, days) {
-        let expires = "";
-        const domain = ";domain=" + extractDomainFromHost();
+    function setCookie(name, value, days, options) {
+        var expires = "";
+        var domain = ";domain=" + URLUtils.getDomain(window.location.href);
+
         if (days) {
             const date = new Date();
-            date.setTime(date.getTime() + (days*24*60*60*1000));
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
             expires = "; expires=" + date.toUTCString();
         }
-        document.cookie = name + "=" + (value || "")  + expires + domain + "; path=/";
+
+        var httpOnlyString = (options && options.httpOnly) ? "; HttpOnly" : "";
+        var secureString = (options && options.secure) ? "; Secure" : "";
+
+        document.cookie = name + "=" + (value || "") + expires + domain + "; path=/" + httpOnlyString + secureString;
+    }
+
+    /**
+     * Handles language change by setting the `ui_locale` cookie.
+     */
+    function setUILocaleCookie(language) {
+        var EXPIRY_DAYS = 30;
+        setCookie('ui_lang', language, EXPIRY_DAYS, { secure: true });
     }
 
     /**
@@ -106,22 +94,15 @@
     function onLangChange() {
         const langSwitchForm = document.getElementById("language-selector-input");
         const language = langSwitchForm.value;
-        const EXPIRY_DAYS = 30;
+        setUILocaleCookie(language);
 
-        setCookie('ui_lang', language, EXPIRY_DAYS);
-        window.location.reload();
-    }
+        if (isParamPrioritized === true) {
+            const url = new URL(window.location.href);
+            url.searchParams.set("ui_locales", language);
 
-    function computeLocale(localeFromCookie, localeFromUrlParams, browserLocale) {
-        if (localeFromCookie) {
-            return localeFromCookie;
-        } else if (localeFromUrlParams) {
-            const firstLangFromUrlParams = localeFromUrlParams.split(" ")[0];
-            return firstLangFromUrlParams;
-        } else if (browserLocale) {
-            return browserLocale;
+            location.replace(url.toString());
         } else {
-            return "en_US";
+            window.location.reload();
         }
     }
 </script>
@@ -159,7 +140,7 @@
     }
 %>
 
-<div id="language-selector-dropdown" class="ui fluid search selection dropdown language-selector-dropdown" data-testid="language-selector-dropdown">
+<div id="language-selector-dropdown" class="ui fluid selection dropdown language-selector-dropdown" data-testid="language-selector-dropdown">
     <input type="hidden" id="language-selector-input" onChange="onLangChange()" name="language-select" />
     <i class="dropdown icon"></i>
     <div id="language-selector-selected-text" class="default text">

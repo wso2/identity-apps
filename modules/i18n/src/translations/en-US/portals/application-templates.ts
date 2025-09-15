@@ -20,13 +20,15 @@ import { applicationTemplatesNS } from "../../../models";
 export const applicationTemplates: applicationTemplatesNS = {
     categories: {
         default: {
-            description: "Integrate applications based on technology and platform.",
-            displayName: "Application Types"
+            description: "Choose the relevant application architecture for easy configuration.",
+            displayName: "Select Application Type"
         },
         ssoIntegration: {
-            description: "Configure single sign-on seamlessly across SaaS services such as"
-                + " Google Workspace, Salesforce, and more.",
-            displayName: "SSO Integrations"
+            description: "Configure Single-Sign-On for your SaaS services.",
+            displayName: "Select SSO Integration"
+        },
+        technology: {
+            description: "Choose the relevant application technology for easy configuration."
         }
     },
     notifications: {

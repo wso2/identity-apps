@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,9 @@
  */
 
 import { FeatureAccessConfigInterface, Show, useRequiredScopes } from "@wso2is/access-control";
-import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -29,6 +31,7 @@ import {
     useDocumentation
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
+import isEmpty from "lodash-es/isEmpty";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -46,10 +49,18 @@ import changeActionStatus from "../api/change-action-status";
 import deleteAction from "../api/delete-action";
 import useGetActionById from "../api/use-get-action-by-id";
 import useGetActionsByType from "../api/use-get-actions-by-type";
-import ActionConfigForm from "../components/action-config-form";
+import PreIssueAccessTokenActionConfigForm from "../components/pre-issue-access-token-action-config-form";
+import PreUpdatePasswordActionConfigForm from "../components/pre-update-password-action-config-form";
+import PreUpdateProfileActionConfigForm from "../components/pre-update-profile-action-config-form";
 import { ActionsConstants } from "../constants/actions-constants";
-import { ActionConfigFormPropertyInterface } from "../models/actions";
+import {
+    ActionConfigFormPropertyInterface, PreUpdatePasswordActionConfigFormPropertyInterface,
+    PreUpdatePasswordActionResponseInterface,
+    PreUpdateProfileActionConfigFormPropertyInterface,
+    PreUpdateProfileActionResponseInterface
+} from "../models/actions";
 import "./action-configuration-page.scss";
+import { useHandleError, useHandleSuccess } from "../util/alert-util";
 
 /**
  * Props for the Action Configuration page.
@@ -71,7 +82,11 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
+    const handleSuccess: (operation: string) => void = useHandleSuccess();
+    const handleError: (error: AxiosError, operation: string) => void = useHandleError();
+
     const hasActionUpdatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.update);
+    const hasActionCreatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.create);
 
     const actionTypeApiPath: string = useMemo(() => {
         const path: string[] = history.location.pathname.split("/");
@@ -98,6 +113,15 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
         mutate: mutateActions
     } = useGetActionsByType(actionTypeApiPath);
 
+    useEffect(() => {
+        if (actions?.length >= 1) {
+            setShowCreateForm(false);
+            setIsActive(actions[0]?.status.toString() === ActionsConstants.ACTIVE_STATUS);
+        } else {
+            setShowCreateForm(true);
+        }
+    }, [ actions ]);
+
     const actionId: string = useMemo(() => actions?.[0]?.id || null, [ actions ]);
 
     const {
@@ -109,27 +133,51 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
 
     const isLoading: boolean = isActionsLoading || !actions || !Array.isArray(actions) || isActionLoading;
 
-    const actionInitialValues: ActionConfigFormPropertyInterface = useMemo(() => {
-        if (action) {
-            return {
-                authenticationType: action?.endpoint?.authentication?.type.toString(),
-                endpointUri: action?.endpoint?.uri,
-                id: action?.id,
-                name: action?.name
-            };
-        } else {
-            return null;
-        }
-    }, [ action ]);
+    const actionCommonInitialValues: ActionConfigFormPropertyInterface =
+        useMemo(() => {
+            if (action) {
+                return {
+                    allowedHeaders: action?.endpoint?.allowedHeaders,
+                    allowedParameters: action?.endpoint?.allowedParameters,
+                    authenticationType: action?.endpoint?.authentication?.type?.toString(),
+                    endpointUri: action?.endpoint?.uri,
+                    id: action?.id,
+                    name: action?.name,
+                    rule: action?.rule
+                };
 
-    useEffect(() => {
-        if (actions?.length >= 1) {
-            setShowCreateForm(false);
-            setIsActive(actions[0]?.status.toString() === ActionsConstants.ACTIVE_STATUS);
-        } else {
-            setShowCreateForm(true);
-        }
-    }, [ actions ]);
+            } else {
+                return null;
+            }
+        }, [ action ]);
+
+    const preUpdatePasswordActionInitialValues: PreUpdatePasswordActionConfigFormPropertyInterface =
+        useMemo(() => {
+            if (action && actionTypeApiPath === ActionsConstants.PRE_UPDATE_PASSWORD_API_PATH ) {
+                return {
+                    ...actionCommonInitialValues,
+                    attributes: (action as PreUpdatePasswordActionResponseInterface)?.attributes,
+                    certificate: (action as PreUpdatePasswordActionResponseInterface)?.passwordSharing.certificate
+                        || "",
+                    passwordSharing: (action as PreUpdatePasswordActionResponseInterface)?.passwordSharing.format
+                };
+            } else {
+                return null;
+            }
+        }, [ action ]);
+
+    const preUpdateProfileActionInitialValues: PreUpdateProfileActionConfigFormPropertyInterface =
+        useMemo(() => {
+
+            if (action && actionTypeApiPath === ActionsConstants.PRE_UPDATE_PROFILE_API_PATH ) {
+                return {
+                    ...actionCommonInitialValues,
+                    attributes: (action as PreUpdateProfileActionResponseInterface)?.attributes
+                };
+            } else {
+                return null;
+            }
+        }, [ action ]);
 
     /**
      * The following useEffect is used to handle if any error occurs while fetching Actions by Type.
@@ -186,6 +234,17 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
             );
         }
     }, [ isActionLoading, actionFetchRequestError ]);
+
+    /**
+     * This function resolves whether the form is read-only or not.
+     */
+    const isReadOnly = (): boolean => {
+        if (showCreateForm) {
+            return !hasActionCreatePermissions;
+        } else {
+            return !hasActionUpdatePermissions;
+        }
+    };
 
     /**
      * Handles the back button click event.
@@ -283,11 +342,10 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
         const handleToggle = (e: SyntheticEvent, data: CheckboxProps) => {
             const toggleOperation: string = data.checked ? ActionsConstants.ACTIVATE : ActionsConstants.DEACTIVATE;
 
-            setIsActive(data.checked);
             setIsSubmitting(true);
             changeActionStatus(
                 actionTypeApiPath,
-                actionInitialValues.id,
+                actionCommonInitialValues.id,
                 toggleOperation)
                 .then(() => {
                     handleSuccess(toggleOperation);
@@ -296,12 +354,13 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                     handleError(error, toggleOperation);
                 })
                 .finally(() => {
+                    setIsActive(data.checked);
                     mutateAction();
                     setIsSubmitting(false);
                 });
         };
 
-        return !isLoading && !showCreateForm && (
+        return !isLoading && !showCreateForm && !isEmpty(actions) && (
             <Checkbox
                 label={
                     isActive
@@ -311,16 +370,16 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                 toggle
                 onChange={ handleToggle }
                 checked={ isActive }
-                readOnly={ !hasActionUpdatePermissions }
+                readOnly={ !hasActionUpdatePermissions || isSubmitting }
                 data-componentId={ `${ _componentId }-${ actionTypeApiPath }-enable-toggle` }
-                disabled={ !hasActionUpdatePermissions }
+                disabled={ !hasActionUpdatePermissions || isSubmitting }
             />
         );
     };
 
     const handleDelete = (): void => {
         setIsSubmitting(true);
-        deleteAction(actionTypeApiPath, actionInitialValues.id)
+        deleteAction(actionTypeApiPath, actionCommonInitialValues.id)
             .then(() => {
                 handleSuccess(ActionsConstants.DELETE);
                 mutateActions();
@@ -333,37 +392,6 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                 setOpenRevertConfigModal(false);
                 setIsSubmitting(false);
             });
-    };
-
-    const handleSuccess = (operation: string): void => {
-        dispatch(
-            addAlert({
-                description: t("actions:notification.success." + operation + ".description"),
-                level: AlertLevels.SUCCESS,
-                message: t("actions:notification.success." + operation + ".message")
-            })
-        );
-    };
-
-    const handleError = (error: AxiosError, operation: string): void => {
-        if (error.response?.data?.description) {
-            dispatch(
-                addAlert({
-                    description: t("actions:notification.error." + operation + ".description",
-                        { description: error.response.data.description }),
-                    level: AlertLevels.ERROR,
-                    message: t("actions:notification.error." + operation + ".message")
-                })
-            );
-        } else {
-            dispatch(
-                addAlert({
-                    description: t("actions:notification.genericError." + operation + ".description"),
-                    level: AlertLevels.ERROR,
-                    message: t("actions:notification.genericError." + operation + ".message")
-                })
-            );
-        }
     };
 
     return (
@@ -385,17 +413,41 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                 <Grid className="grid-form">
                     <Grid.Row columns={ 1 }>
                         <Grid.Column width={ 16 }>
-                            <ActionConfigForm
-                                initialValues={ actionInitialValues }
-                                isLoading={ isLoading }
-                                actionTypeApiPath={ actionTypeApiPath }
-                                isCreateFormState={ showCreateForm }
-                            />
+                            { actionTypeApiPath === ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_API_PATH && (
+                                <PreIssueAccessTokenActionConfigForm
+                                    initialValues={ actionCommonInitialValues }
+                                    isLoading={ isLoading }
+                                    isReadOnly={ isReadOnly() }
+                                    actionTypeApiPath={ actionTypeApiPath }
+                                    isCreateFormState={ showCreateForm }
+                                />
+                            )
+                            }
+                            { actionTypeApiPath === ActionsConstants.PRE_UPDATE_PASSWORD_API_PATH && (
+                                <PreUpdatePasswordActionConfigForm
+                                    initialValues={ preUpdatePasswordActionInitialValues }
+                                    isLoading={ isLoading }
+                                    isReadOnly={ isReadOnly() }
+                                    actionTypeApiPath={ actionTypeApiPath }
+                                    isCreateFormState={ showCreateForm }
+                                />
+                            )
+                            }
+                            { actionTypeApiPath === ActionsConstants.PRE_UPDATE_PROFILE_API_PATH && (
+                                <PreUpdateProfileActionConfigForm
+                                    initialValues={ preUpdateProfileActionInitialValues }
+                                    isLoading={ isLoading }
+                                    isReadOnly={ isReadOnly() }
+                                    actionTypeApiPath={ actionTypeApiPath }
+                                    isCreateFormState={ showCreateForm }
+                                />
+                            )
+                            }
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
             }
-            { !isLoading && !showCreateForm && (
+            { !isLoading && !showCreateForm && !isEmpty(actions) && (
                 <Show
                     when={ actionsFeatureConfig?.scopes?.delete }
                 >

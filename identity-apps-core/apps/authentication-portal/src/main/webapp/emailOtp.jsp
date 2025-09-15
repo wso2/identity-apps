@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -93,6 +93,9 @@
         reCaptchaEnabled = true;
     }
 %>
+
+<% request.setAttribute("pageName","email-otp"); %>
+
 <html lang="en-US">
 <head>
     <%-- header --%>
@@ -151,7 +154,7 @@
     </script>
 </head>
 
-<body class="login-portal layout email-otp-portal-layout">
+<body class="login-portal layout email-otp-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
     <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
         <jsp:include page="extensions/timeout.jsp"/>
     <% } else { %>
@@ -219,6 +222,7 @@
                                     id='OTPCode'
                                     name="OTPCode"
                                     c size='30'
+                                    autocomplete="off"
                                     aria-describedby="OTPDescription"/>
                                 <i id="password-eye" class="eye icon right-align password-toggle slash" onclick="showOTPCode()"></i>
                             </div>
@@ -232,6 +236,7 @@
                                         id='OTPCode'
                                         name="OTPCode"
                                         size='30'
+                                        autocomplete="off"
                                         aria-describedby="OTPDescription"/>
                                     <i id="password-eye" class="eye icon right-align password-toggle slash" onclick="showOTPCode()"></i>
                                 </div>

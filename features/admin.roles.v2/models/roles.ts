@@ -17,7 +17,7 @@
  */
 
 import { CreateGroupMemberInterface } from "@wso2is/admin.groups.v1/models/groups";
-import { SchemaAttributeValueInterface } from "@wso2is/admin.users.v1/models";
+import { SchemaAttributeValueInterface } from "@wso2is/admin.users.v1/models/user";
 import { RolesInterface } from "@wso2is/core/models";
 import { ScopeInterface } from "./apiResources";
 import { RoleAudienceTypes } from "../constants/role-constants";
@@ -127,6 +127,14 @@ export interface RoleEditSectionsInterface {
      * outside the component.
      */
     activeUserStore?: string
+    /**
+     * Flag to check if privileged users toggle is visible.
+     */
+    isPrivilegedUsersToggleVisible?: boolean;
+    /**
+     * Is roles assignment for non human users (eg: AI agents)
+     */
+    isForNonHumanUser?: boolean
 }
 
 /**

@@ -1,5 +1,108 @@
 # @wso2is/forms
 
+## 2.3.25
+
+### Patch Changes
+
+- [#8867](https://github.com/wso2/identity-apps/pull/8867) [`0c714793f572a0e1566e9aae0d4ce767823e1a9d`](https://github.com/wso2/identity-apps/commit/0c714793f572a0e1566e9aae0d4ce767823e1a9d) Thanks [@jeradrutnam](https://github.com/jeradrutnam)! - Improve organization nested search feature
+
+## 2.3.24
+
+### Patch Changes
+
+- [#8696](https://github.com/wso2/identity-apps/pull/8696) [`ab46bb12e16988d1910e0659a4d22cb4337f6a5b`](https://github.com/wso2/identity-apps/commit/ab46bb12e16988d1910e0659a4d22cb4337f6a5b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Support for account linking based on a matching a user attribute
+
+## 2.3.23
+
+### Patch Changes
+
+- [#7804](https://github.com/wso2/identity-apps/pull/7804) [`084f8f96a8370514a418ea59362f0d2a72cddb7a`](https://github.com/wso2/identity-apps/commit/084f8f96a8370514a418ea59362f0d2a72cddb7a) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Show verification pending email/mobile in console user profile
+
+## 2.3.22
+
+### Patch Changes
+
+- Updated dependencies [[`04fdeac1d019db974616a0845dfda84aa353d582`](https://github.com/wso2/identity-apps/commit/04fdeac1d019db974616a0845dfda84aa353d582)]:
+  - @wso2is/core@2.7.0
+
+## 2.3.21
+
+### Patch Changes
+
+- [#7701](https://github.com/wso2/identity-apps/pull/7701) [`f9752f1420e185f1a37ea267fb7edd336b8722ce`](https://github.com/wso2/identity-apps/commit/f9752f1420e185f1a37ea267fb7edd336b8722ce) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Trigger patch release to all packages to prepare for RC
+
+- Updated dependencies [[`f9752f1420e185f1a37ea267fb7edd336b8722ce`](https://github.com/wso2/identity-apps/commit/f9752f1420e185f1a37ea267fb7edd336b8722ce)]:
+  - @wso2is/core@2.6.5
+
+## 2.3.20
+
+### Patch Changes
+
+- Updated dependencies [[`ccb0b6b1e6bc018a9dcea67ab2aa1f6856971578`](https://github.com/wso2/identity-apps/commit/ccb0b6b1e6bc018a9dcea67ab2aa1f6856971578)]:
+  - @wso2is/core@2.6.4
+
+## 2.3.19
+
+### Patch Changes
+
+- Updated dependencies [[`8cebca0336f5769f65fda60960b78d8404049301`](https://github.com/wso2/identity-apps/commit/8cebca0336f5769f65fda60960b78d8404049301)]:
+  - @wso2is/core@2.6.3
+
+## 2.3.18
+
+### Patch Changes
+
+- [#7513](https://github.com/wso2/identity-apps/pull/7513) [`43ab5e89caf6862202104d13ecc45454c04c7fb0`](https://github.com/wso2/identity-apps/commit/43ab5e89caf6862202104d13ecc45454c04c7fb0) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Improve multi email and mobile fields to update with Update button
+
+## 2.3.17
+
+### Patch Changes
+
+- Updated dependencies [[`0aca53b8d7f18b9d8488911500b86c7178eb9be6`](https://github.com/wso2/identity-apps/commit/0aca53b8d7f18b9d8488911500b86c7178eb9be6)]:
+  - @wso2is/core@2.6.2
+
+## 2.3.16
+
+### Patch Changes
+
+- Updated dependencies [[`bb8c0b38541fe6bb367f74621b4c27587d82ebdd`](https://github.com/wso2/identity-apps/commit/bb8c0b38541fe6bb367f74621b4c27587d82ebdd)]:
+  - @wso2is/core@2.6.1
+
+## 2.3.15
+
+### Patch Changes
+
+- Updated dependencies [[`b67d22c81d5c8be72c09abd36ed829a88fb22a4b`](https://github.com/wso2/identity-apps/commit/b67d22c81d5c8be72c09abd36ed829a88fb22a4b)]:
+  - @wso2is/core@2.6.0
+
+## 2.3.14
+
+### Patch Changes
+
+- Updated dependencies [[`92a6766086071fd5e0986f91803804783b9159bf`](https://github.com/wso2/identity-apps/commit/92a6766086071fd5e0986f91803804783b9159bf)]:
+  - @wso2is/core@2.5.9
+
+## 2.3.13
+
+### Patch Changes
+
+- Updated dependencies [[`31b4e92ae73fea1372a03f9aa0511f062030e44f`](https://github.com/wso2/identity-apps/commit/31b4e92ae73fea1372a03f9aa0511f062030e44f)]:
+  - @wso2is/core@2.5.8
+
+## 2.3.12
+
+### Patch Changes
+
+- Updated dependencies [[`50b9ac91f7ff1da3f2e9d3d4ec99a84ff16f3523`](https://github.com/wso2/identity-apps/commit/50b9ac91f7ff1da3f2e9d3d4ec99a84ff16f3523), [`abf5c953b8f48db5cdb855e75f5c1b847d1e42f0`](https://github.com/wso2/identity-apps/commit/abf5c953b8f48db5cdb855e75f5c1b847d1e42f0)]:
+  - @wso2is/core@2.5.7
+
+## 2.3.11
+
+### Patch Changes
+
+- Updated dependencies [[`4497e3e2a3ec1ea0ca94aad71d3bd8580e3f1b98`](https://github.com/wso2/identity-apps/commit/4497e3e2a3ec1ea0ca94aad71d3bd8580e3f1b98)]:
+  - @wso2is/core@2.5.6
+
 ## 2.3.10
 
 ### Patch Changes

@@ -23,7 +23,8 @@ import {
     InboundProtocolListItemInterface,
     URLFragmentTypes
 } from "@wso2is/admin.applications.v1/models/application";
-import { EventPublisher, history } from "@wso2is/admin.core.v1";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { GenericIcon, GenericIconProps, Heading, PageHeader } from "@wso2is/react-components";

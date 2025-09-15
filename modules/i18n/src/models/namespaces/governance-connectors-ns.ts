@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,14 @@
  * under the License.
  */
 
+import { NotificationItem } from "../common";
+
 export interface governanceConnectorsNS {
+    dangerZone: {
+        actionTitle: string;
+        heading: string;
+        subHeading: string;
+    };
     notifications: {
         getConnectorCategories: {
             error: {
@@ -52,6 +59,16 @@ export interface governanceConnectorsNS {
                 description: string;
             };
             genericError: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
+        revertConnector: {
+            error: {
                 message: string;
                 description: string;
             };
@@ -264,6 +281,10 @@ export interface governanceConnectorsNS {
                         };
                     };
                 };
+                registrationFlowBuilder: {
+                    friendlyName: string;
+                    description: string;
+                }
             };
         };
         loginAttemptsSecurity: {
@@ -316,6 +337,22 @@ export interface governanceConnectorsNS {
                         };
                     };
                 };
+                siftConnector: {
+                    properties: {
+                        name: string;
+                        description: string;
+                        siftConnectorApiKey: {
+                            label: string;
+                            placeholder: string;
+                        };
+                    };
+                    notifications: {
+                        configurationUpdate: {
+                            success: NotificationItem;
+                            error: NotificationItem;
+                        };
+                    };
+                };
             };
         };
         accountManagement: {
@@ -341,6 +378,7 @@ export interface governanceConnectorsNS {
                 };
                 accountDisableHandler: {
                     friendlyName: string;
+                    description: string;
                     properties: {
                         accountDisableHandlerEnable: {
                             hint: string;
@@ -349,6 +387,22 @@ export interface governanceConnectorsNS {
                         accountDisableHandlerNotificationManageInternally: {
                             hint: string;
                             label: string;
+                        };
+                    };
+                    notifications: {
+                        configurationUpdate: {
+                            success: NotificationItem;
+                            error: NotificationItem;
+                        };
+                        revertConfiguration: {
+                            success: {
+                                description: string;
+                                message: string;
+                            };
+                            error: {
+                                description: string;
+                                message: string;
+                            };
                         };
                     };
                 };
@@ -606,6 +660,25 @@ export interface governanceConnectorsNS {
                 };
                 userClaimUpdate: {
                     friendlyName: string;
+                    subTitle: string;
+                    update: {
+                        error: {
+                            description: string;
+                            message: string;
+                        },
+                        genericError: {
+                            description: string;
+                            message: string;
+                        },
+                        success: {
+                            description: string;
+                            message: string;
+                        }
+                    },
+                    subHeadings: {
+                        emailConfiguration: string;
+                        mobileConfiguration: string;
+                    },
                     properties: {
                         userClaimUpdateEmailEnableVerification: {
                             hint: string;

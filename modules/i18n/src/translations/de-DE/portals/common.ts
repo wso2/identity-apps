@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,10 +35,113 @@ export const common: CommonNS = {
     "applicationName": "Anwendungsname",
     "applications": "Anwendungen",
     "approvalStatus": "Freigabestand",
+    "approvals": "Genehmigungen",
+    "approvalsPage": {
+        "list": {
+            "columns": {
+                "actions": "Aktionen",
+                "name": "Name"
+            }
+        },
+        "modals": {
+            "description": "Überprüfen Sie die betrieblichen Aufgaben, die Ihre Genehmigung erfordern",
+            "header": "Genehmigungen",
+            "subHeader": "Überprüfen Sie die betrieblichen Aufgaben, die Ihre Genehmigung erfordern"
+        },
+        "notifications": {
+            "fetchApprovalDetails": {
+                "error": {
+                    "description": "{{description}}",
+                    "message": "Fehler beim Abrufen der Genehmigungsdetails"
+                },
+                "genericError": {
+                    "description": "Die Genehmigungsdetails konnten nicht abgerufen werden.",
+                    "message": "Da ist etwas schiefgelaufen"
+                }
+            },
+            "fetchPendingApprovals": {
+                "error": {
+                    "description": "{{description}}",
+                    "message": "Fehler beim Abrufen ausstehender Genehmigungen"
+                },
+                "genericError": {
+                    "description": "Die ausstehenden Genehmigungen konnten nicht abgerufen werden.",
+                    "message": "Da ist etwas schiefgelaufen"
+                }
+            },
+            "updatePendingApprovals": {
+                "error": {
+                    "description": "{{description}}",
+                    "message": "Fehler beim Aktualisieren der Genehmigung"
+                },
+                "genericError": {
+                    "description": "Die ausstehende Genehmigung konnte nicht aktualisiert werden.",
+                    "message": "Da ist etwas schiefgelaufen"
+                },
+                "success": {
+                    "description": "Die Genehmigung wurde erfolgreich aktualisiert.",
+                    "message": "Update erfolgreich"
+                }
+            }
+        },
+        "operationTypes": {
+            "addRole": "Rolle hinzufügen",
+            "addUser": "Benutzer hinzufügen",
+            "all": "Alle Vorgänge",
+            "deleteRole": "Rolle löschen",
+            "deleteUser": "Benutzer löschen",
+            "selfRegisterUser": "Benutzer selbst registrieren",
+            "updateRolesOfUser": "Benutzerrollen aktualisieren"
+        },
+        "placeholders": {
+            "emptyApprovalFilter": {
+                "action": "Alle anzeigen",
+                "subtitles": {
+                    0: "Derzeit gibt es keine Genehmigungen im Status {{status}}.",
+                    1: "Bitte überprüfen Sie, ob Sie Aufgaben im Status {{status}} haben, um",
+                    2: "sie hier anzuzeigen."
+                },
+                "title": "Keine Ergebnisse gefunden"
+            },
+            "emptyApprovalList": {
+                "action": "",
+                "subtitles": {
+                    0: "Derzeit gibt es keine Genehmigungen zur Überprüfung.",
+                    1: "Bitte überprüfen Sie, ob Sie einen Workflow hinzugefügt haben, um die Vorgänge im System zu steuern.",
+                    2: ""
+                },
+                "title": "Keine Genehmigungen"
+            },
+            "emptySearchResults": {
+                "action": "Alle anzeigen",
+                "subtitles": {
+                    0: "Wir konnten den von Ihnen gesuchten Workflow nicht finden.",
+                    1: "Bitte überprüfen Sie, ob Sie einen Workflow mit diesem Namen in",
+                    2: "dem System haben."
+                },
+                "title": "Keine Genehmigungen"
+            },
+            "searchApprovals": "Nach Workflow-Namen suchen"
+        },
+        "propertyMessages": {
+            "assignedUsersDeleted": "Die zugewiesenen Benutzer wurden gelöscht.",
+            "roleDeleted": "Die Rolle wurde gelöscht.",
+            "selfRegistration": "Self Registration",
+            "unassignedUsersDeleted": "Die nicht zugewiesenen Benutzer wurden gelöscht."
+        },
+        "subTitle": "Überprüfen Sie die betrieblichen Aufgaben, die Ihre Genehmigung erfordern",
+        "title": "Genehmigungen"
+    },
     "approve": "Genehmigen",
+    "approved": "Genehmigt",
     "apps": "Anwendungen",
+    "assignYourself": "Weisen Sie sich selbst zu",
     "assignee": "Beauftragter",
     "assignees": "Beauftragte",
+    "asyncOperationErrorMessage": {
+        "description": "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es später noch einmal.",
+        "message": "Da ist etwas schiefgelaufen"
+    },
     "authentication": "Authentifizierung",
     "authenticator": "Authentifikator",
     "authenticator_plural": "Authentifikatoren",
@@ -53,7 +156,6 @@ export const common: CommonNS = {
         "heading": "Etwas ist schief gelaufen",
         "primaryActionText": "Laden Sie die App neu"
     },
-    "claim": "Beanspruchen",
     "clear": "klar",
     "clientId": "Kunden ID",
     "close": "Schließen",
@@ -69,6 +171,7 @@ export const common: CommonNS = {
     "dangerZone": "Gefahrenzone",
     "darkMode": "Dunkler Modus",
     "delete": "Löschen",
+    "deprecated": "Diese Konfiguration ist veraltet und wird in einer zukünftigen Version entfernt.",
     "description": "Beschreibung",
     "deviceModel": "Gerätemodell",
     "disable": "Deaktivieren",
@@ -118,6 +221,7 @@ export const common: CommonNS = {
     "metaAttributes": "Metaattribute",
     "minValidation": "Dieser Wert sollte größer oder gleich {{min}} sein.",
     "minimize": "Minimieren",
+    "minutes": "minuten",
     "more": "Mehr",
     "myAccount": "Mein Konto",
     "name": "Name",
@@ -129,11 +233,14 @@ export const common: CommonNS = {
     "new": "Neu",
     "next": "Nächster",
     "noResultsFound": "Keine Ergebnisse gefunden",
+    "none": "Keine",
     "okay": "Okay",
     "operatingSystem": "Betriebssystem",
+    "operationType": "Operationstyp",
     "operations": "Betrieb",
     "organizationName": "{{orgName}} Organisation",
     "overview": "Überblick",
+    "pending": "Ausstehend",
     "personalInfo": "Persönliche Informationen",
     "pin": "PIN",
     "pinned": "Gepinnt",
@@ -145,11 +252,12 @@ export const common: CommonNS = {
     "priority": "Priorität",
     "privacy": "Privatsphäre",
     "properties": "Eigenschaften",
+    "publish": "Veröffentlichen",
     "ready": "Bereit",
     "regenerate": "Regenerieren",
     "register": "Registrieren",
     "reject": "Ablehnen",
-    "release": "Veröffentlichung",
+    "rejected": "Abgelehnt",
     "remove": "Entfernen",
     "removeAll": "Alles entfernen",
     "required": "Dies ist erforderlich.",
@@ -160,10 +268,13 @@ export const common: CommonNS = {
     "revokeAll": "Alle widerrufen",
     "samples": "Proben",
     "save": "speichern",
+    "saveDraft": "Entwurf speichern",
     "sdks": "SDKs",
     "search": "Suche",
     "searching": "Suche",
     "security": "SICHERHEIT",
+    "selectAll": "Selecteer alles",
+    "selectNone": "Selecteer geen",
     "services": "Dienstleistungen",
     "settings": "die Einstellungen",
     "setup": "Konfiguration",
@@ -184,6 +295,7 @@ export const common: CommonNS = {
     "terminateSession": "Sitzung beenden",
     "tooShort": "Zu kurz",
     "type": "Art",
+    "unassign": "Zuweisung aufheben",
     "unpin": "Lösen Sie den Stift",
     "unpinned": "Losgelöst",
     "update": "Aktualisieren",
@@ -191,6 +303,7 @@ export const common: CommonNS = {
     "verified": "Verifiziert",
     "verify": "Überprüfen",
     "view": "Aussicht",
+    "viewDetails": "Details ansehen",
     "weak": "Schwach",
     "weakPassword": "Die Passwortstärke sollte zumindest gut sein."
 };

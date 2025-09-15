@@ -23,15 +23,22 @@ import {
     ApplicationTemplateLoadingStrategies
 } from "@wso2is/admin.applications.v1/models/application";
 import { ApplicationsResourceEndpointsInterface } from "@wso2is/admin.applications.v1/models/endpoints";
+import {
+    WorkflowAssociationsResourceEndpointsInterface,
+    WorkflowsResourceEndpointsInterface
+} from "@wso2is/admin.approval-workflows.v1/models/endpoints";
 import { BrandingPreferenceResourceEndpointsInterface } from "@wso2is/admin.branding.v1/models/endpoints";
 import { CertificatesResourceEndpointsInterface } from "@wso2is/admin.certificates.v1";
 import { ClaimResourceEndpointsInterface } from "@wso2is/admin.claims.v1/models/endpoints";
 import { ConnectionResourceEndpointsInterface } from "@wso2is/admin.connections.v1";
+import { FlowBuilderCoreResourceEndpointsInterface } from "@wso2is/admin.flow-builder-core.v1/models/endpoints";
 import { GroupsResourceEndpointsInterface } from "@wso2is/admin.groups.v1/models/endpoints";
+import { RemoteLoggingResourceEndpointsInterface } from "@wso2is/admin.logs.v1/models/endpoints";
 import { ScopesResourceEndpointsInterface } from "@wso2is/admin.oidc-scopes.v1";
 import { OrganizationResourceEndpointsInterface } from "@wso2is/admin.organizations.v1/models";
 import { PolicyAdministrationEndpointsInterface } from "@wso2is/admin.policy-administration.v1/models/endpoints";
 import { RolesResourceEndpointsInterface } from "@wso2is/admin.roles.v2/models/endpoints";
+import { RulesEndpointsInterface } from "@wso2is/admin.rules.v1/models/endpoints";
 import { SecretsManagementEndpoints } from "@wso2is/admin.secrets.v1/models/endpoints";
 import { ServerConfigurationsResourceEndpointsInterface } from "@wso2is/admin.server-configurations.v1";
 import { SMSTemplateResourceEndpointsInterface } from "@wso2is/admin.sms-templates.v1/models/endpoints";
@@ -47,6 +54,7 @@ import {
     FeatureAccessConfigInterface
 } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
+import { WorkflowRequestsResourceEndpointsInterface } from "../../admin.workflow-requests.v1/configs/endpoints";
 
 export type ConfigInterface = CommonConfigInterface<
     DeploymentConfigInterface,
@@ -71,6 +79,10 @@ export interface FeatureConfigInterface {
      * Action management feature.
      */
     actions?: FeatureAccessConfigInterface;
+    /**
+     * Agent management feature.
+     */
+    agents?: FeatureAccessConfigInterface;
     /**
      * Admin user management feature.
      */
@@ -100,6 +112,10 @@ export interface FeatureConfigInterface {
      */
     attributeDialects?: FeatureAccessConfigInterface;
     /**
+     * Attribute verification feature.
+     */
+    attributeVerification?: FeatureAccessConfigInterface;
+    /**
      * Branding configurations feature.
      */
     branding?: FeatureAccessConfigInterface;
@@ -112,6 +128,10 @@ export interface FeatureConfigInterface {
      */
     emailProviders?: FeatureAccessConfigInterface;
     /**
+     * Flow orchestration feature.
+     */
+    flows?: FeatureAccessConfigInterface;
+    /**
      * Getting started feature.
      */
     gettingStarted?: FeatureAccessConfigInterface;
@@ -119,6 +139,10 @@ export interface FeatureConfigInterface {
      * SMS providers feature.
      */
     smsProviders?: FeatureAccessConfigInterface;
+    /**
+     * Push providers feature.
+     */
+    pushProviders?: FeatureAccessConfigInterface;
     /**
      * Notification channels feature.
      */
@@ -263,6 +287,18 @@ export interface FeatureConfigInterface {
      * Notification sending feature.
      */
     internalNotificationSending?: FeatureAccessConfigInterface;
+    /**
+     * Registration flow builder feature.
+     */
+    registrationFlowBuilder?: FeatureAccessConfigInterface;
+    /**
+     * Workflow requests feature.
+     */
+    workflowRequests?: FeatureAccessConfigInterface;
+    /**
+     * Workflow feature.
+     */
+    workflows?: FeatureAccessConfigInterface;
 }
 
 /**
@@ -277,6 +313,10 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
      * Configs of the myaccount app.
      */
     accountApp: ExternalAppConfigInterface;
+    /**
+     * Central deployment enabled.
+     */
+    centralDeploymentEnabled: boolean;
     /**
      * Configs of the developer app.
      */
@@ -297,12 +337,21 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
      * Configs of multiple application protocol.
      */
     allowMultipleAppProtocols?: boolean;
+    /**
+     * Region selection enabled.
+     * This is used to enable/disable the region selection in the organization creation page.
+     */
+    regionSelectionEnabled?: boolean;
 }
 
 /**
  * Interface for defining settings and configs of an external app.
  */
 interface ExternalAppConfigInterface {
+    /**
+     * Access URL for the central app.
+     */
+    centralAppPath?: string;
     /**
      * App base path. ex: `/account`, `/admin` etc.
      */
@@ -326,9 +375,34 @@ type GovernanceConnectorsFeatureConfig = Record<string, {
 }>
 
 /**
+ * Interface representing the configuration for multi-tenancy.
+ */
+export interface MultiTenancyConfigInterface {
+    /**
+     * Indicates if the dot extension is mandatory in the tenant domain.
+     */
+    isTenantDomainDotExtensionMandatory: boolean;
+    /**
+     * Regular expression for illegal characters in the tenant domain.
+     */
+    tenantDomainIllegalCharactersRegex: string;
+    /**
+     * Regular expression for validating the tenant domain.
+     */
+    tenantDomainRegex: string;
+}
+
+/**
  * Portal UI config interface inheriting the common configs from core module.
  */
 export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfigInterface> {
+    /**
+     * Should the admin notice be enabled.
+     */
+    adminNotice?: {
+        enabled: boolean;
+        plannedRollOutDate: string;
+    };
     /**
      * How should the application templates be loaded.
      * If `LOCAL` is selected, app will resort to in app templates.
@@ -409,6 +483,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     isSAASDeployment: boolean;
     /**
+     * Enable old UI of email provider.
+     */
+    enableOldUIForEmailProvider: boolean;
+    /**
      * Enable/Disable custom email template feature
      */
     enableCustomEmailTemplates: boolean;
@@ -424,6 +502,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Enable/Disable the custom claim mapping merge feature.
      */
     isCustomClaimMappingMergeEnabled?: boolean;
+    /**
+     * Configurations related to routing.
+     */
+    routes: RouteConfigInterface;
     /**
      * Self app name.
      */
@@ -448,6 +530,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Hidden userstores
      */
     hiddenUserStores: string[];
+    /**
+     * System reserved userstores
+     */
+    systemReservedUserStores: string[];
     /**
      * App Logos
      */
@@ -496,6 +582,11 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     isMultipleEmailsAndMobileNumbersEnabled?: boolean;
     /**
+     * Overridden Scim2 user schema URI.
+     * If the value is not overridden, the default SCIM2 user schema URI is returned.
+     */
+    userSchemaURI?: string;
+    /**
      * Password policy configs.
      */
     passwordPolicyConfigs: PasswordPolicyConfigsInterface;
@@ -503,6 +594,26 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Config to check whether the WS-Federation protocol template is enabled in the application creation wizard.
      */
     isWSFedProtocolTemplateEnabled?: boolean;
+     /**
+     * Multi-tenancy related configurations.
+     */
+    multiTenancy: MultiTenancyConfigInterface;
+    /**
+     * Async Operation Polling Interval.
+     */
+    asyncOperationStatusPollingInterval: number;
+    /**
+     * Custom content configurations.
+     */
+    customContent: CustomContentConfigInterface;
+    /**
+     * Privacy policy URL.
+     */
+    privacyPolicyUrl?: string;
+    /**
+     * Terms of service URL.
+     */
+    termsOfUseUrl?: string;
 }
 
 /**
@@ -581,14 +692,36 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     ApplicationsTemplatesEndpointsInterface,
     SMSTemplateResourceEndpointsInterface,
     ActionsResourceEndpointsInterface,
-    PolicyAdministrationEndpointsInterface {
+    PolicyAdministrationEndpointsInterface,
+    WorkflowsResourceEndpointsInterface,
+    WorkflowAssociationsResourceEndpointsInterface,
+    WorkflowRequestsResourceEndpointsInterface,
+    RulesEndpointsInterface,
+    RemoteLoggingResourceEndpointsInterface,
+    FlowBuilderCoreResourceEndpointsInterface {
+
     CORSOrigins: string;
     // TODO: Remove this endpoint and use ID token to get the details
     me: string;
     saml2Meta: string;
     wellKnown: string;
+    asyncStatus: string;
 }
 
 export interface ResourceEndpointsInterface {
     [key: string]: string;
+}
+
+export interface RouteConfigInterface {
+    organizationEnabledRoutes: string[];
+}
+
+/**
+ * Interface for custom content configurations.
+ */
+export interface CustomContentConfigInterface {
+    /**
+     * Maximum file size allowed for custom content.
+     */
+    maxFileSize?: number;
 }

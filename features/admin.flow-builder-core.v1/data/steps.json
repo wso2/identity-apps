@@ -1,0 +1,202 @@
+[
+    {
+        "resourceType": "STEP",
+        "category": "INTERFACE",
+        "type": "VIEW",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Blank View",
+            "image": "https://www.svgrepo.com/show/448632/step.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {}
+    },
+    {
+        "resourceType": "STEP",
+        "category": "INTERFACE",
+        "type": "VIEW",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Email OTP View",
+            "image": "https://www.svgrepo.com/show/387455/email-down.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {},
+        "data": {
+            "components": [
+                {
+                    "id": "{{ID}}",
+                    "category": "DISPLAY",
+                    "type": "TYPOGRAPHY",
+                    "variant": "H3",
+                    "config": {
+                        "text": "Verify OTP"
+                    }
+                },
+                {
+                    "id": "{{ID}}",
+                    "category": "BLOCK",
+                    "type": "FORM",
+                    "config": {},
+                    "components": [
+                        {
+                            "id": "{{ID}}",
+                            "category": "FIELD",
+                            "type": "INPUT",
+                            "variant": "OTP",
+                            "config": {
+                                "type": "text",
+                                "hint": "",
+                                "identifier": "otp",
+                                "label": "Enter the code sent to your email",
+                                "required": true,
+                                "placeholder": ""
+                            }
+                        },
+                        {
+                            "id": "{{ID}}",
+                            "category": "ACTION",
+                            "type": "BUTTON",
+                            "variant": "PRIMARY",
+                            "config": {
+                                "type": "submit",
+                                "text": "Verify"
+                            },
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "EmailOTPExecutor"
+                                },
+                                "next": ""
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "resourceType": "STEP",
+        "category": "INTERFACE",
+        "type": "VIEW",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "SMS OTP View",
+            "image": "https://www.svgrepo.com/show/455832/mobile-message.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {},
+        "data": {
+            "components": [
+                {
+                    "id": "{{ID}}",
+                    "category": "DISPLAY",
+                    "type": "TYPOGRAPHY",
+                    "variant": "H3",
+                    "config": {
+                        "text": "Verify OTP"
+                    }
+                },
+                {
+                    "id": "{{ID}}",
+                    "category": "BLOCK",
+                    "type": "FORM",
+                    "config": {},
+                    "components": [
+                        {
+                            "id": "{{ID}}",
+                            "category": "FIELD",
+                            "type": "INPUT",
+                            "variant": "OTP",
+                            "config": {
+                                "type": "text",
+                                "hint": "",
+                                "identifier": "otp",
+                                "label": "Enter the code sent to your mobile",
+                                "required": true,
+                                "placeholder": ""
+                            }
+                        },
+                        {
+                            "id": "{{ID}}",
+                            "category": "ACTION",
+                            "type": "BUTTON",
+                            "variant": "PRIMARY",
+                            "config": {
+                                "type": "submit",
+                                "text": "Verify"
+                            },
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "SMSOTPExecutor"
+                                },
+                                "next": ""
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    {
+        "resourceType": "STEP",
+        "category": "DECISION",
+        "type": "RULE",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Rule",
+            "image": "https://www.svgrepo.com/show/413199/decide.svg",
+            "showOnResourcePanel": false
+        },
+        "config": {}
+    },
+    {
+        "resourceType": "STEP",
+        "category": "WORKFLOW",
+        "type": "EXECUTION",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Execution",
+            "image": "https://www.svgrepo.com/show/476381/play.svg",
+            "showOnResourcePanel": false
+        },
+        "config": {}
+    },
+    {
+        "resourceType": "STEP",
+        "category": "WORKFLOW",
+        "type": "EXECUTION",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Magic Link View",
+            "image": "https://www.svgrepo.com/show/532869/link-alt-1.svg",
+            "showOnResourcePanel": true
+        },
+        "data": {
+            "action": {
+                "type": "EXECUTOR",
+                "executor": {
+                    "name": "MagicLinkExecutor"
+                },
+                "next": ""
+            },
+            "components": [
+                {
+                    "id": "{{ID}}",
+                    "category": "DISPLAY",
+                    "type": "RICH_TEXT",
+                    "config": {
+                        "text": "<h3 class=\"rich-text-heading-h3 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Check Your Email</span></h3><h5 class=\"rich-text-heading-h5 rich-text-align-center\"><br><span class=\"rich-text-pre-wrap\">An email containing further instructions has been sent to your email address. Please check your inbox to continue.</span></h5>"
+                    }
+                }
+            ]
+        }
+    }
+]

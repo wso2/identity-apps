@@ -44,6 +44,10 @@ module.exports = {
     setupFilesAfterEnv: [
         "<rootDir>/test-configs/setup-test.ts"
     ],
+    testEnvironment: "jest-environment-jsdom-global",
+    testEnvironmentOptions: {
+        url: "http://localhost"
+    },
     testMatch: [
         "<rootDir>/**/?(*.)test.{ts,tsx}"
     ],

@@ -22,10 +22,11 @@ import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
-import { store } from "@wso2is/admin.core.v1/store";
+import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { useSelector } from "react-redux";
 import { EmailProviderConstants } from "../constants";
 import { EmailProviderConfigAPIResponseInterface }  from "../models";
 
@@ -37,8 +38,41 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  *
  * @returns the email provider configurations of the tenant.
  */
-export const useEmailProviderConfig = <Data = EmailProviderConfigAPIResponseInterface[], Error = RequestErrorInterface>
+export const useEmailProviderConfig = <Data = EmailProviderConfigAPIResponseInterface[],Error = RequestErrorInterface>
     (): RequestResultInterface<Data, Error> => {
+
+    const enableOldUIForEmailProvider: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.enableOldUIForEmailProvider);
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: enableOldUIForEmailProvider
+            ? store.getState().config.endpoints.emailProviderEndpoint
+            : store.getState().config.endpoints.emailProviderV2Endpoint
+    };
+
+    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+
+    return {
+        data,
+        error: error,
+        isLoading,
+        isValidating,
+        mutate: mutate
+    };
+};
+
+/**
+ * Get email provider configurations with V1 API.
+ *
+ * @returns the email provider configurations of the tenant.
+ */
+export const useEmailProviderConfigV1 = <Data = EmailProviderConfigAPIResponseInterface[],
+    Error = RequestErrorInterface>(): RequestResultInterface<Data, Error> => {
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -64,9 +98,11 @@ export const useEmailProviderConfig = <Data = EmailProviderConfigAPIResponseInte
  * Update email provider configurations.
  *
  * @param data - the updated email provider configurations.
+ * @param enableOldUIForEmailProvider - whether to use the old UI for email provider.
  * @returns a promise to update the email provider configurations.
  */
-export const updateEmailProviderConfigurations = (data: EmailProviderConfigAPIResponseInterface):
+export const updateEmailProviderConfigurations = (data: EmailProviderConfigAPIResponseInterface,
+    enableOldUIForEmailProvider: boolean):
     Promise<EmailProviderConfigAPIResponseInterface> => {
 
     const requestConfig: AxiosRequestConfig = {
@@ -76,7 +112,9 @@ export const updateEmailProviderConfigurations = (data: EmailProviderConfigAPIRe
             "Content-Type": "application/json"
         },
         method:  HttpMethods.POST,
-        url: store.getState().config.endpoints.emailProviderEndpoint
+        url: enableOldUIForEmailProvider
+            ? store.getState().config.endpoints.emailProviderEndpoint
+            : store.getState().config.endpoints.emailProviderV2Endpoint
     };
 
     return httpClient(requestConfig)
@@ -104,9 +142,10 @@ export const updateEmailProviderConfigurations = (data: EmailProviderConfigAPIRe
 
 /**
  * Delete email provider configurations.
- *
+ * @param enableOldUIForEmailProvider - whether to use the old UI for email provider.
+ * @returns a promise to delete the email provider configurations.
  */
-export const deleteEmailProviderConfigurations = ():
+export const deleteEmailProviderConfigurations = (enableOldUIForEmailProvider: boolean):
     Promise<EmailProviderConfigAPIResponseInterface> => {
 
     const requestConfig: AxiosRequestConfig = {
@@ -115,7 +154,9 @@ export const deleteEmailProviderConfigurations = ():
             "Content-Type": "application/json"
         },
         method:  HttpMethods.DELETE,
-        url: store.getState().config.endpoints.emailProviderEndpoint + "/EmailPublisher"
+        url: enableOldUIForEmailProvider
+            ? store.getState().config.endpoints.emailProviderEndpoint + "/EmailPublisher"
+            : store.getState().config.endpoints.emailProviderV2Endpoint + "/EmailPublisher"
     };
 
     return httpClient(requestConfig)

@@ -17,17 +17,15 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    getEmptyPlaceholderIllustrations
-} from "@wso2is/admin.core.v1";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { deleteParentOrgInvite } from "@wso2is/admin.users.v1/components/guests/api/invite";
 import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
-import { UserInviteInterface } from "@wso2is/admin.users.v1/models";
+import { UserInviteInterface } from "@wso2is/admin.users.v1/models/user";
 import { UserStoreDropdownItem } from "@wso2is/admin.userstores.v1/models";
 import {
     AlertLevels,

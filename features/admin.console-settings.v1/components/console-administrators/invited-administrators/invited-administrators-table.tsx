@@ -17,13 +17,11 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    getEmptyPlaceholderIllustrations
-} from "@wso2is/admin.core.v1";
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { useServerConfigs } from "@wso2is/admin.server-configurations.v1";
 import { UserInviteInterface } from "@wso2is/admin.users.v1/components/guests/models/invite";
 import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";

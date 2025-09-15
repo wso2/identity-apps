@@ -24,6 +24,7 @@ import {
     InitializeAlertSystemAction,
     SetOpenAction,
     SetSupportedI18nLanguagesActionInterface,
+    SetSupportedLocaleExtensionsActionInterface,
     ShowGlobalLoaderAction,
     ToggleApplicationsPageVisibilityAction
 } from "./types";
@@ -89,6 +90,19 @@ export const setSupportedI18nLanguages = (
 ): SetSupportedI18nLanguagesActionInterface => ({
     payload: languages,
     type: GlobalActionTypes.SET_SUPPORTED_I18N_LANGUAGES
+});
+
+/**
+ * Redux action to set the supported locale extensions.
+ *
+ * @param locales - Supported locale extensions.
+ * @returns an action of type `SET_SUPPORTED_LOCALE_EXTENSIONS`
+ */
+export const setSupportedLocaleExtensions = (
+    locales: SupportedLanguagesMeta
+): SetSupportedLocaleExtensionsActionInterface => ({
+    payload: locales,
+    type: GlobalActionTypes.SET_SUPPORTED_LOCALE_EXTENSIONS
 });
 
 /**

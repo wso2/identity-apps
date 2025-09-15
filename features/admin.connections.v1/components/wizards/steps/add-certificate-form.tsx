@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { UploadCertificate } from "@wso2is/admin.core.v1";
+import { UploadCertificate } from "@wso2is/admin.core.v1/components/upload-certificate";
 import { Certificate, TestableComponentInterface } from "@wso2is/core/models";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
 import { Forms } from "@wso2is/forms";

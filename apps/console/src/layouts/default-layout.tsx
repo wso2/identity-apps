@@ -17,18 +17,21 @@
  */
 
 import AppShell from "@oxygen-ui/react/AppShell";
+import Box from "@oxygen-ui/react/Box";
+import Tooltip from "@oxygen-ui/react/Tooltip";
+import { ArrowLeftIcon } from "@oxygen-ui/react-icons";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
-import {
-    AppConstants,
-    AppState,
-    AppUtils,
-    FeatureConfigInterface,
-    Header,
-    ProtectedRoute,
-    RouteUtils,
-    UIConstants,
-    getEmptyPlaceholderIllustrations
-} from "@wso2is/admin.core.v1";
+import Header from "@wso2is/admin.core.v1/components/header";
+import { ProtectedRoute } from "@wso2is/admin.core.v1/components/protected-route";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
+import { RouteUtils } from "@wso2is/admin.core.v1/utils/route-utils";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { AlertInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
@@ -77,6 +80,11 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = ({
     const isMarketingConsentBannerEnabled: boolean = useSelector((state: AppState) => {
         return state?.config?.ui?.isMarketingConsentBannerEnabled;
     });
+    const gettingStartedFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features.gettingStarted
+    );
+
+    const hasGettingStartedViewPermission: boolean = useRequiredScopes(gettingStartedFeatureConfig?.scopes?.feature);
 
     const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(getDefaultLayoutRoutes());
 
@@ -176,7 +184,22 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = ({
                 } }
                 withIcon={ true }
             />
-            <AppShell header={ <Header handleSidePanelToggleClick={ () => null } /> }>
+            <AppShell
+                header={
+                    (<Header
+                        onCollapsibleHamburgerClick={ () => {
+                            hasGettingStartedViewPermission && history.push(appHomePath);
+                        } }
+                        navbarToggleIcon={
+                            (<Tooltip title={ t("common:goBackHome") }>
+                                <Box display="flex">
+                                    <ArrowLeftIcon />
+                                </Box>
+                            </Tooltip>)
+                        }
+                    />)
+                }
+            >
                 <ErrorBoundary
                     onChunkLoadError={ AppUtils.onChunkLoadError }
                     handleError={ (_error: Error, _errorInfo: React.ErrorInfo) => {

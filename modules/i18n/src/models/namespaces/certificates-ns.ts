@@ -96,6 +96,7 @@ export interface CertificatesNS {
             };
         };
         certificateModalHeader: string;
+        certificateViewValidation: string;
         placeholders: {
             emptySearch: {
                 action: string;
@@ -129,6 +130,7 @@ export interface CertificatesNS {
             subjectDN: string;
             version: string;
         };
+        serial : string;
         wizard: {
             panes: {
                 upload: string;

@@ -17,14 +17,12 @@
  */
 
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
-import {
-    AppConstants,
-    AppState,
-    ConfigReducerStateInterface,
-    EventPublisher,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import {
@@ -370,21 +368,20 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             const initialSelectedClaims: ExtendedClaimInterface[] = [];
             const initialAvailableClaims: ExtendedClaimInterface[] = [];
 
-            applicationConfig.attributeSettings.attributeSelection.getClaims(claims)
-                .map((claim: ExtendedClaimInterface) => {
-                    if (initialRequest.includes(claim.claimURI) &&
-                        !(claim.claimURI === defaultSubjectAttribute && isSubjectClaimSetToDefaultWithoutMapping())) {
-                        const newClaim: ExtendedClaimInterface = {
-                            ...claim,
-                            mandatory: checkInitialRequestMandatory(claim.claimURI),
-                            requested: checkInitialRequested(claim.claimURI)
-                        };
+            claims.map((claim: ExtendedClaimInterface) => {
+                if (initialRequest.includes(claim.claimURI) &&
+                    !(claim.claimURI === defaultSubjectAttribute && isSubjectClaimSetToDefaultWithoutMapping())) {
+                    const newClaim: ExtendedClaimInterface = {
+                        ...claim,
+                        mandatory: checkInitialRequestMandatory(claim.claimURI),
+                        requested: checkInitialRequested(claim.claimURI)
+                    };
 
-                        initialSelectedClaims.push(newClaim);
-                    } else {
-                        initialAvailableClaims.push(claim);
-                    }
-                });
+                    initialSelectedClaims.push(newClaim);
+                } else {
+                    initialAvailableClaims.push(claim);
+                }
+            });
             setSelectedClaims(initialSelectedClaims);
             setClaims(initialAvailableClaims);
             setAvailableClaims(initialAvailableClaims);
@@ -439,21 +436,20 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             const initialSelectedClaims: ExtendedExternalClaimInterface[] = [];
             const initialAvailableClaims: ExtendedExternalClaimInterface[] = [];
 
-            applicationConfig.attributeSettings.attributeSelection.getExternalClaims(externalClaims)
-                .map((claim: ExtendedExternalClaimInterface) => {
-                    if (initialRequest.includes(claim.mappedLocalClaimURI)) {
-                        const newClaim: ExtendedExternalClaimInterface = {
-                            ...claim,
-                            mandatory: checkInitialRequestMandatory(claim.mappedLocalClaimURI),
-                            requested: true
-                        };
+            externalClaims.map((claim: ExtendedExternalClaimInterface) => {
+                if (initialRequest.includes(claim.mappedLocalClaimURI)) {
+                    const newClaim: ExtendedExternalClaimInterface = {
+                        ...claim,
+                        mandatory: checkInitialRequestMandatory(claim.mappedLocalClaimURI),
+                        requested: true
+                    };
 
-                        initialSelectedClaims.push(newClaim);
+                    initialSelectedClaims.push(newClaim);
 
-                    } else {
-                        initialAvailableClaims.push(claim);
-                    }
-                });
+                } else {
+                    initialAvailableClaims.push(claim);
+                }
+            });
             const tempFilterSelectedExternalClaims: ExtendedExternalClaimInterface[] =
             [ ...filterSelectedExternalClaims ];
 
@@ -508,11 +504,10 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
     useEffect(() => {
         if (claims) {
-            setAvailableClaims([ ...applicationConfig.attributeSettings.attributeSelection.getClaims(claims) ]);
+            setAvailableClaims([ ...claims ]);
         }
         if (externalClaims) {
-            setAvailableExternalClaims([ ...applicationConfig.attributeSettings
-                .attributeSelection.getExternalClaims(externalClaims) ]);
+            setAvailableExternalClaims([ ...externalClaims ]);
         }
     }, [ claims, externalClaims ]);
 
@@ -543,7 +538,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                     setInitialSelectedClaims={ setSelectedClaims }
                     showAddModal={ showSelectionModal }
                     setShowAddModal={ setShowSelectionModal }
-                    availableClaims={ applicationConfig.attributeSettings.attributeSelection.getClaims(claims) }
+                    availableClaims={ claims }
                     setAvailableClaims={ setClaims }
                     createMapping={ createMapping }
                     removeMapping={ removeMapping }
@@ -561,8 +556,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                 setInitialSelectedExternalClaims={ setSelectedExternalClaims }
                 showAddModal={ showSelectionModal }
                 setShowAddModal={ setShowSelectionModal }
-                availableExternalClaims={ applicationConfig.attributeSettings
-                    .attributeSelection.getExternalClaims(externalClaims) }
+                availableExternalClaims={ externalClaims }
                 setAvailableExternalClaims={ setExternalClaims }
                 data-testid={ `${ testId }-wizard-other-dialects` }
             />

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,7 +18,8 @@
 
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { getAllExternalClaims, getAllLocalClaims, getDialects } from "@wso2is/admin.claims.v1/api";
-import { AppState, EventPublisher, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { SubjectAttributeListItem } from "@wso2is/admin.identity-providers.v1/components/settings";
 import { useOIDCScopesList } from "@wso2is/admin.oidc-scopes.v1/api/oidc-scopes";
@@ -42,7 +43,7 @@ import isEmpty from "lodash-es/isEmpty";
 import sortBy from "lodash-es/sortBy";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Divider, Grid } from "semantic-ui-react";
 import { AdvanceAttributeSettings } from "./advance-attribute-settings";
@@ -180,9 +181,6 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
     const dispatch: Dispatch = useDispatch();
 
     const hasApplicationUpdatePermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.update);
-
-    const enableIdentityClaims: boolean = useSelector(
-        (state: AppState) => state?.config?.ui?.enableIdentityClaims);
 
     const [ localDialectURI, setLocalDialectURI ] = useState("");
 
@@ -441,7 +439,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
     const getClaims = () => {
         setIsClaimLoading(true);
         const params: ClaimsGetParams = {
-            "exclude-identity-claims": !enableIdentityClaims,
+            "exclude-hidden-claims": true,
             filter: null,
             limit: null,
             offset: null,
@@ -1347,6 +1345,7 @@ export const AttributeSettings: FunctionComponent<AttributeSettingsPropsInterfac
                                                 : undefined
                                         }
                                         data-testid={ `${ componentId }-advanced-attribute-settings-form` }
+                                        appVersion={ appVersion }
                                     />
                                 </Grid.Column>
                             </Grid.Row>

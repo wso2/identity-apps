@@ -16,7 +16,10 @@
  * under the License.
  */
 
-import { AppState, FeatureConfigInterface, getEmptyPlaceholderIllustrations, history } from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmptyPlaceholder, TabPageLayout } from "@wso2is/react-components";
@@ -27,6 +30,7 @@ import { Dispatch } from "redux";
 import { useAPIResourceDetails } from "../api";
 import { EditAPIResource } from "../components";
 import { APIResourceType, APIResourcesConstants } from "../constants";
+import useApiResourcesPageContent from "../hooks/use-api-resources-page-content";
 import { APIResourceUtils } from "../utils/api-resource-utils";
 
 /**
@@ -51,6 +55,12 @@ const APIResourcesEditPage: FunctionComponent<APIResourcesEditPageInterface> = (
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+
+    const {
+        resourceEditPageTitle,
+        resourceEditBackButtonText,
+        resourceEditBackButtonLink
+    } = useApiResourcesPageContent();
 
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
     const [ apiResourceId, setAPIResourceId ] = useState<string>(null);
@@ -123,7 +133,7 @@ const APIResourcesEditPage: FunctionComponent<APIResourcesEditPageInterface> = (
             history.push(APIResourcesConstants.getPaths().get("API_RESOURCES_CATEGORY")
                 .replace(":categoryId", categoryId));
         } else {
-            history.push(APIResourcesConstants.getPaths().get("API_RESOURCES"));
+            history.push(resourceEditBackButtonLink);
         }
     };
 
@@ -139,7 +149,7 @@ const APIResourcesEditPage: FunctionComponent<APIResourcesEditPageInterface> = (
             : (<TabPageLayout
                 isLoading={ isAPIResourceDatatLoading }
                 title={ apiResourceData?.name }
-                pageTitle={ t("extensions:develop.apiResource.tabs.title") }
+                pageTitle={ resourceEditPageTitle }
                 loadingStateOptions={ {
                     count: 5,
                     imageType: "circular"
@@ -151,7 +161,7 @@ const APIResourcesEditPage: FunctionComponent<APIResourcesEditPageInterface> = (
                         ? t("pages:rolesEdit.backButton", { type: "Management APIs" })
                         : categoryId === APIResourceType.ORGANIZATION
                             ? t("pages:rolesEdit.backButton", { type: "Organization APIs" })
-                            : t("pages:rolesEdit.backButton", { type: "APIs" })
+                            : resourceEditBackButtonText
                 } }
                 titleTextAlign="left"
                 bottomMargin={ false }

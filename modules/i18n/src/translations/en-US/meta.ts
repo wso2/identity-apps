@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,6 +21,7 @@ import { LocaleMeta } from "../../models";
 
 export const meta: LocaleMeta = {
     code: "en-US",
+    direction: "ltr",
     flag: "us",
     name: "English (United States)",
     namespaces: [
@@ -47,6 +48,7 @@ export const meta: LocaleMeta = {
         I18nModuleConstants.AUTHENTICATION_FLOW_NAMESPACE,
         I18nModuleConstants.REMOTE_FETCH_NAMESPACE,
         I18nModuleConstants.ROLES_NAMESPACE,
+        I18nModuleConstants.APPLICATION_ROLES_NAMESPACE,
         I18nModuleConstants.SERVER_CONFIGS_NAMESPACE,
         I18nModuleConstants.SAML2_CONFIG_NAMESPACE,
         I18nModuleConstants.SESSION_MANAGEMENT_NAMESPACE,
@@ -70,7 +72,16 @@ export const meta: LocaleMeta = {
         I18nModuleConstants.ACTIONS_NAMESPACE,
         I18nModuleConstants.TENANTS_NAMESPACE,
         I18nModuleConstants.SMS_TEMPLATES_NAMESPACE,
+        I18nModuleConstants.CUSTOM_AUTHENTICATOR_NAMESPACE,
         I18nModuleConstants.POLICY_ADMINISTRATION_NAMESPACE,
-        I18nModuleConstants.REMOTE_USER_STORES_NAMESPACE
+        I18nModuleConstants.REMOTE_USER_STORES_NAMESPACE,
+        I18nModuleConstants.RULES_NAMESPACE,
+        I18nModuleConstants.PUSH_PROVIDERS_NAMESPACE,
+        I18nModuleConstants.EMAIL_PROVIDERS_NAMESPACE,
+        I18nModuleConstants.WEBHOOKS_NAMESPACE,
+        I18nModuleConstants.APPROVAL_WORKFLOWS_NAMESPACE,
+        I18nModuleConstants.AGENTS_NAMESPACE,
+        I18nModuleConstants.FLOWS_NAMESPACE,
+        I18nModuleConstants.COMMON_USERS_NAMESPACE
     ]
 };

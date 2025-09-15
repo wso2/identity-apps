@@ -1,0 +1,113 @@
+.box-container-heading {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    background-color: #f9fafb;
+    border-radius: 8px;
+    padding: 20px;
+    transition: all 0.3s ease-in-out;
+    width: 100%;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.approval-steps-container {
+    overflow-x: auto; 
+    overflow-y: hidden; 
+    padding: 1rem;
+    background-color: #fdfdfb; 
+    background-image: radial-gradient(#dcdcdc 0.5px, transparent 0.3px);
+    background-size: 8px 8px; 
+    border: 1px solid #dcdcdc; 
+    border-radius: 8px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    width: 100%;
+  }
+  
+.approval-steps-stepsWrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    padding: 2rem;
+    width: 100%;
+}
+
+.approval-step {
+    flex: 1;
+    min-width: 400px; 
+    max-width: calc(50% - 0.5rem);
+}
+
+
+.arrow-plus-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  
+  .arrow-container {
+    position: relative;
+    margin-right: 5px;
+   
+  .plus-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #555;
+    color: white;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    line-height: 1;
+
+    &:hover {
+      background-color: #777;
+      cursor: pointer;
+    }
+  }
+  }
+    
+.done.MuiFab-root {
+    pointer-events: none;
+    box-shadow: none;
+    color: var(--oxygen-palette-common-white);
+    background-color: rgba(0, 0, 0, 0);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(131deg, rgba(117, 237, 161, 0.70) 28.46%, rgb(52 146 86 / 60%) 119.09%);;
+
+    .oxygen-typography {
+        margin-left: 5px;
+        color: var(--oxygen-palette-common-white);
+    }
+
+    svg {
+        height: 30px;
+        width: 30px;
+        fill: var(--oxygen-customComponents-Chip-properties-new-border-color);
+
+        path {
+            stroke: var(--oxygen-customComponents-Chip-properties-new-border-color);
+            stroke-width: var(--oxygen-customComponents-Chip-properties-icon-stroke-width);
+        }
+    }
+}
+ 
+  .approval-steps-hint {
+    margin-bottom: 20px;
+  }

@@ -281,6 +281,27 @@ export const groupConnectionTemplates = (
             });
         }
 
+        /**
+         * Custom authenticators are grouped under "Custom Authentication".
+         */
+        if (group.id === ConnectionUIConstants.CONNECTION_TEMPLATE_GROUPS.CUSTOM_AUTHENTICATOR) {
+            const subTemplateIds: string[] = [
+                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.EXTERNAL_CUSTOM_AUTHENTICATOR,
+                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.INTERNAL_CUSTOM_AUTHENTICATOR,
+                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TWO_FACTOR_CUSTOM_AUTHENTICATOR
+            ];
+
+            updatedGroup.subTemplates = _templates
+                .filter((template: ConnectionTemplateInterface) => {
+                    return subTemplateIds.includes(template.id);
+                });
+
+            // Remove grouped sub templates from main template list.
+            _templates = _templates.filter((template: ConnectionTemplateInterface) => {
+                return !subTemplateIds.includes(template.id);
+            });
+        }
+
         groupedTemplates.push(updatedGroup);
     }
 

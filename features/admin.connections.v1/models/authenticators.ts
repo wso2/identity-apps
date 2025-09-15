@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -79,7 +79,8 @@ export interface AuthenticatorInterface {
  */
 export enum AuthenticatorTypes {
     FEDERATED = "FEDERATED",
-    LOCAL = "LOCAL"
+    LOCAL = "LOCAL",
+    IDENTIFICATION = "IDENTIFICATION"
 }
 
 /**
@@ -118,7 +119,8 @@ export enum AuthenticatorLabels {
     HANDLERS = "Handlers",
     USERNAMELESS = "Usernameless",
     PASSKEY = "Passkey",
-    API_AUTHENTICATION = "APIAuth"
+    API_AUTHENTICATION = "APIAuth",
+    CUSTOM = "Custom"
 }
 
 export interface ConnectorPropertyInterface {
@@ -158,7 +160,10 @@ export enum AuthenticatorCategories {
     LOCAL = "LOCAL",
     SECOND_FACTOR = "SECOND_FACTOR",
     SOCIAL = "SOCIAL",
-    RECOVERY = "RECOVERY"
+    RECOVERY = "RECOVERY",
+    EXTERNAL = "EXTERNAL",
+    INTERNAL = "INTERNAL",
+    TWO_FACTOR_CUSTOM = "TWO_FACTOR_CUSTOM"
 }
 
 export enum AuthenticatorSettingsFormModes {

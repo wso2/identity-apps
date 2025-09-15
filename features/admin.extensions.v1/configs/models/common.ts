@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { FeatureAccessConfigInterface, RouteInterface } from "@wso2is/core/models";
 
 export interface CommonConfig {

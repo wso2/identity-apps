@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,10 +35,113 @@ export const common: CommonNS = {
     applicationName: "Application name",
     applications: "Applications",
     approvalStatus: "Approval Status",
+    approvals: "Approvals",
+    approvalsPage: {
+        list: {
+            columns: {
+                actions: "Actions",
+                name: "Name"
+            }
+        },
+        modals: {
+            description: "You can approve or reject the task from here.",
+            header: "Approval Task",
+            subHeader: "Review the details of the approval task."
+        },
+        notifications: {
+            fetchApprovalDetails: {
+                error: {
+                    description: "{{description}}",
+                    message: "Error fetching approval details"
+                },
+                genericError: {
+                    description: "Couldn't retrieve the approval details.",
+                    message: "Something went wrong"
+                }
+            },
+            fetchPendingApprovals: {
+                error: {
+                    description: "{{description}}",
+                    message: "Error fetching pending approvals"
+                },
+                genericError: {
+                    description: "Couldn't retrieve the pending approvals.",
+                    message: "Something went wrong"
+                }
+            },
+            updatePendingApprovals: {
+                error: {
+                    description: "{{description}}",
+                    message: "Error updating the approval"
+                },
+                genericError: {
+                    description: "Couldn't update the pending approval.",
+                    message: "Something went wrong"
+                },
+                success: {
+                    description: "Successfully updated the approval.",
+                    message: "Update successful"
+                }
+            }
+        },
+        operationTypes: {
+            addRole: "Add Role",
+            addUser: "Add User",
+            all: "All Operations",
+            deleteRole: "Delete Role",
+            deleteUser: "Delete User",
+            selfRegisterUser: "Self Register User",
+            updateRolesOfUser: "Update Role Users"
+        },
+        placeholders: {
+            emptyApprovalFilter: {
+                action: "View all",
+                subtitles: {
+                    0: "There are currently no approvals in {{status}} state.",
+                    1: "Please check if you have any tasks in {{status}} state to",
+                    2: "view them here."
+                },
+                title: "No results found"
+            },
+            emptyApprovalList: {
+                action: "",
+                subtitles: {
+                    0: "There are currently no approvals to review.",
+                    1: "Please check if you have added a workflow to control the operations in the system.",
+                    2: ""
+                },
+                title: "No Approvals"
+            },
+            emptySearchResults: {
+                action: "View all",
+                subtitles: {
+                    0: "We couldn't find the workflow you searched for.",
+                    1: "Please check if you have a workflow with that name in",
+                    2: "the system."
+                },
+                title: "No Approvals"
+            },
+            searchApprovals: "Search by workflow name"
+        },
+        propertyMessages: {
+            assignedUsersDeleted: "The assigned user(s) have been deleted.",
+            roleDeleted: "The role has been deleted.",
+            selfRegistration: "Self Registration",
+            unassignedUsersDeleted: "The unassigned user(s) have been deleted."
+        },
+        subTitle: "Review operational tasks that requires your approval",
+        title: "Approvals"
+    },
     approve: "Approve",
+    approved: "Approved",
     apps: "Apps",
+    assignYourself: "Assign yourself",
     assignee: "Assignee",
     assignees: "Assignees",
+    asyncOperationErrorMessage: {
+        description: "Something went wrong",
+        message: "An unexpected error occured. Please check back later."
+    },
     authentication: "Authentication",
     authenticator: "Authenticator",
     authenticator_plural: "Authenticators",
@@ -53,7 +156,6 @@ export const common: CommonNS = {
         heading: "Something went wrong",
         primaryActionText: "Reload the App"
     },
-    claim: "Claim",
     clear: "Clear",
     clientId: "Client ID",
     close: "Close",
@@ -69,6 +171,7 @@ export const common: CommonNS = {
     dangerZone: "Danger Zone",
     darkMode: "Dark mode",
     delete: "Delete",
+    deprecated: "This configuration is deprecated and will be removed in a future release.",
     description: "Description",
     deviceModel: "Device model",
     disable: "Disable",
@@ -118,6 +221,7 @@ export const common: CommonNS = {
     metaAttributes: "Meta Attributes",
     minValidation: "This value should be greater than or equal to {{min}}.",
     minimize: "Minimize",
+    minutes: "mins",
     more: "More",
     myAccount: "My Account",
     name: "Name",
@@ -129,11 +233,14 @@ export const common: CommonNS = {
     new: "New",
     next: "Next",
     noResultsFound: "No results found",
+    none: "None",
     okay: "Okay",
     operatingSystem: "Operating system",
+    operationType: "Operation Type",
     operations: "Operations",
     organizationName: "{{orgName}} organization",
     overview: "Overview",
+    pending: "Pending",
     personalInfo: "Personal Info",
     pin: "Pin",
     pinned: "Pinned",
@@ -145,11 +252,12 @@ export const common: CommonNS = {
     priority: "Priority",
     privacy: "Privacy",
     properties: "Properties",
+    publish: "Publish",
     ready: "Ready",
     regenerate: "Regenerate",
     register: "Register",
     reject: "Reject",
-    release: "Release",
+    rejected: "Rejected",
     remove: "Remove",
     removeAll: "Remove all",
     required: "This is required.",
@@ -160,10 +268,13 @@ export const common: CommonNS = {
     revokeAll: "Revoke all",
     samples: "Samples",
     save: "Save",
+    saveDraft: "Save draft",
     sdks: "SDKs",
     search: "Search",
     searching: "Searching",
     security: "Security",
+    selectAll: "Select all",
+    selectNone: "Select none",
     services: "Services",
     settings: "Settings",
     setup: "Set up",
@@ -184,6 +295,7 @@ export const common: CommonNS = {
     terminateSession: "Terminate session",
     tooShort: "Too short",
     type: "Type",
+    unassign: "Unassign",
     unpin: "Unpin",
     unpinned: "Unpinned",
     update: "Update",
@@ -191,6 +303,7 @@ export const common: CommonNS = {
     verified: "Verified",
     verify: "Verify",
     view: "View",
+    viewDetails: "View details",
     weak: "Weak",
     weakPassword: "The password strength should at least be good."
 };

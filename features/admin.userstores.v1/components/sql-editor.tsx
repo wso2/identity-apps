@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { getOperationIcons } from "@wso2is/admin.core.v1/configs";
+import { getOperationIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { CodeEditor, GenericIcon, Heading, LinkButton, Popup, PrimaryButton, Tooltip } from "@wso2is/react-components";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";

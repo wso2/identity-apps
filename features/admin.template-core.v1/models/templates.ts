@@ -97,7 +97,7 @@ export interface ExtensionTemplateCategoryInterface {
     /**
      * Display name of the template category.
      */
-    displayName: string;
+    displayName?: string;
     /**
      * Description of the template category.
      */
@@ -123,5 +123,6 @@ export interface CategorizedExtensionTemplatesInterface extends ExtensionTemplat
  */
 export enum ResourceTypes {
     APPLICATIONS = "application",
-    CONNECTIONS = "connection"
+    CONNECTIONS = "connection",
+    NOTIFICATION_PROVIDERS = "notification-provider",
 }

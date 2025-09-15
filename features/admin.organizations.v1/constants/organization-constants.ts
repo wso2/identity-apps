@@ -41,6 +41,7 @@ export class OrganizationManagementConstants {
     public static readonly ROOT_ORGANIZATION: OrganizationInterface = {
         id: this.SUPER_ORGANIZATION_ID,
         name: "Super",
+        orgHandle: "carbon.super",
         ref: "",
         status: "ACTIVE"
     };
@@ -63,6 +64,29 @@ export class OrganizationManagementConstants {
         "suborganizations:notifications.duplicateOrgError.message",
         "cdaefcee-ecdb-47af-8538-174ec13292db"
     );
+
+    public static readonly ORG_HANDLE_REGEX: string = "^[a-zA-Z0-9 .\\-_]+$";
+    public static readonly ORG_HANDLE_SANITIZATION_REGEX: RegExp = /^[^a-z]*|[^a-z0-9]/g;
+    public static readonly MIN_ORG_HANDLE_LENGTH: number = 3;
+    public static readonly MAX_ORG_HANDLE_LENGTH: number = 32;
+
+    /**
+     * Organization handle constants.
+     */
+    public static readonly ORG_HANDLE_PLACEHOLDER: string = "myorg";
+    public static readonly SAMPLE_ORG_HANDLE_DOMAIN_EXTENSION: string = ".com";
+
+    /**
+     *  Organization handle field constraints.
+     */
+    public static readonly ORG_HANDLE_FIELD_CONSTRAINTS: Record<string, any> = {
+        ORG_HANDLE_ALPHANUMERIC: new RegExp("^[a-z0-9]+$"),
+        ORG_HANDLE_ALPHANUMERIC_WITH_DOMAIN: new RegExp("^(?=[a-z0-9.]*\\.[a-z0-9.]*$)[a-z0-9.]+$"),
+        ORG_HANDLE_FIRST_ALPHABET: new RegExp("^[a-zA-Z]"),
+        ORG_HANDLE_MAX_LENGTH: 30,
+        ORG_HANDLE_MIN_LENGTH: 4,
+        ORG_HANDLE_PATTERN: new RegExp("^[a-z][a-z0-9]{3,29}$")
+    };
 }
 
 export enum ORGANIZATION_TYPE {

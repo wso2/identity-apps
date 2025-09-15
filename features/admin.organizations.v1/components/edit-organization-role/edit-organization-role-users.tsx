@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AppState } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { AddRoleUsers } from "@wso2is/admin.roles.v2/components/wizard/role-user-assign";
 import { ScimOperationsInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { UserBasicInterface } from "@wso2is/admin.users.v1/models/user";

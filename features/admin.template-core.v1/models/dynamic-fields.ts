@@ -118,6 +118,18 @@ export interface DynamicFilePickerFieldInterface extends DynamicFieldInterface {
      * Hide selection tabs & paste section.
      */
     hidePasteOption?: boolean;
+    /**
+     * Show the file list if any are uploaded.
+     */
+    showFileAsList?: boolean;
+    /**
+     * Display name of the file.
+     */
+    fileDisplayName?: string
+    /**
+     * Callback function to be invoked on file delete.
+     */
+    onDelete?: () => void;
 }
 
 /**

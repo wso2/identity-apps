@@ -58,8 +58,7 @@ export const user: userNS = {
             },
             deleteUserZone: {
                 actionTitle: "Delete User",
-                buttonDisableHint: "Delete option is disabled because this user is managed in a remote " +
-                    "user store.",
+                buttonDisableHint: "Delete option is disabled because this user is managed in a Read Only user store.",
                 header: "Delete user",
                 subheader: "This action will permanently delete the user from the organization. Please " +
                     "be certain before you proceed."
@@ -72,6 +71,7 @@ export const user: userNS = {
             header: "Danger Zone",
             lockUserZone: {
                 actionTitle: "Lock User",
+                disabledHint: "To lock/unlock the user account, please enable the account first.",
                 header: "Lock user",
                 subheader: "Once you lock the account, the user can no longer log in to the system."
             },
@@ -81,12 +81,31 @@ export const user: userNS = {
                 header: "Reset password",
                 subheader: "Once you change the password, the user will no longer be able to log in to " +
                     "any application using the current password."
+            },
+            passwordSetZone: {
+                actionTitle: "Set Password",
+                header: "Set password",
+                subheader: "Once you set the password, the user will no longer be able to set their own password using the setup link."
             }
         },
         dateOfBirth: {
             placeholder: {
                 part1:"Enter the",
                 part2: "in the format YYYY-MM-DD"
+            }
+        },
+        userActionZoneGroup: {
+            impersonateUserZone: {
+                actionTitle: "Impersonate User",
+                buttonDisableHints: {
+                    insufficientPermissions: "Logged in user should be assigned with Impersonator My Account application role.",
+                    myAccountDisabled: "My account application should be enabled to impersonate the user.",
+                    myAccountLoginFlowIncompatible: "My account Login Flow is incompatible.",
+                    userAccountDisabled: "User account should be enabled to impersonate the user.",
+                    userAccountLocked: "User account should be unlocked to impersonate the user."
+                },
+                header: "Impersonate User",
+                subheader: "Once user impersonation has started, the initiator will no longer be able to log in with their own identity until the existing session is terminated."
             }
         }
     },
@@ -135,6 +154,12 @@ export const user: userNS = {
                         empty: "First name is a required field"
                     }
                 },
+                generic: {
+                    placeholder: "Enter the {{label}}",
+                    validations: {
+                        empty: "{{label}} is a required field"
+                    }
+                },
                 lastName: {
                     label: "Last Name",
                     placeholder: "Enter the last name",
@@ -151,9 +176,14 @@ export const user: userNS = {
                     }
                 },
                 username: {
+                    hint: {
+                        defaultRegex: "Must be a 3-50 character string without spaces, '*', '?', or '%', and can include letters, numbers, and other symbols."
+                    },
                     label: "Username",
                     placeholder: "Enter the username",
                     validations: {
+                        customRegex: "The username must match the following regular expression: {{regex}}",
+                        defaultRegex: "The username must be 3-50 characters long and cannot contain spaces, '*', '?', or '%'.",
                         empty: "Username is a required field",
                         invalid: "A user already exists with this username.",
                         invalidCharacters: "Username seems to contain invalid characters.",
@@ -204,7 +234,10 @@ export const user: userNS = {
                 emailVerificationDisabled: "To invite users to set the password, enable email invitations " +
                     "for user password setup from <1>Login & Registration settings</1>.",
                 inviteOffline: "Invite offline",
-                inviteViaEmail: "Invite via email"
+                inviteViaEmail: "Invite via email",
+                inviteViaSMS: "Invite via SMS",
+                mobileNumberAlreadyExists: "Mobile number is required for SMS OTP, enable mobile number attribute from <1>Attributes</1>.",
+                offlineInviteUnavailableWithWorkflow: "Inviting users offline is disabled because workflow approval is required for user creation."
             },
             buttons: {
                 next: "Next",
@@ -363,9 +396,16 @@ export const user: userNS = {
                 userNotFound: "User not found"
             },
             totalInvitations: "Total Invitation(s)"
+        },
+        setPasswordModal: {
+            button: "Set Password",
+            header: "Set User Password",
+            message: "After setting the password, the user will " +
+                "no longer be able to set their own password using the initial setup link."
         }
     },
     profile: {
+        accountDisabled: "The account has been disabled by an administrator.",
         accountLockReason: {
             adminInitiated: "The account has been manually locked by an administrator.",
             default: "The account is locked.",
@@ -376,6 +416,11 @@ export const user: userNS = {
             pendingEmailVerification: "The account is locked and requires email verification from the " +
                 "user to be activated.",
             pendingSelfRegistration: "The account is locked pending user verification via the self-registration email."
+        },
+        accountState: {
+            pendingAskPassword: "The user has not yet set a password using the setup email sent.",
+            pendingAskPasswordEmailOTP: "The user has not yet set a password using the email OTP sent.",
+            pendingAskPasswordSMSOTP: "The user has not yet set a password using the SMS OTP sent."
         },
         confirmationModals: {
             deleteAttributeConfirmation: {
@@ -402,6 +447,13 @@ export const user: userNS = {
             userName: "Username"
         },
         forms: {
+            email: {
+                primaryEmail: {
+                    validations: {
+                        empty: "Primary email address is required"
+                    }
+                }
+            },
             emailChangeForm: {
                 inputs: {
                     email: {
@@ -421,7 +473,15 @@ export const user: userNS = {
                     placeholder: "Enter your {{fieldName}}",
                     validations: {
                         empty: "{{fieldName}} is a required field",
-                        invalidFormat: "The {{fieldName}} is not of the correct format"
+                        invalidFormat: "The {{fieldName}} is not of the correct format",
+                        required: "{{fieldName}} is required"
+                    }
+                }
+            },
+            mobile: {
+                primaryMobile: {
+                    validations: {
+                        empty: "Primary mobile number is required"
                     }
                 }
             },
@@ -472,7 +532,7 @@ export const user: userNS = {
             changeUserPassword: {
                 error: {
                     description: "{{description}}",
-                    message: "Error occurred while changing the user password."
+                    message: "Error while changing user password."
                 },
                 genericError: {
                     description: "Error occurred while changing the user password.",
@@ -562,6 +622,30 @@ export const user: userNS = {
                     message: "Unable to trigger a force password reset"
                 }
             },
+            resendCode: {
+                genericError: {
+                    description: "Error occurred while resending the recovery {{recoveryOption}}.",
+                    message: "Something went wrong"
+                },
+                success: {
+                    description: "The recovery {{recoveryOption}} resent successfully.",
+                    message: "Resend successful."
+                }
+            },
+            setUserPassword: {
+                error: {
+                    description: "{{description}}",
+                    message: "Error while setting user password."
+                },
+                genericError: {
+                    description: "Error occurred while setting the user password.",
+                    message: "Something went wrong"
+                },
+                success: {
+                    description: "The password for the user was set successfully.",
+                    message: "Successfully set password"
+                }
+            },
             unlockUserAccount: {
                 error: {
                     description: "{{description}}",
@@ -630,7 +714,13 @@ export const user: userNS = {
                     title: "No profile information"
                 }
             }
+        },
+        tooltips: {
+            confirmationPending: "Confirmation pending!"
         }
+    },
+    resendCode:{
+        resend: "Resend"
     },
     revokeAdmin: {
         confirmationModal: {

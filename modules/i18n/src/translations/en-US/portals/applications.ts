@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,6 +25,71 @@ import { ApplicationsNS } from "../../../models";
 /* eslint-disable sort-keys */
 
 export const applications: ApplicationsNS = {
+    quickStart: {
+        addUserOption: {
+            description: "You need a <1>user account</1> to log in to the application.",
+            hint:
+                "If you don’t already have a user account, click the below button to create one. " +
+                "Alternatively, go to <1>User Management > Users</1><3></3> and create users.",
+            message:
+                "If you do not already have a user account, contact your organization " +
+                "administrator."
+        },
+        spa: {
+            customConfig: {
+                heading: "You can implement login using <1>Authorization Code flow with PKCE</1> " +
+                    "with Asgardeo for any SPA technology.",
+                anySPATechnology: "or any SPA Technology",
+                configurations: "Configurations",
+                protocolConfig: "Use the following configurations to integrate your application with Asgardeo. " +
+                    "For more details on configurations, go to the <1>Protocol</1> tab.",
+                clientId: "Client ID",
+                baseUrl: "Base URL",
+                redirectUrl: "Redirect URL",
+                scope: "Scope",
+                serverEndpoints: "Details on the server endpoints are available in the <1>Info</1> tab."
+            },
+            techSelection: {
+                heading: "Use the SDKs curated by Asgardeo and 3rd party integrations."
+            }
+        },
+        technologySelectionWrapper: {
+            subHeading:
+                "Use the <1>server endpoint " +
+                "details</1> and start integrating your own app or read through our <3>documentation</3> " +
+                "to learn  more.",
+            otherTechnology: "or any mobile technology"
+        },
+        twa: {
+            common: {
+                orAnyTechnology: "or any technology"
+            },
+            oidc: {
+                customConfig: {
+                    clientSecret: "Client Secret",
+                    heading: "You can implement login using <1>Authorization Code flow</1> " +
+                        "with Asgardeo for any traditional web application."
+                }
+            },
+            saml: {
+                customConfig: {
+                    heading: "Discover <1>SAML configurations</1> to integrate Asgardeo with" +
+                        " any traditional web application.",
+                    issuer: "Issuer",
+                    acsUrl: "Assertion Consumer Service URL",
+                    idpEntityId: "IdP Entity ID",
+                    idpUrl: "IdP URL"
+                }
+            }
+        },
+        m2m: {
+            customConfig: {
+                tokenEndpoint: "Token Endpoint",
+                tokenRequest: "Token Request",
+                configurations: "Configurations"
+            }
+        }
+    },
     URLInput: {
         withLabel: {
             negative: {
@@ -293,6 +358,12 @@ export const applications: ApplicationsNS = {
             header: "Are you sure?",
             message: "If you revoke this application, authentication flows for this application will " +
                 "stop working. Please proceed with caution."
+        },
+        inProgressReshare: {
+            assertionHint: "Please confirm your action.",
+            content: "This action is irreversible and will discard the application sharing operations currently in progress",
+            header: "Are you sure?",
+            message: "Sharing application with organizations is in progress. Cancelling will terminate the operation."
         }
     },
     dangerZoneGroup: {
@@ -527,8 +598,104 @@ export const applications: ApplicationsNS = {
                 tabName: "Provisioning"
             },
             sharedAccess: {
-                subTitle: "Select the following options to share the application with the organizations.",
-                tabName: "Shared Access"
+                title: "Sharing Policy",
+                sharedRoles: "Shared Roles",
+                sharingSettings: "Sharing settings for",
+                individualRoleSharingLabel: "Individually Shared Roles",
+                individualRoleSharingHint: "These roles are shared only with the selected organization. " +
+                    "You can individually add or remove roles from organizations in this mode.",
+                commonRoleSharingLabel: "Commonly Shared Roles",
+                commonRoleSharingHint: "This set of roles will be shared with all existing and future organizations that " +
+                    "the application is shared with.",
+                doNotShareApplication: "Do not share the application with any organization.",
+                shareAllApplication: "Share the application with all organizations.",
+                shareSelectedApplication: "Share the application with selected organizations.",
+                allRolesSharingMessage: "All roles of the application will be shared with the organization.",
+                allRolesAndOrgsSharingMessage: "All roles of the application will be shared with all the organizations.",
+                allRolesAndOrgsNotSharingMessage: "No roles will be shared with any organization.",
+                doNotShareRolesWithAllOrgs: "Do not share roles with all organizations.",
+                manageRoleSharing: "Manage role sharing",
+                viewRoleSharing: "View shared roles",
+                noSharedOrgs: "This application is not shared with any organizations.",
+                noRolesAvailableForOrg: "No roles available for the selected organization.",
+                searchAvailableRolesPlaceholder: "Search available roles",
+                orgNotSelectedForRoleSharing: "To share roles, please select the organization from the left panel.",
+                rolesSharedPartially: "Roles are selectively shared with this organization.",
+                shareRoleSubsetWithSelectedOrgs: "Share a subset of roles with selected organizations",
+                shareRoleSubsetWithAllOrgs: "Share a subset of roles with all organizations",
+                subTitle: "Select how the application and roles will be shared with organizations.",
+                shareAllRoles: "Share All Roles",
+                shareSelectedRoles: "Share Selected Roles",
+                doNotShareRoles: "Do Not Share Roles",
+                tabName: "Shared Access",
+                selectAnOrganizationToViewRoles: "Select an organization to view the shared roles.",
+                selectAnOrganizationToMangage: "Select an organization to manage",
+                toManageOrganizationSelectLeftPanel: "To manage the organization, please select it from the left panel.",
+                shareTypeSwitchModal: {
+                    header: "Switch sharing mode to selective sharing?",
+                    message: "This action is irreversible and change your application sharing settings.",
+                    description: "You're about to switch to selective sharing. Please select one of the 2 options to proceed.",
+                    preserveStateLabel1: "Preserve current state",
+                    preserveStateLabel2: "Keep all existing shared organizations, roles and configurations of the application.",
+                    resetToDefaultLabel1: "Reset to default",
+                    resetToDefaultLabel2: "Clear all sharing settings and start with a clean state."
+                },
+                showShareAllWarningModal: {
+                    header: "Are you sure?",
+                    message: "This action is irreversible and will change roles in all organizations.",
+                    description: "This action may share new roles or unshare the existing roles from all the organizations.",
+                    assertionHint: "Please confirm your action."
+                },
+                sharedAccessStatusOptions: {
+                    all: "All",
+                    success: "Success",
+                    failed: "Failed",
+                    partiallyCompleted: "Partially Completed"
+                },
+                notifications: {
+                    unshare: {
+                        success: {
+                            description: "Application unshared with the organization(s) successfully",
+                            message: "Application unshared!"
+                        },
+                        error: {
+                            description: "Application unsharing failed. Please try again",
+                            message: "Application unsharing failed!"
+                        }
+                    },
+                    share: {
+                        success: {
+                            description: "Application shared with the organization(s) successfully",
+                            message: "Application shared!"
+                        },
+                        error: {
+                            description: "Application sharing failed. Please try again",
+                            message: "Application sharing failed!"
+                        }
+                    },
+                    fetchApplicationOrgTree: {
+                        genericError: {
+                            description: "Error occurred while fetching the shared organizations.",
+                            message: "Fetching shared organizations failed!"
+                        }
+                    },
+                    fetchApplicationRoles: {
+                        genericError: {
+                            description: "Error occurred while fetching the shared roles of the application.",
+                            message: "Fetching roles failed!"
+                        }
+                    },
+                    fetchOrganizations: {
+                        genericError: {
+                            description: "Error occurred while fetching the organizations.",
+                            message: "Fetching organizations failed!"
+                        }
+                    },
+                    noRolesSelected: {
+                        description: "Please select at least one role to share with all the organizations.",
+                        message: "No roles selected!"
+                    }
+                }
             },
             shareApplication: {
                 addSharingNotification: {
@@ -540,6 +707,10 @@ export const applications: ApplicationsNS = {
                         description: "Application shared with the organization(s) successfully",
                         message: "Application shared!"
                     }
+                },
+                addAsyncSharingNotification: {
+                    description: "Application sharing may take a while to complete.",
+                    message: "Application sharing in progress."
                 },
                 getSharedOrganizations: {
                     genericError: {
@@ -569,9 +740,44 @@ export const applications: ApplicationsNS = {
                         message: "Application sharing stopped successfully!"
                     }
                 },
+                completedSharingNotification: {
+                    failure: {
+                        description: "Application sharing completed with failure for all organizations.",
+                        message: "Application sharing failed."
+                    },
+                    success: {
+                        description: "Application was shared with organizations successfully.",
+                        message: "Application sharing successful."
+                    },
+                    partialSuccess: {
+                        description: "Application sharing completed with partial success for some organizations.",
+                        message: "Application sharing partially successful."
+                    }
+                },
                 switchToSelectiveShareFromSharingWithAllSuborgsWarning: "Switching from sharing the app with all organizations to " +
                     "sharing with selected organizations will " +
-                    "reset the application configurations in all organizations."
+                    "reset the application configurations in all organizations.",
+                asyncOperationStatus: {
+                    inProgress: {
+                        heading: "Update In Progress.",
+                        description: "Updating shared access is in progress."
+                    },
+                    failed: {
+                        heading: "Update Failed.",
+                        description: "Updating shared access failed.",
+                        actionText: "View"
+                    },
+                    partiallyCompleted: {
+                        heading: "Update Partialy Successful.",
+                        description: "Updating shared access completed with partial success.",
+                        actionText: "View"
+                    }
+                },
+                applicationShareFailureSummaryDefaultStatus: {
+                    success: "Application shared successfully.",
+                    failed: "Application sharing failed.",
+                    partiallyCompleted: "Application sharing partially completed."
+                }
             },
             signOnMethod: {
                 sections: {
@@ -685,6 +891,15 @@ export const applications: ApplicationsNS = {
                                             backupCodes: {
                                                 description: "Two-factor authentication recovery option.",
                                                 heading: "MFA Recovery"
+                                            },
+                                            external: {
+                                                heading: "External user authentication"
+                                            },
+                                            internal: {
+                                                heading: "Internal user authentication"
+                                            },
+                                            twoFactorCustom: {
+                                                heading: "2FA authentication"
                                             }
                                         },
                                         goBackButton: "Go back to selection",
@@ -761,6 +976,10 @@ export const applications: ApplicationsNS = {
                         }
                     },
                     landing: {
+                        banners: {
+                            registrationConfiguration: "Want to customize your organization's user " +
+                                "<1>self-registration</1> flow? Click <3>configure</3> to get started."
+                        },
                         defaultConfig: {
                             description: {
                                 0: "This application is configured with <1>Username & Password</1> Login",
@@ -953,17 +1172,17 @@ export const applications: ApplicationsNS = {
                         message: "Invalid configuration",
                         description: "Linked local account validation should be enabled to mandate a linked local account"
                     },
-                    heading: "Linked Accounts",
-                    descriptionFederated: "Enable to retrieve user attributes of the linked local account during federated authentication.",
+                    heading: "Attribute Resolution for Linked Accounts",
+                    descriptionFederated: "Manage how user attributes are resolved when a local account is linked to a federated identity.",
                     fields: {
                         validateLocalAccount: {
-                            label: "Prioritize local account attributes",
-                            hint: "If a linked local account exists, its attributes are returned. Otherwise, " +
-                                "attributes of the federated identity are returned."
+                            label: "Use linked local account attributes",
+                            hint: "If a linked local account exists, its attributes will be used. If no linked account is found, attributes of the federated user account will be used instead."
                         },
                         mandateLocalAccount: {
-                            label: "Mandate linked local account",
-                            hint: "Authentication will fail in token exchange grant if there is no linked local account with the federated identity."
+                            label: "Require linked local account",
+                            hint: "Authentication will fail if no linked local account is found during token exchange.",
+                            unifiedHint: "Authentication will fail if no linked local account is found during login and token exchange."
                         }
                     }
                 },
@@ -1318,6 +1537,16 @@ export const applications: ApplicationsNS = {
                         "<1>{{ myAccount }}</1> portal.",
                     label: "Discoverable application"
                 },
+                discoverableGroups: {
+                    label: "Discoverable Groups",
+                    action: {
+                        assign: "Type group name/s to search and assign groups"
+                    },
+                    radioOptions: {
+                        everyone: "Everyone in the organization can discover this application",
+                        userGroups: "Only a selected group of users can discover this application"
+                    }
+                },
                 imageUrl: {
                     hint: "An image URL for the application. If this is not provided, we will display " +
                         "a generated thumbnail instead. Recommended size: 200x200 pixels.",
@@ -1517,8 +1746,20 @@ export const applications: ApplicationsNS = {
                         },
                         bindingType: {
                             children: {
+                                cookie: {
+                                    label: "Cookie"
+                                },
+                                clientRequest: {
+                                    label: "Client Request"
+                                },
+                                certificate: {
+                                    label: "Certificate"
+                                },
+                                deviceFlow: {
+                                    label: "Device Flow"
+                                },
                                 ssoBinding: {
-                                    label: "SSO-session"
+                                    label: "SSO Session"
                                 }
                             },
                             description: "Select type <1>SSO-session</1> to allow {{productName}} to " +
@@ -1533,7 +1774,9 @@ export const applications: ApplicationsNS = {
                                     "when the token expires or is revoked.",
                                 sso_session: "Binds the access token to the login session. " +
                                     "{{productName}} will issue a new access token for each new login " +
-                                    "and revoke the token upon logout."
+                                    "and revoke the token upon logout.",
+                                dpop: "Binds the access token to the client's public key. The client must present"+
+                                    " a signed DPoP proof in each request to prove posession of the corresponding private key."
                             }
                         },
                         expiry: {
@@ -1684,6 +1927,15 @@ export const applications: ApplicationsNS = {
                                 addAllRequestedClaimsInJWTAccessToken: {
                                     instruction: "Irrespective of the <1>scopes</1> requested, all the <3>Requested Attributes</3> will "
                                         + "be included in the JWT Access Token."
+                                }
+                            },
+                            version300: {
+                                linkedLocalAccountAttributeHandling: {
+                                    instruction: "When you enable the use of linked local account attributes " +
+                                        "instead of federated attributes and mandate that a linked local account " +
+                                        "must exist, this configuration previously applied only to the <1>token " +
+                                        "exchange</1> flow. With this update, the same restriction now also " +
+                                        "applies to <3>login</3> scenarios."
                                 }
                             }
                         }
@@ -2013,6 +2265,11 @@ export const applications: ApplicationsNS = {
                 },
                 attributeProfile: {
                     fields: {
+                        attributeNameFormat: {
+                            hint: "This specifies the format for attribute names in the attribute statement of the " +
+                                "SAML assertion.",
+                            label: "Attribute name format"
+                        },
                         enable: {
                             hint: "This specifies whether to include the user’s attributes in the " +
                                 "SAML assertions as part of the attribute statement.",
@@ -3159,6 +3416,15 @@ export const applications: ApplicationsNS = {
                         }
                     }
                 }
+            }
+        },
+        sharedAccessStatus: {
+            heading: "Summary - Update application shared access",
+            subHeading: "Summary of detailed application sharing failures.",
+            actionText: "Close",
+            banner: {
+                partiallyCompleted: "Partially Completed: ",
+                failed: "Failed: "
             }
         }
     },

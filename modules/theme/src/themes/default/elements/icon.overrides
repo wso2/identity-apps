@@ -66,6 +66,18 @@ i.icon {
         fill: #666666;
     }
 
+    &.disabled-icon {
+        position: absolute;
+        z-index: 1;
+        top: 25px;
+        left: 28px;
+        font-size: 14px !important;
+        background-color: white;
+        padding: 0px;
+        border-radius: 50%;
+        fill: #666666;
+    }
+
     &.map-icon {
         margin: 18px 0 0 0;
     }

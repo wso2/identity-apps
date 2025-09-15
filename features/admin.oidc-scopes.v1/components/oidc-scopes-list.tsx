@@ -18,12 +18,10 @@
 
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
-import {
-    AppConstants,
-    FeatureConfigInterface,
-    getEmptyPlaceholderIllustrations,
-    history
-} from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui"; // No specific rule found
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -51,6 +49,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
+import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { deleteOIDCScope } from "../api";
 import { OIDCScopesManagementConstants } from "../constants";
 import { OIDCScopesListInterface } from "../models";
@@ -151,6 +150,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingScope, setDeletingScope ] = useState<OIDCScopesListInterface>(undefined);
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     /**
      * Redirects to the OIDC scope edit page when the edit button is clicked.
@@ -271,13 +271,13 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                     featureConfig?.applications,
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT")),
                 icon: (): SemanticICONS =>
-                    hasOidcScopesUpdatePermissions
+                    hasOidcScopesUpdatePermissions && !isSubOrganization()
                         ? "pencil alternate"
                         : "eye",
                 onClick: (e: SyntheticEvent, scope: OIDCScopesListInterface): void =>
                     handleOIDCScopesEdit(scope?.name),
                 popupText: (): string =>
-                    hasOidcScopesUpdatePermissions
+                    hasOidcScopesUpdatePermissions && !isSubOrganization()
                         ? t("common:edit")
                         : t("common:view"),
                 renderer: "semantic-icon"
@@ -288,7 +288,8 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
             hidden: (item: TableDataInterface<OIDCScopesListInterface>): boolean => {
                 return !hasApplicationDeletePermissions
                     || item.name === OIDCScopesManagementConstants.OPEN_ID_SCOPE
-                    || OIDCScopesManagementConstants.OIDC_READONLY_SCOPES.includes(item.name);
+                    || OIDCScopesManagementConstants.OIDC_READONLY_SCOPES.includes(item.name)
+                    || isSubOrganization();
             },
             icon: (): SemanticICONS => "trash alternate",
             onClick: (e: SyntheticEvent, scope: OIDCScopesListInterface): void => {

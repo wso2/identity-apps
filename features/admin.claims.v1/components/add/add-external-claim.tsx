@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,8 +17,10 @@
  */
 
 import { getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
-import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
-import { SCIMConfigs, attributeConfig } from "@wso2is/admin.extensions.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { SCIMConfigs } from "@wso2is/admin.extensions.v1";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Claim, ClaimsGetParams, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -121,8 +123,8 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
 
     const dispatch: Dispatch = useDispatch();
 
-    const enableIdentityClaims: boolean = useSelector(
-        (state: AppState) => state?.config?.ui?.enableIdentityClaims);
+    const userSchemaURI: string = useSelector(
+        (state: AppState) => state?.config?.ui?.userSchemaURI);
 
     const { t } = useTranslation();
 
@@ -131,7 +133,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
      */
     useEffect(() => {
         if (attributeType !== "oidc"
-            && claimDialectUri !== attributeConfig.localAttributes.customDialectURI) {
+            && claimDialectUri !== userSchemaURI) {
             if (!serverSupportedClaims  || !filteredLocalClaims || serverSupportedClaims.length === 0
                 || filteredLocalClaims.length === 0) {
                 setEmptyClaims(true);
@@ -153,7 +155,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
             setEmptyServerSupportedClaims(false);
         }
         if (attributeType !== "oidc"
-            && claimDialectUri !== attributeConfig.localAttributes.customDialectURI) {
+            && claimDialectUri !== userSchemaURI) {
             if (!serverSupportedClaims || serverSupportedClaims.length === 0) {
                 setEmptyClaims(false);
             } else {
@@ -164,7 +166,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                 }
             }
         } else if (attributeType !== "oidc" &&
-            claimDialectUri === attributeConfig.localAttributes.customDialectURI
+            claimDialectUri === userSchemaURI
             && (!filteredLocalClaims || filteredLocalClaims.length === 0)) {
             setEmptyClaims(true);
         } else {
@@ -220,7 +222,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
      */
     useEffect(() => {
         const params: ClaimsGetParams = {
-            "exclude-identity-claims": !enableIdentityClaims,
+            "exclude-hidden-claims": true,
             filter: null,
             limit: null,
             offset: null,
@@ -378,16 +380,6 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                                         break;
                                                     }
                                                 }
-
-                                                if (attributeType === ClaimManagementConstants.OIDC) {
-                                                    if (!value.toString().match(/^[A-za-z0-9#_]+$/)) {
-                                                        validation.isValid = false;
-                                                        validation.errorMessages.push(t(
-                                                            "claims:external.forms.attributeURI." +
-                                                            "validationErrorMessages.invalidName",
-                                                            { type: resolveType(attributeType) }));
-                                                    }
-                                                }
                                             } }
                                             children={
                                                 serverSupportedClaims?.map((claim: string, index: number) => {
@@ -419,7 +411,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                             listen={ (values: Map<string, FormValue>) => {
                                                 setClaim(values.get("claimURI").toString());
                                             } }
-                                            maxLength={ 30 }
+                                            maxLength={ 50 }
                                             data-testid={ `${ testId }-form-claim-uri-input` }
                                             validation={ (value: string, validation: Validation) => {
                                                 for (const claim of externalClaims) {
@@ -431,16 +423,6 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                                             { type: resolveType(attributeType) }));
 
                                                         break;
-                                                    }
-                                                }
-
-                                                if (attributeType === ClaimManagementConstants.OIDC) {
-                                                    if (!value.toString().match(/^[A-za-z0-9#_]+$/)) {
-                                                        validation.isValid = false;
-                                                        validation.errorMessages.push(t(
-                                                            "claims:external.forms.attributeURI." +
-                                                            "validationErrorMessages.invalidName",
-                                                            { type: resolveType(attributeType) }));
                                                     }
                                                 }
                                             } }

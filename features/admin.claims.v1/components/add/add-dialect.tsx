@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { WizardStepInterface } from "@wso2is/admin.users.v1/models";
+import { WizardStepInterface } from "@wso2is/admin.users.v1/models/user";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";

@@ -17,7 +17,7 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { administratorConfig } from "@wso2is/admin.extensions.v1/configs/administrator";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
@@ -130,7 +130,7 @@ export const EditGuestUser: FunctionComponent<EditGuestUserPropsInterface> = (
         if (!isFeatureEnabled(featureConfig?.users, UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
             || readOnlyUserStores?.includes(userStore?.toString())
             || !hasUserUpdatePermission
-            || user[ SCIMConfigs.scim.enterpriseSchema ]?.userSourceId
+            || user[ SCIMConfigs.scim.systemSchema ]?.userSourceId
         ) {
             setReadOnly(true);
         }
@@ -141,7 +141,7 @@ export const EditGuestUser: FunctionComponent<EditGuestUserPropsInterface> = (
             setAllowDeleteOnly(true);
         }
 
-        if (user[ SCIMConfigs.scim.enterpriseSchema ]?.idpType === "Asgardeo") {
+        if (user[ SCIMConfigs.scim.systemSchema ]?.idpType === "Asgardeo") {
             setAdminUserType(AdminAccountTypes.EXTERNAL);
         } else {
             setAdminUserType(AdminAccountTypes.INTERNAL);

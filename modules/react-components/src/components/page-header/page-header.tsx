@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
 import {
     IdentifiableComponentInterface,
     LoadableComponentInterface,
@@ -61,6 +62,12 @@ export interface PageHeaderPropsInterface extends LoadableComponentInterface, Te
      * Description.
      */
     description?: ReactNode;
+    /**
+     * Flag to enable the legacy semantic-ui grid system for the page header.
+     * @deprecated This prop is deprecated and will be removed in the next major release.
+     * Use the new flex mode (default) instead.
+     */
+    legacyGrid?: boolean;
     /**
      * Flag to determine whether max width should be added to page header text content.
      */
@@ -125,32 +132,31 @@ export interface BackButtonInterface extends TestableComponentInterface, Identif
  * @returns the page header component
  */
 export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
-    props: PageHeaderPropsInterface
-): ReactElement => {
-
-    const {
+    {
         action,
-        actionColumnWidth,
+        actionColumnWidth = 6,
         alertBanner,
         backButton,
-        bottomMargin,
+        bottomMargin = true,
         className,
         description,
-        headingColumnWidth,
+        // TODO: Remove the default value once the existing components are updated.
+        legacyGrid = true,
+        headingColumnWidth = 10,
         image,
         isLoading,
-        imageSpaced,
+        imageSpaced = "right",
         loadingStateOptions,
-        showBottomDivider,
+        showBottomDivider = false,
         title,
-        titleAs,
+        titleAs = "h1",
         titleTextAlign,
         pageHeaderMaxWidth,
         truncateContent,
-        [ "data-componentid" ]: componentId,
-        [ "data-testid" ]: testId
-    } = props;
-
+        [ "data-componentid" ]: componentId = "page-header",
+        [ "data-testid" ]: testId = "page-header"
+    }: PageHeaderPropsInterface
+): ReactElement => {
     const wrapperClasses = classNames(
         "page-header-wrapper",
         {
@@ -275,6 +281,47 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
         </div>
     );
 
+    /**
+     * Resolves the content rendering logic.
+     * @returns Header content as a react component.
+     */
+    const renderContent = (): ReactElement => {
+        if (!action) {
+            return headingContent;
+        }
+
+        if (!legacyGrid) {
+            return (
+                <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    flexDirection="row"
+                    flexWrap="wrap"
+                    alignItems="center"
+                    sx={ {
+                        gap: "var(--oxygen-spacing-2)"
+                    } }
+                >
+                    <Box className="heading-wrapper">{ headingContent }</Box>
+                    <Box className="action-wrapper">{ action }</Box>
+                </Box>
+            );
+        }
+
+        return (
+            <Grid>
+                <Grid.Row>
+                    <Grid.Column computer={ headingColumnWidth } className="heading-wrapper">
+                        { headingContent }
+                    </Grid.Column>
+                    <Grid.Column computer={ actionColumnWidth } className="action-wrapper">
+                        { action && <div className="floated right action">{ action }</div> }
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        );
+    };
+
     return (
         (title || description)
             ? (
@@ -307,22 +354,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                         )
                     }
                     { alertBanner }
-                    {
-                        action
-                            ? (
-                                <Grid>
-                                    <Grid.Row>
-                                        <Grid.Column computer={ headingColumnWidth } className="heading-wrapper">
-                                            { headingContent }
-                                        </Grid.Column>
-                                        <Grid.Column computer={ actionColumnWidth } className="action-wrapper">
-                                            { action && <div className="floated right action">{ action }</div> }
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                </Grid>
-                            )
-                            : headingContent
-                    }
+                    { renderContent() }
                     {
                         bottomMargin && <Divider hidden/>
                     }
@@ -333,18 +365,4 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
             )
             : null
     );
-};
-
-/**
- * Default proptypes for the page header component.
- */
-PageHeader.defaultProps = {
-    actionColumnWidth: 6,
-    bottomMargin: true,
-    "data-componentid": "page-header",
-    "data-testid": "page-header",
-    headingColumnWidth: 10,
-    imageSpaced: "right",
-    showBottomDivider: false,
-    titleAs: "h1"
 };

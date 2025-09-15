@@ -20,7 +20,7 @@ import {
     AccessControlActionType,
     SetDevelopVisibilityActionInterface,
     SetManageVisibilityActionInterface
-} from "./types";
+} from "./types/access-control";
 
 /**
  * Redux action to set the access control developer tab visibility.

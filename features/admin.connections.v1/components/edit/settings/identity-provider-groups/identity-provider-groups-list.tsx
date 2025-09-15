@@ -16,10 +16,11 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
-import { FeatureConfigInterface, UIConstants, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import { Show, useRequiredScopes } from "@wso2is/access-control";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
@@ -60,10 +61,6 @@ import { ConnectionGroupInterface } from "../../../../models/connection";
 interface IdentityProviderGroupsPropsInterface extends SBACInterface<FeatureConfigInterface>,
     IdentifiableComponentInterface {
     /**
-     * Scopes allowed for the user.
-     */
-    allowedScopes: string;
-    /**
      * IDP Id.
      */
     idpId: string;
@@ -87,7 +84,6 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
 ): ReactElement => {
 
     const {
-        allowedScopes,
         featureConfig,
         readOnly,
         idpId,
@@ -97,6 +93,10 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+
+    const hasGroupCreatePermissions: boolean = useRequiredScopes(featureConfig?.groups?.scopes?.create);
+    const hasIdentityProviderUpdatePermissions: boolean =
+        useRequiredScopes(featureConfig?.identityProviders?.scopes?.update);
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
@@ -149,10 +149,10 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
     const handleRetrieveError = (): void => {
         dispatch(
             addAlert({
-                description: t("extensions:console.identityProviderGroups.groupsList.notifications.fetchGroups." +
+                description: t("idp:identityProviderGroups.groupsList.notifications.fetchGroups." +
                     "genericError.description"),
                 level: AlertLevels.ERROR,
-                message: t("extensions:console.identityProviderGroups.groupsList.notifications.fetchGroups." +
+                message: t("idp:identityProviderGroups.groupsList.notifications.fetchGroups." +
                     "genericError.message")
             })
         );
@@ -169,10 +169,10 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
         return updateConnectionGroup(idpId, newIdpGroupList)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("extensions:console.identityProviderGroups.groupsList.notifications.deleteGroup." +
+                    description: t("idp:identityProviderGroups.groupsList.notifications.deleteGroup." +
                         "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("extensions:console.identityProviderGroups.groupsList.notifications.deleteGroup." +
+                    message: t("idp:identityProviderGroups.groupsList.notifications.deleteGroup." +
                         "success.message")
                 }));
                 mutateIdentityProviderGroupsFetchRequest();
@@ -181,10 +181,10 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
             })
             .catch(() => {
                 dispatch(addAlert({
-                    description: t("extensions:console.identityProviderGroups.groupsList.notifications.deleteGroup." +
+                    description: t("idp:identityProviderGroups.groupsList.notifications.deleteGroup." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("extensions:console.identityProviderGroups.groupsList.notifications.deleteGroup." +
+                    message: t("idp:identityProviderGroups.groupsList.notifications.deleteGroup." +
                         "genericError.message")
                 }));
 
@@ -222,7 +222,7 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
         }
 
         if (groupsList?.length === 0) {
-            if (hasRequiredScopes(featureConfig?.groups, featureConfig?.groups?.scopes?.create, allowedScopes)) {
+            if (hasGroupCreatePermissions) {
                 return (
                     <EmptyPlaceholder
                         data-testid={ `${ componentId }-empty-list-empty-placeholder` }
@@ -238,11 +238,11 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
                         ) }
                         image={ getEmptyPlaceholderIllustrations().newList }
                         imageSize="tiny"
-                        title={ t("extensions:console.applicationRoles.connectorGroups.placeholder.title") }
+                        title={ t("applicationRoles:connectorGroups.placeholder.title") }
                         subtitle={
                             [
-                                t("extensions:console.applicationRoles.connectorGroups.placeholder.subTitle.0"),
-                                t("extensions:console.applicationRoles.connectorGroups.placeholder.subTitle.1")
+                                t("applicationRoles:connectorGroups.placeholder.subTitle.0"),
+                                t("applicationRoles:connectorGroups.placeholder.subTitle.1")
                             ]
                         }
                     />
@@ -253,7 +253,7 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
                         data-testid={ `${ componentId }-empty-list-empty-placeholder` }
                         image={ getEmptyPlaceholderIllustrations().newList }
                         imageSize="tiny"
-                        title={ t("extensions:console.identityProviderGroups.groupsList.noGroupsAvailable") }
+                        title={ t("idp:identityProviderGroups.groupsList.noGroupsAvailable") }
                         subtitle={ [
                             t("roles:list.emptyPlaceholders.emptyRoleList.subtitles.0",
                                 { type: "groups" })
@@ -275,9 +275,7 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
 
         const actions: TableActionsInterface[] = [ {
             hidden: (): boolean => {
-                return !hasRequiredScopes(
-                    featureConfig?.identityProviders,
-                    featureConfig?.identityProviders?.scopes?.update, allowedScopes) || readOnly;
+                return !hasIdentityProviderUpdatePermissions || readOnly;
             },
             icon: (): SemanticICONS => "trash alternate",
             onClick: (e: SyntheticEvent, group: ConnectionGroupInterface): void => {
@@ -358,7 +356,7 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
                             icon="search"
                             iconPosition="left"
                             onChange={ (e: ChangeEvent<HTMLInputElement>)  => setSearchQuery(e.target.value) }
-                            placeholder={ t("extensions:console.identityProviderGroups.groupsList.searchByName") }
+                            placeholder={ t("idp:identityProviderGroups.groupsList.searchByName") }
                             value={ searchQuery }
                             floated="right"
                             size="small"
@@ -375,7 +373,7 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
                                 onClick={ () => setShowWizard(true) }
                             >
                                 <Icon name="add" />
-                                { t("extensions:console.identityProviderGroups.groupsList.newGroup") }
+                                { t("idp:identityProviderGroups.groupsList.newGroup") }
                             </PrimaryButton>
                         </Show>
                     </div>
@@ -431,10 +429,10 @@ export const IdentityProviderGroupsList: FunctionComponent<IdentityProviderGroup
                     attached
                     negative
                 >
-                    { t("extensions:console.identityProviderGroups.groupsList.confirmation.deleteGroup.message") }
+                    { t("idp:identityProviderGroups.groupsList.confirmation.deleteGroup.message") }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content>
-                    { t("extensions:console.identityProviderGroups.groupsList.confirmation.deleteGroup.content",
+                    { t("idp:identityProviderGroups.groupsList.confirmation.deleteGroup.content",
                         { groupName: deleteGroup?.name }) }
                 </ConfirmationModal.Content>
             </ConfirmationModal>

@@ -24,7 +24,8 @@ import {
     CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface
 } from "@wso2is/admin.connections.v1/models/connection";
-import { AppConstants, AppState } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import { Code, FormSection, GenericIcon, Hint } from "@wso2is/react-components";

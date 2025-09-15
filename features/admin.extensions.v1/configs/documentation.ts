@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,7 +19,7 @@
 import { Config } from "@wso2is/admin.core.v1/configs/app";
 import { DocumentationLinksExtensionInterface } from "./models/documentation";
 
-export const getDocumentationLinksExtension = () : DocumentationLinksExtensionInterface => {
+export const getDocumentationLinksExtension = (): DocumentationLinksExtensionInterface => {
     const documentationBaseUrl: string = Config?.getDeploymentConfig()?.docSiteURL;
 
     return {
@@ -30,7 +30,7 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
             termsOfService: "https://wso2.com/terms-of-use"
         },
         develop: {
-            actions:{
+            actions: {
                 learnMore: undefined,
                 types: {
                     preIssueAccessToken: {
@@ -43,7 +43,7 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                         learnMore: undefined
                     },
                     preUpdateProfile: {
-                        learnMore:undefined
+                        learnMore: undefined
                     }
                 }
             },
@@ -158,6 +158,11 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                                 addAllRequestedClaimsInJWTAccessToken: {
                                     documentationLink: undefined
                                 }
+                            },
+                            version300: {
+                                linkedLocalAccountAttributeHandling: {
+                                    documentationLink: undefined
+                                }
                             }
                         }
                     },
@@ -250,6 +255,9 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                         },
                         ssoIntegration: {
                             learnMore: undefined
+                        },
+                        technology: {
+                            learnMore: undefined
                         }
                     }
                 }
@@ -260,6 +268,9 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                 },
                 layout: {
                     custom: {
+                        editor: {
+                            learnMore: undefined
+                        },
                         learnMore: undefined
                     }
                 },
@@ -385,9 +396,15 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                     }
                 },
                 learnMore: undefined
+            },
+            webhooks: {
+                learnMore: undefined
             }
         },
         manage: {
+            accountDisable: {
+                learnMore: undefined
+            },
             accountRecovery: {
                 passwordRecovery: {
                     learnMore: undefined
@@ -421,6 +438,9 @@ export const getDocumentationLinksExtension = () : DocumentationLinksExtensionIn
                     learnMore: undefined
                 },
                 loginAttempts: {
+                    learnMore: undefined
+                },
+                siftConnector: {
                     learnMore: undefined
                 }
             },

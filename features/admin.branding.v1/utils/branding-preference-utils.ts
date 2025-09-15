@@ -26,8 +26,9 @@ import {
 import { AxiosError } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import merge from "lodash-es/merge";
-import { BrandingPreferencesConstants } from "../constants";
-import { BrandingPreferenceMeta, LAYOUTS, PredefinedLayouts } from "../meta";
+import { BrandingPreferencesConstants } from "../constants/branding-preferences-constants";
+import { BrandingPreferenceMeta } from "../meta/branding-preference-meta";
+import { LAYOUTS, PredefinedLayouts } from "../meta/layouts";
 
 /**
  * Utility class for Branding Preference related operations.
@@ -370,4 +371,22 @@ export class BrandingPreferenceUtils {
                 return false;
         }
     }
+
+    /**
+     * Checks if the given content is within the maximum size limit.
+     *
+     * @param content - String to check.
+     * @param maxLimit - Maximum limit in bytes.
+     * @returns boolean indicating whether the content is within the limit.
+     */
+    public static isContentWithinMaxSize = (content: string, maxLimit: number): boolean => {
+        if (!content || !maxLimit) {
+            return true;
+        }
+
+        const encoder: TextEncoder = new TextEncoder();
+        const bytes: Uint8Array = encoder.encode(content);
+
+        return bytes.length <= maxLimit;
+    };
 }

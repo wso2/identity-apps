@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { ProtectedRoute } from "@wso2is/admin.core.v1/components";
-import { AppConstants } from "@wso2is/admin.core.v1/constants";
+import { ProtectedRoute } from "@wso2is/admin.core.v1/components/protected-route";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { RouteInterface } from "@wso2is/core/models";
 import { ContentLoader, ErrorLayout as ErrorLayoutSkeleton } from "@wso2is/react-components";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, Suspense, useEffect, useState } from "react";

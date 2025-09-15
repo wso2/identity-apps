@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -27,6 +27,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.local.auth.smsotp.authenticator.util.AuthenticatorUtils" %>
+<%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
@@ -55,9 +56,11 @@
 
     String authenticators = Encode.forUriComponent(request.getParameter("authenticators"));
     int otpLength = 6;
+    boolean isOnlyNumeric = true;
     if (authenticators.equals(LOCAL_SMS_OTP_AUTHENTICATOR_ID)) {
         try {
             otpLength = Integer.parseInt(AuthenticatorUtils.getSmsAuthenticatorConfig("SmsOTP.OTPLength", tenantDomain));
+            isOnlyNumeric = AuthenticatorUtils.getSmsAuthenticatorConfig("SmsOTP.OtpRegex.UseNumericChars", tenantDomain).equals("true");
         } catch (Exception e) {
             // Exception is caught and ignored. otpLength will be kept as 6.
         }
@@ -84,6 +87,14 @@
         }
     }
 %>
+<%
+    boolean reCaptchaEnabled = false;
+    if (request.getParameter("reCaptcha") != null && Boolean.parseBoolean(request.getParameter("reCaptcha"))) {
+        reCaptchaEnabled = true;
+    }
+%>
+
+<% request.setAttribute("pageName", "sms-otp"); %>
 
 <html>
     <head>
@@ -111,9 +122,18 @@
         <script src="js/html5shiv.min.js"></script>
         <script src="js/respond.min.js"></script>
         <![endif]-->
+
+        <%
+            if (reCaptchaEnabled) {
+                String reCaptchaAPI = CaptchaUtil.reCaptchaAPIURL();
+        %>
+            <script src='<%=(reCaptchaAPI)%>'></script>
+        <%
+            }
+        %>
     </head>
 
-    <body class="login-portal layout sms-otp-portal-layout">
+    <body class="login-portal layout sms-otp-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
 
         <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
             <jsp:include page="extensions/timeout.jsp"/>
@@ -149,7 +169,7 @@
                       <% } %>
                       <div id="alertDiv"></div>
                       <div class="segment-form">
-                          <form class="ui large form" id="codeForm" name="codeForm" action="<%=commonauthURL%>" method="POST">
+                          <form class="ui large form otp-form" id="codeForm" name="codeForm" action="<%=commonauthURL%>" method="POST">
                               <%
                                   String loginFailed = request.getParameter("authFailure");
                                   if (loginFailed != null && "true".equals(loginFailed)) {
@@ -204,7 +224,7 @@
                                         %>
                                             <div class="field mt-5">
                                                 <input
-                                                    class="text-center p-3"
+                                                    class="text-center p-1 pb-3 pt-3"
                                                     id=<%= currentStringIndex %>
                                                     name=<%= currentStringIndex %>
                                                     onkeyup="movetoNext(this, '<%= nextStringIndex %>', '<%= previousStringIndex %>')"
@@ -212,13 +232,16 @@
                                                     placeholder="·"
                                                     autofocus
                                                     maxlength="1"
+                                                    autocomplete="off"
+                                                    type="text"
+                                                    inputmode=<%= isOnlyNumeric ? "numeric" : "text" %>
                                                 >
                                             </div>
                                         <% } %>
                                     </div>
                                 <% } else { %>
                                     <div class="ui fluid icon input addon-wrapper">
-                                        <input type="text" id='OTPCode' name="OTPcode" size='30'/>
+                                        <input type="text" id='OTPCode' name="OTPcode" size='30' autocomplete="off"/>
                                         <i id="password-eye" class="eye icon right-align password-toggle slash" onclick="showOTPCode()"></i>
                                     </div>
                                 <% } %>
@@ -257,16 +280,24 @@
                                         <div>
                                             <input type="button"
                                                 id="subButton"
-                                                onclick="sub(); return false;"
                                                 value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>"
                                                 class="ui primary fluid large button" />
                                         </div>
                                     <% } else { %>
-                                        <input type="submit"
-                                            name="authenticate"
-                                            id="authenticate"
-                                            value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>"
-                                            class="ui primary fluid large button"/>
+                                        
+                                        <% if (!reCaptchaEnabled) { %>
+                                            <input type="submit"
+                                                name="authenticate"
+                                                id="authenticate"
+                                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>"
+                                                class="ui primary fluid large button"/>
+                                        <% } else { %>
+                                            <input type="button"
+                                                name="authenticate"
+                                                id="authenticate"
+                                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "authenticate")%>"
+                                                class="ui primary fluid large button"/>
+                                        <% } %>
                                     <% } %>
 
                                     <button type="button"
@@ -277,7 +308,7 @@
 
                                     <%
                                         String multiOptionURI = request.getParameter("multiOptionURI");
-                                        if (isMultiAuthAvailable(multiOptionURI)) {
+                                        if (isMultiAuthAvailable(multiOptionURI) && AuthenticationEndpointUtil.isValidMultiOptionURI(multiOptionURI)) {
                                     %>
                                         <div class="ui divider hidden"></div>
                                         <a
@@ -289,6 +320,38 @@
                                         </a>
                                     <% } %>
                                 </div>
+
+                                <%
+                                    if (reCaptchaEnabled && otpLength <= 6) {
+                                        String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+                                %>
+                                    <div class="field">
+                                        <div class="g-recaptcha"
+                                            data-sitekey="<%=Encode.forHtmlAttribute(reCaptchaKey)%>"
+                                            data-testid="login-page-g-recaptcha"
+                                            data-bind="subButton"
+                                            data-callback="sub"
+                                            data-theme="light"
+                                            data-tabindex="-1"
+                                        >
+                                        </div>
+                                    </div>
+                                <%
+                                    } else if (reCaptchaEnabled && otpLength > 6) {
+                                        String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+                                %>
+                                    <div class="field">
+                                        <div class="g-recaptcha"
+                                            data-sitekey="<%=Encode.forHtmlAttribute(reCaptchaKey)%>"
+                                            data-testid="login-page-g-recaptcha"
+                                            data-bind="authenticate"
+                                            data-callback="submitForm"
+                                            data-theme="light"
+                                            data-tabindex="-1"
+                                        >
+                                        </div>
+                                    </div>
+                                <% } %>
                           </form>
                       </div>
                   </div>
@@ -367,6 +430,27 @@
 
             }
 
+            function submitForm() {
+                
+                var insightsTenantIdentifier = "<%=userTenant%>";
+                var code = document.getElementById("OTPCode").value;
+                if (code == "") {
+                    document.getElementById('alertDiv').innerHTML
+                        = '<div id="error-msg" class="ui negative message"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "error.enter.code")%></div>'
+                        +'<div class="ui divider hidden"></div>';
+                } else {
+                    if ($('#codeForm').data("submitted") === true) {
+                        console.log("Prevented a possible double submit event from Submit Form");
+                        console.warn("Prevented a possible double submit event");
+                    } else {
+                        trackEvent("authentication-portal-sms-otp-click-continue", {
+                            "tenant": insightsTenantIdentifier !== "null" ? insightsTenantIdentifier : ""
+                        });
+                        $('#codeForm').submit();
+                    }
+                }
+            }
+
             // Handle paste events
     	    function handlePaste(e) {
      	        var clipboardData, value;
@@ -377,17 +461,49 @@
 
                 // Get pasted data via clipboard API
                 clipboardData = e.clipboardData || window.clipboardData;
-                value = clipboardData.getData('Text');
-                const reg = new RegExp(/^\d+$/);
-                if (reg.test(value)) {
-                    for (n = 0; n < 6; ++n) {
+                value = clipboardData.getData('Text').trim();
+                
+                var isValid = true;
+                var firstInput = document.getElementById('pincode-1');
+                var isOnlyNumeric = firstInput && firstInput.getAttribute('inputmode') === 'numeric';
+                
+                if (isOnlyNumeric) {
+                    isValid = /^\d+$/.test(value);
+                } else {
+                    isValid = value.length > 0;
+                }
+                
+                if (isValid) {
+                    value = value.substring(0, otpLength);
+                    
+                    for (let n = 0; n < value.length && n < otpLength; ++n) {
                         $("#pincode-" + (n+1)).val(value[n]);
-                        $("#pincode-" + (n+1)).focus();
+                    }
+                    
+                    if (value.length < otpLength) {
+                        $("#pincode-" + (value.length + 1)).focus();
+                    } else {
+                        $("#pincode-" + otpLength).focus();
+                        var hasNullDigit = false;
+                        for (let i = 1; i <= otpLength; i++) {
+                            if (!$("#pincode-" + i).val()) {
+                                hasNullDigit = true;
+                                break;
+                            }
+                        }
+                        
+                        if (!hasNullDigit) {
+                            document.getElementById("subButton").disabled = false;
+                        }
                     }
                 }
             }
 
-           document.getElementById('pincode-1') ? document.getElementById('pincode-1').addEventListener('paste', handlePaste) : null;
+            for (let i = 1; i <= otpLength; i++) {
+                if (document.getElementById('pincode-' + i)) {
+                    document.getElementById('pincode-' + i).addEventListener('paste', handlePaste);
+                }
+            }
 
             $(document).ready(function () {
                 $.fn.preventDoubleSubmission = function() {
@@ -420,6 +536,15 @@
                 $('#resend').click(function () {
                     document.getElementById("resendCode").value = "true";
                     $('#codeForm').submit();
+                });
+            });
+
+            $(document).ready(function () {
+                $('#subButton').click(function () {
+                    <% if (!reCaptchaEnabled) { %>
+                        sub();
+                        return false;
+                    <% } %>
                 });
             });
 

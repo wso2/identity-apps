@@ -27,7 +27,7 @@ import moment from "moment";
 const formatTimestampToDateTime = (dateString: string): string => {
     if (!dateString) return "N/A";
 
-    return moment(dateString).format("DD MMM, YYYY | kk:mm:ss");
+    return moment(dateString).format("DD MMM, YYYY | HH:mm:ss");
 };
 
 /**
@@ -51,7 +51,7 @@ const getDateFromTimestamp = (dateString: string): string => {
 const getTimeFromTimestamp = (dateString: string): string => {
     if (!dateString) return "N/A";
 
-    return moment(dateString).format("kk:mm:ss");
+    return moment(dateString).format("HH:mm:ss");
 };
 
 

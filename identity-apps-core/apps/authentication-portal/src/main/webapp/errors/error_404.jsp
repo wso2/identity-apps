@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2021-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -30,6 +30,8 @@
 
 <%-- Branding Preferences --%>
 <jsp:directive.include file="../includes/branding-preferences.jsp"/>
+
+<% request.setAttribute("pageName","error-404"); %>
 
 <%
     String stat = AuthenticationEndpointUtil.i18n(resourceBundle, "error.404");
@@ -72,7 +74,7 @@
         });
     </script>
 </head>
-<body class="login-portal layout authentication-portal-layout">
+<body class="login-portal layout authentication-portal-layout" data-response-type="error" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
@@ -102,7 +104,7 @@
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "with.tracking.reference.below")%>
                     </p>
                     <div class="ui divider hidden"></div>
-                    <jsp:include page="../extensions/error-tracking-reference.jsp"/>                
+                    <jsp:include page="../extensions/error-tracking-reference.jsp"/>
                 <%
                     } else {
                 %>

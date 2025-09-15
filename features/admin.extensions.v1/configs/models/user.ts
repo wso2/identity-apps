@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,6 +20,7 @@ import { AskPasswordOptionTypes, PasswordOptionTypes } from "@wso2is/admin.users
 import { ProfileInfoInterface } from "@wso2is/core/models";
 
 export interface User {
+    allowImpersonationForPrimaryUserStore: boolean;
     bulkUserImportLimit: {
         fileSize: number;
         inviteEmails: number;
@@ -34,4 +35,8 @@ export interface User {
     enableUsernameValidation: boolean;
     userProfileSchema: string;
     hiddenItemsPerPageRemoteUserStoreDropdown: boolean;
+    userNameValidation: {
+        defaultRegex: string;
+        validateViaAPI: boolean;
+    }
 }

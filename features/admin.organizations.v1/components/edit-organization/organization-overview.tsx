@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,8 +17,10 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsError } from "@wso2is/core/errors";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     SBACInterface,
@@ -51,7 +53,8 @@ import {
     ORGANIZATION_DESCRIPTION_MAX_LENGTH,
     ORGANIZATION_DESCRIPTION_MIN_LENGTH,
     ORGANIZATION_NAME_MAX_LENGTH,
-    ORGANIZATION_NAME_MIN_LENGTH
+    ORGANIZATION_NAME_MIN_LENGTH,
+    OrganizationManagementConstants
 } from "../../constants";
 import {
     OrganizationPatchData,
@@ -117,6 +120,8 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
         showOrgDeleteConfirmation,
         setShowOrgDeleteConfirmationModal
     ] = useState(false);
+
+    const isOrgHandleFeatureEnabled: boolean = isFeatureEnabled(featureConfig.organizations, "organizationHandle");
 
     const handleSubmit: (values: OrganizationResponseInterface) => Promise<void> = useCallback(
         async (values: OrganizationResponseInterface): Promise<void> => {
@@ -432,8 +437,6 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                             "organizations:edit.fields." +
                                         "description.label"
                                         ) }
-                                        required={ false }
-                                        requiredErrorMessage=""
                                         value={ organization?.description ?? "" }
                                         placeholder={ t(
                                             "organizations:edit.fields." +
@@ -461,8 +464,6 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                             "organizations:edit.fields." +
                                         "domain.label"
                                         ) }
-                                        required={ false }
-                                        requiredErrorMessage=""
                                         value={ organization?.domain || "" }
                                         readOnly={ true }
                                         ariaLabel={ t(
@@ -470,8 +471,25 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                         "domain.ariaLabel"
                                         ) }
                                         inputType="url"
-                                        maxLength={ 32 }
-                                        minLength={ 3 }
+                                        maxLength={ OrganizationManagementConstants.MAX_ORG_HANDLE_LENGTH }
+                                        minLength={ OrganizationManagementConstants.MIN_ORG_HANDLE_LENGTH }
+                                    />
+                                ) }
+                                { organization?.orgHandle && isOrgHandleFeatureEnabled && (
+                                    <Field.Input
+                                        data-testid={ `${ testId }-overview-form-org-handle-input` }
+                                        name="orgHandle"
+                                        label={ t(
+                                            "organizations:edit.fields.orgHandle.label"
+                                        ) }
+                                        value={ organization?.orgHandle || organization?.id }
+                                        readOnly={ true }
+                                        ariaLabel={ t(
+                                            "organizations:edit.fields.orgHandle.ariaLabel"
+                                        ) }
+                                        inputType="copy_input"
+                                        maxLength={ OrganizationManagementConstants.MAX_ORG_HANDLE_LENGTH }
+                                        minLength={ OrganizationManagementConstants.MIN_ORG_HANDLE_LENGTH }
                                     />
                                 ) }
                                 <Field.Input
@@ -481,8 +499,6 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                         "organizations:edit.fields." +
                                     "id.label"
                                     ) }
-                                    required={ false }
-                                    requiredErrorMessage=""
                                     type="text"
                                     readOnly={ true }
                                     value={ organization?.id }
@@ -491,8 +507,8 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                     "id.ariaLabel"
                                     ) }
                                     inputType="copy_input"
-                                    maxLength={ 32 }
-                                    minLength={ 3 }
+                                    maxLength={ OrganizationManagementConstants.MAX_ORG_HANDLE_LENGTH }
+                                    minLength={ OrganizationManagementConstants.MIN_ORG_HANDLE_LENGTH }
                                 />
                                 { organization?.created && (
                                     <Field.Input
@@ -502,8 +518,6 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                             "organizations:edit.fields." +
                                         "created.label"
                                         ) }
-                                        required={ false }
-                                        requiredErrorMessage=""
                                         type="text"
                                         readOnly={ true }
                                         value={ moment(organization.created).format(
@@ -514,8 +528,8 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                         "created.ariaLabel"
                                         ) }
                                         inputType="default"
-                                        maxLength={ 32 }
-                                        minLength={ 3 }
+                                        maxLength={ OrganizationManagementConstants.MAX_ORG_HANDLE_LENGTH }
+                                        minLength={ OrganizationManagementConstants.MIN_ORG_HANDLE_LENGTH }
                                     />
                                 ) }
                                 { organization?.lastModified && (
@@ -526,8 +540,6 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                             "organizations:edit.fields." +
                                         "lastModified.label"
                                         ) }
-                                        required={ false }
-                                        requiredErrorMessage=""
                                         type="text"
                                         readOnly={ true }
                                         value={ moment(
@@ -538,8 +550,8 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                         "lastModified.ariaLabel"
                                         ) }
                                         inputType="default"
-                                        maxLength={ 32 }
-                                        minLength={ 3 }
+                                        maxLength={ OrganizationManagementConstants.MAX_ORG_HANDLE_LENGTH }
+                                        minLength={ OrganizationManagementConstants.MIN_ORG_HANDLE_LENGTH }
                                     />
                                 ) }
                                 { !isReadOnly && (

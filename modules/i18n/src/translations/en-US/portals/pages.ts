@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -29,6 +29,14 @@ export const pages: pagesNS = {
         backButton: "Go back to {{name}} template",
         subTitle: null,
         title: "Add New Template"
+    },
+    agents: {
+        subTitle: "Configure and manage AI agent identities for your organizaton",
+        title: "Agents"
+    },
+    approvalWorkflows: {
+        subTitle: "Create and manage approval workflows.",
+        title: "Approval Workflows"
     },
     approvalsPage: {
         subTitle: "Review operational tasks that requires your approval",
@@ -68,7 +76,7 @@ export const pages: pagesNS = {
         title: "Templates - {{displayName}}"
     },
     groups: {
-        subTitle: "Create and manage user groups, assign permissions for groups.",
+        subTitle: "Create and manage groups, assign users to them.",
         title: "Groups"
     },
     groupsEdit: {
@@ -104,7 +112,7 @@ export const pages: pagesNS = {
     },
     roles: {
         alternateSubTitle: "View and manage roles.",
-        subTitle: "Create and manage roles, assign permissions for roles.",
+        subTitle: "Create and manage roles, assign permissions to them.",
         title: "Roles"
     },
     rolesEdit: {
@@ -124,5 +132,13 @@ export const pages: pagesNS = {
         backButton: "Go back to {{type}}",
         subTitle: "{{name}}",
         title: "{{email}}"
-    }
+    },
+    webhooks: {
+        subTitle: "Create webhooks to notify external services when certain events happen.",
+        title: "Webhooks"
+    },
+    workflowRequestsPage: {
+        subTitle: "View and manage workflow requests.",
+        title: "Workflow Requests"
+    },
 };

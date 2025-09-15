@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -70,6 +70,10 @@ export interface TenantsNS {
                     label: string;
                     placeholder: string;
                     validations: {
+                        domainInvalidCharPattern: string;
+                        domainInvalidPattern: string;
+                        domainMandatoryExtension: string;
+                        domainStartingWithDot: string;
                         domainUnavailable: string;
                         required: string;
                     };
@@ -78,6 +82,7 @@ export interface TenantsNS {
                     label: string;
                     placeholder: string;
                     validations: {
+                        invalid: string;
                         required: string;
                     };
                 };
@@ -127,6 +132,14 @@ export interface TenantsNS {
                         required: string;
                     };
                 };
+                organizationName: {
+                    helperText: string;
+                    label: string;
+                    placeholder: string;
+                    validations: {
+                        invalidCharPattern: string;
+                    };
+                };
                 username: {
                     helperText: string;
                     label: string;
@@ -160,9 +173,69 @@ export interface TenantsNS {
             secondaryAction: string;
         };
     },
+    deploymentUnits: {
+        label: string;
+        placeholder: string;
+        validations: {
+            empty: string;
+        };
+    };
     edit: {
         backButton: string;
+        consoleURL: {
+            label: string;
+            hint: string;
+        };
         subtitle: string;
+    };
+    editSelfOrganization: {
+        actions: {
+            save: {
+                label: string;
+            };
+        };
+        form: {
+            fields: {
+                created: {
+                    label: string;
+                };
+                lastModified: {
+                    label: string;
+                };
+                organizationHandle: {
+                    label: string;
+                };
+                organizationId: {
+                    hint: string;
+                    label: string;
+                };
+                organizationName: {
+                    label: string;
+                    placeholder: string;
+                    validations: {
+                        required: string;
+                    };
+                };
+            };
+        };
+        notifications: {
+            updateOrganization: {
+                error: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+        };
+        readOnly: {
+            subtitle: string;
+            title: string;
+        }
+        subtitle: string;
+        title: string;
     };
     editTenant: {
         actions: {
@@ -225,6 +298,10 @@ export interface TenantsNS {
             };
         };
     };
+    listDeploymentUnits: {
+        description: string;
+        message: string;
+    };
     listing: {
         advancedSearch: {
             form: {
@@ -284,9 +361,6 @@ export interface TenantsNS {
                 edit: {
                     label: string;
                 };
-                goToConsole: {
-                    label: string;
-                };
                 more: {
                     label: string;
                 };
@@ -323,7 +397,13 @@ export interface TenantsNS {
     };
     tenantDropdown: {
         options: {
+            edit: {
+                label: string;
+            };
             manage: {
+                label: string;
+            };
+            view: {
                 label: string;
             };
         };

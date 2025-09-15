@@ -17,13 +17,27 @@
  */
 
 /**
+ * Type of agent connection API response.
+ */
+export interface AgentConnectionAPIResponseInterface {
+    tokenId: string;
+    connected: boolean;
+    agent: {
+        Id?: string;
+        id?: string;
+        displayName: string;
+        noOfChannels: number;
+    }
+}
+
+/**
  * Type of agent connection object.
  */
 export interface AgentConnectionInterface {
     tokenId: string;
     connected: boolean;
     agent: {
-        Id: string;
+        agentId: string;
         displayName: string;
     }
 }

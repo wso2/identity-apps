@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,12 +28,18 @@ import {
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import { getAllLocalClaims, updateAClaim } from "@wso2is/admin.claims.v1/api/claims";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
-import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
-import { getConnectorDetails, updateGovernanceConnector } from "@wso2is/admin.server-configurations.v1/api";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import {
+    getConnectorDetails,
+    revertGovernanceConnectorProperties,
+    updateGovernanceConnector
+} from "@wso2is/admin.server-configurations.v1/api";
 import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
+    RevertGovernanceConnectorConfigInterface,
     UpdateGovernanceConnectorConfigInterface
 } from "@wso2is/admin.server-configurations.v1/models";
 import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-management-utils";
@@ -48,12 +54,19 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
-import { ConfirmationModal, ContentLoader, EmphasizedSegment, Message, PageLayout } from "@wso2is/react-components";
+import {
+    ConfirmationModal,
+    ContentLoader,
+    DangerZone,
+    DangerZoneGroup,
+    EmphasizedSegment,
+    Message,
+    PageLayout } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
 import { AlternativeLoginIdentifierFormInterface } from "../models/alternative-login-identifier-validation";
@@ -78,9 +91,6 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
     const { ["data-componentid"]: componentId } = props;
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-
-    const enableIdentityClaims: boolean = useSelector(
-        (state: AppState) => state?.config?.ui?.enableIdentityClaims);
 
     const categoryId: string = ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CATEGORY_ID;
     const connectorId: string = ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID;
@@ -165,7 +175,7 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
     const getClaims = () => {
 
         const params: ClaimsGetParams = {
-            "exclude-identity-claims": !enableIdentityClaims,
+            "exclude-hidden-claims": true,
             filter: null,
             limit: null,
             offset: null,
@@ -311,6 +321,52 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
                 })
             );
         }
+    };
+
+    const handleRevertSuccess = () => {
+        dispatch(
+            addAlert({
+                description: t(
+                    "governanceConnectors:notifications.revertConnector.success.description"),
+                level: AlertLevels.SUCCESS,
+                message: t(
+                    "governanceConnectors:notifications.revertConnector.success.message"
+                )
+            })
+        );
+    };
+
+    const handleRevertError = () => {
+        dispatch(
+            addAlert({
+                description: t(
+                    "governanceConnectors:notifications.revertConnector.error.description"
+                ),
+                level: AlertLevels.ERROR,
+                message: t(
+                    "governanceConnectors:notifications.revertConnector.error.message"
+                )
+            })
+        );
+    };
+
+    const onConfigRevert = () => {
+        setIsSubmitting(true);
+        const revertRequest: RevertGovernanceConnectorConfigInterface = {
+            properties: connector?.properties?.map((property: ConnectorPropertyInterface) => property.name)
+        };
+
+        revertGovernanceConnectorProperties(categoryId, connectorId, revertRequest)
+            .then(() => {
+                handleRevertSuccess();
+                loadConnectorDetails();
+            })
+            .catch(() => {
+                handleRevertError();
+            })
+            .finally(() => {
+                setIsSubmitting(false);
+            });
     };
 
     const updateConnector = (updatedConnectorData: any, checkedClaims: string[]) => {
@@ -643,6 +699,17 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
                                         />
                                     </Form>
                                 </EmphasizedSegment>
+                            </Grid>
+                            <Grid className="mt-3">
+                                <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
+                                    <DangerZone
+                                        actionTitle={ t("governanceConnectors:dangerZone.actionTitle") }
+                                        header= { t("governanceConnectors:dangerZone.heading") }
+                                        subheader= { t("governanceConnectors:dangerZone.subHeading") }
+                                        onActionClick={ () => onConfigRevert() }
+                                        data-testid={ `${ componentId }-danger-zone` }
+                                    />
+                                </DangerZoneGroup>
                             </Grid>
                         </PageLayout>
                     ) : (

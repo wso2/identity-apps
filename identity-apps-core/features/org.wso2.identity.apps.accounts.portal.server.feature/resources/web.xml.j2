@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  ~ Copyright (c) 2025, WSO2 LLC. (http://www.wso2.org).
+  ~
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
+  -->
+
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0" metadata-complete="true">
+
+    <absolute-ordering />
+
+    {% if cookie_consent is defined %}
+        <context-param>
+            <param-name>isCookieConsentBannerEnabled</param-name>
+            <param-value>{{ cookie_consent }}</param-value>
+        </context-param>
+    {% endif %}
+
+    {% if downtime_banner.enabled is defined %}
+        <context-param>
+            <param-name>isDowntimeBannerEnabled</param-name>
+            <param-value>{{ downtime_banner.enabled }}</param-value>
+        </context-param>
+        <context-param>
+            <param-name>downtimeBannerMessage</param-name>
+            <param-value>{{ downtime_banner.content }}</param-value>
+        </context-param>
+    {% endif %}
+
+    <!-- *************** Layout Store URL Configuration ********************** -->
+    {% if webappscommon.layout_store_url is defined %}
+    <context-param>
+        <param-name>LayoutStoreURL</param-name>
+        <param-value>{{ webappscommon.layout_store_url }}</param-value>
+    </context-param>
+    {% endif %}
+    <!-- *************** End of Layout Store URL Configuration ********************** -->
+
+    <!-- *************** Custom Error Page Configurations ********************** -->
+    {% set all_error_pages = [] %}
+    {% for error_page in accounts.error_pages %}
+    <error-page>
+        {% if error_page['exception-type'] is defined %}
+            <exception-type>{{ error_page['exception-type'] }}</exception-type>
+            <location>{{ error_page.location }}</location>
+        {% elif error_page.code is defined %}
+            <error-code>{{ error_page.code }}</error-code>
+            <location>{{ error_page.location }}</location>
+        {% else %}
+            <location>{{ error_page.location }}</location>
+        {% endif %}
+    </error-page>
+    {% endfor %}
+    <!-- *************** End of Custom Error Page Configurations ********************** -->
+
+    {# --- Now add defaults, only if not already handled --- #}
+    {% set handled_codes = [] %}
+    {% for error_page in accounts.error_pages %}
+        {% if error_page.code is defined %}
+            {% set _ = handled_codes.append(error_page.code) %}
+        {% elif error_page['exception-type'] is defined %}
+            {% set _ = handled_codes.append(error_page['exception-type']) %}
+        {% else %}
+            {% set _ = handled_codes.append('default') %}
+        {% endif %}
+    {% endfor %}
+
+    {% set default_error_pages = [
+        {"exception-type": "java.lang.Throwable", "location": "/error.jsp"},
+        {"code": 400, "location": "/errors/error_400.jsp"},
+        {"code": 401, "location": "/errors/error_401.jsp"},
+        {"code": 403, "location": "/errors/error_403.jsp"},
+        {"code": 404, "location": "/errors/error_404.jsp"},
+        {"code": 405, "location": "/errors/error_405.jsp"},
+        {"code": 408, "location": "/errors/error_408.jsp"},
+        {"code": 410, "location": "/errors/error_410.jsp"},
+        {"code": 500, "location": "/errors/error_500.jsp"},
+        {"code": 502, "location": "/errors/error_502.jsp"},
+        {"code": 503, "location": "/errors/error_503.jsp"},
+        {"code": 504, "location": "/errors/error_504.jsp"},
+        {"location": "/errors/error.jsp"}
+    ] %}
+
+    <!-- *************** Default Error Page Configurations ********************** -->
+    {% for error_page in default_error_pages %}
+        {% if error_page.code is defined %}
+            {% set code_name = error_page.code %}
+        {% elif error_page['exception-type'] is defined %}
+            {% set code_name = error_page['exception-type'] %}
+        {% else %}
+            {% set code_name = 'default' %}
+        {% endif %}
+
+        {% if code_name not in handled_codes %}
+    <error-page>
+        {% if error_page['exception-type'] is defined %}
+            <exception-type>{{ error_page['exception-type'] }}</exception-type>
+            <location>{{ error_page.location }}</location>
+        {% elif error_page.code is defined %}
+            <error-code>{{ error_page.code }}</error-code>
+            <location>{{ error_page.location }}</location>
+        {% else %}
+            <location>{{ error_page.location }}</location>
+        {% endif %}
+    </error-page>
+        {% endif %}
+    {% endfor %}
+    <!-- *************** End of Default Error Page Configurations ********************** -->
+
+    <!-- *************** Http Header Security Filter ********************** -->
+    <filter>
+        <filter-name>HttpHeaderSecurityFilter</filter-name>
+        <filter-class>org.apache.catalina.filters.HttpHeaderSecurityFilter</filter-class>
+        <init-param>
+            <param-name>hstsEnabled</param-name>
+            <param-value>{{ http_header_filter.hsts_enabled | default('false') }}</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>HttpHeaderSecurityFilter</filter-name>
+        <url-pattern>{{ http_header_filter.url_pattern | default('*') }}</url-pattern>
+    </filter-mapping>
+    <!-- *************** End of Http Header Security Filter ********************** -->
+
+    <!-- *************** Cache Prevention Filter ********************** -->
+    <filter>
+        <filter-name>ContentTypeBasedCachePreventionFilter</filter-name>
+        <filter-class>
+            org.wso2.carbon.tomcat.ext.filter.ContentTypeBasedCachePreventionFilter
+        </filter-class>
+        <init-param>
+            <param-name>patterns</param-name>
+            <param-value>{{ cache_filter.patterns | default('"text/html" ,"application/json" ,"plain/text"') }}</param-value>
+        </init-param>
+        <init-param>
+            <param-name>filterAction</param-name>
+            <param-value>{{ cache_filter.action | default('enforce') }}</param-value>
+        </init-param>
+        <init-param>
+            <param-name>httpHeaders</param-name>
+            <param-value>
+                {{ cache_filter.headers | default('Cache-Control: no-store, no-cache, must-revalidate, private') }}
+            </param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>ContentTypeBasedCachePreventionFilter</filter-name>
+        <url-pattern>{{ cache_filter.url_pattern | default('*') }}</url-pattern>
+    </filter-mapping>
+    <!-- *************** End of Cache Prevention Filter ********************** -->
+
+    <!-- *************** Listener Configurations ********************** -->
+    <listener>
+        <listener-class>
+            org.wso2.carbon.identity.mgt.endpoint.util.listener.IdentityManagementEndpointContextListener
+        </listener-class>
+    </listener>
+    <!-- *************** End of Listener Configurations ********************** -->
+
+    <!-- *************** Servlet Configurations (dynamic, with overrides) ********************** -->
+    {% set keys = [] %}
+    {% set values = [] %}
+    {% for servlet_item in accounts.servlet %}
+        {% set _ = keys.append(servlet_item['name']) %}
+        {% set _ = values.append(servlet_item) %}
+    {% endfor %}
+    {% set default_servlets = [
+        {"name": "register", "jsp": "/execution-flow.jsp", "url": "/register"},
+        {"name": "recovery", "jsp": "/execution-flow.jsp", "url": "/recovery"},
+        {"name": "error", "jsp": "/errors/execution_flow_error.jsp", "url": "/error"}
+    ] %}
+    {% for servlet_item in default_servlets %}
+        {% set key_name = servlet_item['name'] %}
+        {% set custom_servlet = servlet_item %}
+        {% if key_name in keys %}
+            {% set index = keys.index(key_name) %}
+            {% set custom_servlet = values[index] %}
+        {% endif %}
+    <servlet>
+        <servlet-name>{{ custom_servlet['name'] }}</servlet-name>
+        <jsp-file>{{ custom_servlet['jsp'] }}</jsp-file>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>{{ custom_servlet['name'] }}</servlet-name>
+        <url-pattern>{{ custom_servlet['url'] }}</url-pattern>
+    </servlet-mapping>
+
+    {% endfor %}
+    {% set default_keys = default_servlets | map(attribute='name') | list %}
+    {% for servlet_item in accounts.servlet %}
+      {% if servlet_item['name'] not in default_keys %}
+    <servlet>
+        <servlet-name>{{ servlet_item['name'] }}</servlet-name>
+        <jsp-file>{{ servlet_item['jsp'] }}</jsp-file>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>{{ servlet_item['name'] }}</servlet-name>
+        <url-pattern>{{ servlet_item['url'] }}</url-pattern>
+    </servlet-mapping>
+
+      {% endif %}
+    {% endfor %}
+    <!-- *************** End of Servlet Configurations ********************** -->
+
+    <!-- *************** Session Configurations ********************** -->
+    <session-config>
+        <cookie-config>
+            <secure>{{ session.secure | default('true') }}</secure>
+        </cookie-config>
+    </session-config>
+    <!-- *************** End of Session Configurations ********************** -->
+
+</web-app>

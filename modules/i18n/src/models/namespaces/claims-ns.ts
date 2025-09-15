@@ -17,6 +17,10 @@
  */
 export interface ClaimsNS {
     attributeMappings: {
+        agent: {
+            heading: string;
+            description: string
+        };
         axschema: {
             heading: string;
             description: string;
@@ -170,6 +174,10 @@ export interface ClaimsNS {
                     heading: string;
                     description: string;
                 };
+                agent: {
+                    heading: string;
+                    description: string;
+                }
             };
         };
         confirmations: {
@@ -470,6 +478,15 @@ export interface ClaimsNS {
                     invalidName: string;
                 };
             };
+            sharedProfileValueResolvingMethod: {
+                label: string;
+                hint: string;
+                options: {
+                    fromOrigin: string;
+                    fromSharedProfile: string;
+                    fromFirstFoundInHierarchy: string;
+                };
+            }
             uniquenessScope: {
                 label: string;
                 options: {
@@ -498,10 +515,62 @@ export interface ClaimsNS {
                 label: string;
                 placeholder: string;
             };
+            canonicalValues: {
+                hint: string;
+                keyLabel: string;
+                valueLabel: string;
+                keyRequiredErrorMessage: string;
+                valueRequiredErrorMessage: string;
+                validationError: string;
+                validationErrorMessage: string;
+            };
+            dataType: {
+                hint: string;
+                label: string;
+                options: {
+                    text: string;
+                    options: string;
+                    integer: string;
+                    decimal: string;
+                    boolean: string;
+                    dateTime: string;
+                    date: string;
+                    epoch: string;
+                    object: string;
+                };
+            };
+            subAttributes: {
+                label: string;
+                placeholder: string;
+                validationError: string;
+                validationErrorMessage: string;
+            };
+            multiValued: {
+                label: string;
+                placeholder: string;
+            };
+            multiValuedHint: string;
+            multiValuedSystemClaimHint: string;
             displayOrderHint: string;
             required: {
                 label: string;
             };
+            inputFormat: {
+                label: string;
+                hint: string;
+                options: {
+                    textInput: string;
+                    dropdown: string;
+                    multiSelectDropdown: string;
+                    radioGroup: string;
+                    checkBoxGroup: string;
+                    checkbox: string;
+                    datePicker: string;
+                    textArea: string;
+                    toggle: string;
+                    numberInput: string;
+                }
+            }
             requiredHint: string;
             requiredWarning: string;
             readOnly: {
@@ -515,6 +584,22 @@ export interface ClaimsNS {
             infoMessages: {
                 disabledConfigInfo: string;
                 configApplicabilityInfo: string;
+            };
+            profiles: {
+                administratorConsole: string;
+                attributeConfigurations: {
+                    title: string;
+                    description: string;
+                }
+                endUserProfile: string;
+                selfRegistration: string;
+                displayByDefault: string;
+                displayByDefaultHint: string;
+                required: string;
+                requiredHint: string;
+                readonly: string;
+                readonlyHint: string;
+                selfRegistrationReadOnlyHint: string;
             };
         };
         dangerZone: {
@@ -565,6 +650,7 @@ export interface ClaimsNS {
                     local: string;
                     dialect: string;
                     external: string;
+                    readOnlyDialect: string;
                 };
                 subtitle: string;
                 action: {

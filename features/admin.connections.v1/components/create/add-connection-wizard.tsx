@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { EventPublisher } from "@wso2is/admin.core.v1";
-import { ModalWithSidePanel, TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components";
+import { ModalWithSidePanel, TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals";
 import { HelpPanelModal } from "@wso2is/admin.core.v1/components/modals/help-panel-modal";
 import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-app-configs";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface, LoadableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";

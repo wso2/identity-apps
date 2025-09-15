@@ -1,12 +1,19 @@
 <%--
- ~
- ~ Copyright (c) 2021, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
- ~
- ~ This software is the property of WSO2 Inc. and its suppliers, if any.
- ~ Dissemination of any information or reproduction of any material contained
- ~ herein in any form is strictly forbidden, unless permitted by WSO2 expressly.
- ~ You may not alter or remove any copyright or other notice from copies of this content."
- ~
+  ~ Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
+  ~
+  ~ WSO2 LLC. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
 --%>
 
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -49,6 +56,9 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
+<%-- Include registration portal URL resolver --%>
+<jsp:directive.include file="util/dynamic-portal-url-resolver.jsp"/>
+
 <%!
     private static final String JAVAX_SERVLET_FORWARD_REQUEST_URI = "javax.servlet.forward.request_uri";
     private static final String JAVAX_SERVLET_FORWARD_QUERY_STRING = "javax.servlet.forward.query_string";
@@ -71,7 +81,7 @@
 <%
     String stat = request.getParameter("status");
     String statusMessage = request.getParameter("statusMsg");
-    String sp = request.getParameter("sp");
+    String sp = Encode.forJava(request.getParameter("sp"));
     String applicationAccessURLWithoutEncoding = null;
     if (stat == null || statusMessage == null) {
         stat = AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.error");
@@ -123,19 +133,17 @@
         }
     }
 
-    accountRegistrationEndpointURL = application.getInitParameter("AccountRegisterEndpointURL");
-    if (StringUtils.isBlank(accountRegistrationEndpointURL)) {
+    if (isDynamicPortalEnabled) {
         accountRegistrationEndpointURL = identityMgtEndpointContext + ACCOUNT_RECOVERY_ENDPOINT_REGISTER;
+    } else {
+        accountRegistrationEndpointURL = application.getInitParameter("AccountRegisterEndpointURL");
+        if (StringUtils.isBlank(accountRegistrationEndpointURL)) {
+            accountRegistrationEndpointURL = identityMgtEndpointContext + ACCOUNT_RECOVERY_ENDPOINT_REGISTER;
+        }
     }
 %>
 
-<%!
-    private String getRegistrationUrl(String accountRegistrationEndpointURL, String urlEncodedURL,
-            String urlParameters) {
-
-        return accountRegistrationEndpointURL + "?" + urlParameters + "&callback=" + Encode.forHtmlAttribute(urlEncodedURL);
-    }
-%>
+<% request.setAttribute("pageName", "user-not-found"); %>
 
 <!DOCTYPE html>
 
@@ -153,7 +161,7 @@
         <% } %>
     </head>
 
-    <body class="login-portal layout recovery-layout">
+    <body class="login-portal layout recovery-layout" data-page="<%= request.getAttribute("pageName") %>">
         <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
             <layout:component componentName="ProductHeader">
                 <%-- product-title --%>
@@ -181,7 +189,7 @@
                         <% } else { %>
                             <h3 class="ui header"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "account.not.found")%></h3>
                             <p style="text-align:left;"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "we.cannot.find.an.account.associated.with")%>
-                            <b><%=attemptedUser %></b>.
+                            <b><%= Encode.forHtml(attemptedUser) %></b>.
                             </p>
                             <div class="ui divider hidden"></div>
                         <% }
@@ -192,7 +200,7 @@
                             class="ui primary fluid large button"
                             type="button"
                             value="submit"
-                            onclick="window.location.href='<%=getRegistrationUrl(accountRegistrationEndpointURL, urlEncodedURL, urlParameters)%>';"
+                            onclick="window.location.href='<%=getRegistrationPortalUrl(accountRegistrationEndpointURL, urlEncodedURL, urlParameters)%>';"
                         >
                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "go.to.sign.up")%>
                         </button>

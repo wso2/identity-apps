@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { AppConstants, store } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { store } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { UserBasicInterface } from "@wso2is/admin.users.v1/models/user";
 import { UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants";
@@ -177,7 +178,7 @@ export class RoleManagementUtils {
      * @returns - user managed by
      */
     public static getUserManagedBy = (user: UserBasicInterface): string => {
-        const userIdp: string = user[ SCIMConfigs.scim.enterpriseSchema ]?.idpType;
+        const userIdp: string = user[ SCIMConfigs.scim.systemSchema ]?.idpType;
 
         if (!userIdp) {
             return null;

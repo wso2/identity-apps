@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -45,6 +45,8 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
+<% request.setAttribute("pageName", "iproovlogin"); %>
+
 <!doctype html>
 <html lang="en-US">
 <head>
@@ -73,7 +75,7 @@
         }
 
         .iproov-text {
-            padding: 12px 36px;
+            padding: 5px 5px 30px 0;
         }
 
         .scan-button, .iproov-state-screen a, .iproov-state-screen button {
@@ -90,7 +92,7 @@
     </style>
 </head>
 
-<body class="login-portal layout iproov-layout">
+<body class="login-portal layout iproov-layout" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>
@@ -107,7 +109,6 @@
             <div class="ui segment">
                 <%-- page content --%>
                 <h2><%=AuthenticationEndpointUtil.i18n(resourceBundle, "iproov.heading")%></h2>
-                <div class="ui divider hidden"></div>
                 <div class="ui visible negative message" style="display: none;" id="error-msg"></div>
 
                 <div class="segment-form iproov-segment">
@@ -148,7 +149,7 @@
                     }
                      if ( token != null) {
                         %>
-        <iproov-me token='<%=(token)%>'>
+        <iproov-me token='<%=Encode.forHtmlAttribute(token)%>'>
             <div slot="ready">
     				<h1 class="iproov-lang-heading">iProov Ready</h1>
   			</div>

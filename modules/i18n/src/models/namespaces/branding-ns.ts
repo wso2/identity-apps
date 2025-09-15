@@ -175,6 +175,7 @@ export interface BrandingNS {
         "password-recovery": string;
         "password-reset": string;
         "password-reset-success": string;
+        "push-auth": string;
         "username-recovery-claim": string;
         "username-recovery-channel-selection": string;
         "username-recovery-success": string;
@@ -182,6 +183,7 @@ export interface BrandingNS {
     variations: {
         "sms-otp": string;
         "email-link": string;
+        "email-otp": string;
         "base": string;
         "multi": string;
         "sms": string;
@@ -253,5 +255,34 @@ export interface BrandingNS {
         };
         title: string;
         termsAndConditions: string;
+    };
+    customPageEditor: {
+        backButton: string;
+        brandingNotConfiguredTooltip: string;
+        tabs: {
+            html: {
+                label: string;
+            };
+            css: {
+                label: string;
+            };
+            js: {
+                label: string;
+            };
+        };
+        notifications: {
+            successContentUpdate: {
+                description: string;
+                message: string;
+            };
+            errorContentUpdate: {
+                description: string;
+                message: string;
+            };
+            errorContentSizeLimit: {
+                description: string;
+                message: string;
+            }
+        };
     };
 }

@@ -16,9 +16,15 @@
  * under the License.
  */
 
-import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
+import {
+    I18nModuleInitOptions,
+    I18nModuleOptionsInterface,
+    SupportedLanguagesMeta,
+    generateBackendPaths
+} from "@wso2is/i18n";
 import { I18nConstants } from "../constants";
 import { AppConstants } from "../constants/app-constants";
+import { UserManagementConstants } from "../constants/user-management-constants";
 // Keep statement as this to avoid cyclic dependency. Do not import from config index.
 import { SCIMConfigs } from "../extensions/configs/scim";
 import { AppUtils } from "../init/app-utils";
@@ -62,6 +68,7 @@ export class Config {
             serverOrigin: window["AppUtils"]?.getConfig()?.serverOrigin,
             superTenant: window["AppUtils"]?.getConfig()?.superTenant,
             tenant: window["AppUtils"]?.getConfig()?.tenant,
+            tenantContext: window["AppUtils"]?.getConfig()?.tenantContext,
             tenantPath: window["AppUtils"]?.getConfig()?.tenantPath,
             tenantPrefix: window["AppUtils"]?.getConfig()?.tenantPrefix
         };
@@ -75,6 +82,7 @@ export class Config {
     public static getServiceResourceEndpoints(): ServiceResourceEndpointsInterface {
         return {
             applications: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/applications`,
+            approvals: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/approval-tasks`,
             associations: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/associations`,
             authorize: `${this.getDeploymentConfig()?.serverHost}/oauth2/authorize`,
             backupCode: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/backup-codes`,
@@ -109,8 +117,7 @@ export class Config {
                 this.getDeploymentConfig()?.serverHost
             }/api/server/v1/configs/home-realm-identifiers`,
             isReadOnlyUser: `${this.getDeploymentConfig()?.serverHost}/scim2/Me?attributes=${
-                SCIMConfigs.scimEnterpriseUserClaimUri.isReadOnlyUser
-            }`,
+                SCIMConfigs.scim.systemSchema}:isReadOnlyUser`,
             issuer: `${this.getDeploymentConfig()?.serverHost}/oauth2/token`,
             jwks: `${this.getDeploymentConfig()?.serverHost}/oauth2/jwks`,
             logout: `${this.getDeploymentConfig()?.serverHost}/oidc/logout`,
@@ -118,9 +125,9 @@ export class Config {
             mfaEnabledAuthenticators: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/mfa/authenticators`,
             preference: `${this.getDeploymentConfig()?.serverHost}/api/server/v1/identity-governance/preferences`,
             profileSchemas: `${this.getDeploymentConfig()?.serverHost}/scim2/Schemas`,
+            push: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/push`,
             revoke: `${this.getDeploymentConfig()?.serverHost}/oauth2/revoke`,
             sessions: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/sessions`,
-            smsOtpResend: `${this.getDeploymentConfig()?.serverHost}/api/identity/user/v1.0/me/resend-code`,
             smsOtpValidate: `${this.getDeploymentConfig()?.serverHost}/api/identity/user/v1.0/me/validate-code`,
             token: `${this.getDeploymentConfig()?.serverHost}/oauth2/token`,
             totp: `${this.getDeploymentConfig()?.serverHost}/api/users/v1/me/totp`,
@@ -133,6 +140,7 @@ export class Config {
             validationMgt: `${AppUtils.getOrganizationName()
                 ? window["AppUtils"]?.getConfig()?.serverOriginWithOrganization
                 : this.getDeploymentConfig()?.serverHost}/api/server/v1/validation-rules`,
+            verificationResend: `${this.getDeploymentConfig()?.serverHost}/api/identity/user/v1.0/me/resend-code`,
             wellKnown: `${this.getDeploymentConfig()?.serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
         };
     }
@@ -170,7 +178,9 @@ export class Config {
             productName: window["AppUtils"]?.getConfig()?.ui?.productName,
             productVersionConfig: window["AppUtils"]?.getConfig()?.ui?.productVersionConfig,
             showAppSwitchButton: window["AppUtils"]?.getConfig()?.ui?.showAppSwitchButton,
-            theme: window["AppUtils"]?.getConfig()?.ui?.theme
+            theme: window["AppUtils"]?.getConfig()?.ui?.theme,
+            userSchemaURI: window[ "AppUtils" ]?.getConfig()?.ui?.customUserSchemaURI
+                ?? UserManagementConstants.DEFAULT_SCIM2_CUSTOM_USER_SCHEMA_URI
         };
     }
 
@@ -186,7 +196,7 @@ export class Config {
      * @param metaFile - Meta file.
      * @returns I18nModuleInitOptions - I18n init options.
      */
-    public static generateModuleInitOptions(metaFile: MetaI18N): I18nModuleInitOptions {
+    public static generateModuleInitOptions(metaFile: SupportedLanguagesMeta): I18nModuleInitOptions {
         return {
             backend: {
                 loadPath: (language: any, namespace: any) =>
@@ -205,7 +215,11 @@ export class Config {
                     )
             },
             load: "currentOnly", // lookup only current lang key(en-US). Prevents 404 from `en`.
-            ns: [ I18nConstants.COMMON_NAMESPACE, I18nConstants.PORTAL_NAMESPACE ],
+            ns: [
+                I18nConstants.COMMON_NAMESPACE,
+                I18nConstants.PORTAL_NAMESPACE,
+                I18nConstants.COMMON_USERS_NAMESPACE
+            ],
             preload: [ "si-LK", "fr-FR" ]
         };
     }
@@ -217,13 +231,14 @@ export class Config {
      *
      * @returns I18nModuleOptionsInterface - i18n config object.
      */
-    public static getI18nConfig(metaFile?: MetaI18N): I18nModuleOptionsInterface {
+    public static getI18nConfig(metaFile?: SupportedLanguagesMeta): I18nModuleOptionsInterface {
         return {
             initOptions: this.generateModuleInitOptions(metaFile),
             langAutoDetectEnabled: window["AppUtils"]?.getConfig()?.ui?.i18nConfigs?.langAutoDetectEnabled
                 ?? I18nConstants.LANG_AUTO_DETECT_ENABLED,
             namespaceDirectories: I18nConstants.BUNDLE_NAMESPACE_DIRECTORIES,
             overrideOptions: I18nConstants.INIT_OPTIONS_OVERRIDE,
+            resourceExtensionsPath: "/extensions/i18n",
             resourcePath: "/resources/i18n",
             xhrBackendPluginEnabled: I18nConstants.XHR_BACKEND_PLUGIN_ENABLED
         };

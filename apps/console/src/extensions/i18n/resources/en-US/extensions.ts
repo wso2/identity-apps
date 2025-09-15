@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -26,356 +26,12 @@ import { Extensions } from "../../models";
 /* eslint-disable max-len */
 /* eslint-disable sort-keys */
 export const extensions: Extensions = {
-    console: {
-        application: {
-            quickStart: {
-                addUserOption: {
-                    description: "You need a <1>user account</1> to log in to the application.",
-                    hint:
-                        "If you don’t already have a user account, click the below button to create one. " +
-                        "Alternatively, go to <1>User Management > Users</1><3></3> and create users.",
-                    message:
-                        "If you do not already have a user account, contact your organization " +
-                        "administrator."
-                },
-                spa: {
-                    customConfig: {
-                        heading: "You can implement login using <1>Authorization Code flow with PKCE</1> " +
-                            "with Asgardeo for any SPA technology.",
-                        anySPATechnology: "or any SPA Technology",
-                        configurations: "Configurations",
-                        protocolConfig: "Use the following configurations to integrate your application with Asgardeo. " +
-                            "For more details on configurations, go to the <1>Protocol</1> tab.",
-                        clientId: "Client ID",
-                        baseUrl: "Base URL",
-                        redirectUrl: "Redirect URL",
-                        scope: "Scope",
-                        serverEndpoints: "Details on the server endpoints are available in the <1>Info</1> tab."
-                    },
-                    techSelection: {
-                        heading: "Use the SDKs curated by Asgardeo and 3rd party integrations."
-                    }
-                },
-                technologySelectionWrapper: {
-                    subHeading:
-                        "Use the <1>server endpoint " +
-                        "details</1> and start integrating your own app or read through our <3>documentation</3> " +
-                        "to learn  more.",
-                    otherTechnology: "or any mobile technology"
-                },
-                twa: {
-                    common: {
-                        orAnyTechnology: "or any technology"
-                    },
-                    oidc: {
-                        customConfig: {
-                            clientSecret: "Client Secret",
-                            heading: "You can implement login using <1>Authorization Code flow</1> " +
-                                "with Asgardeo for any traditional web application."
-                        }
-                    },
-                    saml: {
-                        customConfig: {
-                            heading: "Discover <1>SAML configurations</1> to integrate Asgardeo with" +
-                                " any traditional web application.",
-                            issuer: "Issuer",
-                            acsUrl: "Assertion Consumer Service URL",
-                            idpEntityId: "IdP Entity ID",
-                            idpUrl: "IdP URL"
-                        }
-                    }
-                },
-                m2m: {
-                    customConfig: {
-                        tokenEndpoint: "Token Endpoint",
-                        tokenRequest: "Token Request",
-                        configurations: "Configurations"
-                    }
-                }
-            }
-        },
-        applicationRoles: {
-            assign: "Assign",
-            assignGroupWizard: {
-                heading: "Assign Groups",
-                subHeading: "Assign groups to the application role."
-            },
-            authenticatorGroups: {
-                goToConnections: "Go to Connections",
-                groupsList: {
-                    assignGroups: "Assign Groups",
-                    notifications: {
-                        fetchAssignedGroups: {
-                            error: {
-                                description: "{{description}}",
-                                message: "Error occurred while fetching assigned groups"
-                            },
-                            genericError: {
-                                description: "An error occurred while fetching assigned groups.",
-                                message: "Something went wrong"
-                            }
-                        },
-                        updateAssignedGroups: {
-                            error: {
-                                description: "{{description}}",
-                                message: "Error occurred while updating assigned groups"
-                            },
-                            genericError: {
-                                description: "An error occurred while updating assigned groups.",
-                                message: "Something went wrong"
-                            },
-                            success: {
-                                description: "Successfully updated assigned groups.",
-                                message: "Update successful"
-                            }
-                        }
-                    }
-                },
-                hint: "When assigning external groups to a role, make sure that the connection is enabled in " +
-                    "<1>External Grooup Role Resolution Control</1> in the Roles tab of the <3>Application</3>.",
-                placeholder: {
-                    title: "No External Groups",
-                    subTitle: {
-                        0: "There are no external groups available at the moment.",
-                        1: "You can add a new external group by visiting the " +
-                            "Groups tab in a connection."
-                    }
-                }
-            },
-            connectorGroups: {
-                placeholder: {
-                    title: "No External Groups",
-                    subTitle: {
-                        0: "There are no external groups available at the moment.",
-                        1: "Define the groups that you receive from your connections by adding a new group."
-                    }
-                }
-            },
-            heading: "Application Roles",
-            searchApplication: "Search Application",
-            subHeading: "View and assign groups to your application roles.",
-            roleGroups: {
-                assignGroup: "Assign Group",
-                searchGroup: "Search groups",
-                placeholder: {
-                    title: "No groups assigned",
-                    subTitle: {
-                        0: "There are no groups assigned to this role.",
-                        1: "To assign a group, click on the Assign Group button."
-                    }
-                },
-                notifications: {
-                    addGroups: {
-                        error: {
-                            message: "An error occurred",
-                            description: "An error occurred while adding the group."
-                        },
-                        success: {
-                            message: "Group added successfully",
-                            description: "The group has been successfully added to the role."
-                        }
-                    },
-                    fetchGroups: {
-                        error: {
-                            message: "An error occurred",
-                            description: "An error occurred while fetching the groups."
-                        }
-                    }
-                },
-                confirmation: {
-                    deleteRole: {
-                        message: "This action is irreversible and will remove " +
-                            "the group from the application role.",
-                        content: "If you remove this group from the application role, the permissions " +
-                            "associated with this role will be removed from the group. Please proceed " +
-                            "with caution."
-                    }
-                }
-            },
-            roleList: {
-                placeholder: {
-                    title: "No Application Roles",
-                    subTitle: {
-                        0: "There are no application roles available at the moment.",
-                        1: "You can add a new application role by visiting the " +
-                            "Roles tab in an Application."
-                    }
-                }
-            },
-            roleMapping: {
-                heading: "External groups Role Resolution Control",
-                subHeading: "Enable or disable application role resolving from external groups " +
-                    "during authentication flow",
-                notifications: {
-                    sharedApplication: {
-                        error: {
-                            description: "An error occurred while retrieving the shared applications.",
-                            message: "An error occurred"
-                        }
-                    },
-                    updateRole: {
-                        error: {
-                            description: "{{description}}",
-                            message: "Error updating role"
-                        },
-                        genericError: {
-                            description: "An error occurred while updating the role.",
-                            message: "Something went wrong"
-                        },
-                        success: {
-                            description: "Successfully updated the role.",
-                            message: "Updated successfully"
-                        }
-                    }
-                }
-            },
-            roles: {
-                heading: "Roles",
-                subHeading: "Manage roles and permissions.",
-                goBackToRoles: "Go back to Roles",
-                orgRoles: {
-                    heading: "Organization Roles",
-                    subHeading: "Manage organization roles here."
-                }
-            }
-        },
-        identityProviderGroups: {
-            claimConfigs: {
-                groupAttributeLabel: "Group attribute",
-                groupAttributeHint: "The attribute from the connection that will be mapped to the organization's group attribute.",
-                groupAttributePlaceholder: "Enter mapped attribute",
-                groupAttributeMessage1: "Please be aware that the attribute selected in the <1>Attributes tab</1> as the group attribute is used to identify groups at the Connection.",
-                groupAttributeMessage2: "For modifications to the group attribute, please visit the <1>Attributes tab</1>.",
-                groupAttributeMessageOIDC: "Please note that OpenID Connect attribute named <1>{{attribute}}</1> will be considered as the default " +
-                    "<1>Group Attribute</1> as you have not added a custom attribute.",
-                groupAttributeMessageSAML: "Please note that <1>{{attribute}}</1> attribute will be considered as the default " +
-                    "<1>Group Attribute</1> as you have not added a custom attribute.",
-                notifications: {
-                    fetchConfigs: {
-                        error: {
-                            description: "{{description}}",
-                            message: "Error occurred while fetching claim configurations"
-                        },
-                        genericError: {
-                            description: "An error occurred while fetching claim configurations.",
-                            message: "An error occurred"
-                        }
-                    }
-                }
-            },
-            createGroupWizard: {
-                groupNameLabel: "Group Name",
-                groupNamePlaceHolder: "Enter a group name",
-                groupNameHint: "This should correspond to the name of the groups that will be returned " +
-                    "from your connection.",
-                subHeading: "Create a new connection group.",
-                notifications: {
-                    createIdentityProviderGroup: {
-                        error: {
-                            description: "{{description}}",
-                            message: "Error occurred while creating the connection group"
-                        },
-                        genericError: {
-                            description: "An error occurred while creating the connection group.",
-                            message: "An error occurred"
-                        },
-                        success: {
-                            description: "The connection group has been created successfully.",
-                            message: "Successfully created"
-                        }
-                    },
-                    duplicateGroupError: {
-                        error: {
-                            description: "A group with the same name already exists.",
-                            message: "Error occurred"
-                        }
-                    }
-                }
-            },
-            groupsList: {
-                confirmation: {
-                    deleteGroup: {
-                        message: "This action is irreversible.",
-                        content: "This action will permanently delete the {{groupName}} identity provider group. " +
-                            "Please proceed with caution"
-                    }
-                },
-                newGroup: "New Group",
-                noGroupsAvailable: "No groups available",
-                notifications: {
-                    fetchGroups: {
-                        error: {
-                            description: "{{description}}",
-                            message: "Error occurred while fetching identity provider groups"
-                        },
-                        genericError: {
-                            description: "An error occurred while retrieving identity provider groups.",
-                            message: "An error occurred"
-                        }
-                    },
-                    deleteGroup: {
-                        error: {
-                            description: "{{description}}",
-                            message: "Error occurred while deleting the identity provider group"
-                        },
-                        genericError: {
-                            description: "An error occurred while deleting the identity provider group.",
-                            message: "An error occurred"
-                        },
-                        success: {
-                            description: "The identity provider group has been deleted successfully.",
-                            message: "Successfully deleted"
-                        }
-                    }
-                },
-                searchByName: "Search by name"
-            }
-        },
-        marketingConsent: {
-            heading: "Let's stay in touch!",
-            description: "Subscribe to get the latest news and product updates straight to your inbox.",
-            actions: {
-                subscribe: "Subscribe",
-                decline: "Don't show this again"
-            },
-            notifications: {
-                errors: {
-                    fetch: {
-                        message: "Something went wrong",
-                        description: "Something went wrong when getting user consent data"
-                    },
-                    update: {
-                        message: "Something went wrong",
-                        description: "Something went wrong when updating user consent"
-                    }
-                }
-            }
-        },
-        organizationInfo: {
-            heading: "Organization Info",
-            subHeading: "View information related to your organization.",
-            orgId: {
-                label: "Organization ID",
-                heading: "Organization ID",
-                subHeading: "The following organization ID will be useful for you to implement and configure the Asgardeo manangement REST APIs of " +
-                    "organizations."
-            },
-            notifications: {
-                getConfiguration: {
-                    error: {
-                        description: "Error occurred while retrieving organization information",
-                        message: "An error occurred"
-                    },
-                    genericError: {
-                        description: "An error occurred while retrieving organization information.",
-                        message: "An error occurred"
-                    }
-                }
-            }
-        }
-    },
     develop: {
         apiResource: {
+            resourceTypes: {
+                api: "API resource",
+                mcp: "MCP server"
+            },
             pageHeader: {
                 description: "Create and manage the APIs used to define the API scopes/permissions that can be consumed by your applications.",
                 subOrgDescription: "View the APIs that define scopes and permissions for your applications.",
@@ -394,16 +50,16 @@ export const extensions: Extensions = {
             confirmations: {
                 deleteAPIResource: {
                     assertionHint: "Please confirm your action.",
-                    content: "This action is irreversible and will permanently delete the API resource.",
+                    content: "This action is irreversible and will permanently delete the {{ resourceType }}.",
                     header: "Are you sure?",
-                    message: "If you delete this API resource, some functionalities may not work properly. " +
+                    message: "If you delete this {{ resourceType }}, some functionalities may not work properly. " +
                         "Please proceed with caution."
                 },
                 deleteAPIResourcePermission: {
                     assertionHint: "Please confirm your action.",
-                    content: "This action is irreversible and will permanently remove the permission from the API resource.",
+                    content: "This action is irreversible and will permanently remove the permission from the {{ resourceType }}.",
                     header: "Are you sure?",
-                    message: "If you remove this permission from the API resource, some functionalities may not work properly. " +
+                    message: "If you remove this permission from this {{ resourceType }}, some functionalities may not work properly. " +
                         "Please proceed with caution."
                 }
             },
@@ -422,43 +78,43 @@ export const extensions: Extensions = {
             notifications: {
                 deleteAPIResource: {
                     unauthorizedError: {
-                        description: "You are not authorized to delete the API resource.",
+                        description: "You are not authorized to delete the {{ resourceType }}.",
                         message: "Unauthorized"
                     },
                     notFoundError: {
-                        description: "The API resource you are trying to delete does not exist.",
-                        message: "API resource not found"
+                        description: "The {{ resourceType }} you are trying to delete does not exist.",
+                        message: "{{ resourceType }} not found"
                     },
                     genericError: {
-                        description: "Failed to delete the API resource.",
+                        description: "Failed to delete the {{ resourceType }}.",
                         message: "Something went wrong"
                     },
                     success: {
-                        description: "Successfully deleted the API resource.",
-                        message: "API resource deleted"
+                        description: "Successfully deleted the {{ resourceType }}.",
+                        message: "{{ resourceType }} deleted"
                     }
                 },
                 getAPIResource: {
                     unauthorizedError: {
-                        description: "You are not authorized to view the API resource.",
+                        description: "You are not authorized to view the {{ resourceType }}.",
                         message: "Unauthorized"
                     },
                     notFoundError: {
-                        description: "The API resource you are trying to view does not exist.",
-                        message: "API resource not found"
+                        description: "The {{ resourceType }} you are trying to view does not exist.",
+                        message: "{{ resourceType }} not found"
                     },
                     genericError: {
-                        description: "Failed to retrieve the API resource.",
+                        description: "Failed to retrieve the {{ resourceType }}.",
                         message: "Something went wrong"
                     }
                 },
                 getAPIResources: {
                     unauthorizedError: {
-                        description: "You are not authorized to view the API resources.",
+                        description: "You are not authorized to view the {{ resourceType }}s.",
                         message: "Unauthorized"
                     },
                     genericError: {
-                        description: "Failed to retrieve the API resources.",
+                        description: "Failed to retrieve the {{ resourceType }}s.",
                         message: "Something went wrong"
                     }
                 },
@@ -468,20 +124,20 @@ export const extensions: Extensions = {
                         message: "Invalid request payload"
                     },
                     unauthorizedError: {
-                        description: "You are not authorized to update the API resource.",
+                        description: "You are not authorized to update the {{ resourceType }}.",
                         message: "Unauthorized"
                     },
                     notFoundError: {
-                        description: "The API resource you are trying to update does not exist.",
-                        message: "API resource not found"
+                        description: "The {{ resourceType }} you are trying to update does not exist.",
+                        message: "{{ resourceType }} not found"
                     },
                     genericError: {
-                        description: "Failed to update the API resource.",
+                        description: "Failed to update the {{ resourceType }}.",
                         message: "Something went wrong"
                     },
                     success: {
-                        description: "Successfully updated the API resource.",
-                        message: "API resource updated"
+                        description: "Successfully updated the {{ resourceType }}.",
+                        message: "{{ resourceType }} updated"
                     }
                 },
                 addAPIResource: {
@@ -490,24 +146,24 @@ export const extensions: Extensions = {
                         message: "Invalid request payload"
                     },
                     unauthorizedError: {
-                        description: "You are not authorized to create a API resource.",
+                        description: "You are not authorized to create {{ resourceType }}.",
                         message: "Unauthorized"
                     },
                     alreadyExistsError: {
-                        description: "The API resource you are trying to create already exist.",
-                        message: "API resource already exists"
+                        description: "The {{ resourceType }} you are trying to create already exist.",
+                        message: "{{ resourceType }} already exists"
                     },
                     permissionAlreadyExistsError: {
                         description: "This permission (scope) you are trying to add already exists in the organization. Please choose a different one.",
                         message: "Permission already exists"
                     },
                     genericError: {
-                        description: "Failed to create the API resource.",
+                        description: "Failed to create the {{ resourceType }}.",
                         message: "Something went wrong"
                     },
                     success: {
-                        description: "Successfully created the API resource.",
-                        message: "API resource created"
+                        description: "Successfully created the {{ resourceType }}.",
+                        message: "{{ resourceType }} created"
                     }
                 }
             },
@@ -755,27 +411,34 @@ export const extensions: Extensions = {
                             }
                         }
                     },
+                    resourceAuthorization: {
+                        title: "Authorization"
+                    },
                     apiAuthorization: {
                         title: "API Authorization",
+                        resourceText: {
+                            apiResource: "API resource",
+                            genericResource: "resource"
+                        },
                         sections: {
                             apiSubscriptions: {
-                                heading: "Manage access to the API Resources",
-                                subHeading: "Manage API resources consumed by this application.",
-                                search: "Search API resources by display name",
-                                unsubscribeAPIResourcePopOver: "Unsubscribe the API resource",
-                                allAPIAuthorizedPopOver: "All API resources are authorized",
+                                heading: "Manage access to the {{ resourceText }}s",
+                                subHeading: "Manage {{ resourceText }}s consumed by this application.",
+                                search: "Search {{ resourceText }}s by display name",
+                                unsubscribeAPIResourcePopOver: "Unsubscribe the {{ resourceText }}",
+                                allAPIAuthorizedPopOver: "All {{ resourceText }}s are authorized",
                                 choreoApiEditWarning: "Updating the authorized scopes will create unforeseen errors as this is an API resource managed by Choreo. <1>Proceed with caution.</1>",
                                 buttons: {
-                                    subAPIResource: "Authorize an API Resource",
-                                    noAPIResourcesLink: "Create an API Resource",
-                                    emptySearchButton: "View all API resources"
+                                    subAPIResource: "Authorize {{ resourceText }}",
+                                    noAPIResourcesLink: "Create {{ resourceText }}",
+                                    emptySearchButton: "View all {{ resourceText }}s"
                                 },
                                 placeHolderTexts: {
-                                    emptyText: "There are no API resources authorized",
-                                    noAPIResources: "There are no API resources available to subscribe",
+                                    emptyText: "There are no {{ resourceText }}s authorized",
+                                    noAPIResources: "There are no {{ resourceText }}s available to subscribe",
                                     errorText: {
                                         subtitles: {
-                                            0: "An error occurred while retrieving the API resources.",
+                                            0: "An error occurred while retrieving the {{ resourceText }}s.",
                                             1: "Please try again."
                                         },
                                         title: "Something went wrong"
@@ -783,7 +446,7 @@ export const extensions: Extensions = {
                                     emptySearch: {
                                         title: "No results found",
                                         subTitle: {
-                                            0: "We couldn't find the API resource you searched for.",
+                                            0: "We couldn't find the {{ resourceText }} you searched for.",
                                             1: "Please try using a different parameter."
                                         }
                                     }
@@ -791,20 +454,20 @@ export const extensions: Extensions = {
                                 notifications: {
                                     unSubscribe: {
                                         unauthorizedError: {
-                                            description: "You are not authorized to unsubcribe the API resource.",
+                                            description: "You are not authorized to unsubcribe the {{ resourceText }}.",
                                             message: "Unauthorized"
                                         },
                                         notFoundError: {
-                                            description: "The API resource you are trying to unsubcribe does not exist.",
-                                            message: "API resource not found"
+                                            description: "The {{ resourceText }} you are trying to unsubcribe does not exist.",
+                                            message: "{{ resourceText }} not found"
                                         },
                                         genericError: {
-                                            description: "Failed to unsubcribe the API resource.",
+                                            description: "Failed to unsubcribe the {{ resourceText }}.",
                                             message: "Something went wrong"
                                         },
                                         success: {
-                                            description: "Successfully unsubcribed the API resource.",
-                                            message: "API resource unsubcribed"
+                                            description: "Successfully unsubcribed the {{ resourceText }}.",
+                                            message: "{{ resourceText }} unsubcribed"
                                         }
                                     },
                                     patchScopes: {
@@ -843,9 +506,9 @@ export const extensions: Extensions = {
                                 confirmations: {
                                     unsubscribeAPIResource: {
                                         assertionHint: "Please confirm your action.",
-                                        content: "This action is irreversible and will permanently unsubscribe the API resource.",
+                                        content: "This action is irreversible and will permanently unsubscribe the {{ resourceText }}.",
                                         header: "Are you sure?",
-                                        message: "If you unsubscribe this API resource, some functionalities may not work properly. " +
+                                        message: "If you unsubscribe this {{ resourceText }}, some functionalities may not work properly. " +
                                             "Please proceed with caution."
                                     },
                                     unsubscribeChoreoAPIResource: {
@@ -866,18 +529,18 @@ export const extensions: Extensions = {
                                 },
                                 wizards: {
                                     authorizeAPIResource: {
-                                        title: "Authorize an API Resource",
-                                        subTitle: "Authorize a new API resource to the application.",
+                                        title: "Authorize {{ resourceText }}",
+                                        subTitle: "Authorize a new {{ resourceText }} to the application.",
                                         fields: {
                                             apiResource: {
-                                                label: "API Resource",
-                                                placeholder: "Enter the display name of the API resource",
-                                                requiredErrorMessage: "API resource is required"
+                                                label: "{{ resourceText }}",
+                                                placeholder: "Enter the display name of the {{ resourceText }}",
+                                                requiredErrorMessage: "{{ resourceText }} is required"
                                             },
                                             scopes: {
                                                 label: "Authorized Scopes",
-                                                placeholder: "No scopes are authorized for this API resource",
-                                                hint: "The scopes of the API resource that the application is allowed to access."
+                                                placeholder: "No scopes are authorized for this {{ resourceText }}",
+                                                hint: "The scopes of the {{ resourceText }} that the application is allowed to access."
                                             },
                                             policy: {
                                                 label: "Authorization Policy",
@@ -1310,6 +973,11 @@ export const extensions: Extensions = {
                                 hint: "Link to a statement or a legal document that states how your organization collects, handles, and processes the data of your customers and visitors. You can use placeholders like <1>{{lang}}</1>, <3>{{country}}</3>, or <5>{{locale}}</5> to customize the URL for different regions or languages.",
                                 label: "Privacy Policy",
                                 placeholder: "https://myapp.com/{{locale}}/privacy-policy"
+                            },
+                            recoveryPortalURL: {
+                                hint: "Link to your organization's recovery portal URL. This URL will only be used in orchestrated flows. You can use placeholders like <1>{{lang}}</1>, <3>{{country}}</3>, or <5>{{locale}}</5> to customize the URL for different regions or languages.",
+                                label: "Recovery Portal",
+                                placeholder: "https://myapp.com/account-recovery"
                             },
                             selfSignUpURL: {
                                 hint: "Link to your organization's Self Signup webpage. You can use placeholders like <1>{{lang}}</1>, <3>{{country}}</3>, or <5>{{locale}}</5> to customize the URL for different regions or languages.",
@@ -1974,7 +1642,7 @@ export const extensions: Extensions = {
                                 description: "You can now incorporate a custom layout for login, "
                                     + "registration, and recovery pages. Refer to our "
                                     + "documentation for detailed instructions.",
-                                subTitle: "The custom layout has been successfully enabled.",
+                                subTitle: "The custom layout is ready to be enabled.",
                                 title: "Custom Layout"
                             }
                         }
@@ -1992,10 +1660,10 @@ export const extensions: Extensions = {
             info: "You can customize the email content using <1>Email Templates</1>.",
             updateButton: "Update",
             sendTestMailButton: "Send Test Email",
-            goBack: "Go back to Email & SMS",
+            goBack: "Go back to Notification Providers",
             confirmationModal: {
                 assertionHint: "Please confirm your action.",
-                content: "If you delete this configuration, the emails will be sent from the Asgardeo Email Address. " +
+                content: "If you delete this configuration, emails will be sent from the default email provider. " +
                     "Please proceed with caution.",
                 header: "Are you sure?",
                 message: "This action is irreversible and will permanently delete the email provider configurations."
@@ -2004,8 +1672,7 @@ export const extensions: Extensions = {
                 header: "Danger Zone",
                 revertConfig: {
                     heading: "Revert Configurations",
-                    subHeading: "This action will revert mail server configurations to default configurations. " +
-                        "Once reverted, you will receive emails from the Asgardeo domain.",
+                    subHeading: "This action will revert mail server configurations to default configurations.",
                     actionTitle: "Revert"
                 }
             },
@@ -2085,10 +1752,16 @@ export const extensions: Extensions = {
                 }
             }
         },
-        notificationChannel: {
+        emailAndSms: {
             heading: "SMS / Email Providers",
             title: "SMS / Email Providers",
-            description: "Configure the SMS and Email providers for your organization."
+            description: "Configure the SMS and Email providers for your organization.",
+            goBack: "Go back to Email & SMS"
+        },
+        notificationChannel: {
+            heading: "Notification Channels",
+            title: "Notification Channels",
+            description: "Configure the notifiction channels for your organization."
         },
         identityProviders: {
             apple: {
@@ -2212,6 +1885,31 @@ export const extensions: Extensions = {
                         selectSMSOTP: {
                             content: "Go to <1>Login Flow</1> tab and click on the <3>Username & Password + SMS OTP</3> option from the Multi-factor login section to configure a basic SMS OTP flow.",
                             heading: "Select <1>SMS OTP</1> option"
+                        }
+                    }
+                }
+            },
+            pushAuth: {
+                quickStart: {
+                    addLoginModal: {
+                        heading: "Add Push Authenticator",
+                        subHeading: "Select an application to set up push  authentication."
+                    },
+                    connectApp: {
+                        description:
+                            "Add <1>Push Notification</1> to <3>Step 2</3> on the <5>Login Flow" +
+                            "</5> section of your <7>application</7>."
+                    },
+                    heading: "Push Authenticator Set Up Guide",
+                    subHeading: "Follow the instructions to set up Push Authentication in your login flow.",
+                    steps: {
+                        selectApplication: {
+                            content: "Choose the <1>application</1> for which you want to set up Push Authentication.",
+                            heading: "Select Application"
+                        },
+                        selectPushAuth: {
+                            content: "Go to <1>Login Flow</1> tab and click on the <3>Username & Password + Push</3> option from the Multi-factor login section to configure a basic Push Authentication flow.",
+                            heading: "Select <1>Push Authenticator</1> option"
                         }
                     }
                 }
@@ -2736,6 +2434,7 @@ export const extensions: Extensions = {
         },
         sidePanel: {
             apiResources: "API Resources",
+            mcpServers: "MCP Servers",
             branding: "Branding",
             stylesAndText: "Styles & Text",
             monitor: "Logs",
@@ -2891,6 +2590,16 @@ export const extensions: Extensions = {
     manage: {
         accountLogin: {
             notifications: {
+                revert: {
+                    error: {
+                        description: "An error occurred while reverting the username validation configuration.",
+                        message: "Revert error"
+                    },
+                    success: {
+                        description: "Successfully reverted username validation configuration.",
+                        message: "Revert successful"
+                    }
+                },
                 success: {
                     description: "Successfully updated username validation configuration.",
                     message: "Update successful"
@@ -3001,6 +2710,7 @@ export const extensions: Extensions = {
                     makeDefaultOrganization: "Make default organization",
                     backButton: "Go back",
                     copyOrganizationId: "Copy organization ID",
+                    copyOrganizationHandle: "Copy organization Handle",
                     copied: "Copied!",
                     tenantSearch: {
                         placeholder: "Search organization",
@@ -3110,11 +2820,14 @@ export const extensions: Extensions = {
                     inputLabel: {
                         alphanumericUsername: "Username",
                         alphanumericUsernamePlaceholder: "Enter the username",
+                        email: "Email",
                         emailUsername: "Username (Email)"
                     },
-                    inviteUserTooltip:
-                        "An email with a confirmation link will be sent to the " +
-                        "provided email address for the user to set their own password.",
+                    inviteUserTooltip: {
+                        emailLinkInviteTooltip: "An email with a confirmation link will be sent to the provided email address for the user to set their own password.",
+                        emailOTPInviteTooltip: "An email invitation with an OTP will be sent to the provided email address for the user to set their own password.",
+                        smsOTPInviteTooltip: "An SMS notification with an OTP will be sent to the provided phone number for the user to set their own password."
+                    },
                     inviteUserOfflineTooltip: "You can copy the invitation link or the invitation" +
                         " during the final step to share with the user.",
                     inviteLink: {
@@ -3159,6 +2872,7 @@ export const extensions: Extensions = {
                         password: "Password",
                         passwordWarningMessage: "Make sure to copy the password or the invitation before" +
                             " you proceed. You won't see them again!",
+                        passwordWarningMessageWithWorkFlow: "Make sure to copy the password or the invitation before you proceed. You won't see them again! Share this invitation only after the user creation workflow has been approved. The user will not be able to access the account beforehand.",
                         username: "Username"
                     },
                     validation: {
@@ -3539,17 +3253,17 @@ export const extensions: Extensions = {
                                 label: "Enable SMS based recovery"
                             },
                             expiryTime: {
-                                hint: "Password recovery link expiry time in minutes.",
-                                label: "Recovery link expiry time",
+                                hint: "Password recovery link/OTP expiry time in minutes.",
+                                label: "Recovery link/OTP expiry time",
                                 placeholder: "Enter expiry time",
                                 validations: {
-                                    invalid: "Recovery link expiry time should be an integer.",
-                                    empty: "Recovery link expiry time cannot be empty.",
+                                    invalid: "Recovery link/OTP expiry time should be an integer.",
+                                    empty: "Recovery link/OTP expiry time cannot be empty.",
                                     range:
-                                        "Recovery link expiry time should be between 1 minute & 10080 minutes " +
+                                        "Recovery link/OTP expiry time should be between 1 minute & 10080 minutes " +
                                         "(7 days).",
                                     maxLengthReached:
-                                        "Recovery link expiry time should be a number with 5 or less " + "digits."
+                                        "Recovery link/OTP expiry time should be a number with 5 or less " + "digits."
                                 }
                             },
                             notifySuccess: {
@@ -3621,14 +3335,23 @@ export const extensions: Extensions = {
                                 }
                             },
                             enableEmailBasedRecovery: {
-                                hint: "This specifies whether to send an recovery link to the email address.",
-                                label: "Enable email link based recovery"
+                                hint: "This specifies whether to send an recovery link/OTP to the email address.",
+                                label: "Enable email based recovery"
+                            },
+                            emailRecoveryOptions: {
+                                header: "Choose Email recovery option",
+                                emailLink: {
+                                    label: "Email Link"
+                                },
+                                emailOtp: {
+                                    label: "Email OTP"
+                                }
                             }
                         },
                         smsProviderWarning:
                             "Ensure that an <1>SMS Provider</1> is configured for the OTP feature to work properly."
                     },
-                    recoveryOptionSubHeadingEmailLink: "Email Link",
+                    recoveryOptionSubHeadingEmail: "Email",
                     recoveryOptionSubHeadingSMS: "SMS OTP",
                     recoveryOptionHeading: "Recovery Option Selection",
                     otpConfigHeading: "OTP Code Configuration",
@@ -3662,6 +3385,31 @@ export const extensions: Extensions = {
                         recoveryOptionHeading: "Select Recovery Option"
                     },
                     heading: "Enable self-service username recovery for users on the login page."
+                },
+                forcedPasswordRecovery: {
+                    form: {
+                        fields: {
+                            enableEmailLinkBasedReset: {
+                                label: "Email Link"
+                            },
+                            enableEmailOTPBasedReset: {
+                                label: "Email OTP"
+                            },
+                            enableSMSOTPBasedReset: {
+                                label: "SMS OTP"
+                            },
+                            expiryTime: {
+                                label: "Reset link/OTP expiry time",
+                                hint: "Password Reset Link/OTP expiry time in minutes.",
+                                placeholder: "Enter expiry time"
+                            }
+                        },
+                        heading: {
+                            label: "Enable password reset via recovery Email",
+                            hint: "User gets notified with a link/OTP to reset password."
+                        },
+                        subheading: "Choose password reset option"
+                    }
                 },
                 subHeading: "Account Recovery related settings."
             },
@@ -3752,6 +3500,12 @@ export const extensions: Extensions = {
                                     "Notify user when the account lock duration is increased due to " +
                                     "continuous failed login attempts.",
                                 label: "Notify user when lock time is increased"
+                            },
+                            lockAccountForSpecifiedTime: {
+                                label: "Lock account for a specified duration"
+                            },
+                            lockAccountIndefiniteTime: {
+                                label: "Lock account until admin unlocks"
                             }
                         }
                     },
@@ -3761,6 +3515,7 @@ export const extensions: Extensions = {
                     connectorDescription:
                         "Protect accounts from password brute-force attacks by locking the " +
                         "account on consecutive failed login attempts.",
+                    accountLockDurationHeading: "Choose account lock option",
                     heading: "Login Attempts",
                     notification: {
                         error: {
@@ -3873,7 +3628,15 @@ export const extensions: Extensions = {
                 label: "Password expires in ",
                 timeFormat: "days"
             },
-            passwordValidationHeading: "Password Input Validation",
+            passwordValidation: {
+                heading: "Password Input Validation",
+                passwordValidationRegexLabel: "Password pattern regex",
+                passwordValidationRegexHint: "Provide a valid regular expression for the password pattern. The regex must be between 3 and 255 characters.",
+                passwordValidationRegexPlaceholder: "Enter password pattern regex",
+                passwordValidationErrorLabel: "Error message on pattern violation",
+                passwordValidationErrorHint: "This error message will be displayed when a pattern violation is detected.",
+                passwordValidationErrorPlaceholder: "Enter the error message"
+            },
             userOnboarding: {
                 backButton: "Go back to Self Registration",
                 heading: "Self Registration",
@@ -3954,14 +3717,89 @@ export const extensions: Extensions = {
                         "<3>user</3> account in the organization."
                 },
                 inviteUserToSetPassword: {
+                    heading: "Invite User to Set Password",
+                    connectorDescription: "Configure how users are invited to set their passwords during user onboarding and account creation.",
+                    form: {
+                        fields: {
+                            enableInviteUserToSetPassword: {
+                                label: "Enable invite user to set password",
+                                hint: "When enabled, users will receive an invitation to set their password via email or SMS."
+                            },
+                            enableEmailBasedAskPassword: {
+                                label: "Enable email invitations",
+                                hint: "When enabled, users will receive an email invitation with instructions to set their password."
+                            },
+                            enableSMSBasedAskPassword: {
+                                label: "Enable SMS invitations",
+                                hint: "When enabled, users will receive an SMS invitation with an OTP to set their password."
+                            },
+                            emailAskPasswordOptions: {
+                                header: "Choose invitation method",
+                                emailLink: {
+                                    label: "Email with password setup link"
+                                },
+                                emailOtp: {
+                                    label: "Email with OTP code"
+                                },
+                                smsOtp: {
+                                    label: "SMS with OTP code"
+                                }
+                            },
+                            enableAccountActivationEmail: {
+                                label: "Send account activation notification",
+                                hint: "When enabled, users will receive a confirmation email after their account is successfully activated."
+                            },
+                            enableAccountLockOnCreation: {
+                                label: "Lock account until password is set",
+                                hint: "When enabled, the user account will be locked upon creation."
+                            },
+                            expiryTime: {
+                                label: "Invitation link/OTP expiry time",
+                                placeholder: "Enter expiry time in minutes",
+                                hint: "Set the time span that the password setup invitation link / OTP would be valid, in minutes.",
+                                hintSub: "(For infinite validity period, set -1. Setting 0 will cause immediate expiry of the invitation)",
+                                validations: {
+                                    invalid: "Recovery link/OTP expiry time should be an integer.",
+                                    empty: "Recovery link/OTP expiry time cannot be empty.",
+                                    range:
+                                        "Recovery link/OTP expiry time should be between 1 minute & 10080 minutes " +
+                                        "(7 days).",
+                                    maxLengthReached:
+                                        "Recovery link/OTP expiry time should be a number with 5 or less " + "digits."
+                                }
+                            },
+                            askPasswordOtpUseUppercase: {
+                                label: "Include uppercase letters in OTP",
+                                hint: "When enabled, the generated OTP codes will include uppercase letters (A-Z)."
+                            },
+                            askPasswordOtpUseLowercase: {
+                                label: "Include lowercase letters in OTP",
+                                hint: "When enabled, the generated OTP codes will include lowercase letters (a-z)."
+                            },
+                            askPasswordOtpUseNumeric: {
+                                label: "Include numbers in OTP",
+                                hint: "When enabled, the generated OTP codes will include numeric digits (0-9)."
+                            },
+                            askPasswordOtpLength: {
+                                label: "OTP code length",
+                                hint: "Set the number of characters in the generated OTP codes.",
+                                validations: {
+                                    empty: "OTP code length cannot be empty.",
+                                    invalid: "OTP code length should be an integer.",
+                                    range: "OTP code length should be between 4 and 10."
+                                }
+                            }
+                        }
+                    },
+                    otpConfigHeading: "OTP Code Configuration",
                     notification: {
                         error: {
-                            description: "Failed to update the configuration for the Invite User to Set Password connector.",
-                            message: "Error updating configuration"
+                            description: "An error occurred while updating the invite user to set password configuration. Please try again.",
+                            message: "Configuration update failed"
                         },
                         success: {
-                            description: "Successfully updated the configuration for the Invite User to Set Password connector.",
-                            message: "Update successful"
+                            description: "The invite user to set password configuration has been successfully updated.",
+                            message: "Configuration updated successfully"
                         }
                     }
                 },
@@ -4010,8 +3848,14 @@ export const extensions: Extensions = {
                     changePasswordModal: {
                         emailUnavailableWarning: "WARNING: Cannot find an email address for the user account." +
                             "Please provide an email address to proceed with inviting the user to reset the password.",
-                        emailResetWarning: "An email with a link to reset the password will be sent to the provided " +
+                        emailResetWarning: {
+                            emailLink: "An email with a link to reset the password will be sent to the provided " +
                             "email address for the user to set their own password.",
+                            emailOTP: "An email with a OTP to reset the password will be sent to the provided " +
+                            "email address for the user to set their own password.",
+                            smsOTP: "An SMS with a OTP to reset the password will be sent to the provided " +
+                            "mobile number for the user to set their own password."
+                        },
                         passwordResetConfigDisabled: "Password reset via recovery email is not enabled. Please make " +
                             "sure to enable it from <1> " +
                             " Login and Registration </1> configurations."
@@ -4097,6 +3941,10 @@ export const extensions: Extensions = {
                                 description: "An error occurred while adding the administrator.",
                                 message: "Error Adding Administrator"
                             },
+                            pendingApproval: {
+                                description: "The administrator role update is accepted and is pending approval.",
+                                message: "Administrator Role Pending Approval"
+                            },
                             success: {
                                 description: "Successfully added administrator.",
                                 message: "Administrator Added"
@@ -4165,7 +4013,9 @@ export const extensions: Extensions = {
             categories: {
                 attributeManagement: "Attribute Management",
                 AccountManagement: "Account Management",
-                userManagement: "User Management",
+                userManagement: "Identity Management",
+                workflows: "Workflows",
+
                 organizationSettings: "Organization Settings"
             }
         }

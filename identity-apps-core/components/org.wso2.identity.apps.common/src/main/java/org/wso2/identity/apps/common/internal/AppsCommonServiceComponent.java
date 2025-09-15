@@ -29,11 +29,13 @@ import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
 import org.wso2.carbon.CarbonConstants;
 import org.wso2.carbon.core.ServerStartupObserver;
+import org.wso2.carbon.identity.api.resource.collection.mgt.APIResourceCollectionManager;
 import org.wso2.carbon.identity.api.resource.mgt.APIResourceManager;
 import org.wso2.carbon.identity.application.common.IdentityApplicationManagementException;
 import org.wso2.carbon.identity.application.common.model.InboundAuthenticationRequestConfig;
 import org.wso2.carbon.identity.application.common.model.ServiceProvider;
 import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
+import org.wso2.carbon.identity.application.mgt.AuthorizedAPIManagementService;
 import org.wso2.carbon.identity.application.mgt.listener.ApplicationMgtListener;
 import org.wso2.carbon.identity.core.util.IdentityCoreInitializedEvent;
 import org.wso2.carbon.identity.oauth.OAuthAdminServiceImpl;
@@ -48,6 +50,7 @@ import org.wso2.identity.apps.common.listner.AppPortalApplicationMgtListener;
 import org.wso2.identity.apps.common.listner.AppPortalOAuthAppMgtListener;
 import org.wso2.identity.apps.common.listner.AppPortalRoleManagementListener;
 import org.wso2.identity.apps.common.listner.AppPortalTenantMgtListener;
+import org.wso2.identity.apps.common.listner.ConsoleRoleListener;
 import org.wso2.identity.apps.common.util.AppPortalUtils;
 
 import java.util.HashSet;
@@ -109,6 +112,10 @@ public class AppsCommonServiceComponent {
                 RoleManagementListener roleManagementListener = new AppPortalRoleManagementListener(true);
                 bundleContext.registerService(RoleManagementListener.class.getName(), roleManagementListener, null);
                 log.debug("AppPortalRoleManagementListener registered successfully.");
+
+                RoleManagementListener consoleRoleListener = new ConsoleRoleListener();
+                bundleContext.registerService(RoleManagementListener.class.getName(), consoleRoleListener, null);
+                log.debug("ConsoleRoleListener registered successfully.");
             }
 
             if (!CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
@@ -266,6 +273,22 @@ public class AppsCommonServiceComponent {
         AppsCommonDataHolder.getInstance().setAPIResourceManager(null);
     }
 
+    @Reference(
+        name = "api.resource.collection.mgt.service",
+        service = APIResourceCollectionManager.class,
+        cardinality = ReferenceCardinality.MANDATORY,
+        policy = ReferencePolicy.DYNAMIC,
+        unbind = "unsetAPIResourceCollectionManager")
+    protected void setAPIResourceManager(APIResourceCollectionManager apiResourceCollectionManager) {
+
+        AppsCommonDataHolder.getInstance().setAPIResourceCollectionManager(apiResourceCollectionManager);
+    }
+
+    protected void unsetAPIResourceCollectionManager(APIResourceCollectionManager apiResourceCollectionManager) {
+
+        AppsCommonDataHolder.getInstance().setAPIResourceCollectionManager(null);
+    }
+
     private boolean skipPortalInitialization() {
 
         return System.getProperty(SYSTEM_PROP_SKIP_SERVER_INITIALIZATION) != null;
@@ -300,5 +323,30 @@ public class AppsCommonServiceComponent {
             }
         }
         return systemAppConsumerKeys;
+    }
+
+    @Reference(
+            name = "identity.authorized.api.management.component",
+            service = AuthorizedAPIManagementService.class,
+            cardinality = ReferenceCardinality.MANDATORY,
+            policy = ReferencePolicy.DYNAMIC,
+            unbind = "unsetAuthorizedAPIManagementService"
+    )
+    protected void setAuthorizedAPIManagementService(AuthorizedAPIManagementService authorizedAPIManagementService) {
+
+        log.debug("Setting AuthorizedAPIManagementService Service");
+        AppsCommonDataHolder.getInstance().
+                setAuthorizedAPIManagementService(authorizedAPIManagementService);
+    }
+
+    /**
+     * Unsets AuthorizedAPIManagementService Service.
+     *
+     * @param authorizedAPIManagementService An instance of AuthorizedAPIManagementService
+     */
+    protected void unsetAuthorizedAPIManagementService(AuthorizedAPIManagementService authorizedAPIManagementService) {
+
+        log.debug("Unsetting AuthorizedAPIManagementService.");
+        AppsCommonDataHolder.getInstance().setAuthorizedAPIManagementService(null);
     }
 }

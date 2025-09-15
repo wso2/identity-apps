@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,16 +22,20 @@ import Card from "@oxygen-ui/react/Card";
 import CardContent from "@oxygen-ui/react/CardContent";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
+import useFeatureFlag from "@wso2is/admin.feature-gate.v1/hooks/use-feature-flag";
 import {
     CustomAttributeInterface,
     ExtensionTemplateListInterface,
     ResourceTypes
 } from "@wso2is/admin.template-core.v1/models/templates";
 import { ExtensionTemplateManagementUtils } from "@wso2is/admin.template-core.v1/utils/templates";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { FeatureFlagsInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import classnames from "classnames";
 import React, { FunctionComponent, MouseEvent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { ApplicationTemplateConstants } from "../constants/templates";
 import { ApplicationTemplateFeatureStatus, SupportedTechnologyMetadataInterface } from "../models/templates";
 import "./application-template-card.scss";
@@ -67,6 +71,13 @@ const ApplicationTemplateCard: FunctionComponent<ApplicationTemplateCardPropsInt
 
     const { t } = useTranslation();
 
+    const applicationFeatureFlagsConfig: FeatureFlagsInterface[] = useSelector(
+        (state: AppState) => state.config.ui.features.applications.featureFlags);
+
+    const featureFlag: string = useFeatureFlag(FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.APPLICATION_TEMPLATES,
+        applicationFeatureFlagsConfig
+    );
+
     /**
      * Extract the supported technology details related to the current application template.
      */
@@ -98,7 +109,7 @@ const ApplicationTemplateCard: FunctionComponent<ApplicationTemplateCardPropsInt
             || !Array.isArray(template?.customAttributes)
             || template?.customAttributes?.length <= 0) {
 
-            return false;
+            return null;
         }
 
         const property: CustomAttributeInterface = template?.customAttributes?.find(
@@ -106,7 +117,13 @@ const ApplicationTemplateCard: FunctionComponent<ApplicationTemplateCardPropsInt
                 property?.key === ApplicationTemplateConstants.FEATURE_STATUS_ATTRIBUTE_KEY
         );
 
-        return property?.value;
+        if (featureFlag === "TRUE") {
+
+            return property?.value as ApplicationTemplateFeatureStatus;
+        }
+
+        return null;
+
     }, [ template ]);
 
     /**

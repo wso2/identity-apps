@@ -123,6 +123,7 @@ export const BASE_DISPLAY_VARIATION :Record<PreviewScreenType, PreviewScreenVari
     [PreviewScreenType.PASSWORD_RECOVERY]: PreviewScreenVariationType.EMAIL_LINK,
     [PreviewScreenType.PASSWORD_RESET]: PreviewScreenVariationType.BASE,
     [PreviewScreenType.PASSWORD_RESET_SUCCESS]: PreviewScreenVariationType.BASE,
+    [PreviewScreenType.PUSH_AUTH]: PreviewScreenVariationType.BASE,
     [PreviewScreenType.SIGN_UP]: PreviewScreenVariationType.BASE,
     [PreviewScreenType.SMS_OTP]: PreviewScreenVariationType.BASE,
     [PreviewScreenType.TOTP]: PreviewScreenVariationType.BASE,

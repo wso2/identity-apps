@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -30,7 +30,7 @@ import { Grid, Icon } from "semantic-ui-react";
 import { SqlEditor } from "..";
 import { patchUserStore } from "../../api";
 import { CONSUMER_USERSTORE_ID } from "../../constants";
-import { PatchData, PropertyAttribute, RequiredBinary, TypeProperty, UserstoreType } from "../../models";
+import { PatchData, PropertyAttribute, RequiredBinary, TypeProperty } from "../../models";
 
 /**
  * Prop types of `EditUserDetails` component
@@ -44,10 +44,6 @@ interface EditUserDetailsPropsInterface extends TestableComponentInterface {
      * userstore id
      */
     id: string;
-    /**
-     * The type meta data
-     */
-    type: UserstoreType;
     /**
      * The connection properties.
      */
@@ -74,7 +70,6 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
         properties,
         readOnly,
         update,
-        type,
         [ "data-testid" ]: testId
     } = props;
 
@@ -255,12 +250,6 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                         (attribute: PropertyAttribute) => attribute?.name === "type"
                                     )?.value === "boolean";
 
-                                    // FIXME: Temp fix to hide the `ReadOnly` property from ReadOnly Userstores.
-                                    // This should be handled in the backend and reverted from the UI.
-                                    // Tracker: https://github.com/wso2/product-is/issues/19769#issuecomment-1957415262
-                                    const isHidden: boolean = type.typeName === "UniqueIDReadOnlyLDAPUserStoreManager"
-                                        && property.name === "ReadOnly";
-
                                     return (
                                         isPassword
                                             ? (
@@ -291,7 +280,6 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                             }
                                                         )
                                                     }
-                                                    hidden={ isHidden }
                                                     data-testid={ `${ testId }-form-password-input-${ property.name }` }
                                                 />
                                             )
@@ -324,7 +312,6 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                                 }
                                                             )
                                                         }
-                                                        hidden={ isHidden }
                                                         data-testid={ `${ testId }-form-toggle-${ property.name }` }
                                                     />
                                                 ) :
@@ -358,7 +345,6 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                                         }
                                                                     )
                                                                 }
-                                                                hidden={ isHidden }
                                                                 data-testid={
                                                                     `${ testId }-form-text-input-${ property.name }`
                                                                 }
@@ -392,7 +378,6 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                                     }
                                                                 )
                                                             }
-                                                            hidden={ isHidden }
                                                             data-testid={
                                                                 `${ testId }-form-text-input-${ property?.name }`
                                                             }

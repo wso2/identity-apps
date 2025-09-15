@@ -25,9 +25,7 @@
 .ai-banner {
     background: #ffffff;
     align-items: center;
-    background-size: cover;
     background-repeat: no-repeat;
-    background-position: right center;
     border: 1px solid #DCDAD8;
     border-radius: 8px;
     display: flex;
@@ -38,6 +36,16 @@
     &.collapsed, &.input {
         flex-direction: column;
     }
+
+    &.subscribed {
+        background-size: cover;
+        background-position: right center;
+    }
+
+    &.unsubscribed {
+        background-size: auto 270px, auto 520px;
+        background-position: calc(100% - 20px) -36px, right top;
+    }
 }
 
 .ai-banner-text-container {
@@ -45,6 +53,11 @@
     flex-direction: column;
     justify-content: space-between;
     width: 70%;
+
+    .MuiChip-root {
+        margin-left: .5rem;
+        margin-bottom: .25rem;
+    }
 }
 
 .ai-banner-heading {

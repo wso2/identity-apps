@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { AppState, FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { Field, FormField, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Hint } from "@wso2is/react-components";
@@ -26,6 +27,7 @@ import { useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { getAPIResourcesForIdenitifierValidation } from "../../../api";
 import { APIResourcesConstants } from "../../../constants";
+import useApiResourcesPageContent from "../../../hooks/use-api-resources-page-content";
 import { APIResourcesListInterface, BasicAPIResourceInterface } from "../../../models";
 
 /**
@@ -79,6 +81,8 @@ export const AddAPIResourceBasic: FunctionComponent<AddAPIResourceBasicInterface
         ["data-componentid"]: componentId
     } = props;
 
+    const { createResourceWizard } = useApiResourcesPageContent();
+
     const { t } = useTranslation();
     const identifierRef: MutableRefObject<FormField> = useRef<FormField>();
     const productName: string = useSelector((state: AppState) => state.config.ui.productName);
@@ -112,8 +116,7 @@ export const AddAPIResourceBasic: FunctionComponent<AddAPIResourceBasicInterface
                             name="identifier"
                             label={ t("extensions:develop.apiResource.wizard.addApiResource.steps.basic.form." +
                                 "fields.identifier.label") }
-                            placeholder={ t("extensions:develop.apiResource.wizard.addApiResource.steps.basic." +
-                                "form.fields.identifier.placeholder") }
+                            placeholder={ createResourceWizard?.identifierPlaceholder }
                             requiredErrorMessage={ t("extensions:develop.apiResource.wizard.addApiResource.steps." +
                                 "basic.form.fields.identifier.emptyValidate") }
                             required={ true }
@@ -174,8 +177,7 @@ export const AddAPIResourceBasic: FunctionComponent<AddAPIResourceBasicInterface
                             name="displayName"
                             label={ t("extensions:develop.apiResource.wizard.addApiResource.steps.basic.form.fields." +
                                 "name.label") }
-                            placeholder={ t("extensions:develop.apiResource.wizard.addApiResource.steps.basic.form." +
-                                "fields.name.placeholder") }
+                            placeholder={ createResourceWizard?.displayNamePlaceholder }
                             required={ true }
                             tabIndex={ 2 }
                             requiredErrorMessage={ t("extensions:develop.apiResource.wizard.addApiResource.steps." +
@@ -184,8 +186,7 @@ export const AddAPIResourceBasic: FunctionComponent<AddAPIResourceBasicInterface
                             data-testid={ `${componentId}-basic-form-displayName` }
                         />
                         <Hint className="mb-0">
-                            { t("extensions:develop.apiResource.wizard.addApiResource.steps.basic.form.fields." +
-                                "name.hint", { productName }) }
+                            { createResourceWizard?.displayNameHint }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>

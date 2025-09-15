@@ -26,3 +26,6 @@
 - [ ] Followed secure coding standards in http://wso2.com/technical-reports/wso2-secure-engineering-guidelines
 - [ ] Ran FindSecurityBugs plugin and verified report
 - [ ] Confirmed that this PR doesn't commit any keys, passwords, tokens, usernames, or other secrets
+
+## Developer Checklist (Mandatory)
+- [ ] Complete the **Developer Checklist** in the related `product-is` issue to track any behavioral change or migration impact.

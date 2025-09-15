@@ -16,6 +16,13 @@
  * under the License.
  */
 
+import {
+    AppConstants
+} from "@wso2is/admin.core.v1/constants/app-constants";
+import {
+
+    history
+} from "@wso2is/admin.core.v1/helpers/history";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
@@ -31,10 +38,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import {
-    AppConstants,
-    history
-} from "../../admin.core.v1";
 import { getOIDCApplicationConfigurations } from "../api/application";
 import { updateDCRConfigurations } from "../api/applications-settings";
 import { useGetDCRConfigurations } from "../api/use-get-dcr-configurations";

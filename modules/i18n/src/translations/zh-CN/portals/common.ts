@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,10 +35,113 @@ export const common: CommonNS = {
     "applicationName": "应用名称",
     "applications": "申请",
     "approvalStatus": "批准状态",
+    "approvals": "批准",
+    "approvalsPage": {
+        "list": {
+            "columns": {
+                "actions": "操作",
+                "name": "名称"
+            }
+        },
+        "modals": {
+            "description": "查看需要您批准的操作任务",
+            "header": "批准",
+            "subHeader": "查看需要您批准的操作任务"
+        },
+        "notifications": {
+            "fetchApprovalDetails": {
+                "error": {
+                    "description": "{{description}}",
+                    "message": "获取批准详细信息时出错"
+                },
+                "genericError": {
+                    "description": "无法检索批准详细信息。",
+                    "message": "出现了问题"
+                }
+            },
+            "fetchPendingApprovals": {
+                "error": {
+                    "description": "{{description}}",
+                    "message": "获取待处理批准时出错"
+                },
+                "genericError": {
+                    "description": "无法检索待处理批准。",
+                    "message": "出现了问题"
+                }
+            },
+            "updatePendingApprovals": {
+                "error": {
+                    "description": "{{description}}",
+                    "message": "更新批准时出错"
+                },
+                "genericError": {
+                    "description": "无法更新待处理批准。",
+                    "message": "出现了问题"
+                },
+                "success": {
+                    "description": "成功更新批准。",
+                    "message": "更新成功"
+                }
+            }
+        },
+        operationTypes: {
+            "addRole": "添加角色",
+            "addUser": "添加用户",
+            "all": "所有操作",
+            "deleteRole": "删除角色",
+            "deleteUser": "删除用户",
+            "selfRegisterUser": "用户自助注册",
+            "updateRolesOfUser": "更新角色用户"
+        },
+        "placeholders": {
+            "emptyApprovalFilter": {
+                "action": "查看全部",
+                "subtitles": {
+                    0: "当前没有处于 {{status}} 状态的批准。",
+                    1: "请检查您是否有任何处于 {{status}} 状态的任务",
+                    2: "在这里查看它们。"
+                },
+                "title": "未找到结果"
+            },
+            "emptyApprovalList": {
+                "action": "",
+                "subtitles": {
+                    0: "当前没有待审核的批准。",
+                    1: "请检查您是否已添加工作流以控制系统中的操作。",
+                    2: ""
+                },
+                "title": "没有批准"
+            },
+            "emptySearchResults": {
+                "action": "查看全部",
+                "subtitles": {
+                    0: "我们找不到您搜索的工作流。",
+                    1: "请检查您是否在",
+                    2: "系统中有该名称的工作流。"
+                },
+                "title": "没有批准"
+            },
+            "searchApprovals": "按工作流名称搜索"
+        },
+        propertyMessages: {
+            assignedUsersDeleted: "分配的用户已被删除。",
+            roleDeleted: "角色已被删除。",
+            selfRegistration: "自助注册",
+            unassignedUsersDeleted: "未分配的用户已被删除。"
+        },
+        "subTitle": "查看需要您批准的操作任务",
+        "title": "批准"
+    },
     "approve": "批准",
+    "approved": "已批准",
     "apps": "应用",
+    "assignYourself": "分配给自己",
     "assignee": "受让人",
     "assignees": "受让人",
+    "asyncOperationErrorMessage": {
+        "description": "出了點問題",
+        "message": "發生了意外錯誤。請稍後再查看。"
+    },
     "authentication": "验证",
     "authenticator": "身份验证者",
     "authenticator_plural": "身份验证者",
@@ -53,7 +156,6 @@ export const common: CommonNS = {
         "heading": "出了些问题",
         "primaryActionText": "重新加载应用程序"
     },
-    "claim": "宣称",
     "clear": "清除",
     "clientId": "客户 ID",
     "close": "关闭",
@@ -69,6 +171,7 @@ export const common: CommonNS = {
     "dangerZone": "危险区",
     "darkMode": "黑暗模式",
     "delete": "删除",
+    "deprecated": "此配置已弃用，并将在未来的版本中删除。",
     "description": "描述",
     "deviceModel": "设备型号",
     "disable": "禁用",
@@ -118,6 +221,7 @@ export const common: CommonNS = {
     "metaAttributes": "元属性",
     "minValidation": "该值应大于或等于{{min}}。",
     "minimize": "最小化",
+    "minutes": "分钟",
     "more": "更多的",
     "myAccount": "我的账户",
     "name": "姓名",
@@ -129,11 +233,14 @@ export const common: CommonNS = {
     "new": "新的",
     "next": "下一个",
     "noResultsFound": "未找到结果",
+    "none": "没有任何",
     "okay": "好的",
     "operatingSystem": "操作系统",
+    "operationType": "操作类型",
     "operations": "操作",
     "organizationName": "{{orgName}} 组织",
     "overview": "概述",
+    "pending": "待处理",
     "personalInfo": "个人信息",
     "pin": "别针",
     "pinned": "固定",
@@ -145,11 +252,12 @@ export const common: CommonNS = {
     "priority": "优先事项",
     "privacy": "隐私",
     "properties": "特性",
+    "publish": "发布",
     "ready": "准备好",
     "regenerate": "再生",
     "register": "登记",
     "reject": "拒绝",
-    "release": "发布",
+    "rejected": "已拒绝",
     "remove": "消除",
     "removeAll": "移除所有",
     "required": "这是必需的。",
@@ -160,10 +268,13 @@ export const common: CommonNS = {
     "revokeAll": "撤销所有",
     "samples": "样品",
     "save": "节省",
+    "saveDraft": "保存草稿",
     "sdks": "SDKs",
     "search": "搜索",
     "searching": "搜索",
     "security": "安全",
+    "selectAll": "选择全部",
+    "selectNone": "选择无",
     "services": "服务",
     "settings": "设置",
     "setup": "设置",
@@ -184,6 +295,7 @@ export const common: CommonNS = {
     "terminateSession": "终止会话",
     "tooShort": "过短",
     "type": "类型",
+    "unassign": "取消分配",
     "unpin": "商品",
     "unpinned": "未损坏",
     "update": "更新",
@@ -191,6 +303,7 @@ export const common: CommonNS = {
     "verified": "已验证",
     "verify": "核实",
     "view": "看法",
+    "viewDetails": "查看详情",
     "weak": "虚弱的",
     "weakPassword": "密码强度至少应该很好。"
 };

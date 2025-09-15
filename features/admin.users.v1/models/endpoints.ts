@@ -32,6 +32,7 @@ export interface UsersResourceEndpointsInterface {
     schemas: string;
     guests: string;
     guestsList: string;
+    resendCode: string;
 }
 
 /**

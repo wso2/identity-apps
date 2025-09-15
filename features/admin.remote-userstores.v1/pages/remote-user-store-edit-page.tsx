@@ -17,7 +17,9 @@
  */
 
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
-import { AppConstants, AppState, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import useGetUserStoreDetails from "@wso2is/admin.userstores.v1/api/use-get-user-store-details";
 import { getDatabaseAvatarGraphic } from "@wso2is/admin.userstores.v1/configs/ui";
 import { DISABLED, RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants/user-store-constants";

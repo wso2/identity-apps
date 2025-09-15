@@ -114,9 +114,11 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
             return answerParam.questionSetId === questionSetId;
         });
 
-        return questions.find((questionParam: QuestionsInterface) => {
+        const result: QuestionsInterface | null = questions.find((questionParam: QuestionsInterface) => {
             return questionParam.question === answer.question;
         });
+
+        return result || null;
     };
 
     /**
@@ -136,9 +138,15 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
             challengesCopy.push({
                 answer: answer ? answer.answer : "",
                 challengeQuestion: {
-                    locale: answer ? questionInSet.locale : "",
-                    question: answer ? questionInSet.question : "",
-                    questionId: answer ? questionInSet.questionId : ""
+                    /**
+                     * If the answered question is not found in the set,
+                     * it means the questionSet has been modified.
+                     * In that case, we set the question and questionId to empty strings
+                     * to avoid uncontrolled to controlled input error in React.
+                     */
+                    locale: answer && questionInSet ? questionInSet.locale : "",
+                    question: answer ? answer.question : "",
+                    questionId: answer && questionInSet ? questionInSet.questionId : ""
                 },
                 questionSetId: question.questionSetId
             });

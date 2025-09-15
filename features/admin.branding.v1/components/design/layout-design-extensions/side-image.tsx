@@ -22,7 +22,7 @@ import React, { Fragment, ReactElement } from "react";
 import { Trans } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
 import { LayoutDesignExtensionInterface } from "./layout-design-extension-component-interface";
-import { BrandingPreferencesConstants } from "../../../constants";
+import { BrandingPreferencesConstants } from "../../../constants/branding-preferences-constants";
 
 
 /**

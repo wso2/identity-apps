@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -41,7 +41,10 @@ interface LoginSecurityDocumentationLinksInterface {
     },
     loginAttempts: {
         learnMore: string;
-    }
+    },
+    siftConnector: {
+        learnMore: string;
+    },
 }
 
 /**
@@ -156,6 +159,11 @@ interface ApplicationsDocumentationLinksInterface {
                 },
                 version200: {
                     addAllRequestedClaimsInJWTAccessToken: {
+                        documentationLink: string;
+                    }
+                },
+                version300: {
+                    linkedLocalAccountAttributeHandling: {
                         documentationLink: string;
                     }
                 }
@@ -273,6 +281,9 @@ interface ApplicationsDocumentationLinksInterface {
             default: {
                 learnMore: string;
             }
+            technology: {
+                learnMore: string;
+            }
             ssoIntegration: {
                 learnMore: string;
             }
@@ -304,6 +315,9 @@ interface BrandingDocumentationLinksInterface {
     }
     layout: {
         custom: {
+            editor: {
+                learnMore: string;
+            }
             learnMore: string;
         }
     }
@@ -563,6 +577,20 @@ interface MultiTenancyDocumentationLinksInterface {
 }
 
 /**
+ * Interface for the account disable section documentation structure.
+ */
+interface AccountDisableDocumentationLinksInterface {
+    learnMore: string;
+}
+
+/**
+ * Interface for the webhooks section documentation structure.
+ */
+interface WebhooksDocumentationLinksInterface {
+    learnMore: string;
+}
+
+/**
  * Interface for the console documentation structure.
  */
 export interface DocumentationLinksExtensionInterface {
@@ -614,11 +642,19 @@ export interface DocumentationLinksExtensionInterface {
          * Documentation links for SMS customization UI elements.
          */
         smsCustomization: SmsCustomizationLinksInterface;
+        /**
+         * Documentation links for webhooks section elements.
+         */
+        webhooks: WebhooksDocumentationLinksInterface;
     }
     /**
      * Documentation links for manage section elements.
      */
     manage: {
+        /**
+         * Documentation links for account disable elements.
+         */
+        accountDisable: AccountDisableDocumentationLinksInterface;
         /**
          * Documentation links for account recovery elements.
          */

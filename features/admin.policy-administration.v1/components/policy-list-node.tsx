@@ -19,10 +19,10 @@ import Card from "@oxygen-ui/react/Card";
 import CardContent from "@oxygen-ui/react/CardContent";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
-import { AppConstants, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import kebabCase from "lodash-es/kebabCase";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -43,61 +43,54 @@ export interface PolicyListDraggableNodePropsInterface
      * The node that is being dragged.
      */
     policy: PolicyInterface;
-    mutateInactivePolicyList?: () => void;
-    setInactivePolicies?: React.Dispatch<React.SetStateAction<PolicyInterface[]>>;
-    setPageInactive: React.Dispatch<React.SetStateAction<number>>;
-    setHasMoreInactivePolicies: React.Dispatch<React.SetStateAction<boolean>>;
-    mutateActivePolicyList?: () => void;
+    /**
+     * Delete an inactive policy.
+     *
+     * @param policyId - The policy ID.
+     */
+    onDelete: (policyId: string) => void;
+    /**
+     * Activate a policy.
+     *
+     * @param policyId - The policy ID.
+     */
+    onActivate: (policyId: string) => void;
 }
 
 const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> = ({
     "data-componentid": componentId = "policy-list--node",
-    id,
     policy,
-    mutateInactivePolicyList,
-    setInactivePolicies,
-    setPageInactive,
-    setHasMoreInactivePolicies,
-    mutateActivePolicyList,
-    ...rest
+    onDelete,
+    onActivate
 }: PolicyListDraggableNodePropsInterface): ReactElement => {
     const { t } = useTranslation();
 
     const dispatch: Dispatch = useDispatch();
 
     const handleEdit = (policyId: string) => {
-        history.push(`${AppConstants.getPaths().get("EDIT_POLICY").replace(":id", kebabCase(policyId))}`);
+        history.push(`${AppConstants.getPaths().get("EDIT_POLICY").replace(":id", btoa(policyId))}`);
     };
 
     const handleDelete = async (): Promise<void> => {
         try {
-            await deletePolicy(policy.policyId);
-
-            setPageInactive(0);
-            setHasMoreInactivePolicies(true);
-            setInactivePolicies([]);
+            await deletePolicy(btoa(policy.policyId));
 
             dispatch(addAlert({
-                description: "The policy has been deleted successfully",
+                description: t("policyAdministration:alerts.deleteSuccess.description"),
                 level: AlertLevels.SUCCESS,
-                message: "Delete successful"
+                message: t("policyAdministration:alerts.deleteSuccess.message")
             }));
 
-            mutateInactivePolicyList();
-
+            onDelete(policy.policyId);
         } catch (error) {
             // Dispatch the error alert.
             dispatch(addAlert({
-                description: "An error occurred while deleting the policy",
+                description: t("policyAdministration:alerts.deleteFailure.description"),
                 level: AlertLevels.ERROR,
-                message: "Delete error"
+                message: t("policyAdministration:alerts.deleteFailure.message")
             }));
         }
     };
-
-
-
-
 
     const handleActivate = async () : Promise<void> => {
         try{
@@ -109,18 +102,18 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
                 subscriberIds: [ "PDP Subscriber" ]
             });
 
-            setPageInactive(0);
-            setHasMoreInactivePolicies(true);
-            setInactivePolicies([]);
+            dispatch(addAlert({
+                description: t("policyAdministration:alerts.activateSuccess.description"),
+                level: AlertLevels.SUCCESS,
+                message: t("policyAdministration:alerts.activateSuccess.message")
+            }));
 
-            mutateActivePolicyList();
-            mutateInactivePolicyList();
-
+            onActivate(policy.policyId);
         } catch ( error ) {
             dispatch(addAlert({
-                description: "An error occurred while activating the policy",
+                description: t("policyAdministration:alerts.activateFailure.description"),
                 level: AlertLevels.ERROR,
-                message: "Activation error"
+                message: t("policyAdministration:alerts.activateFailure.message")
             }));
         }
     };
@@ -129,23 +122,23 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
         <Card variant="outlined" className="policy-list-node">
             <CardContent>
                 <Stack direction={ "row" } justifyContent={ "space-between" }>
-                    <Stack direction={ "row" } spacing={ 1 } >
+                    <Stack direction="row" spacing={ 1 }>
                         <Popup
                             trigger={ (
                                 <Icon
                                     onClick={ handleActivate }
                                     data-componentid={ `${componentId}-edit-button` }
-                                    className="list-icon"
+                                    className="policy-list-icon list-icon"
                                     size="massive"
                                     color="grey"
                                     name="chevron left"
                                 />
                             ) }
                             position="top center"
-                            content={ "Deactivate" }
+                            content={ t("policyAdministration:popup.activate") }
                             inverted
                         />
-                        <Typography>{ policy.policyId }</Typography>
+                        <Typography className="ellipsis-text">{ policy.policyId }</Typography>
                     </Stack>
                     <Stack direction={ "row" } marginTop={ "3px" }>
                         <Popup
@@ -161,7 +154,7 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
                                 />
                             ) }
                             position="top center"
-                            content={ "Edit" }
+                            content={ t("common:edit") }
                             inverted
                         />
                         <Popup
@@ -176,7 +169,7 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
                                 />
                             ) }
                             position="top center"
-                            content={ "Delete" }
+                            content={ t("common:delete") }
                             inverted
                         />
                     </Stack>

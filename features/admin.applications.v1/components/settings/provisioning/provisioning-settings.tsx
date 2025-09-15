@@ -17,7 +17,7 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";

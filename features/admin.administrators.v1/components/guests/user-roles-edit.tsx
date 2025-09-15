@@ -17,11 +17,9 @@
  */
 
 import { Show, useRequiredScopes } from "@wso2is/access-control";
-import {
-    AppState,
-    FeatureConfigInterface,
-    updateResources
-} from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { FeatureConfigInterface } from "@wso2is.admin.core.v1/models/config";
+import { updateResources } from "@wso2is.admin.core.v1/api";
 import { getRolesList } from "@wso2is/admin.roles.v2/api";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "@wso2is/admin.roles.v2/constants";
 import { RealmConfigInterface } from "@wso2is/admin.server-configurations.v1/models";

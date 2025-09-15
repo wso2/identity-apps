@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,9 +18,11 @@
 
 import Typography from "@oxygen-ui/react/Typography";
 import { useRequiredScopes } from "@wso2is/access-control";
-import { AppState, FeatureConfigInterface, store  } from "@wso2is/admin.core.v1";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { FeatureConfigInterface  } from "@wso2is/admin.core.v1/models/config";
+import { AppState, store  } from "@wso2is/admin.core.v1/store";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/server-configuration";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, ReferableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -36,6 +38,7 @@ import { getConnectorCategories, getConnectorCategory } from "../api";
 import GovernanceConnectorCategoriesGrid from "../components/governance-connector-grid";
 import { ServerConfigurationsConstants } from "../constants";
 import {
+    ConnectorOverrideConfig,
     GovernanceConnectorCategoryInterface,
     GovernanceConnectorInterface
 } from "../models";
@@ -72,12 +75,10 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isPasswordInputValidationEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isPasswordInputValidationEnabled);
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const hasGovernanceConnectorReadPermission: boolean = useRequiredScopes(
         featureConfig?.governanceConnectors?.scopes?.read
-    );
-    const hasOrganizationDiscoveryReadPermission: boolean = useRequiredScopes(
-        featureConfig?.organizationDiscovery?.scopes?.read
     );
     const hasResidentOutboundProvisioningFeaturePermission: boolean = useRequiredScopes(
         featureConfig?.residentOutboundProvisioning?.scopes?.feature
@@ -91,10 +92,8 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
 
     const predefinedCategories: any = useMemo(() => {
         const originalConnectors: Array<any> = GovernanceConnectorUtils.getCombinedPredefinedConnectorCategories();
-        const refinedConnectorCategories: Array<any> = [];
 
-        const isOrganizationDiscoveryEnabled: boolean = featureConfig?.organizationDiscovery?.enabled
-            && hasOrganizationDiscoveryReadPermission;
+        const refinedConnectorCategories: Array<any> = [];
 
         const isResidentOutboundProvisioningEnabled: boolean = featureConfig?.residentOutboundProvisioning?.enabled
             && hasResidentOutboundProvisioningFeaturePermission;
@@ -104,11 +103,6 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
             && hasInternalNotificationSendingReadPermission;
 
         for (const category of originalConnectors) {
-            if (!isOrganizationDiscoveryEnabled
-                    && category.id === ServerConfigurationsConstants.ORGANIZATION_SETTINGS_CATEGORY_ID) {
-                continue;
-            }
-
             if (!isResidentOutboundProvisioningEnabled
                     && category.id === ServerConfigurationsConstants.PROVISIONING_SETTINGS_CATEGORY_ID) {
                 continue;
@@ -119,8 +113,18 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                 continue;
             }
 
-            const filteredConnectors: Array<any> = category.connectors.
-                filter((connector: any) => !serverConfigurationConfig.connectorsToHide.includes(connector.id));
+            const filteredConnectors: Array<any> = category.connectors.filter((connector: any) => {
+                if (serverConfigurationConfig.connectorsToHide.includes(connector.id)) {
+                    return false;
+                }
+
+                if (isSubOrganization() && (connector.id === ServerConfigurationsConstants.SIFT_CONNECTOR_ID ||
+                    connector.id === ServerConfigurationsConstants.EMAIL_DOMAIN_DISCOVERY)) {
+                    return false;
+                }
+
+                return true;
+            });
 
             refinedConnectorCategories.push({ ...category, connectors: filteredConnectors });
         }
@@ -208,6 +212,12 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                 const connectorCategory: GovernanceConnectorCategoryInterface | null =
                     await loadCategoryConnectors(category.id);
 
+                // Filter out the SIFT connector from sub-organizations.
+                if (isSubOrganization() && connectorCategory?.connectors.length > 0) {
+                    connectorCategory.connectors =
+                        connectorCategory?.connectors?.filter((connector: GovernanceConnectorInterface) =>
+                            connector.id !== ServerConfigurationsConstants.SIFT_CONNECTOR_ID);
+                }
                 connectorCategory && dynamicConnectorCategoryArray.push(connectorCategory);
             }
         }
@@ -226,9 +236,11 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     const loadCategoryConnectors = (categoryId: string): Promise<GovernanceConnectorCategoryInterface | null> => {
         return getConnectorCategory(categoryId)
             .then((response: GovernanceConnectorCategoryInterface) => {
-                const connectorList: GovernanceConnectorInterface[] = response?.connectors?.filter(
+                let connectorList: GovernanceConnectorInterface[] = response?.connectors?.filter(
                     (connector: GovernanceConnectorInterface) =>
                         !serverConfigurationConfig.connectorsToHide.includes(connector.id));
+                const connectorOverrides: ConnectorOverrideConfig[] = GovernanceConnectorUtils
+                    .getConnectorPropertyOverrides();
 
                 // If there are no connectors, skip the rest of the logic.
                 if (!connectorList || connectorList.length < 1) {
@@ -244,6 +256,8 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                     connector.isCustom =  true;
                     connector.testId = `${ connector.name }-card`;
                 });
+
+                connectorList = GovernanceConnectorUtils.overrideConnectorProperties(connectorList, connectorOverrides);
 
                 // Group the connectors by category.
                 const connectorCategory: GovernanceConnectorCategoryInterface = {

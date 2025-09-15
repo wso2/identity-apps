@@ -16,7 +16,8 @@
  * under the License.
  */
 import { getConnections } from "@wso2is/admin.connections.v1/api/connections";
-import { AuthenticatorAccordion, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import { AuthenticatorAccordion } from "@wso2is/admin.core.v1/components/authenticator-accordion";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import {
     IdentityProviderInterface,
     IdentityProviderListResponseInterface

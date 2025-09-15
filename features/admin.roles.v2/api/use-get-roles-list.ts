@@ -21,8 +21,9 @@ import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
-import { store } from "@wso2is/admin.core.v1/store";
+import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods, RoleListInterface } from "@wso2is/core/models";
+import { useSelector } from "react-redux";
 
 /**
  * Hook to retrieve the list of roles.
@@ -43,6 +44,14 @@ const useGetRolesList = <Data = RoleListInterface, Error = RequestErrorInterface
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
+    );
+
+    const rolesEndpoint: string = userRolesV3FeatureEnabled
+        ? store.getState().config.endpoints.rolesV3
+        : store.getState().config.endpoints.rolesV2;
+
     const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
@@ -55,7 +64,7 @@ const useGetRolesList = <Data = RoleListInterface, Error = RequestErrorInterface
             filter,
             startIndex
         },
-        url: store.getState().config.endpoints.rolesV2
+        url: rolesEndpoint
     };
 
     const {

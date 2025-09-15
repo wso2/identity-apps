@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2019-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -30,12 +30,21 @@
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
+<% request.setAttribute("pageName","device-success"); %>
+
 <%-- Data for the layout from the page --%>
 <%
     layoutData.put("isResponsePage", true);
     layoutData.put("isErrorResponse", request.getParameter("app_name") == null);
     layoutData.put("isSuccessResponse", request.getParameter("app_name") != null);
     layoutData.put("isDeviceSuccessPage", request.getParameter("app_name") != null);
+%>
+
+<%
+    String responseType = "error";
+    if (request.getParameter("app_name") != null){
+        responseType = "success";
+    }
 %>
 
 <!doctype html>
@@ -51,7 +60,7 @@
     <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout authentication-portal-layout" onload="loadFunc()">
+<body class="login-portal layout authentication-portal-layout" onload="loadFunc()" data-response-type="<%= responseType %>" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
             <%-- product-title --%>

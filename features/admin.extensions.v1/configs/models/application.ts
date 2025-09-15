@@ -26,7 +26,7 @@ import {
     ApplicationInterface,
     ApplicationTabTypes
 } from "@wso2is/admin.applications.v1/models/application";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { ResourceTabPaneInterface } from "@wso2is/react-components";
 import { ReactElement, ReactNode } from "react";
@@ -58,7 +58,7 @@ export interface ApplicationConfig {
             showIncludeTenantDomain: boolean;
             showIncludeUserstoreDomainRole: boolean;
             showIncludeUserstoreDomainSubject: boolean;
-            showMandateLinkedLocalAccount: boolean;
+            isMandateLinkedLocalAccountEnabled: (templateId: string) => boolean;
             showRoleAttribute: boolean;
             showRoleMapping: boolean;
             showValidateLinkedLocalAccount: boolean;
@@ -128,7 +128,6 @@ export interface ApplicationConfig {
         showNativeClientSecretMessage: boolean;
         showIdTokenEncryption: boolean;
         showIdTokenResponseSigningAlgorithm: boolean;
-        showBackChannelLogout: boolean;
         showRequestObjectConfigurations: boolean;
         showRequestObjectSignatureValidation: boolean;
         showCertificates: boolean;

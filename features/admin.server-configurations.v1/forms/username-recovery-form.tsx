@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,8 @@
  */
 
 import Alert from "@oxygen-ui/react/Alert";
-import { AppConstants, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import {
     UsernameRecoveryFormConstants
 } from "@wso2is/admin.server-configurations.v1/constants/username-recovery-constants";
@@ -95,7 +96,6 @@ export const UsernameRecoveryConfigurationForm: FunctionComponent<UsernameRecove
                         break;
                 }
             }
-
         });
 
         setInitialConnectorValues(resolvedInitialValues);
@@ -108,11 +108,9 @@ export const UsernameRecoveryConfigurationForm: FunctionComponent<UsernameRecove
      * @returns Sanitized form values.
      */
     const getUpdatedConfigurations = (values: Record<string, boolean>) => {
-
         const data: UsernamePasswordRecoveryFormUpdatableConfigsInterface = {
             "Recovery.Notification.Username.Email.Enable":
                 values.enableEmailBasedRecovery ?? initialConnectorValues?.enableEmailBasedRecovery,
-
             "Recovery.Notification.Username.SMS.Enable":
                 values.enableSMSBasedRecovery ?? initialConnectorValues?.enableSMSBasedRecovery
         };
@@ -136,7 +134,6 @@ export const UsernameRecoveryConfigurationForm: FunctionComponent<UsernameRecove
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.recoveryOptionHeading") }
                 </Heading>
-
                 <Field.Checkbox
                     className="mb-5"
                     ariaLabel="enableEmailBasedRecovery"
@@ -148,7 +145,6 @@ export const UsernameRecoveryConfigurationForm: FunctionComponent<UsernameRecove
                     width={ 10 }
                     data-componentid={ `${ testId }-email-based-recovery` }
                 />
-
                 {
                     <Alert severity="info">
                         <Trans
@@ -170,7 +166,6 @@ export const UsernameRecoveryConfigurationForm: FunctionComponent<UsernameRecove
                         </Trans>
                     </Alert>
                 }
-
                 <Field.Checkbox
                     className="mt-3 mb-5"
                     ariaLabel="enableSMSBasedRecovery"
@@ -182,7 +177,6 @@ export const UsernameRecoveryConfigurationForm: FunctionComponent<UsernameRecove
                     width={ 10 }
                     data-componentid={ `${ testId }-sms-based-recovery` }
                 />
-
                 <Field.Button
                     form={ FORM_ID }
                     size="small"

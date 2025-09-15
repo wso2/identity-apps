@@ -1,0 +1,32 @@
+<!--
+ * Copyright (c) 2025, WSO2 LLC. (http://www.wso2.org).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg width="16" class="icon" height="16" viewBox="0 0 16 16" fill="none"
+     xmlns="http://www.w3.org/2000/svg" style="color: black;">
+  <g clip-path="url(#clip0_3297_27)">
+    <path d="M0.653107 7.80603L7.72248 1.26716C8.67798 0.383279 10.2274 0.383279 11.1829 1.26716C12.1383 2.15103 12.1383 3.58408 11.1829 4.46796M11.1829 4.46796L5.8437 9.40644M11.1829 4.46796C12.1383 3.58408 13.6877 3.58408 14.6433 4.46796C15.5988 5.35184 15.5988 6.7849 14.6433 7.66872L8.61829 13.2417C8.28047 13.5541 8.28047 14.0609 8.61829 14.3734L9.7366 15.4078"
+          stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M12.7644 6.20493L7.42531 11.1436C6.46982 12.0274 4.92044 12.0274 3.96495 11.1436C3.00944 10.2597 3.00944 8.82662 3.96495 7.9428L9.30405 3.00427"
+          stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </g>
+  <defs>
+    <clipPath id="clip0_3297_27">
+      <rect width="16" height="16" fill="white"/>
+    </clipPath>
+  </defs>
+</svg>

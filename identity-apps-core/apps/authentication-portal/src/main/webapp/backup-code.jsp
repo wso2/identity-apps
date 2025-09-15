@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2022-2023, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -67,6 +67,8 @@
     }
 %>
 
+<% request.setAttribute("pageName","backup-code"); %>
+
 <html>
     <head>
         <%-- header --%>
@@ -127,7 +129,7 @@
         </script>
     </head>
 
-    <body class="login-portal layout backup-code-portal-layout">
+    <body class="login-portal layout backup-code-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
         <% if (new File(getServletContext().getRealPath("extensions/timeout.jsp")).exists()) { %>
             <jsp:include page="extensions/timeout.jsp"/>
         <% } else { %>
@@ -169,21 +171,21 @@
 
                             <div class="equal width fields">
                                 <div class="field mt-5">
-                                    <input 
-                                        class="text-center p-3" 
-                                        id="pincode-1" 
+                                    <input
+                                        class="text-center p-1 pb-3 pt-3"
+                                        id="pincode-1"
                                         name="pincode-1"
-                                        tabindex="1" 
-                                        placeholder="·" 
+                                        tabindex="1"
+                                        placeholder="·"
                                         maxlength="1"
                                         onkeyup="movetoNext(this, 'pincode-2', null)"
                                         autocomplete="off"
                                         autofocus>
                                 </div>
                                 <div class="field mt-5">
-                                    <input 
-                                        class="text-center p-3" 
-                                        id="pincode-2" 
+                                    <input
+                                        class="text-center p-1 pb-3 pt-3"
+                                        id="pincode-2"
                                         name="pincode-2"
                                         onkeyup="movetoNext(this, 'pincode-3', 'pincode-1')"
                                         tabindex="2"
@@ -192,19 +194,19 @@
                                         autocomplete="off">
                                 </div>
                                 <div class="field mt-5">
-                                    <input 
-                                        class="text-center p-3" 
-                                        id="pincode-3" 
+                                    <input
+                                        class="text-center p-1 pb-3 pt-3"
+                                        id="pincode-3"
                                         name="pincode-3"
                                         tabindex="3"
-                                        placeholder="·" 
+                                        placeholder="·"
                                         maxlength="1"
                                         onkeyup="movetoNext(this, 'pincode-4', 'pincode-2')"
                                         autocomplete="off">
                                 </div>
                                 <div class="field mt-5">
-                                    <input 
-                                        class="text-center p-3"
+                                    <input
+                                        class="text-center p-1 pb-3 pt-3"
                                         id="pincode-4"
                                         name="pincode-4"
                                         tabindex="4"
@@ -214,8 +216,8 @@
                                         autocomplete="off">
                                 </div>
                                 <div class="field mt-5">
-                                    <input 
-                                        class="text-center p-3"
+                                    <input
+                                        class="text-center p-1 pb-3 pt-3"
                                         id="pincode-5"
                                         name="pincode-5"
                                         tabindex="5"
@@ -225,8 +227,8 @@
                                         autocomplete="off">
                                 </div>
                                 <div class="field mt-5">
-                                    <input 
-                                        class="text-center p-3"
+                                    <input
+                                        class="text-center p-1 pb-3 pt-3"
                                         id="pincode-6"
                                         name="pincode-6"
                                         tabindex="6"

@@ -20,7 +20,9 @@ import Typography from "@oxygen-ui/react/Typography";
 import { InboundProtocolsMeta } from "@wso2is/admin.applications.v1/components/meta/inbound-protocols.meta";
 import { AuthProtocolMetaListItemInterface } from "@wso2is/admin.applications.v1/models/application-inbound";
 import { ApplicationManagementUtils } from "@wso2is/admin.applications.v1/utils/application-management-utils";
-import { AppState, EventPublisher, getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import useExtensionTemplates from "@wso2is/admin.template-core.v1/hooks/use-extension-templates";
 import {
     CategorizedExtensionTemplatesInterface,
@@ -305,6 +307,9 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
             case ApplicationTemplateCategories.DEFAULT:
                 return getLink("develop.applications.template." +
                     "categories.default.learnMore");
+            case ApplicationTemplateCategories.TECHNOLOGY:
+                return getLink("develop.applications.template." +
+                    "categories.technology.learnMore");
             case ApplicationTemplateCategories.SSO_INTEGRATION:
                 return getLink("develop.applications.template." +
                     "categories.ssoIntegration.learnMore");
@@ -366,15 +371,24 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
 
                                             return (
                                                 <div key={ category?.id } className="application-template-card-group">
-                                                    <Typography variant="h5">
-                                                        { t(category?.displayName) }
-                                                    </Typography>
+                                                    { /* Only render the title if displayName is not empty */ }
+                                                    { category?.displayName && (
+                                                        <Typography variant="h5">
+                                                            { t(category?.displayName) }
+                                                        </Typography>
+                                                    ) }
                                                     {
                                                         category?.description
                                                             ? (
                                                                 <Typography
-                                                                    className=
-                                                                        "application-template-card-group-description"
+                                                                    className={
+                                                                        `application-template-card-group-description${
+                                                                            !category?.displayName
+                                                                                ? " application-template-card-group-" +
+                                                                                  "empty-title"
+                                                                                : ""
+                                                                        }`
+                                                                    }
                                                                     variant="subtitle1"
                                                                 >
                                                                     { t(category?.description) }

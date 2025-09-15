@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,19 +16,24 @@
  * under the License.
  */
 
-import { AppConstants, AppState, FeatureConfigInterface, history } from "@wso2is/admin.core.v1";
+import { useRequiredScopes } from "@wso2is/access-control";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import {  AppState  } from "@wso2is/admin.core.v1/store";
 import { UserstoreConstants } from "@wso2is/core/constants";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { GenericIcon, ResourceTab, ResourceTabPaneInterface, TabPageLayout } from "@wso2is/react-components";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
-import { getAType, getAUserStore } from "../api";
+import { getAUserStore } from "../api";
+import { useGetUserStoreMetaDataType } from "../api/use-get-user-store-meta-data-type";
 import {
     EditBasicDetailsUserStore,
     EditConnectionDetails,
@@ -80,7 +85,18 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
     const { t } = useTranslation();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
+
+    const hasUserStoresUpdatePermission: boolean = useRequiredScopes(featureConfig?.userStores?.scopes?.update);
+
+    const {
+        data: userStoreMetaType,
+        isLoading: isUserStoreMetaTypeFetchRequestLoading,
+        error: userStoreMetaTypeFetchRequestError
+    } = useGetUserStoreMetaDataType(
+        userStore?.typeId,
+        null,
+        !isEmpty(userStore?.typeId)
+    );
 
     /**
      * Fetches the userstore by its id
@@ -111,28 +127,27 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
     }, []);
 
     useEffect(() => {
-        if (userStore) {
-            getAType(userStore?.typeId, null).then((response: UserstoreType) => {
-                setType(response);
-            }).catch((error: IdentityAppsError) => {
-                dispatch(addAlert({
-                    description: error?.description
-                        || t("userstores:notifications.fetchUserstoreMetadata." +
-                            "genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: error?.message
-                        || t("userstores:notifications.fetchUserstoreMetadata" +
-                            ".genericError.message")
-                }));
-            });
+        if (isUserStoreMetaTypeFetchRequestLoading || !userStoreMetaType) {
+            return;
         }
-    }, [ userStore ]);
+
+        setType(userStoreMetaType);
+        setProperties(reOrganizeProperties(userStoreMetaType.properties, userStore.properties));
+    }, [ isUserStoreMetaTypeFetchRequestLoading, userStoreMetaType ]);
 
     useEffect(() => {
-        if (type) {
-            setProperties(reOrganizeProperties(type.properties, userStore.properties));
+        if (userStoreMetaTypeFetchRequestError) {
+            dispatch(addAlert({
+                description: userStoreMetaTypeFetchRequestError?.name
+                    || t("userstores:notifications.fetchUserstoreMetadata." +
+                        "genericError.description"),
+                level: AlertLevels.ERROR,
+                message: userStoreMetaTypeFetchRequestError?.message
+                    || t("userstores:notifications.fetchUserstoreMetadata" +
+                        ".genericError.message")
+            }));
         }
-    }, [ type ]);
+    }, [ userStoreMetaTypeFetchRequestError ]);
 
     /**
      * Returns if the userstore is readonly or not based on the scopes.
@@ -140,8 +155,7 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
      * @returns If an userstore is Read Only or not.
      */
     const resolveReadOnlyState = (): boolean => {
-        return !hasRequiredScopes(featureConfig?.userStores, featureConfig?.userStores?.scopes?.update,
-            allowedScopes);
+        return !hasUserStoresUpdatePermission;
     };
 
     /**
@@ -175,6 +189,7 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
                         id={ userStoreId }
                         properties={ properties?.connection }
                         data-testid={ `${ testId }-userstore-connection-details-edit` }
+                        userStore={ userStore }
                     />
                 </ResourceTab.Pane>
             )
@@ -186,7 +201,6 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
                     <EditUserDetails
                         readOnly={ resolveReadOnlyState() }
                         update={ getUserStore }
-                        type={ type }
                         id={ userStoreId }
                         properties={ properties?.user }
                         data-testid={ `${ testId }-userstore-user-details-edit` }

@@ -17,7 +17,9 @@
  */
 
 import { Hooks, useAuthContext } from "@asgardeo/auth-react";
-import { AppState, PreLoader, history } from "@wso2is/admin.core.v1";
+import { PreLoader } from "@wso2is/admin.core.v1/components/pre-loader";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import useOrganizations from "@wso2is/admin.organizations.v1/hooks/use-organizations";
 import { AppConstants } from "@wso2is/core/constants";
 import { setSignOut } from "@wso2is/core/store";

@@ -17,7 +17,7 @@
  */
 
 import useBrandingPreference from "@wso2is/admin.branding.v1/hooks/use-branding-preference";
-import { BrandingPreferenceUtils } from "@wso2is/admin.branding.v1/utils";
+import { BrandingPreferenceUtils } from "@wso2is/admin.branding.v1/utils/branding-preference-utils";
 import { BrandingPreferenceInterface } from "@wso2is/common.branding.v1/models";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";

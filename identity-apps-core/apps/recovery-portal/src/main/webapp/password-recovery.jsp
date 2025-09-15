@@ -1,5 +1,5 @@
 <%--
-  ~ Copyright (c) 2016-2024, WSO2 LLC. (https://www.wso2.com).
+  ~ Copyright (c) 2016-2025, WSO2 LLC. (https://www.wso2.com).
   ~
   ~ WSO2 LLC. licenses this file to you under the Apache License,
   ~ Version 2.0 (the "License"); you may not use this file except
@@ -78,8 +78,11 @@
     if (SMSOTP.equalsIgnoreCase(request.getParameter("selectedOption"))) {
         selectedOption = SMSOTP;
     }
-    String sp = Encode.forJava(request.getParameter("sp"));
-    String spId = Encode.forJava(request.getParameter("spId"));
+    String sp = request.getParameter("sp");
+    String spId = request.getParameter("spId");
+
+    String rawQueryString = request.getQueryString();
+    String urlQuery = Encode.forHtmlAttribute(rawQueryString == null ? "" : rawQueryString);
 
     if (StringUtils.isBlank(tenantDomain)) {
         tenantDomain = IdentityManagementEndpointConstants.SUPER_TENANT;
@@ -101,7 +104,7 @@
     try {
         ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
         applicationAccessURLWithoutEncoding = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain,
-                sp);
+            Encode.forJava(sp));
         applicationAccessURLWithoutEncoding = IdentityManagementEndpointUtil.replaceUserTenantHintPlaceholder(
                                                                 applicationAccessURLWithoutEncoding, userTenantDomain);
     } catch (ApplicationDataRetrievalClientException e) {
@@ -145,6 +148,7 @@
     Boolean isQuestionBasedPasswordRecoveryEnabledByTenant = false;
     Boolean isSMSRecoveryAvailable = false;
     Boolean isEmailLinkBasedPasswordRecoveryEnabledByTenant = false;
+    Boolean isEmailOtpBasedPasswordRecoveryEnabledByTenant = false;
     Boolean isMultiAttributeLoginEnabledInTenant = false;
     String allowedAttributes = null;
     try {
@@ -154,6 +158,8 @@
             Boolean.parseBoolean(IdentityUtil.getProperty("Connectors.ChallengeQuestions.Enabled"));
         isEmailLinkBasedPasswordRecoveryEnabledByTenant =
             preferenceRetrievalClient.checkEmailLinkBasedPasswordRecovery(tenantDomain);
+        isEmailOtpBasedPasswordRecoveryEnabledByTenant = 
+            preferenceRetrievalClient.checkEmailOTPBasedPasswordRecovery(tenantDomain);
         isSMSRecoveryAvailable = preferenceRetrievalClient.checkSMSOTPBasedPasswordRecovery(tenantDomain);
         isMultiAttributeLoginEnabledInTenant = preferenceRetrievalClient.checkMultiAttributeLogin(tenantDomain);
         allowedAttributes = preferenceRetrievalClient.checkMultiAttributeLoginProperty(tenantDomain);
@@ -168,15 +174,20 @@
         request.getRequestDispatcher("error.jsp").forward(request, response);
         return;
     }
-    Boolean isEmailRecoveryAvailable = isEmailNotificationEnabled && isEmailLinkBasedPasswordRecoveryEnabledByTenant;
-
+    Boolean isEmailRecoveryAvailable = isEmailNotificationEnabled && 
+        (isEmailLinkBasedPasswordRecoveryEnabledByTenant || isEmailOtpBasedPasswordRecoveryEnabledByTenant);
     String emailUsernameEnable = application.getInitParameter("EnableEmailUserName");
     Boolean isEmailUsernameEnabled = false;
-    String usernameLabel = "Username";
+    Boolean isEmailAsUsernameEnabled = MultitenantUtils.isEmailUserName();
+    boolean hideUsernameFieldWhenEmailAsUsernameIsEnabled = Boolean.parseBoolean(config.getServletContext().getInitParameter(
+        "HideUsernameWhenEmailAsUsernameEnabled"));
+
+    String usernameLabel = i18n(recoveryResourceBundle, customText, "Username");
     String usernamePlaceHolder = "Enter.your.username.here";
 
-    if (StringUtils.isNotBlank(emailUsernameEnable) && Boolean.parseBoolean(emailUsernameEnable)) {
-        usernameLabel = "email.username";
+    if ((StringUtils.isNotBlank(emailUsernameEnable) && Boolean.parseBoolean(emailUsernameEnable)) 
+            || (isEmailAsUsernameEnabled && hideUsernameFieldWhenEmailAsUsernameIsEnabled)) {
+        usernameLabel = i18n(recoveryResourceBundle, customText, "email.username");
         usernamePlaceHolder = "enter.your.email";
     } else if (isMultiAttributeLoginEnabledInTenant) {
         if (allowedAttributes != null) {
@@ -185,6 +196,8 @@
         }
     }
 %>
+
+<% request.setAttribute("pageName", "password-recovery"); %>
 
 <!doctype html>
 <html lang="en-US">
@@ -217,7 +230,7 @@
         }
     %>
 </head>
-<body class="login-portal layout recovery-layout">
+<body class="login-portal layout recovery-layout" data-page="<%= request.getAttribute("pageName") %>">
     <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>"
         data="<%= layoutData %>" >
         <layout:component componentName="ProductHeader">
@@ -262,7 +275,7 @@
                         </div>
                         <div class="field">
                             <label for="username">
-                                <%=i18n(recoveryResourceBundle, customText, usernameLabel) %>
+                                <%=usernameLabel %>
                             </label>
                             <div class="ui fluid left icon input">
                                 <input
@@ -296,7 +309,7 @@
                         </div>
                         <div class="field">
                             <label for="username">
-                                <%=i18n(recoveryResourceBundle, customText, usernameLabel) %>
+                                <%=usernameLabel %>
                             </label>
                             <div class="ui fluid left icon input">
                                 <% String identifierPlaceholder=i18n(recoveryResourceBundle, customText,
@@ -350,12 +363,15 @@
                             data-testid="password-recovery-page-multi-option-radio">
                             <%
                                 if (isEmailRecoveryAvailable) {
+                                    String emailSendLabel = isEmailOtpBasedPasswordRecoveryEnabledByTenant
+                                                                ? "send.email.otp" 
+                                                                : "send.email.link";
                             %>
                             <div class="field">
                                 <div class="ui radio checkbox">
                                     <input type="radio" name="recoveryOption" value="<%=EMAIL%>"
                                         <%=EMAIL.equals(selectedOption)?"checked":""%>/>
-                                    <label><%=i18n(recoveryResourceBundle, customText, "send.email.link")%>
+                                    <label><%=i18n(recoveryResourceBundle, customText, emailSendLabel)%>
                                     </label>
                                 </div>
                             </div>
@@ -398,11 +414,17 @@
 
                         <input type="hidden" name="recoveryStage" value="INITIATE"/>
                         <input type="hidden" name="channel" value=""/>
-                        <input type="hidden" name="sp" value="<%=sp %>"/>
-                        <input type="hidden" name="spId" value="<%=spId %>"/>
-                        <input type="hidden" name="urlQuery" value="<%=request.getQueryString() %>"/>
+                        <% if (StringUtils.isNotBlank(sp)) { %>
+                            <input type="hidden" name="sp" value="<%=Encode.forHtmlAttribute(sp) %>"/>
+                        <% } %>
+                        <% if (StringUtils.isNotBlank(spId)) { %>
+                            <input type="hidden" name="spId" value="<%=Encode.forHtmlAttribute(spId) %>"/>
+                        <% } %>
+                        <input type="hidden" name="urlQuery" value="<%=urlQuery %>"/>
                         <input type="hidden" name="isMultiRecoveryOptionsAvailable"
                             value="<%=multipleRecoveryOptionsAvailable %>"/>
+                        <input type="hidden" name="isEmailOtpBasedPasswordRecoveryEnabledByTenant"
+                            value="<%=isEmailOtpBasedPasswordRecoveryEnabledByTenant %>"/>
 
                         <%
                             String callback = request.getParameter("callback");
@@ -443,11 +465,14 @@
                         <div class="mt-4">
                             <%
                                 String submitButtoni18nText =
-                                    multipleRecoveryOptionsAvailable? "password.recovery.button.multi" :
-                                    ( isEmailRecoveryAvailable? "password.recovery.button.email.link" :
-                                    ( isQuestionBasedPasswordRecoveryEnabledByTenant? "Recover.with.question" :
+                                    multipleRecoveryOptionsAvailable ? "password.recovery.button.multi" :
+                                    ( isEmailOtpBasedPasswordRecoveryEnabledByTenant ?
+                                        "password.recovery.button.email.otp" :
+                                    ( isEmailLinkBasedPasswordRecoveryEnabledByTenant ? 
+                                        "password.recovery.button.email.link" :
+                                    ( isQuestionBasedPasswordRecoveryEnabledByTenant ? "Recover.with.question" :
                                     ( isSMSRecoveryAvailable ? "password.recovery.button.smsotp" :
-                                    "Submit")));
+                                    "Submit"))));
                             %>
                             <button id="recoverySubmit"
                                     class="ui primary button large fluid"
@@ -630,6 +655,19 @@
                 .on("submit", submitForm)
                 .keyup(validateUsername)
                 .blur(validateUsername);
+        });
+
+        $(window).on("pageshow", function (event) {
+            if (event.originalEvent.persisted) {
+                // The page was restored from bfcache.
+                $("#recoverySubmit").removeClass("loading");
+                const usernameInput = $("#usernameUserInput").val();
+                if (!usernameInput || usernameInput.trim().length === 0) {
+                    submitBtnState( { disabled: true } );
+                } else {
+                    submitBtnState( { disabled: false } );
+                }
+            }
         });
 
         // Removing the recaptcha UI from the keyboard tab order

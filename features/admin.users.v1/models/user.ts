@@ -16,8 +16,7 @@
  * under the License.
  */
 
-// Keep statement as this to avoid cyclic dependency. Do not import from config index.
-import { UserRoleInterface } from "@wso2is/admin.core.v1";
+import { UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { GroupsInterface, GroupsMemberInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { LinkInterface, MultiValueAttributeInterface, NameInterface, RolesInterface } from "@wso2is/core/models";
@@ -136,6 +135,7 @@ export interface BasicUserDetailsInterface {
     newPassword?: string;
     confirmPassword?: string;
     passwordOption?: string;
+    mobile?: string;
 }
 
 /**
@@ -153,6 +153,7 @@ export interface AddUserWizardStateInterface {
     passwordOption: string;
     groups: GroupsInterface[];
     roles: RolesInterface[];
+    emails?: (EmailsInterface | string | MultiValueAttributeInterface)[];
 }
 
 /**
@@ -167,7 +168,7 @@ export interface EmailsInterface {
  * Captures user details
  */
 export interface UserDetailsInterface {
-    emails: EmailsInterface[];
+    emails: (EmailsInterface | string | MultiValueAttributeInterface)[];
     name?: NameInterface;
     userName: string;
     password?: string;
@@ -196,7 +197,7 @@ export const createEmptyUserDetails = (): UserDetailsInterface => ({
     },
     password: "",
     profileUrl: "",
-    [SCIMConfigs.scim.enterpriseSchema]: {
+    [SCIMConfigs.scim.systemSchema]: {
         askPassword: ""
     },
     userName: ""
@@ -349,6 +350,20 @@ export interface PayloadInterface {
 }
 
 /**
+ * Interface for the SCIM2 Roles V3 API payload.
+ */
+export interface PayloadRolesV3Interface {
+    Operations: {
+        op: string;
+        value: {
+            display: string;
+            value: string;
+        }[];
+      }[];
+      schemas: string[];
+}
+
+/**
  * Interface for the bulk user import operation response.
  */
 export interface BulkUserImportOperationResponse {
@@ -400,7 +415,7 @@ export interface PatchUserAddOpInterface {
  */
 export type PatchUserOperationValue = Record<string, string
     | Record<string, string | string[]>
-    | Array<string>
+    | Array<string | Record<string, string>>
     | Array<Record<string, string>>>;
 
 /**
@@ -428,6 +443,20 @@ export interface UserInviteInterface {
     roles?: string[];
     email: string;
     status?: InviteUserStatus;
+}
+
+/**
+ * Interface for the resend code request payload.
+ */
+export interface ResendCodeRequestData {
+    user: {
+        username: string;
+        realm: string;
+    };
+    properties: Array<{
+        key: string;
+        value: string;
+    }>;
 }
 
 /**

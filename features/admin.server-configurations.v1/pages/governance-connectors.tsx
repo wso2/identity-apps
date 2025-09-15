@@ -16,7 +16,11 @@
  * under the License.
  */
 
-import { AppConstants, AppState, FeatureConfigInterface, UIConstants, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, ReferableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";

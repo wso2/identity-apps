@@ -18,7 +18,12 @@
 
 import { Show } from "@wso2is/access-control";
 import { getAllExternalClaims, getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
-import { AppConstants, AppState, FeatureConfigInterface, UIConstants, history, sortList } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { UIConstants  } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { sortList } from "@wso2is/admin.core.v1/utils/sort-list";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, Claim, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
@@ -44,6 +49,7 @@ import {
     Label,
     Placeholder
 } from "semantic-ui-react";
+import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import { getOIDCScopeDetails, updateOIDCScopeDetails } from "../api";
 import { EditOIDCScope } from "../components";
 import { OIDCScopesManagementConstants } from "../constants";
@@ -118,6 +124,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
         const [ sortByStrategy, setSortByStrategy ] = useState<DropdownItemProps>(SORT_BY[ 0 ]);
         const [ attributeSearchQuery, setAttributeSearchQuery ] = useState<string>("");
         const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+        const { isSubOrganization } = useGetCurrentOrganizationType();
 
         const initialRender: MutableRefObject<boolean> = useRef(true);
 
@@ -422,7 +429,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
 
         return (
             <PageLayout
-                pageTitle="Update Scope"
+                pageTitle={ isSubOrganization() ? t("oidcScopes:viewScope") : t("oidcScopes:updateScope") }
                 isLoading={ isScopeRequestLoading || isAttributeRequestLoading }
                 title={ scope.displayName }
                 contentTopMargin={ true }
@@ -443,7 +450,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                 bottomMargin={ false }
                 data-testid={ `${ testId }-page-layout` }
             >
-                <Header>Update Scope</Header>
+                <Header>{ isSubOrganization() ? t("oidcScopes:viewScope") : t("oidcScopes:updateScope") }</Header>
                 <EmphasizedSegment className="padded very">
                     <Grid>
                         <Grid.Row columns={ 1 }>
@@ -523,7 +530,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                 </EmphasizedSegment>
                 <Divider hidden />
                 {
-                    OIDCScopesManagementConstants.OIDC_READONLY_SCOPES.includes(scope?.name)
+                    OIDCScopesManagementConstants.OIDC_READONLY_SCOPES.includes(scope?.name) || isSubOrganization()
                         ? <Header>{ t("oidcScopes:viewAttributes") }</Header>
                         : <Header>{ t("oidcScopes:manageAttributes") }</Header>
                 }

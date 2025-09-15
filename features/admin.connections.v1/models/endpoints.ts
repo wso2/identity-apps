@@ -22,6 +22,7 @@
 export interface ConnectionResourceEndpointsInterface {
     authenticators: string;
     authenticatorTags: string;
+    customAuthenticators: string;
     extensions: string;
     fidoConfigs: string;
     identityProviders: string;

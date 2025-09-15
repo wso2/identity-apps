@@ -96,6 +96,28 @@ export class RoleConstants {
      * Property key for shared role.
      */
     public static readonly IS_SHARED_ROLE: string = "isSharedRole";
+
+    /**
+     * Key word for impersonation role.
+     */
+    public static readonly IMPERSONATOR_ROLE_NAME: string = "Impersonator";
+
+    /**
+     * Application name for My Account application.
+     */
+    public static readonly MY_ACCOUNT_APP_NAME: string = "My Account";
+
+    /**
+     * Role management permission for assigning groups to roles.
+     * This is used to check if the user has permission to update groups in a role.
+     */
+    public static readonly ROLE_GROUPS_UPDATE: string = "internal_role_mgt_groups_update";
+
+    /**
+     * Role management permission for assigning users to roles.
+     * This is used to check if the user has permission to update users in a role.
+     */
+    public static readonly ROLE_USERS_UPDATE: string = "internal_role_mgt_users_update";
 }
 
 /**

@@ -62,6 +62,11 @@ export interface ExtendedFeatureResourceEndpointsInterface {
     emailProviderEndpoint : string;
 
     /**
+     * Email Provider V2 API endpoint.
+     */
+    emailProviderV2Endpoint : string;
+
+    /**
      * SMS Publishing API endpoint.
      */
     smsProviderEndpoint : string;
@@ -80,6 +85,11 @@ export interface ExtendedFeatureResourceEndpointsInterface {
      * Notification senders API endpoint.
      */
     notificationSendersEndPoint: string;
+
+    /**
+     * Notification senders API endpoint.
+     */
+    notificationSendersV2EndPoint: string;
 
     /**
      * Authorization Service API endpoint.

@@ -19,6 +19,7 @@
 import keyBy from "lodash-es/keyBy";
 import values from "lodash-es/values";
 import DefaultConnectionTemplateCategory from "../meta/templates-meta/categories/default.json";
+import CustomAuthenticatorTemplateGroup from "../meta/templates-meta/groups/custom-authenticator.json";
 import EnterpriseConnetionTemplateGroup from "../meta/templates-meta/groups/enterprise.json";
 import { ConnectionTemplatesConfigInterface } from "../models/connection";
 
@@ -44,6 +45,11 @@ export const getConnectionTemplatesConfig = (): ConnectionTemplatesConfigInterfa
                         enabled: EnterpriseConnetionTemplateGroup.enabled,
                         id: EnterpriseConnetionTemplateGroup.id,
                         resource: EnterpriseConnetionTemplateGroup
+                    },
+                    {
+                        enabled: CustomAuthenticatorTemplateGroup.enabled,
+                        id: CustomAuthenticatorTemplateGroup.id,
+                        resource: CustomAuthenticatorTemplateGroup
                     }
                 ],
                 "id"

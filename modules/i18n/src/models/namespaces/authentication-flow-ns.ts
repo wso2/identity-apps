@@ -100,6 +100,23 @@ export interface AuthenticationFlowNS {
             };
             header: string;
         };
+        push: {
+            controls: {
+                optionRemoveTooltipContent: string;
+            };
+            form: {
+                actions: {
+                    primary: string;
+                };
+                fields: {
+                    code: {
+                        label: string;
+                        placeholder: string;
+                    };
+                };
+            };
+            header: string;
+        };
         signIn: {
             controls: {
                 optionRemoveTooltipContent: string;

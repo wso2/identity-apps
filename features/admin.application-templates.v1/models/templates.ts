@@ -127,6 +127,11 @@ export enum ApplicationTemplateCategories {
      */
     DEFAULT = "DEFAULT",
     /**
+     * Technology-wise templates.
+     * ex: React, Next.js etc.
+     */
+    TECHNOLOGY = "TECHNOLOGY",
+    /**
      * SSO Integration templates.
      * ex: Zoom, Salesforce etc.
      */

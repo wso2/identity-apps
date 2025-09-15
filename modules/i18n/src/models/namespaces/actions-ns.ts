@@ -18,11 +18,30 @@
 
 export interface actionsNS {
     buttons: {
+        addCertificate: string;
         cancel: string;
         changeAuthentication: string;
         create: string;
         update: string;
     };
+    certificateDeleteConfirmationModal: {
+        assertionHint: string;
+        content: string;
+        header: string;
+        message: string;
+        primaryAction: string;
+        secondaryAction: string;
+    },
+    certificateWizard: {
+        add : {
+            heading: "Add New Certificate",
+            subHeading: "Add new certificate to the action"
+        },
+        change : {
+            heading: string;
+            subHeading: string;
+        }
+    },
     confirmationModal: {
         header: string;
         message: string;
@@ -126,6 +145,24 @@ export interface actionsNS {
                 notHttps: string;
             };
         };
+        allowedHeaders: {
+            hint: string;
+            label: string;
+            placeholder: string;
+            tooltip: string;
+            validations: {
+                invalid: string;
+            };
+        };
+        allowedParameters: {
+            hint: string;
+            label: string;
+            placeholder: string;
+            tooltip: string;
+            validations: {
+                invalid: string;
+            };
+        };
         name: {
             hint: string;
             label: string;
@@ -133,6 +170,48 @@ export interface actionsNS {
             validations: {
                 empty: string;
                 invalid: string;
+            };
+        };
+        passwordSharing: {
+            label: string;
+            certificate: {
+                label: string;
+                info: {
+                    header: string;
+                    description: string;
+                },
+                icon: {
+                    changecertificate : string;
+                    viewcertificate: string;
+                    deletecertificate: string;
+                }
+            },
+            format: {
+                label: string;
+                placeholder: string;
+                validations: string;
+            }
+        }
+        rules: {
+            button: string;
+            info: {
+                title: string;
+                message: {
+                    preIssueAccessToken: string;
+                    preUpdatePassword: string;
+                }
+            };
+            label: string;
+        };
+        userAttributes: {
+            error: {
+                limitReached: string;
+            };
+            heading: string;
+            hint: string;
+            search: {
+                placeholder: string;
+                clearButton: string;
             };
         };
     };
@@ -171,6 +250,20 @@ export interface actionsNS {
                 description: string;
                 message: string;
             };
+            certificate: {
+                add : {
+                    description: string;
+                    message: string;
+                };
+                change: {
+                    description: string;
+                    message : string;
+                };
+                delete: {
+                    description: string;
+                    message: string;
+                };
+            };
         };
         genericError: {
             activate: {
@@ -205,6 +298,26 @@ export interface actionsNS {
                 description:  string;
                 message: string;
             };
+            certificate: {
+                add : {
+                    description: string;
+                    message: string;
+                };
+                change: {
+                    description: string;
+                    message : string;
+                };
+                delete: {
+                    description: string;
+                    message: string;
+                };
+            };
+            userAttributes: {
+                getAttributes: {
+                    description: string;
+                    message: string;
+                };
+            };
         };
         success: {
             activate: {
@@ -226,6 +339,20 @@ export interface actionsNS {
             update: {
                 description: string;
                 message: string;
+            };
+            certificate: {
+                add : {
+                    description: string;
+                    message: string;
+                },
+                change: {
+                    description: string;
+                    message : string;
+                },
+                delete: {
+                    description: string;
+                    message: string;
+                }
             };
         };
     };

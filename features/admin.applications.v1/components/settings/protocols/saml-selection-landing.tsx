@@ -15,8 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1";
-import { ProtocolCard } from "@wso2is/admin.core.v1/components";
+import { ProtocolCard } from "@wso2is/admin.core.v1/components/protocol-card";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { EmphasizedSegment, Heading, Text } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";

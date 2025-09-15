@@ -1,0 +1,53 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+.account-status-filter-dropdown {
+    margin-right: 5px;
+    min-width: 200px;
+
+    .dropdown-label-container {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+
+        .status-count-badge {
+            margin-right: 5px;
+
+            .MuiBadge-badge {
+                background-color: var(--oxygen-palette-primary-main);
+                color: var(--oxygen-palette-primary-contrastText);
+            }
+        }
+    }
+
+    .account-status-select-input {
+        background-color: var(--oxygen-palette-grey-50);
+        height: 40px;
+
+        .MuiOutlinedInput-notchedOutline {
+            border: none;
+        }
+
+        &.Mui-focused {
+            .MuiOutlinedInput-notchedOutline {
+                border: 1px solid var(--oxygen-palette-primary-main);;
+            }
+        }
+    }
+}

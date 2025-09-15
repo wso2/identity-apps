@@ -15,7 +15,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { AppState, ConfigReducerStateInterface } from "@wso2is/admin.core.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form, composeValidators } from "@wso2is/form";
 import { Code, FormInputLabel, FormSection } from "@wso2is/react-components";

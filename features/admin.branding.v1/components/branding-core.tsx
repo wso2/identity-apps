@@ -19,8 +19,9 @@
 import Alert from "@oxygen-ui/react/Alert";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import useAIBrandingPreference from "@wso2is/admin.branding.ai.v1/hooks/use-ai-branding-preference";
-import { EventPublisher, OrganizationType } from "@wso2is/admin.core.v1";
+import { OrganizationType } from "@wso2is/admin.core.v1/constants/organization-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/models/organizations";
@@ -50,15 +51,17 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { deleteBrandingPreference, updateBrandingPreference } from "../api";
+import { deleteBrandingPreference, updateBrandingPreference } from "../api/branding-preferences";
 import deleteAllCustomTextPreferences from "../api/delete-all-custom-text-preference";
 import useGetCustomTextPreferenceResolve from "../api/use-get-custom-text-preference-resolve";
-import { BrandingPreferenceTabs, DesignFormValuesInterface } from "../components";
-import { BrandingModes, BrandingPreferencesConstants } from "../constants";
+import { BrandingPreferenceTabs } from "../components/branding-preference-tabs";
+import { DesignFormValuesInterface } from "../components/design/design-form";
+import { BrandingModes, BrandingPreferencesConstants } from "../constants/branding-preferences-constants";
 import { CustomTextPreferenceConstants } from "../constants/custom-text-preference-constants";
 import useBrandingPreference from "../hooks/use-branding-preference";
-import { BrandingPreferenceMeta, LAYOUT_PROPERTY_KEYS } from "../meta";
-import { BrandingPreferenceUtils } from "../utils";
+import { BrandingPreferenceMeta } from "../meta/branding-preference-meta";
+import { LAYOUT_PROPERTY_KEYS } from "../meta/layouts";
+import { BrandingPreferenceUtils } from "../utils/branding-preference-utils";
 
 /**
  * Prop-types for the branding core component.
@@ -124,7 +127,8 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
         data: originalBrandingPreference,
         isLoading: isBrandingPreferenceFetchRequestLoading,
         error: brandingPreferenceFetchRequestError,
-        mutate: mutateBrandingPreferenceFetchRequest
+        mutate: mutateBrandingPreferenceFetchRequest,
+        error: brandingPreferenceErrors
     } = useGetBrandingPreferenceResolve(
         resolvedName,
         resolvedType
@@ -202,6 +206,10 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
         [ tenantDomain, isBrandingPreferenceFetchRequestLoading ]
     );
 
+    const isBrandingConfiguredFromAPI: boolean =
+        brandingPreferenceErrors?.response?.data?.code !==
+        BrandingPreferencesConstants.BRANDING_NOT_CONFIGURED_ERROR_CODE;
+
     /**
      * Publish page visit insights.
      */
@@ -249,7 +257,7 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
                 (brandingMode === BrandingModes.APPLICATION &&
                     originalBrandingPreference?.name !== selectedApplication) ||
                 (brandingMode === BrandingModes.ORGANIZATION &&
-                    originalBrandingPreference?.name !== currentOrganization?.id)
+                    originalBrandingPreference?.name !== currentOrganization?.orgHandle)
             ) {
                 // This means the sub-org or app has no branding preference configured.
                 // It gets the branding preference from the parent org.
@@ -687,19 +695,19 @@ const BrandingCore: FunctionComponent<BrandingCoreInterface> = (
                     </Alert>
                 )
             }
-            {
-                !isBrandingPageLoading && !brandingPreference.configs?.isBrandingEnabled && (
-                    (brandingMode === BrandingModes.APPLICATION && selectedApplication) ||
+            { !isBrandingPageLoading &&
+                isBrandingConfiguredFromAPI &&
+                !brandingPreference.configs?.isBrandingEnabled &&
+                ((brandingMode === BrandingModes.APPLICATION && selectedApplication) ||
                     brandingMode === BrandingModes.ORGANIZATION) && (
-                    <Alert
-                        className="branding-alert"
-                        severity="info"
-                        data-componentid="branding-preference-preview-disclaimer"
-                    >
-                        { t("extensions:develop.branding.publishToggle.hint") }
-                    </Alert>
-                )
-            }
+                <Alert
+                    className="branding-alert"
+                    severity="info"
+                    data-componentid="branding-preference-preview-disclaimer"
+                >
+                    { t("extensions:develop.branding.publishToggle.hint") }
+                </Alert>
+            ) }
             {
                 showSubOrgBrandingUpdateAlert
                     && (

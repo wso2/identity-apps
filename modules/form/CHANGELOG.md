@@ -1,5 +1,234 @@
 # @wso2is/form
 
+## 2.9.0
+
+### Minor Changes
+
+- [#8509](https://github.com/wso2/identity-apps/pull/8509) [`c3debfc1bfab856c701eda6df14b097c7b296cae`](https://github.com/wso2/identity-apps/commit/c3debfc1bfab856c701eda6df14b097c7b296cae) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Introduce new form field adapters
+
+### Patch Changes
+
+- Updated dependencies [[`c3debfc1bfab856c701eda6df14b097c7b296cae`](https://github.com/wso2/identity-apps/commit/c3debfc1bfab856c701eda6df14b097c7b296cae)]:
+  - @wso2is/core@2.10.0
+
+## 2.8.1
+
+### Patch Changes
+
+- [#8518](https://github.com/wso2/identity-apps/pull/8518) [`542afdfe17cf91bef172e141de787436f9f59d7e`](https://github.com/wso2/identity-apps/commit/542afdfe17cf91bef172e141de787436f9f59d7e) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Introduce improved `SelectFieldAdapter` component
+
+## 2.8.0
+
+### Minor Changes
+
+- [#8309](https://github.com/wso2/identity-apps/pull/8309) [`238533137505979cccd4f75d9de2c26ce8d20b50`](https://github.com/wso2/identity-apps/commit/238533137505979cccd4f75d9de2c26ce8d20b50) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add data types support for user profile UI and refactor user profile codebase
+
+### Patch Changes
+
+- Updated dependencies [[`238533137505979cccd4f75d9de2c26ce8d20b50`](https://github.com/wso2/identity-apps/commit/238533137505979cccd4f75d9de2c26ce8d20b50)]:
+  - @wso2is/core@2.9.0
+
+## 2.7.1
+
+### Patch Changes
+
+- [#8238](https://github.com/wso2/identity-apps/pull/8238) [`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Bump oxygen-ui version to 2.4.2
+
+- Updated dependencies [[`c051cd60349a962f1d9a4e988611a5b9cc63872f`](https://github.com/wso2/identity-apps/commit/c051cd60349a962f1d9a4e988611a5b9cc63872f)]:
+  - @wso2is/react-components@2.9.16
+
+## 2.7.0
+
+### Minor Changes
+
+- [#8174](https://github.com/wso2/identity-apps/pull/8174) [`15a063f9e5c1b3e14b1fbb2e1c1a0697d98f53e1`](https://github.com/wso2/identity-apps/commit/15a063f9e5c1b3e14b1fbb2e1c1a0697d98f53e1) Thanks [@lashinijay](https://github.com/lashinijay)! - Introduce client credential authentication for email providers
+
+### Patch Changes
+
+- Updated dependencies [[`15a063f9e5c1b3e14b1fbb2e1c1a0697d98f53e1`](https://github.com/wso2/identity-apps/commit/15a063f9e5c1b3e14b1fbb2e1c1a0697d98f53e1), [`709983b9893e6922dc0c9066f0af61d35d1fa1cc`](https://github.com/wso2/identity-apps/commit/709983b9893e6922dc0c9066f0af61d35d1fa1cc)]:
+  - @wso2is/core@2.8.0
+
+## 2.6.36
+
+### Patch Changes
+
+- [#8132](https://github.com/wso2/identity-apps/pull/8132) [`0149b3e586fb181b1f79ed6cf000e0f8b07f7e4a`](https://github.com/wso2/identity-apps/commit/0149b3e586fb181b1f79ed6cf000e0f8b07f7e4a) Thanks [@lashinijay](https://github.com/lashinijay)! - Revert onboarding multiple authentication schemes for email provider
+
+## 2.6.35
+
+### Patch Changes
+
+- Updated dependencies [[`04fdeac1d019db974616a0845dfda84aa353d582`](https://github.com/wso2/identity-apps/commit/04fdeac1d019db974616a0845dfda84aa353d582)]:
+  - @wso2is/core@2.7.0
+  - @wso2is/react-components@2.9.12
+
+## 2.6.34
+
+### Patch Changes
+
+- [#7707](https://github.com/wso2/identity-apps/pull/7707) [`550d087571863f97af85e1f37a84582d230bbe94`](https://github.com/wso2/identity-apps/commit/550d087571863f97af85e1f37a84582d230bbe94) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Add a new input field adapter for custom authenticator text with adornment
+
+* [#7708](https://github.com/wso2/identity-apps/pull/7708) [`ae40c90f3a834fcbd18e7443ff348088e46457be`](https://github.com/wso2/identity-apps/commit/ae40c90f3a834fcbd18e7443ff348088e46457be) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add a new input field adapter for custom authenticator text with adornment
+
+## 2.6.33
+
+### Patch Changes
+
+- [#7701](https://github.com/wso2/identity-apps/pull/7701) [`f9752f1420e185f1a37ea267fb7edd336b8722ce`](https://github.com/wso2/identity-apps/commit/f9752f1420e185f1a37ea267fb7edd336b8722ce) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Trigger patch release to all packages to prepare for RC
+
+- Updated dependencies [[`f9752f1420e185f1a37ea267fb7edd336b8722ce`](https://github.com/wso2/identity-apps/commit/f9752f1420e185f1a37ea267fb7edd336b8722ce)]:
+  - @wso2is/core@2.6.5
+  - @wso2is/react-components@2.9.11
+  - @wso2is/validation@2.4.1
+
+## 2.6.32
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/react-components@2.9.10
+
+## 2.6.31
+
+### Patch Changes
+
+- Updated dependencies [[`ccb0b6b1e6bc018a9dcea67ab2aa1f6856971578`](https://github.com/wso2/identity-apps/commit/ccb0b6b1e6bc018a9dcea67ab2aa1f6856971578)]:
+  - @wso2is/core@2.6.4
+  - @wso2is/react-components@2.9.9
+
+## 2.6.30
+
+### Patch Changes
+
+- [#7582](https://github.com/wso2/identity-apps/pull/7582) [`f035717c13b4f7b38d903cfc571e7c73129aaf20`](https://github.com/wso2/identity-apps/commit/f035717c13b4f7b38d903cfc571e7c73129aaf20) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Add infinite scrolling to organization list in assign email domains
+
+## 2.6.29
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/react-components@2.9.8
+
+## 2.6.28
+
+### Patch Changes
+
+- [#7547](https://github.com/wso2/identity-apps/pull/7547) [`25472cb2e3404df1f97bfcadb50740ca5af8a951`](https://github.com/wso2/identity-apps/commit/25472cb2e3404df1f97bfcadb50740ca5af8a951) Thanks [@brionmario](https://github.com/brionmario)! - - Bump `@oxygen-ui` version.
+  - Fix https://github.com/wso2/product-is/issues/22470
+  - Fix https://github.com/wso2/product-is/issues/22471
+- Updated dependencies [[`8cebca0336f5769f65fda60960b78d8404049301`](https://github.com/wso2/identity-apps/commit/8cebca0336f5769f65fda60960b78d8404049301), [`25472cb2e3404df1f97bfcadb50740ca5af8a951`](https://github.com/wso2/identity-apps/commit/25472cb2e3404df1f97bfcadb50740ca5af8a951)]:
+  - @wso2is/react-components@2.9.7
+  - @wso2is/core@2.6.3
+
+## 2.6.27
+
+### Patch Changes
+
+- Updated dependencies [[`8161cc441a1cf598f59f50e26d55527a1eb07cc7`](https://github.com/wso2/identity-apps/commit/8161cc441a1cf598f59f50e26d55527a1eb07cc7)]:
+  - @wso2is/react-components@2.9.6
+
+## 2.6.26
+
+### Patch Changes
+
+- Updated dependencies [[`0aca53b8d7f18b9d8488911500b86c7178eb9be6`](https://github.com/wso2/identity-apps/commit/0aca53b8d7f18b9d8488911500b86c7178eb9be6)]:
+  - @wso2is/react-components@2.9.5
+  - @wso2is/core@2.6.2
+
+## 2.6.25
+
+### Patch Changes
+
+- Updated dependencies [[`2c831ff7dc0a263fc0ed20b4599f4a13dd4dc6df`](https://github.com/wso2/identity-apps/commit/2c831ff7dc0a263fc0ed20b4599f4a13dd4dc6df)]:
+  - @wso2is/react-components@2.9.4
+
+## 2.6.24
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/react-components@2.9.3
+
+## 2.6.23
+
+### Patch Changes
+
+- Updated dependencies [[`bb8c0b38541fe6bb367f74621b4c27587d82ebdd`](https://github.com/wso2/identity-apps/commit/bb8c0b38541fe6bb367f74621b4c27587d82ebdd)]:
+  - @wso2is/core@2.6.1
+  - @wso2is/react-components@2.9.2
+
+## 2.6.22
+
+### Patch Changes
+
+- [#7332](https://github.com/wso2/identity-apps/pull/7332) [`4da42930c024dedb5002867b82928df3198c5546`](https://github.com/wso2/identity-apps/commit/4da42930c024dedb5002867b82928df3198c5546) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Remove barrel files from @wso2is/admin.core.v1 module
+
+- Updated dependencies [[`4da42930c024dedb5002867b82928df3198c5546`](https://github.com/wso2/identity-apps/commit/4da42930c024dedb5002867b82928df3198c5546)]:
+  - @wso2is/react-components@2.9.1
+
+## 2.6.21
+
+### Patch Changes
+
+- Updated dependencies [[`b67d22c81d5c8be72c09abd36ed829a88fb22a4b`](https://github.com/wso2/identity-apps/commit/b67d22c81d5c8be72c09abd36ed829a88fb22a4b)]:
+  - @wso2is/react-components@2.9.0
+  - @wso2is/core@2.6.0
+
+## 2.6.20
+
+### Patch Changes
+
+- [#7370](https://github.com/wso2/identity-apps/pull/7370) [`9b6fe9141f5260d6e3760298badd6e0f6c7ec499`](https://github.com/wso2/identity-apps/commit/9b6fe9141f5260d6e3760298badd6e0f6c7ec499) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Add UI support for Push notification based authentication
+
+- Updated dependencies [[`9b6fe9141f5260d6e3760298badd6e0f6c7ec499`](https://github.com/wso2/identity-apps/commit/9b6fe9141f5260d6e3760298badd6e0f6c7ec499)]:
+  - @wso2is/react-components@2.8.27
+
+## 2.6.19
+
+### Patch Changes
+
+- Updated dependencies [[`92a6766086071fd5e0986f91803804783b9159bf`](https://github.com/wso2/identity-apps/commit/92a6766086071fd5e0986f91803804783b9159bf)]:
+  - @wso2is/core@2.5.9
+  - @wso2is/react-components@2.8.26
+
+## 2.6.18
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/react-components@2.8.25
+
+## 2.6.17
+
+### Patch Changes
+
+- Updated dependencies [[`31b4e92ae73fea1372a03f9aa0511f062030e44f`](https://github.com/wso2/identity-apps/commit/31b4e92ae73fea1372a03f9aa0511f062030e44f)]:
+  - @wso2is/core@2.5.8
+  - @wso2is/react-components@2.8.24
+
+## 2.6.16
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/react-components@2.8.23
+
+## 2.6.15
+
+### Patch Changes
+
+- Updated dependencies [[`50b9ac91f7ff1da3f2e9d3d4ec99a84ff16f3523`](https://github.com/wso2/identity-apps/commit/50b9ac91f7ff1da3f2e9d3d4ec99a84ff16f3523), [`abf5c953b8f48db5cdb855e75f5c1b847d1e42f0`](https://github.com/wso2/identity-apps/commit/abf5c953b8f48db5cdb855e75f5c1b847d1e42f0)]:
+  - @wso2is/core@2.5.7
+  - @wso2is/react-components@2.8.22
+
+## 2.6.14
+
+### Patch Changes
+
+- Updated dependencies [[`4497e3e2a3ec1ea0ca94aad71d3bd8580e3f1b98`](https://github.com/wso2/identity-apps/commit/4497e3e2a3ec1ea0ca94aad71d3bd8580e3f1b98)]:
+  - @wso2is/core@2.5.6
+  - @wso2is/react-components@2.8.21
+
 ## 2.6.13
 
 ### Patch Changes

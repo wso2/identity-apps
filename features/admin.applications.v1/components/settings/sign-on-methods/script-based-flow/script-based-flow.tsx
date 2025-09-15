@@ -35,18 +35,24 @@ import {
     useCheckFeatureTags,
     useRequiredScopes
 } from "@wso2is/access-control";
+import { getOperationIcons } from "@wso2is/admin.core.v1/configs/ui";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import {
     ELK_RISK_BASED_TEMPLATE_NAME
-} from "@wso2is/admin.authentication-flow-builder.v1/constants/template-constants";
-import useAuthenticationFlow from "@wso2is/admin.authentication-flow-builder.v1/hooks/use-authentication-flow";
-import { AppState, AppUtils, EventPublisher, FeatureConfigInterface, getOperationIcons } from "@wso2is/admin.core.v1";
-import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
+} from "@wso2is/admin.login-flow-builder.v1/constants/template-constants";
+import useAuthenticationFlow from "@wso2is/admin.login-flow-builder.v1/hooks/use-authentication-flow";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils";
 import { deleteSecret, getSecretList } from "@wso2is/admin.secrets.v1/api/secret";
 import AddSecretWizard from "@wso2is/admin.secrets.v1/components/add-secret-wizard";
 import { ADAPTIVE_SCRIPT_SECRETS } from "@wso2is/admin.secrets.v1/constants/secrets.common";
 import { GetSecretListResponse, SecretModel } from "@wso2is/admin.secrets.v1/models/secret";
+import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
+import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
 import { UIConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface, StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
@@ -219,6 +225,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const hasSecretMgtCreatePermissions: boolean = useRequiredScopes(featureConfig?.secretsManagement?.scopes?.create);
     const hasSecretMgtReadPermissions: boolean = useRequiredScopes(featureConfig?.secretsManagement?.scopes?.read);
 
+    const { tierName }: UseSubscriptionInterface = useSubscription();
+
     /**
      * Calls method to load secrets to secret list.
      */
@@ -268,7 +276,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      */
     useEffect(() => {
         if (adaptiveFeatureStatus === FeatureStatus.ENABLED
-            && adaptiveFeatureTags?.includes(FeatureTags.PREMIUM)) {
+            && adaptiveFeatureTags?.includes(FeatureTags.PREMIUM)
+            && tierName === TenantTier.FREE) {
             setIsPremiumFeature(true);
         }
     }, []);

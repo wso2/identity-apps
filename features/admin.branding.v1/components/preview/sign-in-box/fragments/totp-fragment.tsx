@@ -52,7 +52,7 @@ const TOTP: FunctionComponent<TOTPInterface> = (props: TOTPInterface): ReactElem
                     <div className="equal width fields">
                         <div className="field mt-5">
                             <input
-                                className="text-center p-3"
+                                className="text-center p-1 pb-3 pt-3"
                                 id="pincode-1"
                                 name="pincode-1"
                                 placeholder="·"
@@ -62,7 +62,7 @@ const TOTP: FunctionComponent<TOTPInterface> = (props: TOTPInterface): ReactElem
                         </div>
                         <div className="field mt-5">
                             <input
-                                className="text-center p-3"
+                                className="text-center p-1 pb-3 pt-3"
                                 id="pincode-2"
                                 name="pincode-2"
                                 placeholder="·"
@@ -72,7 +72,7 @@ const TOTP: FunctionComponent<TOTPInterface> = (props: TOTPInterface): ReactElem
                         </div>
                         <div className="field mt-5">
                             <input
-                                className="text-center p-3"
+                                className="text-center p-1 pb-3 pt-3"
                                 id="pincode-3"
                                 name="pincode-3"
                                 placeholder="·"
@@ -82,7 +82,7 @@ const TOTP: FunctionComponent<TOTPInterface> = (props: TOTPInterface): ReactElem
                         </div>
                         <div className="field mt-5">
                             <input
-                                className="text-center p-3"
+                                className="text-center p-1 pb-3 pt-3"
                                 id="pincode-4"
                                 name="pincode-4"
                                 placeholder="·"
@@ -92,7 +92,7 @@ const TOTP: FunctionComponent<TOTPInterface> = (props: TOTPInterface): ReactElem
                         </div>
                         <div className="field mt-5">
                             <input
-                                className="text-center p-3"
+                                className="text-center p-1 pb-3 pt-3"
                                 id="pincode-5"
                                 name="pincode-5"
                                 placeholder="·"
@@ -102,7 +102,7 @@ const TOTP: FunctionComponent<TOTPInterface> = (props: TOTPInterface): ReactElem
                         </div>
                         <div className="field mt-5">
                             <input
-                                className="text-center p-3"
+                                className="text-center p-1 pb-3 pt-3"
                                 id="pincode-6"
                                 name="pincode-6"
                                 placeholder="·"

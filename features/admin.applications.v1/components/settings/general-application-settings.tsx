@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,7 +17,10 @@
  */
 
 import { Show, useRequiredScopes } from "@wso2is/access-control";
-import { AppConstants, AppState, FeatureConfigInterface, UIConfigInterface, history } from "@wso2is/admin.core.v1";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface, UIConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -41,7 +44,7 @@ import {
     ApplicationTemplateListItemInterface
 } from "../../models/application";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
-import { GeneralDetailsForm } from "../forms/general-details-form";
+import { GeneralDetailsForm } from "../forms/general-details-form/general-details-form";
 
 /**
  * Proptypes for the applications general details component.
@@ -136,6 +139,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         readOnly,
         isManagementApp,
         application,
+        template,
         isBrandingSectionHidden,
         [ "data-componentid" ]: componentId
     } = props;
@@ -383,6 +387,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                             data-testid={ `${ componentId }-form` }
                             isSubmitting={ isSubmitting }
                             isManagementApp={ isManagementApp }
+                            template={ template }
                         />
                     </EmphasizedSegment>
                     <Divider hidden />

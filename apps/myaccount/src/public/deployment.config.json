@@ -21,6 +21,7 @@
     "isSaas": false,
     "loginCallbackPath": "",
     "logoutCallbackPath": "",
+    "proxyContextPath": "",
     "routePaths": {
         "home": "/overview",
         "login": "",
@@ -43,6 +44,7 @@
         "announcements": [],
         "appCopyright": "${copyright} ${year} WSO2 LLC.",
         "appLogoPath": "/assets/images/branding/logo.svg",
+        "appMobileLogoPath": "/assets/images/branding/logo-mini.svg",
         "appName": "My Account",
         "appTitle": "My Account | WSO2 Identity Server",
         "appWhiteLogoPath": "/assets/images/branding/logo-inverted.svg",
@@ -61,6 +63,19 @@
                     "delete": [],
                     "read": [],
                     "update": []
+                }
+            },
+            "approvals": {
+                "disabledFeatures": [],
+                "enabled": false,
+                "featureFlags": [],
+                "scopes": {
+                    "read": [
+                        "internal_approval_task_view"
+                    ],
+                    "update": [
+                        "internal_approval_task_update"
+                    ]
                 }
             },
             "operations": {
@@ -86,7 +101,7 @@
                 }
             },
             "personalInfo": {
-                "disabledFeatures": [],
+                "disabledFeatures": [ "profileInfo.profile.legacy" ],
                 "enabled": true,
                 "scopes": {
                     "create": [],

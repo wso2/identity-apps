@@ -1,5 +1,5 @@
 <!--
-~    Copyright (c) 2022, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
+~    Copyright (c) 2022-2025, WSO2 Inc. (http://www.wso2.com). All Rights Reserved.
 ~
 ~    This software is the property of WSO2 Inc. and its suppliers, if any.
 ~    Dissemination of any information or reproduction of any material contained
@@ -7,6 +7,8 @@
 ~    You may not alter or remove any copyright or other notice from copies of this content."
 -->
 
+<%= htmlWebpackPlugin.options.serverConfiguration %>
+<%= htmlWebpackPlugin.options.proxyContextPathConstant %>
 <%= htmlWebpackPlugin.options.importUtil %>
 <%= htmlWebpackPlugin.options.importTenantPrefix %>
 <%= htmlWebpackPlugin.options.importSuperTenantConstant %>
@@ -145,6 +147,7 @@
         <script>
             var contextPathGlobal = "<%= htmlWebpackPlugin.options.publicPath %>";
             var serverOriginGlobal = "<%= htmlWebpackPlugin.options.serverUrl %>";
+            var proxyContextPathGlobal = "<%= htmlWebpackPlugin.options.proxyContextPath %>";
             var superTenantGlobal = "<%= htmlWebpackPlugin.options.superTenantConstant %>";
             var tenantPrefixGlobal = "<%= htmlWebpackPlugin.options.tenantPrefix %>";
             var isAdaptiveAuthenticationAvailable = JSON.parse("<%= htmlWebpackPlugin.options.isAdaptiveAuthenticationAvailable %>");
@@ -169,7 +172,12 @@
         <!-- End of custom stylesheets -->
 
         <!-- Start of custom scripts added to the head -->
-        <script type="text/javascript" src="<%= htmlWebpackPlugin.options.publicPath %>extensions/head-script.js"></script>
+        <script
+            id="head-script"
+            type="text/javascript"
+            src="<%= htmlWebpackPlugin.options.publicPath %>extensions/head-script.js"
+            data-page-id="home"
+        ></script>
         <!-- End of custom scripts added to the head -->
     </head>
     <body>

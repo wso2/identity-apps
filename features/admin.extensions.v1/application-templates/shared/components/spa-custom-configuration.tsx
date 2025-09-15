@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { EventPublisher } from "@wso2is/admin.core.v1";
-import { Config } from "@wso2is/admin.core.v1/configs";
+import { Config } from "@wso2is/admin.core.v1/configs/app";
+import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { EncodeDecodeUtils } from "@wso2is/core/utils";
 import {
@@ -126,7 +126,7 @@ export const SPACustomConfiguration: FC<SPACustomConfigurationPropsInterface> = 
                     <Heading as="h6" compact>
                         <Trans
                             i18nKey={
-                                "extensions:console.application.quickStart" +
+                                "applications:quickStart" +
                                 ".spa.customConfig.protocolConfig"
                             }
                         >
@@ -148,7 +148,7 @@ export const SPACustomConfiguration: FC<SPACustomConfigurationPropsInterface> = 
                                 <Form.Field>
                                     <label>
                                         {
-                                            t("extensions:console.application.quickStart" +
+                                            t("applications:quickStart" +
                                             ".spa.customConfig.clientId")
                                         }
                                     </label>
@@ -160,7 +160,7 @@ export const SPACustomConfiguration: FC<SPACustomConfigurationPropsInterface> = 
                                 <Form.Field>
                                     <label>
                                         {
-                                            t("extensions:console.application.quickStart" +
+                                            t("applications:quickStart" +
                                             ".spa.customConfig.baseUrl")
                                         }
                                     </label>
@@ -172,7 +172,7 @@ export const SPACustomConfiguration: FC<SPACustomConfigurationPropsInterface> = 
                                 <Form.Field>
                                     <label>
                                         {
-                                            t("extensions:console.application.quickStart" +
+                                            t("applications:quickStart" +
                                             ".spa.customConfig.redirectUrl")
                                         }
                                     </label>
@@ -184,7 +184,7 @@ export const SPACustomConfiguration: FC<SPACustomConfigurationPropsInterface> = 
                                 <Form.Field>
                                     <label>
                                         {
-                                            t("extensions:console.application.quickStart" +
+                                            t("applications:quickStart" +
                                             ".spa.customConfig.scope")
                                         }
                                     </label>
@@ -201,7 +201,7 @@ export const SPACustomConfiguration: FC<SPACustomConfigurationPropsInterface> = 
                     <Heading as="h6" compact>
                         <Trans
                             i18nKey={
-                                "extensions:console.application.quickStart" +
+                                "applications:quickStart" +
                                 ".spa.customConfig.serverEndpoints"
                             }
                         >
@@ -228,7 +228,7 @@ export const SPACustomConfiguration: FC<SPACustomConfigurationPropsInterface> = 
                 <Text muted>
                     <Trans
                         i18nKey={
-                            "extensions:console.application.quickStart" +
+                            "applications:quickStart" +
                             ".spa.customConfig.heading"
                         }
                     >
@@ -265,7 +265,7 @@ export const SPACustomConfiguration: FC<SPACustomConfigurationPropsInterface> = 
                     )) }
                 </div>
                 <div>
-                    { t("extensions:console.application.quickStart.spa.customConfig.anySPATechnology") }
+                    { t("applications:quickStart.spa.customConfig.anySPATechnology") }
                 </div>
             </Card.Content>
             <Card.Content>
@@ -280,7 +280,7 @@ export const SPACustomConfiguration: FC<SPACustomConfigurationPropsInterface> = 
                         className="spa-config-accordion-title"
                     >
                         <Heading as="h5">
-                            { t("extensions:console.application.quickStart.spa.customConfig.configurations") }
+                            { t("applications:quickStart.spa.customConfig.configurations") }
                         </Heading>
                     </SegmentedAccordion.Title>
                     <SegmentedAccordion.Content

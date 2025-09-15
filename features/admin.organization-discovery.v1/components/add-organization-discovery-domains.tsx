@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -28,7 +28,10 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import useGetOrganizations from "@wso2is/admin.organizations.v1/api/use-get-organizations";
-import { OrganizationInterface } from "@wso2is/admin.organizations.v1/models/organizations";
+import {
+    GetOrganizationsParamsInterface,
+    OrganizationInterface
+} from "@wso2is/admin.organizations.v1/models/organizations";
 import {
     AlertLevels,
     IdentifiableComponentInterface,
@@ -44,8 +47,17 @@ import {
 } from "@wso2is/form";
 import { EmphasizedSegment, Hint, PrimaryButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
+import debounce from "lodash-es/debounce";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useMemo, useState } from "react";
+import React, {
+    FunctionComponent,
+    ReactElement,
+    SyntheticEvent,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -54,7 +66,8 @@ import checkEmailDomainAvailable from "../api/check-email-domain-available";
 import useGetOrganizationDiscovery from "../api/use-get-organization-discovery";
 import {
     OrganizationDiscoveryCheckResponseInterface,
-    OrganizationDiscoveryInterface
+    OrganizationDiscoveryInterface,
+    OrganizationLinkInterface
 } from "../models/organization-discovery";
 import "./add-organization-discovery-domains.scss";
 
@@ -104,19 +117,158 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
 
     const dispatch: Dispatch = useDispatch();
 
-    const { data: organizations } = useGetOrganizations(true, null, null, null, null, true);
-
     const { data: discoverableOrganizations } = useGetOrganizationDiscovery(true, null, null, null);
 
     const [ emailDomains, setEmailDomains ] = useState<string[]>([]);
     const [ isEmailDomainDataError, setIsEmailDomainDataError ] = useState<boolean>(false);
     const [ isEmailDomainAvailableError, setIsEmailDomainAvailableError ] = useState<boolean>(false);
 
+    const [ organizations, setOrganizations ] = useState<OrganizationInterface[]>([]);
+    const [ hasMoreOrganizations, setHasMoreOrganizations ] = useState(true);
+    const [ inputValue, setInputValue ] = useState<string>("");
+    const [ afterCursor, setAfterCursor ] = useState<string | null>(null);
+    const [ params, setParams ] =
+        useState<GetOrganizationsParamsInterface>({ after: null, limit: 15, shouldFetch: true });
+
+    const queryPrefix: string = "name co ";
+
+    const {
+        data: organizationListResponse,
+        isLoading: isOrganizationsFetchRequestLoading,
+        isValidating: isOrganizationsFetchRequestValidating,
+        error: organizationsFetchRequestError
+    } = useGetOrganizations(params.shouldFetch, params.filter, params.limit, params.after, null, true, false);
+
+    /**
+     * Fetches the organization list.
+     */
+    useEffect(() => {
+        if (!organizationListResponse || isOrganizationsFetchRequestLoading
+            || isOrganizationsFetchRequestValidating) return;
+
+        setParams((prevParams: GetOrganizationsParamsInterface) => ({
+            ...prevParams,
+            shouldFetch: false
+        }));
+
+        const updatedOrganizationList: OrganizationInterface[] = (organizationListResponse.organizations);
+
+        setOrganizations((prevOptions: OrganizationInterface[]) => [
+            ...prevOptions,
+            ...(updatedOrganizationList || [])
+        ]);
+
+        let nextFound: boolean = false;
+
+        organizationListResponse?.links?.forEach((link: OrganizationLinkInterface) => {
+            if (link.rel === "next") {
+                const nextCursor: string = link.href.split("after=")[1];
+
+                setAfterCursor(nextCursor);
+                setHasMoreOrganizations(!!nextCursor);
+                nextFound = true;
+            }
+        });
+
+        if (!nextFound) {
+            setAfterCursor("");
+            setHasMoreOrganizations(false);
+        }
+    }, [ organizationListResponse ]);
+
+    /**
+     * Dispatches error notifications if organization fetch request fails.
+     */
+    useEffect(() => {
+        if (!organizationsFetchRequestError) {
+            return;
+        }
+
+        if (organizationsFetchRequestError?.response?.data?.description) {
+            dispatch(addAlert({
+                description: organizationsFetchRequestError?.response?.data?.description
+                    ?? t("organizations:notifications.getOrganizationList.error.description"),
+                level: AlertLevels.ERROR,
+                message: organizationsFetchRequestError?.response?.data?.message
+                    ?? t("organizations:notifications.getOrganizationList.error.message")
+            }));
+
+            return;
+        }
+
+        dispatch(
+            addAlert({
+                description: t(
+                    "organizations:notifications.getOrganizationList" +
+                        ".genericError.description"
+                ),
+                level: AlertLevels.ERROR,
+                message: t(
+                    "organizations:notifications." +
+                        "getOrganizationList.genericError.message"
+                )
+            })
+        );
+    }, [ organizationsFetchRequestError ]);
+
+    /**
+     * Update the params state whenever inputValue or cursor changes.
+     */
+    const updateParams = (cursor: string, inputValue: string) => {
+        setAfterCursor(cursor);
+        setInputValue(inputValue);
+        setParams((prevParams: GetOrganizationsParamsInterface) => ({
+            ...prevParams,
+            after: cursor || null,
+            filter: inputValue ? `${queryPrefix}${inputValue}` : "",
+            shouldFetch: true
+        }));
+    };
+
+    /**
+     * Handles input changes in the input field.
+     *
+     * @param _event - The change event.
+     * @param data - The new input value.
+     */
+    const handleInputChange: (_event: SyntheticEvent<HTMLElement>, data: string | null, reason: string) => void =
+        useCallback(
+            debounce((_event: SyntheticEvent<HTMLElement>, data: string | null) => {
+                const newInputValue: string = data ?? "";
+
+                setOrganizations([]);
+                updateParams("", newInputValue);
+            }, 100),
+            [ updateParams ]
+        );
+
+    /**
+     * Handles changes in the field.
+     *
+     * @param _event - The change event.
+     * @param data - The new input value.
+     */
+    const handleOnChange = (_: SyntheticEvent, value: any) => {
+        if (!value) {
+            setOrganizations([]);
+            updateParams("", "");
+        }
+    };
+
+    /**
+     * Loads more organization options when scrolled to the bottom.
+     */
+    const loadMoreOrganizations = () => {
+        if (!hasMoreOrganizations) return;
+
+        updateParams(afterCursor, inputValue);
+    };
+
     /**
      * Filter the already configured organizations from the list of organizations.
      */
     const filteredDiscoverableOrganizations: OrganizationInterface[] = useMemo(() => {
-        return organizations?.organizations?.filter((organization: OrganizationInterface) => {
+        return organizations?.filter((organization: OrganizationInterface) => {
             return !discoverableOrganizations?.organizations?.some(
                 (discoverableOrganization: OrganizationDiscoveryInterface) => {
                     return discoverableOrganization.organizationId === organization.id;
@@ -133,7 +285,7 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
      * @param values - Form values.
      */
     const handleSubmit = (values: AddOrganizationDiscoveryDomainsFormValuesInterface): void => {
-        const organizationId: string = organizations?.organizations?.find((organization: OrganizationInterface) => {
+        const organizationId: string = organizations?.find((organization: OrganizationInterface) => {
             return organization.name === values.organizationName;
         }).id;
 
@@ -263,7 +415,7 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
                                     "fields.organizationName.label"
                                 ) }
                                 placeholder={
-                                    isEmpty(organizations?.organizations)
+                                    isEmpty(organizations)
                                         ? t(
                                             "organizationDiscovery:assign.form." +
                                             "fields.organizationName.emptyPlaceholder.0"
@@ -292,6 +444,10 @@ const AddOrganizationDiscoveryDomains: FunctionComponent<AddOrganizationDiscover
                                         return organization.name;
                                     })
                                 }
+                                hasMore={ hasMoreOrganizations }
+                                loadMore={ loadMoreOrganizations }
+                                handleInputChange={ handleInputChange }
+                                handleOnChange= { handleOnChange }
                                 renderValue={ (selected: string) => {
                                     if (!selected) {
                                         return (
