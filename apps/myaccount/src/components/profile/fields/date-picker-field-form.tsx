@@ -43,6 +43,7 @@ const DatePickerFieldForm: FunctionComponent<DatePickerFieldFormPropsInterface> 
     setIsProfileUpdating,
     handleSubmit,
     isUpdating,
+    onValidate,
     ["data-componentid"]: testId = "date-picker-field-form"
 }: DatePickerFieldFormPropsInterface): ReactElement => {
     const { isMobileViewport } = useMediaContext();
@@ -59,6 +60,11 @@ const DatePickerFieldForm: FunctionComponent<DatePickerFieldFormPropsInterface> 
      * @param value - Field value to be validated.
      */
     const validateField = (value: unknown): string | undefined => {
+        // If a custom validation function is provided, use it.
+        if (onValidate) {
+            return onValidate(value as string);
+        }
+
         // Validate the required field.
         if (isEmpty(value) && isRequired) {
             return (
