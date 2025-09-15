@@ -1280,6 +1280,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             category: "extensions:manage.sidePanel.categories.userManagement",
             component: lazy(() => import("../pages/approvals")),
             exact: true,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.APPROVALS,
             icon: {
                 icon: <DocumentCheckIcon fill="black" className="icon" />
             },
@@ -1327,6 +1328,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             ],
             component: lazy(() => import("@wso2is/admin.approval-workflows.v1/pages/approval-workflows")),
             exact: true,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.APPROVAL_WORKFLOWS,
             icon: {
                 icon: <DocumentCheckIcon fill="black" className="icon" />
             },
@@ -1345,6 +1347,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 }))
             ),
             exact: true,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.WORKFLOW_INSTANCES,
             icon: {
                 icon: <LogsDocumentIcon fill="black" className="icon" />
             },
