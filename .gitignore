@@ -131,3 +131,4 @@ identity-apps-core/apps/*/src/main/webapp/includes/layouts
 .repository/
 apps/console/src/extensions/i18n/tmp/**
 .nx
+.pnpm-store/
