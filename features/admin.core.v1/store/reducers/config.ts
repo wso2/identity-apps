@@ -295,6 +295,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             isSAASDeployment: undefined,
             isSignatureValidationCertificateAliasEnabled: undefined,
             isTrustedAppConsentRequired: undefined,
+            isWSFedProtocolTemplateEnabled: undefined,
             listAllAttributeDialects: undefined,
             multiTenancy: {
                 isTenantDomainDotExtensionMandatory: true,
