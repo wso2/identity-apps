@@ -1,5 +1,15 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.10.4
+
+### Patch Changes
+
+- [#9114](https://github.com/wso2/identity-apps/pull/9114) [`d6c6703f9619deee2213b65ecabd091696080df6`](https://github.com/wso2/identity-apps/commit/d6c6703f9619deee2213b65ecabd091696080df6) Thanks [@github-actions](https://github.com/apps/github-actions)! - Fix the auto-selection functionality of the connections and add validation
+
+- Updated dependencies [[`d6c6703f9619deee2213b65ecabd091696080df6`](https://github.com/wso2/identity-apps/commit/d6c6703f9619deee2213b65ecabd091696080df6)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.28
+  - @wso2is/admin.core.v1@2.49.36
+
 ## 0.10.3
 
 ### Patch Changes

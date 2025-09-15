@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.30.20
+
+### Patch Changes
+
+- [#9114](https://github.com/wso2/identity-apps/pull/9114) [`d6c6703f9619deee2213b65ecabd091696080df6`](https://github.com/wso2/identity-apps/commit/d6c6703f9619deee2213b65ecabd091696080df6) Thanks [@github-actions](https://github.com/apps/github-actions)! - Fix the auto-selection functionality of the connections and add validation
+
 ## 2.30.19
 
 ### Patch Changes
