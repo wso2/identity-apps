@@ -33,7 +33,7 @@ And also you will have to refactor the paths(links to the theme, rpIframe etc.) 
 app_base_name = "custom-console"
 ```
 
-**Note for Developers**: If you want to build the application with a different basename, change this config in `<REPO_ROOT>/apps/console/src/public/deployment.config.json`.
+**Note for Developers**: If you want to build the application with a different basename, change this config in `<REPO_ROOT>/apps/console/src/public/deployment.config.jsonc`.
 [Webapack](https://webpack.js.org/) will use this value during build time to put all the build files.
 
 ### `app_base_name_for_history_api`

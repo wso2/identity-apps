@@ -254,10 +254,10 @@
     },
     "serverOrigin": "https://localhost:9443",
     "session": {
-        "checkSessionInterval": 3.0,
-        "sessionRefreshTimeOut": 300.0,
-        "userIdleTimeOut": 600.0,
-        "userIdleWarningTimeOut": 580.0
+        "checkSessionInterval": 3,
+        "sessionRefreshTimeOut": 300,
+        "userIdleTimeOut": 600,
+        "userIdleWarningTimeOut": 580
     },
     "superTenantProxy": "",
     "tenantContext": {
@@ -383,7 +383,7 @@
                     "agents.disable",
                     "agents.groups"
                 ],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [],
@@ -393,7 +393,9 @@
                 }
             },
             "ai": {
-                "disabledFeatures": [ "ai.flows.types.list.registration" ],
+                "disabledFeatures": [
+                    "ai.flows.types.list.registration"
+                ],
                 "enabled": false,
                 "featureFlags": [
                     {
@@ -793,8 +795,7 @@
                 }
             },
             "flows": {
-                "disabledFeatures": [
-                ],
+                "disabledFeatures": [],
                 "enabled": true,
                 "featureFlags": [
                     {
@@ -817,7 +818,9 @@
                 "scopes": {
                     "create": [],
                     "delete": [],
-                    "feature": ["console:flows"],
+                    "feature": [
+                        "console:flows"
+                    ],
                     "read": [],
                     "update": []
                 }
@@ -1193,7 +1196,7 @@
                     ]
                 }
             },
-            "policyAdministration":{
+            "policyAdministration": {
                 "disabledFeatures": [],
                 "enabled": false,
                 "featureFlags": [],
@@ -1232,7 +1235,7 @@
                         "internal_notification_senders_update"
                     ]
                 }
-             },
+            },
             "registrationFlowBuilder": {
                 "disabledFeatures": [],
                 "enabled": true,
@@ -1598,7 +1601,7 @@
             },
             "userStores": {
                 "disabledFeatures": [
-                   "userStores.type.remote"
+                    "userStores.type.remote"
                 ],
                 "enabled": true,
                 "featureFlags": [],
@@ -1689,17 +1692,17 @@
                 "featureFlags": [],
                 "scopes": {
                     "create": [
-                            "internal_webhook_mgt_create"
+                        "internal_webhook_mgt_create"
                     ],
                     "delete": [
-                            "internal_webhook_mgt_delete"
+                        "internal_webhook_mgt_delete"
                     ],
                     "read": [
-                            "internal_webhook_meta_view",
-                            "internal_webhook_mgt_view"
+                        "internal_webhook_meta_view",
+                        "internal_webhook_mgt_view"
                     ],
                     "update": [
-                            "internal_webhook_mgt_update"
+                        "internal_webhook_mgt_update"
                     ]
                 }
             },
@@ -1846,7 +1849,9 @@
             "Console",
             "My Account"
         ],
-        "systemReservedUserStores": ["AGENT"],
+        "systemReservedUserStores": [
+            "AGENT"
+        ],
         "theme": {
             "name": "wso2is"
         },
