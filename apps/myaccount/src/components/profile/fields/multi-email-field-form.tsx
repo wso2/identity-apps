@@ -102,6 +102,7 @@ const MultiEmailFieldForm: FunctionComponent<MultiEmailFieldFormPropsInterface> 
     const isPrimaryEmailVerified: boolean = String(profileDetails?.profileInfo
         ?.[SCIMExtensionConfigs?.scim?.systemSchema]
         ?.[ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_VERIFIED")]) === "true";
+
     // Merge the verified primary email address.
     const mergedVerifiedEmailAddresses: string[] = useMemo(() => {
         if (
@@ -109,7 +110,7 @@ const MultiEmailFieldForm: FunctionComponent<MultiEmailFieldFormPropsInterface> 
             !verifiedEmailAddresses?.includes(primaryEmailAddress) &&
             isPrimaryEmailVerified
         ) {
-            return [ ...verifiedEmailAddresses, primaryEmailAddress ];
+            return [ ...(verifiedEmailAddresses ?? []), primaryEmailAddress ];
         } else {
             return verifiedEmailAddresses;
         }

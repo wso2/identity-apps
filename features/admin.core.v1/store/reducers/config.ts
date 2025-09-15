@@ -204,6 +204,10 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
         },
         i18n: null,
         ui: {
+            adminNotice: {
+                enabled: undefined,
+                plannedRollOutDate: undefined
+            },
             announcements: [],
             appCopyright: "",
             appLogo: {
@@ -274,7 +278,6 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                     enabled: false
                 }
             },
-            isAdminDataSeparationNoticeEnabled: undefined,
             isClaimUniquenessValidationEnabled: undefined,
             isClientSecretHashEnabled: undefined,
             isCookieConsentBannerEnabled: undefined,

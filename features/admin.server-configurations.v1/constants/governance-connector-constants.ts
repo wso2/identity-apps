@@ -17,9 +17,26 @@
  */
 
 /**
+ * Keys used in feature dictionary.
+ */
+export enum GovernanceConnectorFeatureDictionaryKeys {
+    HIDE_INVITED_USER_REGISTRATION_TOGGLE = "hideInvitedUserRegistrationToggle"
+}
+
+/**
  * Class containing governance connector constants.
  */
 export class GovernanceConnectorConstants {
+
+    /**
+     * Feature dictionary for governance connectors.
+     * Key: Feature dictionary key.
+     * Value: Corresponding config key in deployment config.
+     */
+    public static readonly featureDictionary: Record<string, string> = {
+        [GovernanceConnectorFeatureDictionaryKeys.HIDE_INVITED_USER_REGISTRATION_TOGGLE]:
+            "governanceConnectors.invitedUserRegistration.enableDisableControl"
+    };
 
     /**
      * Ask Password Form element constraints.

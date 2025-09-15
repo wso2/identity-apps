@@ -64,7 +64,7 @@ const Execution: FC<ExecutionPropsInterface> = memo(({
             ...resource,
             data
         }) as Step;
-    }, [ data, resource ]);
+    }, [ data, resource, JSON.stringify(data?.action) ]);
 
     /**
      * Resolves the execution name based on the type.
@@ -96,7 +96,7 @@ const Execution: FC<ExecutionPropsInterface> = memo(({
     };
 
     return (
-        <ValidationErrorBoundary disableErrorBoundaryOnHover={ false } resource={ resource }>
+        <ValidationErrorBoundary disableErrorBoundaryOnHover={ false } resource={ fullResource }>
             {
                 components && components.length > 0
                     ? (
@@ -117,7 +117,7 @@ const Execution: FC<ExecutionPropsInterface> = memo(({
                             resource={ fullResource }
                         />
                     )
-                    : <ExecutionMinimal id={ id } data={ data } resource={ fullResource } />
+                    : <ExecutionMinimal resource={ fullResource } />
             }
         </ValidationErrorBoundary>
     );

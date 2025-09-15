@@ -21,14 +21,19 @@ import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FC, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { ExecutionTypes } from "../../../../models/steps";
-import { CommonStepFactoryPropsInterface } from "../common-step-factory";
+import AppleExecution from "./apple-execution";
+import FacebookExecution from "./facebook-execution";
+import GithubExecution from "./github-execution";
+import GoogleExecution from "./google-execution";
+import MicrosoftExecution from "./microsoft-execution";
+import { ExecutionTypes } from "../../../../../models/steps";
+import { CommonStepFactoryPropsInterface } from "../../common-step-factory";
 import "./execution-factory.scss";
 
 /**
  * Props interface of {@link CommonStepFactory}
  */
-export type ExecutionFactoryPropsInterface = Pick<CommonStepFactoryPropsInterface, "data"> &
+export type ExecutionFactoryPropsInterface = Pick<CommonStepFactoryPropsInterface, "resource"> &
     IdentifiableComponentInterface;
 
 /**
@@ -37,58 +42,43 @@ export type ExecutionFactoryPropsInterface = Pick<CommonStepFactoryPropsInterfac
  * @param props - Props injected to the component.
  * @returns The ExecutionFactory component.
  */
-export const ExecutionFactory: FC<ExecutionFactoryPropsInterface> = ({
-    data,
+const ExecutionFactory: FC<ExecutionFactoryPropsInterface> = ({
+    resource,
     "data-componentid": componentId = "execution-factory"
 }: ExecutionFactoryPropsInterface): ReactElement => {
     const { t } = useTranslation();
 
-    if ((data?.action as any)?.executor?.name === ExecutionTypes.GoogleFederation) {
+    if ((resource.data?.action as any)?.executor?.name === ExecutionTypes.GoogleFederation) {
         return (
-            <Box display="flex" gap={ 1 } data-componentid={ componentId }>
-                <img src="https://www.svgrepo.com/show/475656/google-color.svg" height="20" />
-                <Typography variant="body1">{ t("flows:core.executions.names.google") }</Typography>
-            </Box>
+            <GoogleExecution resource={ resource } />
         );
     }
 
-    if ((data?.action as any)?.executor?.name === ExecutionTypes.AppleFederation) {
+    if ((resource.data?.action as any)?.executor?.name === ExecutionTypes.AppleFederation) {
         return (
-            <Box display="flex" gap={ 1 } data-componentid={ componentId } className="flow-builder-execution apple">
-                <img src="https://www.svgrepo.com/show/494331/apple-round.svg" height="20" />
-                <Typography variant="body1">{ t("flows:core.executions.names.apple") }</Typography>
-            </Box>
+            <AppleExecution resource={ resource } />
         );
     }
 
-    if ((data?.action as any)?.executor?.name === ExecutionTypes.FacebookFederation) {
+    if ((resource.data?.action as any)?.executor?.name === ExecutionTypes.FacebookFederation) {
         return (
-            <Box display="flex" gap={ 1 } data-componentid={ componentId }>
-                <img src="https://www.svgrepo.com/show/448224/facebook.svg" height="20" />
-                <Typography variant="body1">{ t("flows:core.executions.names.facebook") }</Typography>
-            </Box>
+            <FacebookExecution resource={ resource } />
         );
     }
 
-    if ((data?.action as any)?.executor?.name === ExecutionTypes.MicrosoftFederation) {
+    if ((resource.data?.action as any)?.executor?.name === ExecutionTypes.MicrosoftFederation) {
         return (
-            <Box display="flex" gap={ 1 } data-componentid={ componentId }>
-                <img src="https://www.svgrepo.com/show/448239/microsoft.svg" height="20" />
-                <Typography variant="body1">{ t("flows:core.executions.names.microsoft") }</Typography>
-            </Box>
+            <MicrosoftExecution resource={ resource } />
         );
     }
 
-    if ((data?.action as any)?.executor?.name === ExecutionTypes.GithubFederation) {
+    if ((resource.data?.action as any)?.executor?.name === ExecutionTypes.GithubFederation) {
         return (
-            <Box display="flex" gap={ 1 } data-componentid={ componentId } className="flow-builder-execution github">
-                <img src="https://www.svgrepo.com/show/473620/github.svg" height="20" />
-                <Typography variant="body1">{ t("flows:core.executions.names.github") }</Typography>
-            </Box>
+            <GithubExecution resource={ resource } />
         );
     }
 
-    if ((data?.action as any)?.executor?.name === ExecutionTypes.PasskeyEnrollment) {
+    if ((resource.data?.action as any)?.executor?.name === ExecutionTypes.PasskeyEnrollment) {
         return (
             <Box display="flex" gap={ 1 } data-componentid={ componentId }>
                 <img src="https://www.svgrepo.com/show/246819/fingerprint.svg" height="20" />
@@ -97,7 +87,7 @@ export const ExecutionFactory: FC<ExecutionFactoryPropsInterface> = ({
         );
     }
 
-    if ((data?.action as any)?.executor?.name === ExecutionTypes.MagicLinkExecutor) {
+    if ((resource.data?.action as any)?.executor?.name === ExecutionTypes.MagicLinkExecutor) {
         return (
             <Box
                 display="flex"
@@ -111,7 +101,7 @@ export const ExecutionFactory: FC<ExecutionFactoryPropsInterface> = ({
         );
     }
 
-    if ((data?.action as any)?.executor?.name === ExecutionTypes.ConfirmationCode) {
+    if ((resource.data?.action as any)?.executor?.name === ExecutionTypes.ConfirmationCode) {
         return (
             <Box
                 display="flex"
