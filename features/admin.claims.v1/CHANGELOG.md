@@ -1,5 +1,18 @@
 # @wso2is/admin.claims.v1
 
+## 2.29.9
+
+### Patch Changes
+
+- [#9119](https://github.com/wso2/identity-apps/pull/9119) [`b49e8895d237320120338da44ca8572f11524004`](https://github.com/wso2/identity-apps/commit/b49e8895d237320120338da44ca8572f11524004) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Remove unnecessary API call on directing to attributes page.
+
+- Updated dependencies [[`b49e8895d237320120338da44ca8572f11524004`](https://github.com/wso2/identity-apps/commit/b49e8895d237320120338da44ca8572f11524004), [`2415d7ee6cfe5d7d78fc15df969ae810711c398d`](https://github.com/wso2/identity-apps/commit/2415d7ee6cfe5d7d78fc15df969ae810711c398d), [`1d9bd91e49741883089899102aab2c8ba143e935`](https://github.com/wso2/identity-apps/commit/1d9bd91e49741883089899102aab2c8ba143e935)]:
+  - @wso2is/admin.claims.v1@2.29.9
+  - @wso2is/admin.users.v1@2.36.18
+  - @wso2is/admin.core.v1@2.49.45
+  - @wso2is/core@2.12.2
+  - @wso2is/admin.server-configurations.v1@2.35.59
+
 ## 2.29.8
 
 ### Patch Changes

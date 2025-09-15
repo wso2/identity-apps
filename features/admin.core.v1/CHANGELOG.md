@@ -1,5 +1,22 @@
 # @wso2is/admin.core.v1
 
+## 2.49.45
+
+### Patch Changes
+
+- [#9068](https://github.com/wso2/identity-apps/pull/9068) [`1d9bd91e49741883089899102aab2c8ba143e935`](https://github.com/wso2/identity-apps/commit/1d9bd91e49741883089899102aab2c8ba143e935) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Add organization version based routing for sub-organizations.
+
+- Updated dependencies [[`b49e8895d237320120338da44ca8572f11524004`](https://github.com/wso2/identity-apps/commit/b49e8895d237320120338da44ca8572f11524004), [`2415d7ee6cfe5d7d78fc15df969ae810711c398d`](https://github.com/wso2/identity-apps/commit/2415d7ee6cfe5d7d78fc15df969ae810711c398d), [`1d9bd91e49741883089899102aab2c8ba143e935`](https://github.com/wso2/identity-apps/commit/1d9bd91e49741883089899102aab2c8ba143e935)]:
+  - @wso2is/admin.claims.v1@2.29.9
+  - @wso2is/admin.users.v1@2.36.18
+  - @wso2is/core@2.12.2
+  - @wso2is/admin.agents.v1@1.0.54
+  - @wso2is/admin.flow-builder-core.v1@0.10.37
+  - @wso2is/admin.roles.v2@2.27.209
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.37
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.37
+  - @wso2is/admin.server-configurations.v1@2.35.59
+
 ## 2.49.44
 
 ### Patch Changes
