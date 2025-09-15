@@ -307,7 +307,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             productName: "",
             productVersionConfig: null,
             routes: {
-                organizationEnabledRoutes: []
+                organizationEnabledRoutes: undefined
             },
             selfAppIdentifier: "",
             showAppSwitchButton: undefined,

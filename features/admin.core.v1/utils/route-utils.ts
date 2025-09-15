@@ -249,7 +249,7 @@ export class RouteUtils {
      * @returns
      */
     public static filterOrganizationEnabledRoutes(routes: RouteInterface[]): RouteInterface[] {
-        return routes.filter((route: RouteInterface) => AppConstants.ORGANIZATION_ENABLED_ROUTES.includes(route.id));
+        return routes.filter((route: RouteInterface) => route.id in AppConstants.ORGANIZATION_ENABLED_ROUTES);
     }
 
     public static filterOutOrganizationOnlyRoutes(routes: RouteInterface[]): RouteInterface[] {
