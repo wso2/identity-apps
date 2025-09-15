@@ -62,7 +62,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { v4 as uuidv4 } from "uuid";
 import RegistrationFlowAILoader from "./ai-registration-flow-generation-loader";
-import StaticNodeFactory from "./resources/steps/static-step-factory";
+import StaticStepFactory from "./resources/steps/static-step-factory";
 import StepFactory from "./resources/steps/step-factory";
 import useAIRegistrationFlowGenerationResult from "../api/use-ai-registration-flow-result";
 import useGetRegistrationFlow from "../api/use-get-registration-flow";
@@ -680,7 +680,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
         const staticStepNodes: NodeTypes = Object.values(StaticStepTypes).reduce(
             (acc: NodeTypes, type: StaticStepTypes) => {
-                acc[type] = (props: any) => <StaticNodeFactory type={ type } { ...props } />;
+                acc[type] = (props: any) => <StaticStepFactory type={ type } { ...props } />;
 
                 return acc;
             },
@@ -689,7 +689,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
         const regStaticStepNodes: NodeTypes = Object.values(RegistrationStaticStepTypes).reduce(
             (acc: NodeTypes, type: RegistrationStaticStepTypes) => {
-                acc[type] = (props: any) => <StaticNodeFactory type={ type } { ...props } />;
+                acc[type] = (props: any) => <StaticStepFactory type={ type } { ...props } />;
 
                 return acc;
             },
