@@ -24,6 +24,7 @@ import { useDispatch } from "react-redux";
 import CheckboxFieldForm from "./checkbox-field-form";
 import CheckboxGroupFieldForm from "./checkbox-group-field-form";
 import CountryFieldForm from "./country-field-form";
+import DatePickerFieldForm from "./date-picker-field-form";
 import DOBFieldForm from "./dob-field-form";
 import DropdownFieldForm from "./dropdown-field-form";
 import LocaleFieldForm from "./locale-field-form";
@@ -490,8 +491,25 @@ const ProfileFieldFormRenderer: FunctionComponent<
                 />
             );
 
-        // As of now text field will be rendered for dates as well.
         case ClaimInputFormat.DATE_PICKER:
+            return (
+                <DatePickerFieldForm
+                    fieldSchema={ fieldSchema }
+                    initialValue={ initialValue as string }
+                    fieldLabel={ fieldLabel }
+                    isActive={ isActive }
+                    isEditable={ isEditable }
+                    onEditClicked={ onEditClicked }
+                    onEditCancelClicked={ onEditCancelClicked }
+                    isRequired={ isRequired }
+                    setIsProfileUpdating={ setIsProfileUpdating }
+                    isLoading={ isLoading }
+                    isUpdating={ isUpdating }
+                    data-componentid={ componentId }
+                    handleSubmit={ handleSubmit }
+                />
+            );
+
         case ClaimInputFormat.TEXT_INPUT:
         default:
             return (

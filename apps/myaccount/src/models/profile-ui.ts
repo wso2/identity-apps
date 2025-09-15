@@ -275,3 +275,5 @@ export interface MultiValueFieldFormPropsInterface<T extends string | number>
      */
     type?: string;
 }
+
+export interface DatePickerFieldFormPropsInterface extends ProfileFieldFormPropsInterface<string> {}
