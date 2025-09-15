@@ -28,6 +28,7 @@ import ESLintPlugin from "eslint-webpack-plugin";
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import JsonMinimizerPlugin from "json-minimizer-webpack-plugin";
+import { parse } from "jsonc-parser";
 import webpack, {
     Configuration,
     RuleSetRule,
@@ -36,7 +37,9 @@ import webpack, {
     WebpackPluginInstance
 } from "webpack";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
-import DeploymentConfig from "./src/public/deployment.config.json";
+
+const raw = fs.readFileSync("./src/public/deployment.config.jsonc", "utf-8");
+const DeploymentConfig = parse(raw);
 
 /**
  * Different Server Types.
@@ -604,6 +607,11 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
     config.module.rules.push({
         test: /\.md$/,
         use: [ "raw-loader" ]
+    });
+
+    config.module.rules.push({
+        test: /\.jsonc$/,
+        use: "jsonc-loader"
     });
 
     config.module.rules.forEach((rule: RuleSetRule) => {

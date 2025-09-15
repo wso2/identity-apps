@@ -19,7 +19,7 @@
 const path = require("path");
 const dotenv = require("dotenv");
 const fs = require("fs-extra");
-const DeploymentConfig = require("../src/public/deployment.config.json");
+const DeploymentConfig = require("../src/public/deployment.config.jsonc");
 
 dotenv.config();
 

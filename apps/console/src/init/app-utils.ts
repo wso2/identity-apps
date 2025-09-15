@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { parse } from "jsonc-parser";
+
 function loadUserConfig(configFile: string, callback: (response: string) => void) {
     const request: XMLHttpRequest = new XMLHttpRequest();
 
@@ -528,10 +530,12 @@ export const AppUtils: any = (function() {
 
             _config = _default;
 
-            const userConfigFile: string = _config.contextPath + "deployment.config.json";
+            const userConfigFile: string = _config.contextPath + "deployment.config.jsonc";
 
             loadUserConfig(userConfigFile, function(response: string) {
-                const configResponse: any = JSON.parse(response);
+                const configResponse: any = parse(response);
+
+                console.log(configResponse);
 
                 if (!{}.hasOwnProperty.call(configResponse, "accountApp"))
                     throw "'accountApp' config is missing in " + _args.deploymentConfigFile;
