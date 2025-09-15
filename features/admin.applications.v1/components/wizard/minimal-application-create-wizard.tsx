@@ -911,9 +911,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         // Filter out legacy and unsupported auth protocols.
         supportedProtocols = supportedProtocols.filter((protocol: string) => {
 
-            if (applicationConfig.customApplication.allowedProtocolTypes()
-                && applicationConfig.customApplication.allowedProtocolTypes().length > 0) {
-                if (applicationConfig.customApplication.allowedProtocolTypes().includes(protocol)) {
+            if (applicationConfig.customApplication.getAllowedProtocolTypes()
+                && applicationConfig.customApplication.getAllowedProtocolTypes().length > 0) {
+                if (applicationConfig.customApplication.getAllowedProtocolTypes().includes(protocol)) {
                     return protocol;
                 } else {
                     return false;
