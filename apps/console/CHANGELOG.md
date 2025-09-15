@@ -1,5 +1,25 @@
 # @wso2is/console
 
+## 2.77.50
+
+### Patch Changes
+
+- [#9125](https://github.com/wso2/identity-apps/pull/9125) [`c54e1c5fa53794bb4347eb29711fb6d14da2c056`](https://github.com/wso2/identity-apps/commit/c54e1c5fa53794bb4347eb29711fb6d14da2c056) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add feature flags for workflow feature
+
+- Updated dependencies [[`c54e1c5fa53794bb4347eb29711fb6d14da2c056`](https://github.com/wso2/identity-apps/commit/c54e1c5fa53794bb4347eb29711fb6d14da2c056)]:
+  - @wso2is/admin.feature-gate.v1@1.7.7
+  - @wso2is/admin.flows.v1@1.0.19
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.38
+  - @wso2is/admin.branding.v1@2.32.5
+  - @wso2is/admin.core.v1@2.49.46
+  - @wso2is/admin.email-management.v1@2.25.214
+  - @wso2is/admin.home.v1@1.7.27
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.38
+  - @wso2is/admin.server-configurations.v1@2.35.60
+  - @wso2is/admin.users.v1@2.36.19
+  - @wso2is/admin.agents.v1@1.0.55
+  - @wso2is/admin.roles.v2@2.27.210
+
 ## 2.77.49
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.1.30
+
+### Patch Changes
+
+- [#9117](https://github.com/wso2/identity-apps/pull/9117) [`0877e02c2af78b2872abf6e832e6107814af8041`](https://github.com/wso2/identity-apps/commit/0877e02c2af78b2872abf6e832e6107814af8041) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Fix displaying error message for emailOTP
+
 ## 3.1.29
 
 ### Patch Changes
