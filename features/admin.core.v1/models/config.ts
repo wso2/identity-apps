@@ -500,7 +500,7 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     passwordPolicyConfigs: PasswordPolicyConfigsInterface;
     /**
-     * Config to check whether the WS-Federation protocol template is enabled.
+     * Config to check whether the WS-Federation protocol template is enabled in the application creation wizard.
      */
     isWSFedProtocolTemplateEnabled?: boolean;
 }
