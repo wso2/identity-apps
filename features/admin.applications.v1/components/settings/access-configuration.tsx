@@ -531,9 +531,9 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         supportedProtocols = supportedProtocols.filter((protocol: string) => {
 
             if (template && template.id === CustomApplicationTemplate.id
-                && applicationConfig.customApplication.allowedProtocolTypes
-                && applicationConfig.customApplication.allowedProtocolTypes.length > 0 ) {
-                if (applicationConfig.customApplication.allowedProtocolTypes.includes(protocol)){
+                && applicationConfig.customApplication.allowedProtocolTypes()
+                && applicationConfig.customApplication.allowedProtocolTypes().length > 0 ) {
+                if (applicationConfig.customApplication.allowedProtocolTypes().includes(protocol)){
                     return protocol;
                 } else {
                     return false;

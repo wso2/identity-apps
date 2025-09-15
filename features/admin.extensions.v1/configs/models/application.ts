@@ -170,7 +170,7 @@ export interface ApplicationConfig {
         customProtocol: boolean;
     };
     customApplication: {
-        allowedProtocolTypes: string[];
+        allowedProtocolTypes: () => string[];
         defaultTabIndex: number;
     };
     excludeSubjectClaim: boolean;
