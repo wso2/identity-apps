@@ -55,7 +55,7 @@ import {
     SelectFieldAdapter,
     TextFieldAdapter
 } from "@wso2is/form";
-import { FormApi, FormSpy } from "@wso2is/form/src";
+import { FormSpy } from "@wso2is/form/src";
 import { FormValue } from "@wso2is/forms";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
@@ -1104,23 +1104,18 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
     };
 
     /**
-     * Handles the submit button click.
-     * Responsible for resetting the submit state in the parent component if there are validation errors. And also
-     * submitting the form if there are no validation errors.
+     * Handles side effects when the form is submitted.
+     * - If there are validation errors, it resets the submit state in the parent component.
      *
-     * @param form - The form API.
      * @param hasValidationErrors - Whether the form has validation errors.
      */
-    const onSubmitClick = (form: FormApi, hasValidationErrors: boolean): void => {
+    const onSubmitClick = (hasValidationErrors: boolean): void => {
         if (hasValidationErrors) {
-            // If there are validation errors, do not submit the form.
             // Reset the trigger submit state in the parent component.
             setTriggerSubmit();
 
             return;
         }
-
-        form.submit();
     };
 
     if (isUserStoreRequestLoading || isUserStoreRequestValidating || isAttributesRequestLoading) {
@@ -1355,7 +1350,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                         { /** This hidden button is used to submit the form programmatically */ }
                         <button
                             ref={ submitButtonRef }
-                            onClick={ () => onSubmitClick(form, hasValidationErrors) }
+                            onClick={ () => onSubmitClick(hasValidationErrors) }
                             hidden
                         />
                     </form>
