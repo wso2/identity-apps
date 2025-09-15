@@ -16,36 +16,8 @@
  * under the License.
  */
 
- :root {
-    --wso2is-flow-builder-end-step-icon-color: var(--oxygen-customComponents-Chip-properties-new-border-color);;
-}
-
-.end.MuiFab-root {
-    pointer-events: none;
-    box-shadow: none;
-    color: var(--oxygen-palette-common-white);
-    background-color: rgba(0, 0, 0, 0);
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    align-content: center;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(131deg, rgba(117, 237, 161, 0.70) 28.46%, rgb(52 146 86 / 60%) 119.09%);;
-
-    .oxygen-typography {
-        margin-left: 5px;
-        color: var(--oxygen-palette-common-white);
-    }
-
-    svg {
-        height: 30px;
-        width: 30px;
-        fill: var(--wso2is-flow-builder-end-step-icon-color);
-
-        path {
-            stroke: var(--wso2is-flow-builder-end-step-icon-color);
-            stroke-width: var(--oxygen-customComponents-Chip-properties-icon-stroke-width);
-        }
+.flow-builder-step {
+    &.flow-builder-end-step {
+        background: var(--oxygen-palette-success-light);
     }
 }

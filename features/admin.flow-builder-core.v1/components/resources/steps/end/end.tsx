@@ -16,52 +16,90 @@
  * under the License.
  */
 
-import Fab from "@oxygen-ui/react/Fab";
-import { CheckIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Handle, Node, Position } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement, memo } from "react";
+import { View } from "../view/view";
+import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import { CommonStepFactoryPropsInterface } from "../common-step-factory";
 import "./end.scss";
+import { Handle, Position, useNodeId } from "@xyflow/react";
+import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
 
 /**
  * Props interface of {@link End}
  */
-export type EndPropsInterface = CommonStepFactoryPropsInterface & IdentifiableComponentInterface & Node;
+export interface EndPropsInterface
+    extends Pick<CommonStepFactoryPropsInterface, "data" | "resource">,
+        IdentifiableComponentInterface {
+    /**
+     * Custom heading for the end node. Defaults to "End".
+     */
+    heading?: string;
+    /**
+     * Custom restricted component types that are not allowed in the end node.
+     */
+    restrictedComponentTypes?: string[];
+}
 
 /**
- * End Node component.
- * This is a custom node supported by react flow renderer library.
- * See {@link https://reactflow.dev/docs/api/node-types/} for its documentation
- * and {@link https://reactflow.dev/examples/custom-node/} for an example
+ * End Node component that composes with View and applies restrictions.
+ * End nodes typically don't allow certain flow control components and don't have source handles.
  *
  * @param props - Props injected to the component.
  * @returns End node component.
  */
-const End: FunctionComponent = memo(({
-    ["data-componentid"]: componentId = "end",
-    data
-}: EndPropsInterface): ReactElement => {
-    return (
-        <div data-componentid={ componentId }>
-            <Fab
-                aria-label="end"
-                className="end"
-                variant="circular"
-                data-componentid={ `${componentId}-end-node` }
-            >
-                <CheckIcon data-componentid={ `${componentId}-end-node-check-icon` } />
-            </Fab>
-            <Handle type="target" position={ Position.Left } />
-            {
-                data?.end === false && (
-                    <Handle type="source" position={ Position.Right } id={ data?.sourceHandle as string } />
-                )
-            }
-        </div>
-    );
-}, (prevProps: EndPropsInterface, nextProps: EndPropsInterface) => {
-    return prevProps.data?.end === nextProps.data?.end;
-});
+const End: FunctionComponent<EndPropsInterface> = memo(
+    ({
+        heading = "End",
+        restrictedComponentTypes = [],
+        data,
+        resource,
+        "data-componentid": componentId = "end"
+    }: EndPropsInterface): ReactElement => {
+        const stepId: string = useNodeId();
+        const { setLastInteractedResource, setLastInteractedStepId } = useAuthenticationFlowBuilderCore();
+
+        /**
+         * Get allowed types by filtering out restricted types from the default allowed types.
+         *
+         * @returns Array of allowed component types for the end node droppable area.
+         */
+        const getAllowedTypes = (): string[] => {
+            const defaultAllowedTypes = VisualFlowConstants.FLOW_BUILDER_VIEW_ALLOWED_RESOURCE_TYPES;
+
+            return defaultAllowedTypes.filter(type => !restrictedComponentTypes.includes(type));
+        };
+
+        return (
+            <>
+                <View
+                    heading={heading}
+                    droppableAllowedTypes={getAllowedTypes()}
+                    enableSourceHandle={true}
+                    data={data}
+                    resource={resource}
+                    className="flow-builder-end-step"
+                    deletable={false}
+                    configurable={true}
+                    data-componentid={componentId}
+                    onConfigure={ () => {
+                        setLastInteractedStepId(stepId);
+                        setLastInteractedResource(resource);
+                    } }
+                />
+                {data?.end === false && (
+                    <Handle type="source" position={Position.Right} id={data?.sourceHandle as string} />
+                )}
+            </>
+        );
+    },
+    (prevProps: EndPropsInterface, nextProps: EndPropsInterface) => {
+        return (
+            prevProps.data === nextProps.data &&
+            prevProps.heading === nextProps.heading &&
+            JSON.stringify(prevProps.restrictedComponentTypes) === JSON.stringify(nextProps.restrictedComponentTypes)
+        );
+    }
+);
 
 export default End;

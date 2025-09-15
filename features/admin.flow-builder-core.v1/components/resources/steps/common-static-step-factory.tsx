@@ -21,7 +21,7 @@ import { Node } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
 import End from "./end/end";
 import Start from "./start/start";
-import { StaticStepTypes } from "../../../models/steps";
+import { StaticStepTypes, Step } from "../../../models/steps";
 
 /**
  * Props interface of {@link CommonStaticStepFactory}
@@ -31,6 +31,10 @@ export interface CommonStaticStepFactoryPropsInterface extends Node, Identifiabl
      * The resource properties.
      */
     type: StaticStepTypes;
+    /**
+     * The resource properties.
+     */
+    resource: Step;
 }
 
 /**
@@ -41,6 +45,7 @@ export interface CommonStaticStepFactoryPropsInterface extends Node, Identifiabl
  */
 export const CommonStaticStepFactory: FunctionComponent<CommonStaticStepFactoryPropsInterface> = ({
     type,
+    resource,
     "data-componentid": componentId = "common-static-node-factory",
     ...rest
 }: CommonStaticStepFactoryPropsInterface): ReactElement => {
@@ -49,11 +54,11 @@ export const CommonStaticStepFactory: FunctionComponent<CommonStaticStepFactoryP
     }
 
     if (type === StaticStepTypes.UserOnboard) {
-        return <End data-componentid={ componentId } { ...rest } />;
+        return <End data-componentid={ componentId } resource={resource} { ...rest } />;
     }
 
     if (type === StaticStepTypes.End) {
-        return <End data-componentid={ componentId } { ...rest } />;
+        return <End data-componentid={ componentId } resource={resource} { ...rest } />;
     }
 
     return null;
