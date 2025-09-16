@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.3.0
+
+### Minor Changes
+
+- [#9132](https://github.com/wso2/identity-apps/pull/9132) [`379363b7c9f1d828709fb17570ab21fab4d0d382`](https://github.com/wso2/identity-apps/commit/379363b7c9f1d828709fb17570ab21fab4d0d382) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Release minor version for cloud deployment
+
 ## 3.2.0
 
 ### Minor Changes
