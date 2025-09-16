@@ -1084,6 +1084,22 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                 }
 
                 decodedFormValues[key] = convertedValues;
+            } else if (key.startsWith(`${ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("ADDRESSES")}#`)) {
+                // Handles address schema names like
+                // "addresses#home.streetAddress", "addresses#work.streetAddress", etc.
+                // These need to be converted to "addresses": [ { type: "home", streetAddress: "123 Main St" } ]
+                const fieldNameParts: string[] = key.split("#");
+
+                decodedFormValues[fieldNameParts[0]] = decodedFormValues[fieldNameParts[0]] || [];
+
+                for (const [ subAttribute, value ] of Object.entries(values[key] as Record<string, string>)) {
+                    (decodedFormValues[fieldNameParts[0]] as Array<Record<string, string>>).push({
+                        [subAttribute]: value,
+                        type: fieldNameParts[1]
+                    });
+                }
+
+                delete decodedFormValues[key];
             }
         }
 
