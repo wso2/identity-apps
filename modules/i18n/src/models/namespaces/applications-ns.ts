@@ -700,6 +700,10 @@ export interface ApplicationsNS {
                                 totp: {
                                     description: string;
                                     heading: string;
+                                    info: {
+                                        totpWithIdentifierFirstEnabled: string;
+                                        totpWithIdentifierFirstEnabledMessage: string;
+                                    };
                                 };
                                 usernameless: {
                                     description: string;
