@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.79.2
+
+### Patch Changes
+
+- [#9127](https://github.com/wso2/identity-apps/pull/9127) [`bdf3588410eef19d07e202c5d0726f523a61c1c5`](https://github.com/wso2/identity-apps/commit/bdf3588410eef19d07e202c5d0726f523a61c1c5) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Add warning for TOTP authenticator with Identifier first
+
+- Updated dependencies [[`bdf3588410eef19d07e202c5d0726f523a61c1c5`](https://github.com/wso2/identity-apps/commit/bdf3588410eef19d07e202c5d0726f523a61c1c5)]:
+  - @wso2is/admin.extensions.v1@2.40.6
+  - @wso2is/i18n@2.30.27
+
 ## 2.79.1
 
 ### Patch Changes

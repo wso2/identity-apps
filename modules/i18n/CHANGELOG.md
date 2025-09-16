@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.30.27
+
+### Patch Changes
+
+- [#9127](https://github.com/wso2/identity-apps/pull/9127) [`bdf3588410eef19d07e202c5d0726f523a61c1c5`](https://github.com/wso2/identity-apps/commit/bdf3588410eef19d07e202c5d0726f523a61c1c5) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Add warning for TOTP authenticator with Identifier first
+
 ## 2.30.26
 
 ### Patch Changes
