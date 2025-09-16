@@ -441,10 +441,12 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
      */
     const isEmailFieldVisible: boolean =
         !isEmpty(flattenedProfileData) &&
-        (usernameConfig?.enableValidator === "true" ||
+        (usernameConfig?.enableValidator === "true" || (
+            flattenedProfileData[ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME")] &&
             getUserNameWithoutDomain(
                 flattenedProfileData[ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("USERNAME")] as string
-            ) !== flattenedProfileData[ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")]);
+            ) !== flattenedProfileData[ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")]
+        ));
 
     /**
      * Handles the profile update.
