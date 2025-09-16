@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.25.2
+
+### Patch Changes
+
+- [#9140](https://github.com/wso2/identity-apps/pull/9140) [`fac7e36a8a3bb489ed6b43022682ddbd6e010480`](https://github.com/wso2/identity-apps/commit/fac7e36a8a3bb489ed6b43022682ddbd6e010480) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Hide approval tabs in my account for cloud admin users
+
+- Updated dependencies [[`bdf3588410eef19d07e202c5d0726f523a61c1c5`](https://github.com/wso2/identity-apps/commit/bdf3588410eef19d07e202c5d0726f523a61c1c5)]:
+  - @wso2is/i18n@2.30.27
+
 ## 2.25.1
 
 ### Patch Changes
