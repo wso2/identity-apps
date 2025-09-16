@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.30.26
+
+### Patch Changes
+
+- [#9134](https://github.com/wso2/identity-apps/pull/9134) [`33dc5b7386afe5cc275ce960ba45452cce7e6c30`](https://github.com/wso2/identity-apps/commit/33dc5b7386afe5cc275ce960ba45452cce7e6c30) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Update admin notice wording.
+
 ## 2.30.25
 
 ### Patch Changes
