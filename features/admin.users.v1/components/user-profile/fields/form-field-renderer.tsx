@@ -507,10 +507,8 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
             );
 
         case ClaimInputFormat.DATE_PICKER:{
-            // Strictly parse the initial value to avoid invalid date formats.
             const formattedInitialValue: moment.Moment = moment(initialValue, "YYYY-MM-DD", true);
 
-            // If the initial value is empty or a valid date, render the date picker.
             if (isEmpty(initialValue) || formattedInitialValue.isValid()) {
                 return (
                     <DatePickerFormField
@@ -527,7 +525,6 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
                 );
             }
 
-            // If the initial value is not empty and not a valid date, fallback to a text field.
             return (
                 <TextFormField
                     fieldName={ fieldName }

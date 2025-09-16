@@ -49,7 +49,6 @@ const DatePickerFieldForm: FunctionComponent<DatePickerFieldFormPropsInterface> 
     const { isMobileViewport } = useMediaContext();
     const { t } = useTranslation();
 
-    // Strictly parse the initial value to avoid invalid date formats.
     const formattedInitialValue: moment.Moment = moment(initialValue as string, "YYYY-MM-DD", true);
     const placeholderText: string = t("myAccount:components.profile.forms.generic.inputs.placeholder",
         { fieldName: fieldLabel.toLowerCase() });
@@ -110,10 +109,6 @@ const DatePickerFieldForm: FunctionComponent<DatePickerFieldFormPropsInterface> 
                                             <Grid verticalAlign="middle">
                                                 <Grid.Row columns={ 2 }>
                                                     <Grid.Column width={ 10 }>
-                                                        { /*
-                                                            If the initial value is empty or a valid date,
-                                                            show the date picker. Otherwise, fallback to a text field.
-                                                        */ }
                                                         { (isEmpty(initialValue) || formattedInitialValue.isValid())
                                                             ? (
                                                                 <FinalFormField
