@@ -467,7 +467,8 @@
             "applications": {
                 "disabledFeatures": [
                     "applications.loginFlow.legacyEditor",
-                    "applications.sharedAccess.status"
+                    "applications.sharedAccess.status",
+                    "applications.sharedApp.adaptiveAuth"
                 ],
                 "enabled": true,
                 "featureFlags": [
