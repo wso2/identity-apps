@@ -24,10 +24,12 @@ import {
 } from "@wso2is/core/models";
 import { CheckboxFieldAdapter, FinalFormField, SwitchFieldAdapter } from "@wso2is/form";
 import isEmpty from "lodash-es/isEmpty";
+import moment from "moment";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import CheckBoxGroupFormField from "../../../user-profile/fields/check-box-group-form-field";
 import CountryField from "../../../user-profile/fields/country-field";
+import DatePickerFormField from "../../../user-profile/fields/date-picker-form-field";
 import DropdownFormField from "../../../user-profile/fields/dropdown-form-field";
 import LocaleField from "../../../user-profile/fields/locale-field";
 import MultiValuedTextField from "../../../user-profile/fields/multi-valued-text-field";
@@ -303,6 +305,39 @@ const DynamicFieldRenderer: FunctionComponent<DynamicFieldRendererPropsInterface
                     data-componentid={ fieldComponentId }
                 />
             );
+
+        case ClaimInputFormat.DATE_PICKER:{
+            // Strictly parse the initial value to avoid invalid date formats.
+            const formattedInitialValue: moment.Moment = moment(initialValue, "YYYY-MM-DD", true);
+
+            if (isEmpty(initialValue) || formattedInitialValue.isValid()) {
+                return (
+                    <DatePickerFormField
+                        schema={ schema }
+                        fieldLabel={ fieldLabel }
+                        fieldName={ fieldName }
+                        initialValue={ initialValue as string }
+                        isUpdating={ isUpdating }
+                        isRequired={ isRequired }
+                        validator={ genericValidator }
+                        data-componentid={ fieldComponentId }
+                    />
+                );
+            }
+
+            return (
+                <TextFormField
+                    fieldName={ fieldName }
+                    fieldLabel={ fieldLabel }
+                    initialValue={ initialValue as string }
+                    validator={ genericValidator }
+                    maxLength={ maxLength }
+                    isRequired={ isRequired }
+                    isUpdating={ isUpdating }
+                    data-componentid={ fieldComponentId }
+                />
+            );
+        }
 
         default:
             return (

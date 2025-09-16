@@ -25,10 +25,12 @@ import {
 } from "@wso2is/core/models";
 import { CheckboxFieldAdapter, FinalFormField, SwitchFieldAdapter } from "@wso2is/form";
 import isEmpty from "lodash-es/isEmpty";
+import moment from "moment";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import CheckBoxGroupFormField from "./check-box-group-form-field";
 import CountryField from "./country-field";
+import DatePickerFormField from "./date-picker-form-field";
 import DropdownFormField from "./dropdown-form-field";
 import LocaleField from "./locale-field";
 import MultiValuedEmailField from "./multi-valued-email-field";
@@ -325,7 +327,8 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
     /**
      * Render date of birth field. Specially handled to use special validator.
      */
-    if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("DOB")) {
+    if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("DOB")
+        && schema.inputFormat?.inputType !== ClaimInputFormat.DATE_PICKER) {
         return (
             <TextFormField
                 fieldName={ `${encodedSchemaId}.${schema.name}` }
@@ -502,6 +505,40 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
                     data-componentid={ fieldComponentId }
                 />
             );
+
+        case ClaimInputFormat.DATE_PICKER:{
+            const formattedInitialValue: moment.Moment = moment(initialValue, "YYYY-MM-DD", true);
+
+            if (isEmpty(initialValue) || formattedInitialValue.isValid()) {
+                return (
+                    <DatePickerFormField
+                        schema={ schema }
+                        fieldLabel={ fieldLabel }
+                        fieldName={ fieldName }
+                        initialValue={ initialValue as string }
+                        isUpdating={ isUpdating }
+                        isReadOnly={ isReadOnly }
+                        isRequired={ isRequired }
+                        validator={ genericValidator }
+                        data-componentid={ fieldComponentId }
+                    />
+                );
+            }
+
+            return (
+                <TextFormField
+                    fieldName={ fieldName }
+                    fieldLabel={ fieldLabel }
+                    initialValue={ initialValue as string }
+                    validator={ genericValidator }
+                    maxLength={ maxLength }
+                    isReadOnly={ isReadOnly }
+                    isRequired={ isRequired }
+                    isUpdating={ isUpdating }
+                    data-componentid={ fieldComponentId }
+                />
+            );
+        }
 
         default:
             return (

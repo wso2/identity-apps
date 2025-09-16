@@ -25,6 +25,7 @@ export * from "./adapters/checkbox-field-adapter";
 export * from "./adapters/checkbox-group-field-adapter";
 export * from "./adapters/checkbox-field-adapter";
 export * from "./adapters/switch-field-adapter";
+export * from "./adapters/date-picker-field-adapter";
 
 export { default as TextFieldAdapter } from "./adapters/text-field-adapter";
 export { default as __DEPRECATED__SelectFieldAdapter } from "./adapters/__DEPRECATED__select-field-adapter";
@@ -36,6 +37,7 @@ export { default as CheckboxGroupFieldAdapter } from "./adapters/checkbox-group-
 export { default as SwitchFieldAdapter } from "./adapters/switch-field-adapter";
 export { default as FilePickerAdapter } from "./adapters/file-picker-adapter";
 export { default as RadioGroupFieldAdapter } from "./adapters/radio-group-field-adapter";
+export { default as DatePickerFieldAdapter } from "./adapters/date-picker-field-adapter";
 
 export * from "./field";
 export * from "./field-button";

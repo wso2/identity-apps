@@ -275,3 +275,12 @@ export interface MultiValueFieldFormPropsInterface<T extends string | number>
      */
     type?: string;
 }
+
+export interface DatePickerFieldFormPropsInterface extends ProfileFieldFormPropsInterface<string> {
+    /**
+     * Callback to validate the field. If not provided, the default validation will be used.
+     *
+     * @param value - Value to be validated.
+     */
+    onValidate?: (value: string) => string | undefined;
+}
