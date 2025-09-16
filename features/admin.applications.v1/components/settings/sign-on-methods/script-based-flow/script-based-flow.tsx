@@ -249,7 +249,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             }).then((axiosResponse: AxiosResponse<GetSecretListResponse>) => {
                 setSecretList(axiosResponse.data);
                 setFilteredSecretList(axiosResponse.data);
-            }).catch((error: AxiosError) => {
+            }).catch((error: AxiosError<{ description?: string; message?: string }>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data?.description,

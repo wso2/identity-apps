@@ -308,7 +308,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 });
 
             }))
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<{ description?: string }>) => {
                     if (error?.response?.status === 404) {
                         return;
                     }
@@ -408,7 +408,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 setShowDisableConfirmationModal(false);
                 onUpdate(application.id);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ description?: string }>) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -1160,7 +1160,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     });
                     setAllowedOrigins(allowedCORSOrigins);
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<{ description?: string }>) => {
                     if (error?.response?.data?.description) {
                         dispatch(addAlert({
                             description: error.response.data.description,

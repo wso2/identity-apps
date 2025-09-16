@@ -457,7 +457,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             .then((response: GovernanceConnectorInterface) => {
                 setConnector(response);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ description?: string; detail?: string }>) => {
                 if (error?.response?.data?.detail) {
                     dispatch(
                         addAlert({

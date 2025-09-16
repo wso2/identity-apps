@@ -272,7 +272,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 setShowDeleteConfirmationModal(false);
                 onApplicationDelete();
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ description?: string }>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(setAlert({
                         description: error.response.data.description,

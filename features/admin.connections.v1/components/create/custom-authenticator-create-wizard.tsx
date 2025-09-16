@@ -546,7 +546,9 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
      *
      * @param error - error object.
      */
-    const handleCustomAuthenticatorCreateErrors = (error: AxiosError): void => {
+    const handleCustomAuthenticatorCreateErrors = (
+        error: AxiosError<{ description?: string; code?: string | number }>
+    ): void => {
         const identityAppsError: IdentityAppsError = ConnectionUIConstants.ERROR_CREATE_LIMIT_REACHED;
 
         if (error?.response?.status === 403 && error?.response?.data?.code === identityAppsError.getErrorCode()) {

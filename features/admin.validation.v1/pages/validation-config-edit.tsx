@@ -564,7 +564,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
             .then((response: GovernanceConnectorInterface) => {
                 setLegacyPasswordPolicies(response?.properties);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ description?: string; detail?: string }>) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     dispatch(
                         addAlert({
@@ -774,7 +774,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
                     })
                 );
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ description?: string; detail?: string; message?: string }>) => {
                 if (error?.response?.data?.description) {
                     dispatch(
                         addAlert({

@@ -227,7 +227,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                     handleAppCreationComplete(createdAppID);
                 }
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ code?: string | number; description?: string }>) => {
                 if (error?.response?.status === 403
                     && error?.response?.data?.code === ApplicationManagementConstants
                         .ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {

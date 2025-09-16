@@ -203,7 +203,7 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
                 // Since the location header is not present, trigger callback without the id.
                 onIDPCreate();
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ code?: string | number; description?: string }>) => {
 
                 const identityAppsError: IdentityAppsError = ConnectionUIConstants.ERROR_CREATE_LIMIT_REACHED;
 

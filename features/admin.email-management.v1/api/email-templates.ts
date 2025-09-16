@@ -181,7 +181,7 @@ export const updateEmailTemplate = (
             }
 
             return Promise.resolve(response.data as EmailTemplate);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<{ code: string | number }>) => {
             throw new IdentityAppsApiException(
                 "Error occurred while updating the email template.",
                 error.stack,
@@ -235,7 +235,7 @@ export const createNewEmailTemplate = (
             }
 
             return Promise.resolve(response.data as EmailTemplate);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<{ code: string | number }>) => {
             throw new IdentityAppsApiException(
                 "Error occurred while creating the email template.",
                 error.stack,
@@ -284,7 +284,7 @@ export const deleteEmailTemplate = (
             }
 
             return response;
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<{ code: string | number }>) => {
             throw new IdentityAppsApiException(
                 "Error occurred while deleting the email template.",
                 error.stack,

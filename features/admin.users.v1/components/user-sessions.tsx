@@ -149,7 +149,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
             .then((response: AxiosResponse<UserSessionsInterface>) => {
                 setUserSessions(response.data);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ description?: string; detail?: string }>) => {
                 if (error.response
                     && error.response.data
                     && (error.response.data.description || error.response.data.detail)) {
@@ -533,7 +533,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                     )
                 }));
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ description?: string; detail?: string }>) => {
                 // fetch the sessions if and only if the session termination fails.
                 fetchUserSessions(user.id);
                 if (error.response
@@ -588,7 +588,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                     )
                 }));
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ description?: string; detail?: string }>) => {
                 if (error.response
                     && error.response.data
                     && (error.response.data.description || error.response.data.detail)) {

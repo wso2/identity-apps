@@ -95,7 +95,7 @@ export const updateImpersonationConfigurations = (data: ImpersonationConfigPatch
             }
 
             return Promise.resolve(response.data as ImpersonationConfigAPIResponseInterface);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<{ code: string | number }>) => {
             const errorMessage: string = ImpersonationConfigConstants.ErrorMessages
                 .IMPERSONATION_CONFIG_UPDATE_ERROR_CODE.getErrorMessage();
 
@@ -133,7 +133,7 @@ export const revertImpersonationConfigurations = (): Promise<void> => {
             }
 
             return Promise.resolve();
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<{ code: string | number }>) => {
             const errorMessage: string = ImpersonationConfigConstants.ErrorMessages
                 .IMPERSONATION_CONFIG_REVERT_ERROR_CODE.getErrorMessage();
 

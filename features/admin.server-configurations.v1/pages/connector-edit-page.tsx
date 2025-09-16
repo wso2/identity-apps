@@ -185,7 +185,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
         );
     };
 
-    const handleUpdateError = (error: AxiosError) => {
+    const handleUpdateError = (error: AxiosError<{ detail?: string }>) => {
         if (error.response && error.response.data && error.response.data.detail) {
             dispatch(
                 addAlert({
@@ -455,7 +455,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
 
                 setEnableForm(enableProperty ? enableProperty?.value === "true" : true);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ description?: string; detail?: string }>) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     dispatch(
                         addAlert({

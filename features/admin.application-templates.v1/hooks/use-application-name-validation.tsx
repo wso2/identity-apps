@@ -58,7 +58,7 @@ const useApplicationNameValidation = (): {
 
         return getApplicationList(null, null, "name eq " + appName?.trim())
             .then((response: ApplicationListInterface) => response)
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ description?: string }>) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,

@@ -530,8 +530,8 @@ export const getAPIResourceDetails = (apiResourceId: string): Promise<APIResourc
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse<APIResourceInterface>) => {
-            return Promise.resolve(response.data);
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response.data as APIResourceInterface);
         }).catch((error: AxiosError) => {
             return Promise.reject(error);
         });

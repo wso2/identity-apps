@@ -135,7 +135,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
 
                 onUpdate(application.id);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ description?: string }>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -236,7 +236,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                 onUpdate(application.id);
                 setShowDeleteConfirmationModal(false);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ description?: string }>) => {
 
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(setAlert({

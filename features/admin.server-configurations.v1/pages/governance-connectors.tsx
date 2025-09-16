@@ -106,7 +106,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                 setConnectors(response?.connectors as GovernanceConnectorWithRef[]);
                 !selectedConnector && setSelectorConnector(response.connectors[ 0 ] as GovernanceConnectorWithRef);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ description?: string; detail?: string }>) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     dispatch(
                         addAlert({

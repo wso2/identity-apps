@@ -134,7 +134,7 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
             .then((response: GovernanceConnectorInterface) => {
                 setConnector(response);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ detail?: string; description?: string }>) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     dispatch(
                         addAlert({
@@ -294,7 +294,7 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
         );
     };
 
-    const handleUpdateError = (error: AxiosError) => {
+    const handleUpdateError = (error: AxiosError<{ detail?: string }>) => {
         if (error.response && error.response.data && error.response.data.detail) {
             dispatch(
                 addAlert({

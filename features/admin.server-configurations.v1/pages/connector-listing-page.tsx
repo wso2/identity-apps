@@ -165,7 +165,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
 
                 setDynamicConnectorCategories(connectorCategoryArray);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ description?: string; detail?: string }>) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     store.dispatch(addAlert({
                         description: I18n.instance.t("governanceConnectors:notifications." +

@@ -72,7 +72,7 @@ export const getAPIResourcesForIdenitifierValidation = (
                     response.config);
             }
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<{ code: string | number }>) => {
             throw new IdentityAppsApiException(
                 error.message,
                 error.stack,
@@ -194,7 +194,7 @@ export const getAPIResourcePermissions = (
                     response.config);
             }
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<{ code: string | number }>) => {
             throw new IdentityAppsApiException(
                 error.message,
                 error.stack,
@@ -237,7 +237,7 @@ export const deleteAPIResource = (apiResourceId: string): Promise<null | Identit
             }
 
             return Promise.resolve(response.data);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<{ code: string | number }>) => {
             throw new IdentityAppsApiException(
                 error.message,
                 error.stack,
@@ -272,7 +272,7 @@ export const updateAPIResource = (
         .then((response: AxiosResponse) => {
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<{ code: string | number }>) => {
             throw new IdentityAppsApiException(
                 error.message,
                 error.stack,
@@ -303,7 +303,7 @@ export const createAPIResource = (
         .then((response: AxiosResponse) => {
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<{ code: string | number }>) => {
             throw new IdentityAppsApiException(
                 error.message,
                 error.stack,

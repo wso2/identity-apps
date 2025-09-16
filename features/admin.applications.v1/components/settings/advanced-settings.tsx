@@ -113,7 +113,7 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
 
                 onUpdate(appId);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ description?: string }>) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,

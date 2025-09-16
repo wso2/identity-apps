@@ -113,7 +113,7 @@ export const InternalNotificationSendingPage: FC<InternalNotificationSendingPage
 
                 setIsNotificationInternallyManaged(summationOfResponse);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ detail?: string, description?: string }>) => {
                 if (error?.response?.data?.detail) {
                     dispatch(
                         addAlert({
@@ -254,7 +254,7 @@ export const InternalNotificationSendingPage: FC<InternalNotificationSendingPage
 
                 return isNotificationInternallyManaged;
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ description?: string; detail?: string }>) => {
                 if (error?.response?.data?.detail) {
                     dispatch(
                         addAlert({
@@ -398,7 +398,7 @@ export const InternalNotificationSendingPage: FC<InternalNotificationSendingPage
             .then(() => {
                 return Promise.resolve(true);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ detail?: string }>) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     dispatch(
                         addAlert({

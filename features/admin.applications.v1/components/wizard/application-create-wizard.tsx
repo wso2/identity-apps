@@ -345,7 +345,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                 // Fallback to applications page, if the location header is not present.
                 history.push(AppConstants.getPaths().get("APPLICATIONS"));
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ description?: string }>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
                         description: error.response.data.description,

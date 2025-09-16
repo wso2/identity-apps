@@ -49,7 +49,7 @@ export const useHandleError = () => {
     const dispatch: Dispatch<any> = useDispatch();
     const { t } = useTranslation();
 
-    return (error: AxiosError, operation: string): void => {
+    return (error: AxiosError<{ description: string }>, operation: string): void => {
         if (error.response?.data?.description) {
             dispatch(
                 addAlert({

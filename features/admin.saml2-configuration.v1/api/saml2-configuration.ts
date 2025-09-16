@@ -90,7 +90,7 @@ export const revertSaml2Configurations = (): Promise<void> => {
             }
 
             return Promise.resolve();
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<{ code: string | number }>) => {
             const errorMessage: string = Saml2ConfigurationConstants.ErrorMessages
                 .SAML2_CONFIG_REVERT_ERROR_CODE.getErrorMessage();
 
@@ -132,7 +132,7 @@ export const updateSaml2Configurations = (data: Saml2ConfigAPIResponseInterface)
             }
 
             return Promise.resolve(response.data as Saml2ConfigAPIResponseInterface);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<{ code: string | number }>) => {
             const errorMessage: string = Saml2ConfigurationConstants.ErrorMessages
                 .SAML2_CONFIG_UPDATE_ERROR_CODE.getErrorMessage();
 

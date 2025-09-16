@@ -122,7 +122,7 @@ export const getAuthenticators = (filter?: string, type?: AuthenticatorTypes): P
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse<AuthenticatorInterface[]>) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
                     ConnectionUIConstants.ERROR_MESSAGES.AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR,
@@ -145,7 +145,7 @@ export const getAuthenticators = (filter?: string, type?: AuthenticatorTypes): P
                 }));
             }
 
-            return Promise.resolve(response.data);
+            return Promise.resolve(response.data as AuthenticatorInterface[]);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 ConnectionUIConstants.ERROR_MESSAGES.AUTHENTICATORS_FETCH_ERROR,
@@ -223,7 +223,7 @@ export const updateMultiFactorAuthenticatorDetails = (
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse<MultiFactorAuthenticatorInterface>) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
                     ConnectionUIConstants.ERROR_MESSAGES.MULTI_FACTOR_AUTHENTICATOR_UPDATE_INVALID_STATUS_CODE_ERROR,
@@ -234,7 +234,7 @@ export const updateMultiFactorAuthenticatorDetails = (
                     response.config);
             }
 
-            return Promise.resolve(response.data);
+            return Promise.resolve(response.data as MultiFactorAuthenticatorInterface);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 ConnectionUIConstants.ERROR_MESSAGES.MULTI_FACTOR_AUTHENTICATOR_UPDATE_ERROR,
@@ -265,7 +265,7 @@ export const getLocalAuthenticator = (id: string): Promise<AuthenticatorInterfac
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse<AuthenticatorInterface | CustomAuthConnectionInterface>) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
                     ConnectionUIConstants.ERROR_MESSAGES.LOCAL_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR,
@@ -276,7 +276,7 @@ export const getLocalAuthenticator = (id: string): Promise<AuthenticatorInterfac
                     response.config);
             }
 
-            return Promise.resolve(response.data);
+            return Promise.resolve(response.data as AuthenticatorInterface | CustomAuthConnectionInterface);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 ConnectionUIConstants.ERROR_MESSAGES.LOCAL_AUTHENTICATOR_FETCH_ERROR,
@@ -307,7 +307,7 @@ export const getMultiFactorAuthenticatorDetails = (id: string): Promise<MultiFac
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse<MultiFactorAuthenticatorInterface>) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
                     ConnectionUIConstants.ERROR_MESSAGES.MULTI_FACTOR_AUTHENTICATOR_FETCH_INVALID_STATUS_CODE_ERROR,
@@ -318,7 +318,7 @@ export const getMultiFactorAuthenticatorDetails = (id: string): Promise<MultiFac
                     response.config);
             }
 
-            return Promise.resolve(response.data);
+            return Promise.resolve(response.data as MultiFactorAuthenticatorInterface);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 ConnectionUIConstants.ERROR_MESSAGES.MULTI_FACTOR_AUTHENTICATOR_FETCH_ERROR,
@@ -397,7 +397,7 @@ export const getFederatedAuthenticatorMeta = (id: string): Promise<any> => {
             }
 
             return Promise.resolve(response.data as FederatedAuthenticatorMetaInterface);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<{ code: string | number; message: string }>) => {
             throw new IdentityAppsApiException(
                 error.response?.data?.message ?? I18n.instance.t(
                     "authenticationProvider:notifications.getFederatedAuthenticatorMetadata.genericError.description"),

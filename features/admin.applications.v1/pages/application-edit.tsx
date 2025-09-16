@@ -969,7 +969,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 setShowConfirmationModal(false);
                 setViewBannerDetails(false);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ description?: string }>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,

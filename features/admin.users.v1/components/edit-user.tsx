@@ -153,7 +153,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                     setIsSelectedSuperAdmin(true);
                 }
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ description?: string; detail?: string }>) => {
 
                 setHideTermination(true);
 

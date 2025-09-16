@@ -70,7 +70,7 @@ const changeActionStatus = (
             }
 
             return Promise.resolve(response.data as ActionBasicResponseInterface);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<{ code: string | number }>) => {
             throw new IdentityAppsApiException(
                 error.message,
                 error.stack,

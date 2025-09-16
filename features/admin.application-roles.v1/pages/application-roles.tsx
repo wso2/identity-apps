@@ -87,7 +87,7 @@ const ApplicationRolesPage = (props: ApplicationRolesPageInterface): ReactElemen
             .then((response: ApplicationRoleInterface[]) => {
                 filterApplicationsList(response);
                 setError(false);
-            }).catch((error: AxiosError) => {
+            }).catch((error: AxiosError<{ detail?: string; description?: string; message?: string }>) => {
                 setError(true);
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
@@ -129,7 +129,7 @@ const ApplicationRolesPage = (props: ApplicationRolesPageInterface): ReactElemen
                 mapApplicationListWithApplicationRoles(response.applications, roles);
                 setError(false);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ detail?: string; description?: string }>) => {
                 setError(true);
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({

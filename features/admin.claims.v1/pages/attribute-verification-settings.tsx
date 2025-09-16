@@ -144,7 +144,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
                 setConnectorDetails(response);
                 updateFormDataFromConnector(response);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ description?: string }>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(
                         addAlert({
@@ -272,7 +272,7 @@ const AttributeVerificationSettingsFormPage: FunctionComponent<AttributeVerifica
      *
      * @param error - Error response.
      */
-    const handleUpdateError = (error: AxiosError) => {
+    const handleUpdateError = (error: AxiosError<{ description?: string }>) => {
         if (error.response && error.response.data && error.response.data.description) {
             dispatch(
                 addAlert({

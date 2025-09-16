@@ -343,7 +343,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
 
                 onUpdate(appId);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ description?: string; code?: string }>) => {
 
                 const DISALLOWED_PROGRAMMING_CONSTRUCTS: string = "APP-60001";
 

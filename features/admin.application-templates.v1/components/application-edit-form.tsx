@@ -210,7 +210,7 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
                     level: AlertLevels.SUCCESS,
                     message: t("applications:notifications.updateApplication.success.message")
                 }));
-            }).catch((error: AxiosError) => {
+            }).catch((error: AxiosError<{ description?: string }>) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -250,7 +250,7 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
                         }));
                     }
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<{ description?: string }>) => {
                     callback();
 
                     if (error?.response?.data?.description) {

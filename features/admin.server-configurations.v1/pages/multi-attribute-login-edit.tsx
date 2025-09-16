@@ -91,7 +91,7 @@ export const MultiAttributeLoginEdit: FunctionComponent<GovernanceConnectorsPage
                 response.categoryId = categoryId;
                 setConnector(response);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ description?: string; detail?: string }>) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     dispatch(
                         addAlert({

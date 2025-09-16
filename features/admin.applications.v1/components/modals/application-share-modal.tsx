@@ -273,7 +273,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                         "client-id": clientId
                     });
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<{ message?: string }>) => {
                     onClose(null, null);
                     if (error.response.data.message) {
                         dispatch(
@@ -333,7 +333,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                             "client-id": clientId
                         });
                     })
-                    .catch((error: AxiosError) => {
+                    .catch((error: AxiosError<{ message?: string }>) => {
                         onClose(null, null);
                         if (error.response.data.message) {
                             dispatch(
@@ -391,7 +391,7 @@ export const ApplicationShareModal: FunctionComponent<ApplicationShareModalProps
                         "client-id": clientId
                     });
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<{ message?: string }>) => {
                     onClose(null, null);
                     if (error.response.data.message) {
                         dispatch(

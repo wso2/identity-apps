@@ -198,7 +198,7 @@ export const generateInviteLink = (username: string, domain: string): Promise<an
             }
 
             return Promise.resolve(response.data);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<{ code: string | number }>) => {
             throw new IdentityAppsApiException(
                 error.response?.data?.message ?? UserManagementConstants.RESOURCE_NOT_FOUND_ERROR_MESSAGE,
                 error.stack,

@@ -68,12 +68,12 @@ export const getOrganizationRoles = (
     };
 
     return httpClient(config)
-        .then((response: HttpResponse<OrganizationRoleListResponseInterface>) => {
+        .then((response: HttpResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get organization roles."));
             }
 
-            return Promise.resolve(response?.data);
+            return Promise.resolve(response?.data as OrganizationRoleListResponseInterface);
         })
         .catch((error: HttpError) => {
             return Promise.reject(error?.response?.data);

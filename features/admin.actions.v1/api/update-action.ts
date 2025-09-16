@@ -74,7 +74,7 @@ const updateAction = <T extends ActionUpdateInterface>(
             }
 
             return Promise.resolve(response.data as ActionResponseInterface);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<{ code: string | number }>) => {
             throw new IdentityAppsApiException(
                 error.message,
                 error.stack,

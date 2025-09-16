@@ -179,7 +179,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                 setShowDeleteConfirmationModal(false);
                 onDelete();
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ description?: string }>) => {
                 setIsDeletionInProgress(false);
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
@@ -221,7 +221,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
 
                 onUpdate(appId);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ description?: string }>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -274,7 +274,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                 setShowDisableConfirmationModal(false);
                 onUpdate(appId);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ description?: string }>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,

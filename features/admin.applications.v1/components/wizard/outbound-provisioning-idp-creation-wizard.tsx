@@ -127,7 +127,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
 
                     onUpdate(application.id);
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<{ description?: string }>) => {
                     if (error.response && error.response.data && error.response.data.description) {
                         dispatch(addAlert({
                             description: error.response.data.description,

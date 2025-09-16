@@ -292,7 +292,7 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
                 // but the state update takes time.
                 onSuccess && onSuccess(response, google, gitHub, facebook, microsoft, apple);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ description?: string; message?: string }>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data?.description,

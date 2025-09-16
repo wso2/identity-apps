@@ -218,7 +218,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     );
                 }
                 onUserDelete();
-            }).catch((error: AxiosError) => {
+            }).catch((error: AxiosError<{ description?: string; detail?: string }>) => {
                 if (error.response && error.response.data) {
                     let errorDescription: string = t("users:notifications.deleteUser.genericError.description");
 
