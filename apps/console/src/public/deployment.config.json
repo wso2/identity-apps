@@ -482,6 +482,10 @@
                     {
                         "feature": "applications.edit.general.branding",
                         "flag": ""
+                    },
+                    {
+                        "feature": "applications.create.ws-fed.protocol.template",
+                        "flag": ""
                     }
                 ],
                 "scopes": {

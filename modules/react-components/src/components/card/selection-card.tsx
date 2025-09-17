@@ -38,6 +38,10 @@ export interface SelectionCardPropsInterface extends Omit<CardProps, "image">, I
      */
     disabled?: boolean;
     /**
+     * Feature label component
+     */
+    featureLabel?: ReactElement;
+    /**
      * Id for the card.
      */
     id?: string;
@@ -124,6 +128,7 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
         description,
         disabled,
         header,
+        featureLabel,
         id,
         inline,
         image,
@@ -191,6 +196,7 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
             onMouseLeave={ () => setDimmerState(false) }
             { ...rest }
         >
+            { featureLabel }
             {
                 disabled && dimmerState && overlay
             }
