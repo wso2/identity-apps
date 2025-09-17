@@ -904,7 +904,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                         </Item.Content>
                                     </Item>
                                 </Item.Group>
-                                { (organizationConfigs.showOrganizationDropdown && !isPrivilegedUser)
+                                { organizationConfigs.showOrganizationDropdown && !isPrivilegedUser
                                     &&  renderDropdownOptions() }
                             </Dropdown.Menu>
                         ) : (
