@@ -21,6 +21,7 @@ import { store } from "@wso2is/admin.core.v1/store";
 import { ClaimConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
+    APIErrorResponseInterface,
     Claim,
     ClaimDialect,
     ClaimDialectsGetParams,
@@ -167,7 +168,7 @@ export const deleteAClaim = (id: string): Promise<any> => {
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<APIErrorResponseInterface>) => {
             /*
             TODO:
             Due to : https://github.com/wso2/product-is/issues/8729. We are hard coding following error response for
@@ -681,7 +682,7 @@ export const getAllExternalClaims = (dialectID: string, params: ClaimsGetParams)
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<APIErrorResponseInterface>) => {
             if (error?.response?.data?.code !== ClaimManagementConstants.RESOURCE_NOT_FOUND_ERROR_CODE) {
                 throw new IdentityAppsApiException(
                     ClaimConstants.ALL_EXTERNAL_CLAIMS_FETCH_REQUEST_ERROR,

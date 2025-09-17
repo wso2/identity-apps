@@ -31,3 +31,4 @@ export * from "./ua-parser";
 export * from "./userstores";
 export * from "./url-components";
 export * from "./patch-operation";
+export * from "./errors";

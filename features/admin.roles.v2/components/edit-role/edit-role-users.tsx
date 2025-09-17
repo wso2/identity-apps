@@ -30,6 +30,7 @@ import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreDropdownItem, UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import {
+    APIErrorResponseInterface,
     AlertLevels,
     FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
@@ -329,7 +330,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                 }
                 onRoleUpdate(tabIndex);
             })
-            .catch( (error: AxiosError) => {
+            .catch( (error: AxiosError<APIErrorResponseInterface>) => {
                 if (error?.response?.data?.detail) {
                     dispatch(
                         addAlert({
@@ -399,7 +400,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                 }
                 onRoleUpdate(tabIndex);
             })
-            .catch( (error: AxiosError) => {
+            .catch( (error: AxiosError<APIErrorResponseInterface>) => {
                 if (error?.response?.data?.detail) {
                     dispatch(
                         addAlert({

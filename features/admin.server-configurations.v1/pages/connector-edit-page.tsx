@@ -25,7 +25,7 @@ import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/s
 import RegistrationFlowBuilderBanner
     from "@wso2is/admin.registration-flow-builder.v1/components/registration-flow-builder-banner";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { APIErrorResponseInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     DangerZone,
@@ -185,7 +185,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
         );
     };
 
-    const handleUpdateError = (error: AxiosError<{ detail?: string }>) => {
+    const handleUpdateError = (error: AxiosError<APIErrorResponseInterface>) => {
         if (error.response && error.response.data && error.response.data.detail) {
             dispatch(
                 addAlert({
@@ -455,7 +455,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
 
                 setEnableForm(enableProperty ? enableProperty?.value === "true" : true);
             })
-            .catch((error: AxiosError<{ description?: string; detail?: string }>) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     dispatch(
                         addAlert({

@@ -28,6 +28,7 @@ import { getUsersList, sendInvite } from "@wso2is/admin.users.v1/api";
 import { AdminAccountTypes, UserManagementConstants } from "@wso2is/admin.users.v1/constants/user-management-constants";
 import { UserInviteInterface, UserListInterface } from "@wso2is/admin.users.v1/models/user";
 import {
+    APIErrorResponseInterface,
     AlertLevels,
     IdentifiableComponentInterface,
     RolesInterface,
@@ -276,7 +277,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
                 setIsSubmitting(true);
 
                 await updateUsersForRoleFunction(roleId, roleData)
-                    .catch((error: AxiosError<{ detail: string }>) => {
+                    .catch((error: AxiosError<APIErrorResponseInterface>) => {
                         if (!error.response || error.response.status === 401) {
                             setAlert({
                                 description: t(
@@ -384,7 +385,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
                 }));
                 onUserUpdate();
             })
-            .catch((error: AxiosError<{ detail: string }>) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (!error.response || error.response.status === 401) {
                     setAlert({
                         description: t(
@@ -448,7 +449,7 @@ export const AddAdministratorWizard: FunctionComponent<AddUserWizardPropsInterfa
                     closeWizard();
                     onInvitationSendSuccessful();
                 })
-                .catch((error: AxiosError<{ code: string | number; description: string }>) => {
+                .catch((error: AxiosError<APIErrorResponseInterface>) => {
                     // Axios throws a generic `Network Error` for 401 status.
                     // As a temporary solution, a check to see if a response
                     // is available has be used.

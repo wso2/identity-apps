@@ -22,7 +22,7 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { APIErrorResponseInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment, PageLayout } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
@@ -147,7 +147,7 @@ const CreateRolePage: FunctionComponent<CreateRoleProps> = (props: CreateRolePro
                         history.push(AppConstants.getPaths().get("ROLES"));
                     }
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<APIErrorResponseInterface>) => {
                     if (!error.response || error.response.status === 401) {
                         dispatch(addAlert({
                             description: t("roles:notifications.createRole.error" +

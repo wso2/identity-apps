@@ -47,6 +47,7 @@ import { IdentityAppsError } from "@wso2is/core/errors";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
+    APIErrorResponseInterface,
     AlertInterface,
     AlertLevels,
     Claim,
@@ -457,7 +458,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             .then((response: GovernanceConnectorInterface) => {
                 setConnector(response);
             })
-            .catch((error: AxiosError<{ description?: string; detail?: string }>) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error?.response?.data?.detail) {
                     dispatch(
                         addAlert({

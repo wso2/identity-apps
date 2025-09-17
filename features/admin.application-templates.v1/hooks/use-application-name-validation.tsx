@@ -20,7 +20,7 @@ import { getApplicationList } from "@wso2is/admin.applications.v1/api/applicatio
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import { ApplicationListInterface } from "@wso2is/admin.applications.v1/models/application";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { AlertLevels } from "@wso2is/core/models";
+import { APIErrorResponseInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AxiosError } from "axios";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
@@ -58,7 +58,7 @@ const useApplicationNameValidation = (): {
 
         return getApplicationList(null, null, "name eq " + appName?.trim())
             .then((response: ApplicationListInterface) => response)
-            .catch((error: AxiosError<{ description?: string }>) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,

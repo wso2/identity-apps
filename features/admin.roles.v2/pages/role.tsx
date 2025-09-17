@@ -27,6 +27,7 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import {
+    APIErrorResponseInterface,
     AlertInterface,
     AlertLevels,
     FeatureAccessConfigInterface,
@@ -186,7 +187,7 @@ const RolesPage: FunctionComponent<RolesPagePropsInterface> = (
                     message: t("roles:notifications.deleteRole.success.message")
                 });
                 mutateRolesList();
-            }).catch((error: AxiosError) => {
+            }).catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     handleAlerts({
                         description: error.response.data.detail,

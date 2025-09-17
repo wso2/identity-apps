@@ -51,6 +51,7 @@ import {
     UserStoreListItem
 } from "@wso2is/admin.userstores.v1/models/user-stores";
 import {
+    APIErrorResponseInterface,
     AlertInterface,
     AlertLevels,
     IdentifiableComponentInterface,
@@ -623,7 +624,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
                 setEmailVerificationEnabled(emailVerification.value === "true" ||
                     invitedUserRegistrationConfigs?.isEnabled);
-            }).catch((error: AxiosError) => {
+            }).catch((error: AxiosError<APIErrorResponseInterface>) => {
                 handleAlerts({
                     description: error?.response?.data?.description ?? t(
                         "governanceConnectors:notifications." +

@@ -47,7 +47,12 @@ import { applicationConfig } from "@wso2is/admin.extensions.v1/configs/applicati
 import useGetExtensionTemplates from "@wso2is/admin.template-core.v1/api/use-get-extension-templates";
 import { ExtensionTemplateListInterface, ResourceTypes } from "@wso2is/admin.template-core.v1/models/templates";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
+import {
+    APIErrorResponseInterface,
+    AlertLevels,
+    FeatureAccessConfigInterface,
+    IdentifiableComponentInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Forms } from "@wso2is/forms";
 import {
@@ -969,7 +974,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 setShowConfirmationModal(false);
                 setViewBannerDetails(false);
             })
-            .catch((error: AxiosError<{ description?: string }>) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,

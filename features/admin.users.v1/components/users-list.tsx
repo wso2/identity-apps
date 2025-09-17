@@ -31,6 +31,7 @@ import { RealmConfigInterface } from "@wso2is/admin.server-configurations.v1";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { getUserNameWithoutDomain, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
+    APIErrorResponseInterface,
     AlertLevels,
     LoadableComponentInterface,
     SBACInterface,
@@ -218,7 +219,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     );
                 }
                 onUserDelete();
-            }).catch((error: AxiosError<{ description?: string; detail?: string }>) => {
+            }).catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error.response && error.response.data) {
                     let errorDescription: string = t("users:notifications.deleteUser.genericError.description");
 

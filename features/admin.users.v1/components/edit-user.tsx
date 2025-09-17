@@ -24,6 +24,7 @@ import { ConnectorPropertyInterface } from "@wso2is/admin.server-configurations.
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
+    APIErrorResponseInterface,
     AlertInterface,
     AlertLevels,
     FeatureAccessConfigInterface,
@@ -153,7 +154,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                     setIsSelectedSuperAdmin(true);
                 }
             })
-            .catch((error: AxiosError<{ description?: string; detail?: string }>) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
 
                 setHideTermination(true);
 

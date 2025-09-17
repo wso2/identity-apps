@@ -24,6 +24,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { UserAgentParser } from "@wso2is/core/helpers";
 import {
+    APIErrorResponseInterface,
     AlertInterface,
     AlertLevels,
     ProfileInfoInterface,
@@ -149,7 +150,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
             .then((response: AxiosResponse<UserSessionsInterface>) => {
                 setUserSessions(response.data);
             })
-            .catch((error: AxiosError<{ description?: string; detail?: string }>) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error.response
                     && error.response.data
                     && (error.response.data.description || error.response.data.detail)) {
@@ -533,7 +534,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                     )
                 }));
             })
-            .catch((error: AxiosError<{ description?: string; detail?: string }>) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 // fetch the sessions if and only if the session termination fails.
                 fetchUserSessions(user.id);
                 if (error.response
@@ -588,7 +589,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                     )
                 }));
             })
-            .catch((error: AxiosError<{ description?: string; detail?: string }>) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error.response
                     && error.response.data
                     && (error.response.data.description || error.response.data.detail)) {

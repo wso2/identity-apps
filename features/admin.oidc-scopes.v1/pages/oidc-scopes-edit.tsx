@@ -26,7 +26,13 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { sortList } from "@wso2is/admin.core.v1/utils/sort-list";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, Claim, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
+import {
+    APIErrorResponseInterface,
+    AlertLevels,
+    Claim,
+    ExternalClaim,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
 import { useTrigger } from "@wso2is/forms";
@@ -150,7 +156,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                 .then((response: Claim[]) => {
                     setClaims(response);
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<APIErrorResponseInterface>) => {
                     dispatch(
                         addAlert({
                             description:
@@ -233,7 +239,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                     });
                     setOIDCAttributes(response);
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<APIErrorResponseInterface>) => {
                     if (error.response && error.response.data && error.response.data.description) {
                         dispatch(
                             addAlert({
@@ -296,7 +302,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                 .then((response: OIDCScopesListInterface) => {
                     setScope(response);
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<APIErrorResponseInterface>) => {
                     if (error.response && error.response.data && error.response.data.description) {
                         dispatch(
                             addAlert({

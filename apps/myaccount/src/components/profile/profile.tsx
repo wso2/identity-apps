@@ -21,6 +21,7 @@ import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { getUserNameWithoutDomain, hasRequiredScopes, isFeatureEnabled, resolveUserstore } from "@wso2is/core/helpers";
 import {
+    APIErrorResponseInterface,
     AlertLevels,
     ClaimDataType,
     PatchOperationRequest,
@@ -241,7 +242,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     });
                 }
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error?.response?.data?.detail) {
                     onAlertFired({
                         description: t(

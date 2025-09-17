@@ -32,6 +32,7 @@ import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { organizationConfigs } from "@wso2is/admin.extensions.v1";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
+    APIErrorResponseInterface,
     AlertLevels,
     IdentifiableComponentInterface,
     LoadableComponentInterface
@@ -236,7 +237,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 setShowDeleteConfirmationModal(false);
                 onOrganizationDelete();
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 setShowDeleteConfirmationModal(false);
                 if (error.response && error.response.data && error.response.data.description) {
                     if (error.response.data.code === "ORG-60007") {

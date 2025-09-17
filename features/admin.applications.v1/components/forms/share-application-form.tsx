@@ -36,6 +36,7 @@ import {
 } from "@wso2is/admin.organizations.v1/models";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
+    APIErrorResponseInterface,
     AlertLevels,
     FeatureAccessConfigInterface,
     IdentifiableComponentInterface
@@ -472,7 +473,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                         );
                     }
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<APIErrorResponseInterface>) => {
                     if (error.response.data.message) {
                         dispatch(
                             addAlert({
@@ -530,7 +531,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                             })
                         );
                     })
-                    .catch((error: AxiosError) => {
+                    .catch((error: AxiosError<APIErrorResponseInterface>) => {
                         if (error.response.data.message) {
                             dispatch(
                                 addAlert({
@@ -580,7 +581,7 @@ export const ApplicationShareForm: FunctionComponent<ApplicationShareFormPropsIn
                         })
                     );
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<APIErrorResponseInterface>) => {
                     if (error?.response?.data?.message) {
                         dispatch(
                             addAlert({

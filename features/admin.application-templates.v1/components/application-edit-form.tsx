@@ -31,7 +31,7 @@ import {
 } from "@wso2is/admin.applications.v1/models/application-inbound";
 import { TemplateDynamicForm } from "@wso2is/admin.template-core.v1/components/template-dynamic-form";
 import { DynamicFieldInterface } from "@wso2is/admin.template-core.v1/models/dynamic-fields";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { APIErrorResponseInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AxiosError } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -210,7 +210,7 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
                     level: AlertLevels.SUCCESS,
                     message: t("applications:notifications.updateApplication.success.message")
                 }));
-            }).catch((error: AxiosError<{ description?: string }>) => {
+            }).catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -250,7 +250,7 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
                         }));
                     }
                 })
-                .catch((error: AxiosError<{ description?: string }>) => {
+                .catch((error: AxiosError<APIErrorResponseInterface>) => {
                     callback();
 
                     if (error?.response?.data?.description) {

@@ -46,6 +46,7 @@ import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-mana
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import {
+    APIErrorResponseInterface,
     AlertLevels,
     Claim,
     ClaimsGetParams,
@@ -134,7 +135,7 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
             .then((response: GovernanceConnectorInterface) => {
                 setConnector(response);
             })
-            .catch((error: AxiosError<{ detail?: string; description?: string }>) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     dispatch(
                         addAlert({
@@ -294,7 +295,7 @@ const AlternativeLoginIdentifierInterface: FunctionComponent<AlternativeLoginIde
         );
     };
 
-    const handleUpdateError = (error: AxiosError<{ detail?: string }>) => {
+    const handleUpdateError = (error: AxiosError<APIErrorResponseInterface>) => {
         if (error.response && error.response.data && error.response.data.detail) {
             dispatch(
                 addAlert({

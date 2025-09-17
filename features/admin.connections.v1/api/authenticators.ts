@@ -17,18 +17,18 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { store } from "@wso2is/admin.core.v1/store";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
+import { store } from "@wso2is/admin.core.v1/store";
 import {
     IdVPTemplateTags
 } from "@wso2is/admin.identity-verification-providers.v1/models/identity-verification-providers";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
+import { APIErrorResponseInterface, HttpMethods } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { ConnectionUIConstants } from "../constants/connection-ui-constants";
@@ -397,7 +397,7 @@ export const getFederatedAuthenticatorMeta = (id: string): Promise<any> => {
             }
 
             return Promise.resolve(response.data as FederatedAuthenticatorMetaInterface);
-        }).catch((error: AxiosError<{ code: string | number; message: string }>) => {
+        }).catch((error: AxiosError<APIErrorResponseInterface>) => {
             throw new IdentityAppsApiException(
                 error.response?.data?.message ?? I18n.instance.t(
                     "authenticationProvider:notifications.getFederatedAuthenticatorMetadata.genericError.description"),

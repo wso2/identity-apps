@@ -55,7 +55,12 @@ import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscri
 import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
 import { UIConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertLevels, IdentifiableComponentInterface, StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
+import {
+    APIErrorResponseInterface,
+    AlertLevels,
+    IdentifiableComponentInterface,
+    StorageIdentityAppsSettingsInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
 import {
@@ -249,7 +254,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             }).then((axiosResponse: AxiosResponse<GetSecretListResponse>) => {
                 setSecretList(axiosResponse.data);
                 setFilteredSecretList(axiosResponse.data);
-            }).catch((error: AxiosError<{ description?: string; message?: string }>) => {
+            }).catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data?.description,
