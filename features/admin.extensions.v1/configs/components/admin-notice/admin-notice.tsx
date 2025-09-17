@@ -47,6 +47,10 @@ export interface AdminNoticeProps extends IdentifiableComponentInterface {
      */
     instructions: ReactElement[];
     /**
+     * More details related to the notice.
+     */
+    moreDetails?: ReactElement;
+    /**
      * Function to set the display state of the banner.
      */
     setDisplayBanner?: (display: boolean) => void;
@@ -64,6 +68,7 @@ const AdminNotice: FunctionComponent<AdminNoticeProps> = (props: AdminNoticeProp
         title,
         description,
         instructions,
+        moreDetails,
         setDisplayBanner,
         [ "data-componentid" ]: componentId
     } = props;
@@ -107,6 +112,9 @@ const AdminNotice: FunctionComponent<AdminNoticeProps> = (props: AdminNoticeProp
                         ))
                     }
                 </List>
+                <Typography variant="body1">
+                    { moreDetails }
+                </Typography>
             </Box>
         );
     };
