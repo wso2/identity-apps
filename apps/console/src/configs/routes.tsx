@@ -223,7 +223,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     showOnSidePanel: false
                 }
             ],
-            component: lazy(() => import("@wso2is/admin.flows.v1/pages/flows")),
+            component: lazy(() => import("@wso2is/admin.flows.v1/pages/flows-page")),
             exact: false,
             featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.FLOWS,
             icon: {
