@@ -58,6 +58,8 @@ import { DynamicApplicationContextCard } from "./dynamic-application-context-car
 import { FeatureCarousel } from "./new-feature-announcement/new-feature-announcement";
 import { getGettingStartedCardIllustrations } from "../configs/ui";
 import HomeConstants from "../constants/home-constants";
+import { Config } from "@wso2is/admin.core.v1/configs/app";
+import Link from "@oxygen-ui/react/Link/Link";
 
 /**
  * Proptypes for the overview page component.
@@ -612,6 +614,19 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                             <b>Editor - Applications</b>: No longer able to assign roles to users or groups.
                         </Trans>
                     ] }
+                    moreDetails={ (
+                        <Trans i18nKey={ "console:common.quickStart.sections.adminNotice.moreDetails" } >
+                            Please refer to
+                            <Link
+                                href={ Config?.getDeploymentConfig()?.docSiteURL
+                                    + "/references/user-management/user-roles/#change-in-role-permissions" }
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                Change in Role Permissions
+                            </Link> for more information.
+                        </Trans>
+                    ) }
                     setDisplayBanner={ setAdminNoticeEnabled }
                 />
             ) }
