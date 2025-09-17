@@ -34,6 +34,7 @@ import RulesProperties from "./nodes/rules-properties";
 import ResourcePropertyFactory from "./resource-property-factory";
 import FederationProperties from "./steps/execution/federation-properties";
 import RegistrationFlowBuilderConstants from "../../constants/registration-flow-builder-constants";
+import UserOnboardingProperties from "./steps/end/user-onboarding-properties";
 
 /**
  * Props interface of {@link ResourceProperties}
@@ -108,6 +109,20 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
     };
 
     switch (resource.category) {
+        case StepCategories.Interface:
+            if (resource.type === StepTypes.End) {
+                return (
+                    <>
+                        { renderElementId() }
+                        <UserOnboardingProperties
+                            resource={ resource }
+                            data-componentid="field-extended-properties"
+                            onChange={ onChange }
+                        />
+                        { renderElementPropertyFactory() }
+                    </>
+                );
+            }
         case ElementCategories.Field:
             return (
                 <>

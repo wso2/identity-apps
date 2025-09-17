@@ -23,6 +23,7 @@ import Execution from "./execution/execution";
 import Rule from "./rule/rule";
 import View from "./view/view";
 import { Step, StepTypes } from "../../../models/steps";
+import End from "./end/end";
 
 /**
  * Props interface of {@link CommonStepFactory}
@@ -59,6 +60,10 @@ export const CommonStepFactory: FunctionComponent<CommonStepFactoryPropsInterfac
 
     if (resource.type === StepTypes.Execution) {
         return <Execution data-componentid={ componentId } resource={ resource } { ...rest } />;
+    }
+
+    if (resource.type === StepTypes.End) {
+        return <End data-componentid={ componentId } resource={ resource } { ...rest } />;
     }
 
     return null;
