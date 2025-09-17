@@ -243,6 +243,7 @@ export interface ConsoleNS {
                 adminNotice: {
                     title: string;
                     description: string;
+                    moreDetails: string;
                     instructions: {
                         0: string;
                         1: string;
