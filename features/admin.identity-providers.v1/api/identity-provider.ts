@@ -187,7 +187,7 @@ export const getLocalAuthenticators = (): Promise<LocalAuthenticatorInterface[]>
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse<LocalAuthenticatorInterface[]>) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
                     ConnectionUIConstants.ERROR_MESSAGES.LOCAL_AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR,
@@ -198,7 +198,7 @@ export const getLocalAuthenticators = (): Promise<LocalAuthenticatorInterface[]>
                     response.config);
             }
 
-            return Promise.resolve(response.data);
+            return Promise.resolve(response.data as LocalAuthenticatorInterface[]);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 ConnectionUIConstants.ERROR_MESSAGES.LOCAL_AUTHENTICATORS_FETCH_ERROR,

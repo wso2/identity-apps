@@ -110,7 +110,7 @@ export const WebhookSettingsForm: FunctionComponent<WebhookSettingsFormPropsInte
     /**
      * Handles the error scenario of the update.
      */
-    const handleUpdateError = (error: AxiosError) => {
+    const handleUpdateError = (error: AxiosError<{ description?: string; detail?: string }>) => {
         if (error?.response?.data?.detail) {
             dispatch(
                 addAlert({

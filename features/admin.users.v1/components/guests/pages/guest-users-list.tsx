@@ -21,7 +21,12 @@ import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { UserListInterface } from "@wso2is/admin.core.v1/models/users";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import {
+    APIErrorResponseInterface,
+    AlertLevels,
+    IdentifiableComponentInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
@@ -105,7 +110,7 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                 }));
                 getGuestUsersList();
 
-            }).catch((error: AxiosError) => {
+            }).catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description ?? error?.response?.data?.detail
@@ -138,7 +143,7 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                 }));
                 getGuestUsersList();
 
-            }).catch((error: AxiosError) => {
+            }).catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description ?? error?.response?.data?.detail
@@ -170,7 +175,7 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                     message: t("invite:notifications.resendInvite.success.message")
                 }));
 
-            }).catch((error: AxiosError) => {
+            }).catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description ?? error?.response?.data?.detail

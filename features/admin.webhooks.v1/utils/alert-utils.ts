@@ -57,7 +57,11 @@ export const useHandleWebhookError = () => {
     const dispatch: Dispatch<any> = useDispatch();
     const { t } = useTranslation();
 
-    return (error: AxiosError, operation: string, additionalParams?: DescriptionParams): void => {
+    return (
+        error: AxiosError<{ description?: string}>,
+        operation: string,
+        additionalParams?: DescriptionParams
+    ): void => {
         const descriptionParams: DescriptionParams = additionalParams || {};
 
         if (error.response?.data?.description) {

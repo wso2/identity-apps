@@ -60,7 +60,7 @@ export const deleteWebhook = (webhookId: string): Promise<string> => {
 
             return Promise.resolve(response?.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<{ code: string | number }>) => {
             throw new IdentityAppsApiException(
                 error.message,
                 error.stack,

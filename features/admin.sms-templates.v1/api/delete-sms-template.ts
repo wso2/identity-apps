@@ -66,7 +66,7 @@ const deleteSmsTemplate = (templateType: string, locale: string): Promise<AxiosR
 
             return response;
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<{ code: string | number }>) => {
             throw new IdentityAppsApiException(
                 "Error occurred while deleting the SMS template.",
                 error.stack,

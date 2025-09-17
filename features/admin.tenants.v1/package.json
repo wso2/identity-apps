@@ -34,7 +34,7 @@
         "@wso2is/react-components": "^2.9.16",
         "@wso2is/theme": "^2.8.4",
         "@wso2is/validation": "^2.4.1",
-        "axios": "^0.19.2",
+        "axios": "^0.30.0",
         "codemirror": "^5.52.0",
         "country-language": "^0.1.7",
         "deep-equal": "^2.2.2",
@@ -135,7 +135,7 @@
         "typescript": "^4.6.4"
     },
     "peerDependencies": {
-        "@asgardeo/auth-react": "^5.1.2",
+        "@asgardeo/auth-react": "^5.4.1",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-router-dom": "^4.3.1"

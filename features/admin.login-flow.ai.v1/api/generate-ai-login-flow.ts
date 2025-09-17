@@ -69,12 +69,12 @@ const generateLoginFlow = (
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse<GenerateLoginFlowAPIResponseInterface>) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200 && response.status !== 202) {
                 throw new Error(`Failed to generate login flow: ${response.statusText}`);
             }
 
-            return response.data;
+            return response.data as GenerateLoginFlowAPIResponseInterface;
         }).catch((error: AxiosError) => {
             const errorMessage: string = error.response?.data?.message || "Unknown error occurred";
 

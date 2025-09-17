@@ -19,7 +19,7 @@
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/models";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { APIErrorResponseInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CommonUtils } from "@wso2is/core/utils";
 import { ContentLoader, CopyInputField, Message, Popup } from "@wso2is/react-components";
@@ -87,7 +87,7 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
             .then((response: string) => {
                 setInviteLink(response);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 // Axios throws a generic `Network Error` for 401 status.
                 // As a temporary solution, a check to see if a response
                 // is available has be used.
