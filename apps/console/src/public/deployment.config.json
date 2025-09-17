@@ -1788,7 +1788,7 @@
         "isSAASDeployment": false,
         "isSignatureValidationCertificateAliasEnabled": false,
         "isTrustedAppConsentRequired": false,
-        "isWsFedConnectorEnabled": true,
+        "isWSFedProtocolTemplateEnabled": true,
         "isXacmlConnectorEnabled": false,
         "legacyMode": {
             "applicationListSystemApps": false,
