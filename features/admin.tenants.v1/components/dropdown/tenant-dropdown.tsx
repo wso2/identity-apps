@@ -802,6 +802,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                         className={
                                             isSubOrg ||
                                             !organizationConfigs.showOrganizationDropdown ||
+                                            isPrivilegedUser ||
                                             renderDropdownOptions()?.length <= 0
                                                 ? "header sub-org-header"
                                                 : "header"
@@ -903,7 +904,8 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                         </Item.Content>
                                     </Item>
                                 </Item.Group>
-                                { organizationConfigs.showOrganizationDropdown &&  renderDropdownOptions() }
+                                { organizationConfigs.showOrganizationDropdown && !isPrivilegedUser
+                                    &&  renderDropdownOptions() }
                             </Dropdown.Menu>
                         ) : (
                             <Dropdown.Menu onClick={ handleDropdownClick }>
@@ -966,7 +968,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                     )
                     : null
             }
-            { !isPrivilegedUser && tenantDropdownMenu }
+            { tenantDropdownMenu }
         </>
     );
 };
