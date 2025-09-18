@@ -252,6 +252,10 @@ export interface usersNS {
                 message: string;
                 description: string;
             };
+            badRequestError: {
+                message: string;
+                description: string;
+            };
             genericError: {
                 message: string;
                 description: string;
