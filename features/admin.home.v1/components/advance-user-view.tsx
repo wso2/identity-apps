@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Link from "@oxygen-ui/react/Link/Link";
 import { GearIcon } from "@oxygen-ui/react-icons";
 import { FeatureAccessConfigInterface, FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
 import {
@@ -35,6 +36,7 @@ import {
 } from "@wso2is/admin.applications.v1/models/application";
 import { ApplicationManagementUtils } from "@wso2is/admin.applications.v1/utils/application-management-utils";
 import getTryItClientId from "@wso2is/admin.applications.v1/utils/get-try-it-client-id";
+import { Config } from "@wso2is/admin.core.v1/configs/app";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config"; // No specific rule found
@@ -557,6 +559,19 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                             <b>Editor - Applications</b>: No longer able to assign roles to users or groups.
                         </Trans>
                     ] }
+                    moreDetails={ (
+                        <Trans i18nKey={ "console:common.quickStart.sections.adminNotice.moreDetails" } >
+                            See
+                            <Link
+                                href={ Config?.getDeploymentConfig()?.docSiteURL
+                                    + "/references/user-management/user-roles/#change-in-role-permissions" }
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                documentation
+                            </Link> for recommended workarounds and more details.
+                        </Trans>
+                    ) }
                     setDisplayBanner={ setAdminNoticeEnabled }
                 />
             ) }

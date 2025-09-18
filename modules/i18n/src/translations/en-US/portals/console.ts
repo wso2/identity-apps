@@ -295,6 +295,7 @@ export const console: ConsoleNS = {
                 adminNotice: {
                     title: "Changes to Console Role Permissions",
                     description: "Starting <1>{{date}}</1>, we are updating the permissions of the <3>Editor - Users</3> and <5>Editor - Applications</5> Console roles.",
+                    moreDetails: "See <1>documentation</1> for recommended workarounds and more details.",
                     instructions: {
                         0: "<1>Editor - Users</1>: No longer able to edit role metadata or change permissions.",
                         1: "<1>Editor - Applications</1>: No longer able to assign roles to users or groups."
