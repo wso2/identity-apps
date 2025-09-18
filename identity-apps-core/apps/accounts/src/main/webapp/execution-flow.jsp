@@ -226,18 +226,16 @@
                 }, [code, state]);
 
                 useEffect(() => {
-                    if (mlt !== "null" && state !== "null") {
-                        const savedFlowId = localStorage.getItem(state);
-                        localStorage.removeItem(state);
+                    if (mlt !== "null" && flowId !== "null") {
                         setPostBody({
-                            flowId: savedFlowId,
+                            flowId: flowId,
                             actionId: "",
                             inputs: {
                                 mlt
                             }
                         });
                     }
-                }, [mlt, state]);
+                }, [mlt, flowId]);
 
                 useEffect(() => {
                     if (confirmationCode !== "null" && !confirmationEffectDone) {
@@ -333,7 +331,9 @@
 
                     if (flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error) {
                         setFlowError(flowData.data.additionalData.error);
+                        return;
                     }
+                    setFlowError(undefined);
                 }, [ error, flowType, flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error ]);
 
                 const handleInternalPrompt = (flowData) => {
