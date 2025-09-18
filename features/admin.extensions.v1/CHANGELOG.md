@@ -1,5 +1,14 @@
 # @wso2is/admin.extensions.v1
 
+## 2.40.7
+
+### Patch Changes
+
+- [#9147](https://github.com/wso2/identity-apps/pull/9147) [`d28c2c1292f3c75ac9dd9354b8e95fd2614176fd`](https://github.com/wso2/identity-apps/commit/d28c2c1292f3c75ac9dd9354b8e95fd2614176fd) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add more details to admin notice.
+
+- Updated dependencies [[`d28c2c1292f3c75ac9dd9354b8e95fd2614176fd`](https://github.com/wso2/identity-apps/commit/d28c2c1292f3c75ac9dd9354b8e95fd2614176fd)]:
+  - @wso2is/i18n@2.30.28
+
 ## 2.40.6
 
 ### Patch Changes
