@@ -507,7 +507,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                 : null
             );
         }
-    }, [ isEmailRequired ]);
+    }, [ isEmailRequired, emailVerificationEnabled, hasWorkflowAssociations ]);
 
     const resolveNamefieldAttributes = () => {
         const hiddenAttributes: (HiddenFieldNames)[] = [];
