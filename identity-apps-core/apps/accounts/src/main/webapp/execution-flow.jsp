@@ -331,7 +331,9 @@
 
                     if (flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error) {
                         setFlowError(flowData.data.additionalData.error);
+                        return;
                     }
+                    setFlowError(undefined);
                 }, [ error, flowType, flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error ]);
 
                 const handleInternalPrompt = (flowData) => {
