@@ -125,6 +125,9 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
     const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
         return state.config?.ui?.features?.applications;
     });
+    const sharedAppAdaptiveAuthDisabled: boolean =
+        featureConfig?.disabledFeatures?.includes(SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID);
+
     const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
 
     const { data: adaptiveAuthTemplates } = useGetAdaptiveAuthTemplates();
@@ -277,15 +280,12 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
     };
 
     const isAdaptiveAuthAvailable: boolean = useMemo(() => {
-        const sharedAppAdaptiveAuthDisabled: boolean =
-            featureConfig?.disabledFeatures?.includes(SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID);
-
         if (orgType === OrganizationType.SUBORGANIZATION && sharedAppAdaptiveAuthDisabled) {
             return false;
         }
 
         return isAdaptiveAuthenticationAvailable;
-    }, [ featureConfig, isAdaptiveAuthenticationAvailable, orgType ]);
+    }, [ isAdaptiveAuthenticationAvailable, orgType ]);
 
     const isVisualEditorEnabled: boolean = useMemo(() => {
         const disabledFeatures: string[] = featureConfig?.disabledFeatures;
