@@ -23,6 +23,10 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.IdentityRecoveryException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClientException" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.net.URISyntaxException" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
@@ -44,8 +48,10 @@
 <%
     String EMAIL = "EMAIL";
     String callback = request.getParameter("callback");
+    boolean isValidCallback = false;
     String username = request.getParameter("username");
     String recoveryChannelType = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("recoveryChannelType"));
+    ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
 
     String successMessageTitle;
     String successMessageDescrition;
@@ -56,6 +62,16 @@
     } else {
         successMessageTitle = "username.recovery.sms.success.heading";
         successMessageDescrition = "username.recovery.sms.success.body";
+    }
+
+    if (StringUtils.isNotBlank(callback)) {
+        try {
+            isValidCallback = applicationDataRetrievalClient.checkIfBackToApplicationURLValid(callback, tenantDomain, spAppName);
+        } catch (ApplicationDataRetrievalClientException e) {
+            isValidCallback = false;
+        } catch (PreferenceRetrievalClientException e) {
+            isValidCallback = false;
+        }
     }
 %>
 
@@ -101,7 +117,7 @@
                     <%=i18n(recoveryResourceBundle, customText, successMessageDescrition)%>
                     <br><br>
                     <%
-                        if(StringUtils.isNotBlank(callback) && AuthenticationEndpointUtil.isSchemeSafeURL(callback)) {
+                        if(StringUtils.isNotBlank(callback) && AuthenticationEndpointUtil.isSchemeSafeURL(callback) && isValidCallback) {
                     %>
                         <br/><br/>
                         <i class="caret left icon primary"></i>
