@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.3.2
+
+### Patch Changes
+
+- [#9148](https://github.com/wso2/identity-apps/pull/9148) [`09d00b4494c499198f22572378374812a4de21e1`](https://github.com/wso2/identity-apps/commit/09d00b4494c499198f22572378374812a4de21e1) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Use flowId to handle magic link
+
 ## 3.3.1
 
 ### Patch Changes
