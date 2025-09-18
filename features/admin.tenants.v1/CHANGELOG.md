@@ -1,5 +1,16 @@
 # @wso2is/admin.tenants.v1
 
+## 2.29.19
+
+### Patch Changes
+
+- [#9144](https://github.com/wso2/identity-apps/pull/9144) [`c74915d6f178213aaeb430505b2458bb33ecc747`](https://github.com/wso2/identity-apps/commit/c74915d6f178213aaeb430505b2458bb33ecc747) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Fix issue where privileged business users can't see the organization switcher.
+
+- Updated dependencies [[`bf0c30427b553fe92322dceece85df02f01cb520`](https://github.com/wso2/identity-apps/commit/bf0c30427b553fe92322dceece85df02f01cb520)]:
+  - @wso2is/react-components@2.9.23
+  - @wso2is/theme@2.8.7
+  - @wso2is/admin.core.v1@2.49.51
+
 ## 2.29.18
 
 ### Patch Changes

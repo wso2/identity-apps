@@ -1,5 +1,17 @@
 # @wso2is/myaccount
 
+## 2.25.3
+
+### Patch Changes
+
+- [#9149](https://github.com/wso2/identity-apps/pull/9149) [`796415b4f2d2e95a3421cf748e9cadf2681a5717`](https://github.com/wso2/identity-apps/commit/796415b4f2d2e95a3421cf748e9cadf2681a5717) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix null pointer issue in multi value fields
+
+* [#9143](https://github.com/wso2/identity-apps/pull/9143) [`bf0c30427b553fe92322dceece85df02f01cb520`](https://github.com/wso2/identity-apps/commit/bf0c30427b553fe92322dceece85df02f01cb520) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add preview label ws-fed protocol template
+
+* Updated dependencies [[`bf0c30427b553fe92322dceece85df02f01cb520`](https://github.com/wso2/identity-apps/commit/bf0c30427b553fe92322dceece85df02f01cb520)]:
+  - @wso2is/react-components@2.9.23
+  - @wso2is/theme@2.8.7
+
 ## 2.25.2
 
 ### Patch Changes
