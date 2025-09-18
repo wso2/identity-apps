@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Link from "@oxygen-ui/react/Link/Link";
 import { GearIcon } from "@oxygen-ui/react-icons";
 import { FeatureAccessConfigInterface, FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
 import {
@@ -35,6 +36,7 @@ import {
 } from "@wso2is/admin.applications.v1/models/application";
 import { ApplicationManagementUtils } from "@wso2is/admin.applications.v1/utils/application-management-utils";
 import getTryItClientId from "@wso2is/admin.applications.v1/utils/get-try-it-client-id";
+import { Config } from "@wso2is/admin.core.v1/configs/app";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config"; // No specific rule found
@@ -58,8 +60,6 @@ import { DynamicApplicationContextCard } from "./dynamic-application-context-car
 import { FeatureCarousel } from "./new-feature-announcement/new-feature-announcement";
 import { getGettingStartedCardIllustrations } from "../configs/ui";
 import HomeConstants from "../constants/home-constants";
-import { Config } from "@wso2is/admin.core.v1/configs/app";
-import Link from "@oxygen-ui/react/Link/Link";
 
 /**
  * Proptypes for the overview page component.
@@ -616,15 +616,15 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                     ] }
                     moreDetails={ (
                         <Trans i18nKey={ "console:common.quickStart.sections.adminNotice.moreDetails" } >
-                            Please refer to
+                            See
                             <Link
                                 href={ Config?.getDeploymentConfig()?.docSiteURL
                                     + "/references/user-management/user-roles/#change-in-role-permissions" }
                                 target="_blank"
                                 rel="noreferrer"
                             >
-                                Change in Role Permissions
-                            </Link> for more information.
+                                documentation
+                            </Link> for recommended workarounds and more details.
                         </Trans>
                     ) }
                     setDisplayBanner={ setAdminNoticeEnabled }
