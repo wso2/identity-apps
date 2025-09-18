@@ -20,6 +20,7 @@ import { AsgardeoSPAClient, HttpError, HttpInstance, HttpRequestConfig, HttpResp
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
+    APIErrorResponseInterface,
     ClaimDataType,
     PatchOperationRequest,
     ProfileInfoInterface,
@@ -166,14 +167,14 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
 
             return Promise.resolve(profileResponse);
         })
-        .catch((error: HttpError) => {
+        .catch((error: HttpError<APIErrorResponseInterface>) => {
             // Check if the API responds with a `500` error, if it does,
             // navigate the user to the login error page.
             if (
                 error.response &&
                 error.response.data &&
                 error.response.data.status &&
-                error.response.data.status === "500"
+                error.response.data.status as unknown as string === "500"
             ) {
                 store.dispatch(toggleSCIMEnabled(false));
 

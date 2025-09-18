@@ -22,6 +22,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
+    APIErrorResponseInterface,
     AlertLevels,
     SBACInterface,
     TestableComponentInterface
@@ -210,7 +211,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                     setShowOrgDeleteConfirmationModal(false);
                     onOrganizationDelete(organizationId);
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<APIErrorResponseInterface>) => {
                     if (
                         error.response &&
                         error.response.data &&

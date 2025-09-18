@@ -254,7 +254,7 @@ export const InternalNotificationSendingPage: FC<InternalNotificationSendingPage
 
                 return isNotificationInternallyManaged;
             })
-            .catch((error: AxiosError<{ description?: string; detail?: string }>) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error?.response?.data?.detail) {
                     dispatch(
                         addAlert({

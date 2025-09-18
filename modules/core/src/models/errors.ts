@@ -56,7 +56,7 @@ export interface APIErrorResponseInterface {
      * HTTP status code as string (for some error responses).
      * @example "500", "400"
      */
-    status?: string;
+    status?: number | string;
 
     /**
      * SCIM error type (for user management related errors).

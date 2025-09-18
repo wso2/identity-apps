@@ -95,7 +95,7 @@ export const getProfileInfo = (endpoint: string,
             if (error.response
                 && error.response.data
                 && error.response.data.status
-                && error.response.data.status === "500") {
+                && error.response.data.status as unknown as string === "500") {
 
                 // Fire `onSCIMDisabled` callback which will navigate the
                 // user to the corresponding error page.

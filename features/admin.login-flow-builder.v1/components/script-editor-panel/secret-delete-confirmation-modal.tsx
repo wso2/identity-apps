@@ -18,7 +18,7 @@
 
 import { deleteSecret } from "@wso2is/admin.secrets.v1/api/secret";
 import { SecretModel } from "@wso2is/admin.secrets.v1/models/secret";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { APIErrorResponseInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ConfirmationModalPropsInterface } from "@wso2is/react-components";
 import { AxiosError } from "axios";
@@ -75,7 +75,7 @@ const SecretDeleteConfirmationModal: FunctionComponent<SecretDeleteConfirmationM
                     message: t("secrets:alerts.deleteSecret.message")
                 }));
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,

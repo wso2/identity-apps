@@ -29,7 +29,7 @@ import { ApprovalStatus, ApprovalTaskDetails, ApprovalTaskListItemInterface } fr
  * Get an axios instance.
  *
  */
-const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
+const httpClient: <T = any>(config: HttpRequestConfig) => Promise<HttpResponse<T>> = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance())
     .bind(AsgardeoSPAClient.getInstance());
 

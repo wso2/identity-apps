@@ -36,7 +36,7 @@ import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/consta
 import { AppState } from "@wso2is/admin.core.v1/store";
 import useAILoginFlow from "@wso2is/admin.login-flow.ai.v1/hooks/use-ai-login-flow";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants/organization-constants";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { APIErrorResponseInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { PrimaryButton } from "@wso2is/react-components";
 import { AxiosError } from "axios";
@@ -257,7 +257,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                         )
                     })
                 );
-            }).catch((error: AxiosError) => {
+            }).catch((error: AxiosError<APIErrorResponseInterface>) => {
                 const INVALID_SCRIPT_CODE: string = "APP-60001";
 
                 if (error?.response?.data?.code === INVALID_SCRIPT_CODE) {

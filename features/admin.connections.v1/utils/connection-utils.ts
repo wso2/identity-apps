@@ -19,7 +19,7 @@
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertLevels, APIErrorResponseInterface } from "@wso2is/core/models";
+import { APIErrorResponseInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ImageUtils, URLUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
@@ -676,7 +676,7 @@ export const handleConnectionUpdateError = (error: AxiosError<APIErrorResponseIn
 /**
  * Utility function to handle the error alert of the custom authenticator update request.
  */
-export const handleCustomAuthenticatorUpdateError = (error: AxiosError): void => {
+export const handleCustomAuthenticatorUpdateError = (error: AxiosError<APIErrorResponseInterface>): void => {
     if (error?.response?.data?.description) {
         store.dispatch(
             addAlert({

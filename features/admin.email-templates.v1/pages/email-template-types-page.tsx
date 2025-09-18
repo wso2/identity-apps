@@ -21,7 +21,12 @@ import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { filterList } from "@wso2is/admin.core.v1/utils/filter-list";
 import { sortList } from "@wso2is/admin.core.v1/utils/sort-list";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import {
+    APIErrorResponseInterface,
+    AlertInterface,
+    AlertLevels,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
@@ -125,7 +130,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
                         ".genericError.message")
                 }));
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert<AlertInterface>({
                         description: error.response.data.description,
@@ -249,7 +254,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
                         ".deleteTemplateType.genericError.message")
                 }));
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert<AlertInterface>({
                         description: error.response.data.description,
