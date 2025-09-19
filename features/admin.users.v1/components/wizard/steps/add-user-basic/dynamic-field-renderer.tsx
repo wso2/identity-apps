@@ -36,6 +36,9 @@ import MultiValuedTextField from "../../../user-profile/fields/multi-valued-text
 import RadioGroupFormField from "../../../user-profile/fields/radio-group-form-field";
 import TextFormField from "../../../user-profile/fields/text-form-field";
 
+// Create a empty array reference to prevent infinite re-renders.
+const EMPTY_ARRAY: string[] = [];
+
 /**
  * User add wizard form field renderer component props interface.
  */
@@ -171,7 +174,7 @@ const DynamicFieldRenderer: FunctionComponent<DynamicFieldRendererPropsInterface
     }
 
     if (isMultiValued) {
-        initialValue = initialValue ?? [];
+        initialValue = initialValue ?? EMPTY_ARRAY;
 
         switch (inputType) {
             case ClaimInputFormat.CHECKBOX_GROUP:
