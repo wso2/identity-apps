@@ -56,6 +56,9 @@
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.mobile.not.found");
             } else if (errorMessage.equalsIgnoreCase("number.mismatch")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.number.mismatch.duo");
+            } else if (isErrorFallbackLocale) {
+                // For any other error messages, if the locale is not English, show a generic error message.
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "something.went.wrong.during.authentication");
             }
         }
     }

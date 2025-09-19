@@ -42,6 +42,7 @@
 
     String errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
     String authenticationFailed = "false";
+    boolean isErrorFallbackLocale = !userLocale.toLanguageTag().equals("en_US");
 
     if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
         authenticationFailed = "true";
@@ -67,6 +68,9 @@
                 }
             } else if (errorMessage.equalsIgnoreCase(EmailOTPAuthenticatorConstants.ERROR_TENANT_MISMATCH_MSG)) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "user.tenant.domain.mismatch.message");
+            } else if (isErrorFallbackLocale) {
+                // For any other error messages, show a generic error message.
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
             }
         }
     }

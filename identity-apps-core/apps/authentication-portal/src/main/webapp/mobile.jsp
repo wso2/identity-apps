@@ -58,15 +58,20 @@
         authenticationFailed = true;
 
         if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
-            errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
+            String error = request.getParameter(Constants.AUTH_FAILURE_MSG);
 
-                if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
-                    errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.failed.please.retry");
-                }
+            if (error.equalsIgnoreCase("authentication.fail.message")) {
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.failed.please.retry");
+            } else if (!error.equalsIgnoreCase(AuthenticationEndpointUtil.i18n(resourceBundle, error))) {
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, error);
+            }
 
-                if (StringUtils.isNotBlank(request.getParameter("authFailureInfo"))) {
-                    errorMessage = request.getParameter("authFailureInfo");
+            if (StringUtils.isNotBlank(request.getParameter("authFailureInfo"))) {
+                String authFailureInfo = request.getParameter("authFailureInfo");
+                if (!authFailureInfo.equalsIgnoreCase(AuthenticationEndpointUtil.i18n(resourceBundle, authFailureInfo))) {
+                    errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, authFailureInfo);
                 }
+            }
         }
     }
 %>

@@ -33,7 +33,12 @@
     String idp = request.getParameter("idp");
     String authenticator = request.getParameter("authenticator");
     String sessionDataKey = request.getParameter(Constants.SESSION_DATA_KEY);
-    int orgCount = Integer.parseInt(request.getParameter("orgCount"));
+    int orgCount = 0;
+    try {
+        orgCount = Integer.parseInt(request.getParameter("orgCount"));
+    } catch (NumberFormatException e) {
+        orgCount = 0;
+    }
 
     String errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
     boolean authenticationFailed = false;
@@ -42,10 +47,12 @@
         authenticationFailed = true;
 
         if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
-            errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
+            String error = request.getParameter(Constants.AUTH_FAILURE_MSG);
 
-            if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
+            if (error.equalsIgnoreCase("authentication.fail.message")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
+            } else if (!errorMessage.equalsIgnoreCase(AuthenticationEndpointUtil.i18n(resourceBundle, error))) {
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, error);
             }
         }
     }
