@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -37,6 +37,10 @@ export interface SelectionCardPropsInterface extends Omit<CardProps, "image">, I
      * Is card disabled.
      */
     disabled?: boolean;
+    /**
+     * Feature label component
+     */
+    featureLabel?: ReactElement;
     /**
      * Id for the card.
      */
@@ -124,6 +128,7 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
         description,
         disabled,
         header,
+        featureLabel,
         id,
         inline,
         image,
@@ -191,6 +196,7 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
             onMouseLeave={ () => setDimmerState(false) }
             { ...rest }
         >
+            { featureLabel }
             {
                 disabled && dimmerState && overlay
             }
