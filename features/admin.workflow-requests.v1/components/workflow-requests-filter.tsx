@@ -18,8 +18,13 @@
 
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { WorkflowRequestOperationTypeDropdown, WorkflowRequestsStatusDropdown } from "./filter-dropdowns";
+import {
+    WorkflowRequestOperationTypeDropdown,
+    WorkflowRequestsPredefinedFiltersDropdown,
+    WorkflowRequestsStatusDropdown
+} from "./filter-dropdowns";
 import TimeRangeDropdown from "./time-range-dropdown";
+import { PredefinedFilter } from "../models/workflowRequests";
 import "./workflow-requests-filter.scss";
 
 interface WorkflowRequestsFilterProps {
@@ -35,6 +40,9 @@ interface WorkflowRequestsFilterProps {
     handleUpdatedCustomDateChange: (from: string, to: string) => void;
     searchWorkflowRequests: () => void;
     loading: boolean;
+    predefinedFilter?: string;
+    setPredefinedFilter?: (value: string) => void;
+    onPredefinedFilterApply?: (filter: PredefinedFilter) => void;
 }
 
 const WorkflowRequestsFilter: React.FC<WorkflowRequestsFilterProps> = ({
@@ -47,13 +55,38 @@ const WorkflowRequestsFilter: React.FC<WorkflowRequestsFilterProps> = ({
     handleCreatedCustomDateChange,
     updatedTimeRange,
     handleUpdatedTimeRangeChange,
-    handleUpdatedCustomDateChange
+    handleUpdatedCustomDateChange,
+    predefinedFilter,
+    setPredefinedFilter,
+    onPredefinedFilterApply
 }: WorkflowRequestsFilterProps) => {
     const { t } = useTranslation();
+
+    const handlePredefinedFilterApply = (filter: PredefinedFilter) => {
+        if (onPredefinedFilterApply) {
+            onPredefinedFilterApply(filter);
+        }
+    };
 
     return (
         <form className="workflow-requests-filter-bar advanced-search ui form" autoComplete="off">
             <div className="fields">
+                { /* Predefined Filters Dropdown */ }
+                { setPredefinedFilter && (
+                    <div className="field predefined-filters-field">
+                        <div>
+                            <WorkflowRequestsPredefinedFiltersDropdown
+                                value={ predefinedFilter || "" }
+                                onChange={ (e: React.SyntheticEvent, data: { value: string }) => {
+                                    setPredefinedFilter(data.value as string);
+                                } }
+                                onFilterApply={ handlePredefinedFilterApply }
+                                data-componentid="workflow-requests-predefined-filters-dropdown"
+                                placeholder={ t("approvalWorkflows:filters.predefinedFilters") }
+                            />
+                        </div>
+                    </div>
+                ) }
                 <div className="field">
                     <div>
                         <WorkflowRequestOperationTypeDropdown
