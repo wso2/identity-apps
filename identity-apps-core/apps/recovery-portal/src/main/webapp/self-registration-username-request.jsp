@@ -310,9 +310,18 @@
     }
 
     /**
-    * If backToUrl is null get to access url of the application.
-    */
-    if (StringUtils.equalsIgnoreCase(backToUrl,"null")) {
+     * Validate the back to login URL.
+     */
+    if (!StringUtils.isBlank(backToUrl)
+        && !StringUtils.equalsIgnoreCase(backToUrl, "null")
+        && !AuthenticationEndpointUtil.isValidMultiOptionURI(backToUrl)) {
+        backToUrl = null;
+    }
+
+    /**
+     * If backToUrl is null get to access url of the application.
+     */
+    if (StringUtils.isBlank(backToUrl) || StringUtils.equalsIgnoreCase(backToUrl, "null")) {
         try {
                 // Retrieve application access url to redirect user back to the application.
                 backToUrl = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain, sp);
