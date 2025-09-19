@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 3.3.3
+
+### Patch Changes
+
+- [#9158](https://github.com/wso2/identity-apps/pull/9158) [`a127204ff9aa64eae402e9d0334e20348cf1fcbc`](https://github.com/wso2/identity-apps/commit/a127204ff9aa64eae402e9d0334e20348cf1fcbc) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Handle self registration error cases with recaptcha.
+
+* [#9145](https://github.com/wso2/identity-apps/pull/9145) [`fadf735b66351039b6ca8aaf5bd1ff9edd7fb740`](https://github.com/wso2/identity-apps/commit/fadf735b66351039b6ca8aaf5bd1ff9edd7fb740) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - encode auth details
+
 ## 3.3.2
 
 ### Patch Changes
