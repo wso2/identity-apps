@@ -171,7 +171,7 @@
                                                 "executor": {
                                                     "name": "PasswordProvisioningExecutor"
                                                 },
-                                                "next": "USER_ONBOARD"
+                                                "next": "{{NEXT_STEP_ID}}"
                                             }
                                         },
                                         {
@@ -181,6 +181,70 @@
                                             },
                                             "id": "{{ID}}",
                                             "type": "RICH_TEXT"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{NEXT_STEP_ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 453
+                        },
+                        "position": {
+                            "x": 735,
+                            "y": 301
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "OTP Verification"
+                                    }
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "OTP",
+                                            "config": {
+                                                "type": "text",
+                                                "hint": "",
+                                                "label": "Enter the code sent to your email",
+                                                "required": false,
+                                                "placeholder": "",
+                                                "identifier": "otp"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "type": "EXECUTOR",
+                                                "executor": {
+                                                    "name": "EmailOTPExecutor"
+                                                },
+                                                "next": "USER_ONBOARD"
+                                            }
                                         }
                                     ]
                                 }
