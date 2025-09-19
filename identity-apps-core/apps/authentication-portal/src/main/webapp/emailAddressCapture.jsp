@@ -113,15 +113,6 @@
                 <%
                     }
                 %>
-                <%
-                    if ("true".equals(authenticationFailed)) {
-                %>
-                <div class="ui negative message" id="failed-msg"><%=Encode.forHtmlContent(errorMessage)%>
-                </div>
-                <div class="ui divider hidden"></div>
-                <%
-                    }
-                %>
                 <div id="alertDiv"></div>
                 <div class="segment-form">
                     <form class="ui large form" id="pin_form" name="pin_form"

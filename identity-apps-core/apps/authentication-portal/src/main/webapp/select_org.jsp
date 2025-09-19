@@ -51,7 +51,7 @@
 
             if (error.equalsIgnoreCase("authentication.fail.message")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
-            } else if (!errorMessage.equalsIgnoreCase(AuthenticationEndpointUtil.i18n(resourceBundle, error))) {
+            } else if (!error.equalsIgnoreCase(AuthenticationEndpointUtil.i18n(resourceBundle, error))) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, error);
             }
         }
