@@ -52,6 +52,7 @@ import AuthenticationFlowVisualEditor from "./authentication-flow-visual-editor"
 import PredefinedFlowsSidePanel from "./predefined-flows-side-panel/predefined-flows-side-panel";
 import ScriptBasedFlowSwitch from "./script-editor-panel/script-based-flow-switch";
 import SidePanelDrawer from "./side-panel-drawer";
+import { SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID } from "../constants/editor-constants";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
 import { AuthenticationFlowBuilderModes, AuthenticationFlowBuilderModesInterface } from "../models/flow-builder";
 import "./sign-in-methods.scss";
@@ -130,6 +131,11 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
             mode: AuthenticationFlowBuilderModes.Visual
         }
     ];
+
+    const sharedAppAdaptiveAuthDisabled: boolean = useSelector((state: AppState) => {
+        return state.config?.ui?.features?.applications?.disabledFeatures?.includes(
+            SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID);
+    });
 
     const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
 
@@ -213,7 +219,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
             );
         }
 
-        if (orgType === OrganizationType.SUBORGANIZATION) {
+        if (orgType === OrganizationType.SUBORGANIZATION && sharedAppAdaptiveAuthDisabled) {
             sequence.script = "";
         }
 
