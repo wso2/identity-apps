@@ -1736,7 +1736,7 @@
             }
         },
         "flowExecution": {
-            "enableLegacyFlows": true
+            "enableLegacyFlows": false
         },
         "governanceConnectors": {
             "loginAttempts": {

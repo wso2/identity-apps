@@ -72,6 +72,8 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     const { UIConfig } = useUIConfig();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const isLegacyFlowsEnabled: boolean = useSelector(
+        (state: AppState) => state.config.ui.flowExecution.enableLegacyFlows);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isPasswordInputValidationEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isPasswordInputValidationEnabled);
@@ -113,6 +115,11 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                 continue;
             }
 
+            if (!isLegacyFlowsEnabled &&
+                    category.id === ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_CATEGORY_ID) {
+                continue;
+            }
+
             const filteredConnectors: Array<any> = category.connectors.filter((connector: any) => {
                 if (serverConfigurationConfig.connectorsToHide.includes(connector.id)) {
                     return false;
@@ -120,6 +127,10 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
 
                 if (isSubOrganization() && (connector.id === ServerConfigurationsConstants.SIFT_CONNECTOR_ID ||
                     connector.id === ServerConfigurationsConstants.EMAIL_DOMAIN_DISCOVERY)) {
+                    return false;
+                }
+
+                if (!isLegacyFlowsEnabled && connector.id === ServerConfigurationsConstants.PASSWORD_RECOVERY) {
                     return false;
                 }
 

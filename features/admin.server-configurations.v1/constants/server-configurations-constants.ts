@@ -427,6 +427,7 @@ export class ServerConfigurationsConstants {
     public static readonly NOTIFICATION_SETTINGS_CATEGORY_ID: string = "notification-settings";
     public static readonly NOTIFICATION_SETTINGS_CONNECTOR_ID: string = "internal-notification-settings";
     public static readonly ACCOUNT_MANAGEMENT_CUSTOM_CATEGORY_ID: string = "account-management";
+    public static readonly USER_ONBOARDING_CONNECTOR_CATEGORY_ID: string = "user-onboarding";
 
     /**
 	 * Multi Attribute Login Constants.
