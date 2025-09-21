@@ -1,5 +1,17 @@
 # @wso2is/admin.claims.v1
 
+## 2.29.10
+
+### Patch Changes
+
+- [#9170](https://github.com/wso2/identity-apps/pull/9170) [`927376ddec142bf893c71a193c4f15bb2524678f`](https://github.com/wso2/identity-apps/commit/927376ddec142bf893c71a193c4f15bb2524678f) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix claim add wizard showing mapping step with empty content when hidden userstores are present
+
+- Updated dependencies [[`927376ddec142bf893c71a193c4f15bb2524678f`](https://github.com/wso2/identity-apps/commit/927376ddec142bf893c71a193c4f15bb2524678f), [`9e68efc9f315b7d3c8687206af7fb60f68b399b3`](https://github.com/wso2/identity-apps/commit/9e68efc9f315b7d3c8687206af7fb60f68b399b3)]:
+  - @wso2is/admin.claims.v1@2.29.10
+  - @wso2is/admin.users.v1@2.36.23
+  - @wso2is/admin.core.v1@2.49.53
+  - @wso2is/admin.server-configurations.v1@2.35.67
+
 ## 2.29.9
 
 ### Patch Changes
