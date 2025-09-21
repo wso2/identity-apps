@@ -285,7 +285,8 @@ export class Config {
                 I18nConstants.WEBHOOKS_NAMESPACE,
                 I18nConstants.APPROVAL_WORKFLOWS_NAMESPACE,
                 I18nConstants.AGENTS_NAMESPACE,
-                I18nConstants.FLOWS_NAMESPACE
+                I18nConstants.FLOWS_NAMESPACE,
+                I18nConstants.COMMON_USERS_NAMESPACE
             ],
             preload: []
         };
@@ -387,6 +388,10 @@ export class Config {
      */
     public static getUIConfig(): UIConfigInterface {
         return {
+            adminNotice: {
+                enabled: window[ "AppUtils" ]?.getConfig()?.ui?.adminNotice?.enabled,
+                plannedRollOutDate: window[ "AppUtils" ]?.getConfig()?.ui?.adminNotice?.plannedRollOutDate
+            },
             administratorRoleDisplayName: window[ "AppUtils" ]?.getConfig()?.ui?.administratorRoleDisplayName ??
                 UIConstants.ADMINISTRATOR_ROLE_DISPLAY_NAME,
             announcements: window[ "AppUtils" ]?.getConfig()?.ui?.announcements,
@@ -430,8 +435,6 @@ export class Config {
             hiddenUserStores: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenUserStores,
             i18nConfigs: window[ "AppUtils" ]?.getConfig()?.ui?.i18nConfigs,
             identityProviderTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.identityProviderTemplates,
-            isAdminDataSeparationNoticeEnabled:
-                window[ "AppUtils" ]?.getConfig()?.ui?.isAdminDataSeparationNoticeEnabled,
             isClaimUniquenessValidationEnabled:
                 window[ "AppUtils" ]?.getConfig()?.ui?.isClaimUniquenessValidationEnabled ?? false,
             isClientSecretHashEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isClientSecretHashEnabled,
@@ -455,6 +458,7 @@ export class Config {
             isSignatureValidationCertificateAliasEnabled:
                 window[ "AppUtils" ]?.getConfig()?.ui?.isSignatureValidationCertificateAliasEnabled,
             isTrustedAppConsentRequired: window[ "AppUtils" ]?.getConfig()?.ui?.isTrustedAppConsentRequired ?? false,
+            isWSFedProtocolTemplateEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isWSFedProtocolTemplateEnabled,
             isXacmlConnectorEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isXacmlConnectorEnabled,
             legacyMode: window[ "AppUtils" ]?.getConfig()?.ui?.legacyMode,
             listAllAttributeDialects: window[ "AppUtils" ]?.getConfig()?.ui?.listAllAttributeDialects,

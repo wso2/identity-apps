@@ -32,44 +32,39 @@ import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { PlusIcon } from "@oxygen-ui/react-icons";
 import { ProfileConstants } from "@wso2is/core/constants";
-import { AlertLevels, PatchOperationRequest } from "@wso2is/core/models";
+import { PatchOperationRequest } from "@wso2is/core/models";
 import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
 import { Popup, Button as SemanticButton, useMediaContext } from "@wso2is/react-components";
-import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
-import React, { Dispatch, FunctionComponent, ReactElement, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Grid, Icon, List } from "semantic-ui-react";
 import EmptyValueField from "./empty-value-field";
 import MultiValueDeleteConfirmationModal from "./multi-value-delete-confirmation-modal";
-import TextFieldForm from "./text-field-form";
-import { updateProfileInfo } from "../../../api/profile";
-import { profileConfig as profileExtensionConfig } from "../../../extensions/configs/profile";
 import { SCIMConfigs as SCIMExtensionConfigs } from "../../../extensions/configs/scim";
 import { AuthStateInterface } from "../../../models/auth";
 import { MultiValue, ProfilePatchOperationValue, ProfileSchema } from "../../../models/profile";
-import { MobileFieldFormPropsInterface } from "../../../models/profile-ui";
+import { MultiEmailFieldFormPropsInterface } from "../../../models/profile-ui";
 import { AppState } from "../../../store";
-import { getProfileInformation } from "../../../store/actions/authenticate";
-import { addAlert, setActiveForm } from "../../../store/actions/global";
 import { EditSection } from "../../shared/edit-section";
-import MobileUpdateWizardV2 from "../../shared/mobile-update-wizard-v2/mobile-update-wizard-v2";
 
 import "./field-form.scss";
 
-interface SortedMobileNumber {
+interface SortedEmailAddress {
     value: string;
     isPrimary: boolean;
     isVerified?: boolean;
+    isVerificationPending?: boolean;
 }
 
-const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
+const MultiEmailFieldForm: FunctionComponent<MultiEmailFieldFormPropsInterface> = ({
     fieldSchema: schema,
-    flattenedProfileSchema,
     fieldLabel,
     initialValue,
-    profileInfo,
+    primaryEmailAddress,
+    verifiedEmailAddresses,
+    pendingEmailAddress,
     isEditable,
     isActive,
     isRequired,
@@ -80,120 +75,138 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
     isVerificationEnabled,
     triggerUpdate,
     setIsProfileUpdating,
-    ["data-componentid"]: testId = "mobile-field-form"
-}: MobileFieldFormPropsInterface): ReactElement => {
+    ["data-componentid"]: testId = "email-field-form"
+}: MultiEmailFieldFormPropsInterface): ReactElement => {
     const { t } = useTranslation();
     const { isMobileViewport } = useMediaContext();
-    const dispatch: Dispatch<any> = useDispatch();
 
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
 
-    const mobileNumbersList: string[] = isEmpty(initialValue) ? [] : initialValue?.split(",");
-    const verifiedMobileNumbers: string[] = profileInfo.get(ProfileConstants
-        .SCIM2_SCHEMA_DICTIONARY.get("VERIFIED_MOBILE_NUMBERS"))?.split(",") ?? [];
-    const primaryMobileNumber: string = profileInfo.get(ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE"));
+    const emailAddressesList: string[] = initialValue ?? [];
 
-    const [ selectedMobileNumber, setSelectedMobileNumber ] = useState<SortedMobileNumber>();
-    const [ isMobileUpdateModalOpen, setIsMobileUpdateModalOpen ] = useState<boolean>(false);
+    // Track the selected email address for deleting.
+    const [ selectedEmailAddress, setSelectedEmailAddress ] = useState<SortedEmailAddress>();
 
-    const primaryMobileSchema: ProfileSchema = useMemo(
+    const primaryEmailSchema: ProfileSchema = useMemo(
         () =>
-            flattenedProfileSchema?.find(
+            profileDetails?.profileSchemas?.find(
                 (schema: ProfileSchema) =>
-                    schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("MOBILE")
+                    schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")
             ),
-        [ flattenedProfileSchema ]
+        [ profileDetails?.profileSchemas ]
     );
 
-    // There can be situations where the primary mobile number is verified
-    // but not added to the verified list.
-    // In that scenario, the "urn:scim:wso2:schema:phoneVerified" needs to be checked.
-    const isPrimaryMobileVerified: boolean = String(profileDetails?.profileInfo
+    // There can be situations where the primary email address is verified
+    // but not added to the verifiedEmailAddresses list.
+    // In that scenario, the "urn:scim:wso2:schema:emailVerified" needs to be checked.
+    const isPrimaryEmailVerified: boolean = String(profileDetails?.profileInfo
         ?.[SCIMExtensionConfigs?.scim?.systemSchema]
-        ?.[ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_VERIFIED")]) === "true";
-    // Merge the verified primary mobile number with the verified list.
-    const mergedVerifiedMobileNumbers: string[] = useMemo(() => {
-        if (
-            !isEmpty(primaryMobileNumber) &&
-            !verifiedMobileNumbers?.includes(primaryMobileNumber) &&
-            isPrimaryMobileVerified
-        ) {
-            return [ ...verifiedMobileNumbers, primaryMobileNumber ];
-        } else {
-            return verifiedMobileNumbers;
-        }
-    }, [ primaryMobileNumber, verifiedMobileNumbers, isPrimaryMobileVerified ]);
+        ?.[ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAIL_VERIFIED")]) === "true";
 
-    const isVerified = (mobileNumber: string): boolean => {
-        return mergedVerifiedMobileNumbers?.includes(mobileNumber);
+    // Merge the verified primary email address.
+    const mergedVerifiedEmailAddresses: string[] = useMemo(() => {
+        if (
+            !isEmpty(primaryEmailAddress) &&
+            !verifiedEmailAddresses?.includes(primaryEmailAddress) &&
+            isPrimaryEmailVerified
+        ) {
+            return [ ...(verifiedEmailAddresses ?? []), primaryEmailAddress ];
+        } else {
+            return verifiedEmailAddresses ?? [];
+        }
+    }, [ primaryEmailAddress, verifiedEmailAddresses, isPrimaryEmailVerified ]);
+
+    const isVerificationPending = (emailAddress: string): boolean => {
+        return pendingEmailAddress === emailAddress;
     };
 
-    const isPrimary = (mobileNumber: string): boolean => {
-        return primaryMobileNumber === mobileNumber;
+    const isVerified = (emailAddress: string): boolean => {
+        return mergedVerifiedEmailAddresses?.includes(emailAddress);
+    };
+
+    const isPrimary = (emailAddress: string): boolean => {
+        return primaryEmailAddress === emailAddress;
     };
 
     /**
-     * Brings the primary mobile number to the top of the list.
-     * Calculate the verification status for each mobile number.
+     * Brings the primary email address to the top of the list.
+     * Calculate the verification status for each email address.
      *
-     * @returns A list of objects containing the mobile number and its verification status.
+     * @returns A list of objects containing the email address and its verification status.
      */
-    const sortedMobileNumbersList: SortedMobileNumber[] = useMemo(() => {
-        const _sortedMobileNumbersList: SortedMobileNumber[] = [];
-        const _mobileNumbersList: string[] = [ ...mobileNumbersList ];
+    const sortedEmailAddressesList: SortedEmailAddress[] = useMemo(() => {
+        const _sortedEmailAddressesList: SortedEmailAddress[] = [];
+        const _emailAddressesList: string[] = [ ...emailAddressesList ];
 
-        // Handles the case where switching from single mobile number to multiple mobile numbers.
-        if (!isEmpty(primaryMobileNumber) && !_mobileNumbersList.includes(primaryMobileNumber)) {
-            _mobileNumbersList.push(primaryMobileNumber);
+        // Handles the case where switching from single email to multiple emails.
+        if (!isEmpty(primaryEmailAddress) && !_emailAddressesList.includes(primaryEmailAddress)) {
+            _emailAddressesList.push(primaryEmailAddress);
         }
 
-        for (const mobileNumber of _mobileNumbersList) {
-            const _mobileNumber: SortedMobileNumber = {
-                isPrimary: isPrimary(mobileNumber),
+        for (const emailAddress of _emailAddressesList) {
+            const _emailAddress: SortedEmailAddress = {
+                isPrimary: isPrimary(emailAddress),
+                isVerificationPending: false,
                 isVerified: false,
-                value: mobileNumber
+                value: emailAddress
             };
 
             if (isVerificationEnabled) {
-                _mobileNumber.isVerified = isVerified(mobileNumber);
+                _emailAddress.isVerified = isVerified(emailAddress);
+                _emailAddress.isVerificationPending = isVerificationPending(emailAddress);
             }
 
-            if (_mobileNumber.isPrimary) {
-                _sortedMobileNumbersList.unshift(_mobileNumber);
+            if (_emailAddress.isPrimary) {
+                _sortedEmailAddressesList.unshift(_emailAddress);
             } else {
-                _sortedMobileNumbersList.push(_mobileNumber);
+                _sortedEmailAddressesList.push(_emailAddress);
             }
         }
 
-        return _sortedMobileNumbersList;
-    }, [ mobileNumbersList ]);
+        return _sortedEmailAddressesList;
+    }, [ emailAddressesList ]);
+
+    const renderPendingVerificationIcon= (): ReactElement => {
+
+        return (
+            <Popup
+                name="pending-email-popup"
+                size="tiny"
+                trigger={ (
+                    <Icon
+                        name="info circle"
+                        color="yellow"
+                    />
+                ) }
+                header={ t("myAccount:components.profile.messages.emailConfirmation.header") }
+                inverted
+            />
+        );
+    };
 
     const renderVerifiedIcon= (): ReactElement => {
-
         return (
             <Popup
                 name="verified-popup"
                 size="tiny"
-                trigger={
-                    (
-                        <Icon
-                            name="check"
-                            color="green"
-                        />
-                    )
-                }
+                trigger={ (
+                    <Icon
+                        name="check"
+                        color="green"
+                    />
+                ) }
                 header= { t("common:verified") }
                 inverted
             />
         );
     };
 
-    const getMultiMobileMenuItems = (): ReactElement[] => {
+    const getMultiEmailMenuItems = (): ReactElement[] => {
         const menuItems: ReactElement[] = [];
 
-        for (const [ index, mobileNumber ] of sortedMobileNumbersList.entries()) {
+        for (const [ index, emailAddress ] of sortedEmailAddressesList.entries()) {
             menuItems.push(
-                <MenuItem key={ mobileNumber.value } value={ mobileNumber.value } className="read-only-menu-item">
+                <MenuItem key={ emailAddress.value } value={ emailAddress.value } className="read-only-menu-item">
                     <div className="dropdown-row">
                         <Typography
                             className="dropdown-label"
@@ -202,9 +215,20 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
                                 "-"
                             )}-value-${index}` }
                         >
-                            { mobileNumber.value }
+                            { emailAddress.value }
                         </Typography>
-                        { isVerificationEnabled && mobileNumber.isVerified && (
+                        { isVerificationEnabled && emailAddress.isVerificationPending && (
+                            <div
+                                className="verified-icon"
+                                data-componentid={
+                                    `${testId}-readonly-section-${schema.name.replace(".", "-")}` +
+                                    `-pending-email-icon-${index}`
+                                }
+                            >
+                                { renderPendingVerificationIcon() }
+                            </div>
+                        ) }
+                        { isVerificationEnabled && emailAddress.isVerified && (
                             <div
                                 className="verified-icon"
                                 data-componentid={
@@ -215,7 +239,7 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
                                 { renderVerifiedIcon() }
                             </div>
                         ) }
-                        { mobileNumber.isPrimary && (
+                        { emailAddress.isPrimary && (
                             <div
                                 className="verified-icon"
                                 data-componentid={
@@ -235,48 +259,42 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
     };
 
     const renderFieldContent = (): ReactElement => {
-        if (schema.extended && schema.multiValued) {
-            return (
-                <Select
-                    className="multi-attribute-dropdown"
-                    value={ sortedMobileNumbersList[0]?.value }
-                    disableUnderline
-                    variant="standard"
-                    data-componentid={ `${testId}-${schema.name.replace(".", "-")}-readonly-dropdown` }
-                >
-                    { getMultiMobileMenuItems() }
-                </Select>
-            );
-        }
-
         return (
-            <List.Content>
-                <List.Description className="with-max-length">
-                    { initialValue }
-                </List.Description>
-            </List.Content>
+            <Select
+                className="multi-attribute-dropdown"
+                value={ sortedEmailAddressesList[0]?.value }
+                disableUnderline
+                variant="standard"
+                data-componentid={ `${testId}-${schema.name.replace(".", "-")}-readonly-dropdown` }
+            >
+                { getMultiEmailMenuItems() }
+            </Select>
         );
     };
 
-    const validateField = (value: string): string | undefined => {
+    const validateField: (value: string) => string | undefined = useCallback((value: string) => {
+        // Check for duplicate email addresses.
+        if (sortedEmailAddressesList?.some((emailAddress: SortedEmailAddress) => emailAddress.value === value)) {
+            return t("myAccount:components.profile.forms.generic.inputs.validations.duplicate", {
+                fieldName: fieldLabel });
+        }
+
         let regEx: string = schema.regEx;
 
-        // Validate multi-valued mobile numbers
+        // Validate multi-valued email addresses
         // using the schema of the primary attribute for individual value validation.
         if (schema.extended && schema.multiValued) {
-            regEx = primaryMobileSchema?.regEx;
+            regEx = primaryEmailSchema?.regEx;
         }
 
         if (!isEmpty(regEx) && !RegExp(regEx).test(value)) {
-            return t(profileExtensionConfig?.attributes?.getRegExpValidationError(
-                ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")
-            ),{ fieldName: fieldLabel } );
+            return t("myAccount:components.profile.forms.emailChangeForm.inputs.email.validations.invalidFormat");
         }
 
         return undefined;
-    };
+    }, [ sortedEmailAddressesList ]);
 
-    const handleVerifyMobile = (mobileNumber: string): void => {
+    const handleVerifyEmail = (emailAddress: string): void => {
         setIsProfileUpdating(true);
 
         const data: PatchOperationRequest<ProfilePatchOperationValue> = {
@@ -289,42 +307,16 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
             value: {
                 [schema.schemaId] : {
                     [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get(
-                        "VERIFIED_MOBILE_NUMBERS"
-                    )]: [ ...mergedVerifiedMobileNumbers, mobileNumber ]
+                        "VERIFIED_EMAIL_ADDRESSES"
+                    )]: [ ...mergedVerifiedEmailAddresses, emailAddress ]
                 }
             }
         });
 
-        updateProfileInfo(data as unknown as Record<string, unknown>)
-            .then((response: AxiosResponse) => {
-                if (response.status === 200) {
-                    dispatch(addAlert({
-                        description: t(
-                            "myAccount:components.profile.notifications.verifyMobile.success.description"
-                        ),
-                        level: AlertLevels.SUCCESS,
-                        message: t(
-                            "myAccount:components.profile.notifications.verifyMobile.success.message"
-                        )
-                    }));
-
-                    setIsMobileUpdateModalOpen(true);
-                }
-            })
-            .catch((error: any) => {
-                dispatch(addAlert({
-                    description: error?.detail ?? t(
-                        "myAccount:components.profile.notifications.verifyMobile.genericError.description"
-                    ),
-                    level: AlertLevels.ERROR,
-                    message: error?.message ?? t(
-                        "myAccount:components.profile.notifications.verifyMobile.genericError.message"
-                    )
-                }));
-            });
+        triggerUpdate(data);
     };
 
-    const handleMakeMobilePrimary = (mobileNumber: string): void => {
+    const handleMakeEmailPrimary = (emailAddress: string): void => {
         setIsProfileUpdating(true);
 
         const data: PatchOperationRequest<ProfilePatchOperationValue> = {
@@ -332,41 +324,29 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
+        const updatedEmailsList: (string | MultiValue)[] = [];
+
+        for (const emailAddress of profileDetails?.profileInfo?.emails) {
+            if (typeof emailAddress === "object") {
+                updatedEmailsList.push(emailAddress);
+            }
+        }
+        updatedEmailsList.push(emailAddress);
+
         data.Operations.push({
-            op: "add",
+            op: "replace",
             value: {
-                [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: [
-                    { type: "mobile", value: mobileNumber }
-                ]
+                [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")]: updatedEmailsList
             }
         });
-
-        if (schema.extended && schema.multiValued) {
-            // In case of switching from single-valued to multi-valued
-            // `sortedMobileNumbersList` will contain the single valued mobile number as well.
-            // This also needs to be added to the multi-valued attribute.
-            data.Operations.push({
-                op: "replace",
-                value: {
-                    [schema.schemaId] : {
-                        [schema.name] : [
-                            ...sortedMobileNumbersList.map(
-                                (mobileNumber: SortedMobileNumber) => mobileNumber.value)
-                        ]
-                    }
-                }
-            });
-        }
 
         if (isVerificationEnabled) {
             data.Operations.push({
                 op: "replace",
                 value: {
-                    [schema.schemaId] : {
-                        [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get(
-                            "VERIFIED_MOBILE_NUMBERS"
-                        )]: mergedVerifiedMobileNumbers
-                    }
+                    [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get(
+                        "VERIFIED_EMAIL_ADDRESSES"
+                    )]: mergedVerifiedEmailAddresses
                 }
             });
         }
@@ -374,41 +354,60 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
         triggerUpdate(data);
     };
 
-    const handleAddMobileNumber = (values: Record<string, string>): void => {
+    const handleAddEmailAddress = (values: Record<string, string>): void => {
         setIsProfileUpdating(true);
 
-        const mobileNumber: string = values["mobileNumbers"];
+        const emailAddress: string = values["emailAddresses"];
         const data: PatchOperationRequest<ProfilePatchOperationValue> = {
             Operations: [],
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
+        // If the email address list is empty, add the new email address as the primary.
+        if (sortedEmailAddressesList.length === 0) {
+            const updatedEmailsList: (string | MultiValue)[] = [];
+
+            for (const emailAddress of profileDetails?.profileInfo?.emails) {
+                if (typeof emailAddress === "object") {
+                    updatedEmailsList.push(emailAddress);
+                }
+            }
+            updatedEmailsList.push(emailAddress);
+
+            data.Operations.push({
+                op: "replace",
+                value: {
+                    [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")]: updatedEmailsList
+                }
+            });
+        }
+
         if (schema.extended && schema.multiValued) {
             // In case of switching from single-valued to multi-valued
-            // `sortedMobileNumbersList` will contain the single valued mobile number as well.
+            // `sortedEmailAddressesList` will contain the single valued email address as well.
             // This also needs to be added to the multi-valued attribute.
             data.Operations.push({
                 op: "replace",
                 value: {
                     [schema.schemaId] : {
                         [schema.name] : [
-                            ...sortedMobileNumbersList.map((mobileNumber: SortedMobileNumber) => mobileNumber.value),
-                            mobileNumber
+                            ...sortedEmailAddressesList.map((emailAddress: SortedEmailAddress) => emailAddress.value),
+                            emailAddress
                         ]
                     }
                 }
             });
         }
 
-        if (isVerificationEnabled && !isEmpty(mergedVerifiedMobileNumbers)) {
+        // In case of switching from single-valued to multi-valued
+        // `mergedVerifiedEmailAddresses` will contain the verified primary email address.
+        if (isVerificationEnabled && !isEmpty(mergedVerifiedEmailAddresses)) {
             data.Operations.push({
                 op: "replace",
                 value: {
-                    [schema.schemaId] : {
-                        [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get(
-                            "VERIFIED_MOBILE_NUMBERS"
-                        )]: mergedVerifiedMobileNumbers
-                    }
+                    [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get(
+                        "VERIFIED_EMAIL_ADDRESSES"
+                    )]: mergedVerifiedEmailAddresses
                 }
             });
         }
@@ -417,9 +416,9 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
     };
 
     /**
-     * Handles the deletion of a mobile number.
+     * Handles the deletion of an email address.
      */
-    const handleMobileNumberDelete = () => {
+    const handleEmailAddressDelete = () => {
         setIsProfileUpdating(true);
 
         const data: PatchOperationRequest<ProfilePatchOperationValue> = {
@@ -427,41 +426,41 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
-        const updatedMobileNumbersList: string[] = sortedMobileNumbersList
-            .filter((mobileNumber: SortedMobileNumber) => mobileNumber.value !== selectedMobileNumber.value)
-            .map((mobileNumber: SortedMobileNumber) => mobileNumber.value);
+        const updatedEmailAddressesList: string[] = sortedEmailAddressesList
+            .filter((emailAddress: SortedEmailAddress) => emailAddress.value !== selectedEmailAddress.value)
+            .map((emailAddress: SortedEmailAddress) => emailAddress.value);
 
         data.Operations.push({
             op: "replace",
             value: {
                 [schema.schemaId] : {
-                    [schema.name] : updatedMobileNumbersList
+                    [schema.name] : updatedEmailAddressesList
                 }
             }
         });
 
-        if (selectedMobileNumber.isPrimary) {
-            const updatedPhoneNumbersList: MultiValue[] = [];
+        if (selectedEmailAddress.isPrimary) {
+            const updatedEmailsList: (string | MultiValue)[] = [];
 
-            for (const phoneNumber of profileDetails?.profileInfo?.phoneNumbers) {
-                if (phoneNumber.value === selectedMobileNumber.value) {
-                    updatedPhoneNumbersList.push({ ...phoneNumber, value: "" });
+            for (const emailAddress of profileDetails?.profileInfo?.emails) {
+                if (typeof emailAddress === "string") {
+                    updatedEmailsList.push("");
                 } else {
-                    updatedPhoneNumbersList.push(phoneNumber);
+                    updatedEmailsList.push(emailAddress);
                 }
             }
 
             data.Operations.push({
                 op: "replace",
                 value: {
-                    [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: updatedPhoneNumbersList
+                    [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")]: updatedEmailsList
                 }
             });
         }
 
-        if (isVerificationEnabled && selectedMobileNumber.isVerified) {
-            const updatedVerifiedMobileNumbersList: string[] = mergedVerifiedMobileNumbers.filter(
-                (mobileNumber: string) => mobileNumber !== selectedMobileNumber.value
+        if (isVerificationEnabled && selectedEmailAddress.isVerified) {
+            const updatedVerifiedEmailAddressesList: string[] = mergedVerifiedEmailAddresses.filter(
+                (emailAddress: string) => emailAddress !== selectedEmailAddress.value
             );
 
             data.Operations.push({
@@ -469,8 +468,8 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
                 value: {
                     [schema.schemaId] : {
                         [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get(
-                            "VERIFIED_MOBILE_NUMBERS"
-                        )] : updatedVerifiedMobileNumbersList
+                            "VERIFIED_EMAIL_ADDRESSES"
+                        )] : updatedVerifiedEmailAddressesList
                     }
                 }
             });
@@ -479,151 +478,7 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
         triggerUpdate(data, false);
     };
 
-    const handleSingleMobileUpdate = (_: string, value: string): void => {
-        setIsProfileUpdating(true);
-
-        const data: PatchOperationRequest<ProfilePatchOperationValue> = {
-            Operations: [],
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
-        };
-
-        const updatedMobileList: MultiValue[] = [];
-
-        for (const mobileNumber of profileDetails?.profileInfo?.phoneNumbers) {
-            if (mobileNumber.type !== "mobile") {
-                updatedMobileList.push(mobileNumber);
-            }
-        }
-        updatedMobileList.push({ type: "mobile", value });
-
-        data.Operations.push({
-            op: "replace",
-            value: {
-                [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("PHONE_NUMBERS")]: updatedMobileList
-            }
-        });
-
-        data.Operations.push({
-            op: "replace",
-            value: {
-                [ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA] : {
-                    [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("VERIFY_MOBILE")] : true
-                }
-            }
-        });
-
-        triggerUpdate(data);
-    };
-
-    const handleMobileUpdateModalClose = (isRevalidate: boolean = false) => {
-        setIsMobileUpdateModalOpen(false);
-        setIsProfileUpdating(false);
-
-        if (isRevalidate) {
-            // Re-fetch the profile information.
-            dispatch(getProfileInformation(true));
-            dispatch(setActiveForm(null));
-        }
-    };
-
-    if (isActive && schema.schemaUri !== SCIMExtensionConfigs.scimSystemSchema.mobileNumbers) {
-        if (isVerificationEnabled) {
-            return (
-                <EditSection data-testid={ `${testId}-schema-mobile-editing-section` }>
-                    <p>{ t("myAccount:components.profile.messages.mobileVerification.content") }</p>
-                    <Grid padded={ true }>
-                        <Grid.Row columns={ 2 }>
-                            <Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
-                                <List.Content>{ fieldLabel }</List.Content>
-                            </Grid.Column>
-                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
-                                <List.Content>
-                                    <List.Description className="with-max-length">
-                                        {
-                                            profileInfo.get(schema.name)
-                                                ? profileInfo.get(schema.name)
-                                                : (
-                                                    <a
-                                                        className="placeholder-text"
-                                                        tabIndex={ 0 }
-                                                        onClick={ () => setIsMobileUpdateModalOpen(true) }
-                                                        onKeyPress={ (
-                                                            { key }: React.KeyboardEvent<HTMLAnchorElement>
-                                                        ) => {
-                                                            if (key === "Enter") {
-                                                                setIsMobileUpdateModalOpen(true);
-                                                            }
-                                                        } }
-                                                        data-testid={
-                                                            `${testId}-schema-mobile-editing-section-${
-                                                                schema.name.replace(".", "-")
-                                                            }-placeholder`
-                                                        }
-                                                    >
-                                                        { t("myAccount:components.profile.forms.generic." +
-                                                                    "inputs.placeholder", {
-                                                            fieldName: fieldLabel.toLowerCase() })
-                                                        }
-                                                    </a>
-                                                )
-                                        }
-                                    </List.Description>
-                                </List.Content>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 2 }>
-                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 2 }>
-                                <Button variant="contained" onClick={ () => setIsMobileUpdateModalOpen(true) }>
-                                    { t("common:update").toString() }
-                                </Button>
-                            </Grid.Column>
-                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 2 }>
-                                <Button
-                                    onClick={ onEditCancelClicked }
-                                >
-                                    { t("common:cancel").toString() }
-                                </Button>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-
-                    <MobileUpdateWizardV2
-                        initialValue={ initialValue }
-                        isOpen={ isMobileUpdateModalOpen }
-                        onClose={ handleMobileUpdateModalClose }
-                        onCancel={ () => {
-                            setIsMobileUpdateModalOpen(false);
-                            setIsProfileUpdating(false);
-                            onEditCancelClicked();
-                        } }
-                        isMultiValued={ false }
-                        isMobileRequired={ isRequired }
-                        data-testid={ `${testId}-mobile-verification-wizard` }
-                    />
-                </EditSection>
-            );
-        }
-
-        return (
-            <TextFieldForm
-                fieldSchema={ schema }
-                initialValue={ initialValue }
-                fieldLabel={ fieldLabel }
-                isActive={ isActive }
-                isEditable={ isEditable }
-                onEditClicked={ onEditClicked }
-                onEditCancelClicked={ onEditCancelClicked }
-                isRequired={ isRequired }
-                setIsProfileUpdating={ setIsProfileUpdating }
-                isLoading={ isLoading }
-                isUpdating={ isUpdating }
-                data-componentid={ testId }
-                handleSubmit={ handleSingleMobileUpdate }
-            />
-        );
-    }
-
-    const renderMobileNumbersTable = (): ReactElement => {
+    const renderEmailAddressesTable = (): ReactElement => {
         return (
             <TableContainer
                 component={ Paper }
@@ -635,11 +490,11 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
                 <Table
                     className="multi-value-table"
                     size="small"
-                    aria-label="multi-attribute value table"
+                    aria-label="multi-attribute-value-table"
                 >
                     <TableBody>
-                        { sortedMobileNumbersList?.map(
-                            (mobileNumber: SortedMobileNumber, index: number) => (
+                        { sortedEmailAddressesList?.map(
+                            (emailAddress: SortedEmailAddress, index: number) => (
                                 <TableRow key={ index } className="multi-value-table-data-row">
                                     <TableCell align="left">
                                         <div className="table-c1">
@@ -651,11 +506,26 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
                                                     }-value-${index}`
                                                 }
                                             >
-                                                { mobileNumber.value }
+                                                { emailAddress.value }
                                             </Typography>
                                             {
                                                 isVerificationEnabled &&
-                                                mobileNumber.isVerified && (
+                                                emailAddress.isVerificationPending && (
+                                                    <div
+                                                        className="verified-icon"
+                                                        data-componentid={
+                                                            `${testId}-editing-section-${
+                                                                schema.name.replace(".", "-")
+                                                            }-pending-email-${index}`
+                                                        }
+                                                    >
+                                                        { renderPendingVerificationIcon() }
+                                                    </div>
+                                                )
+                                            }
+                                            {
+                                                isVerificationEnabled &&
+                                                emailAddress.isVerified && (
                                                     <div
                                                         className="verified-icon"
                                                         data-componentid={
@@ -669,7 +539,7 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
                                                 )
                                             }
                                             {
-                                                mobileNumber.isPrimary && (
+                                                emailAddress.isPrimary && (
                                                     <div
                                                         className="verified-icon"
                                                         data-componentid={
@@ -694,9 +564,9 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
                                                 variant="text"
                                                 className="text-btn"
                                                 hidden={ !isVerificationEnabled ||
-                                                    mobileNumber.isVerified }
+                                                    emailAddress.isVerified }
                                                 onClick={
-                                                    () => handleVerifyMobile(mobileNumber.value) }
+                                                    () => handleVerifyEmail(emailAddress.value) }
                                                 disabled={ isLoading }
                                                 data-componentid={
                                                     `${testId}-editing-section-${
@@ -710,13 +580,12 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
                                                 size="small"
                                                 variant="text"
                                                 className="text-btn"
-                                                hidden={ mobileNumber.isPrimary ||
+                                                hidden={ emailAddress.isPrimary ||
                                                     (isVerificationEnabled &&
-                                                        !mobileNumber.isVerified)
+                                                        !emailAddress.isVerified)
                                                 }
                                                 onClick={
-                                                    () => handleMakeMobilePrimary(
-                                                        mobileNumber.value)
+                                                    () => handleMakeEmailPrimary(emailAddress.value)
                                                 }
                                                 disabled={ isLoading }
                                                 data-componentid={
@@ -730,13 +599,13 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
                                             <IconButton
                                                 size="small"
                                                 onClick={ () => {
-                                                    setSelectedMobileNumber(mobileNumber);
+                                                    setSelectedEmailAddress(emailAddress);
                                                 } }
                                                 disabled={ isLoading ||
-                                                    (mobileNumber.isPrimary &&
-                                                        primaryMobileSchema?.required) ||
+                                                    (emailAddress.isPrimary &&
+                                                        primaryEmailSchema?.required) ||
                                                     (isRequired &&
-                                                        sortedMobileNumbersList.length === 1) }
+                                                        sortedEmailAddressesList?.length === 1) }
                                                 data-componentid={
                                                     `${testId}-editing-section-${
                                                         schema.name.replace(".", "-")
@@ -773,7 +642,7 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
                         <Grid.Column width={ 4 }>{ fieldLabel }</Grid.Column>
                         <Grid.Column width={ 12 }>
                             <FinalForm
-                                onSubmit={ handleAddMobileNumber }
+                                onSubmit={ handleAddEmailAddress }
                                 render={ ({ handleSubmit, hasValidationErrors }: FormRenderProps) => {
                                     return (
                                         <form
@@ -787,18 +656,18 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
                                             <FinalFormField
                                                 component={ TextFieldAdapter }
                                                 ariaLabel={ fieldLabel }
-                                                name="mobileNumbers"
+                                                name="emailAddresses"
                                                 type="text"
                                                 placeholder={
                                                     t("myAccount:components.profile.forms.generic.inputs.placeholder",
                                                         { fieldName: fieldLabel.toLowerCase() }) }
                                                 validate={ validateField }
-                                                maxLength={ primaryMobileSchema?.maxLength
+                                                maxLength={ primaryEmailSchema?.maxLength
                                                     ?? ProfileConstants.CLAIM_VALUE_MAX_LENGTH }
                                                 readOnly={
                                                     !isEditable ||
                                                     isUpdating ||
-                                                    sortedMobileNumbersList?.length === ProfileConstants
+                                                    sortedEmailAddressesList?.length === ProfileConstants
                                                         .MAX_EMAIL_ADDRESSES_ALLOWED
                                                 }
                                                 required={ isRequired }
@@ -811,7 +680,7 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
                                                                 disabled={
                                                                     isUpdating ||
                                                                     hasValidationErrors ||
-                                                                    sortedMobileNumbersList.length >= ProfileConstants
+                                                                    sortedEmailAddressesList.length >= ProfileConstants
                                                                         .MAX_EMAIL_ADDRESSES_ALLOWED
                                                                 }
                                                                 onClick={ handleSubmit }
@@ -829,7 +698,7 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
                                                 }
                                             />
 
-                                            { renderMobileNumbersTable() }
+                                            { renderEmailAddressesTable() }
 
                                             <SemanticButton
                                                 type="button"
@@ -850,32 +719,11 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-
-                <MobileUpdateWizardV2
-                    initialValue={ initialValue }
-                    isOpen={ isMobileUpdateModalOpen }
-                    onClose={ handleMobileUpdateModalClose }
-                    onCancel={ (isRevalidate: boolean = false) => {
-                        setIsMobileUpdateModalOpen(false);
-                        setIsProfileUpdating(false);
-                        onEditCancelClicked();
-
-                        if (isRevalidate) {
-                            // Re-fetch the profile information.
-                            dispatch(getProfileInformation(true));
-                        }
-                    } }
-                    data-testid={ `${testId}-mobile-verification-wizard` }
-                    initialStep={ 1 }
-                    isMobileRequired={ isRequired }
-                    isMultiValued
-                />
-
-                { selectedMobileNumber && (
+                { selectedEmailAddress && (
                     <MultiValueDeleteConfirmationModal
-                        selectedAttributeInfo={ { schema, value: selectedMobileNumber.value } }
-                        onClose={ () => setSelectedMobileNumber(undefined) }
-                        onConfirm={ handleMobileNumberDelete }
+                        selectedAttributeInfo={ { schema, value: selectedEmailAddress.value } }
+                        onClose={ () => setSelectedEmailAddress(undefined) }
+                        onConfirm={ handleEmailAddressDelete }
                         data-componentid={ testId }
                     />
                 ) }
@@ -892,8 +740,12 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
                 <Grid.Column mobile={ 8 } computer={ 10 }>
                     <List.Content>
                         <List.Description className="with-max-length">
-                            { isEmpty(sortedMobileNumbersList) ? (
-                                <EmptyValueField schema={ schema } fieldLabel={ fieldLabel } />
+                            { isEmpty(sortedEmailAddressesList) ? (
+                                <EmptyValueField
+                                    schema={ schema }
+                                    fieldLabel={ fieldLabel }
+                                    onEditClicked={ onEditClicked }
+                                />
                             ) : (
                                 renderFieldContent()
                             ) }
@@ -936,4 +788,4 @@ const MobileFieldForm: FunctionComponent<MobileFieldFormPropsInterface> = ({
     );
 };
 
-export default MobileFieldForm;
+export default MultiEmailFieldForm;

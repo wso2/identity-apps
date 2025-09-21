@@ -52,6 +52,7 @@ import { Step } from "../../models/steps";
 import { Template, TemplateTypes } from "../../models/templates";
 import { Widget } from "../../models/widget";
 import PluginRegistry from "../../plugins/plugin-registry";
+import autoAssignConnections from "../../utils/auto-assign-connections";
 import generateResourceId from "../../utils/generate-resource-id";
 import ResourcePanel from "../resource-panel/resource-panel";
 import ElementPropertiesPanel from "../resource-property-panel/resource-property-panel";
@@ -123,7 +124,9 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     const {
         isResourcePanelOpen,
         isResourcePropertiesPanelOpen,
-        onResourceDropOnCanvas
+        onResourceDropOnCanvas,
+        isFlowMetadataLoading,
+        metadata
     } = useAuthenticationFlowBuilderCore();
 
     useEffect(() => {
@@ -168,6 +171,9 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
                 nodes,
                 edges
             );
+
+            // Auto-assign connections for execution steps.
+            autoAssignConnections([ ...newNodes, defaultPropertySelector as Node ], metadata.executorConnections);
 
             setNodes(() => newNodes);
             setEdges(() => newEdges);
@@ -323,11 +329,20 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
                     const remainingEdges: Edge[] = acc.filter((edge: Edge) => !connectedEdges.includes(edge));
 
                     const createdEdges: Edge[] = incomers.flatMap(({ id: source }: { id: string }) =>
-                        outgoers.map(({ id: target }: { id: string }) => ({
-                            id: `${source}->${target}`,
-                            source,
-                            target
-                        }))
+                        outgoers.map(({ id: target }: { id: string }) => {
+                            // Find the edge from incomer to the node being deleted
+                            const edge: Edge = connectedEdges.find(
+                                (e: Edge) => e.source === source && e.target === node.id
+                            );
+
+                            return {
+                                id: `${edge.source}->${target}`,
+                                source,
+                                sourceHandle: edge?.sourceHandle,
+                                target,
+                                type: edge?.type
+                            };
+                        })
                     );
 
                     return [ ...remainingEdges, ...createdEdges ];
@@ -373,6 +388,9 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
 
         const [ newNodes, newEdges, defaultPropertySelector, defaultPropertySectorStepId ] = onTemplateLoad(resource);
 
+        // Auto-assign connections for execution steps.
+        autoAssignConnections(newNodes, metadata.executorConnections);
+
         // TODO: Figure-out a better way to handle this debounce.
         // Tracker: https://github.com/xyflow/xyflow/issues/2405
         setTimeout(() => {
@@ -410,6 +428,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
                     resources={ resources }
                     open={ isResourcePanelOpen }
                     onAdd={ handleOnAdd }
+                    disabled={ isFlowMetadataLoading }
                 >
                     <ElementPropertiesPanel
                         open={ isResourcePropertiesPanelOpen }

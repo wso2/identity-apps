@@ -240,6 +240,7 @@ export const common: CommonNS = {
     operations: "Operations",
     organizationName: "{{orgName}} organization",
     overview: "Overview",
+    pending: "Pending",
     personalInfo: "Personal Info",
     pin: "Pin",
     pinned: "Pinned",

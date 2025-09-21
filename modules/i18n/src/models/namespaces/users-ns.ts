@@ -235,6 +235,7 @@ export interface usersNS {
         validation: {
             formatError: string;
             dateFormatError: string;
+            duplicateError: string;
             mobileFormatError: string;
             futureDateError: string;
         };
@@ -248,6 +249,10 @@ export interface usersNS {
     notifications: {
         addUser: {
             error: {
+                message: string;
+                description: string;
+            };
+            badRequestError: {
                 message: string;
                 description: string;
             };

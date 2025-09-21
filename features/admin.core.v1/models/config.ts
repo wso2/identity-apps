@@ -397,6 +397,13 @@ export interface MultiTenancyConfigInterface {
  */
 export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfigInterface> {
     /**
+     * Should the admin notice be enabled.
+     */
+    adminNotice?: {
+        enabled: boolean;
+        plannedRollOutDate: string;
+    };
+    /**
      * How should the application templates be loaded.
      * If `LOCAL` is selected, app will resort to in app templates.
      * `REMOTE` will fetch templates from the template management REST API.
@@ -427,10 +434,6 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Configurations for IDP templates.
      */
     identityProviderTemplates: IdentityProviderTemplatesConfigInterface;
-    /**
-     * Should the admin data separation notice be enabled.
-     */
-    isAdminDataSeparationNoticeEnabled?: boolean;
     /**
      * Should default dialects be allowed for editing.
      */
@@ -588,6 +591,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     passwordPolicyConfigs: PasswordPolicyConfigsInterface;
     /**
+     * Config to check whether the WS-Federation protocol template is enabled in the application creation wizard.
+     */
+    isWSFedProtocolTemplateEnabled?: boolean;
+     /**
      * Multi-tenancy related configurations.
      */
     multiTenancy: MultiTenancyConfigInterface;
@@ -712,7 +719,7 @@ export interface ResourceEndpointsInterface {
 }
 
 export interface RouteConfigInterface {
-    organizationEnabledRoutes: string[];
+    organizationEnabledRoutes: Record<string, string>;
 }
 
 /**

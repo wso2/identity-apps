@@ -184,10 +184,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const isOrgHandleFeatureEnabled: boolean = isFeatureEnabled(
-        featureConfig.organizations,
-        "organizations.orgHandle"
-    );
+    const isOrgHandleFeatureEnabled: boolean = isFeatureEnabled(featureConfig.organizations, "organizationHandle");
 
     /**
      * Redirects to the organizations edit page when the edit button is clicked.

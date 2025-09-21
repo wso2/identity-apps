@@ -219,6 +219,7 @@ export interface CommonNS {
     operations: string;
     operationType: string;
     overview: string;
+    pending: string;
     personalInfo: string;
     pin: string;
     pinned: string;

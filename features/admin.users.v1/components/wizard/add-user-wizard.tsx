@@ -649,6 +649,19 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                             "users:notifications.addUser.error.message"
                         )
                     }));
+                } else if (error.response && error.response.status === 400
+                    && error.response.data && error.response.data.detail) {
+                    closeWizard();
+                    dispatch(addAlert({
+                        description: t(
+                            "users:notifications.addUser.badRequestError.description",
+                            { description: error.response.data.detail }
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "users:notifications.addUser.badRequestError.message"
+                        )
+                    }));
                 } else if (error.response && error.response.status === 403 &&
                     error.response.data && error.response.data.scimType ===
                         UserManagementConstants.ERROR_USER_LIMIT_REACHED) {
@@ -829,6 +842,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             content: (
                 <AddUserBasic
                     triggerSubmit={ submitGeneralSettings }
+                    setTriggerSubmit={ setSubmitGeneralSettings }
                     initialValues={ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] }
                     emailVerificationEnabled={ emailVerificationEnabled }
                     onSubmit={ (values: AddUserWizardStateInterface) =>

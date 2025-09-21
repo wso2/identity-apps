@@ -1256,6 +1256,7 @@ export const myAccount: MyAccountNS = {
                             popup: "உங்கள் புதுப்பிக்க நிர்வாகியைத் தொடர்பு கொள்ளுங்கள் {{fieldName}}"
                         },
                         validations: {
+                            duplicate: "{{fieldName}} இல் நகல் மதிப்புகள் இருக்க முடியாது",
                             empty: "{{fieldName}} ஒரு கட்டாயா களமாகும்",
                             invalidFormat: "{{fieldName}} சரியான வடிவத்தில் இல்லை"
                         }

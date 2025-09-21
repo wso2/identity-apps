@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -439,6 +439,7 @@ export class AppConstants {
                 `${AppConstants.getAdminViewBasePath()}/actions/pre-update-profile` ],
             [ "TENANTS", `${AppConstants.getDefaultLayoutBasePath()}/organizations` ],
             [ "EDIT_TENANT", `${AppConstants.getDefaultLayoutBasePath()}/organizations/:id` ],
+            [ "EDIT_SELF_ORGANIZATION", `${AppConstants.getDefaultLayoutBasePath()}/organizations/self` ],
             [ "SYSTEM_SETTINGS", `${AppConstants.getDefaultLayoutBasePath()}/organizations/system-settings` ],
             [ "POLICY_ADMINISTRATION", `${AppConstants.getAdminViewBasePath()}/policy-administration` ],
             [ "EDIT_POLICY", `${AppConstants.getAdminViewBasePath()}/policy-administration/edit-policy/:id` ],
@@ -506,25 +507,38 @@ export class AppConstants {
     /**
      * Route ids that are enabled in an organization.
      */
-    public static readonly ORGANIZATION_ENABLED_ROUTES: string[] = [
-        "gettingStarted",
-        "identityProviders",
-        "users",
-        "organizations",
-        "groups",
-        "roles",
-        "userRoles",
-        "applications",
-        "emailTemplates",
-        "smsTemplates",
-        "governanceConnectors",
-        "branding",
-        "consoleSettings",
-        "apiResources",
-        "approvals",
-        "workflows",
-        "flows"
-    ];
+    public static readonly ORGANIZATION_ENABLED_ROUTES: Record<string, string> = {
+        "accountSecurity": "v1.0.0",
+        "actions": "v0.0.0",
+        "admin-forced-password-reset": "v1.0.0",
+        "apiResources": "v0.0.0",
+        "applications": "v0.0.0",
+        "approvalWorkflows": "v0.0.0",
+        "approvals": "v0.0.0",
+        "attributeDialects": "v0.0.0",
+        "branding": "v0.0.0",
+        "consoleSettings": "v0.0.0",
+        "emailTemplates": "v0.0.0",
+        "flows": "v0.0.0",
+        "gettingStarted": "v0.0.0",
+        "governanceConnectors": "v0.0.0",
+        "groups": "v0.0.0",
+        "identityProviders": "v0.0.0",
+        "loginAndRegistration": "v1.0.0",
+        "oidcScopes": "v0.0.0",
+        "organizations": "v0.0.0",
+        "password-recovery": "v1.0.0",
+        "roles": "v0.0.0",
+        "self-registration-connector": "v1.0.0",
+        "smsTemplates": "v0.0.0",
+        "user-email-verification": "v1.0.0",
+        "userRoles": "v0.0.0",
+        "userStores": "v0.0.0",
+        "username-recovery": "v1.0.0",
+        "users": "v0.0.0",
+        "workflowInstanceDetails": "v0.0.0",
+        "workflowInstances": "v0.0.0"
+    };
 
     /**
      * Organization-management-related route ids

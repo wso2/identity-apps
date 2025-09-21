@@ -1209,6 +1209,7 @@ export const myAccount: MyAccountNS = {
                             "popup": "Wenden Sie sich an den Administrator, um Ihr {{fieldName}} zu aktualisieren"
                         },
                         "validations": {
+                            "duplicate": "{{fieldName}} darf keine doppelten Werte haben",
                             "empty": "{{fieldName}} ist ein Pflichtfeld",
                             "invalidFormat": "Das Format des eingegebenen {{fieldName}} ist falsch"
                         }

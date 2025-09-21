@@ -1,5 +1,115 @@
 # @wso2is/identity-apps-core
 
+## 3.3.3
+
+### Patch Changes
+
+- [#9158](https://github.com/wso2/identity-apps/pull/9158) [`a127204ff9aa64eae402e9d0334e20348cf1fcbc`](https://github.com/wso2/identity-apps/commit/a127204ff9aa64eae402e9d0334e20348cf1fcbc) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Handle self registration error cases with recaptcha.
+
+* [#9145](https://github.com/wso2/identity-apps/pull/9145) [`fadf735b66351039b6ca8aaf5bd1ff9edd7fb740`](https://github.com/wso2/identity-apps/commit/fadf735b66351039b6ca8aaf5bd1ff9edd7fb740) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - encode auth details
+
+## 3.3.2
+
+### Patch Changes
+
+- [#9148](https://github.com/wso2/identity-apps/pull/9148) [`09d00b4494c499198f22572378374812a4de21e1`](https://github.com/wso2/identity-apps/commit/09d00b4494c499198f22572378374812a4de21e1) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Use flowId to handle magic link
+
+## 3.3.1
+
+### Patch Changes
+
+- [#9143](https://github.com/wso2/identity-apps/pull/9143) [`bf0c30427b553fe92322dceece85df02f01cb520`](https://github.com/wso2/identity-apps/commit/bf0c30427b553fe92322dceece85df02f01cb520) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add preview label ws-fed protocol template
+
+- Updated dependencies [[`bf0c30427b553fe92322dceece85df02f01cb520`](https://github.com/wso2/identity-apps/commit/bf0c30427b553fe92322dceece85df02f01cb520)]:
+  - @wso2is/theme@2.8.7
+
+## 3.3.0
+
+### Minor Changes
+
+- [#9132](https://github.com/wso2/identity-apps/pull/9132) [`379363b7c9f1d828709fb17570ab21fab4d0d382`](https://github.com/wso2/identity-apps/commit/379363b7c9f1d828709fb17570ab21fab4d0d382) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Release minor version for cloud deployment
+
+## 3.2.0
+
+### Minor Changes
+
+- [#9118](https://github.com/wso2/identity-apps/pull/9118) [`b1f0836ff5cf38215fcf3e3845f4b41ded664f19`](https://github.com/wso2/identity-apps/commit/b1f0836ff5cf38215fcf3e3845f4b41ded664f19) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Release minor version for cloud deployment
+
+### Patch Changes
+
+- Updated dependencies [[`4975f1232482847ddc0496b85ca54b505bf6a8a4`](https://github.com/wso2/identity-apps/commit/4975f1232482847ddc0496b85ca54b505bf6a8a4)]:
+  - @wso2is/theme@2.8.6
+
+## 3.1.30
+
+### Patch Changes
+
+- [#9117](https://github.com/wso2/identity-apps/pull/9117) [`0877e02c2af78b2872abf6e832e6107814af8041`](https://github.com/wso2/identity-apps/commit/0877e02c2af78b2872abf6e832e6107814af8041) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Fix displaying error message for emailOTP
+
+## 3.1.29
+
+### Patch Changes
+
+- [#9105](https://github.com/wso2/identity-apps/pull/9105) [`5c09616fc16bbdd13b5adb1090cf5137cfbf5f4a`](https://github.com/wso2/identity-apps/commit/5c09616fc16bbdd13b5adb1090cf5137cfbf5f4a) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Handle flow completion properly when workflow is engaged
+
+## 3.1.28
+
+### Patch Changes
+
+- [#9095](https://github.com/wso2/identity-apps/pull/9095) [`8ab2b7cebfe65e91fe0c01782ac489c788034ea9`](https://github.com/wso2/identity-apps/commit/8ab2b7cebfe65e91fe0c01782ac489c788034ea9) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Fix magiclink flow relying on flowId query param
+
+* [#9057](https://github.com/wso2/identity-apps/pull/9057) [`08728cc956f8bb7569d69f9812d174fa1e01a4ef`](https://github.com/wso2/identity-apps/commit/08728cc956f8bb7569d69f9812d174fa1e01a4ef) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Add missing i18n resources and consume flowType from response
+
+## 3.1.27
+
+### Patch Changes
+
+- [#8959](https://github.com/wso2/identity-apps/pull/8959) [`d6d117c56471105ff62bf740303bbf136176da6f`](https://github.com/wso2/identity-apps/commit/d6d117c56471105ff62bf740303bbf136176da6f) Thanks [@KD23243](https://github.com/KD23243)! - Update invite user registration error messages and keys
+
+## 3.1.26
+
+### Patch Changes
+
+- [#8966](https://github.com/wso2/identity-apps/pull/8966) [`71f768b8146f5c9d6bf6f7aa6b0d92785b3f44cb`](https://github.com/wso2/identity-apps/commit/71f768b8146f5c9d6bf6f7aa6b0d92785b3f44cb) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Honor claim input formats in complete your profile page
+
+## 3.1.25
+
+### Patch Changes
+
+- [#9053](https://github.com/wso2/identity-apps/pull/9053) [`62f89c99c542316cbede7b473e1f477a7c7e8c71`](https://github.com/wso2/identity-apps/commit/62f89c99c542316cbede7b473e1f477a7c7e8c71) Thanks [@savindi7](https://github.com/savindi7)! - Add language switcher to SAML login page.
+
+## 3.1.24
+
+### Patch Changes
+
+- [#9054](https://github.com/wso2/identity-apps/pull/9054) [`01d9552b3d30cfeb2e4c275f6576e458e1256bc6`](https://github.com/wso2/identity-apps/commit/01d9552b3d30cfeb2e4c275f6576e458e1256bc6) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix JSON deserialisation error during self-registration username validation
+
+## 3.1.23
+
+### Patch Changes
+
+- [#8962](https://github.com/wso2/identity-apps/pull/8962) [`48ce5ed8fb60d047a974e3a9fab0a3121eea2646`](https://github.com/wso2/identity-apps/commit/48ce5ed8fb60d047a974e3a9fab0a3121eea2646) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Remove imp api resource registration.
+
+## 3.1.22
+
+### Patch Changes
+
+- [#9023](https://github.com/wso2/identity-apps/pull/9023) [`254b1e19dfef942ffc99c9a7e1cebbe75a613354`](https://github.com/wso2/identity-apps/commit/254b1e19dfef942ffc99c9a7e1cebbe75a613354) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Allow custom username validation error message in self-registration page and add i18n to error page
+
+## 3.1.21
+
+### Patch Changes
+
+- [#8993](https://github.com/wso2/identity-apps/pull/8993) [`522947c4b9ea12953452fd56835d0c079469f202`](https://github.com/wso2/identity-apps/commit/522947c4b9ea12953452fd56835d0c079469f202) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Handle email OTP based verification pending scenario
+
+## 3.1.20
+
+### Patch Changes
+
+- [#8991](https://github.com/wso2/identity-apps/pull/8991) [`6b340cb99719bd0c8edac86e65d9caf92a5db7f1`](https://github.com/wso2/identity-apps/commit/6b340cb99719bd0c8edac86e65d9caf92a5db7f1) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Add default static content to handle flow completion with view step
+
+* [#8984](https://github.com/wso2/identity-apps/pull/8984) [`79f2de916b3679817aef58f8e58772d162341951`](https://github.com/wso2/identity-apps/commit/79f2de916b3679817aef58f8e58772d162341951) Thanks [@brionmario](https://github.com/brionmario)! - Properly skip `Console` from `getRegistrationPortalUrl`
+
 ## 3.1.19
 
 ### Patch Changes

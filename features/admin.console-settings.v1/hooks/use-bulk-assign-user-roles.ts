@@ -75,6 +75,9 @@ const useBulkAssignAdministratorRoles = (): UseBulkAssignAdministratorRolesInter
      * @param onAdministratorRoleAssignSuccess - Success callback.
      */
 
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
+    );
     const roleAssignmentFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.roleAssignments);
     const hasRoleV3UpdateScopes: boolean = useRequiredScopes(roleAssignmentFeatureConfig?.scopes?.update);
@@ -82,7 +85,7 @@ const useBulkAssignAdministratorRoles = (): UseBulkAssignAdministratorRolesInter
     const updateUserRoleAssignmentFunction: (
         roleId: string,
         data: PayloadInterface | PayloadRolesV3Interface | PatchRoleDataInterface
-    ) => Promise<void> = hasRoleV3UpdateScopes ? updateUsersForRole : updateRoleDetails;
+    ) => Promise<void> = userRolesV3FeatureEnabled && hasRoleV3UpdateScopes ? updateUsersForRole : updateRoleDetails;
 
     const assignAdministratorRoles = async (
         user: UserBasicInterface,
@@ -90,35 +93,38 @@ const useBulkAssignAdministratorRoles = (): UseBulkAssignAdministratorRolesInter
         onAdministratorRoleAssignError: (error: AxiosError) => void,
         onAdministratorRoleAssignSuccess: (responses: AxiosResponse[]) => void
     ) => {
-        const payload: PayloadRolesV3Interface | PayloadInterface = hasRoleV3UpdateScopes ? {
-            Operations: [
-                {
-                    op: "add",
-                    value: [
+        const payload: PayloadRolesV3Interface | PayloadInterface =
+            userRolesV3FeatureEnabled && hasRoleV3UpdateScopes
+                ? {
+                    Operations: [
                         {
-                            display: user.userName,
-                            value: user.id
+                            op: "add",
+                            value: [
+                                {
+                                    display: user.userName,
+                                    value: user.id
+                                }
+                            ]
                         }
-                    ]
+                    ],
+                    schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
                 }
-            ],
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
-        } : {
-            Operations: [
-                {
-                    op: "add",
-                    value: {
-                        users: [
-                            {
-                                display: user.userName,
-                                value: user.id
+                : {
+                    Operations: [
+                        {
+                            op: "add",
+                            value: {
+                                users: [
+                                    {
+                                        display: user.userName,
+                                        value: user.id
+                                    }
+                                ]
                             }
-                        ]
-                    }
-                }
-            ],
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
-        };
+                        }
+                    ],
+                    schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+                };
 
         const roleIds: string[] = roles.map((role: RolesInterface) => role.id);
 
@@ -148,7 +154,7 @@ const useBulkAssignAdministratorRoles = (): UseBulkAssignAdministratorRolesInter
         onAdministratorRoleUnassignError: (error: AxiosError) => void,
         onAdministratorRoleUnassignSuccess: (responses: AxiosResponse[]) => void
     ) => {
-        const payload: PatchRoleDataInterface = hasRoleV3UpdateScopes ? {
+        const payload: PatchRoleDataInterface = userRolesV3FeatureEnabled && hasRoleV3UpdateScopes ? {
             Operations: [
                 {
                     op: "remove",

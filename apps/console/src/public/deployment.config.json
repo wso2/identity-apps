@@ -482,6 +482,10 @@
                     {
                         "feature": "applications.edit.general.branding",
                         "flag": ""
+                    },
+                    {
+                        "feature": "applications.create.ws-fed.protocol.template",
+                        "flag": ""
                     }
                 ],
                 "scopes": {
@@ -1787,6 +1791,7 @@
         "isSAASDeployment": false,
         "isSignatureValidationCertificateAliasEnabled": false,
         "isTrustedAppConsentRequired": false,
+        "isWSFedProtocolTemplateEnabled": true,
         "isXacmlConnectorEnabled": false,
         "legacyMode": {
             "applicationListSystemApps": false,
@@ -1808,38 +1813,38 @@
             "productVersion": ""
         },
         "routes": {
-            "organizationEnabledRoutes": [
-                "accountSecurity",
-                "actions",
-                "admin-forced-password-reset",
-                "apiResources",
-                "applications",
-                "approvalWorkflows",
-                "approvals",
-                "attributeDialects",
-                "branding",
-                "consoleSettings",
-                "emailTemplates",
-                "flows",
-                "gettingStarted",
-                "governanceConnectors",
-                "groups",
-                "identityProviders",
-                "loginAndRegistration",
-                "oidcScopes",
-                "organizations",
-                "password-recovery",
-                "roles",
-                "self-registration-connector",
-                "smsTemplates",
-                "user-email-verification",
-                "userRoles",
-                "userStores",
-                "username-recovery",
-                "users",
-                "workflowInstanceDetails",
-                "workflowInstances"
-            ]
+            "organizationEnabledRoutes": {
+                "accountSecurity": "v1.0.0",
+                "actions": "v0.0.0",
+                "admin-forced-password-reset": "v1.0.0",
+                "apiResources": "v0.0.0",
+                "applications": "v0.0.0",
+                "approvalWorkflows": "v0.0.0",
+                "approvals": "v0.0.0",
+                "attributeDialects": "v0.0.0",
+                "branding": "v0.0.0",
+                "consoleSettings": "v0.0.0",
+                "emailTemplates": "v0.0.0",
+                "flows": "v0.0.0",
+                "gettingStarted": "v0.0.0",
+                "governanceConnectors": "v0.0.0",
+                "groups": "v0.0.0",
+                "identityProviders": "v0.0.0",
+                "loginAndRegistration": "v1.0.0",
+                "oidcScopes": "v0.0.0",
+                "organizations": "v0.0.0",
+                "password-recovery": "v1.0.0",
+                "roles": "v0.0.0",
+                "self-registration-connector": "v1.0.0",
+                "smsTemplates": "v0.0.0",
+                "user-email-verification": "v1.0.0",
+                "userRoles": "v0.0.0",
+                "userStores": "v0.0.0",
+                "username-recovery": "v1.0.0",
+                "users": "v0.0.0",
+                "workflowInstanceDetails": "v0.0.0",
+                "workflowInstances": "v0.0.0"
+            }
         },
         "selfAppIdentifier": "Console",
         "showAppSwitchButton": true,

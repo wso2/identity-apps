@@ -404,6 +404,33 @@
             -ms-user-select: none;
             user-select: none;
         }
+
+        &.selection-card-with-ribbon {
+            >.content, .ui.cards>.card>.content {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-top: none;
+            }
+            .ribbon {
+                border-radius: 0 !important;
+                font-size: .8em;
+                height: 24px;
+                margin-left: auto;
+                margin-top: -5px;
+                flex-direction: row;
+                align-content: center;
+                align-items: center;
+                justify-content: space-around;
+                clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
+                -webkit-clip-path: polygon(4% 0, 0 100%, 100% 100%, 100% 0, 100% 0);
+                position: absolute;
+                right: 0;
+                padding: 0 10px;
+                top: 5px;
+                border-top-right-radius: 7px !important;
+            }
+        }
     }
 }
 

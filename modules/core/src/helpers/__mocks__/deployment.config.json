@@ -1308,24 +1308,24 @@
             "productVersion": ""
         },
         "routes": {
-            "organizationEnabledRoutes": [
-                "apiResources",
-                "applications",
-                "attributeDialects",
-                "branding",
-                "consoleSettings",
-                "emailTemplates",
-                "gettingStarted",
-                "governanceConnectors",
-                "groups",
-                "identityProviders",
-                "organizations",
-                "roles",
-                "smsTemplates",
-                "userRoles",
-                "userStores",
-                "users"
-            ]
+            "organizationEnabledRoutes": {
+                "apiResources": "v0.0.0",
+                "applications": "v0.0.0",
+                "attributeDialects": "v0.0.0",
+                "branding": "v0.0.0",
+                "consoleSettings": "v0.0.0",
+                "emailTemplates": "v0.0.0",
+                "gettingStarted": "v0.0.0",
+                "governanceConnectors": "v0.0.0",
+                "groups": "v0.0.0",
+                "identityProviders": "v0.0.0",
+                "organizations": "v0.0.0",
+                "roles": "v0.0.0",
+                "smsTemplates": "v0.0.0",
+                "userRoles": "v0.0.0",
+                "userStores": "v0.0.0",
+                "users": "v0.0.0"
+            }
         },
         "selfAppIdentifier": "Console",
         "showAppSwitchButton": true,

@@ -1,5 +1,30 @@
 # @wso2is/admin.tenants.v1
 
+## 2.29.19
+
+### Patch Changes
+
+- [#9144](https://github.com/wso2/identity-apps/pull/9144) [`c74915d6f178213aaeb430505b2458bb33ecc747`](https://github.com/wso2/identity-apps/commit/c74915d6f178213aaeb430505b2458bb33ecc747) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Fix issue where privileged business users can't see the organization switcher.
+
+- Updated dependencies [[`bf0c30427b553fe92322dceece85df02f01cb520`](https://github.com/wso2/identity-apps/commit/bf0c30427b553fe92322dceece85df02f01cb520)]:
+  - @wso2is/react-components@2.9.23
+  - @wso2is/theme@2.8.7
+  - @wso2is/admin.core.v1@2.49.51
+
+## 2.29.18
+
+### Patch Changes
+
+- [#8928](https://github.com/wso2/identity-apps/pull/8928) [`103dc78848886bb10668320272116ad0c2a4e809`](https://github.com/wso2/identity-apps/commit/103dc78848886bb10668320272116ad0c2a4e809) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Provide self organization name update via console UI
+
+* [#9011](https://github.com/wso2/identity-apps/pull/9011) [`4d6c2276f7044df95b7bc98f2ae22f4020e3a1bb`](https://github.com/wso2/identity-apps/commit/4d6c2276f7044df95b7bc98f2ae22f4020e3a1bb) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Add seperate UI configs to enable/disable the organization display name or handle
+
+* Updated dependencies [[`103dc78848886bb10668320272116ad0c2a4e809`](https://github.com/wso2/identity-apps/commit/103dc78848886bb10668320272116ad0c2a4e809), [`b9b2e2c0977296e1539cbdeb92ffcdf179be3b5b`](https://github.com/wso2/identity-apps/commit/b9b2e2c0977296e1539cbdeb92ffcdf179be3b5b), [`680cb06832a8b37d2c4a5613faee079d4b9cce97`](https://github.com/wso2/identity-apps/commit/680cb06832a8b37d2c4a5613faee079d4b9cce97), [`4d6c2276f7044df95b7bc98f2ae22f4020e3a1bb`](https://github.com/wso2/identity-apps/commit/4d6c2276f7044df95b7bc98f2ae22f4020e3a1bb)]:
+  - @wso2is/admin.organizations.v1@2.27.6
+  - @wso2is/admin.core.v1@2.49.36
+  - @wso2is/i18n@2.30.20
+  - @wso2is/admin.users.v1@2.36.12
+
 ## 2.29.17
 
 ### Patch Changes

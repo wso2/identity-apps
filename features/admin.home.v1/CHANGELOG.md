@@ -1,5 +1,35 @@
 # @wso2is/admin.home.v1
 
+## 1.7.28
+
+### Patch Changes
+
+- [#9147](https://github.com/wso2/identity-apps/pull/9147) [`d28c2c1292f3c75ac9dd9354b8e95fd2614176fd`](https://github.com/wso2/identity-apps/commit/d28c2c1292f3c75ac9dd9354b8e95fd2614176fd) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add more details to admin notice.
+
+- Updated dependencies [[`d28c2c1292f3c75ac9dd9354b8e95fd2614176fd`](https://github.com/wso2/identity-apps/commit/d28c2c1292f3c75ac9dd9354b8e95fd2614176fd)]:
+  - @wso2is/admin.extensions.v1@2.40.7
+  - @wso2is/i18n@2.30.28
+
+## 1.7.27
+
+### Patch Changes
+
+- Updated dependencies [[`c54e1c5fa53794bb4347eb29711fb6d14da2c056`](https://github.com/wso2/identity-apps/commit/c54e1c5fa53794bb4347eb29711fb6d14da2c056)]:
+  - @wso2is/admin.feature-gate.v1@1.7.7
+  - @wso2is/admin.flows.v1@1.0.19
+  - @wso2is/admin.core.v1@2.49.46
+
+## 1.7.26
+
+### Patch Changes
+
+- [#9098](https://github.com/wso2/identity-apps/pull/9098) [`a8411676d537cedabc4d306242f273446df8421b`](https://github.com/wso2/identity-apps/commit/a8411676d537cedabc4d306242f273446df8421b) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Onboard admin notice component.
+
+- Updated dependencies [[`a8411676d537cedabc4d306242f273446df8421b`](https://github.com/wso2/identity-apps/commit/a8411676d537cedabc4d306242f273446df8421b)]:
+  - @wso2is/admin.extensions.v1@2.40.4
+  - @wso2is/admin.core.v1@2.49.43
+  - @wso2is/i18n@2.30.24
+
 ## 1.7.25
 
 ### Patch Changes

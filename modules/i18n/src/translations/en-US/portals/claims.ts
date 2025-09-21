@@ -74,7 +74,7 @@ export const claims: ClaimsNS = {
             content: "If you delete this attribute mapping, all the associated {{type}} attributes will "
                 + "also be deleted. Please proceed with caution.",
             header: "Are you sure?",
-            hint: "Please type <1>{{confirm}}</1> to confirm.",
+            hint: "Please confirm your action.",
             message: "This action is irreversible and will permanently delete the selected attribute " +
                 "mapping."
         },
@@ -474,8 +474,10 @@ export const claims: ClaimsNS = {
                 label: "Data Type",
                 options: {
                     boolean: "Boolean",
+                    date: "Date",
                     dateTime: "DateTime",
                     decimal: "Decimal",
+                    epoch: "Epoch",
                     integer: "Integer",
                     object: "Object",
                     options: "Options",
@@ -536,7 +538,7 @@ export const claims: ClaimsNS = {
             profiles: {
                 administratorConsole: "Administrator Console",
                 attributeConfigurations: {
-                    description: "Configure attribute profiles for different flows.",
+                    description: "Define how attributes appear and behave in different flows. These settings control only the user interface. They do not affect backend or API validation.",
                     title: "Attribute Configurations"
                 },
                 displayByDefault: "Display",

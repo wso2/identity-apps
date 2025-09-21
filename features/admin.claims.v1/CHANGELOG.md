@@ -1,5 +1,98 @@
 # @wso2is/admin.claims.v1
 
+## 2.29.10
+
+### Patch Changes
+
+- [#9170](https://github.com/wso2/identity-apps/pull/9170) [`927376ddec142bf893c71a193c4f15bb2524678f`](https://github.com/wso2/identity-apps/commit/927376ddec142bf893c71a193c4f15bb2524678f) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix claim add wizard showing mapping step with empty content when hidden userstores are present
+
+- Updated dependencies [[`927376ddec142bf893c71a193c4f15bb2524678f`](https://github.com/wso2/identity-apps/commit/927376ddec142bf893c71a193c4f15bb2524678f), [`9e68efc9f315b7d3c8687206af7fb60f68b399b3`](https://github.com/wso2/identity-apps/commit/9e68efc9f315b7d3c8687206af7fb60f68b399b3)]:
+  - @wso2is/admin.claims.v1@2.29.10
+  - @wso2is/admin.users.v1@2.36.23
+  - @wso2is/admin.core.v1@2.49.53
+  - @wso2is/admin.server-configurations.v1@2.35.67
+
+## 2.29.9
+
+### Patch Changes
+
+- [#9119](https://github.com/wso2/identity-apps/pull/9119) [`b49e8895d237320120338da44ca8572f11524004`](https://github.com/wso2/identity-apps/commit/b49e8895d237320120338da44ca8572f11524004) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Remove unnecessary API call on directing to attributes page.
+
+- Updated dependencies [[`b49e8895d237320120338da44ca8572f11524004`](https://github.com/wso2/identity-apps/commit/b49e8895d237320120338da44ca8572f11524004), [`2415d7ee6cfe5d7d78fc15df969ae810711c398d`](https://github.com/wso2/identity-apps/commit/2415d7ee6cfe5d7d78fc15df969ae810711c398d), [`1d9bd91e49741883089899102aab2c8ba143e935`](https://github.com/wso2/identity-apps/commit/1d9bd91e49741883089899102aab2c8ba143e935)]:
+  - @wso2is/admin.claims.v1@2.29.9
+  - @wso2is/admin.users.v1@2.36.18
+  - @wso2is/admin.core.v1@2.49.45
+  - @wso2is/core@2.12.2
+  - @wso2is/admin.server-configurations.v1@2.35.59
+
+## 2.29.8
+
+### Patch Changes
+
+- [#9090](https://github.com/wso2/identity-apps/pull/9090) [`55d51174f90c6b2d8c908862a643a1e1fa0e1d7c`](https://github.com/wso2/identity-apps/commit/55d51174f90c6b2d8c908862a643a1e1fa0e1d7c) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Hide agent schema and claims for sub organizations
+
+- Updated dependencies [[`55d51174f90c6b2d8c908862a643a1e1fa0e1d7c`](https://github.com/wso2/identity-apps/commit/55d51174f90c6b2d8c908862a643a1e1fa0e1d7c)]:
+  - @wso2is/admin.claims.v1@2.29.8
+
+## 2.29.7
+
+### Patch Changes
+
+- [#9044](https://github.com/wso2/identity-apps/pull/9044) [`dbb426ffe2e66c56d9f49ad2f9ed733651cc56ba`](https://github.com/wso2/identity-apps/commit/dbb426ffe2e66c56d9f49ad2f9ed733651cc56ba) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Provide the date and epoch data type support
+
+- Updated dependencies [[`dbb426ffe2e66c56d9f49ad2f9ed733651cc56ba`](https://github.com/wso2/identity-apps/commit/dbb426ffe2e66c56d9f49ad2f9ed733651cc56ba)]:
+  - @wso2is/admin.claims.v1@2.29.7
+  - @wso2is/core@2.12.1
+  - @wso2is/i18n@2.30.23
+
+## 2.29.6
+
+### Patch Changes
+
+- [#9060](https://github.com/wso2/identity-apps/pull/9060) [`518532e0263494dda9ca5c7bc76876e459e5d9d0`](https://github.com/wso2/identity-apps/commit/518532e0263494dda9ca5c7bc76876e459e5d9d0) Thanks [@savindi7](https://github.com/savindi7)! - Add support to reflect display name and display order of basic details.
+
+- Updated dependencies [[`518532e0263494dda9ca5c7bc76876e459e5d9d0`](https://github.com/wso2/identity-apps/commit/518532e0263494dda9ca5c7bc76876e459e5d9d0), [`f44b9a13a8d53b9dfeb01046b320e9e327ab2b51`](https://github.com/wso2/identity-apps/commit/f44b9a13a8d53b9dfeb01046b320e9e327ab2b51)]:
+  - @wso2is/admin.claims.v1@2.29.6
+  - @wso2is/admin.users.v1@2.36.17
+  - @wso2is/admin.core.v1@2.49.42
+  - @wso2is/admin.server-configurations.v1@2.35.55
+
+## 2.29.5
+
+### Patch Changes
+
+- [#8966](https://github.com/wso2/identity-apps/pull/8966) [`71f768b8146f5c9d6bf6f7aa6b0d92785b3f44cb`](https://github.com/wso2/identity-apps/commit/71f768b8146f5c9d6bf6f7aa6b0d92785b3f44cb) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Honor claim input formats in complete your profile page
+
+- Updated dependencies [[`71f768b8146f5c9d6bf6f7aa6b0d92785b3f44cb`](https://github.com/wso2/identity-apps/commit/71f768b8146f5c9d6bf6f7aa6b0d92785b3f44cb), [`00860d487e6a193e990def381194598ebe326452`](https://github.com/wso2/identity-apps/commit/00860d487e6a193e990def381194598ebe326452)]:
+  - @wso2is/admin.claims.v1@2.29.5
+  - @wso2is/admin.users.v1@2.36.16
+  - @wso2is/admin.core.v1@2.49.41
+  - @wso2is/admin.server-configurations.v1@2.35.54
+
+## 2.29.4
+
+### Patch Changes
+
+- [#9042](https://github.com/wso2/identity-apps/pull/9042) [`5beb8d0682573cdd09dd83a16b213a34b47831f1`](https://github.com/wso2/identity-apps/commit/5beb8d0682573cdd09dd83a16b213a34b47831f1) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Add checkbox instead of input format for delete confimation modal.
+
+- Updated dependencies [[`5beb8d0682573cdd09dd83a16b213a34b47831f1`](https://github.com/wso2/identity-apps/commit/5beb8d0682573cdd09dd83a16b213a34b47831f1), [`b39c23eb0446afefdbea872ee3b0cf6d5370671f`](https://github.com/wso2/identity-apps/commit/b39c23eb0446afefdbea872ee3b0cf6d5370671f)]:
+  - @wso2is/admin.claims.v1@2.29.4
+  - @wso2is/i18n@2.30.21
+  - @wso2is/admin.extensions.v1@2.40.3
+  - @wso2is/react-components@2.9.22
+  - @wso2is/admin.users.v1@2.36.14
+  - @wso2is/admin.core.v1@2.49.39
+  - @wso2is/admin.server-configurations.v1@2.35.52
+
+## 2.29.3
+
+### Patch Changes
+
+- [#8956](https://github.com/wso2/identity-apps/pull/8956) [`e5510759b56c76ec6284450f654d2ac975b5f6e1`](https://github.com/wso2/identity-apps/commit/e5510759b56c76ec6284450f654d2ac975b5f6e1) Thanks [@Malith-19](https://github.com/Malith-19)! - Fix the inconsistent padding in the claims, additional property tab.
+
+- Updated dependencies [[`e5510759b56c76ec6284450f654d2ac975b5f6e1`](https://github.com/wso2/identity-apps/commit/e5510759b56c76ec6284450f654d2ac975b5f6e1)]:
+  - @wso2is/admin.claims.v1@2.29.3
+
 ## 2.29.2
 
 ### Patch Changes

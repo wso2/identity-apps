@@ -24,7 +24,9 @@ import {
     BuildingAltIcon,
     BuildingCircleCheckIcon,
     BuildingPenIcon,
+    EyeIcon,
     HierarchyIcon,
+    PenToSquareIcon,
     PlusIcon
 } from "@oxygen-ui/react-icons";
 import {
@@ -150,6 +152,8 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
     });
 
     const hasOrganizationReadPermissions: boolean = useRequiredScopes(organizationsFeatureConfig?.scopes?.read);
+    const hasOrganizationUpdatePermissions: boolean = useRequiredScopes(organizationsFeatureConfig?.scopes?.update);
+    const hasTenantsReadPermissions: boolean = useRequiredScopes(tenantsFeatureConfig?.scopes?.read);
 
     const isMakingTenantsDefaultEnabled: boolean = useSelector((state: AppState) => {
         return !state?.config?.ui?.features?.tenants?.disabledFeatures?.includes(
@@ -175,8 +179,9 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
     const featureConfig: FeatureConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features
     );
-    const isOrgHandleFeatureEnabled: boolean = isFeatureEnabled(
-        featureConfig.organizations,"organizations.orgHandle"
+    const isOrgHandleFeatureEnabled: boolean = isFeatureEnabled(featureConfig.organizations, "organizationHandle");
+    const isOrgDisplayNameFeatureEnabled: boolean = isFeatureEnabled(
+        featureConfig.organizations, "organizationDisplayName"
     );
 
     const [ tenantAssociations, setTenantAssociations ] = useState<TenantAssociationsInterface>(undefined);
@@ -245,6 +250,23 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
         }
         getOrganizationData();
     }, [ organizationType ]);
+
+    /**
+     * Listen for current authenticated organization updates from the organization edit form.
+     */
+    useEffect(() => {
+        const handleOrganizationUpdate = (event: CustomEvent) => {
+            if (event.detail?.success) {
+                setOrganizationName(event.detail?.newName);
+            }
+        };
+
+        window.addEventListener("organization-updated", handleOrganizationUpdate as EventListener);
+
+        return () => {
+            window.removeEventListener("organization-updated", handleOrganizationUpdate as EventListener);
+        };
+    }, []);
 
     useEffect(() => {
 
@@ -668,7 +690,33 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
             });
         }
 
-        if (isManagingTenantsFromDropdownEnabled && isSuperOrganization()) {
+        if (isOrgDisplayNameFeatureEnabled) {
+            options.push(
+                <Dropdown.Item
+                    className="action-panel"
+                    onClick={ (): void => {
+                        history.push(AppConstants.getPaths().get("EDIT_SELF_ORGANIZATION"));
+                    } }
+                    data-compnentid="edit-self-organization"
+                >
+                    {
+                        hasOrganizationUpdatePermissions ? (
+                            <>
+                                <PenToSquareIcon />
+                                { t("tenants:tenantDropdown.options.edit.label") }
+                            </>
+                        ) : (
+                            <>
+                                <EyeIcon />
+                                { t("tenants:tenantDropdown.options.view.label") }
+                            </>
+                        )
+                    }
+                </Dropdown.Item>
+            );
+        }
+
+        if (hasTenantsReadPermissions && isManagingTenantsFromDropdownEnabled && isSuperOrganization()) {
             options.push(
                 <Dropdown.Item
                     className="action-panel"
@@ -754,6 +802,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                         className={
                                             isSubOrg ||
                                             !organizationConfigs.showOrganizationDropdown ||
+                                            isPrivilegedUser ||
                                             renderDropdownOptions()?.length <= 0
                                                 ? "header sub-org-header"
                                                 : "header"
@@ -855,7 +904,8 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                         </Item.Content>
                                     </Item>
                                 </Item.Group>
-                                { organizationConfigs.showOrganizationDropdown &&  renderDropdownOptions() }
+                                { organizationConfigs.showOrganizationDropdown && !isPrivilegedUser
+                                    &&  renderDropdownOptions() }
                             </Dropdown.Menu>
                         ) : (
                             <Dropdown.Menu onClick={ handleDropdownClick }>
@@ -918,7 +968,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                     )
                     : null
             }
-            { !isPrivilegedUser && tenantDropdownMenu }
+            { tenantDropdownMenu }
         </>
     );
 };

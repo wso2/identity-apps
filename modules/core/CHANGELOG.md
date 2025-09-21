@@ -1,5 +1,17 @@
 # @wso2is/core
 
+## 2.12.2
+
+### Patch Changes
+
+- [#9068](https://github.com/wso2/identity-apps/pull/9068) [`1d9bd91e49741883089899102aab2c8ba143e935`](https://github.com/wso2/identity-apps/commit/1d9bd91e49741883089899102aab2c8ba143e935) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Add organization version based routing for sub-organizations.
+
+## 2.12.1
+
+### Patch Changes
+
+- [#9044](https://github.com/wso2/identity-apps/pull/9044) [`dbb426ffe2e66c56d9f49ad2f9ed733651cc56ba`](https://github.com/wso2/identity-apps/commit/dbb426ffe2e66c56d9f49ad2f9ed733651cc56ba) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Provide the date and epoch data type support
+
 ## 2.12.0
 
 ### Minor Changes

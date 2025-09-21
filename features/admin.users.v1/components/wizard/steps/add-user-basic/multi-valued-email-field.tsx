@@ -89,6 +89,7 @@ const MultiValuedEmailField: FunctionComponent<MultiValuedEmailFieldPropsInterfa
 
     const form: FormApi<Record<string, any>, Partial<Record<string, any>>> = useForm();
     const addFieldRef: MutableRefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
+    const addFieldName: string = `${schema.name}-add-field`;
 
     const emailAddressesFieldName: string = `${schema.schemaId}.${schema.name}`;
     const emailsFieldName: string = `${ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")}.primary`;
@@ -122,6 +123,46 @@ const MultiValuedEmailField: FunctionComponent<MultiValuedEmailFieldPropsInterfa
     }, [ ]);
 
     /**
+     * Handles the form submission to add the value from the input field to the multi-valued field.
+     * Adds a listener to the form's submit event. So, the value typed in the input field can be
+     * picked up when the form is submitting.
+     */
+    useEffect(() => {
+        const formElement: HTMLFormElement | undefined = addFieldRef.current?.form;
+
+        if (!formElement) {
+            return;
+        }
+
+        /**
+         * Handles the form submission to add the value from the input field to the multi-valued field.
+         */
+        const onFormSubmitCapture = () => {
+            const draftValue: string = addFieldRef?.current?.value;
+            const newValue: string = (draftValue ?? "").trim();
+
+            if (!newValue) {
+                return;
+            }
+
+            const validationError: string = validateEmail(newValue);
+
+            // If there is a validation error, value is not added.
+            if (validationError) {
+                return;
+            }
+
+            handleAddEmail(newValue);
+        };
+
+        formElement.addEventListener("submit", onFormSubmitCapture, true);
+
+        return () => {
+            formElement.removeEventListener("submit", onFormSubmitCapture, true);
+        };
+    }, [ emailsFieldValue, emailAddressesFieldValue, addFieldName, form ]);
+
+    /**
      * Brings the primary email address to the top of the list.
      * Calculate the verification status for each email address.
      *
@@ -150,32 +191,47 @@ const MultiValuedEmailField: FunctionComponent<MultiValuedEmailFieldPropsInterfa
         emailsFieldValue
     ]);
 
-    const validateEmail = (value: string): string => {
+    const validateEmail: (value: string) => string = useCallback((value: string) => {
+        if (emailAddressesFieldValue?.includes(value)) {
+            return t("users:forms.validation.duplicateError", { field: fieldLabel });;
+        }
+
         if (!RegExp(primaryEmailSchema?.regEx).test(value)) {
             return t("users:forms.validation.formatError", { field: fieldLabel });
         }
 
         return undefined;
-    };
+    }, [ emailAddressesFieldValue ]);
 
     const validateInputFieldValue: DebouncedFunc<(value: string) => void> = useCallback(
         debounce((value: string) => {
             setValidationError(validateEmail(value));
         }, 500),
-        []
+        [ emailAddressesFieldValue ]
     );
 
-    const handleAddEmail = (): void => {
-        const newEmailAddress: string = addFieldRef?.current?.value;
+    /**
+     * Handles the addition of a new value to the multi-valued field.
+     * If the value is provided, it will be added to the field. And it assumes the validation is already done.
+     * If the value is not provided, it will use the value from the input field. And validates it.
+     *
+     * @param emailAddress - The value to be added.
+     */
+    const handleAddEmail = (emailAddress: string = ""): void => {
+        let newEmailAddress: string = emailAddress;
 
         if (isEmpty(newEmailAddress)) {
-            return;
-        }
+            newEmailAddress = addFieldRef?.current?.value;
 
-        const validationError: string = validateEmail(newEmailAddress);
+            if (isEmpty(newEmailAddress)) {
+                return;
+            }
 
-        if (!isEmpty(validationError)) {
-            return;
+            const validationError: string = validateEmail(newEmailAddress);
+
+            if (!isEmpty(validationError)) {
+                return;
+            }
         }
 
         const existingEmailAddresses: string[] = emailAddressesFieldValue ?? [];
@@ -203,7 +259,7 @@ const MultiValuedEmailField: FunctionComponent<MultiValuedEmailFieldPropsInterfa
                                 !isEmpty(validationError) ||
                                 sortedEmailAddressesList.length >= maxValueLimit
                             }
-                            onClick={ handleAddEmail }
+                            onClick={ () => handleAddEmail() }
                         >
                             <PlusIcon />
                         </IconButton>)

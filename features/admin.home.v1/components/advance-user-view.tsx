@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Link from "@oxygen-ui/react/Link/Link";
 import { GearIcon } from "@oxygen-ui/react-icons";
 import { FeatureAccessConfigInterface, FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
 import {
@@ -35,15 +36,14 @@ import {
 } from "@wso2is/admin.applications.v1/models/application";
 import { ApplicationManagementUtils } from "@wso2is/admin.applications.v1/utils/application-management-utils";
 import getTryItClientId from "@wso2is/admin.applications.v1/utils/get-try-it-client-id";
+import { Config } from "@wso2is/admin.core.v1/configs/app";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config"; // No specific rule found
 import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state"; // No specific rule found
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
-import
-AdminDataSeparationNotice
-    from "@wso2is/admin.extensions.v1/configs/components/admin-data-separation-notice/admin-data-separation-notice";
+import AdminNotice from "@wso2is/admin.extensions.v1/configs/components/admin-notice/admin-notice";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -52,7 +52,7 @@ import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/co
 import { GenericIcon, Heading, Popup, Text } from "@wso2is/react-components";
 import axios from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Card, Grid, Placeholder } from "semantic-ui-react";
 import { CardExpandedNavigationButton } from "./card-expanded-navigation-button";
@@ -106,16 +106,19 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
     const showFeatureAnnouncementBanner: boolean = !homeFeatureConfig?.disabledFeatures?.includes(
         HomeConstants.FEATURE_DICTIONARY.FEATURE_ANNOUNCEMENT
     );
-    const isAdminDataSeparationNoticeEnabled: boolean = useSelector((state: AppState) => {
-        return state?.config?.ui?.isAdminDataSeparationNoticeEnabled;
+    const isAdminNoticeEnabled: boolean = useSelector((state: AppState) => {
+        return state?.config?.ui?.adminNotice?.enabled;
     });
+    const plannedRollOutDate: string = useSelector((state: AppState) => {
+        return state?.config?.ui?.adminNotice?.plannedRollOutDate;
+    });
+    const [ adminNoticeEnabled, setAdminNoticeEnabled ] = useState<boolean>(isAdminNoticeEnabled);
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateListItemInterface>(null);
     const [ isPlaygroundExist, setisPlaygroundExist ] = useState(undefined);
     const [ showWizardLogin, setShowWizardLogin ] = useState<boolean>(false);
     const [ inboundProtocolConfig, setInboundProtocolConfig ] = useState<any>(undefined);
-    const [ isAdminDataSeparationBannerEnabled, setIsAdminDataSeparationBannerEnabled ] = useState<boolean>(true);
 
     const [
         isTryItApplicationSearchRequestLoading,
@@ -580,9 +583,52 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                 </Heading>
             </div>
 
-            { isAdminDataSeparationNoticeEnabled && isAdminDataSeparationBannerEnabled &&
-                organizationType !== OrganizationType.SUBORGANIZATION && (
-                <AdminDataSeparationNotice setDisplayBanner={ setIsAdminDataSeparationBannerEnabled } />
+            { isAdminNoticeEnabled && adminNoticeEnabled && (
+                <AdminNotice
+                    title={ (
+                        <Trans i18nKey={ "console:common.quickStart.sections.adminNotice.title" }>
+                            Changes to Console Role Permissions
+                        </Trans>
+                    ) }
+                    description={ (
+                        <Trans
+                            i18nKey={ "console:common.quickStart.sections.adminNotice.description" }
+                            tOptions={ { date: plannedRollOutDate } }>
+                            Starting <b>{ plannedRollOutDate }</b>, we are updating some of the permissions in
+                            the <b>Editor - Users</b> and <b>Editor - Applications</b>.
+                        </Trans>
+                    ) }
+                    instructions={ [
+                        <Trans
+                            components={ { 1: <b /> } }
+                            i18nKey={ "console:common.quickStart.sections.adminNotice.instructions.0" }
+                            key="admin-notice-instruction-0"
+                        >
+                            <b>Editor - Users</b>: No longer able to edit role metadata or change permissions.
+                        </Trans>,
+                        <Trans
+                            components={ { 1: <b /> } }
+                            i18nKey={ "console:common.quickStart.sections.adminNotice.instructions.1" }
+                            key="admin-notice-instruction-1"
+                        >
+                            <b>Editor - Applications</b>: No longer able to assign roles to users or groups.
+                        </Trans>
+                    ] }
+                    moreDetails={ (
+                        <Trans i18nKey={ "console:common.quickStart.sections.adminNotice.moreDetails" } >
+                            See
+                            <Link
+                                href={ Config?.getDeploymentConfig()?.docSiteURL
+                                    + "/references/user-management/user-roles/#change-in-role-permissions" }
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                documentation
+                            </Link> for recommended workarounds and more details.
+                        </Trans>
+                    ) }
+                    setDisplayBanner={ setAdminNoticeEnabled }
+                />
             ) }
 
             <br />

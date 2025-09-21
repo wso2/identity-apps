@@ -1131,6 +1131,13 @@
             <%
                 if (error){
             %>
+                // Reset the recaptcha to allow another submission.
+                var reCaptchaType = "<%= CaptchaUtil.getReCaptchaType()%>";
+                if ("recaptcha-enterprise" == reCaptchaType) {
+                    grecaptcha.enterprise.reset();
+                } else {
+                    grecaptcha.reset();
+                }
                 var registrationData = sessionStorage.getItem(registrationDataKey);
                 sessionStorage.removeItem(registrationDataKey);
 
@@ -1139,6 +1146,9 @@
 
                     if (fields.length > 0) {
                         fields.forEach(function(field) {
+                            if (field.name === "g-recaptcha-response") {
+                                return;
+                            }
                             document.getElementsByName(field.name)[0].value = field.value;
                         })
                     }

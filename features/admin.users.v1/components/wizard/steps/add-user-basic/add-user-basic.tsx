@@ -37,20 +37,18 @@ import { USERSTORE_REGEX_PROPERTIES } from "@wso2is/admin.userstores.v1/constant
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem, UserStoreProperty } from "@wso2is/admin.userstores.v1/models";
 import { ValidationDataInterface, ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
+import { getFlattenedInitialValues } from "@wso2is/common.users.v1/utils/profile-utils";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     Claim,
     IdentifiableComponentInterface,
-    MultiValueAttributeInterface,
-    ProfileInfoInterface,
     ProfileSchemaInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ProfileUtils } from "@wso2is/core/utils";
 import {
-    AnyObject,
     FinalForm,
     FinalFormField,
     FormRenderProps,
@@ -85,11 +83,11 @@ import {
     AttributeDataType,
     HiddenFieldNames,
     PasswordOptionTypes,
+    UserFeatureDictionaryKeys,
     UserManagementConstants
 } from "../../../../constants";
 import {
     BasicUserDetailsInterface,
-    SubValueInterface,
     UserListInterface
 } from "../../../../models/user";
 import {
@@ -98,15 +96,15 @@ import {
     getUsernameConfiguration,
     isFieldDisplayableInUserCreationWizard
 } from "../../../../utils";
-
 import "./add-user-basic.scss";
 
 /**
- * Proptypes for the add user component.
+ * Proptypes for the add user basic details component.
  */
 interface AddUserBasicProps extends IdentifiableComponentInterface {
     initialValues: any;
     triggerSubmit: boolean;
+    setTriggerSubmit: () => void;
     emailVerificationEnabled: boolean;
     onSubmit: (values: BasicUserDetailsInterface) => void;
     requestedPasswordOption?: PasswordOptionTypes;
@@ -129,13 +127,12 @@ interface AddUserBasicProps extends IdentifiableComponentInterface {
 }
 
 /**
- * Add user basic component.
- *
- * @returns ReactElement
+ * Basic user details form component used in the add user wizard.
  */
 export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
     initialValues,
     triggerSubmit,
+    setTriggerSubmit,
     emailVerificationEnabled,
     onSubmit,
     isUserstoreRequired,
@@ -164,10 +161,11 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
 
     const dispatch: Dispatch = useDispatch();
 
+    const submitButtonRef: MutableRefObject<HTMLButtonElement> = useRef<HTMLButtonElement>(null);
+
     const profileSchemas: ProfileSchemaInterface[] = useSelector(
         (state: AppState) => state.profile.profileSchemas);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
     const systemReservedUserStores: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.systemReservedUserStores);
     const [ passwordConfig, setPasswordConfig ] = useState<ValidationFormInterface>(undefined);
@@ -183,16 +181,16 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
 
     const triggerSubmitRef: MutableRefObject<boolean> = useRef<boolean>(triggerSubmit);
 
-    let formSubmit: (
-        event?: Partial<Pick<React.SyntheticEvent, "preventDefault" | "stopPropagation">>
-    ) => Promise<AnyObject | undefined> | undefined;
-
     const isDistinctAttributeProfilesDisabled: boolean = featureConfig?.attributeDialects?.disabledFeatures?.includes(
         ClaimManagementConstants.DISTINCT_ATTRIBUTE_PROFILES_FEATURE_FLAG
     );
     const isAttributeProfileForUserCreationEnabled: boolean = isFeatureEnabled(
         featureConfig?.users,
         UserManagementConstants.ATTRIBUTE_PROFILES_FOR_USER_CREATION_FEATURE_FLAG
+    );
+    const useDefaultLabelsAndOrder: boolean = isFeatureEnabled(
+        featureConfig?.users,
+        UserManagementConstants.FEATURE_DICTIONARY.get(UserFeatureDictionaryKeys.UseDefaultLabelsAndOrder)
     );
     const isMultipleEmailAndMobileNumberEnabled: boolean = UIConfig?.isMultipleEmailsAndMobileNumbersEnabled;
     const EMAIL_ATTRIBUTE: string = ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS");
@@ -303,6 +301,30 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
         }
     }, [ fetchedAttributes ]);
 
+    const usernameLabel: string = useMemo(() => {
+        return fetchedAttributes?.find(
+            (attribute: Claim) =>
+                attribute?.[ClaimManagementConstants.CLAIM_URI_ATTRIBUTE_KEY] ===
+                ClaimManagementConstants.USER_NAME_CLAIM_URI
+        )?.displayName;
+    }, [ fetchedAttributes ]);
+
+    const firstNameLabel: string = useMemo(() => {
+        return fetchedAttributes?.find(
+            (attribute: Claim) =>
+                attribute?.[ClaimManagementConstants.CLAIM_URI_ATTRIBUTE_KEY] ===
+                ClaimManagementConstants.FIRST_NAME_CLAIM_URI
+        )?.displayName;
+    }, [ fetchedAttributes ]);
+
+    const lastNameLabel: string = useMemo(() => {
+        return fetchedAttributes?.find(
+            (attribute: Claim) =>
+                attribute?.[ClaimManagementConstants.CLAIM_URI_ATTRIBUTE_KEY] ===
+                ClaimManagementConstants.LAST_NAME_CLAIM_URI
+        )?.displayName;
+    }, [ fetchedAttributes ]);
+
     const readWriteUserStoresList: DropdownItemProps[] = useMemo(() => {
         const storeOptions: DropdownItemProps[] = [
             {
@@ -343,14 +365,14 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
 
     useEffect(() => {
         if (!triggerSubmitRef.current && triggerSubmit) {
-            formSubmit();
+            // Trigger the form submission.
+            submitButtonRef.current?.click();
         }
 
         triggerSubmitRef.current = triggerSubmit;
     }, [ triggerSubmit ]);
 
     /**
-     *
      * It toggles user summary, password creation prompt, offline status according to password options.
      */
     useEffect(() => {
@@ -455,199 +477,16 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
         setProfileSchema(filteredSchemas);
     }, [ profileSchemas ]);
 
-    /**
-     * The following function maps profile details to the SCIM schemas.
-     *
-     * @param proSchema - ProfileSchema
-     * @param userInfo - BasicProfileInterface
-     */
-    const mapUserToSchema = (
-        proSchema: ProfileSchemaInterface[], userInfo: ProfileInfoInterface
-    ): Map<string, string> => {
-        if (!isEmpty(proSchema) && !isEmpty(userInfo)) {
-            const tempProfileInfo: Map<string, string> = new Map<string, string>();
-
-            proSchema.forEach((schema: ProfileSchemaInterface) => {
-                const schemaNames: string[] = schema.name.split(".");
-
-                if (schemaNames.length === 1) {
-                    if (schemaNames[0] === "emails") {
-                        const emailSchema: string = schemaNames[0];
-
-                        if(ProfileUtils.isStringArray(userInfo[emailSchema])) {
-                            const emails: any[] = userInfo[emailSchema];
-                            const primaryEmail: string = emails.find((subAttribute: any) =>
-                                typeof subAttribute === "string");
-
-                            // Set the primary email value.
-                            tempProfileInfo.set(schema.name, primaryEmail);
-                        }
-                    } else {
-                        const schemaName:string = schemaNames[0];
-
-                        // System Schema
-                        if (schema.extended
-                            && userInfo[userConfig.userProfileSchema]?.[schemaNames[0]]
-                        ) {
-                            if (UserManagementConstants.MULTI_VALUED_ATTRIBUTES.includes(schemaNames[0])) {
-                                const attributeValue: string | string[] =
-                                    userInfo[userConfig.userProfileSchema]?.[schemaNames[0]];
-                                const formattedValue: string = Array.isArray(attributeValue)
-                                    ? attributeValue.join(",")
-                                    : "";
-
-                                tempProfileInfo.set(schema.name, formattedValue);
-
-                                return;
-                            }
-                            tempProfileInfo.set(
-                                schema.name, userInfo[userConfig.userProfileSchema][schemaNames[0]]
-                            );
-
-                            return;
-                        }
-
-                        // Enterprise Schema
-                        if (schema.extended
-                            && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaNames[0]]
-                        ) {
-                            if (schema.multiValued) {
-                                const attributeValue: string | string[] =
-                                    userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaNames[0]];
-                                const formattedValue: string = Array.isArray(attributeValue)
-                                    ? attributeValue.join(",")
-                                    : "";
-
-                                tempProfileInfo.set(schema.name, formattedValue);
-
-                                return;
-                            }
-                            tempProfileInfo.set(
-                                schema.name, userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]
-                            );
-
-                            return;
-                        }
-
-                        // Custom Schema
-                        if (
-                            schema.extended
-                            && userInfo?.[userSchemaURI]?.[schemaNames[0]]
-                        ) {
-                            if (schema.multiValued) {
-                                const attributeValue: string | string[] = userInfo[userSchemaURI]?.[schemaNames[0]];
-                                const formattedValue: string = Array.isArray(attributeValue)
-                                    ? attributeValue.join(",")
-                                    : "";
-
-                                tempProfileInfo.set(schema.name, formattedValue);
-
-                                return;
-                            }
-                            tempProfileInfo.set(
-                                schema.name, userInfo[userSchemaURI][schemaNames[0]]
-                            );
-
-                            return;
-                        }
-                        tempProfileInfo.set(schema.name, userInfo[schemaName]);
-                    }
-                } else {
-                    if (schemaNames[0] === "name") {
-                        const nameSchema: string = schemaNames[0];
-                        const givenNameSchema: string = schemaNames[1];
-
-                        givenNameSchema && userInfo[nameSchema] &&
-                            userInfo[nameSchema][givenNameSchema] && (
-                            tempProfileInfo.set(schema.name, userInfo[nameSchema][givenNameSchema])
-                        );
-                    } else {
-                        const schemaName: string = schemaNames[0];
-                        const schemaSecondaryProperty: string = schemaNames[1];
-
-                        const userProfileSchema: string = userInfo
-                            ?.[userConfig.userProfileSchema]?.[schemaName]
-                            ?.[schemaSecondaryProperty];
-
-                        const enterpriseSchema: string = userInfo
-                            ?.[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.[schemaName]
-                            ?.[schemaSecondaryProperty];
-
-                        const customSchema: string = userInfo
-                            ?.[userSchemaURI]?.[schemaName]
-                            ?.[schemaSecondaryProperty];
-
-                        if (schema.extended && (userProfileSchema || enterpriseSchema || customSchema)) {
-                            if (userProfileSchema) {
-                                tempProfileInfo.set(schema.name, userProfileSchema);
-                            } else if (enterpriseSchema && schema.multiValued) {
-                                tempProfileInfo.set(schema.name,
-                                    Array.isArray(enterpriseSchema) ? enterpriseSchema.join(",") : "");
-                            } else if (enterpriseSchema) {
-                                tempProfileInfo.set(schema.name, enterpriseSchema);
-                            } else if (customSchema && schema.multiValued) {
-                                tempProfileInfo.set(schema.name,
-                                    Array.isArray(customSchema) ? customSchema.join(",") : "");
-                            } else if (customSchema) {
-                                tempProfileInfo.set(schema.name, customSchema);
-                            }
-                        } else {
-                            const subValue: SubValueInterface = userInfo[schemaName] &&
-                                Array.isArray(userInfo[schemaName]) &&
-                                userInfo[schemaName]
-                                    .find((subAttribute: MultiValueAttributeInterface) =>
-                                        subAttribute.type === schemaSecondaryProperty);
-
-                            if (schemaName.includes("addresses")) {
-                                // Ex: addresses#home.streetAddress
-                                const addressSubSchema: string = schema?.name?.split(".")[1];
-                                const addressSchemaArray: string[] = schemaName?.split("#");
-
-                                if (addressSchemaArray.length > 1) {
-                                    // Ex: addresses#home
-                                    const addressSchema: string = addressSchemaArray[0];
-                                    const addressType: string = addressSchemaArray[1];
-
-                                    const subValue: SubValueInterface = userInfo[addressSchema] &&
-                                        Array.isArray(userInfo[addressSchema]) &&
-                                        userInfo[addressSchema]
-                                            .find((subAttribute: MultiValueAttributeInterface) =>
-                                                subAttribute.type === addressType);
-
-                                    tempProfileInfo.set(
-                                        schema.name,
-                                        (subValue && subValue[addressSubSchema]) ? subValue[addressSubSchema] : ""
-                                    );
-                                } else {
-                                    tempProfileInfo.set(
-                                        schema.name,
-                                        subValue ? subValue.formatted : ""
-                                    );
-                                }
-                            } else {
-                                tempProfileInfo.set(
-                                    schema.name,
-                                    subValue ? subValue.value : ""
-                                );
-                            }
-                        }
-                    }
-                }
-            });
-
-            return tempProfileInfo;
-        }
-    };
-
     /*
     * This map the user data to schema using initial values of the wizard.
     * This is used to persist wizard data when the user clicks on the back button.
     */
-    const profileInfo: Map<string, string> = useMemo(() => {
-        if (isAttributeProfileForUserCreationEnabled) {
-            return mapUserToSchema(profileSchema, initialValues);
+    const flattenedInitialValues: Record<string, unknown> = useMemo(() => {
+        if (isAttributeProfileForUserCreationEnabled && profileSchema) {
+            return getFlattenedInitialValues(
+                initialValues ?? {}, profileSchema, isMultipleEmailAndMobileNumberEnabled, false, false);
         }
-    }, [ profileSchema, initialValues ]);
+    }, [ profileSchema, initialValues, isMultipleEmailAndMobileNumberEnabled ]);
 
     /**
      * This will set the ask password option as OFFLINE if email verification is not enabled or email is not required.
@@ -657,6 +496,8 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
             if (userConfig.defautlAskPasswordOption === AskPasswordOptionTypes.OFFLINE
                 || !emailVerificationEnabled || !isEmailRequired) {
                 setAskPasswordOption(AskPasswordOptionTypes.OFFLINE);
+            } else {
+                setAskPasswordOption(AskPasswordOptionTypes.EMAIL);
             }
         } else if (emailVerificationEnabled && isEmailRequired) {
             setAskPasswordOption(AskPasswordOptionTypes.EMAIL);
@@ -666,7 +507,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                 : null
             );
         }
-    }, [ isEmailRequired ]);
+    }, [ isEmailRequired, emailVerificationEnabled, hasWorkflowAssociations ]);
 
     const resolveNamefieldAttributes = () => {
         const hiddenAttributes: (HiddenFieldNames)[] = [];
@@ -993,12 +834,16 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                     <Grid.Column mobile={ 16 } computer={ 10 }>
                         <FinalFormField
                             component={ TextFieldAdapter }
-                            label={ t("extensions:manage.features.user.addUser.inputLabel.alphanumericUsername") }
+                            label={ useDefaultLabelsAndOrder ?
+                                t("extensions:manage.features.user.addUser.inputLabel.alphanumericUsername") :
+                                usernameLabel
+                            }
                             name="username"
                             initialValue={ initialValues?.userName }
                             placeholder={ t("extensions:manage.features.user.addUser.inputLabel" +
                                 ".alphanumericUsernamePlaceholder") }
                             validate={ validate }
+                            validateFields={ [] }
                             maxLength={ 60 }
                             helperText={ usernameFieldHint }
                             data-testid="user-mgt-add-user-form-username-input"
@@ -1035,11 +880,12 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                 <MultiValuedEmailField
                     schema={ emailAddressesSchema }
                     primaryEmailSchema={ primaryEmailSchema }
-                    primaryEmailAddress={ profileInfo?.get(EMAIL_ATTRIBUTE) }
+                    primaryEmailAddress={ flattenedInitialValues[EMAIL_ATTRIBUTE] as string }
                     fieldLabel={ t("user:profile.fields." +
                         emailAddressesSchema.name.replace(".", "_"), { defaultValue: emailAddressesSchema.displayName }
                     ) }
-                    emailAddressesList={ profileInfo?.get(EMAIL_ADDRESSES_ATTRIBUTE)?.split(",") ?? [] }
+                    emailAddressesList={ flattenedInitialValues[
+                        ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.[EMAIL_ADDRESSES_ATTRIBUTE] ?? [] }
                     maxValueLimit={ ProfileConstants.MAX_EMAIL_ADDRESSES_ALLOWED }
                     data-componentid={ emailFieldComponentId }
                     data-testid={ emailFieldComponentId }
@@ -1074,6 +920,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                 placeholder={ t("user:forms.addUserForm.inputs.email.placeholder") }
                 required={ isEmailRequired }
                 validate={ validate }
+                validateFields={ [] }
                 maxLength={ 60 }
                 listen={ handleEmailEmpty }
                 data-testid={ emailFieldComponentId }
@@ -1104,8 +951,9 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                                 mobileNumbersSchema.name.replace(".", "_"), {
                                 defaultValue: mobileNumbersSchema.displayName }
                             ) }
-                            primaryMobileNumber={ profileInfo?.get(MOBILE_ATTRIBUTE) }
-                            mobileNumbersList={ profileInfo?.get(MOBILE_NUMBERS_ATTRIBUTE)?.split(",") ?? [] }
+                            primaryMobileNumber={ flattenedInitialValues[MOBILE_ATTRIBUTE] as string }
+                            mobileNumbersList={ flattenedInitialValues[
+                                ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.[MOBILE_NUMBERS_ATTRIBUTE] ?? [] }
                             maxValueLimit={ ProfileConstants.MAX_EMAIL_ADDRESSES_ALLOWED }
                             isUpdating={ isBasicDetailsLoading }
                             data-componentid={ `${ componentId }-${ mobileNumbersSchema.name }-input` }
@@ -1131,7 +979,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                             name={ mobileSchema.name }
                             label={ fieldName }
                             placeholder={ t("user:forms.addUserForm.inputs.generic.placeholder", { label: fieldName }) }
-                            initialValue={ profileInfo?.get(mobileSchema?.name) }
+                            initialValue={ flattenedInitialValues?.[mobileSchema.name] as string }
                             validate={ (value: string) => {
                                 if (isEmpty(value)) {
                                     return t("user:forms.addUserForm.inputs.generic.validations.empty", {
@@ -1179,7 +1027,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                 <Grid.Column mobile={ 16 } computer={ 10 }>
                     <DynamicFieldRenderer
                         schema={ schema }
-                        initialValues={ profileInfo ?? new Map<string, string>() }
+                        initialValues={ flattenedInitialValues }
                         isUpdating={ false }
                         data-componentid={ `${componentId}-profile-form` }
                     />
@@ -1238,8 +1086,22 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                 }
 
                 decodedFormValues[key] = convertedValues;
-            } else {
-                decodedFormValues[key] = values[key];
+            } else if (key.startsWith(`${ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("ADDRESSES")}#`)) {
+                // Handles address schema names like
+                // "addresses#home.streetAddress", "addresses#work.streetAddress", etc.
+                // These need to be converted to "addresses": [ { type: "home", streetAddress: "123 Main St" } ]
+                const fieldNameParts: string[] = key.split("#");
+
+                decodedFormValues[fieldNameParts[0]] = decodedFormValues[fieldNameParts[0]] || [];
+
+                for (const [ subAttribute, value ] of Object.entries(values[key] as Record<string, string>)) {
+                    (decodedFormValues[fieldNameParts[0]] as Array<Record<string, string>>).push({
+                        [subAttribute]: value,
+                        type: fieldNameParts[1]
+                    });
+                }
+
+                delete decodedFormValues[key];
             }
         }
 
@@ -1259,6 +1121,21 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
         onSubmit(decodedFormValues);
     };
 
+    /**
+     * Handles side effects when the form is submitted.
+     * - If there are validation errors, it resets the submit state in the parent component.
+     *
+     * @param hasValidationErrors - Whether the form has validation errors.
+     */
+    const onSubmitClick = (hasValidationErrors: boolean): void => {
+        if (hasValidationErrors) {
+            // Reset the trigger submit state in the parent component.
+            setTriggerSubmit();
+
+            return;
+        }
+    };
+
     if (isUserStoreRequestLoading || isUserStoreRequestValidating || isAttributesRequestLoading) {
         return (
             <OxygenGrid container spacing={ 3 }>
@@ -1272,15 +1149,17 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
         );
     }
 
+    /**
+     * Note: This form is submitted programmatically using a hidden button.
+     * This is required to ensure that the submit listener is triggered correctly. So, the multi-value fields
+     * are properly submitted by picking up the add field value as well.
+     */
     return (
         <FinalForm
             onSubmit={ handleFormSubmit }
             data-testid="user-mgt-add-user-form"
             data-componentid="user-mgt-add-user-form"
-            render={ ({ handleSubmit, form }: FormRenderProps) => {
-                // To trigger form submission externally.
-                formSubmit = handleSubmit;
-
+            render={ ({ handleSubmit, form, hasValidationErrors }: FormRenderProps) => {
                 return (
                     <form onSubmit={ handleSubmit }>
                         <Grid>
@@ -1326,7 +1205,11 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                                     <Grid.Column mobile={ 16 } computer={ 10 }>
                                         <FinalFormField
                                             component={ TextFieldAdapter }
-                                            label={ t("user:forms.addUserForm.inputs.firstName.label") }
+                                            label={
+                                                useDefaultLabelsAndOrder ?
+                                                    t("user:forms.addUserForm.inputs.firstName.label") :
+                                                    firstNameLabel
+                                            }
                                             name="firstName"
                                             initialValue={ initialValues?.firstName }
                                             placeholder={ t(
@@ -1358,7 +1241,11 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                                     <Grid.Column mobile={ 16 } computer={ 10 }>
                                         <FinalFormField
                                             component={ TextFieldAdapter }
-                                            label={ t("user:forms.addUserForm.inputs.lastName.label") }
+                                            label={
+                                                useDefaultLabelsAndOrder ?
+                                                    t("user:forms.addUserForm.inputs.lastName.label") :
+                                                    lastNameLabel
+                                            }
                                             name="lastName"
                                             initialValue={ initialValues?.lastName }
                                             placeholder={ t("user:forms.addUserForm.inputs." +
@@ -1468,6 +1355,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
 
                                         { passwordOption === createPasswordOptionData.value && (
                                             <CreatePasswordOption
+                                                initialValue={ initialValues?.newPassword }
                                                 passwordConfig={ passwordConfig }
                                                 passwordRegex={ passwordRegex }
                                                 data-componentid="user-mgt-add-user-form-create-password-option"
@@ -1477,6 +1365,12 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                                 </Grid.Row>
                             ) }
                         </Grid>
+                        { /** This hidden button is used to submit the form programmatically */ }
+                        <button
+                            ref={ submitButtonRef }
+                            onClick={ () => onSubmitClick(hasValidationErrors) }
+                            hidden
+                        />
                     </form>
                 );
             } }

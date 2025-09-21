@@ -380,6 +380,11 @@ export class I18nModuleConstants {
     public static readonly AGENTS_NAMESPACE: string = "agents";
 
     /**
+     * Common Users namespace.
+     */
+    public static readonly COMMON_USERS_NAMESPACE: string = "commonUsers";
+
+    /**
      * Constant representing the locale preference key.
      * This key is used to store the user's language preference in cookies or local storage.
      */

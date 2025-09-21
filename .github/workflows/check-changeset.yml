@@ -30,7 +30,7 @@ on:
 
 env:
     GH_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
-    IS_RELEASE_MODE: true  # 🚀 WSO2 Identity Server release mode is currently activated - patches only on master, minor/patch on next branch
+    IS_RELEASE_MODE: false
 
 jobs:
     check-changeset:
@@ -112,7 +112,7 @@ jobs:
                     console.log("IS_RELEASE_MODE:", IS_RELEASE_MODE);
 
                     let invalidChangesets = [];
-                    
+
                     // Check for major/minor changesets in release mode (master branch)
                     if (IS_RELEASE_MODE && CHANGES_COUNT > 0) {
                         for (const changesetFile of CHANGESET_FILES) {
@@ -123,10 +123,10 @@ jobs:
                                     path: changesetFile,
                                     ref: `refs/pull/${PR_NUMBER}/head`
                                 });
-                                
+
                                 const content = Buffer.from(fileResponse.data.content, 'base64').toString('utf8');
                                 console.log("CHANGESET_CONTENT:", changesetFile, content);
-                                
+
                                 // Parse changeset frontmatter to check for major/minor releases
                                 const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
                                 if (frontmatterMatch) {

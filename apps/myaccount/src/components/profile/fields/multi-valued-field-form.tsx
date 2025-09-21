@@ -19,7 +19,7 @@
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select from "@oxygen-ui/react/Select";
 import Typography from "@oxygen-ui/react/Typography";
-import MultiValuedTextField from "@wso2is/common.ui.profile.v1/components/multi-valued-text-field";
+import MultiValuedTextField from "@wso2is/common.users.v1/components/multi-valued-text-field";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { FinalForm, FormRenderProps } from "@wso2is/form";
 import { Button, Popup, useMediaContext } from "@wso2is/react-components";
@@ -173,7 +173,11 @@ const MultiValueFieldForm = <T extends string | number>({
                     <List.Content>
                         <List.Description className="with-max-length">
                             { isEmpty(initialValue) ? (
-                                <EmptyValueField schema={ schema } fieldLabel={ fieldLabel } />
+                                <EmptyValueField
+                                    schema={ schema }
+                                    fieldLabel={ fieldLabel }
+                                    onEditClicked={ onEditClicked }
+                                />
                             ) : (
                                 renderInactiveFieldContent()
                             ) }

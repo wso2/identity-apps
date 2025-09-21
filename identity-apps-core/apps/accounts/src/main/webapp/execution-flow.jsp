@@ -170,6 +170,7 @@
     <script src="${pageContext.request.contextPath}/js/react-ui-core.min.js"></script>
     <script type="text/javascript" src="js/error-utils.js"></script>
     <script type="text/javascript" src="js/constants.js"></script>
+    <script type="text/javascript" src="js/flow-components.js"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -195,7 +196,6 @@
                 const code = "<%= Encode.forJavaScript(code) != null ? Encode.forJavaScript(code) : null %>";
                 const state = "<%= Encode.forJavaScript(state) != null ? Encode.forJavaScript(state) : null %>";
                 const confirmationCode = "<%= Encode.forJavaScript(confirmationCode) != null ? Encode.forJavaScript(confirmationCode) : null %>";
-                const flowType = "<%= Encode.forJavaScript(flowType) != null ? Encode.forJavaScript(flowType) : null %>";
                 const mlt = "<%= Encode.forJavaScript(mlt) != null ? Encode.forJavaScript(mlt) : null %>";
                 const flowId = "<%= Encode.forJavaScript(flowId) != null ? Encode.forJavaScript(flowId) : null %>";
                 const spId = "<%= !StringUtils.isBlank(spId) && spId != "null" ? Encode.forJavaScript(spId) : "new-application" %>";
@@ -208,6 +208,7 @@
                 const [ flowError, setFlowError ] = useState(undefined);
                 const [confirmationEffectDone, setConfirmationEffectDone] = useState(false);
                 const [userAssertion, setUserAssertion] = useState(null);
+                const [flowType, setFlowType] = useState("<%= Encode.forJavaScript(flowType) != null ? Encode.forJavaScript(flowType) : null %>");
 
                 useEffect(() => {
                     const savedFlowId = localStorage.getItem("flowId");
@@ -275,6 +276,9 @@
                     })
                     .then((data) => {
                         if (data.error) {
+                            if (data.error.flowType) {
+                                setFlowType(data.error.flowType);
+                            }
                             setError(data.error);
 
                             return;
@@ -284,17 +288,17 @@
                             localStorage.setItem("flowId", data.flowId);
                         }
 
+                        if (data.flowType) {
+                            setFlowType(data.flowType);
+                        }
+
                         const isFlowEnded = handleFlowStatus(data);
 
                         if (isFlowEnded) {
                             return;
                         }
 
-                        if (data.type == "VIEW") {
-                            setComponents(data.data.components || []);
-                        } else {
-                            handleStepType(data);
-                        }
+                        handleStepType(data);
                         setFlowData(data);
                     })
                     .catch((err) => {
@@ -306,23 +310,30 @@
 
                 useEffect(() => {
                     if (error && error.code) {
-                        const errorDetails = getI18nKeyForError(error.code, flowType);
+                        const errorDetails = getI18nKeyForError(error.code, flowType, error.description);
                         let portal_url = authPortalURL + "/register";
                         if (flowType === "PASSWORD_RECOVERY") {
                             portal_url = authPortalURL + "/recovery";
                         }
-                        const errorPageURL = authPortalURL + "/error?" + "ERROR_MSG="
+                        let errorPageURL = authPortalURL + "/error?" + "ERROR_MSG="
                             + errorDetails.message + "&" + "ERROR_DESC=" + errorDetails.description + "&" + "SP_ID="
                             + "<%= Encode.forJavaScript(spId) %>" + "&" + "flowType=" + flowType + "&" + "confirmation="
-                            + "<%= Encode.forJavaScript(confirmationCode) %>" + "&" +
-                            "PORTAL_URL=" + portal_url + "&SP=" + "<%= Encode.forJavaScript(sp) %>";
+                            + "<%= Encode.forJavaScript(confirmationCode) %>" + "&";
+                        
+                        if (errorDetails.portalUrlStatus === "true") {
+                            errorPageURL += "PORTAL_URL=" + portal_url + "&";
+                        }
+                        
+                        errorPageURL += "SP=" + "<%= Encode.forJavaScript(sp) %>";
 
                         window.location.href = errorPageURL;
                     }
 
                     if (flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error) {
                         setFlowError(flowData.data.additionalData.error);
+                        return;
                     }
+                    setFlowError(undefined);
                 }, [ error, flowType, flowData && flowData.data && flowData.data.additionalData && flowData.data.additionalData.error ]);
 
                 const handleInternalPrompt = (flowData) => {
@@ -339,6 +350,13 @@
                         inputs: providedInputs
                     });
                 }
+
+                const handleViewStep = (flow) => {
+                    if (!flow) return;
+                    if (flow.flowId && flow.data && flow.data.additionalData && flow.data.additionalData.state) {
+                        localStorage.setItem(flow.data.additionalData.state, flow.flowId);
+                    }
+                };
 
                 const handleFlowStatus = (flow) => {
                     if (!flow) return false;
@@ -358,6 +376,18 @@
 
                             localStorage.clear();
 
+                            if (flow.type === "VIEW" && flow.data) {
+                                const components = flow.data.components || [];
+                                // If components array is empty, use default components.
+                                if (components.length === 0) {
+                                    const contextPath = "${pageContext.request.contextPath}";
+                                    const accountStatus = flow.data.additionalData?.accountStatus;
+                                    const defaultComponents = getDefaultComponentsForFlowType(flowType, accountStatus, contextPath);
+                                    flow.data.components = defaultComponents;
+                                }
+                                return false;
+                            }
+
                             if (flow.data.redirectURL !== null) {
                                 window.location.href = flow.data.redirectURL;
 
@@ -376,6 +406,10 @@
                 const handleStepType = (flow) => {
                     if (!flow) return false;
                     switch (flow.type) {
+                        case "VIEW":
+                            handleViewStep(flow);
+                            setComponents(flow.data.components || []);
+                            break;
                         case "REDIRECTION":
                             setLoading(true);
                             window.location.href = flow.data.redirectURL;

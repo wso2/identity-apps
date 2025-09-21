@@ -1,5 +1,24 @@
 # @wso2is/common.workflow-approvals.v1
 
+## 1.0.7
+
+### Patch Changes
+
+- [#9055](https://github.com/wso2/identity-apps/pull/9055) [`bc710b1e036147d8880a739ec5259d234e6c0b0a`](https://github.com/wso2/identity-apps/commit/bc710b1e036147d8880a739ec5259d234e6c0b0a) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Introduce SELF_REGISTER_USER operation type to workflow
+
+- Updated dependencies [[`e2fc86c51bf6e720ed865a81e13fae036dd1f049`](https://github.com/wso2/identity-apps/commit/e2fc86c51bf6e720ed865a81e13fae036dd1f049)]:
+  - @wso2is/i18n@2.30.22
+  - @wso2is/admin.core.v1@2.49.40
+
+## 1.0.6
+
+### Patch Changes
+
+- [#8942](https://github.com/wso2/identity-apps/pull/8942) [`1ef71598fd981195fb66939727d7c9e1a34ef76d`](https://github.com/wso2/identity-apps/commit/1ef71598fd981195fb66939727d7c9e1a34ef76d) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Introduce pending state for approval tasks and fix UI alignment issue in workflow request filtering
+
+- Updated dependencies [[`1ef71598fd981195fb66939727d7c9e1a34ef76d`](https://github.com/wso2/identity-apps/commit/1ef71598fd981195fb66939727d7c9e1a34ef76d)]:
+  - @wso2is/i18n@2.30.18
+
 ## 1.0.5
 
 ### Patch Changes

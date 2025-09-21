@@ -66,7 +66,7 @@
 
     /**
      * Returns the full self-registration portal URL, appending callback etc.
-     * 
+     *
      * @param accountRegistrationEndpointURL The fallback endpoint URL.
      * @param urlEncodedURL                 The encoded callback URL.
      * @param urlParameters                 Additional URL query parameters.
@@ -74,12 +74,40 @@
      */
     public static String getRegistrationPortalUrl(String accountRegistrationEndpointURL, String urlEncodedURL,
             String urlParameters) {
-    
-        if (dynamicPortalSREnabled && StringUtils.isNotBlank(dynamicRegistrationPortalURL)) {
+
+        String sp = null;
+
+        try {
+            if (urlParameters != null && !urlParameters.isEmpty()) {
+                String[] params = urlParameters.split("&");
+
+                for (String param : params) {
+                    int idx = param.indexOf('=');
+
+                    if (idx > 0) {
+                        String key = param.substring(0, idx);
+                        String value = param.substring(idx + 1);
+
+                        if ("sp".equals(key)) {
+                            sp = value;
+
+                            break;
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            // Gracefully, exit.
+        }
+
+        // Console is currently skipped from self-registration.
+        // Tracker: https://github.com/wso2/product-is/issues/25484
+        if (dynamicPortalSREnabled && StringUtils.isNotBlank(dynamicRegistrationPortalURL) && !sp.equals(CONSOLE)) {
             return dynamicRegistrationPortalURL + "&" + urlParameters;
         }
 
         String registrationEndpointUrl = accountRegistrationEndpointURL + "?" + urlParameters;
+
         if (!StringUtils.isEmpty(urlEncodedURL)) {
             registrationEndpointUrl += "&callback=" + Encode.forHtmlAttribute(urlEncodedURL);
         }
@@ -89,13 +117,13 @@
 
     /**
      * Returns the recovery portal URL.
-     * 
+     *
      * @param passwordRecoveryOverrideURL The password recovery endpoint URL.
      * @param recoveryPortalOverrideURL   The recovery portal URL.
      * @param localeString                The locale string to append.
      * @return The final recovery portal URL.
      */
-     public static String getRecoveryPortalUrl(String passwordRecoveryOverrideURL, String recoveryPortalOverrideURL, 
+     public static String getRecoveryPortalUrl(String passwordRecoveryOverrideURL, String recoveryPortalOverrideURL,
         String localeString, String urlParameters) {
 
         String baseURL = passwordRecoveryOverrideURL;

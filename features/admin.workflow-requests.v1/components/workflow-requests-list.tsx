@@ -188,7 +188,8 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                     </Header>
                 </div>
             ),
-            title: t("approvalWorkflows:list.columns.workflowInstanceId")
+            title: t("approvalWorkflows:list.columns.workflowInstanceId"),
+            width: 4
         },
         {
             allowToggleVisibility: false,
@@ -207,7 +208,8 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                     </span>
                 );
             },
-            title: t("approvalWorkflows:list.columns.status")
+            title: t("approvalWorkflows:list.columns.status"),
+            width: 4
         },
         {
             allowToggleVisibility: false,
@@ -219,7 +221,8 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                     { getFriendlyDate(workflowRequest.createdAt) }
                 </Header>
             ),
-            title: t("approvalWorkflows:list.columns.createdAt")
+            title: t("approvalWorkflows:list.columns.createdAt"),
+            width: 4
         },
         {
             allowToggleVisibility: false,
@@ -231,7 +234,8 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                     { getFriendlyDate(workflowRequest.updatedAt) }
                 </Header>
             ),
-            title: t("approvalWorkflows:list.columns.updatedAt")
+            title: t("approvalWorkflows:list.columns.updatedAt"),
+            width: 4
         }
     ];
 

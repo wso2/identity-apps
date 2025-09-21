@@ -202,6 +202,7 @@ export interface flowsNS {
                 };
                 input: {
                     general: string;
+                    idpName: string;
                     identifier: string;
                     label: string;
                 };

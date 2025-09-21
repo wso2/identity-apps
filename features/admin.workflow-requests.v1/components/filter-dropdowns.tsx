@@ -137,6 +137,11 @@ export const WorkflowRequestOperationTypeDropdown: React.FC<FilterDropdownProps>
             value: WorkflowInstanceOperationType.ADD_USER
         },
         {
+            key: WorkflowInstanceOperationType.SELF_REGISTER_USER,
+            text: t("common:approvalsPage.operationTypes.selfRegisterUser"),
+            value: WorkflowInstanceOperationType.SELF_REGISTER_USER
+        },
+        {
             key: WorkflowInstanceOperationType.DELETE_USER,
             text: t("approvalWorkflows:operationType.deleteUser"),
             value: WorkflowInstanceOperationType.DELETE_USER

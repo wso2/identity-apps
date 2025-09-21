@@ -1,5 +1,20 @@
 # @wso2is/react-components
 
+## 2.9.23
+
+### Patch Changes
+
+- [#9143](https://github.com/wso2/identity-apps/pull/9143) [`bf0c30427b553fe92322dceece85df02f01cb520`](https://github.com/wso2/identity-apps/commit/bf0c30427b553fe92322dceece85df02f01cb520) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add preview label ws-fed protocol template
+
+- Updated dependencies [[`bf0c30427b553fe92322dceece85df02f01cb520`](https://github.com/wso2/identity-apps/commit/bf0c30427b553fe92322dceece85df02f01cb520)]:
+  - @wso2is/theme@2.8.7
+
+## 2.9.22
+
+### Patch Changes
+
+- [#9041](https://github.com/wso2/identity-apps/pull/9041) [`b39c23eb0446afefdbea872ee3b0cf6d5370671f`](https://github.com/wso2/identity-apps/commit/b39c23eb0446afefdbea872ee3b0cf6d5370671f) Thanks [@savindi7](https://github.com/savindi7)! - Display regex values added via API in app and profile fixes.
+
 ## 2.9.21
 
 ### Patch Changes

@@ -59,13 +59,22 @@
     String confirmationCode = request.getParameter("confirmation");
 
     // Build the registration portal URL
-    String registrationPortalURL = String.format("%s?spId=%s&sp=%s&flowType=%s&confirmation=%s",
-            request.getParameter("PORTAL_URL"),
-            spId,
-            Encode.forUriComponent(sp),
-            flowType,
-            confirmationCode);
+    String registrationPortalURL = null;
+    String portalUrlParam = request.getParameter("PORTAL_URL");
+    if (portalUrlParam != null
+            && !portalUrlParam.isBlank()
+            && !"null".equalsIgnoreCase(portalUrlParam.trim())
+            && !"undefined".equalsIgnoreCase(portalUrlParam.trim())) {
 
+        registrationPortalURL = String.format(
+                "%s?spId=%s&sp=%s&flowType=%s&confirmation=%s",
+                portalUrlParam.trim(),
+                spId,
+                Encode.forUriComponent(sp),
+                flowType,
+                confirmationCode
+        );
+    }
 
     if (StringUtils.isNotEmpty(errorMessage) || StringUtils.isNotEmpty(errorDescription)) {
         if (StringUtils.isNotEmpty(errorMessage)) {
@@ -83,7 +92,7 @@
                     errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "sign.up.error.unexpected.message");
                     break;
                 case INVITED_USER_REGISTRATION:
-                    errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "invite.user.registration.error.unexpected.message");
+                    errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "invited.user.registration.error.unexpected.message");
                     break;
                 case PASSWORD_RECOVERY:
                     errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "password.reset.error.unexpected.message");
@@ -104,7 +113,7 @@
                     errorDescription = AuthenticationEndpointUtil.i18n(resourceBundle, "sign.up.error.unexpected.description");
                     break;
                 case INVITED_USER_REGISTRATION:
-                    errorDescription = AuthenticationEndpointUtil.i18n(resourceBundle, "invite.user.registration.error.unexpected.description");
+                    errorDescription = AuthenticationEndpointUtil.i18n(resourceBundle, "invited.user.registration.error.unexpected.description");
                     break;
                 case PASSWORD_RECOVERY:
                     errorDescription = AuthenticationEndpointUtil.i18n(resourceBundle, "password.reset.error.unexpected.description");
@@ -159,10 +168,12 @@
                 <p class="portal-tagline-description">
                     <%= errorDescription %>
                 </p>
-                <button class="ui primary basic button"
-                    onclick="location.href='<%= IdentityManagementEndpointUtil.getURLEncodedCallback(registrationPortalURL) %>';">
-                    <%= i18n(resourceBundle, customText, "sign.up.try.again.button") %>
-                </button>
+                <% if (StringUtils.isNotEmpty(registrationPortalURL)) { %>
+                    <button class="ui primary basic button"
+                        onclick="location.href='<%= IdentityManagementEndpointUtil.getURLEncodedCallback(registrationPortalURL) %>';">
+                        <%= i18n(resourceBundle, customText, "sign.up.try.again.button") %>
+                    </button>
+                <% } %>
                 <div class="ui divider hidden"></div>
             </div>
             <div class="ui bottom attached warning message">

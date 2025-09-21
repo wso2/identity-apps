@@ -21,7 +21,7 @@
     <parent>
         <groupId>org.wso2.identity.apps</groupId>
         <artifactId>identity-apps-core</artifactId>
-        <version>3.1.20-SNAPSHOT</version>
+        <version>3.3.4-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -164,7 +164,7 @@
                     </webResources>
                     <warName>accounts</warName>
                     <packagingExcludes>WEB-INF/lib/commons-logging*.jar</packagingExcludes>
-                    <packagingExcludes>org/wso2/carbon/identity/application/authentication/endpoint/i18n/*
+                    <packagingExcludes>org/wso2/carbon/identity/application/accounts/endpoint/i18n/*
                     </packagingExcludes>
                 </configuration>
             </plugin>

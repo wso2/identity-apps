@@ -1,5 +1,26 @@
 # @wso2is/admin.console-settings.v1
 
+## 2.25.225
+
+### Patch Changes
+
+- [#9033](https://github.com/wso2/identity-apps/pull/9033) [`9534499e9ff071f559ee1c8f1786abcec8d70ced`](https://github.com/wso2/identity-apps/commit/9534499e9ff071f559ee1c8f1786abcec8d70ced) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Add account lock/disable sign in console-administrator settings.
+
+- Updated dependencies [[`5024d8b9992e7d0e8c080abdeb656d6d4364bddb`](https://github.com/wso2/identity-apps/commit/5024d8b9992e7d0e8c080abdeb656d6d4364bddb)]:
+  - @wso2is/admin.users.v1@2.36.13
+  - @wso2is/admin.core.v1@2.49.38
+  - @wso2is/admin.roles.v2@2.27.204
+  - @wso2is/admin.server-configurations.v1@2.35.51
+
+## 2.25.224
+
+### Patch Changes
+
+- [#8972](https://github.com/wso2/identity-apps/pull/8972) [`cf10a84c5d67ce12686fa1c9d3d575af487cdfa6`](https://github.com/wso2/identity-apps/commit/cf10a84c5d67ce12686fa1c9d3d575af487cdfa6) Thanks [@brionmario](https://github.com/brionmario)! - Fix missed Role V3 check in Console Settings
+
+- Updated dependencies [[`cf10a84c5d67ce12686fa1c9d3d575af487cdfa6`](https://github.com/wso2/identity-apps/commit/cf10a84c5d67ce12686fa1c9d3d575af487cdfa6)]:
+  - @wso2is/i18n@2.30.17
+
 ## 2.25.223
 
 ### Patch Changes

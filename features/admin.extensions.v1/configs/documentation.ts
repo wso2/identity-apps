@@ -187,7 +187,8 @@ export const getDocumentationLinksExtension = (): DocumentationLinksExtensionInt
                         }
                     },
                     signInMethod: {
-                        fido: undefined
+                        fido: undefined,
+                        totp: undefined
                     },
                     singlePageApplication: {
                         info: {

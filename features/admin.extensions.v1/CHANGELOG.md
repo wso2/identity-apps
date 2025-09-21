@@ -1,5 +1,62 @@
 # @wso2is/admin.extensions.v1
 
+## 2.40.7
+
+### Patch Changes
+
+- [#9147](https://github.com/wso2/identity-apps/pull/9147) [`d28c2c1292f3c75ac9dd9354b8e95fd2614176fd`](https://github.com/wso2/identity-apps/commit/d28c2c1292f3c75ac9dd9354b8e95fd2614176fd) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add more details to admin notice.
+
+- Updated dependencies [[`d28c2c1292f3c75ac9dd9354b8e95fd2614176fd`](https://github.com/wso2/identity-apps/commit/d28c2c1292f3c75ac9dd9354b8e95fd2614176fd)]:
+  - @wso2is/i18n@2.30.28
+
+## 2.40.6
+
+### Patch Changes
+
+- [#9127](https://github.com/wso2/identity-apps/pull/9127) [`bdf3588410eef19d07e202c5d0726f523a61c1c5`](https://github.com/wso2/identity-apps/commit/bdf3588410eef19d07e202c5d0726f523a61c1c5) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Add warning for TOTP authenticator with Identifier first
+
+- Updated dependencies [[`bdf3588410eef19d07e202c5d0726f523a61c1c5`](https://github.com/wso2/identity-apps/commit/bdf3588410eef19d07e202c5d0726f523a61c1c5)]:
+  - @wso2is/i18n@2.30.27
+
+## 2.40.5
+
+### Patch Changes
+
+- [#9129](https://github.com/wso2/identity-apps/pull/9129) [`5b22807599c1f6876d41e9f2e985d52993911f90`](https://github.com/wso2/identity-apps/commit/5b22807599c1f6876d41e9f2e985d52993911f90) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add isWSFedProtocolTemplateEnabled config and change allowedProtocolType to getAllowedProtocolType
+
+- Updated dependencies [[`5b22807599c1f6876d41e9f2e985d52993911f90`](https://github.com/wso2/identity-apps/commit/5b22807599c1f6876d41e9f2e985d52993911f90)]:
+  - @wso2is/admin.applications.v1@2.37.8
+  - @wso2is/admin.core.v1@2.49.48
+  - @wso2is/admin.roles.v2@2.27.211
+  - @wso2is/admin.server-configurations.v1@2.35.62
+
+## 2.40.4
+
+### Patch Changes
+
+- [#9098](https://github.com/wso2/identity-apps/pull/9098) [`a8411676d537cedabc4d306242f273446df8421b`](https://github.com/wso2/identity-apps/commit/a8411676d537cedabc4d306242f273446df8421b) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Onboard admin notice component.
+
+- Updated dependencies [[`a8411676d537cedabc4d306242f273446df8421b`](https://github.com/wso2/identity-apps/commit/a8411676d537cedabc4d306242f273446df8421b)]:
+  - @wso2is/admin.core.v1@2.49.43
+  - @wso2is/i18n@2.30.24
+  - @wso2is/admin.server-configurations.v1@2.35.57
+
+## 2.40.3
+
+### Patch Changes
+
+- [#9041](https://github.com/wso2/identity-apps/pull/9041) [`b39c23eb0446afefdbea872ee3b0cf6d5370671f`](https://github.com/wso2/identity-apps/commit/b39c23eb0446afefdbea872ee3b0cf6d5370671f) Thanks [@savindi7](https://github.com/savindi7)! - Display regex values added via API in app and profile fixes.
+
+- Updated dependencies [[`5beb8d0682573cdd09dd83a16b213a34b47831f1`](https://github.com/wso2/identity-apps/commit/5beb8d0682573cdd09dd83a16b213a34b47831f1), [`b39c23eb0446afefdbea872ee3b0cf6d5370671f`](https://github.com/wso2/identity-apps/commit/b39c23eb0446afefdbea872ee3b0cf6d5370671f)]:
+  - @wso2is/admin.claims.v1@2.29.4
+  - @wso2is/i18n@2.30.21
+  - @wso2is/admin.applications.v1@2.37.6
+  - @wso2is/react-components@2.9.22
+  - @wso2is/admin.users.v1@2.36.14
+  - @wso2is/admin.core.v1@2.49.39
+  - @wso2is/admin.roles.v2@2.27.205
+  - @wso2is/admin.server-configurations.v1@2.35.52
+
 ## 2.40.2
 
 ### Patch Changes

@@ -22,6 +22,7 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout } from "@wso2is/react-components";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -56,7 +57,7 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
 ): ReactElement => {
 
     const {
-        ["data-testid"]: testId
+        ["data-testid"]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -152,6 +153,8 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
                         return t("approvalWorkflows:operationType.all");
                     case WorkflowInstanceOperationType.ADD_USER:
                         return t("approvalWorkflows:operationType.createUser");
+                    case WorkflowInstanceOperationType.SELF_REGISTER_USER:
+                        return t("common:approvalsPage.operationTypes.selfRegisterUser");
                     case WorkflowInstanceOperationType.DELETE_USER:
                         return t("approvalWorkflows:operationType.deleteUser");
                     case WorkflowInstanceOperationType.UPDATE_ROLES_OF_USERS:
@@ -356,15 +359,9 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
             title={ t("pages:workflowRequestsPage.title") }
             pageTitle={ t("pages:workflowRequestsPage.title") }
             description={ t("pages:workflowRequestsPage.subTitle") }
-            data-testid={ `${testId}-page-layout` }
+            data-testid={ `${componentId}-page-layout` }
         >
             <div className="workflow-requests-page-content">
-                <ActiveFiltersBar
-                    filters={ activeFilters }
-                    onRemove={ removeFilter }
-                    onClearAll={ clearAllFilters }
-                    data-componentid="workflow-requests-active-filters-bar"
-                />
                 <WorkflowRequestsFilter
                     status={ status }
                     setStatus={ setStatus }
@@ -379,7 +376,14 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
                     searchWorkflowRequests={ searchWorkflowRequests }
                     loading={ isWorkflowInstancesLoading }
                 />
-
+                { !isEmpty(activeFilters) && (
+                    <ActiveFiltersBar
+                        filters={ activeFilters }
+                        onRemove={ removeFilter }
+                        onClearAll={ clearAllFilters }
+                        data-componentid={ `${componentId}-active-filters-bar` }
+                    />
+                ) }
                 <ListLayout
                     currentListSize={ workflowRequests.length }
                     listItemLimit={ limit }

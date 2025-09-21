@@ -1,5 +1,88 @@
 # @wso2is/i18n
 
+## 2.30.29
+
+### Patch Changes
+
+- [#9152](https://github.com/wso2/identity-apps/pull/9152) [`e121a76b186fef909aca96fc91fc19bad3889297`](https://github.com/wso2/identity-apps/commit/e121a76b186fef909aca96fc91fc19bad3889297) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Show BE error message in add user bad request scenario.
+
+## 2.30.28
+
+### Patch Changes
+
+- [#9147](https://github.com/wso2/identity-apps/pull/9147) [`d28c2c1292f3c75ac9dd9354b8e95fd2614176fd`](https://github.com/wso2/identity-apps/commit/d28c2c1292f3c75ac9dd9354b8e95fd2614176fd) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add more details to admin notice.
+
+## 2.30.27
+
+### Patch Changes
+
+- [#9127](https://github.com/wso2/identity-apps/pull/9127) [`bdf3588410eef19d07e202c5d0726f523a61c1c5`](https://github.com/wso2/identity-apps/commit/bdf3588410eef19d07e202c5d0726f523a61c1c5) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Add warning for TOTP authenticator with Identifier first
+
+## 2.30.26
+
+### Patch Changes
+
+- [#9134](https://github.com/wso2/identity-apps/pull/9134) [`33dc5b7386afe5cc275ce960ba45452cce7e6c30`](https://github.com/wso2/identity-apps/commit/33dc5b7386afe5cc275ce960ba45452cce7e6c30) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Update admin notice wording.
+
+## 2.30.25
+
+### Patch Changes
+
+- [#9113](https://github.com/wso2/identity-apps/pull/9113) [`e48553420d4394a652d47e9e650f71fe2a9bea31`](https://github.com/wso2/identity-apps/commit/e48553420d4394a652d47e9e650f71fe2a9bea31) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the auto-selection functionality of the connections and add validation
+
+## 2.30.24
+
+### Patch Changes
+
+- [#9098](https://github.com/wso2/identity-apps/pull/9098) [`a8411676d537cedabc4d306242f273446df8421b`](https://github.com/wso2/identity-apps/commit/a8411676d537cedabc4d306242f273446df8421b) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Onboard admin notice component.
+
+## 2.30.23
+
+### Patch Changes
+
+- [#9044](https://github.com/wso2/identity-apps/pull/9044) [`dbb426ffe2e66c56d9f49ad2f9ed733651cc56ba`](https://github.com/wso2/identity-apps/commit/dbb426ffe2e66c56d9f49ad2f9ed733651cc56ba) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Provide the date and epoch data type support
+
+- Updated dependencies [[`dbb426ffe2e66c56d9f49ad2f9ed733651cc56ba`](https://github.com/wso2/identity-apps/commit/dbb426ffe2e66c56d9f49ad2f9ed733651cc56ba)]:
+  - @wso2is/core@2.12.1
+
+## 2.30.22
+
+### Patch Changes
+
+- [#9046](https://github.com/wso2/identity-apps/pull/9046) [`e2fc86c51bf6e720ed865a81e13fae036dd1f049`](https://github.com/wso2/identity-apps/commit/e2fc86c51bf6e720ed865a81e13fae036dd1f049) Thanks [@BimsaraBodaragama](https://github.com/BimsaraBodaragama)! - Update Attribute Configuration description.
+
+## 2.30.21
+
+### Patch Changes
+
+- [#9042](https://github.com/wso2/identity-apps/pull/9042) [`5beb8d0682573cdd09dd83a16b213a34b47831f1`](https://github.com/wso2/identity-apps/commit/5beb8d0682573cdd09dd83a16b213a34b47831f1) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Add checkbox instead of input format for delete confimation modal.
+
+## 2.30.20
+
+### Patch Changes
+
+- [#8928](https://github.com/wso2/identity-apps/pull/8928) [`103dc78848886bb10668320272116ad0c2a4e809`](https://github.com/wso2/identity-apps/commit/103dc78848886bb10668320272116ad0c2a4e809) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Provide self organization name update via console UI
+
+* [#8986](https://github.com/wso2/identity-apps/pull/8986) [`680cb06832a8b37d2c4a5613faee079d4b9cce97`](https://github.com/wso2/identity-apps/commit/680cb06832a8b37d2c4a5613faee079d4b9cce97) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve multi valued fields in user profile
+
+## 2.30.19
+
+### Patch Changes
+
+- [#8870](https://github.com/wso2/identity-apps/pull/8870) [`9762181a82a5d633a1ec838c02d6e21653226974`](https://github.com/wso2/identity-apps/commit/9762181a82a5d633a1ec838c02d6e21653226974) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Add UI to configure and revert impersonation configurations in sub-orgs and to hide sift connector in sub-orgs when predefined.
+
+## 2.30.18
+
+### Patch Changes
+
+- [#8942](https://github.com/wso2/identity-apps/pull/8942) [`1ef71598fd981195fb66939727d7c9e1a34ef76d`](https://github.com/wso2/identity-apps/commit/1ef71598fd981195fb66939727d7c9e1a34ef76d) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Introduce pending state for approval tasks and fix UI alignment issue in workflow request filtering
+
+## 2.30.17
+
+### Patch Changes
+
+- [#8972](https://github.com/wso2/identity-apps/pull/8972) [`cf10a84c5d67ce12686fa1c9d3d575af487cdfa6`](https://github.com/wso2/identity-apps/commit/cf10a84c5d67ce12686fa1c9d3d575af487cdfa6) Thanks [@brionmario](https://github.com/brionmario)! - Fix missed Role V3 check in Console Settings
+
 ## 2.30.16
 
 ### Patch Changes

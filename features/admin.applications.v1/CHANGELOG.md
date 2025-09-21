@@ -1,5 +1,69 @@
 # @wso2is/admin.applications.v1
 
+## 2.37.9
+
+### Patch Changes
+
+- [#9143](https://github.com/wso2/identity-apps/pull/9143) [`bf0c30427b553fe92322dceece85df02f01cb520`](https://github.com/wso2/identity-apps/commit/bf0c30427b553fe92322dceece85df02f01cb520) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add preview label ws-fed protocol template
+
+- Updated dependencies [[`bf0c30427b553fe92322dceece85df02f01cb520`](https://github.com/wso2/identity-apps/commit/bf0c30427b553fe92322dceece85df02f01cb520)]:
+  - @wso2is/react-components@2.9.23
+  - @wso2is/admin.core.v1@2.49.51
+  - @wso2is/admin.roles.v2@2.27.214
+  - @wso2is/admin.server-configurations.v1@2.35.65
+
+## 2.37.8
+
+### Patch Changes
+
+- [#9129](https://github.com/wso2/identity-apps/pull/9129) [`5b22807599c1f6876d41e9f2e985d52993911f90`](https://github.com/wso2/identity-apps/commit/5b22807599c1f6876d41e9f2e985d52993911f90) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add isWSFedProtocolTemplateEnabled config and change allowedProtocolType to getAllowedProtocolType
+
+- Updated dependencies [[`5b22807599c1f6876d41e9f2e985d52993911f90`](https://github.com/wso2/identity-apps/commit/5b22807599c1f6876d41e9f2e985d52993911f90)]:
+  - @wso2is/admin.core.v1@2.49.48
+  - @wso2is/admin.extensions.v1@2.40.5
+  - @wso2is/admin.roles.v2@2.27.211
+  - @wso2is/admin.server-configurations.v1@2.35.62
+
+## 2.37.7
+
+### Patch Changes
+
+- [#9058](https://github.com/wso2/identity-apps/pull/9058) [`f44b9a13a8d53b9dfeb01046b320e9e327ab2b51`](https://github.com/wso2/identity-apps/commit/f44b9a13a8d53b9dfeb01046b320e9e327ab2b51) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Remove special character validation from application description
+
+- Updated dependencies [[`518532e0263494dda9ca5c7bc76876e459e5d9d0`](https://github.com/wso2/identity-apps/commit/518532e0263494dda9ca5c7bc76876e459e5d9d0), [`f44b9a13a8d53b9dfeb01046b320e9e327ab2b51`](https://github.com/wso2/identity-apps/commit/f44b9a13a8d53b9dfeb01046b320e9e327ab2b51)]:
+  - @wso2is/admin.claims.v1@2.29.6
+  - @wso2is/admin.users.v1@2.36.17
+  - @wso2is/admin.core.v1@2.49.42
+  - @wso2is/admin.roles.v2@2.27.208
+  - @wso2is/admin.server-configurations.v1@2.35.55
+
+## 2.37.6
+
+### Patch Changes
+
+- [#9041](https://github.com/wso2/identity-apps/pull/9041) [`b39c23eb0446afefdbea872ee3b0cf6d5370671f`](https://github.com/wso2/identity-apps/commit/b39c23eb0446afefdbea872ee3b0cf6d5370671f) Thanks [@savindi7](https://github.com/savindi7)! - Display regex values added via API in app and profile fixes.
+
+- Updated dependencies [[`5beb8d0682573cdd09dd83a16b213a34b47831f1`](https://github.com/wso2/identity-apps/commit/5beb8d0682573cdd09dd83a16b213a34b47831f1), [`b39c23eb0446afefdbea872ee3b0cf6d5370671f`](https://github.com/wso2/identity-apps/commit/b39c23eb0446afefdbea872ee3b0cf6d5370671f)]:
+  - @wso2is/admin.claims.v1@2.29.4
+  - @wso2is/i18n@2.30.21
+  - @wso2is/admin.extensions.v1@2.40.3
+  - @wso2is/react-components@2.9.22
+  - @wso2is/admin.users.v1@2.36.14
+  - @wso2is/admin.core.v1@2.49.39
+  - @wso2is/admin.roles.v2@2.27.205
+  - @wso2is/admin.server-configurations.v1@2.35.52
+
+## 2.37.5
+
+### Patch Changes
+
+- [#9020](https://github.com/wso2/identity-apps/pull/9020) [`022fc3d4dcfa52537df082053bf3cbb2e8751214`](https://github.com/wso2/identity-apps/commit/022fc3d4dcfa52537df082053bf3cbb2e8751214) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix premium label issue in conditional auth panel
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.37
+  - @wso2is/admin.roles.v2@2.27.203
+  - @wso2is/admin.server-configurations.v1@2.35.50
+
 ## 2.37.4
 
 ### Patch Changes

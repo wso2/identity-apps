@@ -162,3 +162,13 @@ export interface CheckBoxGroupFormFieldPropsInterface extends Omit<ProfileFormFi
      */
     schema: ProfileSchemaInterface;
 }
+
+/**
+ * Interface for the User profile date picker field props.
+ */
+export interface DatePickerFormFieldPropsInterface extends ProfileFormFieldProps<string> {
+    /**
+     * Attribute schema.
+     */
+    schema: ProfileSchemaInterface;
+}

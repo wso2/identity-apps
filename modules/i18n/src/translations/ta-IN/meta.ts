@@ -24,5 +24,9 @@ export const meta: LocaleMeta = {
     direction: "ltr",
     flag: "in",
     name: "தமிழ் (India)",
-    namespaces: [ I18nModuleConstants.COMMON_NAMESPACE, I18nModuleConstants.MY_ACCOUNT_NAMESPACE ]
+    namespaces: [
+        I18nModuleConstants.COMMON_NAMESPACE,
+        I18nModuleConstants.MY_ACCOUNT_NAMESPACE,
+        I18nModuleConstants.COMMON_USERS_NAMESPACE
+    ]
 };
