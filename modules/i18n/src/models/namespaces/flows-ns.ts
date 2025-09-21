@@ -155,12 +155,6 @@ export interface flowsNS {
                     message: string;
                 };
             };
-            flowConfigsFetch: {
-                genericError: {
-                    description: string;
-                    message: string;
-                };
-            };
             flowMetadataFetch: {
                 genericError: {
                     description: string;

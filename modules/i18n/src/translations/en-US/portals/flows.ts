@@ -156,12 +156,6 @@ export const flows: flowsNS = {
                     message: "Fallback Text Preference Fetch Error"
                 }
             },
-            flowConfigsFetch: {
-                genericError: {
-                    description: "An error occurred while fetching the flows configuration.",
-                    message: "Fetch Flows Configuration Error"
-                }
-            },
             flowMetadataFetch: {
                 genericError: {
                     description: "An error occurred while fetching the flow metadata.",

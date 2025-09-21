@@ -69,6 +69,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
 
     const [ initialConnectorValues, setInitialConnectorValues ]
         = useState<AskPasswordFormValuesInterface>(undefined);
+    const [ isInviteUserToSetPasswordEnabled, setIsInviteUserToSetPasswordEnabled ]= useState<boolean>(false);
     const [ isUpperCaseEnabled, setIsUpperCaseEnabled ] = useState<boolean>(false);
     const [ isLowerCaseEnabled, setIsLowerCaseEnabled ] = useState<boolean>(false);
     const [ isNumericEnabled, setIsNumericEnabled ] = useState<boolean>(false);
@@ -185,6 +186,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
             }
         });
         setInitialConnectorValues(resolvedInitialValues);
+        setIsInviteUserToSetPasswordEnabled(resolvedInitialValues?.enableInviteUserToSetPassword);
         setIsUpperCaseEnabled(resolvedInitialValues?.otpUseUppercase);
         setIsLowerCaseEnabled(resolvedInitialValues?.otpUseLowercase);
         setIsNumericEnabled(resolvedInitialValues?.otpUseNumeric);
@@ -317,7 +319,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                             value={ option.value }
                             checked={ askPasswordOption === option.value }
                             listen={ () => setAskPasswordOption(option.value) }
-                            disabled={ !isConnectorEnabled }
+                            disabled={ !isInviteUserToSetPasswordEnabled }
                             readOnly={ readOnly }
                             data-componentid={ `${ componentId }-ask-password-option-${ option.value }` }
                         />
@@ -350,7 +352,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                     readOnly={ readOnly }
                     width={ 10 }
                     labelPosition="right"
-                    disabled={ !isConnectorEnabled }
+                    disabled={ !isInviteUserToSetPasswordEnabled }
                     data-componentid={ `${ componentId }-link-expiry-time` }
                 >
                     <input/>
@@ -373,7 +375,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                     required={ false }
                     readOnly={ readOnly }
                     width={ 10 }
-                    disabled={ !isConnectorEnabled }
+                    disabled={ !isInviteUserToSetPasswordEnabled }
                     data-componentid={ `${ componentId }-account-activation-email` }
                 />
                 <Hint>
@@ -389,7 +391,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                     required={ false }
                     readOnly={ readOnly }
                     width={ 10 }
-                    disabled={ !isConnectorEnabled }
+                    disabled={ !isInviteUserToSetPasswordEnabled }
                     data-componentid={ `${ componentId }-account-lock-on-creation` }
                 />
                 <Hint>
@@ -416,7 +418,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                     readOnly={ readOnly }
                     width={ 10 }
                     // Disabling the last enabled option is not allowed
-                    disabled={ !isConnectorEnabled
+                    disabled={ !isInviteUserToSetPasswordEnabled
                         || (isUpperCaseEnabled && !isLowerCaseEnabled && !isNumericEnabled)
                         || askPasswordOption === VerificationOption.EMAIL_LINK }
                     listen={ (value: boolean) => setIsUpperCaseEnabled(value) }
@@ -436,7 +438,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                     readOnly={ readOnly }
                     width={ 10 }
                     // Disabling the last enabled option is not allowed
-                    disabled={ !isConnectorEnabled
+                    disabled={ !isInviteUserToSetPasswordEnabled
                         || (!isUpperCaseEnabled && isLowerCaseEnabled && !isNumericEnabled)
                         || askPasswordOption === VerificationOption.EMAIL_LINK }
                     listen={ (value: boolean) => setIsLowerCaseEnabled(value) }
@@ -456,7 +458,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                     readOnly={ readOnly }
                     width={ 10 }
                     // Disabling the last enabled option is not allowed
-                    disabled={ !isConnectorEnabled
+                    disabled={ !isInviteUserToSetPasswordEnabled
                         || (!isUpperCaseEnabled && !isLowerCaseEnabled && isNumericEnabled)
                         || askPasswordOption === VerificationOption.EMAIL_LINK }
                     listen={ (value: boolean) => setIsNumericEnabled(value) }
@@ -494,7 +496,7 @@ export const AskPasswordForm: FunctionComponent<AskPasswordFormPropsInterface> =
                     readOnly={ readOnly }
                     width={ 10 }
                     labelPosition="right"
-                    disabled={ !isConnectorEnabled
+                    disabled={ !isInviteUserToSetPasswordEnabled
                         || askPasswordOption === VerificationOption.EMAIL_LINK }
                     data-componentid={ `${ componentId }-otp-length` }
                 >
