@@ -142,9 +142,16 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
      */
     useEffect(() => {
 
-        let userStoresEnabled: boolean = false;
+        if (systemReservedUserStores?.length > 0) {
+            const userPluggedUserStores: UserStoreListItem[] = userStoresList.filter(
+                (userStore: UserStoreListItem) => !systemReservedUserStores?.includes(userStore.name) &&
+                    !hiddenUserStores?.includes(userStore.name)
+            );
 
-        if ( hiddenUserStores && hiddenUserStores.length > 0) {
+            setShowMapAttributes(userPluggedUserStores?.length > 0);
+        } else if (hiddenUserStores && hiddenUserStores.length > 0) {
+            let userStoresEnabled: boolean = false;
+
             attributeConfig.localAttributes.isUserStoresHidden(hiddenUserStores).then((state: UserStoreListItem[]) => {
                 state.map((store: UserStoreListItem) => {
                     if(store.enabled){
@@ -154,12 +161,6 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
 
                 setShowMapAttributes(state.length > 0 && userStoresEnabled);
             });
-        } else if (systemReservedUserStores?.length > 0) {
-            const userPluggedUserStores: UserStoreListItem[] = userStoresList.filter(
-                (userStore: UserStoreListItem) => !systemReservedUserStores?.includes(userStore.name)
-            );
-
-            setShowMapAttributes(userPluggedUserStores?.length > 0);
         } else if (userStoresList?.length > 0) {
             setShowMapAttributes(true);
         } else {
