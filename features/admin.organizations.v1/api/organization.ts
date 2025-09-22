@@ -115,7 +115,10 @@ export const getOrganizations = (
  *
  * @returns requestedOrganizationList
  */
-export function useAuthorizedOrganizationsList<Data = OrganizationListInterface, Error = AxiosError<APIErrorResponseInterface>>(
+export function useAuthorizedOrganizationsList<
+    Data = OrganizationListInterface,
+    Error = AxiosError<APIErrorResponseInterface>
+>(
     filter: string,
     limit: number,
     after: string,
@@ -126,7 +129,7 @@ export function useAuthorizedOrganizationsList<Data = OrganizationListInterface,
 ): RequestResultInterface<Data, Error> {
     const requestConfig: AxiosRequestConfig = {
         headers: {
-            "Accept": "application/json",
+            Accept: "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -138,9 +141,11 @@ export function useAuthorizedOrganizationsList<Data = OrganizationListInterface,
             limit,
             recursive
         },
-        url: `${ isRoot
-            ? store.getState().config.endpoints.rootUsersOrganization
-            : store.getState().config.endpoints.usersOrganization }/me/organizations`
+        url: `${
+            isRoot
+                ? store.getState().config.endpoints.rootUsersOrganization
+                : store.getState().config.endpoints.usersOrganization
+        }/me/organizations`
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);

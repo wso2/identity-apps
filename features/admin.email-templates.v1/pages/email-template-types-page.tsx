@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters"; 
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { filterList } from "@wso2is/admin.core.v1/utils/filter-list";
 import { sortList } from "@wso2is/admin.core.v1/utils/sort-list";
@@ -34,6 +34,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { deleteEmailTemplateType, getEmailTemplateTypes } from "../api";
 import { AddEmailTemplateTypeWizard, EmailTemplateTypeList } from "../components";
@@ -60,7 +61,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
         [ "data-testid" ]: testId
     } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
 
@@ -69,7 +70,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
     /**
      * Sets the attributes by which the list can be sorted.
      */
-    const SORT_BY = [
+    const SORT_BY: DropdownProps[] = [
         {
             key: 0,
             text: t("common:name"),
@@ -162,7 +163,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
      * @param data - pagination page change data
      */
     const handlePaginationChange = (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
-        const offsetValue = (data.activePage as number - 1) * listItemLimit;
+        const offsetValue: number = (data.activePage as number - 1) * listItemLimit;
 
         setListOffset(offsetValue);
     };
@@ -212,7 +213,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
      * @param data - DropdownProps.
      */
     const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
-        setSortBy(SORT_BY.filter(option => option.value === data.value)[ 0 ]);
+        setSortBy(SORT_BY.filter((option: DropdownProps) => option.value === data.value)[ 0 ]);
     };
 
     /**

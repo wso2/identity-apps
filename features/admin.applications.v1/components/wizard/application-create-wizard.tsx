@@ -18,7 +18,7 @@
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertLevels, APIErrorResponseInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { APIErrorResponseInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";

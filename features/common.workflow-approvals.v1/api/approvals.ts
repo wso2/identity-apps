@@ -18,7 +18,6 @@
 
 import {
     AsgardeoSPAClient,
-    HttpClientInstance,
     HttpError,
     HttpRequestConfig,
     HttpResponse } from "@asgardeo/auth-react";
