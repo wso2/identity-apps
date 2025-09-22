@@ -115,11 +115,6 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                 continue;
             }
 
-            if (!isLegacyFlowsEnabled &&
-                    category.id === ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_CATEGORY_ID) {
-                continue;
-            }
-
             const filteredConnectors: Array<any> = category.connectors.filter((connector: any) => {
                 if (serverConfigurationConfig.connectorsToHide.includes(connector.id)) {
                     return false;
@@ -130,7 +125,8 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                     return false;
                 }
 
-                if (!isLegacyFlowsEnabled && connector.id === ServerConfigurationsConstants.PASSWORD_RECOVERY) {
+                if (!isLegacyFlowsEnabled && (connector.id === ServerConfigurationsConstants.PASSWORD_RECOVERY ||
+                        connector.id === ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID)) {
                     return false;
                 }
 
