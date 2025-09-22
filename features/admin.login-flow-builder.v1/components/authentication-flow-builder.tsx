@@ -36,7 +36,8 @@ import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/consta
 import { AppState } from "@wso2is/admin.core.v1/store";
 import useAILoginFlow from "@wso2is/admin.login-flow.ai.v1/hooks/use-ai-login-flow";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants/organization-constants";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
+import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { PrimaryButton } from "@wso2is/react-components";
 import { AxiosError } from "axios";
@@ -132,10 +133,10 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
         }
     ];
 
-    const sharedAppAdaptiveAuthDisabled: boolean = useSelector((state: AppState) => {
-        return state.config?.ui?.features?.applications?.disabledFeatures?.includes(
-            SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID);
+    const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
+        return state.config?.ui?.features?.applications;
     });
+    const sharedAppAdaptiveAuthEnabled: boolean = isFeatureEnabled(featureConfig, SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID);
 
     const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
 
@@ -219,7 +220,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
             );
         }
 
-        if (orgType === OrganizationType.SUBORGANIZATION && sharedAppAdaptiveAuthDisabled) {
+        if (orgType === OrganizationType.SUBORGANIZATION && !sharedAppAdaptiveAuthEnabled) {
             sequence.script = "";
         }
 

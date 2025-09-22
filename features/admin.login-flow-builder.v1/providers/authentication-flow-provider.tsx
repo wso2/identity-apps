@@ -40,6 +40,7 @@ import {
     GenericAuthenticatorInterface
 } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, FeatureAccessConfigInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -125,8 +126,7 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
     const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
         return state.config?.ui?.features?.applications;
     });
-    const sharedAppAdaptiveAuthDisabled: boolean =
-        featureConfig?.disabledFeatures?.includes(SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID);
+    const sharedAppAdaptiveAuthEnabled: boolean = isFeatureEnabled(featureConfig, SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID);
 
     const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
 
@@ -280,7 +280,7 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
     };
 
     const isAdaptiveAuthAvailable: boolean = useMemo(() => {
-        if (orgType === OrganizationType.SUBORGANIZATION && sharedAppAdaptiveAuthDisabled) {
+        if (orgType === OrganizationType.SUBORGANIZATION && !sharedAppAdaptiveAuthEnabled) {
             return false;
         }
 

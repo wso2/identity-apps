@@ -33,7 +33,13 @@ import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface
 } from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
-import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
+import {
+    AlertLevels,
+    FeatureAccessConfigInterface,
+    IdentifiableComponentInterface,
+    SBACInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     Code,
@@ -178,10 +184,10 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
     const [ smsValidationResult, setSmsValidationResult ] =
         useState<FederatedConflictWithSMSOTPReturnValueInterface>(null);
 
-    const sharedAppAdaptiveAuthDisabled: boolean = useSelector((state: AppState) => {
-        return state.config?.ui?.features?.applications?.disabledFeatures?.includes(
-            SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID);
+    const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
+        return state.config?.ui?.features?.applications;
     });
+    const sharedAppAdaptiveAuthEnabled: boolean = isFeatureEnabled(featureConfig, SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -416,7 +422,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
     const handleUpdateClick = (): void => {
         if (AdaptiveScriptUtils.isEmptyScript(adaptiveScript)) {
             if (!isAdaptiveAuthenticationAvailable ||
-                (orgType === OrganizationType.SUBORGANIZATION && sharedAppAdaptiveAuthDisabled)) {
+                (orgType === OrganizationType.SUBORGANIZATION && !sharedAppAdaptiveAuthEnabled)) {
                 setAdaptiveScript("");
             } else {
                 setAdaptiveScript(AdaptiveScriptUtils.generateScript(steps + 1).join("\n"));
@@ -815,7 +821,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             <Divider className="x2"/>
             {
                 (isAdaptiveAuthenticationAvailable &&
-                    !(orgType === OrganizationType.SUBORGANIZATION && sharedAppAdaptiveAuthDisabled))
+                    !(orgType === OrganizationType.SUBORGANIZATION && !sharedAppAdaptiveAuthEnabled))
                 && (
                     <ScriptBasedFlow
                         authenticationSequence={ sequence }
