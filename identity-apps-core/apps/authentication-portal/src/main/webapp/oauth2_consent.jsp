@@ -52,37 +52,41 @@
     String app = request.getParameter("application");
     String scopeString = request.getParameter("scope");
 
-    String scopeMetaData = request.getParameter("scopeMetadata");
+    boolean isConsentPageRedirectParamsAllowed = AuthenticationEndpointUtil.isConsentPageRedirectParamsAllowed();
+
     List<String> scopesWithMetadata = new ArrayList<>();
     Map<String,List<String>> scopeDetails = new TreeMap<>();
+    if (isConsentPageRedirectParamsAllowed) {
+        String scopeMetaData = request.getParameter("scopeMetadata");
 
-    if (scopeMetaData != null) {
-        JSONArray scopeMetadataArray  = new JSONArray(scopeMetaData);
+        if (scopeMetaData != null) {
+            JSONArray scopeMetadataArray  = new JSONArray(scopeMetaData);
 
-        for (int count = 0; count < scopeMetadataArray.length(); count++) {
-            JSONObject jsonObj = (JSONObject) scopeMetadataArray.get(count);
-            String key = Encode.forHtml((String) jsonObj.get("name"));
-            List<String> scopes = new ArrayList<>();
-            JSONArray scopeArray = new JSONArray (jsonObj.get("scopes").toString());
-            for (int scopeCount = 0; scopeCount < scopeArray.length(); scopeCount++) {
-                JSONObject scope = (JSONObject) scopeArray.get(scopeCount);
+            for (int count = 0; count < scopeMetadataArray.length(); count++) {
+                JSONObject jsonObj = (JSONObject) scopeMetadataArray.get(count);
+                String key = Encode.forHtml((String) jsonObj.get("name"));
+                List<String> scopes = new ArrayList<>();
+                JSONArray scopeArray = new JSONArray (jsonObj.get("scopes").toString());
+                for (int scopeCount = 0; scopeCount < scopeArray.length(); scopeCount++) {
+                    JSONObject scope = (JSONObject) scopeArray.get(scopeCount);
 
-                // Get the displayName.
-                String displayName = Encode.forHtml((String) scope.get("displayName"));
+                    // Get the displayName.
+                    String displayName = Encode.forHtml((String) scope.get("displayName"));
 
-                // Use optString to get description; it returns "" if the key is not found.
-                String description = Encode.forHtml(scope.optString("description", ""));
+                    // Use optString to get description; it returns "" if the key is not found.
+                    String description = Encode.forHtml(scope.optString("description", ""));
 
-                // Check if description is not empty, otherwise use displayName.
-                String scopeName = !StringUtils.isBlank(description) ? description : displayName;
+                    // Check if description is not empty, otherwise use displayName.
+                    String scopeName = !StringUtils.isBlank(description) ? description : displayName;
 
-                // Add the determined scopeName to the scopes list.
-                scopes.add(scopeName);
+                    // Add the determined scopeName to the scopes list.
+                    scopes.add(scopeName);
 
-                // Add the identifier to the scopesWithMetadata list
-                scopesWithMetadata.add(Encode.forHtml((String) scope.get("identifier")));
+                    // Add the identifier to the scopesWithMetadata list
+                    scopesWithMetadata.add(Encode.forHtml((String) scope.get("identifier")));
+                }
+                scopeDetails.put(key,scopes);
             }
-            scopeDetails.put(key,scopes);
         }
     }
 
@@ -163,13 +167,14 @@
                     !StringUtils.equalsIgnoreCase(x, "internal_login"))
                 .collect(Collectors.toList());
         }
-
-        for (String scope : scopesWithMetadata) {
-            if (openIdScopes.contains(scope)) {
-                openIdScopes.remove(scope);
+        
+        if (CollectionUtils.isNotEmpty(scopesWithMetadata)) {
+            for (String scope : scopesWithMetadata) {
+                if (openIdScopes.contains(scope)) {
+                    openIdScopes.remove(scope);
+                }
             }
         }
-
     }
 
     int claimListLimit = 3;
@@ -180,21 +185,23 @@
     int claimSize = requestedClaimList.length + mandatoryClaimList.length;
 
     final Map<String, String> authorizationDetailsToBeDisplayed = new HashMap<>();
-    try {
-        final String authorizationDetailsParam = request.getParameter("authorization_details");
-        if (StringUtils.isNotBlank(authorizationDetailsParam)) {
-            org.json.JSONArray authorizationDetails  = new JSONArray(authorizationDetailsParam);
-            for (int index = 0; index < authorizationDetails.length(); index++) {
-                JSONObject authorizationDetail = authorizationDetails.getJSONObject(index);
+    if (isConsentPageRedirectParamsAllowed) {
+        try {
+            final String authorizationDetailsParam = request.getParameter("authorization_details");
+            if (StringUtils.isNotBlank(authorizationDetailsParam)) {
+                org.json.JSONArray authorizationDetails  = new JSONArray(authorizationDetailsParam);
+                for (int index = 0; index < authorizationDetails.length(); index++) {
+                    JSONObject authorizationDetail = authorizationDetails.getJSONObject(index);
 
-                // Check if consent description is not empty, otherwise use type.
-                final String description = Encode.forHtml(authorizationDetail.optString("_description", authorizationDetail.getString("type")));
-                final String authorizationDetailId = "authorization_detail_id_" + Encode.forHtml(authorizationDetail.getString("_id"));
-                authorizationDetailsToBeDisplayed.put(authorizationDetailId, description);
+                    // Check if consent description is not empty, otherwise use type.
+                    final String description = Encode.forHtml(authorizationDetail.optString("_description", authorizationDetail.getString("type")));
+                    final String authorizationDetailId = "authorization_detail_id_" + Encode.forHtml(authorizationDetail.getString("_id"));
+                    authorizationDetailsToBeDisplayed.put(authorizationDetailId, description);
+                }
             }
+        } catch (JSONException e) {
+            // Ignore the error
         }
-    } catch (JSONException e) {
-        // Ignore the error
     }
 %>
 
