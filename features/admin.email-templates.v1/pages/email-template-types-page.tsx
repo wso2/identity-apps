@@ -35,7 +35,7 @@ import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { deleteEmailTemplateType, getEmailTemplateTypes } from "../api";
 import { AddEmailTemplateTypeWizard, EmailTemplateTypeList } from "../components";
 import { EmailTemplateType } from "../models";
@@ -70,7 +70,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
     /**
      * Sets the attributes by which the list can be sorted.
      */
-    const SORT_BY: DropdownProps[] = [
+    const SORT_BY: DropdownItemProps[] = [
         {
             key: 0,
             text: t("common:name"),
