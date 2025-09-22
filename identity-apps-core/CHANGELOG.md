@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.3.5
+
+### Patch Changes
+
+- [#9168](https://github.com/wso2/identity-apps/pull/9168) [`c2d6afff0cdb7e7898def3d93665ffde28d97304`](https://github.com/wso2/identity-apps/commit/c2d6afff0cdb7e7898def3d93665ffde28d97304) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add validations for sign in URL in self registration pages
+
 ## 3.3.4
 
 ### Patch Changes
