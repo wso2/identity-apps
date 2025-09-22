@@ -1,5 +1,16 @@
 # @wso2is/admin.login-flow-builder.v1
 
+## 2.26.5
+
+### Patch Changes
+
+- [#9137](https://github.com/wso2/identity-apps/pull/9137) [`61c7476562235ee90afe7308821330d472dbd817`](https://github.com/wso2/identity-apps/commit/61c7476562235ee90afe7308821330d472dbd817) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Add support for shared app adaptive authentication based on a config
+
+- Updated dependencies [[`61c7476562235ee90afe7308821330d472dbd817`](https://github.com/wso2/identity-apps/commit/61c7476562235ee90afe7308821330d472dbd817)]:
+  - @wso2is/admin.applications.v1@2.37.10
+  - @wso2is/admin.core.v1@2.49.54
+  - @wso2is/admin.server-configurations.v1@2.35.68
+
 ## 2.26.4
 
 ### Patch Changes

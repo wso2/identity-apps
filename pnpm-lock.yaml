@@ -510,7 +510,7 @@ importers:
         specifier: ^1.5.7
         version: link:../../features/admin.application-templates.v1
       '@wso2is/admin.applications.v1':
-        specifier: ^2.37.9
+        specifier: ^2.37.10
         version: link:../../features/admin.applications.v1
       '@wso2is/admin.approval-workflows.v1':
         specifier: ^1.0.12
@@ -540,7 +540,7 @@ importers:
         specifier: ^2.25.225
         version: link:../../features/admin.console-settings.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.53
+        specifier: ^2.49.54
         version: link:../../features/admin.core.v1
       '@wso2is/admin.email-and-sms.v1':
         specifier: ^2.25.204
@@ -609,7 +609,7 @@ importers:
         specifier: ^2.25.205
         version: link:../../features/admin.roles.v1
       '@wso2is/admin.roles.v2':
-        specifier: ^2.27.216
+        specifier: ^2.27.217
         version: link:../../features/admin.roles.v2
       '@wso2is/admin.saml2-configuration.v1':
         specifier: ^2.25.206
@@ -618,7 +618,7 @@ importers:
         specifier: ^2.25.204
         version: link:../../features/admin.secrets.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.67
+        specifier: ^2.35.68
         version: link:../../features/admin.server-configurations.v1
       '@wso2is/admin.session-management.v1':
         specifier: ^2.25.211
@@ -2051,7 +2051,7 @@ importers:
         specifier: ^2.25.225
         version: link:../admin.console-settings.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.53
+        specifier: ^2.49.54
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: ^2.40.5
@@ -2066,7 +2066,7 @@ importers:
         specifier: ^1.6.203
         version: link:../admin.impersonation.v1
       '@wso2is/admin.login-flow-builder.v1':
-        specifier: ^2.24.203
+        specifier: ^2.26.5
         version: link:../admin.login-flow-builder.v1
       '@wso2is/admin.login-flow.ai.v1':
         specifier: ^2.27.98
@@ -2087,7 +2087,7 @@ importers:
         specifier: ^2.25.203
         version: link:../admin.secrets.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.67
+        specifier: ^2.35.68
         version: link:../admin.server-configurations.v1
       '@wso2is/admin.template-core.v1':
         specifier: ^1.5.157
@@ -2909,7 +2909,7 @@ importers:
         specifier: ^2.25.223
         version: link:../admin.console-settings.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.51
+        specifier: ^2.49.54
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: ^2.40.5
@@ -2924,7 +2924,7 @@ importers:
         specifier: ^1.6.204
         version: link:../admin.impersonation.v1
       '@wso2is/admin.login-flow-builder.v1':
-        specifier: ^2.26.2
+        specifier: ^2.26.5
         version: link:../admin.login-flow-builder.v1
       '@wso2is/admin.login-flow.ai.v1':
         specifier: ^2.27.101
@@ -2936,13 +2936,13 @@ importers:
         specifier: ^2.27.2
         version: link:../admin.organizations.v1
       '@wso2is/admin.roles.v2':
-        specifier: ^2.27.214
+        specifier: ^2.27.217
         version: link:../admin.roles.v2
       '@wso2is/admin.secrets.v1':
         specifier: ^2.25.204
         version: link:../admin.secrets.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.65
+        specifier: ^2.35.68
         version: link:../admin.server-configurations.v1
       '@wso2is/admin.subscription.v1':
         specifier: workspace:^
@@ -3229,7 +3229,7 @@ importers:
         specifier: ^2.29.10
         version: link:../admin.claims.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.53
+        specifier: ^2.49.54
         version: link:../admin.core.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.7.7
@@ -3244,7 +3244,7 @@ importers:
         specifier: ^0.6.0
         version: link:../admin.rules.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.67
+        specifier: ^2.35.68
         version: link:../admin.server-configurations.v1
       '@wso2is/common.ai.v1':
         specifier: ^2.27.3
@@ -6350,7 +6350,7 @@ importers:
         specifier: ^1.5.7
         version: link:../admin.application-templates.v1
       '@wso2is/admin.applications.v1':
-        specifier: ^2.37.9
+        specifier: ^2.37.10
         version: link:../admin.applications.v1
       '@wso2is/admin.approval-workflows.v1':
         specifier: ^1.0.12
@@ -6452,7 +6452,7 @@ importers:
         specifier: ^2.25.205
         version: link:../admin.roles.v1
       '@wso2is/admin.roles.v2':
-        specifier: ^2.27.216
+        specifier: ^2.27.217
         version: link:../admin.roles.v2
       '@wso2is/admin.rules.v1':
         specifier: ^0.6.0
@@ -6464,7 +6464,7 @@ importers:
         specifier: ^2.25.204
         version: link:../admin.secrets.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.67
+        specifier: ^2.35.68
         version: link:../admin.server-configurations.v1
       '@wso2is/admin.session-management.v1':
         specifier: ^2.25.211
@@ -10936,13 +10936,13 @@ importers:
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/admin.applications.v1':
-        specifier: ^2.35.4
+        specifier: ^2.37.10
         version: link:../admin.applications.v1
       '@wso2is/admin.connections.v1':
         specifier: ^2.33.96
         version: link:../admin.connections.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.45.2
+        specifier: ^2.49.54
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: ^2.40.6
@@ -10960,7 +10960,7 @@ importers:
         specifier: ^2.25.204
         version: link:../admin.secrets.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.1
+        specifier: ^2.35.68
         version: link:../admin.server-configurations.v1
       '@wso2is/common.ui.v1':
         specifier: ^0.2.0
@@ -13190,7 +13190,7 @@ importers:
         specifier: ^2.29.10
         version: link:../admin.claims.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.53
+        specifier: ^2.49.54
         version: link:../admin.core.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.7.7
@@ -13205,7 +13205,7 @@ importers:
         specifier: ^0.6.0
         version: link:../admin.rules.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.67
+        specifier: ^2.35.68
         version: link:../admin.server-configurations.v1
       '@wso2is/common.ai.v1':
         specifier: ^2.27.3
@@ -15671,7 +15671,7 @@ importers:
         specifier: ^2.26.4
         version: link:../admin.api-resources.v2
       '@wso2is/admin.applications.v1':
-        specifier: ^2.37.9
+        specifier: ^2.37.10
         version: link:../admin.applications.v1
       '@wso2is/admin.authorization.v1':
         specifier: ^2.25.89
@@ -15680,7 +15680,7 @@ importers:
         specifier: ^2.34.3
         version: link:../admin.connections.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.53
+        specifier: ^2.49.54
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: ^2.40.5
@@ -15698,7 +15698,7 @@ importers:
         specifier: ^1.7.161
         version: link:../admin.remote-userstores.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.67
+        specifier: ^2.35.68
         version: link:../admin.server-configurations.v1
       '@wso2is/admin.users.v1':
         specifier: ^2.36.23
@@ -16944,7 +16944,7 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.53
+        specifier: ^2.49.54
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: ^2.40.5
@@ -16965,7 +16965,7 @@ importers:
         specifier: ^2.27.6
         version: link:../admin.organizations.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.67
+        specifier: ^2.35.68
         version: 'link:'
       '@wso2is/admin.users.v1':
         specifier: ^2.36.23
