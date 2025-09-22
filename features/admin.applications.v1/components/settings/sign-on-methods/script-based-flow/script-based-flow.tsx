@@ -41,6 +41,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
+import { SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID } from "@wso2is/admin.login-flow-builder.v1/constants/editor-constants";
 import {
     ELK_RISK_BASED_TEMPLATE_NAME
 } from "@wso2is/admin.login-flow-builder.v1/constants/template-constants";
@@ -55,6 +56,7 @@ import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscri
 import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
 import { UIConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     APIErrorResponseInterface,
     AlertLevels,
@@ -230,6 +232,9 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const hasSecretMgtCreatePermissions: boolean = useRequiredScopes(featureConfig?.secretsManagement?.scopes?.create);
     const hasSecretMgtReadPermissions: boolean = useRequiredScopes(featureConfig?.secretsManagement?.scopes?.read);
 
+    const sharedAppAdaptiveAuthEnabled: boolean =
+        isFeatureEnabled(featureConfig?.applications, SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID);
+
     const { tierName }: UseSubscriptionInterface = useSubscription();
 
     /**
@@ -246,7 +251,9 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
 
         if (OrganizationUtils.getOrganizationType() === OrganizationType.SUPER_ORGANIZATION ||
             OrganizationUtils.getOrganizationType() === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
-            OrganizationUtils.getOrganizationType() === OrganizationType.TENANT) {
+            OrganizationUtils.getOrganizationType() === OrganizationType.TENANT ||
+            (OrganizationUtils.getOrganizationType() === OrganizationType.SUBORGANIZATION &&
+                sharedAppAdaptiveAuthEnabled)) {
             setIsSecretListLoading(true);
 
             getSecretList({
@@ -971,7 +978,9 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                 !isSecretListLoading &&
                             (OrganizationUtils.getOrganizationType() === OrganizationType.SUPER_ORGANIZATION ||
                             OrganizationUtils.getOrganizationType() === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
-                            OrganizationUtils.getOrganizationType() === OrganizationType.TENANT) && (
+                            OrganizationUtils.getOrganizationType() === OrganizationType.TENANT ||
+                            (OrganizationUtils.getOrganizationType() === OrganizationType.SUBORGANIZATION &&
+                                sharedAppAdaptiveAuthEnabled)) && (
                             <>
                                 <Divider />
                                 <ListItem onClick={ () => null } disableGutters disablePadding>

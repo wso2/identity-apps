@@ -40,6 +40,7 @@ import {
     GenericAuthenticatorInterface
 } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, FeatureAccessConfigInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import cloneDeep from "lodash-es/cloneDeep";
@@ -49,7 +50,11 @@ import React, { PropsWithChildren, ReactElement, useCallback, useEffect, useMemo
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { LEGACY_EDITOR_FEATURE_ID, VISUAL_EDITOR_FEATURE_ID } from "../constants/editor-constants";
+import {
+    LEGACY_EDITOR_FEATURE_ID,
+    SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID,
+    VISUAL_EDITOR_FEATURE_ID
+} from "../constants/editor-constants";
 import AuthenticationFlowContext from "../context/authentication-flow-context";
 import DefaultFlowConfigurationSequenceTemplate from "../data/flow-sequences/basic/default-sequence.json";
 import { AuthenticationFlowBuilderModes } from "../models/flow-builder";
@@ -121,6 +126,8 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
     const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
         return state.config?.ui?.features?.applications;
     });
+    const sharedAppAdaptiveAuthEnabled: boolean = isFeatureEnabled(featureConfig, SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID);
+
     const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
 
     const { data: adaptiveAuthTemplates } = useGetAdaptiveAuthTemplates();
@@ -273,7 +280,7 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
     };
 
     const isAdaptiveAuthAvailable: boolean = useMemo(() => {
-        if (orgType === OrganizationType.SUBORGANIZATION) {
+        if (orgType === OrganizationType.SUBORGANIZATION && !sharedAppAdaptiveAuthEnabled) {
             return false;
         }
 

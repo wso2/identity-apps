@@ -21,9 +21,12 @@ import React, { useMemo, useRef } from "react";
 import { Message } from "semantic-ui-react";
 import Field from "./field";
 import Form from "./form";
+import { useTranslations } from "../hooks/use-translations";
+import { resolveElementText } from "../utils/i18n-utils";
 
 const DynamicContent = ({ contentData, handleFlowRequest, error }) => {
     const recaptchaRef = useRef(null);
+    const { translations } = useTranslations();
 
     const captchaNode = useMemo(() => contentData.components.find(el => el.type === "CAPTCHA"),
         [ contentData.components ]);
@@ -58,7 +61,7 @@ const DynamicContent = ({ contentData, handleFlowRequest, error }) => {
                 <>
                     { error && (
                         <Message negative>
-                            <p>{ error }</p>
+                            <p>{ resolveElementText(translations, error) }</p>
                         </Message>
                     ) }
                     <Form

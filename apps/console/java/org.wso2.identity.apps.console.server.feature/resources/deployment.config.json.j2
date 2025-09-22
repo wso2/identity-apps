@@ -592,6 +592,9 @@
             {% if console.applications is defined %}
             "applications": {
                 "disabledFeatures": [
+                    {% if authentication.adaptive.shared_applications.enable is not defined or authentication.adaptive.shared_applications.enable != true %}
+                    "applications.sharedApp.adaptiveAuth"{{ "," if console.applications.disabled_features is defined }}
+                    {% endif %}
                     {% if console.applications.disabled_features is defined %}
                     {% for feature in console.applications.disabled_features %}
                     "{{ feature }}"{{ "," if not loop.last }}
