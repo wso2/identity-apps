@@ -50,8 +50,8 @@ const WorkflowRequestDetailsPage: React.FC = () => {
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
-    const hasApprovalWorkflowDeletePermissions: boolean = useRequiredScopes(
-        featureConfig?.approvalWorkflows?.scopes?.delete
+    const hasWorkflowInstanceDeletePermissions: boolean = useRequiredScopes(
+        featureConfig?.workflowInstances?.scopes?.delete
     );
 
     useEffect(() => {
@@ -336,7 +336,7 @@ const WorkflowRequestDetailsPage: React.FC = () => {
                         header={ t("approvalWorkflows:details.dangerZone.delete.header") }
                         subheader={ t("approvalWorkflows:details.dangerZone.delete.subheader") }
                         onActionClick={ () => setShowDeleteModal(true) }
-                        isButtonDisabled={ !hasApprovalWorkflowDeletePermissions }
+                        isButtonDisabled={ !hasWorkflowInstanceDeletePermissions }
                         data-testid="workflow-requests-details-danger-zone-delete"
                     />
                 </DangerZoneGroup>
@@ -356,7 +356,7 @@ const WorkflowRequestDetailsPage: React.FC = () => {
                         negative
                         loading={ loading }
                         onClick={ handleDelete }
-                        disabled={ !hasApprovalWorkflowDeletePermissions }
+                        disabled={ !hasWorkflowInstanceDeletePermissions }
                     >{ t("common:delete") }</Button>
                 </Modal.Actions>
             </Modal>
