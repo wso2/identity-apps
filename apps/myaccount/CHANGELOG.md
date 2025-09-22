@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.25.4
+
+### Patch Changes
+
+- [#9176](https://github.com/wso2/identity-apps/pull/9176) [`1d8308465c85057da989ded194090c95dea5161b`](https://github.com/wso2/identity-apps/commit/1d8308465c85057da989ded194090c95dea5161b) Thanks [@Thumimku](https://github.com/Thumimku)! - stop user session call during impersonated my account
+
 ## 2.25.3
 
 ### Patch Changes
