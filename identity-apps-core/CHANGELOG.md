@@ -1,5 +1,28 @@
 # @wso2is/identity-apps-core
 
+## 3.3.3
+
+### Patch Changes
+
+- [#9158](https://github.com/wso2/identity-apps/pull/9158) [`a127204ff9aa64eae402e9d0334e20348cf1fcbc`](https://github.com/wso2/identity-apps/commit/a127204ff9aa64eae402e9d0334e20348cf1fcbc) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Handle self registration error cases with recaptcha.
+
+* [#9145](https://github.com/wso2/identity-apps/pull/9145) [`fadf735b66351039b6ca8aaf5bd1ff9edd7fb740`](https://github.com/wso2/identity-apps/commit/fadf735b66351039b6ca8aaf5bd1ff9edd7fb740) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - encode auth details
+
+## 3.3.2
+
+### Patch Changes
+
+- [#9148](https://github.com/wso2/identity-apps/pull/9148) [`09d00b4494c499198f22572378374812a4de21e1`](https://github.com/wso2/identity-apps/commit/09d00b4494c499198f22572378374812a4de21e1) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Use flowId to handle magic link
+
+## 3.3.1
+
+### Patch Changes
+
+- [#9143](https://github.com/wso2/identity-apps/pull/9143) [`bf0c30427b553fe92322dceece85df02f01cb520`](https://github.com/wso2/identity-apps/commit/bf0c30427b553fe92322dceece85df02f01cb520) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add preview label ws-fed protocol template
+
+- Updated dependencies [[`bf0c30427b553fe92322dceece85df02f01cb520`](https://github.com/wso2/identity-apps/commit/bf0c30427b553fe92322dceece85df02f01cb520)]:
+  - @wso2is/theme@2.8.7
+
 ## 3.3.0
 
 ### Minor Changes

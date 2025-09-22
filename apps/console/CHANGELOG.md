@@ -1,5 +1,80 @@
 # @wso2is/console
 
+## 2.79.6
+
+### Patch Changes
+
+- [#9170](https://github.com/wso2/identity-apps/pull/9170) [`927376ddec142bf893c71a193c4f15bb2524678f`](https://github.com/wso2/identity-apps/commit/927376ddec142bf893c71a193c4f15bb2524678f) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix claim add wizard showing mapping step with empty content when hidden userstores are present
+
+* [#9165](https://github.com/wso2/identity-apps/pull/9165) [`9e68efc9f315b7d3c8687206af7fb60f68b399b3`](https://github.com/wso2/identity-apps/commit/9e68efc9f315b7d3c8687206af7fb60f68b399b3) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix user creation wizard becomes unresponsive when a custom attribute with multi-select dropdown options is added
+
+* Updated dependencies [[`927376ddec142bf893c71a193c4f15bb2524678f`](https://github.com/wso2/identity-apps/commit/927376ddec142bf893c71a193c4f15bb2524678f), [`9e68efc9f315b7d3c8687206af7fb60f68b399b3`](https://github.com/wso2/identity-apps/commit/9e68efc9f315b7d3c8687206af7fb60f68b399b3)]:
+  - @wso2is/admin.claims.v1@2.29.10
+  - @wso2is/admin.users.v1@2.36.23
+  - @wso2is/admin.agents.v1@1.0.61
+  - @wso2is/admin.core.v1@2.49.53
+  - @wso2is/admin.roles.v2@2.27.216
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.45
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.45
+  - @wso2is/admin.server-configurations.v1@2.35.67
+
+## 2.79.5
+
+### Patch Changes
+
+- [#9152](https://github.com/wso2/identity-apps/pull/9152) [`e121a76b186fef909aca96fc91fc19bad3889297`](https://github.com/wso2/identity-apps/commit/e121a76b186fef909aca96fc91fc19bad3889297) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Show BE error message in add user bad request scenario.
+
+* [#9146](https://github.com/wso2/identity-apps/pull/9146) [`6a24c3fbd103967505a473222303ae5bbc61cf80`](https://github.com/wso2/identity-apps/commit/6a24c3fbd103967505a473222303ae5bbc61cf80) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix default password option in add user wizard
+
+* Updated dependencies [[`e121a76b186fef909aca96fc91fc19bad3889297`](https://github.com/wso2/identity-apps/commit/e121a76b186fef909aca96fc91fc19bad3889297), [`6a24c3fbd103967505a473222303ae5bbc61cf80`](https://github.com/wso2/identity-apps/commit/6a24c3fbd103967505a473222303ae5bbc61cf80)]:
+  - @wso2is/admin.users.v1@2.36.22
+  - @wso2is/i18n@2.30.29
+  - @wso2is/admin.agents.v1@1.0.60
+  - @wso2is/admin.core.v1@2.49.52
+  - @wso2is/admin.roles.v2@2.27.215
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.44
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.44
+  - @wso2is/admin.server-configurations.v1@2.35.66
+
+## 2.79.4
+
+### Patch Changes
+
+- [#9147](https://github.com/wso2/identity-apps/pull/9147) [`d28c2c1292f3c75ac9dd9354b8e95fd2614176fd`](https://github.com/wso2/identity-apps/commit/d28c2c1292f3c75ac9dd9354b8e95fd2614176fd) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add more details to admin notice.
+
+- Updated dependencies [[`d28c2c1292f3c75ac9dd9354b8e95fd2614176fd`](https://github.com/wso2/identity-apps/commit/d28c2c1292f3c75ac9dd9354b8e95fd2614176fd)]:
+  - @wso2is/admin.extensions.v1@2.40.7
+  - @wso2is/admin.home.v1@1.7.28
+  - @wso2is/i18n@2.30.28
+
+## 2.79.3
+
+### Patch Changes
+
+- [#9143](https://github.com/wso2/identity-apps/pull/9143) [`bf0c30427b553fe92322dceece85df02f01cb520`](https://github.com/wso2/identity-apps/commit/bf0c30427b553fe92322dceece85df02f01cb520) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add preview label ws-fed protocol template
+
+- Updated dependencies [[`bf0c30427b553fe92322dceece85df02f01cb520`](https://github.com/wso2/identity-apps/commit/bf0c30427b553fe92322dceece85df02f01cb520), [`c74915d6f178213aaeb430505b2458bb33ecc747`](https://github.com/wso2/identity-apps/commit/c74915d6f178213aaeb430505b2458bb33ecc747)]:
+  - @wso2is/admin.applications.v1@2.37.9
+  - @wso2is/react-components@2.9.23
+  - @wso2is/theme@2.8.7
+  - @wso2is/admin.tenants.v1@2.29.19
+  - @wso2is/admin.agents.v1@1.0.59
+  - @wso2is/admin.core.v1@2.49.51
+  - @wso2is/admin.roles.v2@2.27.214
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.43
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.43
+  - @wso2is/admin.server-configurations.v1@2.35.65
+
+## 2.79.2
+
+### Patch Changes
+
+- [#9127](https://github.com/wso2/identity-apps/pull/9127) [`bdf3588410eef19d07e202c5d0726f523a61c1c5`](https://github.com/wso2/identity-apps/commit/bdf3588410eef19d07e202c5d0726f523a61c1c5) Thanks [@ZiyamSanthosh](https://github.com/ZiyamSanthosh)! - Add warning for TOTP authenticator with Identifier first
+
+- Updated dependencies [[`bdf3588410eef19d07e202c5d0726f523a61c1c5`](https://github.com/wso2/identity-apps/commit/bdf3588410eef19d07e202c5d0726f523a61c1c5)]:
+  - @wso2is/admin.extensions.v1@2.40.6
+  - @wso2is/i18n@2.30.27
+
 ## 2.79.1
 
 ### Patch Changes

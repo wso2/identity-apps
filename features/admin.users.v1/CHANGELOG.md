@@ -1,5 +1,33 @@
 # @wso2is/admin.users.v1
 
+## 2.36.23
+
+### Patch Changes
+
+- [#9165](https://github.com/wso2/identity-apps/pull/9165) [`9e68efc9f315b7d3c8687206af7fb60f68b399b3`](https://github.com/wso2/identity-apps/commit/9e68efc9f315b7d3c8687206af7fb60f68b399b3) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix user creation wizard becomes unresponsive when a custom attribute with multi-select dropdown options is added
+
+- Updated dependencies [[`927376ddec142bf893c71a193c4f15bb2524678f`](https://github.com/wso2/identity-apps/commit/927376ddec142bf893c71a193c4f15bb2524678f), [`9e68efc9f315b7d3c8687206af7fb60f68b399b3`](https://github.com/wso2/identity-apps/commit/9e68efc9f315b7d3c8687206af7fb60f68b399b3)]:
+  - @wso2is/admin.claims.v1@2.29.10
+  - @wso2is/admin.users.v1@2.36.23
+  - @wso2is/admin.core.v1@2.49.53
+  - @wso2is/admin.roles.v2@2.27.216
+  - @wso2is/admin.server-configurations.v1@2.35.67
+
+## 2.36.22
+
+### Patch Changes
+
+- [#9152](https://github.com/wso2/identity-apps/pull/9152) [`e121a76b186fef909aca96fc91fc19bad3889297`](https://github.com/wso2/identity-apps/commit/e121a76b186fef909aca96fc91fc19bad3889297) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Show BE error message in add user bad request scenario.
+
+* [#9146](https://github.com/wso2/identity-apps/pull/9146) [`6a24c3fbd103967505a473222303ae5bbc61cf80`](https://github.com/wso2/identity-apps/commit/6a24c3fbd103967505a473222303ae5bbc61cf80) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix default password option in add user wizard
+
+* Updated dependencies [[`e121a76b186fef909aca96fc91fc19bad3889297`](https://github.com/wso2/identity-apps/commit/e121a76b186fef909aca96fc91fc19bad3889297), [`6a24c3fbd103967505a473222303ae5bbc61cf80`](https://github.com/wso2/identity-apps/commit/6a24c3fbd103967505a473222303ae5bbc61cf80)]:
+  - @wso2is/admin.users.v1@2.36.22
+  - @wso2is/i18n@2.30.29
+  - @wso2is/admin.core.v1@2.49.52
+  - @wso2is/admin.roles.v2@2.27.215
+  - @wso2is/admin.server-configurations.v1@2.35.66
+
 ## 2.36.21
 
 ### Patch Changes

@@ -118,7 +118,7 @@ const MultiMobileFieldForm: FunctionComponent<MultiMobileFieldFormPropsInterface
         ) {
             return [ ...(verifiedMobileNumbers ?? []), primaryMobileNumber ];
         } else {
-            return verifiedMobileNumbers;
+            return verifiedMobileNumbers ?? [];
         }
     }, [ primaryMobileNumber, verifiedMobileNumbers, isPrimaryMobileVerified ]);
 

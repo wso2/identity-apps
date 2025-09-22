@@ -31,6 +31,7 @@ import { CORSOriginsListInterface } from "@wso2is/admin.core.v1/models/cors-conf
 import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -43,6 +44,7 @@ import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     APIErrorResponseInterface,
     AlertLevels,
+    FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
@@ -949,6 +951,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         return supportedProtocols;
     };
 
+    const applicationsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state.config.ui.features?.applications);
+
     /**
      * Renders the sub template selection.
      * @returns Sub Template Selection.
@@ -1032,7 +1037,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                                     }[imageKey]
                                                 }
                                                 size="small"
-                                                className="sub-template-selection-card"
+                                                className="sub-template-selection-card selection-card-with-ribbon"
                                                 header={ header }
                                                 selected={ isSelected }
                                                 onClick={ onClick }
@@ -1049,6 +1054,16 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                                 overlay={ renderDimmerOverlay() }
                                                 overlayOpacity={ 0.6 }
                                                 data-testid={ `${ testId }-${ id }-card` }
+                                                featureLabel={
+                                                    subTemplate === SupportedAuthProtocolTypes.WS_FEDERATION &&
+                                                    isFeatureEnabled(applicationsFeatureConfig,
+                                                        "applications.create.ws-fed.protocol.template") &&
+                                                    (<FeatureFlagLabel
+                                                        featureFlags={ applicationsFeatureConfig?.featureFlags }
+                                                        featureKey={ "applications.create.ws-fed.protocol.template" }
+                                                        type="ribbon"
+                                                    />)
+                                                }
                                             />
                                         );
                                     })

@@ -61,17 +61,17 @@
 
         for (int count = 0; count < scopeMetadataArray.length(); count++) {
             JSONObject jsonObj = (JSONObject) scopeMetadataArray.get(count);
-            String key = (String) jsonObj.get("name");
+            String key = Encode.forHtml((String) jsonObj.get("name"));
             List<String> scopes = new ArrayList<>();
             JSONArray scopeArray = new JSONArray (jsonObj.get("scopes").toString());
             for (int scopeCount = 0; scopeCount < scopeArray.length(); scopeCount++) {
                 JSONObject scope = (JSONObject) scopeArray.get(scopeCount);
 
                 // Get the displayName.
-                String displayName = (String) scope.get("displayName");
+                String displayName = Encode.forHtml((String) scope.get("displayName"));
 
                 // Use optString to get description; it returns "" if the key is not found.
-                String description = scope.optString("description", "");
+                String description = Encode.forHtml(scope.optString("description", ""));
 
                 // Check if description is not empty, otherwise use displayName.
                 String scopeName = !StringUtils.isBlank(description) ? description : displayName;
@@ -80,7 +80,7 @@
                 scopes.add(scopeName);
 
                 // Add the identifier to the scopesWithMetadata list
-                scopesWithMetadata.add((String) scope.get("identifier"));
+                scopesWithMetadata.add(Encode.forHtml((String) scope.get("identifier")));
             }
             scopeDetails.put(key,scopes);
         }
@@ -188,8 +188,8 @@
                 JSONObject authorizationDetail = authorizationDetails.getJSONObject(index);
 
                 // Check if consent description is not empty, otherwise use type.
-                final String description = authorizationDetail.optString("_description", authorizationDetail.getString("type"));
-                final String authorizationDetailId = "authorization_detail_id_" + authorizationDetail.getString("_id");
+                final String description = Encode.forHtml(authorizationDetail.optString("_description", authorizationDetail.getString("type")));
+                final String authorizationDetailId = "authorization_detail_id_" + Encode.forHtml(authorizationDetail.getString("_id"));
                 authorizationDetailsToBeDisplayed.put(authorizationDetailId, description);
             }
         }

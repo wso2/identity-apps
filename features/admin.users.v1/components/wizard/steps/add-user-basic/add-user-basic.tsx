@@ -496,6 +496,8 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
             if (userConfig.defautlAskPasswordOption === AskPasswordOptionTypes.OFFLINE
                 || !emailVerificationEnabled || !isEmailRequired) {
                 setAskPasswordOption(AskPasswordOptionTypes.OFFLINE);
+            } else {
+                setAskPasswordOption(AskPasswordOptionTypes.EMAIL);
             }
         } else if (emailVerificationEnabled && isEmailRequired) {
             setAskPasswordOption(AskPasswordOptionTypes.EMAIL);
@@ -505,7 +507,7 @@ export const AddUserBasic: React.FunctionComponent<AddUserBasicProps> = ({
                 : null
             );
         }
-    }, [ isEmailRequired ]);
+    }, [ isEmailRequired, emailVerificationEnabled, hasWorkflowAssociations ]);
 
     const resolveNamefieldAttributes = () => {
         const hiddenAttributes: (HiddenFieldNames)[] = [];

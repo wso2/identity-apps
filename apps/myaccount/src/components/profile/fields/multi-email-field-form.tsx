@@ -112,7 +112,7 @@ const MultiEmailFieldForm: FunctionComponent<MultiEmailFieldFormPropsInterface> 
         ) {
             return [ ...(verifiedEmailAddresses ?? []), primaryEmailAddress ];
         } else {
-            return verifiedEmailAddresses;
+            return verifiedEmailAddresses ?? [];
         }
     }, [ primaryEmailAddress, verifiedEmailAddresses, isPrimaryEmailVerified ]);
 
