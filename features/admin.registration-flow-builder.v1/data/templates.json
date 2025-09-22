@@ -106,6 +106,15 @@
         },
         "config": {
             "data": {
+                "__generationMeta__": {
+                        "defaultPropertySelectorId": "{{NEXT_STEP_ID}}",
+                        "replacers": [
+                            {
+                                "key": "NEXT_STEP_ID",
+                                "type": "ID"
+                            }
+                        ]
+                },
                 "steps": [
                     {
                         "id": "{{ID}}",
