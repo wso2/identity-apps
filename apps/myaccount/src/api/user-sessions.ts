@@ -35,7 +35,6 @@ export const fetchUserSessions = (): Promise<UserSessions> => {
     const allowedScopes: string = store.getState()?.authenticationInformation?.scope;
 
     // Impersonation scope would indicate an impersonated session.
-
     const requestConfig: HttpRequestConfig = (allowedScopes?.includes("internal_user_impersonate")
     || allowedScopes?.includes("internal_org_user_impersonate")) ? null : {
             headers: {
