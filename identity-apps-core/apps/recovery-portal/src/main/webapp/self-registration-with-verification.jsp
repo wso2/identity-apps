@@ -182,6 +182,15 @@
         return;
     }
 
+    /**
+     * Validate the back to login URL.
+     */
+    if (!StringUtils.isBlank(callback)
+        && !StringUtils.equalsIgnoreCase(callback, "null")
+        && !AuthenticationEndpointUtil.isValidMultiOptionURI(callback)) {
+        callback = null;
+    }
+
     if (StringUtils.isBlank(callback)) {
         callback = Encode.forHtmlAttribute(IdentityManagementEndpointUtil.getUserPortalUrl(
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain));
