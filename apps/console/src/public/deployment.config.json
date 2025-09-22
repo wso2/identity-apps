@@ -1738,6 +1738,9 @@
                 }
             }
         },
+        "flowExecution": {
+            "enableLegacyFlows": false
+        },
         "governanceConnectors": {
             "loginAttempts": {
                 "disabledFeatures": []

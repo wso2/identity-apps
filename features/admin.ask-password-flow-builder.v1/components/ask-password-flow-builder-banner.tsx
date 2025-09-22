@@ -28,7 +28,7 @@ import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-f
 import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FC } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import BackgroundSprites from "../../themes/wso2is/assets/images/illustrations/ai-banner-background-white.svg";
 import "./ask-password-flow-builder-banner.scss";
@@ -39,7 +39,7 @@ import "./ask-password-flow-builder-banner.scss";
 export type AskPasswordFlowBuilderBannerProps = IdentifiableComponentInterface;
 
 /**
- * Component to display the password recovery flow builder banner.
+ * Component to display the invited user registration flow builder banner.
  *
  * @param props - Props injected to the component.
  * @returns The AskPasswordFlowBuilderBanner component.
@@ -66,8 +66,10 @@ const AskPasswordFlowBuilderBanner: FC<AskPasswordFlowBuilderBannerProps> = ({
             >
                 <Box>
                     <Typography variant="h5">
-                        Construct your ideal recovery experience with our new{ " " }
-                        <span className="text-gradient primary">{ t("flows:askPasswordFlowBuilder") }</span>
+                        <Trans i18nKey="flows:askPassword.banner.title">
+                            Construct your ideal invited user registration experience with our new
+                            <span className="text-gradient primary">Invited User Registration Flow Builder</span>
+                        </Trans>
                         <FeatureFlagLabel
                             featureFlags={ flowsFeatureAIConfig?.featureFlags }
                             featureKey={ FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.FLOWS_TYPES_REGISTRATION }
@@ -75,12 +77,12 @@ const AskPasswordFlowBuilderBanner: FC<AskPasswordFlowBuilderBannerProps> = ({
                         />
                     </Typography>
                     <Typography variant="body1">
-                        Provide a seamless account recovery experience to your users by customizing the
-                        recovery flow to suit your organization&apos;s needs.
+                        { t("flows:askPassword.banner.description") }
                     </Typography>
                 </Box>
                 <Button
-                    onClick={ () => history.push(AppConstants.getPaths().get("REGISTRATION_FLOW_BUILDER")) }
+                    onClick={ () => history.push(
+                        AppConstants.getPaths().get("INVITE_USER_PASSWORD_SETUP_FLOW_BUILDER")) }
                     color="primary"
                     variant="contained"
                 >
