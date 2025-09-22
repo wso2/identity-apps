@@ -213,7 +213,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
      * @param data - DropdownProps.
      */
     const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
-        setSortBy(SORT_BY.filter((option: DropdownProps) => option.value === data.value)[ 0 ]);
+        setSortBy(SORT_BY.filter((option: DropdownItemProps) => option.value === data.value)[ 0 ]);
     };
 
     /**
