@@ -306,7 +306,7 @@
             "label": "Default Self Registration",
             "description": "Self-registration flow that collects basic profile information",
             "image": "https://www.svgrepo.com/show/390092/security-protection-password.svg",
-            "showOnResourcePanel": true
+            "showOnResourcePanel": false
         },
         "config": {
             "data": {
