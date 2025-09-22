@@ -97,7 +97,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
     }, []);
 
     useEffect(() => {
-        setFilteredEmailTemplateTypes((sortList(filteredEmailTemplateTypes, sortBy.value, sortOrder)));
+        setFilteredEmailTemplateTypes((sortList(filteredEmailTemplateTypes, sortBy.value as string, sortOrder)));
     }, [ sortBy, sortOrder ]);
 
     /**
