@@ -56,11 +56,7 @@ const EXCLUDED_CLAIMS: string[] = [
     "http://wso2.org/claims/verifiedEmailAddresses",
     "http://wso2.org/claims/mobileNumbers",
     "http://wso2.org/claims/verifiedMobileNumbers",
-    "http://wso2.org/claims/username",
-    "http://wso2.org/claims/country",
-    "http://wso2.org/claims/mobile",
-    "http://wso2.org/claims/organization"
-
+    "http://wso2.org/claims/username"
 ];
 
 const FIELD: Element = {
@@ -180,10 +176,12 @@ const useDefaultFlow = (): DefaultFlowReturnType => {
      * @returns True.
      */
     const generateProfileAttributes: (resource: Resource) => boolean = useCallback((resource: Resource): boolean => {
-        if (resource.type === TemplateTypes.Basic) {
+        if (resource.type === TemplateTypes.Default) {
             const formComponents: Element[] = resource.config.data.steps[0].data.components[1].components;
 
             const emailClaim: Claim = claims?.find((claim: Claim) => claim.claimURI === EMAIL_CLAIM_URI);
+            const firstNameClaim: Claim = claims?.find((claim: Claim) => claim.claimURI === FIRST_NAME_CLAIM_URI);
+            const lastNameClaim: Claim = claims?.find((claim: Claim) => claim.claimURI === LAST_NAME_CLAIM_URI);
 
             if (isAlphanumericUsername) {
                 const field: Element = buildFieldFromClaim({
@@ -203,6 +201,14 @@ const useDefaultFlow = (): DefaultFlowReturnType => {
             }
 
             const claimsForRegistration: Element[] = [];
+
+            if (firstNameClaim) {
+                claimsForRegistration.push(buildFieldFromClaim(firstNameClaim));
+            }
+
+            if (lastNameClaim) {
+                claimsForRegistration.push(buildFieldFromClaim(lastNameClaim));
+            }
 
             claims?.forEach((claim: Claim) => {
                 if (EXCLUDED_CLAIMS.includes(claim.claimURI) || claim.readOnly) {
