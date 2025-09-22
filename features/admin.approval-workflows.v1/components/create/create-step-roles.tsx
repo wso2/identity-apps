@@ -192,7 +192,7 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
 
     return (
         <>
-            { roles && !isReadOnly && (
+            { roles && (
                 <Grid
                     container
                     spacing={ 2 }

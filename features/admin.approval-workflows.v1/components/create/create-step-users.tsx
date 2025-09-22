@@ -153,7 +153,7 @@ const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
 
     return (
         <>
-            { users && !isReadOnly && (
+            { users && (
                 <Grid
                     container
                     spacing={ 2 }
