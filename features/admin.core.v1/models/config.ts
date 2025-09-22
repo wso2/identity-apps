@@ -292,13 +292,13 @@ export interface FeatureConfigInterface {
      */
     registrationFlowBuilder?: FeatureAccessConfigInterface;
     /**
-     * Workflow requests feature.
+     * Workflow instances feature.
      */
-    workflowRequests?: FeatureAccessConfigInterface;
+    workflowInstances?: FeatureAccessConfigInterface;
     /**
      * Workflow feature.
      */
-    workflows?: FeatureAccessConfigInterface;
+    approvalWorkflows?: FeatureAccessConfigInterface;
 }
 
 /**
@@ -614,6 +614,12 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Terms of service URL.
      */
     termsOfUseUrl?: string;
+    /**
+     * Flow execution configurations.
+     */
+    flowExecution: {
+        enableLegacyFlows: boolean;
+    };
 }
 
 /**

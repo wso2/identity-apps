@@ -16,15 +16,18 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { getOperationTypeTranslationKey } from "@wso2is/common.workflow-approvals.v1/utils/approval-utils";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DangerZone, DangerZoneGroup, TabPageLayout } from "@wso2is/react-components";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Message, Modal, Table } from "semantic-ui-react";
 import { useGetWorkflowInstance } from "../api/use-get-workflow-instance";
 import { deleteWorkflowInstance } from "../api/workflow-requests";
@@ -44,6 +47,12 @@ const WorkflowRequestDetailsPage: React.FC = () => {
         isLoading: loading,
         error: workflowInstanceError
     } = useGetWorkflowInstance(id, !!id);
+
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
+    const hasWorkflowInstanceDeletePermissions: boolean = useRequiredScopes(
+        featureConfig?.workflowInstances?.scopes?.delete
+    );
 
     useEffect(() => {
         if (workflowInstanceError) {
@@ -327,6 +336,7 @@ const WorkflowRequestDetailsPage: React.FC = () => {
                         header={ t("approvalWorkflows:details.dangerZone.delete.header") }
                         subheader={ t("approvalWorkflows:details.dangerZone.delete.subheader") }
                         onActionClick={ () => setShowDeleteModal(true) }
+                        isButtonDisabled={ !hasWorkflowInstanceDeletePermissions }
                         data-testid="workflow-requests-details-danger-zone-delete"
                     />
                 </DangerZoneGroup>
@@ -342,7 +352,12 @@ const WorkflowRequestDetailsPage: React.FC = () => {
                 </Modal.Content>
                 <Modal.Actions>
                     <Button onClick={ () => setShowDeleteModal(false) }>{ t("common:cancel") }</Button>
-                    <Button negative loading={ loading } onClick={ handleDelete }>{ t("common:delete") }</Button>
+                    <Button
+                        negative
+                        loading={ loading }
+                        onClick={ handleDelete }
+                        disabled={ !hasWorkflowInstanceDeletePermissions }
+                    >{ t("common:delete") }</Button>
                 </Modal.Actions>
             </Modal>
         </TabPageLayout>

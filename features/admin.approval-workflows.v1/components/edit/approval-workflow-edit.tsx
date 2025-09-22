@@ -18,8 +18,11 @@
 import Divider from "@oxygen-ui/react/Divider";
 import Grid from "@oxygen-ui/react/Grid";
 import Skeleton from "@oxygen-ui/react/Skeleton";
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import {
     APIErrorResponseInterface,
     AlertInterface,
@@ -38,7 +41,7 @@ import {
 import { AxiosError } from "axios";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "../../pages/approval-workflow-edit-page.scss";
 import { Dispatch } from "redux";
 import { deleteApprovalWorkflowById, updateApprovalWorkflow } from "../../api/approval-workflow";
@@ -117,6 +120,15 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
 
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
+
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
+    const hasApprovalWorkflowUpdatePermissions: boolean = useRequiredScopes(
+        featureConfig?.approvalWorkflows?.scopes?.update
+    );
+    const hasApprovalWorkflowDeletePermissions: boolean = useRequiredScopes(
+        featureConfig?.approvalWorkflows?.scopes?.delete
+    );
 
     const workflowIdFilter: string = `workflowId eq ${approvalWorkflowId}`;
 
@@ -555,7 +567,7 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                         <div className="workflow-model-general-settings">
                             <GeneralApprovalWorkflowDetailsForm
                                 ref={ generalApprovalWorkflowDetailsFormRef }
-                                isReadOnly={ isReadOnly }
+                                isReadOnly={ isReadOnly || !hasApprovalWorkflowUpdatePermissions }
                                 initialValues={ approvalProcessFormData?.generalDetails ?? {} }
                                 approvalWorkflowId={ approvalWorkflowId }
                                 onSubmit={ onGeneralDetailsFormSubmit }
@@ -567,7 +579,7 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                         <div className="workflow-association-operations">
                             <WorkflowOperationsDetailsForm
                                 ref={ workflowOperationsDetailsFormRef }
-                                isReadOnly={ isReadOnly }
+                                isReadOnly={ isReadOnly || !hasApprovalWorkflowUpdatePermissions }
                                 initialValues={ matchedOperations }
                                 onSubmit={ onWorkflowOperationsDetailsFormSubmit }
                                 data-componentid={ `${componentId}-general-details-form` }
@@ -583,7 +595,7 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                             </Grid>
                             <ConfigurationsForm
                                 ref={ configurationsFormRef }
-                                isReadOnly={ isReadOnly }
+                                isReadOnly={ isReadOnly || !hasApprovalWorkflowUpdatePermissions }
                                 initialValues={ stepValues }
                                 onSubmit={ handleConfigSubmit }
                                 hasErrors={ hasErrors }
@@ -594,7 +606,7 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
 
                         <PrimaryButton
                             type="submit"
-                            disabled={ isReadOnly }
+                            disabled={ isReadOnly || !hasApprovalWorkflowUpdatePermissions }
                             onClick={ () => {
                                 handleUpdateButtonClick();
                             } }
@@ -615,6 +627,7 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                     subheader={ t("approvalWorkflows:form.dangerZone.delete.subheader") }
                     onActionClick={ () => setShowApprovalWorkflowDeleteConfirmationModal(true) }
                     data-componentid={ `${componentId}-danger-zone` }
+                    isButtonDisabled ={ isReadOnly || !hasApprovalWorkflowDeletePermissions }
                 />
             </DangerZoneGroup>
             { showApprovalWorkflowDeleteConfirmation && deleteConfirmation() }

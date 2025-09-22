@@ -18,6 +18,10 @@
 
 export interface flowsNS {
     askPassword: {
+        banner: {
+            description: string;
+            title: string;
+        };
         breadcrumb: string;
         labels: {
             disableFlow: string;
@@ -232,6 +236,10 @@ export interface flowsNS {
     };
     label?: string;
     passwordRecovery: {
+        banner: {
+            description: string;
+            title: string;
+        };
         labels: {
             disableFlow: string;
             enableFlow: string;

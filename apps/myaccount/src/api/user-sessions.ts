@@ -31,13 +31,18 @@ const httpClient: HttpInstance = AsgardeoSPAClient.getInstance().httpRequest.bin
  * @returns - A promise containing the response.
  */
 export const fetchUserSessions = (): Promise<UserSessions> => {
-    const requestConfig: HttpRequestConfig = {
-        headers: {
-            Accept: "application/json"
-        },
-        method: HttpMethods.GET,
-        url: store.getState().config.endpoints.sessions
-    };
+
+    const allowedScopes: string = store.getState()?.authenticationInformation?.scope;
+
+    // Impersonation scope would indicate an impersonated session.
+    const requestConfig: HttpRequestConfig = (allowedScopes?.includes("internal_user_impersonate")
+    || allowedScopes?.includes("internal_org_user_impersonate")) ? null : {
+            headers: {
+                Accept: "application/json"
+            },
+            method: HttpMethods.GET,
+            url: store.getState().config.endpoints.sessions
+        };
 
     return httpClient(requestConfig)
         .then((response: HttpResponse) => {

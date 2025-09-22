@@ -19,6 +19,10 @@ import { flowsNS } from "../../../models";
 
 export const flows: flowsNS = {
     askPassword: {
+        banner: {
+            description: "Provide a seamless invited user onboarding experience to your users by customizing the registration flow to suit your organization's needs.",
+            title: "Construct your ideal invited user registration experience with our new <1>Invited User Registration Flow Builder</1>"
+        },
         breadcrumb: "Edit Invited User Registration Flow",
         labels: {
             disableFlow: "Disable",
@@ -233,6 +237,10 @@ export const flows: flowsNS = {
     },
     label: "Flows",
     passwordRecovery: {
+        banner: {
+            description: "Provide a seamless password recovery experience to your users by customizing the recovery flow to suit your organization's needs.",
+            title: "Construct your ideal password recovery experience with our new <1>Password Recovery Flow Builder</1>"
+        },
         labels: {
             disableFlow: "Disable",
             enableFlow: "Enable"

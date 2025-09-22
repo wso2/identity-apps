@@ -1,5 +1,34 @@
 # @wso2is/admin.core.v1
 
+## 2.49.55
+
+### Patch Changes
+
+- [#9175](https://github.com/wso2/identity-apps/pull/9175) [`333242e5fa5c260d685f49a8f9c1bebfe06b41a8`](https://github.com/wso2/identity-apps/commit/333242e5fa5c260d685f49a8f9c1bebfe06b41a8) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix RBAC issues in workflow related pages
+
+- Updated dependencies [[`333242e5fa5c260d685f49a8f9c1bebfe06b41a8`](https://github.com/wso2/identity-apps/commit/333242e5fa5c260d685f49a8f9c1bebfe06b41a8)]:
+  - @wso2is/admin.approval-workflows.v1@1.0.13
+  - @wso2is/admin.users.v1@2.36.24
+  - @wso2is/admin.flow-builder-core.v1@0.10.47
+  - @wso2is/admin.agents.v1@1.0.63
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.47
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.47
+  - @wso2is/admin.server-configurations.v1@2.35.69
+  - @wso2is/admin.roles.v2@2.27.218
+
+## 2.49.54
+
+### Patch Changes
+
+- Updated dependencies [[`61c7476562235ee90afe7308821330d472dbd817`](https://github.com/wso2/identity-apps/commit/61c7476562235ee90afe7308821330d472dbd817)]:
+  - @wso2is/admin.applications.v1@2.37.10
+  - @wso2is/admin.agents.v1@1.0.62
+  - @wso2is/admin.roles.v2@2.27.217
+  - @wso2is/admin.flow-builder-core.v1@0.10.46
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.46
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.46
+  - @wso2is/admin.server-configurations.v1@2.35.68
+
 ## 2.49.53
 
 ### Patch Changes

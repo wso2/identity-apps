@@ -107,9 +107,12 @@ const ApprovalWorkflowList: React.FunctionComponent<ApprovalWorkflowListProps> =
     const [ currentDeletedApprovalWorkflow, setCurrentDeletedApprovalWorkflow ] = useState<WorkflowListItemInterface>();
     const isPrivilegedUser: any = useSelector((state: AppState) => state.auth.isPrivilegedUser);
 
-    const hasApprovalWorkflowCreatePermissions: boolean = useRequiredScopes(featureConfig?.workflows?.scopes?.create);
-    const hasApprovalWorkflowUpdatePermissions: boolean = useRequiredScopes(featureConfig?.workflows?.scopes?.update);
-    const hasApprovalWorkflowDeletePermissions: boolean = useRequiredScopes(featureConfig?.workflows?.scopes?.delete);
+    const hasApprovalWorkflowCreatePermissions: boolean =
+        useRequiredScopes(featureConfig?.approvalWorkflows?.scopes?.create);
+    const hasApprovalWorkflowUpdatePermissions: boolean =
+        useRequiredScopes(featureConfig?.approvalWorkflows?.scopes?.update);
+    const hasApprovalWorkflowDeletePermissions: boolean =
+        useRequiredScopes(featureConfig?.approvalWorkflows?.scopes?.delete);
 
     const handleApprovalWorkflowEdit = (approvalWorkflowId: string) => {
         history.push(AppConstants.getPaths().get("APPROVAL_WORKFLOW_EDIT").replace(":id", approvalWorkflowId));
@@ -156,7 +159,7 @@ const ApprovalWorkflowList: React.FunctionComponent<ApprovalWorkflowListProps> =
                     <EmptyPlaceholder
                         data-componentid={ `${componentId}-empty-placeholder-create` }
                         action={ (
-                            <Show when={ featureConfig?.workflows?.scopes?.create }>
+                            <Show when={ featureConfig?.approvalWorkflows?.scopes?.create }>
                                 <PrimaryButton
                                     onClick={ () =>
                                         history.push(AppConstants.getPaths().get("APPROVAL_WORKFLOW_CREATE")) }
