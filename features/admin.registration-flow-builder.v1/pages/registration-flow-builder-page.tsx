@@ -16,15 +16,14 @@
  * under the License.
  */
 
-import RegistrationFlowBuilder from "@wso2is/admin.registration-flow-builder.v1/components/registration-flow-builder";
-import RegistrationFlowBuilderProvider from
-    "@wso2is/admin.registration-flow-builder.v1/providers/registration-flow-builder-provider";
-import useUserPreferences from "@wso2is/common.ui.v1/hooks/use-user-preferences";
+import RegistrationFlowBuilder from "../components/registration-flow-builder";
+import RegistrationFlowBuilderProvider from "../providers/registration-flow-builder-provider";
+import FlowBuilderPage from "@wso2is/admin.flow-builder-core.v1/components/flow-builder-page-skeleton/flow-builder-page";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useEffect } from "react";
-import FloatingPublishButton from "./floating-publish-button";
-import RegistrationFlowBuilderPageHeader from "./registration-flow-builder-page-header";
-import "./registration-flow-builder-page.scss";
+import React, { FunctionComponent, ReactElement } from "react";
+import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
+import { useTranslation } from "react-i18next";
+import useRegistrationFlowBuilder from "../hooks/use-registration-flow-builder";
 
 /**
  * Props interface of {@link RegistrationFlowBuilderPage}
@@ -40,27 +39,20 @@ export type RegistrationFlowBuilderPageProps = IdentifiableComponentInterface;
 const RegistrationFlowBuilderPage: FunctionComponent<RegistrationFlowBuilderPageProps> = ({
     ["data-componentid"]: componentId = "registration-flow-builder-page"
 }: RegistrationFlowBuilderPageProps): ReactElement => {
-    const { setPreferences, leftNavbarCollapsed } = useUserPreferences();
-
-    /**
-     * If the user doesn't have a `leftNavbarCollapsed` preference saved, collapse the navbar for better UX.
-     * @remarks Since the builder needs more real estate, it's better to have the navbar collapsed.
-     */
-    useEffect(() => {
-        if (leftNavbarCollapsed === undefined) {
-            setPreferences({ leftNavbarCollapsed: true });
-        }
-    }, [ leftNavbarCollapsed, setPreferences ]);
+    const { t } = useTranslation();
+    const { isPublishing, onPublish } = useRegistrationFlowBuilder();
 
     return (
         <RegistrationFlowBuilderProvider>
-            <div className="registration-flow-builder-page" data-componentid={ componentId }>
-                <div className="page-layout">
-                    <RegistrationFlowBuilderPageHeader />
-                </div>
+            <FlowBuilderPage
+                data-componentid={ componentId }
+                flowType={ FlowTypes.REGISTRATION }
+                flowTypeDisplayName={ t("flows:registrationFlow.flowDisplayName") }
+                isPublishing={ isPublishing }
+                onPublish={ onPublish }
+            >
                 <RegistrationFlowBuilder />
-                <FloatingPublishButton />
-            </div>
+            </FlowBuilderPage>
         </RegistrationFlowBuilderProvider>
     );
 };

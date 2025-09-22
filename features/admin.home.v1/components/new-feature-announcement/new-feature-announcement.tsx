@@ -29,7 +29,7 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
-import useGetFlowConfig from "@wso2is/admin.flows.v1/api/use-get-flow-config";
+import useGetFlowConfig from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-config";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
 import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";

@@ -26,53 +26,46 @@ import Typography from "@oxygen-ui/react/Typography";
 import { ArrowLeftIcon } from "@oxygen-ui/react-icons";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import ValidationStatusLabels from
-    "@wso2is/admin.flow-builder-core.v1/components/validation-panel/validation-status-labels";
-import useValidationStatus from "@wso2is/admin.flow-builder-core.v1/hooks/use-validation-status";
-import updateFlowConfig from "@wso2is/admin.flows.v1/api/update-flow-config";
-import useGetFlowConfig from "@wso2is/admin.flows.v1/api/use-get-flow-config";
-import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
-import useRegistrationFlowBuilder from "@wso2is/admin.registration-flow-builder.v1/hooks/use-registration-flow-builder";
+import ValidationStatusLabels from "../../components/validation-panel/validation-status-labels";
+import useValidationStatus from "../../hooks/use-validation-status";
+import updateFlowConfig from "../../api/update-flow-config";
+import useGetFlowConfig from "../../api/use-get-flow-config";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
+import { RouteProps } from "react-router-dom";
 
 /**
- * Props interface of {@link RegistrationFlowBuilderPageHeader}
+ * Props interface of {@link FlowBuilderPageHeader}
  */
-export type RegistrationFlowBuilderPageHeaderProps = IdentifiableComponentInterface;
+export interface FlowBuilderPageHeaderProps extends IdentifiableComponentInterface, RouteProps {
+    flowType: any;
+    flowTypeDisplayName: string;
+    isPublishing: boolean;
+    onPublish: any;
+};
 
 /**
- * Interface for the path state.
- */
-interface PathStateInterface {
-    from?: {
-        /**
-         * Path to navigate back to.
-         */
-        pathname?: string;
-    }
-}
-
-/**
- * Header for the Registration flow builder page.
+ * Header for the flow builder page.
  *
  * @param props - Props injected to the component.
- * @returns RegistrationFlowBuilderPageHeader component.
+ * @returns FlowBuilderPageHeader component.
  */
-const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuilderPageHeaderProps> = ({
-    ["data-componentid"]: componentId = "registration-flow-builder-page-header"
-}: RegistrationFlowBuilderPageHeaderProps): ReactElement => {
-    const { onPublish } = useRegistrationFlowBuilder();
+const FlowBuilderPageHeader: FunctionComponent<FlowBuilderPageHeaderProps> = ({
+    ["data-componentid"]: componentId = "flow-builder-page-header",
+    onPublish,
+    flowType,
+    flowTypeDisplayName
+}: FlowBuilderPageHeaderProps): ReactElement => {
     const { isValid } = useValidationStatus();
     const {
         data: flowConfig,
         mutate: mutateFlowConfig,
         error: flowConfigError
-    } = useGetFlowConfig(FlowTypes.REGISTRATION);
+    } = useGetFlowConfig(flowType);
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
@@ -84,9 +77,9 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
     useEffect(() => {
         if (flowConfigError) {
             dispatch(addAlert<AlertInterface>({
-                description: t("flows:registrationFlow.notifications.fetchFlowConfig.genericError.description"),
+                description: t("flows:core.notifications.fetchFlowConfig.genericError.description", { flowType: flowTypeDisplayName }),
                 level: AlertLevels.ERROR,
-                message: t("flows:registrationFlow.notifications.fetchFlowConfig.genericError.message")
+                message: t("flows:core.notifications.fetchFlowConfig.genericError.message", { flowType: flowTypeDisplayName })
             }));
         }
     }, [ flowConfigError ]);
@@ -95,11 +88,14 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
      * Handles the back button click event.
      */
     const handleBackButtonClick = (): void => {
-
         let backPath: string = AppConstants.getPaths().get("FLOWS");
 
         if (history?.location?.state) {
-            const state: PathStateInterface = history.location.state as PathStateInterface;
+            const state: {
+                from?: {
+                    pathname: string;
+                }
+            } = history.location.state;
 
             if (state?.from?.pathname) {
                 backPath = state.from.pathname;
@@ -116,9 +112,9 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
      */
     const handleFlowConfigError = (operation: string): void => {
         dispatch(addAlert<AlertInterface>({
-            description: t(`flows:registrationFlow.notifications.${operation}Flow.genericError.description`),
+            description: t(`flows:core.notifications.${operation}Flow.genericError.description`, { flowType: flowTypeDisplayName }),
             level: AlertLevels.ERROR,
-            message: t(`flows:registrationFlow.notifications.${operation}Flow.genericError.message`)
+            message: t(`flows:core.notifications.${operation}Flow.genericError.message`, { flowType: flowTypeDisplayName })
         }));
     };
 
@@ -129,9 +125,9 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
      */
     const handleFlowConfigSuccess = (operation: string): void => {
         dispatch(addAlert<AlertInterface>({
-            description: t(`flows:registrationFlow.notifications.${operation}Flow.success.description`),
+            description: t(`flows:core.notifications.${operation}Flow.success.description`, { flowType: flowTypeDisplayName }),
             level: AlertLevels.SUCCESS,
-            message: t(`flows:registrationFlow.notifications.${operation}Flow.success.message`)
+            message: t(`flows:core.notifications.${operation}Flow.success.message`, { flowType: flowTypeDisplayName })
         }));
     };
 
@@ -152,7 +148,7 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
 
             if (isPublishSuccess) {
                 await updateFlowConfig({
-                    flowType: FlowTypes.REGISTRATION,
+                    flowType,
                     isEnabled
                 });
                 handleFlowConfigSuccess(isEnabled ? "enable" : "disable");
@@ -177,7 +173,7 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
                 <IconButton onClick={ handleBackButtonClick }>
                     <ArrowLeftIcon />
                 </IconButton>
-                <Breadcrumbs aria-label="breadcrumb" className="registration-flow-builder-page-header-breadcrumbs">
+                <Breadcrumbs aria-label="breadcrumb" className="flow-builder-page-header-breadcrumbs">
                     <Link
                         underline="hover"
                         color="inherit"
@@ -186,7 +182,7 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
                         { t("flows:label") }
                     </Link>
                     <Typography>
-                        { t("flows:registrationFlow.breadcrumb") }
+                        { t("flows:core.breadcrumb", { flowType: flowTypeDisplayName }) }
                     </Typography>
                 </Breadcrumbs>
             </Box>
@@ -200,14 +196,14 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
                 <Box display="flex" alignItems="center">
                     <Typography>
                         { flowConfig?.isEnabled
-                            ? t("flows:registrationFlow.labels.disableFlow")
-                            : t("flows:registrationFlow.labels.enableFlow") }
+                            ? t("flows:core.labels.disableFlow")
+                            : t("flows:core.labels.enableFlow") }
                     </Typography>
                     <Tooltip
                         title={
                             flowConfig?.isEnabled
-                                ? t("flows:registrationFlow.tooltip.disableFlow")
-                                : t("flows:registrationFlow.tooltip.enableFlow")
+                                ? t("flows:core.tooltip.disableFlow")
+                                : t("flows:core.tooltip.enableFlow")
                         }
                     >
                         <Switch
@@ -223,4 +219,4 @@ const RegistrationFlowBuilderPageHeader: FunctionComponent<RegistrationFlowBuild
     );
 };
 
-export default RegistrationFlowBuilderPageHeader;
+export default FlowBuilderPageHeader;

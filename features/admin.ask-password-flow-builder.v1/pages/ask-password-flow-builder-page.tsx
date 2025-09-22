@@ -16,16 +16,14 @@
  * under the License.
  */
 
-import useUserPreferences from "@wso2is/common.ui.v1/hooks/use-user-preferences";
+import AskPasswordFlowBuilderProvider from "../providers/ask-password-flow-builder-provider";
+import FlowBuilderPage from "@wso2is/admin.flow-builder-core.v1/components/flow-builder-page-skeleton/flow-builder-page";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useEffect } from "react";
-import AskPasswordFlowBuilderPageHeader from "./ask-password-flow-builder-page-header";
-import FloatingPublishButton from "./floating-publish-button";
-import AskPasswordFlowBuilder from
-    "../components/ask-password-flow-builder";
-import AskPasswordFlowBuilderProvider from
-    "../providers/ask-password-flow-builder-provider";
-import "./ask-password-flow-builder-page.scss";
+import React, { FunctionComponent, ReactElement } from "react";
+import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
+import { useTranslation } from "react-i18next";
+import useAskPasswordFlowBuilder from "../hooks/use-ask-password-flow-builder";
+import AskPasswordFlowBuilder from "../components/ask-password-flow-builder";
 
 /**
  * Props interface of {@link AskPasswordFlowBuilderPage}
@@ -33,35 +31,28 @@ import "./ask-password-flow-builder-page.scss";
 export type AskPasswordFlowBuilderPageProps = IdentifiableComponentInterface;
 
 /**
- * Landing page for the Password Recovery Flow Builder.
+ * Landing page for the Registration Flow Builder.
  *
  * @param props - Props injected to the component.
  * @returns AskPasswordFlowBuilderPage component.
  */
 const AskPasswordFlowBuilderPage: FunctionComponent<AskPasswordFlowBuilderPageProps> = ({
-    ["data-componentid"]: componentId = "ask-password-flow-builder-page"
+    ["data-componentid"]: componentId = "registration-flow-builder-page"
 }: AskPasswordFlowBuilderPageProps): ReactElement => {
-    const { setPreferences, leftNavbarCollapsed } = useUserPreferences();
-
-    /**
-     * If the user doesn't have a `leftNavbarCollapsed` preference saved, collapse the navbar for better UX.
-     * @remarks Since the builder needs more real estate, it's better to have the navbar collapsed.
-     */
-    useEffect(() => {
-        if (leftNavbarCollapsed === undefined) {
-            setPreferences({ leftNavbarCollapsed: true });
-        }
-    }, [ leftNavbarCollapsed, setPreferences ]);
+    const { t } = useTranslation();
+    const { isPublishing, onPublish } = useAskPasswordFlowBuilder();
 
     return (
         <AskPasswordFlowBuilderProvider>
-            <div className="ask-password-flow-builder-page" data-componentid={ componentId }>
-                <div className="page-layout">
-                    <AskPasswordFlowBuilderPageHeader />
-                </div>
+            <FlowBuilderPage
+                data-componentid={ componentId }
+                flowType={ FlowTypes.INVITED_USER_REGISTRATION }
+                flowTypeDisplayName={ t("flows:askPassword.flowDisplayName") }
+                isPublishing={ isPublishing }
+                onPublish={ onPublish }
+            >
                 <AskPasswordFlowBuilder />
-                <FloatingPublishButton />
-            </div>
+            </FlowBuilderPage>
         </AskPasswordFlowBuilderProvider>
     );
 };

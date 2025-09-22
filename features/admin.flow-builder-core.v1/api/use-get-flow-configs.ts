@@ -23,7 +23,7 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import { FlowConfigInterface } from "../models/flows";
+import { FlowConfigInterface } from "@wso2is/admin.flows.v1/models/flows";
 
 /**
  * Hook to fetch the flow configurations.

@@ -23,45 +23,18 @@ export const flows: flowsNS = {
             description: "Provide a seamless invited user onboarding experience to your users by customizing the registration flow to suit your organization's needs.",
             title: "Construct your ideal invited user registration experience with our new <1>Invited User Registration Flow Builder</1>"
         },
-        breadcrumb: "Edit Invited User Registration Flow",
-        labels: {
-            disableFlow: "Disable",
-            enableFlow: "Enable"
-        },
-        notifications: {
-            disableFlow: {
-                genericError: {
-                    description: "An error occurred while disabling the invited user registration flow.",
-                    message: "Disable Invited User Registration Flow Error"
-                },
-                success: {
-                    description: "Successfully disabled the invited user registration flow.",
-                    message: "Invited User Registration Flow Disabled"
-                }
-            },
-            enableFlow: {
-                genericError: {
-                    description: "An error occurred while enabling the invited user registration flow.",
-                    message: "Enable Invited User Registration Flow Error"
-                },
-                success: {
-                    description: "Successfully enabled the invited user registration flow.",
-                    message: "Invited User Registration Flow Enabled"
-                }
-            },
-            fetchFlowConfig: {
-                genericError: {
-                    description: "An error occurred while fetching the invited user registration flow configuration.",
-                    message: "Fetch Invited User Registration Flow Error"
-                }
-            }
-        },
+        flowDisplayName: "Invited User Registration",
         tooltip: {
             disableFlow: "Click to disable the invited user registration flow",
             enableFlow: "Click to enable the invited user registration flow"
         }
     },
     core: {
+        breadcrumb: "Edit {{flowType}} Flow",
+        labels: {
+            disableFlow: "Disable",
+            enableFlow: "Enable"
+        },
         elements: {
             richText: {
                 linkEditor: {
@@ -150,10 +123,36 @@ export const flows: flowsNS = {
                     message: "Custom Text Preference Meta Fetch Error"
                 }
             },
+            disableFlow: {
+                genericError: {
+                    description: "An error occurred while disabling the {{flowType}} flow.",
+                    message: "Disable {{flowType}} Flow Error"
+                },
+                success: {
+                    description: "Successfully disabled the {{flowType}} flow.",
+                    message: "{{flowType}} Flow Disabled"
+                }
+            },
+            enableFlow: {
+                genericError: {
+                    description: "An error occurred while enabling the {{flowType}} flow.",
+                    message: "Enable {{flowType}} Flow Error"
+                },
+                success: {
+                    description: "Successfully enabled the {{flowType}} flow.",
+                    message: "{{flowType}} Flow Enabled"
+                }
+            },
             fallbackTextPreferenceFetch: {
                 genericError: {
                     description: "An error occurred while fetching the fallback text preferences.",
                     message: "Fallback Text Preference Fetch Error"
+                }
+            },
+            fetchFlowConfig: {
+                genericError: {
+                    description: "An error occurred while fetching the {{flowType}} flow configuration.",
+                    message: "Fetch {{flowType}} Flow Error"
                 }
             },
             flowMetadataFetch: {
@@ -241,78 +240,15 @@ export const flows: flowsNS = {
             description: "Provide a seamless password recovery experience to your users by customizing the recovery flow to suit your organization's needs.",
             title: "Construct your ideal password recovery experience with our new <1>Password Recovery Flow Builder</1>"
         },
-        labels: {
-            disableFlow: "Disable",
-            enableFlow: "Enable"
-        },
+        flowDisplayName: "Password Recovery",
         name: "Password Recovery Flow Builder",
-        notifications: {
-            disableFlow: {
-                genericError: {
-                    description: "An error occurred while disabling the password recovery flow.",
-                    message: "Disable Password Recovery Flow Error"
-                },
-                success: {
-                    description: "Successfully disabled the password recovery flow.",
-                    message: "Password Recovery Flow Disabled"
-                }
-            },
-            enableFlow: {
-                genericError: {
-                    description: "An error occurred while enabling the password recovery flow.",
-                    message: "Enable Password Recovery Flow Error"
-                },
-                success: {
-                    description: "Successfully enabled the password recovery flow.",
-                    message: "Password Recovery Flow Enabled"
-                }
-            },
-            fetchFlowConfig: {
-                genericError: {
-                    description: "An error occurred while fetching the password recovery flow configuration.",
-                    message: "Fetch Password Recovery Flow Error"
-                }
-            }
-        },
         tooltip: {
             disableFlow: "Click to disable the password recovery flow",
             enableFlow: "Click to enable the password recovery flow"
         }
     },
     registrationFlow: {
-        breadcrumb: "Edit Registration Flow",
-        labels: {
-            disableFlow: "Disable",
-            enableFlow: "Enable"
-        },
-        notifications: {
-            disableFlow: {
-                genericError: {
-                    description: "An error occurred while disabling the registration flow.",
-                    message: "Disable Registration Flow Error"
-                },
-                success: {
-                    description: "Successfully disabled the registration flow.",
-                    message: "Registration Flow Disabled"
-                }
-            },
-            enableFlow: {
-                genericError: {
-                    description: "An error occurred while enabling the registration flow.",
-                    message: "Enable Registration Flow Error"
-                },
-                success: {
-                    description: "Successfully enabled the registration flow.",
-                    message: "Registration Flow Enabled"
-                }
-            },
-            fetchFlowConfig: {
-                genericError: {
-                    description: "An error occurred while fetching the registration flow configuration.",
-                    message: "Fetch Registration Flow Error"
-                }
-            }
-        },
+        flowDisplayName: "Registration",
         steps: {
             emailConfirmation: "Email Confirmation"
         },

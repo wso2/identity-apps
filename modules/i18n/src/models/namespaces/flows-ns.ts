@@ -22,45 +22,14 @@ export interface flowsNS {
             description: string;
             title: string;
         };
-        breadcrumb: string;
-        labels: {
-            disableFlow: string;
-            enableFlow: string;
-        };
-        notifications: {
-            disableFlow: {
-                genericError: {
-                    description: string;
-                    message: string;
-                };
-                success: {
-                    description: string;
-                    message: string;
-                };
-            };
-            enableFlow: {
-                genericError: {
-                    description: string;
-                    message: string;
-                };
-                success: {
-                    description: string;
-                    message: string;
-                };
-            };
-            fetchFlowConfig: {
-                genericError: {
-                    description: string;
-                    message: string;
-                };
-            };
-        };
+        flowDisplayName: string;
         tooltip: {
             disableFlow: string;
             enableFlow: string;
         };
     };
     core: {
+        breadcrumb: string;
         elements: {
             richText: {
                 linkEditor: {
@@ -123,6 +92,10 @@ export interface flowsNS {
                 magicLink: string;
             };
         };
+        labels: {
+            disableFlow: string;
+            enableFlow: string;
+        };
         notificationPanel: {
             emptyMessages: {
                 errors: string;
@@ -149,7 +122,33 @@ export interface flowsNS {
                     message: string;
                 };
             };
+            disableFlow: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+            enableFlow: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
             fallbackTextPreferenceFetch: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+            fetchFlowConfig: {
                 genericError: {
                     description: string;
                     message: string;
@@ -240,78 +239,15 @@ export interface flowsNS {
             description: string;
             title: string;
         };
-        labels: {
-            disableFlow: string;
-            enableFlow: string;
-        };
+        flowDisplayName: string;
         name: string;
-        notifications: {
-            disableFlow: {
-                genericError: {
-                    description: string;
-                    message: string;
-                };
-                success: {
-                    description: string;
-                    message: string;
-                };
-            };
-            enableFlow: {
-                genericError: {
-                    description: string;
-                    message: string;
-                };
-                success: {
-                    description: string;
-                    message: string;
-                };
-            };
-            fetchFlowConfig: {
-                genericError: {
-                    description: string;
-                    message: string;
-                };
-            };
-        };
         tooltip: {
             disableFlow: string;
             enableFlow: string;
         };
     };
     registrationFlow: {
-        breadcrumb: string;
-        labels: {
-            disableFlow: string;
-            enableFlow: string;
-        };
-        notifications: {
-            disableFlow: {
-                genericError: {
-                    description: string;
-                    message: string;
-                };
-                success: {
-                    description: string;
-                    message: string;
-                };
-            };
-            enableFlow: {
-                genericError: {
-                    description: string;
-                    message: string;
-                };
-                success: {
-                    description: string;
-                    message: string;
-                };
-            };
-            fetchFlowConfig: {
-                genericError: {
-                    description: string;
-                    message: string;
-                };
-            };
-        };
+        flowDisplayName: string;
         steps: {
             emailConfirmation: string;
         };

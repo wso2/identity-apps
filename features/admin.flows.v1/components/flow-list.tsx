@@ -37,7 +37,7 @@ import { GenericIcon } from "@wso2is/react-components";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
-import useGetFlowConfigs from "../api/use-get-flow-configs";
+import useGetFlowConfigs from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-configs";
 import flowData from "../data/flows.json";
 import { FlowListItemInterface, FlowTypes } from "../models/flows";
 import "./flow-list.scss";

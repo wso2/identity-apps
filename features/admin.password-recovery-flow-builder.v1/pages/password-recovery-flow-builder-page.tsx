@@ -16,16 +16,14 @@
  * under the License.
  */
 
-import useUserPreferences from "@wso2is/common.ui.v1/hooks/use-user-preferences";
+import PasswordRecoveryFlowBuilder from "../components/password-recovery-flow-builder";
+import PasswordRecoveryFlowBuilderProvider from "../providers/password-recovery-flow-builder-provider";
+import FlowBuilderPage from "@wso2is/admin.flow-builder-core.v1/components/flow-builder-page-skeleton/flow-builder-page";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useEffect } from "react";
-import FloatingPublishButton from "./floating-publish-button";
-import PasswordRecoveryFlowBuilderPageHeader from "./password-recovery-flow-builder-page-header";
-import PasswordRecoveryFlowBuilder from
-    "../components/password-recovery-flow-builder";
-import PasswordRecoveryFlowBuilderProvider from
-    "../providers/password-recovery-flow-builder-provider";
-import "./password-recovery-flow-builder-page.scss";
+import React, { FunctionComponent, ReactElement } from "react";
+import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
+import { useTranslation } from "react-i18next";
+import usePasswordRecoveryFlowBuilder from "../hooks/use-password-recovery-flow-builder";
 
 /**
  * Props interface of {@link PasswordRecoveryFlowBuilderPage}
@@ -41,27 +39,20 @@ export type PasswordRecoveryFlowBuilderPageProps = IdentifiableComponentInterfac
 const PasswordRecoveryFlowBuilderPage: FunctionComponent<PasswordRecoveryFlowBuilderPageProps> = ({
     ["data-componentid"]: componentId = "password-recovery-flow-builder-page"
 }: PasswordRecoveryFlowBuilderPageProps): ReactElement => {
-    const { setPreferences, leftNavbarCollapsed } = useUserPreferences();
-
-    /**
-     * If the user doesn't have a `leftNavbarCollapsed` preference saved, collapse the navbar for better UX.
-     * @remarks Since the builder needs more real estate, it's better to have the navbar collapsed.
-     */
-    useEffect(() => {
-        if (leftNavbarCollapsed === undefined) {
-            setPreferences({ leftNavbarCollapsed: true });
-        }
-    }, [ leftNavbarCollapsed, setPreferences ]);
+    const { t } = useTranslation();
+    const { isPublishing, onPublish } = usePasswordRecoveryFlowBuilder();
 
     return (
         <PasswordRecoveryFlowBuilderProvider>
-            <div className="password-recovery-flow-builder-page" data-componentid={ componentId }>
-                <div className="page-layout">
-                    <PasswordRecoveryFlowBuilderPageHeader />
-                </div>
+            <FlowBuilderPage
+                data-componentid={ componentId }
+                flowType={ FlowTypes.PASSWORD_RECOVERY }
+                flowTypeDisplayName={ t("flows:passwordRecovery.flowDisplayName") }
+                isPublishing={ isPublishing }
+                onPublish={ onPublish }
+            >
                 <PasswordRecoveryFlowBuilder />
-                <FloatingPublishButton />
-            </div>
+            </FlowBuilderPage>
         </PasswordRecoveryFlowBuilderProvider>
     );
 };

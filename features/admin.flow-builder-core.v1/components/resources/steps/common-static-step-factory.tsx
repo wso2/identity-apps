@@ -57,10 +57,6 @@ export const CommonStaticStepFactory: FunctionComponent<CommonStaticStepFactoryP
         return <Start data-componentid={ componentId } { ...rest } />;
     }
 
-    if (type === StepTypes.End) {
-        return <End data-componentid={ componentId } resource={ resource } { ...rest } />;
-    }
-
     return null;
 };
 
