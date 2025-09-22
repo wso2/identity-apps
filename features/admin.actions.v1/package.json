@@ -6,7 +6,7 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@asgardeo/auth-react": "^5.4.1",
+        "@asgardeo/auth-react": "^5.4.2",
         "@mui/material": "^5.13.0",
         "@oxygen-ui/react": "^2.4.6",
         "@oxygen-ui/react-icons": "^2.4.6",
