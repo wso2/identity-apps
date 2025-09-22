@@ -27,6 +27,7 @@ import {
 } from "@wso2is/admin.groups.v1/models";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import {
+    APIErrorResponseInterface,
     AlertLevels,
     RoleGroupsInterface,
     RolesInterface,
@@ -423,7 +424,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                 handleCloseAddNewGroupModal();
                 onRoleUpdate(role.id);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error?.response?.status === 404) {
                     return;
                 }
