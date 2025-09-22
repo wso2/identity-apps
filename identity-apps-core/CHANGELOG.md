@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 3.3.4
+
+### Patch Changes
+
+- [#9153](https://github.com/wso2/identity-apps/pull/9153) [`b275562b71d028181991584a44424e56fa355cee`](https://github.com/wso2/identity-apps/commit/b275562b71d028181991584a44424e56fa355cee) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Add i18n error message support
+
+* [#9160](https://github.com/wso2/identity-apps/pull/9160) [`02037fae6853c105307ecea6c1d87a0cb312d489`](https://github.com/wso2/identity-apps/commit/02037fae6853c105307ecea6c1d87a0cb312d489) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - add error page for magic link
+
 ## 3.3.3
 
 ### Patch Changes
