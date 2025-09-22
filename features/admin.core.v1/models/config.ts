@@ -298,7 +298,7 @@ export interface FeatureConfigInterface {
     /**
      * Workflow feature.
      */
-    workflows?: FeatureAccessConfigInterface;
+    approvalWorkflows?: FeatureAccessConfigInterface;
 }
 
 /**

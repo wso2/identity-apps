@@ -527,6 +527,8 @@
                         "console:approvalWorkflows"
                     ],
                     "read": [
+                        "internal_role_mgt_view",
+                        "internal_user_mgt_list",
                         "internal_workflow_association_view",
                         "internal_workflow_view"
                     ],
