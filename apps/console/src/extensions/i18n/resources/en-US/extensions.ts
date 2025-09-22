@@ -975,7 +975,7 @@ export const extensions: Extensions = {
                                 placeholder: "https://myapp.com/{{locale}}/privacy-policy"
                             },
                             recoveryPortalURL: {
-                                hint: "Link to your organization's recovery portal URL. This URL will be used only within flow builders. You can use placeholders like <1>{{lang}}</1>, <3>{{country}}</3>, or <5>{{locale}}</5> to customize the URL for different regions or languages.",
+                                hint: "Link to your organization's recovery portal URL. You can use placeholders like <1>{{lang}}</1>, <3>{{country}}</3>, or <5>{{locale}}</5> to customize the URL for different regions or languages. <7>Note: This overrides the URL of the recovery flow you create using the flow builder in Flows.</7>",
                                 label: "Recovery Portal",
                                 placeholder: "https://myapp.com/account-recovery"
                             },

@@ -283,7 +283,8 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
                     Link to your organization&apos;s Recovery portal. You can use placeholders like
                         <Code>&#123;&#123;lang&#125;&#125;</Code>, <Code>&#123;&#123;country&#125;&#125;</Code>,
                     or <Code>&#123;&#123;locale&#125;&#125;</Code> to customize the URL for different
-                    regions or languages.
+                    regions or languages. <strong>Note: This overrides the URL of the recovery flow
+                         you create using the flow builder in Flows.</strong>
                     </Trans>
                 ) }
                 required={ false }
