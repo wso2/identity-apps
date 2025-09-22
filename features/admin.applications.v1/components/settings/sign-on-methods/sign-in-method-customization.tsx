@@ -184,10 +184,11 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
     const [ smsValidationResult, setSmsValidationResult ] =
         useState<FederatedConflictWithSMSOTPReturnValueInterface>(null);
 
-    const featureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
+    const applicationsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
         return state.config?.ui?.features?.applications;
     });
-    const sharedAppAdaptiveAuthEnabled: boolean = isFeatureEnabled(featureConfig, SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID);
+    const sharedAppAdaptiveAuthEnabled: boolean = isFeatureEnabled(applicationsFeatureConfig,
+        SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
