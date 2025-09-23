@@ -538,11 +538,6 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             return [];
         }
 
-        // Normalize the Start step ID for consistency.
-        if (templateSteps[0]) {
-            templateSteps[0].id = INITIAL_FLOW_START_STEP_ID;
-        }
-
         // Drop the last step from the template.
         const stepsWithoutLast: Step[] = templateSteps.slice(0, -1);
 
