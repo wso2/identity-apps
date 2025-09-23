@@ -13,6 +13,7 @@
 <%= htmlWebpackPlugin.options.importUtil %>
 <%= htmlWebpackPlugin.options.importIdentityTenantUtil %>
 <%= htmlWebpackPlugin.options.importOwaspEncode %>
+<%= htmlWebpackPlugin.options.importIsSuperTenantRequiredInUrl %>
 
 <script>
     var userAccessedPath = window.location.href;
@@ -196,6 +197,7 @@
     </head>
     <script>
         var proxyContextPathGlobal = "<%= htmlWebpackPlugin.options.proxyContextPath %>";
+        var isSuperTenantRequiredInUrl = "<%= htmlWebpackPlugin.options.isSuperTenantRequiredInUrl %>";
 
         function authenticateWithSDK() {
 
@@ -212,6 +214,14 @@
 
                 function getTenantPath(tenantDomain) {
                     var _tenantDomain = tenantDomain ? tenantDomain : getTenantName();
+
+                    if (!_tenantDomain && isSuperTenantRequiredInUrl === "true") {
+                        if (startupConfig.superTenantProxy) {
+                            _tenantDomain = startupConfig.superTenantProxy;
+                        } else {
+                            _tenantDomain = startupConfig.superTenant;
+                        }
+                    }
 
                     return _tenantDomain !== ""
                         ? "/" + startupConfig.tenantPrefix + "/" + _tenantDomain
@@ -282,7 +292,7 @@
                     // When there's no proxy context path, the IS server returns "null".
                     var contextPath = (!proxyContextPathGlobal || proxyContextPathGlobal === "null") ? "" : "/" + proxyContextPathGlobal;
 
-                    if (getTenantName() === startupConfig.superTenant) {
+                    if (getTenantName() === startupConfig.superTenant && isSuperTenantRequiredInUrl !== "true") {
                         return applicationDomain.replace(/\/+$/, '') + contextPath
                              + "<%= htmlWebpackPlugin.options.basename ? '/' + htmlWebpackPlugin.options.basename : ''%>";
                     }
@@ -294,10 +304,10 @@
                 /**
                  * Construct the sign-out redirect URL.
                  *
-                 * @returns {string} Contructed URL.
+                 * @returns {string} Constructed URL.
                  */
                 function getSignOutRedirectURL() {
-                    if (getTenantName() === startupConfig.superTenant) {
+                    if (getTenantName() === startupConfig.superTenant && isSuperTenantRequiredInUrl !== "true") {
                         return applicationDomain.replace(/\/+$/, '');
                     }
 
