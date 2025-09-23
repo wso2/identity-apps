@@ -1828,7 +1828,7 @@
                 "branding": "v0.0.0",
                 "consoleSettings": "v0.0.0",
                 "emailTemplates": "v0.0.0",
-                "flows": "v0.0.0",
+                "flows": "v1.0.0",
                 "gettingStarted": "v0.0.0",
                 "governanceConnectors": "v0.0.0",
                 "groups": "v0.0.0",
