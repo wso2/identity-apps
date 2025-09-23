@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.3.7
+
+### Patch Changes
+
+- [#9182](https://github.com/wso2/identity-apps/pull/9182) [`ac6f68396e0bba0e0cebdd23e696b3e2367ca20c`](https://github.com/wso2/identity-apps/commit/ac6f68396e0bba0e0cebdd23e696b3e2367ca20c) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Update missing password policies when setting the password and fix the default password max length rendering issue.
+
 ## 3.3.6
 
 ### Patch Changes
