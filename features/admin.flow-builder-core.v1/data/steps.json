@@ -205,6 +205,7 @@
         "type": "END",
         "version": "0.1.0",
         "deprecated": false,
+        "deletable": false,
         "display": {
             "label": "End Screen",
             "image": "https://www.svgrepo.com/show/169077/check-mark-inside-a-black-box.svg",

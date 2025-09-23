@@ -44,6 +44,10 @@ export interface StrictBase<T = any> {
      */
     deprecated: boolean;
     /**
+     * Is the component or the primitive  deletable.
+     */
+    deletable: boolean;
+    /**
      * Display properties of the component or the primitive.
      */
     display: BaseDisplay;
