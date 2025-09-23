@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.3.6
+
+### Patch Changes
+
+- [#9183](https://github.com/wso2/identity-apps/pull/9183) [`6ee798440c63321ea6eb57e02987c911229da7e1`](https://github.com/wso2/identity-apps/commit/6ee798440c63321ea6eb57e02987c911229da7e1) Thanks [@indeewari](https://github.com/indeewari)! - Fixing the unicode issue in the magic link path
+
 ## 3.3.5
 
 ### Patch Changes

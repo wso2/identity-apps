@@ -1,5 +1,15 @@
 # @wso2is/admin.workflow-requests.v1
 
+## 1.0.7
+
+### Patch Changes
+
+- [#9180](https://github.com/wso2/identity-apps/pull/9180) [`3b25ebbeb85d2ed9ed743b76377e59822f4aa510`](https://github.com/wso2/identity-apps/commit/3b25ebbeb85d2ed9ed743b76377e59822f4aa510) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Update workflow request scopes for delete button
+
+- Updated dependencies [[`3b25ebbeb85d2ed9ed743b76377e59822f4aa510`](https://github.com/wso2/identity-apps/commit/3b25ebbeb85d2ed9ed743b76377e59822f4aa510), [`3e0fcab9bba602cd00e39a231c73dd57b290a037`](https://github.com/wso2/identity-apps/commit/3e0fcab9bba602cd00e39a231c73dd57b290a037)]:
+  - @wso2is/admin.core.v1@2.49.56
+  - @wso2is/i18n@2.30.30
+
 ## 1.0.6
 
 ### Patch Changes
