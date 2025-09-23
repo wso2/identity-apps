@@ -21,9 +21,9 @@ import React, { FunctionComponent, ReactElement, memo } from "react";
 import { View } from "../view/view";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import { CommonStepFactoryPropsInterface } from "../common-step-factory";
-import "./end.scss";
-import { Handle, Position, useNodeId } from "@xyflow/react";
+import { useNodeId } from "@xyflow/react";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
+import "./end.scss";
 
 /**
  * Props interface of {@link End}
@@ -65,32 +65,27 @@ const End: FunctionComponent<EndPropsInterface> = memo(
          * @returns Array of allowed component types for the end node droppable area.
          */
         const getAllowedTypes = (): string[] => {
-            const defaultAllowedTypes = VisualFlowConstants.FLOW_BUILDER_VIEW_ALLOWED_RESOURCE_TYPES;
+            const defaultAllowedTypes: string[] = VisualFlowConstants.FLOW_BUILDER_VIEW_ALLOWED_RESOURCE_TYPES;
 
-            return defaultAllowedTypes.filter(type => !restrictedComponentTypes.includes(type));
+            return defaultAllowedTypes.filter((type: string) => !restrictedComponentTypes.includes(type));
         };
 
         return (
-            <>
-                <View
-                    heading={heading}
-                    droppableAllowedTypes={getAllowedTypes()}
-                    enableSourceHandle={true}
-                    data={data}
-                    resource={resource}
-                    className="flow-builder-end-step"
-                    deletable={false}
-                    configurable={true}
-                    data-componentid={componentId}
-                    onConfigure={ () => {
-                        setLastInteractedStepId(stepId);
-                        setLastInteractedResource(resource);
-                    } }
-                />
-                {data?.end === false && (
-                    <Handle type="source" position={Position.Right} id={data?.sourceHandle as string} />
-                )}
-            </>
+            <View
+                heading={ heading }
+                droppableAllowedTypes={ getAllowedTypes() }
+                enableSourceHandle={ false }
+                data={ data }
+                resource={ resource }
+                className="flow-builder-end-step"
+                deletable={ false }
+                configurable={ true }
+                data-componentid={ componentId }
+                onConfigure={ () => {
+                    setLastInteractedStepId(stepId);
+                    setLastInteractedResource(resource);
+                } }
+            />
         );
     },
     (prevProps: EndPropsInterface, nextProps: EndPropsInterface) => {
