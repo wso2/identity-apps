@@ -71,10 +71,17 @@ const UserOnboardingProperties: FunctionComponent<UserOnboardingPropertiesPropsI
                     <Checkbox
                         checked={ configs?.isEmailVerificationEnabled === "true" }
                         onChange={(event) => {
-                            setFlowCompletionConfigs({
+                            const newConfigs: Record<string, unknown> = {
                                 ...configs,
                                 isEmailVerificationEnabled: event.target.checked ? "true" : "false"
-                            });
+                            };
+
+                            // If email verification is disabled, auto-login should also be disabled
+                            if (!event.target.checked) {
+                                newConfigs.isAutoLoginEnabled = "false";
+                            }
+
+                            setFlowCompletionConfigs(newConfigs);
                         }}
                     />
                 }
@@ -87,10 +94,17 @@ const UserOnboardingProperties: FunctionComponent<UserOnboardingPropertiesPropsI
                         <Checkbox
                             checked={ configs?.isAccountLockOnCreationEnabled === "false" }
                             onChange={(event) => {
-                                setFlowCompletionConfigs({
+                                const newConfigs: Record<string, unknown> = {
                                     ...configs,
                                     isAccountLockOnCreationEnabled: event.target.checked ? "false" : "true"
-                                });
+                                };
+
+                                // If account is set to be locked on creation, auto-login should be disabled
+                                if (!event.target.checked) {
+                                    newConfigs.isAutoLoginEnabled = "false";
+                                }
+
+                                setFlowCompletionConfigs(newConfigs);
                             }}
                         />
                     }
@@ -102,6 +116,10 @@ const UserOnboardingProperties: FunctionComponent<UserOnboardingPropertiesPropsI
                 control={
                     <Checkbox
                         checked={ configs?.isAutoLoginEnabled === "true" }
+                        disabled={
+                            configs?.isEmailVerificationEnabled !== "true" ||
+                            configs?.isAccountLockOnCreationEnabled !== "false"
+                        }
                         onChange={(event) => {
                             setFlowCompletionConfigs({
                                 ...configs,
