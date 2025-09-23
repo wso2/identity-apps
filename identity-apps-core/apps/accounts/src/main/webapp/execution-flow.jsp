@@ -62,16 +62,7 @@
     String contextPath = request.getContextPath();
     String subPath = servletPath + contextPath;
     String baseURL = accessedURL.substring(0, accessedURL.length() - subPath.length());
-    String authenticationPortalURL = baseURL + contextPath;
 
-    if (tenantDomain != null
-        && !tenantDomain.isEmpty()
-        && !tenantDomain.equalsIgnoreCase(IdentityManagementEndpointConstants.SUPER_TENANT)) {
-        authenticationPortalURL = baseURL + "/t/" + tenantDomain + contextPath;
-    }
-%>
-
-<%
     String state = request.getParameter("state");
     String code = request.getParameter("code");
     String spId = request.getParameter("spId");
@@ -189,10 +180,9 @@
 
             const Content = () => {
                 const baseUrl = "<%= identityServerEndpointContextParam %>";
-                const authenticationEndpoint = baseUrl + "${pageContext.request.contextPath}";
+                const accountsPortalUrl = baseUrl + "${pageContext.request.contextPath}";
                 const defaultMyAccountUrl = "<%= myaccountUrl %>";
-                const authPortalURL = "<%= authenticationPortalURL %>";
-                const executionFlowApiProxyPath = authPortalURL + "/util/execution-flow-api.jsp";
+                const executionFlowApiProxyPath = accountsPortalUrl + "/util/execution-flow-api.jsp";
                 const code = "<%= Encode.forJavaScript(code) != null ? Encode.forJavaScript(code) : null %>";
                 const state = "<%= Encode.forJavaScript(state) != null ? Encode.forJavaScript(state) : null %>";
                 const confirmationCode = "<%= Encode.forJavaScript(confirmationCode) != null ? Encode.forJavaScript(confirmationCode) : null %>";
@@ -311,11 +301,11 @@
                 useEffect(() => {
                     if (error && error.code) {
                         const errorDetails = getI18nKeyForError(error.code, flowType, error.description);
-                        let portal_url = authPortalURL + "/register";
+                        let portal_url = accountsPortalUrl + "/register";
                         if (flowType === "PASSWORD_RECOVERY") {
-                            portal_url = authPortalURL + "/recovery";
+                            portal_url = accountsPortalUrl + "/recovery";
                         }
-                        let errorPageURL = authPortalURL + "/error?" + "ERROR_MSG="
+                        let errorPageURL = accountsPortalUrl + "/error?" + "ERROR_MSG="
                             + errorDetails.message + "&" + "ERROR_DESC=" + errorDetails.description + "&" + "SP_ID="
                             + "<%= Encode.forJavaScript(spId) %>" + "&" + "flowType=" + flowType + "&" + "confirmation="
                             + "<%= Encode.forJavaScript(confirmationCode) %>" + "&";
