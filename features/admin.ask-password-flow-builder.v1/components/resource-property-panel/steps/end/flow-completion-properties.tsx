@@ -50,23 +50,23 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
 }: FlowCompletionPropertiesPropsInterface): ReactElement => {
     const { t } = useTranslation();
     const { flowCompletionConfigs, setFlowCompletionConfigs, metadata } = useAuthenticationFlowBuilderCore();
-    const { data: registrationFlowConfig } = useGetFlowConfig(FlowTypes.REGISTRATION);
+    const { data: invitedUserRegistrationFlowConfig } = useGetFlowConfig(FlowTypes.INVITED_USER_REGISTRATION);
 
-    const configs = !isEmpty(flowCompletionConfigs) ? flowCompletionConfigs : registrationFlowConfig?.flowCompletionConfigs;
+    const configs = !isEmpty(flowCompletionConfigs) ? flowCompletionConfigs : invitedUserRegistrationFlowConfig?.flowCompletionConfigs;
 
     return (
         <Stack gap={2} data-componentid={componentId}>
             <Typography>
                 <Alert severity="info">
-                    <Trans i18nKey="flows:registrationFlow.steps.end.description">
-                        The <strong>End Screen</strong> defines what happens once the flow is completed. It allows you to control the user&apos;s final experience by selecting one of the following outcomes:
+                    <Trans i18nKey="flows:askPassword.steps.end.description">
+                        The <strong>End Screen</strong> defines what happens once the invited user registration flow is completed. It allows you to control the user&apos;s final experience by selecting one of the following outcomes:
                     </Trans>
                 </Alert>
             </Typography>
             { metadata?.supportedFlowCompletionConfigs?.includes("isEmailVerificationEnabled") && (
                <>
                     <FormControlLabel
-                        label={ t("flows:registrationFlow.steps.end.accountVerification.label") }
+                        label={ t("flows:askPassword.steps.end.accountVerification.label") }
                         control={
                             <Checkbox
                                 checked={ configs?.isEmailVerificationEnabled === "true" }
@@ -86,13 +86,13 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                             />
                         }
                     />
-                    <FormHelperText>{ t("flows:registrationFlow.steps.end.accountVerification.hint") }</FormHelperText>
-               </> 
+                    <FormHelperText>{ t("flows:askPassword.steps.end.accountVerification.hint") }</FormHelperText>
+               </>
             ) }
             { metadata?.supportedFlowCompletionConfigs?.includes("isAccountLockOnCreationEnabled") && (
                 <Box sx={{ display: 'flex', flexDirection: 'column', ml: 3 }}>
                     <FormControlLabel
-                        label={ t("flows:registrationFlow.steps.end.accountActivation.activateImmediately.label") }
+                        label={ t("flows:askPassword.steps.end.accountActivation.activateImmediately.label") }
                         control={
                             <Checkbox
                                 checked={ configs?.isAccountLockOnCreationEnabled === "false" }
@@ -112,13 +112,13 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                             />
                         }
                     />
-                    <FormHelperText>{ t("flows:registrationFlow.steps.end.accountActivation.activateImmediately.hint") }</FormHelperText>
+                    <FormHelperText>{ t("flows:askPassword.steps.end.accountActivation.activateImmediately.hint") }</FormHelperText>
                 </Box>
             ) }
             { metadata?.supportedFlowCompletionConfigs?.includes("isAutoLoginEnabled") && (
                 <>
                     <FormControlLabel
-                        label={ t("flows:registrationFlow.steps.end.autoLogin.label") }
+                        label={ t("flows:askPassword.steps.end.autoLogin.label") }
                         control={
                             <Checkbox
                                 checked={ configs?.isAutoLoginEnabled === "true" }
@@ -135,13 +135,13 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                             />
                         }
                     />
-                    <FormHelperText>{ t("flows:registrationFlow.steps.end.autoLogin.hint") }</FormHelperText>
+                    <FormHelperText>{ t("flows:askPassword.steps.end.autoLogin.hint") }</FormHelperText>
                 </>
             ) }
             { metadata?.supportedFlowCompletionConfigs?.includes("isFlowCompletionNotificationEnabled") && (
                 <>
                     <FormControlLabel
-                        label={ t("flows:registrationFlow.steps.end.accountFlowCompletion.label") }
+                        label={ t("flows:askPassword.steps.end.flowCompletionNotification.label") }
                         control={
                             <Checkbox
                                 checked={ configs?.isFlowCompletionNotificationEnabled === "true" }
@@ -154,7 +154,7 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                             />
                         }
                     />
-                    <FormHelperText>{ t("flows:registrationFlow.steps.end.accountFlowCompletion.hint") }</FormHelperText>
+                    <FormHelperText>{ t("flows:askPassword.steps.end.flowCompletionNotification.hint") }</FormHelperText>
                 </>
             ) }
         </Stack>

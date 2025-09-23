@@ -20,7 +20,6 @@ import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import Stack from "@oxygen-ui/react/Stack";
 import Checkbox from "@oxygen-ui/react/Checkbox";
-import Box from "@oxygen-ui/react/Box";
 import Alert from "@oxygen-ui/react/Alert";
 import Typography from "@oxygen-ui/react/Typography";
 import useGetFlowConfig from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-config";
@@ -50,82 +49,26 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
 }: FlowCompletionPropertiesPropsInterface): ReactElement => {
     const { t } = useTranslation();
     const { flowCompletionConfigs, setFlowCompletionConfigs, metadata } = useAuthenticationFlowBuilderCore();
-    const { data: registrationFlowConfig } = useGetFlowConfig(FlowTypes.REGISTRATION);
+    const { data: passwordRecoveryFlowConfig } = useGetFlowConfig(FlowTypes.PASSWORD_RECOVERY);
 
-    const configs = !isEmpty(flowCompletionConfigs) ? flowCompletionConfigs : registrationFlowConfig?.flowCompletionConfigs;
+    const configs = !isEmpty(flowCompletionConfigs) ? flowCompletionConfigs : passwordRecoveryFlowConfig?.flowCompletionConfigs;
 
     return (
         <Stack gap={2} data-componentid={componentId}>
             <Typography>
                 <Alert severity="info">
-                    <Trans i18nKey="flows:registrationFlow.steps.end.description">
-                        The <strong>End Screen</strong> defines what happens once the flow is completed. It allows you to control the user&apos;s final experience by selecting one of the following outcomes:
+                    <Trans i18nKey="flows:passwordRecovery.steps.end.description">
+                        The <strong>End Screen</strong> defines what happens once the password recovery flow is completed. It allows you to control the user&apos;s final experience by selecting one of the following outcomes:
                     </Trans>
                 </Alert>
             </Typography>
-            { metadata?.supportedFlowCompletionConfigs?.includes("isEmailVerificationEnabled") && (
-               <>
-                    <FormControlLabel
-                        label={ t("flows:registrationFlow.steps.end.accountVerification.label") }
-                        control={
-                            <Checkbox
-                                checked={ configs?.isEmailVerificationEnabled === "true" }
-                                onChange={(event) => {
-                                    const newConfigs: Record<string, unknown> = {
-                                        ...configs,
-                                        isEmailVerificationEnabled: event.target.checked ? "true" : "false"
-                                    };
-
-                                    // If email verification is disabled, auto-login should also be disabled
-                                    if (!event.target.checked) {
-                                        newConfigs.isAutoLoginEnabled = "false";
-                                    }
-
-                                    setFlowCompletionConfigs(newConfigs);
-                                }}
-                            />
-                        }
-                    />
-                    <FormHelperText>{ t("flows:registrationFlow.steps.end.accountVerification.hint") }</FormHelperText>
-               </> 
-            ) }
-            { metadata?.supportedFlowCompletionConfigs?.includes("isAccountLockOnCreationEnabled") && (
-                <Box sx={{ display: 'flex', flexDirection: 'column', ml: 3 }}>
-                    <FormControlLabel
-                        label={ t("flows:registrationFlow.steps.end.accountActivation.activateImmediately.label") }
-                        control={
-                            <Checkbox
-                                checked={ configs?.isAccountLockOnCreationEnabled === "false" }
-                                onChange={(event) => {
-                                    const newConfigs: Record<string, unknown> = {
-                                        ...configs,
-                                        isAccountLockOnCreationEnabled: event.target.checked ? "false" : "true"
-                                    };
-
-                                    // If account is set to be locked on creation, auto-login should be disabled
-                                    if (!event.target.checked) {
-                                        newConfigs.isAutoLoginEnabled = "false";
-                                    }
-
-                                    setFlowCompletionConfigs(newConfigs);
-                                }}
-                            />
-                        }
-                    />
-                    <FormHelperText>{ t("flows:registrationFlow.steps.end.accountActivation.activateImmediately.hint") }</FormHelperText>
-                </Box>
-            ) }
             { metadata?.supportedFlowCompletionConfigs?.includes("isAutoLoginEnabled") && (
                 <>
                     <FormControlLabel
-                        label={ t("flows:registrationFlow.steps.end.autoLogin.label") }
+                        label={ t("flows:passwordRecovery.steps.end.autoLogin.label") }
                         control={
                             <Checkbox
                                 checked={ configs?.isAutoLoginEnabled === "true" }
-                                disabled={
-                                    configs?.isEmailVerificationEnabled !== "true" ||
-                                    configs?.isAccountLockOnCreationEnabled !== "false"
-                                }
                                 onChange={(event) => {
                                     setFlowCompletionConfigs({
                                         ...configs,
@@ -135,13 +78,13 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                             />
                         }
                     />
-                    <FormHelperText>{ t("flows:registrationFlow.steps.end.autoLogin.hint") }</FormHelperText>
+                    <FormHelperText>{ t("flows:passwordRecovery.steps.end.autoLogin.hint") }</FormHelperText>
                 </>
             ) }
             { metadata?.supportedFlowCompletionConfigs?.includes("isFlowCompletionNotificationEnabled") && (
                 <>
                     <FormControlLabel
-                        label={ t("flows:registrationFlow.steps.end.accountFlowCompletion.label") }
+                        label={ t("flows:passwordRecovery.steps.end.flowCompletionNotification.label") }
                         control={
                             <Checkbox
                                 checked={ configs?.isFlowCompletionNotificationEnabled === "true" }
@@ -154,7 +97,7 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                             />
                         }
                     />
-                    <FormHelperText>{ t("flows:registrationFlow.steps.end.accountFlowCompletion.hint") }</FormHelperText>
+                    <FormHelperText>{ t("flows:passwordRecovery.steps.end.flowCompletionNotification.hint") }</FormHelperText>
                 </>
             ) }
         </Stack>

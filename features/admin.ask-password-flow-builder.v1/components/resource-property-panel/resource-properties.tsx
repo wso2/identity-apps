@@ -34,6 +34,7 @@ import RulesProperties from "./nodes/rules-properties";
 import ResourcePropertyFactory from "./resource-property-factory";
 import FederationProperties from "./steps/execution/federation-properties";
 import AskPasswordFlowBuilderConstants from "../../constants/ask-password-flow-builder-constants";
+import FlowCompletionProperties from "./steps/end/flow-completion-properties";
 
 /**
  * Props interface of {@link ResourceProperties}
@@ -108,6 +109,19 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
     };
 
     switch (resource.category) {
+        case StepCategories.Interface:
+            if (resource.type === StepTypes.End) {
+                return (
+                    <>
+                        { renderElementId() }
+                        <FlowCompletionProperties
+                            resource={ resource }
+                            data-componentid="flow-completion-properties"
+                            onChange={ onChange }
+                        />
+                    </>
+                );
+            }
         case ElementCategories.Field:
             return (
                 <>

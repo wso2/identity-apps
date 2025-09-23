@@ -24,6 +24,29 @@ export const flows: flowsNS = {
             title: "Construct your ideal invited user registration experience with our new <1>Invited User Registration Flow Builder</1>"
         },
         flowDisplayName: "Invited User Registration",
+        steps: {
+            end: {
+                description: "The <1>End Screen</1> defines what happens once the invited user registration flow is completed. It allows you to control the user&apos;s final experience by selecting one of the following outcomes:",
+                accountVerification: {
+                    label: "Verify the account on flow completion",
+                    hint: "Require the user to confirm their account via email before granting access."
+                },
+                accountActivation: {
+                    activateImmediately: {
+                        label: "Activate the account on creation",
+                        hint: "Automatically activate the user account upon creation, allowing immediate access without waiting for verification."
+                    }
+                },
+                flowCompletionNotification: {
+                    label: "Send a notification email on flow completion",
+                    hint: "Notify the user via email once the flow is successfully completed."
+                },
+                autoLogin: {
+                    label: "Auto Login",
+                    hint: "Immediately log the user in once the flow is completed, without additional steps."
+                }
+            }
+        },
         tooltip: {
             disableFlow: "Click to disable the invited user registration flow",
             enableFlow: "Click to enable the invited user registration flow"
@@ -242,6 +265,19 @@ export const flows: flowsNS = {
         },
         flowDisplayName: "Password Recovery",
         name: "Password Recovery Flow Builder",
+        steps: {
+            end: {
+                description: "The <1>End Screen</1> defines what happens once the password recovery flow is completed. It allows you to control the user&apos;s final experience by selecting one of the following outcomes:",
+                autoLogin: {
+                    label: "Auto Login",
+                    hint: "Immediately log the user in once the password recovery is completed, without additional steps."
+                },
+                flowCompletionNotification: {
+                    label: "Send a notification email on flow completion",
+                    hint: "Notify the user via email once the password recovery flow is successfully completed."
+                }
+            }
+        },
         tooltip: {
             disableFlow: "Click to disable the password recovery flow",
             enableFlow: "Click to enable the password recovery flow"

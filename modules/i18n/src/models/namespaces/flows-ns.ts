@@ -23,6 +23,29 @@ export interface flowsNS {
             title: string;
         };
         flowDisplayName: string;
+        steps: {
+            end: {
+                description: string;
+                accountVerification: {
+                    label: string;
+                    hint: string;
+                };
+                accountActivation: {
+                    activateImmediately: {
+                        label: string;
+                        hint: string;
+                    };
+                };
+                flowCompletionNotification: {
+                    label: string;
+                    hint: string;
+                };
+                autoLogin: {
+                    label: string;
+                    hint: string;
+                };
+            };
+        };
         tooltip: {
             disableFlow: string;
             enableFlow: string;
@@ -241,6 +264,19 @@ export interface flowsNS {
         };
         flowDisplayName: string;
         name: string;
+        steps: {
+            end: {
+                description: string;
+                autoLogin: {
+                    label: string;
+                    hint: string;
+                };
+                flowCompletionNotification: {
+                    label: string;
+                    hint: string;
+                };
+            };
+        };
         tooltip: {
             disableFlow: string;
             enableFlow: string;
