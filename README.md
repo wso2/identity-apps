@@ -127,17 +127,21 @@ Clone or download the `identity-apps` repository and run the following commands 
 
 #### For Console & My Account
 
+Run the following command from the project root.
+
 ```shell
-# From project root.
 pnpm install && pnpm build
 ```
 
 #### For JSP apps (authentication portal, recovery portal, etc)
 
-```shell
-# From project root.
-cd identity-apps-core
+Navigate to `identiy-apps-core` directory.
 
+```shell
+cd identity-apps-core
+```
+
+```shell
 mvn clean install
 ```
 
@@ -147,20 +151,20 @@ To start the apps in development mode, execute the following commands accordingl
 
 #### Console
 
+From project root,
+
 ```shell
-# To start Console
-cd apps/console
-pnpm start
+cd apps/console && pnpm start
 ```
 
 Once the development server is up and running, you can access the application via [https://localhost:9001/console](https://localhost:9001/console).
 
 #### My Account
 
+From project root,
+
 ```shell
-# To start My Account
-cd apps/myaccount
-pnpm start
+cd apps/myaccount && pnpm start
 ```
 
 Once the development server is up and running, you can access the application via [https://localhost:9000/myaccount](https://localhost:9000/myaccount).
