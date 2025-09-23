@@ -1,5 +1,17 @@
 # @wso2is/admin.users.v1
 
+## 2.36.25
+
+### Patch Changes
+
+- [#9182](https://github.com/wso2/identity-apps/pull/9182) [`ac6f68396e0bba0e0cebdd23e696b3e2367ca20c`](https://github.com/wso2/identity-apps/commit/ac6f68396e0bba0e0cebdd23e696b3e2367ca20c) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Update missing password policies when setting the password and fix the default password max length rendering issue.
+
+- Updated dependencies [[`ac6f68396e0bba0e0cebdd23e696b3e2367ca20c`](https://github.com/wso2/identity-apps/commit/ac6f68396e0bba0e0cebdd23e696b3e2367ca20c)]:
+  - @wso2is/admin.users.v1@2.36.25
+  - @wso2is/admin.core.v1@2.49.57
+  - @wso2is/admin.server-configurations.v1@2.35.71
+  - @wso2is/admin.roles.v2@2.27.219
+
 ## 2.36.24
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # @wso2is/admin.branding.v1
 
+## 2.32.6
+
+### Patch Changes
+
+- [#9172](https://github.com/wso2/identity-apps/pull/9172) [`077105aa97ef5b9a698f812b8e01456b262cadc4`](https://github.com/wso2/identity-apps/commit/077105aa97ef5b9a698f812b8e01456b262cadc4) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Change wording in new recovery portal URL hint under branding.
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.57
+  - @wso2is/admin.server-configurations.v1@2.35.71
+
 ## 2.32.5
 
 ### Patch Changes
