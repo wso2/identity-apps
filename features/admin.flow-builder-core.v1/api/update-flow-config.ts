@@ -36,7 +36,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  * @param payload - Request payload.
  * @returns Promise resolving to the response data.
  */
-const updateFlowConfig = (payload: FlowConfigInterface): Promise<AxiosResponse> => {
+const updateFlowConfig = (payload: Partial<FlowConfigInterface>): Promise<AxiosResponse> => {
     const requestConfig: RequestConfigInterface = {
         data: payload,
         method: HttpMethods.PATCH,
