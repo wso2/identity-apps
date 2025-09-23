@@ -250,7 +250,8 @@ export const getConfig = (ruleSet: ValidationConfInterface[], validator: string,
     });
 
     if (config?.length > 0) {
-        let properties: ValidationPropertyInterface[] = config[0].properties;
+        let properties: ValidationPropertyInterface[] = config.flatMap(
+            (conf: ValidationConfInterface) => conf.properties ?? []);
 
         properties = properties.filter((data: ValidationPropertyInterface) => data.key === attribute);
 
