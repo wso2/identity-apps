@@ -1,5 +1,21 @@
 # @wso2is/admin.core.v1
 
+## 2.49.56
+
+### Patch Changes
+
+- [#9180](https://github.com/wso2/identity-apps/pull/9180) [`3b25ebbeb85d2ed9ed743b76377e59822f4aa510`](https://github.com/wso2/identity-apps/commit/3b25ebbeb85d2ed9ed743b76377e59822f4aa510) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Update workflow request scopes for delete button
+
+* [#9171](https://github.com/wso2/identity-apps/pull/9171) [`3e0fcab9bba602cd00e39a231c73dd57b290a037`](https://github.com/wso2/identity-apps/commit/3e0fcab9bba602cd00e39a231c73dd57b290a037) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Handle flow feature and legacy feature enablement based on migrating and fresh users
+
+* Updated dependencies [[`3e0fcab9bba602cd00e39a231c73dd57b290a037`](https://github.com/wso2/identity-apps/commit/3e0fcab9bba602cd00e39a231c73dd57b290a037), [`a1e907e292d1940ca875f47a5882b547c96b4c2c`](https://github.com/wso2/identity-apps/commit/a1e907e292d1940ca875f47a5882b547c96b4c2c)]:
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.48
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.48
+  - @wso2is/admin.server-configurations.v1@2.35.70
+  - @wso2is/i18n@2.30.30
+  - @wso2is/admin.registration-flow-builder.v1@0.10.8
+  - @wso2is/admin.flow-builder-core.v1@0.10.48
+
 ## 2.49.55
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.30.30
+
+### Patch Changes
+
+- [#9171](https://github.com/wso2/identity-apps/pull/9171) [`3e0fcab9bba602cd00e39a231c73dd57b290a037`](https://github.com/wso2/identity-apps/commit/3e0fcab9bba602cd00e39a231c73dd57b290a037) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Handle flow feature and legacy feature enablement based on migrating and fresh users
+
 ## 2.30.29
 
 ### Patch Changes

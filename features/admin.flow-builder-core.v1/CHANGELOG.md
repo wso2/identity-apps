@@ -1,5 +1,14 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.10.48
+
+### Patch Changes
+
+- [#9164](https://github.com/wso2/identity-apps/pull/9164) [`a1e907e292d1940ca875f47a5882b547c96b4c2c`](https://github.com/wso2/identity-apps/commit/a1e907e292d1940ca875f47a5882b547c96b4c2c) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Remove unnecessary info from basic registration flow and add email OTP as a default step.
+
+- Updated dependencies [[`3b25ebbeb85d2ed9ed743b76377e59822f4aa510`](https://github.com/wso2/identity-apps/commit/3b25ebbeb85d2ed9ed743b76377e59822f4aa510), [`3e0fcab9bba602cd00e39a231c73dd57b290a037`](https://github.com/wso2/identity-apps/commit/3e0fcab9bba602cd00e39a231c73dd57b290a037)]:
+  - @wso2is/admin.core.v1@2.49.56
+
 ## 0.10.47
 
 ### Patch Changes
