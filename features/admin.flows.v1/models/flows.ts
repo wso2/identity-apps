@@ -29,7 +29,7 @@ export interface FlowListItemInterface {
 export interface FlowConfigInterface {
     flowType: FlowTypes;
     isEnabled: boolean;
-    isAutoLoginEnabled?: boolean;
+    flowCompletionConfigs: Record<string, unknown>;
 }
 
 export enum FlowTypes {

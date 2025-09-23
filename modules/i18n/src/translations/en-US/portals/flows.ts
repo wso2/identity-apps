@@ -249,8 +249,47 @@ export const flows: flowsNS = {
     },
     registrationFlow: {
         flowDisplayName: "Registration",
+        notifications: {
+            updateFlowConfig: {
+                genericError: {
+                    description: "Failed to update the registration flow completion configurations.",
+                    message: "Configuration Update Failure"
+                }
+            },
+            updateRegistrationFlow: {
+                genericError: {
+                    description: "Failed to update the registration flow.",
+                    message: "Flow Update Failure"
+                },
+                success: {
+                    description: "Registration flow updated successfully.",
+                    message: "Flow Updated Successfully"
+                }
+            }
+        },
         steps: {
-            emailConfirmation: "Email Confirmation"
+            emailConfirmation: "Email Confirmation",
+            end: {
+                description: "The <1>End Screen</1> defines what happens once the flow is completed. It allows you to control the user&apos;s final experience by selecting one of the following outcomes:",
+                accountVerification: {
+                    label: "Verify the account on flow completion",
+                    hint: "Require the user to confirm their account via email before granting access."
+                },
+                accountActivation: {
+                    activateImmediately: {
+                        label: "Activate the account on creation",
+                        hint: "Automatically activate the user account upon creation, allowing immediate access without waiting for verification."
+                    }
+                },
+                accountFlowCompletion: {
+                    label: "Send a notification email on flow completion",
+                    hint: "Notify the user via email once the flow is successfully completed."
+                },
+                autoLogin: {
+                    label: "Auto Login",
+                    hint: "Immediately log the user in once the flow is completed, without additional steps."
+                }
+            }
         },
         tooltip: {
             disableFlow: "Click to disable the registration flow",

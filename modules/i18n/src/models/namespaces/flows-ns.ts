@@ -248,8 +248,47 @@ export interface flowsNS {
     };
     registrationFlow: {
         flowDisplayName: string;
+        notifications: {
+            updateFlowConfig: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+            updateRegistrationFlow: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+        };
         steps: {
             emailConfirmation: string;
+            end: {
+                description: string;
+                accountVerification: {
+                    label: string;
+                    hint: string;
+                };
+                accountActivation: {
+                    activateImmediately: {
+                        label: string;
+                        hint: string;
+                    };
+                };
+                accountFlowCompletion: {
+                    label: string;
+                    hint: string;
+                };
+                autoLogin: {
+                    label: string;
+                    hint: string;
+                };
+            };
         };
         tooltip: {
             disableFlow: string;

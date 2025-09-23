@@ -81,9 +81,15 @@ const End: FunctionComponent<EndPropsInterface> = memo(
                 deletable={ false }
                 configurable={ true }
                 data-componentid={ componentId }
-                onConfigure={ () => {
+                onConfigure={ (): void => {
                     setLastInteractedStepId(stepId);
-                    setLastInteractedResource(resource);
+                    setLastInteractedResource({
+                        ...resource,
+                        config: {
+                            ...(resource?.config || {}),
+                            ...((typeof data?.config === "object" && data?.config !== null) ? data.config : {})
+                        }
+                    });
                 } }
             />
         );

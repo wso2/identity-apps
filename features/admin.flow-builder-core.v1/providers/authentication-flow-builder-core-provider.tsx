@@ -108,6 +108,7 @@ const AuthenticationFlowBuilderCoreProvider = ({
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Claim[] }>({});
     const [ language, setLanguage ] = useState<string>(I18nConstants.DEFAULT_FALLBACK_LANGUAGE);
     const [ isI18nSubmitting, setIsI18nSubmitting ] = useState<boolean>(false);
+    const [ flowCompletionConfigs, setFlowCompletionConfigs ] = useState<Record<string, unknown>>({});
 
     const {
         data: flowMetadata,
@@ -330,6 +331,8 @@ const AuthenticationFlowBuilderCoreProvider = ({
                 value={ {
                     ElementFactory,
                     ResourceProperties,
+                    flowCompletionConfigs,
+                    setFlowCompletionConfigs,
                     i18nText,
                     i18nTextLoading: textPreferenceLoading ||
                         fallbackTextPreferenceLoading ||

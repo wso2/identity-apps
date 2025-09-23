@@ -18,12 +18,15 @@
 
 import AuthenticationFlowBuilderCoreProvider
     from "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
+import updateFlowConfig from "@wso2is/admin.flow-builder-core.v1/api/update-flow-config";
+import useAuthenticationFlowBuilderCore from "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { PreviewScreenType } from "@wso2is/common.branding.v1/models/branding-preferences";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useReactFlow } from "@xyflow/react";
 import React, { FC, PropsWithChildren, ReactElement, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import configureRegistrationFlow from "../api/configure-registration-flow";
@@ -34,6 +37,7 @@ import RegistrationFlowConstants from "../constants/registration-flow-constants"
 import RegistrationFlowBuilderContext from "../context/registration-flow-builder-context";
 import { Attribute } from "../models/attributes";
 import transformFlow from "../utils/transform-flow";
+import isEmpty from "lodash-es/isEmpty";
 
 /**
  * Props interface of {@link RegistrationFlowBuilderProvider}
@@ -80,9 +84,11 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
     children
 }: PropsWithChildren<RegistrationFlowBuilderProviderProps>): ReactElement => {
     const dispatch: Dispatch = useDispatch();
+    const { t } = useTranslation();
 
     const { toObject } = useReactFlow();
     const { data: supportedAttributes } = useGetSupportedProfileAttributes();
+    const { flowCompletionConfigs } = useAuthenticationFlowBuilderCore();
 
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Attribute[] }>({});
     const [ isPublishing, setIsPublishing ] = useState<boolean>(false);
@@ -91,6 +97,23 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
         setIsPublishing(true);
 
         const flow: any = toObject();
+
+        if (!isEmpty(flowCompletionConfigs)) {
+            try {
+                await updateFlowConfig({
+                    flowType: FlowTypes.REGISTRATION,
+                    flowCompletionConfigs
+                });
+            } catch (error) {
+                dispatch(
+                    addAlert({
+                        description: t("flows:core.notifications.updateFlowConfig.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("flows:core.notifications.updateFlowConfig.genericError.message")
+                    })
+                );
+            }
+        }
 
         try {
             const registrationFlow: any = transformFlow(flow) as any;
@@ -101,9 +124,9 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
 
             dispatch(
                 addAlert({
-                    description: "Registration flow updated successfully.",
+                    description: t("flows:registrationFlow.notifications.updateRegistrationFlow.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Flow Updated Successfully"
+                    message: t("flows:registrationFlow.notifications.updateRegistrationFlow.success.message")
                 })
             );
 
@@ -111,9 +134,9 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
         } catch (error) {
             dispatch(
                 addAlert({
-                    description: "Failed to update the registration flow.",
+                    description: t("flows:registrationFlow.notifications.updateRegistrationFlow.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: "Flow Update Failure"
+                    message: t("flows:registrationFlow.notifications.updateRegistrationFlow.genericError.message")
                 })
             );
 

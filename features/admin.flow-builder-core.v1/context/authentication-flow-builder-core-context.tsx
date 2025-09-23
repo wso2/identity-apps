@@ -154,6 +154,14 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      */
     isBrandingEnabled?: boolean;
     /**
+     * Flow completion configurations.
+     */
+    flowCompletionConfigs: Record<string, unknown>;
+    /**
+     * Set the flow completion configurations.
+     */
+    setFlowCompletionConfigs: Dispatch<SetStateAction<Record<string, unknown>>>;
+    /**
      * Indicates whether the flow metadata is still loading.
      */
     isFlowMetadataLoading?: boolean;
@@ -190,6 +198,8 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
         setLastInteractedStepId: () => {},
         setResourcePropertiesPanelHeading: () => {},
         setSelectedAttributes: () => {},
+        flowCompletionConfigs: {},
+        setFlowCompletionConfigs: () => {},
         supportedLocales: {}
     }
 );

@@ -75,6 +75,8 @@ import useGenerateRegistrationFlow, {
     UseGenerateRegistrationFlowFunction
 } from "../hooks/use-generate-registration-flow";
 import { RegistrationStaticStepTypes } from "../models/flow";
+import useAuthenticationFlowBuilderCore from
+    "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
 
 /**
  * Props interface of {@link RegistrationFlowBuilderCore}
@@ -101,6 +103,8 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+    
+    const { setFlowCompletionConfigs } = useAuthenticationFlowBuilderCore();
 
     const {
         flowGenerationCompleted,
@@ -269,6 +273,12 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         const processedSteps: Step[] = resolveStepMetadata(resources, generateIdsForResources<Node[]>([
             START_STEP,
             ...steps.map((step: Node) => {
+                if (step.type === StepTypes.End) {
+                    if ((step as Step)?.config) {
+                        setFlowCompletionConfigs((step as Step).config);
+                    }
+                }
+
                 return {
                     data:
                         (step.data?.components && {

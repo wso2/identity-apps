@@ -119,7 +119,6 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
                             data-componentid="field-extended-properties"
                             onChange={ onChange }
                         />
-                        { renderElementPropertyFactory() }
                     </>
                 );
             }
