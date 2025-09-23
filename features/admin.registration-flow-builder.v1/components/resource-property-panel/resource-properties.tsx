@@ -34,7 +34,7 @@ import RulesProperties from "./nodes/rules-properties";
 import ResourcePropertyFactory from "./resource-property-factory";
 import FederationProperties from "./steps/execution/federation-properties";
 import RegistrationFlowBuilderConstants from "../../constants/registration-flow-builder-constants";
-import UserOnboardingProperties from "./steps/end/user-onboarding-properties";
+import FlowCompletionProperties from "./steps/end/flow-completion-properties";
 
 /**
  * Props interface of {@link ResourceProperties}
@@ -114,7 +114,7 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
                 return (
                     <>
                         { renderElementId() }
-                        <UserOnboardingProperties
+                        <FlowCompletionProperties
                             resource={ resource }
                             data-componentid="field-extended-properties"
                             onChange={ onChange }

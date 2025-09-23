@@ -34,22 +34,22 @@ import useAuthenticationFlowBuilderCore from
 import isEmpty from "lodash-es/isEmpty";
 
 /**
- * Props interface of {@link UserOnboardingProperties}
+ * Props interface of {@link FlowCompletionProperties}
  */
-export type UserOnboardingPropertiesPropsInterface = CommonResourcePropertiesPropsInterface &
+export type FlowCompletionPropertiesPropsInterface = CommonResourcePropertiesPropsInterface &
     IdentifiableComponentInterface;
 
 /**
- * User Onboarding widget properties component.
+ * Flow completion step properties component.
  *
  * @param props - Props injected to the component.
- * @returns UserOnboardingProperties component.
+ * @returns FlowCompletionProperties component.
  */
-const UserOnboardingProperties: FunctionComponent<UserOnboardingPropertiesPropsInterface> = ({
+const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsInterface> = ({
     resource,
-    ["data-componentid"]: componentId = "user-onboarding-properties-component",
+    ["data-componentid"]: componentId = "flow-completion-properties-component",
     onChange
-}: UserOnboardingPropertiesPropsInterface): ReactElement => {
+}: FlowCompletionPropertiesPropsInterface): ReactElement => {
     const { t } = useTranslation();
     const { flowCompletionConfigs, setFlowCompletionConfigs } = useAuthenticationFlowBuilderCore();
     const { data: registrationFlowConfig } = useGetFlowConfig(FlowTypes.REGISTRATION);
@@ -149,4 +149,4 @@ const UserOnboardingProperties: FunctionComponent<UserOnboardingPropertiesPropsI
     );
 };
 
-export default UserOnboardingProperties;
+export default FlowCompletionProperties;
