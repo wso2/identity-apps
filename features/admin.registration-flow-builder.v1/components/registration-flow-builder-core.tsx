@@ -257,26 +257,6 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         );
     };
 
-    const getBasicTemplateComponents = (): Element[] => {
-        const basicTemplate: Template = cloneDeep(
-            templates.find((template: Template) => template.type === TemplateTypes.Basic)
-        );
-
-        generateProfileAttributes(basicTemplate);
-
-        if (basicTemplate?.config?.data?.steps?.length > 0) {
-            basicTemplate.config.data.steps[0].id = INITIAL_FLOW_START_STEP_ID;
-        }
-
-        return resolveComponentMetadata(
-            resources,
-            generateIdsForResources<Template>(basicTemplate)?.config?.data?.steps[0]?.data?.components
-        );
-    };
-
-    const initialTemplateComponents: Element[] = useMemo(
-        () => getBasicTemplateComponents(), [ resources, generateProfileAttributes ]);
-
     const generateSteps: (steps: Node[]) => Node[] = useCallback((steps: Node[]): Node[] => {
         const START_STEP: Node = {
             data: {
@@ -547,26 +527,64 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         return edges;
     };
 
-    const initialNodes: Node[] = useMemo<Node[]>(() => {
-        return generateSteps([
-            {
-                data: {
-                    components: initialTemplateComponents
-                },
-                deletable: true,
-                id: INITIAL_FLOW_VIEW_STEP_ID,
-                position: { x: 0, y: 330 },
-                type: StepTypes.View
-            },
-            {
-                data: {},
-                deletable: false,
-                id: INITIAL_FLOW_USER_ONBOARD_STEP_ID,
-                position: { x: 500, y: 408 },
-                type: StaticStepTypes.UserOnboard
+    const getBasicTemplateStepsWithoutOnBoardingStep: () => Step[] = useCallback(() => {
+        const basicTemplate: Template = cloneDeep(
+            templates.find((template: Template) => template.type === TemplateTypes.Basic)
+        );
+
+        const templateSteps: Step[] = basicTemplate?.config?.data?.steps ?? [];
+
+        if (templateSteps.length === 0) {
+            return [];
+        }
+
+        // Normalize the Start step ID for consistency.
+        if (templateSteps[0]) {
+            templateSteps[0].id = INITIAL_FLOW_START_STEP_ID;
+        }
+
+        // Drop the last step from the template.
+        const stepsWithoutLast: Step[] = templateSteps.slice(0, -1);
+
+        // Resolve IDs and metadata for downstream usage.
+        const withIds: Step[] = generateIdsForResources<Step[]>(stepsWithoutLast) as unknown as Step[];
+
+        const withResolvedComponents: Step[] = withIds.map((s: Step) => {
+            if (s?.data?.components) {
+                return {
+                    ...s,
+                    data: {
+                        ...s.data,
+                        components: resolveComponentMetadata(resources, s.data.components as any)
+                    }
+                };
             }
-        ]);
-    }, [ initialTemplateComponents, generateSteps ]);
+
+            return s;
+        });
+
+        return resolveStepMetadata(resources, withResolvedComponents) as Step[];
+    }, [ templates, resources ]);
+
+    const initialNodes: Node[] = useMemo<Node[]>(() => {
+        // Try to seed from Basic template (without the last step).
+        const basicSteps: Step[] = getBasicTemplateStepsWithoutOnBoardingStep();
+
+        if (basicSteps.length > 0) {
+            const seedNodes: Node[] = [
+                ...basicSteps,
+                {
+                    data: {},
+                    deletable: false,
+                    id: INITIAL_FLOW_USER_ONBOARD_STEP_ID,
+                    position: { x: 1200, y: 408 },
+                    type: StaticStepTypes.UserOnboard
+                }
+            ];
+
+            return generateSteps(seedNodes);
+        }
+    }, [ getBasicTemplateStepsWithoutOnBoardingStep, generateSteps ]);
 
     const [ nodes, setNodes, onNodesChange ] = useNodesState([]);
     const [ edges, setEdges, onEdgesChange ] = useEdgesState([]);
