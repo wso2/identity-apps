@@ -20,7 +20,7 @@ import RegistrationFlowBuilder from "../components/registration-flow-builder";
 import RegistrationFlowBuilderProvider from "../providers/registration-flow-builder-provider";
 import FlowBuilderPage from "@wso2is/admin.flow-builder-core.v1/components/flow-builder-page-skeleton/flow-builder-page";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { useTranslation } from "react-i18next";
 import useRegistrationFlowBuilder from "../hooks/use-registration-flow-builder";
@@ -28,7 +28,33 @@ import useRegistrationFlowBuilder from "../hooks/use-registration-flow-builder";
 /**
  * Props interface of {@link RegistrationFlowBuilderPage}
  */
-export type RegistrationFlowBuilderPageProps = IdentifiableComponentInterface;
+export type RegistrationFlowBuilderPageProps = IdentifiableComponentInterface & PropsWithChildren;
+
+/**
+ * Wraps the `RegistrationFlowBuilderPage` with the required context providers.
+ *
+ * @param props - Props injected to the component.
+ * @returns PageWithContext component.
+ */
+const RegistrationFlowBuilderPageWithContext: FunctionComponent<RegistrationFlowBuilderPageProps> = ({
+    ["data-componentid"]: componentId,
+    children
+}: RegistrationFlowBuilderPageProps): ReactElement => {
+    const { t } = useTranslation();
+    const { isPublishing, onPublish } = useRegistrationFlowBuilder();
+
+    return (
+        <FlowBuilderPage
+            data-componentid={ componentId }
+            flowType={ FlowTypes.REGISTRATION }
+            flowTypeDisplayName={ t("flows:registrationFlow.flowDisplayName") }
+            isPublishing={ isPublishing }
+            onPublish={ onPublish }
+        >
+            { children }
+        </FlowBuilderPage>
+    );
+};
 
 /**
  * Landing page for the Registration Flow Builder.
@@ -38,23 +64,12 @@ export type RegistrationFlowBuilderPageProps = IdentifiableComponentInterface;
  */
 const RegistrationFlowBuilderPage: FunctionComponent<RegistrationFlowBuilderPageProps> = ({
     ["data-componentid"]: componentId = "registration-flow-builder-page"
-}: RegistrationFlowBuilderPageProps): ReactElement => {
-    const { t } = useTranslation();
-    const { isPublishing, onPublish } = useRegistrationFlowBuilder();
-
-    return (
-        <RegistrationFlowBuilderProvider>
-            <FlowBuilderPage
-                data-componentid={ componentId }
-                flowType={ FlowTypes.REGISTRATION }
-                flowTypeDisplayName={ t("flows:registrationFlow.flowDisplayName") }
-                isPublishing={ isPublishing }
-                onPublish={ onPublish }
-            >
-                <RegistrationFlowBuilder />
-            </FlowBuilderPage>
-        </RegistrationFlowBuilderProvider>
-    );
-};
+}: RegistrationFlowBuilderPageProps): ReactElement => (
+    <RegistrationFlowBuilderProvider>
+        <RegistrationFlowBuilderPageWithContext data-componentid={ componentId }>
+            <RegistrationFlowBuilder />
+        </RegistrationFlowBuilderPageWithContext>
+    </RegistrationFlowBuilderProvider>
+);
 
 export default RegistrationFlowBuilderPage;
