@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.3.8
+
+### Patch Changes
+
+- [#9186](https://github.com/wso2/identity-apps/pull/9186) [`8915b01b4436ab382159d34416e8eebf8932c2ce`](https://github.com/wso2/identity-apps/commit/8915b01b4436ab382159d34416e8eebf8932c2ce) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Fix accounts portal URL resolving in organizations
+
 ## 3.3.7
 
 ### Patch Changes
