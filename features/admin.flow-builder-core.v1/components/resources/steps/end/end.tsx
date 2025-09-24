@@ -65,9 +65,9 @@ const End: FunctionComponent<EndPropsInterface> = memo(
          * @returns Array of allowed component types for the end node droppable area.
          */
         const getAllowedTypes = (): string[] => {
-            const defaultAllowedTypes: string[] = VisualFlowConstants.FLOW_BUILDER_VIEW_ALLOWED_RESOURCE_TYPES;
+            const allowedTypes: string[] = VisualFlowConstants.FLOW_BUILDER_FLOW_COMPLETION_VIEW_ALLOWED_RESOURCE_TYPES;
 
-            return defaultAllowedTypes.filter((type: string) => !restrictedComponentTypes.includes(type));
+            return allowedTypes.filter((type: string) => !restrictedComponentTypes.includes(type));
         };
 
         return (
