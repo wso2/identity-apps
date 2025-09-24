@@ -1243,6 +1243,7 @@ export const myAccount: MyAccountNS = {
                             popup: "Contact the administrator to update your {{fieldName}}"
                         },
                         validations: {
+                            duplicate: "{{fieldName}} can not have duplicate values",
                             empty: "{{fieldName}} is a required field",
                             invalidFormat: "The format of the {{fieldName}} entered is incorrect"
                         }

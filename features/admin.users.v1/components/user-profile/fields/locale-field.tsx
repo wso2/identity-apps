@@ -52,6 +52,7 @@ const LocaleField: FunctionComponent<LocaleFieldPropsInterface> = ({
     isReadOnly,
     isRequired,
     validator,
+    validateFields,
     ["data-componentid"]: componentId = "locale-field"
 }: LocaleFieldPropsInterface): ReactElement => {
     const { t } = useTranslation();
@@ -98,6 +99,7 @@ const LocaleField: FunctionComponent<LocaleFieldPropsInterface> = ({
                 { fieldName: fieldLabel })
             }
             validator={ validator }
+            validateFields={ validateFields }
             options={ supportedI18nLanguagesArray?.map(
                 ({ key, flag, text: countryName, value }: LocaleListItemInterface) => {
                     return {

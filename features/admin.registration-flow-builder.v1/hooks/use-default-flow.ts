@@ -176,7 +176,7 @@ const useDefaultFlow = (): DefaultFlowReturnType => {
      * @returns True.
      */
     const generateProfileAttributes: (resource: Resource) => boolean = useCallback((resource: Resource): boolean => {
-        if (resource.type === TemplateTypes.Basic) {
+        if (resource.type === TemplateTypes.Default) {
             const formComponents: Element[] = resource.config.data.steps[0].data.components[1].components;
 
             const emailClaim: Claim = claims?.find((claim: Claim) => claim.claimURI === EMAIL_CLAIM_URI);

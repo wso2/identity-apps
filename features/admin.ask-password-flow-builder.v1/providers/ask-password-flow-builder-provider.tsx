@@ -21,10 +21,11 @@ import AuthenticationFlowBuilderCoreProvider
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useReactFlow } from "@xyflow/react";
-import React, { FC, PropsWithChildren, ReactElement, useState } from "react";
+import React, { FC, PropsWithChildren, ReactElement, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { FlowTypes } from "../../admin.flows.v1/models/flows";
+import { PreviewScreenType } from "../../common.branding.v1/models";
 import configureAskPasswordFlow from "../api/configure-ask-password-flow";
 import updateNewAskPasswordPortalFeatureStatus from "../api/update-new-ask-password-portal-feature-status";
 import useGetSupportedProfileAttributes from "../api/use-get-supported-profile-attributes";
@@ -49,15 +50,27 @@ export type AskPasswordFlowBuilderProviderProps = PropsWithChildren<unknown>;
  */
 const AskPasswordFlowBuilderProvider: FC<AskPasswordFlowBuilderProviderProps> = ({
     children
-}: PropsWithChildren<AskPasswordFlowBuilderProviderProps>): ReactElement => (
-    <AuthenticationFlowBuilderCoreProvider
-        ElementFactory={ ElementFactory }
-        ResourceProperties={ ResourceProperties }
-        flowType={ FlowTypes.INVITED_USER_REGISTRATION }
-    >
-        <FlowContextWrapper>{ children }</FlowContextWrapper>
-    </AuthenticationFlowBuilderCoreProvider>
-);
+}: PropsWithChildren<AskPasswordFlowBuilderProviderProps>): ReactElement => {
+
+    const screensList: PreviewScreenType[] = useMemo(() => ([
+        PreviewScreenType.SIGN_UP,
+        PreviewScreenType.COMMON,
+        PreviewScreenType.EMAIL_LINK_EXPIRY,
+        PreviewScreenType.SMS_OTP,
+        PreviewScreenType.EMAIL_OTP
+    ]), []);
+
+    return (
+        <AuthenticationFlowBuilderCoreProvider
+            ElementFactory={ ElementFactory }
+            ResourceProperties={ ResourceProperties }
+            flowType={ FlowTypes.INVITED_USER_REGISTRATION }
+            screenTypes={ screensList }
+        >
+            <FlowContextWrapper>{ children }</FlowContextWrapper>
+        </AuthenticationFlowBuilderCoreProvider>
+    );
+};
 
 /**
  * This component wraps the flow context and provides necessary functions and state.
@@ -110,7 +123,7 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
 
             dispatch(
                 addAlert({
-                    description: "Invite user registration flow updated successfully.",
+                    description: "Invited user registration flow updated successfully.",
                     level: AlertLevels.SUCCESS,
                     message: "Flow Updated Successfully"
                 })
@@ -120,7 +133,7 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
         } catch (error) {
             dispatch(
                 addAlert({
-                    description: "Failed to update the invite user registration flow.",
+                    description: "Failed to update the invited user registration flow.",
                     level: AlertLevels.ERROR,
                     message: "Flow Update Failure"
                 })

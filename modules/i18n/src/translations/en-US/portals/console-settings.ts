@@ -68,6 +68,7 @@ export const consoleSettings: ConsoleSettingsNS = {
     },
     sharedAccess: {
         description: "Select the following options to share the application roles with the organizations.",
+        sharingRolesTakeTimeMessage: "Sharing roles may take sometime to reflect across the organization.",
         selectRolesForOrganization: "Select roles for organization",
         organizations: "Organizations",
         availableRoles: "Available Roles",

@@ -24,6 +24,7 @@ import {  AppState  } from "@wso2is/admin.core.v1/store";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/server-configuration";
 import RegistrationFlowBuilderBanner
     from "@wso2is/admin.registration-flow-builder.v1/components/registration-flow-builder-banner";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -55,6 +56,7 @@ import {
     revertGovernanceConnectorProperties,
     updateGovernanceConnector
 } from "../api/governance-connectors";
+import { GovernanceConnectorConstants, GovernanceConnectorFeatureDictionaryKeys } from "../constants";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import { ConnectorFormFactory } from "../forms";
 import {
@@ -95,6 +97,9 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
         (state: AppState) => state?.config?.ui?.features?.applications);
     const registrationFlowBuilderFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.registrationFlowBuilder);
+    const governanceConnectorsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.governanceConnectors
+    );
 
     const [ isConnectorRequestLoading, setConnectorRequestLoading ] = useState<boolean>(false);
     const [ connector, setConnector ] = useState<GovernanceConnectorInterface>(undefined);
@@ -111,6 +116,13 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
         = useRequiredScopes(registrationFlowBuilderFeatureConfig?.scopes?.read);
     const path: string[] = history.location.pathname.split("/");
     const type: string = path[ path.length - 3 ];
+
+    const showInvitedUserRegistrationToggle: boolean = isFeatureEnabled(
+        governanceConnectorsFeatureConfig,
+        GovernanceConnectorConstants.featureDictionary[
+            GovernanceConnectorFeatureDictionaryKeys.HIDE_INVITED_USER_REGISTRATION_TOGGLE
+        ]
+    );
 
     useEffect(() => {
         // If Governance Connector update permission is not available, prevent from trying to load the connectors.
@@ -498,7 +510,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             case ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID:
                 return "Alternative Login Identifiers";
             case ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID:
-                return "Invite User to Set Password";
+                return t("extensions:manage.serverConfigurations.userOnboarding.inviteUserToSetPassword.heading");
             case ServerConfigurationsConstants.SIFT_CONNECTOR_ID:
                 return "Fraud Detection";
             default:
@@ -675,6 +687,11 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
 
         if (connectorId === ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID) {
             ssoLoginConnectorId = true;
+        }
+
+        if (connectorId === ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID &&
+            !showInvitedUserRegistrationToggle) {
+            return <></>;
         }
 
         return (

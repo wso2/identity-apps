@@ -84,6 +84,15 @@ export const common: CommonNS = {
                 }
             }
         },
+        operationTypes: {
+            "addRole": "添加角色",
+            "addUser": "添加用户",
+            "all": "所有操作",
+            "deleteRole": "删除角色",
+            "deleteUser": "删除用户",
+            "selfRegisterUser": "用户自助注册",
+            "updateRolesOfUser": "更新角色用户"
+        },
         "placeholders": {
             "emptyApprovalFilter": {
                 "action": "查看全部",
@@ -114,11 +123,19 @@ export const common: CommonNS = {
             },
             "searchApprovals": "按工作流名称搜索"
         },
+        propertyMessages: {
+            assignedUsersDeleted: "分配的用户已被删除。",
+            roleDeleted: "角色已被删除。",
+            selfRegistration: "自助注册",
+            unassignedUsersDeleted: "未分配的用户已被删除。"
+        },
         "subTitle": "查看需要您批准的操作任务",
         "title": "批准"
     },
     "approve": "批准",
+    "approved": "已批准",
     "apps": "应用",
+    "assignYourself": "分配给自己",
     "assignee": "受让人",
     "assignees": "受让人",
     "asyncOperationErrorMessage": {
@@ -139,7 +156,6 @@ export const common: CommonNS = {
         "heading": "出了些问题",
         "primaryActionText": "重新加载应用程序"
     },
-    "claim": "宣称",
     "clear": "清除",
     "clientId": "客户 ID",
     "close": "关闭",
@@ -217,11 +233,14 @@ export const common: CommonNS = {
     "new": "新的",
     "next": "下一个",
     "noResultsFound": "未找到结果",
+    "none": "没有任何",
     "okay": "好的",
     "operatingSystem": "操作系统",
+    "operationType": "操作类型",
     "operations": "操作",
     "organizationName": "{{orgName}} 组织",
     "overview": "概述",
+    "pending": "待处理",
     "personalInfo": "个人信息",
     "pin": "别针",
     "pinned": "固定",
@@ -238,7 +257,7 @@ export const common: CommonNS = {
     "regenerate": "再生",
     "register": "登记",
     "reject": "拒绝",
-    "release": "发布",
+    "rejected": "已拒绝",
     "remove": "消除",
     "removeAll": "移除所有",
     "required": "这是必需的。",
@@ -276,6 +295,7 @@ export const common: CommonNS = {
     "terminateSession": "终止会话",
     "tooShort": "过短",
     "type": "类型",
+    "unassign": "取消分配",
     "unpin": "商品",
     "unpinned": "未损坏",
     "update": "更新",
@@ -283,6 +303,7 @@ export const common: CommonNS = {
     "verified": "已验证",
     "verify": "核实",
     "view": "看法",
+    "viewDetails": "查看详情",
     "weak": "虚弱的",
     "weakPassword": "密码强度至少应该很好。"
 };

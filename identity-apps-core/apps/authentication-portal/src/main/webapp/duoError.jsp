@@ -39,6 +39,7 @@
     String error = AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.error");
     String errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "something.went.wrong.during.authentication");
     String authenticationFailed = "false";
+    boolean isErrorFallbackLocale = !userLocale.toLanguageTag().equals("en_US");
 
     if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
         authenticationFailed = "true";
@@ -56,6 +57,8 @@
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.mobile.not.found");
             } else if (errorMessage.equalsIgnoreCase("number.mismatch")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.number.mismatch.duo");
+            } else if (isErrorFallbackLocale) {
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "something.went.wrong.during.authentication");
             }
         }
     }

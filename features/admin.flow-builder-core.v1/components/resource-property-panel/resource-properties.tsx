@@ -190,7 +190,7 @@ const ResourceProperties: FunctionComponent<Partial<CommonResourcePropertiesProp
                 <Stack gap={ 1 }>
                     { lastInteractedResource && (
                         <ResourceProperties
-                            resource={ cloneDeep(lastInteractedResource) }
+                            resource={ lastInteractedResource }
                             properties={ getFilteredProperties() }
                             onChange={ handlePropertyChange }
                             onVariantChange={ changeSelectedVariant }

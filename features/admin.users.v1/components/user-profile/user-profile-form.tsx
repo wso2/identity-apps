@@ -19,7 +19,10 @@
 import Button from "@oxygen-ui/react/Button";
 import Grid from "@oxygen-ui/react/Grid";
 import TextField from "@oxygen-ui/react/TextField";
-import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
+import {
+    ClaimFeatureDictionaryKeys,
+    ClaimManagementConstants
+} from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { commonConfig as commonExtensionConfig } from "@wso2is/admin.extensions.v1";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
@@ -50,6 +53,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import ProfileFormFieldRenderer from "./fields/form-field-renderer";
 import { updateUserInfo } from "../../api/users";
+import { UserFeatureDictionaryKeys, UserManagementConstants } from "../../constants";
 import { AccountConfigSettingsInterface, PatchUserOperationValue } from "../../models/user";
 import {
     getDisplayOrder,
@@ -124,6 +128,9 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
     const attributeDialectsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features?.attributeDialects
     );
+    const usersFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.users
+    );
 
     const [ isUpdating, setIsUpdating ] = useState<boolean>(false);
 
@@ -133,6 +140,20 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
     const isDistinctAttributeProfilesFeatureEnabled: boolean = isFeatureEnabled(
         attributeDialectsFeatureConfig,
         ClaimManagementConstants.DISTINCT_ATTRIBUTE_PROFILES_FEATURE_FLAG
+    );
+    const getUserIDFromSCIMUser: boolean = isFeatureEnabled(
+        attributeDialectsFeatureConfig,
+        ClaimManagementConstants.FEATURE_DICTIONARY.get(ClaimFeatureDictionaryKeys.HideUserIdDisplayConfigurations)
+    );
+
+    const hideReadonlyAttributesWhenEmpty: boolean = isFeatureEnabled(
+        usersFeatureConfig,
+        UserManagementConstants.FEATURE_DICTIONARY.get(UserFeatureDictionaryKeys.HideReadOnlyAttributesWhenEmpty)
+    );
+
+    const useDefaultLabelsAndOrder: boolean = isFeatureEnabled(
+        usersFeatureConfig,
+        UserManagementConstants.FEATURE_DICTIONARY.get(UserFeatureDictionaryKeys.UseDefaultLabelsAndOrder)
     );
 
     const oneTimePassword: string = profileData[ProfileConstants.SCIM2_SYSTEM_USER_SCHEMA]?.oneTimePassword;
@@ -145,7 +166,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
     const flattenedProfileSchema: ProfileSchemaInterface[] = useMemo(() => {
         const sortedSchemas: ProfileSchemaInterface[] = ProfileUtils.flattenSchemas([ ...profileSchemas ]).sort(
             (a: ProfileSchemaInterface, b: ProfileSchemaInterface) => {
-                return getDisplayOrder(a) - getDisplayOrder(b);
+                return getDisplayOrder(a, useDefaultLabelsAndOrder) - getDisplayOrder(b, useDefaultLabelsAndOrder);
             }
         );
 
@@ -690,13 +711,9 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                     }
                 }
             } else {
-                const isExtendedSchema: boolean = (profileData.schemas as string[]).includes(fieldName);
-                let decodedFieldName: string = fieldName;
-
-                if (isExtendedSchema) {
-                    // Replace back the __DOT__ with dots.
-                    decodedFieldName = fieldName.replace(/__DOT__/g, ".");
-                }
+                // Replace back the __DOT__ with dots.
+                const decodedFieldName: string = fieldName.replace(/__DOT__/g, ".");
+                const isExtendedSchema: boolean = (profileData.schemas as string[]).includes(decodedFieldName);
 
                 /**
                  * Following logics map the values from the form with the dirty fields and
@@ -728,13 +745,22 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                 // For each path, build and push a patch op:
                 attributePaths.forEach((path: string) => {
                     // Build the fullPath ex: "urn:scim:wso2:schema.country".
-                    const fullPath: string = `${decodedFieldName}.${path}`;
+                    const fullPath: string = `${fieldName}.${path}`;
                     // Grab the value at that path from the form values.
                     const leafValue: unknown = get(values, fullPath, "");
                     // Build { fieldName: { …nested… } }, e.g. { urn:…: { country: "Argentina" } }
                     const opValue: Record<string, any> = {};
 
                     set(opValue, fullPath, leafValue);
+
+                    // Since the field name is encoded with __DOT__,
+                    // we need to add the decoded field name to the opValue.
+                    // This is only for schema ID keys.
+                    // Ex: "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"
+                    if (isExtendedSchema && decodedFieldName !== fieldName) {
+                        opValue[decodedFieldName] = opValue[fieldName];
+                        delete opValue[fieldName];
+                    }
 
                     data.Operations.push({
                         op: "replace",
@@ -823,7 +849,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
 
         const attributeValue: unknown = extractAttributeValue(schema);
 
-        if (schema.type !== ClaimDataType.BOOLEAN && isEmpty(attributeValue)) {
+        if (schema.type?.toLowerCase() !== ClaimDataType.BOOLEAN.toLowerCase() && isEmpty(attributeValue)) {
             // If the profile UI is in read only mode, the empty field should not be displayed.
             if (isReadOnlyMode) {
                 return false;
@@ -832,9 +858,16 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
             const resolvedMutabilityValue: string = schema?.profiles?.console?.mutability ?? schema.mutability;
 
             // If the schema is read only, the empty field should not be displayed.
-            if (resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA) {
+            if (hideReadonlyAttributesWhenEmpty && resolvedMutabilityValue === ProfileConstants.READONLY_SCHEMA) {
                 return false;
             }
+        }
+
+        // If the attribute is a complex type, it should not be displayed.
+        if (schema.type?.toLowerCase() === ClaimDataType.COMPLEX.toLowerCase() &&
+            schema.schemaUri !== ProfileConstants.SCIM2_CORE_USER_SCHEMA_ATTRIBUTES.emails &&
+            schema.schemaUri !== ProfileConstants.SCIM2_CORE_USER_SCHEMA_ATTRIBUTES.mobile) {
+            return false;
         }
 
         return true;
@@ -854,7 +887,8 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                     >
                         <Grid container spacing={ 3 }>
 
-                            { profileData.id && (
+                            { profileData.id &&
+                            getUserIDFromSCIMUser && (
                                 <Grid xs={ 12 }>
                                     <FinalFormField
                                         key="userID"
@@ -888,6 +922,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                                                 isUpdating={ isUpdating }
                                                 setIsUpdating={ (isUpdating: boolean) => setIsUpdating(isUpdating) }
                                                 onUserUpdated={ onUserUpdated }
+                                                useDefaultLabelsAndOrder={ useDefaultLabelsAndOrder }
                                                 data-componentid={ `${componentId}-profile-form` }
                                             />
                                         </Grid>

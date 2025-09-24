@@ -184,10 +184,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
-    const isOrgHandleFeatureEnabled: boolean = isFeatureEnabled(
-        featureConfig.organizations,
-        "organizations.orgHandle"
-    );
+    const isOrgHandleFeatureEnabled: boolean = isFeatureEnabled(featureConfig.organizations, "organizationHandle");
 
     /**
      * Redirects to the organizations edit page when the edit button is clicked.
@@ -207,7 +204,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
      *
      * @param organizationId - Organization id.
      */
-    const handleOrganizationListItemClick = (organizationId: string): void => {
+    const handleOrganizationDetailsShow = (organizationId: string): void => {
         getOrganization(organizationId)
             .then((data: OrganizationResponseInterface) => {
                 setSelectedOrgDetails(data);
@@ -453,6 +450,14 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
         }
 
         return [
+            {
+                "data-componentid": `${ componentId }-item-view-details-button`,
+                icon: () => "info circle",
+                onClick: (e: SyntheticEvent, organization: OrganizationInterface): void =>
+                    handleOrganizationDetailsShow(organization?.id),
+                popupText: () => t("common:viewDetails"),
+                renderer: "semantic-icon"
+            },
             organizationConfigs.allowNavigationInDropdown && {
                 "data-componentid": `${ componentId }-item-go-to-organization-button`,
                 icon: (): SemanticICONS => {
@@ -607,7 +612,7 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
                 onRowClick={ (e: SyntheticEvent, organization: OrganizationInterface): void => {
                     organizationConfigs.allowNavigationInDropdown
                         ? onListItemClick && onListItemClick(e, organization)
-                        : handleOrganizationListItemClick(organization.id);
+                        : handleOrganizationEdit(organization.id);
                 }
                 }
                 placeholders={ showPlaceholders() }

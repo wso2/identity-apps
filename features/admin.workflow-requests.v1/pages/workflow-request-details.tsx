@@ -16,17 +16,22 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { getOperationTypeTranslationKey } from "@wso2is/common.workflow-approvals.v1/utils/approval-utils";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DangerZone, DangerZoneGroup, TabPageLayout } from "@wso2is/react-components";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Message, Modal, Table } from "semantic-ui-react";
 import { useGetWorkflowInstance } from "../api/use-get-workflow-instance";
 import { deleteWorkflowInstance } from "../api/workflow-requests";
+import { WorkflowInstanceStatus } from "../models/workflowRequests";
 import "./workflow-request-details.scss";
 
 const WorkflowRequestDetailsPage: React.FC = () => {
@@ -42,6 +47,12 @@ const WorkflowRequestDetailsPage: React.FC = () => {
         isLoading: loading,
         error: workflowInstanceError
     } = useGetWorkflowInstance(id, !!id);
+
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
+    const hasWorkflowInstanceDeletePermissions: boolean = useRequiredScopes(
+        featureConfig?.workflowInstances?.scopes?.delete
+    );
 
     useEffect(() => {
         if (workflowInstanceError) {
@@ -155,7 +166,8 @@ const WorkflowRequestDetailsPage: React.FC = () => {
             "arbitrary", "Arbitrary",
             "meta", "Meta",
             "links", "Links",
-            "schemas", "Schemas"
+            "schemas", "Schemas",
+            "Tenant Domain"
         ];
 
         const flattenObject = (obj: any, prefix: string = ""): void => {
@@ -191,8 +203,9 @@ const WorkflowRequestDetailsPage: React.FC = () => {
 
                     const displayValue: string = value === null ? "null" :
                         value === "" ? "(empty)" :
-                            Array.isArray(value) ? `[${value.length} items]` :
-                                String(value);
+                            Array.isArray(value)
+                                ? (value.length === 0 ? "" : String(value))
+                                : String(value);
 
                     result.push({ key: cleanKey, value: displayValue });
                 }
@@ -225,12 +238,13 @@ const WorkflowRequestDetailsPage: React.FC = () => {
                         <Table.Cell>{ workflowRequest.workflowInstanceId }</Table.Cell>
                     </Table.Row>
                     <Table.Row>
-                        <Table.Cell>{ t("approvalWorkflows:details.fields.eventType") }</Table.Cell>
-                        <Table.Cell>{ workflowRequest.eventType }</Table.Cell>
+                        <Table.Cell>{ t("common:operationType") }</Table.Cell>
+                        <Table.Cell>{ t(getOperationTypeTranslationKey(workflowRequest.eventType)) }</Table.Cell>
                     </Table.Row>
                     <Table.Row>
                         <Table.Cell>{ t("approvalWorkflows:details.fields.requestInitiator") }</Table.Cell>
-                        <Table.Cell>{ workflowRequest.requestInitiator || "-" }</Table.Cell>
+                        <Table.Cell>{ workflowRequest.requestInitiator ||
+                            t("common:approvalsPage.propertyMessages.selfRegistration") }</Table.Cell>
                     </Table.Row>
                     <Table.Row>
                         <Table.Cell>{ t("approvalWorkflows:details.fields.status") }</Table.Cell>
@@ -315,13 +329,14 @@ const WorkflowRequestDetailsPage: React.FC = () => {
                 />
             ) }
             { workflowRequest && renderDetailsTable() }
-            { workflowRequest && (
+            { workflowRequest && workflowRequest.status !== WorkflowInstanceStatus.DELETED && (
                 <DangerZoneGroup sectionHeader={ t("approvalWorkflows:details.dangerZone.header") }>
                     <DangerZone
                         actionTitle={ t("approvalWorkflows:details.dangerZone.delete.actionTitle") }
                         header={ t("approvalWorkflows:details.dangerZone.delete.header") }
                         subheader={ t("approvalWorkflows:details.dangerZone.delete.subheader") }
                         onActionClick={ () => setShowDeleteModal(true) }
+                        isButtonDisabled={ !hasWorkflowInstanceDeletePermissions }
                         data-testid="workflow-requests-details-danger-zone-delete"
                     />
                 </DangerZoneGroup>
@@ -337,7 +352,12 @@ const WorkflowRequestDetailsPage: React.FC = () => {
                 </Modal.Content>
                 <Modal.Actions>
                     <Button onClick={ () => setShowDeleteModal(false) }>{ t("common:cancel") }</Button>
-                    <Button negative loading={ loading } onClick={ handleDelete }>{ t("common:delete") }</Button>
+                    <Button
+                        negative
+                        loading={ loading }
+                        onClick={ handleDelete }
+                        disabled={ !hasWorkflowInstanceDeletePermissions }
+                    >{ t("common:delete") }</Button>
                 </Modal.Actions>
             </Modal>
         </TabPageLayout>

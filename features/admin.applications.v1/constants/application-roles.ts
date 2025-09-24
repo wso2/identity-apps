@@ -50,3 +50,8 @@ export enum RoleShareType {
     SHARE_SELECTED = "SHARE_SELECTED",
     SHARE_NONE = "SHARE_NONE"
 }
+
+export enum ShareTypeSwitchApproach {
+    WITH_UNSHARE = "WITH_UNSHARE",
+    WITHOUT_UNSHARE = "WITHOUT_UNSHARE"
+}

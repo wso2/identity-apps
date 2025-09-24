@@ -192,7 +192,11 @@ export const applicationConfig: ApplicationConfig = {
                 return allowedTemplates.includes(templateId);
             },
             isMandateLinkedLocalAccountEnabled: (templateId: string): boolean => {
-                const allowedTemplates: string[] = [];
+                const allowedTemplates: string[] = [
+                    ApplicationManagementConstants.MOBILE,
+                    ApplicationManagementConstants.CUSTOM_APPLICATION_OIDC,
+                    ApplicationManagementConstants.TRADITIONAL_WEB_APPLICATION_OIDC
+                ];
 
                 return allowedTemplates.includes(templateId);
             },
@@ -220,12 +224,12 @@ export const applicationConfig: ApplicationConfig = {
         roleMapping: true
     },
     customApplication: {
-        allowedProtocolTypes: [
-            SupportedAuthProtocolTypes.OAUTH2_OIDC,
-            SupportedAuthProtocolTypes.SAML,
-            SupportedAuthProtocolTypes.WS_FEDERATION
-        ],
-        defaultTabIndex: 1
+        defaultTabIndex: 1,
+        getAllowedProtocolTypes: (): string[] => {
+            return [ SupportedAuthProtocolTypes.OAUTH2_OIDC,
+                SupportedAuthProtocolTypes.SAML,
+                SupportedAuthProtocolTypes.WS_FEDERATION ];
+        }
     },
     editApplication: {
         extendTabs: false,

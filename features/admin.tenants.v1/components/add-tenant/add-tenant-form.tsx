@@ -21,6 +21,7 @@ import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography/Typography";
 import { GlobeIcon } from "@oxygen-ui/react-icons";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { generatePassword, getConfiguration } from "@wso2is/admin.users.v1/utils/generate-password.utils";
@@ -28,6 +29,7 @@ import getUsertoreUsernameValidationPattern from "@wso2is/admin.users.v1/utils/g
 import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-management-utils";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api/validation-config";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models/validation-config";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     FinalForm,
@@ -100,6 +102,11 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
     const passwordValidationConfig: ValidationFormInterface = useMemo((): ValidationFormInterface => {
         return getConfiguration(validationData);
     }, [ validationData ]);
+
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const isOrgDisplayNameFeatureEnabled: boolean = isFeatureEnabled(
+        featureConfig.organizations, "organizationDisplayName"
+    );
 
     /**
      * Form validator to validate the username against the userstore regex.
@@ -354,32 +361,34 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                         onSubmit={ handleSubmit }
                         className="add-tenant-form"
                     >
-                        <FinalFormField
-                            key="organizationName"
-                            width={ 16 }
-                            className="text-field-container"
-                            ariaLabel="organizationName"
-                            required={ false }
-                            data-componentid={ `${componentId}-organization-name` }
-                            name="organizationName"
-                            type="text"
-                            helperText={ (
-                                <Hint>
-                                    <Typography variant="inherit">
-                                        <Trans
-                                            i18nKey="tenants:common.form.fields.organizationName.helperText"
-                                            components={ { bold: <span style={ { fontWeight: "bold" } } /> } }
-                                        />
-                                    </Typography>
-                                </Hint>
-                            ) }
-                            label={ t("tenants:common.form.fields.organizationName.label") }
-                            placeholder={ t("tenants:common.form.fields.organizationName.placeholder") }
-                            component={ TextFieldAdapter }
-                            maxLength={ 100 }
-                            minLength={ 1 }
-                            validate={ validateOrganizationName }
-                        />
+                        { isOrgDisplayNameFeatureEnabled && (
+                            <FinalFormField
+                                key="organizationName"
+                                width={ 16 }
+                                className="text-field-container"
+                                ariaLabel="organizationName"
+                                required={ false }
+                                data-componentid={ `${componentId}-organization-name` }
+                                name="organizationName"
+                                type="text"
+                                helperText={ (
+                                    <Hint>
+                                        <Typography variant="inherit">
+                                            <Trans
+                                                i18nKey="tenants:common.form.fields.organizationName.helperText"
+                                                components={ { bold: <span style={ { fontWeight: "bold" } } /> } }
+                                            />
+                                        </Typography>
+                                    </Hint>
+                                ) }
+                                label={ t("tenants:common.form.fields.organizationName.label") }
+                                placeholder={ t("tenants:common.form.fields.organizationName.placeholder") }
+                                component={ TextFieldAdapter }
+                                maxLength={ 100 }
+                                minLength={ 1 }
+                                validate={ validateOrganizationName }
+                            />
+                        ) }
                         <FinalFormField
                             key="organizationHandle"
                             width={ 16 }

@@ -158,6 +158,11 @@ export const getDocumentationLinksExtension = (): DocumentationLinksExtensionInt
                                 addAllRequestedClaimsInJWTAccessToken: {
                                     documentationLink: undefined
                                 }
+                            },
+                            version300: {
+                                linkedLocalAccountAttributeHandling: {
+                                    documentationLink: undefined
+                                }
                             }
                         }
                     },
@@ -182,7 +187,8 @@ export const getDocumentationLinksExtension = (): DocumentationLinksExtensionInt
                         }
                     },
                     signInMethod: {
-                        fido: undefined
+                        fido: undefined,
+                        totp: undefined
                     },
                     singlePageApplication: {
                         info: {

@@ -65,6 +65,8 @@ export const getRuleLabel = (rule) => {
     const maxLen = getConditionValue(rule, "max.length");
     const confirmPassword = getConditionValue(rule, "confirm.password");
     const isValidatorEnabled = getConditionValue(rule, "enable.validator");
+    const minUniqueChars = getConditionValue(rule, "min.unique.character");
+    const maxRepeatedChars = getConditionValue(rule, "max.consecutive.character");
 
     switch (rule.name) {
         case "LengthValidator":
@@ -122,6 +124,20 @@ export const getRuleLabel = (rule) => {
         case "AlphanumericValidator":
             if (isValidatorEnabled) {
                 return "Must contain only alphanumeric characters.";
+            }
+
+            return null;
+
+        case "UniqueCharacterValidator":
+            if (minUniqueChars) {
+                return `Must contain at least ${minUniqueChars} unique character(s).`;
+            }
+
+            return null;
+
+        case "RepeatedCharacterValidator":
+            if (maxRepeatedChars) {
+                return `Must not contain more than ${maxRepeatedChars} repeated character(s).`;
             }
 
             return null;

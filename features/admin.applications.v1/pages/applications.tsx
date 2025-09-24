@@ -604,7 +604,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                                 onClick={ handleSettingsButton }
                                             />
                                         ) }
-                                        content={ t("applications:applicationsSettings.title") }
+                                        content={ t("applications:forms.applicationsSettings.title") }
                                         position="top center"
                                         size="mini"
                                         hideOnScroll

@@ -44,6 +44,7 @@ import {
     SubjectTypes
 } from "../../../models/application";
 import {     OIDCDataInterface } from "../../../models/application-inbound";
+import { ApplicationManagementUtils } from "../../../utils/application-management-utils";
 
 interface AdvanceAttributeSettingsPropsInterface extends IdentifiableComponentInterface {
     claimConfigurations: ClaimConfigurationInterface;
@@ -63,6 +64,10 @@ interface AdvanceAttributeSettingsPropsInterface extends IdentifiableComponentIn
     applicationTemplateId?: string;
     onlyOIDCConfigured?: boolean;
     oidcInitialValues?: OIDCDataInterface;
+    /**
+     * Application version.
+     */
+    appVersion?: string;
 }
 
 export const SubjectAttributeFieldName: string = "subjectAttribute";
@@ -94,6 +99,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         technology,
         onlyOIDCConfigured,
         oidcInitialValues,
+        appVersion,
         ["data-componentid"]: componentId
     } = props;
 
@@ -729,8 +735,16 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                                                     data-testid={
                                                         `${ componentId }-mandate-linked-local-account-checkbox`
                                                     }
-                                                    hint={ t("applications:forms.advancedAttributeSettings." +
-                                                    "sections.linkedAccounts.fields.mandateLocalAccount.hint") }
+                                                    hint={
+                                                        ApplicationManagementUtils.isAppVersionAllowed(
+                                                            appVersion, ApplicationManagementConstants.APP_VERSION_3)
+                                                            ? t("applications:forms.advancedAttributeSettings." +
+                                                                "sections.linkedAccounts.fields.mandateLocalAccount."
+                                                                + "unifiedHint")
+                                                            : t("applications:forms.advancedAttributeSettings." +
+                                                                "sections.linkedAccounts.fields.mandateLocalAccount."
+                                                                + "hint")
+                                                    }
                                                 />
                                             </Grid.Column>
                                         </Grid.Row>

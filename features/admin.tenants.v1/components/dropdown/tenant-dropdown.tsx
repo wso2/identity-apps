@@ -179,8 +179,9 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
     const featureConfig: FeatureConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features
     );
-    const isOrgHandleFeatureEnabled: boolean = isFeatureEnabled(
-        featureConfig.organizations,"organizations.orgHandle"
+    const isOrgHandleFeatureEnabled: boolean = isFeatureEnabled(featureConfig.organizations, "organizationHandle");
+    const isOrgDisplayNameFeatureEnabled: boolean = isFeatureEnabled(
+        featureConfig.organizations, "organizationDisplayName"
     );
 
     const [ tenantAssociations, setTenantAssociations ] = useState<TenantAssociationsInterface>(undefined);
@@ -689,7 +690,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
             });
         }
 
-        if (hasOrganizationReadPermissions) {
+        if (isOrgDisplayNameFeatureEnabled && hasOrganizationReadPermissions) {
             options.push(
                 <Dropdown.Item
                     className="action-panel"
@@ -801,6 +802,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                         className={
                                             isSubOrg ||
                                             !organizationConfigs.showOrganizationDropdown ||
+                                            isPrivilegedUser ||
                                             renderDropdownOptions()?.length <= 0
                                                 ? "header sub-org-header"
                                                 : "header"
@@ -902,7 +904,8 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                                         </Item.Content>
                                     </Item>
                                 </Item.Group>
-                                { organizationConfigs.showOrganizationDropdown &&  renderDropdownOptions() }
+                                { organizationConfigs.showOrganizationDropdown && !isPrivilegedUser
+                                    &&  renderDropdownOptions() }
                             </Dropdown.Menu>
                         ) : (
                             <Dropdown.Menu onClick={ handleDropdownClick }>
@@ -965,7 +968,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                     )
                     : null
             }
-            { !isPrivilegedUser && tenantDropdownMenu }
+            { tenantDropdownMenu }
         </>
     );
 };

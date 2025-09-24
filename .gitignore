@@ -132,3 +132,4 @@ identity-apps-core/apps/*/src/main/webapp/js/react-ui-core.min.js
 .repository/
 apps/console/src/extensions/i18n/tmp/**
 .nx
+.pnpm-store/

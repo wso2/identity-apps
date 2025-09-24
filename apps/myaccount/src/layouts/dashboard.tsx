@@ -66,8 +66,8 @@ import { Header, ProtectedRoute } from "../components";
 import { SystemNotificationAlert } from "../components/shared/system-notification-alert";
 import { getDashboardLayoutRoutes, getEmptyPlaceholderIllustrations } from "../configs";
 import { AppConstants, UIConstants } from "../constants";
-import { history } from "../helpers";
-import { Application, ConfigReducerStateInterface } from "../models";
+import { history, isApprovalsTabEnabled } from "../helpers";
+import { Application, AuthStateInterface, ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";
 import { toggleApplicationsPageVisibility } from "../store/actions";
 import { AppUtils, CommonUtils as MyAccountCommonUtils, filterRoutes } from "../utils";
@@ -113,6 +113,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
     const [ showAnnouncement, setShowAnnouncement ] = useState<boolean>(true);
     const [ dashboardLayoutRoutes, setDashboardLayoutRoutes ] = useState<RouteInterface[]>(getDashboardLayoutRoutes());
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
+    const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
 
     useEffect(() => {
         const localeCookie: string = CookieStorageUtils.getItem("ui_lang");
@@ -194,7 +195,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
      * Listen for base name changes and updated the layout routes.
      */
     useEffect(() => {
-        if (isApplicationsPageVisible === undefined || !config) {
+        if (isApplicationsPageVisible === undefined || !config || allowedScopes === undefined) {
             return;
         }
 
@@ -210,17 +211,22 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
                     // During an impersonation, only the application list page should be visible.
                     return false;
                 }
-            } else {
-                if (route.path === AppConstants.getPaths().get("APPLICATIONS") && !isApplicationsPageVisible) {
-                    return false;
-                }
+            } else if (route.path === AppConstants.getPaths().get("APPLICATIONS") && !isApplicationsPageVisible) {
+                return false;
+            } else if (route.path === AppConstants.getPaths().get("APPROVALS")
+                && !isApprovalsTabEnabled(profileDetails?.profileInfo?.userName)) {
+                return false;
             }
 
             return route;
         });
 
         setDashboardLayoutRoutes(filterRoutes(routes, config.ui?.features));
-    }, [ AppConstants.getTenantQualifiedAppBasename(), config, isApplicationsPageVisible, allowedScopes ]);
+    }, [ AppConstants.getTenantQualifiedAppBasename(),
+        config,
+        isApplicationsPageVisible,
+        allowedScopes,
+        profileDetails?.profileInfo?.userName ]);
 
     /**
      * On location change, update the selected route.

@@ -24,7 +24,7 @@ import VisualFlowConstants from "../constants/visual-flow-constants";
 import { Properties } from "../models/base";
 import { Element, ElementCategories, ElementTypes } from "../models/elements";
 import { EventTypes } from "../models/extension";
-import { StepTypes } from "../models/steps";
+import { ExecutionTypes, StepTypes } from "../models/steps";
 import PluginRegistry from "../plugins/plugin-registry";
 import generateResourceId from "../utils/generate-resource-id";
 
@@ -117,6 +117,10 @@ const useStaticContentField = (): void => {
         // Check if this is a execution step.
         if (resource?.type === StepTypes.Execution && VisualFlowConstants
             .FLOW_BUILDER_STATIC_CONTENT_ALLOWED_EXECUTION_TYPES.includes(resource?.data?.action?.executor?.name)) {
+
+            if (resource?.data?.action?.executor?.name === ExecutionTypes.MagicLinkExecutor) {
+                return true;
+            }
             const components: Element[] = (node?.data?.components as Element[]) || [];
 
             properties[STATIC_CONTENT_ENABLED_PROPERTY] = components.length > 0;

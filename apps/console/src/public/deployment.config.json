@@ -336,6 +336,8 @@
             "actions": {
                 "disabledFeatures": [
                     "actions.types.list.preRegistration",
+                    "actions.types.list.preUpdatePassword.headersAndParameters",
+                    "actions.types.list.preUpdateProfile.headersAndParameters",
                     "actions.types.org.list.preIssueAccessToken",
                     "actions.types.org.list.preRegistration"
                 ],
@@ -465,7 +467,8 @@
             "applications": {
                 "disabledFeatures": [
                     "applications.loginFlow.legacyEditor",
-                    "applications.sharedAccess.status"
+                    "applications.sharedAccess.status",
+                    "applications.sharedApp.adaptiveAuth"
                 ],
                 "enabled": true,
                 "featureFlags": [
@@ -479,6 +482,10 @@
                     },
                     {
                         "feature": "applications.edit.general.branding",
+                        "flag": ""
+                    },
+                    {
+                        "feature": "applications.create.ws-fed.protocol.template",
                         "flag": ""
                     }
                 ],
@@ -504,13 +511,41 @@
                     ]
                 }
             },
+            "approvalWorkflows": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [
+                        "internal_workflow_association_create",
+                        "internal_workflow_create"
+                    ],
+                    "delete": [
+                        "internal_workflow_association_delete",
+                        "internal_workflow_delete"
+                    ],
+                    "feature": [
+                        "console:approvalWorkflows"
+                    ],
+                    "read": [
+                        "internal_role_mgt_view",
+                        "internal_user_mgt_list",
+                        "internal_workflow_association_view",
+                        "internal_workflow_view"
+                    ],
+                    "update": [
+                        "internal_workflow_association_update",
+                        "internal_workflow_update"
+                    ]
+                }
+            },
             "approvals": {
                 "disabledFeatures": [],
                 "enabled": true,
                 "featureFlags": [],
                 "scopes": {
                     "feature": [
-                        "console:workflows"
+                        "console:users"
                     ],
                     "read": [
                         "internal_approval_task_view"
@@ -789,7 +824,7 @@
                 "scopes": {
                     "create": [],
                     "delete": [],
-                    "feature": [],
+                    "feature": ["console:flows"],
                     "read": [],
                     "update": []
                 }
@@ -1620,12 +1655,16 @@
                 }
             },
             "users": {
-                "disabledFeatures": [],
+                "disabledFeatures": [
+                    "users.add.legacy",
+                    "users.profile.legacy"
+                ],
                 "enabled": true,
                 "featureFlags": [],
                 "scopes": {
                     "create": [
-                        "internal_user_mgt_create"
+                        "internal_user_mgt_create",
+                        "internal_workflow_association_view"
                     ],
                     "delete": [
                         "internal_user_mgt_delete"
@@ -1671,29 +1710,19 @@
                     ]
                 }
             },
-             "workflows": {
+            "workflowInstances": {
                 "disabledFeatures": [],
                 "enabled": true,
                 "featureFlags": [],
                 "scopes": {
-                    "create": [
-                        "internal_workflow_association_create",
-                        "internal_workflow_create"
-                    ],
                     "delete": [
-                        "internal_workflow_association_delete",
-                        "internal_workflow_delete"
+                        "internal_workflow_instance_delete"
                     ],
                     "feature": [
-                        "console:workflows"
+                        "console:workflowInstances"
                     ],
                     "read": [
-                        "internal_workflow_association_view",
-                        "internal_workflow_view"
-                    ],
-                    "update": [
-                        "internal_workflow_association_update",
-                        "internal_workflow_update"
+                        "internal_workflow_instance_view"
                     ]
                 }
             },
@@ -1708,6 +1737,9 @@
                     "update": []
                 }
             }
+        },
+        "flowExecution": {
+            "enableLegacyFlows": false
         },
         "governanceConnectors": {
             "loginAttempts": {
@@ -1762,6 +1794,7 @@
         "isSAASDeployment": false,
         "isSignatureValidationCertificateAliasEnabled": false,
         "isTrustedAppConsentRequired": false,
+        "isWSFedProtocolTemplateEnabled": true,
         "isXacmlConnectorEnabled": false,
         "legacyMode": {
             "applicationListSystemApps": false,
@@ -1783,34 +1816,38 @@
             "productVersion": ""
         },
         "routes": {
-            "organizationEnabledRoutes": [
-                "accountSecurity",
-                "actions",
-                "admin-forced-password-reset",
-                "apiResources",
-                "applications",
-                "approvals",
-                "attributeDialects",
-                "branding",
-                "consoleSettings",
-                "emailTemplates",
-                "gettingStarted",
-                "governanceConnectors",
-                "groups",
-                "identityProviders",
-                "loginAndRegistration",
-                "organizations",
-                "password-recovery",
-                "roles",
-                "self-registration-connector",
-                "smsTemplates",
-                "user-email-verification",
-                "userRoles",
-                "userStores",
-                "username-recovery",
-                "users",
-                "workflows"
-            ]
+            "organizationEnabledRoutes": {
+                "accountSecurity": "v1.0.0",
+                "actions": "v0.0.0",
+                "admin-forced-password-reset": "v1.0.0",
+                "apiResources": "v0.0.0",
+                "applications": "v0.0.0",
+                "approvalWorkflows": "v0.0.0",
+                "approvals": "v0.0.0",
+                "attributeDialects": "v0.0.0",
+                "branding": "v0.0.0",
+                "consoleSettings": "v0.0.0",
+                "emailTemplates": "v0.0.0",
+                "flows": "v1.0.0",
+                "gettingStarted": "v0.0.0",
+                "governanceConnectors": "v0.0.0",
+                "groups": "v0.0.0",
+                "identityProviders": "v0.0.0",
+                "loginAndRegistration": "v1.0.0",
+                "oidcScopes": "v0.0.0",
+                "organizations": "v0.0.0",
+                "password-recovery": "v1.0.0",
+                "roles": "v0.0.0",
+                "self-registration-connector": "v1.0.0",
+                "smsTemplates": "v0.0.0",
+                "user-email-verification": "v1.0.0",
+                "userRoles": "v0.0.0",
+                "userStores": "v0.0.0",
+                "username-recovery": "v1.0.0",
+                "users": "v0.0.0",
+                "workflowInstanceDetails": "v0.0.0",
+                "workflowInstances": "v0.0.0"
+            }
         },
         "selfAppIdentifier": "Console",
         "showAppSwitchButton": true,

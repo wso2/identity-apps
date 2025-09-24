@@ -32,7 +32,11 @@
 <%
     String errorCode = StringUtils.EMPTY;
     if (request.getParameter("error") != null) {
-        errorCode = request.getParameter("error");
+        errorCode = AuthenticationEndpointUtil.i18n(resourceBundle,"error.retry");
+        String error = request.getParameter("error");
+        if (!error.equalsIgnoreCase(AuthenticationEndpointUtil.i18n(resourceBundle, error))) {
+            errorCode = AuthenticationEndpointUtil.i18n(resourceBundle, error);
+        }
     }
 %>
 

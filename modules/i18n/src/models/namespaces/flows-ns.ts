@@ -18,7 +18,15 @@
 
 export interface flowsNS {
     askPassword: {
+        banner: {
+            description: string;
+            title: string;
+        };
         breadcrumb: string;
+        labels: {
+            disableFlow: string;
+            enableFlow: string;
+        };
         notifications: {
             disableFlow: {
                 genericError: {
@@ -68,12 +76,38 @@ export interface flowsNS {
                     urlTypeLabel: string;
                 };
                 placeholder: string;
-            }
-        };
-        errors: {
-            flowMetadataFetch: {
-                description: string;
-                message: string;
+            };
+            textPropertyField: {
+                i18nCard: {
+                    chip: {
+                        commonScreen: {
+                            label: string;
+                        };
+                    };
+                    commonKeyWarning: string;
+                    configure: string;
+                    createTitle: string;
+                    i18nKey: string;
+                    i18nKeyInputHint: string;
+                    i18nKeyInputPlaceholder: string;
+                    language: string;
+                    languageText: string;
+                    languageTextPlaceholder: string;
+                    selectI18nKey: string;
+                    selectLanguage: string;
+                    title: string;
+                    tooltip: {
+                        addNewTranslation: string;
+                        commonKeyTooltip: string;
+                        editExistingTranslation: string;
+                    };
+                    updateTitle: string;
+                };
+                placeholder: string;
+                tooltip: {
+                    configureTranslation: string;
+                    enableBrandingRequired: string;
+                };
             };
         };
         executions: {
@@ -89,9 +123,127 @@ export interface flowsNS {
                 magicLink: string;
             };
         };
+        notificationPanel: {
+            emptyMessages: {
+                errors: string;
+                info: string;
+                warnings: string;
+            };
+            header: string;
+            tabs: {
+                errors: string;
+                info: string;
+                warnings: string;
+            };
+        };
+        notifications: {
+            brandingPreferenceFetch: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+            customTextPreferenceMetaFetch: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+            fallbackTextPreferenceFetch: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+            flowMetadataFetch: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+            textPreferenceFetch: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+            updateI18nKey: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+        };
+        validation: {
+            fields: {
+                button: {
+                    action: string;
+                    general: string;
+                    text: string;
+                    variant: string;
+                };
+                checkbox: {
+                    general: string;
+                    identifier: string;
+                    label: string;
+                };
+                divider: {
+                    general: string;
+                    variant: string;
+                };
+                image: {
+                    general: string;
+                    src: string;
+                    variant: string;
+                };
+                input: {
+                    general: string;
+                    idpName: string;
+                    identifier: string;
+                    label: string;
+                };
+                otpInput: {
+                    general: string;
+                    label: string;
+                };
+                phoneNumberInput: {
+                    general: string;
+                    identifier: string;
+                    label: string;
+                };
+                richText: {
+                    general: string;
+                    text: string;
+                };
+                typography: {
+                    general: string;
+                    text: string;
+                    variant: string;
+                };
+            };
+        };
+        validationStatusLabels: {
+            error: string;
+            errors: string;
+            info: string;
+            warning: string;
+            warnings: string;
+        };
     };
     label?: string;
     passwordRecovery: {
+        banner: {
+            description: string;
+            title: string;
+        };
+        labels: {
+            disableFlow: string;
+            enableFlow: string;
+        };
         name: string;
         notifications: {
             disableFlow: {
@@ -128,6 +280,10 @@ export interface flowsNS {
     };
     registrationFlow: {
         breadcrumb: string;
+        labels: {
+            disableFlow: string;
+            enableFlow: string;
+        };
         notifications: {
             disableFlow: {
                 genericError: {

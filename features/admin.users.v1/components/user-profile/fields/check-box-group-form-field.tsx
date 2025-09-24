@@ -35,6 +35,7 @@ const CheckBoxGroupFormField: FunctionComponent<CheckBoxGroupFormFieldPropsInter
         isUpdating,
         isReadOnly,
         isRequired,
+        validateFields,
         ["data-componentid"]: componentId = "checkbox-group-form-field"
     }: CheckBoxGroupFormFieldPropsInterface
 ): ReactElement => {
@@ -60,6 +61,7 @@ const CheckBoxGroupFormField: FunctionComponent<CheckBoxGroupFormFieldPropsInter
             name={ fieldName }
             label={ fieldLabel }
             validate={ validate }
+            validateFields={ validateFields }
             readOnly={ isReadOnly || isUpdating }
             disabled={ isReadOnly || isUpdating }
             required={ isRequired }

@@ -1,5 +1,55 @@
 # @wso2is/admin.branding.v1
 
+## 2.32.6
+
+### Patch Changes
+
+- [#9172](https://github.com/wso2/identity-apps/pull/9172) [`077105aa97ef5b9a698f812b8e01456b262cadc4`](https://github.com/wso2/identity-apps/commit/077105aa97ef5b9a698f812b8e01456b262cadc4) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Change wording in new recovery portal URL hint under branding.
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.57
+  - @wso2is/admin.server-configurations.v1@2.35.71
+
+## 2.32.5
+
+### Patch Changes
+
+- Updated dependencies [[`c54e1c5fa53794bb4347eb29711fb6d14da2c056`](https://github.com/wso2/identity-apps/commit/c54e1c5fa53794bb4347eb29711fb6d14da2c056)]:
+  - @wso2is/admin.feature-gate.v1@1.7.7
+  - @wso2is/admin.flows.v1@1.0.19
+  - @wso2is/admin.core.v1@2.49.46
+  - @wso2is/admin.server-configurations.v1@2.35.60
+
+## 2.32.4
+
+### Patch Changes
+
+- Updated dependencies [[`e2d53eaf3a8c4d6bda03af358535864ce5c198d6`](https://github.com/wso2/identity-apps/commit/e2d53eaf3a8c4d6bda03af358535864ce5c198d6)]:
+  - @wso2is/i18n@2.29.1
+  - @wso2is/admin.core.v1@2.49.8
+  - @wso2is/admin.flows.v1@1.0.18
+  - @wso2is/admin.server-configurations.v1@2.35.21
+
+## 2.32.3
+
+### Patch Changes
+
+- [#8719](https://github.com/wso2/identity-apps/pull/8719) [`cacc02a0ef41c88cc5d244f8c396a21559b093a1`](https://github.com/wso2/identity-apps/commit/cacc02a0ef41c88cc5d244f8c396a21559b093a1) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Fix branding already configured check for organization with a handle
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.2
+
+## 2.32.2
+
+### Patch Changes
+
+- Updated dependencies [[`e50f90cf4e4904c4d257e4b9b04623097934f9fa`](https://github.com/wso2/identity-apps/commit/e50f90cf4e4904c4d257e4b9b04623097934f9fa), [`d4b01de50e296f0dffdc9c4aacf2fcb74c402b09`](https://github.com/wso2/identity-apps/commit/d4b01de50e296f0dffdc9c4aacf2fcb74c402b09)]:
+  - @wso2is/admin.server-configurations.v1@2.35.20
+  - @wso2is/admin.flows.v1@1.0.17
+  - @wso2is/admin.core.v1@2.49.1
+  - @wso2is/i18n@2.28.1
+  - @wso2is/admin.organizations.v1@2.27.1
+
 ## 2.32.1
 
 ### Patch Changes

@@ -1,5 +1,204 @@
 # @wso2is/myaccount
 
+## 2.25.4
+
+### Patch Changes
+
+- [#9176](https://github.com/wso2/identity-apps/pull/9176) [`1d8308465c85057da989ded194090c95dea5161b`](https://github.com/wso2/identity-apps/commit/1d8308465c85057da989ded194090c95dea5161b) Thanks [@Thumimku](https://github.com/Thumimku)! - stop user session call during impersonated my account
+
+## 2.25.3
+
+### Patch Changes
+
+- [#9149](https://github.com/wso2/identity-apps/pull/9149) [`796415b4f2d2e95a3421cf748e9cadf2681a5717`](https://github.com/wso2/identity-apps/commit/796415b4f2d2e95a3421cf748e9cadf2681a5717) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix null pointer issue in multi value fields
+
+* [#9143](https://github.com/wso2/identity-apps/pull/9143) [`bf0c30427b553fe92322dceece85df02f01cb520`](https://github.com/wso2/identity-apps/commit/bf0c30427b553fe92322dceece85df02f01cb520) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add preview label ws-fed protocol template
+
+* Updated dependencies [[`bf0c30427b553fe92322dceece85df02f01cb520`](https://github.com/wso2/identity-apps/commit/bf0c30427b553fe92322dceece85df02f01cb520)]:
+  - @wso2is/react-components@2.9.23
+  - @wso2is/theme@2.8.7
+
+## 2.25.2
+
+### Patch Changes
+
+- [#9140](https://github.com/wso2/identity-apps/pull/9140) [`fac7e36a8a3bb489ed6b43022682ddbd6e010480`](https://github.com/wso2/identity-apps/commit/fac7e36a8a3bb489ed6b43022682ddbd6e010480) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Hide approval tabs in my account for cloud admin users
+
+- Updated dependencies [[`bdf3588410eef19d07e202c5d0726f523a61c1c5`](https://github.com/wso2/identity-apps/commit/bdf3588410eef19d07e202c5d0726f523a61c1c5)]:
+  - @wso2is/i18n@2.30.27
+
+## 2.25.1
+
+### Patch Changes
+
+- [#9136](https://github.com/wso2/identity-apps/pull/9136) [`3f4e0b85bfeb253ed6443060844225d285c3b649`](https://github.com/wso2/identity-apps/commit/3f4e0b85bfeb253ed6443060844225d285c3b649) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in User Profile UIs
+
+- Updated dependencies [[`33dc5b7386afe5cc275ce960ba45452cce7e6c30`](https://github.com/wso2/identity-apps/commit/33dc5b7386afe5cc275ce960ba45452cce7e6c30)]:
+  - @wso2is/i18n@2.30.26
+
+## 2.25.0
+
+### Minor Changes
+
+- [#9132](https://github.com/wso2/identity-apps/pull/9132) [`379363b7c9f1d828709fb17570ab21fab4d0d382`](https://github.com/wso2/identity-apps/commit/379363b7c9f1d828709fb17570ab21fab4d0d382) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Release minor version for cloud deployment
+
+## 2.24.0
+
+### Minor Changes
+
+- [#9118](https://github.com/wso2/identity-apps/pull/9118) [`b1f0836ff5cf38215fcf3e3845f4b41ded664f19`](https://github.com/wso2/identity-apps/commit/b1f0836ff5cf38215fcf3e3845f4b41ded664f19) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Release minor version for cloud deployment
+
+### Patch Changes
+
+- [#9118](https://github.com/wso2/identity-apps/pull/9118) [`4975f1232482847ddc0496b85ca54b505bf6a8a4`](https://github.com/wso2/identity-apps/commit/4975f1232482847ddc0496b85ca54b505bf6a8a4) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Introduce date picker field support for user profile UIs
+
+- Updated dependencies [[`4975f1232482847ddc0496b85ca54b505bf6a8a4`](https://github.com/wso2/identity-apps/commit/4975f1232482847ddc0496b85ca54b505bf6a8a4)]:
+  - @wso2is/theme@2.8.6
+
+## 2.23.18
+
+### Patch Changes
+
+- [#9099](https://github.com/wso2/identity-apps/pull/9099) [`411ebb9a510a118c5b76c54de7dc0e8241503f5a`](https://github.com/wso2/identity-apps/commit/411ebb9a510a118c5b76c54de7dc0e8241503f5a) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix null pointer issue in multi email/mobile fields
+
+## 2.23.17
+
+### Patch Changes
+
+- [#9072](https://github.com/wso2/identity-apps/pull/9072) [`4f9d9e29ea9e5620e6d3198514f7db431591ec92`](https://github.com/wso2/identity-apps/commit/4f9d9e29ea9e5620e6d3198514f7db431591ec92) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issue with empty field in My Account user profile
+
+## 2.23.16
+
+### Patch Changes
+
+- Updated dependencies [[`00860d487e6a193e990def381194598ebe326452`](https://github.com/wso2/identity-apps/commit/00860d487e6a193e990def381194598ebe326452)]:
+  - @wso2is/common.users.v1@1.0.2
+
+## 2.23.15
+
+### Patch Changes
+
+- [#8989](https://github.com/wso2/identity-apps/pull/8989) [`263274761affba5af6edde8a411bad72f23b5cdb`](https://github.com/wso2/identity-apps/commit/263274761affba5af6edde8a411bad72f23b5cdb) Thanks [@brionmario](https://github.com/brionmario)! - Fix URL fragments getting lost during session refresh / recovery
+
+* [#9055](https://github.com/wso2/identity-apps/pull/9055) [`bc710b1e036147d8880a739ec5259d234e6c0b0a`](https://github.com/wso2/identity-apps/commit/bc710b1e036147d8880a739ec5259d234e6c0b0a) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Introduce SELF_REGISTER_USER operation type to workflow
+
+* Updated dependencies [[`e2fc86c51bf6e720ed865a81e13fae036dd1f049`](https://github.com/wso2/identity-apps/commit/e2fc86c51bf6e720ed865a81e13fae036dd1f049), [`bc710b1e036147d8880a739ec5259d234e6c0b0a`](https://github.com/wso2/identity-apps/commit/bc710b1e036147d8880a739ec5259d234e6c0b0a)]:
+  - @wso2is/i18n@2.30.22
+  - @wso2is/common.workflow-approvals.v1@1.0.7
+
+## 2.23.14
+
+### Patch Changes
+
+- [#9038](https://github.com/wso2/identity-apps/pull/9038) [`262799599950b401142f81c161fc26bbf688ee9c`](https://github.com/wso2/identity-apps/commit/262799599950b401142f81c161fc26bbf688ee9c) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in My Account user profile
+  - Refactors how user profile data is flattened and passed down to input fields
+  - Implements separate components for single-value email address and single-value mobile number fields.
+  - Centralizes profile data flattening logic to the common feature module - `common.users.v1`.
+  - Fixes an issue with not displaying boolean attribute fields in read-only mode.
+- Updated dependencies [[`5beb8d0682573cdd09dd83a16b213a34b47831f1`](https://github.com/wso2/identity-apps/commit/5beb8d0682573cdd09dd83a16b213a34b47831f1), [`b39c23eb0446afefdbea872ee3b0cf6d5370671f`](https://github.com/wso2/identity-apps/commit/b39c23eb0446afefdbea872ee3b0cf6d5370671f), [`262799599950b401142f81c161fc26bbf688ee9c`](https://github.com/wso2/identity-apps/commit/262799599950b401142f81c161fc26bbf688ee9c)]:
+  - @wso2is/i18n@2.30.21
+  - @wso2is/react-components@2.9.22
+  - @wso2is/common.users.v1@1.0.1
+
+## 2.23.13
+
+### Patch Changes
+
+- [#9032](https://github.com/wso2/identity-apps/pull/9032) [`f9dd0922950b0b6b63a6c6cd64e09ca81f0869fa`](https://github.com/wso2/identity-apps/commit/f9dd0922950b0b6b63a6c6cd64e09ca81f0869fa) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Stop loading overview tab before loading scopes.
+
+## 2.23.12
+
+### Patch Changes
+
+- [#9022](https://github.com/wso2/identity-apps/pull/9022) [`ae7f142e91e36fe3aba2788a0bfd68b895db82a8`](https://github.com/wso2/identity-apps/commit/ae7f142e91e36fe3aba2788a0bfd68b895db82a8) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Rename feature: features/common.ui.profile.v1 -> features/common.users.v1
+
+- Updated dependencies [[`ae7f142e91e36fe3aba2788a0bfd68b895db82a8`](https://github.com/wso2/identity-apps/commit/ae7f142e91e36fe3aba2788a0bfd68b895db82a8)]:
+  - @wso2is/common.users.v1@1.0.0
+
+## 2.23.11
+
+### Patch Changes
+
+- [#8986](https://github.com/wso2/identity-apps/pull/8986) [`b9b2e2c0977296e1539cbdeb92ffcdf179be3b5b`](https://github.com/wso2/identity-apps/commit/b9b2e2c0977296e1539cbdeb92ffcdf179be3b5b) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve multi valued fields in user profile
+
+- Updated dependencies [[`103dc78848886bb10668320272116ad0c2a4e809`](https://github.com/wso2/identity-apps/commit/103dc78848886bb10668320272116ad0c2a4e809), [`b9b2e2c0977296e1539cbdeb92ffcdf179be3b5b`](https://github.com/wso2/identity-apps/commit/b9b2e2c0977296e1539cbdeb92ffcdf179be3b5b), [`680cb06832a8b37d2c4a5613faee079d4b9cce97`](https://github.com/wso2/identity-apps/commit/680cb06832a8b37d2c4a5613faee079d4b9cce97), [`4d6c2276f7044df95b7bc98f2ae22f4020e3a1bb`](https://github.com/wso2/identity-apps/commit/4d6c2276f7044df95b7bc98f2ae22f4020e3a1bb)]:
+  - @wso2is/admin.organizations.v1@2.27.6
+  - @wso2is/i18n@2.30.20
+  - @wso2is/common.ui.profile.v1@0.1.1
+
+## 2.23.10
+
+### Patch Changes
+
+- [#8942](https://github.com/wso2/identity-apps/pull/8942) [`1ef71598fd981195fb66939727d7c9e1a34ef76d`](https://github.com/wso2/identity-apps/commit/1ef71598fd981195fb66939727d7c9e1a34ef76d) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Introduce pending state for approval tasks and fix UI alignment issue in workflow request filtering
+
+* [#8796](https://github.com/wso2/identity-apps/pull/8796) [`fce4f826deb71eebf44dc3294dc61d41ac4f1b12`](https://github.com/wso2/identity-apps/commit/fce4f826deb71eebf44dc3294dc61d41ac4f1b12) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issue in multi-value email/mobile fields
+
+* Updated dependencies [[`1ef71598fd981195fb66939727d7c9e1a34ef76d`](https://github.com/wso2/identity-apps/commit/1ef71598fd981195fb66939727d7c9e1a34ef76d)]:
+  - @wso2is/common.workflow-approvals.v1@1.0.6
+  - @wso2is/i18n@2.30.18
+
+## 2.23.9
+
+### Patch Changes
+
+- [#8957](https://github.com/wso2/identity-apps/pull/8957) [`bed972113fcb2fc43bdd779cc682bd030db3af08`](https://github.com/wso2/identity-apps/commit/bed972113fcb2fc43bdd779cc682bd030db3af08) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix an issue with number input in My Account
+
+- Updated dependencies [[`cf10a84c5d67ce12686fa1c9d3d575af487cdfa6`](https://github.com/wso2/identity-apps/commit/cf10a84c5d67ce12686fa1c9d3d575af487cdfa6)]:
+  - @wso2is/i18n@2.30.17
+
+## 2.23.8
+
+### Patch Changes
+
+- [#8926](https://github.com/wso2/identity-apps/pull/8926) [`468b301983900cd3e2eb38a5e13777a5062e24c7`](https://github.com/wso2/identity-apps/commit/468b301983900cd3e2eb38a5e13777a5062e24c7) Thanks [@NutharaNR](https://github.com/NutharaNR)! - UI logic to avoid displaying complex type attributes.
+
+## 2.23.7
+
+### Patch Changes
+
+- [#8904](https://github.com/wso2/identity-apps/pull/8904) [`cb25f14b943535c548a6e0f859d1dd97e50fd0a2`](https://github.com/wso2/identity-apps/commit/cb25f14b943535c548a6e0f859d1dd97e50fd0a2) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Unify workflow approval operationType usages and UI improvements
+
+- Updated dependencies [[`cb25f14b943535c548a6e0f859d1dd97e50fd0a2`](https://github.com/wso2/identity-apps/commit/cb25f14b943535c548a6e0f859d1dd97e50fd0a2)]:
+  - @wso2is/common.workflow-approvals.v1@1.0.5
+  - @wso2is/i18n@2.30.12
+
+## 2.23.6
+
+### Patch Changes
+
+- [#8872](https://github.com/wso2/identity-apps/pull/8872) [`5d3b1a8fcebb3c61a4050be5ed55b8975e11d902`](https://github.com/wso2/identity-apps/commit/5d3b1a8fcebb3c61a4050be5ed55b8975e11d902) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Ensure approval requests with invalid user data are properly validated and handled without throwing errors.
+
+- Updated dependencies [[`13a47749f0f9eb970803c9e8ac40870a8fe1415a`](https://github.com/wso2/identity-apps/commit/13a47749f0f9eb970803c9e8ac40870a8fe1415a), [`5d3b1a8fcebb3c61a4050be5ed55b8975e11d902`](https://github.com/wso2/identity-apps/commit/5d3b1a8fcebb3c61a4050be5ed55b8975e11d902)]:
+  - @wso2is/i18n@2.30.8
+  - @wso2is/common.workflow-approvals.v1@1.0.4
+
+## 2.23.5
+
+### Patch Changes
+
+- [#8810](https://github.com/wso2/identity-apps/pull/8810) [`30e7b1d044f156879ec320347726ff45a665ee43`](https://github.com/wso2/identity-apps/commit/30e7b1d044f156879ec320347726ff45a665ee43) Thanks [@brionmario](https://github.com/brionmario)! - Fix maven release issues
+
+## 2.23.4
+
+### Patch Changes
+
+- [#8808](https://github.com/wso2/identity-apps/pull/8808) [`000789ba3448965fcbc11edff269ed2148f13a3c`](https://github.com/wso2/identity-apps/commit/000789ba3448965fcbc11edff269ed2148f13a3c) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the nexus release issue
+
+* [#8804](https://github.com/wso2/identity-apps/pull/8804) [`420dba817530ced6f3c850b999b352c71c864977`](https://github.com/wso2/identity-apps/commit/420dba817530ced6f3c850b999b352c71c864977) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the nexus release issue
+
+## 2.23.3
+
+### Patch Changes
+
+- [#8802](https://github.com/wso2/identity-apps/pull/8802) [`5c600756c157b3ed80bdbdce440eaeff576a4037`](https://github.com/wso2/identity-apps/commit/5c600756c157b3ed80bdbdce440eaeff576a4037) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the nexus release issue
+
+## 2.23.2
+
+### Patch Changes
+
+- [#8754](https://github.com/wso2/identity-apps/pull/8754) [`54edb88a66524a1547b3522a8fa0b6277bd9b3c7`](https://github.com/wso2/identity-apps/commit/54edb88a66524a1547b3522a8fa0b6277bd9b3c7) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix rendering issue in My Account user profile
+
 ## 2.23.1
 
 ### Patch Changes

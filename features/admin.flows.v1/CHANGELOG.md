@@ -1,5 +1,35 @@
 # @wso2is/admin.flows.v1
 
+## 1.0.19
+
+### Patch Changes
+
+- Updated dependencies [[`c54e1c5fa53794bb4347eb29711fb6d14da2c056`](https://github.com/wso2/identity-apps/commit/c54e1c5fa53794bb4347eb29711fb6d14da2c056)]:
+  - @wso2is/admin.feature-gate.v1@1.7.7
+  - @wso2is/admin.core.v1@2.49.46
+  - @wso2is/admin.registration-flow-builder.v1@0.10.7
+  - @wso2is/admin.server-configurations.v1@2.35.60
+
+## 1.0.18
+
+### Patch Changes
+
+- Updated dependencies [[`e2d53eaf3a8c4d6bda03af358535864ce5c198d6`](https://github.com/wso2/identity-apps/commit/e2d53eaf3a8c4d6bda03af358535864ce5c198d6)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.10.0
+  - @wso2is/admin.core.v1@2.49.8
+  - @wso2is/admin.server-configurations.v1@2.35.21
+
+## 1.0.17
+
+### Patch Changes
+
+- [#8712](https://github.com/wso2/identity-apps/pull/8712) [`e50f90cf4e4904c4d257e4b9b04623097934f9fa`](https://github.com/wso2/identity-apps/commit/e50f90cf4e4904c4d257e4b9b04623097934f9fa) Thanks [@KD23243](https://github.com/KD23243)! - Update terminology from "Invite User" to "Invited User" in flow orchestration
+
+- Updated dependencies [[`e50f90cf4e4904c4d257e4b9b04623097934f9fa`](https://github.com/wso2/identity-apps/commit/e50f90cf4e4904c4d257e4b9b04623097934f9fa)]:
+  - @wso2is/admin.server-configurations.v1@2.35.20
+  - @wso2is/admin.core.v1@2.49.1
+  - @wso2is/admin.registration-flow-builder.v1@0.9.18
+
 ## 1.0.16
 
 ### Patch Changes

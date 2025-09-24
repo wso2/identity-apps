@@ -44,6 +44,8 @@ class FeatureFlagConstants {
         APPLICATION_BRANDING_TEXT: "branding.stylesAndText.application.text",
         APPLICATION_EDIT_BRANDING_LINK: "applications.edit.general.branding",
         APPLICATION_TEMPLATES: "applications.templates",
+        APPROVALS: "approvals",
+        APPROVAL_WORKFLOWS: "approvalWorkflows",
         ATTRIBUTE_DIALECTS: "attributeDialects",
         BRANDING: "branding",
         BRANDING_STYLES_AND_TEXT_TITLE: "branding.stylesAndText.application.title",
@@ -65,7 +67,8 @@ class FeatureFlagConstants {
         SMS_TEMPLATES: "smsTemplates",
         USER_ROLES: "userRoles",
         USER_STORES: "userStores",
-        WEBHOOKS: "webhooks"
+        WEBHOOKS: "webhooks",
+        WORKFLOW_INSTANCES: "workflowInstances"
     };
 }
 

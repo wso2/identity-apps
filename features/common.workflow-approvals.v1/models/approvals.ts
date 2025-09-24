@@ -47,7 +47,8 @@ export interface ApprovalTaskSummary {
     /**
      * State of the Approval task
      */
-    status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED;
+    status: ApprovalStatus.READY | ApprovalStatus.RESERVED |
+        ApprovalStatus.APPROVED | ApprovalStatus.REJECTED;
     /**
      * Priority of the Approval task
      */
@@ -97,11 +98,16 @@ export interface ApprovalTaskDetails {
     /**
      * Status of the Approval task
      */
-    taskStatus?: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED | ApprovalStatus.BLOCKED;
+    taskStatus?: ApprovalStatus.READY | ApprovalStatus.RESERVED |
+        ApprovalStatus.BLOCKED | ApprovalStatus.APPROVED | ApprovalStatus.REJECTED;
     /**
      * The time that the operation for approval initiated
      */
     createdTimeInMillis?: string;
+    /**
+     * Type of the Approval task
+     */
+    operationType?: string;
 }
 
 /**
@@ -129,13 +135,14 @@ export interface ApprovalAction {
  */
 export enum ApprovalStatus {
     READY = "READY",
-    COMPLETED = "COMPLETED",
     RESERVED = "RESERVED",
     PENDING = "PENDING",
     CLAIM = "CLAIM",
     RELEASE = "RELEASE",
     APPROVE = "APPROVE",
+    APPROVED = "APPROVED",
     REJECT = "REJECT",
+    REJECTED = "REJECTED",
     BLOCKED = "BLOCKED",
     ALL = "ALL"
 }
@@ -146,29 +153,22 @@ export interface ApprovalTaskListItemInterface {
      */
     id: string;
     /**
-     * Unique name for the Approval Task
-     */
-    name: string;
-    /**
-     * Display value for Approval Operation
-     */
-    presentationSubject: string;
-    /**
-     * Display value for Approval Task
-     */
-    presentationName: string;
-    /**
      * Type of the Approval Task
      */
     taskType: string;
     /**
+     * Request ID of the Approval Task
+     */
+    requestId: string;
+    /**
      * Status of the Approval Task
      */
-    approvalStatus: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED | ApprovalStatus.BLOCKED;
+    approvalStatus: ApprovalStatus.READY | ApprovalStatus.RESERVED |
+        ApprovalStatus.BLOCKED | ApprovalStatus.APPROVED | ApprovalStatus.REJECTED;
     /**
      * Priority of the Approval task
      */
-    priority: number;
+    priority: string;
     /**
      * Created time of the Approval task
      */

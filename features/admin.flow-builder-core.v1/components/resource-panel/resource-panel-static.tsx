@@ -38,9 +38,17 @@ const ResourcePanelStatic: FunctionComponent<ResourcePanelStaticPropsInterface> 
     id,
     resource,
     type = "static",
+    disabled = false,
     ...rest
 }: ResourcePanelStaticPropsInterface): ReactElement => (
-    <ResourcePanelItem id={ id } resource={ resource } data-componentid={ componentId } type={ type } { ...rest } />
+    <ResourcePanelItem
+        id={ id }
+        resource={ resource }
+        data-componentid={ componentId }
+        type={ type }
+        disabled={ disabled }
+        { ...rest }
+    />
 );
 
 export default ResourcePanelStatic;

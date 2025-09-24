@@ -240,6 +240,15 @@ export interface ConsoleNS {
                     description: string;
                     heading: string;
                 };
+                adminNotice: {
+                    title: string;
+                    description: string;
+                    moreDetails: string;
+                    instructions: {
+                        0: string;
+                        1: string;
+                    }
+                };
                 integrateApps: {
                     actions: {
                         create: string;
@@ -271,6 +280,13 @@ export interface ConsoleNS {
                         collaborators: string;
                         customers: string;
                         groups: string;
+                    };
+                    description: string;
+                    heading: string;
+                };
+                customizeFlows: {
+                    actions: {
+                        setup: string;
                     };
                     description: string;
                     heading: string;

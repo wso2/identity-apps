@@ -26,6 +26,7 @@ import Switch from "@oxygen-ui/react/Switch";
 import { ApplicationSharingPolicy, RoleSharingModes } from "@wso2is/admin.console-settings.v1/models/shared-access";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
+import useGetOrganizations from "@wso2is/admin.organizations.v1/api/use-get-organizations";
 import {
     AlertLevels,
     IdentifiableComponentInterface
@@ -33,14 +34,17 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import {
     Heading,
+    Hint,
     LinkButton,
     PrimaryButton
 } from "@wso2is/react-components";
 import { AnimatePresence, motion } from "framer-motion";
+import isEmpty from "lodash-es/isEmpty";
 import React, {
     ChangeEvent,
     FunctionComponent,
     useEffect,
+    useMemo,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -108,6 +112,28 @@ export const ApplicationShareModalUpdated: FunctionComponent<ApplicationShareMod
         data: application,
         error: applicationGetRequestError
     } = useGetApplication(applicationId, !!applicationId);
+
+    // Fetch the organization of the current organization.
+    const {
+        data: originalOrganizations
+    } = useGetOrganizations(
+        isOrganizationManagementEnabled,
+        null,
+        1,
+        null,
+        null,
+        false,
+        false
+    );
+
+    // Check if there are organizations available to share the application with.
+    const isOrganizationsAvailable: boolean = useMemo(() => {
+        if (!isOrganizationManagementEnabled || isEmpty(originalOrganizations)) {
+            return false;
+        }
+
+        return originalOrganizations?.organizations?.length > 0;
+    }, [ originalOrganizations, isOrganizationManagementEnabled ]);
 
     /**
      * Handles the application get request error.
@@ -269,8 +295,20 @@ export const ApplicationShareModalUpdated: FunctionComponent<ApplicationShareMod
                             isOrganizationManagementEnabled && (
                                 <FormControlLabel
                                     value={ ShareType.SHARE_SELECTED }
-                                    label={ t("organizations:shareWithSelectedOrgsRadio") }
+                                    label={
+                                        isOrganizationsAvailable
+                                            ? t("organizations:shareWithSelectedOrgsRadio")
+                                            : (
+                                                <>
+                                                    { t("organizations:shareWithSelectedOrgsRadio") }
+                                                    <Hint inline popup>
+                                                        { t("organizations:placeholders.emptyList.subtitles.0") }
+                                                    </Hint>
+                                                </>
+                                            )
+                                    }
                                     control={ <Radio /> }
+                                    disabled={ !isOrganizationsAvailable }
                                     data-componentid={ `${ componentId }-share-with-selected-orgs-checkbox` }
                                 />
                             )

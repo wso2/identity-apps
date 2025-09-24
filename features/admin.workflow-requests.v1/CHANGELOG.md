@@ -1,5 +1,65 @@
 # @wso2is/admin.workflow-requests.v1
 
+## 1.0.7
+
+### Patch Changes
+
+- [#9180](https://github.com/wso2/identity-apps/pull/9180) [`3b25ebbeb85d2ed9ed743b76377e59822f4aa510`](https://github.com/wso2/identity-apps/commit/3b25ebbeb85d2ed9ed743b76377e59822f4aa510) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Update workflow request scopes for delete button
+
+- Updated dependencies [[`3b25ebbeb85d2ed9ed743b76377e59822f4aa510`](https://github.com/wso2/identity-apps/commit/3b25ebbeb85d2ed9ed743b76377e59822f4aa510), [`3e0fcab9bba602cd00e39a231c73dd57b290a037`](https://github.com/wso2/identity-apps/commit/3e0fcab9bba602cd00e39a231c73dd57b290a037)]:
+  - @wso2is/admin.core.v1@2.49.56
+  - @wso2is/i18n@2.30.30
+
+## 1.0.6
+
+### Patch Changes
+
+- [#9175](https://github.com/wso2/identity-apps/pull/9175) [`333242e5fa5c260d685f49a8f9c1bebfe06b41a8`](https://github.com/wso2/identity-apps/commit/333242e5fa5c260d685f49a8f9c1bebfe06b41a8) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Fix RBAC issues in workflow related pages
+
+- Updated dependencies [[`333242e5fa5c260d685f49a8f9c1bebfe06b41a8`](https://github.com/wso2/identity-apps/commit/333242e5fa5c260d685f49a8f9c1bebfe06b41a8)]:
+  - @wso2is/admin.core.v1@2.49.55
+
+## 1.0.5
+
+### Patch Changes
+
+- [#9055](https://github.com/wso2/identity-apps/pull/9055) [`bc710b1e036147d8880a739ec5259d234e6c0b0a`](https://github.com/wso2/identity-apps/commit/bc710b1e036147d8880a739ec5259d234e6c0b0a) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Introduce SELF_REGISTER_USER operation type to workflow
+
+- Updated dependencies [[`e2fc86c51bf6e720ed865a81e13fae036dd1f049`](https://github.com/wso2/identity-apps/commit/e2fc86c51bf6e720ed865a81e13fae036dd1f049), [`bc710b1e036147d8880a739ec5259d234e6c0b0a`](https://github.com/wso2/identity-apps/commit/bc710b1e036147d8880a739ec5259d234e6c0b0a)]:
+  - @wso2is/i18n@2.30.22
+  - @wso2is/common.workflow-approvals.v1@1.0.7
+  - @wso2is/admin.core.v1@2.49.40
+
+## 1.0.4
+
+### Patch Changes
+
+- [#8942](https://github.com/wso2/identity-apps/pull/8942) [`1ef71598fd981195fb66939727d7c9e1a34ef76d`](https://github.com/wso2/identity-apps/commit/1ef71598fd981195fb66939727d7c9e1a34ef76d) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Introduce pending state for approval tasks and fix UI alignment issue in workflow request filtering
+
+- Updated dependencies [[`1ef71598fd981195fb66939727d7c9e1a34ef76d`](https://github.com/wso2/identity-apps/commit/1ef71598fd981195fb66939727d7c9e1a34ef76d)]:
+  - @wso2is/common.workflow-approvals.v1@1.0.6
+  - @wso2is/i18n@2.30.18
+
+## 1.0.3
+
+### Patch Changes
+
+- [#8904](https://github.com/wso2/identity-apps/pull/8904) [`cb25f14b943535c548a6e0f859d1dd97e50fd0a2`](https://github.com/wso2/identity-apps/commit/cb25f14b943535c548a6e0f859d1dd97e50fd0a2) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Unify workflow approval operationType usages and UI improvements
+
+- Updated dependencies [[`cb25f14b943535c548a6e0f859d1dd97e50fd0a2`](https://github.com/wso2/identity-apps/commit/cb25f14b943535c548a6e0f859d1dd97e50fd0a2)]:
+  - @wso2is/common.workflow-approvals.v1@1.0.5
+  - @wso2is/i18n@2.30.12
+
+## 1.0.2
+
+### Patch Changes
+
+- [#8709](https://github.com/wso2/identity-apps/pull/8709) [`2aea1d23348890d936a35dc3ed7b57c6383c594b`](https://github.com/wso2/identity-apps/commit/2aea1d23348890d936a35dc3ed7b57c6383c594b) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Fix workflow request view issue
+
+- Updated dependencies [[`3bd7ab28cdcc2a312da7de834793fec190706641`](https://github.com/wso2/identity-apps/commit/3bd7ab28cdcc2a312da7de834793fec190706641), [`dda87f32ccc576670afb8ad197b1d9d239f1207d`](https://github.com/wso2/identity-apps/commit/dda87f32ccc576670afb8ad197b1d9d239f1207d)]:
+  - @wso2is/i18n@2.28.2
+  - @wso2is/admin.core.v1@2.49.3
+
 ## 1.0.1
 
 ### Patch Changes

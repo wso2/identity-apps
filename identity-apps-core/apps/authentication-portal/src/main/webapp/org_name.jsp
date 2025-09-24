@@ -102,7 +102,7 @@
             <layout:component componentName="MainSection">
                 <div class="ui segment">
                     <%-- page content --%>
-                    <h2><%= i18n(resourceBundle, customText, "sign.in.with") %><%= StringUtils.isNotBlank(idp) ? Encode.forHtmlContent(idp) : i18n(resourceBundle, customText, "organization.login") %></h2>
+                    <h2><%= i18n(resourceBundle, customText, "sign.in.with") %> <%= StringUtils.isNotBlank(idp) ? Encode.forHtmlContent(idp) : i18n(resourceBundle, customText, "organization.login") %></h2>
                     <div class="ui divider hidden"></div>
 
                     <%

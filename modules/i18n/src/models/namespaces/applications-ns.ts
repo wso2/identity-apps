@@ -700,6 +700,10 @@ export interface ApplicationsNS {
                                 totp: {
                                     description: string;
                                     heading: string;
+                                    info: {
+                                        totpWithIdentifierFirstEnabled: string;
+                                        totpWithIdentifierFirstEnabledMessage: string;
+                                    };
                                 };
                                 usernameless: {
                                     description: string;
@@ -778,12 +782,18 @@ export interface ApplicationsNS {
                 };
             };
             sharedAccess: {
+                title: string;
+                sharedRoles: string;
+                sharingSettings: string;
                 doNotShareApplication: string;
                 shareAllApplication: string;
                 shareSelectedApplication: string;
                 allRolesAndOrgsSharingMessage: string;
                 allRolesAndOrgsNotSharingMessage: string;
+                selectAnOrganizationToMangage: string;
+                allRolesSharingMessage: string;
                 doNotShareRolesWithAllOrgs: string;
+                toManageOrganizationSelectLeftPanel: string;
                 subTitle: string;
                 tabName: string;
                 sharedAccessStatusOptions: {
@@ -792,7 +802,26 @@ export interface ApplicationsNS {
                     failed: string;
                     partiallyCompleted: string;
                 };
+                shareTypeSwitchModal: {
+                    header: string;
+                    message: string;
+                    description: string;
+                    preserveStateLabel1: string;
+                    resetToDefaultLabel1: string;
+                    preserveStateLabel2: string;
+                    resetToDefaultLabel2: string;
+                };
+                showShareAllWarningModal: {
+                    header: string;
+                    message: string;
+                    description: string;
+                    assertionHint: string;
+                };
                 orgNotSelectedForRoleSharing: string;
+                individualRoleSharingLabel: string;
+                individualRoleSharingHint: string;
+                commonRoleSharingLabel: string;
+                commonRoleSharingHint: string;
                 noRolesAvailableForOrg: string;
                 noSharedOrgs: string;
                 rolesSharedPartially: string;
@@ -960,6 +989,7 @@ export interface ApplicationsNS {
                         mandateLocalAccount: {
                             hint: string;
                             label: string;
+                            unifiedHint: string;
                         };
                     };
                 };
@@ -1606,6 +1636,11 @@ export interface ApplicationsNS {
                             },
                             version200: {
                                 addAllRequestedClaimsInJWTAccessToken: {
+                                    instruction: string;
+                                }
+                            },
+                            version300: {
+                                linkedLocalAccountAttributeHandling: {
                                     instruction: string;
                                 }
                             }

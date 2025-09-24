@@ -42,6 +42,10 @@
         &.selected {
             border: 1px solid var(--oxygen-palette-primary-main);
         }
+
+        &.error {
+            border: 1px solid var(--oxygen-palette-error-main);
+        }
     }
 
     .button-extended-properties-heading {
@@ -51,5 +55,9 @@
     .button-extended-properties-sub-heading {
         margin-top: var(--oxygen-spacing-2);
         margin-bottom: var(--oxygen-spacing-1);
+    }
+
+    .MuiFormHelperText-root {
+        margin-top: var(--oxygen-spacing-1);
     }
 }

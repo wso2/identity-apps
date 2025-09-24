@@ -57,6 +57,7 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import { DropdownChild } from "@wso2is/forms";
 import { Button, EmptyPlaceholder, ListLayout, PrimaryButton } from "@wso2is/react-components";
+import { AxiosResponse } from "axios";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -299,16 +300,26 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
                     })
                 );
             },
-            () => {
+            (responses?: AxiosResponse[]) => {
                 mutateAdministratorsListFetchRequest();
                 onComplete();
-                dispatch(
-                    addAlert<AlertInterface>({
-                        description: t("users:notifications.revokeAdmin.success.description"),
-                        level: AlertLevels.SUCCESS,
-                        message: t("users:notifications.revokeAdmin.success.message")
-                    })
-                );
+                if (responses?.[0].status === 202) {
+                    dispatch(
+                        addAlert<AlertInterface>({
+                            description: t("users:notifications.revokeAdmin.pendingApproval.description"),
+                            level: AlertLevels.WARNING,
+                            message: t("users:notifications.revokeAdmin.pendingApproval.message")
+                        })
+                    );
+                } else {
+                    dispatch(
+                        addAlert<AlertInterface>({
+                            description: t("users:notifications.revokeAdmin.success.description"),
+                            level: AlertLevels.SUCCESS,
+                            message: t("users:notifications.revokeAdmin.success.message")
+                        })
+                    );
+                }
             }
         );
     };

@@ -325,6 +325,11 @@ export class I18nConstants {
     public static readonly FLOWS_NAMESPACE: string = I18nModuleConstants.FLOWS_NAMESPACE;
 
     /**
+     * Common Users namespace.
+     */
+    public static readonly COMMON_USERS_NAMESPACE: string = I18nModuleConstants.COMMON_USERS_NAMESPACE;
+
+    /**
      * Locations of the I18n namespaces.
      */
     public static readonly BUNDLE_NAMESPACE_DIRECTORIES: Map<string, string> = new Map<string, string>([
@@ -385,7 +390,8 @@ export class I18nConstants {
         [ I18nConstants.EMAIL_PROVIDERS_NAMESPACE, "portals" ],
         [ I18nConstants.APPROVAL_WORKFLOWS_NAMESPACE, "portals" ],
         [ I18nConstants.AGENTS_NAMESPACE, "portals" ],
-        [ I18nConstants.FLOWS_NAMESPACE, "portals" ]
+        [ I18nConstants.FLOWS_NAMESPACE, "portals" ],
+        [ I18nConstants.COMMON_USERS_NAMESPACE, "portals" ]
     ]);
 
     /**

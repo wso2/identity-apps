@@ -19,9 +19,9 @@
             "disabled": false
         },
         {
-            "id": "invite-user-to-set-password",
-            "heading": "Invite User Registration",
-            "description": "Set up flows to onboard invited users by guiding them to set their password and activate their account.",
+            "id": "invited-user-to-set-password",
+            "heading": "Invited User Registration",
+            "description": "Set up flows to onboard users invited by an administrator, guiding them to set their password and activate their account.",
             "featureStatusKey": "flows.types.list.inviteUserToSetPassword",
             "path": "INVITE_USER_PASSWORD_SETUP_FLOW_BUILDER",
             "type": "INVITED_USER_REGISTRATION",

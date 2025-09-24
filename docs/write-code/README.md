@@ -9,3 +9,4 @@ Go though the following guides to learn about our coding style and tips on writi
 - [Ensuring performance](./ENSURING_PERFORMANCE.md)
 - [Ensuring a good UX](./ENSURING_GOOD_UX.md)
 - [Styling](./STYLING.md)
+- [Adding a new i18n namespace and using it in the My Account and Console apps](./I18N-TRANSLATIONS.md)

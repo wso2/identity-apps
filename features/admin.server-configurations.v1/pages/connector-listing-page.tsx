@@ -72,6 +72,8 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
     const { UIConfig } = useUIConfig();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const isLegacyFlowsEnabled: boolean = useSelector(
+        (state: AppState) => state.config.ui.flowExecution.enableLegacyFlows);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.allowedScopes);
     const isPasswordInputValidationEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isPasswordInputValidationEnabled);
@@ -79,9 +81,6 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
 
     const hasGovernanceConnectorReadPermission: boolean = useRequiredScopes(
         featureConfig?.governanceConnectors?.scopes?.read
-    );
-    const hasOrganizationDiscoveryReadPermission: boolean = useRequiredScopes(
-        featureConfig?.organizationDiscovery?.scopes?.read
     );
     const hasResidentOutboundProvisioningFeaturePermission: boolean = useRequiredScopes(
         featureConfig?.residentOutboundProvisioning?.scopes?.feature
@@ -98,9 +97,6 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
 
         const refinedConnectorCategories: Array<any> = [];
 
-        const isOrganizationDiscoveryEnabled: boolean = featureConfig?.organizationDiscovery?.enabled
-            && hasOrganizationDiscoveryReadPermission;
-
         const isResidentOutboundProvisioningEnabled: boolean = featureConfig?.residentOutboundProvisioning?.enabled
             && hasResidentOutboundProvisioningFeaturePermission;
 
@@ -109,11 +105,6 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
             && hasInternalNotificationSendingReadPermission;
 
         for (const category of originalConnectors) {
-            if (!isOrganizationDiscoveryEnabled
-                    && category.id === ServerConfigurationsConstants.ORGANIZATION_SETTINGS_CATEGORY_ID) {
-                continue;
-            }
-
             if (!isResidentOutboundProvisioningEnabled
                     && category.id === ServerConfigurationsConstants.PROVISIONING_SETTINGS_CATEGORY_ID) {
                 continue;
@@ -124,8 +115,23 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                 continue;
             }
 
-            const filteredConnectors: Array<any> = category.connectors.
-                filter((connector: any) => !serverConfigurationConfig.connectorsToHide.includes(connector.id));
+            const filteredConnectors: Array<any> = category.connectors.filter((connector: any) => {
+                if (serverConfigurationConfig.connectorsToHide.includes(connector.id)) {
+                    return false;
+                }
+
+                if (isSubOrganization() && (connector.id === ServerConfigurationsConstants.SIFT_CONNECTOR_ID ||
+                    connector.id === ServerConfigurationsConstants.EMAIL_DOMAIN_DISCOVERY)) {
+                    return false;
+                }
+
+                if (!isLegacyFlowsEnabled && (connector.id === ServerConfigurationsConstants.PASSWORD_RECOVERY ||
+                        connector.id === ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID)) {
+                    return false;
+                }
+
+                return true;
+            });
 
             refinedConnectorCategories.push({ ...category, connectors: filteredConnectors });
         }

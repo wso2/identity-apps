@@ -155,6 +155,7 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
     const [ showRevertDisclaimerModal, setShowRevertDisclaimerModal ] = useState<boolean>(false);
     const [ showInfoAlert, setShowInfoAlert ] = useState<boolean>(false);
     const [ InfoAlertContent, setAlertInfoContent ] = useState<ReactElement>(undefined);
+    const [ infoAlertType, setInfoAlertType ] = useState<"info" | "warning">("info");
     const [ infoAlertBoxHeight, setInfoAlertBoxHeight ] = useState<number>(0);
     const [ isPasskeyProgressiveEnrollmentEnabled, setIsPasskeyProgressiveEnrollmentEnabled ] =
         useState<boolean>(undefined);
@@ -421,6 +422,7 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                             </DocumentationLink>
                         </>
                     );
+                    setInfoAlertType("info");
 
                 } else {
                     setAlertInfoContent(
@@ -450,6 +452,7 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                             </DocumentationLink>
                         </>
                     );
+                    setInfoAlertType("info");
                 }
             } else {
                 setAlertInfoContent(
@@ -483,11 +486,63 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                         </DocumentationLink>
                     </>
                 );
+                setInfoAlertType("info");
             }
 
             setShowInfoAlert(true);
         } else {
             setShowInfoAlert(false);
+        }
+    }, [ isPasskeyProgressiveEnrollmentEnabled, authenticationSequence?.steps ]);
+
+    useEffect(() => {
+        const isIdentifierFirstAsFirstFactorOption: boolean = !!authenticationSequence?.steps[0]?.options.find(
+            (authenticator: AuthenticatorInterface) =>
+                authenticator?.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .IDENTIFIER_FIRST_AUTHENTICATOR_NAME
+        );
+        const isTOTPAsSecondFactorOption: boolean = !!authenticationSequence?.steps[1]?.options.find(
+            (authenticator: AuthenticatorInterface) =>
+                authenticator?.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .TOTP_AUTHENTICATOR_NAME
+        );
+
+        if (isTOTPAsSecondFactorOption) {
+            if (isIdentifierFirstAsFirstFactorOption) {
+                setAlertInfoContent(
+                    <>
+                        <AlertTitle>
+                            {
+                                t("applications:edit.sections" +
+                                ".signOnMethod.sections.landing.flowBuilder." +
+                                "types.totp.info.totpWithIdentifierFirstEnabled")
+                            }
+                        </AlertTitle>
+                        <Trans
+                            i18nKey={
+                                t("applications:edit.sections" +
+                                ".signOnMethod.sections.landing.flowBuilder." +
+                                "types.totp.info.totpWithIdentifierFirstEnabledMessage")
+                            }
+                        >
+                            Configuring TOTP authenticator with
+                            Identifier First handler is not recommended as <strong>TOTP progressive
+                            enrollment</strong> is enabled by default. You can disable TOTP
+                            progressive enrollment through <strong> Conditional Authentication</strong> script.
+                        </Trans>
+                        <DocumentationLink
+                            link={
+                                getLink("develop.applications.editApplication.signInMethod.totp")
+                            }
+                            showEmptyLink={ false }
+                        >
+                            { t("common:learnMore") }
+                        </DocumentationLink>
+                    </>
+                );
+                setInfoAlertType("warning");
+                setShowInfoAlert(true);
+            }
         }
     }, [ isPasskeyProgressiveEnrollmentEnabled, authenticationSequence?.steps ]);
 
@@ -519,7 +574,7 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                     showInfoAlert ? (
                         <Alert
                             className="visual-editor-info-message"
-                            severity="info"
+                            severity={ infoAlertType }
                             onClose={ () => setShowInfoAlert(false) }
                             ref={ infoAlertRef }
                         >

@@ -32,6 +32,8 @@ export interface CommonNS {
     applications: string;
     approvalStatus: string;
     approve: string;
+    approved: string;
+    rejected: string;
     approvals: string;
     approvalsPage: {
         list: {
@@ -77,6 +79,15 @@ export interface CommonNS {
                 };
             };
         };
+        operationTypes: {
+            addRole: string;
+            addUser: string;
+            all: string;
+            deleteRole: string;
+            deleteUser: string;
+            selfRegisterUser: string;
+            updateRolesOfUser: string;
+        }
         placeholders: {
                 emptyApprovalList: {
                     action: string;
@@ -112,11 +123,18 @@ export interface CommonNS {
             header: string;
             subHeader: string;
             description: string;
-        }
+        };
+        propertyMessages: {
+            assignedUsersDeleted: string;
+            roleDeleted: string;
+            selfRegistration: string;
+            unassignedUsersDeleted: string;
+        };
     }
     apps: string;
     assignee: string;
     assignees: string;
+    assignYourself: string;
     authenticator: string;
     authentication: string;
     authenticator_plural: string;
@@ -131,7 +149,6 @@ export interface CommonNS {
         description: string;
         primaryActionText: string;
     }
-    claim: string;
     clear: string;
     clientId: string;
     close: string;
@@ -196,10 +213,13 @@ export interface CommonNS {
     name: string;
     new: string;
     next: string;
+    none: string;
     organizationName: string;
     operatingSystem: string;
     operations: string;
+    operationType: string;
     overview: string;
+    pending: string;
     personalInfo: string;
     pin: string;
     pinned: string;
@@ -215,7 +235,6 @@ export interface CommonNS {
     register: string;
     removeAll: string;
     reject: string;
-    release: string;
     remove: string;
     reserved: string;
     resetFilters: string;
@@ -250,12 +269,14 @@ export interface CommonNS {
     terminateAll: string;
     terminateSession: string;
     type: string;
+    unassign: string;
     unpin: string;
     unpinned: string;
     update: string;
     user: string;
     verify: string;
     view: string;
+    viewDetails: string;
     weakPassword: string;
     good: string;
     strong: string;

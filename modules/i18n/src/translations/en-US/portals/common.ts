@@ -84,6 +84,15 @@ export const common: CommonNS = {
                 }
             }
         },
+        operationTypes: {
+            addRole: "Add Role",
+            addUser: "Add User",
+            all: "All Operations",
+            deleteRole: "Delete Role",
+            deleteUser: "Delete User",
+            selfRegisterUser: "Self Register User",
+            updateRolesOfUser: "Update Role Users"
+        },
         placeholders: {
             emptyApprovalFilter: {
                 action: "View all",
@@ -114,11 +123,19 @@ export const common: CommonNS = {
             },
             searchApprovals: "Search by workflow name"
         },
+        propertyMessages: {
+            assignedUsersDeleted: "The assigned user(s) have been deleted.",
+            roleDeleted: "The role has been deleted.",
+            selfRegistration: "Self Registration",
+            unassignedUsersDeleted: "The unassigned user(s) have been deleted."
+        },
         subTitle: "Review operational tasks that requires your approval",
         title: "Approvals"
     },
     approve: "Approve",
+    approved: "Approved",
     apps: "Apps",
+    assignYourself: "Assign yourself",
     assignee: "Assignee",
     assignees: "Assignees",
     asyncOperationErrorMessage: {
@@ -139,7 +156,6 @@ export const common: CommonNS = {
         heading: "Something went wrong",
         primaryActionText: "Reload the App"
     },
-    claim: "Claim",
     clear: "Clear",
     clientId: "Client ID",
     close: "Close",
@@ -217,11 +233,14 @@ export const common: CommonNS = {
     new: "New",
     next: "Next",
     noResultsFound: "No results found",
+    none: "None",
     okay: "Okay",
     operatingSystem: "Operating system",
+    operationType: "Operation Type",
     operations: "Operations",
     organizationName: "{{orgName}} organization",
     overview: "Overview",
+    pending: "Pending",
     personalInfo: "Personal Info",
     pin: "Pin",
     pinned: "Pinned",
@@ -238,7 +257,7 @@ export const common: CommonNS = {
     regenerate: "Regenerate",
     register: "Register",
     reject: "Reject",
-    release: "Release",
+    rejected: "Rejected",
     remove: "Remove",
     removeAll: "Remove all",
     required: "This is required.",
@@ -276,6 +295,7 @@ export const common: CommonNS = {
     terminateSession: "Terminate session",
     tooShort: "Too short",
     type: "Type",
+    unassign: "Unassign",
     unpin: "Unpin",
     unpinned: "Unpinned",
     update: "Update",
@@ -283,6 +303,7 @@ export const common: CommonNS = {
     verified: "Verified",
     verify: "Verify",
     view: "View",
+    viewDetails: "View details",
     weak: "Weak",
     weakPassword: "The password strength should at least be good."
 };

@@ -121,10 +121,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
         setShowOrgDeleteConfirmationModal
     ] = useState(false);
 
-    const isOrgHandleFeatureEnabled: boolean = isFeatureEnabled(
-        featureConfig.organizations,
-        "organizations.orgHandle"
-    );
+    const isOrgHandleFeatureEnabled: boolean = isFeatureEnabled(featureConfig.organizations, "organizationHandle");
 
     const handleSubmit: (values: OrganizationResponseInterface) => Promise<void> = useCallback(
         async (values: OrganizationResponseInterface): Promise<void> => {

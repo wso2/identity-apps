@@ -55,8 +55,6 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.CommonDataRetrievalClient" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.CommonDataRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.user.core.util.UserCoreUtil" %>
 <%@ page import="java.io.UnsupportedEncodingException" %>
@@ -183,11 +181,15 @@
         <% 
             String failedUsername = request.getParameter("failedUsername");
             boolean isEmailVerification = IdentityCoreConstants.USER_EMAIL_NOT_VERIFIED_ERROR_CODE.equals(errorCode);
+            boolean isEmailOTPVerification = IdentityCoreConstants.USER_EMAIL_OTP_NOT_VERIFIED_ERROR_CODE.equals(errorCode);
         %>
         <% if (StringUtils.isNotBlank(failedUsername)) { %>
             window.location.href = "login.do?resend_username=<%=Encode.forHtml(URLEncoder.encode(failedUsername, UTF_8))%>"
             <% if (isEmailVerification) { %>
             + "&isEmailVerification=true"
+            <% } %>
+            <% if (isEmailOTPVerification) { %>
+            + "&isEmailOTPVerification=true"
             <% } %>
             + "&<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>";
         <% } %>
@@ -244,20 +246,17 @@
     private static final String ACCOUNT_RECOVERY_ENDPOINT_RECOVER = "/recoveraccountrouter.do";
     private static final String ACCOUNT_RECOVERY_ENDPOINT_REGISTER = "/register.do";
     private static final String AUTHENTICATION_ENDPOINT_LOGIN = "/authenticationendpoint/login.do";
-    private static final String PASSWORD_RECOVERY_FLOW_ENDPOINT = "/api/server/v1/flow/config?flowType=PASSWORD_RECOVERY";
-    private static final String SELF_SIGNUP_FLOW_ENDPOINT = "/api/server/v1/flow/config?flowType=REGISTRATION";
-    private static final String IS_ENABLED_PROPERTY = "isEnabled";
     private static final String CONSOLE = "Console";
     private Log log = LogFactory.getLog(this.getClass());
 %>
 
 <%
     String serviceProviderAppId = request.getParameter("spId");
-    String serviceProviderAppName = request.getParameter("sp");
-    String DYNAMIC_SELF_SIGNUP_URL = "register.do?flowType=REGISTRATION" + "&spId=" + serviceProviderAppId 
-            + "&sp=" + serviceProviderAppName;
-    String DYNAMIC_PASSWORD_RECOVERY_URL = "recovery.do?flowType=PASSWORD_RECOVERY" + "&spId=" + serviceProviderAppId 
-            + "&sp=" + serviceProviderAppName;
+    String rawSdk = request.getParameter("sessionDataKey");
+    String sdkSafe = "";
+    if (rawSdk != null && rawSdk.matches("^[a-zA-Z0-9\\-_\\.]+$")) {
+        sdkSafe = org.owasp.encoder.Encode.forJavaScript(rawSdk);
+    }
 %>
 
 <%
@@ -328,7 +327,8 @@
     String spId = "";
     String recoveryScenarioProp = "RecoveryScenario";
     String emailVerificationScenario = "EMAIL_VERIFICATION";
-
+    String emailOTPVerificationScenario = "EMAIL_VERIFICATION_OTP";
+    
     try {
         if (sp.equals("My Account")) {
             spId = "My_Account";
@@ -364,6 +364,12 @@
             PropertyDTO recoveryScenarioProperty = new PropertyDTO();
             recoveryScenarioProperty.setKey(recoveryScenarioProp);
             recoveryScenarioProperty.setValue(emailVerificationScenario);
+            properties.add(recoveryScenarioProperty);
+        } else if (request.getParameter("isEmailOTPVerification") != null
+            && Boolean.parseBoolean(request.getParameter("isEmailOTPVerification"))) {
+            PropertyDTO recoveryScenarioProperty = new PropertyDTO();
+            recoveryScenarioProperty.setKey(recoveryScenarioProp);
+            recoveryScenarioProperty.setValue(emailOTPVerificationScenario);
             properties.add(recoveryScenarioProperty);
         }
 
@@ -430,7 +436,8 @@
         </div>
     <% }
 } else if (Boolean.parseBoolean(loginFailed) &&
-        !errorCode.equals(IdentityCoreConstants.USER_ACCOUNT_NOT_CONFIRMED_ERROR_CODE) && !errorCode.equals(IdentityCoreConstants.USER_EMAIL_NOT_VERIFIED_ERROR_CODE)) {
+        !errorCode.equals(IdentityCoreConstants.USER_ACCOUNT_NOT_CONFIRMED_ERROR_CODE) && !errorCode.equals(IdentityCoreConstants.USER_EMAIL_NOT_VERIFIED_ERROR_CODE)
+            && !errorCode.equals(IdentityCoreConstants.USER_EMAIL_OTP_NOT_VERIFIED_ERROR_CODE)) {
     if (StringUtils.equals(request.getParameter("errorCode"),
             IdentityCoreConstants.ADMIN_FORCED_USER_PASSWORD_RESET_VIA_EMAIL_LINK_ERROR_CODE) &&
             StringUtils.equals(request.getParameter("t"), "carbon.super") &&
@@ -525,8 +532,46 @@
     <%
         }
     %>
-<% } %>
-
+<% } else if (Boolean.parseBoolean(loginFailed) && errorCode.equals(IdentityCoreConstants.USER_EMAIL_OTP_NOT_VERIFIED_ERROR_CODE) && request.getParameter("resend_username") == null) { %>
+    <div class="ui visible warning message" id="error-msg" data-testid="login-page-error-message">
+        
+        <h5 class="ui heading"><strong><%= AuthenticationEndpointUtil.i18n(resourceBundle, "no.email.confirmation.mail.heading") %></strong></h5>
+        
+        <%= AuthenticationEndpointUtil.i18n(resourceBundle, Encode.forJava(errorMessage)) %>
+        
+        <div class="ui divider hidden"></div>
+        
+        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "generic.no.confirmation.mail.otp")%>
+        
+        <a id="registerLink"
+            href="javascript:showResendReCaptcha();"
+            data-testid="login-page-resend-confirmation-email-link"
+        >
+            <%=StringEscapeUtils.escapeHtml4(AuthenticationEndpointUtil.i18n(resourceBundle, "resend.mail"))%>
+        </a>
+    </div>
+    <div class="ui divider hidden"></div>
+    <%
+        if (reCaptchaResendEnabled) {
+            String reCaptchaKey = CaptchaUtil.reCaptchaSiteKey();
+    %>
+        <div class="field">
+            <div class="g-recaptcha"
+                data-sitekey="<%=Encode.forHtmlAttribute(reCaptchaKey)%>"
+                data-testid="register-page-g-recaptcha"
+                data-bind="registerLink"
+                data-callback="showResendReCaptcha"
+                data-theme="light"
+                data-tabindex="-1"
+            >
+            </div>
+        </div>
+    <%
+        }
+    %>
+<%
+    }
+%>
 <% if (isAdminAdvisoryBannerEnabledInTenant) { %>
     <div class="ui warning message" data-componentid="login-page-admin-session-advisory-banner">
         <%=Encode.forHtmlContent(adminAdvisoryBannerContentOfTenant)%>
@@ -620,8 +665,6 @@
         String accountRegistrationEndpointURL = "";
         String urlEncodedURL = "";
         String urlParameters = "";
-        Boolean isDynamicPortalPWEnabled = false;
-        Boolean isDynamicPortalSREnabled = false;
 
         if (StringUtils.isNotBlank(recoveryEPAvailable)) {
             isRecoveryEPAvailable = Boolean.valueOf(recoveryEPAvailable);
@@ -694,22 +737,11 @@
             String srURLWithoutEncoding = srURI + "?" + srprmstr;
             srURLEncodedURL= URLEncoder.encode(srURLWithoutEncoding, UTF_8);
 
-            try {
-                CommonDataRetrievalClient commonDataRetrievalClient = new CommonDataRetrievalClient();
-                isDynamicPortalPWEnabled = commonDataRetrievalClient.checkBooleanProperty(
-                        PASSWORD_RECOVERY_FLOW_ENDPOINT, tenantDomain,
-                        IS_ENABLED_PROPERTY, false, true);
-                isDynamicPortalSREnabled = commonDataRetrievalClient.checkBooleanProperty(
-                        SELF_SIGNUP_FLOW_ENDPOINT, tenantDomain,
-                        IS_ENABLED_PROPERTY, false, true);
-            } catch (CommonDataRetrievalClientException e) {
-                // Ignored and fallback to default recovery portal.
-            }
         }
     %>
 
     <div class="buttons mt-2">
-        <% if (isRecoveryEPAvailable && (isUsernameRecoveryEnabledInTenant || isPasswordRecoveryEnabledInTenant || isDynamicPortalPWEnabled)) { %>
+        <% if (isRecoveryEPAvailable && (isUsernameRecoveryEnabledInTenant || isPasswordRecoveryEnabledInTenant || dynamicPortalPWEnabled)) { %>
         <div class="field external-link-container text-small">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password")%>
             <% if (!isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType) && isUsernameRecoveryEnabledInTenant) { %>
@@ -722,28 +754,29 @@
             </a>
         <% } %>
 
-        <% if (!isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType) 
-               && isUsernameRecoveryEnabledInTenant 
-               && (isPasswordRecoveryEnabledInTenant || isDynamicPortalPWEnabled)) { %>
+        <% if (!isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType)
+               && isUsernameRecoveryEnabledInTenant
+               && (isPasswordRecoveryEnabledInTenant || dynamicPortalPWEnabled)) { %>
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password.or")%>
         <% } %>
 
-        <% if ((isPasswordRecoveryEnabledInTenant && isPasswordRecoveryEnabledInTenantPreferences) || isDynamicPortalPWEnabled) { %>
+        <% if ((isPasswordRecoveryEnabledInTenant && isPasswordRecoveryEnabledInTenantPreferences) || dynamicPortalPWEnabled) { %>
             <a
                 id="passwordRecoverLink"
-                <% if(StringUtils.isNotBlank(passwordRecoveryOverrideURL)) { %>
-                href="<%=StringEscapeUtils.escapeHtml4(passwordRecoveryOverrideURL)%>"
-                <% } else { %>
-                <% if (isDynamicPortalPWEnabled) { %>
-                href="<%=DYNAMIC_PASSWORD_RECOVERY_URL%>"
-                <% } else { %>
-                href="<%=StringEscapeUtils.escapeHtml4(getRecoverAccountUrlWithUsername(identityMgtEndpointContext, urlEncodedURL, false, urlParameters, usernameIdentifier))%>"
-                <% } %>
-                <% } %>
+                  <% if(StringUtils.isNotBlank(passwordRecoveryOverrideURL)) { %>
+                  href="<%=StringEscapeUtils.escapeHtml4(passwordRecoveryOverrideURL)%>"
+                  <% } else if(dynamicPortalPWEnabled) { %>
+                  href="<%= StringEscapeUtils.escapeHtml4(getDynamicPasswordRecoveryUrl(serviceProviderAppId)) %>"
+                  <% } else { %>
+                  href="<%=StringEscapeUtils.escapeHtml4(getRecoverAccountUrlWithUsername(identityMgtEndpointContext, urlEncodedURL, false, urlParameters, usernameIdentifier))%>"
+                  <% } %>
                 data-testid="login-page-password-recovery-button"
                 <% if (StringUtils.equals("true", promptAccountLinking)) { %>
                     target="_blank" rel="noopener noreferrer"
                 <% } %>
+                  <% if (dynamicPortalPWEnabled) { %>
+                      onclick="handleDynamicPortalRedirection()"
+                  <% } %>
             >
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.password")%>
             </a>
@@ -785,11 +818,11 @@
         </div>
     </div>
 
-    <% if (isSelfSignUpEPAvailable 
-       && !isIdentifierFirstLogin(inputType) 
-       && !isLoginHintAvailable(inputType) 
-       && ( (isSelfSignUpEnabledInTenant && isSelfSignUpEnabledInTenantPreferences) 
-            || (isDynamicPortalSREnabled && !isIdentifierFirstLogin(inputType) && !CONSOLE.equals(sp)) ) ) { %>
+    <% if (isSelfSignUpEPAvailable
+        && !isIdentifierFirstLogin(inputType)
+        && !isLoginHintAvailable(inputType)
+        && ( (isSelfSignUpEnabledInTenant && isSelfSignUpEnabledInTenantPreferences)
+            || (dynamicPortalSREnabled && !isIdentifierFirstLogin(inputType) && !CONSOLE.equals(sp)) ) ) { %>
         <div class="mt-4 mb-4">
             <div class="mt-3 external-link-container text-small">
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "dont.have.an.account")%>
@@ -797,12 +830,8 @@
                     <% if(StringUtils.isNotBlank(selfSignUpOverrideURL)) { %>
                     href="<%=i18nLink(userLocale, selfSignUpOverrideURL)%>"
                     <% } else { %>
-                        <% if (isDynamicPortalSREnabled) { %>
-                            href="<%= DYNAMIC_SELF_SIGNUP_URL %>"
-                        <% } else { %>
-                            href="<%= StringEscapeUtils.escapeHtml4(
-                                    getRegistrationPortalUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, urlParameters)) %>"
-                        <% } %>
+                        href="<%= StringEscapeUtils.escapeHtml4(
+                                getRegistrationPortalUrl(accountRegistrationEndpointContextURL, srURLEncodedURL, urlParameters)) %>"
                     <% } %>
                     target="_self"
                     class="clickable-link"
@@ -810,6 +839,9 @@
                     id="registerLink"
                     data-testid="login-page-create-account-button"
                     style="cursor: pointer;"
+                    <% if (dynamicPortalSREnabled) { %>
+                        onclick="handleDynamicPortalRedirection()"
+                    <% } %>
                 >
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "register")%>
                 </a>
@@ -919,6 +951,10 @@
             "app": insightsAppIdentifier,
             "tenant": insightsTenantIdentifier !== "null" ? insightsTenantIdentifier : ""
         });
+    }
+
+    function handleDynamicPortalRedirection() {
+        localStorage.setItem("sessionDataKey", "<%= sdkSafe %>");
     }
 
     // Removing the recaptcha UI from the keyboard tab order

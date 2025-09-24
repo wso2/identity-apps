@@ -1,5 +1,177 @@
 # @wso2is/admin.applications.v1
 
+## 2.37.11
+
+### Patch Changes
+
+- [#9190](https://github.com/wso2/identity-apps/pull/9190) [`a463f4fd520121c6478f02165b934136814f8a81`](https://github.com/wso2/identity-apps/commit/a463f4fd520121c6478f02165b934136814f8a81) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - update app settings title label
+
+- Updated dependencies [[`85fc5f12641df71616272bb65c9a016cca82158b`](https://github.com/wso2/identity-apps/commit/85fc5f12641df71616272bb65c9a016cca82158b)]:
+  - @wso2is/admin.server-configurations.v1@2.35.72
+  - @wso2is/admin.core.v1@2.49.58
+  - @wso2is/admin.roles.v2@2.27.220
+
+## 2.37.10
+
+### Patch Changes
+
+- [#9137](https://github.com/wso2/identity-apps/pull/9137) [`61c7476562235ee90afe7308821330d472dbd817`](https://github.com/wso2/identity-apps/commit/61c7476562235ee90afe7308821330d472dbd817) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Add support for shared app adaptive authentication based on a config
+
+- Updated dependencies [[`61c7476562235ee90afe7308821330d472dbd817`](https://github.com/wso2/identity-apps/commit/61c7476562235ee90afe7308821330d472dbd817)]:
+  - @wso2is/admin.login-flow-builder.v1@2.26.5
+  - @wso2is/admin.core.v1@2.49.54
+  - @wso2is/admin.roles.v2@2.27.217
+  - @wso2is/admin.server-configurations.v1@2.35.68
+
+## 2.37.9
+
+### Patch Changes
+
+- [#9143](https://github.com/wso2/identity-apps/pull/9143) [`bf0c30427b553fe92322dceece85df02f01cb520`](https://github.com/wso2/identity-apps/commit/bf0c30427b553fe92322dceece85df02f01cb520) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add preview label ws-fed protocol template
+
+- Updated dependencies [[`bf0c30427b553fe92322dceece85df02f01cb520`](https://github.com/wso2/identity-apps/commit/bf0c30427b553fe92322dceece85df02f01cb520)]:
+  - @wso2is/react-components@2.9.23
+  - @wso2is/admin.core.v1@2.49.51
+  - @wso2is/admin.roles.v2@2.27.214
+  - @wso2is/admin.server-configurations.v1@2.35.65
+
+## 2.37.8
+
+### Patch Changes
+
+- [#9129](https://github.com/wso2/identity-apps/pull/9129) [`5b22807599c1f6876d41e9f2e985d52993911f90`](https://github.com/wso2/identity-apps/commit/5b22807599c1f6876d41e9f2e985d52993911f90) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add isWSFedProtocolTemplateEnabled config and change allowedProtocolType to getAllowedProtocolType
+
+- Updated dependencies [[`5b22807599c1f6876d41e9f2e985d52993911f90`](https://github.com/wso2/identity-apps/commit/5b22807599c1f6876d41e9f2e985d52993911f90)]:
+  - @wso2is/admin.core.v1@2.49.48
+  - @wso2is/admin.extensions.v1@2.40.5
+  - @wso2is/admin.roles.v2@2.27.211
+  - @wso2is/admin.server-configurations.v1@2.35.62
+
+## 2.37.7
+
+### Patch Changes
+
+- [#9058](https://github.com/wso2/identity-apps/pull/9058) [`f44b9a13a8d53b9dfeb01046b320e9e327ab2b51`](https://github.com/wso2/identity-apps/commit/f44b9a13a8d53b9dfeb01046b320e9e327ab2b51) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Remove special character validation from application description
+
+- Updated dependencies [[`518532e0263494dda9ca5c7bc76876e459e5d9d0`](https://github.com/wso2/identity-apps/commit/518532e0263494dda9ca5c7bc76876e459e5d9d0), [`f44b9a13a8d53b9dfeb01046b320e9e327ab2b51`](https://github.com/wso2/identity-apps/commit/f44b9a13a8d53b9dfeb01046b320e9e327ab2b51)]:
+  - @wso2is/admin.claims.v1@2.29.6
+  - @wso2is/admin.users.v1@2.36.17
+  - @wso2is/admin.core.v1@2.49.42
+  - @wso2is/admin.roles.v2@2.27.208
+  - @wso2is/admin.server-configurations.v1@2.35.55
+
+## 2.37.6
+
+### Patch Changes
+
+- [#9041](https://github.com/wso2/identity-apps/pull/9041) [`b39c23eb0446afefdbea872ee3b0cf6d5370671f`](https://github.com/wso2/identity-apps/commit/b39c23eb0446afefdbea872ee3b0cf6d5370671f) Thanks [@savindi7](https://github.com/savindi7)! - Display regex values added via API in app and profile fixes.
+
+- Updated dependencies [[`5beb8d0682573cdd09dd83a16b213a34b47831f1`](https://github.com/wso2/identity-apps/commit/5beb8d0682573cdd09dd83a16b213a34b47831f1), [`b39c23eb0446afefdbea872ee3b0cf6d5370671f`](https://github.com/wso2/identity-apps/commit/b39c23eb0446afefdbea872ee3b0cf6d5370671f)]:
+  - @wso2is/admin.claims.v1@2.29.4
+  - @wso2is/i18n@2.30.21
+  - @wso2is/admin.extensions.v1@2.40.3
+  - @wso2is/react-components@2.9.22
+  - @wso2is/admin.users.v1@2.36.14
+  - @wso2is/admin.core.v1@2.49.39
+  - @wso2is/admin.roles.v2@2.27.205
+  - @wso2is/admin.server-configurations.v1@2.35.52
+
+## 2.37.5
+
+### Patch Changes
+
+- [#9020](https://github.com/wso2/identity-apps/pull/9020) [`022fc3d4dcfa52537df082053bf3cbb2e8751214`](https://github.com/wso2/identity-apps/commit/022fc3d4dcfa52537df082053bf3cbb2e8751214) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix premium label issue in conditional auth panel
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.37
+  - @wso2is/admin.roles.v2@2.27.203
+  - @wso2is/admin.server-configurations.v1@2.35.50
+
+## 2.37.4
+
+### Patch Changes
+
+- [#8939](https://github.com/wso2/identity-apps/pull/8939) [`366768aee864e870ecc5ffd2d2b44e9e49f5fbbd`](https://github.com/wso2/identity-apps/commit/366768aee864e870ecc5ffd2d2b44e9e49f5fbbd) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Update role sharing UI in the application creation wizard
+
+* [#8933](https://github.com/wso2/identity-apps/pull/8933) [`7d939e310257bad84dcb25bdb1b1f8605981ac25`](https://github.com/wso2/identity-apps/commit/7d939e310257bad84dcb25bdb1b1f8605981ac25) Thanks [@JeethJJ](https://github.com/JeethJJ)! - Hide outdated applications banner for shared apps.
+
+* Updated dependencies [[`366768aee864e870ecc5ffd2d2b44e9e49f5fbbd`](https://github.com/wso2/identity-apps/commit/366768aee864e870ecc5ffd2d2b44e9e49f5fbbd), [`c9d4cf136ad0b0e1ec7e8ecf9519a5deb9216d55`](https://github.com/wso2/identity-apps/commit/c9d4cf136ad0b0e1ec7e8ecf9519a5deb9216d55), [`2b5ed1cf2b4d4eaccb08bb082d4408a30233b642`](https://github.com/wso2/identity-apps/commit/2b5ed1cf2b4d4eaccb08bb082d4408a30233b642)]:
+  - @wso2is/common.ui.shared-access.v1@0.1.3
+  - @wso2is/admin.server-configurations.v1@2.35.45
+  - @wso2is/i18n@2.30.16
+  - @wso2is/admin.roles.v2@2.27.199
+  - @wso2is/admin.console-settings.v1@2.25.223
+  - @wso2is/admin.core.v1@2.49.32
+
+## 2.37.3
+
+### Patch Changes
+
+- [#8863](https://github.com/wso2/identity-apps/pull/8863) [`13a47749f0f9eb970803c9e8ac40870a8fe1415a`](https://github.com/wso2/identity-apps/commit/13a47749f0f9eb970803c9e8ac40870a8fe1415a) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix UX issues in the role sharing UI
+
+- Updated dependencies [[`13a47749f0f9eb970803c9e8ac40870a8fe1415a`](https://github.com/wso2/identity-apps/commit/13a47749f0f9eb970803c9e8ac40870a8fe1415a), [`5d3b1a8fcebb3c61a4050be5ed55b8975e11d902`](https://github.com/wso2/identity-apps/commit/5d3b1a8fcebb3c61a4050be5ed55b8975e11d902)]:
+  - @wso2is/common.ui.shared-access.v1@0.1.2
+  - @wso2is/i18n@2.30.8
+  - @wso2is/admin.console-settings.v1@2.25.222
+  - @wso2is/admin.core.v1@2.49.24
+  - @wso2is/admin.roles.v2@2.27.195
+  - @wso2is/admin.server-configurations.v1@2.35.37
+
+## 2.37.2
+
+### Patch Changes
+
+- [#8790](https://github.com/wso2/identity-apps/pull/8790) [`8e1533f3f3256f7c2f6a357f81a234bd822d9cc5`](https://github.com/wso2/identity-apps/commit/8e1533f3f3256f7c2f6a357f81a234bd822d9cc5) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Change share all operation from checkbox to button
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.18
+  - @wso2is/admin.roles.v2@2.27.191
+  - @wso2is/admin.server-configurations.v1@2.35.31
+
+## 2.37.1
+
+### Patch Changes
+
+- [#8753](https://github.com/wso2/identity-apps/pull/8753) [`205047328ca8cd5191f32229f8744fd34f9cc105`](https://github.com/wso2/identity-apps/commit/205047328ca8cd5191f32229f8744fd34f9cc105) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Refactor role sharing component use a common component
+
+- Updated dependencies [[`205047328ca8cd5191f32229f8744fd34f9cc105`](https://github.com/wso2/identity-apps/commit/205047328ca8cd5191f32229f8744fd34f9cc105)]:
+  - @wso2is/common.ui.shared-access.v1@0.1.1
+  - @wso2is/admin.console-settings.v1@2.25.220
+  - @wso2is/i18n@2.30.2
+  - @wso2is/admin.core.v1@2.49.13
+  - @wso2is/admin.roles.v2@2.27.188
+  - @wso2is/admin.server-configurations.v1@2.35.26
+
+## 2.37.0
+
+### Minor Changes
+
+- [#8696](https://github.com/wso2/identity-apps/pull/8696) [`ab46bb12e16988d1910e0659a4d22cb4337f6a5b`](https://github.com/wso2/identity-apps/commit/ab46bb12e16988d1910e0659a4d22cb4337f6a5b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Support for account linking based on a matching a user attribute
+
+### Patch Changes
+
+- Updated dependencies [[`ab46bb12e16988d1910e0659a4d22cb4337f6a5b`](https://github.com/wso2/identity-apps/commit/ab46bb12e16988d1910e0659a4d22cb4337f6a5b)]:
+  - @wso2is/admin.connections.v1@2.34.0
+  - @wso2is/admin.extensions.v1@2.40.2
+  - @wso2is/forms@2.3.24
+  - @wso2is/i18n@2.28.5
+  - @wso2is/admin.core.v1@2.49.6
+  - @wso2is/admin.roles.v2@2.27.183
+
+## 2.36.15
+
+### Patch Changes
+
+- [#8711](https://github.com/wso2/identity-apps/pull/8711) [`0becd0f454afeb3c62af477d1083a1934b217d04`](https://github.com/wso2/identity-apps/commit/0becd0f454afeb3c62af477d1083a1934b217d04) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Improve UX in application role sharing feature
+
+- Updated dependencies [[`0becd0f454afeb3c62af477d1083a1934b217d04`](https://github.com/wso2/identity-apps/commit/0becd0f454afeb3c62af477d1083a1934b217d04), [`d158ca25eca58255f7c834191ddddd9051fb509a`](https://github.com/wso2/identity-apps/commit/d158ca25eca58255f7c834191ddddd9051fb509a)]:
+  - @wso2is/admin.console-settings.v1@2.25.219
+  - @wso2is/admin.organizations.v1@2.27.2
+  - @wso2is/i18n@2.28.4
+  - @wso2is/admin.users.v1@2.34.8
+  - @wso2is/admin.core.v1@2.49.5
+  - @wso2is/admin.roles.v2@2.27.182
+
 ## 2.36.14
 
 ### Patch Changes

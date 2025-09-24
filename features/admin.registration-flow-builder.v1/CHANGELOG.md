@@ -1,5 +1,117 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.10.9
+
+### Patch Changes
+
+- [#9185](https://github.com/wso2/identity-apps/pull/9185) [`752303be661de3f1a6fa5200e8f48d52cf836826`](https://github.com/wso2/identity-apps/commit/752303be661de3f1a6fa5200e8f48d52cf836826) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Fix initial template rendering issue in self-registration flow.
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.58
+  - @wso2is/admin.flow-builder-core.v1@0.10.50
+
+## 0.10.8
+
+### Patch Changes
+
+- [#9164](https://github.com/wso2/identity-apps/pull/9164) [`a1e907e292d1940ca875f47a5882b547c96b4c2c`](https://github.com/wso2/identity-apps/commit/a1e907e292d1940ca875f47a5882b547c96b4c2c) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Remove unnecessary info from basic registration flow and add email OTP as a default step.
+
+- Updated dependencies [[`3b25ebbeb85d2ed9ed743b76377e59822f4aa510`](https://github.com/wso2/identity-apps/commit/3b25ebbeb85d2ed9ed743b76377e59822f4aa510), [`3e0fcab9bba602cd00e39a231c73dd57b290a037`](https://github.com/wso2/identity-apps/commit/3e0fcab9bba602cd00e39a231c73dd57b290a037), [`a1e907e292d1940ca875f47a5882b547c96b4c2c`](https://github.com/wso2/identity-apps/commit/a1e907e292d1940ca875f47a5882b547c96b4c2c)]:
+  - @wso2is/admin.core.v1@2.49.56
+  - @wso2is/admin.flow-builder-core.v1@0.10.48
+
+## 0.10.7
+
+### Patch Changes
+
+- Updated dependencies [[`c54e1c5fa53794bb4347eb29711fb6d14da2c056`](https://github.com/wso2/identity-apps/commit/c54e1c5fa53794bb4347eb29711fb6d14da2c056)]:
+  - @wso2is/admin.feature-gate.v1@1.7.7
+  - @wso2is/admin.flows.v1@1.0.19
+  - @wso2is/admin.core.v1@2.49.46
+  - @wso2is/admin.flow-builder-core.v1@0.10.38
+
+## 0.10.6
+
+### Patch Changes
+
+- [#9113](https://github.com/wso2/identity-apps/pull/9113) [`e48553420d4394a652d47e9e650f71fe2a9bea31`](https://github.com/wso2/identity-apps/commit/e48553420d4394a652d47e9e650f71fe2a9bea31) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the auto-selection functionality of the connections and add validation
+
+- Updated dependencies [[`e48553420d4394a652d47e9e650f71fe2a9bea31`](https://github.com/wso2/identity-apps/commit/e48553420d4394a652d47e9e650f71fe2a9bea31)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.36
+  - @wso2is/admin.core.v1@2.49.44
+
+## 0.10.5
+
+### Patch Changes
+
+- [#8943](https://github.com/wso2/identity-apps/pull/8943) [`05b73972a94081df337b757f4832a3e1dd9c13c4`](https://github.com/wso2/identity-apps/commit/05b73972a94081df337b757f4832a3e1dd9c13c4) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for removing notifications when elements are deleted
+
+- Updated dependencies [[`05b73972a94081df337b757f4832a3e1dd9c13c4`](https://github.com/wso2/identity-apps/commit/05b73972a94081df337b757f4832a3e1dd9c13c4)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.23
+  - @wso2is/admin.core.v1@2.49.31
+
+## 0.10.4
+
+### Patch Changes
+
+- [#8927](https://github.com/wso2/identity-apps/pull/8927) [`e5f908600ad89f3b78477ad4e5752f2e17e3ca20`](https://github.com/wso2/identity-apps/commit/e5f908600ad89f3b78477ad4e5752f2e17e3ca20) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the issue with the password provisioning executor name
+
+- Updated dependencies [[`f16f1d0eafc338a9ebee7f2e630019cfaeee7724`](https://github.com/wso2/identity-apps/commit/f16f1d0eafc338a9ebee7f2e630019cfaeee7724), [`0c714793f572a0e1566e9aae0d4ce767823e1a9d`](https://github.com/wso2/identity-apps/commit/0c714793f572a0e1566e9aae0d4ce767823e1a9d)]:
+  - @wso2is/admin.core.v1@2.49.30
+  - @wso2is/admin.flow-builder-core.v1@0.10.22
+
+## 0.10.3
+
+### Patch Changes
+
+- [#8912](https://github.com/wso2/identity-apps/pull/8912) [`22b67690629449b96755d90fdc92760ccc8abb4f`](https://github.com/wso2/identity-apps/commit/22b67690629449b96755d90fdc92760ccc8abb4f) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Introduce a validation layer with basic validations for flow builders
+
+- Updated dependencies [[`22b67690629449b96755d90fdc92760ccc8abb4f`](https://github.com/wso2/identity-apps/commit/22b67690629449b96755d90fdc92760ccc8abb4f)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.20
+  - @wso2is/admin.core.v1@2.49.28
+
+## 0.10.2
+
+### Patch Changes
+
+- [#8877](https://github.com/wso2/identity-apps/pull/8877) [`b5f794ba71bc76d53b5d3af21b1bc8e9bbb7d544`](https://github.com/wso2/identity-apps/commit/b5f794ba71bc76d53b5d3af21b1bc8e9bbb7d544) Thanks [@KD23243](https://github.com/KD23243)! - Improve flow builder
+
+- Updated dependencies [[`b5f794ba71bc76d53b5d3af21b1bc8e9bbb7d544`](https://github.com/wso2/identity-apps/commit/b5f794ba71bc76d53b5d3af21b1bc8e9bbb7d544)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.18
+  - @wso2is/admin.core.v1@2.49.26
+
+## 0.10.1
+
+### Patch Changes
+
+- [#8815](https://github.com/wso2/identity-apps/pull/8815) [`c387179c4549b6a51e05cc2abbd1dd46cd7aa62a`](https://github.com/wso2/identity-apps/commit/c387179c4549b6a51e05cc2abbd1dd46cd7aa62a) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Enhance the i18n configuration editor UX
+
+- Updated dependencies [[`c387179c4549b6a51e05cc2abbd1dd46cd7aa62a`](https://github.com/wso2/identity-apps/commit/c387179c4549b6a51e05cc2abbd1dd46cd7aa62a)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.12
+  - @wso2is/admin.core.v1@2.49.20
+
+## 0.10.0
+
+### Minor Changes
+
+- [#8736](https://github.com/wso2/identity-apps/pull/8736) [`e2d53eaf3a8c4d6bda03af358535864ce5c198d6`](https://github.com/wso2/identity-apps/commit/e2d53eaf3a8c4d6bda03af358535864ce5c198d6) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add i18n support for flow builder
+
+### Patch Changes
+
+- Updated dependencies [[`e2d53eaf3a8c4d6bda03af358535864ce5c198d6`](https://github.com/wso2/identity-apps/commit/e2d53eaf3a8c4d6bda03af358535864ce5c198d6)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.0
+  - @wso2is/admin.core.v1@2.49.8
+  - @wso2is/admin.flows.v1@1.0.18
+
+## 0.9.18
+
+### Patch Changes
+
+- Updated dependencies [[`e50f90cf4e4904c4d257e4b9b04623097934f9fa`](https://github.com/wso2/identity-apps/commit/e50f90cf4e4904c4d257e4b9b04623097934f9fa)]:
+  - @wso2is/admin.flows.v1@1.0.17
+  - @wso2is/admin.core.v1@2.49.1
+  - @wso2is/admin.flow-builder-core.v1@0.9.13
+
 ## 0.9.17
 
 ### Patch Changes

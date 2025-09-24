@@ -534,6 +534,8 @@ export interface ClaimsNS {
                     decimal: string;
                     boolean: string;
                     dateTime: string;
+                    date: string;
+                    epoch: string;
                     object: string;
                 };
             };
@@ -648,6 +650,7 @@ export interface ClaimsNS {
                     local: string;
                     dialect: string;
                     external: string;
+                    readOnlyDialect: string;
                 };
                 subtitle: string;
                 action: {

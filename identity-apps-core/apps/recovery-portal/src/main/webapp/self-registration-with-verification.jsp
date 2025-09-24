@@ -182,6 +182,15 @@
         return;
     }
 
+    /**
+     * Validate the back to login URL.
+     */
+    if (!StringUtils.isBlank(callback)
+        && !StringUtils.equalsIgnoreCase(callback, "null")
+        && !AuthenticationEndpointUtil.isValidMultiOptionURI(callback)) {
+        callback = null;
+    }
+
     if (StringUtils.isBlank(callback)) {
         callback = Encode.forHtmlAttribute(IdentityManagementEndpointUtil.getUserPortalUrl(
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain));
@@ -1131,6 +1140,13 @@
             <%
                 if (error){
             %>
+                // Reset the recaptcha to allow another submission.
+                var reCaptchaType = "<%= CaptchaUtil.getReCaptchaType()%>";
+                if ("recaptcha-enterprise" == reCaptchaType) {
+                    grecaptcha.enterprise.reset();
+                } else {
+                    grecaptcha.reset();
+                }
                 var registrationData = sessionStorage.getItem(registrationDataKey);
                 sessionStorage.removeItem(registrationDataKey);
 
@@ -1139,6 +1155,9 @@
 
                     if (fields.length > 0) {
                         fields.forEach(function(field) {
+                            if (field.name === "g-recaptcha-response") {
+                                return;
+                            }
                             document.getElementsByName(field.name)[0].value = field.value;
                         })
                     }

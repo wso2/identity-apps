@@ -84,6 +84,15 @@ export const common: CommonNS = {
                 }
             }
         },
+        operationTypes: {
+            addRole: "Ajouter un rôle",
+            addUser: "Ajouter un utilisateur",
+            all: "Toutes les opérations",
+            deleteRole: "Supprimer un rôle",
+            deleteUser: "Supprimer un utilisateur",
+            selfRegisterUser: "Auto-enregistrement de l’utilisateur",
+            updateRolesOfUser: "Mettre à jour les utilisateurs du rôle"
+        },
         placeholders: {
             emptyApprovalFilter: {
                 action: "Voir tout",
@@ -114,11 +123,19 @@ export const common: CommonNS = {
             },
             searchApprovals: "Rechercher par nom de flux de travail"
         },
+        propertyMessages: {
+            assignedUsersDeleted: "Les utilisateurs assignés ont été supprimés.",
+            roleDeleted: "Le rôle a été supprimé.",
+            selfRegistration: "Auto-enregistrement",
+            unassignedUsersDeleted: "Les utilisateurs non assignés ont été supprimés."
+        },
         subTitle: "Examinez les tâches opérationnelles nécessitant votre approbation",
         title: "Approbations"
     },
     approve: "Approuver",
+    approved: "Approuvé",
     apps: "Applications",
+    assignYourself: "Assignez-vous",
     assignee: "Cessionnaire",
     assignees: "Contrôleurs",
     asyncOperationErrorMessage: {
@@ -140,7 +157,6 @@ export const common: CommonNS = {
         heading: "Quelque chose s'est mal passé",
         primaryActionText: "Recharger l'application"
     },
-    claim: "Claim",
     clear: "Effacer",
     clientId: "Identité du client",
     close: "Fermer",
@@ -218,11 +234,14 @@ export const common: CommonNS = {
     new: "Nouveau",
     next: "Suivant",
     noResultsFound: "Aucun résultat trouvé",
+    none: "Aucun",
     okay: "d'accord",
     operatingSystem: "Système d'exploitation",
+    operationType: "Type d'opération",
     operations: "Opérations",
     organizationName: "{{orgName}} organisation",
     overview: "Vue d'ensemble",
+    pending: "En attente",
     personalInfo: "Informations personnelles",
     pin: "Épingler",
     pinned: "Épinglé",
@@ -239,7 +258,7 @@ export const common: CommonNS = {
     regenerate: "Régénérer",
     register: "Inscrire",
     reject: "Rejeter",
-    release: "Version",
+    rejected: "Rejeté",
     remove: "Retirer",
     removeAll: "Tout retirer",
     required: "Ceci est nécessaire",
@@ -277,6 +296,7 @@ export const common: CommonNS = {
     terminateSession: "Terminer la session",
     tooShort: "Trop court",
     type: "Type",
+    unassign: "Désassigner",
     unpin: "Détacher",
     unpinned: "Détaché",
     update: "Mettre à jour",
@@ -284,6 +304,7 @@ export const common: CommonNS = {
     verified: "Vérifié",
     verify: "Vérifier",
     view: "Voir",
+    viewDetails: "Voir les détails",
     weak: "Faible",
     weakPassword: "La force du mot de passe doit au moins être bonne."
 };

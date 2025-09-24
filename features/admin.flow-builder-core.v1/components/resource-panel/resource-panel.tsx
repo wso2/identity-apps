@@ -56,6 +56,10 @@ export interface ResourcePanelPropsInterface
      * @param resource - Added resource.
      */
     onAdd: (resource: Resource) => void;
+    /**
+     * Flag to disable the panel.
+     */
+    disabled?: boolean;
 }
 
 // TODO: Move this to Oxygen UI.
@@ -135,6 +139,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
     open,
     resources,
     onAdd,
+    disabled = false,
     ...rest
 }: ResourcePanelPropsInterface): ReactElement => {
     const {
@@ -222,6 +227,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                                         id={ `${aiTemplate.resourceType}-${aiTemplate.type}-${index}` }
                                         key={ aiTemplate.type }
                                         resource={ aiTemplate }
+                                        disabled={ disabled }
                                     >
                                         <AICard resource={ aiTemplate } onAdd={ onAdd }/>
                                     </ResourcePanelStatic>
@@ -232,6 +238,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                                         key={ template.type }
                                         resource={ template }
                                         onAdd={ onAdd }
+                                        disabled={ disabled }
                                     />
                                 )) }
                             </Stack>
@@ -259,6 +266,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                                         id={ `${widget.resourceType}-${widget.type}-${index}` }
                                         key={ widget.type }
                                         resource={ widget }
+                                        disabled={ disabled }
                                     />
                                 )) }
                             </Stack>
@@ -284,6 +292,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                                         id={ `${step.resourceType}-${step.type}-${index}` }
                                         key={ `${step.type}-${kebabCase(step.display.label)}` }
                                         resource={ step }
+                                        disabled={ disabled }
                                     />
                                 )) }
                             </Stack>
@@ -310,6 +319,7 @@ const ResourcePanel: FunctionComponent<ResourcePanelPropsInterface> = ({
                                         key={ element.type === ElementTypes.Input ?
                                             `${element.type}_${element.variant}` : element.type }
                                         resource={ element }
+                                        disabled={ disabled }
                                     />
                                 )) }
                             </Stack>

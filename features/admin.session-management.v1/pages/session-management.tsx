@@ -21,6 +21,7 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -69,6 +70,7 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ sessionManagementConfig , setSessionManagementConfig ] =
         useState<SessionManagementConfigFormValuesInterface>(undefined);
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const {
         data: originalSessionManagementConfig,
@@ -343,7 +345,7 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                                                 "idleSessionTimeout.hint") }
                                                     required={ true }
                                                     value={ sessionManagementConfig?.idleSessionTimeout }
-                                                    readOnly={ !hasConnectorUpdatePermission }
+                                                    readOnly={ isSubOrganization() || !hasConnectorUpdatePermission }
                                                     maxLength={ null }
                                                     minLength={ SessionManagementConstants
                                                         .SESSION_MANAGEMENT_CONFIG_FIELD_MIN_LENGTH }
@@ -369,7 +371,7 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                                                 "rememberMePeriod.hint") }
                                                     required={ true }
                                                     value={ sessionManagementConfig?.rememberMePeriod }
-                                                    readOnly={ !hasConnectorUpdatePermission }
+                                                    readOnly={ isSubOrganization() || !hasConnectorUpdatePermission }
                                                     maxLength={ null }
                                                     minLength={ SessionManagementConstants
                                                         .SESSION_MANAGEMENT_CONFIG_FIELD_MIN_LENGTH }
@@ -381,7 +383,7 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                                                     <Label>{ t("common:minutes") }</Label>
                                                 </Field.Input>
                                                 {
-                                                    hasConnectorUpdatePermission && (
+                                                    !isSubOrganization() && hasConnectorUpdatePermission && (
                                                         <Field.Button
                                                             form={ FORM_ID }
                                                             size="small"
@@ -406,19 +408,21 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                             </EmphasizedSegment>
                         </Grid.Column>
                     </Grid.Row>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column width={ 16 }>
-                            <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
-                                <DangerZone
-                                    actionTitle= { t("governanceConnectors:dangerZone.actionTitle") }
-                                    header= { t("governanceConnectors:dangerZone.heading") }
-                                    subheader= { t("governanceConnectors:dangerZone.subHeading") }
-                                    onActionClick={ () => onConfigRevert() }
-                                    data-componentid={ `${ componentId }-danger-zone` }
-                                />
-                            </DangerZoneGroup>
-                        </Grid.Column>
-                    </Grid.Row>
+                    { !isSubOrganization() && (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column width={ 16 }>
+                                <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
+                                    <DangerZone
+                                        actionTitle= { t("governanceConnectors:dangerZone.actionTitle") }
+                                        header= { t("governanceConnectors:dangerZone.heading") }
+                                        subheader= { t("governanceConnectors:dangerZone.subHeading") }
+                                        onActionClick={ () => onConfigRevert() }
+                                        data-componentid={ `${ componentId }-danger-zone` }
+                                    />
+                                </DangerZoneGroup>
+                            </Grid.Column>
+                        </Grid.Row>
+                    ) }
                 </Grid>
             </Ref>
         </PageLayout>

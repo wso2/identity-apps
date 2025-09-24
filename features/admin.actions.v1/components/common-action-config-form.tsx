@@ -39,6 +39,10 @@ interface CommonActionConfigFormInterface extends IdentifiableComponentInterface
      */
     isReadOnly: boolean;
     /**
+     * Specifies whether the headers and parameters section should be shown/hidden.
+     */
+    showHeadersAndParams?: boolean;
+    /**
      * Callback function triggered when the authentication type is changed.
      *
      * @param updatedValue - The new authentication type selected.
@@ -51,6 +55,7 @@ const CommonActionConfigForm: FunctionComponent<CommonActionConfigFormInterface>
     initialValues,
     isCreateFormState,
     isReadOnly,
+    showHeadersAndParams,
     onAuthenticationTypeChange,
     ["data-componentid"]: _componentId = "common-action-config-form"
 }: CommonActionConfigFormInterface): ReactElement => {
@@ -89,6 +94,7 @@ const CommonActionConfigForm: FunctionComponent<CommonActionConfigFormInterface>
                 isCreateFormState={ isCreateFormState }
                 onAuthenticationTypeChange={ onAuthenticationTypeChange }
                 isReadOnly={ isReadOnly }
+                showHeadersAndParams= { showHeadersAndParams }
             />
         </div>
     );

@@ -23,7 +23,7 @@
         "resourceType": "ELEMENT",
         "category": "ONBOARDING",
         "display": {
-            "label": "Onboarding",
+            "label": "Actions",
             "image": ""
         },
         "types": [

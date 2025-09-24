@@ -25,10 +25,12 @@ import {
 } from "@wso2is/core/models";
 import { CheckboxFieldAdapter, FinalFormField, SwitchFieldAdapter } from "@wso2is/form";
 import isEmpty from "lodash-es/isEmpty";
+import moment from "moment";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import CheckBoxGroupFormField from "./check-box-group-form-field";
 import CountryField from "./country-field";
+import DatePickerFormField from "./date-picker-form-field";
 import DropdownFormField from "./dropdown-form-field";
 import LocaleField from "./locale-field";
 import MultiValuedEmailField from "./multi-valued-email-field";
@@ -76,6 +78,11 @@ interface ProfileFormFieldRendererPropsInterface extends IdentifiableComponentIn
      */
     isUserManagedByParentOrg: boolean;
     /**
+     * Whether to use attribute labels and order from the backend.
+     * If true, uses the default display name and orders.
+     */
+    useDefaultLabelsAndOrder?: boolean;
+    /**
      * Callback to be fired when the user profile update is initiated/completed.
      * @param isUpdating - Whether the user profile is being updated.
      */
@@ -106,13 +113,15 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
     onUserUpdated,
     isReadOnlyMode,
     isUserManagedByParentOrg,
+    useDefaultLabelsAndOrder = true,
     ["data-componentid"]: componentId = "profile-form-field-renderer"
 }: ProfileFormFieldRendererPropsInterface): ReactElement => {
     const { t } = useTranslation();
 
-    const fieldLabel: string = t("user:profile.fields." + schema.name.replace(".", "_"), {
-        defaultValue: schema.displayName
-    });
+    const fieldLabel: string = useDefaultLabelsAndOrder ?
+        t("user:profile.fields." + schema.name.replace(".", "_"), {
+            defaultValue: schema.displayName
+        }) : schema.displayName;
     const fieldComponentId: string = `${ componentId }-${ schema.name }`;
     // Replace dots with __DOT__ to avoid issues with dot separated field names.
     const encodedSchemaId: string = schema.schemaId.replace(/\./g, "__DOT__");
@@ -318,7 +327,8 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
     /**
      * Render date of birth field. Specially handled to use special validator.
      */
-    if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("DOB")) {
+    if (schema.name === ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("DOB")
+        && schema.inputFormat?.inputType !== ClaimInputFormat.DATE_PICKER) {
         return (
             <TextFormField
                 fieldName={ `${encodedSchemaId}.${schema.name}` }
@@ -435,13 +445,16 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
             return (
                 <FinalFormField
                     component={ CheckboxFieldAdapter }
-                    initialValue={ initialValue ?? false }
+                    initialValue={
+                        typeof initialValue === "string"
+                            ? initialValue.toLowerCase() === "true"
+                            : !!initialValue
+                    }
                     ariaLabel={ fieldLabel }
                     label={ fieldLabel }
                     name={ fieldName }
                     readOnly={ isReadOnly || isUpdating }
                     disabled={ isReadOnly || isUpdating }
-                    required={ isRequired }
                     data-componentid={ fieldComponentId }
                 />
             );
@@ -450,13 +463,16 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
             return (
                 <FinalFormField
                     component={ SwitchFieldAdapter }
-                    initialValue={ initialValue ?? false }
+                    initialValue={
+                        typeof initialValue === "string"
+                            ? initialValue.toLowerCase() === "true"
+                            : !!initialValue
+                    }
                     ariaLabel={ fieldLabel }
                     label={ fieldLabel }
                     name={ fieldName }
                     readOnly={ isReadOnly || isUpdating }
                     disabled={ isReadOnly || isUpdating }
-                    required={ isRequired }
                     data-componentid={ fieldComponentId }
                 />
             );
@@ -489,6 +505,40 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
                     data-componentid={ fieldComponentId }
                 />
             );
+
+        case ClaimInputFormat.DATE_PICKER:{
+            const formattedInitialValue: moment.Moment = moment(initialValue, "YYYY-MM-DD", true);
+
+            if (isEmpty(initialValue) || formattedInitialValue.isValid()) {
+                return (
+                    <DatePickerFormField
+                        schema={ schema }
+                        fieldLabel={ fieldLabel }
+                        fieldName={ fieldName }
+                        initialValue={ initialValue as string }
+                        isUpdating={ isUpdating }
+                        isReadOnly={ isReadOnly }
+                        isRequired={ isRequired }
+                        validator={ genericValidator }
+                        data-componentid={ fieldComponentId }
+                    />
+                );
+            }
+
+            return (
+                <TextFormField
+                    fieldName={ fieldName }
+                    fieldLabel={ fieldLabel }
+                    initialValue={ initialValue as string }
+                    validator={ genericValidator }
+                    maxLength={ maxLength }
+                    isReadOnly={ isReadOnly }
+                    isRequired={ isRequired }
+                    isUpdating={ isUpdating }
+                    data-componentid={ fieldComponentId }
+                />
+            );
+        }
 
         default:
             return (

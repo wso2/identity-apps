@@ -16,10 +16,14 @@
  * under the License.
  */
 
+import Code from "@oxygen-ui/react/Code";
 import Typography, { TypographyProps } from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
-import { Element, TypographyVariants } from "../../../../models/elements";
+import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import { Trans, useTranslation } from "react-i18next";
+import PlaceholderComponent from "./placeholder-component";
+import useRequiredFields, { RequiredFieldInterface } from "../../../../hooks/use-required-fields";
+import { TypographyVariants } from "../../../../models/elements";
 import { CommonElementFactoryPropsInterface } from "../common-element-factory";
 
 /**
@@ -36,6 +40,39 @@ export type TypographyAdapterPropsInterface = IdentifiableComponentInterface & C
 const TypographyAdapter: FunctionComponent<TypographyAdapterPropsInterface> = ({
     resource
 }: TypographyAdapterPropsInterface): ReactElement => {
+    const { t } = useTranslation();
+
+    const generalMessage: ReactElement = useMemo(() => {
+        return (
+            <Trans
+                i18nKey="flows:core.validation.fields.typography.general"
+                values={ { id: resource.id } }
+            >
+                Required fields are not properly configured for the typography with ID{ " " }
+                <Code>{ resource.id }</Code>.
+            </Trans>
+        );
+    }, [ resource?.id ]);
+
+    const fields: RequiredFieldInterface[] = useMemo(() => {
+        return [
+            {
+                errorMessage: t("flows:core.validation.fields.typography.text"),
+                name: "text"
+            },
+            {
+                errorMessage: t("flows:core.validation.fields.typography.variant"),
+                name: "variant"
+            }
+        ];
+    }, []);
+
+    useRequiredFields(
+        resource,
+        generalMessage,
+        fields
+    );
+
     let config: TypographyProps = {};
 
     if (
@@ -54,7 +91,7 @@ const TypographyAdapter: FunctionComponent<TypographyAdapterPropsInterface> = ({
 
     return (
         <Typography variant={ resource?.variant.toLowerCase() } style={ resource?.config?.styles } { ...config }>
-            { resource?.config?.text }
+            <PlaceholderComponent value={ resource?.config?.text } />
         </Typography>
     );
 };

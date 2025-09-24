@@ -1,5 +1,11 @@
 # @wso2is/admin.webhooks.v1
 
+## 1.1.1
+
+### Patch Changes
+
+- [#8724](https://github.com/wso2/identity-apps/pull/8724) [`9a2ecffbc2d6e85713073357d3e05b4162c269a9`](https://github.com/wso2/identity-apps/commit/9a2ecffbc2d6e85713073357d3e05b4162c269a9) Thanks [@Sachin-Mamoru](https://github.com/Sachin-Mamoru)! - Disable session and token event configs in ui
+
 ## 1.1.0
 
 ### Minor Changes

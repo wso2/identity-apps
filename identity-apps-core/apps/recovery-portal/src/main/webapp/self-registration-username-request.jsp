@@ -310,9 +310,18 @@
     }
 
     /**
-    * If backToUrl is null get to access url of the application.
-    */
-    if (StringUtils.equalsIgnoreCase(backToUrl,"null")) {
+     * Validate the back to login URL.
+     */
+    if (!StringUtils.isBlank(backToUrl)
+        && !StringUtils.equalsIgnoreCase(backToUrl, "null")
+        && !AuthenticationEndpointUtil.isValidMultiOptionURI(backToUrl)) {
+        backToUrl = null;
+    }
+
+    /**
+     * If backToUrl is null get to access url of the application.
+     */
+    if (StringUtils.isBlank(backToUrl) || StringUtils.equalsIgnoreCase(backToUrl, "null")) {
         try {
                 // Retrieve application access url to redirect user back to the application.
                 backToUrl = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain, sp);
@@ -2550,7 +2559,7 @@
 
                     return false;
             } else {
-                var usernamePattern = /(^[\u00C0-\u00FFa-zA-Z0-9](?:(?![!#$'+=^_.{|}~\-&]{2})[\u00C0-\u00FF\w!#$'+=^_.{|}~\-&]){0,63}(?<=[\u00C0-\u00FFa-zA-Z0-9_])@(?![+.\-_])(?:(?![.+\-_]{2})[\w.+\-]){0,245}(?=[\u00C0-\u00FFa-zA-Z0-9]).\.[a-zA-Z]{2,10})$/;
+                var usernamePattern = /^(?=.{1,64}@)[\u00C0-\u00FFa-zA-Z0-9!#$'+=^_{|}~&-]+(?:\.[\u00C0-\u00FFa-zA-Z0-9!#$'+=^_{|}~&-]+)*@(?![+.\-_])(?:(?![.+\-_]{2})[\w.+\-]){0,245}(?=[\u00C0-\u00FFa-zA-Z0-9]).\.[\a-zA-Z]{2,10}$/;
                 if (!usernamePattern.test(usernameUserInput.value.trim()) && (emailRequired || !isAlphanumericUsernameEnabled())) {
                     username_error_msg_text.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Please.enter.valid.email")%>")
                     username_error_msg.show();

@@ -19,6 +19,7 @@
 import { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import useGetFlowBuilderCoreResources from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-builder-core-resources";
 import { Resources } from "@wso2is/admin.flow-builder-core.v1/models/resources";
+import steps from "../data/steps.json";
 import templates from "../data/templates.json";
 import widgets from "../data/widgets.json";
 
@@ -41,6 +42,10 @@ const useGetAskPasswordFlowBuilderResources = <Data = Resources, Error = Request
     return {
         data: ({
             ...coreResources,
+            steps: [
+                ...coreResources?.steps,
+                ...steps
+            ],
             templates: [
                 ...coreResources?.templates,
                 ...templates

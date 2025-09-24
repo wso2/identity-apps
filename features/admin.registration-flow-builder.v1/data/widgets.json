@@ -1,318 +1,6 @@
 [
     {
         "resourceType": "WIDGET",
-        "category": "COMPOSITE",
-        "type": "IDENTIFIER_PASSWORD",
-        "version": "0.1.0",
-        "deprecated": false,
-        "display": {
-            "label": "Username + Password",
-            "description": "Basic registration experience with simple username & password",
-            "image": "https://www.svgrepo.com/show/390092/security-protection-password.svg",
-            "showOnResourcePanel": true
-        },
-        "config": {
-            "data": {
-                "__generationMeta__": {},
-                "steps": [
-                    {
-                        "__generationMeta__": {
-                            "strategy": "MERGE_WITH_DROP_POINT"
-                        },
-                        "type": "VIEW",
-                        "data": {
-                            "components": [
-                                {
-                                    "category": "BLOCK",
-                                    "type": "FORM",
-                                    "config": {},
-                                    "id": "{{ID}}",
-                                    "components": [
-                                        {
-                                            "id": "{{ID}}",
-                                            "category": "FIELD",
-                                            "type": "INPUT",
-                                            "variant": "TEXT",
-                                            "config": {
-                                                "type": "text",
-                                                "hint": "",
-                                                "label": "Username",
-                                                "required": true,
-                                                "placeholder": "Enter your username",
-                                                "identifier": "http://wso2.org/claims/username"
-                                            }
-                                        },
-                                        {
-                                            "id": "{{ID}}",
-                                            "category": "FIELD",
-                                            "type": "INPUT",
-                                            "variant": "PASSWORD",
-                                            "config": {
-                                                "identifier": "password",
-                                                "type": "password",
-                                                "hint": "",
-                                                "label": "Password",
-                                                "required": true,
-                                                "placeholder": "Enter your password"
-                                            }
-                                        },
-                                        {
-                                            "id": "{{ID}}",
-                                            "category": "ACTION",
-                                            "type": "BUTTON",
-                                            "variant": "PRIMARY",
-                                            "config": {
-                                                "type": "submit",
-                                                "text": "Continue"
-                                            },
-                                            "action": {
-                                                "type": "EXECUTOR",
-                                                "executor": {
-                                                    "name": "PasswordOnboardExecutor"
-                                                }
-                                            }
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    }
-                ]
-            }
-        }
-    },
-    {
-        "resourceType": "WIDGET",
-        "category": "FLOW",
-        "type": "EMAIL_OTP",
-        "version": "0.1.0",
-        "deprecated": false,
-        "display": {
-            "label": "Continue with Email OTP",
-            "description": "Registration experience with Email",
-            "image": "https://www.svgrepo.com/show/368868/otp.svg",
-            "showOnResourcePanel": true
-        },
-        "config": {
-            "data": {
-                "__generationMeta__": {
-                    "replacers": [
-                        {
-                            "key": "EMAIL_OTP_VERIFICATION_STEP_ID",
-                            "type": "ID"
-                        }
-                    ]
-                },
-                "steps": [
-                    {
-                        "__generationMeta__": {
-                            "strategy": "MERGE_WITH_DROP_POINT"
-                        },
-                        "type": "VIEW",
-                        "data": {
-                            "components": [
-                                {
-                                    "id": "{{ID}}",
-                                    "category": "ACTION",
-                                    "type": "BUTTON",
-                                    "variant": "PRIMARY",
-                                    "config": {
-                                        "type": "button",
-                                        "text": "Continue with Email OTP"
-                                    },
-                                    "action": {
-                                        "next": "{{EMAIL_OTP_VERIFICATION_STEP_ID}}",
-                                        "type": "NEXT"
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "id": "{{EMAIL_OTP_VERIFICATION_STEP_ID}}",
-                        "type": "VIEW",
-                        "size": {
-                            "width": 350,
-                            "height": 343
-                        },
-                        "position": {
-                            "x": 690,
-                            "y": 20
-                        },
-                        "data": {
-                            "components": [
-                                {
-                                    "id": "{{ID}}",
-                                    "category": "DISPLAY",
-                                    "type": "TYPOGRAPHY",
-                                    "variant": "H3",
-                                    "config": {
-                                        "text": "Verify OTP"
-                                    }
-                                },
-                                {
-                                    "id": "{{ID}}",
-                                    "category": "BLOCK",
-                                    "type": "FORM",
-                                    "config": {},
-                                    "components": [
-                                        {
-                                            "id": "{{ID}}",
-                                            "category": "FIELD",
-                                            "type": "INPUT",
-                                            "variant": "OTP",
-                                            "config": {
-                                                "type": "text",
-                                                "hint": "",
-                                                "identifier": "otp",
-                                                "label": "Enter the OTP code",
-                                                "required": true,
-                                                "placeholder": ""
-                                            }
-                                        },
-                                        {
-                                            "id": "{{ID}}",
-                                            "category": "ACTION",
-                                            "type": "BUTTON",
-                                            "variant": "PRIMARY",
-                                            "config": {
-                                                "type": "submit",
-                                                "text": "Verify"
-                                            },
-                                            "action": {
-                                                "type": "EXECUTOR",
-                                                "executor": {
-                                                    "name": "EmailOTPExecutor"
-                                                },
-                                                "next": "USER_ONBOARD"
-                                            }
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    }
-                ]
-            }
-        }
-    },
-    {
-        "resourceType": "WIDGET",
-        "category": "FLOW",
-        "type": "SMS_OTP",
-        "version": "0.1.0",
-        "deprecated": false,
-        "display": {
-            "label": "Continue with SMS OTP",
-            "description": "Registration experience with SMS OTP",
-            "image": "https://www.svgrepo.com/show/381137/transaction-password-otp-verification-code-security.svg",
-            "showOnResourcePanel": true
-        },
-        "config": {
-            "data": {
-                "__generationMeta__": {
-                    "replacers": [
-                        {
-                            "key": "SMS_OTP_VERIFICATION_STEP_ID",
-                            "type": "ID"
-                        }
-                    ]
-                },
-                "steps": [
-                    {
-                        "__generationMeta__": {
-                            "strategy": "MERGE_WITH_DROP_POINT"
-                        },
-                        "type": "VIEW",
-                        "data": {
-                            "components": [
-                                {
-                                    "id": "{{ID}}",
-                                    "category": "ACTION",
-                                    "type": "BUTTON",
-                                    "variant": "PRIMARY",
-                                    "config": {
-                                        "type": "button",
-                                        "text": "Continue with SMS OTP"
-                                    },
-                                    "action": {
-                                        "next": "{{SMS_OTP_VERIFICATION_STEP_ID}}",
-                                        "type": "NEXT"
-                                    }
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "id": "{{SMS_OTP_VERIFICATION_STEP_ID}}",
-                        "type": "VIEW",
-                        "size": {
-                            "width": 350,
-                            "height": 343
-                        },
-                        "position": {
-                            "x": 690,
-                            "y": 20
-                        },
-                        "data": {
-                            "components": [
-                                {
-                                    "id": "{{ID}}",
-                                    "category": "DISPLAY",
-                                    "type": "TYPOGRAPHY",
-                                    "variant": "H3",
-                                    "config": {
-                                        "text": "Verify OTP"
-                                    }
-                                },
-                                {
-                                    "id": "{{ID}}",
-                                    "category": "BLOCK",
-                                    "type": "FORM",
-                                    "config": {},
-                                    "components": [
-                                        {
-                                            "id": "{{ID}}",
-                                            "category": "FIELD",
-                                            "type": "INPUT",
-                                            "variant": "OTP",
-                                            "config": {
-                                                "type": "text",
-                                                "hint": "",
-                                                "identifier": "otp",
-                                                "label": "Enter the OTP code",
-                                                "required": true,
-                                                "placeholder": ""
-                                            }
-                                        },
-                                        {
-                                            "id": "{{ID}}",
-                                            "category": "ACTION",
-                                            "type": "BUTTON",
-                                            "variant": "PRIMARY",
-                                            "config": {
-                                                "type": "submit",
-                                                "text": "Verify"
-                                            },
-                                            "action": {
-                                                "type": "EXECUTOR",
-                                                "executor": {
-                                                    "name": "SMSOTPExecutor"
-                                                },
-                                                "next": "USER_ONBOARD"
-                                            }
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    }
-                ]
-            }
-        }
-    },
-    {
-        "resourceType": "WIDGET",
         "category": "FLOW",
         "type": "GOOGLE_FEDERATION",
         "version": "0.1.0",
@@ -697,77 +385,473 @@
         }
     },
     {
-    "resourceType": "WIDGET",
-    "category": "FLOW",
-    "type": "PASSKEY_ENROLLMENT",
-    "version": "0.1.0",
-    "deprecated": false,
-    "display": {
-        "label": "Continue with Passkey",
-        "description": "Registration experience using Passkeys",
-        "image": "https://www.svgrepo.com/show/340307/fingerprint-recognition.svg",
-        "showOnResourcePanel": true
-    },
-    "config": {
-        "data": {
-            "__generationMeta__": {
-                "defaultPropertySelectorId": "{{PASSKEY_EXECUTION_STEP_ID}}",
-                "replacers": [
+        "resourceType": "WIDGET",
+        "category": "COMPOSITE",
+        "type": "IDENTIFIER_PASSWORD",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Username + Password",
+            "description": "Basic registration experience with simple username & password",
+            "image": "https://www.svgrepo.com/show/390092/security-protection-password.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "__generationMeta__": {},
+                "steps": [
                     {
-                        "key": "PASSKEY_EXECUTION_STEP_ID",
-                        "type": "ID"
-                    }
-                ]
-            },
-            "steps": [
-                {
-                    "__generationMeta__": {
-                        "strategy": "MERGE_WITH_DROP_POINT"
-                    },
-                    "type": "VIEW",
-                    "data": {
-                        "components": [
-                            {
-                                "id": "{{ID}}",
-                                "category": "ACTION",
-                                "type": "BUTTON",
-                                "variant": "SOCIAL",
-                                "config": {
-                                    "type": "button",
-                                    "text": "Continue with Passkey",
-                                    "image": "https://www.svgrepo.com/show/340307/fingerprint-recognition.svg"
-                                },
-                                "action": {
-                                    "type": "NEXT",
-                                    "next": "{{PASSKEY_EXECUTION_STEP_ID}}"
+                        "__generationMeta__": {
+                            "strategy": "MERGE_WITH_DROP_POINT"
+                        },
+                        "type": "VIEW",
+                        "data": {
+                            "components": [
+                                {
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "id": "{{ID}}",
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "TEXT",
+                                            "config": {
+                                                "type": "text",
+                                                "hint": "",
+                                                "label": "Username",
+                                                "required": true,
+                                                "placeholder": "Enter your username",
+                                                "identifier": "http://wso2.org/claims/username"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "PASSWORD",
+                                            "config": {
+                                                "identifier": "password",
+                                                "type": "password",
+                                                "hint": "",
+                                                "label": "Password",
+                                                "required": true,
+                                                "placeholder": "Enter your password"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "type": "EXECUTOR",
+                                                "executor": {
+                                                    "name": "PasswordProvisioningExecutor"
+                                                }
+                                            }
+                                        }
+                                    ]
                                 }
-                            }
-                        ]
-                    }
-                },
-                {
-                    "id": "{{PASSKEY_EXECUTION_STEP_ID}}",
-                    "type": "EXECUTION",
-                    "size": {
-                        "width": 350,
-                        "height": 291
-                    },
-                    "position": {
-                        "x": 690,
-                        "y": 500
-                    },
-                    "data": {
-                        "action": {
-                            "type": "EXECUTOR",
-                            "executor": {
-                                "name": "FIDO2Executor"
-                            },
-                            "next": "USER_ONBOARD"
+                            ]
                         }
                     }
-                }
-            ]
+                ]
+            }
+        }
+    },
+    {
+        "resourceType": "WIDGET",
+        "category": "FLOW",
+        "type": "EMAIL_OTP",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Continue with Email OTP",
+            "description": "Registration experience with Email OTP",
+            "image": "https://www.svgrepo.com/show/387455/email-down.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "__generationMeta__": {
+                    "replacers": [
+                        {
+                            "key": "EMAIL_OTP_VERIFICATION_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
+                "steps": [
+                    {
+                        "__generationMeta__": {
+                            "strategy": "MERGE_WITH_DROP_POINT"
+                        },
+                        "type": "VIEW",
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "ACTION",
+                                    "type": "BUTTON",
+                                    "variant": "PRIMARY",
+                                    "config": {
+                                        "type": "button",
+                                        "text": "Continue with Email OTP"
+                                    },
+                                    "action": {
+                                        "next": "{{EMAIL_OTP_VERIFICATION_STEP_ID}}",
+                                        "type": "NEXT"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{EMAIL_OTP_VERIFICATION_STEP_ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 343
+                        },
+                        "position": {
+                            "x": 690,
+                            "y": 20
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Verify OTP"
+                                    }
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "OTP",
+                                            "config": {
+                                                "type": "text",
+                                                "hint": "",
+                                                "identifier": "otp",
+                                                "label": "Enter the OTP code",
+                                                "required": true,
+                                                "placeholder": ""
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Verify"
+                                            },
+                                            "action": {
+                                                "type": "EXECUTOR",
+                                                "executor": {
+                                                    "name": "EmailOTPExecutor"
+                                                },
+                                                "next": "USER_ONBOARD"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "resourceType": "WIDGET",
+        "category": "FLOW",
+        "type": "SMS_OTP",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Continue with SMS OTP",
+            "description": "Registration experience with SMS OTP",
+            "image": "https://www.svgrepo.com/show/455832/mobile-message.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "__generationMeta__": {
+                    "replacers": [
+                        {
+                            "key": "SMS_OTP_VERIFICATION_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
+                "steps": [
+                    {
+                        "__generationMeta__": {
+                            "strategy": "MERGE_WITH_DROP_POINT"
+                        },
+                        "type": "VIEW",
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "ACTION",
+                                    "type": "BUTTON",
+                                    "variant": "PRIMARY",
+                                    "config": {
+                                        "type": "button",
+                                        "text": "Continue with SMS OTP"
+                                    },
+                                    "action": {
+                                        "next": "{{SMS_OTP_VERIFICATION_STEP_ID}}",
+                                        "type": "NEXT"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{SMS_OTP_VERIFICATION_STEP_ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 343
+                        },
+                        "position": {
+                            "x": 690,
+                            "y": 20
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Verify OTP"
+                                    }
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "OTP",
+                                            "config": {
+                                                "type": "text",
+                                                "hint": "",
+                                                "identifier": "otp",
+                                                "label": "Enter the OTP code",
+                                                "required": true,
+                                                "placeholder": ""
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Verify"
+                                            },
+                                            "action": {
+                                                "type": "EXECUTOR",
+                                                "executor": {
+                                                    "name": "SMSOTPExecutor"
+                                                },
+                                                "next": "USER_ONBOARD"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "resourceType": "WIDGET",
+        "category": "FLOW",
+        "type": "PASSKEY_ENROLLMENT",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Continue with Passkey",
+            "description": "Registration experience with Passkeys",
+            "image": "https://www.svgrepo.com/show/340307/fingerprint-recognition.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "__generationMeta__": {
+                    "defaultPropertySelectorId": "{{PASSKEY_EXECUTION_STEP_ID}}",
+                    "replacers": [
+                        {
+                            "key": "PASSKEY_EXECUTION_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
+                "steps": [
+                    {
+                        "__generationMeta__": {
+                            "strategy": "MERGE_WITH_DROP_POINT"
+                        },
+                        "type": "VIEW",
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "ACTION",
+                                    "type": "BUTTON",
+                                    "variant": "SOCIAL",
+                                    "config": {
+                                        "type": "button",
+                                        "text": "Continue with Passkey",
+                                        "image": "https://www.svgrepo.com/show/340307/fingerprint-recognition.svg"
+                                    },
+                                    "action": {
+                                        "type": "NEXT",
+                                        "next": "{{PASSKEY_EXECUTION_STEP_ID}}"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{PASSKEY_EXECUTION_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 690,
+                            "y": 500
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "FIDO2Executor"
+                                },
+                                "next": "USER_ONBOARD"
+                            }
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "resourceType": "WIDGET",
+        "category": "FLOW",
+        "type": "MAGIC_LINK",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Continue with Magic Link",
+            "description": "Registration experience with Magic Link",
+            "image": "https://www.svgrepo.com/show/532869/link-alt-1.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "__generationMeta__": {
+                    "defaultPropertySelectorId": "{{MAGIC_LINK_EXECUTION_STEP_ID}}",
+                    "replacers": [
+                        {
+                            "key": "MAGIC_LINK_EXECUTION_STEP_ID",
+                            "type": "ID"
+                        }
+                    ]
+                },
+                "steps": [
+                    {
+                        "__generationMeta__": {
+                            "strategy": "MERGE_WITH_DROP_POINT"
+                        },
+                        "type": "VIEW",
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "ACTION",
+                                    "type": "BUTTON",
+                                    "variant": "SOCIAL",
+                                    "config": {
+                                        "type": "button",
+                                        "text": "Continue with Magic Link",
+                                        "image": "https://www.svgrepo.com/show/532869/link-alt-1.svg"
+                                    },
+                                    "action": {
+                                        "type": "NEXT",
+                                        "next": "{{MAGIC_LINK_EXECUTION_STEP_ID}}"
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{MAGIC_LINK_EXECUTION_STEP_ID}}",
+                        "type": "EXECUTION",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 690,
+                            "y": 500
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "MagicLinkExecutor"
+                                },
+                                "next": "USER_ONBOARD"
+                            },
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<h3 class=\"rich-text-heading-h3 rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Check Your Email</span></h3><h5 class=\"rich-text-heading-h5 rich-text-align-center\"><br><span class=\"rich-text-pre-wrap\">An email containing further instructions has been sent to your email address. Please check your inbox to continue.</span></h5>"
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
         }
     }
-}
 ]

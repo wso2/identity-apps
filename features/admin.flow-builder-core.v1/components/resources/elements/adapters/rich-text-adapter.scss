@@ -52,4 +52,16 @@
     .rich-text-paragraph {
         margin: 0.5em 0;
     }
+
+    .rich-text-i18n-placeholder {
+        .rich-text-i18n-placeholder-key {
+            background-color: rgb(from var(--oxygen-palette-primary-main) r g b / 0.1);
+            color: var(--oxygen-palette-primary-main);
+            font-family: monospace;
+            font-size: 13px;
+            padding: 2px 4px;
+            border-radius: var(--oxygen-shape-borderRadius);
+            display: inline-block;
+        }
+    }
 }

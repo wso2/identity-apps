@@ -468,21 +468,6 @@
                 "config": {
                     "text": "Or"
                 }
-            },
-            {
-                "resourceType": "ELEMENT",
-                "category": "DISPLAY",
-                "type": "DIVIDER",
-                "version": "0.1.0",
-                "deprecated": false,
-                "variant": "VERTICAL",
-                "display": {
-                    "label": "Vertical Divider",
-                    "image": null
-                },
-                "config": {
-                    "text": "Or"
-                }
             }
         ]
     },

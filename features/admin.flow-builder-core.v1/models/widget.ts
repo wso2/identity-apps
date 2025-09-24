@@ -47,4 +47,5 @@ export enum WidgetTypes {
     MicrosoftFederation = "MICROSOFT_FEDERATION",
     GithubFederation = "GITHUB_FEDERATION",
     PasskeyEnrollment = "PASSKEY_ENROLLMENT",
+    MagicLink = "MAGIC_LINK",
 }

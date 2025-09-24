@@ -204,6 +204,10 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
         },
         i18n: null,
         ui: {
+            adminNotice: {
+                enabled: undefined,
+                plannedRollOutDate: undefined
+            },
             announcements: [],
             appCopyright: "",
             appLogo: {
@@ -241,6 +245,9 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 userStores: null,
                 users: null
             },
+            flowExecution: {
+                enableLegacyFlows: true
+            },
             googleOneTapEnabledTenants: [],
             gravatarConfig: {
                 defaultImage: "",
@@ -274,7 +281,6 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                     enabled: false
                 }
             },
-            isAdminDataSeparationNoticeEnabled: undefined,
             isClaimUniquenessValidationEnabled: undefined,
             isClientSecretHashEnabled: undefined,
             isCookieConsentBannerEnabled: undefined,
@@ -292,6 +298,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             isSAASDeployment: undefined,
             isSignatureValidationCertificateAliasEnabled: undefined,
             isTrustedAppConsentRequired: undefined,
+            isWSFedProtocolTemplateEnabled: undefined,
             listAllAttributeDialects: undefined,
             multiTenancy: {
                 isTenantDomainDotExtensionMandatory: true,
@@ -304,7 +311,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             productName: "",
             productVersionConfig: null,
             routes: {
-                organizationEnabledRoutes: []
+                organizationEnabledRoutes: undefined
             },
             selfAppIdentifier: "",
             showAppSwitchButton: undefined,

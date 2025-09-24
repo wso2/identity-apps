@@ -41,6 +41,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
+import { SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID } from "@wso2is/admin.login-flow-builder.v1/constants/editor-constants";
 import {
     ELK_RISK_BASED_TEMPLATE_NAME
 } from "@wso2is/admin.login-flow-builder.v1/constants/template-constants";
@@ -51,8 +52,11 @@ import { deleteSecret, getSecretList } from "@wso2is/admin.secrets.v1/api/secret
 import AddSecretWizard from "@wso2is/admin.secrets.v1/components/add-secret-wizard";
 import { ADAPTIVE_SCRIPT_SECRETS } from "@wso2is/admin.secrets.v1/constants/secrets.common";
 import { GetSecretListResponse, SecretModel } from "@wso2is/admin.secrets.v1/models/secret";
+import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
+import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
 import { UIConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
@@ -223,6 +227,11 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const hasSecretMgtCreatePermissions: boolean = useRequiredScopes(featureConfig?.secretsManagement?.scopes?.create);
     const hasSecretMgtReadPermissions: boolean = useRequiredScopes(featureConfig?.secretsManagement?.scopes?.read);
 
+    const sharedAppAdaptiveAuthEnabled: boolean =
+        isFeatureEnabled(featureConfig?.applications, SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID);
+
+    const { tierName }: UseSubscriptionInterface = useSubscription();
+
     /**
      * Calls method to load secrets to secret list.
      */
@@ -237,7 +246,9 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
 
         if (OrganizationUtils.getOrganizationType() === OrganizationType.SUPER_ORGANIZATION ||
             OrganizationUtils.getOrganizationType() === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
-            OrganizationUtils.getOrganizationType() === OrganizationType.TENANT) {
+            OrganizationUtils.getOrganizationType() === OrganizationType.TENANT ||
+            (OrganizationUtils.getOrganizationType() === OrganizationType.SUBORGANIZATION &&
+                sharedAppAdaptiveAuthEnabled)) {
             setIsSecretListLoading(true);
 
             getSecretList({
@@ -272,7 +283,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      */
     useEffect(() => {
         if (adaptiveFeatureStatus === FeatureStatus.ENABLED
-            && adaptiveFeatureTags?.includes(FeatureTags.PREMIUM)) {
+            && adaptiveFeatureTags?.includes(FeatureTags.PREMIUM)
+            && tierName === TenantTier.FREE) {
             setIsPremiumFeature(true);
         }
     }, []);
@@ -961,7 +973,9 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                 !isSecretListLoading &&
                             (OrganizationUtils.getOrganizationType() === OrganizationType.SUPER_ORGANIZATION ||
                             OrganizationUtils.getOrganizationType() === OrganizationType.FIRST_LEVEL_ORGANIZATION ||
-                            OrganizationUtils.getOrganizationType() === OrganizationType.TENANT) && (
+                            OrganizationUtils.getOrganizationType() === OrganizationType.TENANT ||
+                            (OrganizationUtils.getOrganizationType() === OrganizationType.SUBORGANIZATION &&
+                                sharedAppAdaptiveAuthEnabled)) && (
                             <>
                                 <Divider />
                                 <ListItem onClick={ () => null } disableGutters disablePadding>

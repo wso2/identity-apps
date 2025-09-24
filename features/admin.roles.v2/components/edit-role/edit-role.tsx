@@ -254,6 +254,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                                 role={ roleObject }
                                 onRoleUpdate={ onRoleUpdate }
                                 tabIndex={ 3 }
+                                isForNonHumanUser={ false }
                             />
                         </ResourceTab.Pane>
                     )

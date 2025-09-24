@@ -97,6 +97,76 @@
         "
     />
 
+    <!-- Copy layouts to the accounts-portal -->
+    <target name="check-accounts-extensions-layouts-dir">
+        <available
+            property="accounts.extensions.layouts.dir.exists"
+            file="../../apps/accounts/src/main/webapp/extensions/layouts"
+            type="dir"
+        />
+    </target>
+
+    <target
+        name="create-accounts-extensions-layouts-dir"
+        depends="
+        check-accounts-extensions-layouts-dir,
+        check-custom-layout-existance
+        "
+        if="${login-portal-layouts.layouts.custom.dir.exists}"
+        unless="${accounts.extensions.layouts.dir.exists}"
+    >
+        <mkdir dir="../../apps/accounts/src/main/webapp/extensions/layouts"/>
+    </target>
+
+    <target 
+        name="copy-custom-layouts-into-accounts"
+        depends="
+        create-accounts-extensions-layouts-dir,
+        check-custom-layout-existance
+        "
+        if="${login-portal-layouts.layouts.custom.dir.exists}"
+    >
+        <echo message="--- copying custom layouts to Accounts Portal ---"/>
+        <copy todir="../../apps/accounts/src/main/webapp/extensions/layouts/" overwrite="true">
+            <fileset dir="target/layouts/">
+                <include name="custom/**"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="check-accounts-includes-layouts-dir">
+        <available
+            property="accounts.includes.layouts.dir.exists"
+            file="../../apps/accounts/src/main/webapp/includes/layouts"
+            type="dir"
+        />
+    </target>
+
+    <target
+        name="create-accounts-includes-layouts-dir"
+        depends="check-accounts-includes-layouts-dir"
+        unless="${accounts.includes.layouts.dir.exists}"
+    >
+        <mkdir dir="../../apps/accounts/src/main/webapp/includes/layouts"/>
+    </target>
+
+    <target name="copy-predefined-layout-into-accounts" depends="create-accounts-includes-layouts-dir">
+        <echo message="--- copying predefined layout to Accounts Portal ---"/>
+        <copy todir="../../apps/accounts/src/main/webapp/includes/layouts/" overwrite="true">
+            <fileset dir="target/layouts/">
+                <exclude name="custom/**"/>
+            </fileset>
+        </copy>
+    </target>
+
+    <target
+        name="copy-layouts-into-accounts"
+        depends="
+        copy-custom-layouts-into-accounts,
+        copy-predefined-layout-into-accounts
+        "
+    />
+
     <!-- Copy layouts to the recovery-portal -->
     <target name="check-recovery-portal-extensions-layouts-dir">
         <available
@@ -266,6 +336,7 @@
     <target
         name="move-layouts"
         depends="
+            copy-layouts-into-accounts,
             copy-layouts-into-authentication-portal,
             copy-layouts-into-recovery-portal,
             copy-layouts-into-x509-certificate-authentication-portal,

@@ -18,6 +18,7 @@
 
 import { getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
 import { sortList } from "@wso2is/admin.core.v1/utils/sort-list";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Claim, ClaimsGetParams, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -108,6 +109,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
     const [ claim, setClaim ] = useState<ExternalClaim>(null);
     const [ filteredLocalClaims, setFilteredLocalClaims ] = useState<Claim[]>();
     const [ isClaimsLoading, setIsClaimsLoading ] = useState<boolean>(false);
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const dispatch: Dispatch = useDispatch();
 
@@ -311,6 +313,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                     <Grid.Column width={ 8 }>
                         <Field
                             type="dropdown"
+                            disabled={ isSubOrganization() }
                             name="localClaim"
                             label={ t("claims:external.forms.localAttribute.label") }
                             required={ true }

@@ -61,6 +61,24 @@ export const actions: actionsNS = {
         }
     },
     fields: {
+        allowedHeaders: {
+            hint: "Request headers in the relevant flow to be shared with the external service.",
+            label: "Allowed Headers",
+            placeholder: "Header Name",
+            tooltip: "Add Header",
+            validations: {
+                invalid: "Please enter a valid header name."
+            }
+        },
+        allowedParameters: {
+            hint: "Request parameters in the relevant flow to be shared with the external service.",
+            label: "Allowed Parameters",
+            placeholder: "Parameter Name",
+            tooltip: "Add Parameter",
+            validations: {
+                invalid: "Please enter a valid parameter name."
+            }
+        },
         authentication: {
             info: {
                 message: "If you are changing the authentication, be aware that the authentication" +

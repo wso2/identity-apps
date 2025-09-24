@@ -180,7 +180,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     );
 
     useEffect(() => {
-        if (application && applicationInboundConfigs) {
+        if (application && applicationInboundConfigs && !application?.advancedConfigurations?.fragment) {
             const isAppOutdated: boolean = ApplicationManagementUtils.isApplicationOutdated(
                 application?.applicationVersion, true);
 
@@ -819,6 +819,52 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                 </ListItem>
                             )
                         }
+                        {
+                            !ApplicationManagementUtils.isAppVersionAllowed(
+                                application?.applicationVersion,
+                                ApplicationManagementConstants.APP_VERSION_3
+                            ) && applicationInboundConfigs && (
+                                <ListItem
+                                    sx={ {
+                                        display: "list-item",
+                                        listStyleType: "disc"
+                                    } }>
+                                    <ListItemText>
+                                        <Typography variant="body2" >
+                                            <Trans
+                                                i18nKey={
+                                                    t("applications:forms.inboundOIDC.sections"
+                                                    + ".outdatedApplications.fields.versions"
+                                                    + ".version300.linkedLocalAccountAttributeHandling.instruction")
+                                                }
+                                            >
+                                                When you enable the use of linked local account attributes
+                                                instead of federated attributes and mandate that a linked local account
+                                                must exist, this configuration previously applied only to the
+                                                <Code withBackground>token exchange</Code> flow. With this update,
+                                                the same restriction now also applies to
+                                                <Code withBackground>login</Code> scenarios.
+                                            </Trans>
+                                        </Typography>
+                                        <DocumentationLink
+                                            link={
+                                                getLink("develop.applications.editApplication.outdatedApplications."
+                                                + "versions.version300.linkedLocalAccountAttributeHandling."
+                                                + "documentationLink")
+                                            }
+                                            showEmptyLink={ false }
+                                        >
+                                            <Trans
+                                                i18nKey={
+                                                    t("applications:forms.inboundOIDC.sections"
+                                                    + ".outdatedApplications.documentationHint")
+                                                }
+                                            />
+                                        </DocumentationLink>
+                                    </ListItemText>
+                                </ListItem>
+                            )
+                        }
                     </List>
                 </Grid>
                 <Typography variant="body2" className="banner-action">
@@ -976,7 +1022,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                 ApplicationManagementUtils.isApplicationOutdated(
                                     moderatedApplicationData?.applicationVersion,
                                     moderatedApplicationData?.clientId
-                                    && !isEmpty(moderatedApplicationData?.clientId)) && (
+                                    && !isEmpty(moderatedApplicationData?.clientId)) &&
+                                    !application?.advancedConfigurations?.fragment && (
                                     <>
                                         <Label
                                             className="outdated-app-label"

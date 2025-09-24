@@ -30,6 +30,12 @@
         <param-name>EnableEmailNotification</param-name>
         <param-value>true</param-value>
     </context-param>
+    {% if localization.prioritize_param is defined %}
+        <context-param>
+            <param-name>isLocalizationParamPrioritized</param-name>
+            <param-value>{{ localization.prioritize_param }}</param-value>
+        </context-param>
+    {% endif %}
     {% if accountrecoveryendpoint.default_business_user_store is defined %}
         <context-param>
            <param-name>DefaultBusinessUserStore</param-name>

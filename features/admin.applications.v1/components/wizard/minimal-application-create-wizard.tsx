@@ -31,6 +31,7 @@ import { CORSOriginsListInterface } from "@wso2is/admin.core.v1/models/cors-conf
 import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
+import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -40,7 +41,8 @@ import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, FeatureAccessConfigInterface,
+    IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
 import {
@@ -911,9 +913,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         // Filter out legacy and unsupported auth protocols.
         supportedProtocols = supportedProtocols.filter((protocol: string) => {
 
-            if (applicationConfig.customApplication.allowedProtocolTypes
-                && applicationConfig.customApplication.allowedProtocolTypes.length > 0) {
-                if (applicationConfig.customApplication.allowedProtocolTypes.includes(protocol)) {
+            if (applicationConfig.customApplication.getAllowedProtocolTypes()
+                && applicationConfig.customApplication.getAllowedProtocolTypes().length > 0) {
+                if (applicationConfig.customApplication.getAllowedProtocolTypes().includes(protocol)) {
                     return protocol;
                 } else {
                     return false;
@@ -943,6 +945,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
         return supportedProtocols;
     };
+
+    const applicationsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state.config.ui.features?.applications);
 
     /**
      * Renders the sub template selection.
@@ -1027,7 +1032,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                                     }[imageKey]
                                                 }
                                                 size="small"
-                                                className="sub-template-selection-card"
+                                                className="sub-template-selection-card selection-card-with-ribbon"
                                                 header={ header }
                                                 selected={ isSelected }
                                                 onClick={ onClick }
@@ -1044,6 +1049,16 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                                 overlay={ renderDimmerOverlay() }
                                                 overlayOpacity={ 0.6 }
                                                 data-testid={ `${ testId }-${ id }-card` }
+                                                featureLabel={
+                                                    subTemplate === SupportedAuthProtocolTypes.WS_FEDERATION &&
+                                                    isFeatureEnabled(applicationsFeatureConfig,
+                                                        "applications.create.ws-fed.protocol.template") &&
+                                                    (<FeatureFlagLabel
+                                                        featureFlags={ applicationsFeatureConfig?.featureFlags }
+                                                        featureKey={ "applications.create.ws-fed.protocol.template" }
+                                                        type="ribbon"
+                                                    />)
+                                                }
                                             />
                                         );
                                     })
