@@ -44,9 +44,7 @@
 
             if (errorMessage.equalsIgnoreCase("provisioned.user.not.found")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "provisioned.user.not.found");
-            }
-
-            if (errorMessage.equalsIgnoreCase("error.user.account.locked")) {
+            } else if (errorMessage.equalsIgnoreCase("error.user.account.locked")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.user.account.locked");
             }
         }
