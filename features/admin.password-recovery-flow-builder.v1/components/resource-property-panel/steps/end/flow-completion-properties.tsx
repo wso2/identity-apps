@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import Stack from "@oxygen-ui/react/Stack";
@@ -62,44 +63,46 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                     </Trans>
                 </Alert>
             </Typography>
-            { metadata?.supportedFlowCompletionConfigs?.includes("isAutoLoginEnabled") && (
-                <>
-                    <FormControlLabel
-                        label={ t("flows:passwordRecovery.steps.end.autoLogin.label") }
-                        control={
-                            <Checkbox
-                                checked={ configs?.isAutoLoginEnabled === "true" }
-                                onChange={(event) => {
-                                    setFlowCompletionConfigs({
-                                        ...configs,
-                                        isAutoLoginEnabled: event.target.checked ? "true" : "false"
-                                    });
-                                }}
-                            />
-                        }
-                    />
-                    <FormHelperText>{ t("flows:passwordRecovery.steps.end.autoLogin.hint") }</FormHelperText>
-                </>
-            ) }
-            { metadata?.supportedFlowCompletionConfigs?.includes("isFlowCompletionNotificationEnabled") && (
-                <>
-                    <FormControlLabel
-                        label={ t("flows:passwordRecovery.steps.end.flowCompletionNotification.label") }
-                        control={
-                            <Checkbox
-                                checked={ configs?.isFlowCompletionNotificationEnabled === "true" }
-                                onChange={(event) => {
-                                    setFlowCompletionConfigs({
-                                        ...configs,
-                                        isFlowCompletionNotificationEnabled: event.target.checked ? "true" : "false"
-                                    });
-                                }}
-                            />
-                        }
-                    />
-                    <FormHelperText>{ t("flows:passwordRecovery.steps.end.flowCompletionNotification.hint") }</FormHelperText>
-                </>
-            ) }
+            <Box sx={ { display: "flex", flexDirection: "column", gap: 1 } }>
+                { metadata?.supportedFlowCompletionConfigs?.includes("isAutoLoginEnabled") && (
+                    <Box>
+                        <FormControlLabel
+                            label={ t("flows:passwordRecovery.steps.end.autoLogin.label") }
+                            control={
+                                <Checkbox
+                                    checked={ configs?.isAutoLoginEnabled === "true" }
+                                    onChange={(event) => {
+                                        setFlowCompletionConfigs({
+                                            ...configs,
+                                            isAutoLoginEnabled: event.target.checked ? "true" : "false"
+                                        });
+                                    }}
+                                />
+                            }
+                        />
+                        <FormHelperText>{ t("flows:passwordRecovery.steps.end.autoLogin.hint") }</FormHelperText>
+                    </Box>
+                ) }
+                { metadata?.supportedFlowCompletionConfigs?.includes("isFlowCompletionNotificationEnabled") && (
+                    <Box>
+                        <FormControlLabel
+                            label={ t("flows:passwordRecovery.steps.end.flowCompletionNotification.label") }
+                            control={
+                                <Checkbox
+                                    checked={ configs?.isFlowCompletionNotificationEnabled === "true" }
+                                    onChange={(event) => {
+                                        setFlowCompletionConfigs({
+                                            ...configs,
+                                            isFlowCompletionNotificationEnabled: event.target.checked ? "true" : "false"
+                                        });
+                                    }}
+                                />
+                            }
+                        />
+                        <FormHelperText>{ t("flows:passwordRecovery.steps.end.flowCompletionNotification.hint") }</FormHelperText>
+                    </Box>
+                ) }
+            </Box>
         </Stack>
     );
 };
