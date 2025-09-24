@@ -248,6 +248,11 @@ export interface flowsNS {
                 };
             };
         };
+        steps: {
+            end: {
+                flowCompletionProperties: string;
+            };
+        };
         validationStatusLabels: {
             error: string;
             errors: string;

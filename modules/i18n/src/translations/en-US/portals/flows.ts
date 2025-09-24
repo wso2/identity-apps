@@ -249,6 +249,11 @@ export const flows: flowsNS = {
                 }
             }
         },
+        steps: {
+            end: {
+                flowCompletionProperties: "Flow Completion Properties"
+            }
+        },
         validationStatusLabels: {
             error: "Error",
             errors: "Errors",

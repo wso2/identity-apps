@@ -24,6 +24,10 @@ import { CommonStepFactoryPropsInterface } from "../common-step-factory";
 import { useNodeId } from "@xyflow/react";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
 import "./end.scss";
+import Stack from "@oxygen-ui/react/Stack";
+import Avatar from "@oxygen-ui/react/Avatar";
+import Typography from "@oxygen-ui/react/Typography";
+import { useTranslation } from "react-i18next";
 
 /**
  * Props interface of {@link End}
@@ -56,8 +60,9 @@ const End: FunctionComponent<EndPropsInterface> = memo(
         resource,
         "data-componentid": componentId = "end"
     }: EndPropsInterface): ReactElement => {
+        const { t } = useTranslation();
         const stepId: string = useNodeId();
-        const { setLastInteractedResource, setLastInteractedStepId } = useAuthenticationFlowBuilderCore();
+        const { setLastInteractedResource, setLastInteractedStepId, setResourcePropertiesPanelHeading } = useAuthenticationFlowBuilderCore();
 
         /**
          * Get allowed types by filtering out restricted types from the default allowed types.
@@ -90,6 +95,14 @@ const End: FunctionComponent<EndPropsInterface> = memo(
                             ...((typeof data?.config === "object" && data?.config !== null) ? data.config : {})
                         }
                     });
+
+                    // Override the property panel heading.
+                    setResourcePropertiesPanelHeading(
+                        <Stack direction="row" className="sub-title" gap={ 1 } alignItems="center">
+                            <Avatar src={ resource?.display?.image } variant="square" />
+                            <Typography variant="h6">{ t("flows.core.steps.end.flowCompletionProperties") }</Typography>
+                        </Stack>
+                    );
                 } }
             />
         );
