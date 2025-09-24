@@ -510,7 +510,7 @@ export const ConnectorEditPage: FunctionComponent<ConnectorEditPageInterface> = 
             case ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID:
                 return "Alternative Login Identifiers";
             case ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID:
-                return "Invite User to Set Password";
+                return t("extensions:manage.serverConfigurations.userOnboarding.inviteUserToSetPassword.heading");
             case ServerConfigurationsConstants.SIFT_CONNECTOR_ID:
                 return "Fraud Detection";
             default:
