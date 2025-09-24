@@ -39,6 +39,7 @@ import {
     UserStore,
     UserstoreType
 } from "../../models";
+import isEmpty from "lodash-es/isEmpty";
 
 /**
  * Prop types of `EditConnectionDetails` component
@@ -302,6 +303,22 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
             });
     };
 
+    const resolvePasswordFieldValue = (formValue: string): string => {
+        if (isPasswordEditing) {
+            // In this case, an empty string "" can still be the password.
+            // Therefore, we cannot use isEmpty() here.
+            return formValue ?? properties?.required.find(
+                (property: TypeProperty) => property.name === "password")?.value;
+        }
+
+        if (isEmpty(formValue)) {
+            return properties?.required.find(
+                (property: TypeProperty) => property.name === "password")?.value;
+        }
+
+        return formValue;
+    };
+
     return (
         <EmphasizedSegment padded="very">
             <Forms
@@ -444,11 +461,8 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                             setIsTesting(true);
                                             if (type.typeName.includes(JDBC)) {
                                                 const testData: TestConnection = {
-                                                    connectionPassword: formValue?.get("password").toString()
-                                                        ?? properties?.required
-                                                            .find(
-                                                                (property: TypeProperty) => property.name === "password"
-                                                            )?.value,
+                                                    connectionPassword: resolvePasswordFieldValue(
+                                                        formValue?.get("password").toString()),
                                                     connectionURL: formValue?.get("url").toString()
                                                         ?? properties?.required
                                                             .find(
