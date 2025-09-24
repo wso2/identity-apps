@@ -23,7 +23,10 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
+import { useMemo } from "react";
 import RegistrationFlowConstants from "../constants/registration-flow-constants";
+import userOnboardToEndMigrator from "../migrations/migrators/user-onboard-to-end-migrator";
+import { RegistrationFlow } from "../models/flow";
 
 /**
  * Hook to get the configured registration flow.
@@ -48,12 +51,29 @@ const useGetRegistrationFlow = <Data = any, Error = RequestErrorInterface>(
         url: `${store.getState().config.endpoints.registrationFlow}?flowType=${RegistrationFlowConstants.REGISTRATION_FLOW_TYPE}`
     };
 
-    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
+    const { data: rawData, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
         shouldFetch ? requestConfig : null
     );
 
+    // Apply migrations...
+    const migratedData: Data = useMemo(() => {
+        if (!rawData) {
+            return rawData;
+        }
+
+        try {
+            const flow: RegistrationFlow = rawData as unknown as RegistrationFlow;
+            const migratedFlow: RegistrationFlow = userOnboardToEndMigrator(flow);
+
+            return migratedFlow as unknown as Data;
+        } catch (migrationError) {
+            // Fallback to original data if migration fails.
+            return rawData;
+        }
+    }, [ rawData ]);
+
     return {
-        data: data as Data,
+        data: migratedData as Data,
         error,
         isLoading,
         isValidating,
