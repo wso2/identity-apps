@@ -332,7 +332,7 @@ export class GovernanceConnectorUtils {
                     {
                         description: "Allow users to set their own passwords during admin-initiated onboarding " +
                                     "and configure related settings",
-                        header: "Invite User to Set Password",
+                        header: "Invited User Registration",
                         id: ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID,
                         route: AppConstants.getPaths().get("GOVERNANCE_CONNECTOR_EDIT")
                             .replace(":categoryId", ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
