@@ -54,7 +54,7 @@
         String questionBody = questionProperties[2];
         tempChallengeQuestion.setQuestionSetId(questionSetId);
         tempChallengeQuestion.setQuestionId(questionId);
-        tempChallengeQuestion.setQuestion(questionBody);
+        tempChallengeQuestion.setQuestion(Encode.forHtmlAttribute(questionBody));
         // Add the challenge question to the Hash-map
         List<ChallengeQuestion> challengeQuestionList = challengeQuestionMap.get(questionSetId);
         if (challengeQuestionList == null) {
