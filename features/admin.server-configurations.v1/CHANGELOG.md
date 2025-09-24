@@ -1,5 +1,16 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.35.72
+
+### Patch Changes
+
+- [#9194](https://github.com/wso2/identity-apps/pull/9194) [`85fc5f12641df71616272bb65c9a016cca82158b`](https://github.com/wso2/identity-apps/commit/85fc5f12641df71616272bb65c9a016cca82158b) Thanks [@savindi7](https://github.com/savindi7)! - Update Ask Password Settings Label.
+
+- Updated dependencies [[`85fc5f12641df71616272bb65c9a016cca82158b`](https://github.com/wso2/identity-apps/commit/85fc5f12641df71616272bb65c9a016cca82158b)]:
+  - @wso2is/admin.server-configurations.v1@2.35.72
+  - @wso2is/admin.core.v1@2.49.58
+  - @wso2is/admin.flow-builder-core.v1@0.10.50
+
 ## 2.35.71
 
 ### Patch Changes

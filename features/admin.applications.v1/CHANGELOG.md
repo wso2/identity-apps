@@ -1,5 +1,16 @@
 # @wso2is/admin.applications.v1
 
+## 2.37.11
+
+### Patch Changes
+
+- [#9190](https://github.com/wso2/identity-apps/pull/9190) [`a463f4fd520121c6478f02165b934136814f8a81`](https://github.com/wso2/identity-apps/commit/a463f4fd520121c6478f02165b934136814f8a81) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - update app settings title label
+
+- Updated dependencies [[`85fc5f12641df71616272bb65c9a016cca82158b`](https://github.com/wso2/identity-apps/commit/85fc5f12641df71616272bb65c9a016cca82158b)]:
+  - @wso2is/admin.server-configurations.v1@2.35.72
+  - @wso2is/admin.core.v1@2.49.58
+  - @wso2is/admin.roles.v2@2.27.220
+
 ## 2.37.10
 
 ### Patch Changes

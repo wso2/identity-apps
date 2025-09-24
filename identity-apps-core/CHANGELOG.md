@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 3.3.9
+
+### Patch Changes
+
+- [#9192](https://github.com/wso2/identity-apps/pull/9192) [`feaba4d4857d38cd2d07b75f0e7e5aecf6d35ce5`](https://github.com/wso2/identity-apps/commit/feaba4d4857d38cd2d07b75f0e7e5aecf6d35ce5) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - improve encodings of request parameters
+
+* [#9161](https://github.com/wso2/identity-apps/pull/9161) [`1ed5c0d86e84573c77042bc5370a145e0d061be4`](https://github.com/wso2/identity-apps/commit/1ed5c0d86e84573c77042bc5370a145e0d061be4) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Handle error codes processed from the JSP pages
+
 ## 3.3.8
 
 ### Patch Changes

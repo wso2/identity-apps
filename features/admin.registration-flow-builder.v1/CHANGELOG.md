@@ -1,5 +1,15 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.10.9
+
+### Patch Changes
+
+- [#9185](https://github.com/wso2/identity-apps/pull/9185) [`752303be661de3f1a6fa5200e8f48d52cf836826`](https://github.com/wso2/identity-apps/commit/752303be661de3f1a6fa5200e8f48d52cf836826) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Fix initial template rendering issue in self-registration flow.
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.58
+  - @wso2is/admin.flow-builder-core.v1@0.10.50
+
 ## 0.10.8
 
 ### Patch Changes

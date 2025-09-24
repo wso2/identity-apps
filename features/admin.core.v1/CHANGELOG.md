@@ -1,5 +1,19 @@
 # @wso2is/admin.core.v1
 
+## 2.49.58
+
+### Patch Changes
+
+- Updated dependencies [[`a463f4fd520121c6478f02165b934136814f8a81`](https://github.com/wso2/identity-apps/commit/a463f4fd520121c6478f02165b934136814f8a81), [`85fc5f12641df71616272bb65c9a016cca82158b`](https://github.com/wso2/identity-apps/commit/85fc5f12641df71616272bb65c9a016cca82158b), [`752303be661de3f1a6fa5200e8f48d52cf836826`](https://github.com/wso2/identity-apps/commit/752303be661de3f1a6fa5200e8f48d52cf836826)]:
+  - @wso2is/admin.applications.v1@2.37.11
+  - @wso2is/admin.server-configurations.v1@2.35.72
+  - @wso2is/admin.registration-flow-builder.v1@0.10.9
+  - @wso2is/admin.agents.v1@1.0.65
+  - @wso2is/admin.roles.v2@2.27.220
+  - @wso2is/admin.flow-builder-core.v1@0.10.50
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.50
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.50
+
 ## 2.49.57
 
 ### Patch Changes
