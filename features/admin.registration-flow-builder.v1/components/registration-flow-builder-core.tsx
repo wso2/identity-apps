@@ -31,7 +31,6 @@ import { StaticStepTypes, Step, StepTypes } from "@wso2is/admin.flow-builder-cor
 import { Template, TemplateTypes } from "@wso2is/admin.flow-builder-core.v1/models/templates";
 import { Widget } from "@wso2is/admin.flow-builder-core.v1/models/widget";
 import generateIdsForResources from "@wso2is/admin.flow-builder-core.v1/utils/generate-ids-for-templates";
-import generateResourceId from "@wso2is/admin.flow-builder-core.v1/utils/generate-resource-id";
 import resolveComponentMetadata from "@wso2is/admin.flow-builder-core.v1/utils/resolve-component-metadata";
 import resolveStepMetadata from "@wso2is/admin.flow-builder-core.v1/utils/resolve-step-metadata";
 import updateTemplatePlaceholderReferences
@@ -92,7 +91,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     "data-componentid": componentId = "registration-flow-builder-core",
     ...rest
 }: RegistrationFlowBuilderCorePropsInterface): ReactElement => {
-    const { addEmailVerificationEdges, addEmailVerificationNodes, generateProfileAttributes } = useDefaultFlow();
+    const { addEmailVerificationEdges, addEmailVerificationNodes } = useDefaultFlow();
 
     const updateNodeInternals: UpdateNodeInternals = useUpdateNodeInternals();
     const flowUpdatesInProgress: MutableRefObject<boolean> = useRef<boolean>(false);
@@ -134,7 +133,6 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     const { steps, templates } = resources;
 
     const INITIAL_FLOW_START_STEP_ID: string = StaticStepTypes.Start.toLowerCase();
-    const INITIAL_FLOW_VIEW_STEP_ID: string = generateResourceId(StepTypes.View.toLowerCase());
     const INITIAL_FLOW_USER_ONBOARD_STEP_ID: string = StaticStepTypes.UserOnboard;
     const SAMPLE_PROMPTS: string[] = [
         "Ask the user to supply an email address and choose a strong password to begin the sign-up.",
@@ -256,26 +254,6 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             generateIdsForResources<Template>(blankTemplate)?.config?.data?.steps[0]?.data?.components
         );
     };
-
-    const getBasicTemplateComponents = (): Element[] => {
-        const basicTemplate: Template = cloneDeep(
-            templates.find((template: Template) => template.type === TemplateTypes.Basic)
-        );
-
-        generateProfileAttributes(basicTemplate);
-
-        if (basicTemplate?.config?.data?.steps?.length > 0) {
-            basicTemplate.config.data.steps[0].id = INITIAL_FLOW_START_STEP_ID;
-        }
-
-        return resolveComponentMetadata(
-            resources,
-            generateIdsForResources<Template>(basicTemplate)?.config?.data?.steps[0]?.data?.components
-        );
-    };
-
-    const initialTemplateComponents: Element[] = useMemo(
-        () => getBasicTemplateComponents(), [ resources, generateProfileAttributes ]);
 
     const generateSteps: (steps: Node[]) => Node[] = useCallback((steps: Node[]): Node[] => {
         const START_STEP: Node = {
@@ -547,26 +525,59 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         return edges;
     };
 
-    const initialNodes: Node[] = useMemo<Node[]>(() => {
-        return generateSteps([
-            {
-                data: {
-                    components: initialTemplateComponents
-                },
-                deletable: true,
-                id: INITIAL_FLOW_VIEW_STEP_ID,
-                position: { x: 0, y: 330 },
-                type: StepTypes.View
-            },
-            {
-                data: {},
-                deletable: false,
-                id: INITIAL_FLOW_USER_ONBOARD_STEP_ID,
-                position: { x: 500, y: 408 },
-                type: StaticStepTypes.UserOnboard
+    const getBasicTemplateStepsWithoutOnBoardingStep: () => Step[] = useCallback(() => {
+        const basicTemplate: Template = cloneDeep(
+            templates.find((template: Template) => template.type === TemplateTypes.Basic)
+        );
+
+        const templateSteps: Step[] = basicTemplate?.config?.data?.steps ?? [];
+
+        if (templateSteps.length === 0) {
+            return [];
+        }
+
+        // Drop the last step from the template.
+        const stepsWithoutLast: Step[] = templateSteps.slice(0, -1);
+
+        // Resolve IDs and metadata for downstream usage.
+        const withIds: Step[] = generateIdsForResources<Step[]>(stepsWithoutLast) as unknown as Step[];
+
+        const withResolvedComponents: Step[] = withIds.map((s: Step) => {
+            if (s?.data?.components) {
+                return {
+                    ...s,
+                    data: {
+                        ...s.data,
+                        components: resolveComponentMetadata(resources, s.data.components as any)
+                    }
+                };
             }
-        ]);
-    }, [ initialTemplateComponents, generateSteps ]);
+
+            return s;
+        });
+
+        return resolveStepMetadata(resources, withResolvedComponents) as Step[];
+    }, [ templates, resources ]);
+
+    const initialNodes: Node[] = useMemo<Node[]>(() => {
+        // Try to seed from Basic template (without the last step).
+        const basicSteps: Step[] = getBasicTemplateStepsWithoutOnBoardingStep();
+
+        if (basicSteps.length > 0) {
+            const seedNodes: Node[] = [
+                ...basicSteps,
+                {
+                    data: {},
+                    deletable: false,
+                    id: INITIAL_FLOW_USER_ONBOARD_STEP_ID,
+                    position: { x: 1200, y: 408 },
+                    type: StaticStepTypes.UserOnboard
+                }
+            ];
+
+            return generateSteps(seedNodes);
+        }
+    }, [ getBasicTemplateStepsWithoutOnBoardingStep, generateSteps ]);
 
     const [ nodes, setNodes, onNodesChange ] = useNodesState([]);
     const [ edges, setEdges, onEdgesChange ] = useEdgesState([]);
