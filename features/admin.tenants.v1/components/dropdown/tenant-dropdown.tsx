@@ -689,29 +689,31 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
             });
         }
 
-        options.push(
-            <Dropdown.Item
-                className="action-panel"
-                onClick={ (): void => {
-                    history.push(AppConstants.getPaths().get("EDIT_SELF_ORGANIZATION"));
-                } }
-                data-compnentid="edit-self-organization"
-            >
-                {
-                    hasOrganizationUpdatePermissions ? (
-                        <>
-                            <PenToSquareIcon />
-                            { t("tenants:tenantDropdown.options.edit.label") }
-                        </>
-                    ) : (
-                        <>
-                            <EyeIcon />
-                            { t("tenants:tenantDropdown.options.view.label") }
-                        </>
-                    )
-                }
-            </Dropdown.Item>
-        );
+        if (hasOrganizationReadPermissions) {
+            options.push(
+                <Dropdown.Item
+                    className="action-panel"
+                    onClick={ (): void => {
+                        history.push(AppConstants.getPaths().get("EDIT_SELF_ORGANIZATION"));
+                    } }
+                    data-compnentid="edit-self-organization"
+                >
+                    {
+                        hasOrganizationUpdatePermissions ? (
+                            <>
+                                <PenToSquareIcon />
+                                { t("tenants:tenantDropdown.options.edit.label") }
+                            </>
+                        ) : (
+                            <>
+                                <EyeIcon />
+                                { t("tenants:tenantDropdown.options.view.label") }
+                            </>
+                        )
+                    }
+                </Dropdown.Item>
+            );
+        }
 
         if (hasTenantsReadPermissions && isManagingTenantsFromDropdownEnabled && isSuperOrganization()) {
             options.push(
