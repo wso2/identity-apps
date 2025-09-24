@@ -1,5 +1,24 @@
 # @wso2is/console
 
+## 2.79.11
+
+### Patch Changes
+
+- [#9190](https://github.com/wso2/identity-apps/pull/9190) [`a463f4fd520121c6478f02165b934136814f8a81`](https://github.com/wso2/identity-apps/commit/a463f4fd520121c6478f02165b934136814f8a81) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - update app settings title label
+
+* [#9194](https://github.com/wso2/identity-apps/pull/9194) [`85fc5f12641df71616272bb65c9a016cca82158b`](https://github.com/wso2/identity-apps/commit/85fc5f12641df71616272bb65c9a016cca82158b) Thanks [@savindi7](https://github.com/savindi7)! - Update Ask Password Settings Label.
+
+- [#9185](https://github.com/wso2/identity-apps/pull/9185) [`752303be661de3f1a6fa5200e8f48d52cf836826`](https://github.com/wso2/identity-apps/commit/752303be661de3f1a6fa5200e8f48d52cf836826) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Fix initial template rendering issue in self-registration flow.
+
+- Updated dependencies [[`a463f4fd520121c6478f02165b934136814f8a81`](https://github.com/wso2/identity-apps/commit/a463f4fd520121c6478f02165b934136814f8a81), [`85fc5f12641df71616272bb65c9a016cca82158b`](https://github.com/wso2/identity-apps/commit/85fc5f12641df71616272bb65c9a016cca82158b)]:
+  - @wso2is/admin.applications.v1@2.37.11
+  - @wso2is/admin.server-configurations.v1@2.35.72
+  - @wso2is/admin.agents.v1@1.0.65
+  - @wso2is/admin.core.v1@2.49.58
+  - @wso2is/admin.roles.v2@2.27.220
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.50
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.50
+
 ## 2.79.10
 
 ### Patch Changes
