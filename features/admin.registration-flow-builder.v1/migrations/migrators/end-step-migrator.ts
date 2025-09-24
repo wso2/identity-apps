@@ -29,7 +29,7 @@ import defaultEndNodeTemplate from "../templates/default-end-node.json";
  */
 const updateNavigationReferences = (components: Element[]): Element[] => {
     return components.map((component: Element) => {
-        let updatedComponent = { ...component };
+        let updatedComponent: Element = { ...component };
 
         if (component.action && component.action.next === StaticStepTypes.UserOnboard) {
             updatedComponent = {
@@ -71,7 +71,7 @@ const endStepMigrator = (flow: RegistrationFlow): RegistrationFlow => {
         return flow;
     }
 
-    const needsMigration = flow.steps.some((step: Step) => step.type === StaticStepTypes.UserOnboard);
+    const needsMigration: boolean = flow.steps.some((step: Step) => step.type === StaticStepTypes.UserOnboard);
 
     if (!needsMigration) {
         return flow;
@@ -81,18 +81,18 @@ const endStepMigrator = (flow: RegistrationFlow): RegistrationFlow => {
         // Check if this is a USER_ONBOARD step that needs to be migrated
         if (step.type === StaticStepTypes.UserOnboard) {
             // Create the new END node based on the default template
-            const endNode: any = {
+            const endNode: Step = {
                 ...defaultEndNodeTemplate,
                 position: step.position || defaultEndNodeTemplate.position,
                 size: step.size || defaultEndNodeTemplate.size
-            };
+            } as Step;
 
-            return endNode as Step;
+            return endNode;
         }
 
         // For other steps, check if they have navigation references to USER_ONBOARD
         if (step.data && step.data.components) {
-            const updatedComponents = updateNavigationReferences(step.data.components);
+            const updatedComponents: Element[] = updateNavigationReferences(step.data.components);
 
             return {
                 ...step,
