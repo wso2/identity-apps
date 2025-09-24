@@ -68,7 +68,7 @@
                                         "idpName": "{{IDP_NAME}}"
                                     }
                                 },
-                                "next": "USER_ONBOARD"
+                                "next": "END"
                             }
                         }
                     }
@@ -145,7 +145,7 @@
                                         "idpName": "{{IDP_NAME}}"
                                     }
                                 },
-                                "next": "USER_ONBOARD"
+                                "next": "END"
                             }
                         }
                     }
@@ -222,7 +222,7 @@
                                         "idpName": "{{IDP_NAME}}"
                                     }
                                 },
-                                "next": "USER_ONBOARD"
+                                "next": "END"
                             }
                         }
                     }
@@ -299,7 +299,7 @@
                                         "idpName": "{{IDP_NAME}}"
                                     }
                                 },
-                                "next": "USER_ONBOARD"
+                                "next": "END"
                             }
                         }
                     }
@@ -376,7 +376,7 @@
                                         "idpName": "{{IDP_NAME}}"
                                     }
                                 },
-                                "next": "USER_ONBOARD"
+                                "next": "END"
                             }
                         }
                     }
@@ -569,7 +569,7 @@
                                                 "executor": {
                                                     "name": "EmailOTPExecutor"
                                                 },
-                                                "next": "USER_ONBOARD"
+                                                "next": "END"
                                             }
                                         }
                                     ]
@@ -684,7 +684,7 @@
                                                 "executor": {
                                                     "name": "SMSOTPExecutor"
                                                 },
-                                                "next": "USER_ONBOARD"
+                                                "next": "END"
                                             }
                                         }
                                     ]
@@ -762,7 +762,7 @@
                                 "executor": {
                                     "name": "FIDO2Executor"
                                 },
-                                "next": "USER_ONBOARD"
+                                "next": "END"
                             }
                         }
                     }
@@ -836,7 +836,7 @@
                                 "executor": {
                                     "name": "MagicLinkExecutor"
                                 },
-                                "next": "USER_ONBOARD"
+                                "next": "END"
                             },
                             "components": [
                                 {
