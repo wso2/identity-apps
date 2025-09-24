@@ -25,7 +25,7 @@ import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
 import { useMemo } from "react";
 import RegistrationFlowConstants from "../constants/registration-flow-constants";
-import userOnboardToEndMigrator from "../migrations/migrators/user-onboard-to-end-migrator";
+import endStepMigrator from "../migrations/migrators/end-step-migrator";
 import { RegistrationFlow } from "../models/flow";
 
 /**
@@ -63,7 +63,7 @@ const useGetRegistrationFlow = <Data = any, Error = RequestErrorInterface>(
 
         try {
             const flow: RegistrationFlow = rawData as unknown as RegistrationFlow;
-            const migratedFlow: RegistrationFlow = userOnboardToEndMigrator(flow);
+            const migratedFlow: RegistrationFlow = endStepMigrator(flow);
 
             return migratedFlow as unknown as Data;
         } catch (migrationError) {
