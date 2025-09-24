@@ -147,6 +147,14 @@
         byte[] encoding = Base64.encodeBase64(toEncode.getBytes());
         String authHeader = new String(encoding, Charset.defaultCharset());
         String header = "Client " + authHeader;
+        
+        // Handle error message with precedence for request parameter but fallback to generic message
+        String errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "hypr.generic.error");
+        String error = request.getParameter("message");
+        
+        if (error != null && !error.equalsIgnoreCase(AuthenticationEndpointUtil.i18n(resourceBundle, error))) {
+            errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, error);
+        }
     %>
 
     <script type="text/javascript">
@@ -175,9 +183,9 @@
                     pollAuthStatus();
 
                 } else if (status == 'CANCELED' || status == 'FAILED' || status == 'INVALID_REQUEST' || status == 'INVALID_TOKEN') {
-                    handleError('<%= Encode.forHtmlContent(request.getParameter("message")) %>');
+                    handleError('<%= Encode.forHtmlContent(errorMessage) %>');
                 } else if (status == 'INVALID_USER') {
-                    handleUserError('<%= Encode.forHtmlContent(request.getParameter("message")) %>');
+                    handleUserError('<%= Encode.forHtmlContent(errorMessage) %>');
                 }
             }
         });
