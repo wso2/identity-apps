@@ -690,7 +690,7 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
             });
         }
 
-        if (isOrgDisplayNameFeatureEnabled) {
+        if (isOrgDisplayNameFeatureEnabled && hasOrganizationReadPermissions) {
             options.push(
                 <Dropdown.Item
                     className="action-panel"
