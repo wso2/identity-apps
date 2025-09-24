@@ -83,8 +83,8 @@
                             "height": 220
                         },
                         "position": {
-                            "x": 1200,
-                            "y": 408
+                            "x": 790,
+                            "y": 330
                         },
                         "config": {
                             "isAccountLockOnCreationEnabled": "false",
@@ -813,8 +813,8 @@
                             "height": 220
                         },
                         "position": {
-                            "x": 900,
-                            "y": 408
+                            "x": 880,
+                            "y": 800
                         },
                         "config": {
                             "isAccountLockOnCreationEnabled": "false",

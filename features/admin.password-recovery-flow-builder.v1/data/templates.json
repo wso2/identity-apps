@@ -52,13 +52,57 @@
                                                 "text": "Continue"
                                             },
                                             "action": {
-                                                "next": "End",
+                                                "next": "END",
                                                 "type": "NEXT"
                                             }
                                         }
                                     ]
                                 }
                             ]
+                        }
+                    },
+                    {
+                        "id": "END",
+                        "type": "END",
+                        "size": {
+                            "width": 56,
+                            "height": 56
+                        },
+                        "position": {
+                            "x": 790,
+                            "y": 330
+                        },
+                        "configs": {
+                            "isAutoLoginEnabled": "false",
+                            "isFlowCompletionNotificationEnabled": "false"
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "id": "typography_u2oz",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Password Reset Successfully"
+                                    }
+                                },
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">You have successfully changed your password. You can now sign in with your new password.</span></p>"
+                                    },
+                                    "id": "display_hgvm"
+                                }
+                            ],
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "UserProvisioningExecutor"
+                                },
+                                "next": "END"
+                            }
                         }
                     }
                 ]
@@ -252,12 +296,56 @@
                                                 "executor": {
                                                     "name": "PasswordProvisioningExecutor"
                                                 },
-                                                "next": "End"
+                                                "next": "END"
                                             }
                                         }
                                     ]
                                 }
                             ]
+                        }
+                    },
+                    {
+                        "id": "END",
+                        "type": "END",
+                        "size": {
+                            "width": 56,
+                            "height": 56
+                        },
+                        "position": {
+                            "x": 1120,
+                            "y": 420
+                        },
+                        "configs": {
+                            "isAutoLoginEnabled": "false",
+                            "isFlowCompletionNotificationEnabled": "false"
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "id": "typography_u2oz",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Password Reset Successfully"
+                                    }
+                                },
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">You have successfully changed your password. You can now sign in with your new password.</span></p>"
+                                    },
+                                    "id": "display_hgvm"
+                                }
+                            ],
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "UserProvisioningExecutor"
+                                },
+                                "next": "END"
+                            }
                         }
                     }
                 ]
@@ -484,12 +572,56 @@
                                                 "executor": {
                                                     "name": "PasswordProvisioningExecutor"
                                                 },
-                                                "next": "End"
+                                                "next": "END"
                                             }
                                         }
                                     ]
                                 }
                             ]
+                        }
+                    },
+                    {
+                        "id": "END",
+                        "type": "END",
+                        "size": {
+                            "width": 56,
+                            "height": 56
+                        },
+                        "position": {
+                            "x": 1555,
+                            "y": 420
+                        },
+                        "configs": {
+                            "isAutoLoginEnabled": "false",
+                            "isFlowCompletionNotificationEnabled": "false"
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "id": "typography_u2oz",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Password Reset Successfully"
+                                    }
+                                },
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">You have successfully changed your password. You can now sign in with your new password.</span></p>"
+                                    },
+                                    "id": "display_hgvm"
+                                }
+                            ],
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "UserProvisioningExecutor"
+                                },
+                                "next": "END"
+                            }
                         }
                     }
                 ]
@@ -716,12 +848,56 @@
                                                 "executor": {
                                                     "name": "PasswordProvisioningExecutor"
                                                 },
-                                                "next": "End"
+                                                "next": "END"
                                             }
                                         }
                                     ]
                                 }
                             ]
+                        }
+                    },
+                    {
+                        "id": "END",
+                        "type": "END",
+                        "size": {
+                            "width": 56,
+                            "height": 56
+                        },
+                        "position": {
+                            "x": 1555,
+                            "y": 420
+                        },
+                        "configs": {
+                            "isAutoLoginEnabled": "false",
+                            "isFlowCompletionNotificationEnabled": "false"
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "id": "typography_u2oz",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Password Reset Successfully"
+                                    }
+                                },
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">You have successfully changed your password. You can now sign in with your new password.</span></p>"
+                                    },
+                                    "id": "display_hgvm"
+                                }
+                            ],
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "UserProvisioningExecutor"
+                                },
+                                "next": "END"
+                            }
                         }
                     }
                 ]
@@ -1073,12 +1249,56 @@
                                                 "executor": {
                                                     "name": "PasswordProvisioningExecutor"
                                                 },
-                                                "next": "End"
+                                                "next": "END"
                                             }
                                         }
                                     ]
                                 }
                             ]
+                        }
+                    },
+                    {
+                        "id": "END",
+                        "type": "END",
+                        "size": {
+                            "width": 56,
+                            "height": 56
+                        },
+                        "position": {
+                            "x": 1810,
+                            "y": 475
+                        },
+                        "configs": {
+                            "isAutoLoginEnabled": "false",
+                            "isFlowCompletionNotificationEnabled": "false"
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "id": "typography_u2oz",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Password Reset Successfully"
+                                    }
+                                },
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">You have successfully changed your password. You can now sign in with your new password.</span></p>"
+                                    },
+                                    "id": "display_hgvm"
+                                }
+                            ],
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "UserProvisioningExecutor"
+                                },
+                                "next": "END"
+                            }
                         }
                     }
                 ]
