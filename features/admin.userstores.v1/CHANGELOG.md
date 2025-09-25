@@ -1,5 +1,14 @@
 # @wso2is/admin.userstores.v1
 
+## 2.27.38
+
+### Patch Changes
+
+- [#9198](https://github.com/wso2/identity-apps/pull/9198) [`a496ad2f9f1605710f796d62281b8a1cf5df20ea`](https://github.com/wso2/identity-apps/commit/a496ad2f9f1605710f796d62281b8a1cf5df20ea) Thanks [@Aeshan-Rosa](https://github.com/Aeshan-Rosa)! - Fix issue where test connection retries in secondary user stores failed by incorrectly sending an empty password after the first error.
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.60
+
 ## 2.27.37
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 3.3.11
+
+### Patch Changes
+
+- [#9202](https://github.com/wso2/identity-apps/pull/9202) [`4cefeafdcd299c0465dbaffbf57adadc432634d7`](https://github.com/wso2/identity-apps/commit/4cefeafdcd299c0465dbaffbf57adadc432634d7) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Adding Error FEE error codes.
+
+* [#9142](https://github.com/wso2/identity-apps/pull/9142) [`390d5f935dd0d9fc70eaa3e1599d6da9d46512ab`](https://github.com/wso2/identity-apps/commit/390d5f935dd0d9fc70eaa3e1599d6da9d46512ab) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add validation to Back to Application URL
+
 ## 3.3.10
 
 ### Patch Changes

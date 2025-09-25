@@ -1,5 +1,20 @@
 # @wso2is/admin.users.v1
 
+## 2.36.27
+
+### Patch Changes
+
+- [#9200](https://github.com/wso2/identity-apps/pull/9200) [`e029b9357a452bec93c508c05237c72bb0ba6d2b`](https://github.com/wso2/identity-apps/commit/e029b9357a452bec93c508c05237c72bb0ba6d2b) Thanks [@hwupathum](https://github.com/hwupathum)! - Use scim2/Me endpoint to get impersonation roles
+
+- Updated dependencies [[`e029b9357a452bec93c508c05237c72bb0ba6d2b`](https://github.com/wso2/identity-apps/commit/e029b9357a452bec93c508c05237c72bb0ba6d2b), [`a496ad2f9f1605710f796d62281b8a1cf5df20ea`](https://github.com/wso2/identity-apps/commit/a496ad2f9f1605710f796d62281b8a1cf5df20ea)]:
+  - @wso2is/admin.users.v1@2.36.27
+  - @wso2is/admin.userstores.v1@2.27.38
+  - @wso2is/admin.core.v1@2.49.60
+  - @wso2is/admin.roles.v2@2.27.222
+  - @wso2is/admin.flow-builder-core.v1@0.10.52
+  - @wso2is/admin.flows.v1@1.0.21
+  - @wso2is/admin.server-configurations.v1@2.35.74
+
 ## 2.36.26
 
 ### Patch Changes
