@@ -253,6 +253,10 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     ? "<%@ page import=\"" +
                     "static org.wso2.carbon.identity.core.util.IdentityTenantUtil.isTenantQualifiedUrlsEnabled\" %>"
                     : "",
+                importIsSuperTenantRequiredInUrl: !isDeployedOnExternalTomcatServer
+                    ? "<%@ page import=\"" +
+                "static org.wso2.carbon.identity.core.util.IdentityTenantUtil.isSuperTenantRequiredInUrl\" %>"
+                    : "",
                 importStringUtils: "<%@ page import=\"org.apache.commons.lang.StringUtils\" %>",
                 importSuperTenantConstant: !isDeployedOnExternalTomcatServer
                     ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
@@ -271,6 +275,9 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 isOrganizationManagementEnabled: !isDeployedOnExternalTomcatServer
                     ? "<%= isOrganizationManagementEnabled() %>"
                     : "false",
+                isSuperTenantRequiredInUrl: !isDeployedOnExternalTomcatServer
+                    ? "<%=isSuperTenantRequiredInUrl()%>"
+                    : "",
                 isTenantQualifiedUrlsEnabled: !isDeployedOnExternalTomcatServer
                     ? "<%=isTenantQualifiedUrlsEnabled()%>"
                     : "",
@@ -322,6 +329,10 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                     ? "<%@ page import=\"" +
                     "static org.wso2.carbon.identity.core.util.IdentityTenantUtil.isTenantQualifiedUrlsEnabled\" %>"
                     : "",
+                importIsSuperTenantRequiredInUrl: !isDeployedOnExternalTomcatServer
+                    ? "<%@ page import=\"" +
+                "static org.wso2.carbon.identity.core.util.IdentityTenantUtil.isSuperTenantRequiredInUrl\" %>"
+                    : "",
                 importOwaspEncode: "<%@ page import=\"org.owasp.encoder.Encode\" %>",
                 importSuperTenantConstant: !isDeployedOnExternalTomcatServer
                     ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
@@ -341,6 +352,9 @@ module.exports = (config: WebpackOptionsNormalized, context: NxWebpackContextInt
                 isOrganizationManagementEnabled: !isDeployedOnExternalTomcatServer
                     ? "<%= isOrganizationManagementEnabled() %>"
                     : "false",
+                isSuperTenantRequiredInUrl: !isDeployedOnExternalTomcatServer
+                    ? "<%=isSuperTenantRequiredInUrl()%>"
+                    : "",
                 isTenantQualifiedUrlsEnabled: !isDeployedOnExternalTomcatServer
                     ? "<%=isTenantQualifiedUrlsEnabled()%>"
                     : "",
