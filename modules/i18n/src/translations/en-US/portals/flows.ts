@@ -44,7 +44,7 @@ export const flows: flowsNS = {
     },
     core: {
         autoSave: {
-            savingInProgress: "Saving backup..."
+            savingInProgress: "Auto-saving..."
         },
         breadcrumb: "Edit {{flowType}} Flow",
         elements: {

@@ -116,7 +116,7 @@ const FlowBuilderPageHeader: FunctionComponent<FlowBuilderPageHeaderProps> = ({
             suspenseTimeoutRef.current = setTimeout(() => {
                 setShowSavingSuspense(false);
                 suspenseTimeoutRef.current = null;
-            }, 2000);
+            }, 3000);
         }
     }, [ isAutoSavingLocalHistory ]);
 
