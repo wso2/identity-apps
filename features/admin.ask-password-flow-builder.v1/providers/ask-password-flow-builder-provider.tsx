@@ -50,6 +50,7 @@ import { Attribute } from "../models/attributes";
 import transformFlow from "../utils/transform-flow";
 import { AxiosError } from "axios";
 import { useTranslation } from "react-i18next";
+import useAskPasswordFlowBuilder from "../hooks/use-ask-password-flow-builder";
 
 /**
  * Props interface of {@link AskPasswordFlowBuilderProvider}
@@ -109,50 +110,11 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Attribute[] }>({});
     const [ isPublishing, setIsPublishing ] = useState<boolean>(false);
     const [ invitedUserRegistrationConfig , setInvitedUserRegistrationConfig ]
-    = useState<null | AskPasswordFormValuesInterface>(null);
+    = useState<null | AskPasswordFormUpdatableConfigsInterface>(null);
     const [ isInvitedUserRegistrationConfigUpdated, setIsInvitedUserRegistrationConfigUpdated ]
     = useState<boolean>(false);
     const [ connector, setConnector ] = useState<GovernanceConnectorInterface | undefined>(undefined);
 
-    /**
-     * Prepare form values for submitting.
-     *
-     * @param values - Form values.
-     * @returns Sanitized form values.
-     */
-    const getUpdatedConfigurations = (values: Record<string, any>) => {
-
-        const data: AskPasswordFormUpdatableConfigsInterface = {
-            "EmailVerification.AskPassword.AccountActivation": values.enableAccountActivationEmail !== undefined
-                ? values.enableAccountActivationEmail
-                : null,
-            "EmailVerification.AskPassword.EmailOTP": values.askPasswordOption === VerificationOption.EMAIL_OTP,
-            "EmailVerification.AskPassword.ExpiryTime": values.expiryTime !== undefined
-                ? values.expiryTime
-                : null,
-            "EmailVerification.AskPassword.SMSOTP": values.askPasswordOption === VerificationOption.SMS_OTP,
-            "EmailVerification.Enable": values.enableInviteUserToSetPassword !== undefined
-                ? values.enableInviteUserToSetPassword
-                : null,
-            "EmailVerification.LockOnCreation": values.enableAccountLockOnCreation !== undefined
-                ? values.enableAccountLockOnCreation
-                : null,
-            "EmailVerification.OTP.OTPLength": values.otpLength !== undefined
-                ? values.otpLength
-                : null,
-            "EmailVerification.OTP.UseLowercaseCharactersInOTP": values.otpUseLowercase !== undefined
-                ? values.otpUseLowercase
-                : null,
-            "EmailVerification.OTP.UseNumbersInOTP": values.otpUseNumeric !== undefined
-                ? values.otpUseNumeric
-                : null,
-            "EmailVerification.OTP.UseUppercaseCharactersInOTP": values.otpUseUppercase !== undefined
-                ? values.otpUseUppercase
-                : null
-        };
-
-        return data;
-    };
 
     const handleUpdateError = (error: AxiosError) => {
         if (error.response && error.response.data && error.response.data.detail) {
@@ -207,7 +169,7 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
      * @returns A promise that resolves to a boolean indicating the success of the publish action.
      */
 
-    const handleSubmit = (values: Record<string, unknown>) => {
+    const handleSubmit = (values: AskPasswordFormUpdatableConfigsInterface) => {
         const data: UpdateGovernanceConnectorConfigInterface = {
             operation: "UPDATE",
             properties: []
@@ -256,8 +218,8 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
 
         // Update invite user registration configurations if updated.
         if (isInvitedUserRegistrationConfigUpdated && invitedUserRegistrationConfig) {
-            const updatedConfigurations: AskPasswordFormUpdatableConfigsInterface
-            = getUpdatedConfigurations(invitedUserRegistrationConfig);
+
+            handleSubmit(invitedUserRegistrationConfig);
         }
 
         // Update the flow.

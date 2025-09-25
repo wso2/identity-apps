@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AskPasswordFormValuesInterface } from "@wso2is/admin.server-configurations.v1/models/ask-password";
+import { AskPasswordFormUpdatableConfigsInterface } from "@wso2is/admin.server-configurations.v1/models/ask-password";
 import { Context, Dispatch, SetStateAction, createContext } from "react";
 import { GovernanceConnectorInterface } from "../../admin.connections.v1";
 import { Attribute } from "../models/attributes";
@@ -62,11 +62,11 @@ export interface AskPasswordFlowBuilderContextProps {
     /**
      * Invited user registration configuration properties.
      */
-    invitedUserRegistrationConfig: AskPasswordFormValuesInterface | null;
+    invitedUserRegistrationConfig: AskPasswordFormUpdatableConfigsInterface | null;
     /**
      * Sets the invited user registration configuration properties.
      */
-    setInvitedUserRegistrationConfig: Dispatch<SetStateAction<AskPasswordFormValuesInterface | null>>;
+    setInvitedUserRegistrationConfig: Dispatch<SetStateAction<AskPasswordFormUpdatableConfigsInterface | null>>;
     /**
      * Coneector associated with the flow.
      * @remarks This will be null if the flow is not associated with any connector.

@@ -3718,6 +3718,7 @@ export const extensions: Extensions = {
                 },
                 inviteUserToSetPassword: {
                     heading: "Invited User Registration",
+                    subHeading: "Invite User to Set Password Settings",
                     connectorDescription: "Configure how users are invited to set their passwords during user onboarding and account creation.",
                     form: {
                         fields: {
