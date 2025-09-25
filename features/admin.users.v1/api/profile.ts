@@ -18,7 +18,11 @@
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { Config } from "@wso2is/admin.core.v1/configs/app";
-import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
+import useRequest, {
+    RequestConfigInterface,
+    RequestErrorInterface,
+    RequestResultInterface
+} from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -37,6 +41,83 @@ import { AttributeDataType } from "../constants";
  */
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
+
+/**
+ * Hook to retrieve the profile information of the currently authenticated user.
+ *
+ * @param endpoint - Me endpoint absolute path.
+ * @param onSCIMDisabled - Callback to be fired if SCIM is disabled for the user store.
+ * @returns A request result interface containing the profile information.
+ */
+export const useProfileInfo = <Data = ProfileInfoInterface, Error = RequestErrorInterface>(
+    endpoint: string = Config.getServiceResourceEndpoints().me,
+    onSCIMDisabled?: () => void
+): RequestResultInterface<Data, Error> => {
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/scim+json"
+        },
+        method: HttpMethods.GET,
+        url: endpoint
+    };
+
+    const { data, error, isValidating, mutate } = useRequest<Data, Error>(
+        endpoint ? requestConfig : null,
+        {
+            onError: (error: AxiosError) => {
+                // Check if the API responds with a `500` error, if it does,
+                // navigate the user to the login error page.
+                if (error.response
+                    && error.response.data
+                    && error.response.data.status
+                    && error.response.data.status === "500") {
+
+                    // Fire `onSCIMDisabled` callback which will navigate the
+                    // user to the corresponding error page.
+                    onSCIMDisabled && onSCIMDisabled();
+                }
+            },
+            onSuccess: (response: AxiosResponse) => {
+                if (response.status !== 200) {
+                    throw new IdentityAppsApiException(
+                        ProfileConstants.PROFILE_INFO_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR,
+                        null,
+                        response.status,
+                        response.request,
+                        response,
+                        response.config
+                    );
+                }
+
+                // Transform the response data to match ProfileInfoInterface
+                const profileResponse: ProfileInfoInterface = {
+                    emails: response.data.emails || "",
+                    name: response.data.name || { familyName: "", givenName: "" },
+                    phoneNumbers: response.data.phoneNumbers || [],
+                    profileUrl: response.data.profileUrl || "",
+                    responseStatus: response.status || null,
+                    roles: response.data.roles || [],
+                    // TODO: Validate if necessary.
+                    userImage: response.data.userImage || response.data.profileUrl,
+                    userName: response.data.userName || "",
+                    ...response.data
+                };
+
+                return profileResponse;
+            }
+        }
+    );
+
+    return {
+        data,
+        error: error,
+        isLoading: !error && !data,
+        isValidating,
+        mutate
+    };
+};
 
 /**
  * Retrieve the user profile details of the currently authenticated user.
