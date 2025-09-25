@@ -34,7 +34,7 @@ import Stack from "@oxygen-ui/react/Stack";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { EllipsisVerticalIcon } from "@oxygen-ui/react-icons";
-import {  AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import moment from "moment";
 import React, { FunctionComponent, HTMLAttributes, useMemo, useState } from "react";
@@ -57,7 +57,7 @@ export interface VersionHistoryItemPropsInterface
 /**
  * Component to render author info with colored dot.
  */
-const AuthorInfo: FunctionComponent<{ userName: string }> = ({ userName }) => {
+const AuthorInfo: FunctionComponent<{ userName: string }> = ({ userName }: { userName: string }) => {
     const colorRandomizer: string = useMemo(() => {
         return userName || "";
     }, [ userName ]);
@@ -65,14 +65,14 @@ const AuthorInfo: FunctionComponent<{ userName: string }> = ({ userName }) => {
     const { color } = usePastelColorGenerator(colorRandomizer);
 
     return (
-        <Box sx={ { display: "flex", alignItems: "center", gap: "8px", marginTop: "4px" } }>
+        <Box sx={ { alignItems: "center", display: "flex", gap: "8px", marginTop: "4px" } }>
             <Box
                 sx={ {
-                    width: "12px",
-                    height: "12px",
-                    borderRadius: "50%",
                     backgroundColor: color,
-                    flexShrink: 0
+                    borderRadius: "50%",
+                    flexShrink: 0,
+                    height: "12px",
+                    width: "12px"
                 } }
             />
             <Typography
@@ -102,7 +102,11 @@ const VersionHistoryItem: FunctionComponent<VersionHistoryItemPropsInterface> = 
 }: VersionHistoryItemPropsInterface) => {
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    const { restoreFromHistory, setIsVersionHistoryPanelOpen, triggerLocalHistoryAutoSave } = useAuthenticationFlowBuilderCore();
+    const {
+        restoreFromHistory,
+        setIsVersionHistoryPanelOpen,
+        triggerLocalHistoryAutoSave
+    } = useAuthenticationFlowBuilderCore();
     const [ anchorEl, setAnchorEl ] = useState<null | HTMLElement>(null);
     const [ showRestoreDialog, setShowRestoreDialog ] = useState<boolean>(false);
     const [ isRestoring, setIsRestoring ] = useState<boolean>(false);
@@ -130,7 +134,7 @@ const VersionHistoryItem: FunctionComponent<VersionHistoryItemPropsInterface> = 
         setIsRestoring(true);
 
         try {
-            const success = await restoreFromHistory(historyItem);
+            const success: boolean = await restoreFromHistory(historyItem);
 
             if (success) {
                 setShowRestoreDialog(false);
@@ -172,11 +176,11 @@ const VersionHistoryItem: FunctionComponent<VersionHistoryItemPropsInterface> = 
             <Card
                 variant="outlined"
                 sx={ {
-                    cursor: "pointer",
-                    backgroundColor: isCurrentVersion ? "action.selected" : "background.paper",
                     "&:hover": {
                         backgroundColor: "action.hover"
                     },
+                    backgroundColor: isCurrentVersion ? "action.selected" : "background.paper",
+                    cursor: "pointer",
                     padding: 0,
                     position: "relative"
                 } }
@@ -185,13 +189,13 @@ const VersionHistoryItem: FunctionComponent<VersionHistoryItemPropsInterface> = 
             >
                 <CardContent
                     sx={ {
-                        padding: 2,
                         "&:last-child": {
                             paddingBottom: 2
-                        }
+                        },
+                        padding: 2
                     } }
                 >
-                    <Box sx={ { display: "flex", justifyContent: "space-between", alignItems: "flex-start" } }>
+                    <Box sx={ { alignItems: "flex-start", display: "flex", justifyContent: "space-between" } }>
                         <Box sx={ { flex: 1 } }>
                             <Typography
                                 variant="body2"
@@ -208,15 +212,19 @@ const VersionHistoryItem: FunctionComponent<VersionHistoryItemPropsInterface> = 
                                     variant="caption"
                                     color="text.secondary"
                                     sx={ {
-                                        fontSize: "11px",
                                         display: "block",
+                                        fontSize: "11px",
                                         marginBottom: "4px"
                                     } }
                                 >
                                     { t("flows:core.versionHistory.currentVersion") }
                                 </Typography>
                             ) }
-                            <AuthorInfo userName={ historyItem.author?.userName || t("flows:core.versionHistory.unknownAuthor") } />
+                            <AuthorInfo
+                                userName={
+                                    historyItem.author?.userName || t("flows:core.versionHistory.unknownAuthor")
+                                }
+                            />
                         </Box>
                         { !isCurrentVersion && (
                             <Box>
@@ -230,11 +238,11 @@ const VersionHistoryItem: FunctionComponent<VersionHistoryItemPropsInterface> = 
                                         onClick={ handleClick }
                                         size="small"
                                         sx={ {
-                                            padding: "4px",
-                                            opacity: 0.7,
                                             "&:hover": {
                                                 opacity: 1
-                                            }
+                                            },
+                                            opacity: 0.7,
+                                            padding: "4px"
                                         } }
                                     >
                                         <EllipsisVerticalIcon />
@@ -280,11 +288,7 @@ const VersionHistoryItem: FunctionComponent<VersionHistoryItemPropsInterface> = 
                 </DialogContent>
                 <DialogActions>
                     <Stack direction="row" spacing={ 2 }>
-                        <Button
-                            variant="text"
-                            color="primary"
-                            onClick={ handleRestoreCancel }
-                        >
+                        <Button variant="text" color="primary" onClick={ handleRestoreCancel }>
                             { t("flows:core.versionHistory.restoreDialog.cancel") }
                         </Button>
                         <Button
@@ -296,8 +300,7 @@ const VersionHistoryItem: FunctionComponent<VersionHistoryItemPropsInterface> = 
                         >
                             { isRestoring
                                 ? t("flows:core.versionHistory.restoreDialog.restoring")
-                                : t("flows:core.versionHistory.restoreDialog.restore")
-                            }
+                                : t("flows:core.versionHistory.restoreDialog.restore") }
                         </Button>
                     </Stack>
                 </DialogActions>

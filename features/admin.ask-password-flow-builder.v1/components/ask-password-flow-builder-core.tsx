@@ -545,17 +545,17 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
     useEffect(() => {
         const handleRestoreFromHistory = (event: CustomEvent) => {
             const { nodes: restoredNodes, edges: restoredEdges } = event.detail;
-            
+
             if (restoredNodes && restoredEdges) {
                 setNodes(restoredNodes);
                 setEdges(restoredEdges);
             }
         };
 
-        window.addEventListener('restoreFromHistory', handleRestoreFromHistory as EventListener);
+        window.addEventListener("restoreFromHistory", handleRestoreFromHistory as EventListener);
 
         return () => {
-            window.removeEventListener('restoreFromHistory', handleRestoreFromHistory as EventListener);
+            window.removeEventListener("restoreFromHistory", handleRestoreFromHistory as EventListener);
         };
     }, [ setNodes, setEdges ]);
 

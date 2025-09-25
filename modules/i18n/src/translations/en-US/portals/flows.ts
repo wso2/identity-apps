@@ -180,12 +180,6 @@ export const flows: flowsNS = {
                     message: "Flow Metadata Fetch Error"
                 }
             },
-            textPreferenceFetch: {
-                genericError: {
-                    description: "An error occurred while fetching the custom text preferences.",
-                    message: "Text Preference Fetch Error"
-                }
-            },
             restoreFromHistory: {
                 genericError: {
                     description: "An error occurred while restoring the flow version.",
@@ -198,6 +192,12 @@ export const flows: flowsNS = {
                 success: {
                     description: "Successfully restored flow to version from {{date}}.",
                     message: "Flow restored successfully"
+                }
+            },
+            textPreferenceFetch: {
+                genericError: {
+                    description: "An error occurred while fetching the custom text preferences.",
+                    message: "Text Preference Fetch Error"
                 }
             },
             updateI18nKey: {
@@ -215,21 +215,6 @@ export const flows: flowsNS = {
             end: {
                 flowCompletionProperties: "Flow Completion Properties"
             }
-        },
-        versionHistory: {
-            currentVersion: "Current version",
-            emptyState: "No version history available",
-            moreActions: "More actions",
-            panelTitle: "Version History (Local)",
-            restoreDialog: {
-                cancel: "Cancel",
-                description: "Your current document will revert to the version from {{date}}.",
-                restore: "Restore",
-                restoring: "Restoring...",
-                title: "Restore this version?"
-            },
-            restoreVersion: "Restore this version",
-            unknownAuthor: "Unknown"
         },
         validation: {
             fields: {
@@ -285,6 +270,21 @@ export const flows: flowsNS = {
             info: "Info",
             warning: "Warning",
             warnings: "Warnings"
+        },
+        versionHistory: {
+            currentVersion: "Current version",
+            emptyState: "No version history available",
+            moreActions: "More actions",
+            panelTitle: "Version History (Local)",
+            restoreDialog: {
+                cancel: "Cancel",
+                description: "Your current document will revert to the version from {{date}}.",
+                restore: "Restore",
+                restoring: "Restoring...",
+                title: "Restore this version?"
+            },
+            restoreVersion: "Restore this version",
+            unknownAuthor: "Unknown"
         }
     },
     label: "Flows",
