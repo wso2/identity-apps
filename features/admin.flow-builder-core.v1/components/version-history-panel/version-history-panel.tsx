@@ -81,7 +81,7 @@ const VersionHistoryPanel: FunctionComponent<VersionHistoryPanelPropsInterface> 
                 onClose={ () => {} }
                 elevation={ 5 }
                 PaperProps={ {
-                    className: classNames("flow-builder-element-property-panel", { open }, className),
+                    className: classNames("flow-builder-right-panel base", open ? "flow-builder-right-panel open" : "flow-builder-right-panel close", className),
                     style: { position: "absolute" }
                 } }
                 BackdropProps={ { style: { position: "absolute" } } }
@@ -98,25 +98,21 @@ const VersionHistoryPanel: FunctionComponent<VersionHistoryPanelPropsInterface> 
                     }
                 } }
                 hideBackdrop={ true }
-                className={ classNames("flow-builder-element-property-panel", { open }) }
+                className={ classNames(open ? "flow-builder-right-panel open" : "flow-builder-right-panel close") }
                 variant="permanent"
             >
                 <Box
                     display="flex"
                     justifyContent="space-between"
                     alignItems="center"
-                    className="flow-builder-element-property-panel-header"
+                    className="flow-builder-right-panel header"
                 >
                     Version History
                     <IconButton onClick={ () => setIsVersionHistoryPanelOpen(false) }>
                         <ChevronsRight height={ 16 } width={ 16 } />
                     </IconButton>
                 </Box>
-                <div
-                    className={ classNames("flow-builder-element-property-panel-content", {
-                        "full-height": true
-                    }) }
-                >
+                <div className="flow-builder-right-panel content full-height">
 
                 </div>
                 {/* { lastInteractedResource?.deletable || lastInteractedResource?.deletable === undefined && (

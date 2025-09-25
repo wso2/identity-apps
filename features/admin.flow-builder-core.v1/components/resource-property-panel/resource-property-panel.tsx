@@ -94,7 +94,7 @@ const ResourcePropertyPanel: FunctionComponent<ResourcePropertyPanelPropsInterfa
                 onClose={ () => {} }
                 elevation={ 5 }
                 PaperProps={ {
-                    className: classNames("flow-builder-element-property-panel", { open }, className),
+                    className: classNames("flow-builder-right-panel base", open ? "flow-builder-right-panel open" : "flow-builder-right-panel close", className),
                     style: { position: "absolute" }
                 } }
                 BackdropProps={ { style: { position: "absolute" } } }
@@ -111,25 +111,21 @@ const ResourcePropertyPanel: FunctionComponent<ResourcePropertyPanelPropsInterfa
                     }
                 } }
                 hideBackdrop={ true }
-                className={ classNames("flow-builder-element-property-panel", { open }) }
+                className={ classNames(open ? "flow-builder-right-panel open" : "flow-builder-right-panel close") }
                 variant="permanent"
             >
                 <Box
                     display="flex"
                     justifyContent="space-between"
                     alignItems="center"
-                    className="flow-builder-element-property-panel-header"
+                    className="flow-builder-right-panel header"
                 >
                     { resourcePropertiesPanelHeading }
                     <IconButton onClick={ () => setIsOpenResourcePropertiesPanel(false) }>
                         <ChevronsRight height={ 16 } width={ 16 } />
                     </IconButton>
                 </Box>
-                <div
-                    className={ classNames("flow-builder-element-property-panel-content", {
-                        "full-height": true
-                    }) }
-                >
+                <div className="flow-builder-right-panel content full-height">
                     <ResourceProperties />
                 </div>
                 { lastInteractedResource?.deletable || lastInteractedResource?.deletable === undefined && (
@@ -137,7 +133,7 @@ const ResourcePropertyPanel: FunctionComponent<ResourcePropertyPanelPropsInterfa
                         display="flex"
                         justifyContent="flex-end"
                         alignItems="right"
-                        className="flow-builder-element-property-panel-footer"
+                        className="flow-builder-right-panel footer"
                     >
                         { lastInteractedResource?.deletable || lastInteractedResource?.deletable === undefined && (
                             <Button
@@ -151,7 +147,7 @@ const ResourcePropertyPanel: FunctionComponent<ResourcePropertyPanelPropsInterfa
 
                                     setIsOpenResourcePropertiesPanel(false);
                                 } }
-                                className="flow-builder-element-property-panel-footer-secondary-action icon-button"
+                                className="flow-builder-right-panel footer-secondary-action icon-button"
                                 color="error"
                             >
                                 <TrashIcon size={ 14 } />
