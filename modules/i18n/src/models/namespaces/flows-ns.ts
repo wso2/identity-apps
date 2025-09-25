@@ -46,6 +46,9 @@ export interface flowsNS {
         };
     };
     core: {
+        autoSave: {
+            savingInProgress: string;
+        };
         breadcrumb: string;
         elements: {
             richText: {

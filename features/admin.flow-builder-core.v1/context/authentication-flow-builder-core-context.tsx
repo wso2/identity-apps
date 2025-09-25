@@ -166,6 +166,34 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      * Indicates whether the flow metadata is still loading.
      */
     isFlowMetadataLoading?: boolean;
+    /**
+     * Indicates whether auto-save is enabled.
+     */
+    isAutoSaveEnabled?: boolean;
+    /**
+     * Indicates whether an auto-save operation is in progress.
+     */
+    isAutoSaving?: boolean;
+    /**
+     * The timestamp of the last successful auto-save.
+     */
+    lastAutoSaveTimestamp?: number | null;
+    /**
+     * Manually trigger an auto-save operation.
+     */
+    triggerAutoSave?: () => Promise<boolean>;
+    /**
+     * Enable or disable auto-save functionality.
+     */
+    setAutoSaveEnabled?: (enabled: boolean) => void;
+    /**
+     * Check if there are saved drafts for this flow type.
+     */
+    hasDrafts?: boolean;
+    /**
+     * Clear all saved drafts for this flow type.
+     */
+    clearDrafts?: () => Promise<boolean>;
 }
 
 /**
@@ -201,7 +229,14 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
         setLastInteractedStepId: () => {},
         setResourcePropertiesPanelHeading: () => {},
         setSelectedAttributes: () => {},
-        supportedLocales: {}
+        supportedLocales: {},
+        isAutoSaveEnabled: true,
+        isAutoSaving: false,
+        lastAutoSaveTimestamp: null,
+        triggerAutoSave: () => Promise.resolve(false),
+        setAutoSaveEnabled: () => {},
+        hasDrafts: false,
+        clearDrafts: () => Promise.resolve(false)
     }
 );
 

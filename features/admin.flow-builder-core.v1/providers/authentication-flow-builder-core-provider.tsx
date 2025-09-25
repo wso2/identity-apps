@@ -27,22 +27,25 @@ import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import useGetBrandingPreference from "@wso2is/common.branding.v1/api/use-get-branding-preference";
 import { BrandingPreferenceTypes, PreviewScreenType } from "@wso2is/common.branding.v1/models/branding-preferences";
+import useUserPreferences from "@wso2is/common.ui.v1/hooks/use-user-preferences";
 import { AlertLevels, Claim } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
-import { ReactFlowProvider } from "@xyflow/react";
+import { ReactFlowProvider, useReactFlow } from "@xyflow/react";
 import { AxiosRequestConfig } from "axios";
 import merge from "lodash-es/merge";
 import pick from "lodash-es/pick";
 import startCase from "lodash-es/startCase";
 import React, {
     FunctionComponent,
+    MutableRefObject,
     PropsWithChildren,
     ReactElement,
     ReactNode,
     useCallback,
     useEffect,
     useMemo,
+    useRef,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -52,6 +55,7 @@ import ValidationProvider from "./validation-provider";
 import useGetCustomTextPreferenceFallbacks from "../api/use-get-custom-text-preference-fallbacks";
 import useGetMetadata from "../api/use-metadata";
 import useResolveCustomTextPreferences from "../api/use-resolve-custom-text-preference";
+import FlowConstants from "../constants/flow-constants";
 import AuthenticationFlowBuilderCoreContext from "../context/authentication-flow-builder-core-context";
 import { FlowCompletionConfigsInterface } from "../models/flows";
 import { Resource, ResourceTypes } from "../models/resources";
@@ -93,6 +97,10 @@ const FlowContextWrapper = ({
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
     const { isSubOrganization } = useGetCurrentOrganizationType();
+    const { toObject } = useReactFlow();
+    const { setPreferences } = useUserPreferences();
+
+    const userName: string = useSelector((state: AppState) => state.profile.profileInfo.userName);
     const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages
@@ -107,19 +115,30 @@ const FlowContextWrapper = ({
     const [ language, setLanguage ] = useState<string>(I18nConstants.DEFAULT_FALLBACK_LANGUAGE);
     const [ isI18nSubmitting, setIsI18nSubmitting ] = useState<boolean>(false);
     const [ flowCompletionConfigs, setFlowCompletionConfigs ] = useState<FlowCompletionConfigsInterface>({});
+    const [ isAutoSaveEnabled, setIsAutoSaveEnabled ] = useState<boolean>(true);
+    const [ isAutoSaving, setIsAutoSaving ] = useState<boolean>(false);
+    const [ lastAutoSaveTimestamp, setLastAutoSaveTimestamp ] = useState<number | null>(null);
+    const [ hasDrafts, setHasDrafts ] = useState<boolean>(false);
 
-    const {
-        data: flowMetadata,
-        error: flowMetadataError,
-        isLoading: isFlowMetadataLoading
-    } = useGetMetadata(flowType, !!flowType);
+    const intervalRef: MutableRefObject<NodeJS.Timeout | null> = useRef<NodeJS.Timeout | null>(null);
+
+    const { data: flowMetadata, error: flowMetadataError, isLoading: isFlowMetadataLoading } = useGetMetadata(
+        flowType,
+        !!flowType
+    );
     const {
         data: textPreference,
         error: textPreferenceFetchError,
         isLoading: textPreferenceLoading,
         mutate: mutateTextPreference
-    } = useResolveCustomTextPreferences(tenantDomain, screenTypes, language,
-        BrandingPreferenceTypes.ORG, isSubOrganization(), screenTypes?.length > 0);
+    } = useResolveCustomTextPreferences(
+        tenantDomain,
+        screenTypes,
+        language,
+        BrandingPreferenceTypes.ORG,
+        isSubOrganization(),
+        screenTypes?.length > 0
+    );
     const {
         data: fallbackTextPreference,
         error: fallbackTextPreferenceFetchError,
@@ -130,10 +149,7 @@ const FlowContextWrapper = ({
         isLoading: customTextPreferenceMetaLoading,
         error: customTextPreferenceMetaError
     } = useGetCustomTextPreferenceMeta();
-    const {
-        data: brandingPreference,
-        error: brandingPreferenceError
-    } = useGetBrandingPreference(tenantDomain);
+    const { data: brandingPreference, error: brandingPreferenceError } = useGetBrandingPreference(tenantDomain);
 
     /**
      * Memoized i18n text combining both text preference and fallback.
@@ -172,15 +188,135 @@ const FlowContextWrapper = ({
     }, [ screenTypes ]);
 
     /**
+     * Check for existing drafts on component mount.
+     */
+    useEffect(() => {
+        (async () => {
+            try {
+                setHasDrafts(false);
+            } catch (error) {
+                // TODO: Log the error
+            }
+        })();
+    }, [ flowType ]);
+
+    /**
+     * Manually trigger an auto-save operation.
+     */
+    const triggerAutoSave: () => Promise<boolean> = useCallback(async (): Promise<boolean> => {
+        if (!toObject || isAutoSaving) {
+            return false;
+        }
+
+        setIsAutoSaving(true);
+
+        try {
+            const flowData: Record<string, unknown> = toObject();
+
+            if (!flowData || Object.keys(flowData).length === 0) {
+                return false;
+            }
+
+            const timestamp: number = Date.now();
+
+            // Save draft using setPreferences
+            await setPreferences({
+                flows: {
+                    [flowType]: {
+                        history: [
+                            {
+                                author: {
+                                    userName
+                                },
+                                flowData: flowData,
+                                timestamp: timestamp.toString()
+                            }
+                        ]
+                    }
+                }
+            });
+
+            setLastAutoSaveTimestamp(timestamp);
+            setHasDrafts(true);
+
+            return true;
+        } catch (error) {
+            return false;
+        } finally {
+            setIsAutoSaving(false);
+        }
+    }, [ toObject, isAutoSaving, flowType, setPreferences, dispatch, t ]);
+
+    /**
+     * Clear all saved drafts for this flow type.
+     */
+    const clearDrafts: () => Promise<boolean> = useCallback(async (): Promise<boolean> => {
+        try {
+            // Clear drafts from preferences
+            await setPreferences({
+                flows: {
+                    [flowType]: {
+                        history: []
+                    }
+                }
+            });
+
+            setHasDrafts(false);
+            setLastAutoSaveTimestamp(null);
+
+            return true;
+        } catch (error) {
+
+            return false;
+        }
+    }, [ flowType, setPreferences ]);
+
+    /**
+     * Set up auto-save interval.
+     */
+    useEffect(() => {
+        if (isAutoSaveEnabled && FlowConstants.AUTO_SAVE_INTERVAL > 0) {
+            intervalRef.current = setInterval(() => {
+                triggerAutoSave();
+            }, FlowConstants.AUTO_SAVE_INTERVAL);
+
+            return () => {
+                if (intervalRef.current) {
+                    clearInterval(intervalRef.current);
+                    intervalRef.current = null;
+                }
+            };
+        } else if (intervalRef.current) {
+            clearInterval(intervalRef.current);
+            intervalRef.current = null;
+        }
+
+        return undefined;
+    }, [ isAutoSaveEnabled, triggerAutoSave ]);
+
+    /**
+     * Cleanup interval on unmount.
+     */
+    useEffect(() => {
+        return () => {
+            if (intervalRef.current) {
+                clearInterval(intervalRef.current);
+            }
+        };
+    }, []);
+
+    /**
      * Error handling for flow metadata fetch.
      */
     useEffect(() => {
         if (flowMetadataError) {
-            dispatch(addAlert({
-                description: t("flows:core.notifications.flowMetadataFetch.genericError.description"),
-                level: AlertLevels.ERROR,
-                message: t("flows:core.notifications.flowMetadataFetch.genericError.message")
-            }));
+            dispatch(
+                addAlert({
+                    description: t("flows:core.notifications.flowMetadataFetch.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("flows:core.notifications.flowMetadataFetch.genericError.message")
+                })
+            );
         }
     }, [ flowMetadataError ]);
 
@@ -189,11 +325,13 @@ const FlowContextWrapper = ({
      */
     useEffect(() => {
         if (textPreferenceFetchError) {
-            dispatch(addAlert({
-                description: t("flows:core.notifications.textPreferenceFetch.genericError.description"),
-                level: AlertLevels.ERROR,
-                message: t("flows:core.notifications.textPreferenceFetch.genericError.message")
-            }));
+            dispatch(
+                addAlert({
+                    description: t("flows:core.notifications.textPreferenceFetch.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("flows:core.notifications.textPreferenceFetch.genericError.message")
+                })
+            );
         }
     }, [ textPreferenceFetchError ]);
 
@@ -202,11 +340,13 @@ const FlowContextWrapper = ({
      */
     useEffect(() => {
         if (fallbackTextPreferenceFetchError) {
-            dispatch(addAlert({
-                description: t("flows:core.notifications.fallbackTextPreferenceFetch.genericError.description"),
-                level: AlertLevels.ERROR,
-                message: t("flows:core.notifications.fallbackTextPreferenceFetch.genericError.message")
-            }));
+            dispatch(
+                addAlert({
+                    description: t("flows:core.notifications.fallbackTextPreferenceFetch.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("flows:core.notifications.fallbackTextPreferenceFetch.genericError.message")
+                })
+            );
         }
     }, [ fallbackTextPreferenceFetchError ]);
 
@@ -217,8 +357,8 @@ const FlowContextWrapper = ({
         if (customTextPreferenceMetaError?.response?.status === 404) {
             // Check if the 404 error is specifically from the extensions i18n meta endpoint.
             const errorConfig: AxiosRequestConfig = customTextPreferenceMetaError?.config;
-            const isExtensionsMetaRequest: boolean = errorConfig?.url &&
-                errorConfig.url.includes("extensions/branding/i18n/meta.json");
+            const isExtensionsMetaRequest: boolean =
+                errorConfig?.url && errorConfig.url.includes("extensions/branding/i18n/meta.json");
 
             if (isExtensionsMetaRequest) {
                 // Silently ignore 404 errors from extensions meta endpoint as it's optional.
@@ -227,11 +367,13 @@ const FlowContextWrapper = ({
         }
 
         if (customTextPreferenceMetaError) {
-            dispatch(addAlert({
-                description: t("flows:core.notifications.customTextPreferenceMetaFetch.genericError.description"),
-                level: AlertLevels.ERROR,
-                message: t("flows:core.notifications.customTextPreferenceMetaFetch.genericError.message")
-            }));
+            dispatch(
+                addAlert({
+                    description: t("flows:core.notifications.customTextPreferenceMetaFetch.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("flows:core.notifications.customTextPreferenceMetaFetch.genericError.message")
+                })
+            );
         }
     }, [ customTextPreferenceMetaError ]);
 
@@ -244,11 +386,13 @@ const FlowContextWrapper = ({
         }
 
         if (brandingPreferenceError) {
-            dispatch(addAlert({
-                description: t("flows:core.notifications.brandingPreferenceFetch.genericError.description"),
-                level: AlertLevels.ERROR,
-                message: t("flows:core.notifications.brandingPreferenceFetch.genericError.message")
-            }));
+            dispatch(
+                addAlert({
+                    description: t("flows:core.notifications.brandingPreferenceFetch.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("flows:core.notifications.brandingPreferenceFetch.genericError.message")
+                })
+            );
         }
     }, [ brandingPreferenceError ]);
 
@@ -285,54 +429,68 @@ const FlowContextWrapper = ({
     /**
      * Function to update an existing i18n key for the flow builder custom screen.
      */
-    const updateI18nKey: (screenType: string, language: string,
-        i18nText: Record<string, string>) => Promise<boolean> = useCallback(
-            async (screenType: string, language: string, i18nText: Record<string, string>): Promise<boolean> => {
-                setIsI18nSubmitting(true);
-                const isUpdate: boolean = Object.keys(textPreference[screenType]).length > 0;
+    const updateI18nKey: (
+        screenType: string,
+        language: string,
+        i18nText: Record<string, string>
+    ) => Promise<boolean> = useCallback(
+        async (screenType: string, language: string, i18nText: Record<string, string>): Promise<boolean> => {
+            setIsI18nSubmitting(true);
+            const isUpdate: boolean = Object.keys(textPreference[screenType]).length > 0;
 
-                try {
-                    await updateCustomTextPreference(
-                        isUpdate,
-                        {
-                            text: i18nText
-                        },
-                        tenantDomain,
-                        screenType,
-                        language,
-                        BrandingPreferenceTypes.ORG
-                    );
+            try {
+                await updateCustomTextPreference(
+                    isUpdate,
+                    {
+                        text: i18nText
+                    },
+                    tenantDomain,
+                    screenType,
+                    language,
+                    BrandingPreferenceTypes.ORG
+                );
 
-                    mutateTextPreference();
+                mutateTextPreference();
 
-                    return true;
-                } catch (error) {
-                    return false;
-                } finally {
-                    setIsI18nSubmitting(false);
-                }
-            }, [ textPreference, tenantDomain ]);
+                return true;
+            } catch (error) {
+                return false;
+            } finally {
+                setIsI18nSubmitting(false);
+            }
+        },
+        [ textPreference, tenantDomain ]
+    );
 
     /**
      * Function to check if a given i18n key is custom.
      */
     const isCustomI18nKey: (key: string, excludePrimaryScreen?: boolean) => boolean = useCallback(
         (key: string, excludePrimaryScreen: boolean = true): boolean => {
-            return fallbackTextPreference ? Object.keys(fallbackTextPreference).every(
-                (screenType: PreviewScreenType) => (screenType === primaryI18nScreen && excludePrimaryScreen)
-                    || !fallbackTextPreference[screenType][key]) : false;
-        }, [ fallbackTextPreference, primaryI18nScreen ]);
+            return fallbackTextPreference
+                ? Object.keys(fallbackTextPreference).every(
+                    (screenType: PreviewScreenType) =>
+                        (screenType === primaryI18nScreen && excludePrimaryScreen) ||
+                          !fallbackTextPreference[screenType][key]
+                )
+                : false;
+        },
+        [ fallbackTextPreference, primaryI18nScreen ]
+    );
 
     return (
         <AuthenticationFlowBuilderCoreContext.Provider
             value={ {
                 ElementFactory,
                 ResourceProperties,
+                clearDrafts,
                 flowCompletionConfigs,
+                hasDrafts,
                 i18nText,
-                i18nTextLoading: textPreferenceLoading ||
-                fallbackTextPreferenceLoading ||
-                customTextPreferenceMetaLoading,
+                i18nTextLoading:
+                    textPreferenceLoading || fallbackTextPreferenceLoading || customTextPreferenceMetaLoading,
+                isAutoSaveEnabled,
+                isAutoSaving,
                 isBrandingEnabled,
                 isCustomI18nKey,
                 isFlowMetadataLoading,
@@ -340,6 +498,7 @@ const FlowContextWrapper = ({
                 isResourcePanelOpen,
                 isResourcePropertiesPanelOpen,
                 language,
+                lastAutoSaveTimestamp,
                 lastInteractedResource: lastInteractedElementInternal,
                 lastInteractedStepId,
                 metadata: flowMetadata,
@@ -347,6 +506,7 @@ const FlowContextWrapper = ({
                 primaryI18nScreen,
                 resourcePropertiesPanelHeading,
                 selectedAttributes,
+                setAutoSaveEnabled: setIsAutoSaveEnabled,
                 setFlowCompletionConfigs,
                 setIsOpenResourcePropertiesPanel,
                 setIsResourcePanelOpen,
@@ -356,12 +516,11 @@ const FlowContextWrapper = ({
                 setResourcePropertiesPanelHeading,
                 setSelectedAttributes,
                 supportedLocales,
+                triggerAutoSave,
                 updateI18nKey
             } }
         >
-            <ValidationProvider>
-                { children }
-            </ValidationProvider>
+            <ValidationProvider>{ children }</ValidationProvider>
         </AuthenticationFlowBuilderCoreContext.Provider>
     );
 };
