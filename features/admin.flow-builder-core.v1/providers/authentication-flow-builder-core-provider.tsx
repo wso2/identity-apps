@@ -221,20 +221,22 @@ const FlowContextWrapper = ({
 
             const timestamp: number = Date.now();
 
+            const history: FlowsHistoryInterface[] = [
+                ...localHistory,
+                {
+                    author: {
+                        userName
+                    },
+                    flowData: flowData,
+                    timestamp
+                }
+            ].slice(-FlowConstants.MAX_HISTORY_ITEMS);
+
             // Save a draft using setPreferences in localstorage.
             await setPreferences({
                 flows: {
                     [flowType]: {
-                        history: [
-                            ...localHistory,
-                            {
-                                author: {
-                                    userName
-                                },
-                                flowData: flowData,
-                                timestamp: timestamp.toString()
-                            }
-                        ]
+                        history
                     }
                 }
             });

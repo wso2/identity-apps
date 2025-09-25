@@ -25,6 +25,9 @@ class FlowConstants {
 
     // 1 min
     public static readonly AUTO_SAVE_INTERVAL: number = 60000;
+
+    // Maximum number of history items to keep
+    public static readonly MAX_HISTORY_ITEMS: number = 20;
 }
 
 export default FlowConstants;
