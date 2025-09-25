@@ -68,7 +68,7 @@ class VisualFlowConstants {
         WidgetTypes.PasskeyEnrollment,
         WidgetTypes.MagicLink
     ];
-    
+
     public static readonly FLOW_BUILDER_FLOW_COMPLETION_VIEW_ALLOWED_RESOURCE_TYPES: string[] = [
         ElementTypes.Typography,
         ElementTypes.RichText,

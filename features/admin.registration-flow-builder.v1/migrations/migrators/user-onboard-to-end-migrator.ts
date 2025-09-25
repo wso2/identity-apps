@@ -17,7 +17,7 @@
  */
 
 import { Element } from "@wso2is/admin.flow-builder-core.v1/models/elements";
-import { StaticStepTypes, StepTypes, Step } from "@wso2is/admin.flow-builder-core.v1/models/steps";
+import { StaticStepTypes, Step, StepTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import { RegistrationFlow } from "../../models/flow";
 import defaultEndNodeTemplate from "../templates/default-end-node.json";
 
@@ -29,7 +29,7 @@ import defaultEndNodeTemplate from "../templates/default-end-node.json";
  */
 const updateNavigationReferences = (components: Element[]): Element[] => {
     return components.map((component: Element) => {
-        let updatedComponent = { ...component };
+        let updatedComponent: Element = { ...component };
 
         // Check if this component has an action that references USER_ONBOARD
         if (component.action && component.action.next === StaticStepTypes.UserOnboard) {
@@ -74,7 +74,7 @@ const userOnboardToEndMigrator = (flow: RegistrationFlow): RegistrationFlow => {
     }
 
     // Check if migration is needed
-    const needsMigration = flow.steps.some((step: Step) => step.type === StaticStepTypes.UserOnboard);
+    const needsMigration: boolean = flow.steps.some((step: Step) => step.type === StaticStepTypes.UserOnboard);
 
     if (!needsMigration) {
         return flow;
@@ -97,7 +97,7 @@ const userOnboardToEndMigrator = (flow: RegistrationFlow): RegistrationFlow => {
 
         // For other steps, check if they have navigation references to USER_ONBOARD
         if (step.data && step.data.components) {
-            const updatedComponents = updateNavigationReferences(step.data.components);
+            const updatedComponents: Element[] = updateNavigationReferences(step.data.components);
 
             return {
                 ...step,

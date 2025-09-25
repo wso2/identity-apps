@@ -103,14 +103,15 @@ const calculateEndNodePosition = (steps: Step[]): { x: number; y: number } => {
         return { x: 1120, y: 420 };
     }
 
-    const rightmostX = Math.max(...steps.map(step => {
+    const rightmostX: number = Math.max(...steps.map((step: Step) => {
         const stepX: number = step.position?.x || 0;
         const stepWidth: number = step.size?.width || 350;
 
         return stepX + stepWidth;
     }));
 
-    const averageY: number = steps.reduce((sum, step) => sum + (step.position?.y || 200), 0) / steps.length;
+    const averageY: number =
+        steps.reduce((sum: number, step: Step) => sum + (step.position?.y || 200), 0) / steps.length;
 
     return {
         x: rightmostX + 100,

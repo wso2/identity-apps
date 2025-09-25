@@ -32,9 +32,9 @@ import ButtonExtendedProperties from "./extended-properties/button-extended-prop
 import FieldExtendedProperties from "./extended-properties/field-extended-properties";
 import RulesProperties from "./nodes/rules-properties";
 import ResourcePropertyFactory from "./resource-property-factory";
+import FlowCompletionProperties from "./steps/end/flow-completion-properties";
 import FederationProperties from "./steps/execution/federation-properties";
 import RegistrationFlowBuilderConstants from "../../constants/registration-flow-builder-constants";
-import FlowCompletionProperties from "./steps/end/flow-completion-properties";
 
 /**
  * Props interface of {@link ResourceProperties}
@@ -122,6 +122,8 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
                     </>
                 );
             }
+
+            break;
         case ElementCategories.Field:
             return (
                 <>

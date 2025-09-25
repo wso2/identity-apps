@@ -18,6 +18,8 @@
 
 import FlowBuilder from "@wso2is/admin.flow-builder-core.v1/components/flow-builder";
 import VisualFlowConstants from "@wso2is/admin.flow-builder-core.v1/constants/visual-flow-constants";
+import useAuthenticationFlowBuilderCore from
+    "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
 import {
     BlockTypes,
     ButtonTypes,
@@ -75,8 +77,6 @@ import useGenerateRegistrationFlow, {
     UseGenerateRegistrationFlowFunction
 } from "../hooks/use-generate-registration-flow";
 import { RegistrationStaticStepTypes } from "../models/flow";
-import useAuthenticationFlowBuilderCore from
-    "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
 
 /**
  * Props interface of {@link RegistrationFlowBuilderCore}
@@ -103,7 +103,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
-    
+
     const { setFlowCompletionConfigs } = useAuthenticationFlowBuilderCore();
 
     const {

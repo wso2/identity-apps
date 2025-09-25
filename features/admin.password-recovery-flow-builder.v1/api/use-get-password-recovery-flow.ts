@@ -33,10 +33,10 @@ import { PasswordRecoveryFlow } from "../models/flow";
  *
  * This function calls the GET method of the following endpoint to get the password recovery flow of the organization.
  * - `https://{serverUrl}/t/{tenantDomain}/api/server/v1/password-recovery-flow`
- * 
+ *
  * The hook automatically applies migrations to convert legacy flows:
  * - Migrates flows with string "End" references to proper configurable END nodes
- * 
+ *
  * For more details, refer to the documentation:
  * {@link https://TODO:<fillthis>)}
  *

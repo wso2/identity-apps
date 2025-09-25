@@ -17,7 +17,7 @@
  */
 
 import { Element } from "@wso2is/admin.flow-builder-core.v1/models/elements";
-import { StaticStepTypes, StepTypes, Step } from "@wso2is/admin.flow-builder-core.v1/models/steps";
+import { StaticStepTypes, Step, StepTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import { RegistrationFlow } from "../../models/flow";
 import defaultEndNodeTemplate from "../templates/default-end-node.json";
 

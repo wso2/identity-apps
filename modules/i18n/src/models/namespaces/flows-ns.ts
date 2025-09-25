@@ -17,6 +17,10 @@
  */
 
 export interface flowsNS {
+    page: {
+        title: string;
+        description: string;
+    };
     askPassword: {
         banner: {
             description: string;

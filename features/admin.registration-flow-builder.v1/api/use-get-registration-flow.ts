@@ -48,7 +48,9 @@ const useGetRegistrationFlow = <Data = any, Error = RequestErrorInterface>(
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${store.getState().config.endpoints.registrationFlow}?flowType=${RegistrationFlowConstants.REGISTRATION_FLOW_TYPE}`
+        url: `${store.getState().config.endpoints.registrationFlow}?flowType=${
+            RegistrationFlowConstants.REGISTRATION_FLOW_TYPE
+        }`
     };
 
     const { data: rawData, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(

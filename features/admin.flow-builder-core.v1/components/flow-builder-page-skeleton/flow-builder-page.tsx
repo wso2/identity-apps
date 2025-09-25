@@ -18,16 +18,18 @@
 
 import useUserPreferences from "@wso2is/common.ui.v1/hooks/use-user-preferences";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, HTMLAttributes, ReactElement, ReactNode, useEffect } from "react";
-import FloatingPublishButton, { FloatingPublishButtonProps } from "./floating-publish-button";
 import classNames from "classnames";
+import React, { FunctionComponent, HTMLAttributes, ReactElement, useEffect } from "react";
+import FloatingPublishButton, { FloatingPublishButtonProps } from "./floating-publish-button";
 import FlowBuilderPageHeader from "./flow-builder-page-header";
 import "./flow-builder-page.scss";
 
 /**
  * Props interface of {@link FlowBuilderPage}
  */
-export type FlowBuilderPageProps = IdentifiableComponentInterface & HTMLAttributes<HTMLDivElement> & FloatingPublishButtonProps;
+export type FlowBuilderPageProps = IdentifiableComponentInterface &
+    HTMLAttributes<HTMLDivElement> &
+    FloatingPublishButtonProps;
 
 /**
  * Skeleton for the flow builder page.
@@ -59,10 +61,20 @@ const FlowBuilderPage: FunctionComponent<FlowBuilderPageProps> = ({
     return (
         <div className={ classNames("flow-builder-page", className) } data-componentid={ componentId }>
             <div className="page-layout">
-                <FlowBuilderPageHeader flowType={ flowType } isPublishing={ isPublishing } onPublish={ onPublish } flowTypeDisplayName={ flowTypeDisplayName } />
+                <FlowBuilderPageHeader
+                    flowType={ flowType }
+                    isPublishing={ isPublishing }
+                    onPublish={ onPublish }
+                    flowTypeDisplayName={ flowTypeDisplayName }
+                />
             </div>
             { children }
-            <FloatingPublishButton flowType={ flowType } isPublishing={ isPublishing } onPublish={ onPublish } flowTypeDisplayName={ flowTypeDisplayName } />
+            <FloatingPublishButton
+                flowType={ flowType }
+                isPublishing={ isPublishing }
+                onPublish={ onPublish }
+                flowTypeDisplayName={ flowTypeDisplayName }
+            />
         </div>
     );
 };

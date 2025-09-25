@@ -16,14 +16,15 @@
  * under the License.
  */
 
-import RegistrationFlowBuilder from "../components/registration-flow-builder";
-import RegistrationFlowBuilderProvider from "../providers/registration-flow-builder-provider";
-import FlowBuilderPage from "@wso2is/admin.flow-builder-core.v1/components/flow-builder-page-skeleton/flow-builder-page";
+import FlowBuilderPage from
+    "@wso2is/admin.flow-builder-core.v1/components/flow-builder-page-skeleton/flow-builder-page";
+import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
-import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { useTranslation } from "react-i18next";
+import RegistrationFlowBuilder from "../components/registration-flow-builder";
 import useRegistrationFlowBuilder from "../hooks/use-registration-flow-builder";
+import RegistrationFlowBuilderProvider from "../providers/registration-flow-builder-provider";
 
 /**
  * Props interface of {@link RegistrationFlowBuilderPage}

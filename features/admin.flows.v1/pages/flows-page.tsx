@@ -41,9 +41,9 @@ const FlowsPage: FunctionComponent<FlowsPageProps> = ({
 
     return (
         <PageLayout
-            pageTitle="Flows"
-            title="Flows"
-            description="Design and customize your user journeys with a no-code flow composer."
+            pageTitle={ t("flows:page.title") }
+            title={ t("flows:page.title") }
+            description={ t("flows:page.description") }
             data-componentid={ `${ componentId }-page-layout` }
         >
             <FlowList/>

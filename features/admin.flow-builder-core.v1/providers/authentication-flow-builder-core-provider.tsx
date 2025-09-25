@@ -53,6 +53,7 @@ import useGetCustomTextPreferenceFallbacks from "../api/use-get-custom-text-pref
 import useGetMetadata from "../api/use-metadata";
 import useResolveCustomTextPreferences from "../api/use-resolve-custom-text-preference";
 import AuthenticationFlowBuilderCoreContext from "../context/authentication-flow-builder-core-context";
+import { FlowCompletionConfigsInterface } from "../models/flows";
 import { Resource, ResourceTypes } from "../models/resources";
 import { StepTypes } from "../models/steps";
 
@@ -108,7 +109,7 @@ const AuthenticationFlowBuilderCoreProvider = ({
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Claim[] }>({});
     const [ language, setLanguage ] = useState<string>(I18nConstants.DEFAULT_FALLBACK_LANGUAGE);
     const [ isI18nSubmitting, setIsI18nSubmitting ] = useState<boolean>(false);
-    const [ flowCompletionConfigs, setFlowCompletionConfigs ] = useState<Record<string, unknown>>({});
+    const [ flowCompletionConfigs, setFlowCompletionConfigs ] = useState<FlowCompletionConfigsInterface>({});
 
     const {
         data: flowMetadata,
@@ -332,11 +333,10 @@ const AuthenticationFlowBuilderCoreProvider = ({
                     ElementFactory,
                     ResourceProperties,
                     flowCompletionConfigs,
-                    setFlowCompletionConfigs,
                     i18nText,
                     i18nTextLoading: textPreferenceLoading ||
-                        fallbackTextPreferenceLoading ||
-                        customTextPreferenceMetaLoading,
+                    fallbackTextPreferenceLoading ||
+                    customTextPreferenceMetaLoading,
                     isBrandingEnabled,
                     isCustomI18nKey,
                     isFlowMetadataLoading,
@@ -351,6 +351,7 @@ const AuthenticationFlowBuilderCoreProvider = ({
                     primaryI18nScreen,
                     resourcePropertiesPanelHeading,
                     selectedAttributes,
+                    setFlowCompletionConfigs,
                     setIsOpenResourcePropertiesPanel,
                     setIsResourcePanelOpen,
                     setLanguage,

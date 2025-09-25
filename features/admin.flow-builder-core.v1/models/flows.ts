@@ -16,26 +16,4 @@
  * under the License.
  */
 
-import { FlowCompletionConfigsInterface } from "@wso2is/admin.flow-builder-core.v1/models/flows";
-
-export interface FlowListItemInterface {
-    id: string;
-    description?: string;
-    disabled?: boolean;
-    path?: string;
-    type?: string;
-    heading?: string;
-    featureStatusKey?: string;
-};
-
-export interface FlowConfigInterface {
-    flowType: FlowTypes;
-    isEnabled: boolean;
-    flowCompletionConfigs: FlowCompletionConfigsInterface;
-}
-
-export enum FlowTypes {
-    REGISTRATION = "REGISTRATION",
-    PASSWORD_RECOVERY = "PASSWORD_RECOVERY",
-    INVITED_USER_REGISTRATION = "INVITED_USER_REGISTRATION",
-}
+export type FlowCompletionConfigsInterface = Record<string, unknown>;

@@ -16,18 +16,18 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, memo } from "react";
-import { View } from "../view/view";
-import VisualFlowConstants from "../../../../constants/visual-flow-constants";
-import { CommonStepFactoryPropsInterface } from "../common-step-factory";
-import { useNodeId } from "@xyflow/react";
-import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
-import "./end.scss";
-import Stack from "@oxygen-ui/react/Stack";
 import Avatar from "@oxygen-ui/react/Avatar";
+import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { useNodeId } from "@xyflow/react";
+import React, { FunctionComponent, ReactElement, memo } from "react";
 import { useTranslation } from "react-i18next";
+import VisualFlowConstants from "../../../../constants/visual-flow-constants";
+import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
+import { CommonStepFactoryPropsInterface } from "../common-step-factory";
+import { View } from "../view/view";
+import "./end.scss";
 
 /**
  * Props interface of {@link End}
@@ -62,7 +62,11 @@ const End: FunctionComponent<EndPropsInterface> = memo(
     }: EndPropsInterface): ReactElement => {
         const { t } = useTranslation();
         const stepId: string = useNodeId();
-        const { setLastInteractedResource, setLastInteractedStepId, setResourcePropertiesPanelHeading } = useAuthenticationFlowBuilderCore();
+        const {
+            setLastInteractedResource,
+            setLastInteractedStepId,
+            setResourcePropertiesPanelHeading
+        } = useAuthenticationFlowBuilderCore();
 
         /**
          * Get allowed types by filtering out restricted types from the default allowed types.

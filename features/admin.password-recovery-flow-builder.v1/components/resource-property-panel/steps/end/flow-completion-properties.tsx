@@ -16,22 +16,24 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
+import Checkbox from "@oxygen-ui/react/Checkbox";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import Stack from "@oxygen-ui/react/Stack";
-import Checkbox from "@oxygen-ui/react/Checkbox";
-import Alert from "@oxygen-ui/react/Alert";
 import Typography from "@oxygen-ui/react/Typography";
 import useGetFlowConfig from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-config";
-import { CommonResourcePropertiesPropsInterface } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
-import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { CommonResourcePropertiesPropsInterface } from
+    "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
 import useAuthenticationFlowBuilderCore from
     "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
+import { FlowCompletionConfigsInterface } from "@wso2is/admin.flow-builder-core.v1/models/flows";
+import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
+import React, { ChangeEvent, FunctionComponent, ReactElement } from "react";
+import { Trans, useTranslation } from "react-i18next";
 
 /**
  * Props interface of {@link FlowCompletionProperties}
@@ -52,14 +54,18 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
     const { flowCompletionConfigs, setFlowCompletionConfigs, metadata } = useAuthenticationFlowBuilderCore();
     const { data: passwordRecoveryFlowConfig } = useGetFlowConfig(FlowTypes.PASSWORD_RECOVERY);
 
-    const configs = !isEmpty(flowCompletionConfigs) ? flowCompletionConfigs : passwordRecoveryFlowConfig?.flowCompletionConfigs;
+    const configs: FlowCompletionConfigsInterface = !isEmpty(flowCompletionConfigs)
+        ? flowCompletionConfigs
+        : passwordRecoveryFlowConfig?.flowCompletionConfigs;
 
     return (
-        <Stack gap={2} data-componentid={componentId}>
+        <Stack gap={ 2 } data-componentid={ componentId }>
             <Typography>
                 <Alert severity="info">
                     <Trans i18nKey="flows:passwordRecovery.steps.end.description">
-                        The <strong>End Screen</strong> defines what happens once the password recovery flow is completed. It allows you to control the user&apos;s final experience by selecting one of the following outcomes:
+                        The <strong>End Screen</strong> defines what happens once the password recovery flow is
+                        completed. It allows you to control the user&apos;s final experience by selecting one of the
+                        following outcomes:
                     </Trans>
                 </Alert>
             </Typography>
@@ -69,15 +75,15 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                         <FormControlLabel
                             label={ t("flows:passwordRecovery.steps.end.autoLogin.label") }
                             control={
-                                <Checkbox
+                                (<Checkbox
                                     checked={ configs?.isAutoLoginEnabled === "true" }
-                                    onChange={(event) => {
+                                    onChange={ (event: ChangeEvent<HTMLInputElement>) => {
                                         setFlowCompletionConfigs({
                                             ...configs,
                                             isAutoLoginEnabled: event.target.checked ? "true" : "false"
                                         });
-                                    }}
-                                />
+                                    } }
+                                />)
                             }
                         />
                         <FormHelperText>{ t("flows:passwordRecovery.steps.end.autoLogin.hint") }</FormHelperText>
@@ -88,18 +94,20 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                         <FormControlLabel
                             label={ t("flows:passwordRecovery.steps.end.flowCompletionNotification.label") }
                             control={
-                                <Checkbox
+                                (<Checkbox
                                     checked={ configs?.isFlowCompletionNotificationEnabled === "true" }
-                                    onChange={(event) => {
+                                    onChange={ (event: ChangeEvent<HTMLInputElement>) => {
                                         setFlowCompletionConfigs({
                                             ...configs,
                                             isFlowCompletionNotificationEnabled: event.target.checked ? "true" : "false"
                                         });
-                                    }}
-                                />
+                                    } }
+                                />)
                             }
                         />
-                        <FormHelperText>{ t("flows:passwordRecovery.steps.end.flowCompletionNotification.hint") }</FormHelperText>
+                        <FormHelperText>
+                            { t("flows:passwordRecovery.steps.end.flowCompletionNotification.hint") }
+                        </FormHelperText>
                     </Box>
                 ) }
             </Box>

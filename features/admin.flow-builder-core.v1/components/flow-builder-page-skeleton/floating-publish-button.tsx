@@ -17,9 +17,6 @@
  */
 
 import Button from "@oxygen-ui/react/Button";
-import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
-import useValidationStatus from "../../hooks/use-validation-status";
-import useGetFlowConfig from "../../api/use-get-flow-config";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import classNames from "classnames";
@@ -27,6 +24,9 @@ import React, { FC, HTMLAttributes, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
+import useGetFlowConfig from "../../api/use-get-flow-config";
+import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
+import useValidationStatus from "../../hooks/use-validation-status";
 import "./floating-publish-button.scss";
 
 /**
@@ -61,11 +61,17 @@ const FloatingPublishButton: FC<FloatingPublishButtonProps> = ({
 
     useEffect(() => {
         if (flowConfigError) {
-            dispatch(addAlert<AlertInterface>({
-                description: t("flows:core.notifications.fetchFlowConfig.genericError.description", { flowType: flowTypeDisplayName }),
-                level: AlertLevels.ERROR,
-                message: t("flows:core.notifications.fetchFlowConfig.genericError.message", { flowType: flowTypeDisplayName })
-            }));
+            dispatch(
+                addAlert<AlertInterface>({
+                    description: t("flows:core.notifications.fetchFlowConfig.genericError.description", {
+                        flowType: flowTypeDisplayName
+                    }),
+                    level: AlertLevels.ERROR,
+                    message: t("flows:core.notifications.fetchFlowConfig.genericError.message", {
+                        flowType: flowTypeDisplayName
+                    })
+                })
+            );
         }
     }, [ flowConfigError ]);
 
@@ -78,6 +84,7 @@ const FloatingPublishButton: FC<FloatingPublishButtonProps> = ({
             loading={ isPublishing }
             onClick={ onPublish }
             disabled={ !isValid }
+            data-componentid={ componentId }
         >
             { flowConfig?.isEnabled ? t("common:publish") : t("common:saveDraft") }
         </Button>

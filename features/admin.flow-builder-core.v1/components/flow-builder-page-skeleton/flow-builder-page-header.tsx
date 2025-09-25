@@ -26,17 +26,17 @@ import Typography from "@oxygen-ui/react/Typography";
 import { ArrowLeftIcon } from "@oxygen-ui/react-icons";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import ValidationStatusLabels from "../../components/validation-panel/validation-status-labels";
-import useValidationStatus from "../../hooks/use-validation-status";
-import updateFlowConfig from "../../api/update-flow-config";
-import useGetFlowConfig from "../../api/use-get-flow-config";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
 import { RouteProps } from "react-router-dom";
+import { Dispatch } from "redux";
+import updateFlowConfig from "../../api/update-flow-config";
+import useGetFlowConfig from "../../api/use-get-flow-config";
+import ValidationStatusLabels from "../../components/validation-panel/validation-status-labels";
+import useValidationStatus from "../../hooks/use-validation-status";
 
 /**
  * Props interface of {@link FlowBuilderPageHeader}
@@ -46,7 +46,7 @@ export interface FlowBuilderPageHeaderProps extends IdentifiableComponentInterfa
     flowTypeDisplayName: string;
     isPublishing: boolean;
     onPublish: any;
-};
+}
 
 /**
  * Header for the flow builder page.
@@ -61,11 +61,7 @@ const FlowBuilderPageHeader: FunctionComponent<FlowBuilderPageHeaderProps> = ({
     flowTypeDisplayName
 }: FlowBuilderPageHeaderProps): ReactElement => {
     const { isValid } = useValidationStatus();
-    const {
-        data: flowConfig,
-        mutate: mutateFlowConfig,
-        error: flowConfigError
-    } = useGetFlowConfig(flowType);
+    const { data: flowConfig, mutate: mutateFlowConfig, error: flowConfigError } = useGetFlowConfig(flowType);
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
@@ -76,11 +72,17 @@ const FlowBuilderPageHeader: FunctionComponent<FlowBuilderPageHeaderProps> = ({
      */
     useEffect(() => {
         if (flowConfigError) {
-            dispatch(addAlert<AlertInterface>({
-                description: t("flows:core.notifications.fetchFlowConfig.genericError.description", { flowType: flowTypeDisplayName }),
-                level: AlertLevels.ERROR,
-                message: t("flows:core.notifications.fetchFlowConfig.genericError.message", { flowType: flowTypeDisplayName })
-            }));
+            dispatch(
+                addAlert<AlertInterface>({
+                    description: t("flows:core.notifications.fetchFlowConfig.genericError.description", {
+                        flowType: flowTypeDisplayName
+                    }),
+                    level: AlertLevels.ERROR,
+                    message: t("flows:core.notifications.fetchFlowConfig.genericError.message", {
+                        flowType: flowTypeDisplayName
+                    })
+                })
+            );
         }
     }, [ flowConfigError ]);
 
@@ -94,7 +96,7 @@ const FlowBuilderPageHeader: FunctionComponent<FlowBuilderPageHeaderProps> = ({
             const state: {
                 from?: {
                     pathname: string;
-                }
+                };
             } = history.location.state;
 
             if (state?.from?.pathname) {
@@ -111,11 +113,17 @@ const FlowBuilderPageHeader: FunctionComponent<FlowBuilderPageHeaderProps> = ({
      * @param operation - The operation being performed (enable, disable).
      */
     const handleFlowConfigError = (operation: string): void => {
-        dispatch(addAlert<AlertInterface>({
-            description: t(`flows:core.notifications.${operation}Flow.genericError.description`, { flowType: flowTypeDisplayName }),
-            level: AlertLevels.ERROR,
-            message: t(`flows:core.notifications.${operation}Flow.genericError.message`, { flowType: flowTypeDisplayName })
-        }));
+        dispatch(
+            addAlert<AlertInterface>({
+                description: t(`flows:core.notifications.${operation}Flow.genericError.description`, {
+                    flowType: flowTypeDisplayName
+                }),
+                level: AlertLevels.ERROR,
+                message: t(`flows:core.notifications.${operation}Flow.genericError.message`, {
+                    flowType: flowTypeDisplayName
+                })
+            })
+        );
     };
 
     /**
@@ -124,11 +132,17 @@ const FlowBuilderPageHeader: FunctionComponent<FlowBuilderPageHeaderProps> = ({
      * @param operation - The operation that was successful (enable, disable, publish).
      */
     const handleFlowConfigSuccess = (operation: string): void => {
-        dispatch(addAlert<AlertInterface>({
-            description: t(`flows:core.notifications.${operation}Flow.success.description`, { flowType: flowTypeDisplayName }),
-            level: AlertLevels.SUCCESS,
-            message: t(`flows:core.notifications.${operation}Flow.success.message`, { flowType: flowTypeDisplayName })
-        }));
+        dispatch(
+            addAlert<AlertInterface>({
+                description: t(`flows:core.notifications.${operation}Flow.success.description`, {
+                    flowType: flowTypeDisplayName
+                }),
+                level: AlertLevels.SUCCESS,
+                message: t(`flows:core.notifications.${operation}Flow.success.message`, {
+                    flowType: flowTypeDisplayName
+                })
+            })
+        );
     };
 
     /**
@@ -181,23 +195,18 @@ const FlowBuilderPageHeader: FunctionComponent<FlowBuilderPageHeaderProps> = ({
                     >
                         { t("flows:label") }
                     </Link>
-                    <Typography>
-                        { t("flows:core.breadcrumb", { flowType: flowTypeDisplayName }) }
-                    </Typography>
+                    <Typography>{ t("flows:core.breadcrumb", { flowType: flowTypeDisplayName }) }</Typography>
                 </Breadcrumbs>
             </Box>
-            <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                gap={ 4 }
-            >
+            <Box display="flex" justifyContent="center" alignItems="center" gap={ 4 }>
                 <ValidationStatusLabels />
                 <Box display="flex" alignItems="center">
                     <Typography>
-                        { flowConfig?.isEnabled
-                            ? t("flows:core.labels.disableFlow")
-                            : t("flows:core.labels.enableFlow") }
+                        {
+                            flowConfig?.isEnabled
+                                ? t("flows:core.labels.disableFlow")
+                                : t("flows:core.labels.enableFlow")
+                        }
                     </Typography>
                     <Tooltip
                         title={

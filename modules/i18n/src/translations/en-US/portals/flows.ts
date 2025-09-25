@@ -26,14 +26,14 @@ export const flows: flowsNS = {
         flowDisplayName: "Invited User Registration",
         steps: {
             end: {
+                autoLogin: {
+                    hint: "Immediately log the user in once the flow is completed, without additional steps.",
+                    label: "Auto Login"
+                },
                 description: "The <1>End Screen</1> defines what happens once the invited user registration flow is completed. It allows you to control the user's final experience by selecting one of the following outcomes:",
                 flowCompletionNotification: {
-                    label: "Send a notification email on flow completion",
-                    hint: "Notify the user via email once the flow is successfully completed."
-                },
-                autoLogin: {
-                    label: "Auto Login",
-                    hint: "Immediately log the user in once the flow is completed, without additional steps."
+                    hint: "Notify the user via email once the flow is successfully completed.",
+                    label: "Send a notification email on flow completion"
                 }
             }
         },
@@ -44,10 +44,6 @@ export const flows: flowsNS = {
     },
     core: {
         breadcrumb: "Edit {{flowType}} Flow",
-        labels: {
-            disableFlow: "Disable",
-            enableFlow: "Enable"
-        },
         elements: {
             richText: {
                 linkEditor: {
@@ -109,6 +105,10 @@ export const flows: flowsNS = {
                 microsoft: "Microsoft",
                 passkeyEnrollment: "Enroll Passkey"
             }
+        },
+        labels: {
+            disableFlow: "Disable",
+            enableFlow: "Enable"
         },
         notificationPanel: {
             emptyMessages: {
@@ -191,6 +191,11 @@ export const flows: flowsNS = {
                 }
             }
         },
+        steps: {
+            end: {
+                flowCompletionProperties: "Flow Completion Properties"
+            }
+        },
         validation: {
             fields: {
                 button: {
@@ -239,11 +244,6 @@ export const flows: flowsNS = {
                 }
             }
         },
-        steps: {
-            end: {
-                flowCompletionProperties: "Flow Completion Properties"
-            }
-        },
         validationStatusLabels: {
             error: "Error",
             errors: "Errors",
@@ -253,6 +253,10 @@ export const flows: flowsNS = {
         }
     },
     label: "Flows",
+    page: {
+        description: "Design and customize your user journeys with a no-code flow composer.",
+        title: "Flows"
+    },
     passwordRecovery: {
         banner: {
             description: "Provide a seamless password recovery experience to your users by customizing the recovery flow to suit your organization's needs.",
@@ -262,14 +266,14 @@ export const flows: flowsNS = {
         name: "Password Recovery Flow Builder",
         steps: {
             end: {
-                description: "The <1>End Screen</1> defines what happens once the password recovery flow is completed. It allows you to control the user&apos;s final experience by selecting one of the following outcomes:",
                 autoLogin: {
-                    label: "Auto Login",
-                    hint: "Immediately log the user in once the password recovery is completed, without additional steps."
+                    hint: "Immediately log the user in once the password recovery is completed, without additional steps.",
+                    label: "Auto Login"
                 },
+                description: "The <1>End Screen</1> defines what happens once the password recovery flow is completed. It allows you to control the user&apos;s final experience by selecting one of the following outcomes:",
                 flowCompletionNotification: {
-                    label: "Send a notification email on flow completion",
-                    hint: "Notify the user via email once the password recovery flow is successfully completed."
+                    hint: "Notify the user via email once the password recovery flow is successfully completed.",
+                    label: "Send a notification email on flow completion"
                 }
             }
         },
@@ -301,25 +305,25 @@ export const flows: flowsNS = {
         steps: {
             emailConfirmation: "Email Confirmation",
             end: {
-                description: "The <1>End Screen</1> defines what happens once the flow is completed. It allows you to control the user&apos;s final experience by selecting one of the following outcomes:",
-                accountVerification: {
-                    label: "Verify the account on flow completion",
-                    hint: "Require the user to confirm their account via email before granting access."
-                },
                 accountActivation: {
                     activateImmediately: {
-                        label: "Activate the account on creation",
-                        hint: "Automatically activate the user account upon creation, allowing immediate access without waiting for verification."
+                        hint: "Automatically activate the user account upon creation, allowing immediate access without waiting for verification.",
+                        label: "Activate the account on creation"
                     }
                 },
                 accountFlowCompletion: {
-                    label: "Send a notification email on flow completion",
-                    hint: "Notify the user via email once the flow is successfully completed."
+                    hint: "Notify the user via email once the flow is successfully completed.",
+                    label: "Send a notification email on flow completion"
+                },
+                accountVerification: {
+                    hint: "Require the user to confirm their account via email before granting access.",
+                    label: "Verify the account on flow completion"
                 },
                 autoLogin: {
-                    label: "Auto Login",
-                    hint: "Immediately log the user in once the flow is completed, without additional steps."
-                }
+                    hint: "Immediately log the user in once the flow is completed, without additional steps.",
+                    label: "Auto Login"
+                },
+                description: "The <1>End Screen</1> defines what happens once the flow is completed. It allows you to control the user&apos;s final experience by selecting one of the following outcomes:"
             }
         },
         tooltip: {

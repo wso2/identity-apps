@@ -16,14 +16,15 @@
  * under the License.
  */
 
-import PasswordRecoveryFlowBuilder from "../components/password-recovery-flow-builder";
-import PasswordRecoveryFlowBuilderProvider from "../providers/password-recovery-flow-builder-provider";
-import FlowBuilderPage from "@wso2is/admin.flow-builder-core.v1/components/flow-builder-page-skeleton/flow-builder-page";
+import FlowBuilderPage from
+    "@wso2is/admin.flow-builder-core.v1/components/flow-builder-page-skeleton/flow-builder-page";
+import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
-import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { useTranslation } from "react-i18next";
+import PasswordRecoveryFlowBuilder from "../components/password-recovery-flow-builder";
 import usePasswordRecoveryFlowBuilder from "../hooks/use-password-recovery-flow-builder";
+import PasswordRecoveryFlowBuilderProvider from "../providers/password-recovery-flow-builder-provider";
 
 /**
  * Props interface of {@link PasswordRecoveryFlowBuilderPage}

@@ -19,9 +19,8 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Node } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
-import End from "./end/end";
 import Start from "./start/start";
-import { StaticStepTypes, StepTypes, Step } from "../../../models/steps";
+import { StaticStepTypes, Step } from "../../../models/steps";
 
 /**
  * Props interface of {@link CommonStaticStepFactory}
@@ -49,7 +48,6 @@ export interface CommonStaticStepFactoryPropsInterface extends Node, Identifiabl
  */
 export const CommonStaticStepFactory: FunctionComponent<CommonStaticStepFactoryPropsInterface> = ({
     type,
-    resource,
     "data-componentid": componentId = "common-static-node-factory",
     ...rest
 }: CommonStaticStepFactoryPropsInterface): ReactElement => {
