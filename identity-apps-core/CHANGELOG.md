@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 3.3.10
+
+### Patch Changes
+
+- [#9188](https://github.com/wso2/identity-apps/pull/9188) [`abdc7947a59e4c862f3e8aa6ccd6ef93006e30be`](https://github.com/wso2/identity-apps/commit/abdc7947a59e4c862f3e8aa6ccd6ef93006e30be) Thanks [@thiva-k](https://github.com/thiva-k)! - Add user account locked error to fido error page
+
+* [#9196](https://github.com/wso2/identity-apps/pull/9196) [`22c481b8fcaa3b4fd8f1df7be6c50c90a8889da3`](https://github.com/wso2/identity-apps/commit/22c481b8fcaa3b4fd8f1df7be6c50c90a8889da3) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - improve encodings of request parameters
+
 ## 3.3.9
 
 ### Patch Changes
