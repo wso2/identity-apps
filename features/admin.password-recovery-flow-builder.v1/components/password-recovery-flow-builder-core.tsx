@@ -265,19 +265,6 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
             type: StaticStepTypes.Start
         };
 
-        const defaultEndPosition: { x: number; y: number } = { x: 300, y: 330 };
-        const endPosition: { x: number; y: number } = steps.length > 0
-            ? { x: steps[steps.length - 1].position.x + 1000, y: steps[steps.length - 1].position.y + 200 }
-            : defaultEndPosition;
-
-        const END_STEP: Node = {
-            data: { displayOnly: true },
-            deletable: false,
-            id: INITIAL_FLOW_USER_ONBOARD_STEP_ID,
-            position: endPosition,
-            type: StepTypes.End
-        };
-
         return resolveStepMetadata(resources, generateIdsForResources<Node[]>([
             START_STEP,
             ...steps.map((step: Node) => {
@@ -288,13 +275,12 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
                             components: resolveComponentMetadata(resources, (step.data as any).components)
                         }) ||
                         step.data,
-                    deletable: true,
+                    deletable: step.type === StepTypes.End ? false : true,
                     id: step.id,
                     position: step.position,
                     type: step.type
                 };
-            }),
-            END_STEP
+            })
         ]) as Step[]) as Node[];
     };
 

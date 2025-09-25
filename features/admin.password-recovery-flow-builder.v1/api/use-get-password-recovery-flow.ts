@@ -25,7 +25,7 @@ import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
 import { useMemo } from "react";
 import PasswordRecoveryFlowConstants from "../constants/password-recovery-flow-constants";
-import { endStepMigrator } from "../migrations";
+import endStepMigrator from "../migrations/migrators/end-step-migrator";
 import { PasswordRecoveryFlow } from "../models/flow";
 
 /**
@@ -77,7 +77,6 @@ const useGetPasswordRecoveryFlow = <Data = any, Error = RequestErrorInterface>(
         }
     }, [ rawData ]);
 
-    console.log("Fetched and migrated password recovery flow data:", JSON.stringify(migratedData));
     return {
         data: migratedData as Data,
         error,
