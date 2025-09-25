@@ -220,6 +220,15 @@ const FlowContextWrapper = ({
                 return false;
             }
 
+            // Check if the new flow data is different from the most recent history item
+            const mostRecentHistoryItem: FlowsHistoryInterface = localHistory[localHistory.length - 1];
+
+            if (mostRecentHistoryItem &&
+                JSON.stringify(mostRecentHistoryItem.flowData) === JSON.stringify(flowData)) {
+                // Data is the same as the most recent item, no need to save
+                return false;
+            }
+
             const timestamp: number = Date.now();
 
             const history: FlowsHistoryInterface[] = [
@@ -251,7 +260,7 @@ const FlowContextWrapper = ({
         } finally {
             setIsAutoSavingLocalHistory(false);
         }
-    }, [ toObject, isAutoSavingLocalHistory, flowType, setPreferences, dispatch, t ]);
+    }, [ toObject, isAutoSavingLocalHistory, flowType, setPreferences, dispatch, t, localHistory ]);
 
     /**
      * Clear all saved drafts for this flow type.
@@ -308,7 +317,7 @@ const FlowContextWrapper = ({
                         detail: { nodes, edges, historyItem }
                     });
                     window.dispatchEvent(restoreEvent);
-                    
+
                     // Show success message
                     dispatch(
                         addAlert({
