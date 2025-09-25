@@ -19,7 +19,7 @@
 import AskPasswordFlowBuilderProvider from "../providers/ask-password-flow-builder-provider";
 import FlowBuilderPage from "@wso2is/admin.flow-builder-core.v1/components/flow-builder-page-skeleton/flow-builder-page";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { useTranslation } from "react-i18next";
 import useAskPasswordFlowBuilder from "../hooks/use-ask-password-flow-builder";
@@ -28,33 +28,48 @@ import AskPasswordFlowBuilder from "../components/ask-password-flow-builder";
 /**
  * Props interface of {@link AskPasswordFlowBuilderPage}
  */
-export type AskPasswordFlowBuilderPageProps = IdentifiableComponentInterface;
+export type AskPasswordFlowBuilderPageProps = IdentifiableComponentInterface & PropsWithChildren;
 
 /**
- * Landing page for the Registration Flow Builder.
+ * Wraps the `AskPasswordFlowBuilderPage` with the required context providers.
  *
  * @param props - Props injected to the component.
- * @returns AskPasswordFlowBuilderPage component.
+ * @returns PageWithContext component.
  */
-const AskPasswordFlowBuilderPage: FunctionComponent<AskPasswordFlowBuilderPageProps> = ({
-    ["data-componentid"]: componentId = "registration-flow-builder-page"
+const AskPasswordFlowBuilderPageWithContext: FunctionComponent<AskPasswordFlowBuilderPageProps> = ({
+    ["data-componentid"]: componentId,
+    children
 }: AskPasswordFlowBuilderPageProps): ReactElement => {
     const { t } = useTranslation();
     const { isPublishing, onPublish } = useAskPasswordFlowBuilder();
 
     return (
-        <AskPasswordFlowBuilderProvider>
-            <FlowBuilderPage
-                data-componentid={ componentId }
-                flowType={ FlowTypes.INVITED_USER_REGISTRATION }
-                flowTypeDisplayName={ t("flows:askPassword.flowDisplayName") }
-                isPublishing={ isPublishing }
-                onPublish={ onPublish }
-            >
-                <AskPasswordFlowBuilder />
-            </FlowBuilderPage>
-        </AskPasswordFlowBuilderProvider>
+        <FlowBuilderPage
+            data-componentid={ componentId }
+            flowType={ FlowTypes.INVITED_USER_REGISTRATION }
+            flowTypeDisplayName={ t("flows:askPassword.flowDisplayName") }
+            isPublishing={ isPublishing }
+            onPublish={ onPublish }
+        >
+            { children }
+        </FlowBuilderPage>
     );
 };
+
+/**
+ * Landing page for the Ask Password Flow Builder.
+ *
+ * @param props - Props injected to the component.
+ * @returns AskPasswordFlowBuilderPage component.
+ */
+const AskPasswordFlowBuilderPage: FunctionComponent<AskPasswordFlowBuilderPageProps> = ({
+    ["data-componentid"]: componentId = "ask-password-flow-builder-page"
+}: AskPasswordFlowBuilderPageProps): ReactElement => (
+    <AskPasswordFlowBuilderProvider>
+        <AskPasswordFlowBuilderPageWithContext data-componentid={ componentId }>
+            <AskPasswordFlowBuilder />
+        </AskPasswordFlowBuilderPageWithContext>
+    </AskPasswordFlowBuilderProvider>
+);
 
 export default AskPasswordFlowBuilderPage;

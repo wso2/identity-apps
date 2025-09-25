@@ -20,7 +20,7 @@ import PasswordRecoveryFlowBuilder from "../components/password-recovery-flow-bu
 import PasswordRecoveryFlowBuilderProvider from "../providers/password-recovery-flow-builder-provider";
 import FlowBuilderPage from "@wso2is/admin.flow-builder-core.v1/components/flow-builder-page-skeleton/flow-builder-page";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { useTranslation } from "react-i18next";
 import usePasswordRecoveryFlowBuilder from "../hooks/use-password-recovery-flow-builder";
@@ -28,7 +28,33 @@ import usePasswordRecoveryFlowBuilder from "../hooks/use-password-recovery-flow-
 /**
  * Props interface of {@link PasswordRecoveryFlowBuilderPage}
  */
-export type PasswordRecoveryFlowBuilderPageProps = IdentifiableComponentInterface;
+export type PasswordRecoveryFlowBuilderPageProps = IdentifiableComponentInterface & PropsWithChildren;
+
+/**
+ * Wraps the `PasswordRecoveryFlowBuilderPage` with the required context providers.
+ *
+ * @param props - Props injected to the component.
+ * @returns PageWithContext component.
+ */
+const PasswordRecoveryFlowBuilderPageWithContext: FunctionComponent<PasswordRecoveryFlowBuilderPageProps> = ({
+    ["data-componentid"]: componentId,
+    children
+}: PasswordRecoveryFlowBuilderPageProps): ReactElement => {
+    const { t } = useTranslation();
+    const { isPublishing, onPublish } = usePasswordRecoveryFlowBuilder();
+
+    return (
+        <FlowBuilderPage
+            data-componentid={ componentId }
+            flowType={ FlowTypes.PASSWORD_RECOVERY }
+            flowTypeDisplayName={ t("flows:passwordRecovery.flowDisplayName") }
+            isPublishing={ isPublishing }
+            onPublish={ onPublish }
+        >
+            { children }
+        </FlowBuilderPage>
+    );
+};
 
 /**
  * Landing page for the Password Recovery Flow Builder.
@@ -38,23 +64,12 @@ export type PasswordRecoveryFlowBuilderPageProps = IdentifiableComponentInterfac
  */
 const PasswordRecoveryFlowBuilderPage: FunctionComponent<PasswordRecoveryFlowBuilderPageProps> = ({
     ["data-componentid"]: componentId = "password-recovery-flow-builder-page"
-}: PasswordRecoveryFlowBuilderPageProps): ReactElement => {
-    const { t } = useTranslation();
-    const { isPublishing, onPublish } = usePasswordRecoveryFlowBuilder();
-
-    return (
-        <PasswordRecoveryFlowBuilderProvider>
-            <FlowBuilderPage
-                data-componentid={ componentId }
-                flowType={ FlowTypes.PASSWORD_RECOVERY }
-                flowTypeDisplayName={ t("flows:passwordRecovery.flowDisplayName") }
-                isPublishing={ isPublishing }
-                onPublish={ onPublish }
-            >
-                <PasswordRecoveryFlowBuilder />
-            </FlowBuilderPage>
-        </PasswordRecoveryFlowBuilderProvider>
-    );
-};
+}: PasswordRecoveryFlowBuilderPageProps): ReactElement => (
+    <PasswordRecoveryFlowBuilderProvider>
+        <PasswordRecoveryFlowBuilderPageWithContext data-componentid={ componentId }>
+            <PasswordRecoveryFlowBuilder />
+        </PasswordRecoveryFlowBuilderPageWithContext>
+    </PasswordRecoveryFlowBuilderProvider>
+);
 
 export default PasswordRecoveryFlowBuilderPage;
