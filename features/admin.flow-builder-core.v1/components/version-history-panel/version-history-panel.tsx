@@ -17,14 +17,17 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
-import Button from "@oxygen-ui/react/Button";
+import Card from "@oxygen-ui/react/Card";
+import CardContent from "@oxygen-ui/react/CardContent";
 import Drawer, { DrawerProps } from "@oxygen-ui/react/Drawer";
 import IconButton from "@oxygen-ui/react/IconButton";
-import { TrashIcon } from "@oxygen-ui/react-icons";
+import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
+import React, { FunctionComponent, HTMLAttributes, ReactElement, useMemo } from "react";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
+import moment from "moment";
+import { usePastelColorGenerator } from "@oxygen-ui/react"
 import "./version-history-panel.scss";
 
 /**
@@ -53,6 +56,40 @@ const ChevronsRight = ({ width = 16, height = 16 }: { width: number; height: num
  * @param props - Props injected to the component.
  * @returns The VersionHistoryPanel component.
  */
+/**
+ * Component to render author info with colored dot.
+ */
+const AuthorInfo: FunctionComponent<{ userName: string }> = ({ userName }) => {
+    const colorRandomizer: string = useMemo(() => {
+        return userName || '';
+    }, [userName]);
+
+    const { color } = usePastelColorGenerator(colorRandomizer);
+
+    return (
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
+            <Box
+                sx={{
+                    width: '12px',
+                    height: '12px',
+                    borderRadius: '50%',
+                    backgroundColor: color,
+                    flexShrink: 0
+                }}
+            />
+            <Typography 
+                variant="caption" 
+                color="text.secondary"
+                sx={{ 
+                    fontSize: '11px'
+                }}
+            >
+                {userName}
+            </Typography>
+        </Box>
+    );
+};
+
 const VersionHistoryPanel: FunctionComponent<VersionHistoryPanelPropsInterface> = ({
     "data-componentid": componentId = "version-history-panel",
     children,
@@ -61,7 +98,7 @@ const VersionHistoryPanel: FunctionComponent<VersionHistoryPanelPropsInterface> 
     className,
     ...rest
 }: VersionHistoryPanelPropsInterface): ReactElement => {
-    const { isVersionHistoryPanelOpen, setIsVersionHistoryPanelOpen } = useAuthenticationFlowBuilderCore();
+    const { localHistory, setIsVersionHistoryPanelOpen } = useAuthenticationFlowBuilderCore();
 
     return (
         <Box
@@ -112,9 +149,130 @@ const VersionHistoryPanel: FunctionComponent<VersionHistoryPanelPropsInterface> 
                         <ChevronsRight height={ 16 } width={ 16 } />
                     </IconButton>
                 </Box>
-                <div className="flow-builder-right-panel content full-height">
+                <Box 
+                    className="flow-builder-right-panel content full-height"
+                    sx={{ 
+                        overflowY: 'auto',
+                        padding: '12px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '12px'
+                    }}
+                >
+                    {localHistory && localHistory.length > 0 ? (
+                        (() => {
+                            // Find the latest timestamp to identify current version
+                            const latestTimestamp = Math.max(...localHistory.map(item => Number(item.timestamp)));
+                            
+                            // Group history items by date
+                            const groupedHistory = localHistory.reduce((groups, item, index) => {
+                                const date = moment(Number(item.timestamp)).format('YYYY-MM-DD');
+                                const isToday = moment(Number(item.timestamp)).isSame(moment(), 'day');
+                                const groupKey = isToday ? 'Today' : moment(Number(item.timestamp)).format('MMMM DD, YYYY');
+                                
+                                if (!groups[groupKey]) {
+                                    groups[groupKey] = [];
+                                }
+                                groups[groupKey].push({ 
+                                    ...item, 
+                                    originalIndex: index,
+                                    isLatest: Number(item.timestamp) === latestTimestamp
+                                });
+                                return groups;
+                            }, {} as Record<string, any[]>);
 
-                </div>
+                            return Object.entries(groupedHistory)
+                                .sort(([dateGroupA], [dateGroupB]) => {
+                                    // Put "Today" first
+                                    if (dateGroupA === 'Today') return -1;
+                                    if (dateGroupB === 'Today') return 1;
+                                    // For other dates, sort by most recent first
+                                    return moment(dateGroupB, 'MMMM DD, YYYY').valueOf() - moment(dateGroupA, 'MMMM DD, YYYY').valueOf();
+                                })
+                                .map(([dateGroup, items]) => (
+                                <Box key={dateGroup}>
+                                    <Typography 
+                                        variant="subtitle2" 
+                                        color="text.secondary"
+                                        sx={{ 
+                                            marginBottom: '8px',
+                                            fontSize: '12px',
+                                            fontWeight: 500,
+                                            textTransform: 'uppercase',
+                                            letterSpacing: '0.5px'
+                                        }}
+                                    >
+                                        {dateGroup}
+                                    </Typography>
+                                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                                        {items
+                                            .sort((a, b) => Number(b.timestamp) - Number(a.timestamp))
+                                            .map((historyItem, itemIndex) => {
+                                            const isCurrentVersion = historyItem.isLatest;
+                                            return (
+                                                <Card 
+                                                    key={`${historyItem.timestamp}-${itemIndex}`}
+                                                    variant="outlined"
+                                                    sx={{
+                                                        cursor: 'pointer',
+                                                        backgroundColor: isCurrentVersion ? 'action.selected' : 'background.paper',
+                                                        '&:hover': {
+                                                            backgroundColor: 'action.hover'
+                                                        },
+                                                        padding: 0
+                                                    }}
+                                                >
+                                                    <CardContent sx={{ 
+                                                        padding: 2,
+                                                        '&:last-child': {
+                                                            paddingBottom: 2
+                                                        }
+                                                    }}>
+                                                        <Typography 
+                                                            variant="body2" 
+                                                            sx={{ 
+                                                                fontSize: '14px',
+                                                                fontWeight: 500,
+                                                                marginBottom: '4px'
+                                                            }}
+                                                        >
+                                                            {moment(Number(historyItem.timestamp)).format('MMMM DD, h:mm A')}
+                                                        </Typography>
+                                                        {isCurrentVersion && (
+                                                            <Typography 
+                                                                variant="caption" 
+                                                                color="text.secondary"
+                                                                sx={{ 
+                                                                    fontSize: '11px',
+                                                                    display: 'block',
+                                                                    marginBottom: '4px'
+                                                                }}
+                                                            >
+                                                                Current version
+                                                            </Typography>
+                                                        )}
+                                                        <AuthorInfo userName={historyItem.author?.userName || 'Unknown'} />
+                                                    </CardContent>
+                                                </Card>
+                                            );
+                                        })}
+                                    </Box>
+                                </Box>
+                            ));
+                        })()
+                    ) : (
+                        <Box
+                            display="flex"
+                            justifyContent="center"
+                            alignItems="center"
+                            minHeight="200px"
+                        >
+                            <Typography variant="body2" color="textSecondary" fontStyle="italic">
+                                No version history available
+                            </Typography>
+                        </Box>
+                    )}
+                </Box>
                 {/* { lastInteractedResource?.deletable || lastInteractedResource?.deletable === undefined && (
                     <Box
                         display="flex"

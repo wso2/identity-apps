@@ -24,7 +24,7 @@ class FlowConstants {
     private constructor() { }
 
     // 1 min
-    public static readonly AUTO_SAVE_INTERVAL: number = 6000;
+    public static readonly AUTO_SAVE_INTERVAL: number = 60000;
 }
 
 export default FlowConstants;
