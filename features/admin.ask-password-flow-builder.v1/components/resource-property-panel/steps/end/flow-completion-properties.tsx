@@ -59,7 +59,7 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
         : invitedUserRegistrationFlowConfig?.flowCompletionConfigs;
 
     return (
-        <Stack gap={2} data-componentid={componentId}>
+        <Stack gap={ 2 } data-componentid={ componentId }>
             <Typography>
                 <Alert severity="info">
                     <Trans i18nKey="flows:askPassword.steps.end.description">
@@ -69,47 +69,47 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                     </Trans>
                 </Alert>
             </Typography>
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>
-                {metadata?.supportedFlowCompletionConfigs?.includes("isAutoLoginEnabled") && (
+            <Box sx={ { display: "flex", flexDirection: "column", gap: 1 } }>
+                { metadata?.supportedFlowCompletionConfigs?.includes("isAutoLoginEnabled") && (
                     <Box>
                         <FormControlLabel
-                            label={t("flows:askPassword.steps.end.autoLogin.label")}
+                            label={ t("flows:askPassword.steps.end.autoLogin.label") }
                             control={
-                                <Checkbox
-                                    checked={configs?.isAutoLoginEnabled === "true"}
-                                    onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                                (<Checkbox
+                                    checked={ configs?.isAutoLoginEnabled === "true" }
+                                    onChange={ (event: ChangeEvent<HTMLInputElement>) => {
                                         setFlowCompletionConfigs({
                                             ...configs,
                                             isAutoLoginEnabled: event.target.checked ? "true" : "false"
                                         });
-                                    }}
-                                />
+                                    } }
+                                />)
                             }
                         />
-                        <FormHelperText>{t("flows:askPassword.steps.end.autoLogin.hint")}</FormHelperText>
+                        <FormHelperText>{ t("flows:askPassword.steps.end.autoLogin.hint") }</FormHelperText>
                     </Box>
-                )}
-                {metadata?.supportedFlowCompletionConfigs?.includes("isFlowCompletionNotificationEnabled") && (
+                ) }
+                { metadata?.supportedFlowCompletionConfigs?.includes("isFlowCompletionNotificationEnabled") && (
                     <Box>
                         <FormControlLabel
-                            label={t("flows:askPassword.steps.end.flowCompletionNotification.label")}
+                            label={ t("flows:askPassword.steps.end.flowCompletionNotification.label") }
                             control={
-                                <Checkbox
-                                    checked={configs?.isFlowCompletionNotificationEnabled === "true"}
-                                    onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                                (<Checkbox
+                                    checked={ configs?.isFlowCompletionNotificationEnabled === "true" }
+                                    onChange={ (event: ChangeEvent<HTMLInputElement>) => {
                                         setFlowCompletionConfigs({
                                             ...configs,
                                             isFlowCompletionNotificationEnabled: event.target.checked ? "true" : "false"
                                         });
-                                    }}
-                                />
+                                    } }
+                                />)
                             }
                         />
                         <FormHelperText>
-                            {t("flows:askPassword.steps.end.flowCompletionNotification.hint")}
+                            { t("flows:askPassword.steps.end.flowCompletionNotification.hint") }
                         </FormHelperText>
                     </Box>
-                )}
+                ) }
             </Box>
         </Stack>
     );
