@@ -22,6 +22,7 @@ import IconButton from "@oxygen-ui/react/IconButton";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, HTMLAttributes, ReactElement, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import moment from "moment";
 import { usePastelColorGenerator } from "@oxygen-ui/react"
@@ -94,6 +95,7 @@ const VersionHistoryPanel: FunctionComponent<VersionHistoryPanelPropsInterface> 
     ...rest
 }: VersionHistoryPanelPropsInterface): ReactElement => {
     const { localHistory, setIsVersionHistoryPanelOpen } = useAuthenticationFlowBuilderCore();
+    const { t } = useTranslation();
 
     return (
         <Box
@@ -139,7 +141,7 @@ const VersionHistoryPanel: FunctionComponent<VersionHistoryPanelPropsInterface> 
                     alignItems="center"
                     className="flow-builder-right-panel header"
                 >
-                    Version History
+                    { t("flows:core.versionHistory.panelTitle") }
                     <IconButton onClick={ () => setIsVersionHistoryPanelOpen(false) }>
                         <ChevronsRight height={ 16 } width={ 16 } />
                     </IconButton>
@@ -224,7 +226,7 @@ const VersionHistoryPanel: FunctionComponent<VersionHistoryPanelPropsInterface> 
                             minHeight="200px"
                         >
                             <Typography variant="body2" color="textSecondary" fontStyle="italic">
-                                No version history available
+                                { t("flows:core.versionHistory.emptyState") }
                             </Typography>
                         </Box>
                     )}

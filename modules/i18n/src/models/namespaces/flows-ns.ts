@@ -186,6 +186,20 @@ export interface flowsNS {
                     message: string;
                 };
             };
+            restoreFromHistory: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                invalidData: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
             updateI18nKey: {
                 genericError: {
                     description: string;
@@ -256,6 +270,21 @@ export interface flowsNS {
             info: string;
             warning: string;
             warnings: string;
+        };
+        versionHistory: {
+            currentVersion: string;
+            emptyState: string;
+            moreActions: string;
+            panelTitle: string;
+            restoreDialog: {
+                cancel: string;
+                description: string;
+                restore: string;
+                restoring: string;
+                title: string;
+            };
+            restoreVersion: string;
+            unknownAuthor: string;
         };
     };
     label?: string;

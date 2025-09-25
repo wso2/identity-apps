@@ -203,6 +203,10 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      */
     clearLocalHistory?: () => Promise<boolean>;
     /**
+     * Restore flow from a specific history item.
+     */
+    restoreFromHistory?: (historyItem: FlowsHistoryInterface) => Promise<boolean>;
+    /**
      * All locally saved drafts for the current flow type.
      */
     localHistory?: FlowsHistoryInterface[];
@@ -251,7 +255,8 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
         triggerLocalHistoryAutoSave: () => Promise.resolve(false),
         setLocalHistoryAutoSaveEnabled: () => {},
         hasLocalHistory: false,
-        clearLocalHistory: () => Promise.resolve(false)
+        clearLocalHistory: () => Promise.resolve(false),
+        restoreFromHistory: () => Promise.resolve(false)
     }
 );
 

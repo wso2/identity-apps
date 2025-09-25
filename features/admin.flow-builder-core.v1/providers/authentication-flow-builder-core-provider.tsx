@@ -36,6 +36,7 @@ import { AxiosRequestConfig } from "axios";
 import merge from "lodash-es/merge";
 import pick from "lodash-es/pick";
 import startCase from "lodash-es/startCase";
+import moment from "moment";
 import React, {
     FunctionComponent,
     MutableRefObject,
@@ -275,6 +276,65 @@ const FlowContextWrapper = ({
             return false;
         }
     }, [ flowType, setPreferences ]);
+
+    /**
+     * Restore flow from a specific history item.
+     */
+    const restoreFromHistory: (historyItem: FlowsHistoryInterface) => Promise<boolean> = useCallback(
+        async (historyItem: FlowsHistoryInterface): Promise<boolean> => {
+            try {
+                const { flowData } = historyItem;
+
+                if (!flowData || !flowData.nodes || !flowData.edges) {
+                    dispatch(
+                        addAlert({
+                            description: t("flows:core.notifications.restoreFromHistory.invalidData.description"),
+                            level: AlertLevels.ERROR,
+                            message: t("flows:core.notifications.restoreFromHistory.invalidData.message")
+                        })
+                    );
+                    return false;
+                }
+
+                // Extract nodes and edges from the flow data
+                const { nodes, edges } = flowData as { nodes: any[]; edges: any[] };
+
+                // Apply the restored flow data to the current flow using React Flow's methods
+                // Note: This assumes the provider has access to setNodes and setEdges methods
+                // which will be provided by the specific flow builder implementation
+                if (typeof window !== 'undefined') {
+                    // Dispatch a custom event that the flow builder cores can listen to
+                    const restoreEvent = new CustomEvent('restoreFromHistory', {
+                        detail: { nodes, edges, historyItem }
+                    });
+                    window.dispatchEvent(restoreEvent);
+                    
+                    // Show success message
+                    dispatch(
+                        addAlert({
+                            description: t("flows:core.notifications.restoreFromHistory.success.description", {
+                                date: moment(Number(historyItem.timestamp)).format("MMMM DD [at] h:mm A")
+                            }),
+                            level: AlertLevels.SUCCESS,
+                            message: t("flows:core.notifications.restoreFromHistory.success.message")
+                        })
+                    );
+                }
+
+                return true;
+            } catch (error) {
+                dispatch(
+                    addAlert({
+                        description: t("flows:core.notifications.restoreFromHistory.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("flows:core.notifications.restoreFromHistory.genericError.message")
+                    })
+                );
+                return false;
+            }
+        },
+        [ dispatch ]
+    );
 
     /**
      * Set up auto-save interval.
@@ -525,7 +585,8 @@ const FlowContextWrapper = ({
                 setSelectedAttributes,
                 supportedLocales,
                 triggerLocalHistoryAutoSave,
-                updateI18nKey
+                updateI18nKey,
+                restoreFromHistory
             } }
         >
             <ValidationProvider>{ children }</ValidationProvider>

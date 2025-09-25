@@ -183,6 +183,20 @@ export const flows: flowsNS = {
                     message: "Text Preference Fetch Error"
                 }
             },
+            restoreFromHistory: {
+                genericError: {
+                    description: "An error occurred while restoring the flow version.",
+                    message: "Failed to restore version"
+                },
+                invalidData: {
+                    description: "Invalid flow data in history item.",
+                    message: "Failed to restore version"
+                },
+                success: {
+                    description: "Successfully restored flow to version from {{date}}.",
+                    message: "Flow restored successfully"
+                }
+            },
             updateI18nKey: {
                 genericError: {
                     description: "An error occurred while updating the custom text in the flow.",
@@ -198,6 +212,21 @@ export const flows: flowsNS = {
             end: {
                 flowCompletionProperties: "Flow Completion Properties"
             }
+        },
+        versionHistory: {
+            currentVersion: "Current version",
+            emptyState: "No version history available",
+            moreActions: "More actions",
+            panelTitle: "Version History (Local)",
+            restoreDialog: {
+                cancel: "Cancel",
+                description: "Your current document will revert to the version from {{date}}.",
+                restore: "Restore",
+                restoring: "Restoring...",
+                title: "Restore this version?"
+            },
+            restoreVersion: "Restore this version",
+            unknownAuthor: "Unknown"
         },
         validation: {
             fields: {
