@@ -33,9 +33,9 @@ import FieldExtendedProperties from "./extended-properties/field-extended-proper
 import RulesProperties from "./nodes/rules-properties";
 import ResourcePropertyFactory from "./resource-property-factory";
 import FlowCompletionProperties from "./steps/end/flow-completion-properties";
+import ConfirmationCodeProperties from "./steps/execution/confirmation-code-properties";
 import FederationProperties from "./steps/execution/federation-properties";
 import AskPasswordFlowBuilderConstants from "../../constants/ask-password-flow-builder-constants";
-import ConfirmationCodeProperties from "./steps/execution/confirmation-code-properties";
 
 /**
  * Props interface of {@link ResourceProperties}
