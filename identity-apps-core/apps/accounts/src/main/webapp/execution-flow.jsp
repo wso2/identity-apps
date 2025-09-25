@@ -199,6 +199,7 @@
                 const [confirmationEffectDone, setConfirmationEffectDone] = useState(false);
                 const [userAssertion, setUserAssertion] = useState(null);
                 const [flowType, setFlowType] = useState("<%= Encode.forJavaScript(flowType) != null ? Encode.forJavaScript(flowType) : null %>");
+                const [ countDownRedirection, setCountDownRedirection ] = useState(null);
 
                 useEffect(() => {
                     const savedFlowId = localStorage.getItem("flowId");
@@ -309,11 +310,11 @@
                             + errorDetails.message + "&" + "ERROR_DESC=" + errorDetails.description + "&" + "SP_ID="
                             + "<%= Encode.forJavaScript(spId) %>" + "&" + "flowType=" + flowType + "&" + "confirmation="
                             + "<%= Encode.forJavaScript(confirmationCode) %>" + "&";
-                        
+
                         if (errorDetails.portalUrlStatus === "true") {
                             errorPageURL += "PORTAL_URL=" + portal_url + "&";
                         }
-                        
+
                         errorPageURL += "SP=" + "<%= Encode.forJavaScript(sp) %>";
 
                         window.location.href = errorPageURL;
@@ -378,13 +379,14 @@
                                 return false;
                             }
 
-                            if (flow.data.redirectURL !== null) {
-                                window.location.href = flow.data.redirectURL;
+                            let redirectionUrl = defaultMyAccountUrl;
 
-                                return true;
+                            if (flow.data.redirectURL !== null) {
+                                redirectionUrl = flow.data.redirectURL;
                             }
 
-                            window.location.href = defaultMyAccountUrl;
+                            setFlowData({ data: { components: [] } });
+                            setCountDownRedirection(redirectionUrl);
                             return true;
 
                         default:
@@ -471,7 +473,7 @@
                     );
                 }
 
-                if (loading || (!components || components.length === 0)) {
+                if ((loading || !components || components.length === 0) && !countDownRedirection) {
                     return createElement(
                         "div",
                         { className: `registration-content-container loading ${!loading ? "hidden" : ""}` },
@@ -488,6 +490,7 @@
                     createElement(
                         DynamicContent, {
                             contentData: flowData.data && flowData.data,
+                            state: { countDownRedirection },
                             handleFlowRequest: (actionId, formValues) => {
                                 setComponents([]);
                                 localStorage.setItem("actionTrigger", actionId);

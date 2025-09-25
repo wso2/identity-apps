@@ -19,12 +19,13 @@
 import PropTypes from "prop-types";
 import React, { useMemo, useRef } from "react";
 import { Message } from "semantic-ui-react";
+import CountDownAdapter from "./adapters/count-down-adapter";
 import Field from "./field";
 import Form from "./form";
 import { useTranslations } from "../hooks/use-translations";
 import { resolveElementText } from "../utils/i18n-utils";
 
-const DynamicContent = ({ contentData, handleFlowRequest, error }) => {
+const DynamicContent = ({ contentData, state, handleFlowRequest, error }) => {
     const recaptchaRef = useRef(null);
     const { translations } = useTranslations();
 
@@ -88,8 +89,17 @@ const DynamicContent = ({ contentData, handleFlowRequest, error }) => {
         );
     };
 
+    const renderCountDown = () => {
+        return <CountDownAdapter redirection={ state.countDownRedirection } />;
+    };
+
     const renderElements = () => {
         if (!contentData || !contentData.components || contentData.components.length === 0) {
+            // If it's the last component, append the countdown timer if applicable.
+            if (state && state.countDownRedirection) {
+                return renderCountDown();
+            }
+
             return (
                 <div className="content-container loading hidden">
                     <div className="spinner"></div>
@@ -112,7 +122,8 @@ const DynamicContent = ({ contentData, handleFlowRequest, error }) => {
 DynamicContent.propTypes = {
     contentData: PropTypes.object.isRequired,
     error: PropTypes.string,
-    handleFlowRequest: PropTypes.func.isRequired
+    handleFlowRequest: PropTypes.func.isRequired,
+    state: PropTypes.object.isRequired
 };
 
 export default DynamicContent;
