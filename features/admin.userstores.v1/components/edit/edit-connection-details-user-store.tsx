@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,6 +22,7 @@ import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { EmphasizedSegment, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -39,7 +40,6 @@ import {
     UserStore,
     UserstoreType
 } from "../../models";
-import isEmpty from "lodash-es/isEmpty";
 
 /**
  * Prop types of `EditConnectionDetails` component
