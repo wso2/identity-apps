@@ -17,27 +17,22 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
-import Card from "@oxygen-ui/react/Card";
-import CardContent from "@oxygen-ui/react/CardContent";
 import Drawer, { DrawerProps } from "@oxygen-ui/react/Drawer";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, ReactElement, useMemo } from "react";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import moment from "moment";
 import { usePastelColorGenerator } from "@oxygen-ui/react"
+import classNames from "classnames";
+import VersionHistoryItem from "./version-history-item";
 import "./version-history-panel.scss";
 
 /**
  * Props interface of {@link VersionHistoryPanel}
  */
-export interface VersionHistoryPanelPropsInterface
-    extends DrawerProps,
-        IdentifiableComponentInterface,
-        HTMLAttributes<HTMLDivElement> {
-}
+export type VersionHistoryPanelPropsInterface = DrawerProps & IdentifiableComponentInterface & HTMLAttributes<HTMLDivElement>;
 
 // TODO: Move this to Oxygen UI.
 const ChevronsRight = ({ width = 16, height = 16 }: { width: number; height: number }): ReactElement => (
@@ -77,10 +72,10 @@ const AuthorInfo: FunctionComponent<{ userName: string }> = ({ userName }) => {
                     flexShrink: 0
                 }}
             />
-            <Typography 
-                variant="caption" 
+            <Typography
+                variant="caption"
                 color="text.secondary"
-                sx={{ 
+                sx={{
                     fontSize: '11px'
                 }}
             >
@@ -149,9 +144,9 @@ const VersionHistoryPanel: FunctionComponent<VersionHistoryPanelPropsInterface> 
                         <ChevronsRight height={ 16 } width={ 16 } />
                     </IconButton>
                 </Box>
-                <Box 
+                <Box
                     className="flow-builder-right-panel content full-height"
-                    sx={{ 
+                    sx={{
                         overflowY: 'auto',
                         padding: '12px',
                         display: 'flex',
@@ -163,18 +158,18 @@ const VersionHistoryPanel: FunctionComponent<VersionHistoryPanelPropsInterface> 
                         (() => {
                             // Find the latest timestamp to identify current version
                             const latestTimestamp = Math.max(...localHistory.map(item => Number(item.timestamp)));
-                            
+
                             // Group history items by date
                             const groupedHistory = localHistory.reduce((groups, item, index) => {
                                 const date = moment(Number(item.timestamp)).format('YYYY-MM-DD');
                                 const isToday = moment(Number(item.timestamp)).isSame(moment(), 'day');
                                 const groupKey = isToday ? 'Today' : moment(Number(item.timestamp)).format('MMMM DD, YYYY');
-                                
+
                                 if (!groups[groupKey]) {
                                     groups[groupKey] = [];
                                 }
-                                groups[groupKey].push({ 
-                                    ...item, 
+                                groups[groupKey].push({
+                                    ...item,
                                     originalIndex: index,
                                     isLatest: Number(item.timestamp) === latestTimestamp
                                 });
@@ -191,10 +186,10 @@ const VersionHistoryPanel: FunctionComponent<VersionHistoryPanelPropsInterface> 
                                 })
                                 .map(([dateGroup, items]) => (
                                 <Box key={dateGroup}>
-                                    <Typography 
-                                        variant="subtitle2" 
+                                    <Typography
+                                        variant="subtitle2"
                                         color="text.secondary"
-                                        sx={{ 
+                                        sx={{
                                             marginBottom: '8px',
                                             fontSize: '12px',
                                             fontWeight: 500,
@@ -210,50 +205,11 @@ const VersionHistoryPanel: FunctionComponent<VersionHistoryPanelPropsInterface> 
                                             .map((historyItem, itemIndex) => {
                                             const isCurrentVersion = historyItem.isLatest;
                                             return (
-                                                <Card 
+                                                <VersionHistoryItem
                                                     key={`${historyItem.timestamp}-${itemIndex}`}
-                                                    variant="outlined"
-                                                    sx={{
-                                                        cursor: 'pointer',
-                                                        backgroundColor: isCurrentVersion ? 'action.selected' : 'background.paper',
-                                                        '&:hover': {
-                                                            backgroundColor: 'action.hover'
-                                                        },
-                                                        padding: 0
-                                                    }}
-                                                >
-                                                    <CardContent sx={{ 
-                                                        padding: 2,
-                                                        '&:last-child': {
-                                                            paddingBottom: 2
-                                                        }
-                                                    }}>
-                                                        <Typography 
-                                                            variant="body2" 
-                                                            sx={{ 
-                                                                fontSize: '14px',
-                                                                fontWeight: 500,
-                                                                marginBottom: '4px'
-                                                            }}
-                                                        >
-                                                            {moment(Number(historyItem.timestamp)).format('MMMM DD, h:mm A')}
-                                                        </Typography>
-                                                        {isCurrentVersion && (
-                                                            <Typography 
-                                                                variant="caption" 
-                                                                color="text.secondary"
-                                                                sx={{ 
-                                                                    fontSize: '11px',
-                                                                    display: 'block',
-                                                                    marginBottom: '4px'
-                                                                }}
-                                                            >
-                                                                Current version
-                                                            </Typography>
-                                                        )}
-                                                        <AuthorInfo userName={historyItem.author?.userName || 'Unknown'} />
-                                                    </CardContent>
-                                                </Card>
+                                                    historyItem={historyItem}
+                                                    isCurrentVersion={isCurrentVersion}
+                                                />
                                             );
                                         })}
                                     </Box>
