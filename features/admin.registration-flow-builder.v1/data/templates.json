@@ -66,7 +66,7 @@
                                                 "text": "Continue"
                                             },
                                             "action": {
-                                                "next": "USER_ONBOARD",
+                                                "next": "END",
                                                 "type": "NEXT"
                                             }
                                         }
@@ -76,17 +76,49 @@
                         }
                     },
                     {
-                        "id": "USER_ONBOARD",
-                        "type": "USER_ONBOARD",
+                        "id": "END",
+                        "type": "END",
                         "size": {
-                            "width": 56,
-                            "height": 56
+                            "width": 280,
+                            "height": 220
                         },
                         "position": {
-                            "x": 1200,
-                            "y": 408
+                            "x": 790,
+                            "y": 330
                         },
-                        "data": {}
+                        "config": {
+                            "isAccountLockOnCreationEnabled": "false",
+                            "isAutoLoginEnabled": "false",
+                            "isEmailVerificationEnabled": "true",
+                            "isFlowCompletionNotificationEnabled": "false"
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "UserProvisioningExecutor"
+                                }
+                            },
+                            "components": [
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "id": "typography_u2oz",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "You're almost there!"
+                                    }
+                                },
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Check your inbox for instructions to activate your account.</span></p>"
+                                    },
+                                    "id": "display_hgvm"
+                                }
+                            ]
+                        }
                     }
                 ]
             }
@@ -280,7 +312,7 @@
                                                 "executor": {
                                                     "name": "EmailOTPExecutor"
                                                 },
-                                                "next": "USER_ONBOARD"
+                                                "next": "END"
                                             }
                                         }
                                     ]
@@ -289,17 +321,49 @@
                         }
                     },
                     {
-                        "id": "USER_ONBOARD",
-                        "type": "USER_ONBOARD",
+                        "id": "END",
+                        "type": "END",
                         "size": {
-                            "width": 56,
-                            "height": 56
+                            "width": 280,
+                            "height": 220
                         },
                         "position": {
                             "x": 1200,
                             "y": 408
                         },
-                        "data": {}
+                        "config": {
+                            "isAccountLockOnCreationEnabled": "false",
+                            "isAutoLoginEnabled": "false",
+                            "isEmailVerificationEnabled": "true",
+                            "isFlowCompletionNotificationEnabled": "false"
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "UserProvisioningExecutor"
+                                }
+                            },
+                            "components": [
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "id": "typography_u2oz",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "You're almost there!"
+                                    }
+                                },
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Check your inbox for instructions to activate your account.</span></p>"
+                                    },
+                                    "id": "display_hgvm"
+                                }
+                            ]
+                        }
                     }
                 ]
             }
@@ -384,7 +448,7 @@
                                                 "executor": {
                                                     "name": "PasswordProvisioningExecutor"
                                                 },
-                                                "next": "USER_ONBOARD"
+                                                "next": "END"
                                             }
                                         },
                                         {
@@ -401,17 +465,49 @@
                         }
                     },
                     {
-                        "id": "USER_ONBOARD",
-                        "type": "USER_ONBOARD",
+                        "id": "END",
+                        "type": "END",
                         "size": {
-                            "width": 56,
-                            "height": 56
+                            "width": 280,
+                            "height": 220
                         },
                         "position": {
                             "x": 1200,
                             "y": 408
                         },
-                        "data": {}
+                        "config": {
+                            "isAccountLockOnCreationEnabled": "false",
+                            "isAutoLoginEnabled": "false",
+                            "isEmailVerificationEnabled": "true",
+                            "isFlowCompletionNotificationEnabled": "false"
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "UserProvisioningExecutor"
+                                }
+                            },
+                            "components": [
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "id": "typography_u2oz",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "You're almost there!"
+                                    }
+                                },
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Check your inbox for instructions to activate your account.</span></p>"
+                                    },
+                                    "id": "display_hgvm"
+                                }
+                            ]
+                        }
                     }
                 ]
             }
@@ -511,7 +607,7 @@
                                                 "executor": {
                                                     "name": "PasswordProvisioningExecutor"
                                                 },
-                                                "next": "USER_ONBOARD"
+                                                "next": "END"
                                             }
                                         }
                                     ]
@@ -554,22 +650,54 @@
                                         "idpName": "{{IDP_NAME}}"
                                     }
                                 },
-                                "next": "USER_ONBOARD"
+                                "next": "END"
                             }
                         }
                     },
                     {
-                        "id": "USER_ONBOARD",
-                        "type": "USER_ONBOARD",
+                        "id": "END",
+                        "type": "END",
                         "size": {
-                            "width": 56,
-                            "height": 56
+                            "width": 280,
+                            "height": 220
                         },
                         "position": {
                             "x": 900,
                             "y": 408
                         },
-                        "data": {}
+                        "config": {
+                            "isAccountLockOnCreationEnabled": "false",
+                            "isAutoLoginEnabled": "false",
+                            "isEmailVerificationEnabled": "true",
+                            "isFlowCompletionNotificationEnabled": "false"
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "UserProvisioningExecutor"
+                                }
+                            },
+                            "components": [
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "id": "typography_u2oz",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "You're almost there!"
+                                    }
+                                },
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Check your inbox for instructions to activate your account.</span></p>"
+                                    },
+                                    "id": "display_hgvm"
+                                }
+                            ]
+                        }
                     }
                 ]
             }
@@ -705,22 +833,54 @@
                                 "executor": {
                                     "name": "FIDO2Executor"
                                 },
-                                "next": "USER_ONBOARD"
+                                "next": "END"
                             }
                         }
                     },
                     {
-                        "id": "USER_ONBOARD",
-                        "type": "USER_ONBOARD",
+                        "id": "END",
+                        "type": "END",
                         "size": {
-                            "width": 56,
-                            "height": 56
+                            "width": 280,
+                            "height": 220
                         },
                         "position": {
-                            "x": 900,
-                            "y": 408
+                            "x": 880,
+                            "y": 800
                         },
-                        "data": {}
+                        "config": {
+                            "isAccountLockOnCreationEnabled": "false",
+                            "isAutoLoginEnabled": "false",
+                            "isEmailVerificationEnabled": "true",
+                            "isFlowCompletionNotificationEnabled": "false"
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "UserProvisioningExecutor"
+                                }
+                            },
+                            "components": [
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "id": "typography_u2oz",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "You're almost there!"
+                                    }
+                                },
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Check your inbox for instructions to activate your account.</span></p>"
+                                    },
+                                    "id": "display_hgvm"
+                                }
+                            ]
+                        }
                     }
                 ]
             }

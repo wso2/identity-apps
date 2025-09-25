@@ -21,7 +21,7 @@ import BrandingPreferenceProvider from "@wso2is/admin.branding.v1/providers/bran
 import { I18nConstants } from "@wso2is/admin.core.v1/constants/i18n-constants";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import useGetFlowConfig from "@wso2is/admin.flows.v1/api/use-get-flow-config";
+import useGetFlowConfig from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-config";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";

@@ -1,0 +1,45 @@
+{
+    "id": "END",
+    "type": "END",
+    "size": {
+        "width": 280,
+        "height": 220
+    },
+    "position": {
+        "x": 790,
+        "y": 330
+    },
+    "config": {
+        "isAccountLockOnCreationEnabled": "false",
+        "isAutoLoginEnabled": "false",
+        "isEmailVerificationEnabled": "true",
+        "isFlowCompletionNotificationEnabled": "false"
+    },
+    "data": {
+        "action": {
+            "type": "EXECUTOR",
+            "executor": {
+                "name": "UserProvisioningExecutor"
+            }
+        },
+        "components": [
+            {
+                "category": "DISPLAY",
+                "type": "TYPOGRAPHY",
+                "id": "typography_u2oz",
+                "variant": "H3",
+                "config": {
+                    "text": "You're almost there!"
+                }
+            },
+            {
+                "category": "DISPLAY",
+                "type": "RICH_TEXT",
+                "config": {
+                    "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Check your inbox for instructions to activate your account.</span></p>"
+                },
+                "id": "display_hgvm"
+            }
+        ]
+    }
+}

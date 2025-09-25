@@ -55,12 +55,12 @@ export enum StepCategories {
 export enum StepTypes {
     View = "VIEW",
     Rule = "RULE",
-    Execution = "EXECUTION"
+    Execution = "EXECUTION",
+    End = "END",
 }
 
 export enum StaticStepTypes {
     UserOnboard = "USER_ONBOARD",
-    End = "End",
     Start = "START",
 }
 

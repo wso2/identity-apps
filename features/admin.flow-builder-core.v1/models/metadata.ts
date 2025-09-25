@@ -39,6 +39,10 @@ export interface MetadataInterface {
      */
     attributeProfile: string;
     /**
+     * Supported flow completion configurations.
+     */
+    supportedFlowCompletionConfigs?: string[];
+    /**
      * Metadata for attributes used in the flow.
      */
     attributeMetadata: AttributeMetadataInterface[];

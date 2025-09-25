@@ -69,6 +69,13 @@ class VisualFlowConstants {
         WidgetTypes.MagicLink
     ];
 
+    public static readonly FLOW_BUILDER_FLOW_COMPLETION_VIEW_ALLOWED_RESOURCE_TYPES: string[] = [
+        ElementTypes.Typography,
+        ElementTypes.RichText,
+        ElementTypes.Divider,
+        ElementTypes.Image
+    ];
+
     public static readonly FLOW_BUILDER_FORM_ALLOWED_RESOURCE_TYPES: string[] = [
         ElementTypes.Input,
         ElementTypes.Button,

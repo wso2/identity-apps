@@ -19,7 +19,7 @@
 import VisualFlowConstants from "@wso2is/admin.flow-builder-core.v1/constants/visual-flow-constants";
 import { ActionTypes } from "@wso2is/admin.flow-builder-core.v1/models/actions";
 import { Element, ElementCategories } from "@wso2is/admin.flow-builder-core.v1/models/elements";
-import { StaticStepTypes, Step } from "@wso2is/admin.flow-builder-core.v1/models/steps";
+import { Step, StepTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import { Node } from "@xyflow/react";
 import cloneDeep from "lodash-es/cloneDeep";
 import omit from "lodash-es/omit";
@@ -145,12 +145,12 @@ const transformFlow = (flowState: any) => {
         payload.steps.push(step);
     });
 
-    // TODO: Temp move the `UserOnboard` step to the last of the steps array.
-    const userOnboardStep: Step = payload.steps.find((step: Step) => step.type === StaticStepTypes.End);
+    // TODO: Temp move the `End` step to the last of the steps array.
+    const endStep: Step = payload.steps.find((step: Step) => step.type === StepTypes.End);
 
-    if (userOnboardStep) {
-        payload.steps = payload.steps.filter((step: Step) => step.type !== StaticStepTypes.End);
-        payload.steps.push(userOnboardStep);
+    if (endStep) {
+        payload.steps = payload.steps.filter((step: Step) => step.type !== StepTypes.End);
+        payload.steps.push(endStep);
     }
 
     return payload;

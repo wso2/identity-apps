@@ -16,27 +16,4 @@
  * under the License.
  */
 
-.registration-flow-builder-page {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-
-    .page-layout {
-        .page-header {
-            border-bottom: 1px solid var(--oxygen-palette-divider);
-            padding: var(--oxygen-spacing-1) var(--oxygen-spacing-3);
-            box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.05);
-            height: 60px;
-
-            .registration-flow-builder-page-header-breadcrumbs {
-                .MuiBreadcrumbs-li {
-                    cursor: pointer;
-                }
-            }
-        }
-    }
-
-    .decorated-visual-flow {
-        flex-grow: 1;
-    }
-}
+export type FlowCompletionConfigsInterface = Record<string, unknown>;

@@ -17,7 +17,7 @@
  */
 
 import Code from "@oxygen-ui/react/Code";
-import useGetFlowConfig from "@wso2is/admin.flows.v1/api/use-get-flow-config";
+import useGetFlowConfig from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-config";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { BrandingPreferenceInterface } from "@wso2is/common.branding.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";

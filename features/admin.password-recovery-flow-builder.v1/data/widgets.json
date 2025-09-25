@@ -102,7 +102,7 @@
                                                 "executor": {
                                                     "name": "EmailOTPExecutor"
                                                 },
-                                                "next": "USER_ONBOARD"
+                                                "next": "END"
                                             }
                                         }
                                     ]
@@ -217,7 +217,7 @@
                                                 "executor": {
                                                     "name": "SMSOTPExecutor"
                                                 },
-                                                "next": "USER_ONBOARD"
+                                                "next": "END"
                                             }
                                         }
                                     ]
@@ -295,7 +295,7 @@
                                 "executor": {
                                     "name": "MagicLinkExecutor"
                                 },
-                                "next": "End"
+                                "next": "END"
                             },
                             "components": [
                                 {

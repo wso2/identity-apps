@@ -23,11 +23,11 @@ import IconButton from "@oxygen-ui/react/IconButton";
 import Paper from "@oxygen-ui/react/Paper";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
-import { XMarkIcon } from "@oxygen-ui/react-icons";
+import { GearIcon, TrashIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Handle, Node, Position, useNodeId, useNodesData, useReactFlow } from "@xyflow/react";
 import classNames from "classnames";
-import React, { FunctionComponent, MouseEvent, ReactElement, useEffect } from "react";
+import React, { FunctionComponent, HTMLAttributes, MouseEvent, ReactElement, useEffect } from "react";
 import ReorderableElement from "./reorderable-element";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import { Element } from "../../../../models/elements";
@@ -43,8 +43,10 @@ import "./view.scss";
 /**
  * Props interface of {@link View}
  */
-export interface ViewPropsInterface extends Pick<CommonStepFactoryPropsInterface, "data" | "resource">,
-    IdentifiableComponentInterface {
+export interface ViewPropsInterface
+    extends Pick<CommonStepFactoryPropsInterface, "data" | "resource">,
+        Omit<HTMLAttributes<HTMLDivElement>, "resource">,
+        IdentifiableComponentInterface {
     /**
      * Name of the view.
      */
@@ -53,6 +55,10 @@ export interface ViewPropsInterface extends Pick<CommonStepFactoryPropsInterface
      * Droppable allowed resource list.
      */
     droppableAllowedTypes?: string[];
+    /**
+     * Droppable restricted resource list that should not be accepted.
+     */
+    droppableRestrictedTypes?: string[];
     /**
      * Flag to enable source handle.
      */
@@ -63,6 +69,18 @@ export interface ViewPropsInterface extends Pick<CommonStepFactoryPropsInterface
      * @param event - The mouse event.
      */
     onActionPanelDoubleClick?: (event: MouseEvent<HTMLDivElement>) => void;
+    /**
+     * Is the view deletable.
+     */
+    deletable?: boolean;
+    /**
+     * Does the view has configurations.
+     */
+    configurable?: boolean;
+    /**
+     * Callback for configure action.
+     */
+    onConfigure?: () => void;
 }
 
 /**
@@ -74,9 +92,14 @@ export interface ViewPropsInterface extends Pick<CommonStepFactoryPropsInterface
 export const View: FunctionComponent<ViewPropsInterface> = ({
     heading,
     droppableAllowedTypes,
+    droppableRestrictedTypes,
     enableSourceHandle,
     data,
     onActionPanelDoubleClick,
+    className,
+    deletable = true,
+    configurable = false,
+    onConfigure,
     "data-componentid": componentId = "view"
 }: ViewPropsInterface): ReactElement => {
     const stepId: string = useNodeId();
@@ -96,8 +119,8 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
     }, []);
 
     return (
-        <ValidationErrorBoundary disableErrorBoundaryOnHover={ false } resource={ node as unknown as Resource }>
-            <div className="flow-builder-step" data-componentid={ componentId }>
+        <ValidationErrorBoundary disableErrorBoundaryOnHover={ false } resource={ (node as unknown) as Resource }>
+            <div className={ classNames("flow-builder-step", className) } data-componentid={ componentId }>
                 <Box
                     display="flex"
                     justifyContent="space-between"
@@ -111,17 +134,42 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
                     >
                         { heading || "View" }
                     </Typography>
-                    <Tooltip title={ "Remove" }>
-                        <IconButton
-                            size="small"
-                            onClick={ (_: MouseEvent<HTMLButtonElement>) => {
-                                deleteElements({ nodes: [ { id: stepId } ] });
-                            } }
-                            className="flow-builder-step-remove-button"
+                    { configurable && (
+                        <Tooltip
+                            title={
+                                // TODO: Add i18n
+                                "Configure"
+                            }
                         >
-                            <XMarkIcon />
-                        </IconButton>
-                    </Tooltip>
+                            <IconButton
+                                size="small"
+                                onClick={ (_: MouseEvent<HTMLButtonElement>) => {
+                                    onConfigure && onConfigure();
+                                } }
+                                className="flow-builder-step-action"
+                            >
+                                <GearIcon />
+                            </IconButton>
+                        </Tooltip>
+                    ) }
+                    { deletable && (
+                        <Tooltip
+                            title={
+                                // TODO: Add i18n
+                                "Remove"
+                            }
+                        >
+                            <IconButton
+                                size="small"
+                                onClick={ (_: MouseEvent<HTMLButtonElement>) => {
+                                    deleteElements({ nodes: [ { id: stepId } ] });
+                                } }
+                                className="flow-builder-step-action"
+                            >
+                                <TrashIcon />
+                            </IconButton>
+                        </Tooltip>
+                    ) }
                 </Box>
                 <Handle type="target" position={ Position.Left } />
                 <Box className="flow-builder-step-content" data-componentid={ `${componentId}-inner` }>
@@ -129,48 +177,56 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
                         <Box className="flow-builder-step-content-form">
                             <FormGroup>
                                 <Droppable
-                                    id={ generateResourceId(
-                                        `${ VisualFlowConstants.FLOW_BUILDER_VIEW_ID }_${ stepId }`) }
+                                    id={ generateResourceId(`${VisualFlowConstants.FLOW_BUILDER_VIEW_ID}_${stepId}`) }
                                     data={ { droppedOn: node, stepId } }
                                     type={ VisualFlowConstants.FLOW_BUILDER_DROPPABLE_VIEW_ID }
-                                    accept={ droppableAllowedTypes
-                                        ? [
-                                            VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID,
-                                            ...droppableAllowedTypes
-                                        ] : [
-                                            VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID,
-                                            ...VisualFlowConstants.FLOW_BUILDER_VIEW_ALLOWED_RESOURCE_TYPES
-                                        ] }
+                                    accept={
+                                        droppableAllowedTypes
+                                            ? [
+                                                VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID,
+                                                ...droppableAllowedTypes.filter(
+                                                    (type: string) => !droppableRestrictedTypes?.includes(type)
+                                                )
+                                            ]
+                                            : [
+                                                VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID,
+                                                ...VisualFlowConstants.FLOW_BUILDER_VIEW_ALLOWED_RESOURCE_TYPES.filter(
+                                                    (type: string) => !droppableRestrictedTypes?.includes(type)
+                                                )
+                                            ]
+                                    }
                                     collisionPriority={ CollisionPriority.Low }
                                 >
-                                    { (node?.data?.components as any)?.map((component: Element, index: number) =>
-                                        PluginRegistry.getInstance().executeSync(EventTypes.ON_NODE_ELEMENT_FILTER,
-                                            component) && (
-                                            <ReorderableElement
-                                                key={ component.id }
-                                                id={ component.id }
-                                                index={ index }
-                                                element={ component }
-                                                className={ classNames("flow-builder-step-content-form-field") }
-                                                type={ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID }
-                                                accept={ [ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID ] }
-                                                group={ stepId }
-                                            />
-                                        )) }
+                                    { (node?.data?.components as any)?.map(
+                                        (component: Element, index: number) =>
+                                            PluginRegistry.getInstance().executeSync(
+                                                EventTypes.ON_NODE_ELEMENT_FILTER,
+                                                component
+                                            ) && (
+                                                <ReorderableElement
+                                                    key={ component.id }
+                                                    id={ component.id }
+                                                    index={ index }
+                                                    element={ component }
+                                                    className={ classNames("flow-builder-step-content-form-field") }
+                                                    type={ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID }
+                                                    accept={ [ VisualFlowConstants.FLOW_BUILDER_DRAGGABLE_ID ] }
+                                                    group={ stepId }
+                                                />
+                                            )
+                                    ) }
                                 </Droppable>
                             </FormGroup>
                         </Box>
                     </Paper>
                 </Box>
-                {
-                    enableSourceHandle && (
-                        <Handle
-                            type="source"
-                            position={ Position.Right }
-                            id={ `${stepId}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}` }
-                        />
-                    )
-                }
+                { enableSourceHandle && (
+                    <Handle
+                        type="source"
+                        position={ Position.Right }
+                        id={ `${stepId}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}` }
+                    />
+                ) }
             </div>
         </ValidationErrorBoundary>
     );

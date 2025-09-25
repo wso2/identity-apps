@@ -223,7 +223,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     showOnSidePanel: false
                 }
             ],
-            component: lazy(() => import("@wso2is/admin.flows.v1/pages/flows")),
+            component: lazy(() => import("@wso2is/admin.flows.v1/pages/flows-page")),
             exact: false,
             featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.FLOWS,
             icon: {
@@ -957,10 +957,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 },
                 {
                     component: lazy(() =>
-                        import(
-                            // eslint-disable-next-line max-len
-                            "@wso2is/admin.server-configurations.v1/pages/registration-flow-builder/registration-flow-builder-page"
-                        )
+                        import("@wso2is/admin.registration-flow-builder.v1/pages/registration-flow-builder-page")
                     ),
                     exact: true,
                     icon: {

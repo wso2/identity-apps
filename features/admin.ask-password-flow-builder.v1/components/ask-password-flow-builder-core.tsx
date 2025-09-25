@@ -130,7 +130,7 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
     const { steps, templates } = resources;
 
     const INITIAL_FLOW_START_STEP_ID: string = StaticStepTypes.Start.toLowerCase();
-    const INITIAL_FLOW_USER_ONBOARD_STEP_ID: string = StaticStepTypes.End;
+    const INITIAL_FLOW_USER_ONBOARD_STEP_ID: string = StepTypes.End;
     const SAMPLE_PROMPTS: string[] = [
         "Ask the user to supply an email address and choose a strong password to begin the sign-up.",
         "Prompt for a unique username and password, ensuring the password meets basic complexity rules.",
@@ -280,19 +280,6 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
             type: StaticStepTypes.Start
         };
 
-        const defaultEndPosition: { x: number; y: number } = { x: 300, y: 330 };
-        const endPosition: { x: number; y: number } = steps.length > 0
-            ? { x: steps[steps.length - 1].position.x + 600, y: steps[steps.length - 1].position.y + 200 }
-            : defaultEndPosition;
-
-        const END_STEP: Node = {
-            data: { displayOnly: true },
-            deletable: false,
-            id: INITIAL_FLOW_USER_ONBOARD_STEP_ID,
-            position: endPosition,
-            type: StaticStepTypes.End
-        };
-
         return resolveStepMetadata(resources, generateIdsForResources<Node[]>([
             START_STEP,
             ...steps.map((step: Node) => {
@@ -303,13 +290,12 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
                             components: resolveComponentMetadata(resources, (step.data as any).components)
                         }) ||
                         step.data,
-                    deletable: isStepDeletable(step),
+                    deletable: step.type === StepTypes.End ? false : isStepDeletable(step),
                     id: step.id,
                     position: step.position,
                     type: step.type
                 };
-            }),
-            END_STEP
+            })
         ]) as Step[]) as Node[];
     };
 
@@ -328,7 +314,7 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
         const stepIds: any = steps.map((step: any) => step.id);
 
         // Find the user onboard step
-        const userOnboardStep: any = steps.find((step: any) => step.type === StaticStepTypes.End);
+        const userOnboardStep: any = steps.find((step: any) => step.type === StepTypes.End);
 
         // Get the ID of the user onboard step or use the default one
         const userOnboardStepId: any = userOnboardStep?.id || INITIAL_FLOW_USER_ONBOARD_STEP_ID;
@@ -382,7 +368,7 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
                     if (button.action.next === userOnboardStepId) {
                         userOnboardEdgeCreated = true;
                     }
-                } else if (button.action.next === StaticStepTypes.End) {
+                } else if (button.action.next === StepTypes.End) {
                     // If next references a user onboard ID that's not in the steps
                     // but follows the naming pattern, connect to our actual user onboard step
                     edges.push({
@@ -422,7 +408,7 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
         // Create edges based on the action configuration in each step
         steps.forEach((step: Step) => {
             // Skip processing for the user onboard step itself
-            if (step.type === StaticStepTypes.End) {
+            if (step.type === StepTypes.End) {
                 return;
             }
 
@@ -466,7 +452,7 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
                     if (step.data.action.next === userOnboardStepId) {
                         userOnboardEdgeCreated = true;
                     }
-                } else if (step.data.action.next === StaticStepTypes.End) {
+                } else if (step.data.action.next === StepTypes.End) {
                     // If next references a user onboard ID that's not in the steps
                     // but follows the naming pattern, connect to our actual user onboard step
                     edges.push({

@@ -32,6 +32,7 @@ import ButtonExtendedProperties from "./extended-properties/button-extended-prop
 import FieldExtendedProperties from "./extended-properties/field-extended-properties";
 import RulesProperties from "./nodes/rules-properties";
 import ResourcePropertyFactory from "./resource-property-factory";
+import FlowCompletionProperties from "./steps/end/flow-completion-properties";
 import FederationProperties from "./steps/execution/federation-properties";
 import RegistrationFlowBuilderConstants from "../../constants/registration-flow-builder-constants";
 
@@ -108,6 +109,21 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
     };
 
     switch (resource.category) {
+        case StepCategories.Interface:
+            if (resource.type === StepTypes.End) {
+                return (
+                    <>
+                        { renderElementId() }
+                        <FlowCompletionProperties
+                            resource={ resource }
+                            data-componentid="field-extended-properties"
+                            onChange={ onChange }
+                        />
+                    </>
+                );
+            }
+
+            break;
         case ElementCategories.Field:
             return (
                 <>

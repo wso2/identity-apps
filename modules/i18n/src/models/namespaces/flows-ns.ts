@@ -17,41 +17,26 @@
  */
 
 export interface flowsNS {
+    page: {
+        title: string;
+        description: string;
+    };
     askPassword: {
         banner: {
             description: string;
             title: string;
         };
-        breadcrumb: string;
-        labels: {
-            disableFlow: string;
-            enableFlow: string;
-        };
-        notifications: {
-            disableFlow: {
-                genericError: {
-                    description: string;
-                    message: string;
+        flowDisplayName: string;
+        steps: {
+            end: {
+                description: string;
+                flowCompletionNotification: {
+                    label: string;
+                    hint: string;
                 };
-                success: {
-                    description: string;
-                    message: string;
-                };
-            };
-            enableFlow: {
-                genericError: {
-                    description: string;
-                    message: string;
-                };
-                success: {
-                    description: string;
-                    message: string;
-                };
-            };
-            fetchFlowConfig: {
-                genericError: {
-                    description: string;
-                    message: string;
+                autoLogin: {
+                    label: string;
+                    hint: string;
                 };
             };
         };
@@ -61,6 +46,7 @@ export interface flowsNS {
         };
     };
     core: {
+        breadcrumb: string;
         elements: {
             richText: {
                 linkEditor: {
@@ -123,6 +109,10 @@ export interface flowsNS {
                 magicLink: string;
             };
         };
+        labels: {
+            disableFlow: string;
+            enableFlow: string;
+        };
         notificationPanel: {
             emptyMessages: {
                 errors: string;
@@ -149,7 +139,33 @@ export interface flowsNS {
                     message: string;
                 };
             };
+            disableFlow: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+            enableFlow: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
             fallbackTextPreferenceFetch: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+            fetchFlowConfig: {
                 genericError: {
                     description: string;
                     message: string;
@@ -226,6 +242,11 @@ export interface flowsNS {
                 };
             };
         };
+        steps: {
+            end: {
+                flowCompletionProperties: string;
+            };
+        };
         validationStatusLabels: {
             error: string;
             errors: string;
@@ -240,36 +261,18 @@ export interface flowsNS {
             description: string;
             title: string;
         };
-        labels: {
-            disableFlow: string;
-            enableFlow: string;
-        };
+        flowDisplayName: string;
         name: string;
-        notifications: {
-            disableFlow: {
-                genericError: {
-                    description: string;
-                    message: string;
+        steps: {
+            end: {
+                description: string;
+                autoLogin: {
+                    label: string;
+                    hint: string;
                 };
-                success: {
-                    description: string;
-                    message: string;
-                };
-            };
-            enableFlow: {
-                genericError: {
-                    description: string;
-                    message: string;
-                };
-                success: {
-                    description: string;
-                    message: string;
-                };
-            };
-            fetchFlowConfig: {
-                genericError: {
-                    description: string;
-                    message: string;
+                flowCompletionNotification: {
+                    label: string;
+                    hint: string;
                 };
             };
         };
@@ -279,34 +282,20 @@ export interface flowsNS {
         };
     };
     registrationFlow: {
-        breadcrumb: string;
-        labels: {
-            disableFlow: string;
-            enableFlow: string;
-        };
+        flowDisplayName: string;
         notifications: {
-            disableFlow: {
+            updateFlowConfig: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+            updateRegistrationFlow: {
                 genericError: {
                     description: string;
                     message: string;
                 };
                 success: {
-                    description: string;
-                    message: string;
-                };
-            };
-            enableFlow: {
-                genericError: {
-                    description: string;
-                    message: string;
-                };
-                success: {
-                    description: string;
-                    message: string;
-                };
-            };
-            fetchFlowConfig: {
-                genericError: {
                     description: string;
                     message: string;
                 };
@@ -314,6 +303,27 @@ export interface flowsNS {
         };
         steps: {
             emailConfirmation: string;
+            end: {
+                description: string;
+                accountVerification: {
+                    label: string;
+                    hint: string;
+                };
+                accountActivation: {
+                    activateImmediately: {
+                        label: string;
+                        hint: string;
+                    };
+                };
+                accountFlowCompletion: {
+                    label: string;
+                    hint: string;
+                };
+                autoLogin: {
+                    label: string;
+                    hint: string;
+                };
+            };
         };
         tooltip: {
             disableFlow: string;

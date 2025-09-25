@@ -18,6 +18,8 @@
 
 import FlowBuilder from "@wso2is/admin.flow-builder-core.v1/components/flow-builder";
 import VisualFlowConstants from "@wso2is/admin.flow-builder-core.v1/constants/visual-flow-constants";
+import useAuthenticationFlowBuilderCore from
+    "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
 import {
     BlockTypes,
     ButtonTypes,
@@ -62,7 +64,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { v4 as uuidv4 } from "uuid";
 import RegistrationFlowAILoader from "./ai-registration-flow-generation-loader";
-import StaticNodeFactory from "./resources/steps/static-step-factory";
+import StaticStepFactory from "./resources/steps/static-step-factory";
 import StepFactory from "./resources/steps/step-factory";
 import useAIRegistrationFlowGenerationResult from "../api/use-ai-registration-flow-result";
 import useGetRegistrationFlow from "../api/use-get-registration-flow";
@@ -101,6 +103,8 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+
+    const { setFlowCompletionConfigs } = useAuthenticationFlowBuilderCore();
 
     const {
         flowGenerationCompleted,
@@ -269,6 +273,12 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         const processedSteps: Step[] = resolveStepMetadata(resources, generateIdsForResources<Node[]>([
             START_STEP,
             ...steps.map((step: Node) => {
+                if (step.type === StepTypes.End) {
+                    if ((step as Step)?.config) {
+                        setFlowCompletionConfigs((step as Step).config);
+                    }
+                }
+
                 return {
                     data:
                         (step.data?.components && {
@@ -680,7 +690,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
         const staticStepNodes: NodeTypes = Object.values(StaticStepTypes).reduce(
             (acc: NodeTypes, type: StaticStepTypes) => {
-                acc[type] = (props: any) => <StaticNodeFactory type={ type } { ...props } />;
+                acc[type] = (props: any) => <StaticStepFactory type={ type } { ...props } />;
 
                 return acc;
             },
@@ -689,7 +699,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
         const regStaticStepNodes: NodeTypes = Object.values(RegistrationStaticStepTypes).reduce(
             (acc: NodeTypes, type: RegistrationStaticStepTypes) => {
-                acc[type] = (props: any) => <StaticNodeFactory type={ type } { ...props } />;
+                acc[type] = (props: any) => <StaticStepFactory type={ type } { ...props } />;
 
                 return acc;
             },

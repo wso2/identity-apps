@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { FlowCompletionConfigsInterface } from "@wso2is/admin.flow-builder-core.v1/models/flows";
+
 export interface FlowListItemInterface {
     id: string;
     description?: string;
@@ -29,7 +31,7 @@ export interface FlowListItemInterface {
 export interface FlowConfigInterface {
     flowType: FlowTypes;
     isEnabled: boolean;
-    isAutoLoginEnabled?: boolean;
+    flowCompletionConfigs: FlowCompletionConfigsInterface;
 }
 
 export enum FlowTypes {

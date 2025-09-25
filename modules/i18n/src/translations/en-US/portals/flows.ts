@@ -23,36 +23,17 @@ export const flows: flowsNS = {
             description: "Provide a seamless invited user onboarding experience to your users by customizing the registration flow to suit your organization's needs.",
             title: "Construct your ideal invited user registration experience with our new <1>Invited User Registration Flow Builder</1>"
         },
-        breadcrumb: "Edit Invited User Registration Flow",
-        labels: {
-            disableFlow: "Disable",
-            enableFlow: "Enable"
-        },
-        notifications: {
-            disableFlow: {
-                genericError: {
-                    description: "An error occurred while disabling the invited user registration flow.",
-                    message: "Disable Invited User Registration Flow Error"
+        flowDisplayName: "Invited User Registration",
+        steps: {
+            end: {
+                autoLogin: {
+                    hint: "Immediately log the user in once the flow is completed, without additional steps.",
+                    label: "Auto Login"
                 },
-                success: {
-                    description: "Successfully disabled the invited user registration flow.",
-                    message: "Invited User Registration Flow Disabled"
-                }
-            },
-            enableFlow: {
-                genericError: {
-                    description: "An error occurred while enabling the invited user registration flow.",
-                    message: "Enable Invited User Registration Flow Error"
-                },
-                success: {
-                    description: "Successfully enabled the invited user registration flow.",
-                    message: "Invited User Registration Flow Enabled"
-                }
-            },
-            fetchFlowConfig: {
-                genericError: {
-                    description: "An error occurred while fetching the invited user registration flow configuration.",
-                    message: "Fetch Invited User Registration Flow Error"
+                description: "The <1>End Screen</1> defines what happens once the invited user registration flow is completed. It allows you to control the user's final experience by selecting one of the following outcomes:",
+                flowCompletionNotification: {
+                    hint: "Notify the user via email once the flow is successfully completed.",
+                    label: "Send a notification email on flow completion"
                 }
             }
         },
@@ -62,6 +43,7 @@ export const flows: flowsNS = {
         }
     },
     core: {
+        breadcrumb: "Edit {{flowType}} Flow",
         elements: {
             richText: {
                 linkEditor: {
@@ -124,6 +106,10 @@ export const flows: flowsNS = {
                 passkeyEnrollment: "Enroll Passkey"
             }
         },
+        labels: {
+            disableFlow: "Disable",
+            enableFlow: "Enable"
+        },
         notificationPanel: {
             emptyMessages: {
                 errors: "No errors found.",
@@ -150,10 +136,36 @@ export const flows: flowsNS = {
                     message: "Custom Text Preference Meta Fetch Error"
                 }
             },
+            disableFlow: {
+                genericError: {
+                    description: "An error occurred while disabling the {{flowType}} flow.",
+                    message: "Disable {{flowType}} Flow Error"
+                },
+                success: {
+                    description: "Successfully disabled the {{flowType}} flow.",
+                    message: "{{flowType}} Flow Disabled"
+                }
+            },
+            enableFlow: {
+                genericError: {
+                    description: "An error occurred while enabling the {{flowType}} flow.",
+                    message: "Enable {{flowType}} Flow Error"
+                },
+                success: {
+                    description: "Successfully enabled the {{flowType}} flow.",
+                    message: "{{flowType}} Flow Enabled"
+                }
+            },
             fallbackTextPreferenceFetch: {
                 genericError: {
                     description: "An error occurred while fetching the fallback text preferences.",
                     message: "Fallback Text Preference Fetch Error"
+                }
+            },
+            fetchFlowConfig: {
+                genericError: {
+                    description: "An error occurred while fetching the {{flowType}} flow configuration.",
+                    message: "Fetch {{flowType}} Flow Error"
                 }
             },
             flowMetadataFetch: {
@@ -177,6 +189,11 @@ export const flows: flowsNS = {
                     description: "Successfully updated the custom text in the flow.",
                     message: "Update Custom Text Success"
                 }
+            }
+        },
+        steps: {
+            end: {
+                flowCompletionProperties: "Flow Completion Properties"
             }
         },
         validation: {
@@ -236,41 +253,27 @@ export const flows: flowsNS = {
         }
     },
     label: "Flows",
+    page: {
+        description: "Design and customize your user journeys with a no-code flow composer.",
+        title: "Flows"
+    },
     passwordRecovery: {
         banner: {
             description: "Provide a seamless password recovery experience to your users by customizing the recovery flow to suit your organization's needs.",
             title: "Construct your ideal password recovery experience with our new <1>Password Recovery Flow Builder</1>"
         },
-        labels: {
-            disableFlow: "Disable",
-            enableFlow: "Enable"
-        },
+        flowDisplayName: "Password Recovery",
         name: "Password Recovery Flow Builder",
-        notifications: {
-            disableFlow: {
-                genericError: {
-                    description: "An error occurred while disabling the password recovery flow.",
-                    message: "Disable Password Recovery Flow Error"
+        steps: {
+            end: {
+                autoLogin: {
+                    hint: "Immediately log the user in once the password recovery is completed, without additional steps.",
+                    label: "Auto Login"
                 },
-                success: {
-                    description: "Successfully disabled the password recovery flow.",
-                    message: "Password Recovery Flow Disabled"
-                }
-            },
-            enableFlow: {
-                genericError: {
-                    description: "An error occurred while enabling the password recovery flow.",
-                    message: "Enable Password Recovery Flow Error"
-                },
-                success: {
-                    description: "Successfully enabled the password recovery flow.",
-                    message: "Password Recovery Flow Enabled"
-                }
-            },
-            fetchFlowConfig: {
-                genericError: {
-                    description: "An error occurred while fetching the password recovery flow configuration.",
-                    message: "Fetch Password Recovery Flow Error"
+                description: "The <1>End Screen</1> defines what happens once the password recovery flow is completed. It allows you to control the user&apos;s final experience by selecting one of the following outcomes:",
+                flowCompletionNotification: {
+                    hint: "Notify the user via email once the password recovery flow is successfully completed.",
+                    label: "Send a notification email on flow completion"
                 }
             }
         },
@@ -280,41 +283,48 @@ export const flows: flowsNS = {
         }
     },
     registrationFlow: {
-        breadcrumb: "Edit Registration Flow",
-        labels: {
-            disableFlow: "Disable",
-            enableFlow: "Enable"
-        },
+        flowDisplayName: "Registration",
         notifications: {
-            disableFlow: {
+            updateFlowConfig: {
                 genericError: {
-                    description: "An error occurred while disabling the registration flow.",
-                    message: "Disable Registration Flow Error"
-                },
-                success: {
-                    description: "Successfully disabled the registration flow.",
-                    message: "Registration Flow Disabled"
+                    description: "Failed to update the registration flow completion configurations.",
+                    message: "Configuration Update Failure"
                 }
             },
-            enableFlow: {
+            updateRegistrationFlow: {
                 genericError: {
-                    description: "An error occurred while enabling the registration flow.",
-                    message: "Enable Registration Flow Error"
+                    description: "Failed to update the registration flow.",
+                    message: "Flow Update Failure"
                 },
                 success: {
-                    description: "Successfully enabled the registration flow.",
-                    message: "Registration Flow Enabled"
-                }
-            },
-            fetchFlowConfig: {
-                genericError: {
-                    description: "An error occurred while fetching the registration flow configuration.",
-                    message: "Fetch Registration Flow Error"
+                    description: "Registration flow updated successfully.",
+                    message: "Flow Updated Successfully"
                 }
             }
         },
         steps: {
-            emailConfirmation: "Email Confirmation"
+            emailConfirmation: "Email Confirmation",
+            end: {
+                accountActivation: {
+                    activateImmediately: {
+                        hint: "Automatically activate the user account upon creation, allowing immediate access without waiting for verification.",
+                        label: "Activate the account on creation"
+                    }
+                },
+                accountFlowCompletion: {
+                    hint: "Notify the user via email once the flow is successfully completed.",
+                    label: "Send a notification email on flow completion"
+                },
+                accountVerification: {
+                    hint: "Require the user to confirm their account via email before granting access.",
+                    label: "Verify the account on flow completion"
+                },
+                autoLogin: {
+                    hint: "Immediately log the user in once the flow is completed, without additional steps.",
+                    label: "Auto Login"
+                },
+                description: "The <1>End Screen</1> defines what happens once the flow is completed. It allows you to control the user&apos;s final experience by selecting one of the following outcomes:"
+            }
         },
         tooltip: {
             disableFlow: "Click to disable the registration flow",

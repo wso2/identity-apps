@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,18 +16,8 @@
  * under the License.
  */
 
-.floating-publish-button {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-    &.transition {
-        transform: translateX(calc(-1 * var(--wso2is-flow-builder-element-property-panel-width)));
-
-        &.MuiButton-containedPrimary.Mui-disabled {
-            opacity: 0.5;
-            color: var(--oxygen-palette-primary-contrastText);
-        }
+.flow-builder-step {
+    &.flow-builder-end-step {
+        background: var(--oxygen-palette-success-light);
     }
 }

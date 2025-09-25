@@ -22,10 +22,10 @@
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
+import { FlowConfigInterface } from "@wso2is/admin.flows.v1/models/flows";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import { FlowConfigInterface } from "../models/flows";
 
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
@@ -36,7 +36,7 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
  * @param payload - Request payload.
  * @returns Promise resolving to the response data.
  */
-const updateFlowConfig = (payload: FlowConfigInterface): Promise<AxiosResponse> => {
+const updateFlowConfig = (payload: Partial<FlowConfigInterface>): Promise<AxiosResponse> => {
     const requestConfig: RequestConfigInterface = {
         data: payload,
         method: HttpMethods.PATCH,

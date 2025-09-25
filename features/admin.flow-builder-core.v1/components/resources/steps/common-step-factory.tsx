@@ -19,6 +19,7 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Node } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
+import End from "./end/end";
 import Execution from "./execution/execution";
 import Rule from "./rule/rule";
 import View from "./view/view";
@@ -59,6 +60,10 @@ export const CommonStepFactory: FunctionComponent<CommonStepFactoryPropsInterfac
 
     if (resource.type === StepTypes.Execution) {
         return <Execution data-componentid={ componentId } resource={ resource } { ...rest } />;
+    }
+
+    if (resource.type === StepTypes.End) {
+        return <End data-componentid={ componentId } resource={ resource } { ...rest } />;
     }
 
     return null;

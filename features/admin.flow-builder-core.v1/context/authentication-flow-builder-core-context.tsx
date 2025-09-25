@@ -21,6 +21,7 @@ import { Claim } from "@wso2is/core/models";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import { Context, Dispatch, FunctionComponent, ReactNode, SetStateAction, createContext } from "react";
 import { Base } from "../models/base";
+import { FlowCompletionConfigsInterface } from "../models/flows";
 import { MetadataInterface } from "../models/metadata";
 import { Resource } from "../models/resources";
 
@@ -154,6 +155,14 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      */
     isBrandingEnabled?: boolean;
     /**
+     * Flow completion configurations.
+     */
+    flowCompletionConfigs: FlowCompletionConfigsInterface;
+    /**
+     * Set the flow completion configurations.
+     */
+    setFlowCompletionConfigs: Dispatch<SetStateAction<FlowCompletionConfigsInterface>>;
+    /**
      * Indicates whether the flow metadata is still loading.
      */
     isFlowMetadataLoading?: boolean;
@@ -168,6 +177,7 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
     {
         ElementFactory: () => null,
         ResourceProperties: () => null,
+        flowCompletionConfigs: {},
         i18nText: null,
         i18nTextLoading: false,
         isBrandingEnabled: false,
@@ -183,6 +193,7 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
         primaryI18nScreen: PreviewScreenType.COMMON,
         resourcePropertiesPanelHeading: null,
         selectedAttributes: {},
+        setFlowCompletionConfigs: () => {},
         setIsOpenResourcePropertiesPanel: () => {},
         setIsResourcePanelOpen: () => {},
         setLanguage: () => {},

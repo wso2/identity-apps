@@ -23,18 +23,25 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
+import { useMemo } from "react";
 import AskPasswordFlowConstants from "../constants/ask-password-flow-constants";
+import endStepMigrator from "../migrations/migrators/end-step-migrator";
+import { AskPasswordFlow } from "../models/flow";
 
 /**
- * Hook to get the configured password recovery flow.
+ * Hook to get the configured ask password flow with automatic migration support.
  *
- * This function calls the GET method of the following endpoint to get the password recovery flow of the organization.
+ * This function calls the GET method of the following endpoint to get the ask password flow of the organization.
  * - `https://{serverUrl}/t/{tenantDomain}/api/server/v1/ask-password-flow`
+ *
+ * The hook automatically applies migrations to convert legacy flows:
+ * - Migrates flows with string "End" references to proper configurable END nodes
+ *
  * For more details, refer to the documentation:
  * {@link https://TODO:<fillthis>)}
  *
  * @param shouldFetch - Should fetch the data.
- * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
+ * @returns SWR response object containing the migrated data, error, isLoading, isValidating, mutate.
  */
 const useGetAskPasswordFlow = <Data = any, Error = RequestErrorInterface>(
     shouldFetch: boolean = true
@@ -49,12 +56,29 @@ const useGetAskPasswordFlow = <Data = any, Error = RequestErrorInterface>(
         url: `${store.getState().config.endpoints.askPasswordFlow}?flowType=${AskPasswordFlowConstants.ASK_PASSWORD_FLOW_TYPE}`
     };
 
-    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
+    const { data: rawData, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
         shouldFetch ? requestConfig : null
     );
 
+    // Apply migration if needed
+    const migratedData: Data = useMemo(() => {
+        if (!rawData) {
+            return rawData;
+        }
+
+        try {
+            const flow: AskPasswordFlow = rawData as unknown as AskPasswordFlow;
+            const migratedFlow: AskPasswordFlow = endStepMigrator(flow);
+
+            return migratedFlow as unknown as Data;
+        } catch (migrationError) {
+            // Fallback to original data if migration fails.
+            return rawData;
+        }
+    }, [ rawData ]);
+
     return {
-        data: data as Data,
+        data: migratedData as Data,
         error,
         isLoading,
         isValidating,
