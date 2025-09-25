@@ -28,6 +28,7 @@ import { useTranslation } from "react-i18next";
 import VersionHistoryItem from "./version-history-item";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import "./version-history-panel.scss";
+import { FlowsHistoryInterface } from "../../models/flows";
 
 /**
  * Props interface of {@link VersionHistoryPanel}
@@ -35,6 +36,8 @@ import "./version-history-panel.scss";
 export type VersionHistoryPanelPropsInterface = DrawerProps &
     IdentifiableComponentInterface &
     HTMLAttributes<HTMLDivElement>;
+
+type ExtendedFlowsHistoryInterface = FlowsHistoryInterface & { isLatest: boolean; originalIndex: number };
 
 // TODO: Move this to Oxygen UI.
 const ChevronsRight = ({ width = 16, height = 16 }: { width: number; height: number }): ReactElement => (
@@ -130,16 +133,16 @@ const VersionHistoryPanel: FunctionComponent<VersionHistoryPanelPropsInterface> 
                     { localHistory && localHistory.length > 0 ? (
                         (() => {
                             const latestTimestamp: number = Math.max(
-                                ...localHistory.map((item: FlowsHistoryInterface) => Number(item.timestamp))
+                                ...localHistory.map((item: ExtendedFlowsHistoryInterface) => Number(item.timestamp))
                             );
 
                             // Group history items by date
-                            const groupedHistory: Record<string, FlowsHistoryInterface[]> = localHistory.reduce(
+                            const groupedHistory: Record<string, ExtendedFlowsHistoryInterface[]> = localHistory.reduce(
                                 (
-                                    groups: Record<string, FlowsHistoryInterface[]>,
-                                    item: FlowsHistoryInterface,
+                                    groups: Record<string, ExtendedFlowsHistoryInterface[]>,
+                                    item: ExtendedFlowsHistoryInterface,
                                     index: number
-                                ) => {
+                                ): Record<string, ExtendedFlowsHistoryInterface[]> => {
                                     const isToday: boolean = moment(Number(item.timestamp)).isSame(moment(), "day");
                                     const groupKey: string = isToday
                                         ? "Today"
@@ -156,22 +159,27 @@ const VersionHistoryPanel: FunctionComponent<VersionHistoryPanelPropsInterface> 
 
                                     return groups;
                                 },
-                                {} as Record<string, FlowsHistoryInterface[]>
+                                {} as Record<string, ExtendedFlowsHistoryInterface[]>
                             );
 
                             return Object.entries(groupedHistory)
-                                .sort(([ dateGroupA ]: [string], [ dateGroupB ]: [string]) => {
-                                    // Put "Today" first
-                                    if (dateGroupA === "Today") return -1;
-                                    if (dateGroupB === "Today") return 1;
+                                .sort(
+                                    (
+                                        [ dateGroupA ]: [string, ExtendedFlowsHistoryInterface[]],
+                                        [ dateGroupB ]: [string, ExtendedFlowsHistoryInterface[]]
+                                    ) => {
+                                        // Put "Today" first
+                                        if (dateGroupA === "Today") return -1;
+                                        if (dateGroupB === "Today") return 1;
 
-                                    // For other dates, sort by most recent first
-                                    return (
-                                        moment(dateGroupB, "MMMM DD, YYYY").valueOf() -
-                                        moment(dateGroupA, "MMMM DD, YYYY").valueOf()
-                                    );
-                                })
-                                .map(([ dateGroup, items ]: [string, FlowsHistoryInterface[]]) => (
+                                        // For other dates, sort by most recent first
+                                        return (
+                                            moment(dateGroupB, "MMMM DD, YYYY").valueOf() -
+                                            moment(dateGroupA, "MMMM DD, YYYY").valueOf()
+                                        );
+                                    }
+                                )
+                                .map(([ dateGroup, items ]: [string, ExtendedFlowsHistoryInterface[]]) => (
                                     <Box key={ dateGroup }>
                                         <Typography
                                             variant="subtitle2"
@@ -189,20 +197,24 @@ const VersionHistoryPanel: FunctionComponent<VersionHistoryPanelPropsInterface> 
                                         <Box sx={ { display: "flex", flexDirection: "column", gap: "8px" } }>
                                             { items
                                                 .sort(
-                                                    (a: FlowsHistoryInterface, b: FlowsHistoryInterface) =>
-                                                        Number(b.timestamp) - Number(a.timestamp)
+                                                    (
+                                                        a: ExtendedFlowsHistoryInterface,
+                                                        b: ExtendedFlowsHistoryInterface
+                                                    ) => Number(b.timestamp) - Number(a.timestamp)
                                                 )
-                                                .map((historyItem: FlowsHistoryInterface, itemIndex: number) => {
-                                                    const isCurrentVersion: boolean = historyItem.isLatest;
+                                                .map(
+                                                    (historyItem: ExtendedFlowsHistoryInterface, itemIndex: number) => {
+                                                        const isCurrentVersion: boolean = historyItem.isLatest;
 
-                                                    return (
-                                                        <VersionHistoryItem
-                                                            key={ `${historyItem.timestamp}-${itemIndex}` }
-                                                            historyItem={ historyItem }
-                                                            isCurrentVersion={ isCurrentVersion }
-                                                        />
-                                                    );
-                                                }) }
+                                                        return (
+                                                            <VersionHistoryItem
+                                                                key={ `${historyItem.timestamp}-${itemIndex}` }
+                                                                historyItem={ historyItem }
+                                                                isCurrentVersion={ isCurrentVersion }
+                                                            />
+                                                        );
+                                                    }
+                                                ) }
                                         </Box>
                                     </Box>
                                 ));
