@@ -57,7 +57,7 @@ import useGetMetadata from "../api/use-metadata";
 import useResolveCustomTextPreferences from "../api/use-resolve-custom-text-preference";
 import FlowConstants from "../constants/flow-constants";
 import AuthenticationFlowBuilderCoreContext from "../context/authentication-flow-builder-core-context";
-import { FlowCompletionConfigsInterface } from "../models/flows";
+import { FlowCompletionConfigsInterface, FlowsHistoryInterface } from "../models/flows";
 import { Resource, ResourceTypes } from "../models/resources";
 import { StepTypes } from "../models/steps";
 
@@ -98,7 +98,7 @@ const FlowContextWrapper = ({
     const { t } = useTranslation();
     const { isSubOrganization } = useGetCurrentOrganizationType();
     const { toObject } = useReactFlow();
-    const { setPreferences } = useUserPreferences();
+    const { flows, setPreferences } = useUserPreferences();
 
     const userName: string = useSelector((state: AppState) => state.profile.profileInfo.userName);
     const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
@@ -108,6 +108,7 @@ const FlowContextWrapper = ({
 
     const [ isResourcePanelOpen, setIsResourcePanelOpen ] = useState<boolean>(true);
     const [ isResourcePropertiesPanelOpen, setIsOpenResourcePropertiesPanel ] = useState<boolean>(false);
+    const [ isVersionHistoryPanelOpen, setIsVersionHistoryPanelOpen ] = useState<boolean>(false);
     const [ resourcePropertiesPanelHeading, setResourcePropertiesPanelHeading ] = useState<ReactNode>(null);
     const [ lastInteractedElementInternal, setLastInteractedElementInternal ] = useState<Resource>(null);
     const [ lastInteractedStepId, setLastInteractedStepId ] = useState<string>("");
@@ -115,12 +116,19 @@ const FlowContextWrapper = ({
     const [ language, setLanguage ] = useState<string>(I18nConstants.DEFAULT_FALLBACK_LANGUAGE);
     const [ isI18nSubmitting, setIsI18nSubmitting ] = useState<boolean>(false);
     const [ flowCompletionConfigs, setFlowCompletionConfigs ] = useState<FlowCompletionConfigsInterface>({});
-    const [ isAutoSaveEnabled, setIsAutoSaveEnabled ] = useState<boolean>(true);
-    const [ isAutoSaving, setIsAutoSaving ] = useState<boolean>(false);
-    const [ lastAutoSaveTimestamp, setLastAutoSaveTimestamp ] = useState<number | null>(null);
-    const [ hasDrafts, setHasDrafts ] = useState<boolean>(false);
+    const [ isAutoSaveLocalHistoryEnabled, setIsAutoSaveLocalHistoryEnabled ] = useState<boolean>(true);
+    const [ isAutoSavingLocalHistory, setIsAutoSavingLocalHistory ] = useState<boolean>(false);
+    const [ lastLocalHistoryAutoSaveTimestamp, setLastLocalHistoryAutoSaveTimestamp ] = useState<number | null>(null);
+    const [ hasLocalHistory, setHasLocalHistory ] = useState<boolean>(false);
 
     const intervalRef: MutableRefObject<NodeJS.Timeout | null> = useRef<NodeJS.Timeout | null>(null);
+
+    /**
+     * Memoized drafts for the current flow type.
+     */
+    const localHistory: FlowsHistoryInterface[] = useMemo(() => {
+        return flows?.[flowType]?.history ?? [];
+    }, [ flows, flowType ]);
 
     const { data: flowMetadata, error: flowMetadataError, isLoading: isFlowMetadataLoading } = useGetMetadata(
         flowType,
@@ -191,24 +199,18 @@ const FlowContextWrapper = ({
      * Check for existing drafts on component mount.
      */
     useEffect(() => {
-        (async () => {
-            try {
-                setHasDrafts(false);
-            } catch (error) {
-                // TODO: Log the error
-            }
-        })();
-    }, [ flowType ]);
+        setHasLocalHistory(localHistory.length > 0);
+    }, [ localHistory ]);
 
     /**
      * Manually trigger an auto-save operation.
      */
-    const triggerAutoSave: () => Promise<boolean> = useCallback(async (): Promise<boolean> => {
-        if (!toObject || isAutoSaving) {
+    const triggerLocalHistoryAutoSave: () => Promise<boolean> = useCallback(async (): Promise<boolean> => {
+        if (!toObject || isAutoSavingLocalHistory) {
             return false;
         }
 
-        setIsAutoSaving(true);
+        setIsAutoSavingLocalHistory(true);
 
         try {
             const flowData: Record<string, unknown> = toObject();
@@ -219,11 +221,12 @@ const FlowContextWrapper = ({
 
             const timestamp: number = Date.now();
 
-            // Save draft using setPreferences
+            // Save a draft using setPreferences in localstorage.
             await setPreferences({
                 flows: {
                     [flowType]: {
                         history: [
+                            ...localHistory,
                             {
                                 author: {
                                     userName
@@ -236,21 +239,21 @@ const FlowContextWrapper = ({
                 }
             });
 
-            setLastAutoSaveTimestamp(timestamp);
-            setHasDrafts(true);
+            setLastLocalHistoryAutoSaveTimestamp(timestamp);
+            setHasLocalHistory(true);
 
             return true;
         } catch (error) {
             return false;
         } finally {
-            setIsAutoSaving(false);
+            setIsAutoSavingLocalHistory(false);
         }
-    }, [ toObject, isAutoSaving, flowType, setPreferences, dispatch, t ]);
+    }, [ toObject, isAutoSavingLocalHistory, flowType, setPreferences, dispatch, t ]);
 
     /**
      * Clear all saved drafts for this flow type.
      */
-    const clearDrafts: () => Promise<boolean> = useCallback(async (): Promise<boolean> => {
+    const clearLocalHistory: () => Promise<boolean> = useCallback(async (): Promise<boolean> => {
         try {
             // Clear drafts from preferences
             await setPreferences({
@@ -261,8 +264,8 @@ const FlowContextWrapper = ({
                 }
             });
 
-            setHasDrafts(false);
-            setLastAutoSaveTimestamp(null);
+            setHasLocalHistory(false);
+            setLastLocalHistoryAutoSaveTimestamp(null);
 
             return true;
         } catch (error) {
@@ -275,9 +278,9 @@ const FlowContextWrapper = ({
      * Set up auto-save interval.
      */
     useEffect(() => {
-        if (isAutoSaveEnabled && FlowConstants.AUTO_SAVE_INTERVAL > 0) {
+        if (isAutoSaveLocalHistoryEnabled && FlowConstants.AUTO_SAVE_INTERVAL > 0) {
             intervalRef.current = setInterval(() => {
-                triggerAutoSave();
+                triggerLocalHistoryAutoSave();
             }, FlowConstants.AUTO_SAVE_INTERVAL);
 
             return () => {
@@ -292,7 +295,7 @@ const FlowContextWrapper = ({
         }
 
         return undefined;
-    }, [ isAutoSaveEnabled, triggerAutoSave ]);
+    }, [ isAutoSaveLocalHistoryEnabled, triggerLocalHistoryAutoSave ]);
 
     /**
      * Cleanup interval on unmount.
@@ -483,40 +486,43 @@ const FlowContextWrapper = ({
             value={ {
                 ElementFactory,
                 ResourceProperties,
-                clearDrafts,
+                clearLocalHistory,
                 flowCompletionConfigs,
-                hasDrafts,
+                hasLocalHistory,
                 i18nText,
                 i18nTextLoading:
-                    textPreferenceLoading || fallbackTextPreferenceLoading || customTextPreferenceMetaLoading,
-                isAutoSaveEnabled,
-                isAutoSaving,
+                textPreferenceLoading || fallbackTextPreferenceLoading || customTextPreferenceMetaLoading,
+                isAutoSaveLocalHistoryEnabled,
+                isAutoSavingLocalHistory,
                 isBrandingEnabled,
                 isCustomI18nKey,
                 isFlowMetadataLoading,
                 isI18nSubmitting,
                 isResourcePanelOpen,
                 isResourcePropertiesPanelOpen,
+                isVersionHistoryPanelOpen,
                 language,
-                lastAutoSaveTimestamp,
+                lastLocalHistoryAutoSaveTimestamp,
                 lastInteractedResource: lastInteractedElementInternal,
                 lastInteractedStepId,
+                localHistory,
                 metadata: flowMetadata,
                 onResourceDropOnCanvas,
                 primaryI18nScreen,
                 resourcePropertiesPanelHeading,
                 selectedAttributes,
-                setAutoSaveEnabled: setIsAutoSaveEnabled,
+                setLocalHistoryAutoSaveEnabled: setIsAutoSaveLocalHistoryEnabled,
                 setFlowCompletionConfigs,
                 setIsOpenResourcePropertiesPanel,
                 setIsResourcePanelOpen,
+                setIsVersionHistoryPanelOpen,
                 setLanguage,
                 setLastInteractedResource,
                 setLastInteractedStepId,
                 setResourcePropertiesPanelHeading,
                 setSelectedAttributes,
                 supportedLocales,
-                triggerAutoSave,
+                triggerLocalHistoryAutoSave,
                 updateI18nKey
             } }
         >

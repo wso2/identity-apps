@@ -21,7 +21,7 @@ import { Claim } from "@wso2is/core/models";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import { Context, Dispatch, FunctionComponent, ReactNode, SetStateAction, createContext } from "react";
 import { Base } from "../models/base";
-import { FlowCompletionConfigsInterface } from "../models/flows";
+import { FlowCompletionConfigsInterface, FlowsHistoryInterface } from "../models/flows";
 import { MetadataInterface } from "../models/metadata";
 import { Resource } from "../models/resources";
 
@@ -57,6 +57,10 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      * Indicates whether the element properties panel is open.
      */
     isResourcePropertiesPanelOpen: boolean;
+    /**
+     * Indicates whether the version history panel is open.
+     */
+    isVersionHistoryPanelOpen: boolean;
     /**
      * The factory for creating components.
      */
@@ -99,6 +103,10 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      * @param isOpen - Boolean indicating whether the element properties panel should be open.
      */
     setIsOpenResourcePropertiesPanel: Dispatch<SetStateAction<boolean>>;
+    /**
+     * Function to set the state of the version history panel.
+     */
+    setIsVersionHistoryPanelOpen: Dispatch<SetStateAction<boolean>>;
     /**
      * Sets the selected attributes for the flow.
      */
@@ -167,33 +175,37 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      */
     isFlowMetadataLoading?: boolean;
     /**
-     * Indicates whether auto-save is enabled.
+     * Indicates whether local auto-save is enabled.
      */
-    isAutoSaveEnabled?: boolean;
+    isAutoSaveLocalHistoryEnabled?: boolean;
     /**
-     * Indicates whether an auto-save operation is in progress.
+     * Indicates whether an local auto-save operation is in progress.
      */
-    isAutoSaving?: boolean;
+    isAutoSavingLocalHistory?: boolean;
     /**
-     * The timestamp of the last successful auto-save.
+     * The timestamp of the last successful local auto-save.
      */
-    lastAutoSaveTimestamp?: number | null;
+    lastLocalHistoryAutoSaveTimestamp?: number | null;
     /**
-     * Manually trigger an auto-save operation.
+     * Manually trigger an local auto-save operation.
      */
-    triggerAutoSave?: () => Promise<boolean>;
+    triggerLocalHistoryAutoSave?: () => Promise<boolean>;
     /**
-     * Enable or disable auto-save functionality.
+     * Enable or disable locally saved auto-save functionality.
      */
-    setAutoSaveEnabled?: (enabled: boolean) => void;
+    setLocalHistoryAutoSaveEnabled?: (enabled: boolean) => void;
     /**
-     * Check if there are saved drafts for this flow type.
+     * Check if there are locally saved drafts for this flow type.
      */
-    hasDrafts?: boolean;
+    hasLocalHistory?: boolean;
     /**
-     * Clear all saved drafts for this flow type.
+     * Clear all locally saved drafts for this flow type.
      */
-    clearDrafts?: () => Promise<boolean>;
+    clearLocalHistory?: () => Promise<boolean>;
+    /**
+     * All locally saved drafts for the current flow type.
+     */
+    localHistory?: FlowsHistoryInterface[];
 }
 
 /**
@@ -213,9 +225,11 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
         isFlowMetadataLoading: false,
         isResourcePanelOpen: true,
         isResourcePropertiesPanelOpen: false,
+        isVersionHistoryPanelOpen: false,
         language: "",
         lastInteractedResource: null,
         lastInteractedStepId: "",
+        localHistory: [],
         metadata: null,
         onResourceDropOnCanvas: () => {},
         primaryI18nScreen: PreviewScreenType.COMMON,
@@ -224,19 +238,20 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
         setFlowCompletionConfigs: () => {},
         setIsOpenResourcePropertiesPanel: () => {},
         setIsResourcePanelOpen: () => {},
+        setIsVersionHistoryPanelOpen: () => {},
         setLanguage: () => {},
         setLastInteractedResource: () => {},
         setLastInteractedStepId: () => {},
         setResourcePropertiesPanelHeading: () => {},
         setSelectedAttributes: () => {},
         supportedLocales: {},
-        isAutoSaveEnabled: true,
-        isAutoSaving: false,
-        lastAutoSaveTimestamp: null,
-        triggerAutoSave: () => Promise.resolve(false),
-        setAutoSaveEnabled: () => {},
-        hasDrafts: false,
-        clearDrafts: () => Promise.resolve(false)
+        isAutoSaveLocalHistoryEnabled: true,
+        isAutoSavingLocalHistory: false,
+        lastLocalHistoryAutoSaveTimestamp: null,
+        triggerLocalHistoryAutoSave: () => Promise.resolve(false),
+        setLocalHistoryAutoSaveEnabled: () => {},
+        hasLocalHistory: false,
+        clearLocalHistory: () => Promise.resolve(false)
     }
 );
 
