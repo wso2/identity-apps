@@ -201,7 +201,10 @@ const ValidationPanel: FunctionComponent<ValidationPanelPropsInterface> = ({
             onClose={ () => {} }
             elevation={ 5 }
             PaperProps={ {
-                className: classNames("flow-builder-right-panel base left-shadow", open ? "flow-builder-right-panel open" : "flow-builder-right-panel close")
+                className: classNames(
+                    "flow-builder-right-panel base left-shadow",
+                    open ? "flow-builder-right-panel open" : "flow-builder-right-panel close"
+                )
             } }
             hideBackdrop={ true }
             className={ classNames(open ? "flow-builder-right-panel open" : "flow-builder-right-panel close") }

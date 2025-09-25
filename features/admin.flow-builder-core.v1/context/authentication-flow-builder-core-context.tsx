@@ -221,9 +221,13 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
     {
         ElementFactory: () => null,
         ResourceProperties: () => null,
+        clearLocalHistory: () => Promise.resolve(false),
         flowCompletionConfigs: {},
+        hasLocalHistory: false,
         i18nText: null,
         i18nTextLoading: false,
+        isAutoSaveLocalHistoryEnabled: true,
+        isAutoSavingLocalHistory: false,
         isBrandingEnabled: false,
         isCustomI18nKey: () => false,
         isFlowMetadataLoading: false,
@@ -233,11 +237,13 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
         language: "",
         lastInteractedResource: null,
         lastInteractedStepId: "",
+        lastLocalHistoryAutoSaveTimestamp: null,
         localHistory: [],
         metadata: null,
         onResourceDropOnCanvas: () => {},
         primaryI18nScreen: PreviewScreenType.COMMON,
         resourcePropertiesPanelHeading: null,
+        restoreFromHistory: () => Promise.resolve(false),
         selectedAttributes: {},
         setFlowCompletionConfigs: () => {},
         setIsOpenResourcePropertiesPanel: () => {},
@@ -246,17 +252,11 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
         setLanguage: () => {},
         setLastInteractedResource: () => {},
         setLastInteractedStepId: () => {},
+        setLocalHistoryAutoSaveEnabled: () => {},
         setResourcePropertiesPanelHeading: () => {},
         setSelectedAttributes: () => {},
         supportedLocales: {},
-        isAutoSaveLocalHistoryEnabled: true,
-        isAutoSavingLocalHistory: false,
-        lastLocalHistoryAutoSaveTimestamp: null,
-        triggerLocalHistoryAutoSave: () => Promise.resolve(false),
-        setLocalHistoryAutoSaveEnabled: () => {},
-        hasLocalHistory: false,
-        clearLocalHistory: () => Promise.resolve(false),
-        restoreFromHistory: () => Promise.resolve(false)
+        triggerLocalHistoryAutoSave: () => Promise.resolve(false)
     }
 );
 

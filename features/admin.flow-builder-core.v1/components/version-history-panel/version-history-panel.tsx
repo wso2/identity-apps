@@ -21,19 +21,20 @@ import Drawer, { DrawerProps } from "@oxygen-ui/react/Drawer";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, HTMLAttributes, ReactElement, useMemo } from "react";
-import { useTranslation } from "react-i18next";
-import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
-import moment from "moment";
-import { usePastelColorGenerator } from "@oxygen-ui/react"
 import classNames from "classnames";
+import moment from "moment";
+import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import VersionHistoryItem from "./version-history-item";
+import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import "./version-history-panel.scss";
 
 /**
  * Props interface of {@link VersionHistoryPanel}
  */
-export type VersionHistoryPanelPropsInterface = DrawerProps & IdentifiableComponentInterface & HTMLAttributes<HTMLDivElement>;
+export type VersionHistoryPanelPropsInterface = DrawerProps &
+    IdentifiableComponentInterface &
+    HTMLAttributes<HTMLDivElement>;
 
 // TODO: Move this to Oxygen UI.
 const ChevronsRight = ({ width = 16, height = 16 }: { width: number; height: number }): ReactElement => (
@@ -52,40 +53,6 @@ const ChevronsRight = ({ width = 16, height = 16 }: { width: number; height: num
  * @param props - Props injected to the component.
  * @returns The VersionHistoryPanel component.
  */
-/**
- * Component to render author info with colored dot.
- */
-const AuthorInfo: FunctionComponent<{ userName: string }> = ({ userName }) => {
-    const colorRandomizer: string = useMemo(() => {
-        return userName || '';
-    }, [userName]);
-
-    const { color } = usePastelColorGenerator(colorRandomizer);
-
-    return (
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '4px' }}>
-            <Box
-                sx={{
-                    width: '12px',
-                    height: '12px',
-                    borderRadius: '50%',
-                    backgroundColor: color,
-                    flexShrink: 0
-                }}
-            />
-            <Typography
-                variant="caption"
-                color="text.secondary"
-                sx={{
-                    fontSize: '11px'
-                }}
-            >
-                {userName}
-            </Typography>
-        </Box>
-    );
-};
-
 const VersionHistoryPanel: FunctionComponent<VersionHistoryPanelPropsInterface> = ({
     "data-componentid": componentId = "version-history-panel",
     children,
@@ -115,7 +82,11 @@ const VersionHistoryPanel: FunctionComponent<VersionHistoryPanelPropsInterface> 
                 onClose={ () => {} }
                 elevation={ 5 }
                 PaperProps={ {
-                    className: classNames("flow-builder-right-panel base", open ? "flow-builder-right-panel open" : "flow-builder-right-panel close", className),
+                    className: classNames(
+                        "flow-builder-right-panel base",
+                        open ? "flow-builder-right-panel open" : "flow-builder-right-panel close",
+                        className
+                    ),
                     style: { position: "absolute" }
                 } }
                 BackdropProps={ { style: { position: "absolute" } } }
@@ -148,116 +119,102 @@ const VersionHistoryPanel: FunctionComponent<VersionHistoryPanelPropsInterface> 
                 </Box>
                 <Box
                     className="flow-builder-right-panel content full-height"
-                    sx={{
-                        overflowY: 'auto',
-                        padding: '12px',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '12px'
-                    }}
+                    sx={ {
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "12px",
+                        overflowY: "auto",
+                        padding: "12px"
+                    } }
                 >
-                    {localHistory && localHistory.length > 0 ? (
+                    { localHistory && localHistory.length > 0 ? (
                         (() => {
-                            // Find the latest timestamp to identify current version
-                            const latestTimestamp = Math.max(...localHistory.map(item => Number(item.timestamp)));
+                            const latestTimestamp: number = Math.max(
+                                ...localHistory.map((item: FlowsHistoryInterface) => Number(item.timestamp))
+                            );
 
                             // Group history items by date
-                            const groupedHistory = localHistory.reduce((groups, item, index) => {
-                                const date = moment(Number(item.timestamp)).format('YYYY-MM-DD');
-                                const isToday = moment(Number(item.timestamp)).isSame(moment(), 'day');
-                                const groupKey = isToday ? 'Today' : moment(Number(item.timestamp)).format('MMMM DD, YYYY');
+                            const groupedHistory: Record<string, FlowsHistoryInterface[]> = localHistory.reduce(
+                                (
+                                    groups: Record<string, FlowsHistoryInterface[]>,
+                                    item: FlowsHistoryInterface,
+                                    index: number
+                                ) => {
+                                    const isToday: boolean = moment(Number(item.timestamp)).isSame(moment(), "day");
+                                    const groupKey: string = isToday
+                                        ? "Today"
+                                        : moment(Number(item.timestamp)).format("MMMM DD, YYYY");
 
-                                if (!groups[groupKey]) {
-                                    groups[groupKey] = [];
-                                }
-                                groups[groupKey].push({
-                                    ...item,
-                                    originalIndex: index,
-                                    isLatest: Number(item.timestamp) === latestTimestamp
-                                });
-                                return groups;
-                            }, {} as Record<string, any[]>);
+                                    if (!groups[groupKey]) {
+                                        groups[groupKey] = [];
+                                    }
+                                    groups[groupKey].push({
+                                        ...item,
+                                        isLatest: Number(item.timestamp) === latestTimestamp,
+                                        originalIndex: index
+                                    });
+
+                                    return groups;
+                                },
+                                {} as Record<string, FlowsHistoryInterface[]>
+                            );
 
                             return Object.entries(groupedHistory)
-                                .sort(([dateGroupA], [dateGroupB]) => {
+                                .sort(([ dateGroupA ]: [string], [ dateGroupB ]: [string]) => {
                                     // Put "Today" first
-                                    if (dateGroupA === 'Today') return -1;
-                                    if (dateGroupB === 'Today') return 1;
+                                    if (dateGroupA === "Today") return -1;
+                                    if (dateGroupB === "Today") return 1;
+
                                     // For other dates, sort by most recent first
-                                    return moment(dateGroupB, 'MMMM DD, YYYY').valueOf() - moment(dateGroupA, 'MMMM DD, YYYY').valueOf();
+                                    return (
+                                        moment(dateGroupB, "MMMM DD, YYYY").valueOf() -
+                                        moment(dateGroupA, "MMMM DD, YYYY").valueOf()
+                                    );
                                 })
-                                .map(([dateGroup, items]) => (
-                                <Box key={dateGroup}>
-                                    <Typography
-                                        variant="subtitle2"
-                                        color="text.secondary"
-                                        sx={{
-                                            marginBottom: '8px',
-                                            fontSize: '12px',
-                                            fontWeight: 500,
-                                            textTransform: 'uppercase',
-                                            letterSpacing: '0.5px'
-                                        }}
-                                    >
-                                        {dateGroup}
-                                    </Typography>
-                                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                                        {items
-                                            .sort((a, b) => Number(b.timestamp) - Number(a.timestamp))
-                                            .map((historyItem, itemIndex) => {
-                                            const isCurrentVersion = historyItem.isLatest;
-                                            return (
-                                                <VersionHistoryItem
-                                                    key={`${historyItem.timestamp}-${itemIndex}`}
-                                                    historyItem={historyItem}
-                                                    isCurrentVersion={isCurrentVersion}
-                                                />
-                                            );
-                                        })}
+                                .map(([ dateGroup, items ]: [string, FlowsHistoryInterface[]]) => (
+                                    <Box key={ dateGroup }>
+                                        <Typography
+                                            variant="subtitle2"
+                                            color="text.secondary"
+                                            sx={ {
+                                                fontSize: "12px",
+                                                fontWeight: 500,
+                                                letterSpacing: "0.5px",
+                                                marginBottom: "8px",
+                                                textTransform: "uppercase"
+                                            } }
+                                        >
+                                            { dateGroup }
+                                        </Typography>
+                                        <Box sx={ { display: "flex", flexDirection: "column", gap: "8px" } }>
+                                            { items
+                                                .sort(
+                                                    (a: FlowsHistoryInterface, b: FlowsHistoryInterface) =>
+                                                        Number(b.timestamp) - Number(a.timestamp)
+                                                )
+                                                .map((historyItem: FlowsHistoryInterface, itemIndex: number) => {
+                                                    const isCurrentVersion: boolean = historyItem.isLatest;
+
+                                                    return (
+                                                        <VersionHistoryItem
+                                                            key={ `${historyItem.timestamp}-${itemIndex}` }
+                                                            historyItem={ historyItem }
+                                                            isCurrentVersion={ isCurrentVersion }
+                                                        />
+                                                    );
+                                                }) }
+                                        </Box>
                                     </Box>
-                                </Box>
-                            ));
+                                ));
                         })()
                     ) : (
-                        <Box
-                            display="flex"
-                            justifyContent="center"
-                            alignItems="center"
-                            minHeight="200px"
-                        >
+                        <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
                             <Typography variant="body2" color="textSecondary" fontStyle="italic">
                                 { t("flows:core.versionHistory.emptyState") }
                             </Typography>
                         </Box>
-                    )}
+                    ) }
                 </Box>
-                {/* { lastInteractedResource?.deletable || lastInteractedResource?.deletable === undefined && (
-                    <Box
-                        display="flex"
-                        justifyContent="flex-end"
-                        alignItems="right"
-                        className="flow-builder-element-property-panel-footer"
-                    >
-                        { lastInteractedResource?.deletable || lastInteractedResource?.deletable === undefined && (
-                            <Button
-                                variant="outlined"
-                                onClick={ () => {
-                                    if (lastInteractedResource.resourceType === ResourceTypes.Step) {
-                                        deleteElements({ nodes: [ { id: lastInteractedResource.id } ] });
-                                    } else {
-                                        onComponentDelete(lastInteractedStepId, lastInteractedResource);
-                                    }
-
-                                    setIsOpenResourcePropertiesPanel(false);
-                                } }
-                                className="flow-builder-element-property-panel-footer-secondary-action icon-button"
-                                color="error"
-                            >
-                                <TrashIcon size={ 14 } />
-                            </Button>
-                        ) }
-                    </Box>
-                ) } */}
             </Drawer>
         </Box>
     );

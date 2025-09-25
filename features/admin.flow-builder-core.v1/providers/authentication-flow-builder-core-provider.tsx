@@ -302,6 +302,7 @@ const FlowContextWrapper = ({
                             message: t("flows:core.notifications.restoreFromHistory.invalidData.message")
                         })
                     );
+
                     return false;
                 }
 
@@ -311,11 +312,12 @@ const FlowContextWrapper = ({
                 // Apply the restored flow data to the current flow using React Flow's methods
                 // Note: This assumes the provider has access to setNodes and setEdges methods
                 // which will be provided by the specific flow builder implementation
-                if (typeof window !== 'undefined') {
+                if (typeof window !== "undefined") {
                     // Dispatch a custom event that the flow builder cores can listen to
-                    const restoreEvent = new CustomEvent('restoreFromHistory', {
-                        detail: { nodes, edges, historyItem }
+                    const restoreEvent: CustomEvent = new CustomEvent("restoreFromHistory", {
+                        detail: {  edges, historyItem, nodes }
                     });
+
                     window.dispatchEvent(restoreEvent);
 
                     // Show success message
@@ -339,6 +341,7 @@ const FlowContextWrapper = ({
                         message: t("flows:core.notifications.restoreFromHistory.genericError.message")
                     })
                 );
+
                 return false;
             }
         },
@@ -573,16 +576,16 @@ const FlowContextWrapper = ({
                 isResourcePropertiesPanelOpen,
                 isVersionHistoryPanelOpen,
                 language,
-                lastLocalHistoryAutoSaveTimestamp,
                 lastInteractedResource: lastInteractedElementInternal,
                 lastInteractedStepId,
+                lastLocalHistoryAutoSaveTimestamp,
                 localHistory,
                 metadata: flowMetadata,
                 onResourceDropOnCanvas,
                 primaryI18nScreen,
                 resourcePropertiesPanelHeading,
+                restoreFromHistory,
                 selectedAttributes,
-                setLocalHistoryAutoSaveEnabled: setIsAutoSaveLocalHistoryEnabled,
                 setFlowCompletionConfigs,
                 setIsOpenResourcePropertiesPanel,
                 setIsResourcePanelOpen,
@@ -590,12 +593,12 @@ const FlowContextWrapper = ({
                 setLanguage,
                 setLastInteractedResource,
                 setLastInteractedStepId,
+                setLocalHistoryAutoSaveEnabled: setIsAutoSaveLocalHistoryEnabled,
                 setResourcePropertiesPanelHeading,
                 setSelectedAttributes,
                 supportedLocales,
                 triggerLocalHistoryAutoSave,
-                updateI18nKey,
-                restoreFromHistory
+                updateI18nKey
             } }
         >
             <ValidationProvider>{ children }</ValidationProvider>

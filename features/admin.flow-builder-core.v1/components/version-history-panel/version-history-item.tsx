@@ -16,6 +16,8 @@
  * under the License.
  */
 
+/* eslint-disable-next-line no-restricted-imports */
+import { usePastelColorGenerator } from "@oxygen-ui/react";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Card from "@oxygen-ui/react/Card";
@@ -24,7 +26,6 @@ import Dialog from "@oxygen-ui/react/Dialog";
 import DialogActions from "@oxygen-ui/react/DialogActions";
 import DialogContent from "@oxygen-ui/react/DialogContent";
 import DialogTitle from "@oxygen-ui/react/DialogTitle";
-import usePastelColorGenerator from "@oxygen-ui/react/hooks/use-pastel-color-generator";
 import IconButton from "@oxygen-ui/react/IconButton";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import Menu from "@oxygen-ui/react/Menu/Menu";

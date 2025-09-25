@@ -32,7 +32,9 @@ const useAuthenticationFlowBuilderCore = (): AuthenticationFlowBuilderCoreContex
     );
 
     if (!context) {
-        throw new Error("useAuthenticationFlowBuilderCore must be used within an AuthenticationFlowBuilderCoreProvider");
+        throw new Error(
+            "useAuthenticationFlowBuilderCore must be used within an AuthenticationFlowBuilderCoreProvider"
+        );
     }
 
     return context;

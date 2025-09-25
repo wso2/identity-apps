@@ -19,13 +19,13 @@
 import Badge from "@oxygen-ui/react/Badge";
 import Box from "@oxygen-ui/react/Box";
 import IconButton from "@oxygen-ui/react/IconButton";
+import Tooltip from "@oxygen-ui/react/Tooltip";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import useValidationStatus from "../../hooks/use-validation-status";
 import Notification, { NotificationType } from "../../models/notification";
 import { useAuthenticationFlowBuilderCore } from "../../public-api";
-import Tooltip from "@oxygen-ui/react/Tooltip";
 import "./validation-status-labels.scss";
 
 /**
@@ -33,7 +33,7 @@ import "./validation-status-labels.scss";
  */
 export interface ValidationStatusLabelsPropsInterface extends IdentifiableComponentInterface {}
 
-const BellIcon = ({ height = 16, width = 16}): ReactElement => {
+const BellIcon = ({ height = 16, width = 16 }: { height?: number; width?: number }): ReactElement => {
     /* eslint-disable-next-line max-len */
     return <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width={ width } height={ height } fill="currentColor"><path d="M224 512c35.3 0 63.9-28.7 63.9-64H160.1c0 35.3 28.7 64 63.9 64zm215.4-149.7c-20.9-21.5-55.5-52.3-55.5-154.3 0-77.7-54.5-139.2-127.9-155.2V32c0-17.7-14.3-32-32-32s-32 14.3-32 32v21c-73.4 16-127.9 77.5-127.9 155.2 0 102-34.6 132.8-55.5 154.3-6 6.2-8.9 14.4-8.9 22.6v25c0 12.1 9.8 22 21.9 22h383c12.1 0 21.9-9.9 21.9-22v-25c0-8.2-2.9-16.4-8.8-22.6z"/></svg>;
 };
@@ -109,12 +109,12 @@ const ValidationStatusLabels: FunctionComponent<ValidationStatusLabelsPropsInter
                         badgeContent={ badgeContent }
                         color={ badgeColor }
                         overlap="circular"
-                        sx={{
-                            '& .MuiBadge-badge': {
-                                top: -12,
+                        sx={ {
+                            "& .MuiBadge-badge": {
                                 right: -6,
+                                top: -12
                             }
-                        }}
+                        } }
                     />
                 </IconButton>
             </Tooltip>

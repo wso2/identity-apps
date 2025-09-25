@@ -94,7 +94,11 @@ const ResourcePropertyPanel: FunctionComponent<ResourcePropertyPanelPropsInterfa
                 onClose={ () => {} }
                 elevation={ 5 }
                 PaperProps={ {
-                    className: classNames("flow-builder-right-panel base", open ? "flow-builder-right-panel open" : "flow-builder-right-panel close", className),
+                    className: classNames(
+                        "flow-builder-right-panel base",
+                        open ? "flow-builder-right-panel open" : "flow-builder-right-panel close",
+                        className
+                    ),
                     style: { position: "absolute" }
                 } }
                 BackdropProps={ { style: { position: "absolute" } } }
