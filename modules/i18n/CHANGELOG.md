@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.30.31
+
+### Patch Changes
+
+- [#9081](https://github.com/wso2/identity-apps/pull/9081) [`a97a74480293e24fa031bb905cb70329282078ef`](https://github.com/wso2/identity-apps/commit/a97a74480293e24fa031bb905cb70329282078ef) Thanks [@brionmario](https://github.com/brionmario)! - Introduce `End` node to Flows
+
 ## 2.30.30
 
 ### Patch Changes

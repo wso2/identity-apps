@@ -1,5 +1,17 @@
 # @wso2is/admin.organizations.v1
 
+## 2.27.7
+
+### Patch Changes
+
+- [#9193](https://github.com/wso2/identity-apps/pull/9193) [`a86ff9545d3adc08aaf69a3ccdd3c170eccaabaa`](https://github.com/wso2/identity-apps/commit/a86ff9545d3adc08aaf69a3ccdd3c170eccaabaa) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Fix organization detail view dropdown option visibility issue for unauthorized users
+
+- Updated dependencies [[`a97a74480293e24fa031bb905cb70329282078ef`](https://github.com/wso2/identity-apps/commit/a97a74480293e24fa031bb905cb70329282078ef)]:
+  - @wso2is/admin.core.v1@2.49.59
+  - @wso2is/i18n@2.30.31
+  - @wso2is/admin.users.v1@2.36.26
+  - @wso2is/admin.roles.v2@2.27.221
+
 ## 2.27.6
 
 ### Patch Changes

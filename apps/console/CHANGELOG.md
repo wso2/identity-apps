@@ -1,5 +1,33 @@
 # @wso2is/console
 
+## 2.79.12
+
+### Patch Changes
+
+- [#9081](https://github.com/wso2/identity-apps/pull/9081) [`a97a74480293e24fa031bb905cb70329282078ef`](https://github.com/wso2/identity-apps/commit/a97a74480293e24fa031bb905cb70329282078ef) Thanks [@brionmario](https://github.com/brionmario)! - Introduce `End` node to Flows
+
+* [#9191](https://github.com/wso2/identity-apps/pull/9191) [`9774621131f97b08f0f73d0b80e604211a9a4fbc`](https://github.com/wso2/identity-apps/commit/9774621131f97b08f0f73d0b80e604211a9a4fbc) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - honor requireSuperTenantInUrls in Console and MyAccount
+
+- [#9193](https://github.com/wso2/identity-apps/pull/9193) [`a86ff9545d3adc08aaf69a3ccdd3c170eccaabaa`](https://github.com/wso2/identity-apps/commit/a86ff9545d3adc08aaf69a3ccdd3c170eccaabaa) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Fix organization detail view dropdown option visibility issue for unauthorized users
+
+- Updated dependencies [[`a97a74480293e24fa031bb905cb70329282078ef`](https://github.com/wso2/identity-apps/commit/a97a74480293e24fa031bb905cb70329282078ef), [`a86ff9545d3adc08aaf69a3ccdd3c170eccaabaa`](https://github.com/wso2/identity-apps/commit/a86ff9545d3adc08aaf69a3ccdd3c170eccaabaa)]:
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.51
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.51
+  - @wso2is/admin.registration-flow-builder.v1@0.10.10
+  - @wso2is/admin.server-configurations.v1@2.35.73
+  - @wso2is/admin.email-management.v1@2.25.215
+  - @wso2is/admin.branding.v1@2.32.7
+  - @wso2is/admin.flows.v1@1.0.20
+  - @wso2is/admin.core.v1@2.49.59
+  - @wso2is/admin.home.v1@1.7.29
+  - @wso2is/i18n@2.30.31
+  - @wso2is/admin.organizations.v1@2.27.7
+  - @wso2is/admin.users.v1@2.36.26
+  - @wso2is/admin.actions.v1@1.14.6
+  - @wso2is/admin.session-management.v1@2.25.212
+  - @wso2is/admin.agents.v1@1.0.66
+  - @wso2is/admin.roles.v2@2.27.221
+
 ## 2.79.11
 
 ### Patch Changes
