@@ -23,18 +23,25 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
+import { useMemo } from "react";
 import PasswordRecoveryFlowConstants from "../constants/password-recovery-flow-constants";
+import { endStepMigrator } from "../migrations";
+import { PasswordRecoveryFlow } from "../models/flow";
 
 /**
- * Hook to get the configured password recovery flow.
+ * Hook to get the configured password recovery flow with automatic migration support.
  *
  * This function calls the GET method of the following endpoint to get the password recovery flow of the organization.
  * - `https://{serverUrl}/t/{tenantDomain}/api/server/v1/password-recovery-flow`
+ * 
+ * The hook automatically applies migrations to convert legacy flows:
+ * - Migrates flows with string "End" references to proper configurable END nodes
+ * 
  * For more details, refer to the documentation:
  * {@link https://TODO:<fillthis>)}
  *
  * @param shouldFetch - Should fetch the data.
- * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
+ * @returns SWR response object containing the migrated data, error, isLoading, isValidating, mutate.
  */
 const useGetPasswordRecoveryFlow = <Data = any, Error = RequestErrorInterface>(
     shouldFetch: boolean = true
@@ -49,12 +56,30 @@ const useGetPasswordRecoveryFlow = <Data = any, Error = RequestErrorInterface>(
         url: `${store.getState().config.endpoints.passwordRecoveryFlow}?flowType=${PasswordRecoveryFlowConstants.PASSWORD_RECOVERY_FLOW_TYPE}`
     };
 
-    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
+    const { data: rawData, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
         shouldFetch ? requestConfig : null
     );
 
+    // Apply migration if needed
+    const migratedData: Data = useMemo(() => {
+        if (!rawData) {
+            return rawData;
+        }
+
+        try {
+            const flow: PasswordRecoveryFlow = rawData as unknown as PasswordRecoveryFlow;
+            const migratedFlow: PasswordRecoveryFlow = endStepMigrator(flow);
+
+            return migratedFlow as unknown as Data;
+        } catch (migrationError) {
+            // Fallback to original data if migration fails.
+            return rawData;
+        }
+    }, [ rawData ]);
+
+    console.log("Fetched and migrated password recovery flow data:", JSON.stringify(migratedData));
     return {
-        data: data as Data,
+        data: migratedData as Data,
         error,
         isLoading,
         isValidating,
