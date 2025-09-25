@@ -40,7 +40,8 @@ function getI18nKeyForError(errorCode, flowType, errorMessage) {
                 description: "sign.up.error.username.not.provided.description",
                 portalUrlStatus: "true"
             };
-
+        
+        case "FEE-60001":
         case "FE-60003":
 
             return {
@@ -48,7 +49,6 @@ function getI18nKeyForError(errorCode, flowType, errorMessage) {
                 description: "sign.up.error.username.already.exists.description",
                 portalUrlStatus: "true"
             };
-
         case "FE-60004":
             
             if( flowType === "USER_REGISTRATION") {
@@ -71,7 +71,8 @@ function getI18nKeyForError(errorCode, flowType, errorMessage) {
                 message: "orchestration.flow.error.undefined.flow.id.message",
                 description: "orchestration.flow.error.undefined.flow.id.description"
             };
-
+        
+        case "FEE-60002":
         case "FE-60005":
 
             return {
@@ -202,7 +203,8 @@ function getI18nKeyForError(errorCode, flowType, errorMessage) {
                 description: "orchestration.flow.error.disabled.flow.description",
                 portalUrlStatus: "true"
             };
-
+        
+        case "FEE-60003":
         case "FE-60012":
 
             return {
