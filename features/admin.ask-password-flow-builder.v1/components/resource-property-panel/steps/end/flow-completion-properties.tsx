@@ -64,58 +64,6 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                 </Alert>
             </Typography>
             <Box sx={ { display: "flex", flexDirection: "column", gap: 1 } }>
-                { metadata?.supportedFlowCompletionConfigs?.includes("isEmailVerificationEnabled") && (
-                    <Box>
-                        <FormControlLabel
-                            label={ t("flows:askPassword.steps.end.accountVerification.label") }
-                            control={
-                                <Checkbox
-                                    checked={ configs?.isEmailVerificationEnabled === "true" }
-                                    onChange={(event) => {
-                                        const newConfigs: Record<string, unknown> = {
-                                            ...configs,
-                                            isEmailVerificationEnabled: event.target.checked ? "true" : "false"
-                                        };
-
-                                        // If email verification is disabled, auto-login should also be disabled
-                                        if (!event.target.checked) {
-                                            newConfigs.isAutoLoginEnabled = "false";
-                                        }
-
-                                        setFlowCompletionConfigs(newConfigs);
-                                    }}
-                                />
-                            }
-                        />
-                        <FormHelperText>{ t("flows:askPassword.steps.end.accountVerification.hint") }</FormHelperText>
-                    </Box>
-                ) }
-                { metadata?.supportedFlowCompletionConfigs?.includes("isAccountLockOnCreationEnabled") && (
-                    <Box sx={{ display: 'flex', flexDirection: 'column', ml: 3 }}>
-                        <FormControlLabel
-                            label={ t("flows:askPassword.steps.end.accountActivation.activateImmediately.label") }
-                            control={
-                                <Checkbox
-                                    checked={ configs?.isAccountLockOnCreationEnabled === "false" }
-                                    onChange={(event) => {
-                                        const newConfigs: Record<string, unknown> = {
-                                            ...configs,
-                                            isAccountLockOnCreationEnabled: event.target.checked ? "false" : "true"
-                                        };
-
-                                        // If account is set to be locked on creation, auto-login should be disabled
-                                        if (!event.target.checked) {
-                                            newConfigs.isAutoLoginEnabled = "false";
-                                        }
-
-                                        setFlowCompletionConfigs(newConfigs);
-                                    }}
-                                />
-                            }
-                        />
-                        <FormHelperText>{ t("flows:askPassword.steps.end.accountActivation.activateImmediately.hint") }</FormHelperText>
-                    </Box>
-                ) }
                 { metadata?.supportedFlowCompletionConfigs?.includes("isAutoLoginEnabled") && (
                     <Box>
                         <FormControlLabel
@@ -123,10 +71,6 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                             control={
                                 <Checkbox
                                     checked={ configs?.isAutoLoginEnabled === "true" }
-                                    disabled={
-                                        configs?.isEmailVerificationEnabled !== "true" ||
-                                        configs?.isAccountLockOnCreationEnabled !== "false"
-                                    }
                                     onChange={(event) => {
                                         setFlowCompletionConfigs({
                                             ...configs,

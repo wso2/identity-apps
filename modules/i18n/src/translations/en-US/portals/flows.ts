@@ -26,17 +26,7 @@ export const flows: flowsNS = {
         flowDisplayName: "Invited User Registration",
         steps: {
             end: {
-                description: "The <1>End Screen</1> defines what happens once the invited user registration flow is completed. It allows you to control the user&apos;s final experience by selecting one of the following outcomes:",
-                accountVerification: {
-                    label: "Verify the account on flow completion",
-                    hint: "Require the user to confirm their account via email before granting access."
-                },
-                accountActivation: {
-                    activateImmediately: {
-                        label: "Activate the account on creation",
-                        hint: "Automatically activate the user account upon creation, allowing immediate access without waiting for verification."
-                    }
-                },
+                description: "The <1>End Screen</1> defines what happens once the invited user registration flow is completed. It allows you to control the user's final experience by selecting one of the following outcomes:",
                 flowCompletionNotification: {
                     label: "Send a notification email on flow completion",
                     hint: "Notify the user via email once the flow is successfully completed."

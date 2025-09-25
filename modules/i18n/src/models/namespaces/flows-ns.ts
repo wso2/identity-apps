@@ -26,16 +26,6 @@ export interface flowsNS {
         steps: {
             end: {
                 description: string;
-                accountVerification: {
-                    label: string;
-                    hint: string;
-                };
-                accountActivation: {
-                    activateImmediately: {
-                        label: string;
-                        hint: string;
-                    };
-                };
                 flowCompletionNotification: {
                     label: string;
                     hint: string;
