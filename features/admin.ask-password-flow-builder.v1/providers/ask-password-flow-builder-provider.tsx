@@ -18,12 +18,24 @@
 
 import AuthenticationFlowBuilderCoreProvider
     from "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
+import {
+    GovernanceConnectorInterface,
+    GovernanceConnectorUtils,
+    UpdateGovernanceConnectorConfigInterface,
+    updateGovernanceConnector
+} from "@wso2is/admin.server-configurations.v1";
+import {
+    AskPasswordFormUpdatableConfigsInterface,
+    AskPasswordFormValuesInterface,
+    VerificationOption 
+} from "@wso2is/admin.server-configurations.v1/models/ask-password";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useReactFlow } from "@xyflow/react";
 import React, { FC, PropsWithChildren, ReactElement, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
+import { serverConfigurationConfig } from "../../admin.extensions.v1/configs/server-configuration";
 import { FlowTypes } from "../../admin.flows.v1/models/flows";
 import { PreviewScreenType } from "../../common.branding.v1/models";
 import configureAskPasswordFlow from "../api/configure-ask-password-flow";
@@ -36,6 +48,8 @@ import AskPasswordFlowConstants from "../constants/ask-password-flow-constants";
 import AskPasswordFlowBuilderContext from "../context/ask-password-flow-builder-context";
 import { Attribute } from "../models/attributes";
 import transformFlow from "../utils/transform-flow";
+import { AxiosError } from "axios";
+import { useTranslation } from "react-i18next";
 
 /**
  * Props interface of {@link AskPasswordFlowBuilderProvider}
@@ -83,6 +97,8 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
 }: PropsWithChildren<AskPasswordFlowBuilderProviderProps>): ReactElement => {
     const dispatch: Dispatch = useDispatch();
 
+    const { t } = useTranslation();
+
     const { toObject } = useReactFlow();
     const { data: supportedAttributes } = useGetSupportedProfileAttributes();
     const {
@@ -92,10 +108,159 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
 
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Attribute[] }>({});
     const [ isPublishing, setIsPublishing ] = useState<boolean>(false);
+    const [ invitedUserRegistrationConfig , setInvitedUserRegistrationConfig ]
+    = useState<null | AskPasswordFormValuesInterface>(null);
+    const [ isInvitedUserRegistrationConfigUpdated, setIsInvitedUserRegistrationConfigUpdated ]
+    = useState<boolean>(false);
+    const [ connector, setConnector ] = useState<GovernanceConnectorInterface | undefined>(undefined);
 
+    /**
+     * Prepare form values for submitting.
+     *
+     * @param values - Form values.
+     * @returns Sanitized form values.
+     */
+    const getUpdatedConfigurations = (values: Record<string, any>) => {
+
+        const data: AskPasswordFormUpdatableConfigsInterface = {
+            "EmailVerification.AskPassword.AccountActivation": values.enableAccountActivationEmail !== undefined
+                ? values.enableAccountActivationEmail
+                : null,
+            "EmailVerification.AskPassword.EmailOTP": values.askPasswordOption === VerificationOption.EMAIL_OTP,
+            "EmailVerification.AskPassword.ExpiryTime": values.expiryTime !== undefined
+                ? values.expiryTime
+                : null,
+            "EmailVerification.AskPassword.SMSOTP": values.askPasswordOption === VerificationOption.SMS_OTP,
+            "EmailVerification.Enable": values.enableInviteUserToSetPassword !== undefined
+                ? values.enableInviteUserToSetPassword
+                : null,
+            "EmailVerification.LockOnCreation": values.enableAccountLockOnCreation !== undefined
+                ? values.enableAccountLockOnCreation
+                : null,
+            "EmailVerification.OTP.OTPLength": values.otpLength !== undefined
+                ? values.otpLength
+                : null,
+            "EmailVerification.OTP.UseLowercaseCharactersInOTP": values.otpUseLowercase !== undefined
+                ? values.otpUseLowercase
+                : null,
+            "EmailVerification.OTP.UseNumbersInOTP": values.otpUseNumeric !== undefined
+                ? values.otpUseNumeric
+                : null,
+            "EmailVerification.OTP.UseUppercaseCharactersInOTP": values.otpUseUppercase !== undefined
+                ? values.otpUseUppercase
+                : null
+        };
+
+        return data;
+    };
+
+    const handleUpdateError = (error: AxiosError) => {
+        if (error.response && error.response.data && error.response.data.detail) {
+            dispatch(
+                addAlert({
+                    description: t(
+                        "governanceConnectors:notifications.updateConnector.error.description",
+                        { description: error.response.data.description }
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "governanceConnectors:notifications.updateConnector.error.message"
+                    )
+                })
+            );
+        } else {
+            // Generic error message
+            dispatch(
+                addAlert({
+                    description: t(
+                        "governanceConnectors:notifications." +
+                        "updateConnector.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "governanceConnectors:notifications." +
+                        "updateConnector.genericError.message"
+                    )
+                })
+            );
+        }
+    };
+
+    const handleUpdateSuccess = () => {
+        dispatch(
+            addAlert({
+                description: t(
+                    "extensions:manage.serverConfigurations.userOnboarding.inviteUserToSetPassword." +
+                    "notification.success.description"
+                ),
+                level: AlertLevels.SUCCESS,
+                message: t(
+                    "governanceConnectors:notifications." + "updateConnector.success.message"
+                )
+            })
+        );
+    };
+
+    /**
+     * Handles the confirmation code step publish action.
+     *
+     * @returns A promise that resolves to a boolean indicating the success of the publish action.
+     */
+
+    const handleSubmit = (values: Record<string, unknown>) => {
+        const data: UpdateGovernanceConnectorConfigInterface = {
+            operation: "UPDATE",
+            properties: []
+        };
+
+        for (const key in values) {
+            data.properties.push({
+                name: GovernanceConnectorUtils.decodeConnectorPropertyName(key),
+                value: values[ key ]
+            });
+        }
+
+        // Special case for password recovery notification based enable since the connector state
+        // depends on the state of recovery options.
+        if (
+            serverConfigurationConfig.connectorToggleName[ connector?.name ] &&
+            serverConfigurationConfig.autoEnableConnectorToggleProperty &&
+            connector?.name !== "account-recovery"
+        ) {
+            data.properties.push({
+                name: GovernanceConnectorUtils.decodeConnectorPropertyName(
+                    serverConfigurationConfig.connectorToggleName[ connector?.name ]
+                ),
+                value: "true"
+            });
+        }
+
+        updateGovernanceConnector(data, connector?.categoryId, connector?.id)
+            .then(() => {
+                handleUpdateSuccess();
+            })
+            .catch((error: AxiosError) => {
+                handleUpdateError(error);
+            });
+    };
+
+    /**
+     * Handles the publish action.
+     *
+     * @returns A promise that resolves to a boolean indicating the success of the publish action.
+     */
     const handlePublish = async (): Promise<boolean> => {
+
+        // Proceed to update the flow.
         setIsPublishing(true);
 
+        // Update invite user registration configurations if updated.
+        if (isInvitedUserRegistrationConfigUpdated && invitedUserRegistrationConfig) {
+            const updatedConfigurations: AskPasswordFormUpdatableConfigsInterface
+            = getUpdatedConfigurations(invitedUserRegistrationConfig);
+        }
+
+        // Update the flow.
         const flow: any = toObject();
 
         if (!isNewAskPasswordPortalEnabled) {
@@ -148,10 +313,16 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
     return (
         <AskPasswordFlowBuilderContext.Provider
             value={ {
+                connector: connector,
+                invitedUserRegistrationConfig: invitedUserRegistrationConfig,
+                isInvitedUserRegistrationConfigUpdated: isInvitedUserRegistrationConfigUpdated,
                 isNewAskPasswordPortalEnabled,
                 isPublishing,
                 onPublish: handlePublish,
                 selectedAttributes,
+                setConnector: setConnector,
+                setInvitedUserRegistrationConfig: setInvitedUserRegistrationConfig,
+                setIsInvitedUserRegistrationConfigUpdated: setIsInvitedUserRegistrationConfigUpdated,
                 setSelectedAttributes,
                 supportedAttributes
             } }
