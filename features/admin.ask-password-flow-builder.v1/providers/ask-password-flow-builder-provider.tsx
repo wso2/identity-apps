@@ -25,14 +25,14 @@ import {
     updateGovernanceConnector
 } from "@wso2is/admin.server-configurations.v1";
 import {
-    AskPasswordFormUpdatableConfigsInterface,
-    AskPasswordFormValuesInterface,
-    VerificationOption 
+    AskPasswordFormUpdatableConfigsInterface
 } from "@wso2is/admin.server-configurations.v1/models/ask-password";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useReactFlow } from "@xyflow/react";
+import { AxiosError } from "axios";
 import React, { FC, PropsWithChildren, ReactElement, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { serverConfigurationConfig } from "../../admin.extensions.v1/configs/server-configuration";
@@ -48,9 +48,6 @@ import AskPasswordFlowConstants from "../constants/ask-password-flow-constants";
 import AskPasswordFlowBuilderContext from "../context/ask-password-flow-builder-context";
 import { Attribute } from "../models/attributes";
 import transformFlow from "../utils/transform-flow";
-import { AxiosError } from "axios";
-import { useTranslation } from "react-i18next";
-import useAskPasswordFlowBuilder from "../hooks/use-ask-password-flow-builder";
 
 /**
  * Props interface of {@link AskPasswordFlowBuilderProvider}

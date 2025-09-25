@@ -24,7 +24,7 @@ import {
     ConnectorPropertyInterface,
     GovernanceConnectorConstants,
     GovernanceConnectorInterface,
-    ServerConfigurationsConstants 
+    ServerConfigurationsConstants
 } from "@wso2is/admin.server-configurations.v1";
 import {
     AskPasswordFormErrorValidationsInterface,
