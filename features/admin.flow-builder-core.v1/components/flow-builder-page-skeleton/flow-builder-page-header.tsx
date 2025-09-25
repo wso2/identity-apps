@@ -244,7 +244,6 @@ const FlowBuilderPageHeader: FunctionComponent<FlowBuilderPageHeaderProps> = ({
                 </Breadcrumbs>
             </Box>
             <Box display="flex" justifyContent="center" alignItems="center" gap={ 2 }>
-                <ValidationStatusLabels />
                 { (showSavingSuspense || isFlowConfigUpdating) && (
                     <Box sx={ { alignItems: "center", display: "flex", gap: 1  } }>
                         <RotateIcon />
@@ -260,6 +259,7 @@ const FlowBuilderPageHeader: FunctionComponent<FlowBuilderPageHeaderProps> = ({
                         </IconButton>
                     </Tooltip>
                 </Box>
+                <ValidationStatusLabels />
                 <Box display="flex" alignItems="center">
                     <Typography>
                         {

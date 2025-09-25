@@ -56,6 +56,10 @@ const ValidationStatusLabels: FunctionComponent<ValidationStatusLabelsPropsInter
         (notification: Notification) => notification.getType() === NotificationType.WARNING)?.length || 0;
     const infoCount: number = notifications?.filter(
         (notification: Notification) => notification.getType() === NotificationType.INFO)?.length || 0;
+        
+    if (errorCount === 0 && warningCount === 0 && infoCount === 0) {
+        return null;
+    }
 
     return (
         <Box
