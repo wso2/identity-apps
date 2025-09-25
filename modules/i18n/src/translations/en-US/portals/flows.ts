@@ -124,6 +124,9 @@ export const flows: flowsNS = {
                 errors: "Errors",
                 info: "Info",
                 warnings: "Warnings"
+            },
+            trigger: {
+                label: "Notifications"
             }
         },
         notifications: {

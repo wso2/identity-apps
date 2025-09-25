@@ -128,6 +128,9 @@ export interface flowsNS {
                 info: string;
                 warnings: string;
             };
+            trigger: {
+                label: string;
+            };
         };
         notifications: {
             brandingPreferenceFetch: {
