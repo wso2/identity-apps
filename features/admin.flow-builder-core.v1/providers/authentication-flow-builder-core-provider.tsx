@@ -81,12 +81,9 @@ export interface AuthenticationFlowBuilderProviderProps {
 }
 
 /**
- * This component provides authentication flow builder core related context to its children.
- *
- * @param props - Props injected to the component.
- * @returns The AuthenticationFlowBuilderCoreProvider component.
+ * Inner component that uses useReactFlow hook and provides the core context.
  */
-const AuthenticationFlowBuilderCoreProvider = ({
+const FlowContextWrapper = ({
     ElementFactory,
     ResourceProperties,
     children,
@@ -327,46 +324,61 @@ const AuthenticationFlowBuilderCoreProvider = ({
         }, [ fallbackTextPreference, primaryI18nScreen ]);
 
     return (
+        <AuthenticationFlowBuilderCoreContext.Provider
+            value={ {
+                ElementFactory,
+                ResourceProperties,
+                flowCompletionConfigs,
+                i18nText,
+                i18nTextLoading: textPreferenceLoading ||
+                fallbackTextPreferenceLoading ||
+                customTextPreferenceMetaLoading,
+                isBrandingEnabled,
+                isCustomI18nKey,
+                isFlowMetadataLoading,
+                isI18nSubmitting,
+                isResourcePanelOpen,
+                isResourcePropertiesPanelOpen,
+                language,
+                lastInteractedResource: lastInteractedElementInternal,
+                lastInteractedStepId,
+                metadata: flowMetadata,
+                onResourceDropOnCanvas,
+                primaryI18nScreen,
+                resourcePropertiesPanelHeading,
+                selectedAttributes,
+                setFlowCompletionConfigs,
+                setIsOpenResourcePropertiesPanel,
+                setIsResourcePanelOpen,
+                setLanguage,
+                setLastInteractedResource,
+                setLastInteractedStepId,
+                setResourcePropertiesPanelHeading,
+                setSelectedAttributes,
+                supportedLocales,
+                updateI18nKey
+            } }
+        >
+            <ValidationProvider>
+                { children }
+            </ValidationProvider>
+        </AuthenticationFlowBuilderCoreContext.Provider>
+    );
+};
+
+/**
+ * This component provides authentication flow builder core related context to its children.
+ * It wraps the internal component with ReactFlowProvider to enable useReactFlow hook usage.
+ *
+ * @param props - Props injected to the component.
+ * @returns The AuthenticationFlowBuilderCoreProvider component.
+ */
+const AuthenticationFlowBuilderCoreProvider = (
+    props: PropsWithChildren<AuthenticationFlowBuilderProviderProps>
+): ReactElement => {
+    return (
         <ReactFlowProvider>
-            <AuthenticationFlowBuilderCoreContext.Provider
-                value={ {
-                    ElementFactory,
-                    ResourceProperties,
-                    flowCompletionConfigs,
-                    i18nText,
-                    i18nTextLoading: textPreferenceLoading ||
-                    fallbackTextPreferenceLoading ||
-                    customTextPreferenceMetaLoading,
-                    isBrandingEnabled,
-                    isCustomI18nKey,
-                    isFlowMetadataLoading,
-                    isI18nSubmitting,
-                    isResourcePanelOpen,
-                    isResourcePropertiesPanelOpen,
-                    language,
-                    lastInteractedResource: lastInteractedElementInternal,
-                    lastInteractedStepId,
-                    metadata: flowMetadata,
-                    onResourceDropOnCanvas,
-                    primaryI18nScreen,
-                    resourcePropertiesPanelHeading,
-                    selectedAttributes,
-                    setFlowCompletionConfigs,
-                    setIsOpenResourcePropertiesPanel,
-                    setIsResourcePanelOpen,
-                    setLanguage,
-                    setLastInteractedResource,
-                    setLastInteractedStepId,
-                    setResourcePropertiesPanelHeading,
-                    setSelectedAttributes,
-                    supportedLocales,
-                    updateI18nKey
-                } }
-            >
-                <ValidationProvider>
-                    { children }
-                </ValidationProvider>
-            </AuthenticationFlowBuilderCoreContext.Provider>
+            <FlowContextWrapper { ...props } />
         </ReactFlowProvider>
     );
 };
