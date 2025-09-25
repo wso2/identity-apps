@@ -56,7 +56,7 @@ const CountDownAdapter = ({ redirection }) => {
     }
 
     return (
-        <Container textAlign="center">
+        <Container textAlign="center" className="pt-5">
             <Header as="h2">
                 { getTranslationByKey(translations, "flow.execution.success.message") }
             </Header>
