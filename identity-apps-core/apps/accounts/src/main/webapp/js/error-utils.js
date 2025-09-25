@@ -49,6 +49,7 @@ function getI18nKeyForError(errorCode, flowType, errorMessage) {
                 description: "sign.up.error.username.already.exists.description",
                 portalUrlStatus: "true"
             };
+            
         case "FE-60004":
             
             if( flowType === "USER_REGISTRATION") {
