@@ -57,13 +57,12 @@ const CountDownAdapter = ({ redirection }) => {
 
     return (
         <Container textAlign="center">
-            <Header as="h3" color="green">
+            <Header as="h2">
                 { getTranslationByKey(translations, "flow.execution.success.message") }
             </Header>
             <p>
-                { getTranslationByKey(translations, "flow.execution.success.redirect.message") } <span id="countdown">{
-                    timeLeft
-                }</span> { timeLeft === 1
+                { getTranslationByKey(translations, "flow.execution.success.redirect.message") } <span>
+                    <strong>{ timeLeft }</strong></span> { timeLeft === 1
                     ? getTranslationByKey(translations, "flow.execution.success.redirect.seconds.singular")
                     : getTranslationByKey(translations, "flow.execution.success.redirect.seconds.plural")
                 }
