@@ -100,7 +100,7 @@ const End: FunctionComponent<EndPropsInterface> = memo(
                     setResourcePropertiesPanelHeading(
                         <Stack direction="row" className="sub-title" gap={ 1 } alignItems="center">
                             <Avatar src={ resource?.display?.image } variant="square" />
-                            <Typography variant="h6">{ t("flows.core.steps.end.flowCompletionProperties") }</Typography>
+                            <Typography variant="h6">{ t("flows:core.steps.end.flowCompletionProperties") }</Typography>
                         </Stack>
                     );
                 } }
