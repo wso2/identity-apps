@@ -25,13 +25,13 @@ import { getOperationTypeTranslationKey } from "@wso2is/common.workflow-approval
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DangerZone, DangerZoneGroup, TabPageLayout } from "@wso2is/react-components";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Message, Modal, Table } from "semantic-ui-react";
 import { useGetWorkflowInstance } from "../api/use-get-workflow-instance";
 import { deleteWorkflowInstance } from "../api/workflow-requests";
-import { WorkflowInstanceStatus } from "../models/workflowRequests";
+import { WorkflowInstanceStatus, WorkflowRequestPropertyInterface } from "../models/workflowRequests";
 import "./workflow-request-details.scss";
 
 const WorkflowRequestDetailsPage: React.FC = () => {
@@ -54,12 +54,6 @@ const WorkflowRequestDetailsPage: React.FC = () => {
         featureConfig?.workflowInstances?.scopes?.delete
     );
 
-    useEffect(() => {
-        if (workflowInstanceError) {
-            // Error handling is done by the hook
-        }
-    }, [ workflowInstanceError ]);
-
     const formatHumanReadableDate = (dateString: string): string => {
         if (!dateString) return "-";
 
@@ -80,86 +74,11 @@ const WorkflowRequestDetailsPage: React.FC = () => {
         return date.toLocaleDateString("en-US", options);
     };
 
-    // Helper to parse requestParameters BLOB if present
-    function parseRequestParameters(raw: any): any {
-        if (!raw) return null;
-        if (typeof raw === "object") return raw;
+    const formatRequestProperties = (property: WorkflowRequestPropertyInterface): WorkflowRequestPropertyInterface => {
+        const key: string = property.key;
+        const value: any = property.value;
 
-        try {
-            return JSON.parse(raw);
-        } catch {
-            const result: any = {};
-            const str: string = raw.toString();
-            const content: string = str.replace(/^\{|\}$/g, "");
-
-            let braceDepth: number = 0;
-            let current: string = "";
-            const parts: string[] = [];
-
-            for (let i: number = 0; i < content.length; i++) {
-                const char: string = content[i];
-
-                if (char === "{" || char === "[") {
-                    braceDepth++;
-                } else if (char === "}" || char === "]") {
-                    braceDepth--;
-                } else if (char === "," && braceDepth === 0) {
-                    parts.push(current.trim());
-                    current = "";
-
-                    continue;
-                }
-                current += char;
-            }
-            if (current.trim()) {
-                parts.push(current.trim());
-            }
-
-            parts.forEach((part: string) => {
-
-                const colonIndex: number = part.indexOf(" : ");
-
-                if (colonIndex > 0) {
-                    const key: string = part.substring(0, colonIndex).trim();
-                    const value: string = part.substring(colonIndex + 3).trim();
-
-                    if (value.startsWith("{") && value.endsWith("}")) {
-                        const nestedContent: string = value.substring(1, value.length - 1);
-                        const nestedPairs: string[] = nestedContent.split(", ");
-                        const nestedObj: any = {};
-
-                        nestedPairs.forEach((pair: string) => {
-                            const equalIndex: number = pair.indexOf("=");
-
-                            if (equalIndex > 0) {
-                                const nestedKey: string = pair.substring(0, equalIndex).trim();
-                                const nestedValue: string = pair.substring(equalIndex + 1).trim();
-
-                                nestedObj[nestedKey] = nestedValue;
-                            }
-                        });
-
-                        result[key] = nestedObj;
-                    } else if (value === "[]") {
-                        result[key] = [];
-                    } else if (value === "null") {
-                        result[key] = null;
-                    } else {
-                        result[key] = value;
-                    }
-                }
-            });
-
-            return result;
-        }
-    }
-
-    const formatRequestParams = (params: any): { key: string; value: string }[] => {
-        if (!params) return [];
-
-        const result: { key: string; value: string }[] = [];
-
-        const excludeFields: string[] = [
+        const excludedFields: string[] = [
             "REQUEST ID", "requestId", "request_id",
             "self", "Self",
             "arbitries", "Arbitries",
@@ -170,51 +89,16 @@ const WorkflowRequestDetailsPage: React.FC = () => {
             "Tenant Domain"
         ];
 
-        const flattenObject = (obj: any, prefix: string = ""): void => {
-            for (const [ key, value ] of Object.entries(obj)) {
-                const newKey: string = prefix ? `${prefix}.${key}` : key;
+        if (excludedFields.some((field: string) => key.toLowerCase().includes(field.toLowerCase()))) { return null; }
 
-                if (excludeFields.some((field: string) => newKey.toLowerCase().includes(field.toLowerCase()))) {
-                    continue;
-                }
+        if (value === null ) return { key, value: "null" };
+        if (value === "") return { key, value: "(empty)" };
+        if (value === "[]") return { key, value: "(empty)" };
+        if (Array.isArray(value) && value.length === 0) {
+            return { key, value: "(empty)" };
+        }
 
-                if (value && typeof value === "object" && !Array.isArray(value)) {
-                    flattenObject(value, newKey);
-                } else {
-                    let cleanKey: string = newKey;
-
-                    // Remove Claims.http://wso2.org/claims/ prefix (handle both @Claims and Claims formats)
-                    cleanKey = cleanKey.replace(/@?Claims\.http:\/\/wso2\.org\/claims\//g, "");
-
-                    // Convert camelCase or snake_case to Title Case
-                    cleanKey = cleanKey
-                        .replace(/([A-Z])/g, " $1") // Add space before capital letters
-                        .replace(/^./, (str: string) => str.toUpperCase()) // Capitalize first letter
-                        .replace(/\s+/g, " ") // Replace multiple spaces with single space
-                        .trim();
-
-                    // Handle special cases
-                    if (cleanKey === "Emailaddress") cleanKey = "Email Address";
-                    if (cleanKey === "Givenname") cleanKey = "Given Name";
-                    if (cleanKey === "Lastname") cleanKey = "Last Name";
-                    if (cleanKey === "Resource Type") cleanKey = "Resource Type";
-                    if (cleanKey === "Given Name") cleanKey = "Given Name";
-                    if (cleanKey === "Last Name") cleanKey = "Last Name";
-
-                    const displayValue: string = value === null ? "null" :
-                        value === "" ? "(empty)" :
-                            Array.isArray(value)
-                                ? (value.length === 0 ? "" : String(value))
-                                : String(value);
-
-                    result.push({ key: cleanKey, value: displayValue });
-                }
-            }
-        };
-
-        flattenObject(params);
-
-        return result;
+        return { key, value: String(value) };
     };
 
     const handleBackButtonClick = () => {
@@ -223,12 +107,7 @@ const WorkflowRequestDetailsPage: React.FC = () => {
 
     const renderDetailsTable = () => {
         if (!workflowRequest) return null;
-
-        let params: any = workflowRequest.requestParams;
-
-        if (!params && (workflowRequest as any).requestParameters) {
-            params = parseRequestParameters((workflowRequest as any).requestParameters);
-        }
+        const properties: WorkflowRequestPropertyInterface[] = workflowRequest.properties || [];
 
         return (
             <Table definition className="workflow-request-details-table">
@@ -261,15 +140,25 @@ const WorkflowRequestDetailsPage: React.FC = () => {
                     <Table.Row>
                         <Table.Cell>{ t("approvalWorkflows:details.fields.requestParams") }</Table.Cell>
                         <Table.Cell>
-                            { params && Object.keys(params).length > 0 ? (
+                            { properties && properties.length > 0 ? (
                                 <Table celled compact size="small">
                                     <Table.Body>
-                                        { formatRequestParams(params).map((item: any, index: number) => (
-                                            <Table.Row key={ index }>
-                                                <Table.Cell className="param-key">{ item.key }</Table.Cell>
-                                                <Table.Cell className="param-value">{ item.value }</Table.Cell>
-                                            </Table.Row>
-                                        )) }
+                                        { properties.map(
+                                            (property: WorkflowRequestPropertyInterface, index: number) => {
+                                                const formattedProperty: WorkflowRequestPropertyInterface
+                                                = formatRequestProperties(property);
+
+                                                return formattedProperty &&  (
+                                                    <Table.Row key={ index }>
+                                                        <Table.Cell className="param-key">
+                                                            { formattedProperty.key }
+                                                        </Table.Cell>
+                                                        <Table.Cell className="param-value">
+                                                            { formattedProperty.value }
+                                                        </Table.Cell>
+                                                    </Table.Row>
+                                                );
+                                            }) }
                                     </Table.Body>
                                 </Table>
                             ) : (
