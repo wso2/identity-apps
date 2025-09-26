@@ -231,7 +231,7 @@ export default function AgentList ({
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="negative"
                         open={ showAgentDeleteConfirmation }
-                        assertionHint={ "Please confirm your action." }
+                        assertionHint={ t("agents:list.confirmations.deleteItem.assertionHint") }
                         assertionType="checkbox"
                         primaryAction="Confirm"
                         secondaryAction="Cancel"
@@ -243,14 +243,13 @@ export default function AgentList ({
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header>
-                            Are you sure?
+                            { t("agents:list.confirmations.deleteItem.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message attached negative>
-                            This action is irreversible and will permanently delete the selected agent.
+                            { t("agents:list.confirmations.deleteItem.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
-                            If you delete this agent, some functionalities may not work properly.
-                            Please proceed with caution.
+                            { t("agents:list.confirmations.deleteItem.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )
