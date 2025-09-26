@@ -1,5 +1,15 @@
 # @wso2is/identity-apps-core
 
+## 3.3.13
+
+### Patch Changes
+
+- [#9199](https://github.com/wso2/identity-apps/pull/9199) [`406fc4fe26e3fe8148b4207fa046a05f34f2617e`](https://github.com/wso2/identity-apps/commit/406fc4fe26e3fe8148b4207fa046a05f34f2617e) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Improve encoding for request paramater message
+
+* [#9211](https://github.com/wso2/identity-apps/pull/9211) [`00c6ab55c3182e6b3c27986cf21dbae47fee584c`](https://github.com/wso2/identity-apps/commit/00c6ab55c3182e6b3c27986cf21dbae47fee584c) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add validation for Back to Application callback
+
+- [#9179](https://github.com/wso2/identity-apps/pull/9179) [`3cd6ebabbb764cf7374c326786023614a4a1a8e5`](https://github.com/wso2/identity-apps/commit/3cd6ebabbb764cf7374c326786023614a4a1a8e5) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Add config support for scope and authorization details handling
+
 ## 3.3.12
 
 ### Patch Changes
