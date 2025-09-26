@@ -5,7 +5,3 @@
 ---
 
 Add confirmation modal for agent deletion in agent list
-
-- Added confirmation modal with checkbox assertion for agent deletion
-- Updated agent translations with confirmation messages
-- Consistent UX with other resource deletion patterns
