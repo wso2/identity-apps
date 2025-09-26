@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.3.12
+
+### Patch Changes
+
+- [#9204](https://github.com/wso2/identity-apps/pull/9204) [`c94b4df526a8afcca7d2748fed632db4bb431b2e`](https://github.com/wso2/identity-apps/commit/c94b4df526a8afcca7d2748fed632db4bb431b2e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add a countdown before redirecting after the flow completes
+
 ## 3.3.11
 
 ### Patch Changes
