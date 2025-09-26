@@ -57,6 +57,7 @@ import generateResourceId from "../../utils/generate-resource-id";
 import ResourcePanel from "../resource-panel/resource-panel";
 import ElementPropertiesPanel from "../resource-property-panel/resource-property-panel";
 import ValidationPanel from "../validation-panel/validation-panel";
+import VersionHistoryPanel from "../version-history-panel/version-history-panel";
 
 /**
  * Props interface of {@link DecoratedVisualFlow}
@@ -124,6 +125,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     const {
         isResourcePanelOpen,
         isResourcePropertiesPanelOpen,
+        isVersionHistoryPanelOpen,
         onResourceDropOnCanvas,
         isFlowMetadataLoading,
         metadata
@@ -434,19 +436,21 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
                         open={ isResourcePropertiesPanelOpen }
                         onComponentDelete={ deleteComponent }
                     >
-                        <VisualFlow
-                            resources={ resources }
-                            initialNodes={ initialNodes }
-                            initialEdges={ initialEdges }
-                            nodes={ nodes }
-                            onNodesChange={ onNodesChange }
-                            edges={ edges }
-                            onEdgesChange={ onEdgesChange }
-                            onConnect={ onConnect }
-                            onNodesDelete={ onNodesDelete }
-                            onEdgesDelete={ onEdgesDelete }
-                            { ...rest }
-                        />
+                        <VersionHistoryPanel open={ isVersionHistoryPanelOpen }>
+                            <VisualFlow
+                                resources={ resources }
+                                initialNodes={ initialNodes }
+                                initialEdges={ initialEdges }
+                                nodes={ nodes }
+                                onNodesChange={ onNodesChange }
+                                edges={ edges }
+                                onEdgesChange={ onEdgesChange }
+                                onConnect={ onConnect }
+                                onNodesDelete={ onNodesDelete }
+                                onEdgesDelete={ onEdgesDelete }
+                                { ...rest }
+                            />
+                        </VersionHistoryPanel>
                     </ElementPropertiesPanel>
                     <ValidationPanel />
                 </ResourcePanel>

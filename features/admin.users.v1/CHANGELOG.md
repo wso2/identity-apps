@@ -1,5 +1,60 @@
 # @wso2is/admin.users.v1
 
+## 2.36.29
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.62
+  - @wso2is/admin.flow-builder-core.v1@0.10.54
+  - @wso2is/admin.flows.v1@1.0.23
+  - @wso2is/admin.server-configurations.v1@2.35.76
+  - @wso2is/admin.users.v1@2.36.29
+  - @wso2is/admin.roles.v2@2.27.224
+
+## 2.36.28
+
+### Patch Changes
+
+- Updated dependencies [[`ec53ce1d01f865fc1e05e140a51005122a8e9f12`](https://github.com/wso2/identity-apps/commit/ec53ce1d01f865fc1e05e140a51005122a8e9f12)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.53
+  - @wso2is/i18n@2.30.32
+  - @wso2is/admin.core.v1@2.49.61
+  - @wso2is/admin.flows.v1@1.0.22
+  - @wso2is/admin.server-configurations.v1@2.35.75
+  - @wso2is/admin.users.v1@2.36.28
+  - @wso2is/admin.roles.v2@2.27.223
+
+## 2.36.27
+
+### Patch Changes
+
+- [#9200](https://github.com/wso2/identity-apps/pull/9200) [`e029b9357a452bec93c508c05237c72bb0ba6d2b`](https://github.com/wso2/identity-apps/commit/e029b9357a452bec93c508c05237c72bb0ba6d2b) Thanks [@hwupathum](https://github.com/hwupathum)! - Use scim2/Me endpoint to get impersonation roles
+
+- Updated dependencies [[`e029b9357a452bec93c508c05237c72bb0ba6d2b`](https://github.com/wso2/identity-apps/commit/e029b9357a452bec93c508c05237c72bb0ba6d2b), [`a496ad2f9f1605710f796d62281b8a1cf5df20ea`](https://github.com/wso2/identity-apps/commit/a496ad2f9f1605710f796d62281b8a1cf5df20ea)]:
+  - @wso2is/admin.users.v1@2.36.27
+  - @wso2is/admin.userstores.v1@2.27.38
+  - @wso2is/admin.core.v1@2.49.60
+  - @wso2is/admin.roles.v2@2.27.222
+  - @wso2is/admin.flow-builder-core.v1@0.10.52
+  - @wso2is/admin.flows.v1@1.0.21
+  - @wso2is/admin.server-configurations.v1@2.35.74
+
+## 2.36.26
+
+### Patch Changes
+
+- Updated dependencies [[`a97a74480293e24fa031bb905cb70329282078ef`](https://github.com/wso2/identity-apps/commit/a97a74480293e24fa031bb905cb70329282078ef), [`a86ff9545d3adc08aaf69a3ccdd3c170eccaabaa`](https://github.com/wso2/identity-apps/commit/a86ff9545d3adc08aaf69a3ccdd3c170eccaabaa)]:
+  - @wso2is/admin.server-configurations.v1@2.35.73
+  - @wso2is/common.users.v1@1.0.3
+  - @wso2is/admin.flows.v1@1.0.20
+  - @wso2is/admin.core.v1@2.49.59
+  - @wso2is/i18n@2.30.31
+  - @wso2is/admin.flow-builder-core.v1@0.10.51
+  - @wso2is/admin.organizations.v1@2.27.7
+  - @wso2is/admin.users.v1@2.36.26
+  - @wso2is/admin.roles.v2@2.27.221
+
 ## 2.36.25
 
 ### Patch Changes

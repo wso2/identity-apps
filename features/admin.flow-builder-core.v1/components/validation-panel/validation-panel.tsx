@@ -201,10 +201,13 @@ const ValidationPanel: FunctionComponent<ValidationPanelPropsInterface> = ({
             onClose={ () => {} }
             elevation={ 5 }
             PaperProps={ {
-                className: classNames("flow-builder-validation-panel", { open })
+                className: classNames(
+                    "flow-builder-right-panel base left-shadow",
+                    open ? "flow-builder-right-panel open" : "flow-builder-right-panel close"
+                )
             } }
             hideBackdrop={ true }
-            className={ classNames("flow-builder-validation-panel", { open }) }
+            className={ classNames(open ? "flow-builder-right-panel open" : "flow-builder-right-panel close") }
             variant="permanent"
             data-componentid={ componentId }
         >
@@ -212,7 +215,7 @@ const ValidationPanel: FunctionComponent<ValidationPanelPropsInterface> = ({
                 display="flex"
                 justifyContent="space-between"
                 alignItems="center"
-                className="flow-builder-validation-panel-header"
+                className="flow-builder-right-panel header"
             >
                 <Typography variant="h6">
                     { t("flows:core.notificationPanel.header") }
@@ -221,7 +224,7 @@ const ValidationPanel: FunctionComponent<ValidationPanelPropsInterface> = ({
                     <ChevronsRight size={ 20 } />
                 </IconButton>
             </Box>
-            <Box className="flow-builder-validation-panel-content">
+            <Box className="flow-builder-right-panel content no-padding validation-panel-content">
                 <Tabs
                     value={ currentActiveTab }
                     onChange={ handleTabChange }

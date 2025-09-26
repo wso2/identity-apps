@@ -1,5 +1,51 @@
 # @wso2is/admin.password-recovery-flow-builder.v1
 
+## 1.1.54
+
+### Patch Changes
+
+- [#9206](https://github.com/wso2/identity-apps/pull/9206) [`d334b4b7a580c32f664be2bc60950588606637ec`](https://github.com/wso2/identity-apps/commit/d334b4b7a580c32f664be2bc60950588606637ec) Thanks [@brionmario](https://github.com/brionmario)! - Fix flow completion issues
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.62
+  - @wso2is/admin.flow-builder-core.v1@0.10.54
+  - @wso2is/admin.flows.v1@1.0.23
+  - @wso2is/admin.server-configurations.v1@2.35.76
+
+## 1.1.53
+
+### Patch Changes
+
+- [#9203](https://github.com/wso2/identity-apps/pull/9203) [`ec53ce1d01f865fc1e05e140a51005122a8e9f12`](https://github.com/wso2/identity-apps/commit/ec53ce1d01f865fc1e05e140a51005122a8e9f12) Thanks [@brionmario](https://github.com/brionmario)! - Maintain `Local History` in browser temp storage when working on Flows
+
+- Updated dependencies [[`ec53ce1d01f865fc1e05e140a51005122a8e9f12`](https://github.com/wso2/identity-apps/commit/ec53ce1d01f865fc1e05e140a51005122a8e9f12)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.53
+  - @wso2is/admin.core.v1@2.49.61
+  - @wso2is/admin.flows.v1@1.0.22
+  - @wso2is/admin.server-configurations.v1@2.35.75
+
+## 1.1.52
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.60
+  - @wso2is/admin.flow-builder-core.v1@0.10.52
+  - @wso2is/admin.flows.v1@1.0.21
+  - @wso2is/admin.server-configurations.v1@2.35.74
+
+## 1.1.51
+
+### Patch Changes
+
+- [#9081](https://github.com/wso2/identity-apps/pull/9081) [`a97a74480293e24fa031bb905cb70329282078ef`](https://github.com/wso2/identity-apps/commit/a97a74480293e24fa031bb905cb70329282078ef) Thanks [@brionmario](https://github.com/brionmario)! - Introduce `End` node to Flows
+
+- Updated dependencies [[`a97a74480293e24fa031bb905cb70329282078ef`](https://github.com/wso2/identity-apps/commit/a97a74480293e24fa031bb905cb70329282078ef)]:
+  - @wso2is/admin.server-configurations.v1@2.35.73
+  - @wso2is/admin.flows.v1@1.0.20
+  - @wso2is/admin.core.v1@2.49.59
+  - @wso2is/admin.flow-builder-core.v1@0.10.51
+
 ## 1.1.50
 
 ### Patch Changes

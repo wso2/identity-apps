@@ -1,5 +1,37 @@
 # @wso2is/identity-apps-core
 
+## 3.3.13
+
+### Patch Changes
+
+- [#9199](https://github.com/wso2/identity-apps/pull/9199) [`406fc4fe26e3fe8148b4207fa046a05f34f2617e`](https://github.com/wso2/identity-apps/commit/406fc4fe26e3fe8148b4207fa046a05f34f2617e) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Improve encoding for request paramater message
+
+* [#9211](https://github.com/wso2/identity-apps/pull/9211) [`00c6ab55c3182e6b3c27986cf21dbae47fee584c`](https://github.com/wso2/identity-apps/commit/00c6ab55c3182e6b3c27986cf21dbae47fee584c) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add validation for Back to Application callback
+
+- [#9179](https://github.com/wso2/identity-apps/pull/9179) [`3cd6ebabbb764cf7374c326786023614a4a1a8e5`](https://github.com/wso2/identity-apps/commit/3cd6ebabbb764cf7374c326786023614a4a1a8e5) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Add config support for scope and authorization details handling
+
+## 3.3.12
+
+### Patch Changes
+
+- [#9204](https://github.com/wso2/identity-apps/pull/9204) [`c94b4df526a8afcca7d2748fed632db4bb431b2e`](https://github.com/wso2/identity-apps/commit/c94b4df526a8afcca7d2748fed632db4bb431b2e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add a countdown before redirecting after the flow completes
+
+## 3.3.11
+
+### Patch Changes
+
+- [#9202](https://github.com/wso2/identity-apps/pull/9202) [`4cefeafdcd299c0465dbaffbf57adadc432634d7`](https://github.com/wso2/identity-apps/commit/4cefeafdcd299c0465dbaffbf57adadc432634d7) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Adding Error FEE error codes.
+
+* [#9142](https://github.com/wso2/identity-apps/pull/9142) [`390d5f935dd0d9fc70eaa3e1599d6da9d46512ab`](https://github.com/wso2/identity-apps/commit/390d5f935dd0d9fc70eaa3e1599d6da9d46512ab) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add validation to Back to Application URL
+
+## 3.3.10
+
+### Patch Changes
+
+- [#9188](https://github.com/wso2/identity-apps/pull/9188) [`abdc7947a59e4c862f3e8aa6ccd6ef93006e30be`](https://github.com/wso2/identity-apps/commit/abdc7947a59e4c862f3e8aa6ccd6ef93006e30be) Thanks [@thiva-k](https://github.com/thiva-k)! - Add user account locked error to fido error page
+
+* [#9196](https://github.com/wso2/identity-apps/pull/9196) [`22c481b8fcaa3b4fd8f1df7be6c50c90a8889da3`](https://github.com/wso2/identity-apps/commit/22c481b8fcaa3b4fd8f1df7be6c50c90a8889da3) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - improve encodings of request parameters
+
 ## 3.3.9
 
 ### Patch Changes

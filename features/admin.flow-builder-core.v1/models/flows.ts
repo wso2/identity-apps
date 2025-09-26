@@ -16,4 +16,27 @@
  * under the License.
  */
 
+/**
+ * Interface for Flow completion configurations.
+ */
 export type FlowCompletionConfigsInterface = Record<string, unknown>;
+
+/**
+ * Interface for Flow local history.
+ */
+export interface FlowsHistoryInterface {
+    /**
+     * Author of the change.
+     */
+    author: {
+        userName: string;
+    };
+    /**
+     * Entire flow as an object.
+     */
+    flowData: Record<string, unknown>;
+    /**
+     * Flow saved at timestamp.
+     */
+    timestamp: number;
+}

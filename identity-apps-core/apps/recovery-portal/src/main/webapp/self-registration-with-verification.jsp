@@ -183,14 +183,19 @@
     }
 
     /**
-     * Validate the back to login URL.
+     * Validate the back to login URL. If the URL is not valid, set the URL to null.
      */
-    if (!StringUtils.isBlank(callback)
-        && !StringUtils.equalsIgnoreCase(callback, "null")
-        && !AuthenticationEndpointUtil.isValidMultiOptionURI(callback)) {
-        callback = null;
+    if (!StringUtils.isBlank(callback) && !StringUtils.equalsIgnoreCase(callback, "null")) {
+        String encodedCallback = IdentityManagementEndpointUtil.getURLEncodedCallback(callback);
+
+        if (!AuthenticationEndpointUtil.isValidMultiOptionURI(encodedCallback)) {
+            callback = null;
+        }
     }
 
+    /**
+     * If the callback is null, set the callback to the user portal URL.
+     */
     if (StringUtils.isBlank(callback)) {
         callback = Encode.forHtmlAttribute(IdentityManagementEndpointUtil.getUserPortalUrl(
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain));

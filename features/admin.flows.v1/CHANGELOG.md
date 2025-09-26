@@ -1,5 +1,47 @@
 # @wso2is/admin.flows.v1
 
+## 1.0.23
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.62
+  - @wso2is/admin.flow-builder-core.v1@0.10.54
+  - @wso2is/admin.server-configurations.v1@2.35.76
+  - @wso2is/admin.registration-flow-builder.v1@0.10.13
+
+## 1.0.22
+
+### Patch Changes
+
+- Updated dependencies [[`ec53ce1d01f865fc1e05e140a51005122a8e9f12`](https://github.com/wso2/identity-apps/commit/ec53ce1d01f865fc1e05e140a51005122a8e9f12)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.53
+  - @wso2is/admin.registration-flow-builder.v1@0.10.12
+  - @wso2is/admin.core.v1@2.49.61
+  - @wso2is/admin.server-configurations.v1@2.35.75
+
+## 1.0.21
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.60
+  - @wso2is/admin.flow-builder-core.v1@0.10.52
+  - @wso2is/admin.server-configurations.v1@2.35.74
+  - @wso2is/admin.registration-flow-builder.v1@0.10.11
+
+## 1.0.20
+
+### Patch Changes
+
+- [#9081](https://github.com/wso2/identity-apps/pull/9081) [`a97a74480293e24fa031bb905cb70329282078ef`](https://github.com/wso2/identity-apps/commit/a97a74480293e24fa031bb905cb70329282078ef) Thanks [@brionmario](https://github.com/brionmario)! - Introduce `End` node to Flows
+
+- Updated dependencies [[`a97a74480293e24fa031bb905cb70329282078ef`](https://github.com/wso2/identity-apps/commit/a97a74480293e24fa031bb905cb70329282078ef)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.10.10
+  - @wso2is/admin.server-configurations.v1@2.35.73
+  - @wso2is/admin.core.v1@2.49.59
+  - @wso2is/admin.flow-builder-core.v1@0.10.51
+
 ## 1.0.19
 
 ### Patch Changes

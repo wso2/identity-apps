@@ -1,5 +1,51 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.10.14
+
+### Patch Changes
+
+- [#9209](https://github.com/wso2/identity-apps/pull/9209) [`d6fa52d23e778d2a17b232544d2bbd3cc14895b3`](https://github.com/wso2/identity-apps/commit/d6fa52d23e778d2a17b232544d2bbd3cc14895b3) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - add support render end node for default flow
+
+## 0.10.13
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.62
+  - @wso2is/admin.flow-builder-core.v1@0.10.54
+  - @wso2is/admin.flows.v1@1.0.23
+
+## 0.10.12
+
+### Patch Changes
+
+- [#9203](https://github.com/wso2/identity-apps/pull/9203) [`ec53ce1d01f865fc1e05e140a51005122a8e9f12`](https://github.com/wso2/identity-apps/commit/ec53ce1d01f865fc1e05e140a51005122a8e9f12) Thanks [@brionmario](https://github.com/brionmario)! - Maintain `Local History` in browser temp storage when working on Flows
+
+- Updated dependencies [[`ec53ce1d01f865fc1e05e140a51005122a8e9f12`](https://github.com/wso2/identity-apps/commit/ec53ce1d01f865fc1e05e140a51005122a8e9f12)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.53
+  - @wso2is/admin.core.v1@2.49.61
+  - @wso2is/admin.flows.v1@1.0.22
+
+## 0.10.11
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.60
+  - @wso2is/admin.flow-builder-core.v1@0.10.52
+  - @wso2is/admin.flows.v1@1.0.21
+
+## 0.10.10
+
+### Patch Changes
+
+- [#9081](https://github.com/wso2/identity-apps/pull/9081) [`a97a74480293e24fa031bb905cb70329282078ef`](https://github.com/wso2/identity-apps/commit/a97a74480293e24fa031bb905cb70329282078ef) Thanks [@brionmario](https://github.com/brionmario)! - Introduce `End` node to Flows
+
+- Updated dependencies [[`a97a74480293e24fa031bb905cb70329282078ef`](https://github.com/wso2/identity-apps/commit/a97a74480293e24fa031bb905cb70329282078ef)]:
+  - @wso2is/admin.flows.v1@1.0.20
+  - @wso2is/admin.core.v1@2.49.59
+  - @wso2is/admin.flow-builder-core.v1@0.10.51
+
 ## 0.10.9
 
 ### Patch Changes

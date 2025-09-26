@@ -1,5 +1,16 @@
 # @wso2is/myaccount
 
+## 2.25.5
+
+### Patch Changes
+
+- [#9191](https://github.com/wso2/identity-apps/pull/9191) [`9774621131f97b08f0f73d0b80e604211a9a4fbc`](https://github.com/wso2/identity-apps/commit/9774621131f97b08f0f73d0b80e604211a9a4fbc) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - honor requireSuperTenantInUrls in Console and MyAccount
+
+- Updated dependencies [[`a97a74480293e24fa031bb905cb70329282078ef`](https://github.com/wso2/identity-apps/commit/a97a74480293e24fa031bb905cb70329282078ef), [`a86ff9545d3adc08aaf69a3ccdd3c170eccaabaa`](https://github.com/wso2/identity-apps/commit/a86ff9545d3adc08aaf69a3ccdd3c170eccaabaa)]:
+  - @wso2is/common.users.v1@1.0.3
+  - @wso2is/i18n@2.30.31
+  - @wso2is/admin.organizations.v1@2.27.7
+
 ## 2.25.4
 
 ### Patch Changes

@@ -16,6 +16,9 @@
  * under the License.
  */
 
+import updateFlowConfig from "@wso2is/admin.flow-builder-core.v1/api/update-flow-config";
+import useAuthenticationFlowBuilderCore from
+    "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
 import AuthenticationFlowBuilderCoreProvider
     from "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
 import {
@@ -31,6 +34,7 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useReactFlow } from "@xyflow/react";
 import { AxiosError } from "axios";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FC, PropsWithChildren, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -94,11 +98,10 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
     children
 }: PropsWithChildren<AskPasswordFlowBuilderProviderProps>): ReactElement => {
     const dispatch: Dispatch = useDispatch();
-
     const { t } = useTranslation();
-
     const { toObject } = useReactFlow();
     const { data: supportedAttributes } = useGetSupportedProfileAttributes();
+    const { flowCompletionConfigs } = useAuthenticationFlowBuilderCore();
     const {
         data: isNewAskPasswordPortalEnabled,
         mutate: mutateNewAskPasswordPortalEnabledRequest
@@ -244,6 +247,23 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
             }
 
             mutateNewAskPasswordPortalEnabledRequest();
+        }
+
+        if (!isEmpty(flowCompletionConfigs)) {
+            try {
+                await updateFlowConfig({
+                    flowCompletionConfigs,
+                    flowType: FlowTypes.INVITED_USER_REGISTRATION
+                });
+            } catch (error) {
+                dispatch(
+                    addAlert({
+                        description: t("flows:core.notifications.updateFlowConfig.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("flows:core.notifications.updateFlowConfig.genericError.message")
+                    })
+                );
+            }
         }
 
         try {
