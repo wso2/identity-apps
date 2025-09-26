@@ -46,6 +46,9 @@ export interface flowsNS {
         };
     };
     core: {
+        autoSave: {
+            savingInProgress: string;
+        };
         breadcrumb: string;
         elements: {
             richText: {
@@ -125,6 +128,9 @@ export interface flowsNS {
                 info: string;
                 warnings: string;
             };
+            trigger: {
+                label: string;
+            };
         };
         notifications: {
             brandingPreferenceFetch: {
@@ -179,6 +185,20 @@ export interface flowsNS {
             };
             textPreferenceFetch: {
                 genericError: {
+                    description: string;
+                    message: string;
+                };
+            };
+            restoreFromHistory: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                invalidData: {
+                    description: string;
+                    message: string;
+                };
+                success: {
                     description: string;
                     message: string;
                 };
@@ -253,6 +273,31 @@ export interface flowsNS {
             info: string;
             warning: string;
             warnings: string;
+        };
+        versionHistory: {
+            currentVersion: string;
+            emptyState: string;
+            hint: string;
+            moreActions: string;
+            panelTitle: string;
+            restoreAction: string;
+            restoreDialog: {
+                cancel: string;
+                noFlowData: string;
+                restore: string;
+                restoring: string;
+                title: string;
+                warningAlert: {
+                    title: string;
+                    description: string;
+                };
+                previewContainer: {
+                    title: string;
+                    description: string;
+                };
+            };
+            restoreVersion: string;
+            unknownAuthor: string;
         };
     };
     label?: string;

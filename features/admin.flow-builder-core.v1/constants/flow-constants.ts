@@ -16,27 +16,18 @@
  * under the License.
  */
 
-/**
- * Interface for Flow completion configurations.
- */
-export type FlowCompletionConfigsInterface = Record<string, unknown>;
+class FlowConstants {
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     */
+    private constructor() { }
 
-/**
- * Interface for Flow local history.
- */
-export interface FlowsHistoryInterface {
-    /**
-     * Author of the change.
-     */
-    author: {
-        userName: string;
-    };
-    /**
-     * Entire flow as an object.
-     */
-    flowData: Record<string, unknown>;
-    /**
-     * Flow saved at timestamp.
-     */
-    timestamp: number;
+    // 1 min
+    public static readonly AUTO_SAVE_INTERVAL: number = 60000;
+
+    // Maximum number of history items to keep
+    public static readonly MAX_HISTORY_ITEMS: number = 20;
 }
+
+export default FlowConstants;
