@@ -31,7 +31,7 @@ import useUserPreferences from "@wso2is/common.ui.v1/hooks/use-user-preferences"
 import { AlertLevels, Claim } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
-import { ReactFlowProvider, useReactFlow } from "@xyflow/react";
+import { EdgeTypes, NodeTypes, ReactFlowProvider, useReactFlow } from "@xyflow/react";
 import { AxiosRequestConfig } from "axios";
 import merge from "lodash-es/merge";
 import pick from "lodash-es/pick";
@@ -121,6 +121,8 @@ const FlowContextWrapper = ({
     const [ isAutoSavingLocalHistory, setIsAutoSavingLocalHistory ] = useState<boolean>(false);
     const [ lastLocalHistoryAutoSaveTimestamp, setLastLocalHistoryAutoSaveTimestamp ] = useState<number | null>(null);
     const [ hasLocalHistory, setHasLocalHistory ] = useState<boolean>(false);
+    const [ flowNodeTypes, setFlowNodeTypes ] = useState<NodeTypes>({});
+    const [ flowEdgeTypes, setFlowEdgeTypes ] = useState<EdgeTypes>({});
 
     const intervalRef: MutableRefObject<NodeJS.Timeout | null> = useRef<NodeJS.Timeout | null>(null);
 
@@ -562,6 +564,8 @@ const FlowContextWrapper = ({
                 ResourceProperties,
                 clearLocalHistory,
                 flowCompletionConfigs,
+                flowEdgeTypes,
+                flowNodeTypes,
                 hasLocalHistory,
                 i18nText,
                 i18nTextLoading:
@@ -587,6 +591,8 @@ const FlowContextWrapper = ({
                 restoreFromHistory,
                 selectedAttributes,
                 setFlowCompletionConfigs,
+                setFlowEdgeTypes,
+                setFlowNodeTypes,
                 setIsOpenResourcePropertiesPanel,
                 setIsResourcePanelOpen,
                 setIsVersionHistoryPanelOpen,

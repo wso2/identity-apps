@@ -19,6 +19,7 @@
 import { PreviewScreenType } from "@wso2is/common.branding.v1/models/branding-preferences";
 import { Claim } from "@wso2is/core/models";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
+import { EdgeTypes, NodeTypes } from "@xyflow/react";
 import { Context, Dispatch, FunctionComponent, ReactNode, SetStateAction, createContext } from "react";
 import { Base } from "../models/base";
 import { FlowCompletionConfigsInterface, FlowsHistoryInterface } from "../models/flows";
@@ -210,6 +211,22 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      * All locally saved drafts for the current flow type.
      */
     localHistory?: FlowsHistoryInterface[];
+    /**
+     * Node types active in the flow.
+     */
+    flowNodeTypes: NodeTypes;
+    /**
+     * Edge types active in the flow.
+     */
+    flowEdgeTypes: EdgeTypes;
+    /**
+     * Function to set the node types active in the flow.
+     */
+    setFlowNodeTypes: Dispatch<SetStateAction<NodeTypes>>;
+    /**
+     * Function to set the edge types active in the flow.
+     */
+    setFlowEdgeTypes: Dispatch<SetStateAction<EdgeTypes>>;
 }
 
 /**
@@ -223,6 +240,8 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
         ResourceProperties: () => null,
         clearLocalHistory: () => Promise.resolve(false),
         flowCompletionConfigs: {},
+        flowEdgeTypes: {},
+        flowNodeTypes: {},
         hasLocalHistory: false,
         i18nText: null,
         i18nTextLoading: false,
@@ -246,6 +265,8 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
         restoreFromHistory: () => Promise.resolve(false),
         selectedAttributes: {},
         setFlowCompletionConfigs: () => {},
+        setFlowEdgeTypes: () => {},
+        setFlowNodeTypes: () => {},
         setIsOpenResourcePropertiesPanel: () => {},
         setIsResourcePanelOpen: () => {},
         setIsVersionHistoryPanelOpen: () => {},

@@ -274,14 +274,24 @@ export const flows: flowsNS = {
         versionHistory: {
             currentVersion: "Current version",
             emptyState: "No version history available",
+            hint: "Please note that the version history is stored locally in your browser and will be lost if you clear your browser data or switch to a different browser or device.",
             moreActions: "More actions",
             panelTitle: "Version History (Local)",
+            restoreAction: "Restore",
             restoreDialog: {
                 cancel: "Cancel",
-                description: "Your current document will revert to the version from {{date}}.",
+                noFlowData: "No flow data available to preview.",
+                previewContainer: {
+                    description: "The preview below shows the state of the flow in the selected version.",
+                    title: "Flow Preview"
+                },
                 restore: "Restore",
                 restoring: "Restoring...",
-                title: "Restore this version?"
+                title: "Restore this version?",
+                warningAlert: {
+                    description: "If you proceed, the current flow will be replaced with version from <1>{{timestamp}}</1>. Please take a moment to review the flow preview below before confirming since this action cannot be undone.",
+                    title: "Warning"
+                }
             },
             restoreVersion: "Restore this version",
             unknownAuthor: "Unknown"

@@ -277,14 +277,24 @@ export interface flowsNS {
         versionHistory: {
             currentVersion: string;
             emptyState: string;
+            hint: string;
             moreActions: string;
             panelTitle: string;
+            restoreAction: string;
             restoreDialog: {
                 cancel: string;
-                description: string;
+                noFlowData: string;
                 restore: string;
                 restoring: string;
                 title: string;
+                warningAlert: {
+                    title: string;
+                    description: string;
+                };
+                previewContainer: {
+                    title: string;
+                    description: string;
+                };
             };
             restoreVersion: string;
             unknownAuthor: string;

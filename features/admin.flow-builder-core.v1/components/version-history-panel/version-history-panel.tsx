@@ -19,7 +19,9 @@
 import Box from "@oxygen-ui/react/Box";
 import Drawer, { DrawerProps } from "@oxygen-ui/react/Drawer";
 import IconButton from "@oxygen-ui/react/IconButton";
+import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
+import { CircleInfoIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import moment from "moment";
@@ -115,7 +117,12 @@ const VersionHistoryPanel: FunctionComponent<VersionHistoryPanelPropsInterface> 
                     alignItems="center"
                     className="flow-builder-right-panel header"
                 >
-                    { t("flows:core.versionHistory.panelTitle") }
+                    <Tooltip title={ t("flows:core.versionHistory.hint") }>
+                        <Box sx={ { alignItems: "center", display: "flex", gap: 1 } }>
+                            { t("flows:core.versionHistory.panelTitle") }
+                            <CircleInfoIcon size={ 14 } />
+                        </Box>
+                    </Tooltip>
                     <IconButton onClick={ () => setIsVersionHistoryPanelOpen(false) }>
                         <ChevronsRight height={ 16 } width={ 16 } />
                     </IconButton>
