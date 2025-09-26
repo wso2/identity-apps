@@ -113,6 +113,11 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
     const [ connector, setConnector ] = useState<GovernanceConnectorInterface | undefined>(undefined);
 
 
+    /*
+    * Error handler for governance connector update.
+    *
+    * @param error - Axios error object.
+    */
     const handleUpdateError = (error: AxiosError) => {
         if (error.response && error.response.data && error.response.data.detail) {
             dispatch(
@@ -145,6 +150,9 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
         }
     };
 
+    /* Success handler for governance connector update.
+    *
+    */
     const handleUpdateSuccess = () => {
         dispatch(
             addAlert({

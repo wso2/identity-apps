@@ -21,16 +21,15 @@ import { Divider } from "@mui/material";
 import Box from "@oxygen-ui/react/Box";
 import Stack from "@oxygen-ui/react/Stack";
 import {
-    CommonResourcePropertiesPropsInterface 
+    CommonResourcePropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
 import {
     GovernanceConnectorInterface,
-    ServerConfigurationsConstants 
+    ServerConfigurationsConstants
 } from "@wso2is/admin.server-configurations.v1";
 import { getConnectorDetails } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
-import { useTranslation } from "react-i18next";
 import { AskPasswordConfigurations } from "./ask-password-configurations";
 import useAskPasswordFlowBuilder from "../../../../hooks/use-ask-password-flow-builder";
 
@@ -48,7 +47,6 @@ export type ConfirmationCodePropertiesPropsInterface = CommonResourcePropertiesP
 const ConfirmationCodeProperties: FunctionComponent<ConfirmationCodePropertiesPropsInterface> = ({
     ["data-componentid"]: componentId = "confirmation-code-properties-component"
 }: ConfirmationCodePropertiesPropsInterface): ReactElement => {
-    const { t } = useTranslation();
 
     // Get from context
     const {
@@ -76,19 +74,18 @@ const ConfirmationCodeProperties: FunctionComponent<ConfirmationCodePropertiesPr
 
     return (
         <Stack gap={ 2 } data-componentid={ componentId }>
+            <br/>
+            <Divider hidden />
             <Box
                 sx={ {
                     display: "flex",
                     flexDirection: "column",
-                    gap: 1,
+                    gap: "6px",
                     height: "100%",
-                    marginLeft: 2,
+                    marginLeft: "12px",
                     width: "200%"
                 } }
             >
-                <br/>
-                <Divider />
-                <br/>
                 <AskPasswordConfigurations
                     initialValues={ connector }
                     readOnly={ false }

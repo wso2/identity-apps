@@ -110,6 +110,7 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
     const showSmsOtpAskPasswordFeatureStatusChip: boolean =
             useSelector((state: AppState) => state?.config?.ui?.showSmsOtpAskPasswordFeatureStatusChip);
 
+    /* Radio options for ask password */
     const EMAIL_ASK_PASSWORD_RADIO_OPTIONS: RadioChild[] = [
         {
             label: "extensions:manage.serverConfigurations.userOnboarding." +
@@ -128,7 +129,9 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
         }
     ];
 
-    // Update states when initial values change
+    /* Update states when initial values change
+    *
+    */
     useEffect(() => {
         if (!initialConnectorValues) return;
         setIsInviteUserToSetPasswordEnabled(initialConnectorValues.enableInviteUserToSetPassword ?? false);
@@ -189,7 +192,10 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
         return data;
     };
 
-    // Update updatedConfigs whenever any field changes
+    /*
+    * Update updatedConfigs whenever any field changes
+    *
+    */
     useEffect(() => {
         setUpdatedConfigs(getUpdatedConfigurations({
             enableAccountActivationEmail: enableAccountActivationEmail,
@@ -392,10 +398,10 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
                 uncontrolledForm={ false }
                 onSubmit={ () => null }
             >
-                {/* <Heading as="h4">
+                <Heading as="h4">
                     { t("extensions:manage.serverConfigurations.userOnboarding." +
                             "inviteUserToSetPassword.subHeading") }
-                </Heading> */}
+                </Heading>
                 <Heading as="h5">
                     { t("extensions:manage.serverConfigurations.userOnboarding." +
                     "inviteUserToSetPassword.form.fields.emailAskPasswordOptions.header") }
@@ -481,7 +487,7 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
                     data-componentid={ `${ componentId }-account-lock-on-creation` }
                 />
                 <Divider/>
-                <Heading as="h4">
+                <Heading as="h5">
                     { t("extensions:manage.serverConfigurations.userOnboarding." +
                             "inviteUserToSetPassword.otpConfigHeading") as ReactNode }
                     {
