@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,11 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import {
+    APIErrorResponseInterface,
+    IdentifiableComponentInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import { EmphasizedSegment } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import reverse from "lodash-es/reverse";
@@ -80,7 +84,7 @@ export const UserSessionsWidget: FunctionComponent<TestableComponentInterface> =
 
                 setUserSessions(response);
             })
-            .catch((error: AxiosError & { response: { detail: string } }) => {
+            .catch((error: AxiosError<APIErrorResponseInterface> & { response: { detail: string } }) => {
                 if (error.response && error.response.data && error.response.detail) {
                     dispatch(
                         addAlert({

@@ -95,7 +95,7 @@ export const updateSessionManagmentConfigurations = (data: PatchData[]):
             }
 
             return Promise.resolve(response.data as SessionManagementConfigAPIResponseInterface);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<{ code: string | number }>) => {
             const errorMessage: string = SessionManagementConstants.ErrorMessages
                 .SESSION_MANAGEMENT_CONFIG_UPDATE_ERROR_CODE.getErrorMessage();
 

@@ -16,14 +16,14 @@
  * under the License.
  */
 import { store } from "@wso2is/admin.core.v1/store";
-import { AlertLevels } from "@wso2is/core/models";
+import { APIErrorResponseInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { AxiosError } from "axios";
 
 const CANNOT_DELETE_IDP_DUE_TO_ASSOCIATIONS_ERROR_CODE: string = "IDP-65004";
 
-export const handleIDPDeleteError = (error: AxiosError): void  => {
+export const handleIDPDeleteError = (error: AxiosError<APIErrorResponseInterface>): void  => {
     if (
         error.response &&
         error.response.data &&
@@ -73,7 +73,7 @@ export const handleIDPDeleteError = (error: AxiosError): void  => {
     );
 };
 
-export const handleIDPUpdateError = (error: AxiosError): void => {
+export const handleIDPUpdateError = (error: AxiosError<APIErrorResponseInterface>): void => {
     if (error.response && error.response.data && error.response.data.description) {
         store.dispatch(
             addAlert({
@@ -104,7 +104,7 @@ export const handleIDPUpdateError = (error: AxiosError): void => {
     );
 };
 
-export const handleGetRoleListError = (error: AxiosError): void => {
+export const handleGetRoleListError = (error: AxiosError<APIErrorResponseInterface>): void => {
     if (error.response && error.response.data && error.response.data.description) {
         store.dispatch(
             addAlert({
@@ -136,7 +136,7 @@ export const handleGetRoleListError = (error: AxiosError): void => {
     );
 };
 
-export const handleUpdateIDPRoleMappingsError = (error: AxiosError): void => {
+export const handleUpdateIDPRoleMappingsError = (error: AxiosError<APIErrorResponseInterface>): void => {
     if (error.response && error.response.data && error.response.data.description) {
         store.dispatch(
             addAlert({
@@ -168,7 +168,8 @@ export const handleUpdateIDPRoleMappingsError = (error: AxiosError): void => {
     );
 };
 
-export const handleGetFederatedAuthenticatorMetadataAPICallError = (error: AxiosError): void => {
+export const handleGetFederatedAuthenticatorMetadataAPICallError = (
+    error: AxiosError<APIErrorResponseInterface>): void => {
     if (error.response && error.response.data && error.response.data.description) {
         store.dispatch(
             addAlert({
@@ -203,7 +204,8 @@ export const handleGetFederatedAuthenticatorMetadataAPICallError = (error: Axios
     );
 };
 
-export const handleGetOutboundProvisioningConnectorMetadataError = (error: AxiosError): void => {
+export const handleGetOutboundProvisioningConnectorMetadataError = (
+    error: AxiosError<APIErrorResponseInterface>): void => {
     if (error?.response?.data?.description) {
         store.dispatch(
             addAlert({
@@ -238,7 +240,7 @@ export const handleGetOutboundProvisioningConnectorMetadataError = (error: Axios
     );
 };
 
-export const handleUpdateOutboundProvisioningConnectorError = (error: AxiosError): void => {
+export const handleUpdateOutboundProvisioningConnectorError = (error: AxiosError<APIErrorResponseInterface>): void => {
     if (error.response && error.response.data && error.response.data.description) {
         store.dispatch(
             addAlert({
@@ -274,7 +276,7 @@ export const handleUpdateOutboundProvisioningConnectorError = (error: AxiosError
     );
 };
 
-export const handleGetIDPTemplateListError = (error: AxiosError): void => {
+export const handleGetIDPTemplateListError = (error: AxiosError<APIErrorResponseInterface>): void => {
     if (error.response && error.response.data && error.response.data.description) {
         store.dispatch(
             addAlert({
@@ -307,7 +309,7 @@ export const handleGetIDPTemplateListError = (error: AxiosError): void => {
     );
 };
 
-export const handleGetIDPTemplateAPICallError = (error: AxiosError): void => {
+export const handleGetIDPTemplateAPICallError = (error: AxiosError<APIErrorResponseInterface>): void => {
     if (error.response && error.response.data && error.response.data.description) {
         store.dispatch(
             addAlert({
@@ -339,7 +341,7 @@ export const handleGetIDPTemplateAPICallError = (error: AxiosError): void => {
     );
 };
 
-export const handleGetIDPListCallError = (error: AxiosError): void => {
+export const handleGetIDPListCallError = (error: AxiosError<APIErrorResponseInterface>): void => {
     if (error?.response?.data?.description) {
         store.dispatch(
             addAlert({

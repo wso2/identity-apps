@@ -48,6 +48,7 @@ import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { getUserNameWithoutDomain, resolveUserstore } from "@wso2is/core/helpers";
 import {
+    APIErrorResponseInterface,
     AlertInterface,
     AlertLevels,
     IdentifiableComponentInterface,
@@ -1401,7 +1402,7 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
 
                 handleUserUpdate(user.id);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error?.response?.data?.detail || error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.detail || error?.response?.data?.description,

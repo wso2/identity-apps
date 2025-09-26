@@ -22,7 +22,7 @@
         "v1"
     ],
     "dependencies": {
-        "@asgardeo/auth-react": "^5.1.2",
+        "@asgardeo/auth-react": "^5.4.2",
         "@emotion/react": "^11.11.0",
         "@emotion/styled": "^11.11.0",
         "@mui/icons-material": "^5.11.16",
@@ -42,7 +42,7 @@
         "@wso2is/form": "^2.7.1",
         "@wso2is/forms": "^2.3.22",
         "@wso2is/react-components": "^2.9.16",
-        "axios": "^0.19.2",
+        "axios": "^0.30.0",
         "i18next": "^21.9.1",
         "react-helmet": "^5.2.1",
         "react-i18next": "^11.18.5",

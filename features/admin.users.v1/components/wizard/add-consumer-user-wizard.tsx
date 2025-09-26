@@ -38,7 +38,7 @@ import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { APIErrorResponseInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
 import { GenericIconProps, Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
@@ -300,7 +300,7 @@ export const AddConsumerUserWizard: FunctionComponent<AddUserWizardPropsInterfac
 
             for (const groupId of groupIds) {
                 updateGroupDetails(groupId, groupData)
-                    .catch((error: AxiosError) => {
+                    .catch((error: AxiosError<APIErrorResponseInterface>) => {
                         if (!error.response || error.response.status === 401) {
                             setAlert({
                                 description: t(

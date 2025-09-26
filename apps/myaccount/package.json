@@ -35,7 +35,7 @@
         "typecheck": "pnpm run compile"
     },
     "dependencies": {
-        "@asgardeo/auth-react": "^5.1.2",
+        "@asgardeo/auth-react": "^5.4.2",
         "@babel/polyfill": "^7.0.0",
         "@mui/material": "^5.13.0",
         "@mui/system": "^5.12.3",
@@ -53,7 +53,7 @@
         "@wso2is/react-components": "^2.9.23",
         "@wso2is/theme": "^2.8.7",
         "@wso2is/validation": "^2.4.1",
-        "axios": "^0.19.2",
+        "axios": "^0.30.0",
         "history": "^4.9.0",
         "i18next": "^21.9.1",
         "i18next-browser-languagedetector": "^6.1.5",

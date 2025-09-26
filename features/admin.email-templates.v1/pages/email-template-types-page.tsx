@@ -16,12 +16,17 @@
  * under the License.
  */
 
-import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters"; 
+import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { filterList } from "@wso2is/admin.core.v1/utils/filter-list";
 import { sortList } from "@wso2is/admin.core.v1/utils/sort-list";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import {
+    APIErrorResponseInterface,
+    AlertInterface,
+    AlertLevels,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
@@ -29,7 +34,8 @@ import { AxiosError, AxiosResponse } from "axios";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { Dispatch } from "redux";
+import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { deleteEmailTemplateType, getEmailTemplateTypes } from "../api";
 import { AddEmailTemplateTypeWizard, EmailTemplateTypeList } from "../components";
 import { EmailTemplateType } from "../models";
@@ -55,7 +61,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
         [ "data-testid" ]: testId
     } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
 
@@ -64,7 +70,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
     /**
      * Sets the attributes by which the list can be sorted.
      */
-    const SORT_BY = [
+    const SORT_BY: DropdownItemProps[] = [
         {
             key: 0,
             text: t("common:name"),
@@ -91,7 +97,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
     }, []);
 
     useEffect(() => {
-        setFilteredEmailTemplateTypes((sortList(filteredEmailTemplateTypes, sortBy.value, sortOrder)));
+        setFilteredEmailTemplateTypes((sortList(filteredEmailTemplateTypes, sortBy.value as string, sortOrder)));
     }, [ sortBy, sortOrder ]);
 
     /**
@@ -125,7 +131,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
                         ".genericError.message")
                 }));
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert<AlertInterface>({
                         description: error.response.data.description,
@@ -157,7 +163,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
      * @param data - pagination page change data
      */
     const handlePaginationChange = (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
-        const offsetValue = (data.activePage as number - 1) * listItemLimit;
+        const offsetValue: number = (data.activePage as number - 1) * listItemLimit;
 
         setListOffset(offsetValue);
     };
@@ -207,7 +213,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
      * @param data - DropdownProps.
      */
     const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
-        setSortBy(SORT_BY.filter(option => option.value === data.value)[ 0 ]);
+        setSortBy(SORT_BY.filter((option: DropdownItemProps) => option.value === data.value)[ 0 ]);
     };
 
     /**
@@ -249,7 +255,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
                         ".deleteTemplateType.genericError.message")
                 }));
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert<AlertInterface>({
                         description: error.response.data.description,

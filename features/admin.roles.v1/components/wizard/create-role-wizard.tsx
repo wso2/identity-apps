@@ -21,7 +21,7 @@ import { history } from "@wso2is/admin.core.v1/helpers";
 import { getGroupList } from "@wso2is/admin.groups.v1/api";
 import { CreateGroupMemberInterface, GroupsInterface } from "@wso2is/admin.groups.v1/models";
 import { UserBasicInterface } from "@wso2is/admin.users.v1/models/user";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { APIErrorResponseInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
@@ -211,7 +211,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                     history.push(AppConstants.getPaths().get("ROLE_EDIT").replace(":id", response.data.id));
                 }
 
-            }).catch((error: AxiosError) => {
+            }).catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (!error.response || error.response.status === 401) {
                     closeWizard();
                     dispatch(

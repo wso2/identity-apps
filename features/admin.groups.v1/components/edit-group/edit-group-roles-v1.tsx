@@ -28,6 +28,7 @@ import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "@wso2is/admin.roles.v2/cons
 import { UserRolePermissions } from "@wso2is/admin.users.v1/components/user-role-permissions";
 import { RolePermissions } from "@wso2is/admin.users.v1/components/wizard/user-role-permissions";
 import {
+    APIErrorResponseInterface,
     AlertLevels,
     RolesMemberInterface,
     TestableComponentInterface
@@ -424,7 +425,7 @@ export const GroupRolesV1List: FunctionComponent<GroupRolesV1PropsInterface> = (
                 handelAddNewRoleModalClose();
                 onGroupUpdate(group.id);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error?.response?.status === 404) {
                     return;
                 }

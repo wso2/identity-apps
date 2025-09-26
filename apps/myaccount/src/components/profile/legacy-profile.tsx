@@ -43,6 +43,7 @@ import { getUserNameWithoutDomain, hasRequiredScopes,
 } from "@wso2is/core/helpers";
 /* eslint-enable */
 import {
+    APIErrorResponseInterface,
     ClaimDataType,
     PatchOperationRequest,
     ProfileSchemaInterface,
@@ -237,7 +238,7 @@ export const LegacyProfile: FunctionComponent<LegacyProfileProps> = (props: Lega
                     });
                 }
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error?.response?.data?.detail) {
                     onAlertFired({
                         description: t(

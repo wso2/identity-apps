@@ -20,7 +20,7 @@ import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/moda
 import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals/tier-limit-reach-error-modal";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { APIErrorResponseInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { GenericIcon, Heading, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
 import { ContentLoader } from "@wso2is/react-components/src/components/loader/content-loader";
@@ -134,7 +134,7 @@ export const OrganizationEnterpriseConnectionCreateWizard: FunctionComponent<
         setIsSubmitting(true);
 
         createConnection(identityProvider)
-            .then((response: AxiosResponse) => {
+            .then((response: AxiosResponse<APIErrorResponseInterface>) => {
                 eventPublisher.publish("connections-finish-adding-connection", {
                     type: componentId
                 });
@@ -161,7 +161,7 @@ export const OrganizationEnterpriseConnectionCreateWizard: FunctionComponent<
                 // Since the location header is not present, trigger callback without the id.
                 onIDPCreate();
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 const identityAppsError: IdentityAppsError = ConnectionUIConstants.ERROR_CREATE_LIMIT_REACHED;
 
                 if (error.response.status === 403 &&

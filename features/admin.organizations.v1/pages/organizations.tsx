@@ -277,7 +277,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
         handleGetAuthoriziedListCallError(authorizedListFetchRequestError);
     }, [ authorizedListFetchRequestError ]);
 
-    const handleGetAuthoriziedListCallError = (error: AxiosError) => {
+    const handleGetAuthoriziedListCallError = (error: AxiosError<any, any>) => {
         if (error?.response?.data?.description) {
             dispatch(
                 addAlert({

@@ -17,10 +17,10 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { store } from "@wso2is/admin.core.v1/store";
 import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
 import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants";
-import { HttpMethods } from "@wso2is/core/models";
+import { APIErrorResponseInterface, HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { GenerateTokenResponseInterface, RegenerateTokenRequestPayloadInterface } from "../models/remote-user-stores";
 
@@ -61,7 +61,7 @@ export const getAgentConnections = (userStoreId: string): Promise<any> => {
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<APIErrorResponseInterface>) => {
             if (error?.response?.data?.message !== RESOURCE_NOT_FOUND_ERROR_MESSAGE) {
                 return Promise.reject(error?.response?.data);
             }
@@ -107,7 +107,7 @@ export const disconnectAgentConnection = (
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<APIErrorResponseInterface>) => {
             if (error?.response?.data?.message !== RESOURCE_NOT_FOUND_ERROR_MESSAGE) {
                 return Promise.reject(error?.response?.data);
             }
@@ -148,7 +148,7 @@ export const generateToken = (
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<APIErrorResponseInterface>) => {
             if (error?.response?.data?.message !== RESOURCE_NOT_FOUND_ERROR_MESSAGE) {
                 return Promise.reject(error?.response?.data);
             }
@@ -196,7 +196,7 @@ export const regenerateToken = (
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<APIErrorResponseInterface>) => {
             if (error?.response?.data?.message !== RESOURCE_NOT_FOUND_ERROR_MESSAGE) {
                 return Promise.reject(error?.response?.data);
             }

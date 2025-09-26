@@ -24,6 +24,7 @@ import { GroupsInterface, GroupsMemberInterface } from "@wso2is/admin.groups.v1/
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "@wso2is/admin.roles.v2/constants";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import {
+    APIErrorResponseInterface,
     AlertInterface,
     AlertLevels,
     ProfileInfoInterface
@@ -288,7 +289,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                 handleCloseAddNewGroupModal();
                 handleUserUpdate(user.id);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error?.response?.status === 404) {
                     return;
                 }

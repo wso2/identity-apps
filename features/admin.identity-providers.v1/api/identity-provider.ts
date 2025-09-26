@@ -17,12 +17,12 @@
  */
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
-import { store } from "@wso2is/admin.core.v1/store";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
@@ -187,7 +187,7 @@ export const getLocalAuthenticators = (): Promise<LocalAuthenticatorInterface[]>
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse<LocalAuthenticatorInterface[]>) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
                     ConnectionUIConstants.ERROR_MESSAGES.LOCAL_AUTHENTICATORS_FETCH_INVALID_STATUS_CODE_ERROR,
@@ -198,7 +198,7 @@ export const getLocalAuthenticators = (): Promise<LocalAuthenticatorInterface[]>
                     response.config);
             }
 
-            return Promise.resolve(response.data);
+            return Promise.resolve(response.data as LocalAuthenticatorInterface[]);
         }).catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 ConnectionUIConstants.ERROR_MESSAGES.LOCAL_AUTHENTICATORS_FETCH_ERROR,

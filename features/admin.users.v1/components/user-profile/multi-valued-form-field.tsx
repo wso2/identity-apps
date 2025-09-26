@@ -33,6 +33,7 @@ import { PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
 import { commonConfig } from "@wso2is/admin.extensions.v1/configs/common";
 import { ProfileConstants } from "@wso2is/core/constants";
 import {
+    APIErrorResponseInterface,
     AlertInterface,
     AlertLevels,
     ClaimDataType,
@@ -235,7 +236,7 @@ const MultiValuedFormField = (props: MultiValuedFormFieldProps) => {
 
                 handleUserUpdate(user.id);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error?.response?.data?.detail || error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.detail || error?.response?.data?.description,

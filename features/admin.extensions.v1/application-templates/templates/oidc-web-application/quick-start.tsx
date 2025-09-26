@@ -25,7 +25,7 @@ import {
 } from "@wso2is/admin.applications.v1/models/application";
 import { getTechnologyLogos } from "@wso2is/admin.core.v1/configs/ui";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { APIErrorResponseInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Heading, useDocumentation } from "@wso2is/react-components";
 import { AxiosError } from "axios";
@@ -125,7 +125,7 @@ FunctionComponent<TraditionalOIDCWebApplicationQuickStartPropsInterface> = (
                 setAppList(response);
 
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,

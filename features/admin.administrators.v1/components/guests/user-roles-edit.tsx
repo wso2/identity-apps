@@ -18,14 +18,13 @@
 
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { FeatureConfigInterface } from "@wso2is.admin.core.v1/models/config";
-import { updateResources } from "@wso2is.admin.core.v1/api";
 import { getRolesList } from "@wso2is/admin.roles.v2/api";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "@wso2is/admin.roles.v2/constants";
 import { RealmConfigInterface } from "@wso2is/admin.server-configurations.v1/models";
 import { UserRolePermissions } from "@wso2is/admin.users.v1/components/user-role-permissions";
 import { RolePermissions } from "@wso2is/admin.users.v1/components/wizard/user-role-permissions";
 import {
+    APIErrorResponseInterface,
     AlertInterface,
     AlertLevels,
     ProfileInfoInterface,
@@ -43,6 +42,8 @@ import {
     PrimaryButton,
     useDocumentation
 } from "@wso2is/react-components";
+import { updateResources } from "@wso2is.admin.core.v1/api";
+import { FeatureConfigInterface } from "@wso2is.admin.core.v1/models/config";
 import { AxiosError, AxiosResponse } from "axios";
 import forEachRight from "lodash-es/forEachRight";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -528,7 +529,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                     handleUserUpdate(user.id);
                 }
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error?.response?.status === 404) {
                     return;
                 }

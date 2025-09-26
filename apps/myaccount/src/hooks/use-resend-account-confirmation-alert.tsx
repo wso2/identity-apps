@@ -17,6 +17,7 @@
  */
 
 import { ProfileConstants } from "@wso2is/core/constants";
+import { APIErrorResponseInterface } from "@wso2is/core/models";
 import { LinkButton } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { ReactNode, useEffect, useMemo, useState } from "react";
@@ -110,7 +111,7 @@ export const useResendAccountConfirmationAlert = (
                     }));
                 }
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error?.response?.data?.detail) {
                     dispatch(addAlert({
                         description: t(

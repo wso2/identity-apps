@@ -46,7 +46,12 @@ import AuthenticationFlowBuilder
 import AuthenticationFlowProvider
     from "@wso2is/admin.login-flow-builder.v1/providers/authentication-flow-provider";
 import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils";
-import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
+import {
+    APIErrorResponseInterface,
+    AlertLevels,
+    IdentifiableComponentInterface,
+    SBACInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import { Code, ConfirmationModal, ContentLoader, LabeledCard, Text } from "@wso2is/react-components";
@@ -292,7 +297,7 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
                 // but the state update takes time.
                 onSuccess && onSuccess(response, google, gitHub, facebook, microsoft, apple);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data?.description,
