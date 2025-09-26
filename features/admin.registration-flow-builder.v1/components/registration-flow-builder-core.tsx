@@ -76,6 +76,7 @@ import useDefaultFlow from "../hooks/use-default-flow";
 import useGenerateRegistrationFlow, {
     UseGenerateRegistrationFlowFunction
 } from "../hooks/use-generate-registration-flow";
+import DEFAULT_END_NODE_TEMPLATE from "../migrations/templates/default-end-node.json";
 import { RegistrationStaticStepTypes } from "../models/flow";
 
 /**
@@ -577,11 +578,9 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             const seedNodes: Node[] = [
                 ...basicSteps,
                 {
-                    data: {},
+                    ...DEFAULT_END_NODE_TEMPLATE,
                     deletable: false,
-                    id: INITIAL_FLOW_USER_ONBOARD_STEP_ID,
-                    position: { x: 1200, y: 408 },
-                    type: StaticStepTypes.UserOnboard
+                    position: { x: 1200, y: 408 }
                 }
             ];
 
