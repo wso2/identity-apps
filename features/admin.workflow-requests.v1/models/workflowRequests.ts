@@ -33,6 +33,11 @@ export interface WorkflowInstanceListResponseInterface {
     instances: WorkflowInstanceListItemInterface[];
 }
 
+export interface WorkflowRequestPropertyInterface {
+    key: string;
+    value: string;
+}
+
 export interface WorkflowInstanceResponseInterface {
     workflowInstanceId: string;
     eventType: string;
@@ -43,6 +48,7 @@ export interface WorkflowInstanceResponseInterface {
     requestParams: {
         [ key: string ]: string;
     };
+    properties: WorkflowRequestPropertyInterface[];
 }
 
 /**
