@@ -307,6 +307,7 @@
                             <input type="hidden" name="isEmailOtpBasedPasswordRecoveryEnabledByTenant"
                                 value="<%=isEmailOtpBasedPasswordRecoveryEnabledByTenant %>"/>
                             <input type="hidden" name="recoveryStage" value="INITIATE"/>
+                            <input type="hidden" name="sp" value="<%=Encode.forHtmlAttribute(request.getParameter("sp"))%>"/>
                         </div>
                         <div class="ui divider hidden"></div>
                         <div class="align-right buttons">
