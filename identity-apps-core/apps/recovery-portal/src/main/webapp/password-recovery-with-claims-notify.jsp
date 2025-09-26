@@ -23,6 +23,10 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClient" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.net.URISyntaxException" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
@@ -38,10 +42,33 @@
 
 <%
     String callback = IdentityManagementEndpointUtil.getStringValue(request.getParameter("callback"));
-    if (StringUtils.isBlank(callback)) {
+    boolean isValidCallBackURL = true;
+
+    if (!StringUtils.isBlank(callback)) {
+        try {
+            isValidCallBackURL = AuthenticationEndpointUtil.isSchemeSafeURL(callback);
+
+            if (isValidCallBackURL) {
+                ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
+                String applicationAccessUrl = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain, spAppName);
+
+                if (StringUtils.isNotBlank(applicationAccessUrl)) {
+                    // If the application access URL is present, only then allow the callback to be that URL.
+                    isValidCallBackURL = StringUtils.equals(callback, applicationAccessUrl);
+                } else {
+                    // If the application access URL is not present, callback should be a valid multi option URL.
+                    String encodedCallback = IdentityManagementEndpointUtil.getURLEncodedCallback(callback);
+                    isValidCallBackURL = AuthenticationEndpointUtil.isValidMultiOptionURI(encodedCallback);
+                }
+            }
+        } catch (Exception e) {
+            isValidCallBackURL = false;
+        }
+    } else {
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
-                application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain);
+            application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL), tenantDomain);
     }
+
     String username = IdentityManagementEndpointUtil.getStringValue(request.getParameter("username"));
 %>
 
@@ -86,7 +113,7 @@
                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Password.recovery.information.sent.to.the.email.registered.with.account")%>
                     <br><br>
                     <%
-                        if (StringUtils.isNotBlank(callback)) {
+                        if (StringUtils.isNotBlank(callback) && isValidCallBackURL) {
                     %>
                         <br/><br/>
                         <i class="caret left icon primary"></i>

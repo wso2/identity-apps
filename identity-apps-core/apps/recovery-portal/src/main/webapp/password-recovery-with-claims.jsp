@@ -220,6 +220,7 @@
                         <div>
                             <input type="hidden" name="sessionDataKey"
                                 value="<%=Encode.forHtmlAttribute(sessionDataKey) %>"/>
+                            <input type="hidden" name="sp" value="<%=Encode.forHtmlAttribute(spAppName) %>"/>
                         </div>
                         <%
                             }
