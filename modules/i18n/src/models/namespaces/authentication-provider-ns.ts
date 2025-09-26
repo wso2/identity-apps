@@ -341,6 +341,39 @@ export interface AuthenticationProviderNS {
                         range: string;
                     };
                 };
+                amrHeading: {
+                    heading: string;
+                };
+                amrModification: {
+                    hint: string;
+                    label: string;
+                    validations: {
+                        required: string;
+                    }
+                };
+                amrValueConstraint: {
+                    hint: string;
+                    label: string;
+                    placeholder: string;
+                    unit: {
+                        characters: string;
+                    };
+                    validations: {
+                        required: string;
+                        invalid: string;
+                        range: string;
+                    };
+                };
+                allowedAmrValue: {
+                    hint: string;
+                    label: string;
+                    placeholder: string;
+                    validations : {
+                        required: string;
+                        invalid: string;
+                        range: string;
+                    };
+                };
             };
             push: {
                 hint: string;
@@ -536,6 +569,39 @@ export interface AuthenticationProviderNS {
                     hint: string;
                     label: string;
                     placeholder: string;
+                };
+                amrHeading: {
+                    heading: string;
+                };
+                amrModification: {
+                    hint: string;
+                    label: string;
+                    validations: {
+                        required: string;
+                    }
+                };
+                amrValueConstraint: {
+                    hint: string;
+                    label: string;
+                    placeholder: string;
+                    unit: {
+                        characters: string;
+                    };
+                    validations: {
+                        required: string;
+                        invalid: string;
+                        range: string;
+                    };
+                };
+                allowedAmrValue: {
+                    hint: string;
+                    label: string;
+                    placeholder: string;
+                    validations : {
+                        required: string;
+                        invalid: string;
+                        range: string;
+                    };
                 };
                 AdditionalQueryParameters: {
                     hint: string;
