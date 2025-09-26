@@ -1,5 +1,17 @@
 # @wso2is/admin.users.v1
 
+## 2.36.29
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.62
+  - @wso2is/admin.flow-builder-core.v1@0.10.54
+  - @wso2is/admin.flows.v1@1.0.23
+  - @wso2is/admin.server-configurations.v1@2.35.76
+  - @wso2is/admin.users.v1@2.36.29
+  - @wso2is/admin.roles.v2@2.27.224
+
 ## 2.36.28
 
 ### Patch Changes
