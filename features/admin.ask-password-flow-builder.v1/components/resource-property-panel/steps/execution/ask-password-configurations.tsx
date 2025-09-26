@@ -101,7 +101,11 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
     const [ isLowerCaseEnabled, setIsLowerCaseEnabled ] = useState<boolean>(false);
     const [ isNumericEnabled, setIsNumericEnabled ] = useState<boolean>(false);
     const [ askPasswordOption, setAskPasswordOption ] = useState<string>(VerificationOption.EMAIL_LINK);
-    const [ formValues, setFormValues ] = useState<Record<string, any>>(undefined);
+    const [ expiryTime, setExpiryTime ] = useState<string>("");
+    const [ otpLength, setOtpLength ] = useState<string>("");
+    const [ enableAccountActivationEmail, setEnableAccountActivationEmail ] = useState<boolean>(false);
+    const [ enableAccountLockOnCreation, setEnableAccountLockOnCreation ] = useState<boolean>(false);
+    const [ updatedConfigs, setUpdatedConfigs ] = useState<AskPasswordFormUpdatableConfigsInterface>(undefined);
 
     const showSmsOtpAskPasswordFeatureStatusChip: boolean =
             useSelector((state: AppState) => state?.config?.ui?.showSmsOtpAskPasswordFeatureStatusChip);
@@ -124,14 +128,102 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
         }
     ];
 
-    // Listen to form value changes and auto-save
+    // Update states when initial values change
     useEffect(() => {
-        if (formValues) {
-            setInvitedUserRegistrationConfig(
-                getUpdatedConfigurations(formValues) as AskPasswordFormUpdatableConfigsInterface);
-            setIsInvitedUserRegistrationConfigUpdated(true);
+        if (!initialConnectorValues) return;
+        setIsInviteUserToSetPasswordEnabled(initialConnectorValues.enableInviteUserToSetPassword ?? false);
+        setIsUpperCaseEnabled(initialConnectorValues.otpUseUppercase ?? false);
+        setIsLowerCaseEnabled(initialConnectorValues.otpUseLowercase ?? false);
+        setIsNumericEnabled(initialConnectorValues.otpUseNumeric ?? false);
+        setExpiryTime(initialConnectorValues.expiryTime ?? "");
+        setOtpLength(initialConnectorValues.otpLength ?? "");
+        setEnableAccountActivationEmail(initialConnectorValues.enableAccountActivationEmail ?? false);
+        setEnableAccountLockOnCreation(initialConnectorValues.enableAccountLockOnCreation ?? false);
+
+        if (initialConnectorValues.enableSmsOtp) {
+            setAskPasswordOption(VerificationOption.SMS_OTP);
+        } else if (initialConnectorValues.enableEmailOtp) {
+            setAskPasswordOption(VerificationOption.EMAIL_OTP);
+        } else {
+            setAskPasswordOption(VerificationOption.EMAIL_LINK);
         }
-    }, [ formValues ]);
+    }, [ initialConnectorValues ]);
+
+    /**
+     * Prepare form values for submitting.
+     *
+     * @param values - Form values.
+     * @returns Sanitized form values.
+     */
+    const getUpdatedConfigurations = (values: Record<string, any>) => {
+
+        const data: AskPasswordFormUpdatableConfigsInterface = {
+            "EmailVerification.AskPassword.AccountActivation": values.enableAccountActivationEmail !== undefined
+                ? values.enableAccountActivationEmail
+                : initialConnectorValues?.enableAccountActivationEmail,
+            "EmailVerification.AskPassword.EmailOTP": askPasswordOption === VerificationOption.EMAIL_OTP,
+            "EmailVerification.AskPassword.ExpiryTime": values.expiryTime !== undefined
+                ? values.expiryTime
+                : initialConnectorValues?.expiryTime,
+            "EmailVerification.AskPassword.SMSOTP": askPasswordOption === VerificationOption.SMS_OTP,
+            "EmailVerification.Enable": values.enableInviteUserToSetPassword !== undefined
+                ? values.enableInviteUserToSetPassword
+                : initialConnectorValues?.enableInviteUserToSetPassword,
+            "EmailVerification.LockOnCreation": values.enableAccountLockOnCreation !== undefined
+                ? values.enableAccountLockOnCreation
+                : initialConnectorValues?.enableAccountLockOnCreation,
+            "EmailVerification.OTP.OTPLength": values.otpLength !== undefined
+                ? values.otpLength
+                : initialConnectorValues?.otpLength,
+            "EmailVerification.OTP.UseLowercaseCharactersInOTP": values.otpUseLowercase !== undefined
+                ? values.otpUseLowercase
+                : initialConnectorValues?.otpUseLowercase,
+            "EmailVerification.OTP.UseNumbersInOTP": values.otpUseNumeric !== undefined
+                ? values.otpUseNumeric
+                : initialConnectorValues?.otpUseNumeric,
+            "EmailVerification.OTP.UseUppercaseCharactersInOTP": values.otpUseUppercase !== undefined
+                ? values.otpUseUppercase
+                : initialConnectorValues?.otpUseUppercase
+        };
+
+        return data;
+    };
+
+    // Update updatedConfigs whenever any field changes
+    useEffect(() => {
+        setUpdatedConfigs(getUpdatedConfigurations({
+            enableAccountActivationEmail: enableAccountActivationEmail,
+            enableAccountLockOnCreation: enableAccountLockOnCreation,
+            enableInviteUserToSetPassword: isInviteUserToSetPasswordEnabled,
+            expiryTime: expiryTime,
+            otpLength: otpLength,
+            otpUseLowercase: isLowerCaseEnabled,
+            otpUseNumeric: isNumericEnabled,
+            otpUseUppercase: isUpperCaseEnabled
+        }));
+    }, [
+        isInviteUserToSetPasswordEnabled,
+        isUpperCaseEnabled,
+        isLowerCaseEnabled,
+        isNumericEnabled,
+        expiryTime,
+        otpLength,
+        enableAccountActivationEmail,
+        enableAccountLockOnCreation,
+        askPasswordOption
+    ]);
+
+    /**
+     * Handles form value changes.
+     *
+     */
+    useEffect(() => {
+
+        setInvitedUserRegistrationConfig(updatedConfigs);
+        setIsInvitedUserRegistrationConfigUpdated(true);
+    }, [
+        updatedConfigs
+    ]);
 
     /**
      * Flattens and resolved form initial values and field metadata.
@@ -287,65 +379,23 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
         return errors;
     };
 
-    /**
-     * Prepare form values for submitting.
-     *
-     * @param values - Form values.
-     * @returns Sanitized form values.
-     */
-    const getUpdatedConfigurations = (values: Record<string, any>) => {
-
-        const data: AskPasswordFormUpdatableConfigsInterface = {
-            "EmailVerification.AskPassword.AccountActivation": values.enableAccountActivationEmail !== undefined
-                ? values.enableAccountActivationEmail
-                : initialConnectorValues?.enableAccountActivationEmail,
-            "EmailVerification.AskPassword.EmailOTP": askPasswordOption === VerificationOption.EMAIL_OTP,
-            "EmailVerification.AskPassword.ExpiryTime": values.expiryTime !== undefined
-                ? values.expiryTime
-                : initialConnectorValues?.expiryTime,
-            "EmailVerification.AskPassword.SMSOTP": askPasswordOption === VerificationOption.SMS_OTP,
-            "EmailVerification.Enable": values.enableInviteUserToSetPassword !== undefined
-                ? values.enableInviteUserToSetPassword
-                : initialConnectorValues?.enableInviteUserToSetPassword,
-            "EmailVerification.LockOnCreation": values.enableAccountLockOnCreation !== undefined
-                ? values.enableAccountLockOnCreation
-                : initialConnectorValues?.enableAccountLockOnCreation,
-            "EmailVerification.OTP.OTPLength": values.otpLength !== undefined
-                ? values.otpLength
-                : initialConnectorValues?.otpLength,
-            "EmailVerification.OTP.UseLowercaseCharactersInOTP": values.otpUseLowercase !== undefined
-                ? values.otpUseLowercase
-                : initialConnectorValues?.otpUseLowercase,
-            "EmailVerification.OTP.UseNumbersInOTP": values.otpUseNumeric !== undefined
-                ? values.otpUseNumeric
-                : initialConnectorValues?.otpUseNumeric,
-            "EmailVerification.OTP.UseUppercaseCharactersInOTP": values.otpUseUppercase !== undefined
-                ? values.otpUseUppercase
-                : initialConnectorValues?.otpUseUppercase
-        };
-
-        return data;
-    };
-
     if (!initialConnectorValues) {
         return null;
     }
 
     return (
-        <div className="connector-form ask-password-form">
+        <div className="connector-form ask-password-configurations">
             <Form
                 id={ FORM_ID }
                 initialValues={ initialConnectorValues }
-                listen={ (values: Record<string, any>) => setFormValues(values) }
                 validate={ validateForm }
                 uncontrolledForm={ false }
                 onSubmit={ () => null }
             >
-                <Heading as="h4">
+                {/* <Heading as="h4">
                     { t("extensions:manage.serverConfigurations.userOnboarding." +
                             "inviteUserToSetPassword.subHeading") }
-                </Heading>
-
+                </Heading> */}
                 <Heading as="h5">
                     { t("extensions:manage.serverConfigurations.userOnboarding." +
                     "inviteUserToSetPassword.form.fields.emailAskPasswordOptions.header") }
@@ -372,6 +422,8 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
                     ariaLabel="expiryTime"
                     inputType="number"
                     name="expiryTime"
+                    value={ expiryTime }
+                    listen={ (value: string) => setExpiryTime(value) }
                     min={ -1 }
                     max={
                         GovernanceConnectorConstants.ASK_PASSWORD_FORM_FIELD_CONSTRAINTS
@@ -404,6 +456,8 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
                 <Field.Checkbox
                     ariaLabel="enableAccountActivationEmail"
                     name="enableAccountActivationEmail"
+                    checked={ enableAccountActivationEmail }
+                    listen={ (value: boolean) => setEnableAccountActivationEmail(value) }
                     label={ t("extensions:manage.serverConfigurations.userOnboarding." +
                         "inviteUserToSetPassword.form.fields.enableAccountActivationEmail.label") }
                     required={ false }
@@ -416,6 +470,8 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
                 <Field.Checkbox
                     ariaLabel="enableAccountLockOnCreation"
                     name="enableAccountLockOnCreation"
+                    checked={ enableAccountLockOnCreation }
+                    listen={ (value: boolean) => setEnableAccountLockOnCreation(value) }
                     label={ t("extensions:manage.serverConfigurations.userOnboarding." +
                         "inviteUserToSetPassword.form.fields.enableAccountLockOnCreation.label") }
                     required={ false }
@@ -487,6 +543,8 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
                     ariaLabel="otpLength"
                     inputType="number"
                     name="otpLength"
+                    value={ otpLength }
+                    listen={ (value: string) => setOtpLength(value) }
                     min={
                         GovernanceConnectorConstants.ASK_PASSWORD_FORM_FIELD_CONSTRAINTS
                             .OTP_CODE_LENGTH_MIN_VALUE

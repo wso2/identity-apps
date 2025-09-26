@@ -17,6 +17,7 @@
  */
 
 
+import { Divider } from "@mui/material";
 import Box from "@oxygen-ui/react/Box";
 import Stack from "@oxygen-ui/react/Stack";
 import {
@@ -32,7 +33,6 @@ import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { AskPasswordConfigurations } from "./ask-password-configurations";
 import useAskPasswordFlowBuilder from "../../../../hooks/use-ask-password-flow-builder";
-import { Divider } from "@mui/material";
 
 /**
  * Props interface of {@link FlowCompletionProperties}
@@ -63,6 +63,10 @@ const ConfirmationCodeProperties: FunctionComponent<ConfirmationCodePropertiesPr
                 ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
                 ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID
             ).then((response: GovernanceConnectorInterface) => {
+                // Set connector categoryID if not available
+                if (!response?.categoryId) {
+                    response.categoryId = ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID;
+                }
                 setConnector(response);
             }).catch(() => {
                 setConnector(undefined);
@@ -78,6 +82,7 @@ const ConfirmationCodeProperties: FunctionComponent<ConfirmationCodePropertiesPr
                     flexDirection: "column",
                     gap: 1,
                     height: "100%",
+                    marginLeft: 2,
                     width: "200%"
                 } }
             >
@@ -89,7 +94,7 @@ const ConfirmationCodeProperties: FunctionComponent<ConfirmationCodePropertiesPr
                     readOnly={ false }
                     isConnectorEnabled={ true }
                     isSubmitting={ false }
-                    data-componentid="confirmation-code-properties-ask-password-form"
+                    data-componentid="confirmation-code-properties"
                 />
             </Box>
         </Stack>
