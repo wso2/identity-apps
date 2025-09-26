@@ -385,7 +385,8 @@
                                 redirectionUrl = flow.data.redirectURL;
                             }
 
-                            setFlowData({ data: { components: [] } });
+                            setFlowData(flow);
+                            setComponents(flow.data.components || []);
                             setCountDownRedirection(redirectionUrl);
                             return true;
 

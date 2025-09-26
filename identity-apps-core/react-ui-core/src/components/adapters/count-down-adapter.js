@@ -18,7 +18,7 @@
 
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
-import { Container, Header } from "semantic-ui-react";
+import { Container } from "semantic-ui-react";
 import { useTranslations } from "../../hooks/use-translations";
 import { getTranslationByKey } from "../../utils/i18n-utils";
 
@@ -27,16 +27,16 @@ const CountDownAdapter = ({ redirection }) => {
     const [ timeLeft, setTimeLeft ] = useState(5); // Default to 5 seconds.
 
     useEffect(() => {
-        // Only show countdown if redirection URL exists
+        // Only show countdown if redirection URL exists.
         if (!redirection) {
             return;
         }
 
-        // Start the countdown
+        // Start the countdown.
         const timer = setInterval(() => {
             setTimeLeft((prevTime) => {
                 if (prevTime <= 1) {
-                    // Redirect to the specified URL
+                    // Redirect to the specified URL.
                     window.location.href = redirection;
 
                     return 0;
@@ -46,20 +46,17 @@ const CountDownAdapter = ({ redirection }) => {
             });
         }, 1000);
 
-        // Cleanup timer on unmount
+        // Cleanup timer on unmount.
         return () => clearInterval(timer);
     }, [ redirection ]);
 
-    // Don't render anything if there's no redirection URL
+    // Don't render anything if there's no redirection URL.
     if (!redirection) {
         return null;
     }
 
     return (
-        <Container textAlign="center" className="pt-5">
-            <Header as="h2">
-                { getTranslationByKey(translations, "flow.execution.success.message") }
-            </Header>
+        <Container textAlign="center" className="mt-4">
             <p>
                 { getTranslationByKey(translations, "flow.execution.success.redirect.message") } <span>
                     <strong>{ timeLeft }</strong></span> { timeLeft === 1

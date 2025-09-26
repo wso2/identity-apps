@@ -107,9 +107,18 @@ const DynamicContent = ({ contentData, state, handleFlowRequest, error }) => {
             );
         }
 
-        return contentData.components && contentData.components.map((component) => {
+        return contentData.components && contentData.components.map((component, index) => {
             if (component.type === "FORM" && Array.isArray(component.components)) {
                 return renderForm(component);
+            }
+
+            if (index === contentData.components.length - 1 && state && state.countDownRedirection) {
+                return (
+                    <>
+                        { renderElement(component) }
+                        { renderCountDown() }
+                    </>
+                );
             }
 
             return renderElement(component);
