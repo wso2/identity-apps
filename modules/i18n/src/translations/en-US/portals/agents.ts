@@ -54,6 +54,15 @@ export const agents: AgentsNS = {
         }
     },
     list: {
+        confirmations: {
+            deleteItem: {
+                assertionHint: "Please confirm your action.",
+                content: "If you delete this agent, some functionalities may not work properly. " +
+                    "Please proceed with caution.",
+                header: "Are you sure?",
+                message: "This action is irreversible and will permanently delete the selected agent."
+            }
+        },
         featureUnavailable: {
             subtitle: {
                 0: "Each AI agent requires a unique identity with specific permissions, roles, and access policies. Monitor usage, manage credentials, and ensure compliance across all automated systems.",

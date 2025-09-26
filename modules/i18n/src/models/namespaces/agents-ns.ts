@@ -42,6 +42,14 @@ export interface AgentsNS {
         title: string;
     };
     list: {
+        confirmations: {
+            deleteItem: {
+                assertionHint: string;
+                content: string;
+                header: string;
+                message: string;
+            };
+        };
         featureUnavailable: {
             subtitle: {
                 0: string;
