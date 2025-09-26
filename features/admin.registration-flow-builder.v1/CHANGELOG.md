@@ -1,5 +1,11 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.10.14
+
+### Patch Changes
+
+- [#9209](https://github.com/wso2/identity-apps/pull/9209) [`d6fa52d23e778d2a17b232544d2bbd3cc14895b3`](https://github.com/wso2/identity-apps/commit/d6fa52d23e778d2a17b232544d2bbd3cc14895b3) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - add support render end node for default flow
+
 ## 0.10.13
 
 ### Patch Changes
