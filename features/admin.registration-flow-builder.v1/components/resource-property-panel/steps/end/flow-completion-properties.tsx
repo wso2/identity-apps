@@ -133,8 +133,10 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                                 (<Checkbox
                                     checked={ configs?.isAutoLoginEnabled === "true" }
                                     disabled={
-                                        configs?.isEmailVerificationEnabled !== "true" ||
-                                        configs?.isAccountLockOnCreationEnabled !== "false"
+                                        !((configs?.isEmailVerificationEnabled === "true" && 
+                                           configs?.isAccountLockOnCreationEnabled === "false") ||
+                                          (configs?.isEmailVerificationEnabled === "false" && 
+                                           configs?.isAccountLockOnCreationEnabled === "true"))
                                     }
                                     onChange={ (event: ChangeEvent<HTMLInputElement>) => {
                                         setFlowCompletionConfigs({
