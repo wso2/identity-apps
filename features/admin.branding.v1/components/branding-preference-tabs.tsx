@@ -68,6 +68,7 @@ import { CustomTextPreferenceConstants } from "../constants/custom-text-preferen
 import useBrandingPreference from "../hooks/use-branding-preference";
 import { BrandingPreferenceMeta } from "../meta/branding-preference-meta";
 import { CustomTextConfigurationModes } from "../models/custom-text-preference";
+import "./branding-preference-tabs.scss";
 
 /**
  * Proptypes for the Branding preference tabs component.
@@ -598,9 +599,10 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                         pointing={ false }
                         panes={ [
                             {
-                                menuItem: (
-                                    <div className="preview-title-bar">
-                                        <div>{ t("branding:tabs.preview.label") }</div>
+                                menuItem:
+                                    <Menu.Item
+                                        className="preview-title-bar">
+                                        <div> { t("branding:tabs.preview.label") } </div>
                                         { activeTab !== BrandingPreferencesConstants.TABS.TEXT_TAB_ID && (
                                             <div className="preview-screen-selection">
                                                 <ScreenDropdown
@@ -622,8 +624,8 @@ export const BrandingPreferenceTabs: FunctionComponent<BrandingPreferenceTabsInt
                                                 />
                                             </div>
                                         ) }
-                                    </div>
-                                ),
+                                    </Menu.Item>
+                                ,
                                 render: PreviewPreferenceTabPane
                             }
                         ] }
