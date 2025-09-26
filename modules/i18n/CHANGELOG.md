@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.30.32
+
+### Patch Changes
+
+- [#9203](https://github.com/wso2/identity-apps/pull/9203) [`ec53ce1d01f865fc1e05e140a51005122a8e9f12`](https://github.com/wso2/identity-apps/commit/ec53ce1d01f865fc1e05e140a51005122a8e9f12) Thanks [@brionmario](https://github.com/brionmario)! - Maintain `Local History` in browser temp storage when working on Flows
+
 ## 2.30.31
 
 ### Patch Changes
