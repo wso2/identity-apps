@@ -1,5 +1,25 @@
 # @wso2is/console
 
+## 2.79.15
+
+### Patch Changes
+
+- [#9206](https://github.com/wso2/identity-apps/pull/9206) [`d334b4b7a580c32f664be2bc60950588606637ec`](https://github.com/wso2/identity-apps/commit/d334b4b7a580c32f664be2bc60950588606637ec) Thanks [@brionmario](https://github.com/brionmario)! - Fix flow completion issues
+
+- Updated dependencies [[`d334b4b7a580c32f664be2bc60950588606637ec`](https://github.com/wso2/identity-apps/commit/d334b4b7a580c32f664be2bc60950588606637ec)]:
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.54
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.54
+  - @wso2is/admin.core.v1@2.49.62
+  - @wso2is/admin.branding.v1@2.32.10
+  - @wso2is/admin.email-management.v1@2.25.218
+  - @wso2is/admin.flows.v1@1.0.23
+  - @wso2is/admin.home.v1@1.7.32
+  - @wso2is/admin.server-configurations.v1@2.35.76
+  - @wso2is/admin.users.v1@2.36.29
+  - @wso2is/admin.registration-flow-builder.v1@0.10.13
+  - @wso2is/admin.agents.v1@1.0.69
+  - @wso2is/admin.roles.v2@2.27.224
+
 ## 2.79.14
 
 ### Patch Changes
