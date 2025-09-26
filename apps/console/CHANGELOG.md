@@ -1,5 +1,28 @@
 # @wso2is/console
 
+## 2.79.13
+
+### Patch Changes
+
+- [#9200](https://github.com/wso2/identity-apps/pull/9200) [`e029b9357a452bec93c508c05237c72bb0ba6d2b`](https://github.com/wso2/identity-apps/commit/e029b9357a452bec93c508c05237c72bb0ba6d2b) Thanks [@hwupathum](https://github.com/hwupathum)! - Use scim2/Me endpoint to get impersonation roles
+
+* [#9198](https://github.com/wso2/identity-apps/pull/9198) [`a496ad2f9f1605710f796d62281b8a1cf5df20ea`](https://github.com/wso2/identity-apps/commit/a496ad2f9f1605710f796d62281b8a1cf5df20ea) Thanks [@Aeshan-Rosa](https://github.com/Aeshan-Rosa)! - Fix issue where test connection retries in secondary user stores failed by incorrectly sending an empty password after the first error.
+
+* Updated dependencies [[`e029b9357a452bec93c508c05237c72bb0ba6d2b`](https://github.com/wso2/identity-apps/commit/e029b9357a452bec93c508c05237c72bb0ba6d2b), [`a496ad2f9f1605710f796d62281b8a1cf5df20ea`](https://github.com/wso2/identity-apps/commit/a496ad2f9f1605710f796d62281b8a1cf5df20ea)]:
+  - @wso2is/admin.users.v1@2.36.27
+  - @wso2is/admin.userstores.v1@2.27.38
+  - @wso2is/admin.agents.v1@1.0.67
+  - @wso2is/admin.home.v1@1.7.30
+  - @wso2is/admin.core.v1@2.49.60
+  - @wso2is/admin.roles.v2@2.27.222
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.52
+  - @wso2is/admin.branding.v1@2.32.8
+  - @wso2is/admin.email-management.v1@2.25.216
+  - @wso2is/admin.flows.v1@1.0.21
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.52
+  - @wso2is/admin.server-configurations.v1@2.35.74
+  - @wso2is/admin.registration-flow-builder.v1@0.10.11
+
 ## 2.79.12
 
 ### Patch Changes
