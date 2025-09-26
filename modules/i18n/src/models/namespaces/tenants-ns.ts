@@ -203,6 +203,7 @@ export interface TenantsNS {
                     label: string;
                 };
                 organizationHandle: {
+                    hint: string;
                     label: string;
                 };
                 organizationId: {

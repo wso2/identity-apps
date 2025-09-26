@@ -209,6 +209,7 @@ export const tenants: TenantsNS = {
                     label: "Last Modified"
                 },
                 organizationHandle: {
+                    hint: "Copy the organization handle to clipboard",
                     label: "Organization Handle"
                 },
                 organizationId: {
