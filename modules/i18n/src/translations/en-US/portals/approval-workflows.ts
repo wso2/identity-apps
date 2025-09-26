@@ -15,9 +15,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+/* eslint-disable sort-keys */
 import { approvalWorkflowsNS } from "../../../models";
 
 export const approvalWorkflows: approvalWorkflowsNS = {
+    activeFiltersBar: {
+        clearAll: "Clear all",
+        noActiveFilters: "No active filters",
+        removeFilter: "Remove {{filter}} filter"
+    },
     confirmation: {
         confirm: "Confirm",
         content:
@@ -154,6 +160,16 @@ export const approvalWorkflows: approvalWorkflowsNS = {
             }
         }
     },
+    list: {
+        columns: {
+            actions: "Actions",
+            createdAt: "Created At",
+            requestInitiator: "Request Initiator",
+            status: "Status",
+            updatedAt: "Updated At",
+            workflowInstanceId: "Operation Type"
+        }
+    },
     notifications: {
         addApprovalWorkflow: {
             genericError: {
@@ -249,10 +265,6 @@ export const approvalWorkflows: approvalWorkflowsNS = {
                 message: "Approval workflow updated successfully!"
             }
         },
-        updateDelay: {
-            description: "It might take some time for the updated properties to appear.",
-            message: "Updating properties takes time"
-        },
         deleteWorkflowRequest: {
             genericError: {
                 description: "An error occurred while deleting the workflow request",
@@ -262,6 +274,10 @@ export const approvalWorkflows: approvalWorkflowsNS = {
                 description: "Workflow request deleted successfully.",
                 message: "Workflow request deleted successfully!"
             }
+        },
+        updateDelay: {
+            description: "It might take some time for the updated properties to appear.",
+            message: "Updating properties takes time"
         },
         fetchWorkflowRequestDetails: {
             genericError: {
@@ -327,15 +343,9 @@ export const approvalWorkflows: approvalWorkflowsNS = {
             title: "Approval Workflows"
         }
     },
-    list: {
-        columns: {
-            workflowInstanceId: "Operation Type",
-            status: "Status",
-            requestInitiator: "Request Initiator",
-            createdAt: "Created At",
-            updatedAt: "Updated At",
-            actions: "Actions"
-        }
+    eventType: {
+        all: "All Tasks",
+        myTasks: "My Tasks"
     },
     status: {
         all: "All Tasks",
@@ -345,72 +355,83 @@ export const approvalWorkflows: approvalWorkflowsNS = {
         pending: "Pending",
         rejected: "Rejected"
     },
-    eventType: {
-        all: "All Tasks",
-        myTasks: "My Tasks"
-    },
     operationType: {
         all: "All Operations",
-        createUser: "Create User",
-        deleteUser: "Delete User",
-        updateUserRoles: "Update User Roles",
         createRole: "Create Role",
+        createUser: "Create User",
         deleteRole: "Delete Role",
+        deleteUser: "Delete User",
+        deleteUserClaims: "Delete User Claims",
         updateRoleName: "Update Role Name",
         updateRoleUsers: "Update Role Users",
-        deleteUserClaims: "Delete User Claims",
-        updateUserClaims: "Update User Claims"
+        updateUserClaims: "Update User Claims",
+        updateUserRoles: "Update User Roles"
     },
     details: {
-        header: "Workflow Request Details",
-        fields: {
-            id: "ID",
-            eventType: "Event Type",
-            requestInitiator: "Request Initiator",
-            status: "Status",
-            createdAt: "Created At",
-            updatedAt: "Updated At",
-            requestParams: "Request Params"
-        },
-        loading: "Loading...",
-        error: {
-            header: "Error",
-            content: "Failed to load workflow request details."
-        },
         backButton: "Back",
         dangerZone: {
-            header: "Danger Zone",
             delete: {
                 actionTitle: "Delete Workflow Request",
+                confirm: "Are you sure you want to delete this workflow request? This action cannot be undone.",
                 header: "Delete Workflow Request",
-                subheader: "Once you delete a workflow request, there is no going back. Please be certain.",
-                confirm: "Are you sure you want to delete this workflow request? This action cannot be undone."
-            }
-        }
+                subheader: "Once you delete a workflow request, there is no going back. Please be certain."
+            },
+            header: "Danger Zone"
+        },
+        error: {
+            content: "Failed to load workflow request details.",
+            header: "Error"
+        },
+        fields: {
+            createdAt: "Created At",
+            eventType: "Event Type",
+            id: "ID",
+            requestInitiator: "Request Initiator",
+            requestParams: "Request Params",
+            status: "Status",
+            updatedAt: "Updated At"
+        },
+        header: "Workflow Request Details",
+        loading: "Loading..."
+    },
+    filters: {
+        createdTimeRange: "Created Time Range",
+        operationType: "Operation Type",
+        predefinedFilters: "Quick Filters",
+        requestType: "Request Type",
+        status: "Status",
+        updatedTimeRange: "Updated Time Range"
+    },
+    predefinedFilters: {
+        all: "All Requests",
+        allDescription: "Show all workflow requests without any filters",
+        failedOperations: "Failed Operations",
+        failedOperationsDescription: "Operations that failed during processing",
+        highPriorityPending: "High Priority Pending",
+        highPriorityPendingDescription: "Urgent requests pending for more than 3 days",
+        myPendingTasks: "My Pending Tasks",
+        myPendingTasksDescription: "Pending requests assigned to you for approval",
+        pendingRoleOperations: "Pending Role Assignments",
+        pendingRoleOperationsDescription: "Role assignment requests awaiting approval",
+        pendingUserOperations: "Pending User Creation",
+        pendingUserOperationsDescription: "User creation requests awaiting approval",
+        recentApprovals: "Recent Approvals",
+        recentApprovalsDescription: "Requests that were approved in the last 7 days",
+        recentRejections: "Recent Rejections",
+        recentRejectionsDescription: "Requests that were rejected in the last 7 days"
     },
     timeRanges: {
         all: "All",
-        last6Hours: "Last 6 hours",
-        last12Hours: "Last 12 hours",
-        last24Hours: "Last 24 hours",
-        last2Days: "Last 2 days",
-        last7Days: "Last 7 days",
-        last14Days: "Last 14 days",
-        last30Days: "Last 30 days",
         customRange: "Custom Range",
         customRangeTitle: "Custom {{label}}",
+        last3Days: "Last 3 days",
+        last12Hours: "Last 12 hours",
+        last14Days: "Last 14 days",
+        last24Hours: "Last 24 hours",
+        last2Days: "Last 2 days",
+        last30Days: "Last 30 days",
+        last6Hours: "Last 6 hours",
+        last7Days: "Last 7 days",
         range: "Range"
-    },
-    activeFiltersBar: {
-        removeFilter: "Remove {{filter}} filter",
-        noActiveFilters: "No active filters",
-        clearAll: "Clear all"
-    },
-    filters: {
-        requestType: "Request Type",
-        status: "Status",
-        operationType: "Operation Type",
-        createdTimeRange: "Created Time Range",
-        updatedTimeRange: "Updated Time Range"
     }
 };
