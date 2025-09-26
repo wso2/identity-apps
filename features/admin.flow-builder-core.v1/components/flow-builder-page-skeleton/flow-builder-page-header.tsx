@@ -26,9 +26,10 @@ import Typography from "@oxygen-ui/react/Typography";
 import { ArrowLeftIcon } from "@oxygen-ui/react-icons";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteProps } from "react-router-dom";
@@ -132,6 +133,34 @@ const FlowBuilderPageHeader: FunctionComponent<FlowBuilderPageHeaderProps> = ({
             }
         };
     }, []);
+
+    /**
+     * Resolves the tooltip content for the toggle switch based on the flow type.
+     */
+    const toggleTooltipContent: { enable: string; disable: string } = useMemo(() => {
+        switch (flowType) {
+            case FlowTypes.REGISTRATION:
+                return {
+                    disable: t("flows:registrationFlow.tooltip.disableFlow"),
+                    enable: t("flows:registrationFlow.tooltip.enableFlow")
+                };
+            case FlowTypes.PASSWORD_RECOVERY:
+                return {
+                    disable: t("flows:passwordRecovery.tooltip.disableFlow"),
+                    enable: t("flows:passwordRecovery.tooltip.enableFlow")
+                };
+            case FlowTypes.INVITED_USER_REGISTRATION:
+                return {
+                    disable: t("flows:askPassword.tooltip.disableFlow"),
+                    enable: t("flows:askPassword.tooltip.enableFlow")
+                };
+            default:
+                return {
+                    disable: t("flows:core.label.disableFlow"),
+                    enable: t("flows:core.label.enableFlow")
+                };
+        }
+    }, [ flowType ]);
 
     /**
      * Handles the back button click event.
@@ -273,8 +302,8 @@ const FlowBuilderPageHeader: FunctionComponent<FlowBuilderPageHeaderProps> = ({
                     <Tooltip
                         title={
                             flowConfig?.isEnabled
-                                ? t("flows:core.tooltip.disableFlow")
-                                : t("flows:core.tooltip.enableFlow")
+                                ? toggleTooltipContent.disable
+                                : toggleTooltipContent.enable
                         }
                     >
                         <Switch
