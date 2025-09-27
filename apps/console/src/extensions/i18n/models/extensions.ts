@@ -3067,6 +3067,7 @@ export interface Extensions {
                 };
                 inviteUserToSetPassword: {
                     heading: string;
+                    subHeading: string;
                     form: {
                         fields: {
                             enableInviteUserToSetPassword: FormAttributes;
