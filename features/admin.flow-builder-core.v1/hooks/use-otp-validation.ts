@@ -16,12 +16,16 @@
  * under the License.
  */
 
+import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants";
+import
+RegistrationFlowExecutorConstants
+    from "@wso2is/admin.registration-flow-builder.v1/constants/registration-flow-executor-constants";
 import { Edge, Node, getIncomers, useReactFlow } from "@xyflow/react";
 import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import useValidationStatus from "./use-validation-status";
 import Notification, { NotificationType } from "../models/notification";
-import { Resource } from "../public-api";
+import { ElementCategories, Resource } from "../public-api";
 
 /**
  * Custom hook for validating Email and SMS OTP components.
@@ -45,7 +49,7 @@ const useOTPValidation = (node: Node) => {
 
         return (node?.data?.components as any)?.some((parent: any) =>
             (parent?.components as any[])?.some(
-                (child: any) => child?.action?.executor?.name === "EmailOTPExecutor"
+                (child: any) => child?.action?.executor?.name === RegistrationFlowExecutorConstants.EMAIL_OTP_EXECUTOR
             )
         );
     }, [ node?.data?.components, isOTPValidationEnabled, node ]);
@@ -58,7 +62,7 @@ const useOTPValidation = (node: Node) => {
 
         return (node?.data?.components as any[])?.some((parent: any) =>
             parent?.components?.some(
-                (child: any) => child?.action?.executor?.name === "SMSOTPExecutor"
+                (child: any) => child?.action?.executor?.name === RegistrationFlowExecutorConstants.SMS_OTP_EXECUTOR
             )
         );
     }, [ node?.data?.components, isOTPValidationEnabled, node ]);
@@ -93,16 +97,14 @@ const useOTPValidation = (node: Node) => {
 
         const searchComponents = (components: any[]): void => {
             for (const comp of components) {
-                // Check if this is an email FIELD
-                if (comp.category === "FIELD") {
+                if (comp.category === ElementCategories.Field) {
                     const identifier: string = comp?.config?.identifier ?? "";
 
-                    if (identifier.toLowerCase().includes("http://wso2.org/claims/emailaddress")) {
+                    if (identifier.toLowerCase().includes(ClaimManagementConstants.EMAIL_CLAIM_URI)) {
                         results.push(comp);
                     }
                 }
 
-                // Recurse into nested components
                 if (Array.isArray(comp.components)) {
                     searchComponents(comp.components);
                 }
@@ -124,10 +126,10 @@ const useOTPValidation = (node: Node) => {
 
         const searchComponents = (components: any[]): void => {
             for (const comp of components) {
-                if (comp.category === "FIELD") {
+                if (comp.category === ElementCategories.Field) {
                     const identifier: string = comp?.config?.identifier ?? "";
 
-                    if (identifier.toLowerCase().includes("http://wso2.org/claims/mobile")) {
+                    if (identifier.toLowerCase().includes(ClaimManagementConstants.MOBILE_CLAIM_URI)) {
                         results.push(comp);
                     }
                 }
