@@ -168,7 +168,6 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
                 && resource?.data?.action?.executor?.name === ExecutionTypes.ConfirmationCode) {
                 return (
                     <>
-                        { renderElementId() }
                         <ConfirmationCodeProperties
                             resource={ resource }
                             data-componentid="confirmation-code-properties"

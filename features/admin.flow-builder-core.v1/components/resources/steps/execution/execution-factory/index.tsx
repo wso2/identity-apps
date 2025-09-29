@@ -102,6 +102,12 @@ const ExecutionFactory: FC<ExecutionFactoryPropsInterface> = ({
     }
 
     if ((resource.data?.action as any)?.executor?.name === ExecutionTypes.ConfirmationCode) {
+
+        // Add deletable property to the resource if not present.
+        if (resource && resource?.deletable === undefined) {
+            resource.deletable = false;
+        }
+
         return (
             <Box
                 display="flex"

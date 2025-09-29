@@ -17,9 +17,11 @@
  */
 
 
-import { Divider } from "@mui/material";
 import Box from "@oxygen-ui/react/Box";
 import Stack from "@oxygen-ui/react/Stack";
+import { useRequiredScopes } from "@wso2is/access-control";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import {
     CommonResourcePropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
@@ -30,11 +32,12 @@ import {
 import { getConnectorDetails } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
+import { useSelector } from "react-redux";
 import { AskPasswordConfigurations } from "./ask-password-configurations";
 import useAskPasswordFlowBuilder from "../../../../hooks/use-ask-password-flow-builder";
 
 /**
- * Props interface of {@link FlowCompletionProperties}
+ * Props interface of {@link ConfirmationCodeProperties}
  */
 export type ConfirmationCodePropertiesPropsInterface = CommonResourcePropertiesPropsInterface &
     IdentifiableComponentInterface;
@@ -53,6 +56,9 @@ const ConfirmationCodeProperties: FunctionComponent<ConfirmationCodePropertiesPr
         connector,
         setConnector
     } = useAskPasswordFlowBuilder();
+
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const hasConnectorUpdatePermission: boolean = useRequiredScopes(featureConfig.governanceConnectors.scopes?.update);
 
     // Fallback to API if context is null
     useEffect(() => {
@@ -73,22 +79,20 @@ const ConfirmationCodeProperties: FunctionComponent<ConfirmationCodePropertiesPr
     }, [ connector, setConnector ]);
 
     return (
-        <Stack gap={ 2 } data-componentid={ componentId }>
-            <br/>
-            <Divider hidden />
+        <Stack gap={ 1 } data-componentid={ componentId }>
             <Box
                 sx={ {
                     display: "flex",
                     flexDirection: "column",
-                    gap: "6px",
+                    gap: "8px",
                     height: "100%",
-                    marginLeft: "12px",
-                    width: "200%"
+                    marginBottom: "16px",
+                    marginTop: "16px"
                 } }
             >
                 <AskPasswordConfigurations
-                    initialValues={ connector }
-                    readOnly={ false }
+                    connector={ connector }
+                    readOnly={ !hasConnectorUpdatePermission }
                     isConnectorEnabled={ true }
                     isSubmitting={ false }
                     data-componentid="confirmation-code-properties"

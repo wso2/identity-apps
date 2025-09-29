@@ -16,38 +16,46 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert/Alert";
+import AlertTitle from "@oxygen-ui/react/AlertTitle";
+import Box from "@oxygen-ui/react/Box";
+import Button from "@oxygen-ui/react/Button";
+import Checkbox from "@oxygen-ui/react/Checkbox";
 import Chip from "@oxygen-ui/react/Chip";
+import Divider from "@oxygen-ui/react/Divider";
+import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
+import Radio from "@oxygen-ui/react/Radio";
+import RadioGroup from "@oxygen-ui/react/RadioGroup";
+import Stack from "@oxygen-ui/react/Stack/Stack";
+import Switch from "@oxygen-ui/react/Switch";
+import TextField from "@oxygen-ui/react/TextField";
+import Typography from "@oxygen-ui/react/Typography";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import {
     AskPasswordFormConstants,
     ConnectorPropertyInterface,
     GovernanceConnectorConstants,
     GovernanceConnectorInterface,
-    ServerConfigurationsConstants
+    RevertGovernanceConnectorConfigInterface,
+    ServerConfigurationsConstants,
+    getConnectorDetails,
+    revertGovernanceConnectorProperties
 } from "@wso2is/admin.server-configurations.v1";
 import {
-    AskPasswordFormErrorValidationsInterface,
     AskPasswordFormUpdatableConfigsInterface,
     AskPasswordFormValuesInterface,
     VerificationOption
 } from "@wso2is/admin.server-configurations.v1/models/ask-password";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
-import { Field, Form } from "@wso2is/form";
 import { RadioChild } from "@wso2is/forms";
-import { Heading } from "@wso2is/react-components";
-import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { Divider } from "semantic-ui-react";
-
+import { useDispatch, useSelector } from "react-redux";
 import "./ask-password-configurations.scss";
+import { Dispatch } from "redux";
 import useAskPasswordFlowBuilder from "../../../../hooks/use-ask-password-flow-builder";
-
-const FORM_ID: string = "governance-connectors-ask-password-form";
 
 /**
  * Proptypes for the Ask Password Form props interface.
@@ -56,7 +64,7 @@ export interface AskPasswordConfigurationsPropsInterface extends IdentifiableCom
     /**
      * Connector's initial values.
      */
-    initialValues: GovernanceConnectorInterface;
+    connector: GovernanceConnectorInterface;
     /**
      * Is readonly.
      */
@@ -82,14 +90,16 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
 ): ReactElement => {
 
     const {
-        initialValues,
+        connector,
         readOnly,
         ["data-componentid"]: componentId = "ask-password-edit-form"
     } = props;
 
     const { t } = useTranslation();
+    const dispatch: Dispatch = useDispatch();
 
     const {
+        setConnector,
         setIsInvitedUserRegistrationConfigUpdated,
         setInvitedUserRegistrationConfig
     } = useAskPasswordFlowBuilder();
@@ -235,13 +245,13 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
      * Flattens and resolved form initial values and field metadata.
      */
     useEffect(() => {
-        if (isEmpty(initialValues?.properties)) {
+        if (isEmpty(connector?.properties)) {
             return;
         }
 
         let resolvedInitialValues: AskPasswordFormValuesInterface = null;
 
-        initialValues.properties.map((property: ConnectorPropertyInterface) => {
+        connector.properties.map((property: ConnectorPropertyInterface) => {
             if (AskPasswordFormConstants.allowedConnectorFields.includes(property?.name)) {
                 switch (property.name) {
                     case ServerConfigurationsConstants.ASK_PASSWORD_ENABLE:
@@ -325,6 +335,10 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
         setIsUpperCaseEnabled(resolvedInitialValues?.otpUseUppercase);
         setIsLowerCaseEnabled(resolvedInitialValues?.otpUseLowercase);
         setIsNumericEnabled(resolvedInitialValues?.otpUseNumeric);
+        setExpiryTime(resolvedInitialValues?.expiryTime);
+        setOtpLength(resolvedInitialValues?.otpLength);
+        setEnableAccountActivationEmail(resolvedInitialValues?.enableAccountActivationEmail);
+        setEnableAccountLockOnCreation(resolvedInitialValues?.enableAccountLockOnCreation);
         if (resolvedInitialValues?.enableSmsOtp) {
             setAskPasswordOption(VerificationOption.SMS_OTP);
         } else if (resolvedInitialValues?.enableEmailOtp) {
@@ -332,257 +346,367 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
         } else {
             setAskPasswordOption(VerificationOption.EMAIL_LINK);
         }
-    }, [ initialValues ]);
-
-    /**
-     * Validate input data.
-     *
-     * @param values - Form values.
-     * @returns Form validation.
-     */
-    const validateForm = (values: AskPasswordFormValuesInterface):
-        AskPasswordFormErrorValidationsInterface => {
-        const errors: AskPasswordFormErrorValidationsInterface = {
-            expiryTime: undefined,
-            otpLength: undefined
-        };
-
-        if (!values.expiryTime && values.expiryTime !== "0" && values.expiryTime !== "-1") {
-            // Check for required error.
-            errors.expiryTime = t("extensions:manage.serverConfigurations.userOnboarding." +
-                "inviteUserToSetPassword.form.fields.expiryTime.validations.empty");
-        } else if (!FormValidation.isInteger(values.expiryTime as unknown as number)) {
-            // Check for invalid input.
-            errors.expiryTime = t("extensions:manage.serverConfigurations.userOnboarding." +
-                "inviteUserToSetPassword.form.fields.expiryTime.validations.invalid");
-        } else {
-            const expiryTimeValue: number = parseInt(values.expiryTime, 10);
-
-            // Allow -1 for indefinite expiry, 0 for immediate expiry, or values within the normal range
-            if (expiryTimeValue !== -1 && expiryTimeValue !== 0 &&
-                (expiryTimeValue < 1 || expiryTimeValue > GovernanceConnectorConstants
-                    .ASK_PASSWORD_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MAX_VALUE)) {
-                // Check for invalid range.
-                errors.expiryTime = t("extensions:manage.serverConfigurations.userOnboarding." +
-                    "inviteUserToSetPassword.form.fields.expiryTime.validations.range");
-            }
-        }
-
-        if (!values.otpLength) {
-            // Check for required error.
-            errors.otpLength = t("extensions:manage.serverConfigurations.userOnboarding." +
-                "inviteUserToSetPassword.form.fields.askPasswordOtpLength.validations.empty");
-        } else if (!FormValidation.isInteger(values.otpLength as unknown as number)) {
-            // Check for invalid input.
-            errors.otpLength = t("extensions:manage.serverConfigurations.userOnboarding." +
-                "inviteUserToSetPassword.form.fields.askPasswordOtpLength.validations.invalid");
-        } else if ((parseInt(values.otpLength, 10) < 4) || (parseInt(values.otpLength, 10) > 10)) {
-            // Check for invalid range.
-            errors.otpLength = t("extensions:manage.serverConfigurations.userOnboarding." +
-                "inviteUserToSetPassword.form.fields.askPasswordOtpLength.validations.range");
-        }
-
-        return errors;
-    };
+    }, [ connector ]);
 
     if (!initialConnectorValues) {
         return null;
     }
 
+    const connectorToggle = (): ReactElement =>  {
+        return (
+            <FormControlLabel
+                control={
+                    (<Switch
+                        checked={ isInviteUserToSetPasswordEnabled }
+                        onChange={ (event: React.ChangeEvent<HTMLInputElement>) =>
+                            setIsInviteUserToSetPasswordEnabled(event.target.checked)
+                        }
+                        disabled={ readOnly }
+                        data-componentid={ `${ componentId }-invite-user-to-set-password-toggle` }
+                    />)
+                }
+                label={
+                    isInviteUserToSetPasswordEnabled
+                        ? t("extensions:manage.serverConfigurations.generalEnabledLabel")
+                        : t("extensions:manage.serverConfigurations.generalDisabledLabel")
+                }
+            />
+        );
+    };
+
+    const handleRevertSuccess = () => {
+        // Show Oxygen UI Alert using Alert and AlertTitle components
+        dispatch({
+            payload: {
+                alert: (
+                    <Alert severity="success">
+                        <AlertTitle>
+                            { t("governanceConnectors:notifications.revertConnector.success.message") }
+                        </AlertTitle>
+                        { t("governanceConnectors:notifications.revertConnector.success.description") }
+                    </Alert>
+                )
+            },
+            type: "SHOW_OXYGEN_ALERT"
+        });
+    };
+
+    const handleRevertError = () => {
+        dispatch({
+            payload: {
+                alert: (
+                    <Alert severity="error">
+                        <AlertTitle>
+                            { t("governanceConnectors:notifications.revertConnector.error.message") }
+                        </AlertTitle>
+                        { t("governanceConnectors:notifications.revertConnector.error.description") }
+                    </Alert>
+                )
+            },
+            type: "SHOW_OXYGEN_ALERT"
+        });
+    };
+
+    const loadConnectorDetails = () => {
+        getConnectorDetails(
+            ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
+            ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID
+        ).then((response: GovernanceConnectorInterface) => {
+            // Set connector categoryID if not available
+            if (!response?.categoryId) {
+                response.categoryId = ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID;
+            }
+            setConnector(response);
+        }).catch(() => {
+            setConnector(undefined);
+        });
+    };
+
+    const onAskPasswordRevert = () => {
+        const revertRequest: RevertGovernanceConnectorConfigInterface = {
+            properties: [
+                ServerConfigurationsConstants.ASK_PASSWORD_ENABLE,
+                ServerConfigurationsConstants.ASK_PASSWORD_LOCK_ON_CREATION,
+                ServerConfigurationsConstants.ASK_PASSWORD_ACCOUNT_ACTIVATION,
+                ServerConfigurationsConstants.ASK_PASSWORD_OTP_EXPIRY_TIME,
+                ServerConfigurationsConstants.ASK_PASSWORD_EMAIL_OTP,
+                ServerConfigurationsConstants.ASK_PASSWORD_SMS_OTP,
+                ServerConfigurationsConstants.ASK_PASSWORD_OTP_USE_LOWERCASE,
+                ServerConfigurationsConstants.ASK_PASSWORD_OTP_USE_NUMERIC,
+                ServerConfigurationsConstants.ASK_PASSWORD_OTP_USE_UPPERCASE,
+                ServerConfigurationsConstants.ASK_PASSWORD_OTP_LENGTH
+            ]
+        };
+
+        revertGovernanceConnectorProperties(
+            ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
+            ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID,
+            revertRequest
+        )
+            .then(() => {
+                handleRevertSuccess();
+            })
+            .catch(() => {
+                handleRevertError();
+            }).finally(() => {
+                loadConnectorDetails();
+            });
+    };
+
     return (
-        <div className="connector-form ask-password-configurations">
-            <Form
-                id={ FORM_ID }
-                initialValues={ initialConnectorValues }
-                validate={ validateForm }
-                uncontrolledForm={ false }
-                onSubmit={ () => null }
-            >
-                <Heading as="h4">
+        <Stack gap={ 1 } data-componentid={ componentId }>
+            <Stack gap={ 2 }>
+                <Typography variant="h6">
                     { t("extensions:manage.serverConfigurations.userOnboarding." +
                             "inviteUserToSetPassword.subHeading") }
-                </Heading>
-                <Heading as="h5">
-                    { t("extensions:manage.serverConfigurations.userOnboarding." +
-                    "inviteUserToSetPassword.form.fields.emailAskPasswordOptions.header") }
-                </Heading>
-                {
-                    EMAIL_ASK_PASSWORD_RADIO_OPTIONS.map((option: RadioChild) => (
-                        <Field.Radio
-                            key={ option.value }
-                            ariaLabel={ t(option.label) }
-                            label={ t(option.label) }
-                            name="askPasswordOption"
-                            type="radio"
-                            value={ option.value }
-                            checked={ askPasswordOption === option.value }
-                            listen={ () => setAskPasswordOption(option.value) }
-                            disabled={ !isInviteUserToSetPasswordEnabled }
-                            readOnly={ readOnly }
-                            data-componentid={ `${ componentId }-ask-password-option-${ option.value }` }
-                        />
-                    ))
-                }
-                <br/>
-                <Field.Input
-                    ariaLabel="expiryTime"
-                    inputType="number"
-                    name="expiryTime"
-                    value={ expiryTime }
-                    listen={ (value: string) => setExpiryTime(value) }
-                    min={ -1 }
-                    max={
-                        GovernanceConnectorConstants.ASK_PASSWORD_FORM_FIELD_CONSTRAINTS
-                            .EXPIRY_TIME_MAX_VALUE
-                    }
-                    label={ t("extensions:manage.serverConfigurations.userOnboarding." +
+                </Typography>
+                <Divider />
+                <Typography>
+                    <Alert severity="info">
+                        Allow users to set their own passwords during admin-initiated onboarding
+                        and configure related settings.
+                    </Alert>
+                </Typography>
+                { ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE ? connectorToggle() : null }
+                <Stack gap={ 1 }>
+                    <Typography variant="body1">
+                        { t("extensions:manage.serverConfigurations.userOnboarding." +
+                        "inviteUserToSetPassword.form.fields.emailAskPasswordOptions.header") }
+                    </Typography>
+                    <Stack direction="column" spacing={ 1 } sx={ { pl: 3 } } >
+                        <Box>
+                            <RadioGroup
+                                aria-label="ask-password-option"
+                                name="askPasswordOption"
+                                value={ askPasswordOption }
+                                onChange={ (event: React.ChangeEvent<HTMLInputElement>) => {
+                                    if (!isInviteUserToSetPasswordEnabled || readOnly) return;
+                                    setAskPasswordOption(event.target.value as VerificationOption);
+                                } }
+                                row={ false }
+                            >
+                                { EMAIL_ASK_PASSWORD_RADIO_OPTIONS.map((option: RadioChild) => (
+                                    <FormControlLabel
+                                        key={ option.value }
+                                        value={ option.value }
+                                        control={
+                                            (<Radio
+                                                disabled={ !isInviteUserToSetPasswordEnabled || readOnly }
+                                                data-componentid={
+                                                    `${ componentId }-ask-password-option-${ option.value }`
+                                                }
+                                            />)
+                                        }
+                                        label={ t(option.label) }
+                                    />
+                                )) }
+                            </RadioGroup>
+                        </Box>
+                    </Stack>
+                    <br/>
+                    <Stack direction="row" spacing={ 2 }>
+                        <Typography variant="body1" sx={ { maxWidth: 180, minWidth: 100 } }>
+                            { t("extensions:manage.serverConfigurations.userOnboarding." +
                                 "inviteUserToSetPassword.form.fields.expiryTime.label") }
-                    placeholder={ t("extensions:manage.serverConfigurations.userOnboarding." +
+                        </Typography>
+                        <Stack direction="row" spacing={ 0.5 }>
+                            <TextField
+                                component="text"
+                                type="number"
+                                aria-label="expiryTime"
+                                name="expiryTime"
+                                value={ expiryTime }
+                                onChange={ (event: React.ChangeEvent<HTMLInputElement>) =>
+                                    setExpiryTime(event.target.value) }
+                                placeholder={
+                                    t("extensions:manage.serverConfigurations.userOnboarding." +
                                         "inviteUserToSetPassword.form.fields.expiryTime.placeholder") +
-                                        " (-1: indefinite, 0: immediate)" }
-                    required={ false }
-                    maxLength={
-                        GovernanceConnectorConstants.ASK_PASSWORD_FORM_FIELD_CONSTRAINTS
-                            .EXPIRY_TIME_MAX_LENGTH
-                    }
-                    minLength={
-                        GovernanceConnectorConstants.ASK_PASSWORD_FORM_FIELD_CONSTRAINTS
-                            .EXPIRY_TIME_MIN_LENGTH
-                    }
-                    readOnly={ readOnly }
-                    width={ 10 }
-                    labelPosition="right"
-                    disabled={ !isInviteUserToSetPasswordEnabled }
-                    data-componentid={ `${ componentId }-link-expiry-time` }
-                >
-                    <input/>
-                    <label className="ui label">mins</label>
-                </Field.Input>
+                                    " (-1: indefinite, 0: immediate)"
+                                }
+                                required={ false }
+                                inputProps={ {
+                                    max: GovernanceConnectorConstants
+                                        .ASK_PASSWORD_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MAX_VALUE,
+                                    maxLength: GovernanceConnectorConstants
+                                        .ASK_PASSWORD_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MAX_LENGTH,
+                                    min: -1
+                                } }
+                                disabled={ !isInviteUserToSetPasswordEnabled || readOnly }
+                                data-componentid={ `${ componentId }-link-expiry-time` }
+                            />
+                            <Typography
+                                variant="body2"
+                                color="text.secondary"
+                                sx={ { alignSelf: "center" } }>
+                                    mins
+                            </Typography>
+                        </Stack>
+                    </Stack>
+                    <FormControlLabel
+                        control={
+                            (<Checkbox
+                                aria-label="enableAccountActivationEmail"
+                                name="enableAccountActivationEmail"
+                                checked={ enableAccountActivationEmail }
+                                onChange={
+                                    (event: React.ChangeEvent<HTMLInputElement>) =>
+                                        setEnableAccountActivationEmail(event.target.checked)
+                                }
+                                required={ false }
+                                disabled={ !isInviteUserToSetPasswordEnabled || readOnly }
+                                data-componentid={ `${ componentId }-account-activation-email` }
+                            />)
+                        }
+                        label={ t("extensions:manage.serverConfigurations.userOnboarding." +
+                            "inviteUserToSetPassword.form.fields.enableAccountActivationEmail.label") }
+                    />
+                    <FormControlLabel
+                        control={
+                            (<Checkbox
+                                aria-label="enableAccountLockOnCreation"
+                                name="enableAccountLockOnCreation"
+                                checked={ enableAccountLockOnCreation }
+                                onChange={
+                                    (event: React.ChangeEvent<HTMLInputElement>) =>
+                                        setEnableAccountLockOnCreation(event.target.checked)
+                                }
+                                required={ false }
+                                disabled={ !isInviteUserToSetPasswordEnabled || readOnly }
+                                data-componentid={ `${ componentId }-account-lock-on-creation` }
+                            />)
+                        }
+                        label={ t("extensions:manage.serverConfigurations.userOnboarding." +
+                            "inviteUserToSetPassword.form.fields.enableAccountLockOnCreation.label") }
+                    />
+                    <Divider/>
+                    <Typography variant="body1">
+                        { t("extensions:manage.serverConfigurations.userOnboarding." +
+                            "inviteUserToSetPassword.otpConfigHeading") }
+                        { showSmsOtpAskPasswordFeatureStatusChip && (
+                            <Chip
+                                className="oxygen-menu-item-chip oxygen-chip-beta"
+                                sx={ { ml: 1 } }
+                            />
+                        ) }
+                    </Typography>
+                    <FormControlLabel
+                        control={
+                            (<Checkbox
+                                aria-label="otpUseUppercase"
+                                name="otpUseUppercase"
+                                checked={ isUpperCaseEnabled }
+                                onChange={ (event: React.ChangeEvent<HTMLInputElement>) =>
+                                    setIsUpperCaseEnabled(event.target.checked) }
+                                required={ false }
+                                readOnly={ readOnly }
+                                disabled={ !isInviteUserToSetPasswordEnabled
+                                    || (isUpperCaseEnabled && !isLowerCaseEnabled && !isNumericEnabled)
+                                    || askPasswordOption === VerificationOption.EMAIL_LINK }
+                                data-componentid={ `${ componentId }-sms-otp-uppercase` }
+                            />)
+                        }
+                        label={ t("extensions:manage.serverConfigurations.userOnboarding." +
+                            "inviteUserToSetPassword.form.fields.askPasswordOtpUseUppercase.label") }
+                    />
+                    <FormControlLabel
+                        control={
+                            (<Checkbox
+                                aria-label="otpUseLowercase"
+                                name="otpUseLowercase"
+                                checked={ isLowerCaseEnabled }
+                                onChange={ (event: React.ChangeEvent<HTMLInputElement>) =>
+                                    setIsLowerCaseEnabled(event.target.checked) }
+                                required={ false }
+                                readOnly={ readOnly }
+                                disabled={ !isInviteUserToSetPasswordEnabled
+                                    || (!isUpperCaseEnabled && isLowerCaseEnabled && !isNumericEnabled)
+                                    || askPasswordOption === VerificationOption.EMAIL_LINK }
+                                data-componentid={ `${ componentId }-sms-otp-lowercase` }
+                            />)
+                        }
+                        label={ t("extensions:manage.serverConfigurations.userOnboarding." +
+                            "inviteUserToSetPassword.form.fields.askPasswordOtpUseLowercase.label") }
+                    />
+                    <FormControlLabel
+                        control={
+                            (<Checkbox
+                                aria-label="otpUseNumeric"
+                                name="otpUseNumeric"
+                                checked={ isNumericEnabled }
+                                onChange={ (event: React.ChangeEvent<HTMLInputElement>) =>
+                                    setIsNumericEnabled(event.target.checked) }
+                                required={ false }
+                                readOnly={ readOnly }
+                                disabled={ !isInviteUserToSetPasswordEnabled
+                                    || (!isUpperCaseEnabled && !isLowerCaseEnabled && isNumericEnabled)
+                                    || askPasswordOption === VerificationOption.EMAIL_LINK }
+                                data-componentid={ `${ componentId }-sms-otp-numeric` }
+                            />)
+                        }
+                        label={ t("extensions:manage.serverConfigurations.userOnboarding." +
+                            "inviteUserToSetPassword.form.fields.askPasswordOtpUseNumeric.label") }
+                    />
+                    <br/>
+                    <Stack direction="row" spacing={ 2 }>
+                        <Typography variant="body1" sx={ { alignSelf: "center", maxWidth: 180, minWidth: 150 } }>
+                            { t("extensions:manage.serverConfigurations.userOnboarding." +
+                                "inviteUserToSetPassword.form.fields.askPasswordOtpLength.label") }
+                        </Typography>
+                        <Stack direction="row" spacing={ 0.5 }>
+                            <TextField
+                                component="text"
+                                type="number"
+                                aria-label="otpLength"
+                                name="otpLength"
+                                value={ otpLength }
+                                onChange={ (event: React.ChangeEvent<HTMLInputElement>) =>
+                                    setOtpLength(event.target.value) }
+                                placeholder="OTP Length"
+                                required={ false }
+                                inputProps={ {
+                                    max: GovernanceConnectorConstants
+                                        .ASK_PASSWORD_FORM_FIELD_CONSTRAINTS.OTP_CODE_LENGTH_MAX_VALUE,
+                                    maxLength: GovernanceConnectorConstants
+                                        .ASK_PASSWORD_FORM_FIELD_CONSTRAINTS.OTP_CODE_LENGTH_MAX_LENGTH,
+                                    min: GovernanceConnectorConstants
+                                        .ASK_PASSWORD_FORM_FIELD_CONSTRAINTS.OTP_CODE_LENGTH_MIN_VALUE,
+                                    minLength: GovernanceConnectorConstants
+                                        .ASK_PASSWORD_FORM_FIELD_CONSTRAINTS.OTP_CODE_LENGTH_MIN_LENGTH
+                                } }
+                                disabled={ !isInviteUserToSetPasswordEnabled
+                                    || askPasswordOption === VerificationOption.EMAIL_LINK  || readOnly }
+                                data-componentid={ `${ componentId }-otp-length` }
+                            />
+                            <Typography
+                                variant="body2"
+                                color="text.secondary"
+                                sx={ { alignSelf: "center" } }
+                            >
+                                characters
+                            </Typography>
+                        </Stack>
+                    </Stack>
+                </Stack>
                 <br/>
-                <Field.Checkbox
-                    ariaLabel="enableAccountActivationEmail"
-                    name="enableAccountActivationEmail"
-                    checked={ enableAccountActivationEmail }
-                    listen={ (value: boolean) => setEnableAccountActivationEmail(value) }
-                    label={ t("extensions:manage.serverConfigurations.userOnboarding." +
-                        "inviteUserToSetPassword.form.fields.enableAccountActivationEmail.label") }
-                    required={ false }
-                    readOnly={ readOnly }
-                    width={ 10 }
-                    disabled={ !isInviteUserToSetPasswordEnabled }
-                    data-componentid={ `${ componentId }-account-activation-email` }
-                />
-                <br/>
-                <Field.Checkbox
-                    ariaLabel="enableAccountLockOnCreation"
-                    name="enableAccountLockOnCreation"
-                    checked={ enableAccountLockOnCreation }
-                    listen={ (value: boolean) => setEnableAccountLockOnCreation(value) }
-                    label={ t("extensions:manage.serverConfigurations.userOnboarding." +
-                        "inviteUserToSetPassword.form.fields.enableAccountLockOnCreation.label") }
-                    required={ false }
-                    readOnly={ readOnly }
-                    width={ 10 }
-                    disabled={ !isInviteUserToSetPasswordEnabled }
-                    data-componentid={ `${ componentId }-account-lock-on-creation` }
-                />
-                <Divider/>
-                <Heading as="h5">
-                    { t("extensions:manage.serverConfigurations.userOnboarding." +
-                            "inviteUserToSetPassword.otpConfigHeading") as ReactNode }
-                    {
-                        showSmsOtpAskPasswordFeatureStatusChip &&
-                        (<Chip
-                            label={ t(FeatureStatusLabel.BETA) }
-                            className="oxygen-menu-item-chip oxygen-chip-beta" />)
-                    }
-                </Heading>
-                <Field.Checkbox
-                    ariaLabel="otpUseUppercase"
-                    name="otpUseUppercase"
-                    label= { t("extensions:manage.serverConfigurations.userOnboarding." +
-                        "inviteUserToSetPassword.form.fields.askPasswordOtpUseUppercase.label") }
-                    required={ false }
-                    readOnly={ readOnly }
-                    width={ 10 }
-                    // Disabling the last enabled option is not allowed
-                    disabled={ !isInviteUserToSetPasswordEnabled
-                        || (isUpperCaseEnabled && !isLowerCaseEnabled && !isNumericEnabled)
-                        || askPasswordOption === VerificationOption.EMAIL_LINK }
-                    listen={ (value: boolean) => setIsUpperCaseEnabled(value) }
-                    data-componentid={ `${ componentId }-sms-otp-uppercase` }
-                />
-                <br/>
-                <Field.Checkbox
-                    ariaLabel="otpUseLowercase"
-                    name="otpUseLowercase"
-                    label= { t("extensions:manage.serverConfigurations.userOnboarding." +
-                    "inviteUserToSetPassword.form.fields.askPasswordOtpUseLowercase.label") }
-                    required={ false }
-                    readOnly={ readOnly }
-                    width={ 10 }
-                    // Disabling the last enabled option is not allowed
-                    disabled={ !isInviteUserToSetPasswordEnabled
-                        || (!isUpperCaseEnabled && isLowerCaseEnabled && !isNumericEnabled)
-                        || askPasswordOption === VerificationOption.EMAIL_LINK }
-                    listen={ (value: boolean) => setIsLowerCaseEnabled(value) }
-                    data-componentid={ `${ componentId }-sms-otp-lowercase` }
-                />
-                <br/>
-                <Field.Checkbox
-                    ariaLabel="otpUseNumeric"
-                    name="otpUseNumeric"
-                    label= { t("extensions:manage.serverConfigurations.userOnboarding." +
-                        "inviteUserToSetPassword.form.fields.askPasswordOtpUseNumeric.label") }
-                    required={ false }
-                    readOnly={ readOnly }
-                    width={ 10 }
-                    // Disabling the last enabled option is not allowed
-                    disabled={ !isInviteUserToSetPasswordEnabled
-                        || (!isUpperCaseEnabled && !isLowerCaseEnabled && isNumericEnabled)
-                        || askPasswordOption === VerificationOption.EMAIL_LINK }
-                    listen={ (value: boolean) => setIsNumericEnabled(value) }
-                    data-componentid={ `${ componentId }-sms-otp-numeric` }
-                />
-                <br/>
-                <Field.Input
-                    ariaLabel="otpLength"
-                    inputType="number"
-                    name="otpLength"
-                    value={ otpLength }
-                    listen={ (value: string) => setOtpLength(value) }
-                    min={
-                        GovernanceConnectorConstants.ASK_PASSWORD_FORM_FIELD_CONSTRAINTS
-                            .OTP_CODE_LENGTH_MIN_VALUE
-                    }
-                    max={
-                        GovernanceConnectorConstants.ASK_PASSWORD_FORM_FIELD_CONSTRAINTS
-                            .OTP_CODE_LENGTH_MAX_VALUE
-                    }
-                    label= { t("extensions:manage.serverConfigurations.userOnboarding." +
-                                    "inviteUserToSetPassword.form.fields.askPasswordOtpLength.label") }
-                    placeholder="OTP Length"
-                    required={ false }
-                    maxLength={
-                        GovernanceConnectorConstants
-                            .ASK_PASSWORD_FORM_FIELD_CONSTRAINTS.OTP_CODE_LENGTH_MAX_LENGTH
-                    }
-                    minLength={
-                        GovernanceConnectorConstants
-                            .ASK_PASSWORD_FORM_FIELD_CONSTRAINTS.OTP_CODE_LENGTH_MIN_LENGTH
-                    }
-                    readOnly={ readOnly }
-                    width={ 10 }
-                    labelPosition="right"
-                    disabled={ !isInviteUserToSetPasswordEnabled
-                        || askPasswordOption === VerificationOption.EMAIL_LINK }
-                    data-componentid={ `${ componentId }-otp-length` }
-                >
-                    <input/>
-                    <label className="ui label">characters</label>
-                </Field.Input>
-            </Form>
-        </div>
+                <Box display="flex" alignItems="center">
+                    <Alert
+                        severity="error"
+                        sx={ { alignItems: "center", display: "flex", flex: 1, mb: 0 } }
+                        action={
+                            (<Button
+                                color="inherit"
+                                size="small"
+                                sx={ { alignSelf: "center" } }
+                                onClick={ () => { onAskPasswordRevert(); } }
+                            >
+                                Revert
+                            </Button>)
+                        }
+                    >
+                        { t("governanceConnectors:dangerZone.heading") }
+                    </Alert>
+                </Box>
+            </Stack>
+        </Stack>
     );
-
 };
