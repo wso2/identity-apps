@@ -203,10 +203,10 @@ const AdaptiveAuthTemplateInfoModal: FunctionComponent<AdaptiveAuthTemplateInfoM
                             <Table.Header>
                                 <Table.Row>
                                     <Table.HeaderCell>
-                                        { t("common:parameter", "Parameter") }
+                                        { t("common:parameter") }
                                     </Table.HeaderCell>
                                     <Table.HeaderCell>
-                                        { t("common:description", "Description") }
+                                        { t("common:description") }
                                     </Table.HeaderCell>
                                 </Table.Row>
                             </Table.Header>
