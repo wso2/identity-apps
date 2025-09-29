@@ -250,11 +250,8 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                     imageSize="tiny"
                     title={ t("common:approvalsPage.placeholders.emptyApprovalFilter.title") }
                     subtitle={ [
-                        t("common:approvalsPage.placeholders.emptyApprovalFilter.subtitles.0",
-                            { status: filterStatus }),
-                        t("common:approvalsPage.placeholders.emptyApprovalFilter.subtitles.1",
-                            { status: filterStatus }),
-                        t("common:approvalsPage.placeholders.emptyApprovalFilter.subtitles.2")
+                        t("common:approvalsPage.placeholders.emptyApprovalFilter.subtitle",
+                            { status: filterStatus })
                     ] }
                     data-componentid={ `${ componentId }-empty-placeholder` }
                 />
@@ -268,9 +265,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                     imageSize="tiny"
                     title={ t("common:approvalsPage.placeholders.emptyApprovalList.title") }
                     subtitle={ [
-                        t("common:approvalsPage.placeholders.emptyApprovalList.subtitles.0"),
-                        t("common:approvalsPage.placeholders.emptyApprovalList.subtitles.1"),
-                        t("common:approvalsPage.placeholders.emptyApprovalList.subtitles.2")
+                        t("common:approvalsPage.placeholders.emptyApprovalList.subtitle")
                     ] }
                     data-componentid={ `${ componentId }-empty-placeholder` }
                 />

@@ -92,20 +92,12 @@ export interface CommonNS {
                 emptyApprovalList: {
                     action: string;
                     title: string;
-                    subtitles: {
-                        0: string;
-                        1: string;
-                        2: string;
-                    };
+                    subtitle: string;
                 };
                 emptyApprovalFilter: {
                     action: string;
                     title: string;
-                    subtitles: {
-                        0: string;
-                        1: string;
-                        2: string;
-                    };
+                    subtitle: string
                 };
                 emptySearchResults: {
                     action: string;

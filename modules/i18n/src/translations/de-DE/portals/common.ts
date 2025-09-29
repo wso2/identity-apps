@@ -96,20 +96,12 @@ export const common: CommonNS = {
         "placeholders": {
             "emptyApprovalFilter": {
                 "action": "Alle anzeigen",
-                "subtitles": {
-                    0: "Derzeit gibt es keine Genehmigungen im Status {{status}}.",
-                    1: "Bitte überprüfen Sie, ob Sie Aufgaben im Status {{status}} haben, um",
-                    2: "sie hier anzuzeigen."
-                },
+                "subtitle": "Derzeit gibt es keine Genehmigungen im Status {{status}}.",
                 "title": "Keine Ergebnisse gefunden"
             },
             "emptyApprovalList": {
                 "action": "",
-                "subtitles": {
-                    0: "Derzeit gibt es keine Genehmigungen zur Überprüfung.",
-                    1: "Bitte überprüfen Sie, ob Sie einen Workflow hinzugefügt haben, um die Vorgänge im System zu steuern.",
-                    2: ""
-                },
+                "subtitle": "Derzeit gibt es keine Genehmigungen zur Überprüfung.",
                 "title": "Keine Genehmigungen"
             },
             "emptySearchResults": {

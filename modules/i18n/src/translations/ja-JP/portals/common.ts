@@ -96,20 +96,12 @@ export const common: CommonNS = {
         "placeholders": {
             "emptyApprovalFilter": {
                 "action": "すべて表示",
-                "subtitles": {
-                    0: "現在、{{status}} 状態の承認はありません。",
-                    1: "タスクが {{status}} 状態にあるかどうかを確認してください。",
-                    2: "ここで表示できます。"
-                },
+                "subtitle": "現在、{{status}} 状態の承認はありません。",
                 "title": "結果が見つかりません"
             },
             "emptyApprovalList": {
                 "action": "",
-                "subtitles": {
-                    0: "現在、承認をレビューするものはありません。",
-                    1: "システム内の操作を制御するためにワークフローを追加したかどうかを確認してください。",
-                    2: ""
-                },
+                "subtitle": "現在、承認をレビューするものはありません。",
                 "title": "承認なし"
             },
             "emptySearchResults": {
