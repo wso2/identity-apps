@@ -28,33 +28,40 @@ import { Resource } from "../public-api";
  * Ensures that at least one email/mobile field exists in the flow before allowing Email/SMS OTP components.
  */
 const useOTPValidation = (node: Node) => {
+
     const { t } = useTranslation();
     const { getEdges, getNodes } = useReactFlow();
-    const { addNotification, removeNotification } = useValidationStatus();
+    const { addNotification, removeNotification, validationConfig } = useValidationStatus();
     const edges: Edge[] = getEdges();
     const nodes: Node[] = getNodes();
+
+    const isOTPValidationEnabled: boolean = validationConfig?.isOTPValidationEnabled ?? false;
 
     /**
      * Check if this view contains Email OTP components.
      */
     const containsEmailOTP: boolean = useMemo(() => {
+        if (!isOTPValidationEnabled || !node) return false;
+
         return (node?.data?.components as any)?.some((parent: any) =>
             (parent?.components as any[])?.some(
                 (child: any) => child?.action?.executor?.name === "EmailOTPExecutor"
             )
         );
-    }, [ node?.data?.components ]);
+    }, [ node?.data?.components, isOTPValidationEnabled, node ]);
 
     /**
      * Check if this view contains SMS OTP components.
      */
     const containsSMSOTP: boolean = useMemo(() => {
+        if (!isOTPValidationEnabled || !node) return false;
+
         return (node?.data?.components as any[])?.some((parent: any) =>
             parent?.components?.some(
                 (child: any) => child?.action?.executor?.name === "SMSOTPExecutor"
             )
         );
-    }, [ node?.data?.components ]);
+    }, [ node?.data?.components, isOTPValidationEnabled, node ]);
 
     /**
      * Gets all ancestor nodes (nodes that come before this node in the flow).
@@ -103,7 +110,7 @@ const useOTPValidation = (node: Node) => {
         };
 
         if (node?.data?.components) {
-            searchComponents(node.data.components as any[]);
+            searchComponents(node?.data.components as any[]);
         }
 
         return results;
@@ -132,7 +139,7 @@ const useOTPValidation = (node: Node) => {
         };
 
         if (node?.data?.components) {
-            searchComponents(node.data.components as any[]);
+            searchComponents(node?.data.components as any[]);
         }
 
         return results;
@@ -142,6 +149,8 @@ const useOTPValidation = (node: Node) => {
      * Checks if any ancestor nodes have email fields.
      */
     const checkIfAncestorsHaveEmailField = (): boolean => {
+        if (!isOTPValidationEnabled || !node) return false;
+
         const ancestors: Node[] = getAllAncestors(node, nodes, edges);
 
         for (const n of ancestors) {
@@ -159,6 +168,8 @@ const useOTPValidation = (node: Node) => {
      * Checks if any ancestor nodes have mobile fields.
      */
     const checkIfAncestorsHaveMobileField = (): boolean => {
+        if (!isOTPValidationEnabled || !node) return false;
+
         const ancestors: Node[] = getAllAncestors(node, nodes, edges);
 
         for (const n of ancestors) {
@@ -172,15 +183,19 @@ const useOTPValidation = (node: Node) => {
         return false;
     };
 
-
-    // Compute validation state (but don't update notifications during render)
     const hasEmailFieldInAncestors: boolean = checkIfAncestorsHaveEmailField();
     const hasMobileFieldInAncestors: boolean = checkIfAncestorsHaveMobileField();
 
-    // Handle validation updates in useEffect to avoid setState during render
+    /*
+     * Handle validation updates in useEffect to avoid setState during render
+     */
     useEffect(() => {
+        if (!isOTPValidationEnabled || !node) {
+            return;
+        }
+
         // Email OTP validation
-        const emailNotificationId: string = `email-otp-validation-${node.id}`;
+        const emailNotificationId: string = `email-otp-validation-${node?.id}`;
 
         removeNotification(emailNotificationId);
 
@@ -192,15 +207,12 @@ const useOTPValidation = (node: Node) => {
                 NotificationType.ERROR
             );
 
-            if (node) {
-                notification.addResource((node as unknown) as Resource);
-            }
-
+            notification.addResource((node as unknown) as Resource);
             addNotification(notification);
         }
 
         // SMS OTP validation
-        const smsNotificationId: string = `sms-otp-validation-${node.id}`;
+        const smsNotificationId: string = `sms-otp-validation-${node?.id}`;
 
         removeNotification(smsNotificationId);
 
@@ -212,16 +224,13 @@ const useOTPValidation = (node: Node) => {
                 NotificationType.ERROR
             );
 
-            if (node) {
-                notification.addResource((node as unknown) as Resource);
-            }
-
+            notification.addResource((node as unknown) as Resource);
             addNotification(notification);
         }
     }, [
         containsEmailOTP, hasEmailFieldInAncestors,
         containsSMSOTP, hasMobileFieldInAncestors,
-        node.id, node, t, addNotification, removeNotification
+        node, isOTPValidationEnabled, t, addNotification, removeNotification
     ]);
 
     return {

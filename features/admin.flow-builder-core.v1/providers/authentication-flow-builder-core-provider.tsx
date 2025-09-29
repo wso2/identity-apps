@@ -58,6 +58,7 @@ import useGetMetadata from "../api/use-metadata";
 import useResolveCustomTextPreferences from "../api/use-resolve-custom-text-preference";
 import FlowConstants from "../constants/flow-constants";
 import AuthenticationFlowBuilderCoreContext from "../context/authentication-flow-builder-core-context";
+import { ValidationConfig } from "../context/validation-context";
 import { FlowCompletionConfigsInterface, FlowsHistoryInterface } from "../models/flows";
 import { Resource, ResourceTypes } from "../models/resources";
 import { StepTypes } from "../models/steps";
@@ -83,6 +84,10 @@ export interface AuthenticationFlowBuilderProviderProps {
      * First provided screen type will be used as the primary screen type.
      */
     screenTypes: PreviewScreenType[];
+    /**
+     * Validation configuration settings.
+     */
+    validationConfig?: ValidationConfig;
 }
 
 /**
@@ -93,7 +98,8 @@ const FlowContextWrapper = ({
     ResourceProperties,
     children,
     flowType,
-    screenTypes
+    screenTypes,
+    validationConfig
 }: PropsWithChildren<AuthenticationFlowBuilderProviderProps>): ReactElement => {
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation();
@@ -607,7 +613,7 @@ const FlowContextWrapper = ({
                 updateI18nKey
             } }
         >
-            <ValidationProvider>{ children }</ValidationProvider>
+            <ValidationProvider validationConfig={ validationConfig }>{ children }</ValidationProvider>
         </AuthenticationFlowBuilderCoreContext.Provider>
     );
 };

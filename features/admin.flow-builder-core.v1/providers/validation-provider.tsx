@@ -17,12 +17,25 @@
  */
 
 import React, { PropsWithChildren, ReactElement, useCallback, useMemo, useState } from "react";
-import { ValidationContext } from "../context/validation-context";
+import { ValidationConfig, ValidationContext } from "../context/validation-context";
 import Notification, { NotificationType } from "../models/notification";
 
+/**
+ * Props interface of ValidationProvider.
+ */
+export interface ValidationProviderProps {
+    /**
+     * Validation configuration settings.
+     */
+    validationConfig?: ValidationConfig;
+}
+
 const ValidationProvider = ({
-    children
-}: PropsWithChildren): ReactElement => {
+    children,
+    validationConfig = {
+        isOTPValidationEnabled: false
+    }
+}: PropsWithChildren<ValidationProviderProps>): ReactElement => {
     const [ notifications, setNotifications ] = useState<Map<string, Notification>>(new Map());
     const [ selectedNotification, setSelectedNotification ] = useState<Notification>(null);
     const [ openValidationPanel, setOpenValidationPanel ] = useState<boolean>(false);
@@ -95,7 +108,8 @@ const ValidationProvider = ({
                 selectedNotification,
                 setCurrentActiveTab,
                 setOpenValidationPanel,
-                setSelectedNotification
+                setSelectedNotification,
+                validationConfig
             } }
         >
             { children }
