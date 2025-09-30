@@ -24,8 +24,9 @@ import { Edge, Node, getIncomers, useReactFlow } from "@xyflow/react";
 import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import useValidationStatus from "./use-validation-status";
+import { Element, ElementCategories } from "../models/elements";
 import Notification, { NotificationType } from "../models/notification";
-import { ElementCategories, Resource } from "../public-api";
+import { Resource } from "../public-api";
 
 /**
  * Custom hook for validating Email and SMS OTP components.
@@ -47,9 +48,10 @@ const useOTPValidation = (node: Node) => {
     const containsEmailOTP: boolean = useMemo(() => {
         if (!isOTPValidationEnabled || !node) return false;
 
-        return (node?.data?.components as any)?.some((parent: any) =>
-            (parent?.components as any[])?.some(
-                (child: any) => child?.action?.executor?.name === RegistrationFlowExecutorConstants.EMAIL_OTP_EXECUTOR
+        return (node?.data?.components as Element[])?.some((parent: Element) =>
+            parent?.components?.some(
+                (child: Element) => child?.action?.executor?.name ===
+                    RegistrationFlowExecutorConstants.EMAIL_OTP_EXECUTOR
             )
         );
     }, [ node?.data?.components, isOTPValidationEnabled, node ]);
@@ -60,9 +62,10 @@ const useOTPValidation = (node: Node) => {
     const containsSMSOTP: boolean = useMemo(() => {
         if (!isOTPValidationEnabled || !node) return false;
 
-        return (node?.data?.components as any[])?.some((parent: any) =>
+        return (node?.data?.components as Element[])?.some((parent: Element) =>
             parent?.components?.some(
-                (child: any) => child?.action?.executor?.name === RegistrationFlowExecutorConstants.SMS_OTP_EXECUTOR
+                (child: Element) => child?.action?.executor?.name ===
+                    RegistrationFlowExecutorConstants.SMS_OTP_EXECUTOR
             )
         );
     }, [ node?.data?.components, isOTPValidationEnabled, node ]);
@@ -92,10 +95,10 @@ const useOTPValidation = (node: Node) => {
     /**
      * Finds email fields in a node's components.
      */
-    const findEmailFields = (node: Node): any[] => {
-        const results: any[] = [];
+    const findEmailFields = (node: Node): Element[] => {
+        const results: Element[] = [];
 
-        const searchComponents = (components: any[]): void => {
+        const searchComponents = (components: Element[]): void => {
             for (const comp of components) {
                 if (comp.category === ElementCategories.Field) {
                     const identifier: string = comp?.config?.identifier ?? "";
@@ -112,7 +115,7 @@ const useOTPValidation = (node: Node) => {
         };
 
         if (node?.data?.components) {
-            searchComponents(node?.data.components as any[]);
+            searchComponents(node?.data.components as Element[]);
         }
 
         return results;
@@ -121,10 +124,10 @@ const useOTPValidation = (node: Node) => {
     /**
      * Finds mobile number fields in a node's components.
      */
-    const findMobileFields = (node: Node): any[] => {
-        const results: any[] = [];
+    const findMobileFields = (node: Node): Element[] => {
+        const results: Element[] = [];
 
-        const searchComponents = (components: any[]): void => {
+        const searchComponents = (components: Element[]): void => {
             for (const comp of components) {
                 if (comp.category === ElementCategories.Field) {
                     const identifier: string = comp?.config?.identifier ?? "";
@@ -141,7 +144,7 @@ const useOTPValidation = (node: Node) => {
         };
 
         if (node?.data?.components) {
-            searchComponents(node?.data.components as any[]);
+            searchComponents(node?.data.components as Element[]);
         }
 
         return results;
@@ -156,7 +159,7 @@ const useOTPValidation = (node: Node) => {
         const ancestors: Node[] = getAllAncestors(node, nodes, edges);
 
         for (const n of ancestors) {
-            const emailFields: any[] = findEmailFields(n);
+            const emailFields: Element[] = findEmailFields(n);
 
             if (emailFields.length > 0) {
                 return true;
@@ -175,7 +178,7 @@ const useOTPValidation = (node: Node) => {
         const ancestors: Node[] = getAllAncestors(node, nodes, edges);
 
         for (const n of ancestors) {
-            const mobileFields: any[] = findMobileFields(n);
+            const mobileFields: Element[] = findMobileFields(n);
 
             if (mobileFields.length > 0) {
                 return true;
@@ -187,6 +190,18 @@ const useOTPValidation = (node: Node) => {
 
     const hasEmailFieldInAncestors: boolean = checkIfAncestorsHaveEmailField();
     const hasMobileFieldInAncestors: boolean = checkIfAncestorsHaveMobileField();
+    const emailNotificationId: string = `email-otp-validation-${node?.id}`;
+    const smsNotificationId: string = `sms-otp-validation-${node?.id}`;
+
+    /**
+     * Cleanup function to remove notifications on unmount.
+     */
+    useEffect(() => {
+        return () => {
+            removeNotification(emailNotificationId);
+            removeNotification(smsNotificationId);
+        };
+    }, []);
 
     /*
      * Handle validation updates in useEffect to avoid setState during render
@@ -197,8 +212,6 @@ const useOTPValidation = (node: Node) => {
         }
 
         // Email OTP validation
-        const emailNotificationId: string = `email-otp-validation-${node?.id}`;
-
         removeNotification(emailNotificationId);
 
         if (containsEmailOTP && !hasEmailFieldInAncestors) {
@@ -214,8 +227,6 @@ const useOTPValidation = (node: Node) => {
         }
 
         // SMS OTP validation
-        const smsNotificationId: string = `sms-otp-validation-${node?.id}`;
-
         removeNotification(smsNotificationId);
 
         if (containsSMSOTP && !hasMobileFieldInAncestors) {
