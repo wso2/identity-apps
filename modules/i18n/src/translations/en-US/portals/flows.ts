@@ -315,7 +315,7 @@ export const flows: flowsNS = {
                     hint: "Immediately log the user in once the password recovery is completed, without additional steps.",
                     label: "Auto Login"
                 },
-                description: "The <1>End Screen</1> defines what happens once the password recovery flow is completed. It allows you to control the user&apos;s final experience by selecting one of the following outcomes:",
+                description: "The <1>End Screen</1> defines what happens once the password recovery flow is completed. It allows you to control the user's final experience by selecting one of the following outcomes:",
                 flowCompletionNotification: {
                     hint: "Notify the user via email once the password recovery flow is successfully completed.",
                     label: "Send a notification email on flow completion"
@@ -368,7 +368,7 @@ export const flows: flowsNS = {
                     hint: "Immediately log the user in once the flow is completed, without additional steps.",
                     label: "Auto Login"
                 },
-                description: "The <1>End Screen</1> defines what happens once the flow is completed. It allows you to control the user&apos;s final experience by selecting one of the following outcomes:"
+                description: "The <1>End Screen</1> defines what happens once the flow is completed. It allows you to control the user's final experience by selecting one of the following outcomes:"
             }
         },
         tooltip: {
