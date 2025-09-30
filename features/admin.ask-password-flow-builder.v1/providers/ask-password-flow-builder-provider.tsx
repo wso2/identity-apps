@@ -211,6 +211,9 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
             })
             .catch((error: AxiosError) => {
                 handleUpdateError(error);
+            }).finally(() => {
+                // Reset the updated state.
+                setIsInvitedUserRegistrationConfigUpdated(false);
             });
     };
 
