@@ -246,7 +246,9 @@ const VersionHistoryItem: FunctionComponent<VersionHistoryItemPropsInterface> = 
                                 <Box sx={ { alignItems: "center", display: "flex", gap: "5px", marginTop: "4px" } }>
                                     <Avatar
                                         randomBackgroundColor
-                                        backgroundColorRandomizer={ historyItem.author?.userName || t("flows:core.versionHistory.unknownAuthor") }
+                                        backgroundColorRandomizer={
+                                            historyItem.author?.userName || t("flows:core.versionHistory.unknownAuthor")
+                                        }
                                         sx={ {
                                             fontSize: "0.5em",
                                             height: "12px",
