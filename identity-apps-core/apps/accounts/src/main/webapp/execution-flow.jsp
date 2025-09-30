@@ -62,6 +62,7 @@
     String contextPath = request.getContextPath();
     String subPath = servletPath + contextPath;
     String baseURL = accessedURL.substring(0, accessedURL.length() - subPath.length());
+    String accountsBaseURL = ServiceURLBuilder.create().addPath(contextPath).build().getAbsolutePublicURL();
 
     String state = request.getParameter("state");
     String code = request.getParameter("code");
@@ -180,7 +181,7 @@
 
             const Content = () => {
                 const baseUrl = "<%= identityServerEndpointContextParam %>";
-                const accountsPortalUrl = baseUrl + "${pageContext.request.contextPath}";
+                const accountsPortalUrl = "<%= accountsBaseURL %>";
                 const defaultMyAccountUrl = "<%= myaccountUrl %>";
                 const executionFlowApiProxyPath = accountsPortalUrl + "/util/execution-flow-api.jsp";
                 const code = "<%= Encode.forJavaScript(code) != null ? Encode.forJavaScript(code) : null %>";
