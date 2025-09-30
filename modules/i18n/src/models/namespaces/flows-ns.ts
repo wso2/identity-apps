@@ -40,10 +40,6 @@ export interface flowsNS {
                 };
             };
         };
-        tooltip: {
-            disableFlow: string;
-            enableFlow: string;
-        };
     };
     core: {
         autoSave: {
@@ -214,6 +210,10 @@ export interface flowsNS {
                 };
             };
         };
+        tooltips: {
+            enableFlow: string;
+            disableFlow: string;
+        };
         validation: {
             fields: {
                 button: {
@@ -321,10 +321,6 @@ export interface flowsNS {
                 };
             };
         };
-        tooltip: {
-            disableFlow: string;
-            enableFlow: string;
-        };
     };
     registrationFlow: {
         flowDisplayName: string;
@@ -369,10 +365,6 @@ export interface flowsNS {
                     hint: string;
                 };
             };
-        };
-        tooltip: {
-            disableFlow: string;
-            enableFlow: string;
         };
     };
 }

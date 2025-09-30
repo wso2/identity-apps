@@ -36,10 +36,6 @@ export const flows: flowsNS = {
                     label: "Send a notification email on flow completion"
                 }
             }
-        },
-        tooltip: {
-            disableFlow: "Click to disable the invited user registration flow",
-            enableFlow: "Click to enable the invited user registration flow"
         }
     },
     core: {
@@ -216,6 +212,10 @@ export const flows: flowsNS = {
                 flowCompletionProperties: "Flow Completion Properties"
             }
         },
+        tooltips: {
+            disableFlow: "Disable the {{flowType}} flow",
+            enableFlow: "Enable the {{flowType}} flow"
+        },
         validation: {
             fields: {
                 button: {
@@ -321,10 +321,6 @@ export const flows: flowsNS = {
                     label: "Send a notification email on flow completion"
                 }
             }
-        },
-        tooltip: {
-            disableFlow: "Click to disable the password recovery flow",
-            enableFlow: "Click to enable the password recovery flow"
         }
     },
     registrationFlow: {
@@ -370,10 +366,6 @@ export const flows: flowsNS = {
                 },
                 description: "The <1>End Screen</1> defines what happens once the flow is completed. It allows you to control the user&apos;s final experience by selecting one of the following outcomes:"
             }
-        },
-        tooltip: {
-            disableFlow: "Click to disable the registration flow",
-            enableFlow: "Click to enable the registration flow"
         }
     }
 };

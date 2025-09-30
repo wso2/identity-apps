@@ -273,8 +273,8 @@ const FlowBuilderPageHeader: FunctionComponent<FlowBuilderPageHeaderProps> = ({
                     <Tooltip
                         title={
                             flowConfig?.isEnabled
-                                ? t("flows:core.tooltip.disableFlow")
-                                : t("flows:core.tooltip.enableFlow")
+                                ? t("flows:core.tooltips.disableFlow", { flowType: flowTypeDisplayName })
+                                : t("flows:core.tooltips.enableFlow", { flowType: flowTypeDisplayName })
                         }
                     >
                         <Switch
