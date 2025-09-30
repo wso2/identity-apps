@@ -78,16 +78,18 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                                     checked={ configs?.isEmailVerificationEnabled === "true" }
                                     onChange={ (event: ChangeEvent<HTMLInputElement>) => {
                                         const newConfigs: Record<string, unknown> = {
-                                            ...configs,
-                                            isEmailVerificationEnabled: event.target.checked ? "true" : "false"
-                                        };
+                            ...configs,
+                            isEmailVerificationEnabled: event.target.checked ? "true" : "false"
+                        };
 
-                                        // If email verification is disabled, auto-login should also be disabled
-                                        if (!event.target.checked) {
-                                            newConfigs.isAutoLoginEnabled = "false";
-                                        }
+                        // If email verification is disabled, auto-login should also be disabled
+                        // and account lock on creation should be enabled (activate immediately should be unchecked)
+                        if (!event.target.checked) {
+                            newConfigs.isAutoLoginEnabled = "false";
+                            newConfigs.isAccountLockOnCreationEnabled = "true";
+                        }
 
-                                        setFlowCompletionConfigs(newConfigs);
+                        setFlowCompletionConfigs(newConfigs);
                                     } }
                                 />)
                             }
@@ -104,6 +106,7 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                             control={
                                 (<Checkbox
                                     checked={ configs?.isAccountLockOnCreationEnabled === "false" }
+                                    disabled={ configs?.isEmailVerificationEnabled !== "true" }
                                     onChange={ (event: ChangeEvent<HTMLInputElement>) => {
                                         const newConfigs: Record<string, unknown> = {
                                             ...configs,
