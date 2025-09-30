@@ -24,8 +24,10 @@ import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import useGetFlowConfig from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-config";
-import { CommonResourcePropertiesPropsInterface } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
-import useAuthenticationFlowBuilderCore from "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
+import { CommonResourcePropertiesPropsInterface } from
+    "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
+import useAuthenticationFlowBuilderCore from
+    "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
 import { FlowCompletionConfigsInterface } from "@wso2is/admin.flow-builder-core.v1/models/flows";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -81,7 +83,8 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                                         };
 
                                         // If email verification is disabled, auto-login should also be disabled
-                                        // and account lock on creation should be enabled (activate immediately should be unchecked)
+                                        // and account lock on creation should be enabled (activate immediately
+                                        // should be unchecked)
                                         if (!event.target.checked) {
                                             newConfigs.isAutoLoginEnabled = "false";
                                             newConfigs.isAccountLockOnCreationEnabled = "true";
