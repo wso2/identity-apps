@@ -841,7 +841,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         }
 
         const replacers: any = template?.config?.data?.__generationMeta__?.replacers;
-        
+
         // Check for End steps and set flow completion configs before processing
         template.config.data.steps.forEach((step: Step) => {
             if (step.type === StepTypes.End) {
