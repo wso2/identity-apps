@@ -274,12 +274,6 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         const processedSteps: Step[] = resolveStepMetadata(resources, generateIdsForResources<Node[]>([
             START_STEP,
             ...steps.map((step: Node) => {
-                if (step.type === StepTypes.End) {
-                    if ((step as Step)?.config) {
-                        setFlowCompletionConfigs((step as Step).config);
-                    }
-                }
-
                 return {
                     data:
                         (step.data?.components && {
@@ -847,6 +841,15 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         }
 
         const replacers: any = template?.config?.data?.__generationMeta__?.replacers;
+        
+        // Check for End steps and set flow completion configs before processing
+        template.config.data.steps.forEach((step: Step) => {
+            if (step.type === StepTypes.End) {
+                if (step?.config) {
+                    setFlowCompletionConfigs(step.config);
+                }
+            }
+        });
 
         const [ templateSteps ] = updateTemplatePlaceholderReferences(
             generateSteps(template.config.data.steps as any),

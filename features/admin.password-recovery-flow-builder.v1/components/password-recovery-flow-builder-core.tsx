@@ -18,6 +18,8 @@
 
 import FlowBuilder from "@wso2is/admin.flow-builder-core.v1/components/flow-builder";
 import VisualFlowConstants from "@wso2is/admin.flow-builder-core.v1/constants/visual-flow-constants";
+import useAuthenticationFlowBuilderCore from
+    "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
 import {
     BlockTypes,
     ButtonTypes,
@@ -99,6 +101,8 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+
+    const { setFlowCompletionConfigs } = useAuthenticationFlowBuilderCore();
 
     const {
         flowGenerationCompleted,
@@ -767,6 +771,15 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
         }
 
         const replacers: any = template?.config?.data?.__generationMeta__?.replacers;
+
+        // Check for End steps and set flow completion configs before processing
+        template.config.data.steps.forEach((step: Step) => {
+            if (step.type === StepTypes.End) {
+                if (step?.config) {
+                    setFlowCompletionConfigs(step.config);
+                }
+            }
+        });
 
         const [ templateSteps ] = updateTemplatePlaceholderReferences(
             generateSteps(template.config.data.steps as any),
