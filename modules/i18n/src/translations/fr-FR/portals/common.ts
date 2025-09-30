@@ -241,6 +241,7 @@ export const common: CommonNS = {
     operations: "Opérations",
     organizationName: "{{orgName}} organisation",
     overview: "Vue d'ensemble",
+    parameter: "Paramètre",
     pending: "En attente",
     personalInfo: "Informations personnelles",
     pin: "Épingler",
