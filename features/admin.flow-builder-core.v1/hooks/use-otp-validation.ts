@@ -32,7 +32,7 @@ import { Resource } from "../public-api";
  * Custom hook for validating Email and SMS OTP components.
  * Ensures that at least one email/mobile field exists in the flow before allowing Email/SMS OTP components.
  */
-const useOTPValidation = (node: Node) => {
+const useOTPValidation = (node: Node): void => {
 
     const { t } = useTranslation();
     const { getEdges, getNodes } = useReactFlow();
@@ -245,13 +245,6 @@ const useOTPValidation = (node: Node) => {
         containsSMSOTP, hasMobileFieldInAncestors,
         node, isOTPValidationEnabled, t, addNotification, removeNotification
     ]);
-
-    return {
-        containsEmailOTP,
-        containsSMSOTP,
-        hasEmailFieldInAncestors,
-        hasMobileFieldInAncestors
-    };
 };
 
 export default useOTPValidation;
