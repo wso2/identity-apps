@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.30.34
+
+### Patch Changes
+
+- [#9217](https://github.com/wso2/identity-apps/pull/9217) [`dd191071da4e51d6db46f9270d5ddb3bb4e4fe76`](https://github.com/wso2/identity-apps/commit/dd191071da4e51d6db46f9270d5ddb3bb4e4fe76) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add organization handler copy option in Organization edit page
+
 ## 2.30.33
 
 ### Patch Changes
