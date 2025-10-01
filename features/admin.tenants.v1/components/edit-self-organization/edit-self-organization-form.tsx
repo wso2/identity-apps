@@ -173,7 +173,7 @@ const EditSelfOrganizationForm: FunctionComponent<EditSelfOrganizationFormProps>
             keepDirtyOnReinitialize={ true }
             onSubmit={ handleSubmit }
             validate={ handleValidate }
-            render={ ({ handleSubmit }: FormRenderProps) => {
+            render={ ({ handleSubmit, dirty }: FormRenderProps) => {
                 return (
                     <form
                         onSubmit={ handleSubmit }
@@ -303,6 +303,7 @@ const EditSelfOrganizationForm: FunctionComponent<EditSelfOrganizationFormProps>
                                 variant="contained"
                                 color="primary"
                                 type="submit"
+                                disabled={ !dirty }
                             >
                                 { t("tenants:editSelfOrganization.actions.save.label") }
                             </Button>)
