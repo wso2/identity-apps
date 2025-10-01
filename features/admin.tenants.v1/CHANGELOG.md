@@ -1,5 +1,15 @@
 # @wso2is/admin.tenants.v1
 
+## 2.29.21
+
+### Patch Changes
+
+- [#9224](https://github.com/wso2/identity-apps/pull/9224) [`283cfcff62939b2ab0576c3d8be6ac32b631688b`](https://github.com/wso2/identity-apps/commit/283cfcff62939b2ab0576c3d8be6ac32b631688b) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve self organization edit form
+
+- Updated dependencies [[`75adf6e940842fdf91ef2cc29bcc575d2d0ed7c2`](https://github.com/wso2/identity-apps/commit/75adf6e940842fdf91ef2cc29bcc575d2d0ed7c2)]:
+  - @wso2is/admin.core.v1@2.49.65
+  - @wso2is/admin.users.v1@2.36.32
+
 ## 2.29.20
 
 ### Patch Changes
