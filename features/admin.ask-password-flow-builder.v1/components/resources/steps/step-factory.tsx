@@ -38,9 +38,10 @@ export type StepFactoryPropsInterface = CommonStepFactoryPropsInterface & Identi
 export const StepFactory: FunctionComponent<StepFactoryPropsInterface> = ({
     resource,
     resourceId,
+    resources,
     ...rest
 }: StepFactoryPropsInterface & Node): ReactElement => {
-    return <CommonStepFactory resource={ resource } resourceId={ resourceId } { ...rest } />;
+    return <CommonStepFactory resource={ resource } resourceId={ resourceId } resources={ resources } { ...rest } />;
 };
 
 export default StepFactory;

@@ -37,6 +37,10 @@ export interface CommonStepFactoryPropsInterface extends Node, IdentifiableCompo
      * The resource properties.
      */
     resource: Step;
+    /**
+     * All the resources corresponding to the type.
+     */
+    resources?: Step[];
 }
 
 /**
@@ -47,6 +51,7 @@ export interface CommonStepFactoryPropsInterface extends Node, IdentifiableCompo
  */
 export const CommonStepFactory: FunctionComponent<CommonStepFactoryPropsInterface> = ({
     resource,
+    resources,
     "data-componentid": componentId = "step-factory",
     ...rest
 }: CommonStepFactoryPropsInterface): ReactElement => {
@@ -59,7 +64,7 @@ export const CommonStepFactory: FunctionComponent<CommonStepFactoryPropsInterfac
     }
 
     if (resource.type === StepTypes.Execution) {
-        return <Execution data-componentid={ componentId } resource={ resource } { ...rest } />;
+        return <Execution data-componentid={ componentId } resources={ resources } resource={ resource } { ...rest } />;
     }
 
     if (resource.type === StepTypes.End) {

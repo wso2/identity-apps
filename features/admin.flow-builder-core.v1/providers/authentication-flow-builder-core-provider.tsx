@@ -485,7 +485,11 @@ const FlowContextWrapper = ({
         setResourcePropertiesPanelHeading(
             <Stack direction="row" className="sub-title" gap={ 1 } alignItems="center">
                 <Avatar src={ resource?.display?.image } variant="square" />
-                <Typography variant="h6">{ startCase(resource?.type?.toLowerCase()) } Properties</Typography>
+                <Typography variant="h6">
+                    { resource?.display?.displayname
+                        ? startCase(resource.display.displayname)
+                        : startCase(resource?.type?.toLowerCase()) } Properties
+                </Typography>
             </Stack>
         );
         setLastInteractedElementInternal(resource);

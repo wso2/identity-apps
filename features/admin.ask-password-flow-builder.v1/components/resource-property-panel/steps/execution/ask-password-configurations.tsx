@@ -17,7 +17,6 @@
  */
 
 import Alert from "@oxygen-ui/react/Alert/Alert";
-import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Checkbox from "@oxygen-ui/react/Checkbox";
@@ -46,7 +45,8 @@ import {
     AskPasswordFormValuesInterface,
     VerificationOption
 } from "@wso2is/admin.server-configurations.v1/models/ask-password";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { CommonUtils } from "@wso2is/core/utils";
 import { RadioChild } from "@wso2is/forms";
 import isEmpty from "lodash-es/isEmpty";
@@ -375,36 +375,31 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
     };
 
     const handleRevertSuccess = () => {
-        // Show Oxygen UI Alert using Alert and AlertTitle components
-        dispatch({
-            payload: {
-                alert: (
-                    <Alert severity="success">
-                        <AlertTitle>
-                            { t("governanceConnectors:notifications.revertConnector.success.message") }
-                        </AlertTitle>
-                        { t("governanceConnectors:notifications.revertConnector.success.description") }
-                    </Alert>
+        dispatch(
+            addAlert({
+                description: t(
+                    "governanceConnectors:notifications.revertConnector.success.description"
+                ),
+                level: AlertLevels.SUCCESS,
+                message: t(
+                    "governanceConnectors:notifications.revertConnector.success.message"
                 )
-            },
-            type: "SHOW_OXYGEN_ALERT"
-        });
+            })
+        );
     };
 
     const handleRevertError = () => {
-        dispatch({
-            payload: {
-                alert: (
-                    <Alert severity="error">
-                        <AlertTitle>
-                            { t("governanceConnectors:notifications.revertConnector.error.message") }
-                        </AlertTitle>
-                        { t("governanceConnectors:notifications.revertConnector.error.description") }
-                    </Alert>
+        dispatch(
+            addAlert({
+                description: t(
+                    "governanceConnectors:notifications.revertConnector.error.description"
+                ),
+                level: AlertLevels.ERROR,
+                message: t(
+                    "governanceConnectors:notifications.revertConnector.error.message"
                 )
-            },
-            type: "SHOW_OXYGEN_ALERT"
-        });
+            })
+        );
     };
 
     const loadConnectorDetails = () => {
@@ -456,11 +451,6 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
     return (
         <Stack gap={ 1 } data-componentid={ componentId }>
             <Stack gap={ 2 }>
-                <Typography variant="h6">
-                    { t("extensions:manage.serverConfigurations.userOnboarding." +
-                            "inviteUserToSetPassword.subHeading") }
-                </Typography>
-                <Divider />
                 <Typography>
                     <Alert severity="info">
                         Allow users to set their own passwords during admin-initiated onboarding
