@@ -746,6 +746,14 @@ export interface ApplicationsNS {
                                     heading: string;
                                 };
                             };
+                            validation: {
+                                smsOTPRequiresMobileField: {
+                                    message: string;
+                                };
+                                emailOTPRequiresEmailField: {
+                                    message: string;
+                                };
+                            }
                         };
                     };
                     requestPathAuthenticators: {

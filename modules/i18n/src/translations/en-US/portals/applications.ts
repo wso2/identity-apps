@@ -1121,6 +1121,14 @@ export const applications: ApplicationsNS = {
                                         + "sent to their mobile.",
                                     heading: "Add SMS OTP login"
                                 }
+                            },
+                            validation: {
+                                smsOTPRequiresMobileField: {
+                                    message: "SMS OTP requires at least one mobile number field to be present in the flow."
+                                },
+                                emailOTPRequiresEmailField: {
+                                    message: "Email OTP requires at least one email field to be present in the flow."
+                                }
                             }
                         }
                     },

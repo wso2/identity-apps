@@ -69,6 +69,7 @@ const RegistrationFlowBuilderProvider: FC<RegistrationFlowBuilderProviderProps> 
             ResourceProperties={ ResourceProperties }
             flowType={ FlowTypes.REGISTRATION }
             screenTypes={ screensList }
+            validationConfig={ { isOTPValidationEnabled: true } }
         >
             <FlowContextWrapper>{ children }</FlowContextWrapper>
         </AuthenticationFlowBuilderCoreProvider>

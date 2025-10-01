@@ -30,6 +30,7 @@ import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, MouseEvent, ReactElement, useEffect } from "react";
 import ReorderableElement from "./reorderable-element";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
+import useOTPValidation from "../../../../hooks/use-otp-validation";
 import { Element } from "../../../../models/elements";
 import { EventTypes } from "../../../../models/extension";
 import PluginRegistry from "../../../../plugins/plugin-registry";
@@ -105,6 +106,8 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
     const stepId: string = useNodeId();
     const node: Pick<Node, "data"> = useNodesData(stepId);
     const { deleteElements, updateNodeData } = useReactFlow();
+
+    useOTPValidation((node as unknown) as Node);
 
     useEffect(() => {
         if ((data?.components as Element[])?.length <= 0) {

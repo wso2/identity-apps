@@ -20,9 +20,23 @@ import { Context, createContext } from "react";
 import Notification from "../models/notification";
 
 /**
+ * Configuration object for validation settings.
+ */
+export interface ValidationConfig {
+    /**
+     * Whether OTP validation is enabled.
+     */
+    isOTPValidationEnabled?: boolean;
+}
+
+/**
  * Context for managing validation state and notifications.
  */
 export interface ValidationContextProps {
+    /**
+     * Validation configuration settings.
+     */
+    validationConfig?: ValidationConfig;
     /**
      * Indicates whether the current state of the flow is valid.
      */
@@ -96,5 +110,8 @@ export const ValidationContext: Context<ValidationContextProps> = createContext<
     removeNotification: null,
     selectedNotification: null,
     setCurrentActiveTab: null,
-    setOpenValidationPanel: null
+    setOpenValidationPanel: null,
+    validationConfig: {
+        isOTPValidationEnabled: false
+    }
 });
