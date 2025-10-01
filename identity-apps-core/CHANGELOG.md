@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.3.14
+
+### Patch Changes
+
+- [#9226](https://github.com/wso2/identity-apps/pull/9226) [`c0c6f1661754ec47d17aa29ce70610b1e47f8d44`](https://github.com/wso2/identity-apps/commit/c0c6f1661754ec47d17aa29ce70610b1e47f8d44) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Add account portal url.
+
 ## 3.3.13
 
 ### Patch Changes

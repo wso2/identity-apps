@@ -1,5 +1,15 @@
 # @wso2is/admin.login-flow-builder.v1
 
+## 2.26.6
+
+### Patch Changes
+
+- [#9222](https://github.com/wso2/identity-apps/pull/9222) [`4010188d1004df5e2776634688c0447d8e81bb93`](https://github.com/wso2/identity-apps/commit/4010188d1004df5e2776634688c0447d8e81bb93) Thanks [@Sanjaya-Samudra](https://github.com/Sanjaya-Samudra)! - Add missing table header and i18n key for parameter in ACR-based 2FA template info modal
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.64
+  - @wso2is/admin.server-configurations.v1@2.35.78
+
 ## 2.26.5
 
 ### Patch Changes
