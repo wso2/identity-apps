@@ -101,7 +101,7 @@
                             "x": 1120,
                             "y": 420
                         },
-                        "configs": {
+                        "config": {
                             "isAutoLoginEnabled": "false",
                             "isFlowCompletionNotificationEnabled": "false"
                         },
@@ -258,7 +258,7 @@
                             "x": 1120,
                             "y": 420
                         },
-                        "configs": {
+                        "config": {
                             "isAutoLoginEnabled": "false",
                             "isFlowCompletionNotificationEnabled": "false"
                         },
@@ -372,7 +372,7 @@
                             "x": 1120,
                             "y": 420
                         },
-                        "configs": {
+                        "config": {
                             "isAutoLoginEnabled": "false",
                             "isFlowCompletionNotificationEnabled": "false"
                         },

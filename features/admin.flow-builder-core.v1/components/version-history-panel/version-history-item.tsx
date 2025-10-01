@@ -16,10 +16,9 @@
  * under the License.
  */
 
-/* eslint-disable-next-line no-restricted-imports */
-import { usePastelColorGenerator } from "@oxygen-ui/react";
 import Alert from "@oxygen-ui/react/Alert";
 import AlertTitle from "@oxygen-ui/react/AlertTitle";
+import Avatar from "@oxygen-ui/react/Avatar";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Card from "@oxygen-ui/react/Card";
@@ -83,40 +82,6 @@ interface MenuActionInterface {
      */
     onClick: () => void;
 }
-
-/**
- * Component to render author info with colored dot.
- */
-const AuthorInfo: FunctionComponent<{ userName: string }> = ({ userName }: { userName: string }) => {
-    const colorRandomizer: string = useMemo(() => {
-        return userName || "";
-    }, [ userName ]);
-
-    const { color } = usePastelColorGenerator(colorRandomizer);
-
-    return (
-        <Box sx={ { alignItems: "center", display: "flex", gap: "8px", marginTop: "4px" } }>
-            <Box
-                sx={ {
-                    backgroundColor: color,
-                    borderRadius: "50%",
-                    flexShrink: 0,
-                    height: "12px",
-                    width: "12px"
-                } }
-            />
-            <Typography
-                variant="caption"
-                color="text.secondary"
-                sx={ {
-                    fontSize: "11px"
-                } }
-            >
-                { userName }
-            </Typography>
-        </Box>
-    );
-};
 
 /**
  * Component to render individual history item card with menu.
@@ -278,11 +243,30 @@ const VersionHistoryItem: FunctionComponent<VersionHistoryItemPropsInterface> = 
                                 </Typography>
                             ) }
                             { showAuthorInfo && (
-                                <AuthorInfo
-                                    userName={
-                                        historyItem.author?.userName || t("flows:core.versionHistory.unknownAuthor")
-                                    }
-                                />
+                                <Box sx={ { alignItems: "center", display: "flex", gap: "5px", marginTop: "4px" } }>
+                                    <Avatar
+                                        randomBackgroundColor
+                                        backgroundColorRandomizer={
+                                            historyItem.author?.userName || t("flows:core.versionHistory.unknownAuthor")
+                                        }
+                                        sx={ {
+                                            fontSize: "0.5em",
+                                            height: "12px",
+                                            width: "12px"
+                                        } }
+                                    >
+                                        { (historyItem.author?.userName).charAt(0).toUpperCase() }
+                                    </Avatar>
+                                    <Typography
+                                        variant="caption"
+                                        color="text.secondary"
+                                        sx={ {
+                                            fontSize: "11px"
+                                        } }
+                                    >
+                                        { historyItem.author?.userName || t("flows:core.versionHistory.unknownAuthor") }
+                                    </Typography>
+                                </Box>
                             ) }
                         </Box>
                         { !isCurrentVersion && (

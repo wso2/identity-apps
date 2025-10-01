@@ -83,8 +83,11 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                                         };
 
                                         // If email verification is disabled, auto-login should also be disabled
+                                        // and account lock on creation should be enabled (activate immediately
+                                        // should be unchecked)
                                         if (!event.target.checked) {
                                             newConfigs.isAutoLoginEnabled = "false";
+                                            newConfigs.isAccountLockOnCreationEnabled = "true";
                                         }
 
                                         setFlowCompletionConfigs(newConfigs);
@@ -104,6 +107,7 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                             control={
                                 (<Checkbox
                                     checked={ configs?.isAccountLockOnCreationEnabled === "false" }
+                                    disabled={ configs?.isEmailVerificationEnabled !== "true" }
                                     onChange={ (event: ChangeEvent<HTMLInputElement>) => {
                                         const newConfigs: Record<string, unknown> = {
                                             ...configs,
@@ -133,10 +137,12 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                                 (<Checkbox
                                     checked={ configs?.isAutoLoginEnabled === "true" }
                                     disabled={
-                                        !((configs?.isEmailVerificationEnabled === "true" &&
-                                           configs?.isAccountLockOnCreationEnabled === "false") ||
-                                          (configs?.isEmailVerificationEnabled === "false" &&
-                                           configs?.isAccountLockOnCreationEnabled === "true"))
+                                        !(
+                                            (configs?.isEmailVerificationEnabled === "true" &&
+                                                configs?.isAccountLockOnCreationEnabled === "false") ||
+                                            (configs?.isEmailVerificationEnabled === "false" &&
+                                                configs?.isAccountLockOnCreationEnabled === "true")
+                                        )
                                     }
                                     onChange={ (event: ChangeEvent<HTMLInputElement>) => {
                                         setFlowCompletionConfigs({
