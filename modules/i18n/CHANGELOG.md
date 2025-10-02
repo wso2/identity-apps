@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.30.37
+
+### Patch Changes
+
+- [#9229](https://github.com/wso2/identity-apps/pull/9229) [`1dddee5274370fb9741941adaa55dae8a74758f5`](https://github.com/wso2/identity-apps/commit/1dddee5274370fb9741941adaa55dae8a74758f5) Thanks [@Sanjaya-Samudra](https://github.com/Sanjaya-Samudra)! - "fix: update workflow requests empty state message and sort i18n keys"
+
 ## 2.30.36
 
 ### Patch Changes
