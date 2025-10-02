@@ -871,6 +871,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             }
 
             return isReadOnly || isSubOrganization() || !hasMapping
+                || dataType === ClaimDataType.COMPLEX
                 || (
                     accountVerificationEnabled
                     && selfRegistrationEnabled
