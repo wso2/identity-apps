@@ -16,15 +16,20 @@
  * under the License.
  */
 
-import { Theme, useTheme } from "@mui/material/styles";
+import Box from "@oxygen-ui/react/Box";
 import Card from "@oxygen-ui/react/Card";
+import IconButton from "@oxygen-ui/react/IconButton";
+import Tooltip from "@oxygen-ui/react/Tooltip";
+import { GearIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Handle, Position } from "@xyflow/react";
-import React, { FC, ReactElement } from "react";
+import { Handle, Position, useNodeId } from "@xyflow/react";
+import React, { FC, MouseEvent, ReactElement } from "react";
 import ExecutionFactory from "./execution-factory";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
 import { CommonStepFactoryPropsInterface } from "../common-step-factory";
+
+import "./execution-minimal.scss";
 
 /**
  * Props interface of {@link ExecutionMinimal}
@@ -43,32 +48,61 @@ const ExecutionMinimal: FC<ExecutionMinimalPropsInterface> = ({
     ["data-componentid"]: componentId = "minimal-execution"
 }: ExecutionMinimalPropsInterface): ReactElement => {
     const { setLastInteractedResource, setLastInteractedStepId } = useAuthenticationFlowBuilderCore();
-    const theme: Theme = useTheme();
+    const stepId: string = useNodeId();
 
     return (
-        <Card
-            data-componentid={ componentId }
-            sx={ {
-                backgroundColor: (theme as any).colorSchemes.dark.palette.background.default,
-                color: (theme as any).colorSchemes.dark.palette.text.primary
-            } }
-            onClick={ () => {
-                setLastInteractedStepId(resource.id);
-                setLastInteractedResource(resource);
-            } }
-        >
-            <Handle
-                type="target"
-                id={ `${resource.id}${VisualFlowConstants.FLOW_BUILDER_PREVIOUS_HANDLE_SUFFIX}` }
-                position={ Position.Left }
-            />
-            <ExecutionFactory resource={ resource } />
-            <Handle
-                type="source"
-                id={ `${resource.id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}` }
-                position={ Position.Right }
-            />
-        </Card>
+        <div className="execution-minimal-step"  data-componentid={ componentId }>
+            <Box
+                display="flex"
+                justifyContent="space-between"
+                className="execution-minimal-step-action-panel"
+            >
+                <Tooltip
+                    title={
+                        // TODO: Add i18n
+                        "Configure"
+                    }
+                >
+                    <IconButton
+                        size="small"
+                        onClick={ (_: MouseEvent<HTMLButtonElement>) => {
+                            setLastInteractedStepId(stepId);
+                            setLastInteractedResource({
+                                ...resource,
+                                config: {
+                                    ...(resource?.config || {}),
+                                    ...((typeof resource.data?.config === "object" &&
+                                        resource.data?.config !== null) ? resource.data.config : {})
+                                }
+                            });
+                        } }
+                        className="execution-minimal-step-action"
+                    >
+                        <GearIcon />
+                    </IconButton>
+                </Tooltip>
+            </Box>
+            <Card
+                data-componentid={ componentId }
+                className="execution-minimal-step-content"
+                onClick={ () => {
+                    setLastInteractedStepId(resource.id);
+                    setLastInteractedResource(resource);
+                } }
+            >
+                <Handle
+                    type="target"
+                    id={ `${resource.id}${VisualFlowConstants.FLOW_BUILDER_PREVIOUS_HANDLE_SUFFIX}` }
+                    position={ Position.Left }
+                />
+                <ExecutionFactory resource={ resource } />
+                <Handle
+                    type="source"
+                    id={ `${resource.id}${VisualFlowConstants.FLOW_BUILDER_NEXT_HANDLE_SUFFIX}` }
+                    position={ Position.Right }
+                />
+            </Card>
+        </div>
     );
 };
 

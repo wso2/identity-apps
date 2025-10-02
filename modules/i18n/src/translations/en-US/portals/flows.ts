@@ -97,6 +97,9 @@ export const flows: flowsNS = {
             }
         },
         executions: {
+            landing:{
+                message: "Configure the {{executor}} settings and publish to apply the changes."
+            },
             names: {
                 apple: "Apple",
                 confirmationCode: "Confirmation Code",

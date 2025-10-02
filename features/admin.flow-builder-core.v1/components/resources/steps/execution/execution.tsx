@@ -18,12 +18,13 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import cloneDeep from "lodash-es/cloneDeep";
-import React, { FC, ReactElement, memo, useMemo } from "react";
+import React, { FC, ReactElement, memo, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import ExecutionMinimal from "./execution-minimal";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
 import useValidationStatus from "../../../../hooks/use-validation-status";
+import Notification, { NotificationType } from "../../../../models/notification";
 import { ExecutionStepViewTypes, ExecutionTypes, Step } from "../../../../models/steps";
 import { ValidationErrorBoundary } from "../../../validation-panel/validation-error-boundary";
 import { CommonStepFactoryPropsInterface } from "../common-step-factory";
@@ -46,7 +47,9 @@ const Execution: FC<ExecutionPropsInterface> = memo(({
     resources
 }: ExecutionPropsInterface): ReactElement => {
     const { setLastInteractedResource, setLastInteractedStepId } = useAuthenticationFlowBuilderCore();
-    const { setOpenValidationPanel, setSelectedNotification } = useValidationStatus();
+    const {
+        addNotification, removeNotification, setOpenValidationPanel, setSelectedNotification
+    } = useValidationStatus();
     const { t } = useTranslation();
 
     const components: Element[] = data?.components as Element[] || [];
@@ -122,6 +125,33 @@ const Execution: FC<ExecutionPropsInterface> = memo(({
             data
         }) as Step;
     }, [ data, resources, JSON.stringify(data?.action) ]);
+
+    useEffect(() => {
+
+        // Executors that need to show the landing info notification.
+        const executorsWithLandingInfo: ExecutionTypes[] = [
+            ExecutionTypes.ConfirmationCode
+        ];
+
+        if (executorsWithLandingInfo.includes((data?.action as any)?.executor?.name)) {
+
+            const infoNotification: Notification = new Notification(
+                `${id}_info_landing`,
+                t("flows:core.executions.landing.message", {
+                    executor: (fullResource?.display as any)?.displayname || fullResource.display.label
+                }),
+                NotificationType.INFO
+            );
+
+            addNotification(infoNotification);
+
+            return () => {
+                // Remove the notification on unmount.
+                removeNotification(infoNotification.getId());
+            };
+        }
+    }, [ fullResource ]);
+
 
     /**
      * Resolves the execution name based on the type.

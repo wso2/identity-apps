@@ -24,7 +24,9 @@ import AuthenticationFlowBuilderCoreProvider
 import {
     GovernanceConnectorInterface,
     GovernanceConnectorUtils,
+    ServerConfigurationsConstants,
     UpdateGovernanceConnectorConfigInterface,
+    getConnectorDetails,
     updateGovernanceConnector
 } from "@wso2is/admin.server-configurations.v1";
 import {
@@ -171,6 +173,24 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
         );
     };
 
+    /*
+    * Load connector details.
+    */
+    const loadConnectorDetails = () => {
+        getConnectorDetails(
+            ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
+            ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID
+        ).then((response: GovernanceConnectorInterface) => {
+            // Set connector categoryID if not available
+            if (!response?.categoryId) {
+                response.categoryId = ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID;
+            }
+            setConnector(response);
+        }).catch(() => {
+            setConnector(undefined);
+        });
+    };
+
     /**
      * Handles the confirmation code step publish action.
      *
@@ -213,6 +233,7 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
                 handleUpdateError(error);
             }).finally(() => {
                 // Reset the updated state.
+                loadConnectorDetails();
                 setIsInvitedUserRegistrationConfigUpdated(false);
             });
     };

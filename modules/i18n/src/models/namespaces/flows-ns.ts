@@ -100,6 +100,9 @@ export interface flowsNS {
             };
         };
         executions: {
+            landing: {
+                message: string;
+            },
             names: {
                 apple: string;
                 confirmationCode: string;

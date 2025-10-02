@@ -18,7 +18,9 @@
 
 
 import Box from "@oxygen-ui/react/Box";
+import Button  from "@oxygen-ui/react/Button";
 import Stack from "@oxygen-ui/react/Stack";
+import Typography from "@oxygen-ui/react/Typography";
 import { useRequiredScopes } from "@wso2is/access-control";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -27,12 +29,19 @@ import {
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
 import {
     GovernanceConnectorInterface,
+    RevertGovernanceConnectorConfigInterface,
     ServerConfigurationsConstants
 } from "@wso2is/admin.server-configurations.v1";
-import { getConnectorDetails } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import {
+    getConnectorDetails,
+    revertGovernanceConnectorProperties
+} from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { AskPasswordConfigurations } from "./ask-password-configurations";
 import useAskPasswordFlowBuilder from "../../../../hooks/use-ask-password-flow-builder";
 
@@ -57,6 +66,9 @@ const ConfirmationCodeProperties: FunctionComponent<ConfirmationCodePropertiesPr
         setConnector
     } = useAskPasswordFlowBuilder();
 
+    const dispatch: Dispatch = useDispatch();
+    const { t } = useTranslation();
+
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const hasConnectorUpdatePermission: boolean = useRequiredScopes(featureConfig.governanceConnectors.scopes?.update);
 
@@ -78,6 +90,81 @@ const ConfirmationCodeProperties: FunctionComponent<ConfirmationCodePropertiesPr
         }
     }, [ connector, setConnector ]);
 
+
+    const handleRevertSuccess = () => {
+        dispatch(
+            addAlert({
+                description: t(
+                    "governanceConnectors:notifications.revertConnector.success.description"
+                ),
+                level: AlertLevels.SUCCESS,
+                message: t(
+                    "governanceConnectors:notifications.revertConnector.success.message"
+                )
+            })
+        );
+    };
+
+    const handleRevertError = () => {
+        dispatch(
+            addAlert({
+                description: t(
+                    "governanceConnectors:notifications.revertConnector.error.description"
+                ),
+                level: AlertLevels.ERROR,
+                message: t(
+                    "governanceConnectors:notifications.revertConnector.error.message"
+                )
+            })
+        );
+    };
+
+    const loadConnectorDetails = () => {
+        getConnectorDetails(
+            ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
+            ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID
+        ).then((response: GovernanceConnectorInterface) => {
+            // Set connector categoryID if not available
+            if (!response?.categoryId) {
+                response.categoryId = ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID;
+            }
+            setConnector(response);
+        }).catch(() => {
+            setConnector(undefined);
+        });
+    };
+
+    const onAskPasswordRevert = () => {
+        const revertRequest: RevertGovernanceConnectorConfigInterface = {
+            properties: [
+                ServerConfigurationsConstants.ASK_PASSWORD_ENABLE,
+                ServerConfigurationsConstants.ASK_PASSWORD_LOCK_ON_CREATION,
+                ServerConfigurationsConstants.ASK_PASSWORD_ACCOUNT_ACTIVATION,
+                ServerConfigurationsConstants.ASK_PASSWORD_OTP_EXPIRY_TIME,
+                ServerConfigurationsConstants.ASK_PASSWORD_EMAIL_OTP,
+                ServerConfigurationsConstants.ASK_PASSWORD_SMS_OTP,
+                ServerConfigurationsConstants.ASK_PASSWORD_OTP_USE_LOWERCASE,
+                ServerConfigurationsConstants.ASK_PASSWORD_OTP_USE_NUMERIC,
+                ServerConfigurationsConstants.ASK_PASSWORD_OTP_USE_UPPERCASE,
+                ServerConfigurationsConstants.ASK_PASSWORD_OTP_LENGTH
+            ]
+        };
+
+        revertGovernanceConnectorProperties(
+            ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
+            ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID,
+            revertRequest
+        )
+            .then(() => {
+                handleRevertSuccess();
+            })
+            .catch(() => {
+                handleRevertError();
+            }).finally(() => {
+                loadConnectorDetails();
+            });
+    };
+
     return (
         <Stack gap={ 1 } data-componentid={ componentId }>
             <Box
@@ -97,6 +184,31 @@ const ConfirmationCodeProperties: FunctionComponent<ConfirmationCodePropertiesPr
                     isSubmitting={ false }
                     data-componentid="confirmation-code-properties"
                 />
+            </Box>
+            <Box
+                sx={ {
+                    alignItems: "center",
+                    display: "flex",
+                    justifyContent: "center",
+                    marginBottom: "16px"
+                } }
+            >
+                <Button
+                    variant="outlined"
+                    onClick={ () => { onAskPasswordRevert(); } }
+                    color="error"
+                    sx={ {
+                        borderRadius: "var(--oxygen-shape-borderRadius)",
+                        height: "40px",
+                        marginTop: "16px",
+                        minWidth: "40px",
+                        width: "90%"
+                    } }
+                >
+                    <Typography variant="body1" color="error" sx={ { textAlign: "center", width: "100%" } }>
+                        { t("governanceConnectors:dangerZone.heading") }
+                    </Typography>
+                </Button>
             </Box>
         </Stack>
     );

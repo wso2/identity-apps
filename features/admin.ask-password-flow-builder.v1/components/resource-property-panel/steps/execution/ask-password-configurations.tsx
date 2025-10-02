@@ -16,45 +16,43 @@
  * under the License.
  */
 
+import Accordion from "@oxygen-ui/react/Accordion";
+import AccordionDetails from "@oxygen-ui/react/AccordionDetails";
+import AccordionSummary from "@oxygen-ui/react/AccordionSummary/AccordionSummary";
 import Alert from "@oxygen-ui/react/Alert/Alert";
 import Box from "@oxygen-ui/react/Box";
-import Button from "@oxygen-ui/react/Button";
 import Checkbox from "@oxygen-ui/react/Checkbox";
 import Chip from "@oxygen-ui/react/Chip";
-import Divider from "@oxygen-ui/react/Divider";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
+import FormHelperText from "@oxygen-ui/react/FormHelperText/FormHelperText";
 import Radio from "@oxygen-ui/react/Radio";
 import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import Stack from "@oxygen-ui/react/Stack/Stack";
 import Switch from "@oxygen-ui/react/Switch";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
+import { ChevronDownIcon } from "@oxygen-ui/react-icons";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import {
     AskPasswordFormConstants,
     ConnectorPropertyInterface,
     GovernanceConnectorConstants,
     GovernanceConnectorInterface,
-    RevertGovernanceConnectorConfigInterface,
-    ServerConfigurationsConstants,
-    getConnectorDetails,
-    revertGovernanceConnectorProperties
+    ServerConfigurationsConstants
 } from "@wso2is/admin.server-configurations.v1";
 import {
     AskPasswordFormUpdatableConfigsInterface,
     AskPasswordFormValuesInterface,
     VerificationOption
 } from "@wso2is/admin.server-configurations.v1/models/ask-password";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import { RadioChild } from "@wso2is/forms";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import "./ask-password-configurations.scss";
-import { Dispatch } from "redux";
 import useAskPasswordFlowBuilder from "../../../../hooks/use-ask-password-flow-builder";
 
 /**
@@ -96,10 +94,8 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
     } = props;
 
     const { t } = useTranslation();
-    const dispatch: Dispatch = useDispatch();
 
     const {
-        setConnector,
         setIsInvitedUserRegistrationConfigUpdated,
         setInvitedUserRegistrationConfig
     } = useAskPasswordFlowBuilder();
@@ -116,6 +112,7 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
     const [ enableAccountActivationEmail, setEnableAccountActivationEmail ] = useState<boolean>(false);
     const [ enableAccountLockOnCreation, setEnableAccountLockOnCreation ] = useState<boolean>(false);
     const [ updatedConfigs, setUpdatedConfigs ] = useState<AskPasswordFormUpdatableConfigsInterface>(undefined);
+    const [ otpAccordionExpanded, setOtpAccordionExpanded ] = useState<boolean>(false);
 
     const showSmsOtpAskPasswordFeatureStatusChip: boolean =
             useSelector((state: AppState) => state?.config?.ui?.showSmsOtpAskPasswordFeatureStatusChip);
@@ -138,6 +135,15 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
             value: VerificationOption.SMS_OTP
         }
     ];
+
+    // Sync expansion with askPasswordOption
+    useEffect(() => {
+        if (askPasswordOption !== VerificationOption.EMAIL_LINK) {
+            setOtpAccordionExpanded(true);
+        } else {
+            setOtpAccordionExpanded(false);
+        }
+    }, [ askPasswordOption ]);
 
     /* Update states when initial values change
     *
@@ -374,80 +380,6 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
         );
     };
 
-    const handleRevertSuccess = () => {
-        dispatch(
-            addAlert({
-                description: t(
-                    "governanceConnectors:notifications.revertConnector.success.description"
-                ),
-                level: AlertLevels.SUCCESS,
-                message: t(
-                    "governanceConnectors:notifications.revertConnector.success.message"
-                )
-            })
-        );
-    };
-
-    const handleRevertError = () => {
-        dispatch(
-            addAlert({
-                description: t(
-                    "governanceConnectors:notifications.revertConnector.error.description"
-                ),
-                level: AlertLevels.ERROR,
-                message: t(
-                    "governanceConnectors:notifications.revertConnector.error.message"
-                )
-            })
-        );
-    };
-
-    const loadConnectorDetails = () => {
-        getConnectorDetails(
-            ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
-            ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID
-        ).then((response: GovernanceConnectorInterface) => {
-            // Set connector categoryID if not available
-            if (!response?.categoryId) {
-                response.categoryId = ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID;
-            }
-            setConnector(response);
-        }).catch(() => {
-            setConnector(undefined);
-        });
-    };
-
-    const onAskPasswordRevert = () => {
-        const revertRequest: RevertGovernanceConnectorConfigInterface = {
-            properties: [
-                ServerConfigurationsConstants.ASK_PASSWORD_ENABLE,
-                ServerConfigurationsConstants.ASK_PASSWORD_LOCK_ON_CREATION,
-                ServerConfigurationsConstants.ASK_PASSWORD_ACCOUNT_ACTIVATION,
-                ServerConfigurationsConstants.ASK_PASSWORD_OTP_EXPIRY_TIME,
-                ServerConfigurationsConstants.ASK_PASSWORD_EMAIL_OTP,
-                ServerConfigurationsConstants.ASK_PASSWORD_SMS_OTP,
-                ServerConfigurationsConstants.ASK_PASSWORD_OTP_USE_LOWERCASE,
-                ServerConfigurationsConstants.ASK_PASSWORD_OTP_USE_NUMERIC,
-                ServerConfigurationsConstants.ASK_PASSWORD_OTP_USE_UPPERCASE,
-                ServerConfigurationsConstants.ASK_PASSWORD_OTP_LENGTH
-            ]
-        };
-
-        revertGovernanceConnectorProperties(
-            ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
-            ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID,
-            revertRequest
-        )
-            .then(() => {
-                handleRevertSuccess();
-            })
-            .catch(() => {
-                handleRevertError();
-            }).finally(() => {
-                loadConnectorDetails();
-            });
-    };
-
     return (
         <Stack gap={ 1 } data-componentid={ componentId }>
             <Stack gap={ 2 }>
@@ -494,8 +426,8 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
                         </Box>
                     </Stack>
                     <br/>
-                    <Stack direction="row" spacing={ 2 }>
-                        <Typography variant="body1" sx={ { maxWidth: 180, minWidth: 100 } }>
+                    <Stack direction="column" spacing={ 2 }>
+                        <Typography variant="body1" sx={ { minWidth: 100 } }>
                             { t("extensions:manage.serverConfigurations.userOnboarding." +
                                 "inviteUserToSetPassword.form.fields.expiryTime.label") }
                         </Typography>
@@ -531,6 +463,10 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
                                     mins
                             </Typography>
                         </Stack>
+                        <FormHelperText>
+                            { t("extensions:manage.serverConfigurations.userOnboarding." +
+                                    "inviteUserToSetPassword.form.fields.expiryTime.hint") }
+                        </FormHelperText>
                     </Stack>
                     <FormControlLabel
                         control={
@@ -550,6 +486,10 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
                         label={ t("extensions:manage.serverConfigurations.userOnboarding." +
                             "inviteUserToSetPassword.form.fields.enableAccountActivationEmail.label") }
                     />
+                    <FormHelperText>
+                        { t("extensions:manage.serverConfigurations.userOnboarding." +
+                                "inviteUserToSetPassword.form.fields.enableAccountActivationEmail.hint") }
+                    </FormHelperText>
                     <FormControlLabel
                         control={
                             (<Checkbox
@@ -568,134 +508,148 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
                         label={ t("extensions:manage.serverConfigurations.userOnboarding." +
                             "inviteUserToSetPassword.form.fields.enableAccountLockOnCreation.label") }
                     />
-                    <Divider/>
-                    <Typography variant="body1">
+                    <FormHelperText>
                         { t("extensions:manage.serverConfigurations.userOnboarding." +
-                            "inviteUserToSetPassword.otpConfigHeading") }
-                        { showSmsOtpAskPasswordFeatureStatusChip && (
-                            <Chip
-                                className="oxygen-menu-item-chip oxygen-chip-beta"
-                                sx={ { ml: 1 } }
-                            />
-                        ) }
-                    </Typography>
-                    <FormControlLabel
-                        control={
-                            (<Checkbox
-                                aria-label="otpUseUppercase"
-                                name="otpUseUppercase"
-                                checked={ isUpperCaseEnabled }
-                                onChange={ (event: React.ChangeEvent<HTMLInputElement>) =>
-                                    setIsUpperCaseEnabled(event.target.checked) }
-                                required={ false }
-                                readOnly={ readOnly }
-                                disabled={ !isInviteUserToSetPasswordEnabled
-                                    || (isUpperCaseEnabled && !isLowerCaseEnabled && !isNumericEnabled)
-                                    || askPasswordOption === VerificationOption.EMAIL_LINK }
-                                data-componentid={ `${ componentId }-sms-otp-uppercase` }
-                            />)
-                        }
-                        label={ t("extensions:manage.serverConfigurations.userOnboarding." +
-                            "inviteUserToSetPassword.form.fields.askPasswordOtpUseUppercase.label") }
-                    />
-                    <FormControlLabel
-                        control={
-                            (<Checkbox
-                                aria-label="otpUseLowercase"
-                                name="otpUseLowercase"
-                                checked={ isLowerCaseEnabled }
-                                onChange={ (event: React.ChangeEvent<HTMLInputElement>) =>
-                                    setIsLowerCaseEnabled(event.target.checked) }
-                                required={ false }
-                                readOnly={ readOnly }
-                                disabled={ !isInviteUserToSetPasswordEnabled
-                                    || (!isUpperCaseEnabled && isLowerCaseEnabled && !isNumericEnabled)
-                                    || askPasswordOption === VerificationOption.EMAIL_LINK }
-                                data-componentid={ `${ componentId }-sms-otp-lowercase` }
-                            />)
-                        }
-                        label={ t("extensions:manage.serverConfigurations.userOnboarding." +
-                            "inviteUserToSetPassword.form.fields.askPasswordOtpUseLowercase.label") }
-                    />
-                    <FormControlLabel
-                        control={
-                            (<Checkbox
-                                aria-label="otpUseNumeric"
-                                name="otpUseNumeric"
-                                checked={ isNumericEnabled }
-                                onChange={ (event: React.ChangeEvent<HTMLInputElement>) =>
-                                    setIsNumericEnabled(event.target.checked) }
-                                required={ false }
-                                readOnly={ readOnly }
-                                disabled={ !isInviteUserToSetPasswordEnabled
-                                    || (!isUpperCaseEnabled && !isLowerCaseEnabled && isNumericEnabled)
-                                    || askPasswordOption === VerificationOption.EMAIL_LINK }
-                                data-componentid={ `${ componentId }-sms-otp-numeric` }
-                            />)
-                        }
-                        label={ t("extensions:manage.serverConfigurations.userOnboarding." +
-                            "inviteUserToSetPassword.form.fields.askPasswordOtpUseNumeric.label") }
-                    />
+                                "inviteUserToSetPassword.form.fields.enableAccountLockOnCreation.hint") }
+                    </FormHelperText>
                     <br/>
-                    <Stack direction="row" spacing={ 2 }>
-                        <Typography variant="body1" sx={ { alignSelf: "center", maxWidth: 180, minWidth: 150 } }>
-                            { t("extensions:manage.serverConfigurations.userOnboarding." +
-                                "inviteUserToSetPassword.form.fields.askPasswordOtpLength.label") }
-                        </Typography>
-                        <Stack direction="row" spacing={ 0.5 }>
-                            <TextField
-                                component="text"
-                                type="number"
-                                aria-label="otpLength"
-                                name="otpLength"
-                                value={ otpLength }
-                                onChange={ (event: React.ChangeEvent<HTMLInputElement>) =>
-                                    setOtpLength(event.target.value) }
-                                placeholder="OTP Length"
-                                required={ false }
-                                inputProps={ {
-                                    max: GovernanceConnectorConstants
-                                        .ASK_PASSWORD_FORM_FIELD_CONSTRAINTS.OTP_CODE_LENGTH_MAX_VALUE,
-                                    maxLength: GovernanceConnectorConstants
-                                        .ASK_PASSWORD_FORM_FIELD_CONSTRAINTS.OTP_CODE_LENGTH_MAX_LENGTH,
-                                    min: GovernanceConnectorConstants
-                                        .ASK_PASSWORD_FORM_FIELD_CONSTRAINTS.OTP_CODE_LENGTH_MIN_VALUE,
-                                    minLength: GovernanceConnectorConstants
-                                        .ASK_PASSWORD_FORM_FIELD_CONSTRAINTS.OTP_CODE_LENGTH_MIN_LENGTH
-                                } }
-                                disabled={ !isInviteUserToSetPasswordEnabled
-                                    || askPasswordOption === VerificationOption.EMAIL_LINK  || readOnly }
-                                data-componentid={ `${ componentId }-otp-length` }
-                            />
-                            <Typography
-                                variant="body2"
-                                color="text.secondary"
-                                sx={ { alignSelf: "center" } }
-                            >
-                                characters
-                            </Typography>
-                        </Stack>
-                    </Stack>
-                </Stack>
-                <br/>
-                <Box display="flex" alignItems="center">
-                    <Alert
-                        severity="error"
-                        sx={ { alignItems: "center", display: "flex", flex: 1, mb: 0 } }
-                        action={
-                            (<Button
-                                color="inherit"
-                                size="small"
-                                sx={ { alignSelf: "center" } }
-                                onClick={ () => { onAskPasswordRevert(); } }
-                            >
-                                Revert
-                            </Button>)
-                        }
+                    <Accordion
+                        expanded={ otpAccordionExpanded }
+                        onChange={ () => setOtpAccordionExpanded((prev: boolean) => !prev) }
                     >
-                        { t("governanceConnectors:dangerZone.heading") }
-                    </Alert>
-                </Box>
+                        <AccordionSummary
+                            expandIcon={ <ChevronDownIcon /> }
+                            aria-controls="otp-config-content"
+                            id="otp-config-header"
+                        >
+                            <Typography variant="h6">
+                                { t("extensions:manage.serverConfigurations.userOnboarding." +
+                                    "inviteUserToSetPassword.otpConfigHeading") }
+                                { showSmsOtpAskPasswordFeatureStatusChip && (
+                                    <Chip
+                                        className="oxygen-menu-item-chip oxygen-chip-beta"
+                                        sx={ { ml: 1 } }
+                                    />
+                                ) }
+                            </Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                            <FormControlLabel
+                                control={
+                                    (<Checkbox
+                                        aria-label="otpUseUppercase"
+                                        name="otpUseUppercase"
+                                        checked={ isUpperCaseEnabled }
+                                        onChange={ (event: React.ChangeEvent<HTMLInputElement>) =>
+                                            setIsUpperCaseEnabled(event.target.checked) }
+                                        required={ false }
+                                        readOnly={ readOnly }
+                                        disabled={ !isInviteUserToSetPasswordEnabled
+                                            || (isUpperCaseEnabled && !isLowerCaseEnabled && !isNumericEnabled)
+                                            || askPasswordOption === VerificationOption.EMAIL_LINK }
+                                        data-componentid={ `${ componentId }-sms-otp-uppercase` }
+                                    />)
+                                }
+                                label={ t("extensions:manage.serverConfigurations.userOnboarding." +
+                                    "inviteUserToSetPassword.form.fields.askPasswordOtpUseUppercase.label") }
+                            />
+                            <FormHelperText>
+                                { t("extensions:manage.serverConfigurations.userOnboarding." +
+                                        "inviteUserToSetPassword.form.fields.askPasswordOtpUseUppercase.hint") }
+                            </FormHelperText>
+                            <FormControlLabel
+                                control={
+                                    (<Checkbox
+                                        aria-label="otpUseLowercase"
+                                        name="otpUseLowercase"
+                                        checked={ isLowerCaseEnabled }
+                                        onChange={ (event: React.ChangeEvent<HTMLInputElement>) =>
+                                            setIsLowerCaseEnabled(event.target.checked) }
+                                        required={ false }
+                                        readOnly={ readOnly }
+                                        disabled={ !isInviteUserToSetPasswordEnabled
+                                            || (!isUpperCaseEnabled && isLowerCaseEnabled && !isNumericEnabled)
+                                            || askPasswordOption === VerificationOption.EMAIL_LINK }
+                                        data-componentid={ `${ componentId }-sms-otp-lowercase` }
+                                    />)
+                                }
+                                label={ t("extensions:manage.serverConfigurations.userOnboarding." +
+                                    "inviteUserToSetPassword.form.fields.askPasswordOtpUseLowercase.label") }
+                            />
+                            <FormHelperText>
+                                { t("extensions:manage.serverConfigurations.userOnboarding." +
+                                        "inviteUserToSetPassword.form.fields.askPasswordOtpUseLowercase.hint") }
+                            </FormHelperText>
+                            <FormControlLabel
+                                control={
+                                    (<Checkbox
+                                        aria-label="otpUseNumeric"
+                                        name="otpUseNumeric"
+                                        checked={ isNumericEnabled }
+                                        onChange={ (event: React.ChangeEvent<HTMLInputElement>) =>
+                                            setIsNumericEnabled(event.target.checked) }
+                                        required={ false }
+                                        readOnly={ readOnly }
+                                        disabled={ !isInviteUserToSetPasswordEnabled
+                                            || (!isUpperCaseEnabled && !isLowerCaseEnabled && isNumericEnabled)
+                                            || askPasswordOption === VerificationOption.EMAIL_LINK }
+                                        data-componentid={ `${ componentId }-sms-otp-numeric` }
+                                    />)
+                                }
+                                label={ t("extensions:manage.serverConfigurations.userOnboarding." +
+                                    "inviteUserToSetPassword.form.fields.askPasswordOtpUseNumeric.label") }
+                            />
+                            <FormHelperText>
+                                { t("extensions:manage.serverConfigurations.userOnboarding." +
+                                        "inviteUserToSetPassword.form.fields.askPasswordOtpUseNumeric.hint") }
+                            </FormHelperText>
+                            <br/>
+                            <Stack direction="column" spacing={ 2 }>
+                                <Typography variant="body1" sx={ { minWidth: 100 } }>
+                                    { t("extensions:manage.serverConfigurations.userOnboarding." +
+                                        "inviteUserToSetPassword.form.fields.askPasswordOtpLength.label") }
+                                </Typography>
+                                <Stack direction="row" spacing={ 0.5 }>
+                                    <TextField
+                                        component="text"
+                                        type="number"
+                                        aria-label="otpLength"
+                                        name="otpLength"
+                                        value={ otpLength }
+                                        onChange={ (event: React.ChangeEvent<HTMLInputElement>) =>
+                                            setOtpLength(event.target.value) }
+                                        placeholder="OTP Length"
+                                        required={ false }
+                                        inputProps={ {
+                                            max: GovernanceConnectorConstants
+                                                .ASK_PASSWORD_FORM_FIELD_CONSTRAINTS.OTP_CODE_LENGTH_MAX_VALUE,
+                                            maxLength: GovernanceConnectorConstants
+                                                .ASK_PASSWORD_FORM_FIELD_CONSTRAINTS.OTP_CODE_LENGTH_MAX_LENGTH,
+                                            min: GovernanceConnectorConstants
+                                                .ASK_PASSWORD_FORM_FIELD_CONSTRAINTS.OTP_CODE_LENGTH_MIN_VALUE,
+                                            minLength: GovernanceConnectorConstants
+                                                .ASK_PASSWORD_FORM_FIELD_CONSTRAINTS.OTP_CODE_LENGTH_MIN_LENGTH
+                                        } }
+                                        disabled={ !isInviteUserToSetPasswordEnabled
+                                            || askPasswordOption === VerificationOption.EMAIL_LINK  || readOnly }
+                                        data-componentid={ `${ componentId }-otp-length` }
+                                    />
+                                    <Typography
+                                        variant="body2"
+                                        color="text.secondary"
+                                        sx={ { alignSelf: "center" } }
+                                    >
+                                        characters
+                                    </Typography>
+                                </Stack>
+                                <FormHelperText>
+                                    { t("extensions:manage.serverConfigurations.userOnboarding." +
+                                            "inviteUserToSetPassword.form.fields.askPasswordOtpLength.hint") }
+                                </FormHelperText>
+                            </Stack>
+                        </AccordionDetails>
+                    </Accordion>
+                </Stack>
             </Stack>
         </Stack>
     );
