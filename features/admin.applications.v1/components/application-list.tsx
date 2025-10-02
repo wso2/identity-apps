@@ -615,8 +615,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
             return (
                 <EmptyPlaceholder
                     className={ !isRenderedOnPortal ? "list-placeholder mr-0" : "" }
-                    action={ (onEmptyListPlaceholderActionClick
-                        && organizationType !== OrganizationType.SUBORGANIZATION)
+                    action={ onEmptyListPlaceholderActionClick
                         && (
                             <Show
                                 when={ featureConfig?.applications?.scopes?.create }
