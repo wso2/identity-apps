@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.30.36
+
+### Patch Changes
+
+- [#9213](https://github.com/wso2/identity-apps/pull/9213) [`c7ecb39111237521f9fff348cc23d84abb386ccc`](https://github.com/wso2/identity-apps/commit/c7ecb39111237521f9fff348cc23d84abb386ccc) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Support formatted workflow-request properties
+
 ## 2.30.35
 
 ### Patch Changes

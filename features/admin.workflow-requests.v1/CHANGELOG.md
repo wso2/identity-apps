@@ -1,5 +1,16 @@
 # @wso2is/admin.workflow-requests.v1
 
+## 1.0.8
+
+### Patch Changes
+
+- [#9213](https://github.com/wso2/identity-apps/pull/9213) [`c7ecb39111237521f9fff348cc23d84abb386ccc`](https://github.com/wso2/identity-apps/commit/c7ecb39111237521f9fff348cc23d84abb386ccc) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Support formatted workflow-request properties
+
+- Updated dependencies [[`c7ecb39111237521f9fff348cc23d84abb386ccc`](https://github.com/wso2/identity-apps/commit/c7ecb39111237521f9fff348cc23d84abb386ccc)]:
+  - @wso2is/common.workflow-approvals.v1@1.0.8
+  - @wso2is/i18n@2.30.36
+  - @wso2is/admin.core.v1@2.49.66
+
 ## 1.0.7
 
 ### Patch Changes
