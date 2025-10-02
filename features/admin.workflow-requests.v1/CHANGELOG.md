@@ -1,5 +1,11 @@
 # @wso2is/admin.workflow-requests.v1
 
+## 1.0.9
+
+### Patch Changes
+
+- [#9235](https://github.com/wso2/identity-apps/pull/9235) [`f5bb0acc99be75738fbe49172b079c1728870ddb`](https://github.com/wso2/identity-apps/commit/f5bb0acc99be75738fbe49172b079c1728870ddb) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update workflow requests status colors
+
 ## 1.0.8
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.25.6
+
+### Patch Changes
+
+- [#9240](https://github.com/wso2/identity-apps/pull/9240) [`c087eea2da8b97a9e93ab9863b7e1b7e6c76f0fc`](https://github.com/wso2/identity-apps/commit/c087eea2da8b97a9e93ab9863b7e1b7e6c76f0fc) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Fix isSuperTenantRequiredInUrl not properly defined issue
+
 ## 2.25.5
 
 ### Patch Changes
