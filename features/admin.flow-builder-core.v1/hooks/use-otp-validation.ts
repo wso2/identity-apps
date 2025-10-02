@@ -203,6 +203,18 @@ const useOTPValidation = (node: Node): void => {
         };
     }, []);
 
+    /**
+     * Get all ancestors only once and memoize the result.
+     * This avoids recalculating ancestors multiple times during validation checks.
+     */
+    const ancestors: Node[] = useMemo(() => {
+        if (!node?.id) return [];
+
+        return getAllAncestors(node, nodes, edges);
+    }, [ node?.id, nodes, edges ]);
+
+    const hasAncestors: boolean = ancestors?.length > 0;
+
     /*
      * Handle validation updates in useEffect to avoid setState during render
      */
@@ -214,7 +226,7 @@ const useOTPValidation = (node: Node): void => {
         // Email OTP validation
         removeNotification(emailNotificationId);
 
-        if (containsEmailOTP && !hasEmailFieldInAncestors) {
+        if (containsEmailOTP && !hasEmailFieldInAncestors && hasAncestors) {
             const notification: Notification = new Notification(
                 emailNotificationId,
                 t("flowBuilder:validation.emailOTPRequiresEmailField.message",
@@ -229,7 +241,7 @@ const useOTPValidation = (node: Node): void => {
         // SMS OTP validation
         removeNotification(smsNotificationId);
 
-        if (containsSMSOTP && !hasMobileFieldInAncestors) {
+        if (containsSMSOTP && !hasMobileFieldInAncestors && hasAncestors) {
             const notification: Notification = new Notification(
                 smsNotificationId,
                 t("flowBuilder:validation.smsOTPRequiresMobileField.message",
@@ -243,7 +255,8 @@ const useOTPValidation = (node: Node): void => {
     }, [
         containsEmailOTP, hasEmailFieldInAncestors,
         containsSMSOTP, hasMobileFieldInAncestors,
-        node, isOTPValidationEnabled, t, addNotification, removeNotification
+        node?.id, isOTPValidationEnabled, t, addNotification,
+        removeNotification, hasAncestors, getEdges, getNodes
     ]);
 };
 
