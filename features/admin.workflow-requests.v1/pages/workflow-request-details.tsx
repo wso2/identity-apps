@@ -76,7 +76,7 @@ const WorkflowRequestDetailsPage: React.FC = () => {
 
     const formatRequestProperties = (property: WorkflowRequestPropertyInterface): WorkflowRequestPropertyInterface => {
         const key: string = property.key;
-        const value: any = property.value;
+        const value: string = property.value;
 
         const excludedFields: string[] = [
             "REQUEST ID", "requestId", "request_id",
