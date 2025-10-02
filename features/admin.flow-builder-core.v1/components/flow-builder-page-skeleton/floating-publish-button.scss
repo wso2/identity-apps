@@ -23,7 +23,7 @@
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
     &.transition {
-        transform: translateX(calc(-1 * var(--wso2is-flow-builder-element-property-panel-width)));
+        transform: translateX(calc(-1 * var(--wso2is-flow-builder-right-panel-width)));
     }
 
     &.MuiButton-containedPrimary.Mui-disabled {
