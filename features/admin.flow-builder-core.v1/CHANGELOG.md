@@ -1,5 +1,17 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.10.59
+
+### Patch Changes
+
+- [#9242](https://github.com/wso2/identity-apps/pull/9242) [`a0a0c8912605d8fc616411c45b46bd990f1b8ba6`](https://github.com/wso2/identity-apps/commit/a0a0c8912605d8fc616411c45b46bd990f1b8ba6) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Fix Floating button hidden under side configuration panel
+
+- Updated dependencies []:
+  - @wso2is/admin.branding.v1@2.32.15
+  - @wso2is/admin.core.v1@2.49.67
+  - @wso2is/admin.flows.v1@1.0.28
+  - @wso2is/admin.registration-flow-builder.v1@0.10.19
+
 ## 0.10.58
 
 ### Patch Changes
