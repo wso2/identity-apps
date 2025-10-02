@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.79.22
+
+### Patch Changes
+
+- [#9235](https://github.com/wso2/identity-apps/pull/9235) [`f5bb0acc99be75738fbe49172b079c1728870ddb`](https://github.com/wso2/identity-apps/commit/f5bb0acc99be75738fbe49172b079c1728870ddb) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update workflow requests status colors
+
+- Updated dependencies [[`f5bb0acc99be75738fbe49172b079c1728870ddb`](https://github.com/wso2/identity-apps/commit/f5bb0acc99be75738fbe49172b079c1728870ddb)]:
+  - @wso2is/admin.workflow-requests.v1@1.0.9
+
 ## 2.79.21
 
 ### Patch Changes
