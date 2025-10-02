@@ -2749,20 +2749,12 @@ export const console: ConsoleNS = {
                 placeholders: {
                     emptyApprovalFilter: {
                         action: "View all",
-                        subtitles: {
-                            0: "There are currently no approvals in {{status}} state.",
-                            1: "Please check if you have any tasks in {{status}} state to",
-                            2: "view them here."
-                        },
+                        subtitle: "There are currently no approvals in {{status}} state.",
                         title: "No results found"
                     },
                     emptyApprovalList: {
                         action: "",
-                        subtitles: {
-                            0: "There are currently no approvals to review.",
-                            1: "Please check if you have added a workflow to control the operations in the system.",
-                            2: ""
-                        },
+                        subtitle: "There are currently no approvals to review.",
                         title: "No Approvals"
                     },
                     emptySearchResults: {

@@ -96,20 +96,12 @@ export const common: CommonNS = {
         placeholders: {
             emptyApprovalFilter: {
                 action: "Ver todos",
-                subtitles: {
-                    0: "Atualmente não há aprovações no estado {{status}}.",
-                    1: "Verifique se você tem alguma tarefa no estado {{status}} para",
-                    2: "visualizá-las aqui."
-                },
+                subtitle: "Atualmente não há aprovações no estado {{status}}.",
                 title: "Nenhum resultado encontrado"
             },
             emptyApprovalList: {
                 action: "",
-                subtitles: {
-                    0: "Atualmente não há aprovações para revisar.",
-                    1: "Verifique se você adicionou um fluxo de trabalho para controlar as operações no sistema.",
-                    2: ""
-                },
+                subtitle: "Atualmente não há aprovações para revisar.",
                 title: "Nenhuma Aprovação"
             },
             emptySearchResults: {

@@ -96,20 +96,12 @@ export const common: CommonNS = {
         "placeholders": {
             "emptyApprovalFilter": {
                 "action": "查看全部",
-                "subtitles": {
-                    0: "当前没有处于 {{status}} 状态的批准。",
-                    1: "请检查您是否有任何处于 {{status}} 状态的任务",
-                    2: "在这里查看它们。"
-                },
+                "subtitle": "当前没有处于 {{status}} 状态的批准。",
                 "title": "未找到结果"
             },
             "emptyApprovalList": {
                 "action": "",
-                "subtitles": {
-                    0: "当前没有待审核的批准。",
-                    1: "请检查您是否已添加工作流以控制系统中的操作。",
-                    2: ""
-                },
+                "subtitle": "当前没有待审核的批准。",
                 "title": "没有批准"
             },
             "emptySearchResults": {
