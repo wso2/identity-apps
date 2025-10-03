@@ -18,16 +18,16 @@
 
 import Accordion from "@oxygen-ui/react/Accordion";
 import AccordionDetails from "@oxygen-ui/react/AccordionDetails";
-import AccordionSummary from "@oxygen-ui/react/AccordionSummary/AccordionSummary";
-import Alert from "@oxygen-ui/react/Alert/Alert";
+import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
+import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
 import Checkbox from "@oxygen-ui/react/Checkbox";
 import Chip from "@oxygen-ui/react/Chip";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
-import FormHelperText from "@oxygen-ui/react/FormHelperText/FormHelperText";
+import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import Radio from "@oxygen-ui/react/Radio";
 import RadioGroup from "@oxygen-ui/react/RadioGroup";
-import Stack from "@oxygen-ui/react/Stack/Stack";
+import Stack from "@oxygen-ui/react/Stack";
 import Switch from "@oxygen-ui/react/Switch";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
@@ -52,7 +52,6 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import "./ask-password-configurations.scss";
 import useAskPasswordFlowBuilder from "../../../../hooks/use-ask-password-flow-builder";
 
 /**
@@ -102,7 +101,10 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
 
     const [ initialConnectorValues, setInitialConnectorValues ]
         = useState<AskPasswordFormValuesInterface>(undefined);
-    const [ isInviteUserToSetPasswordEnabled, setIsInviteUserToSetPasswordEnabled ]= useState<boolean>(false);
+    const [
+        isInviteUserToSetPasswordEnabled,
+        setIsInviteUserToSetPasswordEnabled
+    ]= useState<boolean>(false);
     const [ isUpperCaseEnabled, setIsUpperCaseEnabled ] = useState<boolean>(false);
     const [ isLowerCaseEnabled, setIsLowerCaseEnabled ] = useState<boolean>(false);
     const [ isNumericEnabled, setIsNumericEnabled ] = useState<boolean>(false);
@@ -117,7 +119,9 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
     const showSmsOtpAskPasswordFeatureStatusChip: boolean =
             useSelector((state: AppState) => state?.config?.ui?.showSmsOtpAskPasswordFeatureStatusChip);
 
-    /* Radio options for ask password */
+    /**
+     * Radio options for ask password.
+     */
     const EMAIL_ASK_PASSWORD_RADIO_OPTIONS: RadioChild[] = [
         {
             label: "extensions:manage.serverConfigurations.userOnboarding." +
@@ -136,7 +140,7 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
         }
     ];
 
-    // Sync expansion with askPasswordOption
+    // Sync expansion with askPasswordOption.
     useEffect(() => {
         if (askPasswordOption !== VerificationOption.EMAIL_LINK) {
             setOtpAccordionExpanded(true);
@@ -145,8 +149,8 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
         }
     }, [ askPasswordOption ]);
 
-    /* Update states when initial values change
-    *
+    /**
+     * Update states when initial values change.
     */
     useEffect(() => {
         if (!initialConnectorValues) return;
@@ -208,9 +212,8 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
         return data;
     };
 
-    /*
-    * Update updatedConfigs whenever any field changes
-    *
+    /**
+     * Update updatedConfigs whenever any field changes.
     */
     useEffect(() => {
         setUpdatedConfigs(getUpdatedConfigurations({
@@ -237,7 +240,6 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
 
     /**
      * Handles form value changes.
-     *
      */
     useEffect(() => {
 

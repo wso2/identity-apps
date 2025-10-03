@@ -125,8 +125,6 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
             }
 
             break;
-
-            break;
         case ElementCategories.Field:
             return (
                 <>
@@ -168,6 +166,7 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
                 && resource?.data?.action?.executor?.name === ExecutionTypes.ConfirmationCode) {
                 return (
                     <>
+                        { renderElementId() }
                         <ConfirmationCodeProperties
                             resource={ resource }
                             data-componentid="confirmation-code-properties"

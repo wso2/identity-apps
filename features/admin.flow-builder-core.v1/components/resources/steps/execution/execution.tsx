@@ -201,7 +201,7 @@ const Execution: FC<ExecutionPropsInterface> = memo(({
                                     setLastInteractedResource(fullResource);
                                 }
                             }
-                            resource={ fullResource }
+                            resources={ resources }
                         />
                     )
                     : <ExecutionMinimal resource={ fullResource } />
@@ -211,7 +211,7 @@ const Execution: FC<ExecutionPropsInterface> = memo(({
 }, (prevProps: ExecutionPropsInterface, nextProps: ExecutionPropsInterface) => {
     return prevProps.id === nextProps.id &&
         JSON.stringify(prevProps.data) === JSON.stringify(nextProps.data) &&
-        JSON.stringify(prevProps.resource) === JSON.stringify(nextProps.resource);
+        JSON.stringify(prevProps.resources) === JSON.stringify(nextProps.resources);
 });
 
 export default Execution;

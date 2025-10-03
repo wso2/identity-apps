@@ -642,7 +642,7 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
 
         const stepNodes: NodeTypes = steps.reduce((acc: NodeTypes, resource: Step) => {
             acc[resource.type] = (props: any) =>
-                <StepFactory resource={ resource } resources={ stepsByType[resource.type] } { ...props } />;
+                <StepFactory resources={ stepsByType[resource.type] } { ...props } />;
 
             return acc;
         }, {});

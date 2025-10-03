@@ -27,15 +27,19 @@ import React, { FC, MouseEvent, ReactElement } from "react";
 import ExecutionFactory from "./execution-factory";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
-import { CommonStepFactoryPropsInterface } from "../common-step-factory";
+import { Step } from "../../../../models/steps";
 
 import "./execution-minimal.scss";
 
 /**
  * Props interface of {@link ExecutionMinimal}
  */
-export type ExecutionMinimalPropsInterface = Pick<CommonStepFactoryPropsInterface, "resource"> &
-    IdentifiableComponentInterface;
+export interface ExecutionMinimalPropsInterface extends IdentifiableComponentInterface {
+    /**
+     * Resource object of the execution step.
+     */
+    resource: Step;
+}
 
 /**
  * Execution (Minimal) Node component.

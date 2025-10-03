@@ -60,7 +60,9 @@ const ConfirmationCodeProperties: FunctionComponent<ConfirmationCodePropertiesPr
     ["data-componentid"]: componentId = "confirmation-code-properties-component"
 }: ConfirmationCodePropertiesPropsInterface): ReactElement => {
 
-    // Get from context
+    /**
+     * Get from context.
+     */
     const {
         connector,
         setConnector
@@ -72,14 +74,14 @@ const ConfirmationCodeProperties: FunctionComponent<ConfirmationCodePropertiesPr
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const hasConnectorUpdatePermission: boolean = useRequiredScopes(featureConfig.governanceConnectors.scopes?.update);
 
-    // Fallback to API if context is null
+    // Fallback to API if context is null.
     useEffect(() => {
         if (!connector) {
             getConnectorDetails(
                 ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
                 ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID
             ).then((response: GovernanceConnectorInterface) => {
-                // Set connector categoryID if not available
+                // Set connector categoryID if not available.
                 if (!response?.categoryId) {
                     response.categoryId = ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID;
                 }
@@ -124,7 +126,7 @@ const ConfirmationCodeProperties: FunctionComponent<ConfirmationCodePropertiesPr
             ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
             ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID
         ).then((response: GovernanceConnectorInterface) => {
-            // Set connector categoryID if not available
+            // Set connector categoryID if not available.
             if (!response?.categoryId) {
                 response.categoryId = ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID;
             }

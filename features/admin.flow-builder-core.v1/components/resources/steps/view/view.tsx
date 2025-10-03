@@ -44,7 +44,7 @@ import "./view.scss";
  * Props interface of {@link View}
  */
 export interface ViewPropsInterface
-    extends Pick<CommonStepFactoryPropsInterface, "data" | "resource">,
+    extends Pick<CommonStepFactoryPropsInterface, "data" | "resources">,
         Omit<HTMLAttributes<HTMLDivElement>, "resource">,
         IdentifiableComponentInterface {
     /**
