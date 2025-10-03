@@ -65,7 +65,7 @@ export const WorkflowRequestsStatusDropdown: React.FC<FilterDropdownProps> =
         },
         {
             key: WorkflowInstanceStatus.DELETED,
-            text: t("approvalWorkflows:status.deleted"),
+            text: t("approvalWorkflows:status.aborted"),
             value: WorkflowInstanceStatus.DELETED
         }
     ];

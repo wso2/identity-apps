@@ -19,7 +19,7 @@
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
@@ -41,9 +41,7 @@ import { formatMsToBackend } from "../utils/formatDateTimeToBackend";
 import { generateFilterString } from "../utils/generateFilterString";
 import "./workflow-requests.scss";
 
-type WorkflowsLogsPageInterface = IdentifiableComponentInterface & {
-    "data-testid"?: string;
-};
+type WorkflowsLogsPageInterface = TestableComponentInterface;
 
 interface FilterTag {
     key: string;
@@ -57,7 +55,7 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
 ): ReactElement => {
 
     const {
-        ["data-testid"]: componentId
+        ["data-testid"]: componentId = "workflow-requests"
     } = props;
 
     const { t } = useTranslation();
@@ -126,7 +124,7 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
         { key: WorkflowInstanceStatus.FAILED, text: t("approvalWorkflows:status.failed"), value: "FAILED" },
         { key: WorkflowInstanceStatus.APPROVED, text: t("approvalWorkflows:status.approved"), value: "APPROVED" },
         { key: WorkflowInstanceStatus.PENDING, text: t("approvalWorkflows:status.pending"), value: "PENDING" },
-        { key: WorkflowInstanceStatus.DELETED, text: t("approvalWorkflows:status.deleted"), value: "DELETED" },
+        { key: WorkflowInstanceStatus.DELETED, text: t("approvalWorkflows:status.aborted"), value: "DELETED" },
         { key: WorkflowInstanceStatus.REJECTED, text: t("approvalWorkflows:status.rejected"), value: "REJECTED" }
     ];
 
@@ -414,13 +412,6 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
             </div>
         </PageLayout>
     );
-};
-
-/**
- * Default props for the component.
- */
-WorkflowRequestsPage.defaultProps = {
-    "data-testid": "workflow-requests"
 };
 
 /**

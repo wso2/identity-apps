@@ -271,7 +271,7 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
             case "FAILED":
                 return t("approvalWorkflows:status.failed");
             case "DELETED":
-                return t("approvalWorkflows:status.deleted");
+                return t("approvalWorkflows:status.aborted");
             default:
                 return status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
         }

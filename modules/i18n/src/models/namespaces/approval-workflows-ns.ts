@@ -327,9 +327,9 @@ export interface approvalWorkflowsNS {
         };
     };
     status: {
+        aborted: string;
         all: string;
         approved: string;
-        deleted: string;
         failed: string;
         pending: string;
         rejected: string;
@@ -369,7 +369,8 @@ export interface approvalWorkflowsNS {
         backButton: string;
         dangerZone: {
             header: string;
-            delete: {
+            abort: {
+                action: string;
                 actionTitle: string;
                 header: string;
                 subheader: string;
