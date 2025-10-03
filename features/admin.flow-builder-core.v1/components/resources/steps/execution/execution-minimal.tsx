@@ -24,11 +24,11 @@ import { GearIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Handle, Position, useNodeId } from "@xyflow/react";
 import React, { FC, MouseEvent, ReactElement } from "react";
+import { useTranslation } from "react-i18next";
 import ExecutionFactory from "./execution-factory";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../../../hooks/use-authentication-flow-builder-core-context";
 import { Step } from "../../../../models/steps";
-
 import "./execution-minimal.scss";
 
 /**
@@ -54,6 +54,8 @@ const ExecutionMinimal: FC<ExecutionMinimalPropsInterface> = ({
     const { setLastInteractedResource, setLastInteractedStepId } = useAuthenticationFlowBuilderCore();
     const stepId: string = useNodeId();
 
+    const { t } = useTranslation();
+
     return (
         <div className="execution-minimal-step"  data-componentid={ componentId }>
             <Box
@@ -63,8 +65,7 @@ const ExecutionMinimal: FC<ExecutionMinimalPropsInterface> = ({
             >
                 <Tooltip
                     title={
-                        // TODO: Add i18n
-                        "Configure"
+                        t("flows:core.executions.tooltip.configurationHint")
                     }
                 >
                     <IconButton

@@ -44,6 +44,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AskPasswordConfigurations } from "./ask-password-configurations";
 import useAskPasswordFlowBuilder from "../../../../hooks/use-ask-password-flow-builder";
+import "./confirmation-code-properties.scss";
 
 /**
  * Props interface of {@link ConfirmationCodeProperties}
@@ -60,9 +61,6 @@ const ConfirmationCodeProperties: FunctionComponent<ConfirmationCodePropertiesPr
     ["data-componentid"]: componentId = "confirmation-code-properties-component"
 }: ConfirmationCodePropertiesPropsInterface): ReactElement => {
 
-    /**
-     * Get from context.
-     */
     const {
         connector,
         setConnector
@@ -77,21 +75,9 @@ const ConfirmationCodeProperties: FunctionComponent<ConfirmationCodePropertiesPr
     // Fallback to API if context is null.
     useEffect(() => {
         if (!connector) {
-            getConnectorDetails(
-                ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
-                ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID
-            ).then((response: GovernanceConnectorInterface) => {
-                // Set connector categoryID if not available.
-                if (!response?.categoryId) {
-                    response.categoryId = ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID;
-                }
-                setConnector(response);
-            }).catch(() => {
-                setConnector(undefined);
-            });
+            loadConnectorDetails();
         }
     }, [ connector, setConnector ]);
-
 
     const handleRevertSuccess = () => {
         dispatch(
@@ -168,17 +154,8 @@ const ConfirmationCodeProperties: FunctionComponent<ConfirmationCodePropertiesPr
     };
 
     return (
-        <Stack gap={ 1 } data-componentid={ componentId }>
-            <Box
-                sx={ {
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "8px",
-                    height: "100%",
-                    marginBottom: "16px",
-                    marginTop: "16px"
-                } }
-            >
+        <Stack gap={ 1 } data-componentid={ componentId } className="confirmation-code-properties">
+            <Box className="configuration-section">
                 <AskPasswordConfigurations
                     connector={ connector }
                     readOnly={ !hasConnectorUpdatePermission }
@@ -187,27 +164,14 @@ const ConfirmationCodeProperties: FunctionComponent<ConfirmationCodePropertiesPr
                     data-componentid="confirmation-code-properties"
                 />
             </Box>
-            <Box
-                sx={ {
-                    alignItems: "center",
-                    display: "flex",
-                    justifyContent: "center",
-                    marginBottom: "16px"
-                } }
-            >
+            <Box className="configuration-revert-section">
                 <Button
                     variant="outlined"
-                    onClick={ () => { onAskPasswordRevert(); } }
+                    onClick={ () => onAskPasswordRevert() }
                     color="error"
-                    sx={ {
-                        borderRadius: "var(--oxygen-shape-borderRadius)",
-                        height: "40px",
-                        marginTop: "16px",
-                        minWidth: "40px",
-                        width: "90%"
-                    } }
+                    className="revert-button"
                 >
-                    <Typography variant="body1" color="error" sx={ { textAlign: "center", width: "100%" } }>
+                    <Typography variant="body1" color="error" className="revert-button-text">
                         { t("governanceConnectors:dangerZone.heading") }
                     </Typography>
                 </Button>

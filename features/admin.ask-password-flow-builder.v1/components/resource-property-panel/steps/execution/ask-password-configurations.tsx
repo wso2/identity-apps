@@ -387,8 +387,7 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
             <Stack gap={ 2 }>
                 <Typography>
                     <Alert severity="info">
-                        Allow users to set their own passwords during admin-initiated onboarding
-                        and configure related settings.
+                        { t("flows:core.executions.confirmationCode.configurationHint") }
                     </Alert>
                 </Typography>
                 { ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE ? connectorToggle() : null }

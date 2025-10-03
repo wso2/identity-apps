@@ -111,8 +111,10 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
 
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Attribute[] }>({});
     const [ isPublishing, setIsPublishing ] = useState<boolean>(false);
-    const [ invitedUserRegistrationConfig , setInvitedUserRegistrationConfig ]
-    = useState<null | AskPasswordFormUpdatableConfigsInterface>(null);
+    const [
+        invitedUserRegistrationConfig,
+        setInvitedUserRegistrationConfig
+    ] = useState<null | AskPasswordFormUpdatableConfigsInterface>(null);
     const [ isInvitedUserRegistrationConfigUpdated, setIsInvitedUserRegistrationConfigUpdated ]
     = useState<boolean>(false);
     const [ connector, setConnector ] = useState<GovernanceConnectorInterface | undefined>(undefined);
@@ -138,7 +140,7 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
                 })
             );
         } else {
-            // Generic error message
+            // Generic error message.
             dispatch(
                 addAlert({
                     description: t(
@@ -155,8 +157,8 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
         }
     };
 
-    /* Success handler for governance connector update.
-    *
+    /*
+    * Success handler for governance connector update.
     */
     const handleUpdateSuccess = () => {
         dispatch(
@@ -166,9 +168,8 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
                     "notification.success.description"
                 ),
                 level: AlertLevels.SUCCESS,
-                message: t(
-                    "governanceConnectors:notifications." + "updateConnector.success.message"
-                )
+                message:
+                t( "governanceConnectors:notifications.updateConnector.success.message" )
             })
         );
     };
