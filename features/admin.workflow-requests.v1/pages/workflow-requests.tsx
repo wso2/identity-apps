@@ -38,7 +38,6 @@ import {
     WorkflowInstanceOperationType,
     WorkflowInstanceStatus
 } from "../models/workflowRequests";
-import { formatMsToBackend } from "../utils/formatDateTimeToBackend";
 import { generateFilterString } from "../utils/generateFilterString";
 import "./workflow-requests.scss";
 
@@ -328,10 +327,10 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
         const generatedFilter: string = generateFilterString(
             status,
             operationType,
-            createdFromTime ? formatMsToBackend(createdFromTime, true) : "",
-            createdToTime ? formatMsToBackend(createdToTime, false) : "",
-            updatedFromTime ? formatMsToBackend(updatedFromTime, true) : "",
-            updatedToTime ? formatMsToBackend(updatedToTime, false) : ""
+            createdFromTime ? moment(Number(createdFromTime)).format("YYYY-MM-DD HH:mm:ss.SSS") : "",
+            createdToTime ? moment(Number(createdToTime)).format("YYYY-MM-DD HH:mm:ss.SSS") : "",
+            updatedFromTime ? moment(Number(updatedFromTime)).format("YYYY-MM-DD HH:mm:ss.SSS") : "",
+            updatedToTime ? moment(Number(updatedToTime)).format("YYYY-MM-DD HH:mm:ss.SSS") : ""
         );
 
         setFilterString(generatedFilter);
