@@ -23,6 +23,7 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
+import moment from "moment";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -37,7 +38,6 @@ import {
     WorkflowInstanceOperationType,
     WorkflowInstanceStatus
 } from "../models/workflowRequests";
-import { formatMsToBackend } from "../utils/formatDateTimeToBackend";
 import { generateFilterString } from "../utils/generateFilterString";
 import "./workflow-requests.scss";
 
@@ -128,7 +128,6 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
         { key: WorkflowInstanceStatus.REJECTED, text: t("approvalWorkflows:status.rejected"), value: "REJECTED" }
     ];
 
-
     const TIME_RANGE_OPTIONS: { key: number; text: string; value: number }[] = [
         { key: -2, text: t("approvalWorkflows:timeRanges.all"), value: -2 },
         { key: 0.25, text: t("approvalWorkflows:timeRanges.last15Minutes"), value: 0.25 },
@@ -178,12 +177,30 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
                         (item: DropdownItemProps) => item.value === value
                     )?.text?.toString() || value
                 );
-            case "createdTimeRange":
+            case "createdTimeRange": {
+                if (value === "-1") {
+                    if (createdFromTime && createdToTime) {
+                        return moment(Number(createdFromTime)).format("YYYY-MM-DD") + " to " +
+                            moment(Number(createdToTime)).format("YYYY-MM-DD");
+                    }
+
+                    return t("approvalWorkflows:timeRanges.customRange");
+                }
+
+                const option: { key: number; text: string; value: number } | undefined = TIME_RANGE_OPTIONS.find(
+                    (item: { key: number; text: string; value: number }) => item.value === Number(value)
+                );
+
+                return option ? option.text : value;
+            }
             case "updatedTimeRange": {
                 if (value === "-1") {
-                    return TIME_RANGE_OPTIONS.find(
-                        (item: { key: number; text: string; value: number }) => item.value === -1
-                    )?.text || value;
+                    if (updatedFromTime && updatedToTime) {
+                        return moment(Number(updatedFromTime)).format("YYYY-MM-DD") + " to " +
+                            moment(Number(updatedToTime)).format("YYYY-MM-DD");
+                    }
+
+                    return t("approvalWorkflows:timeRanges.customRange");
                 }
 
                 const option: { key: number; text: string; value: number } | undefined = TIME_RANGE_OPTIONS.find(
@@ -306,21 +323,18 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
         searchWorkflowRequests();
     };
 
-
-
     const searchWorkflowRequests = (): void => {
         const generatedFilter: string = generateFilterString(
             status,
             operationType,
-            createdFromTime ? formatMsToBackend(createdFromTime, true) : "",
-            createdToTime ? formatMsToBackend(createdToTime, false) : "",
-            updatedFromTime ? formatMsToBackend(updatedFromTime, true) : "",
-            updatedToTime ? formatMsToBackend(updatedToTime, false) : ""
+            createdFromTime ? moment(Number(createdFromTime)).format("YYYY-MM-DD HH:mm:ss.SSS") : "",
+            createdToTime ? moment(Number(createdToTime)).format("YYYY-MM-DD HH:mm:ss.SSS") : "",
+            updatedFromTime ? moment(Number(updatedFromTime)).format("YYYY-MM-DD HH:mm:ss.SSS") : "",
+            updatedToTime ? moment(Number(updatedToTime)).format("YYYY-MM-DD HH:mm:ss.SSS") : ""
         );
 
         setFilterString(generatedFilter);
         setOffset(0);
-        // The hook will automatically refetch when filterString changes
     };
 
     /**
@@ -343,12 +357,19 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
         setLimit(data.value as number);
     };
 
-    // The hook automatically handles fetching when limit, offset, or filterString changes
-
+    // The hook automatically handles fetching when limit, offset, or filterString changes.
     useEffect(() => {
         searchWorkflowRequests();
-    }, [ status, createdTimeRange, createdFromTime, createdToTime, updatedTimeRange, updatedFromTime,
-        updatedToTime, operationType ]);
+    }, [
+        status,
+        createdTimeRange,
+        createdFromTime,
+        createdToTime,
+        updatedTimeRange,
+        updatedFromTime,
+        updatedToTime,
+        operationType
+    ]);
 
     const activeFilters: FilterTag[] = getActiveFilters();
 
