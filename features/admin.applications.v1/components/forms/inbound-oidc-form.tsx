@@ -1253,8 +1253,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 if (template
                     && template.id
                     && get(applicationConfig.allowedGrantTypes, template.id)
-                    && !applicationConfig.allowedGrantTypes[ isSubOrganization() ? "sub-organization-application" :
-                        template.id ].includes(name)
+                    && !applicationConfig.allowedGrantTypes[ template.id ].includes(name)
                     && ApplicationManagementConstants.AVAILABLE_GRANT_TYPES.includes(name)) {
 
                     return;

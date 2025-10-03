@@ -23,6 +23,8 @@ import { ApplicationManagementUtils } from "@wso2is/admin.applications.v1/utils/
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import useExtensionTemplates from "@wso2is/admin.template-core.v1/hooks/use-extension-templates";
 import {
     CategorizedExtensionTemplatesInterface,
@@ -77,6 +79,10 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
         state?.application?.meta?.customInboundProtocols);
     const hiddenApplicationTemplates: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.hiddenApplicationTemplates);
+    const { organizationType } = useGetCurrentOrganizationType();
+    // Application template keys
+    const hiddenApplicationTemplatesInOrgs: string[] =
+    ApplicationTemplateConstants.EXCLUDED_APP_TEMPLATES_FOR_SUB_ORGANIZATIONS;
 
     const {
         templates,
@@ -180,7 +186,12 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
         }
 
         // Remove hidden application templates based on the UI config.
-        removingApplicationTemplateIds = union(removingApplicationTemplateIds, hiddenApplicationTemplates);
+        if (organizationType === OrganizationType.SUBORGANIZATION) {
+            removingApplicationTemplateIds = union(removingApplicationTemplateIds, hiddenApplicationTemplates,
+                hiddenApplicationTemplatesInOrgs);
+        } else {
+            removingApplicationTemplateIds = union(removingApplicationTemplateIds, hiddenApplicationTemplates);
+        }
 
         return templates?.filter(
             (template: ExtensionTemplateListInterface) => !removingApplicationTemplateIds.includes(template?.id));

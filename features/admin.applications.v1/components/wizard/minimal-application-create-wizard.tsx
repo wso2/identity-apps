@@ -101,7 +101,8 @@ import {
 } from "../../models/application";
 import {
     SAMLConfigModes,
-    SupportedAuthProtocolTypes
+    SupportedAuthProtocolTypes,
+    SupportedAuthProtocolTypesForSubOrganizations
 } from "../../models/application-inbound";
 import { ApplicationManagementUtils } from "../../utils/application-management-utils";
 import { ApplicationShareModal } from "../modals/application-share-modal";
@@ -967,7 +968,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         }
 
         const templates: SupportedAuthProtocolTypes[] | ApplicationTemplateInterface[] = isCustom
-            ? getSupportedCustomProtocols()
+            ? (orgType === OrganizationType.SUBORGANIZATION
+                ? [ SupportedAuthProtocolTypes.OAUTH2_OIDC ]
+                : getSupportedCustomProtocols())
             : subTemplates;
 
         return (
@@ -1140,7 +1143,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     </Grid.Row>
                     {
                         // The FAPI App creation checkbox is only present in OIDC Standard-Based apps
-                        customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
+                        orgType !== OrganizationType.SUBORGANIZATION
+                        &&customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
                         && selectedTemplate?.name === ApplicationTemplateNames.STANDARD_BASED_APPLICATION
                         && isFAPIAppCreationEnabled
                         && (

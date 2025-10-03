@@ -212,6 +212,12 @@ export enum SupportedAuthProtocolTypes {
     OAUTH2= "oauth2"
 }
 
+export enum SupportedAuthProtocolTypesForSubOrganizations {
+    OIDC = "oidc",
+    OAUTH2_OIDC = "oauth2-oidc",
+    OAUTH2= "oauth2"
+}
+
 /**
  * Enum for the supported custom auth protocol types.
  *
