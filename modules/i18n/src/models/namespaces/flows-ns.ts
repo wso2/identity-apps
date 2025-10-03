@@ -96,6 +96,12 @@ export interface flowsNS {
             };
         };
         executions: {
+            confirmationCode: {
+                configurationHint: string;
+            };
+            landing: {
+                message: string;
+            };
             names: {
                 apple: string;
                 confirmationCode: string;
@@ -106,6 +112,9 @@ export interface flowsNS {
                 microsoft: string;
                 passkeyEnrollment: string;
                 magicLink: string;
+            };
+            tooltip: {
+                configurationHint: string;
             };
         };
         labels: {

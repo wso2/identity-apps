@@ -33,7 +33,7 @@ import "./end.scss";
  * Props interface of {@link End}
  */
 export interface EndPropsInterface
-    extends Pick<CommonStepFactoryPropsInterface, "data" | "resource">,
+    extends Pick<CommonStepFactoryPropsInterface, "data" | "resources">,
         IdentifiableComponentInterface {
     /**
      * Custom heading for the end node. Defaults to "End".
@@ -57,7 +57,7 @@ const End: FunctionComponent<EndPropsInterface> = memo(
         heading = "End",
         restrictedComponentTypes = [],
         data,
-        resource,
+        resources,
         "data-componentid": componentId = "end"
     }: EndPropsInterface): ReactElement => {
         const { t } = useTranslation();
@@ -85,7 +85,7 @@ const End: FunctionComponent<EndPropsInterface> = memo(
                 droppableAllowedTypes={ getAllowedTypes() }
                 enableSourceHandle={ false }
                 data={ data }
-                resource={ resource }
+                resources={ resources }
                 className="flow-builder-end-step"
                 deletable={ false }
                 configurable={ true }
@@ -93,9 +93,9 @@ const End: FunctionComponent<EndPropsInterface> = memo(
                 onConfigure={ (): void => {
                     setLastInteractedStepId(stepId);
                     setLastInteractedResource({
-                        ...resource,
+                        ...resources[0],
                         config: {
-                            ...(resource?.config || {}),
+                            ...(resources[0]?.config || {}),
                             ...((typeof data?.config === "object" && data?.config !== null) ? data.config : {})
                         }
                     });
@@ -103,7 +103,7 @@ const End: FunctionComponent<EndPropsInterface> = memo(
                     // Override the property panel heading.
                     setResourcePropertiesPanelHeading(
                         <Stack direction="row" className="sub-title" gap={ 1 } alignItems="center">
-                            <Avatar src={ resource?.display?.image } variant="square" />
+                            <Avatar src={ resources[0]?.display?.image } variant="square" />
                             <Typography variant="h6">{ t("flows:core.steps.end.flowCompletionProperties") }</Typography>
                         </Stack>
                     );

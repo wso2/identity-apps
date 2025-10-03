@@ -34,9 +34,9 @@ export interface CommonStepFactoryPropsInterface extends Node, IdentifiableCompo
      */
     resourceId: string;
     /**
-     * The resource properties.
+     * All the resources corresponding to the type.
      */
-    resource: Step;
+    resources?: Step[];
 }
 
 /**
@@ -46,24 +46,24 @@ export interface CommonStepFactoryPropsInterface extends Node, IdentifiableCompo
  * @returns The CommonStepFactory component.
  */
 export const CommonStepFactory: FunctionComponent<CommonStepFactoryPropsInterface> = ({
-    resource,
+    resources,
     "data-componentid": componentId = "step-factory",
     ...rest
 }: CommonStepFactoryPropsInterface): ReactElement => {
-    if (resource.type === StepTypes.View) {
-        return <View data-componentid={ componentId } resource={ resource } { ...rest } />;
+    if (resources[0].type === StepTypes.View) {
+        return <View data-componentid={ componentId } resources={ resources } { ...rest } />;
     }
 
-    if (resource.type === StepTypes.Rule) {
-        return <Rule data-componentid={ componentId } resource={ resource } { ...rest } />;
+    if (resources[0].type === StepTypes.Rule) {
+        return <Rule data-componentid={ componentId } resources={ resources } { ...rest } />;
     }
 
-    if (resource.type === StepTypes.Execution) {
-        return <Execution data-componentid={ componentId } resource={ resource } { ...rest } />;
+    if (resources[0].type === StepTypes.Execution) {
+        return <Execution data-componentid={ componentId } resources={ resources } { ...rest } />;
     }
 
-    if (resource.type === StepTypes.End) {
-        return <End data-componentid={ componentId } resource={ resource } { ...rest } />;
+    if (resources[0].type === StepTypes.End) {
+        return <End data-componentid={ componentId } resources={ resources } { ...rest } />;
     }
 
     return null;

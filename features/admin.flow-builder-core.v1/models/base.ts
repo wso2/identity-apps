@@ -101,6 +101,10 @@ export interface BaseDisplay {
      * Should the component be shown on the resource panel.
      */
     showOnResourcePanel: boolean;
+    /**
+     * Display name of the component or the primitive.
+     */
+    displayname?: string;
 }
 
 /**

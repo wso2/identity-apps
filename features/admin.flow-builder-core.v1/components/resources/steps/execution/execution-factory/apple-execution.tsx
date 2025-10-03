@@ -23,12 +23,12 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ReactElement, useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import useRequiredFields, { RequiredFieldInterface } from "../../../../../hooks/use-required-fields";
-import { CommonStepFactoryPropsInterface } from "../../common-step-factory";
+import { ExecutionMinimalPropsInterface } from "../execution-minimal";
 
 /**
  * Props interface of {@link AppleExecution}.
  */
-export type AppleExecutionPropsInterface = Pick<CommonStepFactoryPropsInterface, "resource">
+export type AppleExecutionPropsInterface = ExecutionMinimalPropsInterface
     & IdentifiableComponentInterface;
 
 const AppleExecution = ({

@@ -74,3 +74,9 @@ export enum ExecutionTypes {
     ConfirmationCode = "ConfirmationCodeValidationExecutor",
     MagicLinkExecutor = "MagicLinkExecutor"
 }
+
+export enum ExecutionStepViewTypes {
+    Default = "Execution",
+    MagicLinkView = "Magic Link View",
+    PasskeyView = "Passkey View"
+}

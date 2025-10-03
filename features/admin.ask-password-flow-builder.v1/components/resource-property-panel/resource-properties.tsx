@@ -24,7 +24,7 @@ import {
 import { FieldKey, FieldValue } from "@wso2is/admin.flow-builder-core.v1/models/base";
 import { Element, ElementCategories } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { Resource } from "@wso2is/admin.flow-builder-core.v1/models/resources";
-import { StepCategories, StepTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
+import { ExecutionTypes, StepCategories, StepTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useMemo } from "react";
@@ -33,6 +33,7 @@ import FieldExtendedProperties from "./extended-properties/field-extended-proper
 import RulesProperties from "./nodes/rules-properties";
 import ResourcePropertyFactory from "./resource-property-factory";
 import FlowCompletionProperties from "./steps/end/flow-completion-properties";
+import ConfirmationCodeProperties from "./steps/execution/confirmation-code-properties";
 import FederationProperties from "./steps/execution/federation-properties";
 import AskPasswordFlowBuilderConstants from "../../constants/ask-password-flow-builder-constants";
 
@@ -161,22 +162,37 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
 
             break;
         case StepCategories.Workflow:
-            return (
-                <>
-                    { renderElementId() }
-                    {
-                        !AskPasswordFlowBuilderConstants.FEDERATION_CONFIG_SKIPPED_EXECUTORS.includes(
-                            resource?.data?.action?.executor?.name) && (
-                            <FederationProperties
-                                resource={ resource }
-                                data-componentid="federation-properties"
-                                onChange={ onChange }
-                            />
-                        )
-                    }
-                    { renderElementPropertyFactory() }
-                </>
-            );
+            if (resource.type === StepTypes.Execution
+                && resource?.data?.action?.executor?.name === ExecutionTypes.ConfirmationCode) {
+                return (
+                    <>
+                        { renderElementId() }
+                        <ConfirmationCodeProperties
+                            resource={ resource }
+                            data-componentid="confirmation-code-properties"
+                            onChange={ onChange }
+                        />
+                        { renderElementPropertyFactory() }
+                    </>
+                );
+            } else {
+                return (
+                    <>
+                        { renderElementId() }
+                        {
+                            !AskPasswordFlowBuilderConstants.FEDERATION_CONFIG_SKIPPED_EXECUTORS.includes(
+                                resource?.data?.action?.executor?.name) && (
+                                <FederationProperties
+                                    resource={ resource }
+                                    data-componentid="federation-properties"
+                                    onChange={ onChange }
+                                />
+                            )
+                        }
+                        { renderElementPropertyFactory() }
+                    </>
+                );
+            }
         default:
             return (
                 <>
