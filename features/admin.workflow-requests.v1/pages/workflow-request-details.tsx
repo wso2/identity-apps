@@ -22,22 +22,31 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { getOperationTypeTranslationKey } from "@wso2is/common.workflow-approvals.v1/utils/approval-utils";
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DangerZone, DangerZoneGroup, TabPageLayout } from "@wso2is/react-components";
-import React, { useState } from "react";
+import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Button, Message, Modal, Table } from "semantic-ui-react";
 import { useGetWorkflowInstance } from "../api/use-get-workflow-instance";
 import { deleteWorkflowInstance } from "../api/workflow-requests";
 import { WorkflowInstanceStatus, WorkflowRequestPropertyInterface } from "../models/workflowRequests";
 import "./workflow-request-details.scss";
 
-const WorkflowRequestDetailsPage: React.FC = () => {
+/**
+ * Workflow request details page component.
+ */
+const WorkflowRequestDetailsPage: FunctionComponent<IdentifiableComponentInterface> = (
+    {
+        [ "data-componentid" ]: componentId = "workflow-request-details-page"
+    }: IdentifiableComponentInterface
+) => {
     const { t } = useTranslation();
+    const dispatch: Dispatch = useDispatch();
+
     const [ showDeleteModal, setShowDeleteModal ] = useState<boolean>(false);
-    const dispatch: any = useDispatch();
 
     const path: string[] = history.location.pathname.split("/");
     const id: string = path[path.length - 1];
@@ -114,7 +123,6 @@ const WorkflowRequestDetailsPage: React.FC = () => {
     ]);
 
     const renderDetailsTable = () => {
-        if (!workflowRequest) return null;
         const properties: WorkflowRequestPropertyInterface[] = workflowRequest.properties || [];
 
         return (
@@ -219,6 +227,7 @@ const WorkflowRequestDetailsPage: React.FC = () => {
             } }
             titleTextAlign="left"
             bottomMargin={ false }
+            data-componentid={ componentId }
         >
             { workflowInstanceError && (
                 <Message
