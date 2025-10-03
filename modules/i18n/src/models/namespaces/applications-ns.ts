@@ -753,6 +753,9 @@ export interface ApplicationsNS {
                                 emailOTPRequiresEmailField: {
                                     message: string;
                                 };
+                                passwordRecoveryRequiresFactors: {
+                                    message: string;
+                                };
                             }
                         };
                     };
