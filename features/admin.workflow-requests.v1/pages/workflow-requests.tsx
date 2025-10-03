@@ -185,9 +185,7 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
                             moment(Number(createdToTime)).format("YYYY-MM-DD");
                     }
 
-                    return TIME_RANGE_OPTIONS.find(
-                        (item: { key: number; text: string; value: number }) => item.value === -1
-                    )?.text || value;
+                    return t("approvalWorkflows:timeRanges.customRange");
                 }
 
                 const option: { key: number; text: string; value: number } | undefined = TIME_RANGE_OPTIONS.find(
@@ -203,9 +201,7 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
                             moment(Number(updatedToTime)).format("YYYY-MM-DD");
                     }
 
-                    return TIME_RANGE_OPTIONS.find(
-                        (item: { key: number; text: string; value: number }) => item.value === -1
-                    )?.text || value;
+                    return t("approvalWorkflows:timeRanges.customRange");
                 }
 
                 const option: { key: number; text: string; value: number } | undefined = TIME_RANGE_OPTIONS.find(
