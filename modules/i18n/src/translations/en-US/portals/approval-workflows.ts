@@ -35,13 +35,14 @@ export const approvalWorkflows: approvalWorkflowsNS = {
             " selected approval workflow and the data in it."
     },
     details: {
-        backButton: "Back",
+        backButton: "Go back to Workflow Requests",
         dangerZone: {
-            delete: {
-                actionTitle: "Delete Workflow Request",
-                confirm: "Are you sure you want to delete this workflow request? This action cannot be undone.",
-                header: "Delete Workflow Request",
-                subheader: "Once you delete a workflow request, there is no going back. Please be certain."
+            abort: {
+                action: "Abort",
+                actionTitle: "Abort Workflow Request",
+                confirm: "Are you sure you want to abort this workflow request? This action cannot be undone.",
+                header: "Abort Workflow Request",
+                subheader: "Once you abort a workflow request, there is no going back. Please be certain."
             },
             header: "Danger Zone"
         },
@@ -393,9 +394,9 @@ export const approvalWorkflows: approvalWorkflowsNS = {
         }
     },
     status: {
+        aborted: "Aborted",
         all: "All Tasks",
         approved: "Approved",
-        deleted: "Deleted",
         failed: "Failed",
         pending: "Pending",
         rejected: "Rejected"

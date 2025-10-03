@@ -22,22 +22,31 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { getOperationTypeTranslationKey } from "@wso2is/common.workflow-approvals.v1/utils/approval-utils";
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DangerZone, DangerZoneGroup, TabPageLayout } from "@wso2is/react-components";
-import React, { useState } from "react";
+import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Button, Message, Modal, Table } from "semantic-ui-react";
 import { useGetWorkflowInstance } from "../api/use-get-workflow-instance";
 import { deleteWorkflowInstance } from "../api/workflow-requests";
 import { WorkflowInstanceStatus, WorkflowRequestPropertyInterface } from "../models/workflowRequests";
 import "./workflow-request-details.scss";
 
-const WorkflowRequestDetailsPage: React.FC = () => {
+/**
+ * Workflow request details page component.
+ */
+const WorkflowRequestDetailsPage: FunctionComponent<IdentifiableComponentInterface> = (
+    {
+        [ "data-componentid" ]: componentId = "workflow-request-details-page"
+    }: IdentifiableComponentInterface
+) => {
     const { t } = useTranslation();
+    const dispatch: Dispatch = useDispatch();
+
     const [ showDeleteModal, setShowDeleteModal ] = useState<boolean>(false);
-    const dispatch: any = useDispatch();
 
     const path: string[] = history.location.pathname.split("/");
     const id: string = path[path.length - 1];
@@ -105,8 +114,15 @@ const WorkflowRequestDetailsPage: React.FC = () => {
         history.push(AppConstants.getPaths().get("WORKFLOW_REQUESTS"));
     };
 
+    const REQUEST_STATUSES: Map<string, string> = new Map([
+        [ WorkflowInstanceStatus.FAILED, t("approvalWorkflows:status.failed") ],
+        [ WorkflowInstanceStatus.APPROVED, t("approvalWorkflows:status.approved") ],
+        [ WorkflowInstanceStatus.PENDING, t("approvalWorkflows:status.pending") ],
+        [ WorkflowInstanceStatus.DELETED, t("approvalWorkflows:status.aborted") ],
+        [ WorkflowInstanceStatus.REJECTED, t("approvalWorkflows:status.rejected") ]
+    ]);
+
     const renderDetailsTable = () => {
-        if (!workflowRequest) return null;
         const properties: WorkflowRequestPropertyInterface[] = workflowRequest.properties || [];
 
         return (
@@ -127,7 +143,9 @@ const WorkflowRequestDetailsPage: React.FC = () => {
                     </Table.Row>
                     <Table.Row>
                         <Table.Cell>{ t("approvalWorkflows:details.fields.status") }</Table.Cell>
-                        <Table.Cell>{ workflowRequest.status }</Table.Cell>
+                        <Table.Cell>
+                            { (REQUEST_STATUSES.get(workflowRequest.status) ?? "N/A").toUpperCase() }
+                        </Table.Cell>
                     </Table.Row>
                     <Table.Row>
                         <Table.Cell>{ t("approvalWorkflows:details.fields.createdAt") }</Table.Cell>
@@ -209,6 +227,7 @@ const WorkflowRequestDetailsPage: React.FC = () => {
             } }
             titleTextAlign="left"
             bottomMargin={ false }
+            data-componentid={ componentId }
         >
             { workflowInstanceError && (
                 <Message
@@ -221,9 +240,9 @@ const WorkflowRequestDetailsPage: React.FC = () => {
             { workflowRequest && workflowRequest.status !== WorkflowInstanceStatus.DELETED && (
                 <DangerZoneGroup sectionHeader={ t("approvalWorkflows:details.dangerZone.header") }>
                     <DangerZone
-                        actionTitle={ t("approvalWorkflows:details.dangerZone.delete.actionTitle") }
-                        header={ t("approvalWorkflows:details.dangerZone.delete.header") }
-                        subheader={ t("approvalWorkflows:details.dangerZone.delete.subheader") }
+                        actionTitle={ t("approvalWorkflows:details.dangerZone.abort.actionTitle") }
+                        header={ t("approvalWorkflows:details.dangerZone.abort.header") }
+                        subheader={ t("approvalWorkflows:details.dangerZone.abort.subheader") }
                         onActionClick={ () => setShowDeleteModal(true) }
                         isButtonDisabled={ !hasWorkflowInstanceDeletePermissions }
                         data-testid="workflow-requests-details-danger-zone-delete"
@@ -235,9 +254,9 @@ const WorkflowRequestDetailsPage: React.FC = () => {
                 size="small"
                 onClose={ () => setShowDeleteModal(false) }
             >
-                <Modal.Header>{ t("approvalWorkflows:details.dangerZone.delete.header") }</Modal.Header>
+                <Modal.Header>{ t("approvalWorkflows:details.dangerZone.abort.header") }</Modal.Header>
                 <Modal.Content>
-                    <p>{ t("approvalWorkflows:details.dangerZone.delete.confirm") }</p>
+                    <p>{ t("approvalWorkflows:details.dangerZone.abort.confirm") }</p>
                 </Modal.Content>
                 <Modal.Actions>
                     <Button onClick={ () => setShowDeleteModal(false) }>{ t("common:cancel") }</Button>
@@ -246,7 +265,9 @@ const WorkflowRequestDetailsPage: React.FC = () => {
                         loading={ loading }
                         onClick={ handleDelete }
                         disabled={ !hasWorkflowInstanceDeletePermissions }
-                    >{ t("common:delete") }</Button>
+                    >
+                        { t("approvalWorkflows:details.dangerZone.abort.action") }
+                    </Button>
                 </Modal.Actions>
             </Modal>
         </TabPageLayout>
