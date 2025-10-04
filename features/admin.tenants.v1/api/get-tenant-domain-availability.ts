@@ -17,10 +17,10 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { store } from "@wso2is/admin.core.v1/store";
 import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
+import { APIErrorResponseInterface, HttpMethods } from "@wso2is/core/models";
 import { AxiosError } from "axios";
 import TenantConstants from "../constants/tenant-constants";
 
@@ -55,7 +55,7 @@ const getTenantDomainAvailability = (tenantDomain: string): Promise<boolean> => 
         .then(() => {
             return Promise.resolve(false);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<APIErrorResponseInterface>) => {
             if (error.response.status === 404) {
                 return Promise.resolve(true);
             }

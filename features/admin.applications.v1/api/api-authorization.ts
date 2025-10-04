@@ -67,7 +67,7 @@ export const authorizeAPI = (appId: string, apiId: string, scopes: string[], pol
             }
 
             return Promise.resolve(response.data);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<{ code: string | number }>) => {
             throw new IdentityAppsApiException(
                 error.message,
                 error.stack,
@@ -110,7 +110,7 @@ export const removeAuthorizedAPI = (appId: string, apiId: string): Promise<null 
             }
 
             return Promise.resolve(response.data);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<{ code: string | number }>) => {
             throw new IdentityAppsApiException(
                 error.message,
                 error.stack,
@@ -158,7 +158,7 @@ export const patchScopesOfAuthorizedAPI = (appId: string, apiId: string, addedSc
             }
 
             return Promise.resolve(response.data);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<{ code: string | number }>) => {
             throw new IdentityAppsApiException(
                 error.message,
                 error.stack,

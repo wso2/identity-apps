@@ -62,7 +62,7 @@ const deleteAllCustomTextPreferences = (): Promise<CustomTextPreferenceAPIRespon
             }
 
             return Promise.resolve(response.data);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<{ code: string | number }>) => {
             throw new IdentityAppsApiException(
                 CustomTextPreferenceConstants.ErrorMessages.CUSTOM_TEXT_PREFERENCE_DELETE_ERROR.getErrorMessage(),
                 error.stack,

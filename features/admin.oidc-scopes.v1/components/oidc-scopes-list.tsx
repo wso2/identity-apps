@@ -24,6 +24,7 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
+    APIErrorResponseInterface,
     AlertLevels,
     LoadableComponentInterface,
     SBACInterface,
@@ -180,7 +181,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
 
                 setShowDeleteConfirmationModal(false);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,

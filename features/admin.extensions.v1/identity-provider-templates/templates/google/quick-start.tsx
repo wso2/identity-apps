@@ -29,7 +29,7 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import {
     IdentityProviderTemplateInterface
 } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { APIErrorResponseInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { GenericIcon, Heading, Link, LinkButton, ListLayout, PageHeader, Text } from "@wso2is/react-components";
 import { AxiosError } from "axios";
@@ -90,7 +90,7 @@ const GoogleQuickStart: FunctionComponent<GoogleQuickStartPropsInterface> = (
             .then((response: ApplicationListInterface) => {
                 setAppList(response);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,

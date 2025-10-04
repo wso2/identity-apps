@@ -131,7 +131,7 @@ export const updateEmailProviderConfigurations = (data: EmailProviderConfigAPIRe
             }
 
             return Promise.resolve(response.data as EmailProviderConfigAPIResponseInterface);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<{ code: string | number }>) => {
             const errorMessage: string = EmailProviderConstants.ErrorMessages.EMAIL_PROVIDER_CONFIG_UPDATE_ERROR_CODE
                 .getErrorMessage();
 
@@ -173,7 +173,7 @@ export const deleteEmailProviderConfigurations = (enableOldUIForEmailProvider: b
             }
 
             return Promise.resolve(response.data as EmailProviderConfigAPIResponseInterface);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<{ code: string | number }>) => {
             if (error.response?.data?.code === EmailProviderConstants.EMAIL_PROVIDER_CONFIG_NOT_FOUND_ERROR_CODE) {
                 // Error due to the email provider configurations not existing. This is expected and should throw error.
                 return Promise.resolve(null);

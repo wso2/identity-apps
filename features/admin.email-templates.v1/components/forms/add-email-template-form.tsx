@@ -18,7 +18,12 @@
 
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import {
+    APIErrorResponseInterface,
+    AlertInterface,
+    AlertLevels,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { Message } from "@wso2is/react-components";
@@ -27,6 +32,7 @@ import * as CountryLanguage from "country-language";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Button, DropdownItemProps, Form, Grid } from "semantic-ui-react";
 import { createLocaleTemplate, getTemplateDetails, replaceLocaleTemplateContent } from "../../api";
 import { EmailTemplate, EmailTemplateFormModes, EmailTemplateType } from "../../models";
@@ -53,8 +59,8 @@ interface AddEmailTemplateFormPropsInterface extends TestableComponentInterface 
 /**
  * Form to handle ADD/EDIT of a locale based email template.
  *
- * @param {AddEmailTemplateFormPropsInterface} props - props required for component.
- * @return {React.ReactElement}
+ * @param props - props required for component.
+ * @returns React.ReactElement
  */
 export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsInterface> = (
     props: AddEmailTemplateFormPropsInterface
@@ -67,7 +73,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
         [ "data-testid" ]: testId
     } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
 
@@ -88,12 +94,12 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
         const locales: string[] = CountryLanguage.getLocales(true);
         const localeDropDown: DropdownItemProps[] = [];
 
-        locales.forEach((locale, index) => {
-            const countryCode = locale.split("-")[ 1 ];
-            const languageCode = locale.split("-")[ 0 ];
+        locales.forEach((locale: string, index: number) => {
+            const countryCode: string = locale.split("-")[ 1 ];
+            const languageCode: string = locale.split("-")[ 0 ];
 
-            const language = CountryLanguage.getLanguage(languageCode).name;
-            const country = CountryLanguage.getCountry(countryCode).name;
+            const language: string = CountryLanguage.getLanguage(languageCode).name;
+            const country: string = CountryLanguage.getCountry(countryCode).name;
 
             localeDropDown.push({
                 flag: countryCode.toLowerCase(),
@@ -117,7 +123,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
         getTemplateDetails(templateTypeId, templateId)
             .then((response: AxiosResponse<EmailTemplate>) => {
                 if (response.status === 200) {
-                    const templateDetails = response.data;
+                    const templateDetails: EmailTemplate = response.data;
 
                     setLocale(templateDetails.id);
                     setSubject(templateDetails.subject);
@@ -163,7 +169,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                         .replace(":templateTypeId", templateTypeId));
                 }
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 dispatch(addAlert<AlertInterface>({
                     description: error.response.data.description,
                     level: AlertLevels.ERROR,
@@ -208,7 +214,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                     }));
                 }
             })
-            .catch(error => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 dispatch(addAlert<AlertInterface>({
                     description: error.response.data.description,
                     level: AlertLevels.ERROR,
@@ -270,7 +276,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                                                 ".validations.empty")
                                         }
                                         required={ true }
-                                        children={ localeList ? localeList.map(list => {
+                                        children={ localeList ? localeList.map((list: DropdownItemProps) => {
                                             return {
                                                 "data-testid": list.value as string,
                                                 key: list.key as string,

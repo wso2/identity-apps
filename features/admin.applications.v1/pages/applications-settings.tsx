@@ -176,7 +176,7 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
     /**
      * Resolve the error message when the update fails.
      */
-    const resolveUpdateErrorMessage = (error: AxiosError): string => {
+    const resolveUpdateErrorMessage = (error: AxiosError<{ description?: string; detail?: string }>): string => {
 
         return (
             t("console:develop.pages.applicationsSettings.notifications.error.description",
@@ -187,7 +187,7 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
     /**
      * Handles the error scenario of the update.
      */
-    const handleUpdateError = (error: AxiosError) => {
+    const handleUpdateError = (error: AxiosError<{ detail?: string }>) => {
         if (error?.response?.data?.detail) {
             dispatch(
                 addAlert({

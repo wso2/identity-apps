@@ -51,12 +51,12 @@ export const getAssociations = (): Promise<LinkedAccountInterface[]> => {
     };
 
     return httpClient(requestConfig)
-        .then((response: HttpResponse<LinkedAccountInterface[]>) => {
+        .then((response: HttpResponse) => {
             if (response.status !== 200) {
                 return Promise.reject("Failed to retrieve the linked accounts");
             }
 
-            return Promise.resolve(response.data);
+            return Promise.resolve(response.data as LinkedAccountInterface[]);
         })
         .catch((error: HttpError) => {
             return Promise.reject(error);

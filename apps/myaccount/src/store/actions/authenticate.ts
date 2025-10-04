@@ -17,6 +17,7 @@
  */
 
 import { AuthenticatedUserInfo, BasicUserInfo } from "@asgardeo/auth-react";
+import { APIErrorResponseInterface } from "@wso2is/core/models";
 import { AuthenticateUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
 import { AxiosError } from "axios";
@@ -196,7 +197,7 @@ export const getProfileInformation = (
                         })
                     );
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<APIErrorResponseInterface>) => {
                     if (error.response && error.response.data && error.response.data.detail) {
                         dispatch(
                             addAlert({

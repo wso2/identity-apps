@@ -22,7 +22,7 @@
         "v1"
     ],
     "dependencies": {
-        "@asgardeo/auth-react": "^5.1.2",
+        "@asgardeo/auth-react": "^5.4.2",
         "@emotion/react": "^11.11.0",
         "@emotion/styled": "^11.11.0",
         "@mui/icons-material": "^5.11.16",

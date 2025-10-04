@@ -92,7 +92,7 @@ const updateCustomTextPreference = (
             }
 
             return Promise.resolve(response.data as CustomTextPreferenceAPIResponseInterface);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<{ code: string | number }>) => {
             throw new IdentityAppsApiException(
                 CustomTextPreferenceConstants.ErrorMessages.CUSTOM_TEXT_PREFERENCE_UPDATE_ERROR.getErrorMessage(),
                 error.stack,

@@ -37,6 +37,7 @@ import { UserBasicInterface } from "@wso2is/admin.users.v1/models/user";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
+    APIErrorResponseInterface,
     AlertLevels,
     IdentifiableComponentInterface,
     RolesInterface
@@ -347,7 +348,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
                         );
                         closeWizard();
                         history.push(AppConstants.getPaths().get("GROUP_EDIT").replace(":id", response.data.id));
-                    }).catch((error: AxiosError) => {
+                    }).catch((error: AxiosError<APIErrorResponseInterface>) => {
                         if (!error.response || error.response.status === 401) {
                             setAlert({
                                 description: t("console:manage.features.groups.notifications." +
@@ -394,7 +395,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> =
             }
 
             onCreate();
-        }).catch((error: AxiosError)  => {
+        }).catch((error: AxiosError<APIErrorResponseInterface>)  => {
             if (!error.response || error.response.status === 401) {
                 dispatch(
                     addAlert({

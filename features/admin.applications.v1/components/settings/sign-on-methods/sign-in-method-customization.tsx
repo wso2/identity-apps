@@ -35,6 +35,7 @@ import {
 } from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
+    APIErrorResponseInterface,
     AlertLevels,
     FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
@@ -72,7 +73,6 @@ import {
 } from "../../../models/application";
 import { AdaptiveScriptUtils } from "../../../utils/adaptive-script-utils";
 import { ConnectionsJITUPConflictWithMFAReturnValue, SignInMethodUtils } from "../../../utils/sign-in-method-utils";
-
 import "./sign-in-method-customization.scss";
 
 /**
@@ -356,7 +356,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
 
                 onUpdate(appId);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
 
                 const DISALLOWED_PROGRAMMING_CONSTRUCTS: string = "APP-60001";
 

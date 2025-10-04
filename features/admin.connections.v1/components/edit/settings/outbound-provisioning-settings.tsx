@@ -21,7 +21,7 @@ import { AuthenticatorAccordion } from "@wso2is/admin.core.v1/components/authent
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { RootOnlyComponent } from "@wso2is/admin.organizations.v1/components";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { APIErrorResponseInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
@@ -169,7 +169,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                             handleGetOutboundProvisioningConnectorMetadataError(error);
                         });
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<APIErrorResponseInterface>) => {
                     if (error.response && error.response.data && error.response.data.description) {
                         dispatch(addAlert({
                             description: t("authenticationProvider:notifications." +
@@ -271,7 +271,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
 
                 onUpdate(identityProvider.id);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,

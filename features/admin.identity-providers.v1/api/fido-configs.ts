@@ -19,14 +19,14 @@
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { ConnectionUIConstants } from "@wso2is/admin.connections.v1/constants/connection-ui-constants";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
-import { store } from "@wso2is/admin.core.v1/store";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
+import { APIErrorResponseInterface, HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { FIDOConfigsInterface, FIDOConnectorConfigsInterface } from "../models";
 
@@ -103,7 +103,7 @@ export const updateFidoConfigs = (
             }
 
             return Promise.resolve(response.data as FIDOConnectorConfigsInterface);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<APIErrorResponseInterface>) => {
             throw new IdentityAppsApiException(
                 ConnectionUIConstants.ERROR_MESSAGES.FIDO_AUTHENTICATOR_CONFIG_UPDATE_ERROR,
                 error?.stack,

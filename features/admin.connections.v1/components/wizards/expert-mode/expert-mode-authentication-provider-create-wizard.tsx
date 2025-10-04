@@ -20,7 +20,7 @@ import { ModalWithSidePanel } from "@wso2is/admin.core.v1/components/modals/moda
 import { TierLimitReachErrorModal } from "@wso2is/admin.core.v1/components/modals/tier-limit-reach-error-modal";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { APIErrorResponseInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ContentLoader,
@@ -163,7 +163,7 @@ export const ExpertModeAuthenticationProviderCreateWizard: FunctionComponent<
                     // Since the location header is not present, trigger callback without the id.
                     onIDPCreate();
                 })
-                .catch((error: AxiosError) => {
+                .catch((error: AxiosError<APIErrorResponseInterface>) => {
 
                     const identityAppsError: IdentityAppsError = ConnectionUIConstants.ERROR_CREATE_LIMIT_REACHED;
 

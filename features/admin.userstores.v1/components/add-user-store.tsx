@@ -19,7 +19,7 @@
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { APIErrorResponseInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
 import { LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
@@ -132,7 +132,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
 
             mutateUserStoreList(UserStoreManagementConstants.USER_STORE_MUTATION_WAIT_TIME);
             history.push(AppConstants.getPaths().get("USERSTORES"));
-        }).catch((error: AxiosError & IdentityAppsError) => {
+        }).catch((error: AxiosError<APIErrorResponseInterface> & IdentityAppsError) => {
 
             if (error.response?.status === 403 &&
                 error.response.data?.code === UserStoreManagementConstants.ERROR_CREATE_LIMIT_REACHED.getErrorCode()) {

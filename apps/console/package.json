@@ -35,7 +35,7 @@
         "typecheck": "pnpm run compile"
     },
     "dependencies": {
-        "@asgardeo/auth-react": "^5.1.2",
+        "@asgardeo/auth-react": "^5.4.2",
         "@emotion/react": "^11.11.0",
         "@emotion/styled": "^11.11.0",
         "@monaco-editor/react": "^4.5.1",
@@ -115,7 +115,7 @@
         "@wso2is/react-components": "^2.9.23",
         "@wso2is/theme": "^2.8.7",
         "@wso2is/validation": "^2.4.2",
-        "axios": "^0.19.2",
+        "axios": "^0.30.0",
         "codemirror": "^5.52.0",
         "country-language": "^0.1.7",
         "deep-equal": "^2.2.2",

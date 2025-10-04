@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { APIErrorResponseInterface } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
 import { AxiosError } from "axios";
 import { addAlert } from "./global";
@@ -58,7 +59,7 @@ export const getProfileLinkedAccounts = () => (dispatch: any): void => {
         .then((linkedAccountsResponse: LinkedAccountInterface[]) => {
             dispatch(setProfileLinkedAccounts(linkedAccountsResponse));
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<APIErrorResponseInterface>) => {
             if (error.response && error.response.data && error.response.data.detail) {
                 dispatch(
                     addAlert({

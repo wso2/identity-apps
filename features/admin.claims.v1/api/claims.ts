@@ -21,6 +21,7 @@ import { store } from "@wso2is/admin.core.v1/store";
 import { ClaimConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
+    APIErrorResponseInterface,
     Claim,
     ClaimDialect,
     ClaimDialectsGetParams,
@@ -72,7 +73,7 @@ export const addLocalClaim = (data: Claim): Promise<AxiosResponse> => {
 
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<APIErrorResponseInterface>) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -103,7 +104,7 @@ export const getAClaim = (id: string): Promise<any> => {
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<APIErrorResponseInterface>) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -136,7 +137,7 @@ export const updateAClaim = (id: string, data: Claim): Promise<any> => {
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<APIErrorResponseInterface>) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -167,7 +168,7 @@ export const deleteAClaim = (id: string): Promise<any> => {
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<APIErrorResponseInterface>) => {
             /*
             TODO:
             Due to : https://github.com/wso2/product-is/issues/8729. We are hard coding following error response for
@@ -227,7 +228,7 @@ export const addDialect = (dialectURI: string): Promise<AxiosResponse> => {
 
             return Promise.resolve(response);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<APIErrorResponseInterface>) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -258,7 +259,7 @@ export const getADialect = (id: string): Promise<any> => {
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<APIErrorResponseInterface>) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -293,7 +294,7 @@ export const updateADialect = (id: string, dialectURI: string): Promise<any> => 
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<APIErrorResponseInterface>) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -324,7 +325,7 @@ export const deleteADialect = (id: string): Promise<any> => {
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<APIErrorResponseInterface>) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -357,7 +358,7 @@ export const addExternalClaim = (dialectID: string, data: AddExternalClaim): Pro
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<APIErrorResponseInterface>) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -395,7 +396,7 @@ export const getAnExternalClaim = (dialectID: string, claimID: string): Promise<
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<APIErrorResponseInterface>) => {
             throw new IdentityAppsApiException(
                 ClaimManagementConstants.EXTERNAL_CLAIM_FETCH_REQUEST_ERROR,
                 error?.stack,
@@ -438,7 +439,7 @@ export const getExternalClaims = (dialectID: string): Promise<any> => {
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<APIErrorResponseInterface>) => {
             throw new IdentityAppsApiException(
                 ClaimConstants.ALL_EXTERNAL_CLAIMS_FETCH_REQUEST_ERROR,
                 error.stack,
@@ -483,7 +484,7 @@ export const updateAnExternalClaim = (dialectID: string, claimID: string, data: 
             }
 
             return Promise.resolve(response.data);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<APIErrorResponseInterface>) => {
             throw new IdentityAppsApiException(
                 ClaimManagementConstants.EXTERNAL_CLAIM_UPDATE_REQUEST_ERROR,
                 error?.stack,
@@ -521,7 +522,7 @@ export const deleteAnExternalClaim = (dialectID: string, claimID: string): Promi
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<APIErrorResponseInterface>) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -552,7 +553,7 @@ export const getServerSupportedClaimsForSchema = (id: string): Promise<ServerSup
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<APIErrorResponseInterface>) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -591,7 +592,7 @@ export const getAllLocalClaims = (params: ClaimsGetParams): Promise<Claim[]> => 
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<APIErrorResponseInterface>) => {
             throw new IdentityAppsApiException(
                 ClaimConstants.ALL_LOCAL_CLAIMS_FETCH_REQUEST_ERROR,
                 error.stack,
@@ -635,7 +636,7 @@ export const getDialects = (params: ClaimDialectsGetParams): Promise<ClaimDialec
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<APIErrorResponseInterface>) => {
             throw new IdentityAppsApiException(
                 ClaimConstants.DIALECTS_FETCH_REQUEST_ERROR,
                 error.stack,
@@ -681,7 +682,7 @@ export const getAllExternalClaims = (dialectID: string, params: ClaimsGetParams)
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<APIErrorResponseInterface>) => {
             if (error?.response?.data?.code !== ClaimManagementConstants.RESOURCE_NOT_FOUND_ERROR_CODE) {
                 throw new IdentityAppsApiException(
                     ClaimConstants.ALL_EXTERNAL_CLAIMS_FETCH_REQUEST_ERROR,
@@ -726,7 +727,7 @@ export const getSCIMResourceTypes = (): Promise<any> => {
 
             return Promise.resolve(response.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<APIErrorResponseInterface>) => {
             throw new IdentityAppsApiException(
                 ClaimConstants.ALL_SCIM_RESOURCE_TYPES_FETCH_REQUEST_ERROR,
                 error.stack,

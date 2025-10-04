@@ -61,7 +61,7 @@ export const fetchApplications = (
     };
 
     return httpClient(requestConfig)
-        .then((response: HttpResponse<{ applications: Application[] }>) => {
+        .then((response: HttpResponse) => {
             let applications: Application[] = [];
 
             if (
