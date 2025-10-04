@@ -42,6 +42,12 @@ export class ApplicationManagementConstants {
     public static readonly DEFAULT_APPS: string[] = [ this.MY_ACCOUNT_APP_NAME ];
 
     /**
+     * Scopes for application management views.
+     */
+    public static readonly INTERNAL_ORG_APPLICATION_MGT_VIEW: string = "internal_org_application_mgt_view";
+    public static readonly INTERNAL_APPLICATION_MGT_VIEW: string = "internal_application_mgt_view";
+
+    /**
      * When a new Application version is released, this variable should to be updated.
      */
     public static readonly APP_VERSION_1: string = "v1.0.0";
