@@ -157,6 +157,7 @@ export const common: CommonNS = {
     "confirm": "確認する",
     "contains": "含む",
     "continue": "続く",
+    "copied": "コピーしました",
     "copyToClipboard": "クリップボードにコピー",
     "create": "作成する",
     "createdOn": "に作成されました",

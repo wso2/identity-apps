@@ -150,6 +150,7 @@ export interface CommonNS {
     confirm: string;
     contains: string;
     continue: string;
+    copied: string;
     copyToClipboard: string;
     createdOn: string;
     create: string;

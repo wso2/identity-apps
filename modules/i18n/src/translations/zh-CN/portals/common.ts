@@ -157,6 +157,7 @@ export const common: CommonNS = {
     "confirm": "确认",
     "contains": "包含",
     "continue": "继续",
+    "copied": "复制了",
     "copyToClipboard": "复制到剪贴板",
     "create": "创造",
     "createdOn": "创建于",

@@ -157,6 +157,7 @@ export const common: CommonNS = {
     confirm: "Confirm",
     contains: "Contains",
     continue: "Continue",
+    copied: "Copied!",
     copyToClipboard: "Copy to clipboard",
     create: "Create",
     createdOn: "Created on",

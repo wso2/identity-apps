@@ -26,7 +26,8 @@ import { CommonUtils } from "@wso2is/core/utils";
 import { DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
-    ReactElement
+    ReactElement,
+    useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -49,6 +50,8 @@ const ConsoleSettingsPage: FunctionComponent<ConsoleSettingsPageInterface> = (
     props: ConsoleSettingsPageInterface
 ): ReactElement => {
     const { [ "data-componentid" ]: componentId } = props;
+
+    const [ isConsoleUrlCopied, setIsConsoleUrlCopied ] = useState<boolean>(false);
 
     const consoleUrl: string = useSelector((state: AppState) => state?.config?.deployment?.clientHost);
 
@@ -79,14 +82,18 @@ const ConsoleSettingsPage: FunctionComponent<ConsoleSettingsPageInterface> = (
                         InputProps={ {
                             endAdornment: (
                                 <Tooltip
-                                    title="Copy"
+                                    title={ isConsoleUrlCopied ? t("common:copied") : t("common:copyToClipboard") }
                                 >
                                     <div>
                                         <IconButton
                                             aria-label="Reset field to default"
                                             className="reset-field-to-default-adornment"
+                                            onMouseEnter={ () => {
+                                                setIsConsoleUrlCopied(false);
+                                            } }
                                             onClick={ async () => {
                                                 await CommonUtils.copyTextToClipboard(consoleUrl);
+                                                setIsConsoleUrlCopied(true);
                                             } }
                                             edge="end"
                                         >
