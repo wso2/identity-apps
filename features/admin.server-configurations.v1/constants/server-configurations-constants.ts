@@ -455,6 +455,7 @@ export class ServerConfigurationsConstants {
     public static readonly ASK_PASSWORD_OTP_USE_LOWERCASE: string = "EmailVerification.OTP.UseLowercaseCharactersInOTP";
     public static readonly ASK_PASSWORD_OTP_USE_NUMERIC: string = "EmailVerification.OTP.UseNumbersInOTP";
     public static readonly ASK_PASSWORD_OTP_LENGTH: string = "EmailVerification.OTP.OTPLength";
+    public static readonly EMAIL_VERIFICATION_OTP: string = "EmailVerification.OTP";
 
     /**
      * Account Management Catergory Constants.
