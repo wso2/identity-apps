@@ -291,16 +291,23 @@ export interface approvalWorkflowsNS {
             emptySearch: {
                 action: string;
                 title: string;
-                subtitles: string;
+                subtitles: {
+                    0: string;
+                };
             };
             emptyList: {
                 action: string;
                 title: string;
-                subtitles: string;
+                subtitles: {
+                    0: string;
+                    1: string;
+                };
             };
             emptyListReadOnly: {
                 title: string;
-                subtitles: string;
+                subtitles: {
+                    0: string;
+                };
             };
             ApprovalWorkflowError: {
                 subtitles: {

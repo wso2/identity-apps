@@ -19,7 +19,8 @@
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import Grid from "@oxygen-ui/react/Grid";
 import TextField from "@oxygen-ui/react/TextField";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FormRenderProps } from "@wso2is/form";
 import { Heading, Hint } from "@wso2is/react-components";
 import React, {
@@ -36,7 +37,10 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import AutoCompleteRenderOption from "./auto-complete-render-option";
+import { useGetWorkflowAssociations } from "../../api/use-get-workflow-associations";
 import { DropdownPropsInterface, WorkflowOperationsDetailsFormValuesInterface } from "../../models/ui";
 import "./general-approval-workflow-details-form.scss";
 import "./workflow-operations-details-form.scss";
@@ -118,10 +122,17 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
         ): ReactElement => {
 
             const { t } = useTranslation();
+            const dispatch: Dispatch = useDispatch();
 
             const triggerFormSubmit: MutableRefObject<() => void> = useRef<(() => void) | null>(null);
 
             const [ selectedOperations, setSelectedOperations ] = useState<DropdownPropsInterface[]>([]);
+
+            // Fetch existing workflow associations for all operations
+            const {
+                data: workflowAssociationsData,
+                error: workflowAssociationsError
+            } = useGetWorkflowAssociations(null, null, null);
 
             useImperativeHandle(ref, () => ({
                 triggerSubmit: () => {
@@ -137,17 +148,79 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                 }
             }, [ initialValues ]);
 
-            const validateForm = ():
-                Partial<WorkflowOperationsDetailsFormValuesInterface> => {
-                const error: Partial<WorkflowOperationsDetailsFormValuesInterface> = {};
-
-                if (selectedOperations.length === 0) {
-                    error.matchedOperations = t(
-                        "approvalWorkflows:forms.operations.dropDown.nullValidationErrorMessage"
+            /**
+             * Show an alert if fetching workflow associations fails.
+             */
+            useEffect(() => {
+                if (workflowAssociationsError) {
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "approvalWorkflows:notifications.fetchWorkflowAssociations.genericError.description"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t("approvalWorkflows:notifications.fetchWorkflowAssociations.genericError.message")
+                        })
                     );
                 }
+            }, [ workflowAssociationsError ]);
 
-                return error;
+            /**
+             * Checks if a workflow association already exists for the given operation.
+             * @param operation - The operation to check.
+             * @returns Whether an association exists.
+             */
+            const hasWorkflowAssociationForOperation = (operation: string): boolean => {
+                if (!workflowAssociationsData?.workflowAssociations) {
+                    return false;
+                }
+
+                return workflowAssociationsData.workflowAssociations.some(
+                    (association: { operation: string }) => association.operation === operation
+                );
+            };
+
+            /**
+             * Handles the selection change in the autocomplete.
+             * @param selectedOperations - The newly selected operations.
+             */
+            const handleOperationSelectionChange = (
+                event: SyntheticEvent,
+                newSelectedOperations: DropdownPropsInterface[]
+            ): void => {
+                // Check if any new operations being added already have workflows
+                const newOperations: DropdownPropsInterface[] = newSelectedOperations.filter(
+                    (newOp: DropdownPropsInterface) =>
+                        !selectedOperations.some(
+                            (existingOp: DropdownPropsInterface) => existingOp.value === newOp.value
+                        )
+                );
+
+                for (const operation of newOperations) {
+                    if (hasWorkflowAssociationForOperation(operation.value)) {
+                        dispatch(
+                            addAlert({
+                                description: t(
+                                    "approvalWorkflows:notifications.operationAlreadyExists.error.description",
+                                    {
+                                        defaultValue: `A workflow already exists for the ${operation.text} ` +
+                                            "operation.",
+                                        operation: operation.text
+                                    }
+                                ),
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "approvalWorkflows:notifications.operationAlreadyExists.error.message",
+                                    { defaultValue: "Operation already has workflow" }
+                                )
+                            })
+                        );
+
+                        return; // Don't update selection if an operation already has a workflow
+                    }
+                }
+
+                setSelectedOperations(newSelectedOperations);
             };
 
             return (
@@ -205,13 +278,7 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                                     data-componentid={ `${componentId}-field-operation-search` }
                                                 />
                                             ) }
-                                            onChange={ (
-                                                event: SyntheticEvent,
-                                                selectedOperations: DropdownPropsInterface[]
-                                            ) => {
-                                                setSelectedOperations(selectedOperations);
-                                                onChange?.(selectedOperations);
-                                            } }
+                                            onChange={ handleOperationSelectionChange }
                                             filterOptions={ (
                                                 options: DropdownPropsInterface[],
                                                 { inputValue }: { inputValue: string }

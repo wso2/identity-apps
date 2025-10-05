@@ -112,19 +112,23 @@ export const approvalWorkflows: approvalWorkflowsNS = {
             },
             emptyList: {
                 action: "New Approval Workflow",
-                subtitles:
-                "There are currently no approval workflows available. " +
-                "You can add a new approval workflow easily by following the " +
-                "steps in the approval workflow creation wizard.",
+                subtitles: {
+                    0: "There are currently no approval workflows available.",
+                    1: "You can add a new approval workflow easily by following the steps in the approval workflow creation wizard."
+                },
                 title: "Add a new approval workflow"
             },
             emptyListReadOnly: {
-                subtitles: "There are currently no workflow requests available.",
+                subtitles: {
+                    0: "There are currently no workflow requests available."
+                },
                 title: "No workflow requests"
             },
             emptySearch: {
                 action: "Clear search query",
-                subtitles: "We couldn't find any results for {{searchQuery}}. " + "Please try a different search term.",
+                subtitles: {
+                    0: "We couldn't find any results for {{searchQuery}}. Please try a different search term."
+                },
                 title: "No results found"
             }
         },
