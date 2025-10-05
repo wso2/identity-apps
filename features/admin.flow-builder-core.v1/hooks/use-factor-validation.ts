@@ -31,7 +31,6 @@ import { Resource } from "../public-api";
  * Custom hook for validating if a factor exists when reset password view is available in the password recovery flow.
  */
 const useRecoveryFactorValidation = (node: Node): void => {
-
     const { t } = useTranslation();
     const { addNotification, removeNotification, validationConfig } = useValidationStatus();
 
