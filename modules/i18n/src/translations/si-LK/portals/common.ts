@@ -157,6 +157,7 @@ export const common: CommonNS = {
     confirm: "තහවුරු කරන්න",
     contains: "අඩංගු වේ",
     continue: "පවත්වාගෙන යන්න",
+    copied: "පිටපත් කළා!",
     copyToClipboard: "ක්ලිප්බෝඩ් වෙත පිටපත් කරන්න",
     create: "සාදන්න",
     createdOn: "නිර්මාණය කරන ලද්දේ",
