@@ -1,5 +1,17 @@
 # @wso2is/admin.workflow-requests.v1
 
+## 1.0.10
+
+### Patch Changes
+
+- [#9247](https://github.com/wso2/identity-apps/pull/9247) [`616d7be338c290eed994a9bcbe31a9d1eb575b5c`](https://github.com/wso2/identity-apps/commit/616d7be338c290eed994a9bcbe31a9d1eb575b5c) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update wordings in Workflow Requests UIs
+
+* [#9248](https://github.com/wso2/identity-apps/pull/9248) [`4b90f619705c227ccb79755a6eb8d323696a290c`](https://github.com/wso2/identity-apps/commit/4b90f619705c227ccb79755a6eb8d323696a290c) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve workflow requests list filters
+
+* Updated dependencies [[`616d7be338c290eed994a9bcbe31a9d1eb575b5c`](https://github.com/wso2/identity-apps/commit/616d7be338c290eed994a9bcbe31a9d1eb575b5c), [`430474b7380ab51bb527cb389e6a1bdda4640cc2`](https://github.com/wso2/identity-apps/commit/430474b7380ab51bb527cb389e6a1bdda4640cc2)]:
+  - @wso2is/i18n@2.30.38
+  - @wso2is/admin.core.v1@2.49.68
+
 ## 1.0.9
 
 ### Patch Changes
