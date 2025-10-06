@@ -73,14 +73,14 @@ export const workflowRequests: workflowRequestsNS = {
         }
     },
     notifications: {
-        deleteWorkflowRequest: {
+        abortWorkflowRequest: {
             genericError: {
-                description: "An error occurred while deleting the workflow request",
+                description: "An error occurred while aborting the workflow request",
                 message: "Something went wrong"
             },
             success: {
-                description: "Workflow request deleted successfully.",
-                message: "Workflow request deleted successfully!"
+                description: "Workflow request aborted successfully.",
+                message: "Workflow request aborted successfully!"
             }
         },
         fetchWorkflowRequestDetails: {

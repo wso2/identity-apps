@@ -156,7 +156,7 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
             case WorkflowInstanceStatus.REJECTED:
             case WorkflowInstanceStatus.FAILED:
                 return "red";
-            case WorkflowInstanceStatus.DELETED:
+            case WorkflowInstanceStatus.ABORTED:
                 return "grey";
             default:
                 return "grey";

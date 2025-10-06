@@ -124,7 +124,7 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
         { key: WorkflowInstanceStatus.FAILED, text: t("workflowRequests:status.failed"), value: "FAILED" },
         { key: WorkflowInstanceStatus.APPROVED, text: t("workflowRequests:status.approved"), value: "APPROVED" },
         { key: WorkflowInstanceStatus.PENDING, text: t("workflowRequests:status.pending"), value: "PENDING" },
-        { key: WorkflowInstanceStatus.DELETED, text: t("workflowRequests:status.aborted"), value: "DELETED" },
+        { key: WorkflowInstanceStatus.ABORTED, text: t("workflowRequests:status.aborted"), value: "ABORTED" },
         { key: WorkflowInstanceStatus.REJECTED, text: t("workflowRequests:status.rejected"), value: "REJECTED" }
     ];
 

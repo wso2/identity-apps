@@ -64,9 +64,9 @@ export const WorkflowRequestsStatusDropdown: React.FC<FilterDropdownProps> =
             value: WorkflowInstanceStatus.FAILED
         },
         {
-            key: WorkflowInstanceStatus.DELETED,
+            key: WorkflowInstanceStatus.ABORTED,
             text: t("workflowRequests:status.aborted"),
-            value: WorkflowInstanceStatus.DELETED
+            value: WorkflowInstanceStatus.ABORTED
         }
     ];
 

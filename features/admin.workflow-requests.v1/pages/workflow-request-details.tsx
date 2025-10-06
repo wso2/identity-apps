@@ -31,7 +31,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Message, Modal, Table } from "semantic-ui-react";
 import { useGetWorkflowInstance } from "../api/use-get-workflow-instance";
-import { deleteWorkflowInstance } from "../api/workflow-requests";
+import { abortWorkflowInstance } from "../api/workflow-requests";
 import { WorkflowInstanceStatus, WorkflowRequestPropertyInterface } from "../models/workflowRequests";
 import "./workflow-request-details.scss";
 
@@ -46,7 +46,7 @@ const WorkflowRequestDetailsPage: FunctionComponent<IdentifiableComponentInterfa
     const { t } = useTranslation([ "workflowRequests" ]);
     const dispatch: Dispatch = useDispatch();
 
-    const [ showDeleteModal, setShowDeleteModal ] = useState<boolean>(false);
+    const [ showAbortModal, setshowAbortModal ] = useState<boolean>(false);
 
     const path: string[] = history.location.pathname.split("/");
     const id: string = path[path.length - 1];
@@ -59,8 +59,8 @@ const WorkflowRequestDetailsPage: FunctionComponent<IdentifiableComponentInterfa
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
-    const hasWorkflowInstanceDeletePermissions: boolean = useRequiredScopes(
-        featureConfig?.workflowInstances?.scopes?.delete
+    const hasWorkflowInstanceUpdatePermissions: boolean = useRequiredScopes(
+        featureConfig?.workflowInstances?.scopes?.update
     );
 
     const formatHumanReadableDate = (dateString: string): string => {
@@ -118,7 +118,7 @@ const WorkflowRequestDetailsPage: FunctionComponent<IdentifiableComponentInterfa
         [ WorkflowInstanceStatus.FAILED, t("workflowRequests:status.failed") ],
         [ WorkflowInstanceStatus.APPROVED, t("workflowRequests:status.approved") ],
         [ WorkflowInstanceStatus.PENDING, t("workflowRequests:status.pending") ],
-        [ WorkflowInstanceStatus.DELETED, t("workflowRequests:status.aborted") ],
+        [ WorkflowInstanceStatus.ABORTED, t("workflowRequests:status.aborted") ],
         [ WorkflowInstanceStatus.REJECTED, t("workflowRequests:status.rejected") ]
     ]);
 
@@ -189,29 +189,25 @@ const WorkflowRequestDetailsPage: FunctionComponent<IdentifiableComponentInterfa
         );
     };
 
-    const handleDelete = async () => {
+    const handleAbort = async () => {
         if (!workflowRequest) return;
 
         try {
-            await deleteWorkflowInstance(workflowRequest.workflowInstanceId);
+            await abortWorkflowInstance(workflowRequest.workflowInstanceId);
             dispatch(addAlert({
-                description: t("workflowRequests:notifications."
-                    + "deleteWorkflowRequest.success.description"),
+                description: t("workflowRequests:notifications.abortWorkflowRequest.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("workflowRequests:notifications."
-                    + "deleteWorkflowRequest.success.message")
+                message: t("workflowRequests:notifications.abortWorkflowRequest.success.message")
             }));
-            setShowDeleteModal(false);
+            setshowAbortModal(false);
             history.push(AppConstants.getPaths().get("WORKFLOW_REQUESTS"));
         } catch (err: any) {
             dispatch(addAlert({
-                description: t("workflowRequests:notifications."
-                    + "deleteWorkflowRequest.genericError.description", {
+                description: t("workflowRequests:notifications.abortWorkflowRequest.genericError.description", {
                     description: err?.response?.data?.detail || ""
                 }),
                 level: AlertLevels.ERROR,
-                message: t("workflowRequests:notifications."
-                    + "deleteWorkflowRequest.genericError.message")
+                message: t("workflowRequests:notifications.abortWorkflowRequest.genericError.message")
             }));
         }
     };
@@ -243,28 +239,28 @@ const WorkflowRequestDetailsPage: FunctionComponent<IdentifiableComponentInterfa
                         actionTitle={ t("workflowRequests:details.dangerZone.abort.actionTitle") }
                         header={ t("workflowRequests:details.dangerZone.abort.header") }
                         subheader={ t("workflowRequests:details.dangerZone.abort.subheader") }
-                        onActionClick={ () => setShowDeleteModal(true) }
-                        isButtonDisabled={ !hasWorkflowInstanceDeletePermissions }
+                        onActionClick={ () => setshowAbortModal(true) }
+                        isButtonDisabled={ !hasWorkflowInstanceUpdatePermissions }
                         data-testid="workflow-requests-details-danger-zone-delete"
                     />
                 </DangerZoneGroup>
             ) }
             <Modal
-                open={ showDeleteModal }
+                open={ showAbortModal }
                 size="small"
-                onClose={ () => setShowDeleteModal(false) }
+                onClose={ () => setshowAbortModal(false) }
             >
                 <Modal.Header>{ t("workflowRequests:details.dangerZone.abort.header") }</Modal.Header>
                 <Modal.Content>
                     <p>{ t("workflowRequests:details.dangerZone.abort.confirm") }</p>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button onClick={ () => setShowDeleteModal(false) }>{ t("common:cancel") }</Button>
+                    <Button onClick={ () => setshowAbortModal(false) }>{ t("common:cancel") }</Button>
                     <Button
                         negative
                         loading={ loading }
-                        onClick={ handleDelete }
-                        disabled={ !hasWorkflowInstanceDeletePermissions }
+                        onClick={ handleAbort }
+                        disabled={ !hasWorkflowInstanceUpdatePermissions }
                     >
                         { t("workflowRequests:details.dangerZone.abort.action") }
                     </Button>

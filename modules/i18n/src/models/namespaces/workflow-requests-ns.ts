@@ -131,7 +131,7 @@ export interface workflowRequestsNS {
         };
     };
     notifications: {
-        deleteWorkflowRequest: {
+        abortWorkflowRequest: {
             genericError: {
                 description: string;
                 message: string;
