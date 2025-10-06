@@ -16,10 +16,16 @@
  * under the License.
  */
 
+import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
+import Chip from "@oxygen-ui/react/Chip";
+import TextField from "@oxygen-ui/react/TextField";
+import Tooltip from "@oxygen-ui/react/Tooltip";
+import { getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
+import { Claim } from "@wso2is/core/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import {
@@ -81,6 +87,9 @@ export const MultiAttributeLoginForm: FunctionComponent<MultiAttributeLoginFormP
         = useState<Map<string, ConnectorPropertyInterface>>(undefined);
     const [ initialFormValues, setInitialFormValues ]
         = useState<any>(undefined);
+    const [ availableClaims, setAvailableClaims ] = useState<Claim[]>([]);
+    const [ selectedClaims, setSelectedClaims ] = useState<Claim[]>([]);
+    const [ isLoadingClaims, setIsLoadingClaims ] = useState<boolean>(false);
 
     /**
      * Flattens and resolved form initial values and field metadata.
@@ -108,6 +117,58 @@ export const MultiAttributeLoginForm: FunctionComponent<MultiAttributeLoginFormP
         setInitialConnectorValues(resolvedInitialValues);
         setInitialFormValues(resolvedInitialFormValues);
     }, [ initialValues ]);
+
+    /**
+     * Fetch all local claims from the API.
+     */
+    useEffect(() => {
+        setIsLoadingClaims(true);
+        getAllLocalClaims(null)
+            .then((claims: Claim[]) => {
+                setAvailableClaims(claims);
+            })
+            .catch((error) => {
+                console.error("Error fetching claims:", error);
+                setAvailableClaims([]);
+            })
+            .finally(() => {
+                setIsLoadingClaims(false);
+            });
+    }, []);
+
+    /**
+     * Parse initial comma-separated claim URIs and set selected claims.
+     */
+    useEffect(() => {
+        if (!initialFormValues || !availableClaims.length) {
+            return;
+        }
+
+        const allowedAttributesValue = initialFormValues["account.multiattributelogin.handler.allowedattributes"];
+        
+        if (allowedAttributesValue) {
+            const claimUris: string[] = allowedAttributesValue
+                .split(",")
+                .map((uri: string) => uri.trim())
+                .filter((uri: string) => uri);
+
+            const selected: Claim[] = availableClaims.filter((claim: Claim) =>
+                claimUris.includes(claim.claimURI)
+            );
+
+            setSelectedClaims(selected);
+        }
+    }, [ initialFormValues, availableClaims ]);
+
+    /**
+     * Handle claim selection changes.
+     *
+     * @param event - The event.
+     * @param newValue - The new selected claims.
+     */
+    const handleClaimSelectionChange = (event: SyntheticEvent, newValue: Claim[]) => {
+        setSelectedClaims(newValue);
+    };
 
     /**
      * Prepare form values for submitting.
@@ -140,38 +201,73 @@ export const MultiAttributeLoginForm: FunctionComponent<MultiAttributeLoginFormP
             id={ FORM_ID }
             uncontrolledForm={ true }
             initialValues={ initialFormValues }
-            onSubmit={ (values: Record<string, unknown>) =>
-                onSubmit(getUpdatedConfigurations(values))
-            }
+            onSubmit={ (values: Record<string, unknown>) => {
+                // Convert selected claims to comma-separated URIs
+                const claimUris: string = selectedClaims
+                    .map((claim: Claim) => claim.claimURI)
+                    .join(",");
+
+                // Add the claim URIs to form values
+                const updatedValues: Record<string, unknown> = {
+                    ...values,
+                    "account.multiattributelogin.handler.allowedattributes": claimUris
+                };
+
+                onSubmit(getUpdatedConfigurations(updatedValues));
+            } }
         >
-            <Field.Input
-                ariaLabel="account.multiattributelogin.handler.allowedattributes"
-                inputType="text"
-                name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
-                    "account.multiattributelogin.handler.allowedattributes"
-                ) }
-                type="text"
-                width={ 16 }
-                required={ true }
-                placeholder={ "Enter allowed attribute list" }
-                labelPosition="top"
-                minLength={ 3 }
-                maxLength={ 1000 }
-                readOnly={ readOnly }
-                initialValue={ initialFormValues?.[ "account.multiattributelogin.handler.allowedattributes" ] }
-                data-componentid={ `${ componentId }-allowed-attribute-list` }
-                label={ GovernanceConnectorUtils.resolveFieldLabel(
-                    "Account Management",
-                    "account.multiattributelogin.handler.allowedattributes",
-                    "Allowed Attribute List")
-                }
-                disabled={ !isConnectorEnabled }
-                hint={ GovernanceConnectorUtils.resolveFieldHint(
-                    "Account Management",
-                    "account.multiattributelogin.handler.allowedattributes",
-                    "Allowed claim list separated by commas.")
-                }
-            />
+            <div style={ { marginBottom: "16px" } }>
+                <label style={ { display: "block", marginBottom: "8px", fontWeight: 500 } }>
+                    { GovernanceConnectorUtils.resolveFieldLabel(
+                        "Account Management",
+                        "account.multiattributelogin.handler.allowedattributes",
+                        "Allowed Attribute List"
+                    ) }
+                    <span style={ { color: "red" } }> *</span>
+                </label>
+                <Autocomplete
+                    multiple
+                    options={ availableClaims }
+                    value={ selectedClaims }
+                    onChange={ handleClaimSelectionChange }
+                    getOptionLabel={ (option: Claim) => option.displayName || option.claimURI }
+                    isOptionEqualToValue={ (option: Claim, value: Claim) => 
+                        option.claimURI === value.claimURI 
+                    }
+                    disabled={ !isConnectorEnabled || readOnly }
+                    loading={ isLoadingClaims }
+                    renderInput={ (params: AutocompleteRenderInputParams) => (
+                        <TextField
+                            { ...params }
+                            placeholder={ selectedClaims.length === 0 ? "Select allowed attributes" : "" }
+                            data-componentid={ `${ componentId }-allowed-attribute-list` }
+                        />
+                    ) }
+                    renderTags={ (value: Claim[], getTagProps) => 
+                        value.map((option: Claim, index: number) => (
+                            <Tooltip 
+                                key={ option.claimURI }
+                                title={ option.claimURI }
+                                placement="top"
+                            >
+                                <Chip
+                                    { ...getTagProps({ index }) }
+                                    label={ option.displayName || option.claimURI }
+                                    size="small"
+                                />
+                            </Tooltip>
+                        ))
+                    }
+                    data-componentid={ `${ componentId }-allowed-attribute-autocomplete` }
+                />
+                <div style={ { marginTop: "4px", fontSize: "12px", color: "#666" } }>
+                    { GovernanceConnectorUtils.resolveFieldHint(
+                        "Account Management",
+                        "account.multiattributelogin.handler.allowedattributes",
+                        "Select the claims that can be used for multi-attribute login."
+                    ) }
+                </div>
+            </div>
             <Field.Button
                 form={ FORM_ID }
                 size="small"
