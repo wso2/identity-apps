@@ -8099,47 +8099,11 @@ export interface ConsoleNS {
                     placeholder: string;
                 };
                 notifications: {
-                    fetchApprovalWorkflows: {
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    deleteApprovalWorkflow: {
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
-                        };
-                    };
                     delay: {
                         message: string;
                         description: string;
                     };
-                    updateApprovalWorkflow: {
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
-                        };
-                    };
                     testConnection: {
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    addApprovalWorkflow: {
                         genericError: {
                             message: string;
                             description: string;
@@ -8241,67 +8205,6 @@ export interface ConsoleNS {
                     read: string;
                     delete: string;
                     darkMode: string;
-                };
-            };
-            workflowRequests: {
-                dangerZone: {
-                    delete: {
-                        actionTitle: string;
-                        header: string;
-                        subheader: string;
-                    };
-                };
-                notifications: {
-                    deleteWorkflowRequest: {
-                        genericError: {
-                            description: string;
-                            message: string;
-                        };
-                        success: {
-                            description: string;
-                            message: string;
-                        };
-                    };
-                    fetchWorkflowRequestDetails: {
-                        genericError: {
-                            description: string;
-                            message: string;
-                        };
-                        success: {
-                            description: string;
-                            message: string;
-                        };
-                    };
-                    fetchWorkflowRequests: {
-                        genericError: {
-                            description: string;
-                            message: string;
-                        };
-                    };
-                    searchWorkflowRequests: {
-                        genericError: {
-                            description: string;
-                            message: string;
-                        };
-                    };
-                };
-                details: {
-                    header: string;
-                    fields: {
-                        id: string;
-                        eventType: string;
-                        requestInitiator: string;
-                        status: string;
-                        createdAt: string;
-                        updatedAt: string;
-                        requestParams: string;
-                    };
-                    loading: string;
-                    error: {
-                        header: string;
-                        content: string;
-                    };
-                    backButton: string;
                 };
             };
         };

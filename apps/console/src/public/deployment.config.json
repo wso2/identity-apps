@@ -541,7 +541,7 @@
             },
             "approvals": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "feature": [

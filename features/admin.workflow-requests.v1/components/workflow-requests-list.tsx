@@ -97,7 +97,7 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
         ["data-componentid"]: componentId = "workflow-requests-list"
     } = props;
 
-    const { t } = useTranslation([ "approvalWorkflows" ]);
+    const { t } = useTranslation([ "workflowRequests" ]);
 
     /**
      * Shows list placeholders.
@@ -111,14 +111,14 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                     data-componentid={ `${componentId}-empty-placeholder-search` }
                     action={ (
                         <LinkButton onClick={ onSearchQueryClear }>
-                            { t("approvalWorkflows:form.placeholders.emptySearch.action") }
+                            { t("workflowRequests:placeholders.emptySearch.action") }
                         </LinkButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
-                    title={ t("approvalWorkflows:form.placeholders.emptySearch.title") }
+                    title={ t("workflowRequests:placeholders.emptySearch.title") }
                     subtitle={ [
-                        t("approvalWorkflows:form.placeholders.emptySearch.subtitles", { searchQuery })
+                        t("workflowRequests:placeholders.emptySearch.subtitles.0", { searchQuery })
                     ] }
                 />
             );
@@ -130,8 +130,8 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                     data-componentid={ `${componentId}-empty-placeholder-readonly` }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    title={ t("approvalWorkflows:form.placeholders.emptyListReadOnly.title") }
-                    subtitle={ [ t("approvalWorkflows:form.placeholders.emptyListReadOnly.subtitles") ] }
+                    title={ t("workflowRequests:placeholders.emptyListReadOnly.title") }
+                    subtitle={ [ t("workflowRequests:placeholders.emptyListReadOnly.subtitles.0") ] }
                 />
             );
         }
@@ -188,7 +188,7 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                     </Header>
                 </div>
             ),
-            title: t("approvalWorkflows:list.columns.workflowInstanceId"),
+            title: t("workflowRequests:list.columns.workflowInstanceId"),
             width: 4
         },
         {
@@ -208,7 +208,7 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                     </span>
                 );
             },
-            title: t("approvalWorkflows:list.columns.status"),
+            title: t("workflowRequests:list.columns.status"),
             width: 4
         },
         {
@@ -221,7 +221,7 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                     { getFriendlyDate(workflowRequest.createdAt) }
                 </Header>
             ),
-            title: t("approvalWorkflows:list.columns.createdAt"),
+            title: t("workflowRequests:list.columns.createdAt"),
             width: 4
         },
         {
@@ -234,7 +234,7 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
                     { getFriendlyDate(workflowRequest.updatedAt) }
                 </Header>
             ),
-            title: t("approvalWorkflows:list.columns.updatedAt"),
+            title: t("workflowRequests:list.columns.updatedAt"),
             width: 4
         }
     ];
@@ -263,15 +263,15 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
 
         switch (status.toUpperCase()) {
             case "PENDING":
-                return t("approvalWorkflows:status.pending");
+                return t("workflowRequests:status.pending");
             case "APPROVED":
-                return t("approvalWorkflows:status.approved");
+                return t("workflowRequests:status.approved");
             case "REJECTED":
-                return t("approvalWorkflows:status.rejected");
+                return t("workflowRequests:status.rejected");
             case "FAILED":
-                return t("approvalWorkflows:status.failed");
+                return t("workflowRequests:status.failed");
             case "DELETED":
-                return t("approvalWorkflows:status.aborted");
+                return t("workflowRequests:status.aborted");
             default:
                 return status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
         }

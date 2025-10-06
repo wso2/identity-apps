@@ -16,6 +16,9 @@
  * under the License.
  */
 export interface approvalWorkflowsNS {
+    advancedSearch: {
+        placeholder: string;
+    };
     notifications: {
         fetchApprovalWorkflows: {
             genericError: {
@@ -116,39 +119,6 @@ export interface approvalWorkflowsNS {
         updateDelay: {
             message: string;
             description: string;
-        };
-        // Workflow Requests notifications
-        deleteWorkflowRequest: {
-            genericError: {
-                description: string;
-                message: string;
-            };
-            success: {
-                description: string;
-                message: string;
-            };
-        };
-        fetchWorkflowRequestDetails: {
-            genericError: {
-                description: string;
-                message: string;
-            };
-            success: {
-                description: string;
-                message: string;
-            };
-        };
-        fetchWorkflowRequests: {
-            genericError: {
-                description: string;
-                message: string;
-            };
-        };
-        searchWorkflowRequests: {
-            genericError: {
-                description: string;
-                message: string;
-            };
         };
     };
     confirmation: {
@@ -288,13 +258,6 @@ export interface approvalWorkflowsNS {
             };
         };
         placeholders: {
-            emptySearch: {
-                action: string;
-                title: string;
-                subtitles: {
-                    0: string;
-                };
-            };
             emptyList: {
                 action: string;
                 title: string;
@@ -304,6 +267,13 @@ export interface approvalWorkflowsNS {
                 };
             };
             emptyListReadOnly: {
+                title: string;
+                subtitles: {
+                    0: string;
+                };
+            };
+            emptySearch: {
+                action: string;
                 title: string;
                 subtitles: {
                     0: string;
@@ -327,93 +297,10 @@ export interface approvalWorkflowsNS {
             darkMode: string;
         };
     };
-    // Workflow Requests specific properties
     list: {
         columns: {
-            workflowInstanceId: string;
-            status: string;
-            requestInitiator: string;
-            createdAt: string;
-            updatedAt: string;
             actions: string;
+            name: string;
         };
-    };
-    status: {
-        aborted: string;
-        all: string;
-        approved: string;
-        failed: string;
-        pending: string;
-        rejected: string;
-    };
-    eventType: {
-        all: string;
-        myTasks: string;
-    };
-    operationType: {
-        all: string;
-        createUser: string;
-        deleteUser: string;
-        updateUserRoles: string;
-        createRole: string;
-        deleteRole: string;
-        updateRoleName: string;
-        updateRoleUsers: string;
-        deleteUserClaims: string;
-        updateUserClaims: string;
-    };
-    details: {
-        header: string;
-        fields: {
-            id: string;
-            eventType: string;
-            requestInitiator: string;
-            status: string;
-            createdAt: string;
-            updatedAt: string;
-            requestParams: string;
-        };
-        loading: string;
-        error: {
-            header: string;
-            content: string;
-        };
-        backButton: string;
-        dangerZone: {
-            header: string;
-            abort: {
-                action: string;
-                actionTitle: string;
-                header: string;
-                subheader: string;
-                confirm: string;
-            };
-        };
-    };
-    timeRanges: {
-        all: string;
-        last6Hours: string;
-        last12Hours: string;
-        last24Hours: string;
-        last2Days: string;
-        last7Days: string;
-        last14Days: string;
-        last30Days: string;
-        customRange: string;
-        customRangeTitle: string;
-        range: string;
-    };
-    activeFiltersBar: {
-        removeFilter: string;
-        noActiveFilters: string;
-        clearAll: string;
-    };
-    filters: {
-        requestType: string;
-        status: string;
-        operationType: string;
-        createdTimeRange: string;
-        updatedTimeRange: string;
-        disabledTimeRange: string;
     };
 }

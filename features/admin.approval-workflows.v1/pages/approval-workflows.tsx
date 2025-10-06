@@ -50,7 +50,7 @@ type WorkflowsPageInterface = IdentifiableComponentInterface;
 const ApprovalWorkflows: FunctionComponent<WorkflowsPageInterface> = (props: WorkflowsPageInterface): ReactElement => {
     const { ["data-componentid"]: componentId = "approval-workflows" } = props;
 
-    const { t } = useTranslation();
+    const { t } = useTranslation([ "approvalWorkflows" ]);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
@@ -98,15 +98,13 @@ const ApprovalWorkflows: FunctionComponent<WorkflowsPageInterface> = (props: Wor
                 description:
                     workflowListFetchRequestError?.response?.data?.description ??
                     t(
-                        "console:manage.features.approvalWorkflows.notifications." +
-                            "fetchApprovalWorkflows.genericError.description"
+                        "approvalWorkflows:notifications.fetchApprovalWorkflows.genericError.description"
                     ),
                 level: AlertLevels.ERROR,
                 message:
                     workflowListFetchRequestError?.response?.data?.message ??
                     t(
-                        "console:manage.features.approvalWorkflows.notifications." +
-                            "fetchApprovalWorkflows.genericError.message"
+                        "approvalWorkflows:notifications.fetchApprovalWorkflows.genericError.message"
                     )
             })
         );
@@ -179,12 +177,11 @@ const ApprovalWorkflows: FunctionComponent<WorkflowsPageInterface> = (props: Wor
             .then(() => {
                 handleAlerts({
                     description: t(
-                        "console:manage.features.approvalWorkflows.notifications." +
-                            "deleteApprovalWorkflow.success.description"
+                        "approvalWorkflows:notifications.deleteApprovalWorkflow.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "console:manage.features.approvalWorkflows.notifications.deleteApprovalWorkflow.success.message"
+                        "approvalWorkflows:notifications.deleteApprovalWorkflow.success.message"
                     )
                 });
                 mutateWorkflowsFetchRequest();
@@ -192,13 +189,11 @@ const ApprovalWorkflows: FunctionComponent<WorkflowsPageInterface> = (props: Wor
             .catch(() => {
                 handleAlerts({
                     description: t(
-                        "console:manage.features.approvalWorkflows.notifications." +
-                            "deleteApprovalWorkflow.genericError.description"
+                        "approvalWorkflows:notifications.deleteApprovalWorkflow.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.approvalWorkflows.notifications." +
-                            "deleteApprovalWorkflow.genericError.message"
+                        "approvalWorkflows:notifications.deleteApprovalWorkflow.genericError.message"
                     )
                 });
             });
@@ -247,7 +242,7 @@ const ApprovalWorkflows: FunctionComponent<WorkflowsPageInterface> = (props: Wor
                             iconPosition="left"
                             value={ inputValue }
                             onChange={ handleInputChange }
-                            placeholder={ t("console:manage.features.approvalWorkflows.advancedSearch.placeholder") }
+                            placeholder={ t("approvalWorkflows:advancedSearch.placeholder") }
                             floated="right"
                             size="small"
                             action={

@@ -114,7 +114,7 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
     } = props;
 
     const dispatch: Dispatch = useDispatch();
-    const { t } = useTranslation();
+    const { t } = useTranslation([ "approvalWorkflows" ]);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
@@ -375,12 +375,11 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
             .then(() => {
                 handleAlerts({
                     description: t(
-                        "console:manage.features.approvalWorkflows.notifications." +
-                            "deleteApprovalWorkflow.success.description"
+                        "approvalWorkflows:notifications.deleteApprovalWorkflow.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "console:manage.features.approvalWorkflows.notifications.deleteApprovalWorkflow.success.message"
+                        "approvalWorkflows:notifications.deleteApprovalWorkflow.success.message"
                     )
                 });
                 history.push(AppConstants.getPaths().get("APPROVAL_WORKFLOWS"));
@@ -388,13 +387,11 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
             .catch(() => {
                 handleAlerts({
                     description: t(
-                        "console:manage.features.approvalWorkflows.notifications." +
-                            "deleteApprovalWorkflow.genericError.description"
+                        "approvalWorkflows:notifications.deleteApprovalWorkflow.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.approvalWorkflows.notifications." +
-                            "deleteApprovalWorkflow.error.message"
+                        "approvalWorkflows:notifications.deleteApprovalWorkflow.genericError.message"
                     )
                 });
             });
