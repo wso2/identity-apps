@@ -216,7 +216,7 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                             })
                         );
 
-                        return; // Don't update selection if an operation already has a workflow
+                        return; // Don't update selection if an operation already has a workflow.
                     }
                 }
 

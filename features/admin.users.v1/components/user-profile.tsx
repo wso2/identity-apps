@@ -1398,7 +1398,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     /**
      * Checks if email via Email OTP is enabled.
      *
-     * @returns true if enabled, false otherwise
+     * @returns true if enabled, false otherwise.
      */
     const isEmailVerificationEmailOTPEnabled = (): boolean => {
         const property: ConnectorPropertyInterface | undefined = connectorProperties?.find(
