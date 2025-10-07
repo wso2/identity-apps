@@ -116,6 +116,9 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
     const dispatch: Dispatch = useDispatch();
     const { t } = useTranslation([ "approvalWorkflows" ]);
 
+    // Make the page read-only if the engine is not "WorkflowEngine"
+    const isPageReadOnly: boolean = isReadOnly || (approvalWorkflowDetails?.engine !== "WorkflowEngine");
+
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const hasApprovalWorkflowUpdatePermissions: boolean = useRequiredScopes(
@@ -563,7 +566,7 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                         <div className="workflow-model-general-settings">
                             <GeneralApprovalWorkflowDetailsForm
                                 ref={ generalApprovalWorkflowDetailsFormRef }
-                                isReadOnly={ isReadOnly || !hasApprovalWorkflowUpdatePermissions }
+                                isReadOnly={ isPageReadOnly || !hasApprovalWorkflowUpdatePermissions }
                                 initialValues={ approvalProcessFormData?.generalDetails ?? {} }
                                 approvalWorkflowId={ approvalWorkflowId }
                                 onSubmit={ onGeneralDetailsFormSubmit }
@@ -575,7 +578,7 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                         <div className="workflow-association-operations">
                             <WorkflowOperationsDetailsForm
                                 ref={ workflowOperationsDetailsFormRef }
-                                isReadOnly={ isReadOnly || !hasApprovalWorkflowUpdatePermissions }
+                                isReadOnly={ isPageReadOnly || !hasApprovalWorkflowUpdatePermissions }
                                 initialValues={ matchedOperations }
                                 onSubmit={ onWorkflowOperationsDetailsFormSubmit }
                                 onChange={ (selectedOperations: DropdownPropsInterface[]) => {
@@ -594,7 +597,7 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                             </Grid>
                             <ConfigurationsForm
                                 ref={ configurationsFormRef }
-                                isReadOnly={ isReadOnly || !hasApprovalWorkflowUpdatePermissions }
+                                isReadOnly={ isPageReadOnly || !hasApprovalWorkflowUpdatePermissions }
                                 initialValues={ stepValues }
                                 onSubmit={ handleConfigSubmit }
                                 hasErrors={ hasErrors }
@@ -605,7 +608,7 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
 
                         <PrimaryButton
                             type="submit"
-                            disabled={ isReadOnly || !hasApprovalWorkflowUpdatePermissions || isOperationDetailsNull }
+                            disabled={ isPageReadOnly || !hasApprovalWorkflowUpdatePermissions || isOperationDetailsNull }
                             onClick={ () => {
                                 handleUpdateButtonClick();
                             } }
@@ -626,7 +629,7 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                     subheader={ t("approvalWorkflows:form.dangerZone.delete.subheader") }
                     onActionClick={ () => setShowApprovalWorkflowDeleteConfirmationModal(true) }
                     data-componentid={ `${componentId}-danger-zone` }
-                    isButtonDisabled ={ isReadOnly || !hasApprovalWorkflowDeletePermissions }
+                    isButtonDisabled ={ isPageReadOnly || !hasApprovalWorkflowDeletePermissions }
                 />
             </DangerZoneGroup>
             { showApprovalWorkflowDeleteConfirmation && deleteConfirmation() }
