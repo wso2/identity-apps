@@ -33,7 +33,8 @@ export interface ValidationProviderProps {
 const ValidationProvider = ({
     children,
     validationConfig = {
-        isOTPValidationEnabled: false
+        isOTPValidationEnabled: false,
+        isRecoveryFactorValidationEnabled: false
     }
 }: PropsWithChildren<ValidationProviderProps>): ReactElement => {
     const [ notifications, setNotifications ] = useState<Map<string, Notification>>(new Map());
