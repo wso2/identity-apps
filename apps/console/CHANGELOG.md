@@ -1,5 +1,27 @@
 # @wso2is/console
 
+## 2.79.27
+
+### Patch Changes
+
+- [#9256](https://github.com/wso2/identity-apps/pull/9256) [`c89fe76f974dfe471318caa08098244279d8cb7d`](https://github.com/wso2/identity-apps/commit/c89fe76f974dfe471318caa08098244279d8cb7d) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Make operations input mandatory in workflow update and creation.
+
+- Updated dependencies [[`c89fe76f974dfe471318caa08098244279d8cb7d`](https://github.com/wso2/identity-apps/commit/c89fe76f974dfe471318caa08098244279d8cb7d)]:
+  - @wso2is/admin.approval-workflows.v1@1.0.14
+  - @wso2is/i18n@2.30.41
+  - @wso2is/admin.users.v1@2.36.37
+  - @wso2is/admin.agents.v1@1.0.77
+  - @wso2is/admin.core.v1@2.49.70
+  - @wso2is/admin.roles.v2@2.27.232
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.62
+  - @wso2is/admin.branding.v1@2.32.18
+  - @wso2is/admin.email-management.v1@2.25.226
+  - @wso2is/admin.flows.v1@1.0.31
+  - @wso2is/admin.home.v1@1.7.40
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.62
+  - @wso2is/admin.server-configurations.v1@2.35.84
+  - @wso2is/admin.registration-flow-builder.v1@0.10.22
+
 ## 2.79.26
 
 ### Patch Changes
