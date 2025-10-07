@@ -93,6 +93,12 @@ export const flows: flowsNS = {
             }
         },
         executions: {
+            confirmationCode: {
+                configurationHint: "Allow users to set their own passwords during admin-initiated onboarding and configure related settings."
+            },
+            landing:{
+                message: "Configure the {{executor}} settings and publish to apply the changes."
+            },
             names: {
                 apple: "Apple",
                 confirmationCode: "Confirmation Code",
@@ -103,6 +109,9 @@ export const flows: flowsNS = {
                 magicLink: "Magic Link",
                 microsoft: "Microsoft",
                 passkeyEnrollment: "Enroll Passkey"
+            },
+            tooltip: {
+                configurationHint: "Configure"
             }
         },
         labels: {
