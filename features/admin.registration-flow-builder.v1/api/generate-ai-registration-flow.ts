@@ -20,6 +20,7 @@ import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import RegistrationFlowConstants from "../constants/registration-flow-constants";
 
 /**
  * Get an axios instance.
@@ -36,6 +37,7 @@ const generateRegistrationFlow = (
 ): Promise<any> => {
     const requestConfig: AxiosRequestConfig = {
         data: {
+            flow_type: RegistrationFlowConstants.REGISTRATION_FLOW_TYPE,
             user_query: userQuery
         },
         headers: {
@@ -44,7 +46,7 @@ const generateRegistrationFlow = (
             "Trace-Id": traceId
         },
         method: HttpMethods.POST,
-        url: `${ store.getState().config.endpoints.registrationFlowAI }/generate/flow`
+        url: `${ store.getState().config.endpoints.registrationFlowAI }/generate`
     };
 
     return httpClient(requestConfig)

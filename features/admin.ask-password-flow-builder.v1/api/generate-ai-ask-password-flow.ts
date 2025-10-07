@@ -20,6 +20,7 @@ import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import AskPasswordFlowConstants from "../constants/ask-password-flow-constants";
 
 /**
  * Get an axios instance.
@@ -36,6 +37,7 @@ const generateAskPasswordFlow = (
 ): Promise<any> => {
     const requestConfig: AxiosRequestConfig = {
         data: {
+            flow_type: AskPasswordFlowConstants.ASK_PASSWORD_FLOW_TYPE,
             user_query: userQuery
         },
         headers: {
@@ -44,7 +46,7 @@ const generateAskPasswordFlow = (
             "Trace-Id": traceId
         },
         method: HttpMethods.POST,
-        url: `${ store.getState().config.endpoints.askPasswordFlowAI }/generate/flow`
+        url: `${ store.getState().config.endpoints.askPasswordFlowAI }/generate`
     };
 
     return httpClient(requestConfig)

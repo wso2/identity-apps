@@ -88,9 +88,9 @@ const AskPasswordFlowAILoader = (): ReactElement => {
         if (error) {
             dispatch(
                 addAlert<AlertInterface>({
-                    description: t("ai:aiAskPasswordFlow.notifications.generateStatusError.description"),
+                    description: t("ai:aiFlow.notifications.generateStatusError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("ai:aiAskPasswordFlow.notifications.generateStatusError.message")
+                    message: t("ai:aiFlow.notifications.generateStatusError.message")
                 })
             );
         }
@@ -122,8 +122,8 @@ const AskPasswordFlowAILoader = (): ReactElement => {
      * @returns The current status.
      */
     const getCurrentStatus = () => {
-        if (!data) return t("ai:aiAskPasswordFlow.states.0");
-        let currentStatusLabel: string = "ai:aiAskPasswordFlow.states.0";
+        if (!data) return t("ai:aiFlow.states.0");
+        let currentStatusLabel: string = "ai:aiFlow.states.0";
 
         Object.entries(data.status).forEach(([ key, value ]: [string, boolean]) => {
             if (value && statusLabels[key]) {
