@@ -26,7 +26,7 @@ import PlaceholderComponent from "./placeholder-component";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import usePasswordExecutorValidation from "../../../../hooks/use-password-executor-validation";
 import useRequiredFields, { RequiredFieldInterface } from "../../../../hooks/use-required-fields";
-import { ButtonVariants } from "../../../../models/elements";
+import { ButtonVariants, Element } from "../../../../models/elements";
 import { CommonElementFactoryPropsInterface } from "../common-element-factory";
 import "./button-adapter.scss";
 
@@ -81,7 +81,7 @@ const ButtonAdapter: FunctionComponent<ButtonAdapterPropsInterface> = ({
         fields
     );
 
-    usePasswordExecutorValidation((resource as unknown) as any);
+    usePasswordExecutorValidation((resource as unknown) as Element);
 
     let config: ButtonProps = {};
     let image: string = "";

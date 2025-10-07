@@ -20,7 +20,7 @@ import { Node, useReactFlow } from "@xyflow/react";
 import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import useValidationStatus from "./use-validation-status";
-import { Element, ElementTypes, InputVariants } from "../models/elements";
+import { Element, ElementTypes } from "../models/elements";
 import Notification, { NotificationType } from "../models/notification";
 import { Resource } from "../public-api";
 
