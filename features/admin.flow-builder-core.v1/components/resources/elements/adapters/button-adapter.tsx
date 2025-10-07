@@ -24,6 +24,7 @@ import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import PlaceholderComponent from "./placeholder-component";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
+import usePasswordExecutorValidation from "../../../../hooks/use-password-executor-validation";
 import useRequiredFields, { RequiredFieldInterface } from "../../../../hooks/use-required-fields";
 import { ButtonVariants } from "../../../../models/elements";
 import { CommonElementFactoryPropsInterface } from "../common-element-factory";
@@ -79,6 +80,8 @@ const ButtonAdapter: FunctionComponent<ButtonAdapterPropsInterface> = ({
         generalMessage,
         fields
     );
+
+    usePasswordExecutorValidation((resource as unknown) as any);
 
     let config: ButtonProps = {};
     let image: string = "";
