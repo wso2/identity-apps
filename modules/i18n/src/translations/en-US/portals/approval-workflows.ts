@@ -32,45 +32,6 @@ export const approvalWorkflows: approvalWorkflowsNS = {
             "This action is irreversible and will permanently delete the" +
             " selected approval workflow and the data in it."
     },
-    details: {
-        backButton: "Go back to Workflow Requests",
-        dangerZone: {
-            abort: {
-                action: "Abort",
-                actionTitle: "Abort Workflow Request",
-                confirm: "Are you sure you want to abort this workflow request? This action cannot be undone.",
-                header: "Abort Workflow Request",
-                subheader: "Once you abort a workflow request, there is no going back. Please be certain."
-            },
-            header: "Danger Zone"
-        },
-        error: {
-            content: "Failed to load workflow request details.",
-            header: "Error"
-        },
-        fields: {
-            createdAt: "Created At",
-            eventType: "Event Type",
-            id: "ID",
-            requestInitiator: "Request Initiator",
-            requestParams: "Request Params",
-            status: "Status",
-            updatedAt: "Updated At"
-        },
-        header: "Workflow Request Details",
-        loading: "Loading..."
-    },
-    eventType: {
-        all: "All Tasks",
-        myTasks: "My Tasks"
-    },
-    filters: {
-        createdTimeRange: "Created Time Range",
-        operationType: "Operation Type",
-        requestType: "Request Type",
-        status: "Status",
-        updatedTimeRange: "Updated Time Range"
-    },
     form: {
         dangerZone: {
             delete: {

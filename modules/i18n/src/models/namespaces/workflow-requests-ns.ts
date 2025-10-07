@@ -107,6 +107,7 @@ export interface workflowRequestsNS {
         operationType: string;
         createdTimeRange: string;
         updatedTimeRange: string;
+        disabledTimeRange: string;
     };
     placeholders: {
         emptySearch: {

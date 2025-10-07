@@ -93,8 +93,8 @@ const WorkflowRequestsFilter: React.FC<WorkflowRequestsFilterProps> = ({
                                 handleCreatedCustomDateChange(from, to);
                             } }
                             disabled={ isUpdatedTimeRangeSelected }
-                            disabledPopupContent={ t("approvalWorkflows:filters.disabledTimeRange",
-                                { label: t("approvalWorkflows:filters.updatedTimeRange") }) }
+                            disabledPopupContent={ t("workflowRequests:filters.disabledTimeRange",
+                                { label: t("workflowRequests:filters.updatedTimeRange") }) }
                             componentId="created-time-range"
                         />
                     </div>
@@ -111,8 +111,8 @@ const WorkflowRequestsFilter: React.FC<WorkflowRequestsFilterProps> = ({
                                 handleUpdatedCustomDateChange(from, to);
                             } }
                             disabled={ isCreatedTimeRangeSelected }
-                            disabledPopupContent={ t("approvalWorkflows:filters.disabledTimeRange",
-                                { label: t("approvalWorkflows:filters.createdTimeRange") }) }
+                            disabledPopupContent={ t("workflowRequests:filters.disabledTimeRange",
+                                { label: t("workflowRequests:filters.createdTimeRange") }) }
                             componentId="updated-time-range"
                         />
                     </div>

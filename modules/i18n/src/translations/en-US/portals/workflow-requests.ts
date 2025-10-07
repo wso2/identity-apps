@@ -57,6 +57,7 @@ export const workflowRequests: workflowRequestsNS = {
     },
     filters: {
         createdTimeRange: "Created Time Range",
+        disabledTimeRange: "Cannot select when '{{label}}' is selected.",
         operationType: "Operation Type",
         requestType: "Request Type",
         status: "Status",
