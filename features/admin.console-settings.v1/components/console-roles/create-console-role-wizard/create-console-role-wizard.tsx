@@ -21,7 +21,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { createRole, createRoleUsingV3Api } from "@wso2is/admin.roles.v2/api/roles";
 import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { CreateRoleInterface, CreateRolePermissionInterface } from "@wso2is/admin.roles.v2/models/roles";
-import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FormRenderProps, FormSpy } from "@wso2is/form";
 import { Heading, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
@@ -91,14 +91,23 @@ const CreateConsoleRoleWizard: FunctionComponent<CreateConsoleRoleWizardPropsInt
         })
             .then((response: AxiosResponse) => {
                 onClose(null, null);
-
-                dispatch(
-                    addAlert<AlertInterface>({
-                        description: `Successfully created the new role: ${response.data.displayName}`,
+                // Notify success.
+                if (response.status === 201) {
+                    dispatch(addAlert({
+                        description: t("roles:notifications.createRole.success" +
+                            ".description"),
                         level: AlertLevels.SUCCESS,
-                        message: "Role created successfully"
-                    })
-                );
+                        message: t("roles:notifications.createRole.success.message")
+                    }));
+
+                } else if (response.status === 202) {
+                    dispatch(addAlert({
+                        description: t("roles:notifications.createRolePendingApproval.success" +
+                            ".description"),
+                        level: AlertLevels.WARNING,
+                        message: t("roles:notifications.createRolePendingApproval.success.message")
+                    }));
+                }
             })
             .catch(() => {
                 setAlert({
