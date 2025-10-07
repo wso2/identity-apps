@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.30.40
+
+### Patch Changes
+
+- [#9254](https://github.com/wso2/identity-apps/pull/9254) [`8fcc5b62ba17183b0be5bf381e8932f18f10f13b`](https://github.com/wso2/identity-apps/commit/8fcc5b62ba17183b0be5bf381e8932f18f10f13b) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve time range filter UX in Workflow Requests UI
+
 ## 2.30.39
 
 ### Patch Changes
