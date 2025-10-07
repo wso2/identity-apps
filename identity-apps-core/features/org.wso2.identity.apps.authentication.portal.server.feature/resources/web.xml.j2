@@ -89,6 +89,10 @@
    </context-param>
    {% endif %}
     <context-param>
+        <param-name>AuthenticatorValidationEnabled</param-name>
+        <param-value>{{ authenticationendpoint.authenticator_validation_enabled }}</param-value>
+    </context-param>
+    <context-param>
        <param-name>AccountRecoveryRESTEndpointURL</param-name>
        <param-value>/t/tenant-domain/api/identity/user/v1.0/</param-value>
    </context-param>
