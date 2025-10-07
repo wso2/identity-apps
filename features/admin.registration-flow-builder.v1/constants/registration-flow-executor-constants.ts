@@ -40,6 +40,8 @@ class RegistrationFlowExecutorConstants {
     public static readonly SMS_OTP_EXECUTOR: string = "SMSOTPExecutor";
 
     public static readonly GOOGLE_EXECUTOR: string = "GoogleExecutor";
+
+    public static readonly MAGIC_LINK_EXECUTOR: string = "MagicLinkExecutor";
 }
 
 export default RegistrationFlowExecutorConstants;

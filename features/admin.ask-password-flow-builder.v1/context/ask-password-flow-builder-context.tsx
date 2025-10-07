@@ -16,7 +16,9 @@
  * under the License.
  */
 
+import { AskPasswordFormUpdatableConfigsInterface } from "@wso2is/admin.server-configurations.v1/models/ask-password";
 import { Context, Dispatch, SetStateAction, createContext } from "react";
+import { GovernanceConnectorInterface } from "../../admin.connections.v1";
 import { Attribute } from "../models/attributes";
 
 /**
@@ -49,6 +51,32 @@ export interface AskPasswordFlowBuilderContextProps {
      * Supported attributes for the ask password flow.
      */
     supportedAttributes: Attribute[];
+    /**
+     * Is the invite user registration configs are updated.
+     */
+    isInvitedUserRegistrationConfigUpdated: boolean;
+    /**
+     * Sets the invite user registration configs are updated.
+     */
+    setIsInvitedUserRegistrationConfigUpdated: Dispatch<SetStateAction<boolean>>;
+    /**
+     * Invited user registration configuration properties.
+     */
+    invitedUserRegistrationConfig: AskPasswordFormUpdatableConfigsInterface | null;
+    /**
+     * Sets the invited user registration configuration properties.
+     */
+    setInvitedUserRegistrationConfig: Dispatch<SetStateAction<AskPasswordFormUpdatableConfigsInterface | null>>;
+    /**
+     * Coneector associated with the flow.
+     * @remarks This will be null if the flow is not associated with any connector.
+     */
+    connector?: GovernanceConnectorInterface | null;
+    /**
+     * Sets the connector associated with the flow.
+     * @remarks This will be null if the flow is not associated with any connector.
+     */
+    setConnector?: Dispatch<SetStateAction<GovernanceConnectorInterface | null>>;
 }
 
 /**
@@ -58,10 +86,14 @@ const AskPasswordFlowBuilderContext: Context<
     AskPasswordFlowBuilderContextProps
 > = createContext<null | AskPasswordFlowBuilderContextProps>(
     {
+        invitedUserRegistrationConfig: null,
+        isInvitedUserRegistrationConfigUpdated: false,
         isNewAskPasswordPortalEnabled: false,
         isPublishing: false,
         onPublish: () => Promise.resolve(false),
         selectedAttributes: {},
+        setInvitedUserRegistrationConfig: () => {},
+        setIsInvitedUserRegistrationConfigUpdated: () => {},
         setSelectedAttributes: () => {},
         supportedAttributes: []
     }
