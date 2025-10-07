@@ -125,7 +125,6 @@ const TimeRangeDropdown: React.FC<TimeRangeDropdownProps> = ({
                         value={ selectedRange }
                         onChange={ handleRangeChange }
                         disabled={ disabled }
-                        // placeholder={ label }
                         text={ label }
                         style={ style }
                         data-componentid={ componentId }
