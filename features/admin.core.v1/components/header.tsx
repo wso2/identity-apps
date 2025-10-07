@@ -41,6 +41,7 @@ import {
 import { FeatureStatus, Show, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import { useMyAccountApplicationData } from "@wso2is/admin.applications.v1/api/application";
 import { organizationConfigs } from "@wso2is/admin.extensions.v1";
+import useRuntimeConfig from "@wso2is/common.ui.v1/hooks/use-runtime-config";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
@@ -93,6 +94,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     const { t } = useTranslation();
 
     const { showPreviewFeaturesModal, setShowPreviewFeaturesModal } = useFeatureGate();
+    const { config: runtimeConfig } = useRuntimeConfig();
 
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
@@ -584,7 +586,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                 { productVersion && (
                                     <Box className="user-dropdown-version">
                                         <Typography variant="body2">
-                                            { `${productName} ${productVersion}` }
+                                            { `${productName} ${productVersion}` } (Build ${runtimeConfig?.updates?.updateLevel})
                                         </Typography>
                                     </Box>
                                 ) }
