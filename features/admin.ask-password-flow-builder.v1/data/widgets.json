@@ -1,6 +1,88 @@
 [
     {
         "resourceType": "WIDGET",
+        "category": "COMPOSITE",
+        "type": "IDENTIFIER_PASSWORD",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Username + Password",
+            "description": "Basic recovery experience with simple username & password",
+            "image": "assets/images/icons/password.svg",
+            "showOnResourcePanel": true
+        },
+        "config": {
+            "data": {
+                "__generationMeta__": {},
+                "steps": [
+                    {
+                        "__generationMeta__": {
+                            "strategy": "MERGE_WITH_DROP_POINT"
+                        },
+                        "type": "VIEW",
+                        "data": {
+                            "components": [
+                                {
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "id": "{{ID}}",
+                                    "components": [
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "TEXT",
+                                            "config": {
+                                                "type": "text",
+                                                "hint": "",
+                                                "label": "Username",
+                                                "required": true,
+                                                "placeholder": "Enter your username",
+                                                "identifier": "http://wso2.org/claims/username"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "FIELD",
+                                            "type": "INPUT",
+                                            "variant": "PASSWORD",
+                                            "config": {
+                                                "identifier": "password",
+                                                "type": "password",
+                                                "hint": "",
+                                                "label": "Password",
+                                                "required": true,
+                                                "placeholder": "Enter your password"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "type": "EXECUTOR",
+                                                "executor": {
+                                                    "name": "PasswordProvisioningExecutor"
+                                                }
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "resourceType": "WIDGET",
         "category": "FLOW",
         "type": "EMAIL_OTP",
         "version": "0.1.0",
@@ -8,7 +90,7 @@
         "display": {
             "label": "Continue with Email OTP",
             "description": "Registration experience with Email OTP",
-            "image": "https://www.svgrepo.com/show/387455/email-down.svg",
+            "image": "assets/images/icons/email-down.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -123,7 +205,7 @@
         "display": {
             "label": "Continue with SMS OTP",
             "description": "Registration experience with SMS OTP",
-            "image": "https://www.svgrepo.com/show/455832/mobile-message.svg",
+            "image": "assets/images/icons/mobile-message.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -238,7 +320,7 @@
         "display": {
             "label": "Continue with Magic Link",
             "description": "Registration experience with Magic Link",
-            "image": "https://www.svgrepo.com/show/532869/link-alt-1.svg",
+            "image": "assets/images/icons/link.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -268,7 +350,7 @@
                                     "config": {
                                         "type": "button",
                                         "text": "Continue with Magic Link",
-                                        "image": "https://www.svgrepo.com/show/532869/link-alt-1.svg"
+                                        "image": "assets/images/icons/link.svg"
                                     },
                                     "action": {
                                         "type": "NEXT",

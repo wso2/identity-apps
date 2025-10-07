@@ -8,7 +8,7 @@
         "display": {
             "label": "Blank",
             "description": "Start a new flow from scratch with confirmation code validation",
-            "image": "https://www.svgrepo.com/show/533698/refresh-ccw-alt-3.svg",
+            "image": "assets/images/icons/refresh-ccw.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -147,7 +147,7 @@
         "display": {
             "label": "Invited User Registration.",
             "description": "Registration flow where the invited user validates a confirmation code and sets a password",
-            "image": "https://www.svgrepo.com/show/390092/security-protection-password.svg",
+            "image": "assets/images/icons/password.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -304,7 +304,7 @@
         "display": {
             "label": "Invited User Registration with Passkey",
             "description": "Registration flow where the invited user validates a confirmation code and completes Passkey onboarding",
-            "image": "https://www.svgrepo.com/show/340307/fingerprint-recognition.svg",
+            "image": "assets/images/icons/fingerprint.svg",
             "showOnResourcePanel": true
         },
         "config": {

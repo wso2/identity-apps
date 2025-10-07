@@ -7,7 +7,7 @@
         "deprecated": false,
         "display": {
             "label": "Blank View",
-            "image": "https://www.svgrepo.com/show/448632/step.svg",
+            "image": "assets/images/icons/step.svg",
             "showOnResourcePanel": true
         },
         "config": {}
@@ -20,7 +20,7 @@
         "deprecated": false,
         "display": {
             "label": "Email OTP View",
-            "image": "https://www.svgrepo.com/show/387455/email-down.svg",
+            "image": "assets/images/icons/email-down.svg",
             "showOnResourcePanel": true
         },
         "config": {},
@@ -85,7 +85,7 @@
         "deprecated": false,
         "display": {
             "label": "SMS OTP View",
-            "image": "https://www.svgrepo.com/show/455832/mobile-message.svg",
+            "image": "assets/images/icons/mobile-message.svg",
             "showOnResourcePanel": true
         },
         "config": {},
@@ -150,7 +150,7 @@
         "deprecated": false,
         "display": {
             "label": "Rule",
-            "image": "https://www.svgrepo.com/show/413199/decide.svg",
+            "image": "assets/images/icons/decide.svg",
             "showOnResourcePanel": false
         },
         "config": {}
@@ -163,7 +163,7 @@
         "deprecated": false,
         "display": {
             "label": "Execution",
-            "image": "https://www.svgrepo.com/show/476381/play.svg",
+            "image": "assets/images/icons/play.svg",
             "showOnResourcePanel": false
         },
         "config": {}
@@ -176,7 +176,7 @@
         "deprecated": false,
         "display": {
             "label": "Magic Link View",
-            "image": "https://www.svgrepo.com/show/532869/link-alt-1.svg",
+            "image": "assets/images/icons/link.svg",
             "showOnResourcePanel": true
         },
         "data": {
@@ -208,7 +208,7 @@
         "deletable": false,
         "display": {
             "label": "End Screen",
-            "image": "https://www.svgrepo.com/show/169077/check-mark-inside-a-black-box.svg",
+            "image": "assets/images/icons/check-mark-inside-a-black-box.svg",
             "showOnResourcePanel": false
         },
         "config": {}
