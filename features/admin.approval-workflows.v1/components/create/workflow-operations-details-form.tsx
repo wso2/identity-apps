@@ -67,6 +67,12 @@ interface WorkflowOperationsDetailsPropsInterface extends IdentifiableComponentI
      * Whether the component is used in edit page or not.
      */
     isEditPage?: boolean;
+    /**
+     * Callback to be called when operations selection changes.
+     * @param operations - Selected operations.
+     * @returns void
+     */
+    onChange?: (operations: DropdownPropsInterface[]) => void;
 }
 
 /**
@@ -104,6 +110,7 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                 onSubmit,
                 initialValues,
                 isEditPage,
+                onChange,
                 ["data-componentid"]: componentId
                 = "workflow-operations"
             }: WorkflowOperationsDetailsPropsInterface,
@@ -130,6 +137,19 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                 }
             }, [ initialValues ]);
 
+            const validateForm = ():
+                Partial<WorkflowOperationsDetailsFormValuesInterface> => {
+                const error: Partial<WorkflowOperationsDetailsFormValuesInterface> = {};
+
+                if (selectedOperations.length === 0) {
+                    error.matchedOperations = t(
+                        "approvalWorkflows:forms.operations.dropDown.nullValidationErrorMessage"
+                    );
+                }
+
+                return error;
+            };
+
             return (
                 <FinalForm
                     onSubmit={ (values: WorkflowOperationsDetailsFormValuesInterface) => {
@@ -139,6 +159,7 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                         });
                     } }
                     initialValues={ initialValues }
+                    validate={ validateForm }
                     render={ ({ handleSubmit }: FormRenderProps) => {
                         triggerFormSubmit.current = handleSubmit;
 
@@ -172,6 +193,15 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                                     placeholder={
                                                         t("approvalWorkflows:forms.operations.dropDown.placeholder")
                                                     }
+                                                    helperText={
+                                                        selectedOperations.length === 0
+                                                            ? t(
+                                                                "approvalWorkflows:forms.operations.dropDown." +
+                                                                "nullValidationErrorMessage"
+                                                            )
+                                                            : ""
+                                                    }
+                                                    error={ selectedOperations.length === 0 }
                                                     data-componentid={ `${componentId}-field-operation-search` }
                                                 />
                                             ) }
@@ -180,6 +210,7 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                                 selectedOperations: DropdownPropsInterface[]
                                             ) => {
                                                 setSelectedOperations(selectedOperations);
+                                                onChange?.(selectedOperations);
                                             } }
                                             filterOptions={ (
                                                 options: DropdownPropsInterface[],
