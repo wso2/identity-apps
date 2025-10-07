@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,8 +18,6 @@
 
 declare global {
     interface Window {
-        themeHash: any;
-        publicPath: any;
         __WSO2IS_RUNTIME_CONFIG__: {
             updates?: {
                 updateLevel?: string;
@@ -31,21 +29,6 @@ declare global {
             [key: string]: unknown;
         };
     }
-
-    const contextPathGlobal: string;
-    const serverOriginGlobal: string;
-    const proxyContextPathGlobal: string;
-    const superTenantGlobal: string;
-    const tenantPrefixGlobal: string;
-    const isAdaptiveAuthenticationAvailable: boolean;
-    const isOrganizationManagementEnabled: boolean;
-    const themeGlobal: {
-        rtl: {
-            stylesheets: {
-                themeHash: string;
-            }[];
-        }
-    };
 }
 
 export {};

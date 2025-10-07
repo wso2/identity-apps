@@ -18,8 +18,18 @@
 
 declare global {
     interface Window {
-        themeHash: any;
-        publicPath: any;
+        themeHash: string;
+        publicPath: string;
+        __WSO2IS_RUNTIME_CONFIG__: {
+            updates?: {
+                updateLevel?: string;
+            };
+            [key: string]: unknown;
+        };
+        __WSO2IS_UPDATE_CONFIG__: {
+            updateLevel?: string;
+            [key: string]: unknown;
+        };
     }
 
     const contextPathGlobal: string;
