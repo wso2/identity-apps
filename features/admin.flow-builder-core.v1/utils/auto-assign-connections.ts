@@ -40,7 +40,7 @@ const autoAssignConnections = (nodes: Node[], availableConnections: ExecutorConn
 
     nodes.forEach((node: Node) => {
         // Only process execution step nodes.
-        if (node.type === StepTypes.Execution) {
+        if (node?.type === StepTypes.Execution) {
             const step: Step = node as Step;
 
             const connections: string[] = availableConnectionsMap[step.data?.action?.executor?.name] ?? [];
