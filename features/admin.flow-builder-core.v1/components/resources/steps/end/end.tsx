@@ -21,6 +21,7 @@ import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { useNodeId } from "@xyflow/react";
+import loadStaticResource from "@wso2is/admin.core.v1/utils/load-static-resource";
 import React, { FunctionComponent, ReactElement, memo } from "react";
 import { useTranslation } from "react-i18next";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
@@ -103,7 +104,7 @@ const End: FunctionComponent<EndPropsInterface> = memo(
                     // Override the property panel heading.
                     setResourcePropertiesPanelHeading(
                         <Stack direction="row" className="sub-title" gap={ 1 } alignItems="center">
-                            <Avatar src={ resources[0]?.display?.image } variant="square" />
+                            <Avatar src={ loadStaticResource(resources[0]?.display?.image) } variant="square" />
                             <Typography variant="h6">{ t("flows:core.steps.end.flowCompletionProperties") }</Typography>
                         </Stack>
                     );

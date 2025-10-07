@@ -28,6 +28,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import {
     CommonResourcePropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
+import loadStaticResource from "@wso2is/admin.core.v1/utils/load-static-resource";
 // eslint-disable-next-line max-len
 import useAuthenticationFlowBuilderCore from "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
 import useValidationStatus from "@wso2is/admin.flow-builder-core.v1/hooks/use-validation-status";
@@ -120,7 +121,7 @@ const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsI
                                             <Box display="flex" flexDirection="row" gap={ 1 } alignItems="center">
                                                 <Avatar
                                                     className="action-type-icon"
-                                                    src={ actionType?.display?.image }
+                                                    src={ loadStaticResource(actionType?.display?.image) }
                                                     variant="rounded"
                                                 />
                                                 <Typography variant="body2" className="action-type-name">

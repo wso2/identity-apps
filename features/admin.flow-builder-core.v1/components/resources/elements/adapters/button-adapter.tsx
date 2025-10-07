@@ -20,6 +20,7 @@ import Button, { ButtonProps } from "@oxygen-ui/react/Button";
 import Code from "@oxygen-ui/react/Code";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Handle, Position } from "@xyflow/react";
+import loadStaticResource from "@wso2is/admin.core.v1/utils/load-static-resource";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import PlaceholderComponent from "./placeholder-component";
@@ -123,8 +124,8 @@ const ButtonAdapter: FunctionComponent<ButtonAdapterPropsInterface> = ({
             <Button
                 sx={ resource?.config.styles }
                 startIcon={ resource?.config?.image
-                    ? <img src={ resource?.config?.image } height={ 20 } />
-                    : image && <img src={ image } height={ 20 } />
+                    ? <img src={ loadStaticResource(resource?.config?.image) } height={ 20 } />
+                    : image && <img src={ loadStaticResource(image) } height={ 20 } />
                 }
                 { ...config }
             >

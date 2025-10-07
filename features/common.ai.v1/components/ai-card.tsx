@@ -22,6 +22,7 @@ import Box from "@oxygen-ui/react/Box";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Typography from "@oxygen-ui/react/Typography";
 import { PlusIcon } from "@oxygen-ui/react-icons";
+import loadStaticResource from "@wso2is/admin.core.v1/utils/load-static-resource";
 import React, { ReactElement } from "react";
 import "./ai-generation-modal.scss";
 import { Card, CardContent } from "semantic-ui-react";
@@ -45,7 +46,7 @@ const AICard = ({ resource, onAdd }): ReactElement => {
                     <Stack direction="row" spacing={ 1 }>
                         <Avatar
                             className="ai-card-avatar"
-                            src={ resource?.display?.image }
+                            src={ loadStaticResource(resource?.display?.image) }
                             variant="square"
                             sx={ { width: "20px", height: "20px", marginTop: "3px" } }
                         />
