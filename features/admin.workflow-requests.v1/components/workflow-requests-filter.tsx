@@ -51,6 +51,9 @@ const WorkflowRequestsFilter: React.FC<WorkflowRequestsFilterProps> = ({
 }: WorkflowRequestsFilterProps) => {
     const { t } = useTranslation();
 
+    const isCreatedTimeRangeSelected: boolean = createdTimeRange !== undefined && createdTimeRange !== -2;
+    const isUpdatedTimeRangeSelected: boolean = updatedTimeRange !== undefined && updatedTimeRange !== -2;
+
     return (
         <form className="workflow-requests-filter-bar advanced-search ui form" autoComplete="off">
             <div className="fields">
@@ -89,7 +92,9 @@ const WorkflowRequestsFilter: React.FC<WorkflowRequestsFilterProps> = ({
                             onCustomDateChange={ (from: string, to: string) => {
                                 handleCreatedCustomDateChange(from, to);
                             } }
-                            disabled={ updatedTimeRange !== undefined && updatedTimeRange !== -2 }
+                            disabled={ isUpdatedTimeRangeSelected }
+                            disabledPopupContent={ t("approvalWorkflows:filters.disabledTimeRange",
+                                { label: t("approvalWorkflows:filters.updatedTimeRange") }) }
                             componentId="created-time-range"
                         />
                     </div>
@@ -105,7 +110,9 @@ const WorkflowRequestsFilter: React.FC<WorkflowRequestsFilterProps> = ({
                             onCustomDateChange={ (from: string, to: string) => {
                                 handleUpdatedCustomDateChange(from, to);
                             } }
-                            disabled={ createdTimeRange !== undefined && createdTimeRange !== -2 }
+                            disabled={ isCreatedTimeRangeSelected }
+                            disabledPopupContent={ t("approvalWorkflows:filters.disabledTimeRange",
+                                { label: t("approvalWorkflows:filters.createdTimeRange") }) }
                             componentId="updated-time-range"
                         />
                     </div>

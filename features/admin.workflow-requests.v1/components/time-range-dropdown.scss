@@ -23,6 +23,10 @@
     .ui.dropdown {
         width: 100%;
     }
+
+    .ui.dropdown.disabled {
+        opacity: 0.45;
+    }
 }
 
 .custom-portal-wrapper {

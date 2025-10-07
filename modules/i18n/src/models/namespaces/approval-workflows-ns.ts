@@ -402,5 +402,6 @@ export interface approvalWorkflowsNS {
         operationType: string;
         createdTimeRange: string;
         updatedTimeRange: string;
+        disabledTimeRange: string;
     };
 }
