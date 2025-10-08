@@ -78,9 +78,9 @@ const PhoneNumberFieldAdapter = ({ component, formState, formStateHandler, field
     };
 
     const handleFieldValidation = () => {
-        const isValid = validate({ identifier, required }, fullNumber);
+        const {isValid, errors} = validate({ identifier, required }, fullNumber);
 
-        fieldErrorHandler(identifier, isValid ? null : fieldErrors);
+        fieldErrorHandler(identifier, isValid ? null : errors);
     };
 
     const handlePhoneChange = e => {

@@ -46,9 +46,9 @@ const CountryFieldAdapter = ({ component, formState, formStateHandler, fieldErro
     }, [ selectedCountry ]);
 
     const handleFieldValidation = () => {
-        const isValid = validate({ identifier, required }, selectedCountry);
+        const {isValid, errors} = validate({ identifier, required }, selectedCountry);
 
-        fieldErrorHandler(identifier, isValid ? null : fieldErrors);
+        fieldErrorHandler(identifier, isValid ? null : errors);
     };
 
     const getCountryList = () => {

@@ -78,8 +78,16 @@ const useDynamicForm = (fields, onSubmit) => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        let errors = [];
+        if (Object.keys(formState.errors).length > 0) {
+            setFormState((prev) => ({
+                ...prev,
+                isValid: false
+            }));
+            return;
+        }
 
+        let errors = [];
+        
         fields.forEach(field => {
             const fieldValue = formState.values[field.config.identifier];
 
@@ -90,8 +98,8 @@ const useDynamicForm = (fields, onSubmit) => {
                 });
             }
 
-            if (field.config.validation && fieldValue) {
-                field.config.validation.forEach(rule => {
+            if (field.config.validations && fieldValue) {
+                field.config.validations.forEach(rule => {
                     if (rule.type === "MIN_LENGTH" && fieldValue.length < rule.value) {
                         errors.push({
                             error: `Must be at least ${rule.value} characters.`,
