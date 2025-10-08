@@ -36,14 +36,15 @@ const CaptchaAdapter: FunctionComponent<CaptchaAdapterPropsInterface> = ({
     resource
 }: CaptchaAdapterPropsInterface): ReactElement => (
     <Box display="flex" alignItems="center" justifyContent="center">
+        { /* eslint-disable max-len */ }
         <svg width="276" height="80" viewBox="0 0 276 80" fill="none" xmlns="http://www.w3.org/2000/svg">
             <title>{ resource?.config?.alt }</title>
             <g filter="url(#filter0_d_72_124)">
-                <g clip-path="url(#clip0_72_124)">
+                <g clipPath="url(#clip0_72_124)">
                     <rect width="70" height="60" transform="translate(10 10)" fill="#F9F9F9" />
                     <mask
                         id="mask0_72_124"
-                        style={{ maskType: "alpha" }}
+                        style={ { maskType: "alpha" } }
                         maskUnits="userSpaceOnUse"
                         x="24"
                         y="19"
@@ -92,9 +93,9 @@ const CaptchaAdapter: FunctionComponent<CaptchaAdapterPropsInterface> = ({
                     width="264"
                     height="68"
                     filterUnits="userSpaceOnUse"
-                    color-interpolation-filters="sRGB"
+                    colorInterpolationFilters="sRGB"
                 >
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feColorMatrix
                         in="SourceAlpha"
                         type="matrix"
@@ -114,9 +115,9 @@ const CaptchaAdapter: FunctionComponent<CaptchaAdapterPropsInterface> = ({
                     width="32.0795"
                     height="48.1795"
                     filterUnits="userSpaceOnUse"
-                    color-interpolation-filters="sRGB"
+                    colorInterpolationFilters="sRGB"
                 >
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feColorMatrix
                         in="SourceAlpha"
                         type="matrix"
@@ -136,9 +137,9 @@ const CaptchaAdapter: FunctionComponent<CaptchaAdapterPropsInterface> = ({
                     width="48.1795"
                     height="32.0795"
                     filterUnits="userSpaceOnUse"
-                    color-interpolation-filters="sRGB"
+                    colorInterpolationFilters="sRGB"
                 >
-                    <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
                     <feColorMatrix
                         in="SourceAlpha"
                         type="matrix"
@@ -156,6 +157,7 @@ const CaptchaAdapter: FunctionComponent<CaptchaAdapterPropsInterface> = ({
                 </clipPath>
             </defs>
         </svg>
+        { /* eslint-enable max-len */ }
     </Box>
 );
 

@@ -23,18 +23,42 @@ import IconButton from "@oxygen-ui/react/IconButton";
 import Typography from "@oxygen-ui/react/Typography";
 import { PlusIcon } from "@oxygen-ui/react-icons";
 import loadStaticResource from "@wso2is/admin.core.v1/utils/load-static-resource";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ReactElement } from "react";
-import "./ai-generation-modal.scss";
 import { Card, CardContent } from "semantic-ui-react";
 import AIText from "./ai-text";
 import AIBannerBackground from "../../themes/wso2is/assets/images/illustrations/ai-banner-background-white.svg";
+import "./ai-generation-modal.scss";
 import "./ai-card.scss";
 
-const AICard = ({ resource, onAdd }): ReactElement => {
+export interface AICardProps extends IdentifiableComponentInterface {
+    /**
+     * The resource item.
+     */
+    resource: {
+        display: {
+            description: string;
+            image: string;
+            label: string;
+        };
+    };
+    /**
+     * Callback to be triggered when a resource add button is clicked.
+     */
+    onAdd?: (resource: {
+        display: {
+            description: string;
+            image: string;
+            label: string;
+        };
+    }) => void;
+}
+
+const AICard = ({ resource, onAdd }: AICardProps): ReactElement => {
     return (
         <Card
             style={ {
-                backgroundImage: `url(${ AIBannerBackground })`,
+                backgroundImage: `url(${AIBannerBackground})`,
                 backgroundPostion: "right",
                 marginBottom: "0"
             } }
@@ -48,23 +72,18 @@ const AICard = ({ resource, onAdd }): ReactElement => {
                             className="ai-card-avatar"
                             src={ loadStaticResource(resource?.display?.image) }
                             variant="square"
-                            sx={ { width: "20px", height: "20px", marginTop: "3px" } }
+                            sx={ { height: "20px", marginTop: "3px", width: "20px" } }
                         />
                         <Stack direction="column" spacing={ 0.5 }>
                             <Typography sx={ { fontWeight: "bold" } }>
-                                <AIText>
-                                    { resource?.display?.label }
-                                </AIText>
+                                <AIText>{ resource?.display?.label }</AIText>
                             </Typography>
                             { resource?.display?.description && (
                                 <Typography variant="body2">{ resource?.display?.description }</Typography>
                             ) }
                         </Stack>
                         { onAdd && (
-                            <IconButton
-                                className="ai-card-add-button"
-                                onClick={ () => onAdd(resource) }
-                            >
+                            <IconButton className="ai-card-add-button" onClick={ () => onAdd(resource) }>
                                 <PlusIcon size={ 14 } />
                             </IconButton>
                         ) }

@@ -18,9 +18,9 @@
 
 import Button, { ButtonProps } from "@oxygen-ui/react/Button";
 import Code from "@oxygen-ui/react/Code";
+import loadStaticResource from "@wso2is/admin.core.v1/utils/load-static-resource";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Handle, Position } from "@xyflow/react";
-import loadStaticResource from "@wso2is/admin.core.v1/utils/load-static-resource";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import PlaceholderComponent from "./placeholder-component";

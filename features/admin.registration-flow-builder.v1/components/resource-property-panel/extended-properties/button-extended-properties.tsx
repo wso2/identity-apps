@@ -25,10 +25,10 @@ import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import Grid from "@oxygen-ui/react/Grid";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
+import loadStaticResource from "@wso2is/admin.core.v1/utils/load-static-resource";
 import {
     CommonResourcePropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
-import loadStaticResource from "@wso2is/admin.core.v1/utils/load-static-resource";
 // eslint-disable-next-line max-len
 import useAuthenticationFlowBuilderCore from "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
 import useValidationStatus from "@wso2is/admin.flow-builder-core.v1/hooks/use-validation-status";

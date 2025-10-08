@@ -19,9 +19,9 @@
 import Avatar from "@oxygen-ui/react/Avatar";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
+import loadStaticResource from "@wso2is/admin.core.v1/utils/load-static-resource";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { useNodeId } from "@xyflow/react";
-import loadStaticResource from "@wso2is/admin.core.v1/utils/load-static-resource";
 import React, { FunctionComponent, ReactElement, memo } from "react";
 import { useTranslation } from "react-i18next";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
