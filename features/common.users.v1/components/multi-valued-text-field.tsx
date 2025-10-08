@@ -216,13 +216,10 @@ const MultiValuedTextField: FunctionComponent<MultiValuedTextFieldPropsInterface
                     label={ showLabel && fieldLabel }
                     margin={ margin }
                     placeholder={ placeholder ??
-                        t("user:profile.forms.generic.inputs.placeholder", { fieldName: fieldLabel }) }
+                        t("commonUsers:forms.profile.generic.placeholder", { fieldName: fieldLabel }) }
                     InputProps={ {
                         endAdornment: renderAddButton(),
                         readOnly: isReadOnly || isUpdating
-                    } }
-                    InputLabelProps={ {
-                        required: isRequired
                     } }
                     error={ !isEmpty(validationError) || (fieldTouched && !isEmpty(fieldError)) }
                     helperText={ validationError ?? (fieldTouched && fieldError) }
@@ -245,7 +242,7 @@ const MultiValuedTextField: FunctionComponent<MultiValuedTextFieldPropsInterface
                     type="hidden"
                     validate={ (value: string[]) => {
                         if (isEmpty(value) && isRequired) {
-                            return t("user:profile.forms.generic.inputs.validations.required", {
+                            return t("commonUsers:forms.profile.generic.validation.required", {
                                 fieldName: fieldLabel });
                         }
                     } }
