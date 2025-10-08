@@ -113,7 +113,7 @@ const ReduxStoreStateMock: any = {
         endpoints: {
             applications: "https://localhost:9443/api/server/v1/applications",
             requestPathAuthenticators: "https://localhost:9443/api/server/v1/configs/authenticators?type=REQUEST_PATH",
-            approvals: "https://localhost:9443/api/users/v1/me/approval-tasks",
+            approvals: "https://localhost:9443/api/users/v2/me/approval-tasks",
             claims: "https://localhost:9443/api/server/v1/claim-dialects",
             externalClaims: "https://localhost:9443/api/server/v1/claim-dialects/{}/claims",
             localClaims: "https://localhost:9443/api/server/v1/claim-dialects/local/claims",
