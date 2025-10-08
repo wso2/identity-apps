@@ -27,9 +27,11 @@ export const commonUsers: CommonUsersNS = {
     forms: {
         profile: {
             generic: {
+                placeholder: "ඔබගේ {{fieldName}} ඇතුළත් කරන්න",
                 validation: {
                     duplicate: "{{field}} හි අනුපිටපත් අගයන් තිබිය නොහැක.",
-                    invalidFormat: "ඇතුළත් කළ {{field}} හි ආකෘතිය වැරදිය."
+                    invalidFormat: "ඇතුළත් කළ {{field}} හි ආකෘතිය වැරදිය.",
+                    required: "{{fieldName}} අනිවාර්ය ක්ෂේත්‍රයකි"
                 }
             }
         }

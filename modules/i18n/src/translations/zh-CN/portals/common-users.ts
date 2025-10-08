@@ -27,9 +27,11 @@ export const commonUsers: CommonUsersNS = {
     forms: {
         profile: {
             generic: {
+                placeholder: "请输入您的{{fieldName}}",
                 validation: {
                     duplicate: "{{field}} 不能有重複的值。",
-                    invalidFormat: "輸入的{{field}}格式不正確。"
+                    invalidFormat: "輸入的{{field}}格式不正確。",
+                    required: "{{fieldName}} 是必填字段"
                 }
             }
         }
