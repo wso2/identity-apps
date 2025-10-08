@@ -21,8 +21,7 @@ import Chip from "@oxygen-ui/react/Chip";
 import TextField from "@oxygen-ui/react/TextField";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import { getAllLocalClaims } from "@wso2is/admin.claims.v1/api";
-import { Claim } from "@wso2is/core/models";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { Claim, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
@@ -127,8 +126,7 @@ export const MultiAttributeLoginForm: FunctionComponent<MultiAttributeLoginFormP
             .then((claims: Claim[]) => {
                 setAvailableClaims(claims);
             })
-            .catch((error) => {
-                console.error("Error fetching claims:", error);
+            .catch(() => {
                 setAvailableClaims([]);
             })
             .finally(() => {
@@ -144,8 +142,9 @@ export const MultiAttributeLoginForm: FunctionComponent<MultiAttributeLoginFormP
             return;
         }
 
-        const allowedAttributesValue = initialFormValues["account.multiattributelogin.handler.allowedattributes"];
-        
+        const allowedAttributesValue: string =
+            initialFormValues["account.multiattributelogin.handler.allowedattributes"];
+
         if (allowedAttributesValue) {
             const claimUris: string[] = allowedAttributesValue
                 .split(",")
@@ -217,7 +216,7 @@ export const MultiAttributeLoginForm: FunctionComponent<MultiAttributeLoginFormP
             } }
         >
             <div style={ { marginBottom: "16px" } }>
-                <label style={ { display: "block", marginBottom: "8px", fontWeight: 500 } }>
+                <label style={ { display: "block", fontWeight: 500, marginBottom: "8px" } }>
                     { GovernanceConnectorUtils.resolveFieldLabel(
                         "Account Management",
                         "account.multiattributelogin.handler.allowedattributes",
@@ -231,8 +230,8 @@ export const MultiAttributeLoginForm: FunctionComponent<MultiAttributeLoginFormP
                     value={ selectedClaims }
                     onChange={ handleClaimSelectionChange }
                     getOptionLabel={ (option: Claim) => option.displayName || option.claimURI }
-                    isOptionEqualToValue={ (option: Claim, value: Claim) => 
-                        option.claimURI === value.claimURI 
+                    isOptionEqualToValue={ (option: Claim, value: Claim) =>
+                        option.claimURI === value.claimURI
                     }
                     disabled={ !isConnectorEnabled || readOnly }
                     loading={ isLoadingClaims }
@@ -243,9 +242,9 @@ export const MultiAttributeLoginForm: FunctionComponent<MultiAttributeLoginFormP
                             data-componentid={ `${ componentId }-allowed-attribute-list` }
                         />
                     ) }
-                    renderTags={ (value: Claim[], getTagProps) => 
+                    renderTags={ (value: Claim[], getTagProps: (arg: { index: number }) => object) =>
                         value.map((option: Claim, index: number) => (
-                            <Tooltip 
+                            <Tooltip
                                 key={ option.claimURI }
                                 title={ option.claimURI }
                                 placement="top"
@@ -260,7 +259,7 @@ export const MultiAttributeLoginForm: FunctionComponent<MultiAttributeLoginFormP
                     }
                     data-componentid={ `${ componentId }-allowed-attribute-autocomplete` }
                 />
-                <div style={ { marginTop: "4px", fontSize: "12px", color: "#666" } }>
+                <div style={ { color: "#666", fontSize: "12px", marginTop: "4px" } }>
                     { GovernanceConnectorUtils.resolveFieldHint(
                         "Account Management",
                         "account.multiattributelogin.handler.allowedattributes",
