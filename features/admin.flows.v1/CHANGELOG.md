@@ -1,5 +1,35 @@
 # @wso2is/admin.flows.v1
 
+## 1.0.33
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.72
+  - @wso2is/admin.flow-builder-core.v1@0.10.64
+  - @wso2is/admin.server-configurations.v1@2.35.86
+  - @wso2is/admin.registration-flow-builder.v1@0.10.24
+
+## 1.0.32
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.71
+  - @wso2is/admin.flow-builder-core.v1@0.10.63
+  - @wso2is/admin.server-configurations.v1@2.35.85
+  - @wso2is/admin.registration-flow-builder.v1@0.10.23
+
+## 1.0.31
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.70
+  - @wso2is/admin.flow-builder-core.v1@0.10.62
+  - @wso2is/admin.server-configurations.v1@2.35.84
+  - @wso2is/admin.registration-flow-builder.v1@0.10.22
+
 ## 1.0.30
 
 ### Patch Changes

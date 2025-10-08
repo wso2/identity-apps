@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { Popup } from "@wso2is/react-components";
 import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Dropdown, Form, Input, Portal, Segment } from "semantic-ui-react";
@@ -29,6 +30,10 @@ interface TimeRangeDropdownProps {
     componentId: string;
     disabled?: boolean;
     style?: React.CSSProperties;
+    /**
+     * Content to be shown in the popup if the dropdown is disabled.
+     */
+    disabledPopupContent?: string;
 }
 
 const TimeRangeDropdown: React.FC<TimeRangeDropdownProps> = ({
@@ -38,7 +43,8 @@ const TimeRangeDropdown: React.FC<TimeRangeDropdownProps> = ({
     onCustomDateChange,
     componentId,
     disabled = false,
-    style
+    style,
+    disabledPopupContent
 }: TimeRangeDropdownProps) => {
     const { t } = useTranslation( [ "approvalWorkflows" ] );
     const [ showCustomModal, setShowCustomModal ] = useState(false);
@@ -108,116 +114,126 @@ const TimeRangeDropdown: React.FC<TimeRangeDropdownProps> = ({
     const thirtyDaysAgo: Date = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
 
     return (
-        <div className="time-range-dropdown">
-            <Dropdown
-                selection
-                options={ TIME_RANGE_OPTIONS }
-                value={ selectedRange }
-                onChange={ handleRangeChange }
-                disabled={ disabled }
-                placeholder={ label }
-                text={ label }
-                style={ style }
-                data-componentid={ componentId }
-            />
-            <Portal
-                onOpen={ () => setShowCustomModal(true) }
-                open={ showCustomModal } >
-                <Segment className="custom-portal-wrapper">
-                    <div
-                        className="main-container"
-                        onClick={ (e: React.MouseEvent<HTMLDivElement, MouseEvent>) =>
-                            e.stopPropagation()
-                        }
-                    >
-                        <Form
-                            className="date-picker-form"
-                            onSubmit={ handleCustomSubmit }
-                        >
-                            <Form.Group>
-                                <Form.Field width={ 16 }>
-                                    <label>
-                                        { t( "common:from" ) }
-                                    </label>
-                                    <div className="date-time-picker-row">
-                                        <div>
-                                            <Input
-                                                className="date-input"
-                                                type="date"
-                                                value={ customStartDate }
-                                                min={ formatDateForInput(thirtyDaysAgo) }
-                                                max={ formatDateForInput(now) }
-                                                onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
-                                                    setCustomStartDate(e.target.value)
-                                                }
-                                                required
-                                            />
-                                        </div>
-                                        <div>
-                                            <Input
-                                                className="time-input"
-                                                type="time"
-                                                value={ customStartTime }
-                                                onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
-                                                    setCustomStartTime(e.target.value)
-                                                }
-                                                required
-                                            />
-                                        </div>
-                                    </div>
-                                </Form.Field>
-                            </Form.Group>
+        <Popup
+            content={ disabledPopupContent }
+            disabled={ !disabled || !disabledPopupContent }
+            trigger={ (
+                <div className="time-range-dropdown">
+                    <Dropdown
+                        selection
+                        options={ TIME_RANGE_OPTIONS }
+                        value={ selectedRange }
+                        onChange={ handleRangeChange }
+                        disabled={ disabled }
+                        text={ label }
+                        style={ style }
+                        data-componentid={ componentId }
+                    />
+                    <Portal
+                        onOpen={ () => setShowCustomModal(true) }
+                        open={ showCustomModal } >
+                        <Segment className="custom-portal-wrapper">
+                            <div
+                                className="main-container"
+                                onClick={ (e: React.MouseEvent<HTMLDivElement, MouseEvent>) =>
+                                    e.stopPropagation()
+                                }
+                            >
+                                <Form
+                                    className="date-picker-form"
+                                    onSubmit={ handleCustomSubmit }
+                                >
+                                    <Form.Group>
+                                        <Form.Field width={ 16 }>
+                                            <label>
+                                                { t( "common:from" ) }
+                                            </label>
+                                            <div className="date-time-picker-row">
+                                                <div>
+                                                    <Input
+                                                        className="date-input"
+                                                        type="date"
+                                                        value={ customStartDate }
+                                                        min={ formatDateForInput(thirtyDaysAgo) }
+                                                        max={ formatDateForInput(now) }
+                                                        onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
+                                                            setCustomStartDate(e.target.value)
+                                                        }
+                                                        required
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <Input
+                                                        className="time-input"
+                                                        type="time"
+                                                        value={ customStartTime }
+                                                        onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
+                                                            setCustomStartTime(e.target.value)
+                                                        }
+                                                        required
+                                                    />
+                                                </div>
+                                            </div>
+                                        </Form.Field>
+                                    </Form.Group>
 
-                            <Form.Group>
-                                <Form.Field width={ 16 }>
-                                    <label>
-                                        { t( "common:to" ) }
-                                    </label>
-                                    <div className="date-time-picker-row">
-                                        <div>
-                                            <Input
-                                                className="date-input"
-                                                type="date"
-                                                min={
-                                                    customStartDate ||
+                                    <Form.Group>
+                                        <Form.Field width={ 16 }>
+                                            <label>
+                                                { t( "common:to" ) }
+                                            </label>
+                                            <div className="date-time-picker-row">
+                                                <div>
+                                                    <Input
+                                                        className="date-input"
+                                                        type="date"
+                                                        min={
+                                                            customStartDate ||
                                                         formatDateForInput(thirtyDaysAgo)
-                                                }
-                                                max={ formatDateForInput(now) }
-                                                value={ customEndDate }
-                                                onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
-                                                    setCustomEndDate(e.target.value)
-                                                }
-                                                required
-                                            />
-                                        </div>
-                                        <div>
-                                            <Input
-                                                className="time-input"
-                                                type="time"
-                                                value={ customEndTime }
-                                                onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
-                                                    setCustomEndTime(e.target.value)
-                                                }
-                                                required
-                                            />
-                                        </div>
-                                    </div>
-                                </Form.Field>
-                            </Form.Group>
+                                                        }
+                                                        max={ formatDateForInput(now) }
+                                                        value={ customEndDate }
+                                                        onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
+                                                            setCustomEndDate(e.target.value)
+                                                        }
+                                                        required
+                                                    />
+                                                </div>
+                                                <div>
+                                                    <Input
+                                                        className="time-input"
+                                                        type="time"
+                                                        value={ customEndTime }
+                                                        onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
+                                                            setCustomEndTime(e.target.value)
+                                                        }
+                                                        required
+                                                    />
+                                                </div>
+                                            </div>
+                                        </Form.Field>
+                                    </Form.Group>
 
-                            <Form.Group>
-                                <Form.Field width={ 8 }>
-                                    <Button fluid icon="close" type="button" onClick={ handleExternalPortalClose } />
-                                </Form.Field>
-                                <Form.Field width={ 8 }>
-                                    <Button fluid icon="check" type="submit" />
-                                </Form.Field>
-                            </Form.Group>
-                        </Form>
-                    </div>
-                </Segment>
-            </Portal>
-        </div>
+                                    <Form.Group>
+                                        <Form.Field width={ 8 }>
+                                            <Button
+                                                fluid
+                                                icon="close"
+                                                type="button"
+                                                onClick={ handleExternalPortalClose }
+                                            />
+                                        </Form.Field>
+                                        <Form.Field width={ 8 }>
+                                            <Button fluid icon="check" type="submit" />
+                                        </Form.Field>
+                                    </Form.Group>
+                                </Form>
+                            </div>
+                        </Segment>
+                    </Portal>
+                </div>
+            ) }
+        />
     );
 };
 

@@ -40,6 +40,10 @@ export interface approvalWorkflowsNS {
                 message: string;
                 description: string;
             };
+            noAssociationsSelectedError: {
+                message: string;
+                description: string;
+            };
             success: {
                 message: string;
                 description: string;
@@ -250,6 +254,7 @@ export interface approvalWorkflowsNS {
         operations: {
             dropDown: {
                 label: string;
+                nullValidationErrorMessage: string;
                 placeholder: string;
             }
         }
@@ -402,5 +407,6 @@ export interface approvalWorkflowsNS {
         operationType: string;
         createdTimeRange: string;
         updatedTimeRange: string;
+        disabledTimeRange: string;
     };
 }
