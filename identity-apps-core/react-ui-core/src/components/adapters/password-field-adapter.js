@@ -57,7 +57,7 @@ const PasswordFieldAdapter = ({ component, formState, formStateHandler, formErro
         if (isPasswordField) {
             formStateHandler(identifier, password);
             const { errors, isValid } = validate({ identifier, required }, password);
-            
+
             formErrorHandler(identifier, isValid ? null : errors);
 
             if (formState.values.confirmPassword) {
@@ -81,6 +81,7 @@ const PasswordFieldAdapter = ({ component, formState, formStateHandler, formErro
                 
                 formState.values.password
             );
+ 
             formErrorHandler(identifier, isValidConfirmPassword ? null : confirmPasswordErrors);
         }
     }, [ confirmPassword, password ]);
