@@ -741,6 +741,8 @@
                 "enabled": true,
                 "featureFlags": [],
                 "scopes": {
+                    "create": [],
+                    "delete": [],
                     "feature": [
                         "console:applications"
                     ],
