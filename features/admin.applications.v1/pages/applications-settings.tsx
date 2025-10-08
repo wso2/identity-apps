@@ -79,7 +79,6 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
     const [ ssaJwksState, setSsaJwks ] = useState<string>(ssaJwks);
     const [ dcrEndpointState, setDCREndpoint ] = useState<string>(dcrEndpoint);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
-    const [ isLoading, setIsLoading ] = useState<boolean>(undefined);
 
     /**
      * Get initial DCR Configurations.
@@ -89,13 +88,6 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
         error: getDCRConfigsRequestError,
         isLoading: isGetDCRConfigsRequestLoading
     } = useGetDCRConfigurations();
-
-    /**
-     * Sets the internal state of the application loading status when the SWR `isLoading` state changes.
-     */
-    useEffect(() => {
-        setIsLoading(isGetDCRConfigsRequestLoading);
-    }, [ isGetDCRConfigsRequestLoading ]);
 
     /**
      * Set initial values for the form.
@@ -289,7 +281,7 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
         history.push(AppConstants.getPaths().get("APPLICATIONS"));
     };
 
-    if (isLoading) {
+    if (isGetDCRConfigsRequestLoading) {
         return (
             <EmphasizedSegment padded="very">
                 <ContentLoader inline="centered" active />
