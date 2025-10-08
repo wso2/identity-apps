@@ -533,6 +533,8 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
 
         return undefined;
     };
+    
+    const updateLevel: string = getUpdateLevel();
 
     return (
         <>
@@ -609,8 +611,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                 { productVersion && (
                                     <Box className="user-dropdown-version">
                                         <Typography variant="body2">
-                                            { `${productName} ${productVersion}` }
-                                            { getUpdateLevel() ? `-${ getUpdateLevel() }` : "" }
+                                            { `${productName} ${productVersion}` }{ updateLevel && `-${ updateLevel }` }
                                         </Typography>
                                     </Box>
                                 ) }
