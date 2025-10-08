@@ -525,7 +525,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
         if (typeof updateLevel === "string") {
             const numericValue: number = parseFloat(updateLevel);
 
-            // Verify it's a valid number and the string conversion matches the original
+            // Verify it's a valid number and the string conversion matches the original.
             if (!isNaN(numericValue) && isFinite(numericValue) && String(numericValue) === updateLevel) {
                 return updateLevel;
             }
