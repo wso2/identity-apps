@@ -31,8 +31,6 @@ export interface RuntimeConfigProviderProps<T> {
     initialRuntimeConfig?: T;
 }
 
-const RUNTIME_CONFIG_WINDOW_KEY: string = "__WSO2_IS_RUNTIME_CONFIG__";
-
 /**
  * Provider for the Application runtime configuration.
  * This provider reads configuration from the window.__WSO2_IS_RUNTIME_CONFIG__ object.
