@@ -137,7 +137,7 @@
         "privacyPolicyConfigs": {},
         "productName": "WSO2 Identity Server",
         "productVersionConfig": {
-            "versionOverride": ""
+            "versionOverride": "7.2.0"
         },
         "showAppSwitchButton": "true",
         "theme": {
