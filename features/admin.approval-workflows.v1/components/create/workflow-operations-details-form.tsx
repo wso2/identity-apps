@@ -201,7 +201,6 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                 event: SyntheticEvent,
                 newSelectedOperations: DropdownPropsInterface[]
             ): void => {
-                onChange?.(selectedOperations);
                 // Check if any new operations being added already have workflows
                 const newOperations: DropdownPropsInterface[] = newSelectedOperations.filter(
                     (newOp: DropdownPropsInterface) =>
@@ -210,31 +209,41 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                         )
                 );
 
+                // Only check for existing workflows on newly added operations, not on removed ones
                 for (const operation of newOperations) {
                     if (hasWorkflowAssociationForOperation(operation.value)) {
-                        dispatch(
-                            addAlert({
-                                description: t(
-                                    "approvalWorkflows:notifications.operationAlreadyExists.error.description",
-                                    {
-                                        defaultValue: `A workflow already exists for the ${operation.text} ` +
-                                            "operation.",
-                                        operation: operation.text
-                                    }
-                                ),
-                                level: AlertLevels.ERROR,
-                                message: t(
-                                    "approvalWorkflows:notifications.operationAlreadyExists.error.message",
-                                    { defaultValue: "Operation already has workflow" }
-                                )
-                            })
-                        );
+                        // Check if this operation was in the initial values
+                        const wasInitiallyPresent: boolean = initialValues?.matchedOperations?.some(
+                            (initialOp: DropdownPropsInterface) => initialOp.value === operation.value
+                        ) ?? false;
 
-                        return; // Don't update selection if an operation already has a workflow
+                        // Only show error if the operation wasn't initially present
+                        if (!wasInitiallyPresent) {
+                            dispatch(
+                                addAlert({
+                                    description: t(
+                                        "approvalWorkflows:notifications.operationAlreadyExists.error.description",
+                                        {
+                                            defaultValue: `A workflow already exists for the ${operation.text} ` +
+                                                "operation.",
+                                            operation: operation.text
+                                        }
+                                    ),
+                                    level: AlertLevels.ERROR,
+                                    message: t(
+                                        "approvalWorkflows:notifications.operationAlreadyExists.error.message",
+                                        { defaultValue: "Operation already has workflow" }
+                                    )
+                                })
+                            );
+
+                            return; // Don't update selection if an operation already has a workflow
+                        }
                     }
                 }
 
                 setSelectedOperations(newSelectedOperations);
+                onChange?.(newSelectedOperations);
             };
 
             return (
