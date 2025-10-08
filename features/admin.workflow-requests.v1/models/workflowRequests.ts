@@ -62,7 +62,7 @@ export enum WorkflowInstanceStatus {
     APPROVED = "APPROVED",
     REJECTED = "REJECTED",
     FAILED = "FAILED",
-    DELETED = "DELETED"
+    ABORTED = "ABORTED"
 }
 
 /**

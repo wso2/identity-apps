@@ -58,6 +58,10 @@ interface AutoCompleteRenderOption extends IdentifiableComponentInterface {
      */
     ternarySubTitle?: string;
     /**
+     * Is the option disabled.
+     */
+    disabled?: boolean;
+    /**
      * The props passed to the option.
      */
     renderOptionProps: HTMLAttributes<HTMLLIElement>
@@ -75,17 +79,18 @@ const AutoCompleteRenderOption: FunctionComponent<AutoCompleteRenderOption> = (
         ternarySubTitle,
         audience,
         audienceDisplay,
+        disabled,
         renderOptionProps
     } = props;
 
     return (
-        <li { ...renderOptionProps }>
+        <li { ...renderOptionProps } style={ disabled ? { cursor: "not-allowed", opacity: 0.5 } : {} }>
             <Grid container justifyContent="space-between" alignItems="center" xs={ 12 }>
                 <Grid container alignItems="center" xs={ 8 }>
                     <Grid>
                         {
                             typeof selected === "boolean" && (
-                                <Checkbox checked={ selected } />
+                                <Checkbox checked={ selected } disabled={ disabled } />
                             )
                         }
                     </Grid>
