@@ -1,5 +1,16 @@
 # @wso2is/admin.home.v1
 
+## 1.7.42
+
+### Patch Changes
+
+- Updated dependencies [[`4f5029fcbe593a34a3af5f5bc29320b458156c2e`](https://github.com/wso2/identity-apps/commit/4f5029fcbe593a34a3af5f5bc29320b458156c2e)]:
+  - @wso2is/admin.applications.v1@2.37.13
+  - @wso2is/i18n@2.30.42
+  - @wso2is/admin.core.v1@2.49.72
+  - @wso2is/admin.flow-builder-core.v1@0.10.64
+  - @wso2is/admin.flows.v1@1.0.33
+
 ## 1.7.41
 
 ### Patch Changes
