@@ -63,7 +63,7 @@ const createAction = <T extends ActionInterface>(actionType: string, actionBody:
             }
 
             return Promise.resolve(response.data as ActionResponseInterface);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<{ code: string | number }>) => {
             throw new IdentityAppsApiException(
                 error.message,
                 error.stack,

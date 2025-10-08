@@ -18,15 +18,20 @@
 
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import {
+    APIErrorResponseInterface,
+    AlertInterface,
+    AlertLevels,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { PageLayout } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
-import * as CountryLanguage from "country-language";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
+import { Dispatch } from "redux";
 import { getEmailTemplate } from "../api";
 import { AddEmailTemplateForm } from "../components";
 import { EmailTemplateDetails, EmailTemplateFormModes } from "../models";
@@ -48,8 +53,8 @@ interface RouteParams {
  * Component will render add view for a email template based on
  * locale for selected email template type.
  *
- * @param {EmailTemplateEditPagePropsInterface} props - Props injected to the component.
- * @return {React.ReactElement}
+ * @param props - Props injected to the component.
+ * @returns React.ReactElement
  */
 const EmailTemplateEditPage: FunctionComponent<EmailTemplateEditPagePropsInterface> = (
     props: EmailTemplateEditPagePropsInterface & RouteComponentProps<RouteParams>
@@ -60,14 +65,13 @@ const EmailTemplateEditPage: FunctionComponent<EmailTemplateEditPagePropsInterfa
         [ "data-testid" ]: testId
     } = props;
 
-    const templateTypeId = match?.params?.templateTypeId;
-    const templateId = match?.params?.templateId;
+    const templateTypeId: string = match?.params?.templateTypeId;
+    const templateId: string = match?.params?.templateId;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
 
-    const [ localeName, setLocaleName ] = useState<string>("");
     const [ formMode, setFormMode ] = useState<EmailTemplateFormModes>(EmailTemplateFormModes.ADD);
     const [ emailTemplateTypeDetails, setEmailTemplateTypeDetails ] = useState<EmailTemplateDetails>(undefined);
     const [ emailTemplateName, setEmailTemplateName ] = useState<string>("");
@@ -90,19 +94,6 @@ const EmailTemplateEditPage: FunctionComponent<EmailTemplateEditPagePropsInterfa
         // behave as a template editing component.
         setFormMode(EmailTemplateFormModes.EDIT);
 
-        let countryCode = "";
-        let languageCode = "";
-
-        if (templateId.indexOf("_") !== -1) {
-            countryCode = templateId.split("_")[ 1 ];
-            languageCode = templateId.split("_")[ 0 ];
-        }
-
-        const language = CountryLanguage.getLanguage(languageCode).name;
-        const country = CountryLanguage.getCountry(countryCode).name;
-
-        setLocaleName(country ? language + " (" + country + ")" : language);
-
         getEmailTemplate(templateTypeId)
             .then((response: AxiosResponse<EmailTemplateDetails>) => {
                 if (response.status === 200) {
@@ -120,7 +111,7 @@ const EmailTemplateEditPage: FunctionComponent<EmailTemplateEditPagePropsInterfa
                         ".genericError.message")
                 }));
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert<AlertInterface>({
                         description: error.response.data.description,

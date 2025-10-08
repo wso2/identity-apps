@@ -29,6 +29,7 @@ import {
 import { useIdentityProviderList } from "@wso2is/admin.identity-providers.v1/api/identity-provider";
 import { IdentityProviderInterface, StrictIdentityProviderInterface } from "@wso2is/admin.identity-providers.v1/models";
 import {
+    APIErrorResponseInterface,
     AlertLevels,
     IdentifiableComponentInterface,
     RoleGroupsInterface } from "@wso2is/core/models";
@@ -262,7 +263,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                 );
                 onRoleUpdate(tabIndex);
             })
-            .catch( (error: AxiosError) => {
+            .catch( (error: AxiosError<APIErrorResponseInterface>) => {
                 if (error.response && error.response.data.detail) {
                     dispatch(
                         addAlert({

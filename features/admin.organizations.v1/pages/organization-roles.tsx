@@ -26,7 +26,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { CreateGroupMemberInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { CreateRoleInterface, CreateRoleMemberInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { APIErrorResponseInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { I18n } from "@wso2is/i18n";
@@ -296,7 +296,7 @@ const OrganizationRoles: FunctionComponent<OrganizationRolesPageInterface> = (
                 history.push(AppConstants.getPaths().get("ORGANIZATION_ROLE_UPDATE").replace(":id", response.data.id));
             }
 
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<APIErrorResponseInterface>) => {
             if (!error.response || error.response.status === 401) {
                 setShowWizard(false);
                 dispatch(

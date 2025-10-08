@@ -25,6 +25,7 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
+    APIErrorResponseInterface,
     AlertLevels,
     LoadableComponentInterface,
     SBACInterface,
@@ -190,7 +191,7 @@ export const OrganizationRoleList: FunctionComponent<OrganizationRolesListPropsI
                 setShowDeleteConfirmationModal(false);
                 onOrganizationRoleDelete();
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(
                         setAlert({

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels } from "@wso2is/core/models";
+import { APIErrorResponseInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AxiosError } from "axios";
 import { useTranslation } from "react-i18next";
@@ -57,7 +57,11 @@ export const useHandleWebhookError = () => {
     const dispatch: Dispatch<any> = useDispatch();
     const { t } = useTranslation();
 
-    return (error: AxiosError, operation: string, additionalParams?: DescriptionParams): void => {
+    return (
+        error: AxiosError<APIErrorResponseInterface>,
+        operation: string,
+        additionalParams?: DescriptionParams
+    ): void => {
         const descriptionParams: DescriptionParams = additionalParams || {};
 
         if (error.response?.data?.description) {

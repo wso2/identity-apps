@@ -39,6 +39,7 @@ import {
 import { ProfileConstants } from "@wso2is/core/constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
+    APIErrorResponseInterface,
     AlertLevels,
     ExternalClaim,
     IdentifiableComponentInterface,
@@ -439,7 +440,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = (
 
                 onUserUpdate(profileData.id);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error?.response?.data?.detail || error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.detail || error?.response?.data?.description,
@@ -1856,7 +1857,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = (
 
                 onUpdate(profileData.id);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error?.response?.data?.detail || error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.detail || error?.response?.data?.description,

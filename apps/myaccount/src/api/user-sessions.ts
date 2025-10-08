@@ -45,8 +45,8 @@ export const fetchUserSessions = (): Promise<UserSessions> => {
         };
 
     return httpClient(requestConfig)
-        .then((response: HttpResponse<UserSessions>) => {
-            return response.data;
+        .then((response: HttpResponse) => {
+            return response.data as UserSessions;
         })
         .catch((error: HttpError) => {
             return Promise.reject(error);

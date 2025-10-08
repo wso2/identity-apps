@@ -24,7 +24,7 @@ import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { APIErrorResponseInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     EmptyPlaceholder,
@@ -87,7 +87,7 @@ const ApplicationRolesPage = (props: ApplicationRolesPageInterface): ReactElemen
             .then((response: ApplicationRoleInterface[]) => {
                 filterApplicationsList(response);
                 setError(false);
-            }).catch((error: AxiosError) => {
+            }).catch((error: AxiosError<APIErrorResponseInterface>) => {
                 setError(true);
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
@@ -129,7 +129,7 @@ const ApplicationRolesPage = (props: ApplicationRolesPageInterface): ReactElemen
                 mapApplicationListWithApplicationRoles(response.applications, roles);
                 setError(false);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 setError(true);
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({

@@ -19,7 +19,12 @@
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
-import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import {
+    APIErrorResponseInterface,
+    AlertInterface,
+    AlertLevels,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DropdownChild, Field, Form } from "@wso2is/form";
 import {
@@ -288,7 +293,7 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
                 }
                 setCheckingTenantExistence(false);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error.response.status == 404) {
                     // Proceed if tenant does not exist.
                     setTenantDuplicate(false);
@@ -318,7 +323,7 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
                     });
                 }
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error.response.status == 404) {
                     // Proceed to tenant creation if tenant does not exist.
                     addTenant(
@@ -372,7 +377,7 @@ const TenantCreationPage: FunctionComponent<TestableComponentInterface> = (
                     }, 5000);
                 }
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 setIsNewTenantLoading(false);
                 // This section gives error context on a former error scenario where the tenant creation would fail
                 // if the first name, last name or primary email of the user is absent in their personal info

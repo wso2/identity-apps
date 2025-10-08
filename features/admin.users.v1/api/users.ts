@@ -75,8 +75,8 @@ export const getUsersList = (
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse<UserListInterface>) => {
-            return Promise.resolve(response.data);
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response.data as UserListInterface);
         })
         .catch((error: AxiosError) => {
             return Promise.reject(error);
@@ -299,8 +299,8 @@ export const getUserDetails = (id: string, attributes: string): Promise<ProfileI
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse<ProfileInfoInterface>) => {
-            return Promise.resolve(response.data);
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response.data as ProfileInfoInterface);
         })
         .catch((error: AxiosError) => {
             return Promise.reject(error);
@@ -329,8 +329,8 @@ export const updateUserInfo = (userId: string, data: PatchRoleDataInterface): Pr
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse<ProfileInfoInterface>) => {
-            return Promise.resolve(response.data);
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response.data as ProfileInfoInterface);
         })
         .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
@@ -362,7 +362,7 @@ export const getUserSessions = (userId: string): Promise<AxiosResponse<UserSessi
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse<UserSessionsInterface>) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
                     UserManagementConstants.GET_USER_SESSIONS_REQUEST_INVALID_STATUS_CODE_ERROR,
@@ -406,7 +406,7 @@ export const terminateUserSession = (userId: string, sessionId: string): Promise
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse<UserSessionsInterface>) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 204) {
                 throw new IdentityAppsApiException(
                     UserManagementConstants.TERMINATE_USER_SESSION_REQUEST_INVALID_STATUS_CODE_ERROR,
@@ -449,7 +449,7 @@ export const terminateAllUserSessions = (userId: string): Promise<AxiosResponse>
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse<UserSessionsInterface>) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 204) {
                 throw new IdentityAppsApiException(
                     UserManagementConstants.TERMINATE_ALL_USER_SESSIONS_REQUEST_INVALID_STATUS_CODE_ERROR,

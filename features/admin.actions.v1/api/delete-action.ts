@@ -63,7 +63,7 @@ export const deleteAction = (actionType: string, actionId: string): Promise<stri
 
             return Promise.resolve(response?.data);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<{ code: string | number }>) => {
             throw new IdentityAppsApiException(
                 error.message,
                 error.stack,

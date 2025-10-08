@@ -84,7 +84,7 @@ export const updateBrandingPreference = (
             }
 
             return Promise.resolve(response.data as BrandingPreferenceAPIResponseInterface);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<{ code: string | number }>) => {
             throw new IdentityAppsApiException(
                 BrandingPreferencesConstants.ErrorMessages.BRANDING_PREFERENCE_UPDATE_ERROR.getErrorMessage(),
                 error.stack,
@@ -137,7 +137,7 @@ export const deleteBrandingPreference = (
             }
 
             return Promise.resolve(response.data);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<{ code: string | number; message: string }>) => {
             throw new IdentityAppsApiException(
                 error.response?.data?.message ?? BrandingPreferencesConstants
                     .ErrorMessages.BRANDING_PREFERENCE_DELETE_ERROR.getErrorMessage(),

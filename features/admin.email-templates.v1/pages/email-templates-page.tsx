@@ -19,7 +19,12 @@
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import {
+    APIErrorResponseInterface,
+    AlertInterface,
+    AlertLevels,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
@@ -27,6 +32,7 @@ import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
+import { Dispatch } from "redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { deleteLocaleTemplate, getEmailTemplate } from "../api";
 import { EmailTemplateList } from "../components";
@@ -48,9 +54,9 @@ interface RouteParams {
  * Component will list all available locale based email templates for
  * the selected email template type.
  *
- * @param {EmailTemplatesPagePropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns React.ReactElement
  */
 const EmailTemplatesPage: FunctionComponent<EmailTemplatesPagePropsInterface> = (
     props: EmailTemplatesPagePropsInterface & RouteComponentProps<RouteParams>
@@ -61,9 +67,9 @@ const EmailTemplatesPage: FunctionComponent<EmailTemplatesPagePropsInterface> = 
         [ "data-testid" ]: testId
     } = props;
 
-    const templateTypeId = match?.params?.templateTypeId;
+    const templateTypeId: string = match?.params?.templateTypeId;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
 
@@ -113,7 +119,7 @@ const EmailTemplatesPage: FunctionComponent<EmailTemplatesPagePropsInterface> = 
                         ".genericError.message")
                 }));
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,
@@ -140,11 +146,11 @@ const EmailTemplatesPage: FunctionComponent<EmailTemplatesPagePropsInterface> = 
     /**
      * Handler for pagination page change.
      *
-     * @param event pagination page change event
-     * @param data pagination page change data
+     * @param event - pagination page change event
+     * @param data - pagination page change data
      */
     const handlePaginationChange = (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
-        const offsetValue = (data.activePage as number - 1) * listItemLimit;
+        const offsetValue: number = (data.activePage as number - 1) * listItemLimit;
 
         setListOffset(offsetValue);
         paginate(emailTemplates, offsetValue, listItemLimit);
@@ -153,8 +159,8 @@ const EmailTemplatesPage: FunctionComponent<EmailTemplatesPagePropsInterface> = 
     /**
      * Handler for Items per page dropdown change.
      *
-     * @param event drop down event
-     * @param data drop down data
+     * @param event - drop down event
+     * @param data - drop down data
      */
     const handleItemsPerPageDropdownChange = (event: MouseEvent<HTMLAnchorElement>, data: DropdownProps): void => {
         setListItemLimit(data.value as number);
@@ -164,9 +170,9 @@ const EmailTemplatesPage: FunctionComponent<EmailTemplatesPagePropsInterface> = 
     /**
      * Util method to paginate retrieved email template type list.
      *
-     * @param {EmailTemplate[]} list - Email template list.
-     * @param {number} offset - Pagination offset value.
-     * @param {number} limit - Pagination item limit.
+     * @param list - Email template list.
+     * @param offset - Pagination offset value.
+     * @param limit - Pagination item limit.
      */
     const paginate = (list: EmailTemplate[], offset: number, limit: number): void => {
         setPaginatedEmailTemplates(list.slice(offset, limit + offset));
@@ -220,7 +226,7 @@ const EmailTemplatesPage: FunctionComponent<EmailTemplatesPagePropsInterface> = 
                         ".genericError.message")
                 }));
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert<AlertInterface>({
                         description: error.response.data.description,

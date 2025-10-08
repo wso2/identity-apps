@@ -27,6 +27,7 @@ import { store } from "@wso2is/admin.core.v1/store";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
+    APIErrorResponseInterface,
     HttpMethods,
     ProfileInfoInterface,
     ProfileSchemaInterface,
@@ -120,13 +121,13 @@ export const getProfileInfo = (endpoint: string,
 
             return Promise.resolve(profileResponse);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<APIErrorResponseInterface>) => {
             // Check if the API responds with a `500` error, if it does,
             // navigate the user to the login error page.
             if (error.response
                 && error.response.data
                 && error.response.data.status
-                && error.response.data.status === "500") {
+                && error.response.data.status as unknown as string === "500") {
 
                 // Fire `onSCIMDisabled` callback which will navigate the
                 // user to the corresponding error page.

@@ -22,7 +22,12 @@ import Typography from "@oxygen-ui/react/Typography";
 import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
 import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
-import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
+import {
+    APIErrorResponseInterface,
+    AlertLevels,
+    IdentifiableComponentInterface,
+    RolesInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AutocompleteFieldAdapter, FinalForm, FinalFormField, FormRenderProps } from "@wso2is/form";
 import { Heading, Hint, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
@@ -133,7 +138,7 @@ const AddExistingUserWizard: FunctionComponent<AddExistingUserWizardPropsInterfa
         assignAdministratorRoles(
             values?.username?.user,
             values?.roles?.map((role: any) => role.role),
-            (error: AxiosError) => {
+            (error: AxiosError<APIErrorResponseInterface>) => {
                 if (!error.response || error.response.status === 401) {
                     setAlert({
                         description: t("users:notifications.addUser.error.description"),

@@ -162,7 +162,7 @@ export class ApplicationTemplateManagementUtils {
 
                 return Promise.resolve();
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<{ description: string }>) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     store.dispatch(addAlert({
                         description: error.response.data.description,

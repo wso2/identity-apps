@@ -67,7 +67,7 @@ const createSmsTemplate = (templateType: string, smsTemplate: SMSTemplate): Prom
 
             return Promise.resolve(response.data as SMSTemplate);
         })
-        .catch((error: AxiosError) => {
+        .catch((error: AxiosError<{ code: string | number }>) => {
             throw new IdentityAppsApiException(
                 "Error occurred while creating the SMS template.",
                 error.stack,

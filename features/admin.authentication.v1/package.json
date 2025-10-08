@@ -15,7 +15,7 @@
         "@wso2is/admin.userstores.v1": "^2.27.29",
         "@wso2is/core": "^2.7.1",
         "@wso2is/i18n": "^2.26.1",
-        "axios": "^0.19.2",
+        "axios": "^0.30.0",
         "lodash-es": "^4.17.21",
         "react-redux": "^7.2.9",
         "redux": "^4.0.4",
@@ -41,7 +41,7 @@
         "rollup-plugin-svg": "^2.0.0"
     },
     "peerDependencies": {
-        "@asgardeo/auth-react": "^5.1.2",
+        "@asgardeo/auth-react": "^5.4.2",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "react-router-dom": "^4.3.1"

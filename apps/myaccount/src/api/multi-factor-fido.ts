@@ -52,7 +52,7 @@ export const getMetaData = (): Promise<FIDODevice[]> => {
     };
 
     return httpClient(requestConfig)
-        .then((response: HttpResponse<FIDODevice[]>) => {
+        .then((response: HttpResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(
                     new Error(
@@ -63,7 +63,7 @@ export const getMetaData = (): Promise<FIDODevice[]> => {
                 );
             }
 
-            return Promise.resolve(response.data);
+            return Promise.resolve(response.data as FIDODevice[]);
         })
         .catch((error: HttpError) => {
             return Promise.reject(

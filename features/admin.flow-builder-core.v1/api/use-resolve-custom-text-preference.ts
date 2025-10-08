@@ -21,7 +21,7 @@ import { I18nConstants } from "@wso2is/admin.core.v1/constants/i18n-constants";
 import { store } from "@wso2is/admin.core.v1/store";
 import { BrandingPreferenceTypes, PreviewScreenType } from "@wso2is/common.branding.v1/models/branding-preferences";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
+import { APIErrorResponseInterface, HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import { useMemo } from "react";
@@ -52,7 +52,7 @@ const fetchCustomTextPreference = async (
 
         return response?.data?.preference?.text || {};
     } catch (error) {
-        const axiosError: AxiosError = error as AxiosError;
+        const axiosError: AxiosError<APIErrorResponseInterface> = error as AxiosError<APIErrorResponseInterface>;
 
         if (axiosError.response?.status === 404) {
             return {};

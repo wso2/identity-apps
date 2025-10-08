@@ -96,7 +96,7 @@ export const updateWSFederationConfigurations = (data: WSFederationConfigAPIResp
             }
 
             return Promise.resolve(response.data as WSFederationConfigAPIResponseInterface);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<{ code: string | number }>) => {
             const errorMessage: string = WSFederationConfigConstants.ErrorMessages
                 .WS_FEDERATION_CONFIG_UPDATE_ERROR_CODE.getErrorMessage();
 
@@ -134,7 +134,7 @@ export const revertWSFederationConfigurations = (): Promise<void> => {
             }
 
             return Promise.resolve();
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<{ code: string | number }>) => {
             const errorMessage: string = WSFederationConfigConstants.ErrorMessages
                 .WS_FEDERATION_CONFIG_REVERT_ERROR_CODE.getErrorMessage();
 

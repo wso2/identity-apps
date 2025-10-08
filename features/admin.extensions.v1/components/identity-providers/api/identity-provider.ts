@@ -17,12 +17,12 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { store } from "@wso2is/admin.core.v1/store";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
@@ -93,7 +93,7 @@ export const addSMSPublisher = (): Promise<NotificationSenderSMSInterface> => {
     };
 
     return httpClient(requestConfig)
-        .then((response: AxiosResponse<NotificationSenderSMSInterface>) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 201) {
                 throw new IdentityAppsApiException(
                     SMSOTPConstants.ERROR_IN_CREATING_SMS_NOTIFICATION_SENDER,
@@ -145,7 +145,7 @@ export const deleteSMSPublisher = (): Promise<void> => {
             }
 
             return Promise.resolve(response.data);
-        }).catch((error: AxiosError) => {
+        }).catch((error: AxiosError<{ code: string | number }>) => {
             let errorMessage: string = SMSOTPConstants.ERROR_IN_DELETING_SMS_NOTIFICATION_SENDER;
 
             if (error.response?.data?.code ===

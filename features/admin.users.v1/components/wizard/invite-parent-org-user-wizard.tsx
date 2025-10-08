@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { APIErrorResponseInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Heading, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useState } from "react";
@@ -76,7 +76,7 @@ export const InviteParentOrgUserWizard: FunctionComponent<InviteParentOrgUserWiz
      * organization.
      * @param error - Error response.
      */
-    const handleParentOrgUserInviteError = (error: AxiosError) => {
+    const handleParentOrgUserInviteError = (error: AxiosError<APIErrorResponseInterface>) => {
         /**
          * Axios throws a generic `Network Error` for status code 401.
          * As a temporary solution, a check to see if a response

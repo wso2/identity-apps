@@ -29,7 +29,7 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { HttpMethods } from "@wso2is/core/models";
+import { APIErrorResponseInterface, HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import {
     AddOrganizationInterface,
@@ -91,12 +91,12 @@ export const getOrganizations = (
     };
 
     return httpClient(config)
-        .then((response: HttpResponse<OrganizationListInterface>) => {
+        .then((response: HttpResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get organizations."));
             }
 
-            return Promise.resolve(response?.data);
+            return Promise.resolve(response?.data as OrganizationListInterface);
         })
         .catch((error: HttpError) => {
             return Promise.reject(error?.response?.data);
@@ -115,7 +115,10 @@ export const getOrganizations = (
  *
  * @returns requestedOrganizationList
  */
-export function useAuthorizedOrganizationsList<Data = OrganizationListInterface, Error = AxiosError>(
+export function useAuthorizedOrganizationsList<
+    Data = OrganizationListInterface,
+    Error = AxiosError<APIErrorResponseInterface>
+>(
     filter: string,
     limit: number,
     after: string,
@@ -126,7 +129,7 @@ export function useAuthorizedOrganizationsList<Data = OrganizationListInterface,
 ): RequestResultInterface<Data, Error> {
     const requestConfig: AxiosRequestConfig = {
         headers: {
-            "Accept": "application/json",
+            Accept: "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -138,9 +141,11 @@ export function useAuthorizedOrganizationsList<Data = OrganizationListInterface,
             limit,
             recursive
         },
-        url: `${ isRoot
-            ? store.getState().config.endpoints.rootUsersOrganization
-            : store.getState().config.endpoints.usersOrganization }/me/organizations`
+        url: `${
+            isRoot
+                ? store.getState().config.endpoints.rootUsersOrganization
+                : store.getState().config.endpoints.usersOrganization
+        }/me/organizations`
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
@@ -173,12 +178,12 @@ export const addOrganization = (organization: AddOrganizationInterface): Promise
     };
 
     return httpClient(config)
-        .then((response: HttpResponse<OrganizationResponseInterface>) => {
+        .then((response: HttpResponse) => {
             if (response.status !== 201) {
                 return Promise.reject(new Error("Failed to create organization."));
             }
 
-            return Promise.resolve(response?.data);
+            return Promise.resolve(response?.data as OrganizationResponseInterface);
         })
         .catch((error: HttpError) => {
             return Promise.reject(error?.response?.data);
@@ -207,12 +212,12 @@ export const getOrganization = (id: string, showChildren?: boolean): Promise<Org
     };
 
     return httpClient(config)
-        .then((response: HttpResponse<OrganizationResponseInterface>) => {
+        .then((response: HttpResponse) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get the organization."));
             }
 
-            return Promise.resolve(response?.data);
+            return Promise.resolve(response?.data as OrganizationResponseInterface);
         })
         .catch((error: IdentityAppsApiException) => {
             return Promise.reject(error?.response?.data);
@@ -242,12 +247,12 @@ export const updateOrganization = (
     };
 
     return httpClient(config)
-        .then((response: HttpResponse<OrganizationResponseInterface>) => {
+        .then((response: HttpResponse) => {
             if (response?.status !== 200) {
                 return Promise.reject(new Error("Failed to update the organization."));
             }
 
-            return Promise.resolve(response?.data);
+            return Promise.resolve(response?.data as OrganizationResponseInterface);
         })
         .catch((error: HttpError) => {
             return Promise.reject(error?.response?.data);
@@ -277,12 +282,12 @@ export const patchOrganization = (
     };
 
     return httpClient(config)
-        .then((response: HttpResponse<OrganizationResponseInterface>) => {
+        .then((response: HttpResponse) => {
             if (response?.status !== 200) {
                 return Promise.reject(new Error("Failed to update the organization."));
             }
 
-            return Promise.resolve(response?.data);
+            return Promise.resolve(response?.data as OrganizationResponseInterface);
         })
         .catch((error: HttpError) => {
             return Promise.reject(error?.response?.data);
@@ -507,8 +512,8 @@ export const checkOrgHandleAvailability = (checkOrgHandleRequest: CheckOrgHandle
     };
 
     return httpClient(config)
-        .then((response: HttpResponse<CheckOrgHandleResponseInterface>) => {
-            return response.data;
+        .then((response: HttpResponse) => {
+            return response.data as CheckOrgHandleResponseInterface;
         })
         .catch((error: HttpError) => {
             return Promise.reject(error?.response?.data || error);

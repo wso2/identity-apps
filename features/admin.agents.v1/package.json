@@ -6,7 +6,7 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@asgardeo/auth-react": "^5.1.2",
+        "@asgardeo/auth-react": "^5.4.2",
         "@emotion/react": "^11.11.0",
         "@emotion/styled": "^11.11.0",
         "@mui/icons-material": "^5.11.16",
@@ -49,7 +49,7 @@
         "@wso2is/i18n": "^2.30.42",
         "@wso2is/react-components": "^2.9.23",
         "@wso2is/validation": "^2.4.1",
-        "axios": "^0.19.2",
+        "axios": "^0.30.0",
         "classnames": "^2.2.6",
         "codemirror": "^5.52.0",
         "file-saver": "^2.0.5",

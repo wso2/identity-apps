@@ -29,6 +29,7 @@ import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils";
 import { getRolesList } from "@wso2is/admin.roles.v2/api";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "@wso2is/admin.roles.v2/constants";
 import {
+    APIErrorResponseInterface,
     AlertInterface,
     AlertLevels,
     ProfileInfoInterface,
@@ -511,7 +512,7 @@ export const UserRolesV1List: FunctionComponent<UserRolesV1PropsInterface> = (
                 handelAddNewRoleModalClose();
                 handleUserUpdate(user.id);
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error?.response?.status === 404) {
                     return;
                 }

@@ -37,6 +37,7 @@ import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
+    APIErrorResponseInterface,
     AlertLevels,
     FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
@@ -461,7 +462,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
             for (const groupId of groupIds) {
                 updateGroupDetails(groupId, groupData)
-                    .catch((error: AxiosError) => {
+                    .catch((error: AxiosError<APIErrorResponseInterface>) => {
                         if (!error.response || error.response.status === 401) {
                             setAlert({
                                 description: t(
@@ -634,7 +635,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     setCurrentWizardStep(currentWizardStep + 1);
                 }
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 // Axios throws a generic `Network Error` for 401 status.
                 // As a temporary solution, a check to see if a response
                 // is available has be used.

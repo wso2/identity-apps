@@ -27,7 +27,7 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { APIErrorResponseInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Wizard2, WizardPage } from "@wso2is/form";
 import { FormSpy } from "@wso2is/form/src";
@@ -546,7 +546,9 @@ const CustomAuthenticatorCreateWizard: FunctionComponent<CustomAuthenticatorCrea
      *
      * @param error - error object.
      */
-    const handleCustomAuthenticatorCreateErrors = (error: AxiosError): void => {
+    const handleCustomAuthenticatorCreateErrors = (
+        error: AxiosError<APIErrorResponseInterface>
+    ): void => {
         const identityAppsError: IdentityAppsError = ConnectionUIConstants.ERROR_CREATE_LIMIT_REACHED;
 
         if (error?.response?.status === 403 && error?.response?.data?.code === identityAppsError.getErrorCode()) {

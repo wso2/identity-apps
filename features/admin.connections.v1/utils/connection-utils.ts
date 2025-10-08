@@ -19,7 +19,7 @@
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertLevels } from "@wso2is/core/models";
+import { APIErrorResponseInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ImageUtils, URLUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
@@ -357,7 +357,8 @@ export const getIdPCapabilityIcons = (): any => {
 /**
  * Utility function to handle the error alert of the outbound provisioning connector metadata request.
  */
-export const handleGetOutboundProvisioningConnectorMetadataError = (error: AxiosError): void => {
+export const handleGetOutboundProvisioningConnectorMetadataError = (
+    error: AxiosError<APIErrorResponseInterface>): void => {
     if (error?.response?.data?.description) {
         store.dispatch(
             addAlert({
@@ -394,7 +395,7 @@ export const handleGetOutboundProvisioningConnectorMetadataError = (error: Axios
 /**
  * Utility function to handle the error alert of the connection deletion request.
  */
-export const handleConnectionDeleteError = (error: AxiosError): void => {
+export const handleConnectionDeleteError = (error: AxiosError<APIErrorResponseInterface>): void => {
     if (
         error.response &&
         error.response.data &&
@@ -437,7 +438,7 @@ export const handleConnectionDeleteError = (error: AxiosError): void => {
 /**
  * Utility function to handle the error alert of the get connection list request.
  */
-export const handleGetConnectionsError = (error: AxiosError): void => {
+export const handleGetConnectionsError = (error: AxiosError<APIErrorResponseInterface>): void => {
     if (error?.response?.data?.description) {
         store.dispatch(
             addAlert({
@@ -465,7 +466,7 @@ export const handleGetConnectionsError = (error: AxiosError): void => {
 /**
  * Utility function to handle the error alert of the get custom authenticator request.
  */
-export const handleGetCustomAuthenticatorError = (error: AxiosError): void => {
+export const handleGetCustomAuthenticatorError = (error: AxiosError<APIErrorResponseInterface>): void => {
     if (error?.response?.data?.description) {
         store.dispatch(
             addAlert({
@@ -497,7 +498,7 @@ export const handleGetCustomAuthenticatorError = (error: AxiosError): void => {
 /**
  * Utility function to handle the error alert of the get connection templates list request.
  */
-export const handleGetConnectionTemplateListError = (error: AxiosError): void => {
+export const handleGetConnectionTemplateListError = (error: AxiosError<APIErrorResponseInterface>): void => {
     if (error.response && error.response.data && error.response.data.description) {
         store.dispatch(
             addAlert({
@@ -527,7 +528,7 @@ export const handleGetConnectionTemplateListError = (error: AxiosError): void =>
 /**
  * Utility function to handle the error alert of the connection role mappings update request.
  */
-export const handleUpdateConnectionRoleMappingsError = (error: AxiosError): void => {
+export const handleUpdateConnectionRoleMappingsError = (error: AxiosError<APIErrorResponseInterface>): void => {
     if (error.response && error.response.data && error.response.data.description) {
         store.dispatch(
             addAlert({
@@ -557,7 +558,7 @@ export const handleUpdateConnectionRoleMappingsError = (error: AxiosError): void
 /**
  * Utility function to handle the error alert of the get connection template list request.
  */
-export const handleGetConnectionTemplateRequestError = (error: AxiosError): void => {
+export const handleGetConnectionTemplateRequestError = (error: AxiosError<APIErrorResponseInterface>): void => {
     if (error.response && error.response.data && error.response.data.description) {
         store.dispatch(
             addAlert({
@@ -586,7 +587,7 @@ export const handleGetConnectionTemplateRequestError = (error: AxiosError): void
 /**
  * Utility function to handle the error alert of the outbound provining connector update request.
  */
-export const handleUpdateOutboundProvisioningConnectorError = (error: AxiosError): void => {
+export const handleUpdateOutboundProvisioningConnectorError = (error: AxiosError<APIErrorResponseInterface>): void => {
     if (error.response && error.response.data && error.response.data.description) {
         store.dispatch(
             addAlert({
@@ -620,7 +621,7 @@ export const handleUpdateOutboundProvisioningConnectorError = (error: AxiosError
 /**
  * Utility function to handle the error alert of the get connection list request.
  */
-export const handleGetConnectionListCallError = (error: AxiosError): void => {
+export const handleGetConnectionListCallError = (error: AxiosError<APIErrorResponseInterface>): void => {
     if (error?.response?.data?.description) {
         store.dispatch(
             addAlert({
@@ -648,7 +649,7 @@ export const handleGetConnectionListCallError = (error: AxiosError): void => {
 /**
  * Utility function to handle the error alert of the connection update request.
  */
-export const handleConnectionUpdateError = (error: AxiosError): void => {
+export const handleConnectionUpdateError = (error: AxiosError<APIErrorResponseInterface>): void => {
     if (error.response && error.response.data && error.response.data.description) {
         store.dispatch(
             addAlert({
@@ -675,7 +676,7 @@ export const handleConnectionUpdateError = (error: AxiosError): void => {
 /**
  * Utility function to handle the error alert of the custom authenticator update request.
  */
-export const handleCustomAuthenticatorUpdateError = (error: AxiosError): void => {
+export const handleCustomAuthenticatorUpdateError = (error: AxiosError<APIErrorResponseInterface>): void => {
     if (error?.response?.data?.description) {
         store.dispatch(
             addAlert({
@@ -743,7 +744,7 @@ export const handleGetFederatedAuthenticatorMetadataAPICallError = (error: Ident
 /**
  * Utility function to handle the error alert of the connection meta data GET request.
  */
-export const handleGetConnectionsMetaDataError = (error: AxiosError): void => {
+export const handleGetConnectionsMetaDataError = (error: AxiosError<APIErrorResponseInterface>): void => {
     if (error?.response?.data?.description) {
         store.dispatch(
             addAlert({
@@ -778,7 +779,7 @@ export const handleGetConnectionsMetaDataError = (error: AxiosError): void => {
 /**
  * Utility function to handle the error alert of the authenticator tags GET request.
  */
-export const handleGetAuthenticatorTagsError = (error: AxiosError): void => {
+export const handleGetAuthenticatorTagsError = (error: AxiosError<APIErrorResponseInterface>): void => {
     if (error?.response?.data?.description) {
         store.dispatch(
             addAlert({
@@ -808,7 +809,7 @@ export const handleGetAuthenticatorTagsError = (error: AxiosError): void => {
     return;
 };
 
-export const handleGetRoleListError = (error: AxiosError): void => {
+export const handleGetRoleListError = (error: AxiosError<APIErrorResponseInterface>): void => {
     if (error.response && error.response.data && error.response.data.description) {
         store.dispatch(
             addAlert({
@@ -835,7 +836,7 @@ export const handleGetRoleListError = (error: AxiosError): void => {
     );
 };
 
-export const handleUpdateIDPRoleMappingsError = (error: AxiosError): void => {
+export const handleUpdateIDPRoleMappingsError = (error: AxiosError<APIErrorResponseInterface>): void => {
     if (error.response && error.response.data && error.response.data.description) {
         store.dispatch(
             addAlert({

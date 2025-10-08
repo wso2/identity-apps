@@ -78,8 +78,8 @@ export const fetchConsentedApps = async (
     };
 
     return httpClient(requestConfig)
-        .then((response: HttpResponse<ConsentInterface[]>) => {
-            return response.data;
+        .then((response: HttpResponse) => {
+            return response.data as ConsentInterface[];
         })
         .catch((error: HttpError) => {
             return Promise.reject(error);
@@ -108,8 +108,8 @@ export const fetchConsentReceipt = (
     };
 
     return httpClient(requestConfig)
-        .then((response: HttpResponse<ConsentReceiptInterface>) => {
-            return response.data;
+        .then((response: HttpResponse) => {
+            return response.data as ConsentReceiptInterface;
         })
         .catch((error: HttpError) => {
             return Promise.reject(error);
@@ -242,9 +242,9 @@ export const revokeConsentedApp = (
     };
 
     return httpClient(requestConfig)
-        .then((response: HttpResponse<ConsentReceiptInterface>) => {
+        .then((response: HttpResponse) => {
             // TODO: change the return type
-            return response.data;
+            return response.data as ConsentReceiptInterface;
         })
         .catch((error: HttpError) => {
             return Promise.reject(error);
@@ -300,8 +300,8 @@ export const updateConsentedClaims = (
     };
 
     return httpClient(requestConfig)
-        .then((response: HttpResponse<ConsentReceiptInterface>) => {
-            return response.data;
+        .then((response: HttpResponse) => {
+            return response.data as ConsentReceiptInterface;
         })
         .catch((error: HttpError) => {
             return Promise.reject(error);

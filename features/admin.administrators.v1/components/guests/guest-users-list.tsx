@@ -23,7 +23,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { deleteInvite, resendInvite, updateInvite } from "@wso2is/admin.users.v1/api";
 import { InvitationStatus, UserInviteInterface } from "@wso2is/admin.users.v1/models/user";
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { APIErrorResponseInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     AnimatedAvatar,
@@ -104,7 +104,7 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                 }));
                 getGuestUsersList();
 
-            }).catch((error: AxiosError) => {
+            }).catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description ?? error?.response?.data?.detail
@@ -136,7 +136,7 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                     message: t("invite:notifications.resendInvite.success.message")
                 }));
 
-            }).catch((error: AxiosError) => {
+            }).catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description ?? error?.response?.data?.detail
@@ -251,7 +251,7 @@ export const GuestUsersList: FunctionComponent<GuestUsersListInterface> = (
                 }));
                 getGuestUsersList();
 
-            }).catch((error: AxiosError) => {
+            }).catch((error: AxiosError<APIErrorResponseInterface>) => {
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description ?? error?.response?.data?.detail

@@ -17,7 +17,12 @@
  */
 
 import { ExtendedFeatureConfigInterface } from "@wso2is/admin.extensions.v1/configs/models";
-import { AlertInterface, AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
+import {
+    APIErrorResponseInterface,
+    AlertInterface,
+    AlertLevels,
+    IdentifiableComponentInterface,
+    SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ResourceTab } from "@wso2is/react-components";
 import { AxiosError } from "axios";
@@ -148,7 +153,7 @@ export const EditAPIResource: FunctionComponent<EditAPIResourceInterface> = (
                 }));
                 mutateAPIResource();
             })
-            .catch((error: AxiosError) => {
+            .catch((error: AxiosError<APIErrorResponseInterface>) => {
                 switch (error?.code) {
                     case APIResourcesConstants.UNAUTHORIZED_ACCESS:
                         dispatch(addAlert<AlertInterface>({
