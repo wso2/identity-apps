@@ -26,11 +26,11 @@ import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { SMSProviderConstants } from "../constants";
+import { SMSProviderConstants } from "../constants/sms-provider-constants";
 import {
     SMSProviderAPIInterface,
     SMSProviderAPIResponseInterface
-} from "../models";
+} from "../models/sms-providers";
 
 /**
  * Get an axios instance.

@@ -27,13 +27,13 @@ import GithubExecution from "./github-execution";
 import GoogleExecution from "./google-execution";
 import MicrosoftExecution from "./microsoft-execution";
 import { ExecutionTypes } from "../../../../../models/steps";
-import { CommonStepFactoryPropsInterface } from "../../common-step-factory";
 import "./execution-factory.scss";
+import { ExecutionMinimalPropsInterface } from "../execution-minimal";
 
 /**
  * Props interface of {@link CommonStepFactory}
  */
-export type ExecutionFactoryPropsInterface = Pick<CommonStepFactoryPropsInterface, "resource"> &
+export type ExecutionFactoryPropsInterface = ExecutionMinimalPropsInterface &
     IdentifiableComponentInterface;
 
 /**
@@ -102,6 +102,12 @@ const ExecutionFactory: FC<ExecutionFactoryPropsInterface> = ({
     }
 
     if ((resource.data?.action as any)?.executor?.name === ExecutionTypes.ConfirmationCode) {
+
+        // Add deletable property to the resource if not present.
+        if (resource && resource?.deletable === undefined) {
+            resource.deletable = false;
+        }
+
         return (
             <Box
                 display="flex"

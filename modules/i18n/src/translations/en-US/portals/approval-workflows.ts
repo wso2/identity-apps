@@ -68,6 +68,7 @@ export const approvalWorkflows: approvalWorkflowsNS = {
     },
     filters: {
         createdTimeRange: "Created Time Range",
+        disabledTimeRange: "Cannot select when '{{label}}' is selected.",
         operationType: "Operation Type",
         requestType: "Request Type",
         status: "Status",
@@ -194,6 +195,7 @@ export const approvalWorkflows: approvalWorkflowsNS = {
         operations: {
             dropDown: {
                 label: "Operations",
+                nullValidationErrorMessage: "Please select at least one operation",
                 placeholder: "Type operation/s to search and assign"
             }
         }
@@ -255,6 +257,10 @@ export const approvalWorkflows: approvalWorkflowsNS = {
             genericError: {
                 description: "There was an error while removing workflow operations.",
                 message: "Something went wrong!"
+            },
+            noAssociationsSelectedError: {
+                description: "At least one workflow operation must be selected.",
+                message: "No workflow operations selected"
             },
             success: {
                 description: "Workflow operation has been deleted successfully!",
