@@ -148,6 +148,19 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                 }
             }, [ initialValues ]);
 
+            const validateForm = ():
+                Partial<WorkflowOperationsDetailsFormValuesInterface> => {
+                const error: Partial<WorkflowOperationsDetailsFormValuesInterface> = {};
+
+                if (selectedOperations.length === 0) {
+                    error.matchedOperations = t(
+                        "approvalWorkflows:forms.operations.dropDown.nullValidationErrorMessage"
+                    );
+                }
+
+                return error;
+            };
+
             /**
              * Show an alert if fetching workflow associations fails.
              */
@@ -188,6 +201,39 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                 event: SyntheticEvent,
                 newSelectedOperations: DropdownPropsInterface[]
             ): void => {
+                onChange?.(selectedOperations);
+                // Check if any new operations being added already have workflows
+                const newOperations: DropdownPropsInterface[] = newSelectedOperations.filter(
+                    (newOp: DropdownPropsInterface) =>
+                        !selectedOperations.some(
+                            (existingOp: DropdownPropsInterface) => existingOp.value === newOp.value
+                        )
+                );
+
+                for (const operation of newOperations) {
+                    if (hasWorkflowAssociationForOperation(operation.value)) {
+                        dispatch(
+                            addAlert({
+                                description: t(
+                                    "approvalWorkflows:notifications.operationAlreadyExists.error.description",
+                                    {
+                                        defaultValue: `A workflow already exists for the ${operation.text} ` +
+                                            "operation.",
+                                        operation: operation.text
+                                    }
+                                ),
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "approvalWorkflows:notifications.operationAlreadyExists.error.message",
+                                    { defaultValue: "Operation already has workflow" }
+                                )
+                            })
+                        );
+
+                        return; // Don't update selection if an operation already has a workflow
+                    }
+                }
+
                 setSelectedOperations(newSelectedOperations);
             };
 
@@ -227,9 +273,6 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                             options={ operations }
                                             disabled={ isReadOnly }
                                             getOptionLabel={ (option: DropdownPropsInterface) => option.text }
-                                            getOptionDisabled={ (option: DropdownPropsInterface) =>
-                                                hasWorkflowAssociationForOperation(option.value)
-                                            }
                                             value={ selectedOperations }
                                             renderInput={ (params: AutocompleteRenderInputParams) => (
                                                 <TextField
@@ -268,29 +311,14 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                                 props: React.HTMLAttributes<HTMLLIElement>,
                                                 option: DropdownPropsInterface,
                                                 { selected }: { selected: boolean }
-                                            ) => {
-                                                const isDisabled: boolean = hasWorkflowAssociationForOperation(
-                                                    option.value
-                                                );
-
-                                                return (
-                                                    <AutoCompleteRenderOption
-                                                        selected={ selected }
-                                                        displayName={ option.text }
-                                                        disabled={ isDisabled }
-                                                        subTitle={
-                                                            isDisabled
-                                                                ? t("approvalWorkflows:forms.operations.dropDown." +
-                                                                    "disabledHint")
-                                                                : undefined
-                                                        }
-                                                        renderOptionProps={ props }
-                                                        data-componentid={
-                                                            `${componentId}-option-operation-${option.key}`
-                                                        }
-                                                    />
-                                                );
-                                            } }
+                                            ) => (
+                                                <AutoCompleteRenderOption
+                                                    selected={ selected }
+                                                    displayName={ option.text }
+                                                    renderOptionProps={ props }
+                                                    data-componentid={ `${componentId}-option-operation-${option.key}` }
+                                                />
+                                            ) }
                                         />
                                         { isEditPage && (<Hint className="hint" compact>
                                             { t("approvalWorkflows:pageLayout.create.stepper.step2.hint") }
