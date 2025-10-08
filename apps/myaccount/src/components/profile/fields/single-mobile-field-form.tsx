@@ -219,7 +219,9 @@ const SingleMobileFieldForm: FunctionComponent<SingleMobileFieldFormPropsInterfa
         <Grid padded={ true }>
             <Grid.Row columns={ 3 }>
                 <Grid.Column mobile={ 6 } computer={ 4 } className="first-column">
-                    <List.Content className="vertical-align-center">{ fieldLabel }</List.Content>
+                    <List.Content className="vertical-align-center field-label">
+                        <span className={ `${isRequired ? "required" : ""}` }>{ fieldLabel }</span>
+                    </List.Content>
                 </Grid.Column>
                 <Grid.Column mobile={ 8 } computer={ 10 }>
                     <List.Content>
