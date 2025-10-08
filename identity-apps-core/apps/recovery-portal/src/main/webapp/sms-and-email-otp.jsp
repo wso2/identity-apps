@@ -82,10 +82,6 @@
     if (urlQuery == null) {
         urlQuery = (String) request.getAttribute("urlQuery");
     }
-    String screenValue = request.getParameter("screenValue");
-    if (screenValue == null) {
-        screenValue = (String) request.getAttribute("screenValue");
-    }
     String channel = (String) request.getAttribute("channel");
     if (channel == null) {
         channel = Encode.forJava(request.getParameter("channel"));
@@ -201,21 +197,11 @@
                             } %>
 
                             <div class="field">
-                                <% String otpHeader = isEmailOtp ? "enter.code.sent.emailotp" : "enter.code.sent.smsotp";
-
-                                if (screenValue != null && !isEmailOtp) { %>
-                                    <input type='hidden' name='screenValue' id='screenValue'
-                                        value='<%=Encode.forHtmlContent(screenValue)%>'/>
-                                    <label for="password" class="text-center">
-                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                            otpHeader)%> (<%=Encode.forHtmlContent(screenValue)%>)
-                                    </label>
-                                <% } else { %>
-                                    <label for="password" class="text-center">
-                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                                           otpHeader)%>
-                                    </label>
-                                <% } %>
+                                <% String otpHeader = isEmailOtp ? "enter.code.sent.emailotp" : "enter.code.sent.smsotp"; %>
+                                <label for="password" class="text-center">
+                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                       otpHeader)%>
+                                </label>
 
                                 <% if (otpLength <= 6) { %>
                                     <div class="sms-otp-fields equal width fields">
