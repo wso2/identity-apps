@@ -35,23 +35,11 @@ export interface AICardProps extends IdentifiableComponentInterface {
     /**
      * The resource item.
      */
-    resource: {
-        display: {
-            description: string;
-            image: string;
-            label: string;
-        };
-    };
+    resource: any;
     /**
      * Callback to be triggered when a resource add button is clicked.
      */
-    onAdd?: (resource: {
-        display: {
-            description: string;
-            image: string;
-            label: string;
-        };
-    }) => void;
+    onAdd?: (resource: any) => void;
 }
 
 const AICard = ({ resource, onAdd }: AICardProps): ReactElement => {
