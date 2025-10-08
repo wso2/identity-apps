@@ -608,7 +608,8 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
 
                         <PrimaryButton
                             type="submit"
-                            disabled={ isPageReadOnly || !hasApprovalWorkflowUpdatePermissions || isOperationDetailsNull }
+                            disabled={ isPageReadOnly || !hasApprovalWorkflowUpdatePermissions
+                                || isOperationDetailsNull }
                             onClick={ () => {
                                 handleUpdateButtonClick();
                             } }
