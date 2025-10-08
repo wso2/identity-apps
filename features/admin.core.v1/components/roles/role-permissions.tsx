@@ -35,8 +35,7 @@ interface RolePermissionsInterface extends TestableComponentInterface {
 /**
  *  Roles permission component.
  *
- * @param {RolePermissionsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - Props injected to the component.
  */
 export const RolePermissions: FunctionComponent<RolePermissionsInterface> = (
     props: RolePermissionsInterface
@@ -64,7 +63,7 @@ export const RolePermissions: FunctionComponent<RolePermissionsInterface> = (
 
         if (roleId) {
             getRoleById(roleId)
-                .then((response) => {
+                .then((response: any) => {
                     setRoleCheck(false);
                     setRole(response.data);
                 });
