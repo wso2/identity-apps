@@ -1,5 +1,14 @@
 # @wso2is/common.workflow-approvals.v1
 
+## 1.0.9
+
+### Patch Changes
+
+- [#9278](https://github.com/wso2/identity-apps/pull/9278) [`52c5fdd916c73a0d7388203345ecde708ed37e4a`](https://github.com/wso2/identity-apps/commit/52c5fdd916c73a0d7388203345ecde708ed37e4a) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Update Approval API to v2
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.74
+
 ## 1.0.8
 
 ### Patch Changes
