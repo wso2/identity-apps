@@ -1,18 +1,18 @@
 {
     "private": true,
     "name": "@wso2is/admin.approval-workflows.v1",
-    "version": "1.0.14",
+    "version": "1.0.15",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
         "@wso2is/core": "^2.6.3",
-        "@wso2is/admin.core.v1": "^2.49.70",
+        "@wso2is/admin.core.v1": "^2.49.73",
         "@wso2is/admin.groups.v1": "^2.27.76",
-        "@wso2is/admin.roles.v2": "^2.27.232",
-        "@wso2is/admin.users.v1": "^2.36.37",
+        "@wso2is/admin.roles.v2": "^2.27.235",
+        "@wso2is/admin.users.v1": "^2.36.40",
         "@wso2is/admin.userstores.v1": "^2.26.125",
-        "@wso2is/i18n": "^2.30.41",
+        "@wso2is/i18n": "^2.30.43",
         "i18next": "^21.9.1",
         "react-redux": "^7.2.9",
         "redux": "^4.0.4"
