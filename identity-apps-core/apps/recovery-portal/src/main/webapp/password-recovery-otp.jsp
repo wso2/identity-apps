@@ -198,7 +198,6 @@
 
             /**
              * Manage user don't have phone number set up in the account.
-             * Instead of showing error, proceed to OTP input page without mobile number hint.
              */
             if (StringUtils.isBlank(channelId)) {
                 request.setAttribute("resendCode", UUID.randomUUID().toString());
