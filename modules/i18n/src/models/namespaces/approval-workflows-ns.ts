@@ -226,6 +226,7 @@ export interface approvalWorkflowsNS {
                 label: string;
                 nullValidationErrorMessage: string;
                 placeholder: string;
+                disabledHint: string;
             }
         }
     };
