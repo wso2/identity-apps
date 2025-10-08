@@ -533,7 +533,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
 
         return undefined;
     };
-    
+
     const updateLevel: string = getUpdateLevel();
 
     return (
