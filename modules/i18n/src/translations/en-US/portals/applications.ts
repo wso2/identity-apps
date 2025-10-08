@@ -1128,6 +1128,11 @@ export const applications: ApplicationsNS = {
                                 },
                                 emailOTPRequiresEmailField: {
                                     message: "Email OTP requires at least one email field to be present in the flow."
+                                },
+                                passwordRecoveryRequiresFactors: {
+                                    message: "Password recovery requires at least one of the following " +
+                                        "factors to be present in the flow: Email OTP, SMS OTP, " +
+                                        "or Magic Link."
                                 }
                             }
                         }

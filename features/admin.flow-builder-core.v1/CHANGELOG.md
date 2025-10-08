@@ -1,5 +1,51 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.10.63
+
+### Patch Changes
+
+- Updated dependencies [[`583aafd9a58dc15b196f88c22cce95a28c7b1e31`](https://github.com/wso2/identity-apps/commit/583aafd9a58dc15b196f88c22cce95a28c7b1e31)]:
+  - @wso2is/admin.branding.v1@2.32.19
+  - @wso2is/admin.core.v1@2.49.71
+  - @wso2is/admin.flows.v1@1.0.32
+  - @wso2is/admin.registration-flow-builder.v1@0.10.23
+
+## 0.10.62
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.70
+  - @wso2is/admin.branding.v1@2.32.18
+  - @wso2is/admin.flows.v1@1.0.31
+  - @wso2is/admin.registration-flow-builder.v1@0.10.22
+
+## 0.10.61
+
+### Patch Changes
+
+- [#9215](https://github.com/wso2/identity-apps/pull/9215) [`e644fb080eb1d887bd9768544abfae2154c0e4d5`](https://github.com/wso2/identity-apps/commit/e644fb080eb1d887bd9768544abfae2154c0e4d5) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Add configuration settings for Invite User Registration in the flow drawer panel.
+
+* [#9249](https://github.com/wso2/identity-apps/pull/9249) [`db08e8d3d560d557a4159da6b6c51202f24fd7f2`](https://github.com/wso2/identity-apps/commit/db08e8d3d560d557a4159da6b6c51202f24fd7f2) Thanks [@savindi7](https://github.com/savindi7)! - Add validation to Password recovery flow in flow builder.
+
+* Updated dependencies [[`e644fb080eb1d887bd9768544abfae2154c0e4d5`](https://github.com/wso2/identity-apps/commit/e644fb080eb1d887bd9768544abfae2154c0e4d5), [`db08e8d3d560d557a4159da6b6c51202f24fd7f2`](https://github.com/wso2/identity-apps/commit/db08e8d3d560d557a4159da6b6c51202f24fd7f2)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.10.21
+  - @wso2is/admin.core.v1@2.49.69
+  - @wso2is/admin.branding.v1@2.32.17
+  - @wso2is/admin.flows.v1@1.0.30
+
+## 0.10.60
+
+### Patch Changes
+
+- [#9244](https://github.com/wso2/identity-apps/pull/9244) [`a3f012f2844f0e4387a8f73037d3774507972596`](https://github.com/wso2/identity-apps/commit/a3f012f2844f0e4387a8f73037d3774507972596) Thanks [@savindi7](https://github.com/savindi7)! - Fix false error message being shown in Self Registration Flow Builder.
+
+- Updated dependencies []:
+  - @wso2is/admin.branding.v1@2.32.16
+  - @wso2is/admin.core.v1@2.49.68
+  - @wso2is/admin.flows.v1@1.0.29
+  - @wso2is/admin.registration-flow-builder.v1@0.10.20
+
 ## 0.10.59
 
 ### Patch Changes
