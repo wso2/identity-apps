@@ -45,6 +45,7 @@ import {
     addWorkflowAssociation,
     deleteWorkflowAssociationById
 } from "../../api/workflow-associations";
+import { WORKFLOW_ENGINE } from "../../constants/approval-workflow-constants";
 import {
     ApprovalWorkflowPayload,
     OptionDetails,
@@ -117,7 +118,7 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
     const { t } = useTranslation([ "approvalWorkflows" ]);
 
     // Make the page read-only if the engine is not "WorkflowEngine"
-    const isPageReadOnly: boolean = isReadOnly || (approvalWorkflowDetails?.engine !== "WorkflowEngine");
+    const isPageReadOnly: boolean = isReadOnly || (approvalWorkflowDetails?.engine !== WORKFLOW_ENGINE);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
@@ -313,7 +314,7 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
 
         const approvalWorkflowPayload: ApprovalWorkflowPayload = {
             description: updatedApprovalProcessFormData.generalDetails.description,
-            engine: "WorkflowEngine",
+            engine: WORKFLOW_ENGINE,
             name: updatedApprovalProcessFormData.generalDetails.name,
             template: workflowTemplate
         };
@@ -458,6 +459,8 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
         addWorkflowAssociation(workflowAssociationPayload)
             .then(() => {
                 mutateWorkflowAssociationDetails();
+                // Refresh the workflow associations in the form to update validation
+                workflowOperationsDetailsFormRef?.current?.refreshWorkflowAssociations();
             })
             .catch(() => {
                 handleAlerts({
@@ -478,6 +481,8 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
         deleteWorkflowAssociationById(associationId)
             .then(() => {
                 mutateWorkflowAssociationDetails();
+                // Refresh the workflow associations in the form to update validation
+                workflowOperationsDetailsFormRef?.current?.refreshWorkflowAssociations();
             })
             .catch(() => {
                 handleAlerts({

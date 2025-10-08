@@ -233,7 +233,7 @@ const WorkflowRequestDetailsPage: FunctionComponent<IdentifiableComponentInterfa
                 />
             ) }
             { workflowRequest && renderDetailsTable() }
-            { workflowRequest && workflowRequest.status == WorkflowInstanceStatus.PENDING && (
+            { workflowRequest && workflowRequest.status === WorkflowInstanceStatus.PENDING && (
                 <DangerZoneGroup sectionHeader={ t("workflowRequests:details.dangerZone.header") }>
                     <DangerZone
                         actionTitle={ t("workflowRequests:details.dangerZone.abort.actionTitle") }

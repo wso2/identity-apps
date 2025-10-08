@@ -97,6 +97,7 @@ export const operations: DropdownPropsInterface[] = [
 
 export interface WorkflowOperationsDetailsFormRef {
     triggerSubmit: () => void;
+    refreshWorkflowAssociations: () => void;
 }
 
 /**
@@ -131,10 +132,14 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
             // Fetch existing workflow associations for all operations
             const {
                 data: workflowAssociationsData,
-                error: workflowAssociationsError
+                error: workflowAssociationsError,
+                mutate: mutateWorkflowAssociations
             } = useGetWorkflowAssociations(null, null, null);
 
             useImperativeHandle(ref, () => ({
+                refreshWorkflowAssociations: () => {
+                    mutateWorkflowAssociations();
+                },
                 triggerSubmit: () => {
                     if (triggerFormSubmit.current) {
                         triggerFormSubmit.current();
@@ -147,6 +152,15 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                     setSelectedOperations(initialValues?.matchedOperations);
                 }
             }, [ initialValues ]);
+
+            /**
+             * Refresh workflow associations when initial values change (indicating an update occurred).
+             */
+            useEffect(() => {
+                if (initialValues?.matchedOperations && isEditPage) {
+                    mutateWorkflowAssociations();
+                }
+            }, [ initialValues?.matchedOperations ]);
 
             const validateForm = ():
                 Partial<WorkflowOperationsDetailsFormValuesInterface> => {
@@ -194,6 +208,27 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
             };
 
             /**
+             * Checks if an operation should be disabled in the dropdown.
+             * An operation is disabled if it has an existing workflow association
+             * that doesn't belong to the current workflow being edited.
+             * @param operation - The operation to check.
+             * @returns Whether the operation should be disabled.
+             */
+            const isOperationDisabled = (operation: DropdownPropsInterface): boolean => {
+                if (!hasWorkflowAssociationForOperation(operation.value)) {
+                    return false;
+                }
+
+                // Check if this operation was in the initial values (meaning it belongs to this workflow)
+                const wasInitiallyPresent: boolean = initialValues?.matchedOperations?.some(
+                    (initialOp: DropdownPropsInterface) => initialOp.value === operation.value
+                ) ?? false;
+
+                // Disable if it has a workflow and wasn't initially present (belongs to a different workflow)
+                return !wasInitiallyPresent;
+            };
+
+            /**
              * Handles the selection change in the autocomplete.
              * @param selectedOperations - The newly selected operations.
              */
@@ -201,47 +236,6 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                 event: SyntheticEvent,
                 newSelectedOperations: DropdownPropsInterface[]
             ): void => {
-                // Check if any new operations being added already have workflows
-                const newOperations: DropdownPropsInterface[] = newSelectedOperations.filter(
-                    (newOp: DropdownPropsInterface) =>
-                        !selectedOperations.some(
-                            (existingOp: DropdownPropsInterface) => existingOp.value === newOp.value
-                        )
-                );
-
-                // Only check for existing workflows on newly added operations, not on removed ones
-                for (const operation of newOperations) {
-                    if (hasWorkflowAssociationForOperation(operation.value)) {
-                        // Check if this operation was in the initial values
-                        const wasInitiallyPresent: boolean = initialValues?.matchedOperations?.some(
-                            (initialOp: DropdownPropsInterface) => initialOp.value === operation.value
-                        ) ?? false;
-
-                        // Only show error if the operation wasn't initially present
-                        if (!wasInitiallyPresent) {
-                            dispatch(
-                                addAlert({
-                                    description: t(
-                                        "approvalWorkflows:notifications.operationAlreadyExists.error.description",
-                                        {
-                                            defaultValue: `A workflow already exists for the ${operation.text} ` +
-                                                "operation.",
-                                            operation: operation.text
-                                        }
-                                    ),
-                                    level: AlertLevels.ERROR,
-                                    message: t(
-                                        "approvalWorkflows:notifications.operationAlreadyExists.error.message",
-                                        { defaultValue: "Operation already has workflow" }
-                                    )
-                                })
-                            );
-
-                            return; // Don't update selection if an operation already has a workflow
-                        }
-                    }
-                }
-
                 setSelectedOperations(newSelectedOperations);
                 onChange?.(newSelectedOperations);
             };
@@ -253,6 +247,8 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                             ...values,
                             matchedOperations: selectedOperations.map((operation: DropdownPropsInterface) => operation)
                         });
+                        // Refresh workflow associations data after form submission
+                        mutateWorkflowAssociations();
                     } }
                     initialValues={ initialValues }
                     validate={ validateForm }
@@ -282,6 +278,9 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                             options={ operations }
                                             disabled={ isReadOnly }
                                             getOptionLabel={ (option: DropdownPropsInterface) => option.text }
+                                            getOptionDisabled={ (option: DropdownPropsInterface) =>
+                                                isOperationDisabled(option)
+                                            }
                                             value={ selectedOperations }
                                             renderInput={ (params: AutocompleteRenderInputParams) => (
                                                 <TextField
@@ -320,14 +319,29 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                                 props: React.HTMLAttributes<HTMLLIElement>,
                                                 option: DropdownPropsInterface,
                                                 { selected }: { selected: boolean }
-                                            ) => (
-                                                <AutoCompleteRenderOption
-                                                    selected={ selected }
-                                                    displayName={ option.text }
-                                                    renderOptionProps={ props }
-                                                    data-componentid={ `${componentId}-option-operation-${option.key}` }
-                                                />
-                                            ) }
+                                            ) => {
+                                                const disabled: boolean = isOperationDisabled(option);
+                                                const subTitle: string = disabled
+                                                    ? t(
+                                                        "approvalWorkflows:forms.operations.dropDown." +
+                                                        "alreadyAssignedMessage",
+                                                        { defaultValue: "Already assigned to another workflow" }
+                                                    )
+                                                    : undefined;
+
+                                                return (
+                                                    <AutoCompleteRenderOption
+                                                        selected={ selected }
+                                                        displayName={ option.text }
+                                                        subTitle={ subTitle }
+                                                        disabled={ disabled }
+                                                        renderOptionProps={ props }
+                                                        data-componentid={
+                                                            `${componentId}-option-operation-${option.key}`
+                                                        }
+                                                    />
+                                                );
+                                            } }
                                         />
                                         { isEditPage && (<Hint className="hint" compact>
                                             { t("approvalWorkflows:pageLayout.create.stepper.step2.hint") }
