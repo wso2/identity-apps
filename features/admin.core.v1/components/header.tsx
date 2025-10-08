@@ -511,6 +511,28 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
         );
     };
 
+    /**
+     * Get the update level from the runtime config. 
+     * @returns Update level as a string.
+     */
+    const getUpdateLevel = (): string | undefined => {
+        const updateLevel = runtimeConfig?.updates?.updateLevel;
+
+        if (typeof updateLevel === 'number' && !isNaN(updateLevel)) {
+            return String(updateLevel);
+        }
+
+        if (typeof updateLevel === 'string') {
+            const numericValue = parseFloat(updateLevel);
+            // Verify it's a valid number and the string conversion matches the original
+            if (!isNaN(numericValue) && isFinite(numericValue) && String(numericValue) === updateLevel) {
+                return updateLevel;
+            }
+        }
+
+        return undefined;
+    };
+
     return (
         <>
             <OxygenHeader
@@ -586,7 +608,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                 { productVersion && (
                                     <Box className="user-dropdown-version">
                                         <Typography variant="body2">
-                                            { `${productName} ${productVersion}` } (Build ${runtimeConfig?.updates?.updateLevel})
+                                            { `${productName} ${productVersion}` }{ getUpdateLevel() ? `-${ getUpdateLevel() }` : "" }
                                         </Typography>
                                     </Box>
                                 ) }
