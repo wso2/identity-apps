@@ -17,7 +17,7 @@
  */
 
 window.__WSO2_IS_UPDATE_CONFIG__ = {
-  product: {
-    updateLevel: "${UPDATE_LEVEL}"
-  }
+    product: {
+        updateLevel: "${UPDATE_LEVEL}"
+    }
 };

@@ -44,7 +44,9 @@ const DecoratedApp: FC<DecoratedAppProps> = ({ children }: DecoratedAppProps): R
     return (
         <RuntimeConfigProvider>
             <FeatureGateProvider>
-                <UserPreferencesProvider<UserPreferencesInterface> userId={ userId }>{ children }</UserPreferencesProvider>
+                <UserPreferencesProvider<UserPreferencesInterface> userId={ userId }>
+                    { children }
+                </UserPreferencesProvider>
             </FeatureGateProvider>
         </RuntimeConfigProvider>
     );

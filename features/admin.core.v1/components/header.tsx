@@ -41,7 +41,6 @@ import {
 import { FeatureStatus, Show, useCheckFeatureStatus, useRequiredScopes } from "@wso2is/access-control";
 import { useMyAccountApplicationData } from "@wso2is/admin.applications.v1/api/application";
 import { organizationConfigs } from "@wso2is/admin.extensions.v1";
-import useRuntimeConfig from "@wso2is/common.ui.v1/hooks/use-runtime-config";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
@@ -49,6 +48,7 @@ import { OrganizationSwitchBreadcrumb } from "@wso2is/admin.organizations.v1/com
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
 import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
+import useRuntimeConfig from "@wso2is/common.ui.v1/hooks/use-runtime-config";
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import { FeatureAccessConfigInterface } from "@wso2is/core/src/models";
@@ -512,18 +512,19 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     };
 
     /**
-     * Get the update level from the runtime config. 
+     * Get the update level from the runtime config.
      * @returns Update level as a string.
      */
     const getUpdateLevel = (): string | undefined => {
-        const updateLevel = runtimeConfig?.updates?.updateLevel;
+        const updateLevel: string = runtimeConfig?.updates?.updateLevel;
 
-        if (typeof updateLevel === 'number' && !isNaN(updateLevel)) {
+        if (typeof updateLevel === "number" && !isNaN(updateLevel)) {
             return String(updateLevel);
         }
 
-        if (typeof updateLevel === 'string') {
-            const numericValue = parseFloat(updateLevel);
+        if (typeof updateLevel === "string") {
+            const numericValue: number = parseFloat(updateLevel);
+
             // Verify it's a valid number and the string conversion matches the original
             if (!isNaN(numericValue) && isFinite(numericValue) && String(numericValue) === updateLevel) {
                 return updateLevel;
@@ -608,7 +609,8 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                 { productVersion && (
                                     <Box className="user-dropdown-version">
                                         <Typography variant="body2">
-                                            { `${productName} ${productVersion}` }{ getUpdateLevel() ? `-${ getUpdateLevel() }` : "" }
+                                            { `${productName} ${productVersion}` }
+                                            { getUpdateLevel() ? `-${ getUpdateLevel() }` : "" }
                                         </Typography>
                                     </Box>
                                 ) }
