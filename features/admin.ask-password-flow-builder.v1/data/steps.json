@@ -7,7 +7,7 @@
         "deprecated": false,
         "display": {
             "label": "Passkey View",
-            "image": "https://www.svgrepo.com/show/340307/fingerprint-recognition.svg",
+            "image": "assets/images/icons/fingerprint.svg",
             "showOnResourcePanel": true
         },
         "data": {
