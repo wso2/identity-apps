@@ -1,5 +1,17 @@
 # @wso2is/myaccount
 
+## 2.25.7
+
+### Patch Changes
+
+- [#9273](https://github.com/wso2/identity-apps/pull/9273) [`8c22c1643d0fec6d23a4e32d89dff8280c5f343b`](https://github.com/wso2/identity-apps/commit/8c22c1643d0fec6d23a4e32d89dff8280c5f343b) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add required icon for field labels in My Account user profile
+
+* [#9273](https://github.com/wso2/identity-apps/pull/9273) [`8c22c1643d0fec6d23a4e32d89dff8280c5f343b`](https://github.com/wso2/identity-apps/commit/8c22c1643d0fec6d23a4e32d89dff8280c5f343b) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in User Profile multi valued text field
+
+* Updated dependencies [[`8c22c1643d0fec6d23a4e32d89dff8280c5f343b`](https://github.com/wso2/identity-apps/commit/8c22c1643d0fec6d23a4e32d89dff8280c5f343b), [`3dd8b975c7b8340a528e056286e91bd8118ffd71`](https://github.com/wso2/identity-apps/commit/3dd8b975c7b8340a528e056286e91bd8118ffd71), [`907bfbefeefd22d6266bb2ff871506665653baa4`](https://github.com/wso2/identity-apps/commit/907bfbefeefd22d6266bb2ff871506665653baa4)]:
+  - @wso2is/common.users.v1@1.0.4
+  - @wso2is/i18n@2.30.43
+
 ## 2.25.6
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @wso2is/common.users.v1
 
+## 1.0.4
+
+### Patch Changes
+
+- [#9273](https://github.com/wso2/identity-apps/pull/9273) [`8c22c1643d0fec6d23a4e32d89dff8280c5f343b`](https://github.com/wso2/identity-apps/commit/8c22c1643d0fec6d23a4e32d89dff8280c5f343b) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in User Profile multi valued text field
+
 ## 1.0.3
 
 ### Patch Changes
