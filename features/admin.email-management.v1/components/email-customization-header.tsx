@@ -28,6 +28,7 @@ import { useSelector } from "react-redux";
 import { DropdownItemProps, DropdownProps, Grid, Header, Segment } from "semantic-ui-react";
 import { EmailTemplateType } from "../models";
 import "./email-customization-header.scss";
+import { CommonUtils } from "@wso2is/core/utils";
 
 const FORM_ID: string = "email-customization-header-form";
 
@@ -91,9 +92,7 @@ const EmailCustomizationHeader: FunctionComponent<EmailCustomizationHeaderProps>
     const [ localeList, setLocaleList ] =
         useState<LocaleOptionList[]>([]);
 
-    const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
-        (state: AppState) => state.global.supportedI18nLanguages
-    );
+    const supportedI18nLanguages: SupportedLanguagesMeta = CommonUtils.getCountryCodeList();
 
     const emailTemplateListOptions: { text: string, value: string }[] = useMemo(() => {
         return emailTemplatesList?.map((template: EmailTemplateType) => {
