@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { getRoleById } from "@wso2is/admin.roles.v2/api";
-import { PermissionList } from "@wso2is/admin.roles.v2/components/wizard";
+import { getRoleById } from "@wso2is/admin.roles.v2/api/roles";
+import { PermissionList } from "@wso2is/admin.roles.v2/components/wizard/role-permission";
 import { RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Heading, LinkButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -35,8 +35,7 @@ interface RolePermissionsInterface extends TestableComponentInterface {
 /**
  *  Roles permission component.
  *
- * @param {RolePermissionsInterface} props - Props injected to the component.
- * @return {ReactElement}
+ * @param props - Props injected to the component.
  */
 export const RolePermissions: FunctionComponent<RolePermissionsInterface> = (
     props: RolePermissionsInterface
@@ -64,7 +63,7 @@ export const RolePermissions: FunctionComponent<RolePermissionsInterface> = (
 
         if (roleId) {
             getRoleById(roleId)
-                .then((response) => {
+                .then((response: any) => {
                     setRoleCheck(false);
                     setRole(response.data);
                 });
