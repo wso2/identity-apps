@@ -82,7 +82,7 @@ const useDynamicForm = (fields, onSubmit) => {
             setFormState((prev) => ({
                 ...prev,
                 isValid: false
-            })); 
+            }));
 
             return;
         }
