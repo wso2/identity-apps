@@ -948,6 +948,8 @@
                     ]{{ "," if not loop.last }}
                     {% endfor %}
                     {% else %}
+                        "create": [],
+                        "delete": [],
                         "read": [],
                         "update": []
                     {% endif %}
