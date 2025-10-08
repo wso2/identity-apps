@@ -142,6 +142,7 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
     const [ hasErrors, setHasErrors ] = useState<boolean>(false);
     const [ stepValues, setStepValues ] = useState<ConfigurationsFormValuesInterface>();
     const [ isGeneralDetailsSubmitted, setGeneralDetailsSubmitted ] = useState<boolean>(false);
+    const [ isOperationDetailsNull, setIsOperationDetailsNull ] = useState<boolean>(true);
 
     const {
         data: workflowAssociationDetails,
@@ -199,6 +200,9 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
             ...prev,
             matchedOperations: matchedOps
         }));
+
+        // Update isOperationDetailsNull based on whether there are any matched operations
+        setIsOperationDetailsNull(!matchedOps || matchedOps.length === 0);
     }, [ operationDetails, operations ]);
 
     /**
@@ -577,6 +581,9 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                                 isReadOnly={ isReadOnly || !hasApprovalWorkflowUpdatePermissions }
                                 initialValues={ matchedOperations }
                                 onSubmit={ onWorkflowOperationsDetailsFormSubmit }
+                                onChange={ (selectedOperations: DropdownPropsInterface[]) => {
+                                    setIsOperationDetailsNull(!selectedOperations || selectedOperations.length === 0);
+                                } }
                                 data-componentid={ `${componentId}-general-details-form` }
                                 isEditPage={ true }
                             />
@@ -601,7 +608,7 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
 
                         <PrimaryButton
                             type="submit"
-                            disabled={ isReadOnly || !hasApprovalWorkflowUpdatePermissions }
+                            disabled={ isReadOnly || !hasApprovalWorkflowUpdatePermissions || isOperationDetailsNull }
                             onClick={ () => {
                                 handleUpdateButtonClick();
                             } }

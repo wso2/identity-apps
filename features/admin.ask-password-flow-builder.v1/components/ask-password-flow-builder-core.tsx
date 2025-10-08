@@ -652,8 +652,18 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
             return {};
         }
 
+        const stepsByType: Record<string, Step[]> = steps.reduce((acc: Record<string, Step[]>, step: Step) => {
+            if (!acc[step.type]) {
+                acc[step.type] = [];
+            }
+            acc[step.type].push(step);
+
+            return acc;
+        }, {});
+
         const stepNodes: NodeTypes = steps.reduce((acc: NodeTypes, resource: Step) => {
-            acc[resource.type] = (props: any) => <StepFactory resource={ resource } { ...props } />;
+            acc[resource.type] = (props: any) =>
+                <StepFactory resources={ stepsByType[resource.type] } { ...props } />;
 
             return acc;
         }, {});

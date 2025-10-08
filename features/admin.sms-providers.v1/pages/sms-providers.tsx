@@ -43,9 +43,9 @@ import { Divider, Grid, Placeholder } from "semantic-ui-react";
 import CustomSMSProvider from "./custom-sms-provider";
 import TwilioSMSProvider from "./twilio-sms-provider";
 import VonageSMSProvider from "./vonage-sms-provider";
-import { createSMSProvider, deleteSMSProviders, updateSMSProvider, useSMSProviders } from "../api";
+import { createSMSProvider, deleteSMSProviders, updateSMSProvider, useSMSProviders } from "../api/sms-provider";
 import { providerCards } from "../configs/provider-cards";
-import { SMSProviderConstants } from "../constants";
+import { SMSProviderConstants } from "../constants/sms-provider-constants";
 import {
     ContentType,
     SMSProviderAPIInterface,
@@ -55,7 +55,7 @@ import {
     SMSProviderInterface,
     SMSProviderPropertiesInterface,
     SMSProviderSettingsState
-} from "../models";
+} from "../models/sms-providers";
 import "./sms-providers.scss";
 
 type SMSProviderPageInterface = IdentifiableComponentInterface;

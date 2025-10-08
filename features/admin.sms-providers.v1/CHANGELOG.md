@@ -1,5 +1,14 @@
 # @wso2is/admin.sms-providers.v1
 
+## 2.25.205
+
+### Patch Changes
+
+- [#9251](https://github.com/wso2/identity-apps/pull/9251) [`8491d2b037658c2a40320e3febbc4a078f8bd092`](https://github.com/wso2/identity-apps/commit/8491d2b037658c2a40320e3febbc4a078f8bd092) Thanks [@mmafrar](https://github.com/mmafrar)! - fix: Remove index files in `@wso2is/admin.sms-providers.v1` package
+
+- Updated dependencies [[`8fcc5b62ba17183b0be5bf381e8932f18f10f13b`](https://github.com/wso2/identity-apps/commit/8fcc5b62ba17183b0be5bf381e8932f18f10f13b)]:
+  - @wso2is/i18n@2.30.40
+
 ## 2.25.204
 
 ### Patch Changes

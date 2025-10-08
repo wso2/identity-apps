@@ -17,7 +17,7 @@
  */
 
 import { getSMSProviderIcons } from "../configs/ui";
-import { SMSProviderCardInterface } from "../models";
+import { SMSProviderCardInterface } from "../models/sms-providers";
 
 export const providerCards: SMSProviderCardInterface[] = [
     { icon: getSMSProviderIcons().twilio, id: 1, key: "TwilioSMSProvider", name: "Twilio" },
