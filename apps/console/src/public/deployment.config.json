@@ -736,6 +736,22 @@
                     ]
                 }
             },
+            "dynamicClientRegistration": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [],
+                "scopes": {
+                    "feature": [
+                        "console:applications"
+                    ],
+                    "read": [
+                        "internal_config_view"
+                    ],
+                    "update": [
+                        "internal_config_update"
+                    ]
+                }
+            },
             "emailProviders": {
                 "disabledFeatures": [],
                 "enabled": true,

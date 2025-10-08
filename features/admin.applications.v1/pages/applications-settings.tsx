@@ -16,12 +16,14 @@
  * under the License.
  */
 
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import {
     AppConstants
 } from "@wso2is/admin.core.v1/constants/app-constants";
 import {
     history
 } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form } from "@wso2is/form";
@@ -35,7 +37,7 @@ import {
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { getOIDCApplicationConfigurations } from "../api/application";
 import { updateDCRConfigurations } from "../api/applications-settings";
@@ -73,12 +75,18 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
+    const dynamicClientRegistrationFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features.dynamicClientRegistration);
+
     const [ isAuthenticationRequired = true, setAuthenticationRequired ] = useState<boolean>(authenticationRequired);
     const [ isMandateSSA = !isAuthenticationRequired, setMandateSSA ] = useState<boolean>(mandateSSA);
     const [ isEnableFapiEnforcement, setEnableFapiEnforcement ] = useState<boolean>(enableFapiEnforcement);
     const [ ssaJwksState, setSsaJwks ] = useState<string>(ssaJwks);
     const [ dcrEndpointState, setDCREndpoint ] = useState<string>(dcrEndpoint);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+
+    const hasDynamicClientRegistrationUpdatePermission: boolean = useRequiredScopes(
+        dynamicClientRegistrationFeatureConfig?.scopes?.update);
 
     /**
      * Get initial DCR Configurations.
@@ -373,6 +381,7 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
                             }
                         }
                         }
+                        readOnly={ !hasDynamicClientRegistrationUpdatePermission }
                         data-componentid={ `${componentId}-authenticationRequired-checkbox` }
                     />
                     <Field.Checkbox
@@ -382,7 +391,7 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
                         hint={ t("applications:forms.applicationsSettings.fields.mandateSSA.hint") }
                         tabIndex={ 3 }
                         width={ 16 }
-                        readOnly={ !isAuthenticationRequired }
+                        readOnly={ !hasDynamicClientRegistrationUpdatePermission || !isAuthenticationRequired }
                         listen={ (value: boolean) => setMandateSSA(value) }
                         data-componentid={ `${componentId}-mandateSSA-checkbox` }
                     />
@@ -397,6 +406,7 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
                         maxLength={ 150 }
                         minLength={ 10 }
                         width={ 16 }
+                        readOnly={ !hasDynamicClientRegistrationUpdatePermission }
                         data-componentid={ `${componentId}-ssaJwks-url` }
                     />
                     <Field.Checkbox
@@ -407,6 +417,7 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
                         tabIndex={ 3 }
                         width={ 16 }
                         listen={ (value: boolean) => setEnableFapiEnforcement(value) }
+                        readOnly={ !hasDynamicClientRegistrationUpdatePermission }
                         data-componentid={ `${componentId}-enableFapiEnforcement-checkbox` }
                     />
                     <Field.Button
@@ -415,7 +426,7 @@ export const ApplicationsSettingsForm: FunctionComponent<ApplicationsSettingsPro
                         buttonType="primary_btn"
                         ariaLabel="DCR Configuration update button"
                         name="update-button"
-                        disabled={ isSubmitting }
+                        disabled={ isSubmitting || !hasDynamicClientRegistrationUpdatePermission }
                         loading={ isSubmitting }
                         label={ t("common:update") }
                         data-componentid={ `${componentId}-submit-button` }
