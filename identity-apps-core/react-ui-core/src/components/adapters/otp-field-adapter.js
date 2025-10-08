@@ -54,11 +54,13 @@ const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHan
         let errors = [];
 
         if (otpLength <= 6) {
-            const { isValidOtp, otpValueErrors } = validate({ identifier, required }, otpValues.join(""));
+            const { otpValueErrors, isValidOtp } = validate({ identifier, required }, otpValues.join(""));
+
             isValid = isValidOtp;
             errors = otpValueErrors;
         } else {
-            const { isValidOtp, otpValueErrors } = validate({ identifier, required }, otpValues);
+            const { otpValueErrors, isValidOtp } = validate({ identifier, required }, otpValues);
+
             isValid = isValidOtp;
             errors = otpValueErrors;
         }

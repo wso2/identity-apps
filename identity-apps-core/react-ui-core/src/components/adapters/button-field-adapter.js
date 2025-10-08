@@ -117,7 +117,8 @@ ButtonAdapter.propTypes = {
         type: PropTypes.string,
         variant: PropTypes.string
     }).isRequired,
-    handleButtonAction: PropTypes.func.isRequired
+    handleButtonAction: PropTypes.func.isRequired,
+    isDisabled: PropTypes.bool.isOptional
 };
 
 export default ButtonAdapter;

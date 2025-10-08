@@ -40,7 +40,9 @@ const TextFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHa
     }, [ value ]);
 
     const handleFieldValidation = (value) => {
-        const { isValid, errors } = validate({ identifier, required }, value);
+        const { errors, isValid } = validate({ identifier, required }, value);
+
+        formState.isValid = isValid;
         fieldErrorHandler(identifier, isValid ? null : errors);
     };
 

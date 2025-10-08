@@ -58,12 +58,12 @@ const useFieldValidation = (validationConfig) => {
         if (rule.type !== "RULE") return null;
 
         const { name, conditions } = rule;
-        
+
         switch (name) {
             case "LengthValidator": {
                 const minLen = getNumCondition(conditions, "min.length");
                 const maxLen = getNumCondition(conditions, "max.length");
-            
+
                 if (minLen && maxLen) {
                     if (value.length < minLen || value.length > maxLen) {
                         return `Must be between ${minLen} and ${maxLen} characters long.`;
@@ -222,8 +222,8 @@ const useFieldValidation = (validationConfig) => {
         setFieldErrors(validationErrors);
 
         return {
-            isValid: validationErrors.length === 0,
-            errors: validationErrors
+            errors: validationErrors,
+            isValid: validationErrors.length === 0
         };
     }, [ validationConfig, validateRule ]);
 

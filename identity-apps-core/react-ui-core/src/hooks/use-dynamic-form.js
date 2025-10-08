@@ -82,12 +82,13 @@ const useDynamicForm = (fields, onSubmit) => {
             setFormState((prev) => ({
                 ...prev,
                 isValid: false
-            }));
+            })); 
+
             return;
         }
 
         let errors = [];
-        
+
         fields.forEach(field => {
             const fieldValue = formState.values[field.config.identifier];
 

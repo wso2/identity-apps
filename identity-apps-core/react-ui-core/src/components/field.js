@@ -36,6 +36,8 @@ const Field = ({
     recaptchaRef
 }) => {
 
+    const isDisabled = formState &&Object.keys(formState.errors).length > 0;
+
     switch (component.type) {
         case "TYPOGRAPHY":
             return <TypographyAdapter component={ component } />;
@@ -51,8 +53,11 @@ const Field = ({
                 />
             );
         case "BUTTON":
-            const isDisabled = Object.keys(formState.errors).length > 0;
-            return <ButtonFieldAdapter component={ component } handleButtonAction={ flowActionHandler } isDisabled={ isDisabled } />;
+            return <ButtonFieldAdapter 
+                        component={ component } 
+                        handleButtonAction={ flowActionHandler } 
+                        isDisabled={ isDisabled } 
+                    />;
         case "DIVIDER":
             return <DividerAdapter component={ component } />;
         case "CAPTCHA":

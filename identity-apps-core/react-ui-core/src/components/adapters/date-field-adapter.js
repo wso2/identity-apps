@@ -40,7 +40,7 @@ const DateFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHa
     }, [ value ]);
 
     const handleFieldValidation = () => {
-        const {isValid, errors} = validate({ identifier, required }, value);
+        const { errors, isValid } = validate({ identifier, required }, value);
 
         fieldErrorHandler(identifier, isValid ? null : errors);
     };
