@@ -1,5 +1,27 @@
 # @wso2is/console
 
+## 2.79.28
+
+### Patch Changes
+
+- [#9264](https://github.com/wso2/identity-apps/pull/9264) [`29685fb54dc33758625b074c07be605db963db9c`](https://github.com/wso2/identity-apps/commit/29685fb54dc33758625b074c07be605db963db9c) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Update templates and remove invalid steps
+
+* [#9234](https://github.com/wso2/identity-apps/pull/9234) [`583aafd9a58dc15b196f88c22cce95a28c7b1e31`](https://github.com/wso2/identity-apps/commit/583aafd9a58dc15b196f88c22cce95a28c7b1e31) Thanks [@s-vamshi](https://github.com/s-vamshi)! - Fix error when clicking empty space in branding preference preview tab header
+
+* Updated dependencies [[`29685fb54dc33758625b074c07be605db963db9c`](https://github.com/wso2/identity-apps/commit/29685fb54dc33758625b074c07be605db963db9c), [`583aafd9a58dc15b196f88c22cce95a28c7b1e31`](https://github.com/wso2/identity-apps/commit/583aafd9a58dc15b196f88c22cce95a28c7b1e31)]:
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.63
+  - @wso2is/admin.branding.v1@2.32.19
+  - @wso2is/admin.core.v1@2.49.71
+  - @wso2is/admin.email-management.v1@2.25.227
+  - @wso2is/admin.flows.v1@1.0.32
+  - @wso2is/admin.home.v1@1.7.41
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.63
+  - @wso2is/admin.server-configurations.v1@2.35.85
+  - @wso2is/admin.users.v1@2.36.38
+  - @wso2is/admin.registration-flow-builder.v1@0.10.23
+  - @wso2is/admin.agents.v1@1.0.78
+  - @wso2is/admin.roles.v2@2.27.233
+
 ## 2.79.27
 
 ### Patch Changes
