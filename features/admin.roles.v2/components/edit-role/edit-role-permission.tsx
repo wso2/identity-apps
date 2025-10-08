@@ -55,7 +55,7 @@ import { DropdownItemProps, DropdownProps } from "semantic-ui-react";
 import { RenderChip } from "./edit-role-common/render-chip";
 import { RoleAPIResourcesListItem } from "./edit-role-common/role-api-resources-list-item";
 import { getAPIResourceDetailsBulk, updateRoleDetails, updateRoleDetailsUsingV3Api,
-    useAPIResourceDetails } from "../../api";
+    useAPIResourceDetails } from "../../api/roles";
 import { RoleAudienceTypes, RoleConstants } from "../../constants/role-constants";
 import { APIResourceInterface, AuthorizedAPIListItemInterface, ScopeInterface } from "../../models/apiResources";
 import { PatchRoleDataInterface, PermissionUpdateInterface, SelectedPermissionsInterface } from "../../models/roles";

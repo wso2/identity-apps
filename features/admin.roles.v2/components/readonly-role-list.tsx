@@ -31,7 +31,7 @@ import {
 import React, { ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Dropdown, DropdownItemProps, DropdownProps, Header, Label } from "semantic-ui-react";
-import { RoleAudienceTypes } from "../constants";
+import { RoleAudienceTypes } from "../constants/role-constants";
 
 const DEFAULT_SEARCH_OPERATOR: string = "co";
 

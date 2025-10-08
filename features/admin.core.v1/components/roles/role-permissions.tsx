@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { getRoleById } from "@wso2is/admin.roles.v2/api";
-import { PermissionList } from "@wso2is/admin.roles.v2/components/wizard";
+import { getRoleById } from "@wso2is/admin.roles.v2/api/roles";
+import { PermissionList } from "@wso2is/admin.roles.v2/components/wizard/role-permission";
 import { RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Heading, LinkButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
