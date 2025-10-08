@@ -591,6 +591,7 @@ const EditApprovalWorkflow: FunctionComponent<EditApprovalWorkflowPropsInterface
                                 } }
                                 data-componentid={ `${componentId}-general-details-form` }
                                 isEditPage={ true }
+                                workflowId={ approvalWorkflowId }
                             />
                         </div>
 

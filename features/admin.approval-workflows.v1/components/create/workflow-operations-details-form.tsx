@@ -77,6 +77,10 @@ interface WorkflowOperationsDetailsPropsInterface extends IdentifiableComponentI
      * @returns void
      */
     onChange?: (operations: DropdownPropsInterface[]) => void;
+    /**
+     * The workflow ID being edited (optional, only for edit mode).
+     */
+    workflowId?: string;
 }
 
 /**
@@ -116,6 +120,7 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                 initialValues,
                 isEditPage,
                 onChange,
+                workflowId,
                 ["data-componentid"]: componentId
                 = "workflow-operations"
             }: WorkflowOperationsDetailsPropsInterface,
@@ -129,12 +134,24 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
 
             const [ selectedOperations, setSelectedOperations ] = useState<DropdownPropsInterface[]>([]);
 
-            // Fetch existing workflow associations for all operations
+            // Fetch existing workflow associations for all operations.
+            // For edit mode with workflowId, fetch only current workflow's associations.
+            // For create mode or without workflowId, fetch all associations to check conflicts.
             const {
                 data: workflowAssociationsData,
                 error: workflowAssociationsError,
                 mutate: mutateWorkflowAssociations
             } = useGetWorkflowAssociations(null, null, null);
+
+            // Fetch current workflow's associations separately when in edit mode
+            const {
+                data: currentWorkflowAssociationsData
+            } = useGetWorkflowAssociations(
+                null,
+                null,
+                workflowId ? `workflowId eq ${workflowId}` : null,
+                !!workflowId
+            );
 
             useImperativeHandle(ref, () => ({
                 refreshWorkflowAssociations: () => {
@@ -192,40 +209,32 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                 }
             }, [ workflowAssociationsError ]);
 
-            /**
-             * Checks if a workflow association already exists for the given operation.
-             * @param operation - The operation to check.
-             * @returns Whether an association exists.
-             */
-            const hasWorkflowAssociationForOperation = (operation: string): boolean => {
+            const isOperationDisabled = (operation: DropdownPropsInterface): boolean => {
                 if (!workflowAssociationsData?.workflowAssociations) {
                     return false;
                 }
 
-                return workflowAssociationsData.workflowAssociations.some(
-                    (association: { operation: string }) => association.operation === operation
+                // Check if this operation has any workflow association
+                const hasAssociation: boolean = workflowAssociationsData.workflowAssociations.some(
+                    (association: { operation: string }) => association.operation === operation.value
                 );
-            };
 
-            /**
-             * Checks if an operation should be disabled in the dropdown.
-             * An operation is disabled if it has an existing workflow association
-             * that doesn't belong to the current workflow being edited.
-             * @param operation - The operation to check.
-             * @returns Whether the operation should be disabled.
-             */
-            const isOperationDisabled = (operation: DropdownPropsInterface): boolean => {
-                if (!hasWorkflowAssociationForOperation(operation.value)) {
+                if (!hasAssociation) {
                     return false;
                 }
 
-                // Check if this operation was in the initial values (meaning it belongs to this workflow)
-                const wasInitiallyPresent: boolean = initialValues?.matchedOperations?.some(
-                    (initialOp: DropdownPropsInterface) => initialOp.value === operation.value
-                ) ?? false;
+                // If in edit mode with workflowId, check if the operation belongs to current workflow
+                if (workflowId && currentWorkflowAssociationsData?.workflowAssociations) {
+                    const belongsToCurrentWorkflow: boolean = currentWorkflowAssociationsData.workflowAssociations.some(
+                        (association: { operation: string }) => association.operation === operation.value
+                    );
 
-                // Disable if it has a workflow and wasn't initially present (belongs to a different workflow)
-                return !wasInitiallyPresent;
+                    // Disable if it has an association but doesn't belong to current workflow
+                    return !belongsToCurrentWorkflow;
+                }
+
+                // In create mode, disable all operations with existing associations
+                return true;
             };
 
             /**
