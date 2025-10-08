@@ -622,7 +622,7 @@ export const applications: ApplicationsNS = {
                 orgNotSelectedForRoleSharing: "To share roles, please select the organization from the left panel.",
                 rolesSharedPartially: "Roles are selectively shared with this organization.",
                 shareRoleSubsetWithSelectedOrgs: "Share a subset of roles with selected organizations",
-                shareRoleSubsetWithAllOrgs: "Share a subset of roles with all organizations",
+                shareRoleSubsetWithAllOrgs: "Share only a subset of roles with all organizations",
                 subTitle: "Select how the application and roles will be shared with organizations.",
                 shareAllRoles: "Share All Roles",
                 shareSelectedRoles: "Share Selected Roles",
