@@ -17,5 +17,5 @@
  */
 
 window.__WSO2IS_CONFIG__ = {
-    updates: window.__WSO2IS_UPDATE_CONFIG__
+    updates: window.__WSO2_IS_UPDATE_CONFIG__
 };

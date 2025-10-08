@@ -31,11 +31,11 @@ export interface RuntimeConfigProviderProps<T> {
     initialRuntimeConfig?: T;
 }
 
-const RUNTIME_CONFIG_WINDOW_KEY: string = "__WSO2IS_RUNTIME_CONFIG__";
+const RUNTIME_CONFIG_WINDOW_KEY: string = "__WSO2_IS_RUNTIME_CONFIG__";
 
 /**
  * Provider for the Application runtime configuration.
- * This provider reads configuration from the window.__WSO2IS_RUNTIME_CONFIG__ object.
+ * This provider reads configuration from the window.__WSO2_IS_RUNTIME_CONFIG__ object.
  * The type of the configuration should be passed as a generic type.
  *
  * @example
@@ -55,7 +55,7 @@ const RuntimeConfigProvider = <T,>({
      * Load from the window object.
      */
     useEffect(() => {
-        const config: T = (window.__WSO2IS_RUNTIME_CONFIG__ as T) || initialRuntimeConfig || {} as T;
+        const config: T = (window.__WSO2_IS_RUNTIME_CONFIG__ as T) || initialRuntimeConfig || {} as T;
 
         setRuntimeConfigInContext(config);
     }, [ initialRuntimeConfig ]);
@@ -72,7 +72,7 @@ const RuntimeConfigProvider = <T,>({
         const updatedConfig: T = merge({}, runtimeConfigInContext, configToUpdate);
 
         setRuntimeConfigInContext(updatedConfig);
-        window.__WSO2IS_RUNTIME_CONFIG__ = updatedConfig as typeof window.__WSO2IS_RUNTIME_CONFIG__;
+        window.__WSO2_IS_RUNTIME_CONFIG__ = updatedConfig as typeof window.__WSO2_IS_RUNTIME_CONFIG__;
     };
 
     /**

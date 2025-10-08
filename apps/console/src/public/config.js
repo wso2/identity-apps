@@ -16,6 +16,6 @@
  * under the License.
  */
 
-window.__WSO2IS_RUNTIME_CONFIG__ = {
-    updates: window.__WSO2IS_UPDATE_CONFIG__
+window.__WSO2_IS_RUNTIME_CONFIG__ = {
+    updates: window.__WSO2_IS_UPDATE_CONFIG__
 };

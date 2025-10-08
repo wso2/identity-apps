@@ -16,6 +16,6 @@
  * under the License.
  */
 
-window.__WSO2IS_UPDATE_CONFIG__ = {
+window.__WSO2_IS_UPDATE_CONFIG__ = {
     updateLevel: "${UPDATE_LEVEL}"
 };

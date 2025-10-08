@@ -41,7 +41,7 @@ const TestComponent: React.FC = () => {
 describe('RuntimeConfigProvider', () => {
     beforeEach(() => {
         // Clear window object
-        delete (window as any).__WSO2IS_RUNTIME_CONFIG__;
+        delete (window as any).__WSO2_IS_RUNTIME_CONFIG__;
     });
 
     it('should provide initial runtime config', () => {
@@ -62,8 +62,8 @@ describe('RuntimeConfigProvider', () => {
         expect(screen.getByTestId('update-level')).toHaveTextContent('BETA');
     });
 
-    it('should read from window.__WSO2IS_RUNTIME_CONFIG__', () => {
-        (window as any).__WSO2IS_RUNTIME_CONFIG__ = {
+    it('should read from window.__WSO2_IS_RUNTIME_CONFIG__', () => {
+        (window as any).__WSO2_IS_RUNTIME_CONFIG__ = {
             updates: {
                 updateLevel: 'STABLE'
             }
