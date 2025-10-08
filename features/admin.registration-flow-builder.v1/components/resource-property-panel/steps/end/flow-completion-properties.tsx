@@ -68,7 +68,7 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                     </Trans>
                 </Alert>
             </Typography>
-            <Box sx={ { display: "flex", flexDirection: "column", gap: 1 } }>
+            <Box sx={ { display: "flex", flexDirection: "column", gap: 2 } }>
                 { metadata?.supportedFlowCompletionConfigs?.includes("isEmailVerificationEnabled") && (
                     <Box>
                         <FormControlLabel
@@ -98,6 +98,11 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                         <FormHelperText>
                             { t("flows:registrationFlow.steps.end.accountVerification.hint") }
                         </FormHelperText>
+                        <Alert severity="warning">
+                            <Trans i18nKey="flows:registrationFlow.steps.end.accountVerification.warning">
+                                When the flow includes an email verification step (e.g. email OTP), this option will not be applied.
+                            </Trans>
+                         </Alert>
                     </Box>
                 ) }
                 { metadata?.supportedFlowCompletionConfigs?.includes("isAccountLockOnCreationEnabled") && (

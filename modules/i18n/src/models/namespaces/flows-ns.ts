@@ -358,6 +358,7 @@ export interface flowsNS {
                 accountVerification: {
                     label: string;
                     hint: string;
+                    warning: string;
                 };
                 accountActivation: {
                     activateImmediately: {
