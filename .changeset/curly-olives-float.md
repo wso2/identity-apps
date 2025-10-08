@@ -4,4 +4,4 @@
 "@wso2is/myaccount": patch
 ---
 
-Approval V2 support
+Update Approval API to v2
