@@ -158,12 +158,12 @@ async function propertiesToJson(propertiesPath, metadata) {
 
             const keyValue = keyValues.split("=");
             const key = keyValue[0].trim();
-            const value = keyValue[1].trim();
+            const value = keyValue[1] ? keyValue[1].trim() : "";
 
             // Check if the line contains comments that include the editable flag
             const isEditable = metadata[key] && metadata[key][META_FLAGS.EDITABLE];
 
-            if (!isEditable || keyValue.length !== 2) {
+            if (!isEditable || keyValue.length !== 2 || !value) {
                 continue;
             }
 
