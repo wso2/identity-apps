@@ -113,9 +113,12 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             const propertyMetadata: CommonPluggableComponentMetaPropertyInterface = getPropertyMetadata(
                 key, metadata?.properties);
 
-            const processedValue: string = !isEmpty(key) && !isUndefined(value) &&
+            let processedValue: string = !isEmpty(key) && !isUndefined(value) &&
                 interpretValueByType(value, key, propertyMetadata?.type).toString();
 
+            if (processedValue === key && propertyMetadata.type === CommonConstants.STRING) {
+                processedValue = propertyMetadata.defaultValue;
+            }
             if (!isEmpty(processedValue) && key !== "customProperties") {
                 properties.push({
                     key: key,
