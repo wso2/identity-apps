@@ -28,6 +28,11 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <!-- Start of loading application configurations -->
+        <script type="text/javascript" src="<%= htmlWebpackPlugin.options.publicPath %>update.config.js"></script>
+        <script type="text/javascript" src="<%= htmlWebpackPlugin.options.publicPath %>config.js"></script>
+        <!-- End of loading application configurations -->
+
         <style>
             #trifacta-pre-loader {
                 display: none;

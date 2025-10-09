@@ -18,6 +18,7 @@
 
 import { AppState } from "@wso2is/admin.core.v1/store";
 import FeatureGateProvider from "@wso2is/admin.feature-gate.v1/providers/feature-gate-provider";
+import RuntimeConfigProvider from "@wso2is/common.ui.v1/providers/runtime-config-provider";
 import UserPreferencesProvider from "@wso2is/common.ui.v1/providers/user-preferences-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FC, PropsWithChildren, ReactElement } from "react";
@@ -41,9 +42,13 @@ const DecoratedApp: FC<DecoratedAppProps> = ({ children }: DecoratedAppProps): R
     });
 
     return (
-        <FeatureGateProvider>
-            <UserPreferencesProvider<UserPreferencesInterface> userId={ userId }>{ children }</UserPreferencesProvider>
-        </FeatureGateProvider>
+        <RuntimeConfigProvider>
+            <FeatureGateProvider>
+                <UserPreferencesProvider<UserPreferencesInterface> userId={ userId }>
+                    { children }
+                </UserPreferencesProvider>
+            </FeatureGateProvider>
+        </RuntimeConfigProvider>
     );
 };
 

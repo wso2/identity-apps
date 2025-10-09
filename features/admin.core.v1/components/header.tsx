@@ -48,6 +48,7 @@ import { OrganizationSwitchBreadcrumb } from "@wso2is/admin.organizations.v1/com
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
 import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
+import useRuntimeConfig from "@wso2is/common.ui.v1/hooks/use-runtime-config";
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import { FeatureAccessConfigInterface } from "@wso2is/core/src/models";
@@ -93,6 +94,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
     const { t } = useTranslation();
 
     const { showPreviewFeaturesModal, setShowPreviewFeaturesModal } = useFeatureGate();
+    const { config: runtimeConfig } = useRuntimeConfig();
 
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
@@ -509,6 +511,31 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
         );
     };
 
+    /**
+     * Get the update level from the runtime config.
+     * @returns Update level as a string.
+     */
+    const getUpdateLevel = (): string | undefined => {
+        const updateLevel: string = runtimeConfig?.updates?.updateLevel;
+
+        if (typeof updateLevel === "number" && !isNaN(updateLevel)) {
+            return String(updateLevel);
+        }
+
+        if (typeof updateLevel === "string") {
+            const numericValue: number = parseFloat(updateLevel);
+
+            // Verify it's a valid number and the string conversion matches the original.
+            if (!isNaN(numericValue) && isFinite(numericValue) && String(numericValue) === updateLevel) {
+                return updateLevel;
+            }
+        }
+
+        return undefined;
+    };
+
+    const updateLevel: string = getUpdateLevel();
+
     return (
         <>
             <OxygenHeader
@@ -584,7 +611,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                                 { productVersion && (
                                     <Box className="user-dropdown-version">
                                         <Typography variant="body2">
-                                            { `${productName} ${productVersion}` }
+                                            { `${productName} ${productVersion}` }{ updateLevel && `-${ updateLevel }` }
                                         </Typography>
                                     </Box>
                                 ) }

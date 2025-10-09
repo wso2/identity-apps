@@ -81,6 +81,16 @@
 
     <servlet-mapping>
         <servlet-name>default</servlet-name>
+        <url-pattern>/updates.config.js</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/config.js</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
         <url-pattern>/auth-spa-3.1.2.min.js</url-pattern>
     </servlet-mapping>
 

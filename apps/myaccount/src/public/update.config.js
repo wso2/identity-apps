@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,4 +16,8 @@
  * under the License.
  */
 
-export { AppUtilsProvider } from "./provider/app-utils-provider";
+window.__WSO2_IS_UPDATE_CONFIG__ = {
+    product: {
+        updateLevel: "${UPDATE_LEVEL}"
+    }
+};
