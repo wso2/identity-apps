@@ -1,5 +1,18 @@
 # @wso2is/myaccount
 
+## 2.25.11
+
+### Patch Changes
+
+- [#9291](https://github.com/wso2/identity-apps/pull/9291) [`63e781a91599b7fa77df7adf4032a1d2f5b32d13`](https://github.com/wso2/identity-apps/commit/63e781a91599b7fa77df7adf4032a1d2f5b32d13) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Implement success message for Approval request status changes
+
+* [#9293](https://github.com/wso2/identity-apps/pull/9293) [`79ff1d8eee4f33de656a00e5340b75784c054913`](https://github.com/wso2/identity-apps/commit/79ff1d8eee4f33de656a00e5340b75784c054913) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Fix unnecessary preferences calls during impersonation
+
+* Updated dependencies [[`63e781a91599b7fa77df7adf4032a1d2f5b32d13`](https://github.com/wso2/identity-apps/commit/63e781a91599b7fa77df7adf4032a1d2f5b32d13), [`792e6851be17a77111319ef1978263b76723238c`](https://github.com/wso2/identity-apps/commit/792e6851be17a77111319ef1978263b76723238c)]:
+  - @wso2is/common.workflow-approvals.v1@1.0.10
+  - @wso2is/i18n@2.30.45
+  - @wso2is/access-control@3.5.0
+
 ## 2.25.10
 
 ### Patch Changes
