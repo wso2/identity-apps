@@ -221,7 +221,10 @@ const useFieldValidation = (validationConfig) => {
 
         setFieldErrors(validationErrors);
 
-        return validationErrors.length === 0;
+        return {
+            errors: validationErrors,
+            isValid: validationErrors.length === 0
+        };
     }, [ validationConfig, validateRule ]);
 
     return { fieldErrors, validate };

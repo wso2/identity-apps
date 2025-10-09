@@ -22,7 +22,7 @@ import { Button } from "semantic-ui-react";
 import { useTranslations } from "../../hooks/use-translations";
 import { resolveElementText } from "../../utils/i18n-utils";
 
-const ButtonAdapter = ({ component, handleButtonAction }) => {
+const ButtonAdapter = ({ component, handleButtonAction, isDisabled }) => {
 
     const { translations } = useTranslations();
 
@@ -37,6 +37,7 @@ const ButtonAdapter = ({ component, handleButtonAction }) => {
                         ? () => handleButtonAction(component.id, {})
                         : null
                     }
+                    disabled={ isDisabled }
                 >
                     { resolveElementText(translations, component.config.text) }
                 </Button>
@@ -116,7 +117,8 @@ ButtonAdapter.propTypes = {
         type: PropTypes.string,
         variant: PropTypes.string
     }).isRequired,
-    handleButtonAction: PropTypes.func.isRequired
+    handleButtonAction: PropTypes.func.isRequired,
+    isDisabled: PropTypes.bool.isOptional
 };
 
 export default ButtonAdapter;

@@ -98,6 +98,9 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                         <FormHelperText>
                             { t("flows:registrationFlow.steps.end.accountVerification.hint") }
                         </FormHelperText>
+                        <Alert severity="warning">
+                            { t("flows:registrationFlow.steps.end.accountVerification.warning") }
+                        </Alert>
                     </Box>
                 ) }
                 { metadata?.supportedFlowCompletionConfigs?.includes("isAccountLockOnCreationEnabled") && (

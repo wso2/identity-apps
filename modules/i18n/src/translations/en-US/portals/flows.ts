@@ -367,7 +367,8 @@ export const flows: flowsNS = {
                 },
                 accountVerification: {
                     hint: "Require the user to confirm their account via email before granting access.",
-                    label: "Verify the account on flow completion"
+                    label: "Verify the account on flow completion.",
+                    warning: "When the flow includes an email verification step (e.g. email OTP), this option will not be applied."
                 },
                 autoLogin: {
                     hint: "Immediately log the user in once the flow is completed, without additional steps.",
