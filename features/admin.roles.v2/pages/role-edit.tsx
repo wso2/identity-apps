@@ -32,7 +32,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Label } from "semantic-ui-react";
-import { useGetRoleById } from "../api";
+import { useGetRoleById } from "../api/roles";
 import { EditRole } from "../components/edit-role/edit-role";
 import { RoleAudienceTypes } from "../constants/role-constants";
 import { useGetRoleByIdV3 } from "../hooks/use-get-role-by-id-v3";

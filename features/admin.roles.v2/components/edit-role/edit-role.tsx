@@ -40,7 +40,7 @@ import { BasicRoleDetails } from "./edit-role-basic";
 import { RoleGroupsList } from "./edit-role-groups";
 import { UpdatedRolePermissionDetails } from "./edit-role-permission";
 import { RoleUsersList } from "./edit-role-users";
-import { RoleConstants as LocalRoleConstants } from "../../constants";
+import { RoleConstants as LocalRoleConstants } from "../../constants/role-constants";
 import { isMyAccountImpersonationRole } from "../role-utils";
 
 /**

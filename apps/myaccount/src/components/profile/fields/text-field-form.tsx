@@ -29,6 +29,7 @@ import EmptyValueField from "./empty-value-field";
 import { SCIMConfigs as SCIMExtensionConfigs } from "../../../extensions/configs/scim";
 import { TextFieldFormPropsInterface } from "../../../models/profile-ui";
 import { EditSection } from "../../shared/edit-section";
+import "./field-form.scss";
 
 const TextFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
     fieldSchema: schema,
@@ -170,7 +171,9 @@ const TextFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
             <EditSection data-testid={ "profile-schema-editing-section" }>
                 <Grid>
                     <Grid.Row columns={ 2 }>
-                        <Grid.Column width={ 4 }>{ fieldLabel }</Grid.Column>
+                        <Grid.Column className="field-label" width={ 4 }>
+                            <span className={ isRequired ? "required" : "" }>{ fieldLabel }</span>
+                        </Grid.Column>
                         <Grid.Column width={ 12 }>
                             <Forms onSubmit={ onFormSubmit }>
                                 <Grid verticalAlign="middle" textAlign="right">
@@ -247,7 +250,9 @@ const TextFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
         <Grid padded={ true }>
             <Grid.Row columns={ 3 }>
                 <Grid.Column mobile={ 6 } computer={ 4 } className="first-column">
-                    <List.Content className="vertical-align-center">{ fieldLabel }</List.Content>
+                    <List.Content className="vertical-align-center field-label">
+                        <span className={ isRequired ? "required" : "" }>{ fieldLabel }</span>
+                    </List.Content>
                 </Grid.Column>
                 <Grid.Column mobile={ 8 } computer={ 10 }>
                     <List.Content>

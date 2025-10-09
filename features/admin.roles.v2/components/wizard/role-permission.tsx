@@ -25,9 +25,9 @@ import Tree from "rc-tree";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid } from "semantic-ui-react";
-import { RoleConstants } from "../../constants";
+import { RoleConstants } from "../../constants/role-constants";
 import { TreeNode } from "../../models/permission";
-import { RoleManagementUtils } from "../../utils";
+import { RoleManagementUtils } from "../../utils/role-management-utils";
 
 /**
  * Interface to capture permission list props

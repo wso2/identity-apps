@@ -39,7 +39,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Header, Label } from "semantic-ui-react";
 import { RoleAPIResourcesListItem } from "./components/role-api-resources-list-item";
-import { useAPIResourceDetails, useGetAuthorizedAPIList } from "../../../api";
+import { useAPIResourceDetails, useGetAuthorizedAPIList } from "../../../api/roles";
 import { RoleAudienceTypes } from "../../../constants/role-constants";
 import { APIResourceInterface, AuthorizedAPIListItemInterface, ScopeInterface } from "../../../models/apiResources";
 import { SelectedPermissionsInterface } from "../../../models/roles";

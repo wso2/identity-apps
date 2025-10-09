@@ -7,7 +7,7 @@
         "deprecated": false,
         "display": {
             "label": "User Resolve View",
-            "image": "https://www.svgrepo.com/show/532362/user.svg",
+            "image": "assets/images/icons/user.svg",
             "showOnResourcePanel": true
         },
         "config": {},
@@ -80,7 +80,7 @@
         "deprecated": false,
         "display": {
             "label": "Reset Password View",
-            "image": "https://www.svgrepo.com/show/489073/password.svg",
+            "image": "assets/images/icons/password.svg",
             "showOnResourcePanel": true
         },
         "config": {},

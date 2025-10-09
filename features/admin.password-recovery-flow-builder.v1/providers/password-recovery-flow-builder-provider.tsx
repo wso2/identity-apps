@@ -74,6 +74,7 @@ const PasswordRecoveryFlowBuilderProvider: FC<PasswordRecoveryFlowBuilderProvide
             flowType={ FlowTypes.PASSWORD_RECOVERY }
             screenTypes={ screensList }
             validationConfig={ {
+                isPasswordExecutorValidationEnabled: true,
                 isRecoveryFactorValidationEnabled: true
             } }
         >

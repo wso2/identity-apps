@@ -25,6 +25,7 @@ import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import Grid from "@oxygen-ui/react/Grid";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
+import loadStaticResource from "@wso2is/admin.core.v1/utils/load-static-resource";
 import {
     CommonResourcePropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
@@ -120,7 +121,7 @@ const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsI
                                             <Box display="flex" flexDirection="row" gap={ 1 } alignItems="center">
                                                 <Avatar
                                                     className="action-type-icon"
-                                                    src={ actionType?.display?.image }
+                                                    src={ loadStaticResource(actionType?.display?.image) }
                                                     variant="rounded"
                                                 />
                                                 <Typography variant="body2" className="action-type-name">

@@ -756,6 +756,9 @@ export interface ApplicationsNS {
                                 passwordRecoveryRequiresFactors: {
                                     message: string;
                                 };
+                                passwordExecutorRequired: {
+                                    message: string;
+                                };
                             }
                         };
                     };

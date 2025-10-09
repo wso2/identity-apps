@@ -23,7 +23,9 @@ export interface CommonUsersNS {
                 validation: {
                     duplicate: string;
                     invalidFormat: string;
+                    required: string;
                 };
+                placeholder: string;
             };
         };
     };

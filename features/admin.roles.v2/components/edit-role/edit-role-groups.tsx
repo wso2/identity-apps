@@ -47,10 +47,10 @@ import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
 import { EditRoleFederatedGroupsAccordion } from "./edit-role-federated-groups-accordion";
 import { EditRoleLocalGroupsAccordion } from "./edit-role-local-groups-accordion";
-import { assignGroupstoRoles, updateRoleDetails } from "../../api";
-import { RoleAudienceTypes, Schemas } from "../../constants";
+import { assignGroupstoRoles, updateRoleDetails } from "../../api/roles";
+import { RoleAudienceTypes, Schemas } from "../../constants/role-constants";
 import { PatchRoleDataInterface, RoleEditSectionsInterface } from "../../models/roles";
-import { RoleManagementUtils } from "../../utils";
+import { RoleManagementUtils } from "../../utils/role-management-utils";
 
 type RoleGroupsPropsInterface = IdentifiableComponentInterface & RoleEditSectionsInterface;
 

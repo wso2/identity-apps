@@ -151,7 +151,9 @@ const LocaleFieldForm: FunctionComponent<LocaleFieldFormPropsInterface> = ({
             <EditSection data-testid={ "profile-schema-editing-section" }>
                 <Grid>
                     <Grid.Row columns={ 2 } verticalAlign="middle">
-                        <Grid.Column width={ 4 }>{ fieldLabel }</Grid.Column>
+                        <Grid.Column width={ 4 } className="field-label">
+                            <span className={ isRequired ? "required" : "" }>{ fieldLabel }</span>
+                        </Grid.Column>
                         <Grid.Column width={ 12 }>
                             <FinalForm
                                 onSubmit={ onFormSubmit }
@@ -238,7 +240,9 @@ const LocaleFieldForm: FunctionComponent<LocaleFieldFormPropsInterface> = ({
         <Grid padded={ true }>
             <Grid.Row columns={ 3 }>
                 <Grid.Column mobile={ 6 } computer={ 4 } className="first-column">
-                    <List.Content className="vertical-align-center">{ fieldLabel }</List.Content>
+                    <List.Content className="vertical-align-center field-label">
+                        <span className={ isRequired ? "required" : "" }>{ fieldLabel }</span>
+                    </List.Content>
                 </Grid.Column>
                 <Grid.Column mobile={ 8 } computer={ 10 }>
                     <List.Content>

@@ -26,7 +26,7 @@ import { RoleGroupsInterface } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
 import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
-import { getPermissionList, searchRoleList } from "../api";
+import { getPermissionList, searchRoleList } from "../api/roles";
 import { generatePermissionTree } from "../components/role-utils";
 import { PermissionObject,TreeNode } from "../models/permission";
 import { SearchRoleInterface  } from "../models/roles";

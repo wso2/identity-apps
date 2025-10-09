@@ -22,9 +22,9 @@ import Autocomplete, {
 } from "@oxygen-ui/react/Autocomplete";
 import Grid from "@oxygen-ui/react/Grid";
 import TextField from "@oxygen-ui/react/TextField";
-import { getRolesList } from "@wso2is/admin.roles.v2/api";
+import { getRolesList } from "@wso2is/admin.roles.v2/api/roles";
 import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
-import { RoleConstants } from "@wso2is/admin.roles.v2/constants";
+import { RoleConstants } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";

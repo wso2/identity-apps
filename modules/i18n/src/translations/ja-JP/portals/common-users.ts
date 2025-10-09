@@ -27,9 +27,11 @@ export const commonUsers: CommonUsersNS = {
     forms: {
         profile: {
             generic: {
+                placeholder: "{{fieldName}}を入力してください",
                 validation: {
                     duplicate: "{{field}} には重複した値を指定できません。",
-                    invalidFormat: "入力された{{field}}の形式が正しくありません。"
+                    invalidFormat: "入力された{{field}}の形式が正しくありません。",
+                    required: "{{fieldName}}は必須項目です"
                 }
             }
         }

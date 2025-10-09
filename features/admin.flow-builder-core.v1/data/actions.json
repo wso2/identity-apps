@@ -13,7 +13,7 @@
                 },
                 "display": {
                     "label": "Next",
-                    "image": "https://www.svgrepo.com/show/305382/arrowhead-right-outline.svg",
+                    "image": "assets/images/icons/arrowhead-right-outline.svg",
                     "defaultVariant": "PRIMARY"
                 }
             }
@@ -36,7 +36,7 @@
                 },
                 "display": {
                     "label": "Verify Email OTP Code",
-                    "image": "https://www.svgrepo.com/show/479622/email-18.svg",
+                    "image": "assets/images/icons/email.svg",
                     "defaultVariant": "PRIMARY"
                 }
             },
@@ -49,7 +49,7 @@
                 },
                 "display": {
                     "label": "Verify SMS OTP Code",
-                    "image": "https://www.svgrepo.com/show/325390/message-text.svg",
+                    "image": "assets/images/icons/message-text.svg",
                     "defaultVariant": "PRIMARY"
                 }
             }

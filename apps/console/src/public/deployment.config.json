@@ -541,7 +541,7 @@
             },
             "approvals": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "feature": [
@@ -733,6 +733,24 @@
                     "update": [
                         "internal_application_mgt_update",
                         "internal_user_mgt_update"
+                    ]
+                }
+            },
+            "dynamicClientRegistration": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [
+                        "console:applications"
+                    ],
+                    "read": [
+                        "internal_config_view"
+                    ],
+                    "update": [
+                        "internal_config_update"
                     ]
                 }
             },

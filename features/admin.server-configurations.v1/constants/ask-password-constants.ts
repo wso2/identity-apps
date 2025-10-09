@@ -37,6 +37,7 @@ export class AskPasswordFormConstants {
         ServerConfigurationsConstants.ASK_PASSWORD_OTP_USE_LOWERCASE,
         ServerConfigurationsConstants.ASK_PASSWORD_OTP_USE_NUMERIC,
         ServerConfigurationsConstants.ASK_PASSWORD_OTP_USE_UPPERCASE,
-        ServerConfigurationsConstants.ASK_PASSWORD_OTP_LENGTH
+        ServerConfigurationsConstants.ASK_PASSWORD_OTP_LENGTH,
+        ServerConfigurationsConstants.EMAIL_VERIFICATION_OTP
     ];
 }

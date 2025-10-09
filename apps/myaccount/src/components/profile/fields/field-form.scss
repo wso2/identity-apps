@@ -24,6 +24,16 @@
     gap: 8px;
 }
 
+.field-label {
+    span.required {
+        &::after {
+            content: "*";
+            color: var(--oxygen-palette-error-main);
+            margin-left: 2px;
+        }
+    }
+}
+
 .multi-valued-field-form {
     .MuiTableContainer-root {
         margin: 8px 0;

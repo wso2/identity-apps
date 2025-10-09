@@ -46,7 +46,7 @@ const TimeRangeDropdown: React.FC<TimeRangeDropdownProps> = ({
     style,
     disabledPopupContent
 }: TimeRangeDropdownProps) => {
-    const { t } = useTranslation( [ "approvalWorkflows" ] );
+    const { t } = useTranslation( [ "workflowRequests" ] );
     const [ showCustomModal, setShowCustomModal ] = useState(false);
     const prevSelectedRangeRef: React.MutableRefObject<number | undefined> = useRef<number | undefined>(selectedRange);
     const [ customStartDate, setCustomStartDate ] = useState("");
@@ -55,15 +55,15 @@ const TimeRangeDropdown: React.FC<TimeRangeDropdownProps> = ({
     const [ customEndTime, setCustomEndTime ] = useState("23:59");
 
     const TIME_RANGE_OPTIONS: Array<{ key: number; text: string; value: number }> = [
-        { key: -2, text: t("approvalWorkflows:timeRanges.all"), value: -2 },
-        { key: 6, text: t("approvalWorkflows:timeRanges.last6Hours"), value: 6 },
-        { key: 12, text: t("approvalWorkflows:timeRanges.last12Hours"), value: 12 },
-        { key: 24, text: t("approvalWorkflows:timeRanges.last24Hours"), value: 24 },
-        { key: 48, text: t("approvalWorkflows:timeRanges.last2Days"), value: 48 },
-        { key: 168, text: t("approvalWorkflows:timeRanges.last7Days"), value: 168 },
-        { key: 336, text: t("approvalWorkflows:timeRanges.last14Days"), value: 336 },
-        { key: 720, text: t("approvalWorkflows:timeRanges.last30Days"), value: 720 },
-        { key: -1, text: t("approvalWorkflows:timeRanges.customRange"), value: -1 }
+        { key: -2, text: t("workflowRequests:timeRanges.all"), value: -2 },
+        { key: 6, text: t("workflowRequests:timeRanges.last6Hours"), value: 6 },
+        { key: 12, text: t("workflowRequests:timeRanges.last12Hours"), value: 12 },
+        { key: 24, text: t("workflowRequests:timeRanges.last24Hours"), value: 24 },
+        { key: 48, text: t("workflowRequests:timeRanges.last2Days"), value: 48 },
+        { key: 168, text: t("workflowRequests:timeRanges.last7Days"), value: 168 },
+        { key: 336, text: t("workflowRequests:timeRanges.last14Days"), value: 336 },
+        { key: 720, text: t("workflowRequests:timeRanges.last30Days"), value: 720 },
+        { key: -1, text: t("workflowRequests:timeRanges.customRange"), value: -1 }
     ];
 
     const handleRangeChange = (e: React.SyntheticEvent<HTMLElement>, { value }: { value: number }) => {

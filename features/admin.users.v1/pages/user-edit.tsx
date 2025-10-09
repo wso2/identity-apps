@@ -180,7 +180,8 @@ const UserEditPage = (): ReactElement => {
                     connector.properties.map((property: ConnectorPropertyInterface) => {
                         if (property.name === ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION
                             || property.name === ServerConfigurationsConstants.ASK_PASSWORD_EMAIL_OTP
-                            || property.name === ServerConfigurationsConstants.ASK_PASSWORD_SMS_OTP) {
+                            || property.name === ServerConfigurationsConstants.ASK_PASSWORD_SMS_OTP
+                            || property.name === ServerConfigurationsConstants.EMAIL_VERIFICATION_OTP) {
                             properties.push(property);
                         }
                     });

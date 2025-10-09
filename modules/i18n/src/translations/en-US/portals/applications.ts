@@ -622,7 +622,7 @@ export const applications: ApplicationsNS = {
                 orgNotSelectedForRoleSharing: "To share roles, please select the organization from the left panel.",
                 rolesSharedPartially: "Roles are selectively shared with this organization.",
                 shareRoleSubsetWithSelectedOrgs: "Share a subset of roles with selected organizations",
-                shareRoleSubsetWithAllOrgs: "Share a subset of roles with all organizations",
+                shareRoleSubsetWithAllOrgs: "Share only a subset of roles with all organizations",
                 subTitle: "Select how the application and roles will be shared with organizations.",
                 shareAllRoles: "Share All Roles",
                 shareSelectedRoles: "Share Selected Roles",
@@ -1133,6 +1133,9 @@ export const applications: ApplicationsNS = {
                                     message: "Password recovery requires at least one of the following " +
                                         "factors to be present in the flow: Email OTP, SMS OTP, " +
                                         "or Magic Link."
+                                },
+                                passwordExecutorRequired: {
+                                    message: "Forms with a Password field requires a 'Provision Password' Action to be configured for the button."
                                 }
                             }
                         }

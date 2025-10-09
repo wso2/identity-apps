@@ -23,6 +23,7 @@ import updateCustomTextPreference from "@wso2is/admin.branding.v1/api/update-cus
 import useGetCustomTextPreferenceMeta from "@wso2is/admin.branding.v1/api/use-get-custom-text-preference-meta";
 import { I18nConstants } from "@wso2is/admin.core.v1/constants/i18n-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import loadStaticResource from "@wso2is/admin.core.v1/utils/load-static-resource";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import useGetBrandingPreference from "@wso2is/common.branding.v1/api/use-get-branding-preference";
@@ -490,7 +491,7 @@ const FlowContextWrapper = ({
         // TODO: Internationalize this string and get from a mapping.
         setResourcePropertiesPanelHeading(
             <Stack direction="row" className="sub-title" gap={ 1 } alignItems="center">
-                <Avatar src={ resource?.display?.image } variant="square" />
+                <Avatar src={ loadStaticResource(resource?.display?.image) } variant="square" />
                 <Typography variant="h6">
                     { resource?.display?.displayname
                         ? startCase(resource.display.displayname)

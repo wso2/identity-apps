@@ -31,7 +31,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Message, Modal, Table } from "semantic-ui-react";
 import { useGetWorkflowInstance } from "../api/use-get-workflow-instance";
-import { deleteWorkflowInstance } from "../api/workflow-requests";
+import { abortWorkflowInstance } from "../api/workflow-requests";
 import { WorkflowInstanceStatus, WorkflowRequestPropertyInterface } from "../models/workflowRequests";
 import "./workflow-request-details.scss";
 
@@ -43,10 +43,10 @@ const WorkflowRequestDetailsPage: FunctionComponent<IdentifiableComponentInterfa
         [ "data-componentid" ]: componentId = "workflow-request-details-page"
     }: IdentifiableComponentInterface
 ) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation([ "workflowRequests" ]);
     const dispatch: Dispatch = useDispatch();
 
-    const [ showDeleteModal, setShowDeleteModal ] = useState<boolean>(false);
+    const [ showAbortModal, setshowAbortModal ] = useState<boolean>(false);
 
     const path: string[] = history.location.pathname.split("/");
     const id: string = path[path.length - 1];
@@ -59,8 +59,8 @@ const WorkflowRequestDetailsPage: FunctionComponent<IdentifiableComponentInterfa
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
-    const hasWorkflowInstanceDeletePermissions: boolean = useRequiredScopes(
-        featureConfig?.workflowInstances?.scopes?.delete
+    const hasWorkflowInstanceUpdatePermissions: boolean = useRequiredScopes(
+        featureConfig?.workflowInstances?.scopes?.update
     );
 
     const formatHumanReadableDate = (dateString: string): string => {
@@ -115,11 +115,11 @@ const WorkflowRequestDetailsPage: FunctionComponent<IdentifiableComponentInterfa
     };
 
     const REQUEST_STATUSES: Map<string, string> = new Map([
-        [ WorkflowInstanceStatus.FAILED, t("approvalWorkflows:status.failed") ],
-        [ WorkflowInstanceStatus.APPROVED, t("approvalWorkflows:status.approved") ],
-        [ WorkflowInstanceStatus.PENDING, t("approvalWorkflows:status.pending") ],
-        [ WorkflowInstanceStatus.DELETED, t("approvalWorkflows:status.aborted") ],
-        [ WorkflowInstanceStatus.REJECTED, t("approvalWorkflows:status.rejected") ]
+        [ WorkflowInstanceStatus.FAILED, t("workflowRequests:status.failed") ],
+        [ WorkflowInstanceStatus.APPROVED, t("workflowRequests:status.approved") ],
+        [ WorkflowInstanceStatus.PENDING, t("workflowRequests:status.pending") ],
+        [ WorkflowInstanceStatus.ABORTED, t("workflowRequests:status.aborted") ],
+        [ WorkflowInstanceStatus.REJECTED, t("workflowRequests:status.rejected") ]
     ]);
 
     const renderDetailsTable = () => {
@@ -129,7 +129,7 @@ const WorkflowRequestDetailsPage: FunctionComponent<IdentifiableComponentInterfa
             <Table definition className="workflow-request-details-table">
                 <Table.Body>
                     <Table.Row>
-                        <Table.Cell width={ 3 }>{ t("approvalWorkflows:details.fields.id") }</Table.Cell>
+                        <Table.Cell width={ 3 }>{ t("workflowRequests:details.fields.id") }</Table.Cell>
                         <Table.Cell>{ workflowRequest.workflowInstanceId }</Table.Cell>
                     </Table.Row>
                     <Table.Row>
@@ -137,26 +137,26 @@ const WorkflowRequestDetailsPage: FunctionComponent<IdentifiableComponentInterfa
                         <Table.Cell>{ t(getOperationTypeTranslationKey(workflowRequest.eventType)) }</Table.Cell>
                     </Table.Row>
                     <Table.Row>
-                        <Table.Cell>{ t("approvalWorkflows:details.fields.requestInitiator") }</Table.Cell>
+                        <Table.Cell>{ t("workflowRequests:details.fields.requestInitiator") }</Table.Cell>
                         <Table.Cell>{ workflowRequest.requestInitiator ||
                             t("common:approvalsPage.propertyMessages.selfRegistration") }</Table.Cell>
                     </Table.Row>
                     <Table.Row>
-                        <Table.Cell>{ t("approvalWorkflows:details.fields.status") }</Table.Cell>
+                        <Table.Cell>{ t("workflowRequests:details.fields.status") }</Table.Cell>
                         <Table.Cell>
                             { (REQUEST_STATUSES.get(workflowRequest.status) ?? "N/A").toUpperCase() }
                         </Table.Cell>
                     </Table.Row>
                     <Table.Row>
-                        <Table.Cell>{ t("approvalWorkflows:details.fields.createdAt") }</Table.Cell>
+                        <Table.Cell>{ t("workflowRequests:details.fields.createdAt") }</Table.Cell>
                         <Table.Cell>{ formatHumanReadableDate(workflowRequest.createdAt) }</Table.Cell>
                     </Table.Row>
                     <Table.Row>
-                        <Table.Cell>{ t("approvalWorkflows:details.fields.updatedAt") }</Table.Cell>
+                        <Table.Cell>{ t("workflowRequests:details.fields.updatedAt") }</Table.Cell>
                         <Table.Cell>{ formatHumanReadableDate(workflowRequest.updatedAt) }</Table.Cell>
                     </Table.Row>
                     <Table.Row>
-                        <Table.Cell>{ t("approvalWorkflows:details.fields.requestParams") }</Table.Cell>
+                        <Table.Cell>{ t("workflowRequests:details.fields.requestParams") }</Table.Cell>
                         <Table.Cell>
                             { properties && properties.length > 0 ? (
                                 <Table celled compact size="small">
@@ -189,29 +189,25 @@ const WorkflowRequestDetailsPage: FunctionComponent<IdentifiableComponentInterfa
         );
     };
 
-    const handleDelete = async () => {
+    const handleAbort = async () => {
         if (!workflowRequest) return;
 
         try {
-            await deleteWorkflowInstance(workflowRequest.workflowInstanceId);
+            await abortWorkflowInstance(workflowRequest.workflowInstanceId);
             dispatch(addAlert({
-                description: t("console:manage.features.workflowRequests.notifications."
-                    + "deleteWorkflowRequest.success.description"),
+                description: t("workflowRequests:notifications.abortWorkflowRequest.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("console:manage.features.workflowRequests.notifications."
-                    + "deleteWorkflowRequest.success.message")
+                message: t("workflowRequests:notifications.abortWorkflowRequest.success.message")
             }));
-            setShowDeleteModal(false);
+            setshowAbortModal(false);
             history.push(AppConstants.getPaths().get("WORKFLOW_REQUESTS"));
         } catch (err: any) {
             dispatch(addAlert({
-                description: t("console:manage.features.workflowRequests.notifications."
-                    + "deleteWorkflowRequest.error.description", {
+                description: t("workflowRequests:notifications.abortWorkflowRequest.genericError.description", {
                     description: err?.response?.data?.detail || ""
                 }),
                 level: AlertLevels.ERROR,
-                message: t("console:manage.features.workflowRequests.notifications."
-                    + "deleteWorkflowRequest.error.message")
+                message: t("workflowRequests:notifications.abortWorkflowRequest.genericError.message")
             }));
         }
     };
@@ -219,11 +215,11 @@ const WorkflowRequestDetailsPage: FunctionComponent<IdentifiableComponentInterfa
     return (
         <TabPageLayout
             isLoading={ loading }
-            title={ t("approvalWorkflows:details.header") }
+            title={ t("workflowRequests:details.header") }
             backButton={ {
                 "data-testid": "workflow-requests-details-back-button",
                 onClick: handleBackButtonClick,
-                text: t("approvalWorkflows:details.backButton")
+                text: t("workflowRequests:details.backButton")
             } }
             titleTextAlign="left"
             bottomMargin={ false }
@@ -232,41 +228,41 @@ const WorkflowRequestDetailsPage: FunctionComponent<IdentifiableComponentInterfa
             { workflowInstanceError && (
                 <Message
                     negative
-                    header={ t("approvalWorkflows:details.error.header") }
-                    content={ t("approvalWorkflows:details.error.content") }
+                    header={ t("workflowRequests:details.error.header") }
+                    content={ t("workflowRequests:details.error.content") }
                 />
             ) }
             { workflowRequest && renderDetailsTable() }
-            { workflowRequest && workflowRequest.status !== WorkflowInstanceStatus.DELETED && (
-                <DangerZoneGroup sectionHeader={ t("approvalWorkflows:details.dangerZone.header") }>
+            { workflowRequest && workflowRequest.status === WorkflowInstanceStatus.PENDING && (
+                <DangerZoneGroup sectionHeader={ t("workflowRequests:details.dangerZone.header") }>
                     <DangerZone
-                        actionTitle={ t("approvalWorkflows:details.dangerZone.abort.actionTitle") }
-                        header={ t("approvalWorkflows:details.dangerZone.abort.header") }
-                        subheader={ t("approvalWorkflows:details.dangerZone.abort.subheader") }
-                        onActionClick={ () => setShowDeleteModal(true) }
-                        isButtonDisabled={ !hasWorkflowInstanceDeletePermissions }
+                        actionTitle={ t("workflowRequests:details.dangerZone.abort.actionTitle") }
+                        header={ t("workflowRequests:details.dangerZone.abort.header") }
+                        subheader={ t("workflowRequests:details.dangerZone.abort.subheader") }
+                        onActionClick={ () => setshowAbortModal(true) }
+                        isButtonDisabled={ !hasWorkflowInstanceUpdatePermissions }
                         data-testid="workflow-requests-details-danger-zone-delete"
                     />
                 </DangerZoneGroup>
             ) }
             <Modal
-                open={ showDeleteModal }
+                open={ showAbortModal }
                 size="small"
-                onClose={ () => setShowDeleteModal(false) }
+                onClose={ () => setshowAbortModal(false) }
             >
-                <Modal.Header>{ t("approvalWorkflows:details.dangerZone.abort.header") }</Modal.Header>
+                <Modal.Header>{ t("workflowRequests:details.dangerZone.abort.header") }</Modal.Header>
                 <Modal.Content>
-                    <p>{ t("approvalWorkflows:details.dangerZone.abort.confirm") }</p>
+                    <p>{ t("workflowRequests:details.dangerZone.abort.confirm") }</p>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button onClick={ () => setShowDeleteModal(false) }>{ t("common:cancel") }</Button>
+                    <Button onClick={ () => setshowAbortModal(false) }>{ t("common:cancel") }</Button>
                     <Button
                         negative
                         loading={ loading }
-                        onClick={ handleDelete }
-                        disabled={ !hasWorkflowInstanceDeletePermissions }
+                        onClick={ handleAbort }
+                        disabled={ !hasWorkflowInstanceUpdatePermissions }
                     >
-                        { t("approvalWorkflows:details.dangerZone.abort.action") }
+                        { t("workflowRequests:details.dangerZone.abort.action") }
                     </Button>
                 </Modal.Actions>
             </Modal>

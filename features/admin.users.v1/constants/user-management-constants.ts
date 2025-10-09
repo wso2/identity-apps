@@ -433,7 +433,9 @@ export enum RecoveryScenario {
     LITE_SIGN_UP = "LITE_SIGN_UP",
     TENANT_ADMIN_ASK_PASSWORD = "TENANT_ADMIN_ASK_PASSWORD",
     PASSWORD_EXPIRY = "PASSWORD_EXPIRY",
-    ADMIN_INVITE_SET_PASSWORD_OFFLINE = "ADMIN_INVITE_SET_PASSWORD_OFFLINE"
+    ADMIN_INVITE_SET_PASSWORD_OFFLINE = "ADMIN_INVITE_SET_PASSWORD_OFFLINE",
+    EMAIL_VERIFICATION = "EMAIL_VERIFICATION",
+    EMAIL_VERIFICATION_OTP = "EMAIL_VERIFICATION_OTP"
 }
 
 /**
@@ -489,7 +491,9 @@ export const RECOVERY_SCENARIO_TO_RECOVERY_OPTION_TYPE_MAP: Record<string, strin
     [RecoveryScenario.ADMIN_FORCED_PASSOWRD_RESET_VIA_SMS_OTP]: [ RecoveryOptionTypes.CODE ],
     [RecoveryScenario.ASK_PASSWORD]: [ RecoveryOptionTypes.LINK ],
     [RecoveryScenario.ASK_PASSWORD_VIA_EMAIL_OTP]: [ RecoveryOptionTypes.CODE ],
-    [RecoveryScenario.ASK_PASSWORD_VIA_SMS_OTP]: [ RecoveryOptionTypes.CODE ]
+    [RecoveryScenario.ASK_PASSWORD_VIA_SMS_OTP]: [ RecoveryOptionTypes.CODE ],
+    [RecoveryScenario.EMAIL_VERIFICATION]: [ RecoveryOptionTypes.LINK ],
+    [RecoveryScenario.EMAIL_VERIFICATION_OTP]: [ RecoveryOptionTypes.CODE ]
 };
 
 /**

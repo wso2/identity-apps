@@ -8,7 +8,7 @@
         "display": {
             "label": "reCAPTCHA",
             "description": "Add reCAPTCHA to your registration experience",
-            "image": "https://www.gstatic.com/recaptcha/api2/logo_48.png",
+            "image": "assets/images/icons/recaptcha.png",
             "showOnResourcePanel": false
         },
         "config": {

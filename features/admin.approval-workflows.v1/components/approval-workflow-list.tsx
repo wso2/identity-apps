@@ -99,7 +99,7 @@ const ApprovalWorkflowList: React.FunctionComponent<ApprovalWorkflowListProps> =
         ["data-componentid"]: componentId = "approval-workflow-list"
     } = props;
 
-    const { t } = useTranslation();
+    const { t } = useTranslation([ "approvalWorkflows" ]);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
@@ -137,7 +137,7 @@ const ApprovalWorkflowList: React.FunctionComponent<ApprovalWorkflowListProps> =
                     imageSize="tiny"
                     title={ t("approvalWorkflows:form.placeholders.emptySearch.title") }
                     subtitle={ [
-                        t("approvalWorkflows:form.placeholders.emptySearch.subtitles", { searchQuery })
+                        t("approvalWorkflows:form.placeholders.emptySearch.subtitles.0", { searchQuery })
                     ] }
                 />
             );
@@ -151,7 +151,7 @@ const ApprovalWorkflowList: React.FunctionComponent<ApprovalWorkflowListProps> =
                         image={ getEmptyPlaceholderIllustrations().newList }
                         imageSize="tiny"
                         title={ t("approvalWorkflows:form.placeholders.emptyListReadOnly.title") }
-                        subtitle={ [ t("approvalWorkflows:form.placeholders.emptyListReadOnly.subtitles") ] }
+                        subtitle={ [ t("approvalWorkflows:form.placeholders.emptyListReadOnly.subtitles.0") ] }
                     />
                 );
             } else {
@@ -173,7 +173,8 @@ const ApprovalWorkflowList: React.FunctionComponent<ApprovalWorkflowListProps> =
                         imageSize="tiny"
                         title={ t("approvalWorkflows:form.placeholders.emptyList.title") }
                         subtitle={ [
-                            t("approvalWorkflows:form.placeholders.emptyList.subtitles" )
+                            t("approvalWorkflows:form.placeholders.emptyList.subtitles.0"),
+                            t("approvalWorkflows:form.placeholders.emptyList.subtitles.1")
                         ] }
                     />
                 );
@@ -249,7 +250,7 @@ const ApprovalWorkflowList: React.FunctionComponent<ApprovalWorkflowListProps> =
                     </Header.Content>
                 </Header>
             ),
-            title: t("console:manage.features.approvalWorkflows.list.columns.name")
+            title: t("approvalWorkflows:list.columns.name")
         },
         {
             allowToggleVisibility: false,
@@ -257,7 +258,7 @@ const ApprovalWorkflowList: React.FunctionComponent<ApprovalWorkflowListProps> =
             id: "actions",
             key: "actions",
             textAlign: "right",
-            title: t("console:manage.features.approvalWorkflows.list.columns.actions")
+            title: t("approvalWorkflows:list.columns.actions")
         }
     ];
 

@@ -38,7 +38,7 @@ interface ActiveFiltersBarProps {
 const ActiveFiltersBar: React.FC<ActiveFiltersBarProps> = (
     { filters, onRemove, onClearAll, ..._rest }: ActiveFiltersBarProps
 ) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation([ "workflowRequests" ]);
 
     return (
         <div className="workflow-requests-active-filters-bar modern-active-filters-bar">
@@ -59,7 +59,7 @@ const ActiveFiltersBar: React.FC<ActiveFiltersBarProps> = (
                             <span
                                 role="button"
                                 tabIndex={ 0 }
-                                aria-label={ t("approvalWorkflows:activeFiltersBar.removeFilter",
+                                aria-label={ t("workflowRequests:activeFiltersBar.removeFilter",
                                     { filter: filter.label }) }
                                 onClick={ () => onRemove(filter) }
                                 onKeyPress={ (e: React.KeyboardEvent) => {
@@ -73,7 +73,7 @@ const ActiveFiltersBar: React.FC<ActiveFiltersBarProps> = (
                     ))
                 ) : (
                     <span className="no-filters-text">
-                        { t("approvalWorkflows:activeFiltersBar.noActiveFilters") }
+                        { t("workflowRequests:activeFiltersBar.noActiveFilters") }
                     </span>
                 ) }
             </div>
@@ -86,7 +86,7 @@ const ActiveFiltersBar: React.FC<ActiveFiltersBarProps> = (
                     className="clear-all-button"
                 >
                     <Icon name="close" size="small" className="icon" />
-                    { t("approvalWorkflows:activeFiltersBar.clearAll") }
+                    { t("workflowRequests:activeFiltersBar.clearAll") }
                 </Button>
             ) }
         </div>

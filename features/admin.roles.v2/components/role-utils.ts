@@ -15,7 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { RoleConstants } from "../constants";
+import { RoleConstants } from "../constants/role-constants";
 import { PermissionObject, TreeNode } from "../models/permission";
 
 /**

@@ -84,6 +84,7 @@ const AskPasswordFlowBuilderProvider: FC<AskPasswordFlowBuilderProviderProps> = 
             ResourceProperties={ ResourceProperties }
             flowType={ FlowTypes.INVITED_USER_REGISTRATION }
             screenTypes={ screensList }
+            validationConfig={ { isPasswordExecutorValidationEnabled: true } }
         >
             <FlowContextWrapper>{ children }</FlowContextWrapper>
         </AuthenticationFlowBuilderCoreProvider>

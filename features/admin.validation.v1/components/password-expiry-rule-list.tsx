@@ -32,7 +32,7 @@ import TextField from "@oxygen-ui/react/TextField";
 import { ChevronDownIcon, ChevronUpIcon, PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
-import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants";
+import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
 import {
     GovernanceConnectorConstants
 } from "@wso2is/admin.server-configurations.v1/constants/governance-connector-constants";

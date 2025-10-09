@@ -95,7 +95,7 @@ const GeneralApprovalWorkflowDetailsForm: ForwardRefExoticComponent<RefAttribute
             const currentValuesRef: any = useRef(null);
 
             const dispatch: Dispatch = useDispatch();
-            const { t } = useTranslation();
+            const { t } = useTranslation([ "approvalWorkflows" ]);
 
             const [ filterQuery, setFilterQuery ] = useState<string>("");
 
@@ -124,15 +124,13 @@ const GeneralApprovalWorkflowDetailsForm: ForwardRefExoticComponent<RefAttribute
                             workflowsError?.response?.data?.description ??
                             workflowsError?.response?.data?.detail ??
                             t(
-                                "console:manage.features.approvalWorkflows.notifications." +
-                                    "fetchApprovalWorkflows.genericError.description"
+                                "approvalWorkflows:notifications.fetchApprovalWorkflows.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message:
                             workflowsError?.response?.data?.message ??
                             t(
-                                "console:manage.features.approvalWorkflows.notifications." +
-                                    "fetchApprovalWorkflows.genericError.message"
+                                "approvalWorkflows:notifications.fetchApprovalWorkflows.genericError.message"
                             )
                         })
                     );

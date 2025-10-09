@@ -8,7 +8,7 @@
         "display": {
             "label": "Continue with Email OTP",
             "description": "Registration experience with Email OTP",
-            "image": "https://www.svgrepo.com/show/387455/email-down.svg",
+            "image": "assets/images/icons/email-down.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -123,7 +123,7 @@
         "display": {
             "label": "Continue with SMS OTP",
             "description": "Registration experience with SMS OTP",
-            "image": "https://www.svgrepo.com/show/455832/mobile-message.svg",
+            "image": "assets/images/icons/mobile-message.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -238,7 +238,7 @@
         "display": {
             "label": "Continue with Magic Link",
             "description": "Registration experience with Magic Link",
-            "image": "https://www.svgrepo.com/show/532869/link-alt-1.svg",
+            "image": "assets/images/icons/link.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -268,7 +268,7 @@
                                     "config": {
                                         "type": "button",
                                         "text": "Continue with Magic Link",
-                                        "image": "https://www.svgrepo.com/show/532869/link-alt-1.svg"
+                                        "image": "assets/images/icons/link.svg"
                                     },
                                     "action": {
                                         "type": "NEXT",

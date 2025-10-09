@@ -33,7 +33,7 @@ import { Dispatch } from "redux";
 import { createRole, createRoleUsingV3Api } from "../api/roles";
 import { RoleBasics } from "../components/wizard-updated/role-basics";
 import { RolePermissionsList } from "../components/wizard-updated/role-permissions/role-permissions";
-import { RoleAudienceTypes } from "../constants";
+import { RoleAudienceTypes } from "../constants/role-constants";
 import { ScopeInterface } from "../models/apiResources";
 import {
     CreateRoleFormData,

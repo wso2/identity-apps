@@ -27,9 +27,11 @@ export const commonUsers: CommonUsersNS = {
     forms: {
         profile: {
             generic: {
+                placeholder: "உங்கள் {{fieldName}} ஐ உள்ளிடவும்",
                 validation: {
                     duplicate: "{{field}} இல் நகல் மதிப்புகள் இருக்கக்கூடாது.",
-                    invalidFormat: "உள்ளிடப்பட்ட {{field}} இன் வடிவம் தவறானது."
+                    invalidFormat: "உள்ளிடப்பட்ட {{field}} இன் வடிவம் தவறானது.",
+                    required: "{{fieldName}} ஒரு அவசியமான புலம்"
                 }
             }
         }

@@ -17,7 +17,7 @@
  */
 
 import Chip, { ChipProps } from "@oxygen-ui/react/Chip";
-import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants";
+import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useState } from "react";
 import { ChipMoreDetails } from "./chip-more-details";

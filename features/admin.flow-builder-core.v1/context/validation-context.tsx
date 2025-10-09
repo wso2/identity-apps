@@ -31,6 +31,10 @@ export interface ValidationConfig {
      * Whether recovery factor validation is enabled.
      */
     isRecoveryFactorValidationEnabled?: boolean;
+    /**
+     * Whether password executor validation is enabled.
+     */
+    isPasswordExecutorValidationEnabled?: boolean;
 }
 
 /**
@@ -117,6 +121,7 @@ export const ValidationContext: Context<ValidationContextProps> = createContext<
     setOpenValidationPanel: null,
     validationConfig: {
         isOTPValidationEnabled: false,
+        isPasswordExecutorValidationEnabled: false,
         isRecoveryFactorValidationEnabled: false
     }
 });

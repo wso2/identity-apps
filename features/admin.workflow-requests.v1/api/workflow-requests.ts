@@ -28,12 +28,12 @@ const httpClient: (config: any) => Promise<any> = AsgardeoSPAClient.getInstance(
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
- * Deletes a workflow instance by ID.
+ * Abort a workflow instance by ID.
  *
- * @param workflowInstanceId - ID of the workflow instance to delete.
- * @returns A promise that resolves if the deletion is successful.
+ * @param workflowInstanceId - ID of the workflow instance to abort.
+ * @returns A promise that resolves if the abortion is successful.
  */
-export const deleteWorkflowInstance = (workflowInstanceId: string): Promise<void> => {
+export const abortWorkflowInstance = (workflowInstanceId: string): Promise<void> => {
     const requestConfig: {
         headers: { "Content-Type": string };
         method: HttpMethods;
@@ -42,8 +42,8 @@ export const deleteWorkflowInstance = (workflowInstanceId: string): Promise<void
         headers: {
             "Content-Type": "application/json"
         },
-        method: HttpMethods.DELETE,
-        url: `${store.getState().config.endpoints.workflowInstances}/${workflowInstanceId}`
+        method: HttpMethods.POST,
+        url: `${store.getState().config.endpoints.workflowInstances}/${workflowInstanceId}/abort`
     };
 
     return httpClient(requestConfig)
@@ -51,6 +51,6 @@ export const deleteWorkflowInstance = (workflowInstanceId: string): Promise<void
             return Promise.resolve();
         })
         .catch((error: AxiosError) => {
-            return Promise.reject(`Failed to delete workflow instance - ${error}`);
+            return Promise.reject(`Failed to abort workflow instance - ${error}`);
         });
 };

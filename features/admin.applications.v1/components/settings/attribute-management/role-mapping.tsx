@@ -17,7 +17,7 @@
  */
 
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
-import { getRolesList } from "@wso2is/admin.roles.v2/api";
+import { getRolesList } from "@wso2is/admin.roles.v2/api/roles";
 import { AlertLevels, RoleListInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DynamicField, KeyValue } from "@wso2is/forms";
