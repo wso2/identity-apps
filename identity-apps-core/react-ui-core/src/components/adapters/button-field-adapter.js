@@ -17,13 +17,8 @@
  */
 
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useMemo } from "react";
 import { Button } from "semantic-ui-react";
-import appleIcon from "../../assets/identity-providers/apple.svg";
-import facebookIcon from "../../assets/identity-providers/facebook.svg";
-import githubIcon from "../../assets/identity-providers/github.svg";
-import googleIcon from "../../assets/identity-providers/google.svg";
-import microsoftIcon from "../../assets/identity-providers/microsoft.svg";
 import { useTranslations } from "../../hooks/use-translations";
 import { resolveElementText } from "../../utils/i18n-utils";
 
@@ -32,20 +27,77 @@ const ButtonAdapter = ({ component, handleButtonAction }) => {
     const { translations } = useTranslations();
 
     /**
-     * Resolves the provider icon based on the image URL.
-     * @param imageUrl
-     * @returns The resolved icon URL or null if not found.
+     * Dynamic icon resolver that constructs import paths automatically.
      */
+    const iconResolver = useMemo(() => {
+        const resolveIcon = (imagePath) => {
+            // Handle asset paths like "assets/identity-providers/apple.svg"
+            if (imagePath.startsWith("assets/images/icons/") && imagePath.endsWith(".svg")) {
+                try {
+                    const iconName = imagePath.split("/").pop().replace(".svg", "");
+                    const iconContext = require.context(
+                        "../../assets/images/icons",
+                        false,
+                        /\.svg$/
+                    );
+
+                    const iconKey = `./${iconName}.svg`;
+                    const mod = iconContext(iconKey);
+
+                    return typeof mod === "string" ? mod : mod.default;
+
+                } catch (error) {
+                    // If dynamic resolution fails, continue to fallback
+                }
+            }
+
+            return null;
+        };
+
+        return resolveIcon;
+    }, []);
+
     const resolveProviderIcon = (imageUrl) => {
-        if (!imageUrl) return null;
+        if (!imageUrl) return { type: "none", value: null };
 
-        if (imageUrl.includes("facebook")) return facebookIcon;
-        if (imageUrl.includes("google")) return googleIcon;
-        if (imageUrl.includes("microsoft")) return microsoftIcon;
-        if (imageUrl.includes("github")) return githubIcon;
-        if (imageUrl.includes("apple")) return appleIcon;
+        try {
+            new URL(imageUrl);
 
-        return imageUrl;
+            return { type: "url", value: imageUrl };
+        } catch (error) {
+            // Not a URL.
+        }
+
+        const dynamicIcon = iconResolver(imageUrl);
+
+        if (dynamicIcon) {
+            return typeof dynamicIcon === "function"
+                ? { type: "component", value: dynamicIcon }
+                : { type: "url", value: dynamicIcon };
+        }
+
+        return { type: "url", value: imageUrl };
+    };
+
+    const icon = resolveProviderIcon(component.config.image);
+
+    const renderIcon = (icon) => {
+        if (!icon || icon.type === "none") return null;
+
+        if (icon.type === "component") {
+            const IconComponent = icon.value;
+
+            return <IconComponent className="ui image" role="presentation" />;
+        }
+
+        return (
+            <img
+                className="ui image"
+                src={ icon.value }
+                alt="Connection Login icon"
+                role="presentation"
+            />
+        );
     };
 
     switch (component.variant) {
@@ -100,12 +152,7 @@ const ButtonAdapter = ({ component, handleButtonAction }) => {
                         name={ component.id }
                         onClick={ () => handleButtonAction(component.id, {}) }
                     >
-                        <img
-                            className="ui image"
-                            src={ resolveProviderIcon(component.config.image) }
-                            alt="Connection Login icon"
-                            role="presentation"
-                        />
+                        { renderIcon(icon) }
                         <span>{ resolveElementText(translations, component.config.text) }</span>
                     </Button>
                 </div>
