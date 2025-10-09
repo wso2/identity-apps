@@ -27,11 +27,14 @@ import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import Typography from "@oxygen-ui/react/Typography";
 import { XMarkIcon } from "@oxygen-ui/react-icons";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ConfirmationModal, DocumentationLink, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { ActionVersionInfo } from "../hooks/use-action-versioning";
+import { useSelector } from "react-redux";
+import { useRequiredScopes } from "@wso2is/access-control";
+import { AppState } from "@wso2is/admin.core.v1/store";
 
 /**
  * Props for the Action Version Warning Banner component.
@@ -83,11 +86,16 @@ const ActionVersionWarningBanner: FunctionComponent<ActionVersionWarningBannerPr
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
 
+    const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.actions
+    );
+    const hasActionUpdatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.update);
+
     const [ showBanner, setShowBanner ] = useState<boolean>(true);
     const [ viewBannerDetails, setViewBannerDetails ] = useState<boolean>(false);
     const [ showConfirmationModal, setShowConfirmationModal ] = useState<boolean>(false);
 
-    if (!versionInfo.isOutdated) {
+    if (!versionInfo.isOutdated || !hasActionUpdatePermissions) {
         return null;
     }
 
