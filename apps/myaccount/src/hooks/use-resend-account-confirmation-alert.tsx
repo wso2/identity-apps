@@ -44,6 +44,7 @@ export const useResendAccountConfirmationAlert = (
     const dispatch: Dispatch = useDispatch();
 
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
+    const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
 
     const [ isSelfSignUpSendOtpInEmailEnabled, setIsSelfSignUpSendOtpInEmailEnabled ] = useState<boolean>(false);
     const [ isAccountStatePendingSelfRegistration,
@@ -53,8 +54,10 @@ export const useResendAccountConfirmationAlert = (
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     useEffect(() => {
-        getSelfSignUpPreferences();
-    }, []);
+        if (!allowedScopes.includes("internal_user_impersonate")) {
+            getSelfSignUpPreferences();
+        }
+    }, [ allowedScopes ]);
 
     useEffect(() => {
         const accountState: string = profileDetails
