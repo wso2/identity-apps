@@ -135,7 +135,7 @@ const AIPrompt = ({
                 data-componentid={ `${ componentId }-disclaimer` }
                 variant="body2"
             >
-                { t("ai:aiRegistrationFlow.disclaimer") }
+                { t("ai:aiFlow.disclaimer") }
                 <DocumentationLink
                     link={ getLink("common.termsOfService") }
                 >

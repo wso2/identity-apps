@@ -393,7 +393,7 @@
                 }
             },
             "ai": {
-                "disabledFeatures": [ "ai.flows.types.list.registration" ],
+                "disabledFeatures": [],
                 "enabled": false,
                 "featureFlags": [
                     {

@@ -60,9 +60,9 @@ const useGeneratePasswordRecoveryFlow = (): UseGeneratePasswordRecoveryFlowFunct
                 if (error?.code === 422) {
                     dispatch(
                         addAlert<AlertInterface>({
-                            description: t("ai:aiPasswordRecoveryFlow.notifications.generateInputError.description"),
+                            description: t("ai:aiFlow.notifications.generateInputError.description"),
                             level: AlertLevels.ERROR,
-                            message: t("ai:aiPasswordRecoveryFlow.notifications.generateInputError.message")
+                            message: t("ai:aiFlow.notifications.generateInputError.message")
                         })
                     );
 
@@ -72,9 +72,9 @@ const useGeneratePasswordRecoveryFlow = (): UseGeneratePasswordRecoveryFlowFunct
                 if (error?.code === 429) {
                     dispatch(
                         addAlert<AlertInterface>({
-                            description: t("ai:aiPasswordRecoveryFlow.notifications.generateLimitError.description"),
+                            description: t("ai:aiFlow.notifications.generateLimitError.description"),
                             level: AlertLevels.ERROR,
-                            message: t("ai:aiPasswordRecoveryFlow.notifications.generateLimitError.message")
+                            message: t("ai:aiFlow.notifications.generateLimitError.message")
                         })
                     );
 
@@ -83,9 +83,9 @@ const useGeneratePasswordRecoveryFlow = (): UseGeneratePasswordRecoveryFlowFunct
 
                 dispatch(
                     addAlert<AlertInterface>({
-                        description: t("ai:aiPasswordRecoveryFlow.notifications.generateError.description"),
+                        description: t("ai:aiFlow.notifications.generateError.description"),
                         level: AlertLevels.ERROR,
-                        message: error.message || t("ai:aiPasswordRecoveryFlow.notifications.generateError.message")
+                        message: error.message || t("ai:aiFlow.notifications.generateError.message")
                     })
                 );
             });

@@ -28,6 +28,6 @@ export const getPasswordRecoveryFlowBuilderResourceEndpoints = (
 ): PasswordRecoveryFlowBuilderResourceEndpointsInterface => {
     return {
         passwordRecoveryFlow: `${ serverOrigin }/api/server/v1/flow`,
-        passwordRecoveryFlowAI: `${ serverOrigin }/api/server/v1/password-recovery-flow`
+        passwordRecoveryFlowAI: `${ serverOrigin }/api/server/v1/flow`
     };
 };

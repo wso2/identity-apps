@@ -85,7 +85,7 @@ export interface aiNS{
         termsAndConditions: string;
         title: string;
     };
-    aiRegistrationFlow: {
+    aiFlow: {
         notifications: {
             generateError: NotificationItem;
             generateInputError: NotificationItem;
@@ -102,9 +102,6 @@ export interface aiNS{
             1: string;
             2: string;
             3: string;
-            4: string;
-            5: string;
-            6: string;
         };
         disclaimer: string;
         termsAndConditions: string;

@@ -153,9 +153,9 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
 
             dispatch(
                 addAlert<AlertInterface>({
-                    description: t("ai:aiPasswordRecoveryFlow.notifications.generateResultError.description"),
+                    description: t("ai:aiFlow.notifications.generateResultError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("ai:aiPasswordRecoveryFlow.notifications.generateResultError.message")
+                    message: t("ai:aiFlow.notifications.generateResultError.message")
                 })
             );
 
@@ -168,13 +168,13 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
 
             // if data.data contains an object error then use that as the error message
             const errorMessage: string = "error" in flowData.data
-                ? flowData.data.error : t("ai:aiPasswordRecoveryFlow.notifications.generateResultFailed.message");
+                ? flowData.data.error : t("ai:aiFlow.notifications.generateResultFailed.message");
 
             dispatch(
                 addAlert<AlertInterface>({
                     description: errorMessage,
                     level: AlertLevels.ERROR,
-                    message: t("ai:aiPasswordRecoveryFlow.notifications.generateResultFailed.message")
+                    message: t("ai:aiFlow.notifications.generateResultFailed.message")
                 })
             );
 
@@ -236,9 +236,9 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
 
         dispatch(
             addAlert<AlertInterface>({
-                description: t("ai:aiPasswordRecoveryFlow.notifications.generateSuccess.description"),
+                description: t("ai:aiFlow.notifications.generateSuccess.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("ai:aiPasswordRecoveryFlow.notifications.generateSuccess.message")
+                message: t("ai:aiFlow.notifications.generateSuccess.message")
             })
         );
     };
