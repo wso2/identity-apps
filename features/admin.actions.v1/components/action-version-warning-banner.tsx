@@ -138,11 +138,7 @@ const ActionVersionWarningBanner: FunctionComponent<ActionVersionWarningBannerPr
                     <Trans i18nKey="actions:versioning.outdated.warning.details.preRequisite">
                         Before updating, please ensure that you have read the
                         <DocumentationLink
-                            link={ getLink(
-                                "develop.applications.editApplication.outdatedApplications." +
-                                    "versions.version100.useClientIdAsSubClaimOfAppTokens." +
-                                    "documentationLink"
-                            ) }
+                            link={ getLink("develop.actions.versioning.learnMore") }
                             showEmptyLinkText={ true }
                             showEmptyLink={ false }
                         >

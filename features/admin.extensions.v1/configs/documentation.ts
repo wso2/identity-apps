@@ -45,6 +45,9 @@ export const getDocumentationLinksExtension = (): DocumentationLinksExtensionInt
                     preUpdateProfile: {
                         learnMore: undefined
                     }
+                },
+                versioning: {
+                    learnMore: undefined
                 }
             },
             apiResources: {
