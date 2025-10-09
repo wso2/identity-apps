@@ -367,8 +367,15 @@
                     {% endif %}
                     {% endfor %}
                     {% endif %}
-                    {% if flow_execution.enable_legacy_flows is defined and not flow_execution.enable_legacy_flows %}
+                    {% if connector.challenge_questions is defined and not connector.challenge_questions.enable %}
                     {% if myaccount.security.disabled_features is defined %}
+                    ,"security.accountRecovery.challengeQuestions"
+                    {% else %}
+                    "security.accountRecovery.challengeQuestions"
+                    {% endif %}
+                    {% endif %}
+                    {% if flow_execution.enable_legacy_flows is defined and not flow_execution.enable_legacy_flows %}
+                    {% if myaccount.security.disabled_features is defined or (connector.challenge_questions is defined and not connector.challenge_questions.enable) %}
                     ,"security.accountRecovery.legacyRecoveryMethodStatusCheck"
                     {% else %}
                     "security.accountRecovery.legacyRecoveryMethodStatusCheck"
