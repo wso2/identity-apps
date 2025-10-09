@@ -596,7 +596,7 @@
                     {%- if authentication.adaptive.shared_applications.enable is not defined or authentication.adaptive.shared_applications.enable != true -%}
                         {%- set _ = disabled_features.append('"applications.sharedApp.adaptiveAuth"') -%}
                     {%- endif -%}
-                    {%- if application_mgt.skip_enforce_authorized_api_update_permission is not defined or application_mgt.skip_enforce_authorized_api_update_permission != true -%}
+                    {%- if application_mgt.skip_enforce_authorized_api_update_permission is defined and application_mgt.skip_enforce_authorized_api_update_permission == true -%}
                         {%- set _ = disabled_features.append('"applications.enforceAuthorizedAPIUpdatePermission"') -%}
                     {%- endif -%}
                     {%- if console.applications.disabled_features is defined -%}
