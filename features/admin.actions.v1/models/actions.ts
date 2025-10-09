@@ -334,6 +334,10 @@ export interface ActionUpdateInterface {
      * Rule configuration of the Action.
      */
     rule?: RuleWithoutIdInterface | RuleExecuteCollectionWithoutIdInterface | Record<string, never>;
+    /**
+     * Version of the Action.
+     */
+    version?: string;
 }
 
 /**

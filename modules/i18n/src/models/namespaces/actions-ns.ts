@@ -357,6 +357,18 @@ export interface actionsNS {
         };
     };
     versioning: {
+        notifications: {
+            updateVersion: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+        };
         outdated: {
             warning: {
                 message: string;

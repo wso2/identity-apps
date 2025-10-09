@@ -367,6 +367,18 @@ export const actions: actionsNS = {
         }
     },
     versioning: {
+        notifications: {
+            updateVersion: {
+                genericError: {
+                    description: "Failed to update the action version.",
+                    message: "Something went wrong"
+                },
+                success: {
+                    description: "Successfully updated the action version.",
+                    message: "Update successful"
+                }
+            }
+        },
         outdated: {
             warning: {
                 message: "A new <1>version {{latestVersion}}</1> of this action is available now. Please update to the latest version.",

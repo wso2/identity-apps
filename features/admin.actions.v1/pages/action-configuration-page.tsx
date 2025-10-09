@@ -65,6 +65,7 @@ import { useHandleError, useHandleSuccess } from "../util/alert-util";
 import { useActionVersioning } from "../hooks/use-action-versioning";
 import ActionVersionChips from "../components/action-version-chips";
 import ActionVersionWarningBanner from "../components/action-version-warning-banner";
+import updateAction from "../api/update-action";
 
 /**
  * Props for the Action Configuration page.
@@ -100,8 +101,6 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
 
         return path[path.length - 1];
     }, [ history.location.pathname ]);
-
-
 
     const actionTypeApiPath: string = useMemo(() => {
         switch (actionType) {
@@ -411,6 +410,35 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
             });
     };
 
+    /**
+     * Handles action version update.
+     */
+    const handleVersionUpdate = (): void => {
+        updateAction(actionTypeApiPath, actionId, {
+            version: versionInfo.latestVersion
+        })
+            .then(() => {
+                dispatch(
+                    addAlert<AlertInterface>({
+                        description: t("actions:versioning.notifications.updateVersion.success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("actions:versioning.notifications.updateVersion.success.message")
+                    })
+                );
+
+                mutateAction();
+            })
+            .catch((error: AxiosError) => {
+                dispatch(
+                    addAlert<AlertInterface>({
+                        description: t("actions:versioning.notifications.updateVersion.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("actions:versioning.notifications.updateVersion.genericError.message")
+                    })
+                );
+            });
+    };
+
     return (
         <PageLayout
             title={
@@ -439,8 +467,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                 <ActionVersionWarningBanner
                     versionInfo={ versionInfo }
                     onUpdate={ () => {
-                        // TODO: Implement version upgrade logic
-                        console.log("Upgrade action to latest version");
+                        handleVersionUpdate();
                     } }
                     data-componentid={ `${_componentId}-version-warning` }
                 />
