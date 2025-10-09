@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,14 +27,14 @@ import ListItem from "@oxygen-ui/react/ListItem";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import Typography from "@oxygen-ui/react/Typography";
 import { XMarkIcon } from "@oxygen-ui/react-icons";
+import { useRequiredScopes } from "@wso2is/access-control";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { ConfirmationModal, DocumentationLink, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { ActionVersionInfo } from "../hooks/use-action-versioning";
 import { useSelector } from "react-redux";
-import { useRequiredScopes } from "@wso2is/access-control";
-import { AppState } from "@wso2is/admin.core.v1/store";
+import { ActionVersionInfo } from "../hooks/use-action-versioning";
 
 /**
  * Props for the Action Version Warning Banner component.

@@ -61,7 +61,6 @@ import ActionVersionChips from "../components/action-version-chips";
 import { ActionsConstants } from "../constants/actions-constants";
 import { ActionVersionInfo, useActionVersioning } from "../hooks/use-action-versioning";
 import {
-    ActionBasicResponseInterface,
     ActionType,
     ActionTypeCardInterface,
     ActionTypesCountInterface,
@@ -277,18 +276,22 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
             case ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH:
                 versionInfo = preIssueAccessTokenVersionInfo;
                 hasConfiguredActions = !!preIssueAccessTokenActions?.[0];
+
                 break;
             case ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH:
                 versionInfo = preUpdatePasswordVersionInfo;
                 hasConfiguredActions = !!preUpdatePasswordActions?.[0];
+
                 break;
             case ActionsConstants.PRE_UPDATE_PROFILE_URL_PATH:
                 versionInfo = preUpdateProfileVersionInfo;
                 hasConfiguredActions = !!preUpdateProfileActions?.[0];
+
                 break;
             case ActionsConstants.PRE_REGISTRATION_URL_PATH:
                 versionInfo = preRegistrationVersionInfo;
                 hasConfiguredActions = !!preRegistrationActions?.[0];
+
                 break;
             default:
                 return null;
@@ -497,7 +500,14 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
                                                 { cardProps.heading }
                                             </Typography>
                                             { !cardProps.disabled ? (
-                                                <div style={ { display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" } }>
+                                                <div
+                                                    style={ {
+                                                        alignItems: "center",
+                                                        display: "flex",
+                                                        flexWrap: "wrap",
+                                                        gap: "8px"
+                                                    } }
+                                                >
                                                     { renderActionConfiguredStatus(cardProps.identifier) }
                                                     { renderVersionChips(cardProps.identifier) }
                                                 </div>

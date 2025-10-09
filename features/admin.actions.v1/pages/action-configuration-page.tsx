@@ -48,24 +48,24 @@ import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Grid } from "semantic-ui-react";
 import changeActionStatus from "../api/change-action-status";
 import deleteAction from "../api/delete-action";
+import updateAction from "../api/update-action";
 import useGetActionById from "../api/use-get-action-by-id";
 import useGetActionsByType from "../api/use-get-actions-by-type";
+import ActionVersionChips from "../components/action-version-chips";
+import ActionVersionWarningBanner from "../components/action-version-warning-banner";
 import PreIssueAccessTokenActionConfigForm from "../components/pre-issue-access-token-action-config-form";
 import PreUpdatePasswordActionConfigForm from "../components/pre-update-password-action-config-form";
 import PreUpdateProfileActionConfigForm from "../components/pre-update-profile-action-config-form";
 import { ActionsConstants } from "../constants/actions-constants";
+import { ActionVersionInfo, useActionVersioning } from "../hooks/use-action-versioning";
 import {
     ActionConfigFormPropertyInterface, PreUpdatePasswordActionConfigFormPropertyInterface,
     PreUpdatePasswordActionResponseInterface,
     PreUpdateProfileActionConfigFormPropertyInterface,
     PreUpdateProfileActionResponseInterface
 } from "../models/actions";
-import "./action-configuration-page.scss";
 import { useHandleError, useHandleSuccess } from "../util/alert-util";
-import { useActionVersioning } from "../hooks/use-action-versioning";
-import ActionVersionChips from "../components/action-version-chips";
-import ActionVersionWarningBanner from "../components/action-version-warning-banner";
-import updateAction from "../api/update-action";
+import "./action-configuration-page.scss";
 
 /**
  * Props for the Action Configuration page.
@@ -79,7 +79,6 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
     const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state.config.ui.features.actions
     );
-    const actionsConfig: any = useSelector((state: AppState) => state?.config?.ui?.actions);
 
     const [ isOpenRevertConfigModal, setOpenRevertConfigModal ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState(false);
@@ -147,7 +146,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
     // Use the action versioning hook
     // In create mode (action is null), show latest version
     // In edit mode (action exists), show the action's actual version
-    const versionInfo = useActionVersioning(actionType, action?.version);
+    const versionInfo: ActionVersionInfo = useActionVersioning(actionType, action?.version);
 
     const actionCommonInitialValues: ActionConfigFormPropertyInterface =
         useMemo(() => {
@@ -428,7 +427,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
 
                 mutateAction();
             })
-            .catch((error: AxiosError) => {
+            .catch(() => {
                 dispatch(
                     addAlert<AlertInterface>({
                         description: t("actions:versioning.notifications.updateVersion.genericError.description"),
@@ -540,7 +539,9 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                         onPrimaryActionClick={ (): void => handleDelete() }
                         closeOnDimmerClick={ false }
                     >
-                        <ConfirmationModal.Header data-componentid={ `${_componentId}-revert-confirmation-modal-header` }>
+                        <ConfirmationModal.Header
+                            data-componentid={ `${_componentId}-revert-confirmation-modal-header` }
+                        >
                             { t("actions:confirmationModal.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
@@ -550,7 +551,9 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                         >
                             { t("actions:confirmationModal.message") }
                         </ConfirmationModal.Message>
-                        <ConfirmationModal.Content>{ t("actions:confirmationModal.content") }</ConfirmationModal.Content>
+                        <ConfirmationModal.Content>
+                            { t("actions:confirmationModal.content") }
+                        </ConfirmationModal.Content>
                     </ConfirmationModal>
                 </Show>
             ) }
