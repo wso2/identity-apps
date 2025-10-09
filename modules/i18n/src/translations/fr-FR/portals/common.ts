@@ -69,6 +69,24 @@ export const common: CommonNS = {
                     message: "Une erreur s'est produite"
                 }
             },
+            statusUpdate: {
+                approved: {
+                    description: "La demande d'approbation a été approuvée.",
+                    message: "Demande d'approbation approuvée"
+                },
+                claimed: {
+                    description: "La demande d'approbation a été réclamée.",
+                    message: "Demande d'approbation réclamée"
+                },
+                rejected: {
+                    description: "La demande d'approbation a été rejetée.",
+                    message: "Demande d'approbation rejetée"
+                },
+                released: {
+                    description: "La demande d'approbation a été libérée.",
+                    message: "Demande d'approbation libérée"
+                }
+            },
             updatePendingApprovals: {
                 error: {
                     description: "{{description}}",

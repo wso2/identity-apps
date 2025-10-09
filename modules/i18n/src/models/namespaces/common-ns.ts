@@ -78,6 +78,24 @@ export interface CommonNS {
                     description: string;
                 };
             };
+            statusUpdate: {
+                approved: {
+                    message: string;
+                    description: string;
+                };
+                rejected: {
+                    message: string;
+                    description: string;
+                };
+                claimed: {
+                    message: string;
+                    description: string;
+                };
+                released: {
+                    message: string;
+                    description: string;
+                };
+            };
         };
         operationTypes: {
             addRole: string;

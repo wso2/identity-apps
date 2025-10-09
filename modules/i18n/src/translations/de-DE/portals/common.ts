@@ -69,6 +69,24 @@ export const common: CommonNS = {
                     "message": "Da ist etwas schiefgelaufen"
                 }
             },
+            "statusUpdate": {
+                "approved": {
+                    "description": "Der Genehmigungsantrag wurde genehmigt.",
+                    "message": "Genehmigungsantrag genehmigt"
+                },
+                "claimed": {
+                    "description": "Der Genehmigungsantrag wurde beansprucht.",
+                    "message": "Genehmigungsantrag beansprucht"
+                },
+                "rejected": {
+                    "description": "Der Genehmigungsantrag wurde abgelehnt.",
+                    "message": "Genehmigungsantrag abgelehnt"
+                },
+                "released": {
+                    "description": "Der Genehmigungsantrag wurde freigegeben.",
+                    "message": "Genehmigungsantrag freigegeben"
+                }
+            },
             "updatePendingApprovals": {
                 "error": {
                     "description": "{{description}}",

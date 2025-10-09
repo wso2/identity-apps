@@ -69,6 +69,24 @@ export const common: CommonNS = {
                     "message": "何かがうまくいかなかった"
                 }
             },
+            "statusUpdate": {
+                "approved": {
+                    "description": "承認要求が承認されました。",
+                    "message": "承認要求が承認されました"
+                },
+                "claimed": {
+                    "description": "承認要求が要求されました。",
+                    "message": "承認要求が要求されました"
+                },
+                "rejected": {
+                    "description": "承認要求が拒否されました。",
+                    "message": "承認要求が拒否されました"
+                },
+                "released": {
+                    "description": "承認要求がリリースされました。",
+                    "message": "承認要求がリリースされました"
+                }
+            },
             "updatePendingApprovals": {
                 "error": {
                     "description": "{{description}}",
