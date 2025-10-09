@@ -70,25 +70,6 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                 </Alert>
             </Typography>
             <Box sx={ { display: "flex", flexDirection: "column", gap: 1 } }>
-                { metadata?.supportedFlowCompletionConfigs?.includes("isAutoLoginEnabled") && (
-                    <Box>
-                        <FormControlLabel
-                            label={ t("flows:askPassword.steps.end.autoLogin.label") }
-                            control={
-                                (<Checkbox
-                                    checked={ configs?.isAutoLoginEnabled === "true" }
-                                    onChange={ (event: ChangeEvent<HTMLInputElement>) => {
-                                        setFlowCompletionConfigs({
-                                            ...configs,
-                                            isAutoLoginEnabled: event.target.checked ? "true" : "false"
-                                        });
-                                    } }
-                                />)
-                            }
-                        />
-                        <FormHelperText>{ t("flows:askPassword.steps.end.autoLogin.hint") }</FormHelperText>
-                    </Box>
-                ) }
                 { metadata?.supportedFlowCompletionConfigs?.includes("isFlowCompletionNotificationEnabled") && (
                     <Box>
                         <FormControlLabel
