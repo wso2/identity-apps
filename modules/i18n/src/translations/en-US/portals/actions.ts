@@ -366,6 +366,23 @@ export const actions: actionsNS = {
             }
         }
     },
+    versioning: {
+        outdated: {
+            warning: {
+                message: "A new <1>version {{latestVersion}}</1> of this action is available now. Please update to the latest version.",
+                hideDetailsButton: "Hide Details",
+                details: {
+                    title: "You are currently using <1>version {{currentVersion}}</1> of this action which will be deprecated soon. Please update to the latest <3>version {{latestVersion}}</3> to continue receiving support and updates.",
+                    preRequisite: "Before updating, please ensure that you have read the <1>documentation</1> for any breaking changes."
+                },
+                title: "Update Required.",
+                viewDetailsButton: "View Details",
+                updateButton: "Update"
+            }
+        },
+        outdatedLabel: "Outdated",
+        versionLabel: "Version {{version}}",
+    },
     status: {
         active: "Active",
         configured: "Configured",

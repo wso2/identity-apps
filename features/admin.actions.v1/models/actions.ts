@@ -222,6 +222,10 @@ export interface ActionBaseResponseInterface {
      * Status of the Action.
      */
     status: ActionStatus;
+    /**
+     * Version of the Action.
+     */
+    version?: string;
 }
 
 /**
