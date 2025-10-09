@@ -81,7 +81,7 @@
 
     <servlet-mapping>
         <servlet-name>default</servlet-name>
-        <url-pattern>/updates.config.js</url-pattern>
+        <url-pattern>/update.config.js</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
