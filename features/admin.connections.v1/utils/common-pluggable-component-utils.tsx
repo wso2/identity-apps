@@ -22,8 +22,8 @@ import { CommonPluggableComponentMetaPropertyInterface } from "../models/connect
  * Find the corresponding metadata for the given property key, among the provided set of meta properties. This method
  * recursively traverse through all the properties and sub-properties in the provided meta property set.
  *
- * @param propertyKey Key of the property.
- * @param metaProperties Set of meta properties.
+ * @param propertyKey    - Key of the property.
+ * @param metaProperties - Set of meta properties.
  */
 export const getPropertyMetadata = (propertyKey: string, metaProperties:
     CommonPluggableComponentMetaPropertyInterface[]): CommonPluggableComponentMetaPropertyInterface => {
