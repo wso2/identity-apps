@@ -27,13 +27,22 @@ import { CommonPluggableComponentMetaPropertyInterface } from "../models/connect
  */
 export const getPropertyMetadata = (propertyKey: string, metaProperties:
     CommonPluggableComponentMetaPropertyInterface[]): CommonPluggableComponentMetaPropertyInterface => {
-    
-    for (let i = 0; i < metaProperties?.length; i++) {
-        const metaProperty = metaProperties[i];
+
+    for (let i: number = 0; i < metaProperties?.length; i++) {
+
+        const metaProperty: CommonPluggableComponentMetaPropertyInterface = metaProperties[i];
+
         if (metaProperty.key === propertyKey) {
             return  metaProperty;
         } else if (metaProperty.subProperties?.length > 0) {
-            return getPropertyMetadata(propertyKey, metaProperty.subProperties);
+            const metaSubProperty: CommonPluggableComponentMetaPropertyInterface
+                = getPropertyMetadata(propertyKey, metaProperty.subProperties);
+
+            if (metaSubProperty) {
+                return metaSubProperty;
+            }
         }
     }
+
+    return null;
 };
