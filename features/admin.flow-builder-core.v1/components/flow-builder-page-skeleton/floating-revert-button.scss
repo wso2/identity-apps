@@ -16,18 +16,23 @@
  * under the License.
  */
 
-import { FlowBuilderCoreResourceEndpointsInterface } from "../models/endpoints";
+.floating-revert-button {
+    position: absolute;
+    bottom: 20px;
+    right: 110px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-/**
- * Get the resource endpoints for the Flow Builder Core related features.
- *
- * @returns Flow Builder Core resource endpoints.
- */
-export const getFlowBuilderCoreResourceEndpoints = (
-    serverOrigin: string
-): FlowBuilderCoreResourceEndpointsInterface => {
-    return {
-        flow: `${ serverOrigin }/api/server/v1/flow`,
-        flowMeta: `${ serverOrigin }/api/server/v1/flow/meta`
-    };
-};
+    &.transition {
+        transform: translateX(calc(-1 * var(--wso2is-flow-builder-right-panel-width)));
+    }
+
+    &.MuiButton-outlinedPrimary.Mui-disabled {
+        opacity: 0.5;
+        border-color: var(--oxygen-palette-primary-main);
+        color: var(--oxygen-palette-primary-main);
+    }
+
+    &.save-draft-button {
+        right: 130px;
+    }
+}

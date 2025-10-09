@@ -233,6 +233,7 @@ export interface CommonNS {
     reserved: string;
     resetFilters: string;
     retry: string;
+    revert: string;
     revoke: string;
     revokeAll: string;
     required: string;

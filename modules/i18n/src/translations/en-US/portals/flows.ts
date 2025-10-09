@@ -118,6 +118,14 @@ export const flows: flowsNS = {
             disableFlow: "Disable",
             enableFlow: "Enable"
         },
+        modals: {
+            revertFlow: {
+                assertionHint: "Please confirm your action",
+                description: "This action will permanently delete all customizations and revert the flow back to its initial state.",
+                title: "Revert {{flowType}} Flow?",
+                warning: "This action cannot be undone."
+            }
+        },
         notificationPanel: {
             emptyMessages: {
                 errors: "No errors found.",
@@ -197,6 +205,16 @@ export const flows: flowsNS = {
                 success: {
                     description: "Successfully restored flow to version from {{date}}.",
                     message: "Flow restored successfully"
+                }
+            },
+            revertFlow: {
+                genericError: {
+                    description: "An error occurred while reverting the {{flowType}} flow.",
+                    message: "Revert {{flowType}} Flow Error"
+                },
+                success: {
+                    description: "Successfully reverted the {{flowType}} flow to its initial state.",
+                    message: "{{flowType}} Flow Reverted"
                 }
             },
             textPreferenceFetch: {

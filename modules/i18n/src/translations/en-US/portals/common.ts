@@ -258,6 +258,7 @@ export const common: CommonNS = {
     reserved: "Reserved",
     resetFilters: "Reset filters",
     retry: "Retry",
+    revert: "Revert",
     revoke: "Revoke",
     revokeAll: "Revoke all",
     samples: "Samples",

@@ -258,6 +258,7 @@ export const common: CommonNS = {
     "reserved": "予約済み",
     "resetFilters": "フィルターをリセットします",
     "retry": "リトライ",
+    "revert": "元に戻す",
     "revoke": "取り消す",
     "revokeAll": "すべてを取り消します",
     "samples": "サンプル",

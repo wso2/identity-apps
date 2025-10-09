@@ -105,7 +105,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const { setFlowCompletionConfigs } = useAuthenticationFlowBuilderCore();
+    const { setFlowCompletionConfigs, refetchFlow, setRefetchFlow } = useAuthenticationFlowBuilderCore();
 
     const {
         flowGenerationCompleted,
@@ -128,6 +128,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
     const {
         data: registrationFlow,
+        mutate: mutateRegistrationFlow,
         error: registrationFlowFetchRequestError,
         isLoading: isRegistrationFlowFetchRequestLoading,
         isValidating: isRegistrationFlowFetchRequestValidating
@@ -147,6 +148,18 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
         "Offer the option to Sign up with password or Sign up with Google. If the password " +
             "option is selected, ask for first name, last name, password. Then verify the email of the user."
     ];
+
+    /**
+     * Hook to refetch the flow when `refetchFlow` is set to `true`.
+     */
+    useEffect(() => {
+        if (!refetchFlow) {
+            return;
+        }
+
+        mutateRegistrationFlow();
+        setRefetchFlow(false);
+    }, [ refetchFlow ]);
 
     useEffect(() => {
         if (flowError) {

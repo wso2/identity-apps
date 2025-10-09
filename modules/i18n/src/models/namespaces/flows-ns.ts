@@ -218,6 +218,24 @@ export interface flowsNS {
                     message: string;
                 };
             };
+            revertFlow: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+        };
+        modals: {
+            revertFlow: {
+                title: string;
+                description: string;
+                warning: string;
+                assertionHint: string;
+            };
         };
         tooltips: {
             enableFlow: string;
