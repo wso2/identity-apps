@@ -189,6 +189,10 @@ export class AppConstants {
         .set("SECURITY_ACCOUNT_RECOVERY", "security.accountRecovery")
         .set("SECURITY_ACCOUNT_RECOVERY_CHALLENGE_QUESTIONS", "security.accountRecovery.challengeQuestions")
         .set("SECURITY_ACCOUNT_RECOVERY_EMAIL_RECOVERY", "security.accountRecovery.emailRecovery")
+        .set(
+            "SECURITY_ACCOUNT_RECOVERY_LEGACY_RECOVERY_METHOD_STATUS_CHECK",
+            "security.accountRecovery.legacyRecoveryMethodStatusCheck"
+        )
         .set("SECURITY_MFA", "security.mfa")
         .set("SECURITY_MFA_SMS", "security.mfa.sms")
         .set("SECURITY_MFA_FIDO", "security.mfa.fido")

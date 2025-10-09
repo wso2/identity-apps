@@ -367,6 +367,13 @@
                     {% endif %}
                     {% endfor %}
                     {% endif %}
+                    {% if flow_execution.enable_legacy_flows is defined and not flow_execution.enable_legacy_flows %}
+                    {% if myaccount.security.disabled_features is defined %}
+                    ,"security.accountRecovery.legacyRecoveryMethodStatusCheck"
+                    {% else %}
+                    "security.accountRecovery.legacyRecoveryMethodStatusCheck"
+                    {% endif %}
+                    {% endif %}
                 ],
                 "enabled": {{ myaccount.security.enabled }},
                 "scopes": {

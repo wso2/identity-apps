@@ -112,6 +112,7 @@
             },
             "security": {
                 "disabledFeatures": [
+                    "security.accountRecovery.legacyRecoveryMethodStatusCheck",
                     "security.loginVerifyData.typingDNA",
                     "security.mfa.sms"
                 ],
