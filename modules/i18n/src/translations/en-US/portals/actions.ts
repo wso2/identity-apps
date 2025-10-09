@@ -377,7 +377,13 @@ export const actions: actionsNS = {
                 },
                 title: "Update Required.",
                 viewDetailsButton: "View Details",
-                updateButton: "Update"
+                updateButton: "Update",
+                confirmationModal: {
+                    header: "Have you done the relevant changes?",
+                    message: "Proceeding without making the necessary changes will cause the external service behavior to break.",
+                    content: "This action is irreversible and will result in a permanent update to the action functionality.",
+                    assertionHint: "Please confirm your action"
+                }
             }
         },
         outdatedLabel: "Outdated",

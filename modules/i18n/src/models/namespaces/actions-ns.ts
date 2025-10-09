@@ -368,6 +368,12 @@ export interface actionsNS {
                 title: string;
                 viewDetailsButton: string;
                 updateButton: string;
+                confirmationModal: {
+                    header: string;
+                    message: string;
+                    content: string;
+                    assertionHint: string;
+                };
             };
         };
         outdatedLabel: string;

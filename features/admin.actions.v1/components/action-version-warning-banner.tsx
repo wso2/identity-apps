@@ -28,7 +28,7 @@ import ListItemText from "@oxygen-ui/react/ListItemText";
 import Typography from "@oxygen-ui/react/Typography";
 import { XMarkIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { DocumentationLink, useDocumentation } from "@wso2is/react-components";
+import { ConfirmationModal, DocumentationLink, useDocumentation } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { ActionVersionInfo } from "../hooks/use-action-versioning";
@@ -61,6 +61,10 @@ interface ActionVersionWarningBannerProps extends IdentifiableComponentInterface
      * Whether to show detailed version information.
      */
     showDetails?: boolean;
+    /**
+     * Whether the update operation is in progress.
+     */
+    isUpdateLoading?: boolean;
 }
 
 /**
@@ -73,6 +77,7 @@ const ActionVersionWarningBanner: FunctionComponent<ActionVersionWarningBannerPr
     onDismiss,
     showDismissButton = true,
     showDetails = true,
+    isUpdateLoading = false,
     ["data-componentid"]: componentId = "action-version-warning-banner"
 }: ActionVersionWarningBannerProps): ReactElement => {
     const { t } = useTranslation();
@@ -80,6 +85,7 @@ const ActionVersionWarningBanner: FunctionComponent<ActionVersionWarningBannerPr
 
     const [ showBanner, setShowBanner ] = useState<boolean>(true);
     const [ viewBannerDetails, setViewBannerDetails ] = useState<boolean>(false);
+    const [ showConfirmationModal, setShowConfirmationModal ] = useState<boolean>(false);
 
     if (!versionInfo.isOutdated) {
         return null;
@@ -141,13 +147,59 @@ const ActionVersionWarningBanner: FunctionComponent<ActionVersionWarningBannerPr
                     <Button
                         sx={ { marginTop: "var(--oxygen-spacing-2)" } }
                         variant="contained"
-                        onClick={ onUpdate }
+                        onClick={ () => setShowConfirmationModal(true) }
                         data-componentid={ `${componentId}-upgrade-button` }
                     >
                         { t("actions:versioning.outdated.warning.updateButton") }
                     </Button>
                 ) }
             </Box>
+        );
+    };
+
+    /**
+     * Renders the confirmation modal for the update action.
+     *
+     * @returns Confirmation modal.
+     */
+    const renderConfirmationModal = (): ReactElement => {
+        return (
+            <ConfirmationModal
+                primaryActionLoading={ isUpdateLoading }
+                data-componentid={ `${componentId}-update-confirmation-modal` }
+                onClose={ (): void => setShowConfirmationModal(false) }
+                type="negative"
+                open={ showConfirmationModal }
+                assertionHint={ t("actions:versioning.outdated.warning.confirmationModal.assertionHint") }
+                assertionType="checkbox"
+                primaryAction={ t("common:confirm") }
+                secondaryAction={ t("common:cancel") }
+                onSecondaryActionClick={ (): void => {
+                    setShowConfirmationModal(false);
+                } }
+                onPrimaryActionClick={ (): void => {
+                    setShowConfirmationModal(false);
+                    onUpdate && onUpdate();
+                } }
+                closeOnDimmerClick={ false }
+            >
+                <ConfirmationModal.Header
+                    data-componentid={ `${componentId}-update-confirmation-modal-header` }>
+                    { t("actions:versioning.outdated.warning.confirmationModal.header") }
+                </ConfirmationModal.Header>
+                <ConfirmationModal.Message
+                    data-componentid={ `${componentId}-update-confirmation-modal-message` }
+                    attached
+                    negative
+                >
+                    { t("actions:versioning.outdated.warning.confirmationModal.message") }
+                </ConfirmationModal.Message>
+                <ConfirmationModal.Content
+                    data-componentid={ `${componentId}-update-confirmation-modal-content` }
+                >
+                    { t("actions:versioning.outdated.warning.confirmationModal.content") }
+                </ConfirmationModal.Content>
+            </ConfirmationModal>
         );
     };
 
@@ -203,6 +255,7 @@ const ActionVersionWarningBanner: FunctionComponent<ActionVersionWarningBannerPr
                 of this action is available now. Please update to the latest version.
             </Trans>
             { viewBannerDetails && renderBannerViewDetails() }
+            { showConfirmationModal && renderConfirmationModal() }
         </Alert>
     );
 };
