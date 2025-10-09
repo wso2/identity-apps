@@ -341,6 +341,7 @@ export interface GithubDocumentationOptionsInterface {
 
 /**
  * Interface to extent in-order to enable scope based access control.
+ * @deprecated - Use `FeatureAccessConfigInterface` from `@wso2is/access-control` instead.
  */
 export interface FeatureAccessConfigInterface {
     /**

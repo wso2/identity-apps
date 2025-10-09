@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,6 +23,7 @@ import Autocomplete, {
 import Box from "@oxygen-ui/react/Box";
 import Chip from "@oxygen-ui/react/Chip";
 import TextField from "@oxygen-ui/react/TextField";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import {
     ApplicationTabComponentsFilter
 } from "@wso2is/admin.application-templates.v1/components/application-tab-components-filter";
@@ -43,7 +44,6 @@ import {
     AlertLevels,
     Claim,
     ExternalClaim,
-    FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
@@ -91,7 +91,10 @@ import { Dispatch } from "redux";
 import { Button, Container, Divider, DropdownProps, Form, Grid, Label, List, Table } from "semantic-ui-react";
 import { OIDCScopesManagementConstants } from "../../../admin.oidc-scopes.v1/constants";
 import { getGeneralIcons } from "../../configs/ui";
-import { ApplicationManagementConstants } from "../../constants/application-management";
+import {
+    ApplicationFeatureDictionaryKeys,
+    ApplicationManagementConstants
+} from "../../constants/application-management";
 import CustomApplicationTemplate from
     "../../data/application-templates/templates/custom-application/custom-application.json";
 import M2MApplicationTemplate from "../../data/application-templates/templates/m2m-application/m2m-application.json";
@@ -238,6 +241,16 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         applicationFeatureConfig,
         ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG_BACK_CHANNEL_LOGOUT")
     );
+    const isApplicationEditEnforceAuthorizedAPIUpdatePermissionEnabled: boolean = isFeatureEnabled(
+        applicationFeatureConfig,
+        ApplicationManagementConstants.FEATURE_DICTIONARY.get(
+            ApplicationFeatureDictionaryKeys.ApplicationEditEnforceAuthorizedAPIUpdatePermission)
+    );
+
+    const hasClientSecretReadPermission: boolean = useRequiredScopes(
+        applicationFeatureConfig?.subFeatures?.clientSecret?.scopes?.read);
+    const hasClientSecretCreatePermission: boolean = useRequiredScopes(
+        applicationFeatureConfig?.subFeatures?.clientSecret?.scopes?.create);
 
     const { isFAPIApplication } = initialValues;
     const { isOrganizationManagementEnabled } = useGlobalVariables();
@@ -4570,6 +4583,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             && !isPublicClient
                             && !isSystemApplication
                             && !isDefaultApplication
+                            && (!isApplicationEditEnforceAuthorizedAPIUpdatePermissionEnabled
+                                || hasClientSecretReadPermission)
                             && (
                                 <Grid.Row columns={ 2 } data-componentid={ `${ testId }-oidc-client-secret` }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -4593,7 +4608,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                                 }
                                                             />
                                                             {
-                                                                !readOnly && (
+                                                                !readOnly
+                                                                // eslint-disable-next-line max-len
+                                                                && (!isApplicationEditEnforceAuthorizedAPIUpdatePermissionEnabled
+                                                                    || hasClientSecretCreatePermission) && (
                                                                     <Button
                                                                         color="red"
                                                                         className="oidc-action-button"
@@ -4626,7 +4644,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                                 }
                                                             />
                                                             {
-                                                                !readOnly && (
+                                                                !readOnly
+                                                                    // eslint-disable-next-line max-len
+                                                                    && (!isApplicationEditEnforceAuthorizedAPIUpdatePermissionEnabled
+                                                                    || hasClientSecretCreatePermission) && (
                                                                     <Button
                                                                         color="red"
                                                                         className="oidc-action-button"
