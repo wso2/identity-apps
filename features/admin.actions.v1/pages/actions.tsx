@@ -56,8 +56,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Placeholder } from "semantic-ui-react";
 import useGetActionTypes from "../api/use-get-action-types";
+import useGetActionsByType from "../api/use-get-actions-by-type";
+import ActionVersionChips from "../components/action-version-chips";
 import { ActionsConstants } from "../constants/actions-constants";
+import { ActionVersionInfo, useActionVersioning } from "../hooks/use-action-versioning";
 import {
+    ActionBasicResponseInterface,
     ActionType,
     ActionTypeCardInterface,
     ActionTypesCountInterface,
@@ -222,6 +226,93 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
             return actionTypeCounts;
         }
     }, [ actionTypesConfigs ]);
+
+    // Fetch actions for each action type to check versions
+    const {
+        data: preIssueAccessTokenActions
+    } = useGetActionsByType(ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_API_PATH,
+        typeCounts?.preIssueAccessToken > 0);
+
+    const {
+        data: preUpdatePasswordActions
+    } = useGetActionsByType(ActionsConstants.PRE_UPDATE_PASSWORD_API_PATH,
+        typeCounts?.preUpdatePassword > 0);
+
+    const {
+        data: preUpdateProfileActions
+    } = useGetActionsByType(ActionsConstants.PRE_UPDATE_PROFILE_API_PATH,
+        typeCounts?.preUpdateProfile > 0);
+
+    const {
+        data: preRegistrationActions
+    } = useGetActionsByType(ActionsConstants.PRE_REGISTRATION_API_PATH,
+        typeCounts?.preRegistration > 0);
+
+    // Version information for each action type
+    const preIssueAccessTokenVersionInfo: ActionVersionInfo = useActionVersioning(
+        ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH,
+        preIssueAccessTokenActions?.[0]?.version
+    );
+    const preUpdatePasswordVersionInfo: ActionVersionInfo = useActionVersioning(
+        ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH,
+        preUpdatePasswordActions?.[0]?.version
+    );
+    const preUpdateProfileVersionInfo: ActionVersionInfo = useActionVersioning(
+        ActionsConstants.PRE_UPDATE_PROFILE_URL_PATH,
+        preUpdateProfileActions?.[0]?.version
+    );
+    const preRegistrationVersionInfo: ActionVersionInfo = useActionVersioning(
+        ActionsConstants.PRE_REGISTRATION_URL_PATH,
+        preRegistrationActions?.[0]?.version
+    );
+
+    /**
+     * Render an 'Outdated' chip for configured actions when the version is outdated.
+     */
+    const renderVersionChips = (actionType: string): ReactElement | null => {
+        let versionInfo: ActionVersionInfo;
+        let hasConfiguredActions: boolean = false;
+
+        switch (actionType) {
+            case ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH:
+                versionInfo = preIssueAccessTokenVersionInfo;
+                hasConfiguredActions = !!preIssueAccessTokenActions?.[0];
+                break;
+            case ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH:
+                versionInfo = preUpdatePasswordVersionInfo;
+                hasConfiguredActions = !!preUpdatePasswordActions?.[0];
+                break;
+            case ActionsConstants.PRE_UPDATE_PROFILE_URL_PATH:
+                versionInfo = preUpdateProfileVersionInfo;
+                hasConfiguredActions = !!preUpdateProfileActions?.[0];
+                break;
+            case ActionsConstants.PRE_REGISTRATION_URL_PATH:
+                versionInfo = preRegistrationVersionInfo;
+                hasConfiguredActions = !!preRegistrationActions?.[0];
+                break;
+            default:
+                return null;
+        }
+
+        // Only show outdated chip when actions are configured and the version is outdated
+        if (!hasConfiguredActions || !versionInfo?.isOutdated) {
+            return null;
+        }
+
+        // Create a custom version info that only shows the outdated chip
+        const outdatedOnlyVersionInfo: ActionVersionInfo = {
+            ...versionInfo,
+            displayVersion: "" // Hide the version chip by clearing displayVersion
+        };
+
+        return (
+            <ActionVersionChips
+                versionInfo={ outdatedOnlyVersionInfo }
+                size="small"
+                data-componentid={ `${ _componentId }-${ actionType }-version-chips` }
+            />
+        );
+    };
 
     /**
      * The following useEffect is used to handle if any error occurs while fetching the Action Types.
@@ -405,8 +496,12 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
                                             <Typography variant="h6">
                                                 { cardProps.heading }
                                             </Typography>
-                                            { !cardProps.disabled ?
-                                                renderActionConfiguredStatus(cardProps.identifier) : null }
+                                            { !cardProps.disabled ? (
+                                                <div style={ { display: "flex", gap: "8px", alignItems: "center", flexWrap: "wrap" } }>
+                                                    { renderActionConfiguredStatus(cardProps.identifier) }
+                                                    { renderVersionChips(cardProps.identifier) }
+                                                </div>
+                                            ) : null }
                                         </div>
                                         <FeatureFlagLabel
                                             featureFlags={ actionsFeatureConfig?.featureFlags }

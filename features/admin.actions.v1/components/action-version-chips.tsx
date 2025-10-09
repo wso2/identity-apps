@@ -32,10 +32,6 @@ interface ActionVersionChipsProps extends IdentifiableComponentInterface {
      */
     versionInfo: ActionVersionInfo;
     /**
-     * Whether to show the outdated chip.
-     */
-    showOutdatedChip?: boolean;
-    /**
      * Size of the chips.
      */
     size?: "small" | "medium";
@@ -47,15 +43,10 @@ interface ActionVersionChipsProps extends IdentifiableComponentInterface {
  */
 const ActionVersionChips: FunctionComponent<ActionVersionChipsProps> = ({
     versionInfo,
-    showOutdatedChip = true,
     size = "medium",
     ["data-componentid"]: componentId = "action-version-chips"
 }: ActionVersionChipsProps): ReactElement => {
     const { t } = useTranslation();
-
-    if (!versionInfo.displayVersion) {
-        return null;
-    }
 
     return (
         <Box
@@ -66,23 +57,25 @@ const ActionVersionChips: FunctionComponent<ActionVersionChipsProps> = ({
             } }
             data-componentid={ componentId }
         >
-            <Chip
-                label={ t("actions:versioning.versionLabel", { version: versionInfo.displayVersion }) }
-                size={ size }
-                sx={ {
-                    "> span": {
-                        padding: ".5833em .833em"
-                    },
-                    backgroundColor: "#dcf0fa",
-                    borderRadius: "var(--oxygen-shape-borderRadius)",
-                    color: "#0082c3",
-                    fontSize: "12px",
-                    fontWeight: "500",
-                    height: "24px"
-                } }
-                data-componentid={ `${componentId}-version` }
-            />
-            { showOutdatedChip && versionInfo.isOutdated && (
+            { versionInfo.displayVersion && (
+                <Chip
+                    label={ t("actions:versioning.versionLabel", { version: versionInfo.displayVersion }) }
+                    size={ size }
+                    sx={ {
+                        "> span": {
+                            padding: ".5833em .833em"
+                        },
+                        backgroundColor: "#dcf0fa",
+                        borderRadius: "var(--oxygen-shape-borderRadius)",
+                        color: "#0082c3",
+                        fontSize: "12px",
+                        fontWeight: "500",
+                        height: "24px"
+                    } }
+                    data-componentid={ `${componentId}-version` }
+                />
+            ) }
+            { versionInfo.isOutdated && (
                 <Chip
                     label={ t("actions:versioning.outdatedLabel") }
                     size={ size }
