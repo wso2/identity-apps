@@ -31,7 +31,6 @@ export enum ApplicationFeatureDictionaryKeys {
     ApplicationEditEnforceAuthorizedAPIUpdatePermission = "APPLICATION_EDIT_ENFORCE_AUTHORIZED_API_UPDATE_PERMISSION"
 }
 
-
 /**
  * Class containing application management constants.
  */
