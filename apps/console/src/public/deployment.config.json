@@ -509,6 +509,44 @@
                     "update": [
                         "internal_application_mgt_update"
                     ]
+                },
+                "subFeatures": {
+                    "businessAPIResourceAuthorization": {
+                        "disabledFeatures": [],
+                        "enabled": true,
+                        "featureFlags": [],
+                        "scopes": {
+                            "create": [],
+                            "delete": [],
+                            "feature": [],
+                            "read": [],
+                            "update": []
+                        }
+                    },
+                    "internalAPIResourceAuthorization": {
+                        "disabledFeatures": [],
+                        "enabled": true,
+                        "featureFlags": [],
+                        "scopes": {
+                            "create": [],
+                            "delete": [],
+                            "feature": [],
+                            "read": [],
+                            "update": []
+                        }
+                    },
+                    "loginFlow": {
+                        "disabledFeatures": [],
+                        "enabled": true,
+                        "featureFlags": [],
+                        "scopes": {
+                            "create": [],
+                            "delete": [],
+                            "feature": [],
+                            "read": [],
+                            "update": []
+                        }
+                    }
                 }
             },
             "approvalWorkflows": {
