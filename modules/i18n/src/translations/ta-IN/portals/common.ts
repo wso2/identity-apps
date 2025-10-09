@@ -69,6 +69,24 @@ export const common: CommonNS = {
                     message: "ஏதோ தவறு நடந்துவிட்டது"
                 }
             },
+            statusUpdate: {
+                approved: {
+                    description: "அனுமதி கோரிக்கை அனுமதிக்கப்பட்டது.",
+                    message: "அனுமதி கோரிக்கை அனுமதிக்கப்பட்டது"
+                },
+                claimed: {
+                    description: "அனுமதி கோரிக்கை கோரப்பட்டது.",
+                    message: "அனுமதி கோரிக்கை கோரப்பட்டது"
+                },
+                rejected: {
+                    description: "அனுமதி கோரிக்கை நிராகரிக்கப்பட்டது.",
+                    message: "அனுமதி கோரிக்கை நிராகரிக்கப்பட்டது"
+                },
+                released: {
+                    description: "அனுமதி கோரிக்கை வெளியிடப்பட்டது.",
+                    message: "அனுமதி கோரிக்கை வெளியிடப்பட்டது"
+                }
+            },
             updatePendingApprovals: {
                 error: {
                     description: "{{description}}",

@@ -69,6 +69,24 @@ export const common: CommonNS = {
                     message: "යමක් වැරදී ඇත"
                 }
             },
+            statusUpdate: {
+                approved: {
+                    description: "අනුමත කිරීමේ ඉල්ලීම අනුමත කර ඇත.",
+                    message: "අනුමත කිරීමේ ඉල්ලීම අනුමත කර ඇත"
+                },
+                claimed: {
+                    description: "අනුමත කිරීමේ ඉල්ලීම ගෙන ඇත.",
+                    message: "අනුමත කිරීමේ ඉල්ලීම ගෙන ඇත"
+                },
+                rejected: {
+                    description: "අනුමත කිරීමේ ඉල්ලීම ප්‍රතික්ෂේප කර ඇත.",
+                    message: "අනුමත කිරීමේ ඉල්ලීම ප්‍රතික්ෂේප කර ඇත"
+                },
+                released: {
+                    description: "අනුමත කිරීමේ ඉල්ලීම නිදහස් කර ඇත.",
+                    message: "අනුමත කිරීමේ ඉල්ලීම නිදහස් කර ඇත"
+                }
+            },
             updatePendingApprovals: {
                 error: {
                     description: "{{description}}",

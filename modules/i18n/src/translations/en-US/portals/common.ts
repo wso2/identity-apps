@@ -69,6 +69,24 @@ export const common: CommonNS = {
                     message: "Something went wrong"
                 }
             },
+            statusUpdate: {
+                approved: {
+                    description: "The approval request has been approved.",
+                    message: "Approval request approved"
+                },
+                claimed: {
+                    description: "The approval request has been claimed.",
+                    message: "Approval request claimed"
+                },
+                rejected: {
+                    description: "The approval request has been rejected.",
+                    message: "Approval request rejected"
+                },
+                released: {
+                    description: "The approval request has been released.",
+                    message: "Approval request released"
+                }
+            },
             updatePendingApprovals: {
                 error: {
                     description: "{{description}}",

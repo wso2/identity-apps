@@ -69,6 +69,24 @@ export const common: CommonNS = {
                     "message": "出现了问题"
                 }
             },
+            "statusUpdate": {
+                "approved": {
+                    "description": "批准请求已被批准。",
+                    "message": "批准请求已批准"
+                },
+                "claimed": {
+                    "description": "批准请求已被认领。",
+                    "message": "批准请求已认领"
+                },
+                "rejected": {
+                    "description": "批准请求已被拒绝。",
+                    "message": "批准请求已拒绝"
+                },
+                "released": {
+                    "description": "批准请求已被释放。",
+                    "message": "批准请求已释放"
+                }
+            },
             "updatePendingApprovals": {
                 "error": {
                     "description": "{{description}}",
