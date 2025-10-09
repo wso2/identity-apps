@@ -99,10 +99,7 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                             { t("flows:registrationFlow.steps.end.accountVerification.hint") }
                         </FormHelperText>
                         <Alert severity="warning">
-                            <Trans i18nKey="flows:registrationFlow.steps.end.accountVerification.warning">
-                                When the flow includes an email verification step (e.g. email OTP),
-                                this option will not be applied.
-                            </Trans>
+                            { t("flows:registrationFlow.steps.end.accountVerification.warning") }
                         </Alert>
                     </Box>
                 ) }

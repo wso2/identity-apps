@@ -61,13 +61,13 @@ const PasswordFieldAdapter = ({ component, formState, formStateHandler, formErro
             formErrorHandler(identifier, isValid ? null : errors);
 
             if (formState.values.confirmPassword) {
-                const { confirmPasswordErrors, isValidConfirmPassword } = validateConfirmPassword(
+                const { errors: passwordConfirmationErrors, isValid: isValidConfirmPassword } = validateConfirmPassword(
                     { identifier: "confirmPassword", required },
                     formState.values.confirmPassword,
                     password
                 );
 
-                formErrorHandler("confirmPassword", isValidConfirmPassword ? null : confirmPasswordErrors);
+                formErrorHandler("confirmPassword", isValidConfirmPassword ? null : passwordConfirmationErrors);
             }
         }
     }, [ password ]);
@@ -75,14 +75,14 @@ const PasswordFieldAdapter = ({ component, formState, formStateHandler, formErro
     useEffect(() => {
         if (isConfirmPasswordField) {
             formStateHandler(identifier, confirmPassword);
-            const { confirmPasswordErrors, isValidConfirmPassword } = validateConfirmPassword(
+            const { errors: passwordConfirmationErrors, isValid: isValidConfirmPassword } = validateConfirmPassword(
                 { identifier, required },
                 confirmPassword,
 
                 formState.values.password
             );
 
-            formErrorHandler(identifier, isValidConfirmPassword ? null : confirmPasswordErrors);
+            formErrorHandler(identifier, isValidConfirmPassword ? null : passwordConfirmationErrors);
         }
     }, [ confirmPassword, password ]);
 
