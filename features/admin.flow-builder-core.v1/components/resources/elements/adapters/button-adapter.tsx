@@ -119,8 +119,6 @@ const ButtonAdapter: FunctionComponent<ButtonAdapterPropsInterface> = ({
         };
     }
 
-    console.log(resource?.config?.image)
-
     return (
         <div className="adapter button-adapter">
             <Button
