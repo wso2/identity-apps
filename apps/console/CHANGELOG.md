@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.79.33
+
+### Patch Changes
+
+- [#9282](https://github.com/wso2/identity-apps/pull/9282) [`b6fc0b0609e40d20dc551b4f26868dbfbcbb9b0a`](https://github.com/wso2/identity-apps/commit/b6fc0b0609e40d20dc551b4f26868dbfbcbb9b0a) Thanks [@brionmario](https://github.com/brionmario)! - Show update level on Console UI
+
 ## 2.79.32
 
 ### Patch Changes
