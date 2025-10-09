@@ -393,9 +393,26 @@ export interface MultiTenancyConfigInterface {
 }
 
 /**
+ * Interface for. Actions UI level configurations.
+ */
+export interface ActionsUIConfigInterface {
+    types: {
+        [ key: string ]: {
+            version: {
+                latest: string;
+            }
+        }
+    }
+}
+
+/**
  * Portal UI config interface inheriting the common configs from core module.
  */
 export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfigInterface> {
+    /**
+     * Actions related configurations.
+     */
+    actions: ActionsUIConfigInterface;
     /**
      * Should the admin notice be enabled.
      */
