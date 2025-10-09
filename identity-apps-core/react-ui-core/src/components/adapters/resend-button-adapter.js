@@ -40,7 +40,6 @@ const ResendButtonAdapter = ({ component, handleButtonAction }) => {
 
 ResendButtonAdapter.propTypes = {
     component: PropTypes.shape({
-        action: PropTypes.object.isOptional,
         actionId: PropTypes.string.isRequired,
         config: PropTypes.shape({
             text: PropTypes.string.isRequired,
@@ -50,8 +49,7 @@ ResendButtonAdapter.propTypes = {
         type: PropTypes.string,
         variant: PropTypes.string
     }).isRequired,
-    handleButtonAction: PropTypes.func.isRequired,
-    isDisabled: PropTypes.bool.isOptional
+    handleButtonAction: PropTypes.func.isRequired
 };
 
 export default ResendButtonAdapter;
