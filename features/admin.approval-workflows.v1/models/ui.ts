@@ -67,6 +67,11 @@ export interface WorkflowOperationsDetailsFormValuesInterface {
      * Name of the workflow.
      */
     matchedOperations: DropdownPropsInterface[];
+
+    /**
+     * Error when no operation is selected.
+     */
+    NoSelectedOperation?: boolean;
 }
 
 /**

@@ -142,9 +142,9 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                 const error: Partial<WorkflowOperationsDetailsFormValuesInterface> = {};
 
                 if (selectedOperations.length === 0) {
-                    error.matchedOperations = t(
-                        "approvalWorkflows:forms.operations.dropDown.nullValidationErrorMessage"
-                    );
+                    error.NoSelectedOperation = true;
+                } else {
+                    error.NoSelectedOperation = false;
                 }
 
                 return error;
@@ -160,7 +160,7 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                     } }
                     initialValues={ initialValues }
                     validate={ validateForm }
-                    render={ ({ handleSubmit }: FormRenderProps) => {
+                    render={ ({ handleSubmit, errors }: FormRenderProps) => {
                         triggerFormSubmit.current = handleSubmit;
 
                         return (
@@ -194,14 +194,14 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                                         t("approvalWorkflows:forms.operations.dropDown.placeholder")
                                                     }
                                                     helperText={
-                                                        selectedOperations.length === 0
+                                                        errors.NoSelectedOperation
                                                             ? t(
                                                                 "approvalWorkflows:forms.operations.dropDown." +
                                                                 "nullValidationErrorMessage"
                                                             )
                                                             : ""
                                                     }
-                                                    error={ selectedOperations.length === 0 }
+                                                    error={ errors.NoSelectedOperation }
                                                     data-componentid={ `${componentId}-field-operation-search` }
                                                 />
                                             ) }
