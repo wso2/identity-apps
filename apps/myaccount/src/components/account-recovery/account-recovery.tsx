@@ -75,14 +75,14 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
     const RECOVERY_PASSWORD_NOTIFICATION_EMAIL_LINK: string = "Recovery.Notification.Password.emailLink.Enable";
     const RECOVERY_PASSWORD_NOTIFICATION_SMS_OTP: string = "Recovery.Notification.Password.smsOtp.Enable";
     const RECOVERY_USERNAME_NOTIFICATION: string = "Recovery.Notification.Username.Enable";
-    const [isQsRecoveryEnabled, setIsQsRecoveryEnabled] = useState<boolean>(false);
-    const [isNotificationRecoveryEnabled, setIsNotificationRecoveryEnabled] = useState<boolean>(false);
-    const [isNotificationRecoveryEmailLinkEnabled, setIsNotificationRecoveryEmailLinkEnabled] = useState<boolean>(
+    const [ isQsRecoveryEnabled, setIsQsRecoveryEnabled ] = useState<boolean>(false);
+    const [ isNotificationRecoveryEnabled, setIsNotificationRecoveryEnabled ] = useState<boolean>(false);
+    const [ isNotificationRecoveryEmailLinkEnabled, setIsNotificationRecoveryEmailLinkEnabled ] = useState<boolean>(
         false
     );
-    const [isNotificationRecoverySMSOTPEnabled, setIsNotificationRecoverySMSOTPEnabled] = useState<boolean>(false);
-    const [isUsernameRecoveryEnabled, setIsUsernameRecoveryEnabled] = useState<boolean>(false);
-    const [isAccountRecoveryDetailsLoading, setIsAccountRecoveryDetailsLoading] = useState<boolean>(false);
+    const [ isNotificationRecoverySMSOTPEnabled, setIsNotificationRecoverySMSOTPEnabled ] = useState<boolean>(false);
+    const [ isUsernameRecoveryEnabled, setIsUsernameRecoveryEnabled ] = useState<boolean>(false);
+    const [ isAccountRecoveryDetailsLoading, setIsAccountRecoveryDetailsLoading ] = useState<boolean>(false);
 
     /**
      * The following method gets the preference for account recovery.
@@ -182,9 +182,9 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
 
     return (
         <SettingsSection
-            data-testid={`${testId}-settings-section`}
-            description={t("myAccount:sections.accountRecovery.description")}
-            header={t("myAccount:sections.accountRecovery.heading")}
+            data-testid={ `${testId}-settings-section` }
+            description={ t("myAccount:sections.accountRecovery.description") }
+            header={ t("myAccount:sections.accountRecovery.heading") }
             placeholder={
                 isLegacyRecoveryMethodStatusCheckEnabled &&
                 !isAccountRecoveryDetailsLoading &&
@@ -193,10 +193,10 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                     : null
             }
         >
-            {!isLegacyRecoveryMethodStatusCheckEnabled || !isAccountRecoveryDetailsLoading ? (
-                <List divided={true} verticalAlign="middle" className="main-content-inner">
+            { !isLegacyRecoveryMethodStatusCheckEnabled || !isAccountRecoveryDetailsLoading ? (
+                <List divided={ true } verticalAlign="middle" className="main-content-inner">
                     <List.Item className="inner-list-item">
-                        {(hasRequiredScopes(
+                        { (hasRequiredScopes(
                             featureConfig?.security,
                             featureConfig?.security?.scopes?.read,
                             allowedScopes
@@ -207,14 +207,14 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                             ) &&
                             !isLegacyRecoveryMethodStatusCheckEnabled) ||
                         isQsRecoveryEnabled ? (
-                            <SecurityQuestionsComponent
-                                onAlertFired={onAlertFired}
-                                data-testid={`${testId}-settings-section-security-questions-component`}
-                            />
-                        ) : null}
+                                <SecurityQuestionsComponent
+                                    onAlertFired={ onAlertFired }
+                                    data-testid={ `${testId}-settings-section-security-questions-component` }
+                                />
+                            ) : null }
                     </List.Item>
                     <List.Item className="inner-list-item">
-                        {(hasRequiredScopes(
+                        { (hasRequiredScopes(
                             featureConfig?.security,
                             featureConfig?.security?.scopes?.read,
                             allowedScopes
@@ -226,25 +226,25 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                             !isLegacyRecoveryMethodStatusCheckEnabled) ||
                         isNotificationRecoveryEmailLinkEnabled ||
                         isUsernameRecoveryEnabled ? (
-                            <EmailRecovery
-                                onAlertFired={onAlertFired}
-                                data-testid={`${testId}-settings-section-email-recovery`}
-                            />
-                        ) : null}
+                                <EmailRecovery
+                                    onAlertFired={ onAlertFired }
+                                    data-testid={ `${testId}-settings-section-email-recovery` }
+                                />
+                            ) : null }
                     </List.Item>
                     <List.Item className="inner-list-item">
-                        {(hasRequiredScopes(
+                        { (hasRequiredScopes(
                             featureConfig?.security,
                             featureConfig?.security?.scopes?.read,
                             allowedScopes
                         ) &&
                             !isLegacyRecoveryMethodStatusCheckEnabled) ||
                         isNotificationRecoverySMSOTPEnabled ? (
-                            <SMSRecovery
-                                onAlertFired={onAlertFired}
-                                data-componentid={`${testId}-settings-section-sms-recovery`}
-                            />
-                        ) : null}
+                                <SMSRecovery
+                                    onAlertFired={ onAlertFired }
+                                    data-componentid={ `${testId}-settings-section-sms-recovery` }
+                                />
+                            ) : null }
                     </List.Item>
                 </List>
             ) : (
@@ -264,7 +264,7 @@ export const AccountRecoveryComponent: FunctionComponent<AccountRecoveryProps> =
                         </Placeholder.Header>
                     </Placeholder>
                 </EmphasizedSegment>
-            )}
+            ) }
         </SettingsSection>
     );
 };
