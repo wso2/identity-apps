@@ -511,7 +511,7 @@
                     ]
                 },
                 "subFeatures": {
-                    "businessAPIResourceAuthorization": {
+                    "authenticationScript": {
                         "disabledFeatures": [],
                         "enabled": true,
                         "featureFlags": [],
@@ -521,6 +521,18 @@
                             "feature": [],
                             "read": [],
                             "update": []
+                        }
+                    },
+                    "businessAPIResourceAuthorization": {
+                        "disabledFeatures": [],
+                        "enabled": true,
+                        "featureFlags": [],
+                        "scopes": {
+                            "create": [],
+                            "delete": [],
+                            "feature": [],
+                            "read": [],
+                            "update": [ "internal_application_business_api_update" ]
                         }
                     },
                     "internalAPIResourceAuthorization": {
@@ -532,19 +544,7 @@
                             "delete": [],
                             "feature": [],
                             "read": [],
-                            "update": []
-                        }
-                    },
-                    "loginFlow": {
-                        "disabledFeatures": [],
-                        "enabled": true,
-                        "featureFlags": [],
-                        "scopes": {
-                            "create": [],
-                            "delete": [],
-                            "feature": [],
-                            "read": [],
-                            "update": []
+                            "update": [ "internal_application_internal_api_update" ]
                         }
                     }
                 }
