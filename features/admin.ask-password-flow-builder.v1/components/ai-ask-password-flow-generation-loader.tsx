@@ -107,7 +107,7 @@ const AskPasswordFlowAILoader = (): ReactElement => {
         // Find the last completed status based on the predefined progress mapping.
         let maxProgress: number = 0;
 
-        Object.entries(data.status).forEach(([ key, value ]: [string, boolean]) => {
+        Object.entries(data).forEach(([ key, value ]: [string, boolean]) => {
             if (value && statusProgress[key] > maxProgress) {
                 maxProgress = statusProgress[key];
             }
@@ -125,7 +125,7 @@ const AskPasswordFlowAILoader = (): ReactElement => {
         if (!data) return t("ai:aiFlow.states.0");
         let currentStatusLabel: string = "ai:aiFlow.states.0";
 
-        Object.entries(data.status).forEach(([ key, value ]: [string, boolean]) => {
+        Object.entries(data).forEach(([ key, value ]: [string, boolean]) => {
             if (value && statusLabels[key]) {
                 currentStatusLabel = statusLabels[key];
             }
