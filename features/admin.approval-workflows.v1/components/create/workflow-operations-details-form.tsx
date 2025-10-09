@@ -142,9 +142,9 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                 const error: Partial<WorkflowOperationsDetailsFormValuesInterface> = {};
 
                 if (selectedOperations.length === 0) {
-                    error.NoSelectedOperation = true;
-                } else {
-                    error.NoSelectedOperation = false;
+                    error.matchedOperations = t(
+                        "approvalWorkflows:forms.operations.dropDown.nullValidationErrorMessage"
+                    );
                 }
 
                 return error;
@@ -193,15 +193,8 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                                     placeholder={
                                                         t("approvalWorkflows:forms.operations.dropDown.placeholder")
                                                     }
-                                                    helperText={
-                                                        errors.NoSelectedOperation
-                                                            ? t(
-                                                                "approvalWorkflows:forms.operations.dropDown." +
-                                                                "nullValidationErrorMessage"
-                                                            )
-                                                            : ""
-                                                    }
-                                                    error={ errors.NoSelectedOperation }
+                                                    helperText={ errors.matchedOperations }
+                                                    error={ !!errors.matchedOperations }
                                                     data-componentid={ `${componentId}-field-operation-search` }
                                                 />
                                             ) }
