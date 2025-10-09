@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 3.3.15
+
+### Patch Changes
+
+- [#9277](https://github.com/wso2/identity-apps/pull/9277) [`3b8fb556dd0314724bad7337ac804d1dcb94d936`](https://github.com/wso2/identity-apps/commit/3b8fb556dd0314724bad7337ac804d1dcb94d936) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Fix ability to continue with the warn logs in flow execution.
+
+* [#9274](https://github.com/wso2/identity-apps/pull/9274) [`e1ff3c7132acd24724018c708c85cb719d1b8ddc`](https://github.com/wso2/identity-apps/commit/e1ff3c7132acd24724018c708c85cb719d1b8ddc) Thanks [@thiva-k](https://github.com/thiva-k)! - Remove recovery screen values
+
 ## 3.3.14
 
 ### Patch Changes
