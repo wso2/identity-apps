@@ -54,7 +54,8 @@ export const useResendAccountConfirmationAlert = (
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     useEffect(() => {
-        if (!allowedScopes.includes("internal_user_impersonate")) {
+        if (!allowedScopes.includes("internal_user_impersonate") &&
+            !allowedScopes.includes("internal_org_user_impersonate")) {
             getSelfSignUpPreferences();
         }
     }, [ allowedScopes ]);
