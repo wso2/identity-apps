@@ -522,7 +522,7 @@
         "display": {
             "label": "Basic + Google",
             "description": "Basic registration experience with Google as an addition",
-            "image": "assets/images/icons/google.svg",
+            "image": "assets/images/icons/google-generic.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -620,7 +620,7 @@
                                     "config": {
                                         "type": "button",
                                         "text": "Continue with Google",
-                                        "image": "assets/images/icons/google-color.svg"
+                                        "image": "assets/images/icons/google.svg"
                                     },
                                     "action": {
                                         "type": "NEXT",

@@ -107,11 +107,6 @@
     <link rel="preload" href="${pageContext.request.contextPath}/libs/react/react-dom.production.min.js" as="script" />
     <link rel="preload" href="${pageContext.request.contextPath}/js/react-ui-core.min.js" as="script" />
 
-    <script>
-        window.onSubmit = function(token) {
-            console.log("Got recaptcha token:", token);
-        };
-    </script>
 </head>
 <body class="login-portal layout authentication-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
   <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
@@ -391,9 +386,7 @@
                             setCountDownRedirection(redirectionUrl);
                             return true;
 
-                        default:
-                            console.log(`Flow status: ${flow.flowStatus}. No special action.`);
-                            return false;
+                        default: return false;
                     }
                 };
 
