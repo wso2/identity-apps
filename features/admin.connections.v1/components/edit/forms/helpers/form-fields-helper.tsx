@@ -652,6 +652,7 @@ export enum FieldType {
  * commonly used constants.
  */
 export enum CommonConstants {
+    STRING = "STRING",
     BOOLEAN = "BOOLEAN",
     FIELD_COMPONENT_KEYWORD_URL = "URL",
     FIELD_COMPONENT_KEYWORD_QUERY_PARAMETER = "QUERYPARAM",
