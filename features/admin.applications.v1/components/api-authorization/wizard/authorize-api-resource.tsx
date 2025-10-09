@@ -550,7 +550,9 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                 key="apiResource"
                                             />
                                             { isApplicationEditEnforceAuthorizedAPIUpdatePermissionEnabled &&
-                                                !hasInternalAPIResourceAuthorizationPermission && (
+                                                (!hasInternalAPIResourceAuthorizationPermission ||
+                                                    !hasBusinessAPIResourceAuthorizationPermission
+                                                ) && (
                                                 <Hint warning>
                                                     { t("applications:edit.sections.apiAuthorization." +
                                                         "limitedAccessMessage") }
