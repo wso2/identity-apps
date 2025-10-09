@@ -266,6 +266,43 @@
         "requireSuperTenantInUrls": false
     },
     "ui": {
+        "actions": {
+            "http_client": {
+                "connection_pool_size": "20",
+                "connection_timeout": "2000",
+                "read_timeout": "5000",
+                "request_timeout": "2000",
+                "retry_count": "2"
+            },
+            "maximum_actions_per_action_type": "1",
+            "types": {
+                "authentication": {
+                    "default_userstore": "PRIMARY",
+                    "enable": true,
+                    "version": {
+                        "latest": "v1"
+                    }
+                },
+                "pre_issue_access_token": {
+                    "enable": true,
+                    "version": {
+                        "latest": "v1"
+                    }
+                },
+                "pre_update_password": {
+                    "enable_in_registration_flows": true,
+                    "version": {
+                        "latest": "v1"
+                    }
+                },
+                "pre_update_profile": {
+                    "enable": true,
+                    "version": {
+                        "latest": "v1"
+                    }
+                }
+            }
+        },
         "administratorRoleDisplayName": "Administrator",
         "announcements": [],
         "appCopyright": "${copyright} ${year} WSO2 LLC.",
