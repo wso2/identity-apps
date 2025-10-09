@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.25.10
+
+### Patch Changes
+
+- [#9290](https://github.com/wso2/identity-apps/pull/9290) [`2b60f22f2055b51d6643fa19f5b23f19af9ba10c`](https://github.com/wso2/identity-apps/commit/2b60f22f2055b51d6643fa19f5b23f19af9ba10c) Thanks [@brionmario](https://github.com/brionmario)! - Fix typo in web.xml
+
+- Updated dependencies [[`3b8fb556dd0314724bad7337ac804d1dcb94d936`](https://github.com/wso2/identity-apps/commit/3b8fb556dd0314724bad7337ac804d1dcb94d936), [`3f0c51e30a8e6565ffcbe5028de71a00fcdb95d8`](https://github.com/wso2/identity-apps/commit/3f0c51e30a8e6565ffcbe5028de71a00fcdb95d8)]:
+  - @wso2is/i18n@2.30.44
+
 ## 2.25.9
 
 ### Patch Changes

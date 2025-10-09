@@ -1,5 +1,19 @@
 # @wso2is/admin.server-configurations.v1
 
+## 2.35.90
+
+### Patch Changes
+
+- [#9260](https://github.com/wso2/identity-apps/pull/9260) [`a5143a64b8649fe0ac8946c67134a5d958171146`](https://github.com/wso2/identity-apps/commit/a5143a64b8649fe0ac8946c67134a5d958171146) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Add invite user registraion connector to legacy mode.
+
+- Updated dependencies [[`3b8fb556dd0314724bad7337ac804d1dcb94d936`](https://github.com/wso2/identity-apps/commit/3b8fb556dd0314724bad7337ac804d1dcb94d936), [`a5143a64b8649fe0ac8946c67134a5d958171146`](https://github.com/wso2/identity-apps/commit/a5143a64b8649fe0ac8946c67134a5d958171146), [`3f0c51e30a8e6565ffcbe5028de71a00fcdb95d8`](https://github.com/wso2/identity-apps/commit/3f0c51e30a8e6565ffcbe5028de71a00fcdb95d8)]:
+  - @wso2is/i18n@2.30.44
+  - @wso2is/admin.server-configurations.v1@2.35.90
+  - @wso2is/admin.flow-builder-core.v1@0.10.68
+  - @wso2is/admin.core.v1@2.49.76
+  - @wso2is/admin.flows.v1@1.0.37
+  - @wso2is/admin.users.v1@2.36.43
+
 ## 2.35.89
 
 ### Patch Changes
