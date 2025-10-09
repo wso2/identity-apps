@@ -27,6 +27,11 @@ on:
             - "LICENSE"
     workflow_dispatch:
 
+# Prevent multiple concurrent runs of this workflow. New runs will be queued.
+concurrency:
+    group: release
+    cancel-in-progress: false
+
 env:
     GH_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
     SHOULD_GENERATE_CHANGESET: 'true'
