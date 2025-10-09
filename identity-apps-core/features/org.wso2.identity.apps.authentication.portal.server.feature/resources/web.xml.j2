@@ -89,10 +89,6 @@
    </context-param>
    {% endif %}
     <context-param>
-        <param-name>AuthenticatorValidationEnabled</param-name>
-        <param-value>{{ authenticationendpoint.authenticator_validation_enabled }}</param-value>
-    </context-param>
-    <context-param>
        <param-name>AccountRecoveryRESTEndpointURL</param-name>
        <param-value>/t/tenant-domain/api/identity/user/v1.0/</param-value>
    </context-param>
@@ -129,6 +125,18 @@
     {% endif %}
 
     <!-- *************** End of Account Recovery Endpoint Context URL Configuration ********************** -->
+
+    <!-- *************** Authenticator Validation Configuration ********************** -->
+
+    {% if authenticationendpoint.authenticator_validation_enabled is defined %}
+     <context-param>
+        <param-name>AuthenticatorValidationEnabled</param-name>
+        <param-value>{{ authenticationendpoint.authenticator_validation_enabled }}</param-value>
+    </context-param>
+    {% endif %}3
+
+    <!-- *************** End of Authenticator Validation Configuration ********************** -->
+
     <!-- *************** Identity Server Endpoint URL Configuration ********************** -->
     {% if authenticationendpoint.identity_server_endpoint_url is defined %}
     <context-param>
