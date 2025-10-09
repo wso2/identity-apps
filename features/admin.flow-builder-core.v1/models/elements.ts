@@ -56,6 +56,7 @@ export enum ElementTypes {
     Image = "IMAGE",
     RichText = "RICH_TEXT",
     Typography = "TYPOGRAPHY",
+    Resend = "RESEND",
 }
 
 export enum BlockTypes {

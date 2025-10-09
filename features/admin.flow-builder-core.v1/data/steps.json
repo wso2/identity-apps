@@ -51,7 +51,6 @@
                                 "hint": "",
                                 "identifier": "otp",
                                 "label": "Enter the code sent to your email",
-                                "required": true,
                                 "placeholder": ""
                             }
                         },
@@ -70,6 +69,15 @@
                                     "name": "EmailOTPExecutor"
                                 },
                                 "next": ""
+                            }
+                        },
+                        {
+                            "id": "{{ID}}",
+                            "category": "ACTION",
+                            "type": "RESEND",
+                            "config": {
+                                "type": "submit",
+                                "text": "Resend OTP"
                             }
                         }
                     ]
@@ -116,7 +124,6 @@
                                 "hint": "",
                                 "identifier": "otp",
                                 "label": "Enter the code sent to your mobile",
-                                "required": true,
                                 "placeholder": ""
                             }
                         },
@@ -135,6 +142,15 @@
                                     "name": "SMSOTPExecutor"
                                 },
                                 "next": ""
+                            }
+                        },
+                        {
+                            "id": "{{ID}}",
+                            "category": "ACTION",
+                            "type": "RESEND",
+                            "config": {
+                                "type": "submit",
+                                "text": "Resend OTP"
                             }
                         }
                     ]

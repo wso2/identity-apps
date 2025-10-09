@@ -524,6 +524,15 @@
                                                 },
                                                 "next": "{{PASSWORD_RESET_STEP_ID}}"
                                             }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "RESEND",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Resend OTP"
+                                            }
                                         }
                                     ]
                                 }
@@ -799,6 +808,15 @@
                                                     "name": "SMSOTPExecutor"
                                                 },
                                                 "next": "{{PASSWORD_RESET_STEP_ID}}"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "RESEND",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Resend OTP"
                                             }
                                         }
                                     ]
@@ -1137,6 +1155,15 @@
                                                 },
                                                 "next": "{{PASSWORD_RESET_STEP_ID}}"
                                             }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "RESEND",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Resend OTP"
+                                            }
                                         }
                                     ]
                                 }
@@ -1200,6 +1227,15 @@
                                                     "name": "EmailOTPExecutor"
                                                 },
                                                 "next": "{{PASSWORD_RESET_STEP_ID}}"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "RESEND",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Resend OTP"
                                             }
                                         }
                                     ]

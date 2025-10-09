@@ -22,7 +22,7 @@ import { FormField, Form as SemanticForm } from "semantic-ui-react";
 import Field from "./field";
 import useDynamicForm from "../hooks/use-dynamic-form";
 
-const Form = ({ formSchema, onSubmit, recaptchaRef }) => {
+const Form = ({ formSchema, onSubmit, recaptchaRef, flowActionHandler }) => {
     const {
         formState,
         handleChange,
@@ -41,6 +41,7 @@ const Form = ({ formSchema, onSubmit, recaptchaRef }) => {
                             formStateHandler={ handleChange }
                             formFieldError={ handleFieldError }
                             recaptchaRef={ field.type === "CAPTCHA" ? recaptchaRef : undefined }
+                            flowActionHandler={ flowActionHandler }
                         />
                     </FormField>
                 )) }
@@ -50,6 +51,7 @@ const Form = ({ formSchema, onSubmit, recaptchaRef }) => {
 };
 
 Form.propTypes = {
+    flowActionHandler: PropTypes.func,
     formSchema: PropTypes.array.isRequired,
     onSubmit: PropTypes.func.isRequired
 };
