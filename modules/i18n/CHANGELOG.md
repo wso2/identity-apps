@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.30.45
+
+### Patch Changes
+
+- [#9291](https://github.com/wso2/identity-apps/pull/9291) [`63e781a91599b7fa77df7adf4032a1d2f5b32d13`](https://github.com/wso2/identity-apps/commit/63e781a91599b7fa77df7adf4032a1d2f5b32d13) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Implement success message for Approval request status changes
+
 ## 2.30.44
 
 ### Patch Changes

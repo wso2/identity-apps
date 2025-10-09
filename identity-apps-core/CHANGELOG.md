@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.3.16
+
+### Patch Changes
+
+- [#9299](https://github.com/wso2/identity-apps/pull/9299) [`1302eb55f9ce99394a3711b64fce381d3280b488`](https://github.com/wso2/identity-apps/commit/1302eb55f9ce99394a3711b64fce381d3280b488) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Handle pending approval error code from the authentication portal login failure page
+
 ## 3.3.15
 
 ### Patch Changes

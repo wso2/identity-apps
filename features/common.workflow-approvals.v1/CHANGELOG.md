@@ -1,5 +1,15 @@
 # @wso2is/common.workflow-approvals.v1
 
+## 1.0.10
+
+### Patch Changes
+
+- [#9291](https://github.com/wso2/identity-apps/pull/9291) [`63e781a91599b7fa77df7adf4032a1d2f5b32d13`](https://github.com/wso2/identity-apps/commit/63e781a91599b7fa77df7adf4032a1d2f5b32d13) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Implement success message for Approval request status changes
+
+- Updated dependencies [[`63e781a91599b7fa77df7adf4032a1d2f5b32d13`](https://github.com/wso2/identity-apps/commit/63e781a91599b7fa77df7adf4032a1d2f5b32d13), [`792e6851be17a77111319ef1978263b76723238c`](https://github.com/wso2/identity-apps/commit/792e6851be17a77111319ef1978263b76723238c)]:
+  - @wso2is/i18n@2.30.45
+  - @wso2is/access-control@3.5.0
+
 ## 1.0.9
 
 ### Patch Changes
