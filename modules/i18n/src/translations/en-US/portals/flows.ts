@@ -322,6 +322,11 @@ export const flows: flowsNS = {
             },
             restoreVersion: "Restore this version",
             unknownAuthor: "Unknown"
+        },
+        workflowAlert: {
+            description: "A workflow is engaged for this flow. The following settings will not take effect until the workflow is disabled.",
+            navigation: "Click <1>here</1> to have a look at the currently engaged workflows.",
+            title: "Workflow Engaged"
         }
     },
     label: "Flows",

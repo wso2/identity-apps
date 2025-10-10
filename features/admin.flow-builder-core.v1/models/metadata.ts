@@ -50,6 +50,10 @@ export interface MetadataInterface {
      * List of executor connections.
      */
     executorConnections: ExecutorConnectionInterface[];
+    /**
+     * Is a Workflow engagement enabled?
+     */
+    workflowEnabled: boolean;
 };
 
 /**
