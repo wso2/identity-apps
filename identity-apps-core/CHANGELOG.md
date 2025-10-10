@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.3.18
+
+### Patch Changes
+
+- [#9297](https://github.com/wso2/identity-apps/pull/9297) [`ca5f81dda8c6de01493c5c3a2602843a131b4681`](https://github.com/wso2/identity-apps/commit/ca5f81dda8c6de01493c5c3a2602843a131b4681) Thanks [@savindi7](https://github.com/savindi7)! - Resolve social login icons from local assets in accounts portal.
+
 ## 3.3.17
 
 ### Patch Changes
