@@ -18,6 +18,7 @@
 
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
+import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import Dialog, { DialogProps } from "@oxygen-ui/react/Dialog";
 import DialogActions from "@oxygen-ui/react/DialogActions";
 import DialogContent from "@oxygen-ui/react/DialogContent";
@@ -27,7 +28,7 @@ import Typography from "@oxygen-ui/react/Typography/Typography";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, useDocumentation } from "@wso2is/react-components";
-import React, { FunctionComponent, MouseEvent, ReactElement } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -58,12 +59,15 @@ const AddTenantModal: FunctionComponent<AddTenantModalProps> = ({
     const dispatch: Dispatch = useDispatch();
     const { getLink } = useDocumentation();
     const { mutateTenantList } = useTenants();
+    const [ isLoading, setIsLoading ] = useState<boolean>(false);
 
     /**
      * Handles the form submission.
      * @param payload - Form values.
      */
     const handleSubmit = (payload: AddTenantRequestPayload): void => {
+        setIsLoading(true);
+
         addTenant(payload)
             .then(() => {
                 dispatch(
@@ -85,6 +89,9 @@ const AddTenantModal: FunctionComponent<AddTenantModalProps> = ({
                         message: t("tenants:addTenant.notifications.addTenant.error.message")
                     })
                 );
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     };
 
@@ -126,13 +133,17 @@ const AddTenantModal: FunctionComponent<AddTenantModalProps> = ({
                             variant="contained"
                             color="primary"
                             autoFocus
+                            disabled={ isLoading }
                             onClick={ () => {
                                 document
                                     .getElementById(TenantConstants.ADD_TENANT_FORM_ID)
                                     .dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
                             } }
                         >
-                            { t("tenants:addTenant.actions.save.label") }
+                            { isLoading
+                                ? <CircularProgress size={ 16 } />
+                                : t("tenants:addTenant.actions.save.label")
+                            }
                         </Button>
                     </Stack>
                 </Box>
