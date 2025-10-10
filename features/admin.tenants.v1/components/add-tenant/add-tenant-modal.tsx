@@ -18,7 +18,6 @@
 
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
-import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import Dialog, { DialogProps } from "@oxygen-ui/react/Dialog";
 import DialogActions from "@oxygen-ui/react/DialogActions";
 import DialogContent from "@oxygen-ui/react/DialogContent";
@@ -140,10 +139,7 @@ const AddTenantModal: FunctionComponent<AddTenantModalProps> = ({
                                     .dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
                             } }
                         >
-                            { isLoading
-                                ? <CircularProgress size={ 16 } />
-                                : t("tenants:addTenant.actions.save.label")
-                            }
+                            { t("tenants:addTenant.actions.save.label") }
                         </Button>
                     </Stack>
                 </Box>

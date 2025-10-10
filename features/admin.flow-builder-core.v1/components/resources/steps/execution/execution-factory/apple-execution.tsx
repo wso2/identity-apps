@@ -66,7 +66,7 @@ const AppleExecution = ({
 
     return (
         <Box display="flex" gap={ 1 } data-componentid={ componentId } className="flow-builder-execution apple">
-            <img style={ { color: "white" } } src={ loadStaticResource("assets/images/icons/apple.svg") } height="20" />
+            <img src={ loadStaticResource("assets/images/icons/apple.svg") } height="20" />
             <Typography variant="body1">{ t("flows:core.executions.names.apple") }</Typography>
         </Box>
     );
