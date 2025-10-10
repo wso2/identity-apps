@@ -84,7 +84,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     );
 
     const hasRoleGroupUpdatePermission: boolean = useRequiredScopes(
-        userRolesFeatureConfig?.subFeatures?.groupManagement?.scopes?.update
+        userRolesFeatureConfig?.subFeatures?.roleAssignments?.scopes?.update
     );
 
     const isReadOnlyView: boolean = isReadOnly ||

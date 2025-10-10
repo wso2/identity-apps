@@ -120,7 +120,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     );
 
     const hasRoleUsersUpdatePermission: boolean = useRequiredScopes(
-        userRolesFeatureConfig?.subFeatures?.userManagement?.scopes?.update
+        userRolesFeatureConfig?.subFeatures?.roleAssignments?.scopes?.update
     );
 
     const isReadOnlyView: boolean = isReadOnly ||

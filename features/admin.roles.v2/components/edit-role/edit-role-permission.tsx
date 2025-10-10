@@ -136,11 +136,11 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
     );
 
     const hasRolePermissionUpdatePermission: boolean = useRequiredScopes(
-        userRolesFeatureConfig?.subFeatures?.permissionManagement?.scopes?.update
+        userRolesFeatureConfig?.subFeatures?.rolePermissionAssignments?.scopes?.update
     );
 
-    // If the enforce role operation permission feature is enabled, only allow to edit the role if the user has the
-    // relevant permission.
+    // If the enforce role operation permission feature is enabled,
+    // only allow to edit the role if the user has the relevant permission.
     const isReadOnlyView: boolean = isReadOnly ||
         (isEnforceRoleOperationPermissionEnabled && !hasRolePermissionUpdatePermission);
 
