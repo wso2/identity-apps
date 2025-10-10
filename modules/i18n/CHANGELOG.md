@@ -1,5 +1,14 @@
 # @wso2is/i18n
 
+## 2.30.48
+
+### Patch Changes
+
+- [#9314](https://github.com/wso2/identity-apps/pull/9314) [`939bb25524a0a248cc482bd1022942583547ebc0`](https://github.com/wso2/identity-apps/commit/939bb25524a0a248cc482bd1022942583547ebc0) Thanks [@brionmario](https://github.com/brionmario)! - Enhance flow completion properties with workflow engagement alerts
+
+- Updated dependencies [[`b84d5d4cab5f0b2201cda15d30196df29af50c36`](https://github.com/wso2/identity-apps/commit/b84d5d4cab5f0b2201cda15d30196df29af50c36)]:
+  - @wso2is/core@2.12.3
+
 ## 2.30.47
 
 ### Patch Changes

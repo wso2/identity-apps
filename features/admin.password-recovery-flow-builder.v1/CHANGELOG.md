@@ -1,5 +1,19 @@
 # @wso2is/admin.password-recovery-flow-builder.v1
 
+## 1.1.74
+
+### Patch Changes
+
+- [#9314](https://github.com/wso2/identity-apps/pull/9314) [`939bb25524a0a248cc482bd1022942583547ebc0`](https://github.com/wso2/identity-apps/commit/939bb25524a0a248cc482bd1022942583547ebc0) Thanks [@brionmario](https://github.com/brionmario)! - Enhance flow completion properties with workflow engagement alerts
+
+- Updated dependencies [[`433d2a34ea4e7b69eaf45f96866f5acc2a70b1e9`](https://github.com/wso2/identity-apps/commit/433d2a34ea4e7b69eaf45f96866f5acc2a70b1e9), [`327a46c175df2bd96cf4784e5ec82eecae024967`](https://github.com/wso2/identity-apps/commit/327a46c175df2bd96cf4784e5ec82eecae024967), [`939bb25524a0a248cc482bd1022942583547ebc0`](https://github.com/wso2/identity-apps/commit/939bb25524a0a248cc482bd1022942583547ebc0), [`b84d5d4cab5f0b2201cda15d30196df29af50c36`](https://github.com/wso2/identity-apps/commit/b84d5d4cab5f0b2201cda15d30196df29af50c36), [`02a07ae75d678f36dafc6eb9dc73f2dd5a48fc78`](https://github.com/wso2/identity-apps/commit/02a07ae75d678f36dafc6eb9dc73f2dd5a48fc78)]:
+  - @wso2is/admin.server-configurations.v1@2.35.96
+  - @wso2is/admin.flow-builder-core.v1@0.10.74
+  - @wso2is/core@2.12.3
+  - @wso2is/admin.rules.v1@0.6.1
+  - @wso2is/admin.core.v1@2.49.82
+  - @wso2is/admin.flows.v1@1.0.43
+
 ## 1.1.73
 
 ### Patch Changes
