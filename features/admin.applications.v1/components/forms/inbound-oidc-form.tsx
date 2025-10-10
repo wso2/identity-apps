@@ -248,9 +248,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     );
 
     const hasClientSecretReadPermission: boolean = useRequiredScopes(
-        applicationFeatureConfig?.subFeatures?.clientSecret?.scopes?.read);
+        applicationFeatureConfig?.subFeatures?.applicationClientSecretManagement?.scopes?.read);
     const hasClientSecretCreatePermission: boolean = useRequiredScopes(
-        applicationFeatureConfig?.subFeatures?.clientSecret?.scopes?.create);
+        applicationFeatureConfig?.subFeatures?.applicationClientSecretManagement?.scopes?.create);
 
     const { isFAPIApplication } = initialValues;
     const { isOrganizationManagementEnabled } = useGlobalVariables();

@@ -548,7 +548,7 @@
                     ]
                 },
                 "subFeatures": {
-                    "authenticationScript": {
+                    "applicationAuthenticationScript": {
                         "disabledFeatures": [],
                         "enabled": true,
                         "featureFlags": [],
@@ -562,7 +562,7 @@
                             ]
                         }
                     },
-                    "businessAPIResourceAuthorization": {
+                    "applicationBusinessAPIAuthorization": {
                         "disabledFeatures": [],
                         "enabled": true,
                         "featureFlags": [],
@@ -574,7 +574,7 @@
                             "update": [ "internal_application_business_api_update" ]
                         }
                     },
-                    "clientSecret": {
+                    "applicationClientSecretManagement": {
                         "disabledFeatures": [],
                         "enabled": true,
                         "featureFlags": [],
@@ -586,7 +586,7 @@
                             "update": []
                         }
                     },
-                    "internalAPIResourceAuthorization": {
+                    "applicationInternalAPIAuthorization": {
                         "disabledFeatures": [],
                         "enabled": true,
                         "featureFlags": [],

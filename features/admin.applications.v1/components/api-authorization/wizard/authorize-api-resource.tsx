@@ -114,9 +114,9 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
     );
 
     const hasInternalAPIResourceAuthorizationPermission: boolean = useRequiredScopes(
-        applicationFeatureConfig?.subFeatures?.internalAPIResourceAuthorization?.scopes?.update);
+        applicationFeatureConfig?.subFeatures?.applicationInternalAPIAuthorization?.scopes?.update);
     const hasBusinessAPIResourceAuthorizationPermission: boolean = useRequiredScopes(
-        applicationFeatureConfig?.subFeatures?.businessAPIResourceAuthorization?.scopes?.update);
+        applicationFeatureConfig?.subFeatures?.applicationBusinessAPIAuthorization?.scopes?.update);
 
     const [ allAPIResourcesListData, setAllAPIResourcesListData ] = useState<APIResourceInterface[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
