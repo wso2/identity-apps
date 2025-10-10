@@ -276,6 +276,7 @@ export const common: CommonNS = {
     "reserved": "预订的",
     "resetFilters": "重置过滤器",
     "retry": "重试",
+    "revert": "恢复",
     "revoke": "撤销",
     "revokeAll": "撤销所有",
     "samples": "样品",

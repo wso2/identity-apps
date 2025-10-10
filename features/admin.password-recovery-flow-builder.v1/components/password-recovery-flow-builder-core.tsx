@@ -102,7 +102,7 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const { setFlowCompletionConfigs } = useAuthenticationFlowBuilderCore();
+    const { setFlowCompletionConfigs, refetchFlow, setRefetchFlow } = useAuthenticationFlowBuilderCore();
 
     const {
         flowGenerationCompleted,
@@ -125,6 +125,7 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
 
     const {
         data: passwordRecoveryFlow,
+        mutate: mutatePasswordRecoveryFlow,
         error: passwordRecoveryFlowFetchRequestError,
         isLoading: isPasswordRecoveryFlowFetchRequestLoading,
         isValidating: isPasswordRecoveryFlowFetchRequestValidating
@@ -145,6 +146,18 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
         "Offer the option to Sign up with password or Sign up with Google. If the password " +
             "option is selected, ask for first name, last name, password. Then verify the email of the user."
     ];
+
+    /**
+     * Hook to refetch the flow when `refetchFlow` is set to `true`.
+     */
+    useEffect(() => {
+        if (!refetchFlow) {
+            return;
+        }
+
+        mutatePasswordRecoveryFlow();
+        setRefetchFlow(false);
+    }, [ refetchFlow ]);
 
     useEffect(() => {
         if (flowError) {

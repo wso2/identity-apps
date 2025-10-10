@@ -276,6 +276,7 @@ export const common: CommonNS = {
     "reserved": "Reserviert",
     "resetFilters": "Filter zurücksetzen",
     "retry": "Wiederholen",
+    "revert": "Rückgängig machen",
     "revoke": "Widerrufen",
     "revokeAll": "Alle widerrufen",
     "samples": "Proben",

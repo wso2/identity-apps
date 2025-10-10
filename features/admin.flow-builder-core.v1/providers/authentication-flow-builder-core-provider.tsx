@@ -130,6 +130,7 @@ const FlowContextWrapper = ({
     const [ hasLocalHistory, setHasLocalHistory ] = useState<boolean>(false);
     const [ flowNodeTypes, setFlowNodeTypes ] = useState<NodeTypes>({});
     const [ flowEdgeTypes, setFlowEdgeTypes ] = useState<EdgeTypes>({});
+    const [ refetchFlow, setRefetchFlow ] = useState<boolean>(false);
 
     const intervalRef: MutableRefObject<NodeJS.Timeout | null> = useRef<NodeJS.Timeout | null>(null);
 
@@ -598,6 +599,7 @@ const FlowContextWrapper = ({
                 metadata: flowMetadata,
                 onResourceDropOnCanvas,
                 primaryI18nScreen,
+                refetchFlow,
                 resourcePropertiesPanelHeading,
                 restoreFromHistory,
                 selectedAttributes,
@@ -611,6 +613,7 @@ const FlowContextWrapper = ({
                 setLastInteractedResource,
                 setLastInteractedStepId,
                 setLocalHistoryAutoSaveEnabled: setIsAutoSaveLocalHistoryEnabled,
+                setRefetchFlow,
                 setResourcePropertiesPanelHeading,
                 setSelectedAttributes,
                 supportedLocales,
