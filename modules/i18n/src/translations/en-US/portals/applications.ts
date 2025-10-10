@@ -1176,6 +1176,7 @@ export const applications: ApplicationsNS = {
                 tabName: "Login Flow"
             },
             apiAuthorization: {
+                limitedAccessMessage: "You don't have permission to assign all the API Resources. Some API Resources are disabled.",
                 m2mPolicyMessage: "All the authorized scopes of an API resource are available for an M2M application despite the authorization policy specified for the resource."
             },
             roles: {

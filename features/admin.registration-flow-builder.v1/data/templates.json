@@ -314,6 +314,15 @@
                                                 },
                                                 "next": "END"
                                             }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "RESEND",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Resend OTP"
+                                            }
                                         }
                                     ]
                                 }

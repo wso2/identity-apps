@@ -534,6 +534,18 @@
                             "delete": [],
                             "feature": [],
                             "read": [],
+                            "update": [ "internal_application_business_api_update" ]
+                        }
+                    },
+                    "clientSecret": {
+                        "disabledFeatures": [],
+                        "enabled": true,
+                        "featureFlags": [],
+                        "scopes": {
+                            "create": [ "internal_application_mgt_client_secret_create" ],
+                            "delete": [],
+                            "feature": [],
+                            "read": [ "internal_application_mgt_client_secret_view" ],
                             "update": []
                         }
                     },
@@ -546,7 +558,7 @@
                             "delete": [],
                             "feature": [],
                             "read": [],
-                            "update": []
+                            "update": [ "internal_application_internal_api_update" ]
                         }
                     }
                 }

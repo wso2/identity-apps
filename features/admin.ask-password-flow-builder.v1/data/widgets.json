@@ -84,7 +84,6 @@
                                                 "hint": "",
                                                 "identifier": "otp",
                                                 "label": "Enter the OTP code",
-                                                "required": true,
                                                 "placeholder": ""
                                             }
                                         },
@@ -103,6 +102,15 @@
                                                     "name": "EmailOTPExecutor"
                                                 },
                                                 "next": "END"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "RESEND",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Resend OTP"
                                             }
                                         }
                                     ]
@@ -199,7 +207,6 @@
                                                 "hint": "",
                                                 "identifier": "otp",
                                                 "label": "Enter the OTP code",
-                                                "required": true,
                                                 "placeholder": ""
                                             }
                                         },
@@ -218,6 +225,15 @@
                                                     "name": "SMSOTPExecutor"
                                                 },
                                                 "next": "END"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "RESEND",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Resend OTP"
                                             }
                                         }
                                     ]
