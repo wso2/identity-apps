@@ -39,7 +39,7 @@ const DateFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHa
         formStateHandler(component.config.identifier, value);
     }, [ value ]);
 
-    const handleFieldValidation = () => {
+    const handleFieldValidation = (value) => {
         const { errors, isValid } = validate({ identifier, required }, value);
 
         fieldErrorHandler(identifier, isValid ? null : errors);
@@ -52,8 +52,10 @@ const DateFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHa
                 name={ identifier }
                 placeholder={ placeholder }
                 iconPosition="left"
-                onChange={ (event, { value }) => setValue(value) }
-                onBlur={ handleFieldValidation }
+                onChange={ (event, { value }) => {
+                    setValue(value);
+                    handleFieldValidation(value);
+                }}
                 value={ value }
                 required={ required }
                 clearable
