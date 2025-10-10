@@ -241,10 +241,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         applicationFeatureConfig,
         ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG_BACK_CHANNEL_LOGOUT")
     );
-    const isApplicationEditEnforceAuthorizedAPIUpdatePermissionEnabled: boolean = isFeatureEnabled(
+    const isEnforceClientSecretPermissionEnabled: boolean = isFeatureEnabled(
         applicationFeatureConfig,
         ApplicationManagementConstants.FEATURE_DICTIONARY.get(
-            ApplicationFeatureDictionaryKeys.ApplicationEditEnforceAuthorizedAPIUpdatePermission)
+            ApplicationFeatureDictionaryKeys.ApplicationEditEnforceClientSecretPermission)
     );
 
     const hasClientSecretReadPermission: boolean = useRequiredScopes(
@@ -4583,7 +4583,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             && !isPublicClient
                             && !isSystemApplication
                             && !isDefaultApplication
-                            && (!isApplicationEditEnforceAuthorizedAPIUpdatePermissionEnabled
+                            && (!isEnforceClientSecretPermissionEnabled
                                 || hasClientSecretReadPermission)
                             && (
                                 <Grid.Row columns={ 2 } data-componentid={ `${ testId }-oidc-client-secret` }>
@@ -4608,9 +4608,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                                 }
                                                             />
                                                             {
-                                                                !readOnly
-                                                                // eslint-disable-next-line max-len
-                                                                && (!isApplicationEditEnforceAuthorizedAPIUpdatePermissionEnabled
+                                                                !readOnly &&
+                                                                (!isEnforceClientSecretPermissionEnabled
                                                                     || hasClientSecretCreatePermission) && (
                                                                     <Button
                                                                         color="red"
@@ -4644,9 +4643,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                                 }
                                                             />
                                                             {
-                                                                !readOnly
-                                                                    // eslint-disable-next-line max-len
-                                                                    && (!isApplicationEditEnforceAuthorizedAPIUpdatePermissionEnabled
+                                                                !readOnly &&
+                                                                (!isEnforceClientSecretPermissionEnabled
                                                                     || hasClientSecretCreatePermission) && (
                                                                     <Button
                                                                         color="red"
