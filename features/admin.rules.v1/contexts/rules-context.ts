@@ -28,6 +28,15 @@ import {
 } from "../models/rules";
 
 /**
+ * Hidden configuration interface
+ */
+export interface HiddenConfigurationInterface {
+    resources?: string[];
+    conditions?: string[];
+    values?: string[];
+}
+
+/**
  * Interface for the RulesContext.
  */
 export interface RulesContextInterface {
@@ -45,6 +54,11 @@ export interface RulesContextInterface {
      * Rule condition expressions meta.
      */
     conditionExpressionsMeta: ConditionExpressionsMetaDataInterface;
+
+    /**
+     * Hidden configuration for filtering UI components.
+     */
+    hidden: HiddenConfigurationInterface;
 
     /**
      * Method to add a new rule.

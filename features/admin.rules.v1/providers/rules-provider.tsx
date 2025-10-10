@@ -19,7 +19,7 @@
 import { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import React, { ReactNode, useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import RulesContext from "../contexts/rules-context";
+import RulesContext, { HiddenConfigurationInterface } from "../contexts/rules-context";
 import { ConditionExpressionsMetaDataInterface, RuleExecutionMetaDataInterface } from "../models/meta";
 import {
     AdjoiningOperatorTypes,
@@ -77,6 +77,7 @@ export const getRuleInstanceValue = (): RuleExecuteCollectionWithoutIdInterface 
  * @param conditionExpressionsMetaData - ConditionExpressionsMetaDataInterface
  * @param initialData - RuleExecuteCollectionWithoutIdInterface | RuleWithoutIdInterface
  * @param ruleExecutionsMetaData - RuleExecutionMetaDataInterface
+ * @param hidden - HiddenConfigurationInterface
  * @returns RulesProvider
  */
 export const RulesProvider = ({
@@ -84,13 +85,15 @@ export const RulesProvider = ({
     initialData,
     isMultipleRules = false,
     conditionExpressionsMetaData,
-    ruleExecutionMetaData
+    ruleExecutionMetaData,
+    hidden = { conditions: [], resources: [], values: [] }
 }: {
     children: ReactNode;
     isMultipleRules?: boolean;
     conditionExpressionsMetaData: ConditionExpressionsMetaDataInterface;
     initialData: RuleExecuteCollectionWithoutIdInterface | RuleWithoutIdInterface;
     ruleExecutionMetaData?: RuleExecutionMetaDataInterface;
+    hidden?: HiddenConfigurationInterface;
 }) => {
     let RuleExecutionData: any = addIds(initialData);
 
@@ -446,6 +449,7 @@ export const RulesProvider = ({
                 addNewRuleConditionExpression: handleAddConditionExpression,
                 clearRule: handleClearRule,
                 conditionExpressionsMeta: ruleComponentInstanceConditionExpressionsMeta,
+                hidden: hidden,
                 isMultipleRules: isMultipleRules,
                 removeRule: handleRemoveRule,
                 removeRuleConditionExpression: handleRemoveConditionExpression,
