@@ -29,7 +29,9 @@ import {
     getGovernanceConnectors
 } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
 import { getServerConfigs } from "@wso2is/admin.server-configurations.v1/api/server-config";
-import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
+import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,

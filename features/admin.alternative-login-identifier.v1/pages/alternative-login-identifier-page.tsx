@@ -35,7 +35,9 @@ import {
     revertGovernanceConnectorProperties,
     updateGovernanceConnector
 } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
-import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
+import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
