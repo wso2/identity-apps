@@ -18,6 +18,8 @@
 
 import FlowBuilderPage from
     "@wso2is/admin.flow-builder-core.v1/components/flow-builder-page-skeleton/flow-builder-page";
+import useAuthenticationFlowBuilderCore from
+    "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
@@ -43,6 +45,7 @@ const PasswordRecoveryFlowBuilderPageWithContext: FunctionComponent<PasswordReco
 }: PasswordRecoveryFlowBuilderPageProps): ReactElement => {
     const { t } = useTranslation();
     const { isPublishing, onPublish } = usePasswordRecoveryFlowBuilder();
+    const { setRefetchFlow } = useAuthenticationFlowBuilderCore();
 
     return (
         <FlowBuilderPage
@@ -51,6 +54,7 @@ const PasswordRecoveryFlowBuilderPageWithContext: FunctionComponent<PasswordReco
             flowTypeDisplayName={ t("flows:passwordRecovery.flowDisplayName") }
             isPublishing={ isPublishing }
             onPublish={ onPublish }
+            onRevert={ () => setRefetchFlow(true) }
         >
             { children }
         </FlowBuilderPage>
