@@ -338,7 +338,6 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
         setIsNumericEnabled(resolvedInitialValues?.otpUseNumeric);
         setExpiryTime(resolvedInitialValues?.expiryTime);
         setOtpLength(resolvedInitialValues?.otpLength);
-        // setEnableAccountActivationEmail(resolvedInitialValues?.enableAccountActivationEmail);
         setEnableAccountLockOnCreation(resolvedInitialValues?.enableAccountLockOnCreation);
         if (resolvedInitialValues?.enableSmsOtp) {
             setAskPasswordOption(VerificationOption.SMS_OTP);
