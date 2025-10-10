@@ -1,5 +1,20 @@
 # @wso2is/admin.applications.v1
 
+## 2.37.17
+
+### Patch Changes
+
+- [#9303](https://github.com/wso2/identity-apps/pull/9303) [`a9c5cf7f548bfc65b62b6c524d91f81cbf0f9857`](https://github.com/wso2/identity-apps/commit/a9c5cf7f548bfc65b62b6c524d91f81cbf0f9857) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Integrate Script update REST API to login flow section
+
+- Updated dependencies [[`e88528f09538a6eddcb630e34595becd5c4b546e`](https://github.com/wso2/identity-apps/commit/e88528f09538a6eddcb630e34595becd5c4b546e), [`a9c5cf7f548bfc65b62b6c524d91f81cbf0f9857`](https://github.com/wso2/identity-apps/commit/a9c5cf7f548bfc65b62b6c524d91f81cbf0f9857), [`a80c98397d5ad8dccce306eba62f7f91ccbf0aa9`](https://github.com/wso2/identity-apps/commit/a80c98397d5ad8dccce306eba62f7f91ccbf0aa9)]:
+  - @wso2is/admin.core.v1@2.49.78
+  - @wso2is/i18n@2.30.47
+  - @wso2is/admin.login-flow-builder.v1@2.26.7
+  - @wso2is/admin.users.v1@2.36.45
+  - @wso2is/admin.branding.v1@2.32.26
+  - @wso2is/admin.server-configurations.v1@2.35.92
+  - @wso2is/admin.roles.v2@2.27.240
+
 ## 2.37.16
 
 ### Patch Changes
