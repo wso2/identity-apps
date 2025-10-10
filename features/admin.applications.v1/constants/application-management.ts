@@ -28,7 +28,8 @@ import { ApplicationTemplateCategories, ApplicationTemplateLoadingStrategies } f
  * Keys used in the application feature dictionary.
  */
 export enum ApplicationFeatureDictionaryKeys {
-    ApplicationEditEnforceAuthorizedAPIUpdatePermission = "APPLICATION_EDIT_ENFORCE_AUTHORIZED_API_UPDATE_PERMISSION"
+    ApplicationEditEnforceAuthorizedAPIUpdatePermission = "APPLICATION_EDIT_ENFORCE_AUTHORIZED_API_UPDATE_PERMISSION",
+    ApplicationEditEnforceClientSecretPermission = "APPLICATION_EDIT_ENFORCE_CLIENT_SECRET_PERMISSION"
 }
 
 /**
@@ -99,7 +100,9 @@ export class ApplicationManagementConstants {
         .set("APPLICATION_SHARED_ACCESS_STATUS", "applications.sharedAccess.status")
         .set("APPLICATION_ROLE_SHARING", "applications.sharedAccess.roleSharing")
         .set(ApplicationFeatureDictionaryKeys.ApplicationEditEnforceAuthorizedAPIUpdatePermission,
-            "applications.enforceAuthorizedAPIUpdatePermission");
+            "applications.enforceAuthorizedAPIUpdatePermission")
+        .set(ApplicationFeatureDictionaryKeys.ApplicationEditEnforceClientSecretPermission,
+            "applications.enforceClientSecretPermission");
 
     /**
      * Key for the URL search param for application state.
