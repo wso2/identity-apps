@@ -109,7 +109,7 @@
 
     <script>
         window.onSubmit = function(token) {
-            console.log("Got recaptcha token:");
+            console.log("Received the recaptcha token.");
         };
     </script>
 
