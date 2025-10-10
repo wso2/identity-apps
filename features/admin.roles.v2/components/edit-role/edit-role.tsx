@@ -195,6 +195,10 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
     }, [ roleObject ]);
 
     const resolveResourcePanes = () => {
+        if (!roleObject) {
+            return [];
+        }
+
         const panes: ResourceTabPaneInterface[] = [
             {
                 menuItem: t("roles:edit.menuItems.basic"),
