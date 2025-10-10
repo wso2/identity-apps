@@ -8,7 +8,7 @@
         "display": {
             "label": "Continue with Google",
             "description": "Registration experience with Google",
-            "image": "assets/images/icons/google.svg",
+            "image": "assets/images/icons/google-generic.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -38,7 +38,7 @@
                                     "config": {
                                         "type": "button",
                                         "text": "Continue with Google",
-                                        "image": "assets/images/icons/google-color.svg"
+                                        "image": "assets/images/icons/google.svg"
                                     },
                                     "action": {
                                         "type": "NEXT",
@@ -162,7 +162,7 @@
         "display": {
             "label": "Continue with Facebook",
             "description": "Registration experience with Facebook",
-            "image": "assets/images/icons/facebook.svg",
+            "image": "assets/images/icons/facebook-black.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -239,7 +239,7 @@
         "display": {
             "label": "Continue with Microsoft",
             "description": "Registration experience with Microsoft",
-            "image": "assets/images/icons/microsoft.svg",
+            "image": "assets/images/icons/microsoft-black.svg",
             "showOnResourcePanel": true
         },
         "config": {

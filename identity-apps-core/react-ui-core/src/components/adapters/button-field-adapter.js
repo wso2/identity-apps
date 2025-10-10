@@ -26,6 +26,23 @@ const ButtonAdapter = ({ component, handleButtonAction, isDisabled }) => {
 
     const { translations } = useTranslations();
 
+    const resolveImageUrl = (imageUrl) => {
+        if (!imageUrl) return null;
+
+        try {
+            new URL(imageUrl);
+
+            return imageUrl;
+        } catch (e) {
+            // Not a valid URL, proceed to construct the full path.
+        }
+
+        const appBase = window.location.pathname.split("/")[1];
+        const base = `${window.location.origin}/${appBase}`;
+
+        return `${base}/${imageUrl.replace(/^\//, "")}`;
+    };
+
     switch (component.variant) {
         case "PRIMARY":
             return (
@@ -81,9 +98,10 @@ const ButtonAdapter = ({ component, handleButtonAction, isDisabled }) => {
                     >
                         <img
                             className="ui image"
-                            src={ component.config.image }
+                            src={ resolveImageUrl(component.config.image) }
                             alt="Connection Login icon"
-                            role="presentation"></img>
+                            role="presentation"
+                        />
                         <span>{ resolveElementText(translations, component.config.text) }</span>
                     </Button>
                 </div>

@@ -1,5 +1,5 @@
 <!--
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,10 +16,8 @@
  * under the License.
 -->
 
-<svg version="1.1" id="microsoft-logo" class="icon" width="14" height="14" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 23 23">
-    <path fill="#f3f3f3" d="M0 0h23v23H0z" />
-    <path fill="#f35325" d="M1 1h10v10H1z" />
-    <path fill="#81bc06" d="M12 1h10v10H12z" />
-    <path fill="#05a6f0" d="M1 12h10v10H1z" />
-    <path fill="#ffba08" d="M12 12h10v10H12z" />
+<svg xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24">
+    <title>microsoft</title>
+    <rect width="24" height="24" fill="none" />
+    <path d="M2,3h9v9H2V3m9,19H2V13h9v9M21,3v9H12V3h9m0,19H12V13h9Z" />
 </svg>

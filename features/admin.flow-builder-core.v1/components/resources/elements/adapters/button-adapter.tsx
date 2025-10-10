@@ -109,7 +109,7 @@ const ButtonAdapter: FunctionComponent<ButtonAdapterPropsInterface> = ({
         };
     } else if (resource.variant === ButtonVariants.Social) {
         // TODO: Figure out a way to identify the social connection from the next step.
-        image = "https://www.svgrepo.com/show/475656/google-color.svg";
+        image = "https://www.svgrepo.com/show/475656/google.svg";
 
         config = {
             ...config,
