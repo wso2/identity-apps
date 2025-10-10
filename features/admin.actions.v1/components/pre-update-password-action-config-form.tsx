@@ -50,6 +50,7 @@ import updateAction from "../api/update-action";
 import useGetActionById from "../api/use-get-action-by-id";
 import useGetActionsByType from "../api/use-get-actions-by-type";
 import { ActionsConstants } from "../constants/actions-constants";
+import { ActionVersionInfo } from "../hooks/use-action-versioning";
 import {
     ActionConfigFormPropertyInterface,
     AuthenticationPropertiesInterface,
@@ -57,9 +58,9 @@ import {
     PreUpdatePasswordActionConfigFormPropertyInterface,
     PreUpdatePasswordActionInterface, PreUpdatePasswordActionUpdateInterface
 } from "../models/actions";
-import "./pre-update-password-action-config-form.scss";
 import { useHandleError, useHandleSuccess } from "../util/alert-util";
 import { validateActionCommonFields } from "../util/form-field-util";
+import "./pre-update-password-action-config-form.scss";
 
 /**
  * Prop types for the action configuration form component.
@@ -85,6 +86,10 @@ interface PreUpdatePasswordActionConfigFormInterface extends IdentifiableCompone
      * Specifies action creation state.
      */
     isCreateFormState: boolean;
+    /**
+     * Action version information.
+     */
+    versionInfo: ActionVersionInfo;
 }
 
 const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActionConfigFormInterface> = ({
@@ -93,6 +98,7 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
     isReadOnly,
     actionTypeApiPath,
     isCreateFormState,
+    versionInfo,
     ["data-componentid"]: _componentId = "pre-update-password-action-config-form"
 }: PreUpdatePasswordActionConfigFormInterface): ReactElement => {
 
@@ -117,6 +123,7 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
     } = useGetActionsByType(actionTypeApiPath);
 
     const {
+        data: action,
         mutate: mutateAction
     } = useGetActionById(actionTypeApiPath, initialValues?.id);
 
@@ -403,6 +410,12 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
                 <RulesProvider
                     conditionExpressionsMetaData={ RuleExpressionsMetaData }
                     initialData={ initialValues?.rule }
+                    hidden={ {
+                        values:
+                            ActionsConstants.__TEMPORARY__DISALLOWED_RULES[
+                                ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH
+                            ]?.[action?.version || versionInfo?.latestVersion]
+                    } }
                 >
                     <FinalForm
                         onSubmit={ (values: PreUpdatePasswordActionConfigFormPropertyInterface, form: any) => {
@@ -428,18 +441,15 @@ const PreUpdatePasswordActionConfigForm: FunctionComponent<PreUpdatePasswordActi
                                             loading={ isSubmitting }
                                             disabled={ isReadOnly }
                                         >
-                                            {
-                                                isCreateFormState
-                                                    ? t("actions:buttons.create")
-                                                    : t("actions:buttons.update")
-                                            }
+                                            { isCreateFormState
+                                                ? t("actions:buttons.create")
+                                                : t("actions:buttons.update") }
                                         </Button>
                                     ) }
                                 </div>
                             </EmphasizedSegment>
                         ) }
-                    >
-                    </FinalForm>
+                    ></FinalForm>
                 </RulesProvider>
             ) }
         </>

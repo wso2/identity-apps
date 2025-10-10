@@ -76,6 +76,18 @@ export class ActionsConstants {
         [ActionsConstants.PRE_REGISTRATION_URL_PATH]: "pre_registration"
     };
 
+    public static __TEMPORARY__DISALLOWED_RULES: {
+        [key: string]: { [key: string]: string[] };
+    } = {
+            [ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH]: {
+                "v1": [
+                    "userInitiatedRegistration",
+                    "applicationInitiatedRegistration",
+                    "adminInitiatedRegistration"
+                ]
+            }
+        };
+
     public static readonly ACTION_COMING_SOON_LABEL: string = "COMING_SOON";
 
     public static readonly EMPTY_STRING: string = "";

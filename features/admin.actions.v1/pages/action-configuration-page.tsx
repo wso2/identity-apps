@@ -488,6 +488,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                                     isReadOnly={ isReadOnly() }
                                     actionTypeApiPath={ actionTypeApiPath }
                                     isCreateFormState={ showCreateForm }
+                                    versionInfo={ versionInfo }
                                 />
                             ) }
                             { actionTypeApiPath === ActionsConstants.PRE_UPDATE_PASSWORD_API_PATH && (
@@ -497,6 +498,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                                     isReadOnly={ isReadOnly() }
                                     actionTypeApiPath={ actionTypeApiPath }
                                     isCreateFormState={ showCreateForm }
+                                    versionInfo={ versionInfo }
                                 />
                             ) }
                             { actionTypeApiPath === ActionsConstants.PRE_UPDATE_PROFILE_API_PATH && (
@@ -506,6 +508,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                                     isReadOnly={ isReadOnly() }
                                     actionTypeApiPath={ actionTypeApiPath }
                                     isCreateFormState={ showCreateForm }
+                                    versionInfo={ versionInfo }
                                 />
                             ) }
                         </Grid.Column>

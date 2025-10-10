@@ -77,6 +77,7 @@ export const getRuleInstanceValue = (): RuleExecuteCollectionWithoutIdInterface 
  * @param conditionExpressionsMetaData - ConditionExpressionsMetaDataInterface
  * @param initialData - RuleExecuteCollectionWithoutIdInterface | RuleWithoutIdInterface
  * @param ruleExecutionsMetaData - RuleExecutionMetaDataInterface
+ * @param hidden - HiddenConfigurationInterface
  * @returns RulesProvider
  */
 export const RulesProvider = ({
@@ -84,13 +85,15 @@ export const RulesProvider = ({
     initialData,
     isMultipleRules = false,
     conditionExpressionsMetaData,
-    ruleExecutionMetaData
+    ruleExecutionMetaData,
+    hidden = { conditions: [], resources: [], values: [] }
 }: {
     children: ReactNode;
     isMultipleRules?: boolean;
     conditionExpressionsMetaData: ConditionExpressionsMetaDataInterface;
     initialData: RuleExecuteCollectionWithoutIdInterface | RuleWithoutIdInterface;
     ruleExecutionMetaData?: RuleExecutionMetaDataInterface;
+    hidden?: HiddenConfigurationInterface;
 }) => {
     let RuleExecutionData: any = addIds(initialData);
 
@@ -446,6 +449,7 @@ export const RulesProvider = ({
                 addNewRuleConditionExpression: handleAddConditionExpression,
                 clearRule: handleClearRule,
                 conditionExpressionsMeta: ruleComponentInstanceConditionExpressionsMeta,
+                hidden: hidden,
                 isMultipleRules: isMultipleRules,
                 removeRule: handleRemoveRule,
                 removeRuleConditionExpression: handleRemoveConditionExpression,
