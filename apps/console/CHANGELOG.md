@@ -1,5 +1,25 @@
 # @wso2is/console
 
+## 2.80.4
+
+### Patch Changes
+
+- [#9311](https://github.com/wso2/identity-apps/pull/9311) [`325a992bf6ac8f9da15c3bf0d5ad5e11421d315c`](https://github.com/wso2/identity-apps/commit/325a992bf6ac8f9da15c3bf0d5ad5e11421d315c) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Check the confirm password field before updating the properties
+
+- Updated dependencies []:
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.72
+  - @wso2is/admin.branding.v1@2.32.28
+  - @wso2is/admin.core.v1@2.49.80
+  - @wso2is/admin.email-management.v1@2.25.236
+  - @wso2is/admin.flows.v1@1.0.41
+  - @wso2is/admin.home.v1@1.7.50
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.72
+  - @wso2is/admin.server-configurations.v1@2.35.94
+  - @wso2is/admin.users.v1@2.36.47
+  - @wso2is/admin.registration-flow-builder.v1@0.10.32
+  - @wso2is/admin.agents.v1@1.0.87
+  - @wso2is/admin.roles.v2@2.27.242
+
 ## 2.80.3
 
 ### Patch Changes
