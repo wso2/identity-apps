@@ -69,6 +69,24 @@ export const common: CommonNS = {
                     "message": "何かがうまくいかなかった"
                 }
             },
+            "statusUpdate": {
+                "approved": {
+                    "description": "承認要求が承認されました。",
+                    "message": "承認要求が承認されました"
+                },
+                "claimed": {
+                    "description": "承認要求が要求されました。",
+                    "message": "承認要求が要求されました"
+                },
+                "rejected": {
+                    "description": "承認要求が拒否されました。",
+                    "message": "承認要求が拒否されました"
+                },
+                "released": {
+                    "description": "承認要求がリリースされました。",
+                    "message": "承認要求がリリースされました"
+                }
+            },
             "updatePendingApprovals": {
                 "error": {
                     "description": "{{description}}",
@@ -157,6 +175,7 @@ export const common: CommonNS = {
     "confirm": "確認する",
     "contains": "含む",
     "continue": "続く",
+    "copied": "コピーしました",
     "copyToClipboard": "クリップボードにコピー",
     "create": "作成する",
     "createdOn": "に作成されました",
@@ -257,6 +276,7 @@ export const common: CommonNS = {
     "reserved": "予約済み",
     "resetFilters": "フィルターをリセットします",
     "retry": "リトライ",
+    "revert": "元に戻す",
     "revoke": "取り消す",
     "revokeAll": "すべてを取り消します",
     "samples": "サンプル",

@@ -101,7 +101,7 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const { setFlowCompletionConfigs } = useAuthenticationFlowBuilderCore();
+    const { setFlowCompletionConfigs, refetchFlow, setRefetchFlow } = useAuthenticationFlowBuilderCore();
 
     const {
         flowGenerationCompleted,
@@ -124,6 +124,7 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
 
     const {
         data: askPasswordFlow,
+        mutate: mutateAskPasswordFlow,
         error: askPasswordFlowFetchRequestError,
         isLoading: isAskPasswordFlowFetchRequestLoading,
         isValidating: isAskPasswordFlowFetchRequestValidating
@@ -144,6 +145,18 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
             "option is selected, ask for first name, last name, password. Then verify the email of the user."
     ];
 
+    /**
+     * Hook to refetch the flow when `refetchFlow` is set to `true`.
+     */
+    useEffect(() => {
+        if (!refetchFlow) {
+            return;
+        }
+
+        mutateAskPasswordFlow();
+        setRefetchFlow(false);
+    }, [ refetchFlow ]);
+
     useEffect(() => {
         if (flowError) {
             setIsFlowGenerating(false);
@@ -151,9 +164,9 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
 
             dispatch(
                 addAlert<AlertInterface>({
-                    description: t("ai:aiAskPasswordFlow.notifications.generateResultError.description"),
+                    description: t("ai:aiFlow.notifications.generateResultError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("ai:aiAskPasswordFlow.notifications.generateResultError.message")
+                    message: t("ai:aiFlow.notifications.generateResultError.message")
                 })
             );
 
@@ -166,13 +179,13 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
 
             // if data.data contains an object error then use that as the error message
             const errorMessage: string = "error" in flowData.data
-                ? flowData.data.error : t("ai:aiAskPasswordFlow.notifications.generateResultFailed.message");
+                ? flowData.data.error : t("ai:aiFlow.notifications.generateResultFailed.message");
 
             dispatch(
                 addAlert<AlertInterface>({
                     description: errorMessage,
                     level: AlertLevels.ERROR,
-                    message: t("ai:aiAskPasswordFlow.notifications.generateResultFailed.message")
+                    message: t("ai:aiFlow.notifications.generateResultFailed.message")
                 })
             );
 
@@ -234,9 +247,9 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
 
         dispatch(
             addAlert<AlertInterface>({
-                description: t("ai:aiAskPasswordFlow.notifications.generateSuccess.description"),
+                description: t("ai:aiFlow.notifications.generateSuccess.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("ai:aiAskPasswordFlow.notifications.generateSuccess.message")
+                message: t("ai:aiFlow.notifications.generateSuccess.message")
             })
         );
     };
@@ -652,8 +665,18 @@ const AskPasswordFlowBuilderCore: FunctionComponent<AskPasswordFlowBuilderCorePr
             return {};
         }
 
+        const stepsByType: Record<string, Step[]> = steps.reduce((acc: Record<string, Step[]>, step: Step) => {
+            if (!acc[step.type]) {
+                acc[step.type] = [];
+            }
+            acc[step.type].push(step);
+
+            return acc;
+        }, {});
+
         const stepNodes: NodeTypes = steps.reduce((acc: NodeTypes, resource: Step) => {
-            acc[resource.type] = (props: any) => <StepFactory resource={ resource } { ...props } />;
+            acc[resource.type] = (props: any) =>
+                <StepFactory resources={ stepsByType[resource.type] } { ...props } />;
 
             return acc;
         }, {});

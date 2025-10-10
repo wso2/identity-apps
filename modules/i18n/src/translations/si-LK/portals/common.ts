@@ -69,6 +69,24 @@ export const common: CommonNS = {
                     message: "යමක් වැරදී ඇත"
                 }
             },
+            statusUpdate: {
+                approved: {
+                    description: "අනුමත කිරීමේ ඉල්ලීම අනුමත කර ඇත.",
+                    message: "අනුමත කිරීමේ ඉල්ලීම අනුමත කර ඇත"
+                },
+                claimed: {
+                    description: "අනුමත කිරීමේ ඉල්ලීම ගෙන ඇත.",
+                    message: "අනුමත කිරීමේ ඉල්ලීම ගෙන ඇත"
+                },
+                rejected: {
+                    description: "අනුමත කිරීමේ ඉල්ලීම ප්‍රතික්ෂේප කර ඇත.",
+                    message: "අනුමත කිරීමේ ඉල්ලීම ප්‍රතික්ෂේප කර ඇත"
+                },
+                released: {
+                    description: "අනුමත කිරීමේ ඉල්ලීම නිදහස් කර ඇත.",
+                    message: "අනුමත කිරීමේ ඉල්ලීම නිදහස් කර ඇත"
+                }
+            },
             updatePendingApprovals: {
                 error: {
                     description: "{{description}}",
@@ -157,6 +175,7 @@ export const common: CommonNS = {
     confirm: "තහවුරු කරන්න",
     contains: "අඩංගු වේ",
     continue: "පවත්වාගෙන යන්න",
+    copied: "පිටපත් කළා!",
     copyToClipboard: "ක්ලිප්බෝඩ් වෙත පිටපත් කරන්න",
     create: "සාදන්න",
     createdOn: "නිර්මාණය කරන ලද්දේ",
@@ -257,6 +276,7 @@ export const common: CommonNS = {
     reserved: "වෙන් කරන ලද",
     resetFilters: "පෙරහන් නැවත සකසන්න",
     retry: "නැවත උත්සාහ කරන්න",
+    revert: "ප්‍රතිස්ථාපනය",
     revoke: "අවලංගු කරන්න",
     revokeAll: "සියල්ල අවලංගු කරන්න",
     samples: "සාම්පල",

@@ -24,4 +24,8 @@ export interface FlowBuilderCoreResourceEndpointsInterface {
      * API to get the metadata for the flow builder.
      */
     flowMeta: string;
+    /**
+     * API to get/delete/update a specific flow.
+     */
+    flow: string;
 }

@@ -64,7 +64,6 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
     const { t } = useTranslation();
 
     const {
-        authenticationSequence,
         isConditionalAuthenticationEnabled,
         onConditionalAuthenticationToggle,
         updateAuthenticationSequence,
@@ -176,8 +175,7 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
                     open={ showScriptResetWarning }
                     onClose={ () => {
                         updateAuthenticationSequence({
-                            script:
-                                AdaptiveScriptUtils.generateScript(authenticationSequence?.steps?.length + 1).join("\n")
+                            script: ""
                         });
                         setShowScriptResetWarning(false);
                     } }

@@ -54,12 +54,12 @@ const useAIRegistrationFlowGenerationStatus = ():
 
     useEffect(() => {
         const interval: ReturnType<typeof setInterval> = setInterval(() => {
-            if (!isValidating && !data?.status?.generation_of_registration_flow_complete) {
+            if (!isValidating && !data?.completed) {
                 mutate();
             }
         }, 1000);
 
-        if (data?.status?.generation_of_registration_flow_complete) {
+        if (data?.completed) {
             setIsLoading(false);
             clearInterval(interval);
             setFlowGenerationCompleted(true);

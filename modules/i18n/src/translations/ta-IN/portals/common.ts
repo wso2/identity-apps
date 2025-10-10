@@ -69,6 +69,24 @@ export const common: CommonNS = {
                     message: "ஏதோ தவறு நடந்துவிட்டது"
                 }
             },
+            statusUpdate: {
+                approved: {
+                    description: "அனுமதி கோரிக்கை அனுமதிக்கப்பட்டது.",
+                    message: "அனுமதி கோரிக்கை அனுமதிக்கப்பட்டது"
+                },
+                claimed: {
+                    description: "அனுமதி கோரிக்கை கோரப்பட்டது.",
+                    message: "அனுமதி கோரிக்கை கோரப்பட்டது"
+                },
+                rejected: {
+                    description: "அனுமதி கோரிக்கை நிராகரிக்கப்பட்டது.",
+                    message: "அனுமதி கோரிக்கை நிராகரிக்கப்பட்டது"
+                },
+                released: {
+                    description: "அனுமதி கோரிக்கை வெளியிடப்பட்டது.",
+                    message: "அனுமதி கோரிக்கை வெளியிடப்பட்டது"
+                }
+            },
             updatePendingApprovals: {
                 error: {
                     description: "{{description}}",
@@ -158,6 +176,7 @@ export const common: CommonNS = {
     confirm: "உறுதிப்படுத்தவும்",
     contains: "கொண்டுள்ளது",
     continue: "தொடர்",
+    copied: "நகலெடுக்கப்பட்டது!",
     copyToClipboard: "கிளிப்போர்டுக்கு நகலெடு",
     create: "உருவாக்கு",
     createdOn: "உருவாக்கப்பட்ட தினம்",
@@ -258,6 +277,7 @@ export const common: CommonNS = {
     reserved: "ஒதுக்கப்பட்டவை",
     resetFilters: "வடிகட்டல்களை மீட்டடமை",
     retry: "மீண்டும் முயற்சி செய்",
+    revert: "மீண்டும் அமைக்க",
     revoke: "நீக்கு",
     revokeAll: "அனைத்தையும் நீக்கு",
     samples: "மாதிரிகள்",

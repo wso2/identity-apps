@@ -51,13 +51,26 @@ const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHan
      */
     const handleFieldValidation = () => {
         let isValid = false;
+        let errors = [];
 
         if (otpLength <= 6) {
-            isValid = validate({ identifier, required }, otpValues.join(""));
+            const {
+                erros: otpValueErrors,
+                isValid: isValidOtp
+            } = validate({ identifier, required }, otpValues.join(""));
+
+            isValid = isValidOtp;
+            errors = otpValueErrors;
         } else {
-            isValid = validate({ identifier, required }, otpValues);
+            const {
+                erros: otpValueErrors,
+                isValid: isValidOtp
+            } = validate({ identifier, required }, otpValues);
+
+            isValid = isValidOtp;
+            errors = otpValueErrors;
         }
-        fieldErrorHandler(identifier, isValid ? null : fieldErrors);
+        fieldErrorHandler(identifier, isValid ? null : errors);
     };
 
     /**

@@ -27,9 +27,11 @@ export const commonUsers: CommonUsersNS = {
     forms: {
         profile: {
             generic: {
+                placeholder: "Ingrese su {{fieldName}}",
                 validation: {
                     duplicate: "{{field}} no puede tener valores duplicados.",
-                    invalidFormat: "El formato del {{field}} ingresado es incorrecto."
+                    invalidFormat: "El formato del {{field}} ingresado es incorrecto.",
+                    required: "{{fieldName}} es un campo obligatorio"
                 }
             }
         }

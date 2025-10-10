@@ -70,6 +70,7 @@ const DynamicContent = ({ contentData, state, handleFlowRequest, error }) => {
                         formSchema={ form.components }
                         onSubmit={ (action, formValues) => handleFlowExecution(action, formValues) }
                         recaptchaRef={ recaptchaRef }
+                        flowActionHandler={ (action, formValues) => handleFlowExecution(action, formValues) }
                     />
                 </>
             );

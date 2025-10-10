@@ -18,6 +18,16 @@
 
 import { Base } from "./base";
 
+export interface Executor {
+    name?: string;
+    [ key: string ]: any;
+}
+
+export interface Action {
+    executor?: Executor;
+    [ key: string ]: any;
+}
+
 /**
  * Interface for a component.
  */
@@ -27,7 +37,7 @@ export interface Element<T = any> extends Base<T> {
      * @remarks Some elements like `Form` can have nested elements.
      */
     components?: Element[];
-    action?: any;
+    action?: Action;
 };
 
 export enum ElementCategories {
@@ -46,6 +56,7 @@ export enum ElementTypes {
     Image = "IMAGE",
     RichText = "RICH_TEXT",
     Typography = "TYPOGRAPHY",
+    Resend = "RESEND",
 }
 
 export enum BlockTypes {

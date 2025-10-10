@@ -54,4 +54,9 @@ export const ENTITY_TYPES: any = {
 
 export type EntityType = (typeof ENTITY_TYPES)[keyof typeof ENTITY_TYPES];
 
+/**
+ * Workflow engine type
+ */
+export const WORKFLOW_ENGINE: string = "WorkflowEngine";
+
 export default ApprovalWorkflowConstants;

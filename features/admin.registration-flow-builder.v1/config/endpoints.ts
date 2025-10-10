@@ -28,6 +28,6 @@ export const getRegistrationFlowBuilderResourceEndpoints = (
 ): RegistrationFlowBuilderResourceEndpointsInterface => {
     return {
         registrationFlow: `${ serverOrigin }/api/server/v1/flow`,
-        registrationFlowAI: `${ serverOrigin }/api/server/v1/registration-flow`
+        registrationFlowAI: `${ serverOrigin }/api/server/v1/flow`
     };
 };

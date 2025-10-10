@@ -112,6 +112,8 @@
             },
             "security": {
                 "disabledFeatures": [
+                    "security.accountRecovery.challengeQuestions",
+                    "security.accountRecovery.legacyRecoveryMethodStatusCheck",
                     "security.loginVerifyData.typingDNA",
                     "security.mfa.sms"
                 ],
@@ -137,7 +139,7 @@
         "privacyPolicyConfigs": {},
         "productName": "WSO2 Identity Server",
         "productVersionConfig": {
-            "versionOverride": ""
+            "versionOverride": "7.2.0"
         },
         "showAppSwitchButton": "true",
         "theme": {

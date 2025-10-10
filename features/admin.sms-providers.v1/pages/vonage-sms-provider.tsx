@@ -27,7 +27,7 @@ import {
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid, Icon } from "semantic-ui-react";
-import { SMSProviderConstants } from "../constants";
+import { SMSProviderConstants } from "../constants/sms-provider-constants";
 
 interface VonageSMSProviderPageInterface extends IdentifiableComponentInterface {
     "data-componentid": string;

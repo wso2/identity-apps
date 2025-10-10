@@ -23,6 +23,7 @@ import updateCustomTextPreference from "@wso2is/admin.branding.v1/api/update-cus
 import useGetCustomTextPreferenceMeta from "@wso2is/admin.branding.v1/api/use-get-custom-text-preference-meta";
 import { I18nConstants } from "@wso2is/admin.core.v1/constants/i18n-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import loadStaticResource from "@wso2is/admin.core.v1/utils/load-static-resource";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import useGetBrandingPreference from "@wso2is/common.branding.v1/api/use-get-branding-preference";
@@ -129,6 +130,7 @@ const FlowContextWrapper = ({
     const [ hasLocalHistory, setHasLocalHistory ] = useState<boolean>(false);
     const [ flowNodeTypes, setFlowNodeTypes ] = useState<NodeTypes>({});
     const [ flowEdgeTypes, setFlowEdgeTypes ] = useState<EdgeTypes>({});
+    const [ refetchFlow, setRefetchFlow ] = useState<boolean>(false);
 
     const intervalRef: MutableRefObject<NodeJS.Timeout | null> = useRef<NodeJS.Timeout | null>(null);
 
@@ -194,8 +196,8 @@ const FlowContextWrapper = ({
      * Memoized branding enabled status based on the branding preference.
      */
     const isBrandingEnabled: boolean = useMemo(() => {
-        return brandingPreference?.preference?.configs?.isBrandingEnabled ?? false;
-    }, [ brandingPreference ]);
+        return (!brandingPreferenceError && brandingPreference?.preference?.configs?.isBrandingEnabled) ?? false;
+    }, [ brandingPreference, brandingPreferenceError ]);
 
     /**
      * Memoized primary i18n screen based on the screen types.
@@ -490,8 +492,12 @@ const FlowContextWrapper = ({
         // TODO: Internationalize this string and get from a mapping.
         setResourcePropertiesPanelHeading(
             <Stack direction="row" className="sub-title" gap={ 1 } alignItems="center">
-                <Avatar src={ resource?.display?.image } variant="square" />
-                <Typography variant="h6">{ startCase(resource?.type?.toLowerCase()) } Properties</Typography>
+                <Avatar src={ loadStaticResource(resource?.display?.image) } variant="square" />
+                <Typography variant="h6">
+                    { resource?.display?.displayname
+                        ? startCase(resource.display.displayname)
+                        : startCase(resource?.type?.toLowerCase()) } Properties
+                </Typography>
             </Stack>
         );
         setLastInteractedElementInternal(resource);
@@ -593,6 +599,7 @@ const FlowContextWrapper = ({
                 metadata: flowMetadata,
                 onResourceDropOnCanvas,
                 primaryI18nScreen,
+                refetchFlow,
                 resourcePropertiesPanelHeading,
                 restoreFromHistory,
                 selectedAttributes,
@@ -606,6 +613,7 @@ const FlowContextWrapper = ({
                 setLastInteractedResource,
                 setLastInteractedStepId,
                 setLocalHistoryAutoSaveEnabled: setIsAutoSaveLocalHistoryEnabled,
+                setRefetchFlow,
                 setResourcePropertiesPanelHeading,
                 setSelectedAttributes,
                 supportedLocales,

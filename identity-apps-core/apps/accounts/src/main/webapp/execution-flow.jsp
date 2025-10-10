@@ -109,9 +109,10 @@
 
     <script>
         window.onSubmit = function(token) {
-            console.log("Got recaptcha token:", token);
+            console.log("Received the recaptcha token.");
         };
     </script>
+
 </head>
 <body class="login-portal layout authentication-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
   <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
@@ -391,9 +392,7 @@
                             setCountDownRedirection(redirectionUrl);
                             return true;
 
-                        default:
-                            console.log(`Flow status: ${flow.flowStatus}. No special action.`);
-                            return false;
+                        default: return false;
                     }
                 };
 

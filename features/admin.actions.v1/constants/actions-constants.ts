@@ -69,6 +69,13 @@ export class ActionsConstants {
     public static readonly PRE_UPDATE_PROFILE_API_PATH: string = "preUpdateProfile";
     public static readonly PRE_REGISTRATION_API_PATH: string = "preRegistration";
 
+    public static readonly ACTIONS_CONFIG_PATHS: Record<string, string> = {
+        [ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH]: "pre_issue_access_token",
+        [ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH]: "pre_update_password",
+        [ActionsConstants.PRE_UPDATE_PROFILE_URL_PATH]: "pre_update_profile",
+        [ActionsConstants.PRE_REGISTRATION_URL_PATH]: "pre_registration"
+    };
+
     public static readonly ACTION_COMING_SOON_LABEL: string = "COMING_SOON";
 
     public static readonly EMPTY_STRING: string = "";

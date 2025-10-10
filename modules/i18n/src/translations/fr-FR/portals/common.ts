@@ -69,6 +69,24 @@ export const common: CommonNS = {
                     message: "Une erreur s'est produite"
                 }
             },
+            statusUpdate: {
+                approved: {
+                    description: "La demande d'approbation a été approuvée.",
+                    message: "Demande d'approbation approuvée"
+                },
+                claimed: {
+                    description: "La demande d'approbation a été réclamée.",
+                    message: "Demande d'approbation réclamée"
+                },
+                rejected: {
+                    description: "La demande d'approbation a été rejetée.",
+                    message: "Demande d'approbation rejetée"
+                },
+                released: {
+                    description: "La demande d'approbation a été libérée.",
+                    message: "Demande d'approbation libérée"
+                }
+            },
             updatePendingApprovals: {
                 error: {
                     description: "{{description}}",
@@ -158,6 +176,7 @@ export const common: CommonNS = {
     confirm: "Confirmer",
     contains: "Contient",
     continue: "Continuer",
+    copied: "Copié!",
     copyToClipboard: "Copier dans le presse-papier",
     create: "Créer",
     createdOn: "Créé le",
@@ -258,6 +277,7 @@ export const common: CommonNS = {
     reserved: "Réservé",
     resetFilters: "Réinitialiser les filtres",
     retry: "Réessayer",
+    revert: "Rétablir",
     revoke: "Révoquer",
     revokeAll: "Tout révoquer",
     samples: "Exemples",

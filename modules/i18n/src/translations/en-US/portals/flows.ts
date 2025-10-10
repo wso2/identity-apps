@@ -93,6 +93,12 @@ export const flows: flowsNS = {
             }
         },
         executions: {
+            confirmationCode: {
+                configurationHint: "Allow users to set their own passwords during admin-initiated onboarding and configure related settings."
+            },
+            landing:{
+                message: "Configure the {{executor}} settings and publish to apply the changes."
+            },
             names: {
                 apple: "Apple",
                 confirmationCode: "Confirmation Code",
@@ -103,11 +109,22 @@ export const flows: flowsNS = {
                 magicLink: "Magic Link",
                 microsoft: "Microsoft",
                 passkeyEnrollment: "Enroll Passkey"
+            },
+            tooltip: {
+                configurationHint: "Configure"
             }
         },
         labels: {
             disableFlow: "Disable",
             enableFlow: "Enable"
+        },
+        modals: {
+            revertFlow: {
+                assertionHint: "Please confirm your action",
+                description: "This action will permanently delete all customizations and revert the flow back to its initial state.",
+                title: "Revert {{flowType}} Flow?",
+                warning: "This action cannot be undone."
+            }
         },
         notificationPanel: {
             emptyMessages: {
@@ -188,6 +205,16 @@ export const flows: flowsNS = {
                 success: {
                     description: "Successfully restored flow to version from {{date}}.",
                     message: "Flow restored successfully"
+                }
+            },
+            revertFlow: {
+                genericError: {
+                    description: "An error occurred while reverting the {{flowType}} flow.",
+                    message: "Revert {{flowType}} Flow Error"
+                },
+                success: {
+                    description: "Successfully reverted the {{flowType}} flow to its initial state.",
+                    message: "{{flowType}} Flow Reverted"
                 }
             },
             textPreferenceFetch: {
@@ -358,7 +385,8 @@ export const flows: flowsNS = {
                 },
                 accountVerification: {
                     hint: "Require the user to confirm their account via email before granting access.",
-                    label: "Verify the account on flow completion"
+                    label: "Verify the account on flow completion.",
+                    warning: "When the flow includes an email verification step (e.g. email OTP), this option will not be applied."
                 },
                 autoLogin: {
                     hint: "Immediately log the user in once the flow is completed, without additional steps.",

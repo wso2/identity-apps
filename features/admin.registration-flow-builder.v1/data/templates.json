@@ -8,7 +8,7 @@
         "display": {
             "label": "Generate with AI",
             "description": "Describe your registration flow and generate with AI.",
-            "image": "https://www.svgrepo.com/show/521818/robot.svg",
+            "image": "assets/images/icons/robot.svg",
             "showOnResourcePanel": false
         },
         "config": {}
@@ -22,7 +22,7 @@
         "display": {
             "label": "Blank",
             "description": "Start a new flow from scratch",
-            "image": "https://www.svgrepo.com/show/533698/refresh-ccw-alt-3.svg",
+            "image": "assets/images/icons/refresh-ccw.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -133,7 +133,7 @@
         "display": {
             "label": "Basic Details",
             "description": "Basic registration experience with minimal data collection",
-            "image": "https://www.svgrepo.com/show/390092/security-protection-password.svg",
+            "image": "assets/images/icons/password.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -314,6 +314,15 @@
                                                 },
                                                 "next": "END"
                                             }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "RESEND",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Resend OTP"
+                                            }
                                         }
                                     ]
                                 }
@@ -378,7 +387,7 @@
         "display": {
             "label": "Default Self Registration",
             "description": "Self-registration flow that collects basic profile information",
-            "image": "https://www.svgrepo.com/show/390092/security-protection-password.svg",
+            "image": "assets/images/icons/password.svg",
             "showOnResourcePanel": false
         },
         "config": {
@@ -522,7 +531,7 @@
         "display": {
             "label": "Basic + Google",
             "description": "Basic registration experience with Google as an addition",
-            "image": "https://www.svgrepo.com/show/461597/google.svg",
+            "image": "assets/images/icons/google-generic.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -620,7 +629,7 @@
                                     "config": {
                                         "type": "button",
                                         "text": "Continue with Google",
-                                        "image": "https://www.svgrepo.com/show/475656/google-color.svg"
+                                        "image": "assets/images/icons/google.svg"
                                     },
                                     "action": {
                                         "type": "NEXT",
@@ -712,7 +721,7 @@
         "display": {
             "label": "Basic + Passkey",
             "description": "Basic registration experience with passkey enrollment",
-            "image": "https://www.svgrepo.com/show/340307/fingerprint-recognition.svg",
+            "image": "assets/images/icons/fingerprint.svg",
             "showOnResourcePanel": true
         },
         "config": {

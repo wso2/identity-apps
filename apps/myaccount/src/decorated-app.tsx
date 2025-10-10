@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import RuntimeConfigProvider from "@wso2is/common.ui.v1/providers/runtime-config-provider";
 import UserPreferencesProvider from "@wso2is/common.ui.v1/providers/user-preferences-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FC, PropsWithChildren, ReactElement } from "react";
@@ -39,7 +40,11 @@ const DecoratedApp: FC<DecoratedAppProps> = ({ children }: DecoratedAppProps): R
         return state.authenticationInformation.profileInfo.id;
     });
 
-    return <UserPreferencesProvider<UserPreferencesInterface> userId={ userId }>{ children }</UserPreferencesProvider>;
+    return (
+        <RuntimeConfigProvider>
+            <UserPreferencesProvider<UserPreferencesInterface> userId={ userId }>{ children }</UserPreferencesProvider>
+        </RuntimeConfigProvider>
+    );
 };
 
 export default DecoratedApp;

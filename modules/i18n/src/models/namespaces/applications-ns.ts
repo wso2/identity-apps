@@ -753,6 +753,12 @@ export interface ApplicationsNS {
                                 emailOTPRequiresEmailField: {
                                     message: string;
                                 };
+                                passwordRecoveryRequiresFactors: {
+                                    message: string;
+                                };
+                                passwordExecutorRequired: {
+                                    message: string;
+                                };
                             }
                         };
                     };
@@ -968,6 +974,7 @@ export interface ApplicationsNS {
                 }
             };
             apiAuthorization: {
+                limitedAccessMessage: string;
                 m2mPolicyMessage: string;
             };
             roles: {

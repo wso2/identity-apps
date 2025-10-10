@@ -69,6 +69,24 @@ export const common: CommonNS = {
                     message: "Something went wrong"
                 }
             },
+            statusUpdate: {
+                approved: {
+                    description: "The approval request has been approved.",
+                    message: "Approval request approved"
+                },
+                claimed: {
+                    description: "The approval request has been claimed.",
+                    message: "Approval request claimed"
+                },
+                rejected: {
+                    description: "The approval request has been rejected.",
+                    message: "Approval request rejected"
+                },
+                released: {
+                    description: "The approval request has been released.",
+                    message: "Approval request released"
+                }
+            },
             updatePendingApprovals: {
                 error: {
                     description: "{{description}}",
@@ -157,6 +175,7 @@ export const common: CommonNS = {
     confirm: "Confirm",
     contains: "Contains",
     continue: "Continue",
+    copied: "Copied!",
     copyToClipboard: "Copy to clipboard",
     create: "Create",
     createdOn: "Created on",
@@ -257,6 +276,7 @@ export const common: CommonNS = {
     reserved: "Reserved",
     resetFilters: "Reset filters",
     retry: "Retry",
+    revert: "Revert",
     revoke: "Revoke",
     revokeAll: "Revoke all",
     samples: "Samples",

@@ -28,6 +28,6 @@ export const getAskPasswordFlowBuilderResourceEndpoints = (
 ): AskPasswordFlowBuilderResourceEndpointsInterface => {
     return {
         askPasswordFlow: `${ serverOrigin }/api/server/v1/flow`,
-        askPasswordFlowAI: `${ serverOrigin }/api/server/v1/ask-password-flow`
+        askPasswordFlowAI: `${ serverOrigin }/api/server/v1/flow`
     };
 };

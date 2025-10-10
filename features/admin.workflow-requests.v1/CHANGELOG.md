@@ -1,5 +1,53 @@
 # @wso2is/admin.workflow-requests.v1
 
+## 1.0.14
+
+### Patch Changes
+
+- Updated dependencies [[`63e781a91599b7fa77df7adf4032a1d2f5b32d13`](https://github.com/wso2/identity-apps/commit/63e781a91599b7fa77df7adf4032a1d2f5b32d13), [`792e6851be17a77111319ef1978263b76723238c`](https://github.com/wso2/identity-apps/commit/792e6851be17a77111319ef1978263b76723238c)]:
+  - @wso2is/common.workflow-approvals.v1@1.0.10
+  - @wso2is/i18n@2.30.45
+  - @wso2is/access-control@3.5.0
+
+## 1.0.13
+
+### Patch Changes
+
+- Updated dependencies [[`52c5fdd916c73a0d7388203345ecde708ed37e4a`](https://github.com/wso2/identity-apps/commit/52c5fdd916c73a0d7388203345ecde708ed37e4a)]:
+  - @wso2is/common.workflow-approvals.v1@1.0.9
+  - @wso2is/admin.core.v1@2.49.74
+
+## 1.0.12
+
+### Patch Changes
+
+- [#9250](https://github.com/wso2/identity-apps/pull/9250) [`cc6c52580cdf99f50529916e2f7a0a193b10b352`](https://github.com/wso2/identity-apps/commit/cc6c52580cdf99f50529916e2f7a0a193b10b352) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Refactor i18n keys for workflow requests and approval workflows
+
+- Updated dependencies [[`ade32a3834e2654a3450d311d32977eb06419654`](https://github.com/wso2/identity-apps/commit/ade32a3834e2654a3450d311d32977eb06419654), [`8c22c1643d0fec6d23a4e32d89dff8280c5f343b`](https://github.com/wso2/identity-apps/commit/8c22c1643d0fec6d23a4e32d89dff8280c5f343b), [`3dd8b975c7b8340a528e056286e91bd8118ffd71`](https://github.com/wso2/identity-apps/commit/3dd8b975c7b8340a528e056286e91bd8118ffd71), [`907bfbefeefd22d6266bb2ff871506665653baa4`](https://github.com/wso2/identity-apps/commit/907bfbefeefd22d6266bb2ff871506665653baa4)]:
+  - @wso2is/admin.core.v1@2.49.73
+  - @wso2is/i18n@2.30.43
+
+## 1.0.11
+
+### Patch Changes
+
+- [#9254](https://github.com/wso2/identity-apps/pull/9254) [`8fcc5b62ba17183b0be5bf381e8932f18f10f13b`](https://github.com/wso2/identity-apps/commit/8fcc5b62ba17183b0be5bf381e8932f18f10f13b) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve time range filter UX in Workflow Requests UI
+
+- Updated dependencies [[`8fcc5b62ba17183b0be5bf381e8932f18f10f13b`](https://github.com/wso2/identity-apps/commit/8fcc5b62ba17183b0be5bf381e8932f18f10f13b)]:
+  - @wso2is/i18n@2.30.40
+
+## 1.0.10
+
+### Patch Changes
+
+- [#9247](https://github.com/wso2/identity-apps/pull/9247) [`616d7be338c290eed994a9bcbe31a9d1eb575b5c`](https://github.com/wso2/identity-apps/commit/616d7be338c290eed994a9bcbe31a9d1eb575b5c) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update wordings in Workflow Requests UIs
+
+* [#9248](https://github.com/wso2/identity-apps/pull/9248) [`4b90f619705c227ccb79755a6eb8d323696a290c`](https://github.com/wso2/identity-apps/commit/4b90f619705c227ccb79755a6eb8d323696a290c) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve workflow requests list filters
+
+* Updated dependencies [[`616d7be338c290eed994a9bcbe31a9d1eb575b5c`](https://github.com/wso2/identity-apps/commit/616d7be338c290eed994a9bcbe31a9d1eb575b5c), [`430474b7380ab51bb527cb389e6a1bdda4640cc2`](https://github.com/wso2/identity-apps/commit/430474b7380ab51bb527cb389e6a1bdda4640cc2)]:
+  - @wso2is/i18n@2.30.38
+  - @wso2is/admin.core.v1@2.49.68
+
 ## 1.0.9
 
 ### Patch Changes

@@ -105,7 +105,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const { setFlowCompletionConfigs } = useAuthenticationFlowBuilderCore();
+    const { setFlowCompletionConfigs, refetchFlow, setRefetchFlow } = useAuthenticationFlowBuilderCore();
 
     const {
         flowGenerationCompleted,
@@ -128,6 +128,7 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
     const {
         data: registrationFlow,
+        mutate: mutateRegistrationFlow,
         error: registrationFlowFetchRequestError,
         isLoading: isRegistrationFlowFetchRequestLoading,
         isValidating: isRegistrationFlowFetchRequestValidating
@@ -148,6 +149,18 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             "option is selected, ask for first name, last name, password. Then verify the email of the user."
     ];
 
+    /**
+     * Hook to refetch the flow when `refetchFlow` is set to `true`.
+     */
+    useEffect(() => {
+        if (!refetchFlow) {
+            return;
+        }
+
+        mutateRegistrationFlow();
+        setRefetchFlow(false);
+    }, [ refetchFlow ]);
+
     useEffect(() => {
         if (flowError) {
             setIsFlowGenerating(false);
@@ -155,9 +168,9 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
             dispatch(
                 addAlert<AlertInterface>({
-                    description: t("ai:aiRegistrationFlow.notifications.generateResultError.description"),
+                    description: t("ai:aiFlow.notifications.generateResultError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("ai:aiRegistrationFlow.notifications.generateResultError.message")
+                    message: t("ai:aiFlow.notifications.generateResultError.message")
                 })
             );
 
@@ -170,13 +183,13 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
             // if data.data contains an object error then use that as the error message
             const errorMessage: string = "error" in flowData.data
-                ? flowData.data.error : t("ai:aiRegistrationFlow.notifications.generateResultFailed.message");
+                ? flowData.data.error : t("ai:aiFlow.notifications.generateResultFailed.message");
 
             dispatch(
                 addAlert<AlertInterface>({
                     description: errorMessage,
                     level: AlertLevels.ERROR,
-                    message: t("ai:aiRegistrationFlow.notifications.generateResultFailed.message")
+                    message: t("ai:aiFlow.notifications.generateResultFailed.message")
                 })
             );
 
@@ -238,9 +251,9 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
 
         dispatch(
             addAlert<AlertInterface>({
-                description: t("ai:aiRegistrationFlow.notifications.generateSuccess.description"),
+                description: t("ai:aiFlow.notifications.generateSuccess.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("ai:aiRegistrationFlow.notifications.generateSuccess.message")
+                message: t("ai:aiFlow.notifications.generateSuccess.message")
             })
         );
     };
@@ -695,8 +708,18 @@ const RegistrationFlowBuilderCore: FunctionComponent<RegistrationFlowBuilderCore
             return {};
         }
 
+        const stepsByType: Record<string, Step[]> = steps.reduce((acc: Record<string, Step[]>, step: Step) => {
+            if (!acc[step.type]) {
+                acc[step.type] = [];
+            }
+            acc[step.type].push(step);
+
+            return acc;
+        }, {});
+
         const stepNodes: NodeTypes = steps.reduce((acc: NodeTypes, resource: Step) => {
-            acc[resource.type] = (props: any) => <StepFactory resource={ resource } { ...props } />;
+            acc[resource.type] = (props: any) =>
+                <StepFactory resources={ stepsByType[resource.type] } { ...props } />;
 
             return acc;
         }, {});

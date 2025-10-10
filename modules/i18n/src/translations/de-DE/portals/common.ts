@@ -69,6 +69,24 @@ export const common: CommonNS = {
                     "message": "Da ist etwas schiefgelaufen"
                 }
             },
+            "statusUpdate": {
+                "approved": {
+                    "description": "Der Genehmigungsantrag wurde genehmigt.",
+                    "message": "Genehmigungsantrag genehmigt"
+                },
+                "claimed": {
+                    "description": "Der Genehmigungsantrag wurde beansprucht.",
+                    "message": "Genehmigungsantrag beansprucht"
+                },
+                "rejected": {
+                    "description": "Der Genehmigungsantrag wurde abgelehnt.",
+                    "message": "Genehmigungsantrag abgelehnt"
+                },
+                "released": {
+                    "description": "Der Genehmigungsantrag wurde freigegeben.",
+                    "message": "Genehmigungsantrag freigegeben"
+                }
+            },
             "updatePendingApprovals": {
                 "error": {
                     "description": "{{description}}",
@@ -157,6 +175,7 @@ export const common: CommonNS = {
     "confirm": "Bestätigen",
     "contains": "enthält",
     "continue": "Fortsetzen",
+    "copied": "Kopiert!",
     "copyToClipboard": "In die Zwischenablage kopieren",
     "create": "Erstellen",
     "createdOn": " Angelegt am ",
@@ -257,6 +276,7 @@ export const common: CommonNS = {
     "reserved": "Reserviert",
     "resetFilters": "Filter zurücksetzen",
     "retry": "Wiederholen",
+    "revert": "Rückgängig machen",
     "revoke": "Widerrufen",
     "revokeAll": "Alle widerrufen",
     "samples": "Proben",

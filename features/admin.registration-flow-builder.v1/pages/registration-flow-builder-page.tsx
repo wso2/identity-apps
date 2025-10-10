@@ -18,6 +18,7 @@
 
 import FlowBuilderPage from
     "@wso2is/admin.flow-builder-core.v1/components/flow-builder-page-skeleton/flow-builder-page";
+import { useAuthenticationFlowBuilderCore } from "@wso2is/admin.flow-builder-core.v1/public-api";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
@@ -43,6 +44,7 @@ const RegistrationFlowBuilderPageWithContext: FunctionComponent<RegistrationFlow
 }: RegistrationFlowBuilderPageProps): ReactElement => {
     const { t } = useTranslation();
     const { isPublishing, onPublish } = useRegistrationFlowBuilder();
+    const { setRefetchFlow } = useAuthenticationFlowBuilderCore();
 
     return (
         <FlowBuilderPage
@@ -51,6 +53,7 @@ const RegistrationFlowBuilderPageWithContext: FunctionComponent<RegistrationFlow
             flowTypeDisplayName={ t("flows:registrationFlow.flowDisplayName") }
             isPublishing={ isPublishing }
             onPublish={ onPublish }
+            onRevert={ () => setRefetchFlow(true) }
         >
             { children }
         </FlowBuilderPage>

@@ -1,5 +1,25 @@
 # @wso2is/identity-apps-core
 
+## 3.3.17
+
+### Patch Changes
+
+- [#9300](https://github.com/wso2/identity-apps/pull/9300) [`cc54379fb970c79b3e1310e50cf7ee2d01a3e1e1`](https://github.com/wso2/identity-apps/commit/cc54379fb970c79b3e1310e50cf7ee2d01a3e1e1) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Add resend support
+
+## 3.3.16
+
+### Patch Changes
+
+- [#9299](https://github.com/wso2/identity-apps/pull/9299) [`1302eb55f9ce99394a3711b64fce381d3280b488`](https://github.com/wso2/identity-apps/commit/1302eb55f9ce99394a3711b64fce381d3280b488) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Handle pending approval error code from the authentication portal login failure page
+
+## 3.3.15
+
+### Patch Changes
+
+- [#9277](https://github.com/wso2/identity-apps/pull/9277) [`3b8fb556dd0314724bad7337ac804d1dcb94d936`](https://github.com/wso2/identity-apps/commit/3b8fb556dd0314724bad7337ac804d1dcb94d936) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Fix ability to continue with the warn logs in flow execution.
+
+* [#9274](https://github.com/wso2/identity-apps/pull/9274) [`e1ff3c7132acd24724018c708c85cb719d1b8ddc`](https://github.com/wso2/identity-apps/commit/e1ff3c7132acd24724018c708c85cb719d1b8ddc) Thanks [@thiva-k](https://github.com/thiva-k)! - Remove recovery screen values
+
 ## 3.3.14
 
 ### Patch Changes

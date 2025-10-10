@@ -7,7 +7,7 @@
         "deprecated": false,
         "display": {
             "label": "Form",
-            "image": "https://www.svgrepo.com/show/381655/form.svg"
+            "image": "assets/images/icons/form.svg"
         },
         "config": {}
     },
@@ -20,7 +20,7 @@
         "variant": "TEXT",
         "display": {
             "label": "Text Input",
-            "image": "https://www.svgrepo.com/show/437311/textbox.svg"
+            "image": "assets/images/icons/textbox.svg"
         },
         "config": {
             "type": "text",
@@ -39,7 +39,7 @@
         "variant": "PASSWORD",
         "display": {
             "label": "Password Input",
-            "image": "https://www.svgrepo.com/show/529125/password.svg"
+            "image": "assets/images/icons/password-input.svg"
         },
         "config": {
             "identifier": "password",
@@ -59,7 +59,7 @@
         "variant": "EMAIL",
         "display": {
             "label": "Email Input",
-            "image": "https://www.svgrepo.com/show/488920/email.svg"
+            "image": "assets/images/icons/at.svg"
         },
         "config": {
             "type": "email",
@@ -78,7 +78,7 @@
         "variant": "TELEPHONE",
         "display": {
             "label": "Phone Input",
-            "image": "https://www.svgrepo.com/show/533285/phone.svg"
+            "image": "assets/images/icons/phone.svg"
         },
         "config": {
             "type": "tel",
@@ -97,7 +97,7 @@
         "variant": "NUMBER",
         "display": {
             "label": "Number Input",
-            "image": "https://www.svgrepo.com/show/374740/number-input.svg"
+            "image": "assets/images/icons/number-input.svg"
         },
         "config": {
             "type": "number",
@@ -116,7 +116,7 @@
         "variant": "DATE",
         "display": {
             "label": "Date Input",
-            "image": "https://www.svgrepo.com/show/488144/date.svg"
+            "image": "assets/images/icons/date.svg"
         },
         "config": {
             "type": "date",
@@ -135,7 +135,7 @@
         "variant": "OTP",
         "display": {
             "label": "OTP Input",
-            "image": "https://www.svgrepo.com/show/381137/transaction-password-otp-verification-code-security.svg"
+            "image": "assets/images/icons/transaction-password-otp-verification-code-security.svg"
         },
         "config": {
             "type": "text",
@@ -155,7 +155,7 @@
         "variant": "RECAPTCHA_V2",
         "display": {
             "label": "reCAPTCHA",
-            "image": "https://www.gstatic.com/recaptcha/api2/logo_48.png",
+            "image": "assets/images/icons/recaptcha.png",
             "showOnResourcePanel": true
         },
         "config": {
@@ -171,7 +171,7 @@
         "variant": "CHECKBOX",
         "display": {
             "label": "Checkbox",
-            "image": "https://www.svgrepo.com/show/510900/checkbox-check.svg"
+            "image": "assets/images/icons/checkbox-check.svg"
         },
         "config": {
             "hint": "",
@@ -187,7 +187,7 @@
         "deprecated": false,
         "display": {
             "label": "Choice",
-            "image": "https://www.svgrepo.com/show/339836/boolean.svg",
+            "image": "assets/images/icons/boolean.svg",
             "showOnResourcePanel": false
         },
         "variant": "DROPDOWN",
@@ -223,7 +223,7 @@
         "deprecated": false,
         "display": {
             "label": "Button",
-            "image": "https://www.svgrepo.com/show/450681/button.svg",
+            "image": "assets/images/icons/button.svg",
             "defaultVariant": "PRIMARY"
         },
         "variants": [
@@ -236,7 +236,7 @@
                 "deprecated": false,
                 "display": {
                     "label": "Primary Button",
-                    "image": "https://www.svgrepo.com/show/450681/button.svg"
+                    "image": "assets/images/icons/button.svg"
                 },
                 "config": {
                     "type": "button",
@@ -252,7 +252,7 @@
                 "deprecated": false,
                 "display": {
                     "label": "Secondary Button",
-                    "image": "https://www.svgrepo.com/show/450681/button.svg"
+                    "image": "assets/images/icons/button.svg"
                 },
                 "config": {
                     "type": "button",
@@ -268,7 +268,7 @@
                 "deprecated": false,
                 "display": {
                     "label": "Text Button",
-                    "image": "https://www.svgrepo.com/show/450681/button.svg"
+                    "image": "assets/images/icons/button.svg"
                 },
                 "config": {
                     "type": "button",
@@ -284,7 +284,7 @@
                 "deprecated": false,
                 "display": {
                     "label": "Social Button",
-                    "image": "https://www.svgrepo.com/show/450681/button.svg"
+                    "image": "assets/images/icons/button.svg"
                 },
                 "config": {
                     "type": "button",
@@ -295,13 +295,28 @@
     },
     {
         "resourceType": "ELEMENT",
+        "category": "ACTION",
+        "type": "RESEND",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Resend",
+            "image": "assets/images/icons/loop.svg"
+        },
+        "config": {
+            "type": "submit",
+            "text": "Resend"
+        }
+    },
+    {
+        "resourceType": "ELEMENT",
         "category": "DISPLAY",
         "type": "TYPOGRAPHY",
         "version": "0.1.0",
         "deprecated": false,
         "display": {
             "label": "Text",
-            "image": "https://www.svgrepo.com/show/532231/text-size.svg",
+            "image": "assets/images/icons/text-size.svg",
             "defaultVariant": "H3"
         },
         "variants": [
@@ -435,7 +450,7 @@
         "deprecated": false,
         "display": {
             "label": "Rich Text",
-            "image": "https://www.svgrepo.com/show/374852/display-rich-text.svg",
+            "image": "assets/images/icons/display-rich-text.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -450,7 +465,7 @@
         "deprecated": false,
         "display": {
             "label": "Divider",
-            "image": "https://www.svgrepo.com/show/471336/divider.svg",
+            "image": "assets/images/icons/divider.svg",
             "defaultVariant": "HORIZONTAL"
         },
         "variants": [
@@ -479,7 +494,7 @@
         "deprecated": false,
         "display": {
             "label": "Image",
-            "image": "https://www.svgrepo.com/show/532576/image-square.svg",
+            "image": "assets/images/icons/image-square.svg",
             "defaultVariant": "IMAGE_BLOCK"
         },
         "variants": [
@@ -495,7 +510,7 @@
                     "image": null
                 },
                 "config": {
-                    "src": "https://www.svgrepo.com/show/508699/landscape-placeholder.svg"
+                    "src": "assets/images/icons/landscape-placeholder.svg"
                 }
             }
         ]

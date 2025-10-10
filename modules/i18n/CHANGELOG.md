@@ -1,5 +1,77 @@
 # @wso2is/i18n
 
+## 2.30.47
+
+### Patch Changes
+
+- [#9301](https://github.com/wso2/identity-apps/pull/9301) [`e88528f09538a6eddcb630e34595becd5c4b546e`](https://github.com/wso2/identity-apps/commit/e88528f09538a6eddcb630e34595becd5c4b546e) Thanks [@brionmario](https://github.com/brionmario)! - Actions versioning support
+
+* [#9305](https://github.com/wso2/identity-apps/pull/9305) [`a80c98397d5ad8dccce306eba62f7f91ccbf0aa9`](https://github.com/wso2/identity-apps/commit/a80c98397d5ad8dccce306eba62f7f91ccbf0aa9) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for reverting flows in sub-organizations
+
+## 2.30.46
+
+### Patch Changes
+
+- [#9296](https://github.com/wso2/identity-apps/pull/9296) [`a9aefac582adc58d2b49d19989ef74bb25275330`](https://github.com/wso2/identity-apps/commit/a9aefac582adc58d2b49d19989ef74bb25275330) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve RBAC in applications' API authorize UI
+
+## 2.30.45
+
+### Patch Changes
+
+- [#9291](https://github.com/wso2/identity-apps/pull/9291) [`63e781a91599b7fa77df7adf4032a1d2f5b32d13`](https://github.com/wso2/identity-apps/commit/63e781a91599b7fa77df7adf4032a1d2f5b32d13) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Implement success message for Approval request status changes
+
+## 2.30.44
+
+### Patch Changes
+
+- [#9277](https://github.com/wso2/identity-apps/pull/9277) [`3b8fb556dd0314724bad7337ac804d1dcb94d936`](https://github.com/wso2/identity-apps/commit/3b8fb556dd0314724bad7337ac804d1dcb94d936) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Fix ability to continue with the warn logs in flow execution.
+
+* [#9261](https://github.com/wso2/identity-apps/pull/9261) [`3f0c51e30a8e6565ffcbe5028de71a00fcdb95d8`](https://github.com/wso2/identity-apps/commit/3f0c51e30a8e6565ffcbe5028de71a00fcdb95d8) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Update console to consume flow AI
+
+## 2.30.43
+
+### Patch Changes
+
+- [#9273](https://github.com/wso2/identity-apps/pull/9273) [`8c22c1643d0fec6d23a4e32d89dff8280c5f343b`](https://github.com/wso2/identity-apps/commit/8c22c1643d0fec6d23a4e32d89dff8280c5f343b) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in User Profile multi valued text field
+
+* [#9250](https://github.com/wso2/identity-apps/pull/9250) [`3dd8b975c7b8340a528e056286e91bd8118ffd71`](https://github.com/wso2/identity-apps/commit/3dd8b975c7b8340a528e056286e91bd8118ffd71) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Avoid configuring same user management operation for multiple workflows and extend the resend code for email & account pending confirmation scenarios
+
+- [#9263](https://github.com/wso2/identity-apps/pull/9263) [`907bfbefeefd22d6266bb2ff871506665653baa4`](https://github.com/wso2/identity-apps/commit/907bfbefeefd22d6266bb2ff871506665653baa4) Thanks [@savindi7](https://github.com/savindi7)! - Add validation to check Password Provision Executor in flow builder.
+
+## 2.30.42
+
+### Patch Changes
+
+- [#9257](https://github.com/wso2/identity-apps/pull/9257) [`4f5029fcbe593a34a3af5f5bc29320b458156c2e`](https://github.com/wso2/identity-apps/commit/4f5029fcbe593a34a3af5f5bc29320b458156c2e) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update wording in application role sharing UI
+
+## 2.30.41
+
+### Patch Changes
+
+- [#9256](https://github.com/wso2/identity-apps/pull/9256) [`c89fe76f974dfe471318caa08098244279d8cb7d`](https://github.com/wso2/identity-apps/commit/c89fe76f974dfe471318caa08098244279d8cb7d) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Make operations input mandatory in workflow update and creation.
+
+## 2.30.40
+
+### Patch Changes
+
+- [#9254](https://github.com/wso2/identity-apps/pull/9254) [`8fcc5b62ba17183b0be5bf381e8932f18f10f13b`](https://github.com/wso2/identity-apps/commit/8fcc5b62ba17183b0be5bf381e8932f18f10f13b) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve time range filter UX in Workflow Requests UI
+
+## 2.30.39
+
+### Patch Changes
+
+- [#9215](https://github.com/wso2/identity-apps/pull/9215) [`e644fb080eb1d887bd9768544abfae2154c0e4d5`](https://github.com/wso2/identity-apps/commit/e644fb080eb1d887bd9768544abfae2154c0e4d5) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Add configuration settings for Invite User Registration in the flow drawer panel.
+
+* [#9249](https://github.com/wso2/identity-apps/pull/9249) [`db08e8d3d560d557a4159da6b6c51202f24fd7f2`](https://github.com/wso2/identity-apps/commit/db08e8d3d560d557a4159da6b6c51202f24fd7f2) Thanks [@savindi7](https://github.com/savindi7)! - Add validation to Password recovery flow in flow builder.
+
+## 2.30.38
+
+### Patch Changes
+
+- [#9247](https://github.com/wso2/identity-apps/pull/9247) [`616d7be338c290eed994a9bcbe31a9d1eb575b5c`](https://github.com/wso2/identity-apps/commit/616d7be338c290eed994a9bcbe31a9d1eb575b5c) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update wordings in Workflow Requests UIs
+
+* [#9233](https://github.com/wso2/identity-apps/pull/9233) [`430474b7380ab51bb527cb389e6a1bdda4640cc2`](https://github.com/wso2/identity-apps/commit/430474b7380ab51bb527cb389e6a1bdda4640cc2) Thanks [@s-vamshi](https://github.com/s-vamshi)! - Fix copy icon hint text in Console settings not updating to "Copied"
+
 ## 2.30.37
 
 ### Patch Changes

@@ -96,6 +96,12 @@ export interface flowsNS {
             };
         };
         executions: {
+            confirmationCode: {
+                configurationHint: string;
+            };
+            landing: {
+                message: string;
+            };
             names: {
                 apple: string;
                 confirmationCode: string;
@@ -106,6 +112,9 @@ export interface flowsNS {
                 microsoft: string;
                 passkeyEnrollment: string;
                 magicLink: string;
+            };
+            tooltip: {
+                configurationHint: string;
             };
         };
         labels: {
@@ -208,6 +217,24 @@ export interface flowsNS {
                     description: string;
                     message: string;
                 };
+            };
+            revertFlow: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+        };
+        modals: {
+            revertFlow: {
+                title: string;
+                description: string;
+                warning: string;
+                assertionHint: string;
             };
         };
         tooltips: {
@@ -349,6 +376,7 @@ export interface flowsNS {
                 accountVerification: {
                     label: string;
                     hint: string;
+                    warning: string;
                 };
                 accountActivation: {
                     activateImmediately: {

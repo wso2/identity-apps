@@ -69,6 +69,24 @@ export const common: CommonNS = {
                     "message": "出现了问题"
                 }
             },
+            "statusUpdate": {
+                "approved": {
+                    "description": "批准请求已被批准。",
+                    "message": "批准请求已批准"
+                },
+                "claimed": {
+                    "description": "批准请求已被认领。",
+                    "message": "批准请求已认领"
+                },
+                "rejected": {
+                    "description": "批准请求已被拒绝。",
+                    "message": "批准请求已拒绝"
+                },
+                "released": {
+                    "description": "批准请求已被释放。",
+                    "message": "批准请求已释放"
+                }
+            },
             "updatePendingApprovals": {
                 "error": {
                     "description": "{{description}}",
@@ -157,6 +175,7 @@ export const common: CommonNS = {
     "confirm": "确认",
     "contains": "包含",
     "continue": "继续",
+    "copied": "复制了",
     "copyToClipboard": "复制到剪贴板",
     "create": "创造",
     "createdOn": "创建于",
@@ -257,6 +276,7 @@ export const common: CommonNS = {
     "reserved": "预订的",
     "resetFilters": "重置过滤器",
     "retry": "重试",
+    "revert": "恢复",
     "revoke": "撤销",
     "revokeAll": "撤销所有",
     "samples": "样品",

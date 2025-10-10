@@ -34,7 +34,7 @@ import {
     SelectedOrganizationRoleInterface
 } from "@wso2is/admin.organizations.v1/models";
 import useGetApplicationRolesByAudience from "@wso2is/admin.roles.v2/api/use-get-application-roles-by-audience";
-import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants";
+import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { RolesV2Interface } from "@wso2is/admin.roles.v2/models/roles";
 import SelectiveOrgShareWithSelectiveRoles from
     "@wso2is/common.ui.shared-access.v1/components/selective-org-share-with-selective-roles";

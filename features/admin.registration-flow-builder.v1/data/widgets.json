@@ -8,7 +8,7 @@
         "display": {
             "label": "Continue with Google",
             "description": "Registration experience with Google",
-            "image": "https://www.svgrepo.com/show/461597/google.svg",
+            "image": "assets/images/icons/google-generic.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -38,7 +38,7 @@
                                     "config": {
                                         "type": "button",
                                         "text": "Continue with Google",
-                                        "image": "https://www.svgrepo.com/show/475656/google-color.svg"
+                                        "image": "assets/images/icons/google.svg"
                                     },
                                     "action": {
                                         "type": "NEXT",
@@ -85,7 +85,7 @@
         "display": {
             "label": "Continue with Apple",
             "description": "Registration experience with Apple",
-            "image": "https://www.svgrepo.com/show/494336/apple.svg",
+            "image": "assets/images/icons/apple.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -115,7 +115,7 @@
                                     "config": {
                                         "type": "button",
                                         "text": "Continue with Apple",
-                                        "image": "https://www.svgrepo.com/show/494336/apple.svg"
+                                        "image": "assets/images/icons/apple.svg"
                                     },
                                     "action": {
                                         "type": "NEXT",
@@ -162,7 +162,7 @@
         "display": {
             "label": "Continue with Facebook",
             "description": "Registration experience with Facebook",
-            "image": "https://www.svgrepo.com/show/503338/facebook.svg",
+            "image": "assets/images/icons/facebook-black.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -192,7 +192,7 @@
                                     "config": {
                                         "type": "button",
                                         "text": "Continue with Facebook",
-                                        "image": "https://www.svgrepo.com/show/448224/facebook.svg"
+                                        "image": "assets/images/icons/facebook.svg"
                                     },
                                     "action": {
                                         "type": "NEXT",
@@ -239,7 +239,7 @@
         "display": {
             "label": "Continue with Microsoft",
             "description": "Registration experience with Microsoft",
-            "image": "https://www.svgrepo.com/show/503422/microsoft.svg",
+            "image": "assets/images/icons/microsoft-black.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -269,7 +269,7 @@
                                     "config": {
                                         "type": "button",
                                         "text": "Continue with Microsoft",
-                                        "image": "https://www.svgrepo.com/show/448239/microsoft.svg"
+                                        "image": "assets/images/icons/microsoft.svg"
                                     },
                                     "action": {
                                         "type": "NEXT",
@@ -316,7 +316,7 @@
         "display": {
             "label": "Continue with GitHub",
             "description": "Registration experience with GitHub",
-            "image": "https://www.svgrepo.com/show/473620/github.svg",
+            "image": "assets/images/icons/github.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -346,7 +346,7 @@
                                     "config": {
                                         "type": "button",
                                         "text": "Continue with GitHub",
-                                        "image": "https://www.svgrepo.com/show/473620/github.svg"
+                                        "image": "assets/images/icons/github.svg"
                                     },
                                     "action": {
                                         "type": "NEXT",
@@ -393,7 +393,7 @@
         "display": {
             "label": "Username + Password",
             "description": "Basic registration experience with simple username & password",
-            "image": "https://www.svgrepo.com/show/390092/security-protection-password.svg",
+            "image": "assets/images/icons/password.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -475,7 +475,7 @@
         "display": {
             "label": "Continue with Email OTP",
             "description": "Registration experience with Email OTP",
-            "image": "https://www.svgrepo.com/show/387455/email-down.svg",
+            "image": "assets/images/icons/email-down.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -551,7 +551,6 @@
                                                 "hint": "",
                                                 "identifier": "otp",
                                                 "label": "Enter the OTP code",
-                                                "required": true,
                                                 "placeholder": ""
                                             }
                                         },
@@ -570,6 +569,15 @@
                                                     "name": "EmailOTPExecutor"
                                                 },
                                                 "next": "END"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "RESEND",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Resend OTP"
                                             }
                                         }
                                     ]
@@ -590,7 +598,7 @@
         "display": {
             "label": "Continue with SMS OTP",
             "description": "Registration experience with SMS OTP",
-            "image": "https://www.svgrepo.com/show/455832/mobile-message.svg",
+            "image": "assets/images/icons/mobile-message.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -686,6 +694,15 @@
                                                 },
                                                 "next": "END"
                                             }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "RESEND",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Resend OTP"
+                                            }
                                         }
                                     ]
                                 }
@@ -705,7 +722,7 @@
         "display": {
             "label": "Continue with Passkey",
             "description": "Registration experience with Passkeys",
-            "image": "https://www.svgrepo.com/show/340307/fingerprint-recognition.svg",
+            "image": "assets/images/icons/fingerprint.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -735,7 +752,7 @@
                                     "config": {
                                         "type": "button",
                                         "text": "Continue with Passkey",
-                                        "image": "https://www.svgrepo.com/show/340307/fingerprint-recognition.svg"
+                                        "image": "assets/images/icons/fingerprint.svg"
                                     },
                                     "action": {
                                         "type": "NEXT",
@@ -779,7 +796,7 @@
         "display": {
             "label": "Continue with Magic Link",
             "description": "Registration experience with Magic Link",
-            "image": "https://www.svgrepo.com/show/532869/link-alt-1.svg",
+            "image": "assets/images/icons/link.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -809,7 +826,7 @@
                                     "config": {
                                         "type": "button",
                                         "text": "Continue with Magic Link",
-                                        "image": "https://www.svgrepo.com/show/532869/link-alt-1.svg"
+                                        "image": "assets/images/icons/link.svg"
                                     },
                                     "action": {
                                         "type": "NEXT",

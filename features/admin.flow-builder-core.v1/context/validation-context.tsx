@@ -27,6 +27,14 @@ export interface ValidationConfig {
      * Whether OTP validation is enabled.
      */
     isOTPValidationEnabled?: boolean;
+    /**
+     * Whether recovery factor validation is enabled.
+     */
+    isRecoveryFactorValidationEnabled?: boolean;
+    /**
+     * Whether password executor validation is enabled.
+     */
+    isPasswordExecutorValidationEnabled?: boolean;
 }
 
 /**
@@ -112,6 +120,8 @@ export const ValidationContext: Context<ValidationContextProps> = createContext<
     setCurrentActiveTab: null,
     setOpenValidationPanel: null,
     validationConfig: {
-        isOTPValidationEnabled: false
+        isOTPValidationEnabled: false,
+        isPasswordExecutorValidationEnabled: false,
+        isRecoveryFactorValidationEnabled: false
     }
 });

@@ -43,6 +43,7 @@ import GeneralApprovalWorkflowDetailsForm, {
 import WorkflowOperationsDetailsForm, {
     WorkflowOperationsDetailsFormRef
 } from "../components/create/workflow-operations-details-form";
+import { WORKFLOW_ENGINE } from "../constants/approval-workflow-constants";
 import { ApprovalWorkflowPayload, OptionDetails, WorkflowTemplate } from "../models/approval-workflows";
 import {
     ApprovalSteps,
@@ -163,7 +164,7 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
 
         const approvalWorkflowPayload: ApprovalWorkflowPayload = {
             description: approvalWorkflowFormData.generalDetails.description,
-            engine: "WorkflowEngine",
+            engine: WORKFLOW_ENGINE,
             name: approvalWorkflowFormData.generalDetails.name,
             template: workflowTemplate
         };

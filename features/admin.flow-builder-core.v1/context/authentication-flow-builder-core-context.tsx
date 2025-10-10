@@ -227,6 +227,16 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      * Function to set the edge types active in the flow.
      */
     setFlowEdgeTypes: Dispatch<SetStateAction<EdgeTypes>>;
+    /**
+     * Indicates whether to refetch the flow data.
+     */
+    refetchFlow: boolean;
+    /**
+     * Sets the refetchFlow state.
+     *
+     * @param value - boolean value to set the refetchFlow state.
+     */
+    setRefetchFlow: (value: boolean) => void;
 }
 
 /**
@@ -261,6 +271,7 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
         metadata: null,
         onResourceDropOnCanvas: () => {},
         primaryI18nScreen: PreviewScreenType.COMMON,
+        refetchFlow: false,
         resourcePropertiesPanelHeading: null,
         restoreFromHistory: () => Promise.resolve(false),
         selectedAttributes: {},
@@ -274,6 +285,7 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
         setLastInteractedResource: () => {},
         setLastInteractedStepId: () => {},
         setLocalHistoryAutoSaveEnabled: () => {},
+        setRefetchFlow: () => {},
         setResourcePropertiesPanelHeading: () => {},
         setSelectedAttributes: () => {},
         supportedLocales: {},

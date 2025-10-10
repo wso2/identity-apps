@@ -1,5 +1,29 @@
 # @wso2is/admin.connections.v1
 
+## 2.34.6
+
+### Patch Changes
+
+- [#9294](https://github.com/wso2/identity-apps/pull/9294) [`c05cc1e3637fb5789b0d16f158581eb92988a69e`](https://github.com/wso2/identity-apps/commit/c05cc1e3637fb5789b0d16f158581eb92988a69e) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Fix custom authenticator nested metadata issue.
+
+- Updated dependencies [[`63e781a91599b7fa77df7adf4032a1d2f5b32d13`](https://github.com/wso2/identity-apps/commit/63e781a91599b7fa77df7adf4032a1d2f5b32d13), [`792e6851be17a77111319ef1978263b76723238c`](https://github.com/wso2/identity-apps/commit/792e6851be17a77111319ef1978263b76723238c), [`c05cc1e3637fb5789b0d16f158581eb92988a69e`](https://github.com/wso2/identity-apps/commit/c05cc1e3637fb5789b0d16f158581eb92988a69e)]:
+  - @wso2is/i18n@2.30.45
+  - @wso2is/access-control@3.5.0
+  - @wso2is/admin.connections.v1@2.34.6
+
+## 2.34.5
+
+### Patch Changes
+
+- [#9279](https://github.com/wso2/identity-apps/pull/9279) [`4c0e8530931a622f1ba0650d1b8728d63b0fba13`](https://github.com/wso2/identity-apps/commit/4c0e8530931a622f1ba0650d1b8728d63b0fba13) Thanks [@mmafrar](https://github.com/mmafrar)! - fix: Remove index files in `@wso2is/admin.roles.v2` package
+
+- Updated dependencies [[`4c0e8530931a622f1ba0650d1b8728d63b0fba13`](https://github.com/wso2/identity-apps/commit/4c0e8530931a622f1ba0650d1b8728d63b0fba13)]:
+  - @wso2is/admin.console-settings.v1@2.25.228
+  - @wso2is/admin.applications.v1@2.37.15
+  - @wso2is/admin.connections.v1@2.34.5
+  - @wso2is/admin.roles.v2@2.27.237
+  - @wso2is/admin.core.v1@2.49.75
+
 ## 2.34.4
 
 ### Patch Changes

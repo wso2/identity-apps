@@ -1207,6 +1207,16 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
                 return RecoveryScenario.ASK_PASSWORD;
             }
+            if (accountLockedReason === AccountLockedReason.PENDING_EMAIL_VERIFICATION) {
+                if (isEmailVerificationEmailOTPEnabled()) {
+                    return RecoveryScenario.EMAIL_VERIFICATION_OTP;
+                }
+
+                return RecoveryScenario.EMAIL_VERIFICATION;
+            }
+            if (accountLockedReason === AccountLockedReason.PENDING_SELF_REGISTRATION) {
+                return RecoveryScenario.SELF_SIGN_UP;
+            }
         }
         // For non-locked accounts, use the account state to determine the scenario.
         if (!accountLocked && accountState) {
@@ -1379,6 +1389,21 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         const property: ConnectorPropertyInterface | undefined = connectorProperties?.find(
             (property: ConnectorPropertyInterface) =>
                 property.name === ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_SMS_OTP
+        );
+
+        return property?.value === "true";
+    };
+
+
+    /**
+     * Checks if email via Email OTP is enabled.
+     *
+     * @returns true if enabled, false otherwise.
+     */
+    const isEmailVerificationEmailOTPEnabled = (): boolean => {
+        const property: ConnectorPropertyInterface | undefined = connectorProperties?.find(
+            (property: ConnectorPropertyInterface) =>
+                property.name === ServerConfigurationsConstants.EMAIL_VERIFICATION_OTP
         );
 
         return property?.value === "true";

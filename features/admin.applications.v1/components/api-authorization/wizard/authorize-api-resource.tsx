@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -21,10 +21,13 @@ import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Au
 import Button from "@oxygen-ui/react/Button";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { useAPIResources } from "@wso2is/admin.api-resources.v2/api";
 import { APIResourceCategories, APIResourcesConstants } from "@wso2is/admin.api-resources.v2/constants";
 import { APIResourceInterface, APIResourcePermissionInterface } from "@wso2is/admin.api-resources.v2/models";
 import { APIResourceUtils } from "@wso2is/admin.api-resources.v2/utils/api-resource-utils";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, LinkInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -42,11 +45,15 @@ import {
 import startCase from "lodash-es/startCase";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Grid, Header, Label, Modal } from "semantic-ui-react";
 import useScopesOfAPIResources from "../../../api/use-scopes-of-api-resources";
 import { Policy, PolicyInfo, policyDetails } from "../../../constants/api-authorization";
+import {
+    ApplicationFeatureDictionaryKeys,
+    ApplicationManagementConstants
+} from "../../../constants/application-management";
 import { AuthorizedAPIListItemInterface } from "../../../models/api-authorization";
 import { ApplicationTemplateIdTypes } from "../../../models/application";
 
@@ -86,7 +93,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
         subscribedAPIResourcesListData,
         closeWizard,
         handleCreateAPIResource,
-        ["data-componentid"]: componentId
+        ["data-componentid"]: componentId = "authorize-api-resource"
     } = props;
 
     const { t } = useTranslation();
@@ -96,6 +103,20 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
     const resourceText: string = originalTemplateId === "mcp-client-application"
         ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.genericResource")
         : t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.apiResource");
+
+    const applicationFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui?.features?.applications);
+
+    const isApplicationEditEnforceAuthorizedAPIUpdatePermissionEnabled: boolean = isFeatureEnabled(
+        applicationFeatureConfig,
+        ApplicationManagementConstants.FEATURE_DICTIONARY.get(
+            ApplicationFeatureDictionaryKeys.ApplicationEditEnforceAuthorizedAPIUpdatePermission)
+    );
+
+    const hasInternalAPIResourceAuthorizationPermission: boolean = useRequiredScopes(
+        applicationFeatureConfig?.subFeatures?.internalAPIResourceAuthorization?.scopes?.update);
+    const hasBusinessAPIResourceAuthorizationPermission: boolean = useRequiredScopes(
+        applicationFeatureConfig?.subFeatures?.businessAPIResourceAuthorization?.scopes?.update);
 
     const [ allAPIResourcesListData, setAllAPIResourcesListData ] = useState<APIResourceInterface[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
@@ -188,7 +209,22 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                 (dropdownOption: DropdownItemProps) => dropdownOption.key === apiResource.id);
 
                         if (isCurrentAPIResourceAlreadyAdded) {
+                            let isOptionDisabled: boolean = false;
+
+                            // If the feature to enforce API resource update permission is enabled,
+                            // check if the user has the required permission to authorize the API resource.
+                            if (isApplicationEditEnforceAuthorizedAPIUpdatePermissionEnabled) {
+                                if (apiResource.type === APIResourceCategories.BUSINESS) {
+                                    // Disable business API resources if the user does not have the required permission.
+                                    isOptionDisabled = !hasBusinessAPIResourceAuthorizationPermission;
+                                } else {
+                                    // Disable internal API resources if the user does not have the required permission.
+                                    isOptionDisabled = !hasInternalAPIResourceAuthorizationPermission;
+                                }
+                            }
+
                             filtered.push({
+                                disabled: isOptionDisabled,
                                 identifier: apiResource?.identifier,
                                 key: apiResource.id,
                                 text: apiResource.name,
@@ -486,6 +522,8 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                         APIResourceUtils.sortApiResourceTypes(a, b)
                                                     )
                                                 }
+                                                getOptionDisabled={ (apiResourcesListOption: DropdownItemProps) =>
+                                                    apiResourcesListOption?.disabled }
                                                 onChange={ (
                                                     event: SyntheticEvent<HTMLElement>,
                                                     data: DropdownProps
@@ -511,6 +549,15 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                 ) }
                                                 key="apiResource"
                                             />
+                                            { isApplicationEditEnforceAuthorizedAPIUpdatePermissionEnabled &&
+                                                (!hasInternalAPIResourceAuthorizationPermission ||
+                                                    !hasBusinessAPIResourceAuthorizationPermission
+                                                ) && (
+                                                <Hint warning>
+                                                    { t("applications:edit.sections.apiAuthorization." +
+                                                        "limitedAccessMessage") }
+                                                </Hint>
+                                            ) }
                                         </Grid.Row>
                                         <Grid.Row>
                                             <Autocomplete
@@ -826,8 +873,4 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
             </Modal.Actions>
         </Modal>
     );
-};
-
-AuthorizeAPIResource.defaultProps = {
-    "data-componentid": "authorize-api-resource"
 };

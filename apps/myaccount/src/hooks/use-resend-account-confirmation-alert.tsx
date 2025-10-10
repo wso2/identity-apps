@@ -49,6 +49,7 @@ export const useResendAccountConfirmationAlert = (
             AppConstants.FEATURE_DICTIONARY.get("LEGACY_FLOWS")
         );
     });
+    const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
 
     const [ isSelfSignUpSendOtpInEmailEnabled, setIsSelfSignUpSendOtpInEmailEnabled ] = useState<boolean>(false);
     const [ isAccountStatePendingSelfRegistration,
@@ -58,8 +59,11 @@ export const useResendAccountConfirmationAlert = (
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     useEffect(() => {
-        getSelfSignUpPreferences();
-    }, []);
+        if (!allowedScopes.includes("internal_user_impersonate") &&
+            !allowedScopes.includes("internal_org_user_impersonate")) {
+            getSelfSignUpPreferences();
+        }
+    }, [ allowedScopes ]);
 
     useEffect(() => {
         const accountState: string = profileDetails

@@ -55,6 +55,15 @@ type ConnectorListingPageInterface = TestableComponentInterface;
 type GovernanceConnectorWithRef = GovernanceConnectorInterface & ReferableComponentInterface<HTMLDivElement>;
 
 /**
+ * List of connector IDs that should only be visible in legacy mode
+ */
+const LEGACY_ONLY_CONNECTOR_IDS: string[] = [
+    ServerConfigurationsConstants.PASSWORD_RECOVERY,
+    ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID,
+    ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID
+];
+
+/**
  * Governance connector listing page.
  *
  * @param props - Props injected to the component.
@@ -125,8 +134,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                     return false;
                 }
 
-                if (!isLegacyFlowsEnabled && (connector.id === ServerConfigurationsConstants.PASSWORD_RECOVERY ||
-                        connector.id === ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID)) {
+                if (!isLegacyFlowsEnabled && LEGACY_ONLY_CONNECTOR_IDS.includes(connector.id)) {
                     return false;
                 }
 

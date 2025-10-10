@@ -121,6 +121,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             extensions: "",
             externalClaims: "",
             fidoConfigs: "",
+            flow: "",
             flowMeta: "",
             getSecret: "",
             getSecretList: "",
@@ -204,6 +205,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
         },
         i18n: null,
         ui: {
+            actions: null,
             adminNotice: {
                 enabled: undefined,
                 plannedRollOutDate: undefined

@@ -1,5 +1,63 @@
 # @wso2is/myaccount
 
+## 2.25.12
+
+### Patch Changes
+
+- [#9287](https://github.com/wso2/identity-apps/pull/9287) [`b30883031712f353d4fd4cef97ef31440b4f930e`](https://github.com/wso2/identity-apps/commit/b30883031712f353d4fd4cef97ef31440b4f930e) Thanks [@brionmario](https://github.com/brionmario)! - Add legacy recovery method status check feature to account recovery
+
+- Updated dependencies [[`e88528f09538a6eddcb630e34595becd5c4b546e`](https://github.com/wso2/identity-apps/commit/e88528f09538a6eddcb630e34595becd5c4b546e), [`a80c98397d5ad8dccce306eba62f7f91ccbf0aa9`](https://github.com/wso2/identity-apps/commit/a80c98397d5ad8dccce306eba62f7f91ccbf0aa9)]:
+  - @wso2is/i18n@2.30.47
+
+## 2.25.11
+
+### Patch Changes
+
+- [#9291](https://github.com/wso2/identity-apps/pull/9291) [`63e781a91599b7fa77df7adf4032a1d2f5b32d13`](https://github.com/wso2/identity-apps/commit/63e781a91599b7fa77df7adf4032a1d2f5b32d13) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Implement success message for Approval request status changes
+
+* [#9293](https://github.com/wso2/identity-apps/pull/9293) [`79ff1d8eee4f33de656a00e5340b75784c054913`](https://github.com/wso2/identity-apps/commit/79ff1d8eee4f33de656a00e5340b75784c054913) Thanks [@SujanSanjula96](https://github.com/SujanSanjula96)! - Fix unnecessary preferences calls during impersonation
+
+* Updated dependencies [[`63e781a91599b7fa77df7adf4032a1d2f5b32d13`](https://github.com/wso2/identity-apps/commit/63e781a91599b7fa77df7adf4032a1d2f5b32d13), [`792e6851be17a77111319ef1978263b76723238c`](https://github.com/wso2/identity-apps/commit/792e6851be17a77111319ef1978263b76723238c)]:
+  - @wso2is/common.workflow-approvals.v1@1.0.10
+  - @wso2is/i18n@2.30.45
+  - @wso2is/access-control@3.5.0
+
+## 2.25.10
+
+### Patch Changes
+
+- [#9290](https://github.com/wso2/identity-apps/pull/9290) [`2b60f22f2055b51d6643fa19f5b23f19af9ba10c`](https://github.com/wso2/identity-apps/commit/2b60f22f2055b51d6643fa19f5b23f19af9ba10c) Thanks [@brionmario](https://github.com/brionmario)! - Fix typo in web.xml
+
+- Updated dependencies [[`3b8fb556dd0314724bad7337ac804d1dcb94d936`](https://github.com/wso2/identity-apps/commit/3b8fb556dd0314724bad7337ac804d1dcb94d936), [`3f0c51e30a8e6565ffcbe5028de71a00fcdb95d8`](https://github.com/wso2/identity-apps/commit/3f0c51e30a8e6565ffcbe5028de71a00fcdb95d8)]:
+  - @wso2is/i18n@2.30.44
+
+## 2.25.9
+
+### Patch Changes
+
+- [#9282](https://github.com/wso2/identity-apps/pull/9282) [`b6fc0b0609e40d20dc551b4f26868dbfbcbb9b0a`](https://github.com/wso2/identity-apps/commit/b6fc0b0609e40d20dc551b4f26868dbfbcbb9b0a) Thanks [@brionmario](https://github.com/brionmario)! - Show update level on Console UI
+
+## 2.25.8
+
+### Patch Changes
+
+- [#9278](https://github.com/wso2/identity-apps/pull/9278) [`52c5fdd916c73a0d7388203345ecde708ed37e4a`](https://github.com/wso2/identity-apps/commit/52c5fdd916c73a0d7388203345ecde708ed37e4a) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Update Approval API to v2
+
+- Updated dependencies [[`52c5fdd916c73a0d7388203345ecde708ed37e4a`](https://github.com/wso2/identity-apps/commit/52c5fdd916c73a0d7388203345ecde708ed37e4a)]:
+  - @wso2is/common.workflow-approvals.v1@1.0.9
+
+## 2.25.7
+
+### Patch Changes
+
+- [#9273](https://github.com/wso2/identity-apps/pull/9273) [`8c22c1643d0fec6d23a4e32d89dff8280c5f343b`](https://github.com/wso2/identity-apps/commit/8c22c1643d0fec6d23a4e32d89dff8280c5f343b) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add required icon for field labels in My Account user profile
+
+* [#9273](https://github.com/wso2/identity-apps/pull/9273) [`8c22c1643d0fec6d23a4e32d89dff8280c5f343b`](https://github.com/wso2/identity-apps/commit/8c22c1643d0fec6d23a4e32d89dff8280c5f343b) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issues in User Profile multi valued text field
+
+* Updated dependencies [[`8c22c1643d0fec6d23a4e32d89dff8280c5f343b`](https://github.com/wso2/identity-apps/commit/8c22c1643d0fec6d23a4e32d89dff8280c5f343b), [`3dd8b975c7b8340a528e056286e91bd8118ffd71`](https://github.com/wso2/identity-apps/commit/3dd8b975c7b8340a528e056286e91bd8118ffd71), [`907bfbefeefd22d6266bb2ff871506665653baa4`](https://github.com/wso2/identity-apps/commit/907bfbefeefd22d6266bb2ff871506665653baa4)]:
+  - @wso2is/common.users.v1@1.0.4
+  - @wso2is/i18n@2.30.43
+
 ## 2.25.6
 
 ### Patch Changes
