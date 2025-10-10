@@ -29,6 +29,7 @@ import ListItemText from "@oxygen-ui/react/ListItemText";
 import Typography from "@oxygen-ui/react/Typography";
 import { DiamondIcon, GearIcon, PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
 import {
+    FeatureAccessConfigInterface,
     FeatureStatus,
     FeatureTags,
     useCheckFeatureStatus,
@@ -41,7 +42,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
-import { SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID } from "@wso2is/admin.login-flow-builder.v1/constants/editor-constants";
+import { ENFORCE_SCRIPT_UPDATE_PERMISSION_FEATURE_ID, SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID } from "@wso2is/admin.login-flow-builder.v1/constants/editor-constants";
 import {
     ELK_RISK_BASED_TEMPLATE_NAME
 } from "@wso2is/admin.login-flow-builder.v1/constants/template-constants";
@@ -223,12 +224,19 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+    const applicationsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.applications);
 
     const hasSecretMgtCreatePermissions: boolean = useRequiredScopes(featureConfig?.secretsManagement?.scopes?.create);
     const hasSecretMgtReadPermissions: boolean = useRequiredScopes(featureConfig?.secretsManagement?.scopes?.read);
 
     const sharedAppAdaptiveAuthEnabled: boolean =
         isFeatureEnabled(featureConfig?.applications, SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID);
+    const isScriptUpdatePermissionEnforced: boolean = isFeatureEnabled(applicationsFeatureConfig,
+        ENFORCE_SCRIPT_UPDATE_PERMISSION_FEATURE_ID);
+    const hasScriptUpdatePermission: boolean =
+        useRequiredScopes(applicationsFeatureConfig?.subFeatures?.authenticationScript?.scopes?.update);
+    const isScriptUpdateReadOnly: boolean = isScriptUpdatePermissionEnforced && !hasScriptUpdatePermission;
 
     const { tierName }: UseSubscriptionInterface = useSubscription();
 
@@ -471,6 +479,10 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      * @returns
      */
     const resolveAdaptiveScript = (script: string): string | string[] => {
+
+        if (!isConditionalAuthenticationEnabled) {
+            setSourceCode(undefined);
+        }
         // Check if there is no script defined and the step count is o.
         // If so, return the default script.
         if (!script && authenticationSequence?.steps?.length === 0) {
@@ -564,7 +576,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     };
 
     const resetAdaptiveScriptTemplateToDefaultHandler = () => {
-        setSourceCode(AdaptiveScriptUtils.generateScript(authenticationSteps + 1));
+        setSourceCode("");
         setIsScriptFromTemplate(false);
         onAdaptiveScriptReset();
         onConditionalAuthenticationToggle(false);
@@ -1277,7 +1289,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                             <>
                                 <div className="conditional-auth-accordion-title">
                                     {
-                                        !readOnly && (
+                                        !readOnly && !isScriptUpdateReadOnly && (
                                             <Checkbox
                                                 toggle
                                                 data-tourid="conditional-auth"
