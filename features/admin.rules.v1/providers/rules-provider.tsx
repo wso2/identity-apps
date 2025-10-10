@@ -19,7 +19,7 @@
 import { SelectChangeEvent } from "@oxygen-ui/react/Select";
 import React, { ReactNode, useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import RulesContext from "../contexts/rules-context";
+import RulesContext, { HiddenConfigurationInterface } from "../contexts/rules-context";
 import { ConditionExpressionsMetaDataInterface, RuleExecutionMetaDataInterface } from "../models/meta";
 import {
     AdjoiningOperatorTypes,
