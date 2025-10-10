@@ -28,7 +28,7 @@ import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import {
     ENFORCE_SCRIPT_UPDATE_PERMISSION_FEATURE_ID,
-    SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID 
+    SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID
 } from "@wso2is/admin.login-flow-builder.v1/constants/editor-constants";
 import useAuthenticationFlow from "@wso2is/admin.login-flow-builder.v1/hooks/use-authentication-flow";
 import useAILoginFlow from "@wso2is/admin.login-flow.ai.v1/hooks/use-ai-login-flow";

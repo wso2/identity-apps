@@ -42,7 +42,10 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
-import { ENFORCE_SCRIPT_UPDATE_PERMISSION_FEATURE_ID, SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID } from "@wso2is/admin.login-flow-builder.v1/constants/editor-constants";
+import {
+    ENFORCE_SCRIPT_UPDATE_PERMISSION_FEATURE_ID,
+    SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID
+} from "@wso2is/admin.login-flow-builder.v1/constants/editor-constants";
 import {
     ELK_RISK_BASED_TEMPLATE_NAME
 } from "@wso2is/admin.login-flow-builder.v1/constants/template-constants";
