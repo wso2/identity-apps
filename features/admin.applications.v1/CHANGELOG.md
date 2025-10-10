@@ -1,5 +1,21 @@
 # @wso2is/admin.applications.v1
 
+## 2.37.18
+
+### Patch Changes
+
+- [#9298](https://github.com/wso2/identity-apps/pull/9298) [`b84d5d4cab5f0b2201cda15d30196df29af50c36`](https://github.com/wso2/identity-apps/commit/b84d5d4cab5f0b2201cda15d30196df29af50c36) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve RBAC in applications' client secret field
+
+- Updated dependencies [[`433d2a34ea4e7b69eaf45f96866f5acc2a70b1e9`](https://github.com/wso2/identity-apps/commit/433d2a34ea4e7b69eaf45f96866f5acc2a70b1e9), [`eb9eea6dacb6bc1fab9a305387d75714e18e3309`](https://github.com/wso2/identity-apps/commit/eb9eea6dacb6bc1fab9a305387d75714e18e3309), [`939bb25524a0a248cc482bd1022942583547ebc0`](https://github.com/wso2/identity-apps/commit/939bb25524a0a248cc482bd1022942583547ebc0), [`b0de4e126b5c4f49ce6793be66f8b5ec22102396`](https://github.com/wso2/identity-apps/commit/b0de4e126b5c4f49ce6793be66f8b5ec22102396), [`b84d5d4cab5f0b2201cda15d30196df29af50c36`](https://github.com/wso2/identity-apps/commit/b84d5d4cab5f0b2201cda15d30196df29af50c36)]:
+  - @wso2is/admin.server-configurations.v1@2.35.96
+  - @wso2is/admin.organizations.v1@2.27.8
+  - @wso2is/i18n@2.30.48
+  - @wso2is/admin.roles.v2@2.27.244
+  - @wso2is/core@2.12.3
+  - @wso2is/admin.branding.v1@2.32.30
+  - @wso2is/admin.core.v1@2.49.82
+  - @wso2is/admin.users.v1@2.36.49
+
 ## 2.37.17
 
 ### Patch Changes

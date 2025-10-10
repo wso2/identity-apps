@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.3.19
+
+### Patch Changes
+
+- [#9309](https://github.com/wso2/identity-apps/pull/9309) [`764907f9d7a8c74f9297ad16fcd6c9b26aa8673c`](https://github.com/wso2/identity-apps/commit/764907f9d7a8c74f9297ad16fcd6c9b26aa8673c) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Fix data field validation issue.
+
 ## 3.3.18
 
 ### Patch Changes

@@ -1,5 +1,21 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.10.74
+
+### Patch Changes
+
+- [#9316](https://github.com/wso2/identity-apps/pull/9316) [`327a46c175df2bd96cf4784e5ec82eecae024967`](https://github.com/wso2/identity-apps/commit/327a46c175df2bd96cf4784e5ec82eecae024967) Thanks [@savindi7](https://github.com/savindi7)! - Add disabled state to button creating a new organization.
+
+* [#9314](https://github.com/wso2/identity-apps/pull/9314) [`939bb25524a0a248cc482bd1022942583547ebc0`](https://github.com/wso2/identity-apps/commit/939bb25524a0a248cc482bd1022942583547ebc0) Thanks [@brionmario](https://github.com/brionmario)! - Enhance flow completion properties with workflow engagement alerts
+
+* Updated dependencies [[`eb9eea6dacb6bc1fab9a305387d75714e18e3309`](https://github.com/wso2/identity-apps/commit/eb9eea6dacb6bc1fab9a305387d75714e18e3309), [`939bb25524a0a248cc482bd1022942583547ebc0`](https://github.com/wso2/identity-apps/commit/939bb25524a0a248cc482bd1022942583547ebc0), [`b84d5d4cab5f0b2201cda15d30196df29af50c36`](https://github.com/wso2/identity-apps/commit/b84d5d4cab5f0b2201cda15d30196df29af50c36)]:
+  - @wso2is/admin.organizations.v1@2.27.8
+  - @wso2is/admin.registration-flow-builder.v1@0.10.34
+  - @wso2is/core@2.12.3
+  - @wso2is/admin.branding.v1@2.32.30
+  - @wso2is/admin.core.v1@2.49.82
+  - @wso2is/admin.flows.v1@1.0.43
+
 ## 0.10.73
 
 ### Patch Changes

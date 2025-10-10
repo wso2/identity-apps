@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.12.3
+
+### Patch Changes
+
+- [#9298](https://github.com/wso2/identity-apps/pull/9298) [`b84d5d4cab5f0b2201cda15d30196df29af50c36`](https://github.com/wso2/identity-apps/commit/b84d5d4cab5f0b2201cda15d30196df29af50c36) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Deprecate duplicate interface for `FeatureAccessConfigInterface`
+
 ## 2.12.2
 
 ### Patch Changes
