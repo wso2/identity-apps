@@ -41,11 +41,8 @@ const CheckboxFieldAdapter = ({ component, formState, formStateHandler, fieldErr
     const handleChange = (e, data) => {
         setValue(data.checked);
         handleFieldValidation(data.checked);
+        formStateHandler(identifier, data.checked);
     };
-
-    useEffect(() => {
-        formStateHandler(identifier, value);
-    }, [ value ]);
 
     return (
         <div>
