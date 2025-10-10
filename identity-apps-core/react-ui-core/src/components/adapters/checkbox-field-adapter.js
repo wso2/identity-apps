@@ -27,12 +27,11 @@ import ValidationError from "../validation-error";
 
 const CheckboxFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHandler }) => {
 
-    const { identifier, label, hint, validations ,required } = component.config;
+    const { identifier, label, hint, validations, required } = component.config;
     const { translations } = useTranslations();
+    const [ value, setValue ] = useState(false);
     const { fieldErrors, validate } = useFieldValidation(validations, value);
 
-    const [ value, setValue ] = useState(false);
-    
     const handleFieldValidation = (value) => {
         const { errors, isValid } = validate({ identifier, required }, value);
 
@@ -70,9 +69,9 @@ const CheckboxFieldAdapter = ({ component, formState, formStateHandler, fieldErr
 
 CheckboxFieldAdapter.propTypes = {
     component: PropTypes.object.isRequired,
+    fieldErrorHandler: PropTypes.func.isRequired,
     formState: PropTypes.object.isRequired,
-    formStateHandler: PropTypes.func.isRequired,
-    fieldErrorHandler: PropTypes.func.isRequired
+    formStateHandler: PropTypes.func.isRequired
 };
 
 export default CheckboxFieldAdapter;

@@ -78,7 +78,6 @@ const useDynamicForm = (fields, onSubmit) => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        console.log(formState.errors);
         if (Object.keys(formState.errors).length > 0) {
             setFormState((prev) => ({
                 ...prev,
