@@ -388,6 +388,7 @@ export class Config {
      */
     public static getUIConfig(): UIConfigInterface {
         return {
+            actions: window[ "AppUtils" ]?.getConfig()?.ui?.actions,
             adminNotice: {
                 enabled: window[ "AppUtils" ]?.getConfig()?.ui?.adminNotice?.enabled,
                 plannedRollOutDate: window[ "AppUtils" ]?.getConfig()?.ui?.adminNotice?.plannedRollOutDate

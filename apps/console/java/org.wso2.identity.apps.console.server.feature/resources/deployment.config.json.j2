@@ -184,6 +184,26 @@
             {% endfor %}
             {% endif %}
         ],
+        "actions": {
+            {% if actions is defined %}
+            {% for key, value in actions.items() %}
+            {% if key != 'types' %}
+            "{{ key }}": {% if value is mapping %}{{ value | tojson }}{% elif value is number %}{{ value }}{% elif value is boolean %}{{ value }}{% else %}"{{ value }}"{% endif %},
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            "types": {
+                {% if actions.types is defined %}
+                {% for type_name, type_config in actions.types.items() %}
+                "{{ type_name }}": {
+                    {% for config_key, config_value in type_config.items() %}
+                    "{{ config_key }}": {% if config_value is mapping %}{{ config_value | tojson }}{% elif config_value is number %}{{ config_value }}{% elif config_value is boolean %}{{ config_value }}{% else %}"{{ config_value }}"{% endif %}{{ "," if not loop.last }}
+                    {% endfor %}
+                }{{ "," if not loop.last }}
+                {% endfor %}
+                {% endif %}
+            }
+        },
         "appCopyright": "{{ console.ui.app_copyright }}",
         "appTitle": "{{ console.ui.app_title }}",
         "appName": "{{ console.ui.app_name }}",

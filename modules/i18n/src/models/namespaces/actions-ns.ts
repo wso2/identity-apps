@@ -356,6 +356,41 @@ export interface actionsNS {
             };
         };
     };
+    versioning: {
+        notifications: {
+            updateVersion: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+        };
+        outdated: {
+            warning: {
+                message: string;
+                hideDetailsButton: string;
+                details: {
+                    title: string;
+                    preRequisite: string;
+                };
+                title: string;
+                viewDetailsButton: string;
+                updateButton: string;
+                confirmationModal: {
+                    header: string;
+                    message: string;
+                    content: string;
+                    assertionHint: string;
+                };
+            };
+        };
+        outdatedLabel: string;
+        versionLabel: string;
+    };
     status: {
         active: string;
         configured: string;

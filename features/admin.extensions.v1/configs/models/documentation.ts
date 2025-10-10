@@ -65,7 +65,10 @@ interface ActionsDocumentationLinksInterface {
         preUpdateProfile: {
             learnMore: string;
         }
-    }
+    };
+    versioning: {
+        learnMore: string;
+    };
 }
 
 /**
