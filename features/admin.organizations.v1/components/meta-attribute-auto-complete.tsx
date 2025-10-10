@@ -35,7 +35,7 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import InfiniteScroll from "react-infinite-scroll-component";
+import { FixedSizeList as List } from "react-window";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import "./meta-attribute-auto-complete.scss";
@@ -202,21 +202,68 @@ const MetaAttributeAutoComplete: FunctionComponent<MetaAttributeAutoCompleteProp
     };
 
     /**
-     * Custom listbox component with infinite scroll.
+     * Custom listbox component with infinite scroll using react-window.
      */
     const customListboxComponent: (listboxProps: HTMLProps<HTMLDivElement>) => JSX.Element = useMemo(
-        () => (listboxProps: HTMLProps<HTMLDivElement>) => (
-            <InfiniteScroll
-                dataLength={ metaAttributeListOptions.length }
-                next={ loadMoreOptions }
-                hasMore={ hasNextPage }
-                loader={ loadingComponent() }
-                height={ metaAttributeListOptions.length > 4 ? 155 : "auto" }
-            >
-                <div style={ { overflow: "visible" } } { ...listboxProps }/>
-            </InfiniteScroll>
-        ),
-        [ metaAttributeListOptions.length, loadMoreOptions, hasNextPage ]
+        () => (listboxProps: HTMLProps<HTMLDivElement>) => {
+            const itemCount: number = metaAttributeListOptions.length + (hasNextPage ? 1 : 0);
+            const listHeight: number = Math.min(metaAttributeListOptions.length * 40, 155);
+
+            const Row: ({ index, style }: { index: number; style: React.CSSProperties }) => JSX.Element = ({
+                index,
+                style
+            }: { index: number; style: React.CSSProperties }) => {
+                // Show loading indicator at the end
+                if (index === metaAttributeListOptions.length) {
+                    return (
+                        <div style={ style }>
+                            { loadingComponent() }
+                        </div>
+                    );
+                }
+
+                // Render the actual list item
+                const option: MetaAttributeOption = metaAttributeListOptions[index];
+                const childElement: HTMLElement = (listboxProps.children as HTMLElement[])?.[index];
+
+                return (
+                    <div style={ style }>
+                        { childElement || (
+                            <Header.Content>
+                                { option.text }
+                            </Header.Content>
+                        ) }
+                    </div>
+                );
+            };
+
+            const handleScroll: ({ scrollOffset }: { scrollOffset: number }) => void = ({
+                scrollOffset
+            }: { scrollOffset: number }) => {
+                const scrollPercentage: number = scrollOffset / (itemCount * 40);
+
+                if (scrollPercentage > 0.8 && hasNextPage && !isMetaAttributesFetchRequestLoading &&
+                    !metaAttributesIsValidating) {
+                    loadMoreOptions();
+                }
+            };
+
+            return (
+                <List
+                    height={ listHeight || 155 }
+                    itemCount={ itemCount }
+                    itemSize={ 40 }
+                    width="100%"
+                    onScroll={ handleScroll }
+                    style={ { overflow: "visible" } }
+                    { ...listboxProps }
+                >
+                    { Row }
+                </List>
+            );
+        },
+        [ metaAttributeListOptions, hasNextPage, isMetaAttributesFetchRequestLoading, metaAttributesIsValidating,
+            loadMoreOptions ]
     );
 
     /**

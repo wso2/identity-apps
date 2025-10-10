@@ -71,7 +71,7 @@ import React, {
     useEffect,
     useState } from "react";
 import { useTranslation } from "react-i18next";
-import InfiniteScroll from "react-infinite-scroll-component";
+import { FixedSizeList as List } from "react-window";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import "./selective-org-share-with-selective-roles.scss";
@@ -1095,59 +1095,66 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
                                     padding={ 1 }
                                     className="roles-selective-share-left-panel"
                                     id="scrollableOrgContainer"
+                                    style={ { position: "relative", height: "600px", overflow: "auto" } }
+                                    onScroll={ (e: React.UIEvent<HTMLDivElement>) => {
+                                        const target: HTMLDivElement = e.target as HTMLDivElement;
+                                        const scrollPercentage: number = target.scrollTop / 
+                                            (target.scrollHeight - target.clientHeight);
+
+                                        if (scrollPercentage > 0.8 && isNextPageAvailable) {
+                                            loadMoreOrganizations();
+                                        }
+                                    } }
                                 >
-                                    <InfiniteScroll
-                                        dataLength={ organizationTree.length }
-                                        next={ loadMoreOrganizations }
-                                        hasMore={ isNextPageAvailable }
-                                        loader={ (<LinearProgress/>) }
-                                        scrollableTarget="scrollableOrgContainer"
-                                    >
-                                        <RichTreeView
-                                            data-componentid={ `${ componentId }-tree-view` }
-                                            className="roles-selective-share-tree-view"
-                                            items={ organizationTree }
-                                            expandedItems={ expandedItems }
-                                            expansionTrigger={ disableOrgSelection
-                                                ? "content"
-                                                : "iconContainer"
+                                    { isNextPageAvailable && organizationTree.length > 0 && (
+                                        <div style={ { position: "absolute", bottom: 0, width: "100%" } }>
+                                            <LinearProgress />
+                                        </div>
+                                    ) }
+                                    <RichTreeView
+                                        data-componentid={ `${ componentId }-tree-view` }
+                                        className="roles-selective-share-tree-view"
+                                        items={ organizationTree }
+                                        expandedItems={ expandedItems }
+                                        expansionTrigger={ disableOrgSelection
+                                            ? "content"
+                                            : "iconContainer"
+                                        }
+                                        onItemExpansionToggle={ (
+                                            _e: SyntheticEvent,
+                                            itemId: string,
+                                            expanded: boolean
+                                        ) => {
+                                            if (expanded) {
+                                                setExpandedOrgId(itemId);
+                                                setExpandedItems((prev: string[]) => [ ...prev, itemId ]);
+                                            } else {
+                                                setExpandedItems((prev: string[]) =>
+                                                    prev.filter((id: string) => id !== itemId));
+                                                collapseChildNodes(itemId);
                                             }
-                                            onItemExpansionToggle={ (
-                                                _e: SyntheticEvent,
-                                                itemId: string,
-                                                expanded: boolean
-                                            ) => {
-                                                if (expanded) {
-                                                    setExpandedOrgId(itemId);
-                                                    setExpandedItems((prev: string[]) => [ ...prev, itemId ]);
-                                                } else {
-                                                    setExpandedItems((prev: string[]) =>
-                                                        prev.filter((id: string) => id !== itemId));
-                                                    collapseChildNodes(itemId);
-                                                }
-                                            } }
-                                            onItemSelectionToggle={ (
-                                                _e: SyntheticEvent,
-                                                itemId: string,
-                                                isSelected: boolean
-                                            ) =>
-                                                resolveSelectedItems(itemId, isSelected) }
-                                            onItemClick={ (_e: SyntheticEvent, itemId: string) => {
-                                                setSelectedOrgId(itemId);
-                                            } }
-                                            selectedItems={ disableOrgSelection ? selectedOrgId : selectedItems }
-                                            checkboxSelection={ !disableOrgSelection }
-                                            disableSelection={ disableOrgSelection }
-                                            multiSelect={ !disableOrgSelection }
-                                            selectionPropagation={ {
-                                                descendants: false,
-                                                parents: false
-                                            } }
-                                            slots={ {
-                                                item: CustomTreeItem
-                                            } }
-                                        />
-                                    </InfiniteScroll>
+                                        } }
+                                        onItemSelectionToggle={ (
+                                            _e: SyntheticEvent,
+                                            itemId: string,
+                                            isSelected: boolean
+                                        ) =>
+                                            resolveSelectedItems(itemId, isSelected) }
+                                        onItemClick={ (_e: SyntheticEvent, itemId: string) => {
+                                            setSelectedOrgId(itemId);
+                                        } }
+                                        selectedItems={ disableOrgSelection ? selectedOrgId : selectedItems }
+                                        checkboxSelection={ !disableOrgSelection }
+                                        disableSelection={ disableOrgSelection }
+                                        multiSelect={ !disableOrgSelection }
+                                        selectionPropagation={ {
+                                            descendants: false,
+                                            parents: false
+                                        } }
+                                        slots={ {
+                                            item: CustomTreeItem
+                                        } }
+                                    />
                                 </Grid>
                             )
                         }

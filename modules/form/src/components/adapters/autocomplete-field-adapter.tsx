@@ -26,7 +26,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, HTMLProps, ReactElement, SyntheticEvent, useMemo, useState } from "react";
 import { FieldRenderProps } from "react-final-form";
-import InfiniteScroll from "react-infinite-scroll-component";
+import { FixedSizeList as List } from "react-window";
 import "./autocomplete-field-adapter.scss";
 
 /**
@@ -111,20 +111,59 @@ const AutocompleteFieldAdapter: FunctionComponent<AutocompleteFieldAdapterPropsI
     const isError: boolean = (meta.error || meta.submitError) && meta.touched;
 
     /**
-     * Custom listbox component with infinite scroll.
+     * Custom listbox component with infinite scroll using react-window.
      */
     const customListboxComponent: (listboxProps: HTMLProps<HTMLDivElement>) => JSX.Element = useMemo(
-        () => (listboxProps: HTMLProps<HTMLDivElement>) => (
-            <InfiniteScroll
-                dataLength={ options.length }
-                next={ loadMore }
-                hasMore={ hasMore }
-                loader={ <CircularProgress size={ 22 } className="list-item-loader"/> }
-                height={ options.length < 10 ? "auto" : 360 }
-            >
-                <div style={ { overflow: "visible" } } { ...listboxProps }/>
-            </InfiniteScroll>
-        ),
+        () => (listboxProps: HTMLProps<HTMLDivElement>) => {
+            const { children, ...otherProps } = listboxProps;
+            const items: any[] = React.Children.toArray(children);
+            const itemCount: number = items.length + (hasMore ? 1 : 0);
+
+            const Row: ({ index, style }: { index: number; style: React.CSSProperties }) => ReactElement = ({ 
+                index, 
+                style 
+            }: { 
+                index: number; 
+                style: React.CSSProperties 
+            }): ReactElement => {
+                // If this is the last item and there are more items to load, show the loading component
+                if (index === items.length && hasMore) {
+                    return (
+                        <div style={ style }>
+                            <CircularProgress size={ 22 } className="list-item-loader"/>
+                        </div>
+                    );
+                }
+
+                return <div style={ style }>{ items[index] }</div>;
+            };
+
+            const handleScroll: ({ scrollOffset }: { scrollOffset: number }) => void = ({ 
+                scrollOffset 
+            }: { 
+                scrollOffset: number 
+            }): void => {
+                const listHeight: number = items.length * 40;
+                const scrollPercentage: number = scrollOffset / listHeight;
+
+                if (scrollPercentage > 0.8 && hasMore) {
+                    loadMore();
+                }
+            };
+
+            return (
+                <List
+                    height={ Math.min(items.length * 40, 360) + (hasMore ? 40 : 0) }
+                    itemCount={ itemCount }
+                    itemSize={ 40 }
+                    width="100%"
+                    onScroll={ handleScroll }
+                    { ...otherProps }
+                >
+                    { Row }
+                </List>
+            );
+        },
         [ options.length, loadMore, hasMore ]
     );
 

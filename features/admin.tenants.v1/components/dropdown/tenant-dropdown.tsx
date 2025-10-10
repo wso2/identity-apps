@@ -60,7 +60,7 @@ import { AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import InfiniteScroll from "react-infinite-scroll-component";
+import { FixedSizeList as List } from "react-window";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import {
@@ -492,6 +492,34 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
 
     const resolveAssociatedTenants = (): ReactElement => {
         if (Array.isArray(tempTenantAssociationsList)) {
+            const Row = ({ index, style }: { index: number; style: React.CSSProperties }) => {
+                // If this is the last item and there are more items to load, show the loading component
+                if (index === tempTenantAssociationsList.length) {
+                    return (
+                        <div style={ style }>
+                            { loadingComponent() }
+                        </div>
+                    );
+                }
+
+                const tenant: TenantInfo = tempTenantAssociationsList[index];
+
+                return (
+                    <div style={ style }>
+                        { resolveAssociatedTenantRecord(tenant, index) }
+                    </div>
+                );
+            };
+
+            const handleScroll = ({ scrollOffset }: { scrollOffset: number }) => {
+                const listHeight: number = tempTenantAssociationsList.length * 40;
+                const scrollPercentage: number = scrollOffset / listHeight;
+
+                if (scrollPercentage > 0.8 && hasMoreAssociatedTenants) {
+                    loadMoreItems();
+                }
+            };
+
             return (
                 <Item.Group
                     id="associated-tenants-container"
@@ -501,19 +529,17 @@ const TenantDropdown: FunctionComponent<TenantDropdownInterface> = (props: Tenan
                 >
                     {
                         tempTenantAssociationsList.length > 0 ? (
-                            <InfiniteScroll
-                                dataLength={ tempTenantAssociationsList.length }
-                                next={ loadMoreItems }
-                                hasMore={ hasMoreAssociatedTenants }
-                                loader={ loadingComponent() }
-                                endMessage={ null }
-                                scrollableTarget="associated-tenants-container"
+                            <List
+                                height={ Math.min(tempTenantAssociationsList.length * 40, 155) + 
+                                    (hasMoreAssociatedTenants ? 40 : 0) }
+                                itemCount={ tempTenantAssociationsList.length + 
+                                    (hasMoreAssociatedTenants ? 1 : 0) }
+                                itemSize={ 40 }
+                                width="100%"
+                                onScroll={ handleScroll }
                             >
-                                {
-                                    tempTenantAssociationsList.map((tenant: TenantInfo, index: number) =>
-                                        resolveAssociatedTenantRecord(tenant, index))
-                                }
-                            </InfiniteScroll>
+                                { Row }
+                            </List>
                         ) : (
                             <Item
                                 className="empty-list"

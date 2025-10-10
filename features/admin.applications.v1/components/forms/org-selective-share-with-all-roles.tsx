@@ -43,7 +43,7 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import InfiniteScroll from "react-infinite-scroll-component";
+import { FixedSizeList as List } from "react-window";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import useGetApplicationShare from "../../api/use-get-application-share";
@@ -436,72 +436,79 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
                         padding={ 1 }
                         className="roles-selective-share-all-roles"
                         id="scrollableOrgContainer"
-                    >
-                        <InfiniteScroll
-                            dataLength={ organizationTree.length }
-                            next={ loadMoreOrganizations }
-                            hasMore={ isNextPageAvailable }
-                            loader={ (<LinearProgress/>) }
-                            scrollableTarget="scrollableOrgContainer"
-                        >
-                            {
-                                organizationTree.length > 0 ? (
-                                    <RichTreeView
-                                        data-componentid={ `${ componentId }-tree-view` }
-                                        className="roles-selective-share-tree-view"
-                                        items={ organizationTree }
-                                        expandedItems={ expandedItems }
-                                        selectedItems={ selectedItems }
-                                        onItemSelectionToggle={ (
-                                            _e: SyntheticEvent,
-                                            itemId: string,
-                                            isSelected: boolean
-                                        ) =>
-                                            resolveSelectedItems(itemId, isSelected) }
-                                        onItemExpansionToggle={ (
-                                            _e: SyntheticEvent,
-                                            itemId: string,
-                                            expanded: boolean
-                                        ) => {
-                                            if (expanded) {
-                                                setExpandedOrgId(itemId);
-                                                setExpandedItems((prev: string[]) => [ ...prev, itemId ]);
-                                            } else {
-                                                setExpandedItems((prev: string[]) =>
-                                                    prev.filter((id: string) => id !== itemId));
-                                                collapseChildNodes(itemId);
-                                            }
-                                        } }
-                                        selectionPropagation={ {
-                                            descendants: false,
-                                            parents: false
-                                        } }
-                                        checkboxSelection={ true }
-                                        multiSelect={ true }
-                                        slots={ {
-                                            item: CustomTreeItem
-                                        } }
-                                    />
-                                ) : (
-                                    <Box
-                                        data-componentid={ `${ componentId }-no-orgs` }
-                                        display="flex"
-                                        flexDirection="column"
-                                        justifyContent="center"
-                                        alignItems="center"
-                                        height="100%"
-                                    >
-                                        <EmptyPlaceholder
-                                            className="p-0"
-                                            data-componentid={ `${componentId}-empty-list-placeholder` }
-                                            image={ getEmptyPlaceholderIllustrations().emptyList }
-                                            imageSize="mini"
-                                            subtitle={ [ t("organizations:placeholders.emptyList.subtitles.0") ] }
-                                        />
-                                    </Box>
-                                )
+                        style={ { position: "relative", height: "600px", overflow: "auto" } }
+                        onScroll={ (e: React.UIEvent<HTMLDivElement>) => {
+                            const target: HTMLDivElement = e.target as HTMLDivElement;
+                            const scrollPercentage: number = target.scrollTop / 
+                                (target.scrollHeight - target.clientHeight);
+
+                            if (scrollPercentage > 0.8 && isNextPageAvailable) {
+                                loadMoreOrganizations();
                             }
-                        </InfiniteScroll>
+                        } }
+                    >
+                        { isNextPageAvailable && organizationTree.length > 0 && (
+                            <div style={ { position: "absolute", bottom: 0, width: "100%" } }>
+                                <LinearProgress />
+                            </div>
+                        ) }
+                        {
+                            organizationTree.length > 0 ? (
+                                <RichTreeView
+                                    data-componentid={ `${ componentId }-tree-view` }
+                                    className="roles-selective-share-tree-view"
+                                    items={ organizationTree }
+                                    expandedItems={ expandedItems }
+                                    selectedItems={ selectedItems }
+                                    onItemSelectionToggle={ (
+                                        _e: SyntheticEvent,
+                                        itemId: string,
+                                        isSelected: boolean
+                                    ) =>
+                                        resolveSelectedItems(itemId, isSelected) }
+                                    onItemExpansionToggle={ (
+                                        _e: SyntheticEvent,
+                                        itemId: string,
+                                        expanded: boolean
+                                    ) => {
+                                        if (expanded) {
+                                            setExpandedOrgId(itemId);
+                                            setExpandedItems((prev: string[]) => [ ...prev, itemId ]);
+                                        } else {
+                                            setExpandedItems((prev: string[]) =>
+                                                prev.filter((id: string) => id !== itemId));
+                                            collapseChildNodes(itemId);
+                                        }
+                                    } }
+                                    selectionPropagation={ {
+                                        descendants: false,
+                                        parents: false
+                                    } }
+                                    checkboxSelection={ true }
+                                    multiSelect={ true }
+                                    slots={ {
+                                        item: CustomTreeItem
+                                    } }
+                                />
+                            ) : (
+                                <Box
+                                    data-componentid={ `${ componentId }-no-orgs` }
+                                    display="flex"
+                                    flexDirection="column"
+                                    justifyContent="center"
+                                    alignItems="center"
+                                    height="100%"
+                                >
+                                    <EmptyPlaceholder
+                                        className="p-0"
+                                        data-componentid={ `${componentId}-empty-list-placeholder` }
+                                        image={ getEmptyPlaceholderIllustrations().emptyList }
+                                        imageSize="mini"
+                                        subtitle={ [ t("organizations:placeholders.emptyList.subtitles.0") ] }
+                                    />
+                                </Box>
+                            )
+                        }
                     </Grid>
                 )
             }
