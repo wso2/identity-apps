@@ -303,14 +303,16 @@
                 }
             },
             "overview": {
-                "disabledFeatures": [
-                    {% if myaccount.overview.disabled_features is defined %}
-                    {% for feature in myaccount.overview.disabled_features %}
-                    "{{ feature }}"{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% endif %}
-                ],
-                "enabled": {{ myaccount.overview.enabled }},
+                {%- set disabled_features = [] -%}
+                {%- if myaccount.overview.disabled_features is defined -%}
+                    {%- for feature in myaccount.overview.disabled_features -%}
+                        {%- set _ = disabled_features.append('"' + feature + '"') -%}
+                    {%- endfor -%}
+                {%- endif -%}
+                {%- if flow_execution.enable_legacy_flows is defined and not flow_execution.enable_legacy_flows -%}
+                    {%- set _ = disabled_features.append('"legacyFlows"') -%}
+                {%- endif -%}
+                {{ disabled_features | join(', ') }}
                 "scopes": {
                     {% if myaccount.overview.scopes is defined %}
                     {% for operation, scopes in myaccount.overview.scopes.items() %}

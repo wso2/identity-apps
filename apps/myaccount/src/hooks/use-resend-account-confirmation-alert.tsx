@@ -25,7 +25,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { getPreference } from "../api";
 import { resendVerificationLinkOrCode } from "../api/resend-verification";
-import { ProfileConstants as MyAccountProfileConstants, RecoveryScenario } from "../constants";
+import { AppConstants, ProfileConstants as MyAccountProfileConstants, RecoveryScenario } from "../constants";
 import { SCIMConfigs } from "../extensions/configs/scim";
 import { AlertLevels, AuthStateInterface, SystemNotificationAlertState } from "../models";
 import { PreferenceConnectorResponse, PreferenceProperty, PreferenceRequest } from "../models/preference";
@@ -44,6 +44,11 @@ export const useResendAccountConfirmationAlert = (
     const dispatch: Dispatch = useDispatch();
 
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
+    const isLegacyFlowEnabled: boolean = useSelector((state: AppState) => {
+        return !state?.config?.ui?.features?.overview?.disabledFeatures?.includes(
+            AppConstants.FEATURE_DICTIONARY.get("LEGACY_FLOWS")
+        );
+    });
 
     const [ isSelfSignUpSendOtpInEmailEnabled, setIsSelfSignUpSendOtpInEmailEnabled ] = useState<boolean>(false);
     const [ isAccountStatePendingSelfRegistration,
@@ -168,11 +173,16 @@ export const useResendAccountConfirmationAlert = (
      * methods is that their respective code validations must occur during the initial
      * user registration flow itself rather in a later stage via MyAccount.
      */
-    const isAlertVisible: boolean =
-        isAccountStatePendingSelfRegistration &&
-        isPreferredChannelEmail &&
-        !isSelfSignUpSendOtpInEmailEnabled &&
-        !isEmailVerified;
+    const isAlertVisible: boolean = (
+        isLegacyFlowEnabled
+            ? (
+                isAccountStatePendingSelfRegistration &&
+                isPreferredChannelEmail &&
+                !isSelfSignUpSendOtpInEmailEnabled &&
+                !isEmailVerified
+            )
+            : isAccountStatePendingSelfRegistration
+    );
 
     const alertSeverity: AlertLevels = AlertLevels.WARNING;
 
