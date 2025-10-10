@@ -93,7 +93,9 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                                     Click
                                     <Link
                                         sx={ { cursor: "pointer" } }
-                                        onClick={ () => history.push(AppConstants.getPaths().get("APPROVAL_WORKFLOWS")) }
+                                        onClick={ () => {
+                                            history.push(AppConstants.getPaths().get("APPROVAL_WORKFLOWS"))
+                                        } }
                                     >
                                         here
                                     </Link>

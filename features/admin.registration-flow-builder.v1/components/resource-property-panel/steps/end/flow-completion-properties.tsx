@@ -93,7 +93,9 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                                 Click
                                 <Link
                                     sx={ { cursor: "pointer" } }
-                                    onClick={ () => history.push(AppConstants.getPaths().get("APPROVAL_WORKFLOWS")) }
+                                    onClick={ () => {
+                                        history.push(AppConstants.getPaths().get("APPROVAL_WORKFLOWS"));
+                                    } }
                                 >
                                     here
                                 </Link>
@@ -148,7 +150,9 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                             control={
                                 (<Checkbox
                                     checked={ configs?.isAccountLockOnCreationEnabled === "false" }
-                                    disabled={ metadata?.workflowEnabled || configs?.isEmailVerificationEnabled !== "true" }
+                                    disabled={
+                                        metadata?.workflowEnabled || configs?.isEmailVerificationEnabled !== "true"
+                                    }
                                     onChange={ (event: ChangeEvent<HTMLInputElement>) => {
                                         const newConfigs: Record<string, unknown> = {
                                             ...configs,
