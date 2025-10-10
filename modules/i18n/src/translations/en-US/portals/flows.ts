@@ -43,6 +43,11 @@ export const flows: flowsNS = {
             savingInProgress: "Auto-saving..."
         },
         breadcrumb: "Edit {{flowType}} Flow",
+        workflowAlert: {
+            description: "A workflow is engaged for this flow. The following settings will not take effect until the workflow is disabled.",
+            navigation: "Click <1>here</1> to have a look at the currently engaged workflows.",
+            title: "Workflow Engaged"
+        },
         elements: {
             richText: {
                 linkEditor: {

@@ -46,6 +46,11 @@ export interface flowsNS {
             savingInProgress: string;
         };
         breadcrumb: string;
+        workflowAlert: {
+            description: string;
+            navigation: string;
+            title: string;
+        };
         elements: {
             richText: {
                 linkEditor: {
