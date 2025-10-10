@@ -1,5 +1,18 @@
 # @wso2is/admin.login-flow-builder.v1
 
+## 2.27.0
+
+### Minor Changes
+
+- [#9325](https://github.com/wso2/identity-apps/pull/9325) [`31559adf396bfc4482cf24542ba746e2995ab82b`](https://github.com/wso2/identity-apps/commit/31559adf396bfc4482cf24542ba746e2995ab82b) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Rename authenticationScript sub feature to applicationAuthenticationScript
+
+### Patch Changes
+
+- Updated dependencies [[`dae5e73820feef56c679bd4981d8eda876416970`](https://github.com/wso2/identity-apps/commit/dae5e73820feef56c679bd4981d8eda876416970), [`31559adf396bfc4482cf24542ba746e2995ab82b`](https://github.com/wso2/identity-apps/commit/31559adf396bfc4482cf24542ba746e2995ab82b)]:
+  - @wso2is/admin.applications.v1@2.38.0
+  - @wso2is/admin.core.v1@2.49.83
+  - @wso2is/admin.server-configurations.v1@2.35.97
+
 ## 2.26.7
 
 ### Patch Changes

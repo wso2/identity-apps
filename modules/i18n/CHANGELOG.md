@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.30.49
+
+### Patch Changes
+
+- [#9324](https://github.com/wso2/identity-apps/pull/9324) [`428be49ea1d8f245ca9217c126b4152e5caf1a9e`](https://github.com/wso2/identity-apps/commit/428be49ea1d8f245ca9217c126b4152e5caf1a9e) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix showing client error messages in user profile pages in console and myaccount
+
 ## 2.30.48
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.25.14
+
+### Patch Changes
+
+- [#9324](https://github.com/wso2/identity-apps/pull/9324) [`428be49ea1d8f245ca9217c126b4152e5caf1a9e`](https://github.com/wso2/identity-apps/commit/428be49ea1d8f245ca9217c126b4152e5caf1a9e) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix showing client error messages in user profile pages in console and myaccount
+
+- Updated dependencies [[`428be49ea1d8f245ca9217c126b4152e5caf1a9e`](https://github.com/wso2/identity-apps/commit/428be49ea1d8f245ca9217c126b4152e5caf1a9e)]:
+  - @wso2is/i18n@2.30.49
+
 ## 2.25.13
 
 ### Patch Changes
