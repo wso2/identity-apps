@@ -40,7 +40,7 @@ import { BasicRoleDetails } from "./edit-role-basic";
 import { RoleGroupsList } from "./edit-role-groups";
 import { UpdatedRolePermissionDetails } from "./edit-role-permission";
 import { RoleUsersList } from "./edit-role-users";
-import { RoleConstants as LocalRoleConstants } from "../../constants/role-constants";
+import { RoleConstants as LocalRoleConstants, SYSTEM_RESERVED_ROLES } from "../../constants/role-constants";
 import { isMyAccountImpersonationRole } from "../role-utils";
 
 /**
@@ -225,25 +225,29 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                         />
                     </ResourceTab.Pane>
                 )
-            },
-            {
-                menuItem: t("roles:edit.menuItems.groups"),
-                render: () => (
-                    <ResourceTab.Pane controlledSegmentation attached={ false }>
-                        <RoleGroupsList
-                            isReadOnly={ isGroupReadOnly }
-                            role={ roleObject }
-                            onRoleUpdate={ onRoleUpdate }
-                            tabIndex={ 2 }
-                        />
-                    </ResourceTab.Pane>
-                )
             }
         ];
 
-        if (!userRolesDisabledFeatures?.includes(
-            LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_USERS")
-        )) {
+        if (roleObject?.displayName !== SYSTEM_RESERVED_ROLES.SELF_SIGNUP) {
+            panes.push(
+                {
+                    menuItem: t("roles:edit.menuItems.groups"),
+                    render: () => (
+                        <ResourceTab.Pane controlledSegmentation attached={ false }>
+                            <RoleGroupsList
+                                isReadOnly={ isGroupReadOnly }
+                                role={ roleObject }
+                                onRoleUpdate={ onRoleUpdate }
+                                tabIndex={ 2 }
+                            />
+                        </ResourceTab.Pane>
+                    )
+                }
+            );
+        }
+
+        if (!userRolesDisabledFeatures?.includes(LocalRoleConstants.FEATURE_DICTIONARY.get("ROLE_USERS")) &&
+            roleObject?.displayName !== SYSTEM_RESERVED_ROLES.SELF_SIGNUP) {
             panes.push(
                 {
                     menuItem: t("roles:edit.menuItems.users"),
@@ -262,7 +266,8 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
             );
         }
 
-        if (agentsFeatureConfig?.enabled && isAgentManagementEnabledForOrg && !isSubOrganization()) {
+        if (agentsFeatureConfig?.enabled && isAgentManagementEnabledForOrg && !isSubOrganization() &&
+            !Object.values(SYSTEM_RESERVED_ROLES).includes(roleObject?.displayName as SYSTEM_RESERVED_ROLES)) {
             panes.push(
                 {
                     menuItem: t("roles:edit.menuItems.agents"),

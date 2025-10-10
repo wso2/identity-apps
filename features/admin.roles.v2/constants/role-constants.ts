@@ -128,3 +128,14 @@ export enum Schemas {
     BULK_REQUEST = "urn:ietf:params:scim:api:messages:2.0:BulkRequest",
     PATCH_OP = "urn:ietf:params:scim:api:messages:2.0:PatchOp"
 }
+
+/**
+ * System reserved roles.
+ */
+export enum SYSTEM_RESERVED_ROLES {
+    ADMIN = "admin",
+    EVERYONE = "everyone",
+    SYSTEM = "system",
+    IMPERSONATOR = "Impersonator",
+    SELF_SIGNUP = "selfsignup"
+}
