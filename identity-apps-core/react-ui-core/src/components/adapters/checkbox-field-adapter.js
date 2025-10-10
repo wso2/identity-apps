@@ -17,7 +17,7 @@
  */
 
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Checkbox } from "semantic-ui-react";
 import useFieldValidation from "../../hooks/use-field-validations";
 import { useTranslations } from "../../hooks/use-translations";
