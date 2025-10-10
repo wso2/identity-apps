@@ -548,7 +548,7 @@
                     ]
                 },
                 "subFeatures": {
-                    "authenticationScript": {
+                    "applicationAuthenticationScript": {
                         "disabledFeatures": [],
                         "enabled": true,
                         "featureFlags": [],

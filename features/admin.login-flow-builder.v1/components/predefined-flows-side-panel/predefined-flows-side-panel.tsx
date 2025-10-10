@@ -231,7 +231,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
     const isScriptUpdatePermissionEnforced: boolean = isFeatureEnabled(applicationsFeatureConfig,
         ENFORCE_SCRIPT_UPDATE_PERMISSION_FEATURE_ID);
     const hasScriptUpdatePermission: boolean = useRequiredScopes(
-        applicationsFeatureConfig?.subFeatures?.authenticationScript?.scopes?.update);
+        applicationsFeatureConfig?.subFeatures?.applicationAuthenticationScript?.scopes?.update);
     const isScriptUpdateReadOnly: boolean = isScriptUpdatePermissionEnforced && !hasScriptUpdatePermission;
 
     /**
