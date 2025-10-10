@@ -1,5 +1,36 @@
 # @wso2is/console
 
+## 2.81.0
+
+### Minor Changes
+
+- [#9325](https://github.com/wso2/identity-apps/pull/9325) [`31559adf396bfc4482cf24542ba746e2995ab82b`](https://github.com/wso2/identity-apps/commit/31559adf396bfc4482cf24542ba746e2995ab82b) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Rename authenticationScript sub feature to applicationAuthenticationScript
+
+* [#9325](https://github.com/wso2/identity-apps/pull/9325) [`82e74eaa2f352274cf36b083bc0eafb26ff6bad7`](https://github.com/wso2/identity-apps/commit/82e74eaa2f352274cf36b083bc0eafb26ff6bad7) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Provide support to list sub features under the console settings
+
+### Patch Changes
+
+- [#9324](https://github.com/wso2/identity-apps/pull/9324) [`428be49ea1d8f245ca9217c126b4152e5caf1a9e`](https://github.com/wso2/identity-apps/commit/428be49ea1d8f245ca9217c126b4152e5caf1a9e) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix showing client error messages in user profile pages in console and myaccount
+
+* [#9325](https://github.com/wso2/identity-apps/pull/9325) [`dae5e73820feef56c679bd4981d8eda876416970`](https://github.com/wso2/identity-apps/commit/dae5e73820feef56c679bd4981d8eda876416970) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update sub feature names to match API resource collections
+
+* Updated dependencies [[`428be49ea1d8f245ca9217c126b4152e5caf1a9e`](https://github.com/wso2/identity-apps/commit/428be49ea1d8f245ca9217c126b4152e5caf1a9e), [`dae5e73820feef56c679bd4981d8eda876416970`](https://github.com/wso2/identity-apps/commit/dae5e73820feef56c679bd4981d8eda876416970), [`31559adf396bfc4482cf24542ba746e2995ab82b`](https://github.com/wso2/identity-apps/commit/31559adf396bfc4482cf24542ba746e2995ab82b), [`82e74eaa2f352274cf36b083bc0eafb26ff6bad7`](https://github.com/wso2/identity-apps/commit/82e74eaa2f352274cf36b083bc0eafb26ff6bad7)]:
+  - @wso2is/admin.users.v1@2.36.50
+  - @wso2is/i18n@2.30.49
+  - @wso2is/admin.applications.v1@2.38.0
+  - @wso2is/admin.console-settings.v1@2.26.0
+  - @wso2is/admin.agents.v1@1.0.90
+  - @wso2is/admin.core.v1@2.49.83
+  - @wso2is/admin.roles.v2@2.27.245
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.75
+  - @wso2is/admin.branding.v1@2.32.31
+  - @wso2is/admin.email-management.v1@2.25.239
+  - @wso2is/admin.flows.v1@1.0.44
+  - @wso2is/admin.home.v1@1.7.53
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.75
+  - @wso2is/admin.server-configurations.v1@2.35.97
+  - @wso2is/admin.registration-flow-builder.v1@0.10.35
+
 ## 2.80.6
 
 ### Patch Changes

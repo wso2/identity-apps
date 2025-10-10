@@ -1,5 +1,25 @@
 # @wso2is/admin.applications.v1
 
+## 2.38.0
+
+### Minor Changes
+
+- [#9325](https://github.com/wso2/identity-apps/pull/9325) [`31559adf396bfc4482cf24542ba746e2995ab82b`](https://github.com/wso2/identity-apps/commit/31559adf396bfc4482cf24542ba746e2995ab82b) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Rename authenticationScript sub feature to applicationAuthenticationScript
+
+### Patch Changes
+
+- [#9325](https://github.com/wso2/identity-apps/pull/9325) [`dae5e73820feef56c679bd4981d8eda876416970`](https://github.com/wso2/identity-apps/commit/dae5e73820feef56c679bd4981d8eda876416970) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update sub feature names to match API resource collections
+
+- Updated dependencies [[`428be49ea1d8f245ca9217c126b4152e5caf1a9e`](https://github.com/wso2/identity-apps/commit/428be49ea1d8f245ca9217c126b4152e5caf1a9e), [`31559adf396bfc4482cf24542ba746e2995ab82b`](https://github.com/wso2/identity-apps/commit/31559adf396bfc4482cf24542ba746e2995ab82b), [`82e74eaa2f352274cf36b083bc0eafb26ff6bad7`](https://github.com/wso2/identity-apps/commit/82e74eaa2f352274cf36b083bc0eafb26ff6bad7)]:
+  - @wso2is/admin.users.v1@2.36.50
+  - @wso2is/i18n@2.30.49
+  - @wso2is/admin.login-flow-builder.v1@2.27.0
+  - @wso2is/admin.console-settings.v1@2.26.0
+  - @wso2is/admin.core.v1@2.49.83
+  - @wso2is/admin.roles.v2@2.27.245
+  - @wso2is/admin.branding.v1@2.32.31
+  - @wso2is/admin.server-configurations.v1@2.35.97
+
 ## 2.37.18
 
 ### Patch Changes
