@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { useGetApplication } from "@wso2is/admin.applications.v1/api/use-get-application";
 import { AuthenticationStepInterface, AuthenticatorInterface } from "@wso2is/admin.applications.v1/models/application";
 import {
@@ -28,6 +29,7 @@ import {
 } from "@wso2is/admin.groups.v1/models/groups";
 import { useIdentityProviderList } from "@wso2is/admin.identity-providers.v1/api/identity-provider";
 import { IdentityProviderInterface, StrictIdentityProviderInterface } from "@wso2is/admin.identity-providers.v1/models";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
     IdentifiableComponentInterface,
@@ -48,7 +50,7 @@ import { Divider } from "semantic-ui-react";
 import { EditRoleFederatedGroupsAccordion } from "./edit-role-federated-groups-accordion";
 import { EditRoleLocalGroupsAccordion } from "./edit-role-local-groups-accordion";
 import { assignGroupstoRoles, updateRoleDetails } from "../../api/roles";
-import { RoleAudienceTypes, Schemas } from "../../constants/role-constants";
+import { RoleAudienceTypes, RoleConstants, RoleManagementFeatureKeys, Schemas } from "../../constants/role-constants";
 import { PatchRoleDataInterface, RoleEditSectionsInterface } from "../../models/roles";
 import { RoleManagementUtils } from "../../utils/role-management-utils";
 
@@ -72,6 +74,21 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+
+    const userRolesFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRoles
+    );
+    const isEnforceRoleOperationPermissionEnabled: boolean = isFeatureEnabled(
+        userRolesFeatureConfig,
+        RoleConstants.FEATURE_DICTIONARY.get(RoleManagementFeatureKeys.EnforceRoleOperationPermission)
+    );
+
+    const hasRoleGroupUpdatePermission: boolean = useRequiredScopes(
+        userRolesFeatureConfig?.subFeatures?.groupManagement?.scopes?.update
+    );
+
+    const isReadOnlyView: boolean = isReadOnly ||
+        (isEnforceRoleOperationPermissionEnabled && !hasRoleGroupUpdatePermission);
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ filteredIdpList, setFilteredIdpList ] = useState<IdentityProviderInterface[]>([]);
@@ -303,7 +320,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             {
                 <EditRoleLocalGroupsAccordion
                     key={ "role-group-accordion-local" }
-                    isReadOnly={ isReadOnly }
+                    isReadOnly={ isReadOnlyView }
                     onUpdate={ onGroupsUpdate }
                     initialSelectedGroups={ assignedGroups[LOCAL_GROUPS_IDENTIFIER_ID] }
                     onSelectedGroupsListChange={ onSelectedGroupsChange }
@@ -325,7 +342,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                             return (
                                 <EditRoleFederatedGroupsAccordion
                                     key={ `role-group-accordion-${idp.id}` }
-                                    isReadOnly={ isReadOnly }
+                                    isReadOnly={ isReadOnlyView }
                                     onUpdate={ onGroupsUpdate }
                                     initialSelectedGroups={ initialSelectedGroupsOptions }
                                     identityProvider={ idp }
