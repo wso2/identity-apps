@@ -2159,11 +2159,16 @@
             {% if console.user_roles is defined %}
             "userRoles": {
                 "disabledFeatures": [
-                    {% if console.user_roles.disabled_features is defined %}
-                    {% for feature in console.user_roles.disabled_features %}
-                    "{{ feature }}"{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% endif %}
+                    {%- set disabled_features = [] -%}
+                    {%- if role_mgt.skip_enforce_role_operation_permission is defined and role_mgt.skip_enforce_role_operation_permission == true -%}
+                        {%- set _ = disabled_features.append('"roles.enforceRoleOperationPermission"') -%}
+                    {%- endif -%}
+                    {%- if console.user_roles.disabled_features is defined -%}
+                        {%- for feature in console.user_roles.disabled_features -%}
+                            {%- set _ = disabled_features.append('"' + feature + '"') -%}
+                        {%- endfor -%}
+                    {%- endif -%}
+                    {{ disabled_features | join(', ') }}
                 ],
                 "enabled": {% if console.user_roles.enabled is defined %} {{ console.user_roles.enabled }},
                 {% else %} true,
@@ -2183,7 +2188,55 @@
                         "update": [],
                         "delete": []
                     {% endif %}
-                }
+                }{% if console.user_roles.sub_features is defined %},
+                "subFeatures": {
+                    {% for sub_feature_name, sub_feature in console.user_roles.sub_features.items() %}
+                    "{{ sub_feature_name }}": {
+                        "disabledFeatures": [
+                            {% if sub_feature.disabled_features is defined %}
+                            {% for disabled_feature in sub_feature.disabled_features %}
+                            "{{ disabled_feature }}"{{ "," if not loop.last }}
+                            {% endfor %}
+                            {% endif %}
+                        ],
+                        "enabled": {% if sub_feature.enabled is defined %} {{ sub_feature.enabled }},
+                        {% else %} true,
+                        {% endif %}
+                        "featureFlags": [
+                            {% if sub_feature.feature_flags is defined %}
+                            {% for flag in sub_feature.feature_flags %}
+                            {
+                                {% for key, value in flag.items() %}
+                                {% if value is string %}
+                                    "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+                                {% else %}
+                                    "{{ key }}": {{ value }}{{ "," if not loop.last }}
+                                {% endif %}
+                                {% endfor %}
+                            }{{ "," if not loop.last }}
+                            {% endfor %}
+                            {% endif %}
+                        ],
+                        "scopes": {
+                            {% if sub_feature.scopes is defined %}
+                            {% for operation, scopes in sub_feature.scopes.items() %}
+                            "{{ operation }}": [
+                                {% for scope in scopes %}
+                                    "{{ scope }}"{{ "," if not loop.last }}
+                                {% endfor %}
+                            ]{{ "," if not loop.last }}
+                            {% endfor %}
+                            {% else %}
+                                "create": [],
+                                "delete": [],
+                                "feature": [],
+                                "read": [],
+                                "update": []
+                            {% endif %}
+                        }
+                    }{{ "," if not loop.last }}
+                    {% endfor %}
+                }{% endif %}
             },
             {% endif %}
             {% if console.user_roles_v3 is defined && scim2.enable_scim2_roles_v3_api is defined %}

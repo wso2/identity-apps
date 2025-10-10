@@ -1675,6 +1675,38 @@
                     "update": [
                         "internal_role_mgt_update"
                     ]
+                },
+                "subFeatures": {
+                    "groupManagement": {
+                        "disabledFeatures": [],
+                        "enabled": true,
+                        "featureFlags": [],
+                        "scopes": {
+                            "update": [
+                                "internal_role_mgt_groups_update"
+                            ]
+                        }
+                    },
+                    "permissionManagement": {
+                        "disabledFeatures": [],
+                        "enabled": true,
+                        "featureFlags": [],
+                        "scopes": {
+                            "update": [
+                                "internal_role_mgt_permission_update"
+                            ]
+                        }
+                    },
+                    "userManagement": {
+                        "disabledFeatures": [],
+                        "enabled": true,
+                        "featureFlags": [],
+                        "scopes": {
+                            "update": [
+                                "internal_role_mgt_users_update"
+                            ]
+                        }
+                    }
                 }
             },
             "userRolesV3": {
