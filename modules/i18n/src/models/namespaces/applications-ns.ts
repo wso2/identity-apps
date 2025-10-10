@@ -974,6 +974,7 @@ export interface ApplicationsNS {
                 }
             };
             apiAuthorization: {
+                limitedAccessMessage: string;
                 m2mPolicyMessage: string;
             };
             roles: {
