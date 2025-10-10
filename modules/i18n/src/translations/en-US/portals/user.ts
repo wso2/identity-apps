@@ -664,7 +664,7 @@ export const user: userNS = {
             updateProfileInfo: {
                 error: {
                     description: "{{description}}",
-                    message: "Error occurred while updating the profile details"
+                    message: "Profile update failed"
                 },
                 genericError: {
                     description: "Error occurred while updating the profile details.",

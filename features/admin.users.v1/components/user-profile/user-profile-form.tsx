@@ -27,6 +27,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { commonConfig as commonExtensionConfig } from "@wso2is/admin.extensions.v1";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { ProfileConstants } from "@wso2is/core/constants";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
@@ -784,7 +785,18 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
 
                 onUserUpdated(profileData.id);
             })
-            .catch(() => {
+            .catch((error: IdentityAppsApiException) => {
+                if (error.response && error.response.status === 400 && error.response.data?.detail) {
+                    dispatch(addAlert({
+                        description: t("user:profile.notifications.updateProfileInfo.error.description",
+                            { description: error.response.data.detail }),
+                        level: AlertLevels.ERROR,
+                        message: t("user:profile.notifications.updateProfileInfo.error.message")
+                    }));
+
+                    return;
+                }
+
                 dispatch(addAlert({
                     description: t("user:profile.notifications.updateProfileInfo." +
                         "genericError.description"),
