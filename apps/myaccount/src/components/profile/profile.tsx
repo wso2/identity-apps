@@ -475,7 +475,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     dispatch(getProfileInformation(true));
                 }
             })
-            .catch((errorData: any) => {
+            .catch((errorData: { status: string; detail: string }) => {
+                debugger;
                 if (errorData?.status === "400" && errorData?.detail) {
                     onAlertFired({
                         description: t("myAccount:components.profile.notifications.updateProfileInfo." +
