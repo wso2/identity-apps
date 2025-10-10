@@ -361,6 +361,7 @@ export const roles: rolesNS = {
         },
         permissions: {
             heading: "Assigned Permissions",
+            limitedPermission: "You have limited permissions to edit this role's permissions.",
             readOnlySubHeading: "View the assigned permissions of the role.",
             removedPermissions: "Removed Permissions",
             subHeading: "Manage assigned permissions in the role."

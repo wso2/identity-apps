@@ -361,6 +361,7 @@ export interface rolesNS {
             subHeading: string;
             readOnlySubHeading: string;
             removedPermissions: string;
+            limitedPermission: string;
         };
         users: AssignEntityToRole;
         agents: AssignEntityToRole;

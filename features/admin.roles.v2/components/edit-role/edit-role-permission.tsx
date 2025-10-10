@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
 import Autocomplete, {
     AutocompleteRenderGetTagProps,
     AutocompleteRenderInputParams
@@ -23,11 +24,13 @@ import Autocomplete, {
 import Button from "@oxygen-ui/react/Button";
 import Grid from "@oxygen-ui/react/Grid";
 import TextField from "@oxygen-ui/react/TextField";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { useAPIResources } from "@wso2is/admin.api-resources.v2/api";
 import { useGetAuthorizedAPIList } from "@wso2is/admin.api-resources.v2/api/useGetAuthorizedAPIList";
 import { APIResourceCategories, APIResourcesConstants } from "@wso2is/admin.api-resources.v2/constants";
 import { APIResourceUtils } from "@wso2is/admin.api-resources.v2/utils/api-resource-utils";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
@@ -54,11 +57,16 @@ import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps } from "semantic-ui-react";
 import { RenderChip } from "./edit-role-common/render-chip";
 import { RoleAPIResourcesListItem } from "./edit-role-common/role-api-resources-list-item";
-import { getAPIResourceDetailsBulk, updateRoleDetails, updateRoleDetailsUsingV3Api,
-    useAPIResourceDetails } from "../../api/roles";
-import { RoleAudienceTypes, RoleConstants } from "../../constants/role-constants";
+import {
+    getAPIResourceDetailsBulk,
+    updateRoleDetails,
+    updateRoleDetailsUsingV3Api,
+    useAPIResourceDetails
+} from "../../api/roles";
+import { RoleAudienceTypes, RoleConstants, RoleManagementFeatureKeys } from "../../constants/role-constants";
 import { APIResourceInterface, AuthorizedAPIListItemInterface, ScopeInterface } from "../../models/apiResources";
 import { PatchRoleDataInterface, PermissionUpdateInterface, SelectedPermissionsInterface } from "../../models/roles";
+import "./edit-role-permission.scss";
 
 /**
  * Interface to capture permission edit props.
@@ -93,7 +101,7 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
         role,
         onRoleUpdate,
         tabIndex,
-        ["data-componentid"]: componentId
+        ["data-componentid"]: componentId = "edit-role-permissions"
     } = props;
 
     const { t } = useTranslation();
@@ -119,6 +127,20 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
     const userRolesV3FeatureEnabled: boolean = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
     );
+    const userRolesFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRoles
+    );
+    const isEnforceRoleOperationPermissionEnabled: boolean = isFeatureEnabled(
+        userRolesFeatureConfig, RoleManagementFeatureKeys.EnforceRoleOperationPermission);
+
+    const hasRolePermissionUpdatePermission: boolean = useRequiredScopes(
+        userRolesFeatureConfig?.subFeatures?.permissionManagement?.scopes?.update
+    );
+
+    // If the enforce role operation permission feature is enabled, only allow to edit the role if the user has the
+    // relevant permission.
+    const isReadOnlyView: boolean = isReadOnly ||
+        (isEnforceRoleOperationPermissionEnabled && !hasRolePermissionUpdatePermission);
 
     const updateRoleDetailsFunction: (roleId: string, roleData: PatchRoleDataInterface) => Promise<any> =
         userRolesV3FeatureEnabled ? updateRoleDetailsUsingV3Api : updateRoleDetails;
@@ -146,9 +168,9 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
     );
 
     useEffect(() => {
-        !isReadOnly
-            ? getExistingAPIResources()
-            : null;
+        if (!isReadOnlyView) {
+            getExistingAPIResources();
+        }
     }, [ role ]);
 
     /**
@@ -684,13 +706,19 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
     );
 
     return (
-        <EmphasizedSegment padded="very">
+        <EmphasizedSegment padded="very" className="edit-role-permission">
+            { isEnforceRoleOperationPermissionEnabled && !hasRolePermissionUpdatePermission && (
+                <Alert severity="warning" className="warning-alert">
+                    { t("roles:edit.permissions.limitedPermission") }
+                </Alert>
+            ) }
+
             <Grid xs={ 8 }>
                 <Heading as="h4">
                     { t("roles:edit.permissions.heading") }
                 </Heading>
                 {
-                    isReadOnly ? (
+                    isReadOnlyView ? (
                         <Heading as="h6" color="grey" subHeading className="mb-5">
                             { t("roles:edit.permissions.readOnlySubHeading") }
                         </Heading>
@@ -702,17 +730,17 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
                 }
             </Grid>
             {
-                isReadOnly ? readOnlyPermissionList() : editablePermissionList()
+                isReadOnlyView ? readOnlyPermissionList() : editablePermissionList()
             }
             {
-                !isReadOnly && (
+                !isReadOnlyView && (
                     <Button
                         color="primary"
                         variant="contained"
                         size="small"
                         className="mt-5"
                         loading={ isSubmitting }
-                        disabled={ isReadOnly }
+                        disabled={ isReadOnlyView }
                         onClick={ () => {
                             updateRolePermissions();
                         } }
@@ -724,11 +752,4 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
             }
         </EmphasizedSegment>
     );
-};
-
-/**
- * Default props for role permissions tab component.
- */
-UpdatedRolePermissionDetails.defaultProps = {
-    "data-componentid": "edit-role-permissions"
 };
