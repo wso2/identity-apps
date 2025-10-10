@@ -17,7 +17,7 @@
  */
 
 import PropTypes from "prop-types";
-import React, { useMemo } from "react";
+import React from "react";
 import { Button } from "semantic-ui-react";
 import { useTranslations } from "../../hooks/use-translations";
 import { resolveElementText } from "../../utils/i18n-utils";
@@ -26,78 +26,21 @@ const ButtonAdapter = ({ component, handleButtonAction }) => {
 
     const { translations } = useTranslations();
 
-    /**
-     * Dynamic icon resolver that constructs import paths automatically.
-     */
-    const iconResolver = useMemo(() => {
-        const resolveIcon = (imagePath) => {
-            // Handle asset paths like "assets/identity-providers/apple.svg"
-            if (imagePath.startsWith("assets/images/icons/") && imagePath.endsWith(".svg")) {
-                try {
-                    const iconName = imagePath.split("/").pop().replace(".svg", "");
-                    const iconContext = require.context(
-                        "../../assets/images/icons",
-                        false,
-                        /\.svg$/
-                    );
-
-                    const iconKey = `./${iconName}.svg`;
-                    const mod = iconContext(iconKey);
-
-                    return typeof mod === "string" ? mod : mod.default;
-
-                } catch (error) {
-                    // If dynamic resolution fails, continue to fallback
-                }
-            }
-
-            return null;
-        };
-
-        return resolveIcon;
-    }, []);
-
-    const resolveProviderIcon = (imageUrl) => {
-        if (!imageUrl) return { type: "none", value: null };
+    const resolveImageUrl = (imageUrl) => {
+        if (!imageUrl) return null;
 
         try {
             new URL(imageUrl);
 
-            return { type: "url", value: imageUrl };
-        } catch (error) {
-            // Not a URL.
+            return imageUrl;
+        } catch (e) {
+            // Not a valid URL, proceed to construct the full path.
         }
 
-        const dynamicIcon = iconResolver(imageUrl);
+        const appBase = window.location.pathname.split("/")[1];
+        const base = `${window.location.origin}/${appBase}`;
 
-        if (dynamicIcon) {
-            return typeof dynamicIcon === "function"
-                ? { type: "component", value: dynamicIcon }
-                : { type: "url", value: dynamicIcon };
-        }
-
-        return { type: "url", value: imageUrl };
-    };
-
-    const icon = resolveProviderIcon(component.config.image);
-
-    const renderIcon = (icon) => {
-        if (!icon || icon.type === "none") return null;
-
-        if (icon.type === "component") {
-            const IconComponent = icon.value;
-
-            return <IconComponent className="ui image" role="presentation" />;
-        }
-
-        return (
-            <img
-                className="ui image"
-                src={ icon.value }
-                alt="Connection Login icon"
-                role="presentation"
-            />
-        );
+        return `${base}/${imageUrl.replace(/^\//, "")}`;
     };
 
     switch (component.variant) {
@@ -152,7 +95,12 @@ const ButtonAdapter = ({ component, handleButtonAction }) => {
                         name={ component.id }
                         onClick={ () => handleButtonAction(component.id, {}) }
                     >
-                        { renderIcon(icon) }
+                        <img
+                            className="ui image"
+                            src={ resolveImageUrl(component.config.image) }
+                            alt="Connection Login icon"
+                            role="presentation"
+                        />
                         <span>{ resolveElementText(translations, component.config.text) }</span>
                     </Button>
                 </div>
