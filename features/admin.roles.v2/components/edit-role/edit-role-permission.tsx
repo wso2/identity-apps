@@ -131,7 +131,9 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
         (state: AppState) => state?.config?.ui?.features?.userRoles
     );
     const isEnforceRoleOperationPermissionEnabled: boolean = isFeatureEnabled(
-        userRolesFeatureConfig, RoleManagementFeatureKeys.EnforceRoleOperationPermission);
+        userRolesFeatureConfig,
+        RoleConstants.FEATURE_DICTIONARY.get(RoleManagementFeatureKeys.EnforceRoleOperationPermission)
+    );
 
     const hasRolePermissionUpdatePermission: boolean = useRequiredScopes(
         userRolesFeatureConfig?.subFeatures?.permissionManagement?.scopes?.update
