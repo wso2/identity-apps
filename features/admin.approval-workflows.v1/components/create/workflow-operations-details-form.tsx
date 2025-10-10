@@ -261,7 +261,7 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                     } }
                     initialValues={ initialValues }
                     validate={ validateForm }
-                    render={ ({ handleSubmit }: FormRenderProps) => {
+                    render={ ({ handleSubmit, errors }: FormRenderProps) => {
                         triggerFormSubmit.current = handleSubmit;
 
                         return (
@@ -297,15 +297,8 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                                     placeholder={
                                                         t("approvalWorkflows:forms.operations.dropDown.placeholder")
                                                     }
-                                                    helperText={
-                                                        selectedOperations.length === 0
-                                                            ? t(
-                                                                "approvalWorkflows:forms.operations.dropDown." +
-                                                                "nullValidationErrorMessage"
-                                                            )
-                                                            : ""
-                                                    }
-                                                    error={ selectedOperations.length === 0 }
+                                                    helperText={ errors.matchedOperations }
+                                                    error={ !!errors.matchedOperations }
                                                     data-componentid={ `${componentId}-field-operation-search` }
                                                 />
                                             ) }

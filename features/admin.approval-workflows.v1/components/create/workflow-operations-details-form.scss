@@ -14,9 +14,17 @@
 
     .operations-autocomplete-header  {
         margin-bottom: 5px;
+        white-space: nowrap; 
 
         h6 {
             color: #666666; 
+            margin: 0;
+        }
+
+        h6::after {
+            content: " *";
+            color: var(--oxygen-palette-error-main);
+            margin-left: 2px;
         }
     }
     .operations-autocomplete-input {
@@ -24,4 +32,3 @@
     }
 
 }
-
