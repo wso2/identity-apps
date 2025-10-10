@@ -162,7 +162,7 @@
         "display": {
             "label": "Continue with Facebook",
             "description": "Registration experience with Facebook",
-            "image": "assets/images/icons/facebook.svg",
+            "image": "assets/images/icons/facebook-black.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -239,7 +239,7 @@
         "display": {
             "label": "Continue with Microsoft",
             "description": "Registration experience with Microsoft",
-            "image": "assets/images/icons/microsoft.svg",
+            "image": "assets/images/icons/microsoft-black.svg",
             "showOnResourcePanel": true
         },
         "config": {

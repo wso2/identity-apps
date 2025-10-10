@@ -65,7 +65,7 @@ const MicrosoftExecution = ({
 
     return (
         <Box display="flex" gap={ 1 } data-componentid={ componentId }>
-            <img src={ loadStaticResource("connections/assets/images/logos/microsoft.svg") } height="20" />
+            <img src={ loadStaticResource("assets/images/icons/microsoft.svg") } height="20" />
             <Typography variant="body1">{ t("flows:core.executions.names.microsoft") }</Typography>
         </Box>
     );
