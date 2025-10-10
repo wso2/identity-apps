@@ -295,6 +295,21 @@
     },
     {
         "resourceType": "ELEMENT",
+        "category": "ACTION",
+        "type": "RESEND",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Resend",
+            "image": "assets/images/icons/loop.svg"
+        },
+        "config": {
+            "type": "submit",
+            "text": "Resend"
+        }
+    },
+    {
+        "resourceType": "ELEMENT",
         "category": "DISPLAY",
         "type": "TYPOGRAPHY",
         "version": "0.1.0",

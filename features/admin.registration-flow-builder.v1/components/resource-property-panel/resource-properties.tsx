@@ -22,7 +22,7 @@ import {
     CommonResourcePropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
 import { FieldKey, FieldValue } from "@wso2is/admin.flow-builder-core.v1/models/base";
-import { Element, ElementCategories } from "@wso2is/admin.flow-builder-core.v1/models/elements";
+import { Element, ElementCategories, ElementTypes } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { Resource } from "@wso2is/admin.flow-builder-core.v1/models/resources";
 import { StepCategories, StepTypes } from "@wso2is/admin.flow-builder-core.v1/models/steps";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -140,12 +140,15 @@ const ResourceProperties: FunctionComponent<ResourcePropertiesPropsInterface> = 
             return (
                 <>
                     { renderElementId() }
-                    <ButtonExtendedProperties
-                        resource={ resource }
-                        data-componentid="button-extended-properties"
-                        onChange={ onChange }
-                        onVariantChange={ onVariantChange }
-                    />
+                    { resource.type === ElementTypes.Button && (
+                        <ButtonExtendedProperties
+                            resource={ resource }
+                            data-componentid="button-extended-properties"
+                            onChange={ onChange }
+                            onVariantChange={ onVariantChange }
+                        />
+                    )
+                    }
                     { renderElementPropertyFactory() }
                 </>
             );
