@@ -196,8 +196,8 @@ const FlowContextWrapper = ({
      * Memoized branding enabled status based on the branding preference.
      */
     const isBrandingEnabled: boolean = useMemo(() => {
-        return brandingPreference?.preference?.configs?.isBrandingEnabled ?? false;
-    }, [ brandingPreference ]);
+        return (!brandingPreferenceError && brandingPreference?.preference?.configs?.isBrandingEnabled) ?? false;
+    }, [ brandingPreference, brandingPreferenceError ]);
 
     /**
      * Memoized primary i18n screen based on the screen types.
