@@ -39,11 +39,11 @@ import {
     ConnectorPropertyInterface,
     GovernanceConnectorCategoryInterface,
     GovernanceConnectorInterface,
-    RealmConfigInterface,
-    ServerConfigurationsConstants,
-    getConnectorCategory,
-    useServerConfigs
-} from "@wso2is/admin.server-configurations.v1";
+    RealmConfigInterface
+} from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
+import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
+import { getConnectorCategory } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
+import { useServerConfigs } from "@wso2is/admin.server-configurations.v1/api/server-config";
 import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import {

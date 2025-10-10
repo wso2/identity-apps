@@ -29,7 +29,7 @@ import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import {
     ServerConfigurationsConstants
-} from "@wso2is/admin.server-configurations.v1";
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import { useGetGovernanceConnectorById } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";

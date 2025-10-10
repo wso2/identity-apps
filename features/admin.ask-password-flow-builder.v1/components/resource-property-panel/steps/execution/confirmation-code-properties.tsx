@@ -29,9 +29,9 @@ import {
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
 import {
     GovernanceConnectorInterface,
-    RevertGovernanceConnectorConfigInterface,
-    ServerConfigurationsConstants
-} from "@wso2is/admin.server-configurations.v1";
+    RevertGovernanceConnectorConfigInterface
+} from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
+import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import {
     getConnectorDetails,
     revertGovernanceConnectorProperties

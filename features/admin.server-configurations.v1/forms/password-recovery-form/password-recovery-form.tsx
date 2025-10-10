@@ -24,11 +24,11 @@ import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature
 import {
     EmailRecoveryOption,
     PasswordRecoveryConfigurationFormPropsInterface,
-    PasswordRecoveryFormConstants,
     PasswordRecoveryFormErrorValidationsInterface,
     PasswordRecoveryFormUpdatableConfigsInterface,
     PasswordRecoveryFormValuesInterface
-} from "@wso2is/admin.server-configurations.v1";
+} from "@wso2is/admin.server-configurations.v1/models/password-recovery";
+import { PasswordRecoveryFormConstants } from "@wso2is/admin.server-configurations.v1/constants/password-recovery-constants";
 import { CommonUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
 import { RadioChild } from "@wso2is/forms";

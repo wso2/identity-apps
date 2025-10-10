@@ -46,10 +46,14 @@ import {
 } from "semantic-ui-react";
 import { ConnectorPropertyInterface } from "../../admin.connections.v1";
 import {
-    ServerConfigurationsConstants,
-    UpdateGovernanceConnectorConfigPropertyInterface,
     useGetGovernanceConnectorById
-} from "../../admin.server-configurations.v1";
+} from "../../admin.server-configurations.v1/api/governance-connectors";
+import {
+    ServerConfigurationsConstants
+} from "../../admin.server-configurations.v1/constants/server-configurations-constants";
+import {
+    UpdateGovernanceConnectorConfigPropertyInterface
+} from "../../admin.server-configurations.v1/models/governance-connectors";
 import addOrganizationDiscoveryConfig from "../api/add-organization-discovery-config";
 import deleteOrganizationDiscoveryConfig from "../api/delete-organization-discovery-config";
 import updateOrganizationDiscoveryConfig from "../api/update-organization-discovery-config";

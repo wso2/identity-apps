@@ -25,9 +25,9 @@ import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-uti
 import { SCIMConfigs, userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import {
-    ConnectorPropertyInterface,
     ServerConfigurationsConstants
-} from "@wso2is/admin.server-configurations.v1";
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
+import { ConnectorPropertyInterface } from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import {
     AdminForcedPasswordResetOption
 } from "@wso2is/admin.server-configurations.v1/models/admin-forced-password-reset";

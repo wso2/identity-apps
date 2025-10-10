@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { GovernanceConnectorsInterface } from "../../models";
+import { GovernanceConnectorsInterface } from "../../models/governance-connectors";
 import {
     GovernanceConnectorActionTypes,
     GovernanceConnectorActions
-} from "../actions/types";
+} from "../actions/types/governance-connector";
 
 /**
  * Governance Connector reducer initial state.

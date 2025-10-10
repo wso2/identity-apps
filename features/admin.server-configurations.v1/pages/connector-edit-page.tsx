@@ -56,9 +56,9 @@ import {
     revertGovernanceConnectorProperties,
     updateGovernanceConnector
 } from "../api/governance-connectors";
-import { GovernanceConnectorConstants, GovernanceConnectorFeatureDictionaryKeys } from "../constants";
+import { GovernanceConnectorConstants, GovernanceConnectorFeatureDictionaryKeys } from "../constants/governance-connector-constants";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
-import { ConnectorFormFactory } from "../forms";
+import { ConnectorFormFactory } from "../forms/connector-form-factory";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,

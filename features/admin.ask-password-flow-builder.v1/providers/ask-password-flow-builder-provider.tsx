@@ -23,12 +23,14 @@ import AuthenticationFlowBuilderCoreProvider
     from "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
 import {
     GovernanceConnectorInterface,
-    GovernanceConnectorUtils,
-    ServerConfigurationsConstants,
-    UpdateGovernanceConnectorConfigInterface,
+    UpdateGovernanceConnectorConfigInterface
+} from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
+import { GovernanceConnectorUtils } from "@wso2is/admin.server-configurations.v1/utils/governance-connector-utils";
+import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
+import {
     getConnectorDetails,
     updateGovernanceConnector
-} from "@wso2is/admin.server-configurations.v1";
+} from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
 import {
     AskPasswordFormUpdatableConfigsInterface
 } from "@wso2is/admin.server-configurations.v1/models/ask-password";

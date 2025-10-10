@@ -25,7 +25,7 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { ServerConfigurationsInterface } from "./governance-connectors";
-import { ServerConfigurationsConstants } from "../constants";
+import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 
 /**
  * Initialize an axios Http client.
