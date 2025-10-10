@@ -78,43 +78,10 @@ const useDynamicForm = (fields, onSubmit) => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
+        console.log(formState.errors);
         if (Object.keys(formState.errors).length > 0) {
             setFormState((prev) => ({
                 ...prev,
-                isValid: false
-            }));
-
-            return;
-        }
-
-        let errors = [];
-
-        fields.forEach(field => {
-            const fieldValue = formState.values[field.config.identifier];
-
-            if (field.config.required && !fieldValue) {
-                errors.push({
-                    error: "This field is required.",
-                    label: field.config.identifier
-                });
-            }
-
-            if (field.config.validations && fieldValue) {
-                field.config.validations.forEach(rule => {
-                    if (rule.type === "MIN_LENGTH" && fieldValue.length < rule.value) {
-                        errors.push({
-                            error: `Must be at least ${rule.value} characters.`,
-                            label: field.config.identifier
-                        });
-                    }
-                });
-            }
-        });
-
-        if (Object.keys(errors).length > 0) {
-            setFormState((prev) => ({
-                ...prev,
-                errors: errors,
                 isValid: false
             }));
 
