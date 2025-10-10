@@ -17,6 +17,7 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { useGetAgents } from "@wso2is/admin.agents.v1/hooks/use-get-agents";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
@@ -28,10 +29,9 @@ import { UserManagementUtils } from "@wso2is/admin.users.v1/utils/user-managemen
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreDropdownItem, UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
-import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
+import { getUserNameWithoutDomain, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
-    FeatureAccessConfigInterface,
     IdentifiableComponentInterface,
     RolesMemberInterface
 } from "@wso2is/core/models";
@@ -66,6 +66,7 @@ import { Dispatch } from "redux";
 import { Divider, Dropdown, DropdownProps, Header, Icon, PaginationProps, SemanticICONS } from "semantic-ui-react";
 import { AddRoleUserModal } from "./add-role-user-modal";
 import { updateRoleDetails, updateUsersForRole } from "../../api/roles";
+import { RoleConstants, RoleManagementFeatureKeys } from "../../constants/role-constants";
 import { CreateRoleMemberInterface, PatchRoleDataInterface, RoleEditSectionsInterface } from "../../models/roles";
 import "./edit-role.scss";
 
@@ -110,6 +111,20 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
     const consoleSettingsFeatureConfig: FeatureAccessConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features?.consoleSettings
     );
+    const userRolesFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRoles
+    );
+    const isEnforceRoleOperationPermissionEnabled: boolean = isFeatureEnabled(
+        userRolesFeatureConfig,
+        RoleConstants.FEATURE_DICTIONARY.get(RoleManagementFeatureKeys.EnforceRoleOperationPermission)
+    );
+
+    const hasRoleUsersUpdatePermission: boolean = useRequiredScopes(
+        userRolesFeatureConfig?.subFeatures?.userManagement?.scopes?.update
+    );
+
+    const isReadOnlyView: boolean = isReadOnly ||
+        (isEnforceRoleOperationPermissionEnabled && !hasRoleUsersUpdatePermission);
 
     const isUserstoreSelectionInAdministratorsEnabled: boolean =
         !consoleSettingsFeatureConfig?.disabledFeatures?.includes(
@@ -610,7 +625,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
         const actions: TableActionsInterface[] = [
             {
                 "data-componentid": `${ componentId }-list-item-delete-button`,
-                hidden: (): boolean => isReadOnly,
+                hidden: (): boolean => isReadOnlyView,
                 icon: (): SemanticICONS =>  "trash alternate",
                 onClick: (e: SyntheticEvent, user: UserBasicInterface): void =>
                     unassignUserFromRole(user),
@@ -647,7 +662,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                         { t(baseI18nKey + "subHeading") }
                     </Heading>
                 </div>
-                { !isReadOnly && (
+                { !isReadOnlyView && (
                     <PrimaryButton
                         data-componentid={
                             `${ componentId }-list-edit-button`
@@ -672,7 +687,7 @@ export const RoleUsersList: FunctionComponent<RoleUsersPropsInterface> = (
                 totalPages={ Math.ceil(selectedUsersFromUserStore?.length / listItemLimit) }
                 totalListSize={ selectedUsersFromUserStore?.length }
                 isLoading={ isUserStoresLoading || isSubmitting }
-                showPaginationPageLimit={ !isReadOnly }
+                showPaginationPageLimit={ !isReadOnlyView }
                 rightActionPanel={ (
                     shouldShowUserstoreDropdown && (
                         <Dropdown
