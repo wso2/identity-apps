@@ -557,7 +557,9 @@
                             "delete": [],
                             "feature": [],
                             "read": [],
-                            "update": []
+                            "update": [
+                                "internal_application_script_update"
+                            ]
                         }
                     },
                     "businessAPIResourceAuthorization": {
