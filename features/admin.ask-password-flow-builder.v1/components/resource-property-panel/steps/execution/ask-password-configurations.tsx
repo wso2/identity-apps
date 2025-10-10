@@ -276,13 +276,6 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
                         };
 
                         break;
-                    case ServerConfigurationsConstants.ASK_PASSWORD_ACCOUNT_ACTIVATION:
-                        resolvedInitialValues = {
-                            ...resolvedInitialValues,
-                            enableAccountActivationEmail: CommonUtils.parseBoolean(property.value)
-                        };
-
-                        break;
                     case ServerConfigurationsConstants.ASK_PASSWORD_OTP_EXPIRY_TIME:
                         resolvedInitialValues = {
                             ...resolvedInitialValues,
@@ -345,7 +338,7 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
         setIsNumericEnabled(resolvedInitialValues?.otpUseNumeric);
         setExpiryTime(resolvedInitialValues?.expiryTime);
         setOtpLength(resolvedInitialValues?.otpLength);
-        setEnableAccountActivationEmail(resolvedInitialValues?.enableAccountActivationEmail);
+        // setEnableAccountActivationEmail(resolvedInitialValues?.enableAccountActivationEmail);
         setEnableAccountLockOnCreation(resolvedInitialValues?.enableAccountLockOnCreation);
         if (resolvedInitialValues?.enableSmsOtp) {
             setAskPasswordOption(VerificationOption.SMS_OTP);
@@ -469,28 +462,6 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
                                     "inviteUserToSetPassword.form.fields.expiryTime.hint") }
                         </FormHelperText>
                     </Stack>
-                    <FormControlLabel
-                        control={
-                            (<Checkbox
-                                aria-label="enableAccountActivationEmail"
-                                name="enableAccountActivationEmail"
-                                checked={ enableAccountActivationEmail }
-                                onChange={
-                                    (event: React.ChangeEvent<HTMLInputElement>) =>
-                                        setEnableAccountActivationEmail(event.target.checked)
-                                }
-                                required={ false }
-                                disabled={ !isInviteUserToSetPasswordEnabled || readOnly }
-                                data-componentid={ `${ componentId }-account-activation-email` }
-                            />)
-                        }
-                        label={ t("extensions:manage.serverConfigurations.userOnboarding." +
-                            "inviteUserToSetPassword.form.fields.enableAccountActivationEmail.label") }
-                    />
-                    <FormHelperText>
-                        { t("extensions:manage.serverConfigurations.userOnboarding." +
-                                "inviteUserToSetPassword.form.fields.enableAccountActivationEmail.hint") }
-                    </FormHelperText>
                     <FormControlLabel
                         control={
                             (<Checkbox
