@@ -1,5 +1,17 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.10.71
+
+### Patch Changes
+
+- [#9307](https://github.com/wso2/identity-apps/pull/9307) [`78a513f88f5132796929db563d97acee7475eb75`](https://github.com/wso2/identity-apps/commit/78a513f88f5132796929db563d97acee7475eb75) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Fix the branding state issue that occurs when branding is disabled after being enabled
+
+- Updated dependencies []:
+  - @wso2is/admin.branding.v1@2.32.27
+  - @wso2is/admin.core.v1@2.49.79
+  - @wso2is/admin.flows.v1@1.0.40
+  - @wso2is/admin.registration-flow-builder.v1@0.10.31
+
 ## 0.10.70
 
 ### Patch Changes
