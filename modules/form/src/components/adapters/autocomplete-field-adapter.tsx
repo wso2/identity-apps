@@ -115,7 +115,7 @@ const AutocompleteFieldAdapter: FunctionComponent<AutocompleteFieldAdapterPropsI
      */
     const customListboxComponent: (listboxProps: HTMLProps<HTMLDivElement>) => JSX.Element = useMemo(
         () => (listboxProps: HTMLProps<HTMLDivElement>) => {
-            const { children, ...otherProps } = listboxProps;
+            const { children, onScroll: _onScroll, ref: _ref, ...otherProps } = listboxProps;
             const items: any[] = React.Children.toArray(children);
             const itemCount: number = items.length + (hasMore ? 1 : 0);
 
@@ -138,10 +138,10 @@ const AutocompleteFieldAdapter: FunctionComponent<AutocompleteFieldAdapterPropsI
                 return <div style={ style }>{ items[index] }</div>;
             };
 
-            const handleScroll: ({ scrollOffset }: { scrollOffset: number }) => void = ({ 
-                scrollOffset 
-            }: { 
-                scrollOffset: number 
+            const handleScroll = ({ scrollOffset }: { 
+                scrollDirection: "forward" | "backward"; 
+                scrollOffset: number; 
+                scrollUpdateWasRequested: boolean;
             }): void => {
                 const listHeight: number = items.length * 40;
                 const scrollPercentage: number = scrollOffset / listHeight;

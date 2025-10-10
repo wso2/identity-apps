@@ -206,6 +206,7 @@ const MetaAttributeAutoComplete: FunctionComponent<MetaAttributeAutoCompleteProp
      */
     const customListboxComponent: (listboxProps: HTMLProps<HTMLDivElement>) => JSX.Element = useMemo(
         () => (listboxProps: HTMLProps<HTMLDivElement>) => {
+            const { children, onScroll: _onScroll, ref: _ref, ...otherProps } = listboxProps;
             const itemCount: number = metaAttributeListOptions.length + (hasNextPage ? 1 : 0);
             const listHeight: number = Math.min(metaAttributeListOptions.length * 40, 155);
 
@@ -224,7 +225,7 @@ const MetaAttributeAutoComplete: FunctionComponent<MetaAttributeAutoCompleteProp
 
                 // Render the actual list item
                 const option: MetaAttributeOption = metaAttributeListOptions[index];
-                const childElement: HTMLElement = (listboxProps.children as HTMLElement[])?.[index];
+                const childElement: React.ReactElement = (children as React.ReactElement[])?.[index];
 
                 return (
                     <div style={ style }>
@@ -237,9 +238,11 @@ const MetaAttributeAutoComplete: FunctionComponent<MetaAttributeAutoCompleteProp
                 );
             };
 
-            const handleScroll: ({ scrollOffset }: { scrollOffset: number }) => void = ({
-                scrollOffset
-            }: { scrollOffset: number }) => {
+            const handleScroll = ({ scrollOffset }: { 
+                scrollDirection: "forward" | "backward"; 
+                scrollOffset: number; 
+                scrollUpdateWasRequested: boolean;
+            }): void => {
                 const scrollPercentage: number = scrollOffset / (itemCount * 40);
 
                 if (scrollPercentage > 0.8 && hasNextPage && !isMetaAttributesFetchRequestLoading &&
@@ -256,7 +259,7 @@ const MetaAttributeAutoComplete: FunctionComponent<MetaAttributeAutoCompleteProp
                     width="100%"
                     onScroll={ handleScroll }
                     style={ { overflow: "visible" } }
-                    { ...listboxProps }
+                    { ...otherProps }
                 >
                     { Row }
                 </List>

@@ -20,7 +20,7 @@
                 "tsConfig": "modules/form/tsconfig.lib.json",
                 "project": "modules/form/package.json",
                 "entryFile": "modules/form/src/index.ts",
-                "external": ["react/jsx-runtime"],
+                "external": ["react/jsx-runtime", "react-window"],
                 "rollupConfig": "@nx/react/plugins/bundle-rollup",
                 "compiler": "babel",
                 "format": [
