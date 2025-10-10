@@ -55,7 +55,7 @@ const DateFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHa
                 onChange={ (event, { value }) => {
                     setValue(value);
                     handleFieldValidation(value);
-                }}
+                } }
                 value={ value }
                 required={ required }
                 clearable
