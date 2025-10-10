@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.25.12
+
+### Patch Changes
+
+- [#9287](https://github.com/wso2/identity-apps/pull/9287) [`b30883031712f353d4fd4cef97ef31440b4f930e`](https://github.com/wso2/identity-apps/commit/b30883031712f353d4fd4cef97ef31440b4f930e) Thanks [@brionmario](https://github.com/brionmario)! - Add legacy recovery method status check feature to account recovery
+
+- Updated dependencies [[`e88528f09538a6eddcb630e34595becd5c4b546e`](https://github.com/wso2/identity-apps/commit/e88528f09538a6eddcb630e34595becd5c4b546e), [`a80c98397d5ad8dccce306eba62f7f91ccbf0aa9`](https://github.com/wso2/identity-apps/commit/a80c98397d5ad8dccce306eba62f7f91ccbf0aa9)]:
+  - @wso2is/i18n@2.30.47
+
 ## 2.25.11
 
 ### Patch Changes
