@@ -609,35 +609,6 @@
                 }
             },
             {% endif %}
-            "applicationAuthenticationScript": {
-                "disabledFeatures": [
-                    {% if console.applicationAuthenticationScript.disabled_features is defined %}
-                    {% for feature in console.applicationAuthenticationScript.disabled_features %}
-                    "{{ feature }}"{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% endif %}
-                ],
-                "enabled": {% if console.applicationAuthenticationScript.enabled is defined %} {{ console.applicationAuthenticationScript.enabled }},
-                {% else %} true,
-                {% endif %}
-                "scopes": {
-                    {% if console.applicationAuthenticationScript.scopes is defined %}
-                    {% for operation, scopes in console.applicationAuthenticationScript.scopes.items() %}
-                    "{{ operation }}": [
-                        {% for scope in scopes %}
-                        "{{ scope }}"{{ "," if not loop.last }}
-                        {% endfor %}
-                    ]{{ "," if not loop.last }}
-                    {% endfor %}
-                    {% else %}
-                    "create": [],
-                    "read": [],
-                    "update": [],
-                    "delete": []
-                    {% endif %}
-                }
-            },
-            {% endif %}
             {% if console.applications is defined %}
             "applications": {
                 "disabledFeatures": [
