@@ -17,8 +17,8 @@
  */
 
 import { userstoresConfig } from "@wso2is/admin.extensions.v1";
-import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
-import { UserStoreProperty } from "@wso2is/admin.userstores.v1/models";
+import { getUserStoreList } from "@wso2is/admin.userstores.v1/api/user-stores";
+import { UserStoreProperty } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";

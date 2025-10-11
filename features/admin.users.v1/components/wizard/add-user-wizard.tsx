@@ -32,7 +32,7 @@ import {
 } from "@wso2is/admin.server-configurations.v1";
 import { useGetGovernanceConnectorById } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
-import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { isFeatureEnabled } from "@wso2is/core/helpers";

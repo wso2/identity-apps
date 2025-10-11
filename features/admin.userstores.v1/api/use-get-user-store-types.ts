@@ -23,7 +23,7 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import { UserStoreType } from "../models";
+import { UserStoreType } from "../models/user-stores";
 
 /**
  * Hook to get the available user store types.
