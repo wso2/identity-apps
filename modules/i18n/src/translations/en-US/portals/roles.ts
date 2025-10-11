@@ -142,7 +142,8 @@ export const roles: rolesNS = {
                 collapseAll: "Collapse All",
                 expandAll: "Expand All",
                 update: "Update"
-            }
+            },
+            limitedPermission: "You don't have sufficient permissions to assign permissions to this role."
         },
         subHeading: "Create a new {{type}} in the system.",
         summary: {

@@ -190,6 +190,7 @@ export interface rolesNS {
                 expandAll: string;
                 update: string;
             };
+            limitedPermission: string;
         };
         subHeading: string;
         back: string;

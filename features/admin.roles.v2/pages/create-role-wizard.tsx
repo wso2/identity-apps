@@ -17,25 +17,23 @@
  */
 
 import Grid from "@oxygen-ui/react/Grid";
-import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { VerticalStepper, VerticalStepperStepInterface } from "@wso2is/admin.core.v1/components/vertical-stepper";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EmphasizedSegment, PageLayout } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
-import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { createRole, createRoleUsingV3Api } from "../api/roles";
 import { RoleBasics } from "../components/wizard-updated/role-basics";
 import { RolePermissionsList } from "../components/wizard-updated/role-permissions/role-permissions";
-import { RoleAudienceTypes, RoleConstants, RoleManagementFeatureKeys } from "../constants/role-constants";
+import { RoleAudienceTypes } from "../constants/role-constants";
 import { ScopeInterface } from "../models/apiResources";
 import {
     CreateRoleFormData,
@@ -70,19 +68,8 @@ const CreateRolePage: FunctionComponent<CreateRoleProps> = (props: CreateRolePro
     const [ selectedPermissions, setSelectedPermissions ] = useState<SelectedPermissionsInterface[]>([]);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
-    const userRolesFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state?.config?.ui?.features?.userRoles
-    );
     const userRolesV3FeatureEnabled: boolean = useSelector(
         (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
-    );
-    const isEnforceRoleOperationPermissionEnabled: boolean = isFeatureEnabled(
-        userRolesFeatureConfig,
-        RoleConstants.FEATURE_DICTIONARY.get(RoleManagementFeatureKeys.EnforceRoleOperationPermission)
-    );
-
-    const hasRolePermissionUpdatePermission: boolean = useRequiredScopes(
-        userRolesFeatureConfig?.subFeatures?.rolePermissionAssignments?.scopes?.update
     );
 
     const createRoleFunction: (roleData: CreateRoleInterface) => Promise<AxiosResponse> =
@@ -191,8 +178,8 @@ const CreateRolePage: FunctionComponent<CreateRoleProps> = (props: CreateRolePro
         }
     };
 
-    const creationFlowSteps: VerticalStepperStepInterface[] = useMemo(() => {
-        const steps: VerticalStepperStepInterface[] = [ {
+    const creationFlowSteps: VerticalStepperStepInterface[] = [
+        {
             preventGoToNextStep: isBasicDetailsNextButtonDisabled,
             stepAction: () => submitRoleBasic(),
             stepContent: (
@@ -208,43 +195,31 @@ const CreateRolePage: FunctionComponent<CreateRoleProps> = (props: CreateRolePro
                 />
             ),
             stepTitle: t("roles:addRoleWizard.wizardSteps.0")
-        } ];
-
-        if (!isEnforceRoleOperationPermissionEnabled || hasRolePermissionUpdatePermission) {
-            steps.push({
-                preventGoToNextStep: isPermissionStepNextButtonDisabled,
-                stepContent: (
-                    <RolePermissionsList
-                        selectedPermissions={ selectedPermissions }
-                        setSelectedPermissions={ setSelectedPermissions }
-                        setIsPermissionStepNextButtonDisabled={ setIsPermissionStepNextButtonDisabled }
-                        roleAudience={
-                            stepperState &&
-                            stepperState[ CreateRoleStepsFormTypes.BASIC_DETAILS ]?.roleAudience as RoleAudienceTypes
-                        }
-                        assignedApplicationId={
-                            stepperState &&
-                            stepperState[ CreateRoleStepsFormTypes.BASIC_DETAILS ]?.assignedApplicationId
-                        }
-                        assignedApplicationName={
-                            stepperState &&
-                            stepperState[ CreateRoleStepsFormTypes.BASIC_DETAILS ]?.assignedApplicationName
-                        }
-                    />
-                ),
-                stepTitle: t("roles:addRoleWizard.wizardSteps.1")
-            });
+        },
+        {
+            preventGoToNextStep: isPermissionStepNextButtonDisabled,
+            stepContent: (
+                <RolePermissionsList
+                    selectedPermissions={ selectedPermissions }
+                    setSelectedPermissions={ setSelectedPermissions }
+                    setIsPermissionStepNextButtonDisabled={ setIsPermissionStepNextButtonDisabled }
+                    roleAudience={
+                        stepperState &&
+                        stepperState[ CreateRoleStepsFormTypes.BASIC_DETAILS ]?.roleAudience as RoleAudienceTypes
+                    }
+                    assignedApplicationId={
+                        stepperState &&
+                        stepperState[ CreateRoleStepsFormTypes.BASIC_DETAILS ]?.assignedApplicationId
+                    }
+                    assignedApplicationName={
+                        stepperState &&
+                        stepperState[ CreateRoleStepsFormTypes.BASIC_DETAILS ]?.assignedApplicationName
+                    }
+                />
+            ),
+            stepTitle: t("roles:addRoleWizard.wizardSteps.1")
         }
-
-        return steps;
-    }, [
-        isBasicDetailsNextButtonDisabled,
-        isPermissionStepNextButtonDisabled,
-        selectedPermissions,
-        stepperState,
-        isEnforceRoleOperationPermissionEnabled,
-        hasRolePermissionUpdatePermission
-    ]);
+    ];
 
     return (
         <PageLayout
