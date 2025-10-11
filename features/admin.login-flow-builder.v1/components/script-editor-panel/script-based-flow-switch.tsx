@@ -166,7 +166,7 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
                         </Grid>
                     </AccordionSummary>
                     <AccordionDetails className="script-based-flow-switch-accordion-details">
-                        <ScriptEditorPanel/>
+                        <ScriptEditorPanel readOnly={ readOnly }/>
                     </AccordionDetails>
                 </Accordion>
             </Box>
