@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2025-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -39,8 +39,8 @@ export class CommonUtils {
      * @param date - Date string which needs to be humanize
      */
     static humanizeDateDifference = (date: string): string => {
-        const now = moment(new Date());
-        const receivedDate = moment(date);
+        const now: moment.Moment = moment(new Date());
+        const receivedDate: moment.Moment = moment(date);
 
         return "Last modified " + moment.duration(now.diff(receivedDate)).humanize() + " ago";
     };
@@ -96,9 +96,9 @@ export class CommonUtils {
         let selected: AnnouncementBannerInterface = null;
 
         for (const item of sorted) {
-            const isExpired = moment.duration(moment.unix(parseInt(item.expire, 10)).diff(moment()))
+            const isExpired: boolean = moment.duration(moment.unix(parseInt(item.expire, 10)).diff(moment()))
                 .asMilliseconds() < 0;
-            const isSeen = seen.includes(item.id);
+            const isSeen: boolean = seen.includes(item.id);
 
             if (!isExpired && !isSeen) {
                 selected = item;
@@ -135,10 +135,10 @@ export class CommonUtils {
      * @param offset - scroll stop offset value.
      */
     public static scrollToTarget (element: Element, offset?: number): void {
-        const bodyRect = document.body.getBoundingClientRect().top;
-        const elementRect = element.getBoundingClientRect().top;
-        const elementPosition = elementRect - bodyRect;
-        const offsetPosition = offset ? elementPosition - offset : elementPosition;
+        const bodyRect: number = document.body.getBoundingClientRect().top;
+        const elementRect: number = element.getBoundingClientRect().top;
+        const elementPosition: number = elementRect - bodyRect;
+        const offsetPosition: number = offset ? elementPosition - offset : elementPosition;
 
         window.scrollTo({
             behavior: "smooth",
