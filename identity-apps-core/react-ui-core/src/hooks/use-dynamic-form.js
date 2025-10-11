@@ -87,6 +87,26 @@ const useDynamicForm = (fields, onSubmit) => {
             return;
         }
 
+        let errors = {};
+
+        fields.forEach(field => {
+            const fieldValue = formState.values[field.config.identifier];
+
+            if (field.config.required && !fieldValue) {
+                errors[field.config.identifier] = "This field is required.";
+            }
+        });
+
+        if (Object.keys(errors).length > 0) {
+            setFormState((prev) => ({
+                ...prev,
+                errors: errors,
+                isValid: false
+            }));
+
+            return;
+        }
+
         setFormState((prev) => ({
             ...prev,
             isValid: true
