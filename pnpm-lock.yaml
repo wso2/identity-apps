@@ -12385,6 +12385,9 @@ importers:
       '@wso2is/admin.organizations.v1':
         specifier: ^2.27.1
         version: link:../admin.organizations.v1
+      '@wso2is/admin.server-configurations.v1':
+        specifier: ^2.35.95
+        version: link:../admin.server-configurations.v1
       '@wso2is/core':
         specifier: ^2.7.0
         version: link:../../modules/core

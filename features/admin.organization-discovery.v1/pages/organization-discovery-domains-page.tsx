@@ -23,6 +23,15 @@ import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import {
+    useGetGovernanceConnectorById
+} from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
+import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
+import {
+    UpdateGovernanceConnectorConfigPropertyInterface
+} from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -45,15 +54,6 @@ import {
     Divider
 } from "semantic-ui-react";
 import { ConnectorPropertyInterface } from "../../admin.connections.v1";
-import {
-    useGetGovernanceConnectorById
-} from "../../admin.server-configurations.v1/api/governance-connectors";
-import {
-    ServerConfigurationsConstants
-} from "../../admin.server-configurations.v1/constants/server-configurations-constants";
-import {
-    UpdateGovernanceConnectorConfigPropertyInterface
-} from "../../admin.server-configurations.v1/models/governance-connectors";
 import addOrganizationDiscoveryConfig from "../api/add-organization-discovery-config";
 import deleteOrganizationDiscoveryConfig from "../api/delete-organization-discovery-config";
 import updateOrganizationDiscoveryConfig from "../api/update-organization-discovery-config";
