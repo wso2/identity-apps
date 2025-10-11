@@ -1,5 +1,11 @@
 # @wso2is/admin.login-flow-builder.v1
 
+## 2.27.1
+
+### Patch Changes
+
+- [#9332](https://github.com/wso2/identity-apps/pull/9332) [`bfc3f77d23e8c983f62fac2d4dfb67372e48df6b`](https://github.com/wso2/identity-apps/commit/bfc3f77d23e8c983f62fac2d4dfb67372e48df6b) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Make script read only when edit permission is not present
+
 ## 2.27.0
 
 ### Minor Changes
