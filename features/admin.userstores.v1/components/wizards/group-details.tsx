@@ -21,7 +21,7 @@ import { Field, FormValue, Forms } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
-import { TypeProperty } from "../../models/user-stores";
+import { PropertyAttribute, TypeProperty } from "../../models/user-stores";
 
 /**
  * Prop types of the `GroupDetails` component
@@ -79,10 +79,11 @@ export const GroupDetails: FunctionComponent<GroupDetailsPropsInterface> = (
                         {
                             properties.map(
                                 (selectedTypeDetail: TypeProperty, index: number) => {
-                                    const name = selectedTypeDetail.description.split("#")[ 0 ];
-                                    const toggle = selectedTypeDetail.attributes
-                                        .find(attribute => attribute.name === "type")?.value === "boolean";
-                                    const master = selectedTypeDetail.name === "ReadGroups";
+                                    const name: string = selectedTypeDetail.description.split("#")[ 0 ];
+                                    const toggle: boolean = selectedTypeDetail.attributes
+                                        .find((attribute: PropertyAttribute) =>
+                                            attribute.name === "type")?.value === "boolean";
+                                    const master: boolean = selectedTypeDetail.name === "ReadGroups";
 
                                     return (
                                         toggle

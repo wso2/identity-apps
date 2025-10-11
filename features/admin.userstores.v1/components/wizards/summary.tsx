@@ -20,7 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
-import { TypeProperty, UserStorePostData, UserStoreProperty } from "../../models/user-stores";
+import { PropertyAttribute, TypeProperty, UserStorePostData, UserStoreProperty } from "../../models/user-stores";
 
 /**
  * Prop types of the `SummaryUserStores` component
@@ -55,9 +55,7 @@ interface SummaryUserStoresPropsInterface extends TestableComponentInterface {
 /**
  * This component renders the Summary step of the wizard.
  *
- * @param {SummaryUserStoresPropsInterface} props - Props injected to the component.
- *
- * @return {ReactElement}
+ * @param props - Props injected to the component.
  */
 export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterface> = (
     props: SummaryUserStoresPropsInterface
@@ -76,9 +74,9 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
     const { t } = useTranslation();
     /**
      * This generates a summary row
-     * @param {string} title
-     * @param {string | number | ReactElement} description
-     * @param {number} key - Row key.
+     * @param title - Title
+     * @param description - Description
+     * @param key - Row key.
      */
     const generateSummaryLine = (
         title: string,
@@ -117,7 +115,8 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
 
             {
                 basicProperties?.map((property: TypeProperty, index: number) => {
-                    if (!(property.attributes.find(attribute => attribute.name === "type")?.value === "password")) {
+                    if (!(property.attributes.find((attribute: PropertyAttribute) =>
+                        attribute.name === "type")?.value === "password")) {
                         return (
                             generateSummaryLine(
                                 property.description.split("#")[ 0 ],
@@ -132,7 +131,8 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
             }
             {
                 connectionProperties?.map((property: TypeProperty, index: number) => {
-                    if (!(property.attributes.find(attribute => attribute.name === "type")?.value === "password")) {
+                    if (!(property.attributes.find((attribute: PropertyAttribute) =>
+                        attribute.name === "type")?.value === "password")) {
                         return (
                             generateSummaryLine(
                                 property.description.split("#")[ 0 ],
@@ -150,7 +150,8 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
 
             {
                 userProperties?.map((property: TypeProperty, index: number) => {
-                    if (!(property.attributes.find(attribute => attribute.name === "type")?.value === "password")) {
+                    if (!(property.attributes.find((attribute: PropertyAttribute) =>
+                        attribute.name === "type")?.value === "password")) {
                         return (
                             generateSummaryLine(
                                 property.description.split("#")[ 0 ],
@@ -168,7 +169,8 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
 
             {
                 groupProperties?.map((property: TypeProperty, index: number) => {
-                    if (!(property.attributes.find(attribute => attribute.name === "type")?.value === "password")) {
+                    if (!(property.attributes.find((attribute: PropertyAttribute) =>
+                        attribute.name === "type")?.value === "password")) {
                         return (
                             generateSummaryLine(
                                 property.description.split("#")[ 0 ],
