@@ -34,7 +34,7 @@ import {
 } from "@wso2is/react-components";
 import React, { ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import InfiniteScroll from "react-infinite-scroll-component";
+import { FixedSizeList as List } from "react-window";
 import {
     Dropdown,
     DropdownItemProps,
@@ -362,16 +362,18 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
                                 ] }
                             />
                         ) : (
-                            <InfiniteScroll
-                                dataLength={ unitOperations.length }
-                                next={ loadMoreData }
-                                hasMore={ hasMoreItems }
-                                loader={
-                                    (<div className="infinite-scroll-loader">
-                                        <CircularProgress size={ 22 } className="list-item-loader" />
-                                    </div>)
-                                }
-                                scrollableTarget={ "scrollableDiv" }
+                            <div
+                                id="scrollableDiv"
+                                style={ { overflow: "auto", height: "600px", position: "relative" } }
+                                onScroll={ (e: React.UIEvent<HTMLDivElement>) => {
+                                    const target: HTMLDivElement = e.target as HTMLDivElement;
+                                    const scrollPercentage: number = target.scrollTop / 
+                                        (target.scrollHeight - target.clientHeight);
+
+                                    if (scrollPercentage > 0.8 && hasMoreItems) {
+                                        loadMoreData();
+                                    }
+                                } }
                             >
                                 <DataTable<AsyncOperationStatusUnitResponse>
                                     className="addon-field-wrapper"
@@ -390,7 +392,12 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
                                     data-testid={ `${componentId}-data-table` }
                                     data-componentid={ `${componentId}-data-table` }
                                 />
-                            </InfiniteScroll>
+                                { hasMoreItems && unitOperations.length > 0 && (
+                                    <div className="infinite-scroll-loader">
+                                        <CircularProgress size={ 22 } className="list-item-loader" />
+                                    </div>
+                                ) }
+                            </div>
                         ) }
                     </div>
                 </ListLayout>
