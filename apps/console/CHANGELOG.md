@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.81.2
+
+### Patch Changes
+
+- [#9334](https://github.com/wso2/identity-apps/pull/9334) [`203057a9386414c23f09cda32dc8e1f5a3c0dd7d`](https://github.com/wso2/identity-apps/commit/203057a9386414c23f09cda32dc8e1f5a3c0dd7d) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update operation_permission_enforcement related configs
+
 ## 2.81.1
 
 ### Patch Changes
