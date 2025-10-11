@@ -21,8 +21,12 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApplicationDataRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="java.io.File" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="org.wso2.carbon.utils.multitenancy.MultitenantUtils" %>
@@ -43,6 +47,30 @@
 
 <%
     String accessUrl = (String) request.getAttribute("accessUrl");
+%>
+
+<%
+    boolean isValidAccessURL = true;
+
+    try {
+        isValidAccessURL = AuthenticationEndpointUtil.isSchemeSafeURL(accessUrl);
+
+        if (isValidAccessURL && StringUtils.isNotBlank(accessUrl)) {
+            ApplicationDataRetrievalClient applicationDataRetrievalClient = new ApplicationDataRetrievalClient();
+            String applicationAccessUrl = applicationDataRetrievalClient.getApplicationAccessURL(tenantDomain, spAppName);
+
+            if (StringUtils.isNotBlank(applicationAccessUrl)) {
+                // If the application access URL is equal to the provided access URL, then only allow it to be that URL.
+                isValidAccessURL = StringUtils.equals(accessUrl, applicationAccessUrl);
+            } else {
+                // If the application access URL is not present, provided access URL should be a valid multi option URL.
+                String encodedAccessUrl = IdentityManagementEndpointUtil.getURLEncodedCallback(accessUrl);
+                isValidAccessURL = AuthenticationEndpointUtil.isValidMultiOptionURI(encodedAccessUrl);
+            }
+        }
+    } catch (Exception e) {
+        isValidAccessURL = false;
+    }
 %>
 
 <% request.setAttribute("pageName", "password-reset-success"); %>
@@ -89,7 +117,7 @@
                         <%=i18n(recoveryResourceBundle, customText, "password.reset.success.body")%>
                     </span>
                     <%
-                        if(StringUtils.isNotBlank(accessUrl)) {
+                        if(StringUtils.isNotBlank(accessUrl) && isValidAccessURL) {
                     %>
                         <br/><br/>
                         <i class="caret left icon primary"></i>
