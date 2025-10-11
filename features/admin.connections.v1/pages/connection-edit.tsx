@@ -50,7 +50,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Label } from "semantic-ui-react";
-import { getLocalAuthenticator, getMultiFactorAuthenticatorDetails } from "../api/authenticators";
+import { getLocalAuthenticator,
+    getMultiFactorAuthenticatorDetails,
+    getSystemDefinedLocalAuthenticator
+} from "../api/authenticators";
 import { getConnectionDetails, getConnectionMetaData, getConnectionTemplates } from "../api/connections";
 import { EditConnection } from "../components/edit/connection-edit";
 import { EditMultiFactorAuthenticator } from "../components/edit/edit-multi-factor-authenticator";
@@ -217,6 +220,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         }
 
         getIdentityProvider(id);
+        console.log("IDP: ", getIdentityProvider(id));
     }, [ identityProviderConfig ]);
 
     /**
@@ -248,6 +252,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
      * Load the template that the IDP is built on.
      */
     useEffect(() => {
+        console.log("Connectortwo: ", connector);
         // Return if connector is not defined.
         if (!connector) {
             return;
@@ -470,10 +475,54 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
 
             return;
         }
+        
+        Promise.all([
+            getSystemDefinedLocalAuthenticator(id),
+            getMultiFactorAuthenticatorDetails(id) 
+        ])
+            .then(([ systemData, mfaData ]) => {
+                // Merge responses (systemData takes precedence)
+                const mergedData: MultiFactorAuthenticatorInterface = {
+                    ...mfaData,
+                    ...systemData,
+                    amrValue: systemData.amrValue || ""
+                };
+                setConnector(mergedData);
+            })
+            .catch((error: IdentityAppsApiException) => {
+                if (error.response?.data?.description) {
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "authenticationProvider:notifications.getConnectionDetails.error.description",
+                                { description: error.response.data.description }
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t("authenticationProvider:notifications.getConnectionDetails.error.message")
+                        })
+                    );
+                } else {
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "authenticationProvider:notifications.getConnectionDetails.genericError.description"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t("authenticationProvider:notifications.getConnectionDetails.genericError.message")
+                        })
+                    );
+                }
+            })
+            .finally(() => {
+                setConnectorDetailFetchRequestLoading(false);
+            });
 
-        getAuthenticatorDetails<MultiFactorAuthenticatorInterface>(getMultiFactorAuthenticatorDetails);
+        console.log("Auth Details API call initiated for ID:", id);
+        console.log("Auth Details from API:", getMultiFactorAuthenticatorDetails(id));
+        console.log("ID:", id);
+        console.log("System Auth Details:", getSystemDefinedLocalAuthenticator(id));
     };
-
+    
     /**
      * Handles the back button click event.
      */
@@ -711,7 +760,10 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                 { ConnectionsManagementUtils.isConnectorIdentityProvider(connector) ? (
                     <EditConnection
                         connectionSettingsMetaData={ connectionSettings }
-                        identityProvider={ connector }
+                        identityProvider={{
+                            ...connector,
+                            amrValue: connector?.amrValue || ""
+                        }}
                         isLoading={ isConnectorDetailsFetchRequestLoading || isConnectorMetaDataFetchRequestLoading }
                         onDelete={ handleIdentityProviderDelete }
                         onUpdate={ handleIdentityProviderUpdate }
