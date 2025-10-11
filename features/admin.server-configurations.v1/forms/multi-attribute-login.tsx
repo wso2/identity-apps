@@ -29,7 +29,8 @@ import { useTranslation } from "react-i18next";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface,
-    GovernanceConnectorInterface } from "../models/governance-connectors";
+    GovernanceConnectorInterface
+} from "../models/governance-connectors";
 import { GovernanceConnectorUtils } from "../utils";
 
 /**
@@ -216,7 +217,7 @@ export const MultiAttributeLoginForm: FunctionComponent<MultiAttributeLoginFormP
             } }
         >
             <div style={ { marginBottom: "16px" } }>
-                <label style={ { display: "block", fontWeight: 500, marginBottom: "8px" } }>
+                <label style={ { display: "block", marginBottom: "8px", fontWeight: 500 } }>
                     { GovernanceConnectorUtils.resolveFieldLabel(
                         "Account Management",
                         "account.multiattributelogin.handler.allowedattributes",
@@ -238,11 +239,16 @@ export const MultiAttributeLoginForm: FunctionComponent<MultiAttributeLoginFormP
                     renderInput={ (params: AutocompleteRenderInputParams) => (
                         <TextField
                             { ...params }
-                            placeholder={ selectedClaims.length === 0 ? "Select allowed attributes" : "" }
+                            placeholder={
+                                selectedClaims.length === 0 ? "Select allowed attributes" : ""
+                            }
                             data-componentid={ `${ componentId }-allowed-attribute-list` }
                         />
                     ) }
-                    renderTags={ (value: Claim[], getTagProps: (arg: { index: number }) => object) =>
+                    renderTags={ (
+                        value: Claim[],
+                        getTagProps: (arg: { index: number }) => object
+                    ) =>
                         value.map((option: Claim, index: number) => (
                             <Tooltip
                                 key={ option.claimURI }
