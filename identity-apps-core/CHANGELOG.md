@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.3.20
+
+### Patch Changes
+
+- [#9328](https://github.com/wso2/identity-apps/pull/9328) [`db94d96d5a0f05a0e58bff098ace6de8212f563d`](https://github.com/wso2/identity-apps/commit/db94d96d5a0f05a0e58bff098ace6de8212f563d) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Fix checkbox required issue.
+
 ## 3.3.19
 
 ### Patch Changes
