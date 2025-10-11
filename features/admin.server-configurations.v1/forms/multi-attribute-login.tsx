@@ -217,7 +217,7 @@ export const MultiAttributeLoginForm: FunctionComponent<MultiAttributeLoginFormP
             } }
         >
             <div style={ { marginBottom: "16px" } }>
-                <label style={ { display: "block", marginBottom: "8px", fontWeight: 500 } }>
+                <label style={ { display: "block", fontWeight: 500, marginBottom: "8px" } }>
                     { GovernanceConnectorUtils.resolveFieldLabel(
                         "Account Management",
                         "account.multiattributelogin.handler.allowedattributes",
