@@ -31,7 +31,9 @@ import {
     PatchRoleDataInterface,
     SearchRoleInterface
 } from "@wso2is/admin.roles.v2/models/roles";
-import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
+import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import { ConnectorPropertyInterface } from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import { TenantInfo } from "@wso2is/admin.tenants.v1/models/tenant";
 import { getAssociationType } from "@wso2is/admin.tenants.v1/utils/tenants";

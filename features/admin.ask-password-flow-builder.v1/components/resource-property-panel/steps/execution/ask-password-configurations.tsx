@@ -33,18 +33,24 @@ import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
 import { ChevronDownIcon } from "@oxygen-ui/react-icons";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { AskPasswordFormConstants } from "@wso2is/admin.server-configurations.v1/constants/ask-password-constants";
-import { GovernanceConnectorConstants } from "@wso2is/admin.server-configurations.v1/constants/governance-connector-constants";
-import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import {
-    ConnectorPropertyInterface,
-    GovernanceConnectorInterface
-} from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
+    AskPasswordFormConstants
+} from "@wso2is/admin.server-configurations.v1/constants/ask-password-constants";
+import {
+    GovernanceConnectorConstants
+} from "@wso2is/admin.server-configurations.v1/constants/governance-connector-constants";
+import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import {
     AskPasswordFormUpdatableConfigsInterface,
     AskPasswordFormValuesInterface,
     VerificationOption
 } from "@wso2is/admin.server-configurations.v1/models/ask-password";
+import {
+    ConnectorPropertyInterface,
+    GovernanceConnectorInterface
+} from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import { RadioChild } from "@wso2is/forms";

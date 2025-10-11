@@ -22,13 +22,15 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import {
+    PasswordRecoveryFormConstants
+} from "@wso2is/admin.server-configurations.v1/constants/password-recovery-constants";
+import {
     EmailRecoveryOption,
     PasswordRecoveryConfigurationFormPropsInterface,
     PasswordRecoveryFormErrorValidationsInterface,
     PasswordRecoveryFormUpdatableConfigsInterface,
     PasswordRecoveryFormValuesInterface
 } from "@wso2is/admin.server-configurations.v1/models/password-recovery";
-import { PasswordRecoveryFormConstants } from "@wso2is/admin.server-configurations.v1/constants/password-recovery-constants";
 import { CommonUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
 import { RadioChild } from "@wso2is/forms";

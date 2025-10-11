@@ -17,6 +17,7 @@
  */
 
 import { fireEvent, render, screen } from "@wso2is/unit-testing/utils";
+import React from "react";
 import "@testing-library/jest-dom";
 import { PasswordRecoveryConfigurationForm } from "../../forms/password-recovery-form/password-recovery-form";
 import { PasswordRecoveryConfigurationFormPropsInterface } from "../../models/password-recovery";

@@ -35,15 +35,17 @@ import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature
 import useGetFlowConfig from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-config";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { getConnectorCategory } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
+import { useServerConfigs } from "@wso2is/admin.server-configurations.v1/api/server-config";
+import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorCategoryInterface,
     GovernanceConnectorInterface,
     RealmConfigInterface
 } from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
-import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
-import { getConnectorCategory } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
-import { useServerConfigs } from "@wso2is/admin.server-configurations.v1/api/server-config";
 import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import {

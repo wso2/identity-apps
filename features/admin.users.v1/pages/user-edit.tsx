@@ -28,7 +28,9 @@ import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { getIdPIcons } from "@wso2is/admin.identity-providers.v1/configs/ui";
 import { useGovernanceConnectors } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
-import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
+import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface

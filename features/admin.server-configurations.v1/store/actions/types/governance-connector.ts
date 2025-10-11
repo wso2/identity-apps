@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,14 +22,12 @@ import { GovernanceConnectorsInterface } from "../../../models/governance-connec
  * Enum for help panel action types.
  *
  * @readonly
- * @enum {string}
  */
 export enum GovernanceConnectorActionTypes {
 
     /**
      * Action type to set the content URL for the help panel docs tab.
      *
-     * @type {string}
      */
     SET_GOVERNANCE_CONNECTOR_CATEGORY = "SET_GOVERNANCE_CONNECTOR_CATEGORY",
 }

@@ -28,14 +28,16 @@ import {
     CommonResourcePropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
 import {
-    GovernanceConnectorInterface,
-    RevertGovernanceConnectorConfigInterface
-} from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
-import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
-import {
     getConnectorDetails,
     revertGovernanceConnectorProperties
 } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
+import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
+import {
+    GovernanceConnectorInterface,
+    RevertGovernanceConnectorConfigInterface
+} from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";

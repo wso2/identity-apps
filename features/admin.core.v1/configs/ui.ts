@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
+import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import { FunctionComponent, ReactNode } from "react";
 import { ReactComponent as AlertIcon } from "../../themes/default/assets/images/icons/alert-icon.svg";
 import {

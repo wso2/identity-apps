@@ -23,8 +23,8 @@ import { Heading, Hint } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { GovernanceConnectorConstants } from "../../constants/governance-connector-constants";
 import { AdminForcedPasswordResetFormConstants } from "../../constants/admin-forced-password-reset-constants";
+import { GovernanceConnectorConstants } from "../../constants/governance-connector-constants";
 import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
 import {
     AdminForcedPasswordResetFormPropsInterface,

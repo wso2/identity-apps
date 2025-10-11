@@ -19,6 +19,9 @@
 /* eslint-disable sort-keys */
 
 import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
+import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
     UpdateGovernanceConnectorConfigInterface,
@@ -26,9 +29,6 @@ import {
     UpdateMultipleGovernanceConnectorsInterface
 } from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import { GovernanceConnectorUtils } from "@wso2is/admin.server-configurations.v1/utils/governance-connector-utils";
-import {
-    ServerConfigurationsConstants
-} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import React, { ReactElement, ReactNode } from "react";
 import { TFunction } from "react-i18next";

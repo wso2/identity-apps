@@ -27,13 +27,18 @@ import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1";
 import { useGroupList } from "@wso2is/admin.groups.v1/api/groups";
 import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
 import {
+    getConnectorDetails,
+    revertGovernanceConnectorProperties
+} from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
+import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
+import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
     RevertGovernanceConnectorConfigInterface
 } from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import { GovernanceConnectorUtils } from "@wso2is/admin.server-configurations.v1/utils/governance-connector-utils";
-import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
-import { getConnectorDetails, revertGovernanceConnectorProperties } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
 import { getConfiguration } from "@wso2is/admin.users.v1/utils/generate-password.utils";
 import {
     AlertLevels,
