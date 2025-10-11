@@ -19,8 +19,8 @@
 import { fireEvent, render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";
 import "@testing-library/jest-dom";
-import { PasswordRecoveryConfigurationForm } from "../../forms";
-import { PasswordRecoveryConfigurationFormPropsInterface } from "../../models";
+import { PasswordRecoveryConfigurationForm } from "../../forms/password-recovery-form/password-recovery-form";
+import { PasswordRecoveryConfigurationFormPropsInterface } from "../../models/password-recovery";
 
 const onSubmitMock: jest.Mock<any, any> = jest.fn();
 const data_component_id: string = "password-recovery-edit-form";

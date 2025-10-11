@@ -22,7 +22,7 @@ import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { useServerConfigs } from "@wso2is/admin.server-configurations.v1";
+import { useServerConfigs } from "@wso2is/admin.server-configurations.v1/api/server-config";
 import { UserInviteInterface } from "@wso2is/admin.users.v1/components/guests/models/invite";
 import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { getUserNameWithoutDomain, isFeatureEnabled } from "@wso2is/core/helpers";

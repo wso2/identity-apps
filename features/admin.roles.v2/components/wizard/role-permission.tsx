@@ -17,7 +17,8 @@
  */
 
 import { store } from "@wso2is/admin.core.v1/store";
-import { ServerConfigurationsInterface, getServerConfigs } from "@wso2is/admin.server-configurations.v1";
+import { ServerConfigurationsInterface } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
+import { getServerConfigs } from "@wso2is/admin.server-configurations.v1/api/server-config";
 import { RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Forms } from "@wso2is/forms";
 import { ContentLoader, EmphasizedSegment } from "@wso2is/react-components";

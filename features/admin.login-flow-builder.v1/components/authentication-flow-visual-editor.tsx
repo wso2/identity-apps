@@ -32,7 +32,7 @@ import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/consta
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { ConnectorPropertyInterface } from "@wso2is/admin.server-configurations.v1";
+import { ConnectorPropertyInterface } from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";

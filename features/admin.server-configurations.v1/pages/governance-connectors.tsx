@@ -34,9 +34,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Menu, Rail, Ref, Sticky } from "semantic-ui-react";
 import { getConnectorCategory } from "../api/governance-connectors";
-import { DynamicGovernanceConnector } from "../components";
-import { ServerConfigurationsConstants } from "../constants";
-import { GovernanceConnectorCategoryInterface, GovernanceConnectorInterface } from "../models";
+import { DynamicGovernanceConnector } from "../components/governance-connectors/dynamic-governance-connector";
+import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
+import { GovernanceConnectorCategoryInterface, GovernanceConnectorInterface } from "../models/governance-connectors";
 
 /**
  * Props for the Server Configurations page.

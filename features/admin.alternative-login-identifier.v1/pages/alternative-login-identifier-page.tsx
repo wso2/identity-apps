@@ -34,14 +34,16 @@ import {
     getConnectorDetails,
     revertGovernanceConnectorProperties,
     updateGovernanceConnector
-} from "@wso2is/admin.server-configurations.v1/api";
-import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants";
+} from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
+import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
     RevertGovernanceConnectorConfigInterface,
     UpdateGovernanceConnectorConfigInterface
-} from "@wso2is/admin.server-configurations.v1/models";
+} from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-management-utils";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { IdentityAppsError } from "@wso2is/core/errors";

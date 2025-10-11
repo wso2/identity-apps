@@ -26,8 +26,8 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import camelCase from "lodash-es/camelCase";
-import { getConnectorCategories } from "../api";
-import { ServerConfigurationsConstants } from "../constants";
+import { getConnectorCategories } from "../api/governance-connectors";
+import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import {
     ConnectorOverrideConfig,
     ConnectorPropertyInterface,
@@ -35,8 +35,8 @@ import {
     GovernanceConnectorForOrgsInterface,
     GovernanceConnectorInterface,
     GovernanceConnectorsInterface
-} from "../models";
-import { SetGovernanceConnectorCategory } from "../store/actions";
+} from "../models/governance-connectors";
+import { SetGovernanceConnectorCategory } from "../store/actions/governance-connector";
 
 /**
  * Utility class for governance connectors.

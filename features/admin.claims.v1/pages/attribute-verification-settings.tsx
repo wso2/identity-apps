@@ -21,14 +21,19 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import { getConnectorDetails, updateGovernanceConnector } from "@wso2is/admin.server-configurations.v1/api";
-import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants";
+import {
+    getConnectorDetails,
+    updateGovernanceConnector
+} from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
+import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
     UpdateGovernanceConnectorConfigInterface
 } from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
-import { GovernanceConnectorUtils } from "@wso2is/admin.server-configurations.v1/utils";
+import { GovernanceConnectorUtils } from "@wso2is/admin.server-configurations.v1/utils/governance-connector-utils";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";

@@ -17,7 +17,7 @@
  */
 
 import { RequestErrorInterface, RequestResultInterface } from "@wso2is/admin.core.v1/hooks/use-request";
-import { GovernanceConnectorInterface } from "@wso2is/admin.server-configurations.v1";
+import { GovernanceConnectorInterface } from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { ReactElement, ReactNode } from "react";
 import { TFunction } from "react-i18next";

@@ -18,7 +18,8 @@
 
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { OrganizationResponseInterface } from "@wso2is/admin.organizations.v1/models";
-import { ServerConfigurationsInterface, getServerConfigs } from "@wso2is/admin.server-configurations.v1";
+import { ServerConfigurationsInterface } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
+import { getServerConfigs } from "@wso2is/admin.server-configurations.v1/api/server-config";
 import { Dispatch } from "redux";
 import {
     OrganizationActionTypes,

@@ -19,8 +19,9 @@
 import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { ServerConfigurationsInterface, getServerConfigs } from "@wso2is/admin.server-configurations.v1";
-import { ConnectorPropertyInterface } from "@wso2is/admin.server-configurations.v1/models";
+import { ServerConfigurationsInterface } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
+import { getServerConfigs } from "@wso2is/admin.server-configurations.v1/api/server-config";
+import { ConnectorPropertyInterface } from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {

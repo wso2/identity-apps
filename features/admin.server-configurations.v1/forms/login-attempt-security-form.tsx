@@ -31,7 +31,7 @@ import { ServerConfigurationsConstants } from "../constants/server-configuration
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface
-} from "../models";
+} from "../models/governance-connectors";
 import "./login-attempt-security-form.scss";
 
 /**

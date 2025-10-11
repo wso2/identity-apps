@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { ServerConfigurationsConstants } from "../constants";
-import { ServerConfigurationsResourceEndpointsInterface } from "../models";
+import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
+import { ServerConfigurationsResourceEndpointsInterface } from "../models/endpoints";
 
 /**
  * Get the resource endpoints for the server configurations feature.

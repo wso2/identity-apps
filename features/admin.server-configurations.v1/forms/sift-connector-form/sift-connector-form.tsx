@@ -28,7 +28,7 @@ import { useTranslation } from "react-i18next";
 import { Icon } from "semantic-ui-react";
 import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
 import { GovernanceConnectorInterface } from "../../models/governance-connectors";
-import { GovernanceConnectorUtils } from "../../utils";
+import { GovernanceConnectorUtils } from "../../utils/governance-connector-utils";
 import "./sift-connector-form.scss";
 
 /**

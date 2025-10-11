@@ -40,12 +40,12 @@ import {
     Form,
     Grid
 } from "semantic-ui-react";
-import { ServerConfigurationsConstants } from "../../constants";
+import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface
-} from "../../models";
-import { GovernanceConnectorUtils } from "../../utils";
+} from "../../models/governance-connectors";
+import { GovernanceConnectorUtils } from "../../utils/governance-connector-utils";
 
 /**
  * Determine the matching Form component based on the property attributes.

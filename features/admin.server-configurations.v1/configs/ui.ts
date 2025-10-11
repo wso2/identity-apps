@@ -93,7 +93,7 @@ import {
 import {
     default as JWTKeyIcon
 } from "../../themes/default/assets/images/illustrations/jwt-key-icon.svg";
-import { ServerConfigurationsConstants } from "../constants";
+import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 
 interface GetGovernanceConnectorIllustrationsInterface {
     [key: string]: string;

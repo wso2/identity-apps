@@ -26,7 +26,7 @@ import { UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/mod
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { userConfig } from "@wso2is/admin.extensions.v1/configs/user";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { useServerConfigs } from "@wso2is/admin.server-configurations.v1";
+import { useServerConfigs } from "@wso2is/admin.server-configurations.v1/api/server-config";
 import { ACCOUNT_LOCK_REASON_MAP, UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { UserListInterface } from "@wso2is/admin.users.v1/models/user";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
