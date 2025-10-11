@@ -29,7 +29,7 @@ import { resolveElementText } from "../utils/i18n-utils";
 const ValidationError = ({ name, errors }) => {
 
     const { translations } = useTranslations();
- 
+
     const formError = errors.formStateErrors && errors.formStateErrors[name];
     const fieldError = formError||
         (errors.fieldErrors.length > 0 ? errors.fieldErrors[errors.fieldErrors.length - 1] : null);
