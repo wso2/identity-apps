@@ -22,7 +22,7 @@ import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { useUsersList } from "@wso2is/admin.users.v1/api";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
-import { UserStoreDropdownItem } from "@wso2is/admin.userstores.v1/models";
+import { UserStoreDropdownItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";

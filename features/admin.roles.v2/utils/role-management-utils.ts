@@ -20,7 +20,7 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { store } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { UserBasicInterface } from "@wso2is/admin.users.v1/models/user";
-import { UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants";
+import { UserStoreManagementConstants } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { RoleGroupsInterface } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";

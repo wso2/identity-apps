@@ -31,12 +31,12 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { CheckboxProps, Divider, Grid, Icon } from "semantic-ui-react";
-import { SqlEditor } from "..";
-import { deleteUserStore, patchUserStore } from "../../api";
+import { deleteUserStore, patchUserStore } from "../../api/user-stores";
 import { CONSUMER_USERSTORE, CONSUMER_USERSTORE_ID, DISABLED, USERSTORE_VALIDATION_REGEX_PATTERNS }
-    from "../../constants";
-import { PatchData, PropertyAttribute, RequiredBinary, TypeProperty, UserStore } from "../../models";
+    from "../../constants/user-store-constants";
+import { PatchData, PropertyAttribute, RequiredBinary, TypeProperty, UserStore } from "../../models/user-stores";
 import { validateInputWithRegex } from "../../utils/userstore-utils";
+import { SqlEditor } from "../sql-editor";
 
 /**
  * Prop types of `EditBasicDetailsUserStore` component

@@ -59,7 +59,7 @@ import {
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import {
     CONSUMER_USERSTORE
-} from "@wso2is/admin.userstores.v1/constants";
+} from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { IdentityAppsError } from "@wso2is/core/errors";

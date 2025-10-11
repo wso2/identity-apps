@@ -28,7 +28,7 @@ import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import { useState } from "react";
 import { BareFetcher, PublicConfiguration } from "swr/dist/_internal";
-import { UserStoreDetails } from "../models";
+import { UserStoreDetails } from "../models/user-stores";
 
 /**
  * Hook to get User Store details.

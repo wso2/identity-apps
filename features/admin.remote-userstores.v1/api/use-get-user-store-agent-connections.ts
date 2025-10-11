@@ -22,7 +22,7 @@ import useRequest, {
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
-import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants";
+import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { HttpMethods } from "@wso2is/core/models";
 import { AgentConnectionAPIResponseInterface, AgentConnectionInterface } from "../models/remote-user-stores";
 

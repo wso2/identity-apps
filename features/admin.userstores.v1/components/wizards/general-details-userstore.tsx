@@ -21,7 +21,7 @@ import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid, Header, Icon } from "semantic-ui-react";
-import { testConnection } from "../../api";
+import { testConnection } from "../../api/user-stores";
 import {
     DISABLED,
     JDBC,
@@ -29,9 +29,15 @@ import {
     TestButtonIcon,
     USERSTORE_NAME_CHARACTER_LIMIT,
     USERSTORE_VALIDATION_REGEX_PATTERNS
-} from "../../constants";
+} from "../../constants/user-store-constants";
 import useUserStores from "../../hooks/use-user-stores";
-import { PropertyAttribute, TestConnection, TypeProperty, UserStoreListItem, UserstoreType } from "../../models";
+import {
+    PropertyAttribute,
+    TestConnection,
+    TypeProperty,
+    UserStoreListItem,
+    UserstoreType
+} from "../../models/user-stores";
 import { validateInputWithRegex } from "../../utils/userstore-utils";
 
 /**

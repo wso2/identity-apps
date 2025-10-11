@@ -19,7 +19,7 @@
 import Button from "@oxygen-ui/react/Button";
 import Typography from "@oxygen-ui/react/Typography";
 import { CheckIcon } from "@oxygen-ui/react-icons";
-import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants";
+import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CodeEditor, Message } from "@wso2is/react-components";

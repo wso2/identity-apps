@@ -50,7 +50,7 @@ import {
     PRIMARY_USERSTORE,
     USERSTORE_REGEX_PROPERTIES,
     UserStoreManagementConstants
-} from "@wso2is/admin.userstores.v1/constants";
+} from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";

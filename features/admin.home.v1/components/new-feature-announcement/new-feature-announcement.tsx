@@ -33,9 +33,9 @@ import useGetFlowConfig from "@wso2is/admin.flow-builder-core.v1/api/use-get-flo
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
 import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
-import { AGENT_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import { AGENT_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
-import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import AIText from "@wso2is/common.ai.v1/components/ai-text";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Heading, PrimaryButton, Button as SemanticButton } from "@wso2is/react-components";

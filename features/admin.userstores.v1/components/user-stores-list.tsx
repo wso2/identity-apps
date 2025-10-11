@@ -49,15 +49,15 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
-import { deleteUserStore } from "../api";
-import { getTableIcons } from "../configs";
+import { deleteUserStore } from "../api/user-stores";
+import { getTableIcons } from "../configs/ui";
 import {
     CONSUMER_USERSTORE,
     CONSUMER_USERSTORE_ID,
     REMOTE_USERSTORE_TYPE_NAME,
     UserStoreManagementConstants
-} from "../constants";
-import { UserStoreListItem } from "../models";
+} from "../constants/user-store-constants";
+import { UserStoreListItem } from "../models/user-stores";
 
 /**
  * Prop types of the `UserStoresList` component

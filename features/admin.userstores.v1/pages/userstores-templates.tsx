@@ -28,10 +28,10 @@ import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useS
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { getUserStoreMetaDataType } from "../api";
 import useGetUserStoreTypes from "../api/use-get-user-store-types";
-import { AddUserStore } from "../components";
-import { getUserstoreTemplateIllustrations } from "../configs";
+import { getUserStoreMetaDataType } from "../api/user-stores";
+import { AddUserStore } from "../components/add-user-store";
+import { getUserstoreTemplateIllustrations } from "../configs/ui";
 import {
     DEFAULT_DESCRIPTION_CUSTOM_USERSTORE,
     DEFAULT_USERSTORE_TYPE_IMAGE,
@@ -39,8 +39,8 @@ import {
     USERSTORE_TYPE_DISPLAY_NAMES,
     USERSTORE_TYPE_IMAGES,
     USER_STORE_TYPE_DESCRIPTIONS
-} from "../constants";
-import { UserStoreType, UserstoreType } from "../models";
+} from "../constants/user-store-constants";
+import { UserStoreType, UserstoreType } from "../models/user-stores";
 
 /**
  * Props for the Userstore templates page.

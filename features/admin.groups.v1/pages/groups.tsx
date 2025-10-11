@@ -27,7 +27,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { groupConfig, userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
 import {
     RemoteUserStoreManagerType
-} from "@wso2is/admin.userstores.v1/constants";
+} from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { AlertInterface, AlertLevels, RolesInterface } from "@wso2is/core/models";

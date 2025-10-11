@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { UserstoresConfig } from "./models";
 
 const primaryUserStoreDomainName: string = window[ "AppUtils" ]

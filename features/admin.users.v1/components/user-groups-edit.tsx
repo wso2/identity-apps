@@ -22,7 +22,7 @@ import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores
 import { useGroupList } from "@wso2is/admin.groups.v1/api/groups";
 import { GroupsInterface, GroupsMemberInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "@wso2is/admin.roles.v2/constants/role-constants";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import {
     AlertInterface,
     AlertLevels,
