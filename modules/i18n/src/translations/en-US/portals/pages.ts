@@ -98,7 +98,7 @@ export const pages: pagesNS = {
     },
     oidcScopesEdit: {
         backButton: "Go back to Scopes",
-        subTitle: "Add or remove OIDC attributes of the scope",
+        subTitle: "",//"Add or remove OIDC attributes of the scope",
         title: "Edit scope: {{ name }}"
     },
     organizations: {
