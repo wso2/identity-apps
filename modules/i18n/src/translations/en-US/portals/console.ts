@@ -8568,7 +8568,7 @@ export const console: ConsoleNS = {
             },
             oidcScopesEdit: {
                 backButton: "Go back to Scopes",
-                subTitle: "",//"Add or remove OIDC attributes of the scope",
+                subTitle: "",
                 title: "Edit scope: {{ name }}"
             },
             organizations: {
