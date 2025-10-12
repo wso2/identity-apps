@@ -1,5 +1,11 @@
 # @wso2is/admin.console-settings.v1
 
+## 2.26.1
+
+### Patch Changes
+
+- [#9339](https://github.com/wso2/identity-apps/pull/9339) [`8a3d82fa1beac62385e914a29b18879f4cd0c4b3`](https://github.com/wso2/identity-apps/commit/8a3d82fa1beac62385e914a29b18879f4cd0c4b3) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issue with Role Assignment permission
+
 ## 2.26.0
 
 ### Minor Changes
