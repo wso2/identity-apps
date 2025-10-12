@@ -73,6 +73,7 @@ interface ConnectionConfigInterface extends FeatureAccessConfigInterface {
 
 /**
  * Application configuration interface.
+ * @deprecated - Use `FeatureConfigInterface` from `@wso2is/access-control` instead.
  */
 export interface FeatureConfigInterface {
     /**

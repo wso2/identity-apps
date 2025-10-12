@@ -30,9 +30,8 @@ import Checkbox from "@oxygen-ui/react/Checkbox";
 import Paper from "@oxygen-ui/react/Paper";
 import Typography from "@oxygen-ui/react/Typography";
 import { ChevronDownIcon } from "@oxygen-ui/react-icons";
-import { FeatureAccessConfigInterface } from "@wso2is/access-control";
+import { FeatureAccessConfigInterface, FeatureConfigInterface } from "@wso2is/access-control";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { CreateRolePermissionInterface } from "@wso2is/admin.roles.v2/models/roles";
@@ -112,7 +111,7 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
         defaultExpandedIfPermissionsAreSelected,
         initialValues,
         onPermissionsChange,
-        "data-componentid": componentId
+        "data-componentid": componentId = "create-console-role-wizard-basic-info-form"
     } = props;
 
     const { t } = useTranslation();
@@ -166,15 +165,16 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
 
     // Flatten the feature config to easily access sub features.
     const flattenedFeatureConfig: FeatureConfigInterface = useMemo(() => {
-        // TODO: Define proper type for these variables.
-        const topLevelFeatures: any = mapValues(
+        const topLevelFeatures: Record<string, Omit<FeatureAccessConfigInterface, "subFeatures">> = mapValues(
             featureConfig,
             (feature: FeatureAccessConfigInterface) => omit(feature, [ "subFeatures" ])
         );
 
-        const subLevelFeatures: any = fromPairs(flatMap(values(featureConfig), (feature) => {
-            return Object.entries((feature as FeatureAccessConfigInterface).subFeatures || {});
-        }));
+        const subLevelFeatures: Record<string, Omit<FeatureAccessConfigInterface, "subFeatures">> = fromPairs(
+            flatMap(values(featureConfig), (feature: FeatureAccessConfigInterface) => {
+                return Object.entries(feature.subFeatures || {});
+            })
+        );
 
         return {
             ...topLevelFeatures,
@@ -633,13 +633,6 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
             </div>
         </div>
     );
-};
-
-/**
- * Default props for the component.
- */
-CreateConsoleRoleWizardPermissionsForm.defaultProps = {
-    "data-componentid": "create-console-role-wizard-basic-info-form"
 };
 
 export default CreateConsoleRoleWizardPermissionsForm;
