@@ -135,10 +135,6 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
 
-    const userRolesV3FeatureEnabled: boolean = useSelector(
-        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
-    );
-
     /**
      * Initializes the permission tree with any initial values.
      */
