@@ -17,8 +17,8 @@
  */
 
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import DatePicker from "@oxygen-ui/react/DatePicker";
 import { FormControlProps } from "@oxygen-ui/react/FormControl";
 import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import TextField from "@oxygen-ui/react/TextField";

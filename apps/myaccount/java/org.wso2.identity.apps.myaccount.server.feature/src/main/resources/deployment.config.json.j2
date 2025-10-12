@@ -1,0 +1,469 @@
+{
+    {% if myaccount.__experimental__platform_idp is defined %}
+    "__experimental__platformIdP" : {
+        "enabled": {{ myaccount.__experimental__platform_idp.enabled }},
+        "homeRealmId": "{{ myaccount.__experimental__platform_idp.homeRealmId }}"
+    },
+    {% endif %}
+    "consoleApp": {
+        {% if myaccount.applications.console_app.configs is defined %}
+        {% for key, value in myaccount.applications.console_app.configs.items() %}
+            {% if value is string %}
+                "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+            {% elif value is iterable %}
+                "{{ key }}": [
+                    {% for item in value %}
+                        "{{ item }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                ]{{ "," if not loop.last }}
+            {% else %}
+                "{{ key }}": {{ value }}{{ "," if not loop.last }}
+            {% endif %}
+        {% endfor %}
+        {% endif %}
+    },
+    "appBaseName": "{{ myaccount.app_base_name }}",
+    {% if myaccount.app_base_name_for_history_api is defined %}
+        "appBaseNameForHistoryAPI": "{{ myaccount.app_base_name_for_history_api }}",
+    {% endif %}
+    "clientID": "{{ myaccount.client_id }}",
+    "loginCallbackPath": "{{ myaccount.login_callback_path }}",
+    "logoutCallbackPath": "{{ myaccount.logout_callback_path }}",
+    {% if myaccount.server_origin is defined %}
+    "serverOrigin": "{{ myaccount.server_origin }}",
+    {% endif %}
+    "routePaths": {
+        {% if myaccount.route_paths is defined %}
+        {% for path, value in myaccount.route_paths.items() %}
+            "{{ path }}": "{{ value }}"{{ "," if not loop.last }}
+        {% endfor %}
+        {% endif %}
+    },
+    "extensions": {
+        {% if myaccount.extensions is defined %}
+        {% for key, value in myaccount.extensions.items() %}
+        {% if value is number %}
+            "{{ key }}": {{ value }}{{ "," if not loop.last }}
+        {% elif value is mapping %}
+            "{{ key }}": {
+                {% for level_1_key, level_1_value in value.items() %}
+                    {% if level_1_value is mapping %}
+                        "{{ level_1_key }}": {
+                            {% for level_2_key, level_2_value in level_1_value.items() %}
+                                {% if level_2_value is iterable %}
+                                    "{{ level_2_key }}": [
+                                        {% for level_2_value_item in level_2_value %}
+                                            "{{ level_2_value_item }}"{{ "," if not loop.last }}
+                                        {% endfor %}
+                                    ]{{ "," if not loop.last }}
+                                {% else %}
+                                    "{{ level_2_key }}": "{{ level_2_value }}"{{ "," if not loop.last }}
+                                {% endif %}
+                            {% endfor %}
+                        }{{ "," if not loop.last }}
+                    {% else %}
+                        "{{ level_1_key }}": "{{ level_1_value }}"{{ "," if not loop.last }}
+                    {% endif %}
+                {% endfor %}
+            }{{ "," if not loop.last }}
+        {% elif value is iterable %}
+            "{{ key }}": [
+                {% for item in value %}
+                    {% if item is mapping %}
+                        {
+                            {% for array_obj_key, array_obj_value in item.items() %}
+                                {% if array_obj_value is number %}
+                                    "{{ array_obj_key }}": {{ array_obj_value }}{{ "," if not loop.last }}
+                                {% elif array_obj_value is boolean %}
+                                    "{{ array_obj_key }}": {{ array_obj_value }}{{ "," if not loop.last }}
+                                {% else %}
+                                    "{{ array_obj_key }}": "{{ array_obj_value }}"{{ "," if not loop.last }}
+                                {% endif %}
+                            {% endfor %}
+                        }{{ "," if not loop.last }}
+                    {% else %}
+                        "{{ level_1_key }}": "{{ level_1_value }}"{{ "," if not loop.last }}
+                    {% endif %}
+                {% endfor %}
+            ]{{ "," if not loop.last }}
+        {% else %}
+            "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+    },
+    {% if myaccount.super_tenant_proxy_name is defined %}
+        "superTenantProxy" : "{{ myaccount.super_tenant_proxy_name }}",
+    {% endif %}
+    {% if myaccount.idp_configs is defined %}
+    "idpConfigs": {
+        {% if myaccount.idp_configs.items() is defined %}
+        {% for key, value in myaccount.idp_configs.items() %}
+        {% if value is string %}
+            "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+        {% elif value is iterable %}
+            "{{ key }}": [
+                {% for item in value %}
+                    "{{ item }}"{{ "," if not loop.last }}
+                {% endfor %}
+            ]{{ "," if not loop.last }}
+        {% else %}
+            "{{ key }}": {{ value }}{{ "," if not loop.last }}
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+    },
+    {% endif %}
+    {% if myaccount.is_saas is defined %}
+    "isSaas": {{ myaccount.is_saas }},
+    {% elif legacy_mode.enabled is defined %}
+    "isSaas": {{ legacy_mode.enabled }},
+    {% elif legacy_authz_runtime.enable is defined %}
+    "isSaas": {{ legacy_authz_runtime.enable }},
+    {% endif %}
+    {% if myaccount.proxy_context_path is defined %}
+    "proxyContextPath": "{{ myaccount.proxy_context_path }}",
+    {% endif %}
+    "session": {
+        {% if myaccount.session.params is defined %}
+            {% for param, value in myaccount.session.params.items() %}
+                "{{ param }}": {{ value }}{{ "," if not loop.last }}
+            {% endfor %}
+        {% endif %}
+    },
+    {% if tenant_context is defined %}
+    "tenantContext": {
+        "enableTenantQualifiedUrls": {{ tenant_context.enable_tenant_qualified_urls | default(true) }},
+        "requireSuperTenantInUrls": {{ tenant_context.enable_tenant_qualified_urls && tenant_context.require_super_tenant_in_urls | default(false) }},
+        "requireSuperTenantInAppUrls": {{ tenant_context.require_super_tenant_in_app_urls | default(true) }}
+    },
+    {% endif %}
+    "ui": {
+        "announcements": [
+            {% if myaccount.ui.announcements is defined %}
+            {% for announcement in myaccount.ui.announcements %}
+            {
+            {% for key, value in announcement.items() %}
+            {% if value is number %}
+                "{{ key }}": {{ value }}{{ "," if not loop.last }}
+            {% else %}
+                "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+            {% endif %}
+            {% endfor %}
+            }{{ "," if not loop.last }}
+            {% endfor %}
+            {% endif %}
+        ],
+        "appCopyright": "{{ myaccount.ui.app_copyright }}",
+        "appTitle": "{{ myaccount.ui.app_title }}",
+        "appName": "{{ myaccount.ui.app_name }}",
+        "appLogoPath": "{{ myaccount.ui.app_logo_path }}",
+        "appMobileLogoPath": "{{ myaccount.ui.app_mobile_logo_path }}",
+        "appWhiteLogoPath": "{{ myaccount.ui.app_white_logo_path }}",
+        {% if myaccount.disable_mfa_for_super_tenant_user is defined %}
+        "disableMFAforSuperTenantUser": "{{ myaccount.disable_mfa_for_super_tenant_user }}",
+        {% endif %}
+        {% if myaccount.enable_mfa_user_wise is defined %}
+        "enableMFAUserWise": {{ myaccount.enable_mfa_user_wise }},
+        {% endif %}
+        {% if myaccount.disable_mfa_for_federated_users is defined %}
+        "disableMFAForFederatedUsers": {{ myaccount.disable_mfa_for_federated_users }},
+        {% endif %}
+        {% if myaccount.force_backup_code is defined %}
+        "forceBackupCode": {{ myaccount.force_backup_code }},
+        {% endif %}
+        {% if myaccount.ui.show_app_switch_button is defined %}
+        "showAppSwitchButton": "{{ myaccount.ui.show_app_switch_button }}",
+        {% endif %}
+        "authenticatorApp": {
+                {% if myaccount.authenticator_app_configs is defined %}
+                {% for key, value in myaccount.authenticator_app_configs.items() %}
+                "{{ key }}": {{ value }}{{ "," if not loop.last }}
+                {% endfor %}
+                {% endif %}
+        },
+        {% if user_store.properties.DomainName is defined %}
+        "primaryUserStoreDomainName": "{{ user_store.properties.DomainName }}",
+        {% endif %}
+        {% if identity_mgt.user_claim_update.enable_multiple_emails_and_mobile_numbers is defined %}
+        "isMultipleEmailsAndMobileNumbersEnabled": {{ identity_mgt.user_claim_update.enable_multiple_emails_and_mobile_numbers }},
+        {% endif %}
+        "features": {
+            {% if myaccount.extensions.features is defined %}
+            {% for name, feature in myaccount.extensions.features.items() %}
+            "{{ name }}": {
+                "disabledFeatures": [
+                    {% if feature.disabled_features is defined %}
+                    {% for disabled_feature in feature.disabled_features %}
+                    "{{ disabled_feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ feature.enabled }},
+                "scopes": {
+                    {% if feature.scopes is defined %}
+                    {% for operation, scopes in feature.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            {% endfor %}
+            {% endif %}
+            "applications": {
+                "disabledFeatures": [
+                    {% if myaccount.applications.disabled_features is defined %}
+                    {% for feature in applications.users.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ myaccount.applications.enabled }},
+                "scopes": {
+                    {% if myaccount.applications.scopes is defined %}
+                    {% for operation, scopes in myaccount.applications.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            "approvals": {
+                "disabledFeatures": [
+                    {% if myaccount.approvals.disabled_features is defined %}
+                    {% for feature in myaccount.approvals.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ myaccount.approvals.enabled }},
+                "featureFlags": [
+                    {% if myaccount.approvals.feature_flags is defined %}
+                    {% for flag in myaccount.approvals.feature_flags %}
+                    "{{ flag }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "scopes": {
+                    {% if myaccount.approvals.scopes is defined %}
+                    {% for operation, scopes in myaccount.approvals.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "read": [],
+                        "update": [],
+                    {% endif %}
+                }
+            },
+            "operations": {
+                "disabledFeatures": [
+                    {% if myaccount.operations.disabled_features is defined %}
+                    {% for feature in myaccount.operations.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ myaccount.operations.enabled }},
+                "scopes": {
+                    {% if myaccount.operations.scopes is defined %}
+                    {% for operation, scopes in myaccount.operations.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            "overview": {
+                "disabledFeatures": [
+                    {%- set disabled_features = [] -%}
+                    {%- if myaccount.overview.disabled_features is defined -%}
+                        {%- for feature in myaccount.overview.disabled_features -%}
+                            {%- set _ = disabled_features.append('"' + feature + '"') -%}
+                        {%- endfor -%}
+                    {%- endif -%}
+                    {%- if flow_execution.enable_legacy_flows is defined and not flow_execution.enable_legacy_flows -%}
+                        {%- set _ = disabled_features.append('"legacyFlows"') -%}
+                    {%- endif -%}
+                    {{ disabled_features | join(', ') }}
+                ],
+                "enabled": {{ myaccount.overview.enabled }},
+                "scopes": {
+                    {% if myaccount.overview.scopes is defined %}
+                    {% for operation, scopes in myaccount.overview.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            "personalInfo": {
+                "disabledFeatures": [
+                    {% if myaccount.personal_info.disabled_features is defined %}
+                    {% for feature in myaccount.personal_info.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ myaccount.personal_info.enabled }},
+                "scopes": {
+                    {% if myaccount.personal_info.scopes is defined %}
+                    {% for operation, scopes in myaccount.personal_info.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            "security": {
+                "disabledFeatures": [
+                    {% if myaccount.security.disabled_features is defined %}
+                    {% for feature in myaccount.security.disabled_features %}
+                    {% if myaccount.security.enabled_features is defined %}
+                    {% if not (feature in myaccount.security.enabled_features) %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endif %}
+                    {% else %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endif %}
+                    {% endfor %}
+                    {% endif %}
+                    {% if not (connector.challenge_questions is defined and connector.challenge_questions.enable) %}
+                    {% if myaccount.security.disabled_features is defined %}
+                    ,"security.accountRecovery.challengeQuestions"
+                    {% else %}
+                    "security.accountRecovery.challengeQuestions"
+                    {% endif %}
+                    {% endif %}
+                    {% if flow_execution.enable_legacy_flows is defined and not flow_execution.enable_legacy_flows %}
+                    {% if myaccount.security.disabled_features is defined %}
+                    ,"security.accountRecovery.legacyRecoveryMethodStatusCheck"
+                    {% else %}
+                    "security.accountRecovery.legacyRecoveryMethodStatusCheck"
+                    {% endif %}
+                    {% endif %}
+                ],
+                "enabled": {{ myaccount.security.enabled }},
+                "scopes": {
+                    {% if myaccount.security.scopes is defined %}
+                    {% for operation, scopes in myaccount.security.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            }
+        },
+        {% set cookie_consent = myaccount.ui.is_cookie_consent_banner_enabled if myaccount.ui.is_cookie_consent_banner_enabled is defined
+            else ui.is_cookie_consent_banner_enabled %}
+        {% if cookie_consent is defined %}
+        "isCookieConsentBannerEnabled": {{ cookie_consent }},
+        {% endif %}
+        {% if myaccount.ui.cookie_policy_url is defined %}
+        "cookiePolicyUrl": "{{ myaccount.ui.cookie_policy_url }}",
+        {% endif %}
+        {% if myaccount.ui.is_header_avatar_label_allowed is defined %}
+        "isHeaderAvatarLabelAllowed": {{ myaccount.ui.is_header_avatar_label_allowed }},
+        {% endif %}
+        {% if event.default_listener.validation.enable is defined %}
+        "isPasswordInputValidationEnabled": {{ event.default_listener.validation.enable }},
+        {% else %}
+        "isPasswordInputValidationEnabled": true,
+        {% endif %}
+        "i18nConfigs": {
+            {% if myaccount.i18n_configs.items() is defined %}
+            {% for key, value in myaccount.i18n_configs.items() %}
+            {% if value is string %}
+                "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+            {% else %}
+                "{{ key }}": {{ value }}{{ "," if not loop.last }}
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        },
+        {% if scim2.custom_user_schema_uri is defined %}
+        "customUserSchemaURI": "{{ scim2.custom_user_schema_uri }}",
+        {% endif %}
+        "privacyPolicyConfigs": {
+            {% if myaccount.privacy_policy_configs.items() is defined %}
+            {% for key, value in myaccount.privacy_policy_configs.items() %}
+            {% if value is string %}
+                "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+            {% else %}
+                "{{ key }}": {{ value }}{{ "," if not loop.last }}
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        },
+        {% if myaccount.is_profile_username_readonly is defined %}
+        "isProfileUsernameReadonly": {{ myaccount.is_profile_username_readonly }},
+        {% endif %}
+        "productName": "{{ myaccount.ui.product_name }}",
+        "productVersionConfig": {
+            {% if myaccount.product_version.configs.items() is defined %}
+            {% for key, value in myaccount.product_version.configs.items() %}
+            {% if value is string %}
+                "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+            {% else %}
+                "{{ key }}": {{ value }}{{ "," if not loop.last }}
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        },
+        "theme": {
+            "name": "{{ myaccount.theme }}"
+        }
+    }
+}
