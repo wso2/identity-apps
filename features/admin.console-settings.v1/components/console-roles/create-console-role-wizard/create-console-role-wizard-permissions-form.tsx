@@ -220,11 +220,6 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
             cloneDeep(organizationAPIResourceCollections);
         const filteringAPIResourceCollectionNames: string[] = [];
 
-        if(!userRolesV3FeatureEnabled) {
-            filteringAPIResourceCollectionNames.push(
-                ConsoleRolesOnboardingConstants.ORG_ROLE_ASSIGNMENTS_ROLE_ID);
-        }
-
         filteringAPIResourceCollectionNames.push(
             ConsoleRolesOnboardingConstants.ORG_ROLE_V1_API_RESOURCES_COLLECTION_NAME);
 
