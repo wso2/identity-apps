@@ -1423,7 +1423,7 @@
             },
             "roleAssignments": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [],
@@ -1704,7 +1704,7 @@
             },
             "userRolesV3": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [
                     {
                         "feature": "userRoles",
