@@ -214,8 +214,10 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                             // If the feature to enforce API resource update permission is enabled,
                             // check if the user has the required permission to authorize the API resource.
                             if (isApplicationEditEnforceAuthorizedAPIUpdatePermissionEnabled) {
-                                if (apiResource.type === APIResourceCategories.BUSINESS) {
-                                    // Disable business API resources if the user does not have the required permission.
+                                if (apiResource.type === APIResourceCategories.BUSINESS ||
+                                    apiResource.type === APIResourceCategories.MCP) {
+                                    // Disable business and MCP API resources
+                                    // if the user does not have the required permission.
                                     isOptionDisabled = !hasBusinessAPIResourceAuthorizationPermission;
                                 } else {
                                     // Disable internal API resources if the user does not have the required permission.
