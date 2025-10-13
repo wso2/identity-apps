@@ -50,9 +50,9 @@ import { ValidationServiceEndpointsInterface } from "@wso2is/admin.validation.v1
 import {
     CommonConfigInterface,
     CommonDeploymentConfigInterface,
-    CommonUIConfigInterface,
-    FeatureAccessConfigInterface
+    CommonUIConfigInterface
 } from "@wso2is/core/models";
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { WorkflowRequestsResourceEndpointsInterface } from "../../admin.workflow-requests.v1/configs/endpoints";
 
@@ -73,7 +73,6 @@ interface ConnectionConfigInterface extends FeatureAccessConfigInterface {
 
 /**
  * Application configuration interface.
- * @deprecated - Use `FeatureConfigInterface` from `@wso2is/access-control` instead.
  */
 export interface FeatureConfigInterface {
     /**
