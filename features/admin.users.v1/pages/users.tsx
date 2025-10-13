@@ -191,6 +191,9 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ invitedUserListItemLimit, setInvitedUserListItemLimit ]
         = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ invitedUserListOffset, setInvitedUserListOffset ] = useState<number>(1);
+    const isLegacyFlowsEnabled: boolean = useSelector(
+        (state: AppState) => state.config.ui.flowExecution.enableLegacyFlows
+    );
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state?.profile?.profileSchemas);
     const systemReservedUserStores: string[] =
         useSelector((state: AppState) => state?.config?.ui?.systemReservedUserStores);
@@ -1008,6 +1011,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     };
 
     const renderMultipleInviteConfirmationModel = (): ReactElement => {
+        console.log("isLegacyFlowsEnabled", isLegacyFlowsEnabled);
         return (
             <ConfirmationModal
                 data-componentid={ `${componentId}-select-multiple-invite-confirmation-modal` }
@@ -1031,17 +1035,30 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                     { t("users:confirmations.addMultipleUser.message") }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content>
-                    <Trans i18nKey="users:confirmations.addMultipleUser.content">
-                        Invite User to Set Password should be enabled to add multiple users.
-                        Please enable email invitations for user password setup from
-                        <Link
-                            onClick={ () => history.push(AppConstants.getPaths().get("GOVERNANCE_CONNECTOR_EDIT")
-                                .replace(":categoryId", ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
-                                .replace(":connectorId", ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID)) }
-                            external={ false }>
-                            Login & Registration settings
-                        </Link>
-                    </Trans>
+                    { isLegacyFlowsEnabled ? (
+                        <Trans i18nKey="users:confirmations.addMultipleUser.legacyContent">
+                            Invite User to Set Password should be enabled to add multiple users.
+                            Please enable email invitations for user password setup from
+                            <Link
+                                onClick={ () => history.push(AppConstants.getPaths().get("GOVERNANCE_CONNECTOR_EDIT")
+                                    .replace(":categoryId", ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
+                                    .replace(":connectorId", ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID)) }
+                                external={ false }>
+                                Login & Registration settings
+                            </Link>
+                        </Trans>
+                    ) : (
+                        <Trans i18nKey="users:confirmations.addMultipleUser.content">
+                            Invite User to Set Password should be enabled to add multiple users.
+                            Please enable user password setup invitations from the
+                            <Link
+                                onClick={ () => history.push(AppConstants.getPaths()
+                                    .get("INVITE_USER_PASSWORD_SETUP_FLOW_BUILDER")) }
+                                external={ false }>
+                                Invited User Registration Flow Builder.
+                            </Link>
+                        </Trans>
+                    ) }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         );
