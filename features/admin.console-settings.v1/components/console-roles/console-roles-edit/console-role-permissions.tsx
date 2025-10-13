@@ -35,7 +35,7 @@ import {
 } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -92,7 +92,7 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
         role,
         onRoleUpdate,
         tabIndex,
-        [ "data-componentid" ]: componentId
+        [ "data-componentid" ]: componentId = "console-roles-table"
     } = props;
 
     const dispatch: Dispatch = useDispatch();
@@ -112,6 +112,20 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
     );
 
     const [ permissions, setPermissions ] = useState<CreateRolePermissionInterface[]>(undefined);
+
+    /**
+     * Set the initial permissions when the role is fetched.
+     */
+    useEffect(() => {
+        const initialPermissions: CreateRolePermissionInterface[] = role?.permissions?.map(
+            (permission: string | RolePermissionInterface) => {
+                return {
+                    value: (permission as RolePermissionInterface).value
+                };
+            }) ?? [];
+
+        setPermissions(initialPermissions);
+    }, [ role ]);
 
     const filteredTenantAPIResourceCollections: APIResourceCollectionResponseInterface = useMemo(() => {
 
@@ -321,7 +335,7 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
                         variant="contained"
                         size="small"
                         loading={ false }
-                        disabled={ isEmpty(role?.permissions) || (permissions && isEmpty(permissions)) }
+                        disabled={ permissions && isEmpty(permissions) }
                         onClick={ () => {
                             updateRolePermissions(permissions);
                         } }
@@ -333,13 +347,6 @@ const ConsoleRolePermissions: FunctionComponent<ConsoleRolePermissionsProps> = (
             }
         </EmphasizedSegment>
     );
-};
-
-/**
- * Default props for {@link ConsoleRolePermissions}
- */
-ConsoleRolePermissions.defaultProps = {
-    "data-componentid": "console-roles-table"
 };
 
 export default ConsoleRolePermissions;
