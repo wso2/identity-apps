@@ -160,6 +160,7 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
         List<Permission> systemPermissions = getSystemPermission(tenantDomain);
         List<APIResourceCollection> apiResourceCollections = getAPIResourceCollections(tenantDomain);
         List<Permission> consoleFeaturePermissions = getConsoleFeaturePermissions(rolePermissions);
+        Set<String> addedPermissionNames = new HashSet<>();
         if (!consoleFeaturePermissions.isEmpty()) {
             // This is where we handle the new console roles (console roles created after 7.0.0) permissions.
             // We check whether the role has the view feature scope or edit feature scope. If the role has the
@@ -175,7 +176,10 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
                             Optional<Permission> newPermission = systemPermissions.stream()
                                 .filter(permission1 -> permission1.getName().equals(writeScope))
                                 .findFirst();
-                            newPermission.ifPresent(resolvedRolePermissions::add);
+                            if (newPermission.isPresent() &&
+                                    addedPermissionNames.add(newPermission.get().getName())) {
+                                resolvedRolePermissions.add(newPermission.get());
+                            }
                         });
                     }
                     if (apiResourceCollection.getViewFeatureScope() != null &&
@@ -184,7 +188,10 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
                             Optional<Permission> newPermission = systemPermissions.stream()
                                 .filter(permission1 -> permission1.getName().equals(readScope))
                                 .findFirst();
-                            newPermission.ifPresent(resolvedRolePermissions::add);
+                            if (newPermission.isPresent() &&
+                                    addedPermissionNames.add(newPermission.get().getName())) {
+                                resolvedRolePermissions.add(newPermission.get());
+                            }
                         });
                     }
                 });
@@ -204,7 +211,10 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
                             Optional<Permission> newPermission = systemPermissions.stream()
                                 .filter(permission1 -> permission1.getName().equals(newReadScope))
                                 .findFirst();
-                            newPermission.ifPresent(resolvedRolePermissions::add);
+                            if (newPermission.isPresent() &&
+                                    addedPermissionNames.add(newPermission.get().getName())) {
+                                resolvedRolePermissions.add(newPermission.get());
+                            }
                         });
                         List<String> legacyWriteScopes = apiResourceCollection.getLegacyWriteScopes();
                         // if all the writeScopes are in the role's permission list, then add new write scopes.
@@ -214,7 +224,10 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
                                 Optional<Permission> newPermission = systemPermissions.stream()
                                     .filter(permission1 -> permission1.getName().equals(newWriteScope))
                                     .findFirst();
-                                newPermission.ifPresent(resolvedRolePermissions::add);
+                                if (newPermission.isPresent() &&
+                                        addedPermissionNames.add(newPermission.get().getName())) {
+                                    resolvedRolePermissions.add(newPermission.get());
+                                }
                             });
                         }
                     }
