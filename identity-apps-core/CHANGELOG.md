@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.3.21
+
+### Patch Changes
+
+- [#9342](https://github.com/wso2/identity-apps/pull/9342) [`878d38cb0c008cd39137476a51c5fd9685d31a6c`](https://github.com/wso2/identity-apps/commit/878d38cb0c008cd39137476a51c5fd9685d31a6c) Thanks [@Malith-19](https://github.com/Malith-19)! - Add a duplicate check for scope population for console role listener.
+
 ## 3.3.20
 
 ### Patch Changes
