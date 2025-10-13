@@ -579,7 +579,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                                 <ScriptBasedFlowSwitch readOnly={ readOnly || isScriptUpdateReadOnly } />
                             ) }
                             { isAdaptiveAuthAvailable && isConditionalAuthenticationEnabled &&
-                                hasScriptUpdatePermission && (
+                                !isScriptUpdateReadOnly && (
                                 <div className="visual-editor-update-button-container">
                                     <PrimaryButton
                                         variant="contained"
