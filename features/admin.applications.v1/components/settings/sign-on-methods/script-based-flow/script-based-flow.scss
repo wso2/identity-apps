@@ -33,3 +33,14 @@
 .create-new-secret-dropdown-item-loading {
     justify-content: center;
 }
+
+.conditional-auth-accordion-title-text {
+    .heading {
+        display: flex;
+        gap: 4px;
+
+        .warning-sign {
+            font-size: 16px;
+        }
+    }
+}
