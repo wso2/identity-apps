@@ -45,6 +45,7 @@ import OrganizationSwitchDropdown from "./organization-switch-dropdown";
 import { useGetOrganizationBreadCrumb } from "../../api";
 import { useGetCurrentOrganizationType } from "../../hooks/use-get-organization-type";
 import useOrganizationSwitch from "../../hooks/use-organization-switch";
+import useOrganizations from "../../hooks/use-organizations";
 import {
     BreadcrumbItem,
     BreadcrumbList,
@@ -68,6 +69,8 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     const { switchOrganization } = useOrganizationSwitch();
 
     const { organizationType } = useGetCurrentOrganizationType();
+
+    const { updateOrganizationSwitchRequestLoadingState } = useOrganizations();
 
     const [ isDropDownOpen, setIsDropDownOpen ] = useState<boolean>(false);
     const tenantDomain: string = useSelector(
@@ -180,6 +183,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         let response: BasicUserInfo = null;
 
         try {
+            updateOrganizationSwitchRequestLoadingState(true);
             response = await switchOrganization(organization.id);
             await onSignIn(
                 response,
@@ -197,7 +201,9 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
             if (redirectToStart) {
                 history.push(AppConstants.getPaths().get("GETTING_STARTED"));
             }
+            updateOrganizationSwitchRequestLoadingState(false);
         } catch(e) {
+            updateOrganizationSwitchRequestLoadingState(false);
             // TODO: Handle error
         }
     };
