@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.30.50
+
+### Patch Changes
+
+- [#9349](https://github.com/wso2/identity-apps/pull/9349) [`8f213eae3ccb1eb49e9fffe8bd9a2950cd07bbe2`](https://github.com/wso2/identity-apps/commit/8f213eae3ccb1eb49e9fffe8bd9a2950cd07bbe2) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Minor improvements to application script editor in read only mode
+
 ## 2.30.49
 
 ### Patch Changes

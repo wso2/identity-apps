@@ -1,5 +1,16 @@
 # @wso2is/admin.login-flow-builder.v1
 
+## 2.27.2
+
+### Patch Changes
+
+- [#9349](https://github.com/wso2/identity-apps/pull/9349) [`8f213eae3ccb1eb49e9fffe8bd9a2950cd07bbe2`](https://github.com/wso2/identity-apps/commit/8f213eae3ccb1eb49e9fffe8bd9a2950cd07bbe2) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Minor improvements to application script editor in read only mode
+
+- Updated dependencies [[`8f213eae3ccb1eb49e9fffe8bd9a2950cd07bbe2`](https://github.com/wso2/identity-apps/commit/8f213eae3ccb1eb49e9fffe8bd9a2950cd07bbe2)]:
+  - @wso2is/admin.applications.v1@2.38.2
+  - @wso2is/admin.core.v1@2.49.85
+  - @wso2is/admin.server-configurations.v1@2.35.99
+
 ## 2.27.1
 
 ### Patch Changes
