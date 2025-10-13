@@ -338,4 +338,5 @@ export interface FeatureConfigInterface {
      * User roles V3 feature.
      */
     userRolesV3?: FeatureAccessConfigInterface;
+
 }
