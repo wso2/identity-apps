@@ -60,6 +60,7 @@ import { deleteOrganization, getOrganization } from "../api";
 import { OrganizationIcon } from "../configs";
 import { OrganizationManagementConstants } from "../constants";
 import useOrganizationSwitch from "../hooks/use-organization-switch";
+import useOrganizations from "../hooks/use-organizations";
 import {
     GenericOrganization,
     OrganizationAncestorPathSegmentInterface,
@@ -170,6 +171,8 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
     const { onSignIn } = useSignIn();
 
     const { switchOrganization } = useOrganizationSwitch();
+
+    const { updateOrganizationSwitchRequestLoadingState } = useOrganizations();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
@@ -300,12 +303,15 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
         let response: BasicUserInfo = null;
 
         try {
+            updateOrganizationSwitchRequestLoadingState(true);
             response = await switchOrganization(organization.id);
             await onSignIn(response, () => null, () => null, () => null);
 
             onListMutate();
             history.push(AppConstants.getPaths().get("GETTING_STARTED"));
+            updateOrganizationSwitchRequestLoadingState(false);
         } catch(e) {
+            updateOrganizationSwitchRequestLoadingState(false);
             // TODO: Handle error
         }
     };

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Skeleton from "@oxygen-ui/react/Skeleton";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
@@ -57,6 +58,7 @@ import { getOrganizations, useAuthorizedOrganizationsList } from "../api";
 import { AddOrganizationModal, OrganizationList } from "../components";
 import MetaAttributeAutoComplete from "../components/meta-attribute-auto-complete";
 import { OrganizationManagementConstants } from "../constants";
+import useOrganizations from "../hooks/use-organizations";
 import {
     OrganizationInterface,
     OrganizationLinkInterface,
@@ -129,6 +131,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
     const [ paginationReset, triggerResetPagination ] = useState(false);
+    const { isOrganizationSwitchRequestLoading } = useOrganizations();
 
     useEffect(() => {
         let nextFound: boolean = false;
@@ -516,144 +519,153 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
 
     return (
         <>
-            <PageLayout
-                action={
-                    !isOrganizationListRequestLoading && !isAuthorizedOrganizationListRequestLoading &&
-                    !(!searchQuery && (isEmpty(organizationList) || organizationList?.organizations?.length <= 0)) &&
-                    (
-                        isFeatureEnabled(featureConfig.organizations,
-                            OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_CREATE")) && (
-                            <Show when={ featureConfig?.organizations?.scopes?.create }>
-                                <PrimaryButton
-                                    disabled={ isOrganizationListRequestLoading }
-                                    loading={ isOrganizationListRequestLoading }
-                                    onClick={ (): void => {
-                                        eventPublisher.publish("organization-click-new-organization-button");
-                                        setShowWizard(true);
-                                    } }
-                                    data-componentid={ `${ testId }-list-layout-add-button` }
-                                >
-                                    <Icon name="add" />
-                                    { t("organizations:list.actions.add") }
-                                </PrimaryButton>
-                            </Show>)
-                    )
-                }
-                pageTitle={ t("pages:organizations.title") }
-                title={ t("pages:organizations.title") }
-                description={ (
-                    <>
-                        { t("pages:organizations.subTitle") }
-                        <DocumentationLink
-                            link={ getLink("manage.organizations.learnMore") }
-                        >
-                            { t("common:learnMore") }
-                        </DocumentationLink>
-                    </>
-                ) }
-                data-componentid={ `${ testId }-page-layout` }
-            >
-                <ListLayout
-                    advancedSearch={
-                        (<AdvancedSearchWithBasicFilters
-                            onClose={ handleAdvancedSearchClose }
-                            onFilter={ handleOrganizationFilter }
-                            onFilterAttributeOptionsChange={ handleFilterAttributeOptionsChange }
-                            onSubmitError={ handleMetaAttributeSubmitError }
-                            getQuery={ getQuery }
-                            resetRecursiveSearchState={ resetRecursiveSearchState }
-                            recursiveSearch={ true }
-                            filterAttributeOptions={ [
-                                {
-                                    key: 0,
-                                    text: t("common:name"),
-                                    value: "name"
-                                },
-                                ...(isFilterByMetadataAttributesEnabled ? [
-                                    {
-                                        key: 1,
-                                        text: t("common:metaAttributes"),
-                                        value: "attributes"
-                                    }
-                                ] : [])
-                            ] }
-                            filterAttributePlaceholder={ t(
-                                "organizations:advancedSearch.form" +
-                                        ".inputs.filterAttribute.placeholder"
-                            ) }
-                            filterConditionsPlaceholder={ t(
-                                "organizations:advancedSearch.form" +
-                                        ".inputs.filterCondition.placeholder"
-                            ) }
-                            filterValuePlaceholder={ t(
-                                "organizations:advancedSearch.form.inputs.filterValue" +
-                                        ".placeholder"
-                            ) }
-                            placeholder={ t(
-                                "organizations:" + "advancedSearch.placeholder"
-                            ) }
-                            defaultSearchAttribute="name"
-                            defaultSearchOperator="co"
-                            triggerClearQuery={ triggerClearQuery }
-                            data-componentid={ `${ testId }-list-advanced-search` }
-                            data-testid={ `${ testId }-list-advanced-search` }
-                        >
-                            { shouldShowMetaAttributeComponent && isFilterByMetadataAttributesEnabled && (
-                                <MetaAttributeAutoComplete
-                                    onMetaAttributeChange={ handleMetaAttributeChange }
-                                    hasErrors={ hasErrors }
-                                />
-                            ) }
-                        </AdvancedSearchWithBasicFilters>
+            { isOrganizationSwitchRequestLoading ? (
+                <div className="organization-switch-skeleton p-6">
+                    <Skeleton variant="rectangular" width="100%" height = { 48 } className="mb-4 rounded-lg" />
+                    <Skeleton variant="rectangular" width="100%" height = { 48 } className="mb-4 rounded-lg" />
+                    <Skeleton variant="rectangular" width="100%" height = { 48 } className="mb-4 rounded-lg" />
+                </div>
+            ) : (
+                <PageLayout
+                    action={
+                        !isOrganizationListRequestLoading && !isAuthorizedOrganizationListRequestLoading &&
+                        !(!searchQuery && (isEmpty(organizationList) || organizationList?.organizations?.length <= 0))
+                        &&
+                        (
+                            isFeatureEnabled(featureConfig.organizations,
+                                OrganizationManagementConstants.FEATURE_DICTIONARY.get("ORGANIZATION_CREATE")) && (
+                                <Show when={ featureConfig?.organizations?.scopes?.create }>
+                                    <PrimaryButton
+                                        disabled={ isOrganizationListRequestLoading }
+                                        loading={ isOrganizationListRequestLoading }
+                                        onClick={ (): void => {
+                                            eventPublisher.publish("organization-click-new-organization-button");
+                                            setShowWizard(true);
+                                        } }
+                                        data-componentid={ `${ testId }-list-layout-add-button` }
+                                    >
+                                        <Icon name="add" />
+                                        { t("organizations:list.actions.add") }
+                                    </PrimaryButton>
+                                </Show>)
                         )
                     }
-                    currentListSize={ organizationList?.organizations?.length }
-                    listItemLimit={ listItemLimit }
-                    onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
-                    onPageChange={ handlePaginationChange }
-                    onSortStrategyChange={ handleListSortingStrategyOnChange }
-                    showPagination={ true }
-                    showTopActionPanel={
-                        isOrganizationListRequestLoading
-                        || ((searchQuery || "").trim().length > 0)
-                        || (organizationList?.organizations?.length > 0)
-                    }
-                    sortOptions={ ORGANIZATIONS_LIST_SORTING_OPTIONS }
-                    sortStrategy={ listSortingStrategy }
-                    totalPages={ 10 }
-                    totalListSize={ organizationList?.organizations?.length }
-                    paginationOptions={ {
-                        disableNextButton: !isOrganizationsNextPageAvailable,
-                        disablePreviousButton: !isOrganizationsPrevPageAvailable
-                    } }
-                    isLoading={ isOrganizationListRequestLoading }
-                    data-componentid={ `${ testId }-list-layout` }
-                    resetPagination={ paginationReset }
-                    activePage={ activePage }
+                    pageTitle={ t("pages:organizations.title") }
+                    title={ t("pages:organizations.title") }
+                    description={ (
+                        <>
+                            { t("pages:organizations.subTitle") }
+                            <DocumentationLink
+                                link={ getLink("manage.organizations.learnMore") }
+                            >
+                                { t("common:learnMore") }
+                            </DocumentationLink>
+                        </>
+                    ) }
+                    data-componentid={ `${ testId }-page-layout` }
                 >
-                    <OrganizationList
-                        list={ organizationList }
-                        authorizedList={ authorizedOrganizationList }
-                        onOrganizationDelete={ handleOrganizationDelete }
-                        onEmptyListPlaceholderActionClick={ () => {
-                            setShowWizard(true);
+                    <ListLayout
+                        advancedSearch={
+                            (<AdvancedSearchWithBasicFilters
+                                onClose={ handleAdvancedSearchClose }
+                                onFilter={ handleOrganizationFilter }
+                                onFilterAttributeOptionsChange={ handleFilterAttributeOptionsChange }
+                                onSubmitError={ handleMetaAttributeSubmitError }
+                                getQuery={ getQuery }
+                                resetRecursiveSearchState={ resetRecursiveSearchState }
+                                recursiveSearch={ true }
+                                filterAttributeOptions={ [
+                                    {
+                                        key: 0,
+                                        text: t("common:name"),
+                                        value: "name"
+                                    },
+                                    ...(isFilterByMetadataAttributesEnabled ? [
+                                        {
+                                            key: 1,
+                                            text: t("common:metaAttributes"),
+                                            value: "attributes"
+                                        }
+                                    ] : [])
+                                ] }
+                                filterAttributePlaceholder={ t(
+                                    "organizations:advancedSearch.form" +
+                                            ".inputs.filterAttribute.placeholder"
+                                ) }
+                                filterConditionsPlaceholder={ t(
+                                    "organizations:advancedSearch.form" +
+                                            ".inputs.filterCondition.placeholder"
+                                ) }
+                                filterValuePlaceholder={ t(
+                                    "organizations:advancedSearch.form.inputs.filterValue" +
+                                            ".placeholder"
+                                ) }
+                                placeholder={ t(
+                                    "organizations:" + "advancedSearch.placeholder"
+                                ) }
+                                defaultSearchAttribute="name"
+                                defaultSearchOperator="co"
+                                triggerClearQuery={ triggerClearQuery }
+                                data-componentid={ `${ testId }-list-advanced-search` }
+                                data-testid={ `${ testId }-list-advanced-search` }
+                            >
+                                { shouldShowMetaAttributeComponent && isFilterByMetadataAttributesEnabled && (
+                                    <MetaAttributeAutoComplete
+                                        onMetaAttributeChange={ handleMetaAttributeChange }
+                                        hasErrors={ hasErrors }
+                                    />
+                                ) }
+                            </AdvancedSearchWithBasicFilters>
+                            )
+                        }
+                        currentListSize={ organizationList?.organizations?.length }
+                        listItemLimit={ listItemLimit }
+                        onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                        onPageChange={ handlePaginationChange }
+                        onSortStrategyChange={ handleListSortingStrategyOnChange }
+                        showPagination={ true }
+                        showTopActionPanel={
+                            isOrganizationListRequestLoading
+                            || ((searchQuery || "").trim().length > 0)
+                            || (organizationList?.organizations?.length > 0)
+                        }
+                        sortOptions={ ORGANIZATIONS_LIST_SORTING_OPTIONS }
+                        sortStrategy={ listSortingStrategy }
+                        totalPages={ 10 }
+                        totalListSize={ organizationList?.organizations?.length }
+                        paginationOptions={ {
+                            disableNextButton: !isOrganizationsNextPageAvailable,
+                            disablePreviousButton: !isOrganizationsPrevPageAvailable
                         } }
-                        onSearchQueryClear={ handleSearchQueryClear }
-                        searchQuery={ searchQuery }
-                        data-componentid="organization-list"
-                        onListItemClick={ handleListItemClick }
-                        parentOrganization={ parent }
-                        onListMutate={ handleOrganizationListUpdate }
-                    />
-                </ListLayout>
-                { showWizard && (
-                    <AddOrganizationModal
-                        onUpdate={ handleOrganizationListUpdate }
-                        closeWizard={ () => setShowWizard(false) }
-                        parent={ parent }
-                    />
-                ) }
-            </PageLayout>
+                        isLoading={ isOrganizationListRequestLoading }
+                        data-componentid={ `${ testId }-list-layout` }
+                        resetPagination={ paginationReset }
+                        activePage={ activePage }
+                    >
+                        <OrganizationList
+                            list={ organizationList }
+                            authorizedList={ authorizedOrganizationList }
+                            onOrganizationDelete={ handleOrganizationDelete }
+                            onEmptyListPlaceholderActionClick={ () => {
+                                setShowWizard(true);
+                            } }
+                            onSearchQueryClear={ handleSearchQueryClear }
+                            searchQuery={ searchQuery }
+                            data-componentid="organization-list"
+                            onListItemClick={ handleListItemClick }
+                            parentOrganization={ parent }
+                            onListMutate={ handleOrganizationListUpdate }
+                        />
+                    </ListLayout>
+                    { showWizard && (
+                        <AddOrganizationModal
+                            onUpdate={ handleOrganizationListUpdate }
+                            closeWizard={ () => setShowWizard(false) }
+                            parent={ parent }
+                        />
+                    ) }
+                </PageLayout>
+            ) }
         </>
     );
 };

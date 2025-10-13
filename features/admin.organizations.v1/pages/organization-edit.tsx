@@ -37,6 +37,7 @@ import { EditOrganization } from "../components/edit-organization/edit-organizat
 import { OrganizationIcon } from "../configs";
 import { OrganizationManagementConstants } from "../constants";
 import useOrganizationSwitch from "../hooks/use-organization-switch";
+import useOrganizations from "../hooks/use-organizations";
 import { OrganizationInterface, OrganizationResponseInterface } from "../models";
 
 interface OrganizationEditPagePropsInterface extends SBACInterface<FeatureConfigInterface>,
@@ -62,6 +63,7 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
 
     const { switchOrganization } = useOrganizationSwitch();
     const { onSignIn } = useSignIn();
+    const { updateOrganizationSwitchRequestLoadingState } = useOrganizations();
 
     useEffect(() => {
         setIsReadOnly(
@@ -180,11 +182,14 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
         let response: BasicUserInfo = null;
 
         try {
+            updateOrganizationSwitchRequestLoadingState(true);
             response = await switchOrganization(organization.id);
             await onSignIn(response, () => null, () => null, () => null);
 
             history.push(AppConstants.getPaths().get("GETTING_STARTED"));
+            updateOrganizationSwitchRequestLoadingState(false);
         } catch(e) {
+            updateOrganizationSwitchRequestLoadingState(false);
             dispatch(
                 addAlert({
                     description: t(
