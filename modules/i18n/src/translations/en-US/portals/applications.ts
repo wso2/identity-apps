@@ -788,7 +788,13 @@ export const applications: ApplicationsNS = {
                                 accordion: {
                                     title: {
                                         description: "Add conditions to your login flow.",
-                                        heading: "Conditional Authentication"
+                                        heading: {
+                                            readOnly: "Conditional Authentication (Read only)",
+                                            readWrite: "Conditional Authentication"
+                                        },
+                                        tooltip: {
+                                            readOnly: "You do not have permission to edit the script."
+                                        }
                                     }
                                 },
                                 conditionalAuthTour: {

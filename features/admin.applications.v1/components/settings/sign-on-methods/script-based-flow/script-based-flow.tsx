@@ -1307,7 +1307,30 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                             {
                                                 t("applications:edit.sections.signOnMethod." +
                                                     "sections.authenticationFlow.sections.scriptBased.accordion." +
-                                                    "title.heading")
+                                                    "title.heading" + (readOnly ? ".readOnly" : ".readWrite"))
+                                            }
+                                            { readOnly && (
+                                                <Popup
+                                                    basic
+                                                    inverted
+                                                    position="top center"
+                                                    content={
+                                                        (<p>
+                                                            {
+                                                                t("applications:edit.sections.signOnMethod.sections." +
+                                                                "authenticationFlow.sections.scriptBased.accordion." +
+                                                                "title.tooltip.readOnly")
+                                                            }
+                                                        </p>)
+                                                    }
+                                                    trigger={ (
+                                                        <Icon
+                                                            className="warning-sign"
+                                                            name="warning sign"
+                                                            color="yellow"
+                                                        />
+                                                    ) }
+                                                />)
                                             }
                                             {
                                                 isPremiumFeature && (
