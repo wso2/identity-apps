@@ -1,5 +1,15 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.10.80
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.88
+  - @wso2is/admin.branding.v1@2.32.36
+  - @wso2is/admin.flows.v1@1.0.49
+  - @wso2is/admin.registration-flow-builder.v1@0.10.40
+
 ## 0.10.79
 
 ### Patch Changes
