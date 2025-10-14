@@ -185,8 +185,8 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
                 : initialConnectorValues?.expiryTime,
             "EmailVerification.AskPassword.SMSOTP": askPasswordOption === VerificationOption.SMS_OTP,
             "EmailVerification.Enable": values.enableInviteUserToSetPassword !== undefined
-            ? values.enableInviteUserToSetPassword
-            : initialConnectorValues?.enableInviteUserToSetPassword,
+                ? values.enableInviteUserToSetPassword
+                : initialConnectorValues?.enableInviteUserToSetPassword,
             "EmailVerification.LockOnCreation": values.enableAccountLockOnCreation !== undefined
                 ? values.enableAccountLockOnCreation
                 : initialConnectorValues?.enableAccountLockOnCreation,

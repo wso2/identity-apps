@@ -1011,8 +1011,9 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     };
 
     const renderMultipleInviteConfirmationModel = (): ReactElement => {
-        console.log("isLegacyFlowsEnabled", isLegacyFlowsEnabled);
+
         return (
+            
             <ConfirmationModal
                 data-componentid={ `${componentId}-select-multiple-invite-confirmation-modal` }
                 onClose={ (): void => {
