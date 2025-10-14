@@ -874,10 +874,8 @@ export interface ApplicationsNS {
                         };
                     };
                     noOrganizationsSelected: {
-                        
                         message: string;
                         description: string;
-                        
                     };
                     noRolesSelected: {
                         description: string;

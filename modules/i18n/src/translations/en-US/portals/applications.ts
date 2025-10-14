@@ -674,10 +674,8 @@ export const applications: ApplicationsNS = {
                         }
                     },
                     noOrganizationsSelected: {
-                        
                         description: "Please select at least one organization to share with.",
                         message: "No organizations selected!"
-                    
                     },
                     fetchApplicationOrgTree: {
                         genericError: {
