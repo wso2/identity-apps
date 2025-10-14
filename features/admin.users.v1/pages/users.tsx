@@ -1013,7 +1013,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const renderMultipleInviteConfirmationModel = (): ReactElement => {
 
         return (
-            
+
             <ConfirmationModal
                 data-componentid={ `${componentId}-select-multiple-invite-confirmation-modal` }
                 onClose={ (): void => {
