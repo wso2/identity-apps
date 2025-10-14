@@ -1,5 +1,18 @@
 # @wso2is/admin.applications.v1
 
+## 2.38.3
+
+### Patch Changes
+
+- [#9354](https://github.com/wso2/identity-apps/pull/9354) [`f36dd385de821cea707ad417ea9f3a97e3c5cd15`](https://github.com/wso2/identity-apps/commit/f36dd385de821cea707ad417ea9f3a97e3c5cd15) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix application protocol section update issue
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.88
+  - @wso2is/admin.roles.v2@2.27.250
+  - @wso2is/admin.branding.v1@2.32.36
+  - @wso2is/admin.server-configurations.v1@2.35.102
+  - @wso2is/admin.users.v1@2.36.55
+
 ## 2.38.2
 
 ### Patch Changes
