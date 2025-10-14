@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.3.22
+
+### Patch Changes
+
+- [#9347](https://github.com/wso2/identity-apps/pull/9347) [`a272c6c8cce236986772d598e843769f683b327d`](https://github.com/wso2/identity-apps/commit/a272c6c8cce236986772d598e843769f683b327d) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Fix redundant enable buttons and other issues.
+
 ## 3.3.21
 
 ### Patch Changes

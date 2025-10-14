@@ -1,5 +1,17 @@
 # @wso2is/admin.ask-password-flow-builder.v1
 
+## 1.1.78
+
+### Patch Changes
+
+- [#9347](https://github.com/wso2/identity-apps/pull/9347) [`a272c6c8cce236986772d598e843769f683b327d`](https://github.com/wso2/identity-apps/commit/a272c6c8cce236986772d598e843769f683b327d) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Fix redundant enable buttons and other issues.
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.86
+  - @wso2is/admin.flow-builder-core.v1@0.10.78
+  - @wso2is/admin.flows.v1@1.0.47
+  - @wso2is/admin.server-configurations.v1@2.35.100
+
 ## 1.1.77
 
 ### Patch Changes
