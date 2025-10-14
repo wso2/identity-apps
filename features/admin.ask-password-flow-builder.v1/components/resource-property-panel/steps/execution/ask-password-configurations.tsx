@@ -91,7 +91,7 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
         ["data-componentid"]: componentId = "ask-password-edit-form"
     } = props;
 
-    const enableAccountActivationEmail = false;
+    const enableAccountActivationEmail : boolean = false;
     const { t } = useTranslation();
 
     const {
@@ -184,7 +184,9 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
                 ? values.expiryTime
                 : initialConnectorValues?.expiryTime,
             "EmailVerification.AskPassword.SMSOTP": askPasswordOption === VerificationOption.SMS_OTP,
-            "EmailVerification.Enable": isInviteUserToSetPasswordEnabled,
+            "EmailVerification.Enable": values.enableInviteUserToSetPassword !== undefined
+            ? values.enableInviteUserToSetPassword
+            : initialConnectorValues?.enableInviteUserToSetPassword,
             "EmailVerification.LockOnCreation": values.enableAccountLockOnCreation !== undefined
                 ? values.enableAccountLockOnCreation
                 : initialConnectorValues?.enableAccountLockOnCreation,
@@ -504,8 +506,7 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
                                             setIsLowerCaseEnabled(event.target.checked) }
                                         required={ false }
                                         readOnly={ readOnly }
-                                        disabled={ 
-                                            (!isUpperCaseEnabled && isLowerCaseEnabled && !isNumericEnabled)
+                                        disabled={ (!isUpperCaseEnabled && isLowerCaseEnabled && !isNumericEnabled)
                                             || askPasswordOption === VerificationOption.EMAIL_LINK }
                                         data-componentid={ `${ componentId }-sms-otp-lowercase` }
                                     />)
@@ -527,8 +528,7 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
                                             setIsNumericEnabled(event.target.checked) }
                                         required={ false }
                                         readOnly={ readOnly }
-                                        disabled={ 
-                                            (!isUpperCaseEnabled && !isLowerCaseEnabled && isNumericEnabled)
+                                        disabled={ (!isUpperCaseEnabled && !isLowerCaseEnabled && isNumericEnabled)
                                             || askPasswordOption === VerificationOption.EMAIL_LINK }
                                         data-componentid={ `${ componentId }-sms-otp-numeric` }
                                     />)
