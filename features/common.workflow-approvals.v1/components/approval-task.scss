@@ -25,6 +25,12 @@
     &-table {
         table-layout: fixed;
         width: 100%;
+        background: var(--asg-colors-background-surface-main) !important;
+        border-color: var(--asg-colors-text-secondary) !important;
+
+        td {
+            border-color: var(--asg-colors-text-secondary) !important;
+        }
 
         .key-cell {
             width: 30%;
