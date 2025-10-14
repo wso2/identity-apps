@@ -1588,12 +1588,19 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 }
             };
 
-            // If the app is not a newly created, add `clientId` & `clientSecret`.
-            if (initialValues?.clientId && initialValues?.clientSecret) {
+            // If the clientId is available, add it to the payload.
+            if (initialValues?.clientId) {
                 inboundConfigFormValues = {
                     ...inboundConfigFormValues,
-                    clientId: initialValues?.clientId,
-                    clientSecret: initialValues?.clientSecret
+                    clientId: initialValues.clientId
+                };
+            }
+
+            // If the clientSecret is available, add it to the payload.
+            if (initialValues?.clientSecret) {
+                inboundConfigFormValues = {
+                    ...inboundConfigFormValues,
+                    clientSecret: initialValues.clientSecret
                 };
             }
 
