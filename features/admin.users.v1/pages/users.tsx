@@ -191,7 +191,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ invitedUserListItemLimit, setInvitedUserListItemLimit ]
         = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ invitedUserListOffset, setInvitedUserListOffset ] = useState<number>(1);
-    
+
     const isLegacyFlowsEnabled: boolean = useSelector(
         (state: AppState) => state.config.ui.flowExecution.enableLegacyFlows
     );
