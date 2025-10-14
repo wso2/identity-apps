@@ -91,7 +91,6 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
         ["data-componentid"]: componentId = "ask-password-edit-form"
     } = props;
 
-    const enableAccountActivationEmail : boolean = false;
     const { t } = useTranslation();
 
     const {
@@ -178,7 +177,7 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
     const getUpdatedConfigurations = (values: Record<string, any>) => {
 
         const data: AskPasswordFormUpdatableConfigsInterface = {
-            "EmailVerification.AskPassword.AccountActivation": enableAccountActivationEmail,
+            "EmailVerification.AskPassword.AccountActivation": false,
             "EmailVerification.AskPassword.EmailOTP": askPasswordOption === VerificationOption.EMAIL_OTP,
             "EmailVerification.AskPassword.ExpiryTime": values.expiryTime !== undefined
                 ? values.expiryTime
@@ -364,7 +363,7 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
                                 name="askPasswordOption"
                                 value={ askPasswordOption }
                                 onChange={ (event: React.ChangeEvent<HTMLInputElement>) => {
-                                    if ( readOnly ) return;
+                                    if (readOnly) return;
                                     setAskPasswordOption(event.target.value as VerificationOption);
                                 } }
                                 row={ false }

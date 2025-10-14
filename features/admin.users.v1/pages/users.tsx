@@ -191,6 +191,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ invitedUserListItemLimit, setInvitedUserListItemLimit ]
         = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ invitedUserListOffset, setInvitedUserListOffset ] = useState<number>(1);
+    
     const isLegacyFlowsEnabled: boolean = useSelector(
         (state: AppState) => state.config.ui.flowExecution.enableLegacyFlows
     );
@@ -1011,9 +1012,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     };
 
     const renderMultipleInviteConfirmationModel = (): ReactElement => {
-
         return (
-
             <ConfirmationModal
                 data-componentid={ `${componentId}-select-multiple-invite-confirmation-modal` }
                 onClose={ (): void => {
