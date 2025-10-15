@@ -18,17 +18,15 @@
 
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import TextField from "@oxygen-ui/react/TextField";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { CommonUtils } from "@wso2is/core/utils";
 import { DropdownChild, Field, Form } from "@wso2is/form";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { DropdownItemProps, DropdownProps, Grid, Header, Segment } from "semantic-ui-react";
 import { EmailTemplateType } from "../models";
 import "./email-customization-header.scss";
-import { CommonUtils } from "@wso2is/core/utils";
 
 const FORM_ID: string = "email-customization-header-form";
 
@@ -92,7 +90,7 @@ const EmailCustomizationHeader: FunctionComponent<EmailCustomizationHeaderProps>
     const [ localeList, setLocaleList ] =
         useState<LocaleOptionList[]>([]);
 
-    const supportedI18nLanguages: SupportedLanguagesMeta = CommonUtils.getCountryCodeList();
+    const supportedI18nLanguages: SupportedLanguagesMeta = CommonUtils.getLocaleList();
 
     const emailTemplateListOptions: { text: string, value: string }[] = useMemo(() => {
         return emailTemplatesList?.map((template: EmailTemplateType) => {
