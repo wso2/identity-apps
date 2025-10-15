@@ -832,6 +832,10 @@
         background: var(--asg-colors-background-surface-main);
     }
 
+    .ui.segment.emphasized {
+        background: var(--asg-colors-background-surface-light);
+    }
+
     /*-----------------------------
                 Icons
     ------------------------------*/
@@ -919,6 +923,20 @@
 
     .ui.placeholder, .ui.placeholder .image.header:after, .ui.placeholder .line, .ui.placeholder .line:after, .ui.placeholder>:before {
         background-color: var(--asg-colors-background-surface-main);
+    }
+
+    /*-----------------------------
+            Data Table
+    ------------------------------*/
+
+    .ui.table .data-table-body .data-table-row {
+        background-color: var(--asg-colors-background-surface-main) !important;
+        color: var(--asg-colors-text-primary) !important;
+
+        &:hover {
+            background-color: var(--asg-colors-background-surface-hover) !important;
+            color: var(--asg-colors-text-primary) !important;
+        }
     }
 
     /*-----------------------------
@@ -1263,9 +1281,12 @@
     .ui.selection.dropdown,
     .ui.selection.dropdown:hover {
         color: var(--asg-input-field-base-text-color);
-        background: var(--asg-input-field-base-background-color);
+        background: var(--asg-input-field-base-background-color) !important;
         border-color: var(--asg-input-field-base-border-color);
         border-radius: var(--asg-input-field-base-border-radius);
+    }
+    .ui.selection.visible.dropdown>.text:not(.default) {
+        color: var(--asg-input-field-base-text-color) !important;
     }
 
     /* Autofilled */
@@ -1637,6 +1658,35 @@
 
     .ui.items>.item.application-list-item {
         border-color: var(--asg-colors-outlined-default);
+    }
+
+    /*-----------------------------
+            Grid
+    ------------------------------*/
+
+    .top-action-panel .ui.grid {
+        background: var(--asg-colors-background-surface-main) !important;
+    }
+
+    /*-----------------------------
+            Pagination Bar
+    ------------------------------*/
+
+    .pagination-bar .page-limit-label {
+        color: var(--asg-colors-text-primary) !important;
+    }
+
+    .pagination-bar .ui.pagination.menu.list-pagination>.item {
+        color: var(--asg-colors-text-primary) !important;
+        background: var(--asg-colors-background-surface-main) !important;
+        border-color: var(--asg-colors-outlined-default) !important;
+    }
+
+    .pagination-bar .ui.pagination.menu.list-pagination>.item.disabled {
+        color: var(--asg-colors-text-secondary) !important;
+        background: var(--asg-colors-background-surface-main) !important;
+        border-color: var(--asg-colors-outlined-default) !important;
+        pointer-events: none;
     }
 </style>
 <% } %>
