@@ -141,7 +141,7 @@
   },
   "ar-SS": {
     "code": "ar-SS",
-    "flag": "ss",
+    "flag": "sd",
     "name": "العربية (South Sudan)"
   },
   "ar-SD": {
@@ -1551,7 +1551,7 @@
   },
   "ja-JP": {
     "code": "ja-JP",
-    "flag": "ja",
+    "flag": "jp",
     "name": "日本語 (Japan)"
   },
   "dyo-dyo": {
@@ -2311,7 +2311,7 @@
     },
     "pt-BR": {
     "code": "pt-BR",
-    "flag": "pt",
+    "flag": "br",
     "name": "Português (Brazil)"
     },
     "pt-CV": {
@@ -2561,7 +2561,7 @@
   },
   "sr-XK": {
     "code": "sr-XK",
-    "flag": "sr",
+    "flag": "xk",
     "name": "Српски (Kosovo)"
   },
   "sr-ME": {
@@ -2624,50 +2624,25 @@
     "flag": "sd",
     "name": "سنڌي (Pakistan)"
   },
-  "si-si": {
-    "code": "si-si",
-    "flag": "si",
-    "name": "සිංහල"
-  },
   "si-LK": {
     "code": "si-LK",
-    "flag": "si",
+    "flag": "lk",
     "name": "සිංහල (Sri Lanka)"
-  },
-  "sk-sk": {
-    "code": "sk-sk",
-    "flag": "sk",
-    "name": "Slovenčina"
   },
   "sk-SK": {
     "code": "sk-SK",
     "flag": "sk",
     "name": "Slovenčina (Slovakia)"
   },
-  "sl-sl": {
-    "code": "sl-sl",
-    "flag": "sl",
-    "name": "Slovenščina"
-  },
   "sl-SI": {
     "code": "sl-SI",
     "flag": "sl",
     "name": "Slovenščina (Slovenia)"
   },
-  "xog-xog": {
-    "code": "xog-xog",
-    "flag": "xog",
-    "name": "Olusoga"
-  },
   "xog-UG": {
     "code": "xog-UG",
-    "flag": "xog",
+    "flag": "ug",
     "name": "Olusoga (Uganda)"
-  },
-  "so-so": {
-    "code": "so-so",
-    "flag": "so",
-    "name": "Soomaali"
   },
   "so-DJ": {
     "code": "so-DJ",
@@ -2841,7 +2816,7 @@
     },
     "zgh-MA": {
     "code": "zgh-MA",
-    "flag": "zgh",
+    "flag": "ma",
     "name": "ⵜⴰⵎⴰⵣⵉⵖⵜ (Morocco)"
     },
     "sw-sw": {
@@ -2921,7 +2896,7 @@
     },
     "shi-MA": {
     "code": "shi-MA",
-    "flag": "shi",
+    "flag": "ma",
     "name": "ⵜⴰⵛⵍⵃⵉⵜ (Morocco)"
     },
     "shi-shi-tifinagh": {
@@ -2931,7 +2906,7 @@
     },
     "shi-MA-alt": {
     "code": "shi-MA",
-    "flag": "shi",
+    "flag": "ma",
     "name": "ⵜⴰⵛⵍⵃⵉⵜ (Morocco)"
     },
     "dav-dav": {
