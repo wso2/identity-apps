@@ -744,6 +744,9 @@ export class ThemePreferenceMeta {
         border-color: var(--asg-input-field-base-border-color);
         border-radius: var(--asg-input-field-base-border-radius);
     }
+    .ui.selection.visible.dropdown>.text:not(.default) {
+        color: var(--asg-input-field-base-text-color) !important;
+    }
 
     /* Autofilled */
     .ui.form .field.field input:-webkit-autofill {
