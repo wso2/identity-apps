@@ -601,6 +601,16 @@ export interface ConsoleNS {
                                     required: string;
                                 };
                             };
+                            allowedResendAttemptCount: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                    invalid: string;
+                                    range: string;
+                                };
+                            };
                             useAlphanumericChars: {
                                 hint: string;
                                 label: string;
