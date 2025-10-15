@@ -20,6 +20,7 @@ import * as Country from "country-language";
 import { MD5 } from "crypto-js";
 import sortBy from "lodash-es/sortBy";
 import moment from "moment";
+import locales from "./locales.json";
 import { AnnouncementBannerInterface, ProductReleaseTypes } from "../models";
 
 /**
@@ -198,7 +199,7 @@ export class CommonUtils {
         text: string;
         value: string;
     }[] {
-        const countryCodesToSkip = [ "AQ", "BQ", "CW", "GG", "IM", "JE", "BL", "MF", "SX", "SS" ];
+        const countryCodesToSkip: string[] = [ "AQ", "BQ", "CW", "GG", "IM", "JE", "BL", "MF", "SX", "SS" ];
         const countries: any[] = Country.getCountries();
         const countryDropDown: {
             flag: string;
@@ -207,7 +208,7 @@ export class CommonUtils {
             value: string;
         }[] = [];
 
-        countries.forEach((country, index) => {
+        countries.forEach((country: any, index: number) => {
             if (!countryCodesToSkip.includes(country.code_2)) {
                 countryDropDown.push({
                     flag: country.code_2.toLowerCase(),
@@ -219,6 +220,15 @@ export class CommonUtils {
         });
 
         return countryDropDown;
+    }
+
+    /**
+     * Get the list of locales to be added to the locale dropdown input field.
+     *
+     * @returns List of locale objects.
+     */
+    public static getLocaleList() {
+        return locales;
     }
 
     /**
