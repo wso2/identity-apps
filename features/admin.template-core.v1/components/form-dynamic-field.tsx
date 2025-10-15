@@ -60,13 +60,9 @@ export interface FormDynamicFieldPropsInterface extends IdentifiableComponentInt
  * Renders helper text with markdown support.
  * 
  * @param text - Text with markdown syntax
- * @returns Rendered markdown or null
+ * @returns Rendered markdown
  */
 const renderHelperText = (text: string): ReactElement => {
-    if (!text) {
-        return null;
-    }
-
     return (
         <ReactMarkdown
             components={{
