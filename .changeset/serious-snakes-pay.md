@@ -1,7 +1,5 @@
 ---
-"@wso2is/admin.email-management.v1": patch
-"@wso2is/core": patch
-"@wso2is/console": patch
+"@wso2is/console": minor
 ---
 
-Update locale dropdown in email templates to include all locales available
+Update locale dropdown in email and sms template edit pages to display all locales available
