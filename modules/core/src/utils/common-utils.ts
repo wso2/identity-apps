@@ -22,6 +22,7 @@ import dayjs, { Dayjs } from "dayjs";
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
 import sortBy from "lodash-es/sortBy";
+import locales from "./locales.json";
 import { AnnouncementBannerInterface, ProductReleaseTypes } from "../models";
 
 dayjs.extend(duration);
@@ -224,6 +225,15 @@ export class CommonUtils {
         });
 
         return countryDropDown;
+    }
+
+    /**
+     * Get the list of locales to be added to the locale dropdown input field.
+     *
+     * @returns List of locale objects.
+     */
+    public static getLocaleList() {
+        return locales;
     }
 
     /**
