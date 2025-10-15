@@ -27,7 +27,7 @@ import {
     __DEPRECATED__SelectFieldAdapter
 } from "@wso2is/form";
 import { Hint } from "@wso2is/react-components";
-import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
+import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode } from "react";
 import { Icon } from "semantic-ui-react";
 import {
     DynamicDropdownFieldInterface,
@@ -54,6 +54,41 @@ export interface FormDynamicFieldPropsInterface extends IdentifiableComponentInt
      */
     readOnly?: boolean;
 }
+
+/**
+ * Parses markdown-style bold text (**text**) and converts to React elements.
+ * 
+ * @param text - Text with markdown syntax (e.g., "text **bold** text")
+ * @returns React elements with proper formatting
+ */
+const parseMarkdownText = (text: string): ReactElement => {
+    if (!text) return null;
+
+    const parts: ReactNode[] = [];
+    const regex: RegExp = /\*\*(.*?)\*\*/g;
+    let lastIndex: number = 0;
+    let match: RegExpExecArray;
+    let key: number = 0;
+
+    while ((match = regex.exec(text)) !== null) {
+        // Add text before the bold part
+        if (match.index > lastIndex) {
+            parts.push(text.substring(lastIndex, match.index));
+        }
+        
+        // Add the bold part
+        parts.push(<strong key={key++}>{match[1]}</strong>);
+        
+        lastIndex = regex.lastIndex;
+    }
+
+    // Add remaining text after last match
+    if (lastIndex < text.length) {
+        parts.push(text.substring(lastIndex));
+    }
+
+    return <>{parts}</>;
+};
 
 /**
  * Component responsible for generating the field based on the provided field configs.
@@ -90,7 +125,7 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                         hint={
                             field?.helperText ? (
                                 <Hint compact>
-                                    { field?.helperText }
+                                    { parseMarkdownText(field?.helperText) }
                                 </Hint>
                             ) : null
                         }
@@ -115,7 +150,7 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                         helperText={
                             field?.helperText ? (
                                 <Hint compact>
-                                    { field?.helperText }
+                                    { parseMarkdownText(field?.helperText) }
                                 </Hint>
                             ) : null
                         }
@@ -142,7 +177,7 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                         helperText={
                             field?.helperText ? (
                                 <Hint compact>
-                                    { field?.helperText }
+                                    { parseMarkdownText(field?.helperText) }
                                 </Hint>
                             ) : null
                         }
@@ -173,7 +208,7 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                             helperText={
                                 field?.helperText ? (
                                     <Hint compact>
-                                        { field?.helperText }
+                                        { parseMarkdownText(field?.helperText) }
                                     </Hint>
                                 ) : null
                             }
@@ -206,7 +241,7 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                         helperText={
                             field?.helperText ? (
                                 <Hint compact>
-                                    { field?.helperText }
+                                    { parseMarkdownText(field?.helperText) }
                                 </Hint>
                             ) : null
                         }
@@ -232,7 +267,7 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                         helperText={
                             field?.helperText ? (
                                 <Hint compact>
-                                    { field?.helperText }
+                                    { parseMarkdownText(field?.helperText) }
                                 </Hint>
                             ) : null
                         }
