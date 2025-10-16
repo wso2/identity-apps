@@ -161,7 +161,7 @@ export const ApplicationMarkdownGuide: FunctionComponent<ApplicationMarkdownGuid
         }
 
         // Combine API and user scopes.
-        const scopeArray: string[] = [apiScopes, userScopes]
+        const scopeArray: string[] = [ apiScopes, userScopes ]
             .filter((scope: string) => scope?.trim())
             .join(" ")
             .trim()

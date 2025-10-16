@@ -18,7 +18,7 @@
 
 import { useRequiredScopes } from "@wso2is/access-control";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useSubscribedAPIResources from "../api/use-subscribed-api-resources";
 import { ApplicationManagementConstants } from "../constants/application-management";
 import {
@@ -28,6 +28,7 @@ import {
 
 interface UseAPIAuthorizationReturn {
     allAuthorizedScopes: AuthorizedPermissionListItemInterface[];
+    allAuthorizedScopeNames: string;
     subscribedAPIResourcesListData: AuthorizedAPIListItemInterface[];
     isSubscribedAPIResourcesListLoading: boolean;
     subscribedAPIResourcesFetchRequestError: any;
@@ -39,13 +40,9 @@ interface UseAPIAuthorizationReturn {
  * Hook to manage API authorization logic.
  *
  * @param appId - Application ID
- * @param updateApiScopes - Function to update API scopes in context
  * @returns API authorization state and functions
  */
-export const useAPIAuthorization = (
-    appId: string,
-    updateApiScopes?: (scopes: string) => void
-): UseAPIAuthorizationReturn => {
+export const useAPIAuthorization = (appId: string): UseAPIAuthorizationReturn => {
     const [ allAuthorizedScopes, setAllAuthorizedScopes ] = useState<AuthorizedPermissionListItemInterface[]>([]);
     const { isSubOrganization } = useGetCurrentOrganizationType();
     const requiredApplicationViewScope: string = isSubOrganization
@@ -59,6 +56,14 @@ export const useAPIAuthorization = (
         error: subscribedAPIResourcesFetchRequestError,
         mutate: mutateSubscribedAPIResourcesList
     } = useSubscribedAPIResources(appId, hasApplicationViewPermission);
+
+    /**
+     * Calculate authorized scope names from all authorized scopes.
+     */
+    const allAuthorizedScopeNames: string = useMemo(
+        () => allAuthorizedScopes?.map((scope: AuthorizedPermissionListItemInterface) => scope.name)?.join(" ") ?? "",
+        [ allAuthorizedScopes ]
+    );
 
     /**
      * Initalize the all authorized scopes.
@@ -76,17 +81,6 @@ export const useAPIAuthorization = (
             setAllAuthorizedScopes([]);
         }
     }, [ subscribedAPIResourcesListData ]);
-
-    /**
-     * Update API Scopes in context.
-     */
-    useEffect(() => {
-        if (allAuthorizedScopes) {
-            updateApiScopes(allAuthorizedScopes.map(
-                (scope: AuthorizedPermissionListItemInterface) => scope.name).join(" ")
-            );
-        }
-    }, [ allAuthorizedScopes ]);
 
     /**
      * Bulk change the all authorized scopes.
@@ -114,6 +108,7 @@ export const useAPIAuthorization = (
 
     return {
         allAuthorizedScopes,
+        allAuthorizedScopeNames,
         subscribedAPIResourcesListData,
         isSubscribedAPIResourcesListLoading,
         subscribedAPIResourcesFetchRequestError,

@@ -155,7 +155,7 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
     const [ m2mApplication, setM2MApplication ] = useState<boolean>(false);
     const dispatch: Dispatch = useDispatch();
 
-    const { apiScopes } = useApplicationManagement();
+    const { allAuthorizedScopeNames } = useApplicationManagement();
 
     const {
         data: currentAPIResourceScopeListData,
@@ -548,7 +548,7 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
                         </Grid.Column>
                     </Grid.Row>
                     {
-                        apiScopes && (
+                        allAuthorizedScopeNames && (
                             <Grid.Row className="mt-2">
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
                                     <Grid.Row>
@@ -556,7 +556,7 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
                                             <Form.Field>
                                                 <CopyInputField
                                                     className="copy-input spaced"
-                                                    value={ apiScopes }
+                                                    value={ allAuthorizedScopeNames }
                                                     data-componentid={ `${ componentId }-selected-scope-area` }
                                                 />
                                                 <Hint>

@@ -46,21 +46,17 @@ const ApplicationManagementProvider: FunctionComponent<ApplicationManagementProv
     props: ApplicationManagementProviderProps
 ): ReactElement => {
     const { children, appId } = props;
-    const [ apiScopes, setApiScopes ] = useState<string>("");
     const [ userScopes, setUserScopes ] = useState<string>("");
-
-    const updateApiScopes = (scopes: string): void => {
-        setApiScopes(scopes);
-    };
 
     const {
         allAuthorizedScopes,
+        allAuthorizedScopeNames,
         subscribedAPIResourcesListData,
         isSubscribedAPIResourcesListLoading,
         subscribedAPIResourcesFetchRequestError,
         mutateSubscribedAPIResourcesList,
         bulkChangeAllAuthorizedScopes
-    } = useAPIAuthorization(appId, updateApiScopes);
+    } = useAPIAuthorization(appId);
 
     const updateUserScopes = (scopes: string): void => {
         setUserScopes(scopes);
@@ -69,16 +65,15 @@ const ApplicationManagementProvider: FunctionComponent<ApplicationManagementProv
     return (
         <ApplicationManagementContext.Provider
             value={ {
-                apiScopes,
-                userScopes,
-                updateApiScopes,
-                updateUserScopes,
+                allAuthorizedScopeNames,
                 allAuthorizedScopes,
-                subscribedAPIResourcesListData,
+                bulkChangeAllAuthorizedScopes,
                 isSubscribedAPIResourcesListLoading,
-                subscribedAPIResourcesFetchRequestError,
                 mutateSubscribedAPIResourcesList,
-                bulkChangeAllAuthorizedScopes
+                subscribedAPIResourcesFetchRequestError,
+                subscribedAPIResourcesListData,
+                updateUserScopes,
+                userScopes
             } }
         >
             { children }

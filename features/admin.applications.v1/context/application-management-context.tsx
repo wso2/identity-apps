@@ -27,18 +27,13 @@ import {
  */
 export interface ApplicationManagementContextProps {
     /**
-     * API scopes for the application.
+     * All authorized API scope names as a space-separated string.
      */
-    apiScopes: string;
+    allAuthorizedScopeNames: string;
     /**
      * User scopes for the application.
      */
     userScopes: string;
-    /**
-     * Update API scopes.
-     * @param scopes - API scopes names.
-     */
-    updateApiScopes: (scopes: string) => void;
     /**
      * Update user scopes.
      * @param scopes - User scopes names.

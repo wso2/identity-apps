@@ -168,7 +168,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const { isSuperOrganization, isSubOrganization } = useGetCurrentOrganizationType();
     const dispatch: Dispatch = useDispatch();
     const { UIConfig } = useUIConfig();
-    const { apiScopes, userScopes } = useApplicationManagement();
+    const { allAuthorizedScopeNames, userScopes } = useApplicationManagement();
     const {
         templateMetadata: extensionTemplateMetadata,
         isTemplateMetadataRequestLoading: isExtensionTemplateMetadataFetchRequestLoading
@@ -733,7 +733,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     content={ guideContent }
                     isLoading={ isLoading }
                     protocolName={ firstProtocolName }
-                    apiScopes={ apiScopes }
+                    apiScopes={ allAuthorizedScopeNames }
                     userScopes={ userScopes }
                 />
             </ResourceTab.Pane>
