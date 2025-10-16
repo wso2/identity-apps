@@ -486,6 +486,11 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
                                 >
                                     { supportEmail }
                                 </Link>
+                                {" "}
+                                    Learn more about custom layouts in our
+                                    <DocumentationLink link={getLink("develop.branding.layout.custom.learnMore")}>
+                                        { t("common:learnMore") }
+                                    </DocumentationLink>       
                             </Trans>
                         ]
                         : [
