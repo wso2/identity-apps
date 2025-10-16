@@ -90,6 +90,11 @@ export interface FeatureFlagsInterface {
 }
 
 /**
+ * Type alias for backward compatibility.
+ */
+export type FeatureAccessConfig = FeatureAccessConfigInterface;
+
+/**
  * Interface for Scopes related to CRUD permission.
  */
 export interface CRUDScopesInterface {
