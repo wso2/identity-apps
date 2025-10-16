@@ -57,7 +57,7 @@ export interface FeatureAccessConfigInterface {
     /**
      * Feature flags for the feature.
      */
-    featureFlags?: Record<string, boolean>;
+    featureFlags?: FeatureFlagsInterface[];
 }
 
 export interface DeprecatedFeatureInterface {
@@ -69,6 +69,24 @@ export interface DeprecatedFeatureInterface {
      * An array of deprecated properties.
      */
     deprecatedProperties?: string[];
+}
+
+/**
+ * Interface for feature flags.
+ */
+export interface FeatureFlagsInterface {
+    /**
+     * Identifier of the feature.
+     */
+    feature: string;
+    /**
+     * Value of the feature flag.
+     */
+    flag: string;
+    /**
+     * Specifies whether the feature flag should apply to sub-organizations only.
+     */
+    subOrgsOnly?: string;
 }
 
 /**
