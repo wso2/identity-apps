@@ -17,6 +17,7 @@
  */
 
 import { ResponseMode, Storage } from "@asgardeo/auth-react";
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { ActionsResourceEndpointsInterface } from "@wso2is/admin.actions.v1/models/endpoints";
 import { ApplicationsTemplatesEndpointsInterface } from "@wso2is/admin.application-templates.v1/models/endpoints";
 import {
@@ -52,7 +53,6 @@ import {
     CommonDeploymentConfigInterface,
     CommonUIConfigInterface
 } from "@wso2is/core/models";
-import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { WorkflowRequestsResourceEndpointsInterface } from "../../admin.workflow-requests.v1/configs/endpoints";
 

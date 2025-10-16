@@ -54,6 +54,10 @@ export interface FeatureAccessConfigInterface {
     subFeatures?: {
         [key: string]: Omit<FeatureAccessConfigInterface, "subFeatures">;
     };
+    /**
+     * Feature flags for the feature.
+     */
+    featureFlags?: Record<string, boolean>;
 }
 
 export interface DeprecatedFeatureInterface {
