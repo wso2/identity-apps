@@ -1,5 +1,29 @@
 # @wso2is/identity-apps-core
 
+## 3.3.22
+
+### Patch Changes
+
+- [#9347](https://github.com/wso2/identity-apps/pull/9347) [`a272c6c8cce236986772d598e843769f683b327d`](https://github.com/wso2/identity-apps/commit/a272c6c8cce236986772d598e843769f683b327d) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Fix redundant enable buttons and other issues.
+
+## 3.3.21
+
+### Patch Changes
+
+- [#9342](https://github.com/wso2/identity-apps/pull/9342) [`878d38cb0c008cd39137476a51c5fd9685d31a6c`](https://github.com/wso2/identity-apps/commit/878d38cb0c008cd39137476a51c5fd9685d31a6c) Thanks [@Malith-19](https://github.com/Malith-19)! - Add a duplicate check for scope population for console role listener.
+
+## 3.3.20
+
+### Patch Changes
+
+- [#9328](https://github.com/wso2/identity-apps/pull/9328) [`db94d96d5a0f05a0e58bff098ace6de8212f563d`](https://github.com/wso2/identity-apps/commit/db94d96d5a0f05a0e58bff098ace6de8212f563d) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Fix checkbox required issue.
+
+## 3.3.19
+
+### Patch Changes
+
+- [#9309](https://github.com/wso2/identity-apps/pull/9309) [`764907f9d7a8c74f9297ad16fcd6c9b26aa8673c`](https://github.com/wso2/identity-apps/commit/764907f9d7a8c74f9297ad16fcd6c9b26aa8673c) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Fix data field validation issue.
+
 ## 3.3.18
 
 ### Patch Changes

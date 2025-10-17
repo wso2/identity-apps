@@ -106,14 +106,14 @@
                                     "id": "typography_u2oz",
                                     "variant": "H3",
                                     "config": {
-                                        "text": "You're almost there!"
+                                        "text": "Registration Successful!"
                                     }
                                 },
                                 {
                                     "category": "DISPLAY",
                                     "type": "RICH_TEXT",
                                     "config": {
-                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Check your inbox for instructions to activate your account.</span></p>"
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">You can now sign in with your new account.</span></p>"
                                     },
                                     "id": "display_hgvm"
                                 }
@@ -360,14 +360,14 @@
                                     "id": "typography_u2oz",
                                     "variant": "H3",
                                     "config": {
-                                        "text": "You're almost there!"
+                                        "text": "Registration Successful!"
                                     }
                                 },
                                 {
                                     "category": "DISPLAY",
                                     "type": "RICH_TEXT",
                                     "config": {
-                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Check your inbox for instructions to activate your account.</span></p>"
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">You can now sign in with your new account.</span></p>"
                                     },
                                     "id": "display_hgvm"
                                 }
@@ -504,14 +504,14 @@
                                     "id": "typography_u2oz",
                                     "variant": "H3",
                                     "config": {
-                                        "text": "You're almost there!"
+                                        "text": "Registration Successful!"
                                     }
                                 },
                                 {
                                     "category": "DISPLAY",
                                     "type": "RICH_TEXT",
                                     "config": {
-                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Check your inbox for instructions to activate your account.</span></p>"
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">You can now sign in with your new account.</span></p>"
                                     },
                                     "id": "display_hgvm"
                                 }
@@ -694,14 +694,14 @@
                                     "id": "typography_u2oz",
                                     "variant": "H3",
                                     "config": {
-                                        "text": "You're almost there!"
+                                        "text": "Registration Successful!"
                                     }
                                 },
                                 {
                                     "category": "DISPLAY",
                                     "type": "RICH_TEXT",
                                     "config": {
-                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Check your inbox for instructions to activate your account.</span></p>"
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">You can now sign in with your new account.</span></p>"
                                     },
                                     "id": "display_hgvm"
                                 }

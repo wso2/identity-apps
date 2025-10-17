@@ -29,10 +29,13 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { GeneralDetailsUserstore, GroupDetails, SummaryUserStores, UserDetails } from "./wizards";
-import { addUserStore } from "../api";
-import { getAddUserstoreWizardStepIcons } from "../configs";
-import { USERSTORE_TYPE_DISPLAY_NAMES, UserStoreManagementConstants } from "../constants";
+import { GeneralDetailsUserstore } from "./wizards/general-details-userstore";
+import { GroupDetails } from "./wizards/group-details";
+import { SummaryUserStores } from "./wizards/summary";
+import { UserDetails } from "./wizards/user-details";
+import { addUserStore } from "../api/user-stores";
+import { getAddUserstoreWizardStepIcons } from "../configs/ui";
+import { USERSTORE_TYPE_DISPLAY_NAMES, UserStoreManagementConstants } from "../constants/user-store-constants";
 import useUserStores from "../hooks/use-user-stores";
 import {
     CategorizedProperties,
@@ -41,8 +44,8 @@ import {
     UserStoreProperty,
     UserstoreType,
     WizardStepInterface
-} from "../models";
-import { reOrganizeProperties } from "../utils";
+} from "../models/user-stores";
+import { reOrganizeProperties } from "../utils/userstore-utils";
 
 /**
  * Prop types of the `AddUserStore` component

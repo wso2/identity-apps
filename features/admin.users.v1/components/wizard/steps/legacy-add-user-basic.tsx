@@ -45,9 +45,9 @@ import {
 } from "@wso2is/admin.server-configurations.v1/models/ask-password";
 import { ConnectorPropertyInterface } from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import { useGetUserStore } from "@wso2is/admin.userstores.v1/api/use-get-user-store";
-import { USERSTORE_REGEX_PROPERTIES } from "@wso2is/admin.userstores.v1/constants";
+import { USERSTORE_REGEX_PROPERTIES } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
-import { UserStoreListItem, UserStoreProperty } from "@wso2is/admin.userstores.v1/models";
+import { UserStoreListItem, UserStoreProperty } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { ValidationDataInterface, ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";

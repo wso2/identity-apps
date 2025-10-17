@@ -78,8 +78,11 @@ export const users: usersNS = {
         addMultipleUser: {
             assertionHint: "Please confirm your action.",
             content: "Invite User to Set Password should be enabled to add multiple users. " +
-                "Please enable email invitations for user password setup from <1>Login & Registration settings</1>.",
+                "Please enable user password setup invitations from the " +
+                "<1>Invited User Registration Flow Builder</1>.",
             header: "Before you proceed",
+            legacyContent: "Invite User to Set Password should be enabled to add multiple users. " +
+                "Please enable email invitations for user password setup from <1>Login & Registration settings</1>.",
             message: "Invite users option is disabled"
         },
         terminateAllSessions: {

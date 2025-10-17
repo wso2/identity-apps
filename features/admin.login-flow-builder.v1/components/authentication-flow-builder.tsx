@@ -146,7 +146,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
     const isScriptUpdatePermissionEnforced: boolean = isFeatureEnabled(applicationsFeatureConfig,
         ENFORCE_SCRIPT_UPDATE_PERMISSION_FEATURE_ID);
     const hasScriptUpdatePermission: boolean = useRequiredScopes(
-        applicationsFeatureConfig?.subFeatures?.authenticationScript?.scopes?.update);
+        applicationsFeatureConfig?.subFeatures?.applicationAuthenticationScript?.scopes?.update);
     const isScriptUpdateReadOnly: boolean = isScriptUpdatePermissionEnforced && !hasScriptUpdatePermission;
 
     const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
@@ -324,7 +324,16 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
         newSequence: AuthenticationSequenceInterface,
         isRevertFlow?: boolean
     ): void => {
+        if (orgType === OrganizationType.SUBORGANIZATION && !sharedAppAdaptiveAuthEnabled) {
+            // Update the modified script state in the context.
+            updateAuthenticationSequence({
+                ...newSequence,
+                script: undefined
+            });
+        }
+
         let payload: Partial<ApplicationInterface> = {};
+        const adaptiveScriptToUpdate: string = isRevertFlow ? "" : newSequence?.script;
         const sequence: AuthenticationSequenceInterface = {
             ...cloneDeep(newSequence),
             script: undefined,
@@ -333,15 +342,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                 : AuthenticationSequenceType.USER_DEFINED
         };
 
-        if (orgType === OrganizationType.SUBORGANIZATION && !sharedAppAdaptiveAuthEnabled) {
-            sequence.script = undefined;
-        }
 
-        // Update the modified script state in the context.
-        updateAuthenticationSequence({
-            ...newSequence,
-            script: sequence.script
-        });
         // If the updating application is a system application,
         // we need to send the application name in the PATCH request.
         if (isSystemApplication) {
@@ -363,7 +364,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
 
         if (isRevertFlow) {
             // If the flow is reverting, the script should be cleared first before updating the authentication sequence.
-            updateAdaptiveScript(applicationMetaData?.id, "", !isScriptUpdateReadOnly)
+            updateAdaptiveScript(applicationMetaData?.id, adaptiveScriptToUpdate, !isScriptUpdateReadOnly)
                 .then(() => {
                     updateAuthenticationSequenceFromAPI(applicationMetaData?.id, payload)
                         .then(() => {
@@ -388,7 +389,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
 
         updateAuthenticationSequenceFromAPI(applicationMetaData?.id, payload)
             .then(() => {
-                updateAdaptiveScript(applicationMetaData?.id, newSequence?.script, !isScriptUpdateReadOnly)
+                updateAdaptiveScript(applicationMetaData?.id, adaptiveScriptToUpdate, !isScriptUpdateReadOnly)
                     .then(() => {
                         dispatch(addAlert({
                             description: t("applications:notifications.updateAuthenticationFlow" +
@@ -578,7 +579,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                                 <ScriptBasedFlowSwitch readOnly={ readOnly || isScriptUpdateReadOnly } />
                             ) }
                             { isAdaptiveAuthAvailable && isConditionalAuthenticationEnabled &&
-                                hasScriptUpdatePermission && (
+                                !isScriptUpdateReadOnly && (
                                 <div className="visual-editor-update-button-container">
                                     <PrimaryButton
                                         variant="contained"

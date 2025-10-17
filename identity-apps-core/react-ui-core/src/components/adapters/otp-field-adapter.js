@@ -148,6 +148,7 @@ const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHan
                                         value={ value }
                                         onChange={ (e) => handleInputChange(i, e.target.value) }
                                         onKeyUp={ (e) => movetoNext(e, i) }
+                                        onBlur={ () => handleFieldValidation() }
                                         placeholder="·"
                                         maxLength="1"
                                         style={ {

@@ -30,9 +30,8 @@ const ValidationError = ({ name, errors }) => {
 
     const { translations } = useTranslations();
 
-    const formError = errors.formStateErrors.length > 0 &&
-            errors.formStateErrors.filter(error => error.label === name);
-    const fieldError = formError[0] && formError[0].error ||
+    const formError = errors.formStateErrors && errors.formStateErrors[name];
+    const fieldError = formError||
         (errors.fieldErrors.length > 0 ? errors.fieldErrors[errors.fieldErrors.length - 1] : null);
 
     return (

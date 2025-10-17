@@ -548,7 +548,7 @@
                     ]
                 },
                 "subFeatures": {
-                    "authenticationScript": {
+                    "applicationAuthenticationScript": {
                         "disabledFeatures": [],
                         "enabled": true,
                         "featureFlags": [],
@@ -562,7 +562,7 @@
                             ]
                         }
                     },
-                    "businessAPIResourceAuthorization": {
+                    "applicationBusinessAPIAuthorization": {
                         "disabledFeatures": [],
                         "enabled": true,
                         "featureFlags": [],
@@ -574,7 +574,7 @@
                             "update": [ "internal_application_business_api_update" ]
                         }
                     },
-                    "clientSecret": {
+                    "applicationClientSecretManagement": {
                         "disabledFeatures": [],
                         "enabled": true,
                         "featureFlags": [],
@@ -586,7 +586,7 @@
                             "update": []
                         }
                     },
-                    "internalAPIResourceAuthorization": {
+                    "applicationInternalAPIAuthorization": {
                         "disabledFeatures": [],
                         "enabled": true,
                         "featureFlags": [],
@@ -1423,7 +1423,7 @@
             },
             "roleAssignments": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [],
@@ -1675,11 +1675,36 @@
                     "update": [
                         "internal_role_mgt_update"
                     ]
+                },
+                "subFeatures": {
+                    "roleAssignments": {
+                        "disabledFeatures": [],
+                        "enabled": true,
+                        "featureFlags": [],
+                        "scopes": {
+                            "update": [
+                                "internal_role_mgt_groups_update",
+                                "internal_role_mgt_update",
+                                "internal_role_mgt_users_update"
+                            ]
+                        }
+                    },
+                    "rolePermissionAssignments": {
+                        "disabledFeatures": [],
+                        "enabled": true,
+                        "featureFlags": [],
+                        "scopes": {
+                            "update": [
+                                "internal_role_mgt_permission_update",
+                                "internal_role_mgt_update"
+                            ]
+                        }
+                    }
                 }
             },
             "userRolesV3": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [
                     {
                         "feature": "userRoles",

@@ -238,7 +238,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const isScriptUpdatePermissionEnforced: boolean = isFeatureEnabled(applicationsFeatureConfig,
         ENFORCE_SCRIPT_UPDATE_PERMISSION_FEATURE_ID);
     const hasScriptUpdatePermission: boolean =
-        useRequiredScopes(applicationsFeatureConfig?.subFeatures?.authenticationScript?.scopes?.update);
+        useRequiredScopes(applicationsFeatureConfig?.subFeatures?.applicationAuthenticationScript?.scopes?.update);
     const isScriptUpdateReadOnly: boolean = isScriptUpdatePermissionEnforced && !hasScriptUpdatePermission;
 
     const { tierName }: UseSubscriptionInterface = useSubscription();
@@ -1307,7 +1307,30 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                             {
                                                 t("applications:edit.sections.signOnMethod." +
                                                     "sections.authenticationFlow.sections.scriptBased.accordion." +
-                                                    "title.heading")
+                                                    "title.heading" + (readOnly ? ".readOnly" : ".readWrite"))
+                                            }
+                                            { readOnly && (
+                                                <Popup
+                                                    basic
+                                                    inverted
+                                                    position="top center"
+                                                    content={
+                                                        (<p>
+                                                            {
+                                                                t("applications:edit.sections.signOnMethod.sections." +
+                                                                "authenticationFlow.sections.scriptBased.accordion." +
+                                                                "title.tooltip.readOnly")
+                                                            }
+                                                        </p>)
+                                                    }
+                                                    trigger={ (
+                                                        <Icon
+                                                            className="warning-sign"
+                                                            name="warning sign"
+                                                            color="yellow"
+                                                        />
+                                                    ) }
+                                                />)
                                             }
                                             {
                                                 isPremiumFeature && (

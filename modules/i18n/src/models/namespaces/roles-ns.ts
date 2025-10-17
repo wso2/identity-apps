@@ -190,6 +190,7 @@ export interface rolesNS {
                 expandAll: string;
                 update: string;
             };
+            limitedPermission: string;
         };
         subHeading: string;
         back: string;
@@ -361,6 +362,7 @@ export interface rolesNS {
             subHeading: string;
             readOnlySubHeading: string;
             removedPermissions: string;
+            limitedPermission: string;
         };
         users: AssignEntityToRole;
         agents: AssignEntityToRole;
