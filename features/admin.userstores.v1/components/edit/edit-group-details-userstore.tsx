@@ -27,10 +27,10 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon } from "semantic-ui-react";
-import { SqlEditor } from "..";
-import { patchUserStore } from "../../api";
-import { CONSUMER_USERSTORE_ID } from "../../constants";
-import { PatchData, PropertyAttribute, RequiredBinary, TypeProperty, UserstoreType } from "../../models";
+import { patchUserStore } from "../../api/user-stores";
+import { CONSUMER_USERSTORE_ID } from "../../constants/user-store-constants";
+import { PatchData, PropertyAttribute, RequiredBinary, TypeProperty, UserstoreType } from "../../models/user-stores";
+import { SqlEditor } from "../sql-editor";
 
 /**
  * Prop types of `EditGroupDetails` component

@@ -32,18 +32,16 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
-import { getAUserStore } from "../api";
 import { useGetUserStoreMetaDataType } from "../api/use-get-user-store-meta-data-type";
-import {
-    EditBasicDetailsUserStore,
-    EditConnectionDetails,
-    EditGroupDetails,
-    EditUserDetails
-} from "../components";
-import { getDatabaseAvatarGraphic } from "../configs";
-import { CONSUMER_USERSTORE, CONSUMER_USERSTORE_ID } from "../constants";
-import { CategorizedProperties, UserStore, UserstoreType } from "../models";
-import { reOrganizeProperties } from "../utils";
+import { getAUserStore } from "../api/user-stores";
+import { EditBasicDetailsUserStore } from "../components/edit/edit-basic-details-user-store";
+import { EditConnectionDetails } from "../components/edit/edit-connection-details-user-store";
+import { EditGroupDetails } from "../components/edit/edit-group-details-userstore";
+import { EditUserDetails } from "../components/edit/edit-user-details-userstore";
+import { getDatabaseAvatarGraphic } from "../configs/ui";
+import { CONSUMER_USERSTORE, CONSUMER_USERSTORE_ID } from "../constants/user-store-constants";
+import { CategorizedProperties, UserStore, UserstoreType } from "../models/user-stores";
+import { reOrganizeProperties } from "../utils/userstore-utils";
 
 /**
  * Props for the Userstores edit page.

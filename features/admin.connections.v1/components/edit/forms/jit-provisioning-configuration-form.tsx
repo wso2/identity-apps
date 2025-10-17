@@ -25,7 +25,7 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { identityProviderConfig, userstoresConfig } from "@wso2is/admin.extensions.v1";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
-import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { AlertLevels, Claim, TestableComponentInterface, UniquenessScope } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms, RadioChild } from "@wso2is/forms";

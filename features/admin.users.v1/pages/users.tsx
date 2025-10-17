@@ -44,7 +44,7 @@ import {
     getConnectorCategory,
     useServerConfigs
 } from "@wso2is/admin.server-configurations.v1";
-import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants";
+import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import {
     UserStoreItem,

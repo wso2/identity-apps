@@ -19,7 +19,7 @@
 import {
     CategorizedProperties, PropertyAttribute, TypeProperty, UserStoreProperty,
     UserstorePropertiesCategories, UserstoreType
-} from "../models";
+} from "../models/user-stores";
 
 export const reOrganizeProperties = (
     properties: UserstoreType["properties"],
