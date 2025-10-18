@@ -101,7 +101,6 @@ export interface pagesNS {
     };
     oidcScopesEdit: {
         title: string;
-        subTitle: string;
         backButton: string;
     };
     roles: {
