@@ -409,6 +409,12 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
                             >
                                 { t("common:learnMore") }
                             </DocumentationLink>
+                            <a
+                                href="https://is.docs.wso2.com/en/latest/guides/branding/add-custom-layouts/" 
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                    Learn More
+                            </a>
                         </>
                     ]
                 }
@@ -486,11 +492,12 @@ export const BrandingPreferencePreview: FunctionComponent<BrandingPreferencePrev
                                 >
                                     { supportEmail }
                                 </Link>
-                                {" "}
-                                    Learn more about custom layouts in our
-                                    <DocumentationLink link={getLink("develop.branding.layout.custom.learnMore")}>
-                                        { t("common:learnMore") }
-                                    </DocumentationLink>       
+                                <a
+                                    href="https://is.docs.wso2.com/en/latest/guides/branding/add-custom-layouts/" 
+                                    target="_blank"
+                                    rel="noopener noreferrer">
+                                  Learn More
+                                </a>
                             </Trans>
                         ]
                         : [
