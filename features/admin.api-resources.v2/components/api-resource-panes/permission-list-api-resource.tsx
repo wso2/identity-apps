@@ -27,6 +27,7 @@ import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useS
 import { useTranslation } from "react-i18next";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import { APIResourcePanesCommonPropsInterface, APIResourcePermissionInterface } from "../../models";
+import "./permission-list-api-resource.scss";
 
 /**
  * Prop-types for the API resources page component.
@@ -150,9 +151,9 @@ export const PermissionListAPIResource: FunctionComponent<PermissionListAPIResou
                 id: "description",
                 key: "description",
                 render: (permission: APIResourcePermissionInterface): ReactNode => (
-                    <Header as="h6" data-testid={ `${componentId}-description` }>
+                    <Header as="h6" data-testid={ `1${componentId}-description` }>
                         <Header.Content>
-                            <Header.Subheader>
+                            <Header.Subheader className="permission-description">
                                 { permission.description }
                             </Header.Subheader>
                         </Header.Content>
