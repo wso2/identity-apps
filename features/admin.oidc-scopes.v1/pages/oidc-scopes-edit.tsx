@@ -438,7 +438,7 @@ const OIDCScopesEditPage: FunctionComponent<RouteComponentProps<OIDCScopesEditPa
                         <Label className="no-margin-left">
                             <code>{ scope.name }</code>
                         </Label>
-                        { " " + (scope.description) }
+                        { (scope.description) }
                     </>)
                 }
                 image={ <AnimatedAvatar name={ scope.name } size="tiny" floated="left" /> }

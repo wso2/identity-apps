@@ -8309,7 +8309,6 @@ export interface ConsoleNS {
             };
             oidcScopesEdit: {
                 title: string;
-                subTitle: string;
                 backButton: string;
             };
             rolesEdit: {

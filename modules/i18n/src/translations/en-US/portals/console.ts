@@ -8568,7 +8568,6 @@ export const console: ConsoleNS = {
             },
             oidcScopesEdit: {
                 backButton: "Go back to Scopes",
-                subTitle: "",
                 title: "Edit scope: {{ name }}"
             },
             organizations: {
