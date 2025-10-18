@@ -139,7 +139,8 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
         getOrganization(organizationId)
             .then((organization: OrganizationResponseInterface) => {
                 setOrganization(organization);
-                setFilterQuery("name eq " + organization?.name);
+                const encodedName = encodeURIComponent(organization?.name);
+                setFilterQuery(`name eq '${organization?.name}'`);
             }).catch((error: any) => {
                 if (error?.description) {
                     dispatch(addAlert({
