@@ -674,7 +674,7 @@ export const applications: ApplicationsNS = {
                         }
                     },
                     noOrganizationsSelected: {
-                        description: "Please select at least one organization to share with.",
+                        description: "Please select at least one organization to share this application.",
                         message: "No organizations selected!"
                     },
                     fetchApplicationOrgTree: {
@@ -698,8 +698,7 @@ export const applications: ApplicationsNS = {
                     noRolesSelected: {
                         description: "Please select at least one role to share with all the organizations.",
                         message: "No roles selected!"
-                    }
-                    
+                    }  
                 }
             },
             shareApplication: {

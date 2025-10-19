@@ -880,8 +880,7 @@ export interface ApplicationsNS {
                     noRolesSelected: {
                         description: string;
                         message: string;
-                    };
-                    
+                    }; 
                 };
             };
             shareApplication: {

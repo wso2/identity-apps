@@ -412,12 +412,18 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
     };
 
     const handleApplicationSharing = (): void => {
+        if (shareType === ShareType.SHARE_SELECTED && selectedOrgIds.length === 0) {
+            dispatch(addAlert({
+                description: t("applications:edit.sections.sharedAccess.notifications." +
+                        "noOrganizationsSelected.description"),
+                level: AlertLevels.ERROR,
+                message: t("applications:edit.sections.sharedAccess.notifications." +
+                        "noOrganizationsSelected.message")
+            }));
+            return;
+        }
         if (isApplicationShareOperationStatusEnabled) {
             handleAsyncSharingNotification(shareType);
-        }
-        if (shareType === ShareType.SHARE_SELECTED && selectedOrgIds.length === 0) {
-            noOrgSelected();
-            return;
         }
         if (shareType === ShareType.UNSHARE) {
             // Unshare the application with all organizations
@@ -457,16 +463,6 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                 shareAllorNoRolesWithSelectedOrgs(false);
             }
         }
-    };
-
-    const noOrgSelected = () => {
-        dispatch(addAlert({
-            description: t("applications:edit.sections.sharedAccess.notifications." +
-                    "noOrganizationsSelected.description"),
-            level: AlertLevels.ERROR,
-            message: t("applications:edit.sections.sharedAccess.notifications." +
-                    "noOrganizationsSelected.message")
-        }));
     };
 
     const unshareWithAllOrganizations = async (): Promise<boolean> => {
