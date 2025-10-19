@@ -22,22 +22,31 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { getOperationTypeTranslationKey } from "@wso2is/common.workflow-approvals.v1/utils/approval-utils";
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DangerZone, DangerZoneGroup, TabPageLayout } from "@wso2is/react-components";
-import React, { useEffect, useState } from "react";
+import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
 import { Button, Message, Modal, Table } from "semantic-ui-react";
 import { useGetWorkflowInstance } from "../api/use-get-workflow-instance";
-import { deleteWorkflowInstance } from "../api/workflow-requests";
-import { WorkflowInstanceStatus } from "../models/workflowRequests";
+import { abortWorkflowInstance } from "../api/workflow-requests";
+import { WorkflowInstanceStatus, WorkflowRequestPropertyInterface } from "../models/workflowRequests";
 import "./workflow-request-details.scss";
 
-const WorkflowRequestDetailsPage: React.FC = () => {
-    const { t } = useTranslation();
-    const [ showDeleteModal, setShowDeleteModal ] = useState<boolean>(false);
-    const dispatch: any = useDispatch();
+/**
+ * Workflow request details page component.
+ */
+const WorkflowRequestDetailsPage: FunctionComponent<IdentifiableComponentInterface> = (
+    {
+        [ "data-componentid" ]: componentId = "workflow-request-details-page"
+    }: IdentifiableComponentInterface
+) => {
+    const { t } = useTranslation([ "workflowRequests" ]);
+    const dispatch: Dispatch = useDispatch();
+
+    const [ showAbortModal, setshowAbortModal ] = useState<boolean>(false);
 
     const path: string[] = history.location.pathname.split("/");
     const id: string = path[path.length - 1];
@@ -50,15 +59,9 @@ const WorkflowRequestDetailsPage: React.FC = () => {
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
-    const hasWorkflowInstanceDeletePermissions: boolean = useRequiredScopes(
-        featureConfig?.workflowInstances?.scopes?.delete
+    const hasWorkflowInstanceUpdatePermissions: boolean = useRequiredScopes(
+        featureConfig?.workflowInstances?.scopes?.update
     );
-
-    useEffect(() => {
-        if (workflowInstanceError) {
-            // Error handling is done by the hook
-        }
-    }, [ workflowInstanceError ]);
 
     const formatHumanReadableDate = (dateString: string): string => {
         if (!dateString) return "-";
@@ -80,86 +83,11 @@ const WorkflowRequestDetailsPage: React.FC = () => {
         return date.toLocaleDateString("en-US", options);
     };
 
-    // Helper to parse requestParameters BLOB if present
-    function parseRequestParameters(raw: any): any {
-        if (!raw) return null;
-        if (typeof raw === "object") return raw;
+    const formatRequestProperties = (property: WorkflowRequestPropertyInterface): WorkflowRequestPropertyInterface => {
+        const key: string = property.key;
+        const value: string = property.value;
 
-        try {
-            return JSON.parse(raw);
-        } catch {
-            const result: any = {};
-            const str: string = raw.toString();
-            const content: string = str.replace(/^\{|\}$/g, "");
-
-            let braceDepth: number = 0;
-            let current: string = "";
-            const parts: string[] = [];
-
-            for (let i: number = 0; i < content.length; i++) {
-                const char: string = content[i];
-
-                if (char === "{" || char === "[") {
-                    braceDepth++;
-                } else if (char === "}" || char === "]") {
-                    braceDepth--;
-                } else if (char === "," && braceDepth === 0) {
-                    parts.push(current.trim());
-                    current = "";
-
-                    continue;
-                }
-                current += char;
-            }
-            if (current.trim()) {
-                parts.push(current.trim());
-            }
-
-            parts.forEach((part: string) => {
-
-                const colonIndex: number = part.indexOf(" : ");
-
-                if (colonIndex > 0) {
-                    const key: string = part.substring(0, colonIndex).trim();
-                    const value: string = part.substring(colonIndex + 3).trim();
-
-                    if (value.startsWith("{") && value.endsWith("}")) {
-                        const nestedContent: string = value.substring(1, value.length - 1);
-                        const nestedPairs: string[] = nestedContent.split(", ");
-                        const nestedObj: any = {};
-
-                        nestedPairs.forEach((pair: string) => {
-                            const equalIndex: number = pair.indexOf("=");
-
-                            if (equalIndex > 0) {
-                                const nestedKey: string = pair.substring(0, equalIndex).trim();
-                                const nestedValue: string = pair.substring(equalIndex + 1).trim();
-
-                                nestedObj[nestedKey] = nestedValue;
-                            }
-                        });
-
-                        result[key] = nestedObj;
-                    } else if (value === "[]") {
-                        result[key] = [];
-                    } else if (value === "null") {
-                        result[key] = null;
-                    } else {
-                        result[key] = value;
-                    }
-                }
-            });
-
-            return result;
-        }
-    }
-
-    const formatRequestParams = (params: any): { key: string; value: string }[] => {
-        if (!params) return [];
-
-        const result: { key: string; value: string }[] = [];
-
-        const excludeFields: string[] = [
+        const excludedFields: string[] = [
             "REQUEST ID", "requestId", "request_id",
             "self", "Self",
             "arbitries", "Arbitries",
@@ -170,71 +98,38 @@ const WorkflowRequestDetailsPage: React.FC = () => {
             "Tenant Domain"
         ];
 
-        const flattenObject = (obj: any, prefix: string = ""): void => {
-            for (const [ key, value ] of Object.entries(obj)) {
-                const newKey: string = prefix ? `${prefix}.${key}` : key;
+        if (excludedFields.some((field: string) => key.toLowerCase().includes(field.toLowerCase()))) { return null; }
 
-                if (excludeFields.some((field: string) => newKey.toLowerCase().includes(field.toLowerCase()))) {
-                    continue;
-                }
+        if (value === null ) return { key, value: "null" };
+        if (value === "") return { key, value: "(empty)" };
+        if (value === "[]") return { key, value: "(empty)" };
+        if (Array.isArray(value) && value.length === 0) {
+            return { key, value: "(empty)" };
+        }
 
-                if (value && typeof value === "object" && !Array.isArray(value)) {
-                    flattenObject(value, newKey);
-                } else {
-                    let cleanKey: string = newKey;
-
-                    // Remove Claims.http://wso2.org/claims/ prefix (handle both @Claims and Claims formats)
-                    cleanKey = cleanKey.replace(/@?Claims\.http:\/\/wso2\.org\/claims\//g, "");
-
-                    // Convert camelCase or snake_case to Title Case
-                    cleanKey = cleanKey
-                        .replace(/([A-Z])/g, " $1") // Add space before capital letters
-                        .replace(/^./, (str: string) => str.toUpperCase()) // Capitalize first letter
-                        .replace(/\s+/g, " ") // Replace multiple spaces with single space
-                        .trim();
-
-                    // Handle special cases
-                    if (cleanKey === "Emailaddress") cleanKey = "Email Address";
-                    if (cleanKey === "Givenname") cleanKey = "Given Name";
-                    if (cleanKey === "Lastname") cleanKey = "Last Name";
-                    if (cleanKey === "Resource Type") cleanKey = "Resource Type";
-                    if (cleanKey === "Given Name") cleanKey = "Given Name";
-                    if (cleanKey === "Last Name") cleanKey = "Last Name";
-
-                    const displayValue: string = value === null ? "null" :
-                        value === "" ? "(empty)" :
-                            Array.isArray(value)
-                                ? (value.length === 0 ? "" : String(value))
-                                : String(value);
-
-                    result.push({ key: cleanKey, value: displayValue });
-                }
-            }
-        };
-
-        flattenObject(params);
-
-        return result;
+        return { key, value: String(value) };
     };
 
     const handleBackButtonClick = () => {
         history.push(AppConstants.getPaths().get("WORKFLOW_REQUESTS"));
     };
 
+    const REQUEST_STATUSES: Map<string, string> = new Map([
+        [ WorkflowInstanceStatus.FAILED, t("workflowRequests:status.failed") ],
+        [ WorkflowInstanceStatus.APPROVED, t("workflowRequests:status.approved") ],
+        [ WorkflowInstanceStatus.PENDING, t("workflowRequests:status.pending") ],
+        [ WorkflowInstanceStatus.ABORTED, t("workflowRequests:status.aborted") ],
+        [ WorkflowInstanceStatus.REJECTED, t("workflowRequests:status.rejected") ]
+    ]);
+
     const renderDetailsTable = () => {
-        if (!workflowRequest) return null;
-
-        let params: any = workflowRequest.requestParams;
-
-        if (!params && (workflowRequest as any).requestParameters) {
-            params = parseRequestParameters((workflowRequest as any).requestParameters);
-        }
+        const properties: WorkflowRequestPropertyInterface[] = workflowRequest.properties || [];
 
         return (
             <Table definition className="workflow-request-details-table">
                 <Table.Body>
                     <Table.Row>
-                        <Table.Cell width={ 3 }>{ t("approvalWorkflows:details.fields.id") }</Table.Cell>
+                        <Table.Cell width={ 3 }>{ t("workflowRequests:details.fields.id") }</Table.Cell>
                         <Table.Cell>{ workflowRequest.workflowInstanceId }</Table.Cell>
                     </Table.Row>
                     <Table.Row>
@@ -242,34 +137,46 @@ const WorkflowRequestDetailsPage: React.FC = () => {
                         <Table.Cell>{ t(getOperationTypeTranslationKey(workflowRequest.eventType)) }</Table.Cell>
                     </Table.Row>
                     <Table.Row>
-                        <Table.Cell>{ t("approvalWorkflows:details.fields.requestInitiator") }</Table.Cell>
+                        <Table.Cell>{ t("workflowRequests:details.fields.requestInitiator") }</Table.Cell>
                         <Table.Cell>{ workflowRequest.requestInitiator ||
                             t("common:approvalsPage.propertyMessages.selfRegistration") }</Table.Cell>
                     </Table.Row>
                     <Table.Row>
-                        <Table.Cell>{ t("approvalWorkflows:details.fields.status") }</Table.Cell>
-                        <Table.Cell>{ workflowRequest.status }</Table.Cell>
+                        <Table.Cell>{ t("workflowRequests:details.fields.status") }</Table.Cell>
+                        <Table.Cell>
+                            { (REQUEST_STATUSES.get(workflowRequest.status) ?? "N/A").toUpperCase() }
+                        </Table.Cell>
                     </Table.Row>
                     <Table.Row>
-                        <Table.Cell>{ t("approvalWorkflows:details.fields.createdAt") }</Table.Cell>
+                        <Table.Cell>{ t("workflowRequests:details.fields.createdAt") }</Table.Cell>
                         <Table.Cell>{ formatHumanReadableDate(workflowRequest.createdAt) }</Table.Cell>
                     </Table.Row>
                     <Table.Row>
-                        <Table.Cell>{ t("approvalWorkflows:details.fields.updatedAt") }</Table.Cell>
+                        <Table.Cell>{ t("workflowRequests:details.fields.updatedAt") }</Table.Cell>
                         <Table.Cell>{ formatHumanReadableDate(workflowRequest.updatedAt) }</Table.Cell>
                     </Table.Row>
                     <Table.Row>
-                        <Table.Cell>{ t("approvalWorkflows:details.fields.requestParams") }</Table.Cell>
+                        <Table.Cell>{ t("workflowRequests:details.fields.requestParams") }</Table.Cell>
                         <Table.Cell>
-                            { params && Object.keys(params).length > 0 ? (
+                            { properties && properties.length > 0 ? (
                                 <Table celled compact size="small">
                                     <Table.Body>
-                                        { formatRequestParams(params).map((item: any, index: number) => (
-                                            <Table.Row key={ index }>
-                                                <Table.Cell className="param-key">{ item.key }</Table.Cell>
-                                                <Table.Cell className="param-value">{ item.value }</Table.Cell>
-                                            </Table.Row>
-                                        )) }
+                                        { properties.map(
+                                            (property: WorkflowRequestPropertyInterface, index: number) => {
+                                                const formattedProperty: WorkflowRequestPropertyInterface
+                                                = formatRequestProperties(property);
+
+                                                return formattedProperty &&  (
+                                                    <Table.Row key={ index }>
+                                                        <Table.Cell className="param-key">
+                                                            { formattedProperty.key }
+                                                        </Table.Cell>
+                                                        <Table.Cell className="param-value">
+                                                            { formattedProperty.value }
+                                                        </Table.Cell>
+                                                    </Table.Row>
+                                                );
+                                            }) }
                                     </Table.Body>
                                 </Table>
                             ) : (
@@ -282,29 +189,25 @@ const WorkflowRequestDetailsPage: React.FC = () => {
         );
     };
 
-    const handleDelete = async () => {
+    const handleAbort = async () => {
         if (!workflowRequest) return;
 
         try {
-            await deleteWorkflowInstance(workflowRequest.workflowInstanceId);
+            await abortWorkflowInstance(workflowRequest.workflowInstanceId);
             dispatch(addAlert({
-                description: t("console:manage.features.workflowRequests.notifications."
-                    + "deleteWorkflowRequest.success.description"),
+                description: t("workflowRequests:notifications.abortWorkflowRequest.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("console:manage.features.workflowRequests.notifications."
-                    + "deleteWorkflowRequest.success.message")
+                message: t("workflowRequests:notifications.abortWorkflowRequest.success.message")
             }));
-            setShowDeleteModal(false);
+            setshowAbortModal(false);
             history.push(AppConstants.getPaths().get("WORKFLOW_REQUESTS"));
         } catch (err: any) {
             dispatch(addAlert({
-                description: t("console:manage.features.workflowRequests.notifications."
-                    + "deleteWorkflowRequest.error.description", {
+                description: t("workflowRequests:notifications.abortWorkflowRequest.genericError.description", {
                     description: err?.response?.data?.detail || ""
                 }),
                 level: AlertLevels.ERROR,
-                message: t("console:manage.features.workflowRequests.notifications."
-                    + "deleteWorkflowRequest.error.message")
+                message: t("workflowRequests:notifications.abortWorkflowRequest.genericError.message")
             }));
         }
     };
@@ -312,52 +215,55 @@ const WorkflowRequestDetailsPage: React.FC = () => {
     return (
         <TabPageLayout
             isLoading={ loading }
-            title={ t("approvalWorkflows:details.header") }
+            title={ t("workflowRequests:details.header") }
             backButton={ {
                 "data-testid": "workflow-requests-details-back-button",
                 onClick: handleBackButtonClick,
-                text: t("approvalWorkflows:details.backButton")
+                text: t("workflowRequests:details.backButton")
             } }
             titleTextAlign="left"
             bottomMargin={ false }
+            data-componentid={ componentId }
         >
             { workflowInstanceError && (
                 <Message
                     negative
-                    header={ t("approvalWorkflows:details.error.header") }
-                    content={ t("approvalWorkflows:details.error.content") }
+                    header={ t("workflowRequests:details.error.header") }
+                    content={ t("workflowRequests:details.error.content") }
                 />
             ) }
             { workflowRequest && renderDetailsTable() }
-            { workflowRequest && workflowRequest.status !== WorkflowInstanceStatus.DELETED && (
-                <DangerZoneGroup sectionHeader={ t("approvalWorkflows:details.dangerZone.header") }>
+            { workflowRequest && workflowRequest.status === WorkflowInstanceStatus.PENDING && (
+                <DangerZoneGroup sectionHeader={ t("workflowRequests:details.dangerZone.header") }>
                     <DangerZone
-                        actionTitle={ t("approvalWorkflows:details.dangerZone.delete.actionTitle") }
-                        header={ t("approvalWorkflows:details.dangerZone.delete.header") }
-                        subheader={ t("approvalWorkflows:details.dangerZone.delete.subheader") }
-                        onActionClick={ () => setShowDeleteModal(true) }
-                        isButtonDisabled={ !hasWorkflowInstanceDeletePermissions }
+                        actionTitle={ t("workflowRequests:details.dangerZone.abort.actionTitle") }
+                        header={ t("workflowRequests:details.dangerZone.abort.header") }
+                        subheader={ t("workflowRequests:details.dangerZone.abort.subheader") }
+                        onActionClick={ () => setshowAbortModal(true) }
+                        isButtonDisabled={ !hasWorkflowInstanceUpdatePermissions }
                         data-testid="workflow-requests-details-danger-zone-delete"
                     />
                 </DangerZoneGroup>
             ) }
             <Modal
-                open={ showDeleteModal }
+                open={ showAbortModal }
                 size="small"
-                onClose={ () => setShowDeleteModal(false) }
+                onClose={ () => setshowAbortModal(false) }
             >
-                <Modal.Header>{ t("approvalWorkflows:details.dangerZone.delete.header") }</Modal.Header>
+                <Modal.Header>{ t("workflowRequests:details.dangerZone.abort.header") }</Modal.Header>
                 <Modal.Content>
-                    <p>{ t("approvalWorkflows:details.dangerZone.delete.confirm") }</p>
+                    <p>{ t("workflowRequests:details.dangerZone.abort.confirm") }</p>
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button onClick={ () => setShowDeleteModal(false) }>{ t("common:cancel") }</Button>
+                    <Button onClick={ () => setshowAbortModal(false) }>{ t("common:cancel") }</Button>
                     <Button
                         negative
                         loading={ loading }
-                        onClick={ handleDelete }
-                        disabled={ !hasWorkflowInstanceDeletePermissions }
-                    >{ t("common:delete") }</Button>
+                        onClick={ handleAbort }
+                        disabled={ !hasWorkflowInstanceUpdatePermissions }
+                    >
+                        { t("workflowRequests:details.dangerZone.abort.action") }
+                    </Button>
                 </Modal.Actions>
             </Modal>
         </TabPageLayout>

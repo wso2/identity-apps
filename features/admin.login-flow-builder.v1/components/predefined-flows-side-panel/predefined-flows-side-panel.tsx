@@ -26,6 +26,7 @@ import Image from "@oxygen-ui/react/Image";
 import Toolbar from "@oxygen-ui/react/Toolbar";
 import Typography from "@oxygen-ui/react/Typography";
 import { CircleInfoIcon, GearIcon } from "@oxygen-ui/react-icons";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import {
     AdaptiveAuthTemplateCategoryInterface,
     AdaptiveAuthTemplateInterface,
@@ -38,6 +39,7 @@ import {
     CommonAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/common-authenticator-constants";
 import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-deployment-configs";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/server-configuration";
 import { getAuthenticatorIcons } from "@wso2is/admin.identity-providers.v1/configs/ui";
 import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models";
@@ -54,6 +56,7 @@ import {
     UpdateGovernanceConnectorConfigInterface
 } from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import { GovernanceConnectorUtils } from "@wso2is/admin.server-configurations.v1/utils/governance-connector-utils";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -66,13 +69,14 @@ import { AxiosError } from "axios";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, ReactNode, SVGProps, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Modal } from "semantic-ui-react";
 import AdaptiveAuthTemplateChangeConfirmationModal from "./adaptive-auth-template-change-confimation-modal";
 import AdaptiveAuthTemplateInfoModal from "./adaptive-auth-template-info-modal";
 import BasicLoginFlowTemplateChangeConfirmationModal from "./basic-login-flow-template-change-confimation-modal";
 import PredefinedSocialFlowHandlerModalFactory from "./predefined-social-flow-handler-modal-factory";
+import { ENFORCE_SCRIPT_UPDATE_PERMISSION_FEATURE_ID } from "../../constants/editor-constants";
 import {
     APPLE_LOGIN_SEQUENCE,
     ELK_RISK_BASED_TEMPLATE_NAME,
@@ -176,6 +180,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
 
     const {
         adaptiveAuthTemplates,
+        authenticationSequence,
         authenticators,
         defaultAuthenticationSequence,
         updateAuthenticationSequence,
@@ -221,6 +226,15 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
 
     const dispatch: Dispatch = useDispatch();
 
+    const applicationsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
+        return state.config?.ui?.features?.applications;
+    });
+    const isScriptUpdatePermissionEnforced: boolean = isFeatureEnabled(applicationsFeatureConfig,
+        ENFORCE_SCRIPT_UPDATE_PERMISSION_FEATURE_ID);
+    const hasScriptUpdatePermission: boolean = useRequiredScopes(
+        applicationsFeatureConfig?.subFeatures?.applicationAuthenticationScript?.scopes?.update);
+    const isScriptUpdateReadOnly: boolean = isScriptUpdatePermissionEnforced && !hasScriptUpdatePermission;
+
     /**
      * Handles the accordion change event.
      *
@@ -254,9 +268,13 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
 
         const sequence: AuthenticationSequenceInterface = {
             ...template.sequence,
-            script: template.sequence.script ??
-                AdaptiveScriptUtils.generateScript(template.sequence.steps.length + 1).join("\n")
+            script: isScriptUpdateReadOnly ? authenticationSequence?.script
+                : template.sequence.script ?? ""
         };
+
+        if (AdaptiveScriptUtils.isEmptyScript(sequence?.script)) {
+            onConditionalAuthenticationToggle(false);
+        }
 
         if (template.sequenceCategoryId === PredefinedFlowCategories.Social) {
             setSelectedSocialFlowSequence({
@@ -762,7 +780,8 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                 ) }
                 { showAdaptiveLoginTemplates &&
                     adaptiveAuthTemplates &&
-                    Object.entries(adaptiveAuthTemplates).length > 0 && (
+                    Object.entries(adaptiveAuthTemplates).length > 0 &&
+                    !isScriptUpdateReadOnly && (
                     <Accordion
                         square
                         disableGutters

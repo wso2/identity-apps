@@ -17,8 +17,8 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import isEmpty from "lodash-es/isEmpty";
 import isUndefined from "lodash-es/isUndefined";
@@ -79,7 +79,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         );
     },[ dynamicValues ]);
 
-    const interpretValueByType = (value: FormValue, key: string, type: string) => {
+    const interpretValueByType = (value: FormValue, key: string, type: string, defaultValue?: string) => {
         switch (type?.toUpperCase()) {
             case CommonConstants.BOOLEAN: {
                 if (key === ConnectionUIConstants.USER_ID_IN_CLAIMS) {
@@ -90,6 +90,15 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             }
             case CommonConstants.RADIO: {
                 return value?.includes(key);
+            }
+            case CommonConstants.STRING: {
+                // If the value is same as the key and the type is string, that means
+                // the form has set invalid value.
+                if (value === key) {
+                    return defaultValue;
+                }
+
+                return value;
             }
             default: {
                 return value;
@@ -114,7 +123,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                 key, metadata?.properties);
 
             const processedValue: string = !isEmpty(key) && !isUndefined(value) &&
-                interpretValueByType(value, key, propertyMetadata?.type).toString();
+                interpretValueByType(value, key, propertyMetadata?.type, propertyMetadata?.defaultValue).toString();
 
             if (!isEmpty(processedValue) && key !== "customProperties") {
                 properties.push({

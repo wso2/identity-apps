@@ -18,6 +18,8 @@
 
 import FlowBuilder from "@wso2is/admin.flow-builder-core.v1/components/flow-builder";
 import VisualFlowConstants from "@wso2is/admin.flow-builder-core.v1/constants/visual-flow-constants";
+import useAuthenticationFlowBuilderCore from
+    "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
 import {
     BlockTypes,
     ButtonTypes,
@@ -100,6 +102,8 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
+    const { setFlowCompletionConfigs, refetchFlow, setRefetchFlow } = useAuthenticationFlowBuilderCore();
+
     const {
         flowGenerationCompleted,
         isFlowGenerating,
@@ -121,6 +125,7 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
 
     const {
         data: passwordRecoveryFlow,
+        mutate: mutatePasswordRecoveryFlow,
         error: passwordRecoveryFlowFetchRequestError,
         isLoading: isPasswordRecoveryFlowFetchRequestLoading,
         isValidating: isPasswordRecoveryFlowFetchRequestValidating
@@ -142,6 +147,18 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
             "option is selected, ask for first name, last name, password. Then verify the email of the user."
     ];
 
+    /**
+     * Hook to refetch the flow when `refetchFlow` is set to `true`.
+     */
+    useEffect(() => {
+        if (!refetchFlow) {
+            return;
+        }
+
+        mutatePasswordRecoveryFlow();
+        setRefetchFlow(false);
+    }, [ refetchFlow ]);
+
     useEffect(() => {
         if (flowError) {
             setIsFlowGenerating(false);
@@ -149,9 +166,9 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
 
             dispatch(
                 addAlert<AlertInterface>({
-                    description: t("ai:aiPasswordRecoveryFlow.notifications.generateResultError.description"),
+                    description: t("ai:aiFlow.notifications.generateResultError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("ai:aiPasswordRecoveryFlow.notifications.generateResultError.message")
+                    message: t("ai:aiFlow.notifications.generateResultError.message")
                 })
             );
 
@@ -164,13 +181,13 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
 
             // if data.data contains an object error then use that as the error message
             const errorMessage: string = "error" in flowData.data
-                ? flowData.data.error : t("ai:aiPasswordRecoveryFlow.notifications.generateResultFailed.message");
+                ? flowData.data.error : t("ai:aiFlow.notifications.generateResultFailed.message");
 
             dispatch(
                 addAlert<AlertInterface>({
                     description: errorMessage,
                     level: AlertLevels.ERROR,
-                    message: t("ai:aiPasswordRecoveryFlow.notifications.generateResultFailed.message")
+                    message: t("ai:aiFlow.notifications.generateResultFailed.message")
                 })
             );
 
@@ -232,9 +249,9 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
 
         dispatch(
             addAlert<AlertInterface>({
-                description: t("ai:aiPasswordRecoveryFlow.notifications.generateSuccess.description"),
+                description: t("ai:aiFlow.notifications.generateSuccess.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("ai:aiPasswordRecoveryFlow.notifications.generateSuccess.message")
+                message: t("ai:aiFlow.notifications.generateSuccess.message")
             })
         );
     };
@@ -523,6 +540,26 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
     const [ edges, setEdges, onEdgesChange ] = useEdgesState([]);
 
     /**
+     * Handle restore from history event.
+     */
+    useEffect(() => {
+        const handleRestoreFromHistory = (event: CustomEvent) => {
+            const { nodes: restoredNodes, edges: restoredEdges } = event.detail;
+
+            if (restoredNodes && restoredEdges) {
+                setNodes(restoredNodes);
+                setEdges(restoredEdges);
+            }
+        };
+
+        window.addEventListener("restoreFromHistory", handleRestoreFromHistory as EventListener);
+
+        return () => {
+            window.removeEventListener("restoreFromHistory", handleRestoreFromHistory as EventListener);
+        };
+    }, [ setNodes, setEdges ]);
+
+    /**
      * Helper function to update node internals for a given node and its components.
      *
      * @param nodes - Set of nodes to update.
@@ -611,8 +648,18 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
             return {};
         }
 
+        const stepsByType: Record<string, Step[]> = steps.reduce((acc: Record<string, Step[]>, step: Step) => {
+            if (!acc[step.type]) {
+                acc[step.type] = [];
+            }
+            acc[step.type].push(step);
+
+            return acc;
+        }, {});
+
         const stepNodes: NodeTypes = steps.reduce((acc: NodeTypes, resource: Step) => {
-            acc[resource.type] = (props: any) => <StepFactory resource={ resource } { ...props } />;
+            acc[resource.type] = (props: any) =>
+                <StepFactory resources={ stepsByType[resource.type] } { ...props } />;
 
             return acc;
         }, {});
@@ -747,6 +794,15 @@ const PasswordRecoveryFlowBuilderCore: FunctionComponent<PasswordRecoveryFlowBui
         }
 
         const replacers: any = template?.config?.data?.__generationMeta__?.replacers;
+
+        // Check for End steps and set flow completion configs before processing
+        template.config.data.steps.forEach((step: Step) => {
+            if (step.type === StepTypes.End) {
+                if (step?.config) {
+                    setFlowCompletionConfigs(step.config);
+                }
+            }
+        });
 
         const [ templateSteps ] = updateTemplatePlaceholderReferences(
             generateSteps(template.config.data.steps as any),

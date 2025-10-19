@@ -2,13 +2,27 @@
     {
         "resourceType": "TEMPLATE",
         "category": "STARTER",
+        "type": "GENERATE_WITH_AI",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Generate with AI",
+            "description": "Describe your invited user registration flow and generate with AI.",
+            "image": "https://www.svgrepo.com/show/521818/robot.svg",
+            "showOnResourcePanel": false
+        },
+        "config": {}
+    },
+    {
+        "resourceType": "TEMPLATE",
+        "category": "STARTER",
         "type": "BLANK",
         "version": "0.1.0",
         "deprecated": false,
         "display": {
             "label": "Blank",
             "description": "Start a new flow from scratch with confirmation code validation",
-            "image": "https://www.svgrepo.com/show/533698/refresh-ccw-alt-3.svg",
+            "image": "assets/images/icons/refresh-ccw.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -101,7 +115,7 @@
                             "x": 1120,
                             "y": 420
                         },
-                        "configs": {
+                        "config": {
                             "isAutoLoginEnabled": "false",
                             "isFlowCompletionNotificationEnabled": "false"
                         },
@@ -147,7 +161,7 @@
         "display": {
             "label": "Invited User Registration.",
             "description": "Registration flow where the invited user validates a confirmation code and sets a password",
-            "image": "https://www.svgrepo.com/show/390092/security-protection-password.svg",
+            "image": "assets/images/icons/password.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -258,7 +272,7 @@
                             "x": 1120,
                             "y": 420
                         },
-                        "configs": {
+                        "config": {
                             "isAutoLoginEnabled": "false",
                             "isFlowCompletionNotificationEnabled": "false"
                         },
@@ -304,7 +318,7 @@
         "display": {
             "label": "Invited User Registration with Passkey",
             "description": "Registration flow where the invited user validates a confirmation code and completes Passkey onboarding",
-            "image": "https://www.svgrepo.com/show/340307/fingerprint-recognition.svg",
+            "image": "assets/images/icons/fingerprint.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -365,14 +379,14 @@
                         "id": "END",
                         "type": "END",
                         "size": {
-                            "width": 56,
-                            "height": 56
+                            "width": 350,
+                            "height": 310
                         },
                         "position": {
-                            "x": 1120,
-                            "y": 420
+                            "x": 790,
+                            "y": 130
                         },
-                        "configs": {
+                        "config": {
                             "isAutoLoginEnabled": "false",
                             "isFlowCompletionNotificationEnabled": "false"
                         },
@@ -384,14 +398,14 @@
                                     "id": "typography_u2oz",
                                     "variant": "H3",
                                     "config": {
-                                        "text": "Password Set Successfully"
+                                        "text": "Passkey Created Successfully"
                                     }
                                 },
                                 {
                                     "category": "DISPLAY",
                                     "type": "RICH_TEXT",
                                     "config": {
-                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">You have successfully set a password for your account.</span></p>"
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">You have successfully created a passkey for your account.</span></p>"
                                     },
                                     "id": "display_hgvm"
                                 }
@@ -400,8 +414,7 @@
                                 "type": "EXECUTOR",
                                 "executor": {
                                     "name": "UserProvisioningExecutor"
-                                },
-                                "next": "END"
+                                }
                             }
                         }
                     }

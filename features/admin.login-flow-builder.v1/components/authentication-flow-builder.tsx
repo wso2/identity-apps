@@ -21,7 +21,9 @@ import Tab from "@oxygen-ui/react/Tab";
 import TabPanel from "@oxygen-ui/react/TabPanel";
 import Tabs from "@oxygen-ui/react/Tabs";
 import Typography from "@oxygen-ui/react/Typography";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import {
+    updateAdaptiveScript,
     updateAuthenticationSequence as updateAuthenticationSequenceFromAPI
 } from "@wso2is/admin.applications.v1/api/application";
 import {
@@ -37,7 +39,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import useAILoginFlow from "@wso2is/admin.login-flow.ai.v1/hooks/use-ai-login-flow";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants/organization-constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { PrimaryButton } from "@wso2is/react-components";
 import { AxiosError } from "axios";
@@ -53,7 +55,10 @@ import AuthenticationFlowVisualEditor from "./authentication-flow-visual-editor"
 import PredefinedFlowsSidePanel from "./predefined-flows-side-panel/predefined-flows-side-panel";
 import ScriptBasedFlowSwitch from "./script-editor-panel/script-based-flow-switch";
 import SidePanelDrawer from "./side-panel-drawer";
-import { SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID } from "../constants/editor-constants";
+import {
+    ENFORCE_SCRIPT_UPDATE_PERMISSION_FEATURE_ID,
+    SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID
+} from "../constants/editor-constants";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
 import { AuthenticationFlowBuilderModes, AuthenticationFlowBuilderModesInterface } from "../models/flow-builder";
 import "./sign-in-methods.scss";
@@ -138,6 +143,11 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
     });
     const sharedAppAdaptiveAuthEnabled: boolean = isFeatureEnabled(applicationsFeatureConfig,
         SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID);
+    const isScriptUpdatePermissionEnforced: boolean = isFeatureEnabled(applicationsFeatureConfig,
+        ENFORCE_SCRIPT_UPDATE_PERMISSION_FEATURE_ID);
+    const hasScriptUpdatePermission: boolean = useRequiredScopes(
+        applicationsFeatureConfig?.subFeatures?.applicationAuthenticationScript?.scopes?.update);
+    const isScriptUpdateReadOnly: boolean = isScriptUpdatePermissionEnforced && !hasScriptUpdatePermission;
 
     const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
 
@@ -203,6 +213,12 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
         newSequence: AuthenticationSequenceInterface,
         isRevertFlow?: boolean
     ): void => {
+        if (isScriptUpdatePermissionEnforced) {
+            handleOnUpdateWithScriptAPI(newSequence, isRevertFlow);
+
+            return;
+        }
+
         let payload: Partial<ApplicationInterface> = {};
         const sequence: AuthenticationSequenceInterface = {
             ...cloneDeep(newSequence),
@@ -302,6 +318,129 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                 setAiGeneratedLoginFlow(undefined);
                 refetchApplication();
             });
+    };
+
+    const handleOnUpdateWithScriptAPI = (
+        newSequence: AuthenticationSequenceInterface,
+        isRevertFlow?: boolean
+    ): void => {
+        if (orgType === OrganizationType.SUBORGANIZATION && !sharedAppAdaptiveAuthEnabled) {
+            // Update the modified script state in the context.
+            updateAuthenticationSequence({
+                ...newSequence,
+                script: undefined
+            });
+        }
+
+        let payload: Partial<ApplicationInterface> = {};
+        const adaptiveScriptToUpdate: string = isRevertFlow ? "" : newSequence?.script;
+        const sequence: AuthenticationSequenceInterface = {
+            ...cloneDeep(newSequence),
+            script: undefined,
+            type: isRevertFlow
+                ? AuthenticationSequenceType.DEFAULT
+                : AuthenticationSequenceType.USER_DEFINED
+        };
+
+
+        // If the updating application is a system application,
+        // we need to send the application name in the PATCH request.
+        if (isSystemApplication) {
+            payload = {
+                authenticationSequence: sequence,
+                name: applicationMetaData?.name
+            };
+        } else {
+            payload = {
+                authenticationSequence: sequence
+            };
+        }
+
+        const isValid: boolean = validateSteps(newSequence?.steps);
+
+        if (!isValid) {
+            return;
+        }
+
+        if (isRevertFlow) {
+            // If the flow is reverting, the script should be cleared first before updating the authentication sequence.
+            updateAdaptiveScript(applicationMetaData?.id, adaptiveScriptToUpdate, !isScriptUpdateReadOnly)
+                .then(() => {
+                    updateAuthenticationSequenceFromAPI(applicationMetaData?.id, payload)
+                        .then(() => {
+                            dispatch(addAlert({
+                                description: t("applications:notifications.updateAuthenticationFlow" +
+                                    ".success.description"),
+                                level: AlertLevels.SUCCESS,
+                                message: t("applications:notifications.updateAuthenticationFlow.success.message")
+                            }));
+                        }).catch((error: AxiosError) => {
+                            handleUpdateAuthenticationFlowError(error);
+                        });
+                }).catch((error: AxiosError) => {
+                    handleUpdateAuthenticationFlowError(error);
+                }).finally(() => {
+                    setAiGeneratedLoginFlow(undefined);
+                    refetchApplication();
+                });
+
+            return;
+        }
+
+        updateAuthenticationSequenceFromAPI(applicationMetaData?.id, payload)
+            .then(() => {
+                updateAdaptiveScript(applicationMetaData?.id, adaptiveScriptToUpdate, !isScriptUpdateReadOnly)
+                    .then(() => {
+                        dispatch(addAlert({
+                            description: t("applications:notifications.updateAuthenticationFlow" +
+                                    ".success.description"),
+                            level: AlertLevels.SUCCESS,
+                            message: t("applications:notifications.updateAuthenticationFlow.success.message")
+                        }));
+                    }).catch((error: AxiosError) => {
+                        handleUpdateAuthenticationFlowError(error);
+                    });
+            }).catch((error: AxiosError) => {
+                handleUpdateAuthenticationFlowError(error);
+            }).finally(() => {
+                setAiGeneratedLoginFlow(undefined);
+                refetchApplication();
+            });
+    };
+
+    const handleUpdateAuthenticationFlowError = (error: AxiosError): void => {
+        const INVALID_SCRIPT_CODE: string = "APP-60001";
+
+        if (error?.response?.data?.code === INVALID_SCRIPT_CODE) {
+            dispatch(addAlert({
+                description: t("applications:notifications.updateAuthenticationFlow" +
+                            ".invalidScriptError.description"),
+                level: AlertLevels.ERROR,
+                message: t("applications:notifications.updateAuthenticationFlow" +
+                            ".invalidScriptError.message")
+            }));
+
+            return;
+        }
+
+        if (error?.response?.data?.description) {
+            dispatch(addAlert({
+                description: error.response.data.description,
+                level: AlertLevels.ERROR,
+                message: t("applications:notifications.updateAuthenticationFlow" +
+                            ".error.message")
+            }));
+
+            return;
+        }
+
+        dispatch(addAlert({
+            description: t("applications:notifications.updateAuthenticationFlow" +
+                        ".genericError.description"),
+            level: AlertLevels.INFO,
+            message: t("applications:notifications.updateAuthenticationFlow" +
+                        ".genericError.message")
+        }));
     };
 
     /**
@@ -436,8 +575,11 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                                     ) => handleOnUpdate(sequence, isRevertFlow) }
                                 />
                             </ReactFlowProvider>
-                            { isAdaptiveAuthAvailable && <ScriptBasedFlowSwitch /> }
-                            { isAdaptiveAuthAvailable && isConditionalAuthenticationEnabled && (
+                            { isAdaptiveAuthAvailable && (
+                                <ScriptBasedFlowSwitch readOnly={ readOnly || isScriptUpdateReadOnly } />
+                            ) }
+                            { isAdaptiveAuthAvailable && isConditionalAuthenticationEnabled &&
+                                !isScriptUpdateReadOnly && (
                                 <div className="visual-editor-update-button-container">
                                     <PrimaryButton
                                         variant="contained"

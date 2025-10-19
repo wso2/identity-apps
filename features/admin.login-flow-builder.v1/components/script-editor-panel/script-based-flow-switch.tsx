@@ -22,6 +22,7 @@ import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
 import Box from "@oxygen-ui/react/Box";
 import Grid from "@oxygen-ui/react/Grid";
 import Switch from "@oxygen-ui/react/Switch";
+import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { AdaptiveScriptUtils } from "@wso2is/admin.applications.v1/utils/adaptive-script-utils";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -37,6 +38,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { Icon } from "semantic-ui-react";
 import AdaptiveScriptResetConfirmationModal from "./adaptive-script-reset-confirmation-modal";
 import ScriptEditorPanel from "./script-editor-panel";
 import useAuthenticationFlow from "../../hooks/use-authentication-flow";
@@ -64,7 +66,6 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
     const { t } = useTranslation();
 
     const {
-        authenticationSequence,
         isConditionalAuthenticationEnabled,
         onConditionalAuthenticationToggle,
         updateAuthenticationSequence,
@@ -127,7 +128,7 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
         <>
             <Box className="script-based-flow-switch" data-componentid={ componentId }>
                 <Accordion expanded={ isConditionalAuthenticationEnabled } elevation={ 0 }>
-                    <AccordionSummary disabled={ readOnly }>
+                    <AccordionSummary>
                         <Grid className="script-based-flow-switch-accordion-summary">
                             <Grid
                                 xs={ 12 }
@@ -136,10 +137,14 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
                                 lg={ 1 }
                                 xl={ 1 }
                             >
-                                <Switch
-                                    checked={ isConditionalAuthenticationEnabled }
-                                    onChange={ handleSwitchChange }
-                                />
+                                {
+                                    !readOnly && (
+                                        <Switch
+                                            checked={ isConditionalAuthenticationEnabled }
+                                            onChange={ handleSwitchChange }
+                                        />
+                                    )
+                                }
                             </Grid>
                             <Grid
                                 className="script-based-flow-switch-text"
@@ -149,13 +154,25 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
                                 lg={ 11 }
                                 xl={ 11 }
                             >
-                                <Typography variant="body1">
-                                    {
-                                        t("applications:edit.sections.signOnMethod." +
-                                            "sections.authenticationFlow.sections.scriptBased.accordion." +
-                                            "title.heading")
+                                <div className="title">
+                                    <Typography variant="body1">
+                                        {
+                                            t("applications:edit.sections.signOnMethod." +
+                                                "sections.authenticationFlow.sections.scriptBased.accordion." +
+                                                "title.heading" + (readOnly ? ".readOnly" : ".readWrite"))
+                                        }
+                                    </Typography>
+                                    { readOnly && (
+                                        <Tooltip
+                                            title={ t("applications:edit.sections.signOnMethod.sections." +
+                                                "authenticationFlow.sections.scriptBased.accordion.title." +
+                                                "tooltip.readOnly") }>
+                                            <span>
+                                                <Icon name="warning sign" color="yellow" />
+                                            </span>
+                                        </Tooltip>)
                                     }
-                                </Typography>
+                                </div>
                                 <Typography variant="body2">
                                     {
                                         t("applications:edit.sections.signOnMethod." +
@@ -167,7 +184,7 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
                         </Grid>
                     </AccordionSummary>
                     <AccordionDetails className="script-based-flow-switch-accordion-details">
-                        <ScriptEditorPanel/>
+                        <ScriptEditorPanel readOnly={ readOnly }/>
                     </AccordionDetails>
                 </Accordion>
             </Box>
@@ -176,8 +193,7 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
                     open={ showScriptResetWarning }
                     onClose={ () => {
                         updateAuthenticationSequence({
-                            script:
-                                AdaptiveScriptUtils.generateScript(authenticationSequence?.steps?.length + 1).join("\n")
+                            script: ""
                         });
                         setShowScriptResetWarning(false);
                     } }

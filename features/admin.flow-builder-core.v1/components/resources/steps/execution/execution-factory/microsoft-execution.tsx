@@ -19,17 +19,17 @@
 import Box from "@oxygen-ui/react/Box";
 import Code from "@oxygen-ui/react/Code";
 import Typography from "@oxygen-ui/react/Typography";
+import loadStaticResource from "@wso2is/admin.core.v1/utils/load-static-resource";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ReactElement, useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import useRequiredFields, { RequiredFieldInterface } from "../../../../../hooks/use-required-fields";
-import { CommonStepFactoryPropsInterface } from "../../common-step-factory";
+import { ExecutionMinimalPropsInterface } from "../execution-minimal";
 
 /**
  * Props interface of {@link MicrosoftExecution}.
  */
-export type MicrosoftExecutionPropsInterface = Pick<CommonStepFactoryPropsInterface, "resource">
-    & IdentifiableComponentInterface;
+export type MicrosoftExecutionPropsInterface = ExecutionMinimalPropsInterface & IdentifiableComponentInterface;
 
 const MicrosoftExecution = ({
     resource,
@@ -65,7 +65,7 @@ const MicrosoftExecution = ({
 
     return (
         <Box display="flex" gap={ 1 } data-componentid={ componentId }>
-            <img src="https://www.svgrepo.com/show/448239/microsoft.svg" height="20" />
+            <img src={ loadStaticResource("assets/images/icons/microsoft.svg") } height="20" />
             <Typography variant="body1">{ t("flows:core.executions.names.microsoft") }</Typography>
         </Box>
     );

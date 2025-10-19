@@ -2,13 +2,27 @@
     {
         "resourceType": "TEMPLATE",
         "category": "STARTER",
+        "type": "GENERATE_WITH_AI",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Generate with AI",
+            "description": "Describe your password recovery flow and generate with AI.",
+            "image": "https://www.svgrepo.com/show/521818/robot.svg",
+            "showOnResourcePanel": false
+        },
+        "config": {}
+    },
+    {
+        "resourceType": "TEMPLATE",
+        "category": "STARTER",
         "type": "BLANK",
         "version": "0.1.0",
         "deprecated": false,
         "display": {
             "label": "Blank",
             "description": "Start a new flow from scratch",
-            "image": "https://www.svgrepo.com/show/533698/refresh-ccw-alt-3.svg",
+            "image": "assets/images/icons/refresh-ccw.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -72,7 +86,7 @@
                             "x": 790,
                             "y": 330
                         },
-                        "configs": {
+                        "config": {
                             "isAutoLoginEnabled": "false",
                             "isFlowCompletionNotificationEnabled": "false"
                         },
@@ -118,7 +132,7 @@
         "display": {
             "label": "Password Recovery with Magic Link",
             "description": "Password recovery using Magic Link",
-            "image": "https://www.svgrepo.com/show/532869/link-alt-1.svg",
+            "image": "assets/images/icons/link.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -315,7 +329,7 @@
                             "x": 1120,
                             "y": 420
                         },
-                        "configs": {
+                        "config": {
                             "isAutoLoginEnabled": "false",
                             "isFlowCompletionNotificationEnabled": "false"
                         },
@@ -361,7 +375,7 @@
         "display": {
             "label": "Password Recovery with Email OTP",
             "description": "Password recovery using Email OTP",
-            "image": "https://www.svgrepo.com/show/387455/email-down.svg",
+            "image": "assets/images/icons/email-down.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -510,6 +524,15 @@
                                                 },
                                                 "next": "{{PASSWORD_RESET_STEP_ID}}"
                                             }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "RESEND",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Resend OTP"
+                                            }
                                         }
                                     ]
                                 }
@@ -591,7 +614,7 @@
                             "x": 1555,
                             "y": 420
                         },
-                        "configs": {
+                        "config": {
                             "isAutoLoginEnabled": "false",
                             "isFlowCompletionNotificationEnabled": "false"
                         },
@@ -637,7 +660,7 @@
         "display": {
             "label": "Password Recovery with SMS OTP",
             "description": "Password recovery using SMS OTP",
-            "image": "https://www.svgrepo.com/show/455832/mobile-message.svg",
+            "image": "assets/images/icons/mobile-down.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -786,6 +809,15 @@
                                                 },
                                                 "next": "{{PASSWORD_RESET_STEP_ID}}"
                                             }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "RESEND",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Resend OTP"
+                                            }
                                         }
                                     ]
                                 }
@@ -867,7 +899,7 @@
                             "x": 1555,
                             "y": 420
                         },
-                        "configs": {
+                        "config": {
                             "isAutoLoginEnabled": "false",
                             "isFlowCompletionNotificationEnabled": "false"
                         },
@@ -913,7 +945,7 @@
         "display": {
             "label": "Password Recovery with SMS or Email OTP",
             "description": "Password recovery using either SMS or Email OTP",
-            "image": "https://www.svgrepo.com/show/532325/scan.svg",
+            "image": "assets/images/icons/scan.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -1123,6 +1155,15 @@
                                                 },
                                                 "next": "{{PASSWORD_RESET_STEP_ID}}"
                                             }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "RESEND",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Resend OTP"
+                                            }
                                         }
                                     ]
                                 }
@@ -1186,6 +1227,15 @@
                                                     "name": "EmailOTPExecutor"
                                                 },
                                                 "next": "{{PASSWORD_RESET_STEP_ID}}"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "RESEND",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Resend OTP"
                                             }
                                         }
                                     ]
@@ -1268,7 +1318,7 @@
                             "x": 1810,
                             "y": 475
                         },
-                        "configs": {
+                        "config": {
                             "isAutoLoginEnabled": "false",
                             "isFlowCompletionNotificationEnabled": "false"
                         },

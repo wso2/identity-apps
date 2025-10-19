@@ -1,0 +1,93 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+:root {
+    --wso2is-flow-builder-right-panel-background: var(--oxygen-palette-common-white);
+    --wso2is-flow-builder-right-panel-width: 350px;
+}
+
+.flow-builder-right-panel {
+    &.base {
+        position: absolute;
+        width: var(--wso2is-flow-builder-right-panel-width);
+        background: var(--wso2is-flow-builder-right-panel-background);
+        box-shadow: 3px 0px 20px 0 rgba(0, 0, 0, 0.06);
+        border-right: 1px solid #E8E8E8;
+        border-left: 1px solid #E8E8E8;
+
+        &.left-shadow {
+            box-shadow: -3px 0px 20px 0 rgba(0, 0, 0, 0.06);
+        }
+    }
+
+    &.header {
+        padding: var(--oxygen-spacing-1) var(--oxygen-spacing-2);
+        border-bottom: 1px solid var(--oxygen-palette-divider);
+    }
+
+    &.content {
+        padding: var(--oxygen-spacing-1) var(--oxygen-spacing-2);
+
+        &.full-height {
+            height: 100%;
+            overflow: auto;
+        }
+
+        &.no-padding {
+            padding: 0;
+        }
+    }
+
+    &.footer {
+        border-top: 1px solid var(--oxygen-palette-divider);
+        padding: var(--oxygen-spacing-2);
+    }
+
+    &.footer-secondary-action {
+        &.icon-button {
+            border-radius: var(--oxygen-shape-borderRadius);
+            height: 40px;
+            width: 40px;
+            min-width: 40px;
+        }
+    }
+
+    &.open {
+        width: var(--wso2is-flow-builder-right-panel-width);
+        transition: width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;
+        overflow: hidden;
+
+        .MuiDrawer-paper {
+            width: var(--wso2is-flow-builder-right-panel-width);
+            transition: width 225ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;
+            overflow: hidden;
+        }
+    }
+
+    &.close {
+        width: 0;
+        transition: width 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;
+        overflow: hidden;
+
+        .MuiDrawer-paper {
+            width: 0;
+            transition: width 195ms cubic-bezier(0.4, 0, 0.6, 1) 0ms;
+            overflow: hidden;
+        }
+    }
+}

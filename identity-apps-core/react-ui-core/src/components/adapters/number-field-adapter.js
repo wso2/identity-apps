@@ -39,9 +39,9 @@ const NumberFieldAdapter = ({ component, formState, formStateHandler, fieldError
     }, [ value ]);
 
     const handleFieldValidation = (value) => {
-        const isValid = validate({ identifier, required }, value);
+        const { errors, isValid } = validate({ identifier, required }, value);
 
-        fieldErrorHandler(identifier, isValid ? null : fieldErrors);
+        fieldErrorHandler(identifier, isValid ? null : errors);
     };
 
     const handleNumberChange = (e) => {

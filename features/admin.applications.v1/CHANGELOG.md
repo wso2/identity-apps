@@ -1,5 +1,190 @@
 # @wso2is/admin.applications.v1
 
+## 2.38.4
+
+### Patch Changes
+
+- [#9330](https://github.com/wso2/identity-apps/pull/9330) [`c06595150af8b9756f5d165c0b534dbef4341ce5`](https://github.com/wso2/identity-apps/commit/c06595150af8b9756f5d165c0b534dbef4341ce5) Thanks [@mmafrar](https://github.com/mmafrar)! - fix: Remove index files in `@wso2is/common.userstores.v1` package
+
+- Updated dependencies [[`83c0f480bd104adb25b519b6137c49d6642f6723`](https://github.com/wso2/identity-apps/commit/83c0f480bd104adb25b519b6137c49d6642f6723), [`c06595150af8b9756f5d165c0b534dbef4341ce5`](https://github.com/wso2/identity-apps/commit/c06595150af8b9756f5d165c0b534dbef4341ce5)]:
+  - @wso2is/admin.oidc-scopes.v1@2.26.1
+  - @wso2is/i18n@2.30.52
+  - @wso2is/admin.console-settings.v1@2.26.2
+  - @wso2is/admin.connections.v1@2.34.7
+  - @wso2is/admin.extensions.v1@2.40.8
+  - @wso2is/admin.userstores.v1@2.27.39
+  - @wso2is/admin.claims.v1@2.29.12
+  - @wso2is/admin.roles.v2@2.27.251
+  - @wso2is/admin.users.v1@2.36.56
+  - @wso2is/admin.core.v1@2.49.89
+  - @wso2is/admin.branding.v1@2.32.37
+  - @wso2is/admin.server-configurations.v1@2.35.103
+
+## 2.38.3
+
+### Patch Changes
+
+- [#9354](https://github.com/wso2/identity-apps/pull/9354) [`f36dd385de821cea707ad417ea9f3a97e3c5cd15`](https://github.com/wso2/identity-apps/commit/f36dd385de821cea707ad417ea9f3a97e3c5cd15) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix application protocol section update issue
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.88
+  - @wso2is/admin.roles.v2@2.27.250
+  - @wso2is/admin.branding.v1@2.32.36
+  - @wso2is/admin.server-configurations.v1@2.35.102
+  - @wso2is/admin.users.v1@2.36.55
+
+## 2.38.2
+
+### Patch Changes
+
+- [#9349](https://github.com/wso2/identity-apps/pull/9349) [`8f213eae3ccb1eb49e9fffe8bd9a2950cd07bbe2`](https://github.com/wso2/identity-apps/commit/8f213eae3ccb1eb49e9fffe8bd9a2950cd07bbe2) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Minor improvements to application script editor in read only mode
+
+- Updated dependencies [[`8f213eae3ccb1eb49e9fffe8bd9a2950cd07bbe2`](https://github.com/wso2/identity-apps/commit/8f213eae3ccb1eb49e9fffe8bd9a2950cd07bbe2)]:
+  - @wso2is/admin.login-flow-builder.v1@2.27.2
+  - @wso2is/i18n@2.30.50
+  - @wso2is/admin.core.v1@2.49.85
+  - @wso2is/admin.roles.v2@2.27.247
+  - @wso2is/admin.branding.v1@2.32.33
+  - @wso2is/admin.server-configurations.v1@2.35.99
+  - @wso2is/admin.users.v1@2.36.52
+
+## 2.38.1
+
+### Patch Changes
+
+- [#9344](https://github.com/wso2/identity-apps/pull/9344) [`5fa6d5ec7e48599bdd32d06d1b03be600d242b2d`](https://github.com/wso2/identity-apps/commit/5fa6d5ec7e48599bdd32d06d1b03be600d242b2d) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issue in SPA updating when client secret is not available
+
+* [#9345](https://github.com/wso2/identity-apps/pull/9345) [`52e6c4704314d7b168f91d559966356a1f159459`](https://github.com/wso2/identity-apps/commit/52e6c4704314d7b168f91d559966356a1f159459) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix API authorization RBAC logic
+
+* Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.84
+  - @wso2is/admin.roles.v2@2.27.246
+  - @wso2is/admin.branding.v1@2.32.32
+  - @wso2is/admin.server-configurations.v1@2.35.98
+  - @wso2is/admin.users.v1@2.36.51
+
+## 2.38.0
+
+### Minor Changes
+
+- [#9325](https://github.com/wso2/identity-apps/pull/9325) [`31559adf396bfc4482cf24542ba746e2995ab82b`](https://github.com/wso2/identity-apps/commit/31559adf396bfc4482cf24542ba746e2995ab82b) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Rename authenticationScript sub feature to applicationAuthenticationScript
+
+### Patch Changes
+
+- [#9325](https://github.com/wso2/identity-apps/pull/9325) [`dae5e73820feef56c679bd4981d8eda876416970`](https://github.com/wso2/identity-apps/commit/dae5e73820feef56c679bd4981d8eda876416970) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update sub feature names to match API resource collections
+
+- Updated dependencies [[`428be49ea1d8f245ca9217c126b4152e5caf1a9e`](https://github.com/wso2/identity-apps/commit/428be49ea1d8f245ca9217c126b4152e5caf1a9e), [`31559adf396bfc4482cf24542ba746e2995ab82b`](https://github.com/wso2/identity-apps/commit/31559adf396bfc4482cf24542ba746e2995ab82b), [`82e74eaa2f352274cf36b083bc0eafb26ff6bad7`](https://github.com/wso2/identity-apps/commit/82e74eaa2f352274cf36b083bc0eafb26ff6bad7)]:
+  - @wso2is/admin.users.v1@2.36.50
+  - @wso2is/i18n@2.30.49
+  - @wso2is/admin.login-flow-builder.v1@2.27.0
+  - @wso2is/admin.console-settings.v1@2.26.0
+  - @wso2is/admin.core.v1@2.49.83
+  - @wso2is/admin.roles.v2@2.27.245
+  - @wso2is/admin.branding.v1@2.32.31
+  - @wso2is/admin.server-configurations.v1@2.35.97
+
+## 2.37.18
+
+### Patch Changes
+
+- [#9298](https://github.com/wso2/identity-apps/pull/9298) [`b84d5d4cab5f0b2201cda15d30196df29af50c36`](https://github.com/wso2/identity-apps/commit/b84d5d4cab5f0b2201cda15d30196df29af50c36) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve RBAC in applications' client secret field
+
+- Updated dependencies [[`433d2a34ea4e7b69eaf45f96866f5acc2a70b1e9`](https://github.com/wso2/identity-apps/commit/433d2a34ea4e7b69eaf45f96866f5acc2a70b1e9), [`eb9eea6dacb6bc1fab9a305387d75714e18e3309`](https://github.com/wso2/identity-apps/commit/eb9eea6dacb6bc1fab9a305387d75714e18e3309), [`939bb25524a0a248cc482bd1022942583547ebc0`](https://github.com/wso2/identity-apps/commit/939bb25524a0a248cc482bd1022942583547ebc0), [`b0de4e126b5c4f49ce6793be66f8b5ec22102396`](https://github.com/wso2/identity-apps/commit/b0de4e126b5c4f49ce6793be66f8b5ec22102396), [`b84d5d4cab5f0b2201cda15d30196df29af50c36`](https://github.com/wso2/identity-apps/commit/b84d5d4cab5f0b2201cda15d30196df29af50c36)]:
+  - @wso2is/admin.server-configurations.v1@2.35.96
+  - @wso2is/admin.organizations.v1@2.27.8
+  - @wso2is/i18n@2.30.48
+  - @wso2is/admin.roles.v2@2.27.244
+  - @wso2is/core@2.12.3
+  - @wso2is/admin.branding.v1@2.32.30
+  - @wso2is/admin.core.v1@2.49.82
+  - @wso2is/admin.users.v1@2.36.49
+
+## 2.37.17
+
+### Patch Changes
+
+- [#9303](https://github.com/wso2/identity-apps/pull/9303) [`a9c5cf7f548bfc65b62b6c524d91f81cbf0f9857`](https://github.com/wso2/identity-apps/commit/a9c5cf7f548bfc65b62b6c524d91f81cbf0f9857) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Integrate Script update REST API to login flow section
+
+- Updated dependencies [[`e88528f09538a6eddcb630e34595becd5c4b546e`](https://github.com/wso2/identity-apps/commit/e88528f09538a6eddcb630e34595becd5c4b546e), [`a9c5cf7f548bfc65b62b6c524d91f81cbf0f9857`](https://github.com/wso2/identity-apps/commit/a9c5cf7f548bfc65b62b6c524d91f81cbf0f9857), [`a80c98397d5ad8dccce306eba62f7f91ccbf0aa9`](https://github.com/wso2/identity-apps/commit/a80c98397d5ad8dccce306eba62f7f91ccbf0aa9)]:
+  - @wso2is/admin.core.v1@2.49.78
+  - @wso2is/i18n@2.30.47
+  - @wso2is/admin.login-flow-builder.v1@2.26.7
+  - @wso2is/admin.users.v1@2.36.45
+  - @wso2is/admin.branding.v1@2.32.26
+  - @wso2is/admin.server-configurations.v1@2.35.92
+  - @wso2is/admin.roles.v2@2.27.240
+
+## 2.37.16
+
+### Patch Changes
+
+- [#9296](https://github.com/wso2/identity-apps/pull/9296) [`a9aefac582adc58d2b49d19989ef74bb25275330`](https://github.com/wso2/identity-apps/commit/a9aefac582adc58d2b49d19989ef74bb25275330) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Improve RBAC in applications' API authorize UI
+
+- Updated dependencies [[`a9aefac582adc58d2b49d19989ef74bb25275330`](https://github.com/wso2/identity-apps/commit/a9aefac582adc58d2b49d19989ef74bb25275330)]:
+  - @wso2is/i18n@2.30.46
+  - @wso2is/admin.core.v1@2.49.77
+  - @wso2is/admin.branding.v1@2.32.25
+  - @wso2is/admin.server-configurations.v1@2.35.91
+  - @wso2is/admin.users.v1@2.36.44
+  - @wso2is/admin.roles.v2@2.27.239
+
+## 2.37.15
+
+### Patch Changes
+
+- [#9279](https://github.com/wso2/identity-apps/pull/9279) [`4c0e8530931a622f1ba0650d1b8728d63b0fba13`](https://github.com/wso2/identity-apps/commit/4c0e8530931a622f1ba0650d1b8728d63b0fba13) Thanks [@mmafrar](https://github.com/mmafrar)! - fix: Remove index files in `@wso2is/admin.roles.v2` package
+
+- Updated dependencies [[`4c0e8530931a622f1ba0650d1b8728d63b0fba13`](https://github.com/wso2/identity-apps/commit/4c0e8530931a622f1ba0650d1b8728d63b0fba13)]:
+  - @wso2is/admin.console-settings.v1@2.25.228
+  - @wso2is/admin.connections.v1@2.34.5
+  - @wso2is/admin.roles.v2@2.27.237
+  - @wso2is/admin.users.v1@2.36.42
+  - @wso2is/admin.core.v1@2.49.75
+  - @wso2is/admin.branding.v1@2.32.23
+  - @wso2is/admin.server-configurations.v1@2.35.89
+
+## 2.37.14
+
+### Patch Changes
+
+- [#9276](https://github.com/wso2/identity-apps/pull/9276) [`ecdc2fbe1fa42000e48a20de01ce91010aa332e8`](https://github.com/wso2/identity-apps/commit/ecdc2fbe1fa42000e48a20de01ce91010aa332e8) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix scope issue in DCR feature
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.74
+  - @wso2is/admin.roles.v2@2.27.236
+  - @wso2is/admin.branding.v1@2.32.22
+  - @wso2is/admin.server-configurations.v1@2.35.88
+  - @wso2is/admin.users.v1@2.36.41
+
+## 2.37.13
+
+### Patch Changes
+
+- [#9257](https://github.com/wso2/identity-apps/pull/9257) [`4f5029fcbe593a34a3af5f5bc29320b458156c2e`](https://github.com/wso2/identity-apps/commit/4f5029fcbe593a34a3af5f5bc29320b458156c2e) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Update wording in application role sharing UI
+
+- Updated dependencies [[`4f5029fcbe593a34a3af5f5bc29320b458156c2e`](https://github.com/wso2/identity-apps/commit/4f5029fcbe593a34a3af5f5bc29320b458156c2e)]:
+  - @wso2is/i18n@2.30.42
+  - @wso2is/admin.core.v1@2.49.72
+  - @wso2is/admin.roles.v2@2.27.234
+  - @wso2is/admin.branding.v1@2.32.20
+  - @wso2is/admin.server-configurations.v1@2.35.86
+  - @wso2is/admin.users.v1@2.36.39
+
+## 2.37.12
+
+### Patch Changes
+
+- [#9231](https://github.com/wso2/identity-apps/pull/9231) [`f110cc79c9d9c558c165d2e81ded9b5eba33f8e8`](https://github.com/wso2/identity-apps/commit/f110cc79c9d9c558c165d2e81ded9b5eba33f8e8) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Fix authorized redirect URL display issue for mobile deep links
+
+- Updated dependencies [[`228c95fc49c0af6c336fac509a7e061a14a92145`](https://github.com/wso2/identity-apps/commit/228c95fc49c0af6c336fac509a7e061a14a92145), [`c7ecb39111237521f9fff348cc23d84abb386ccc`](https://github.com/wso2/identity-apps/commit/c7ecb39111237521f9fff348cc23d84abb386ccc)]:
+  - @wso2is/admin.claims.v1@2.29.11
+  - @wso2is/i18n@2.30.36
+  - @wso2is/admin.core.v1@2.49.66
+  - @wso2is/admin.roles.v2@2.27.228
+  - @wso2is/admin.branding.v1@2.32.14
+  - @wso2is/admin.server-configurations.v1@2.35.80
+  - @wso2is/admin.users.v1@2.36.33
+
 ## 2.37.11
 
 ### Patch Changes

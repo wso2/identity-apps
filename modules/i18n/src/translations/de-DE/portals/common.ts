@@ -69,6 +69,24 @@ export const common: CommonNS = {
                     "message": "Da ist etwas schiefgelaufen"
                 }
             },
+            "statusUpdate": {
+                "approved": {
+                    "description": "Der Genehmigungsantrag wurde genehmigt.",
+                    "message": "Genehmigungsantrag genehmigt"
+                },
+                "claimed": {
+                    "description": "Der Genehmigungsantrag wurde beansprucht.",
+                    "message": "Genehmigungsantrag beansprucht"
+                },
+                "rejected": {
+                    "description": "Der Genehmigungsantrag wurde abgelehnt.",
+                    "message": "Genehmigungsantrag abgelehnt"
+                },
+                "released": {
+                    "description": "Der Genehmigungsantrag wurde freigegeben.",
+                    "message": "Genehmigungsantrag freigegeben"
+                }
+            },
             "updatePendingApprovals": {
                 "error": {
                     "description": "{{description}}",
@@ -96,20 +114,12 @@ export const common: CommonNS = {
         "placeholders": {
             "emptyApprovalFilter": {
                 "action": "Alle anzeigen",
-                "subtitles": {
-                    0: "Derzeit gibt es keine Genehmigungen im Status {{status}}.",
-                    1: "Bitte überprüfen Sie, ob Sie Aufgaben im Status {{status}} haben, um",
-                    2: "sie hier anzuzeigen."
-                },
+                "subtitle": "Derzeit gibt es keine Genehmigungen im Status {{status}}.",
                 "title": "Keine Ergebnisse gefunden"
             },
             "emptyApprovalList": {
                 "action": "",
-                "subtitles": {
-                    0: "Derzeit gibt es keine Genehmigungen zur Überprüfung.",
-                    1: "Bitte überprüfen Sie, ob Sie einen Workflow hinzugefügt haben, um die Vorgänge im System zu steuern.",
-                    2: ""
-                },
+                "subtitle": "Derzeit gibt es keine Genehmigungen zur Überprüfung.",
                 "title": "Keine Genehmigungen"
             },
             "emptySearchResults": {
@@ -165,6 +175,7 @@ export const common: CommonNS = {
     "confirm": "Bestätigen",
     "contains": "enthält",
     "continue": "Fortsetzen",
+    "copied": "Kopiert!",
     "copyToClipboard": "In die Zwischenablage kopieren",
     "create": "Erstellen",
     "createdOn": " Angelegt am ",
@@ -240,6 +251,7 @@ export const common: CommonNS = {
     "operations": "Betrieb",
     "organizationName": "{{orgName}} Organisation",
     "overview": "Überblick",
+    "parameter": "Parameter",
     "pending": "Ausstehend",
     "personalInfo": "Persönliche Informationen",
     "pin": "PIN",
@@ -264,6 +276,7 @@ export const common: CommonNS = {
     "reserved": "Reserviert",
     "resetFilters": "Filter zurücksetzen",
     "retry": "Wiederholen",
+    "revert": "Rückgängig machen",
     "revoke": "Widerrufen",
     "revokeAll": "Alle widerrufen",
     "samples": "Proben",

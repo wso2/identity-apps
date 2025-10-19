@@ -534,7 +534,7 @@ export const AppUtils: AppUtilsInterface = (function() {
          * @returns Resolved URLs.
          */
         resolveURLs: function() {
-            const tenantPath: string = this.getTenantPath(!_config.tenantContext?.requireSuperTenantInUrls, true);
+            const tenantPath: string = this.getTenantPath(_config.tenantContext?.requireSuperTenantInUrls, true);
 
             return {
                 authorizeEndpointURL: _config.idpConfigs

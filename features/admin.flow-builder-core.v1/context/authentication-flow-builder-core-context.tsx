@@ -19,9 +19,10 @@
 import { PreviewScreenType } from "@wso2is/common.branding.v1/models/branding-preferences";
 import { Claim } from "@wso2is/core/models";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
+import { EdgeTypes, NodeTypes } from "@xyflow/react";
 import { Context, Dispatch, FunctionComponent, ReactNode, SetStateAction, createContext } from "react";
 import { Base } from "../models/base";
-import { FlowCompletionConfigsInterface } from "../models/flows";
+import { FlowCompletionConfigsInterface, FlowsHistoryInterface } from "../models/flows";
 import { MetadataInterface } from "../models/metadata";
 import { Resource } from "../models/resources";
 
@@ -57,6 +58,10 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      * Indicates whether the element properties panel is open.
      */
     isResourcePropertiesPanelOpen: boolean;
+    /**
+     * Indicates whether the version history panel is open.
+     */
+    isVersionHistoryPanelOpen: boolean;
     /**
      * The factory for creating components.
      */
@@ -99,6 +104,10 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      * @param isOpen - Boolean indicating whether the element properties panel should be open.
      */
     setIsOpenResourcePropertiesPanel: Dispatch<SetStateAction<boolean>>;
+    /**
+     * Function to set the state of the version history panel.
+     */
+    setIsVersionHistoryPanelOpen: Dispatch<SetStateAction<boolean>>;
     /**
      * Sets the selected attributes for the flow.
      */
@@ -166,6 +175,68 @@ export interface AuthenticationFlowBuilderCoreContextProps {
      * Indicates whether the flow metadata is still loading.
      */
     isFlowMetadataLoading?: boolean;
+    /**
+     * Indicates whether local auto-save is enabled.
+     */
+    isAutoSaveLocalHistoryEnabled?: boolean;
+    /**
+     * Indicates whether an local auto-save operation is in progress.
+     */
+    isAutoSavingLocalHistory?: boolean;
+    /**
+     * The timestamp of the last successful local auto-save.
+     */
+    lastLocalHistoryAutoSaveTimestamp?: number | null;
+    /**
+     * Manually trigger an local auto-save operation.
+     */
+    triggerLocalHistoryAutoSave?: () => Promise<boolean>;
+    /**
+     * Enable or disable locally saved auto-save functionality.
+     */
+    setLocalHistoryAutoSaveEnabled?: (enabled: boolean) => void;
+    /**
+     * Check if there are locally saved drafts for this flow type.
+     */
+    hasLocalHistory?: boolean;
+    /**
+     * Clear all locally saved drafts for this flow type.
+     */
+    clearLocalHistory?: () => Promise<boolean>;
+    /**
+     * Restore flow from a specific history item.
+     */
+    restoreFromHistory?: (historyItem: FlowsHistoryInterface) => Promise<boolean>;
+    /**
+     * All locally saved drafts for the current flow type.
+     */
+    localHistory?: FlowsHistoryInterface[];
+    /**
+     * Node types active in the flow.
+     */
+    flowNodeTypes: NodeTypes;
+    /**
+     * Edge types active in the flow.
+     */
+    flowEdgeTypes: EdgeTypes;
+    /**
+     * Function to set the node types active in the flow.
+     */
+    setFlowNodeTypes: Dispatch<SetStateAction<NodeTypes>>;
+    /**
+     * Function to set the edge types active in the flow.
+     */
+    setFlowEdgeTypes: Dispatch<SetStateAction<EdgeTypes>>;
+    /**
+     * Indicates whether to refetch the flow data.
+     */
+    refetchFlow: boolean;
+    /**
+     * Sets the refetchFlow state.
+     *
+     * @param value - boolean value to set the refetchFlow state.
+     */
+    setRefetchFlow: (value: boolean) => void;
 }
 
 /**
@@ -177,31 +248,48 @@ const AuthenticationFlowBuilderCoreContext: Context<AuthenticationFlowBuilderCor
     {
         ElementFactory: () => null,
         ResourceProperties: () => null,
+        clearLocalHistory: () => Promise.resolve(false),
         flowCompletionConfigs: {},
+        flowEdgeTypes: {},
+        flowNodeTypes: {},
+        hasLocalHistory: false,
         i18nText: null,
         i18nTextLoading: false,
+        isAutoSaveLocalHistoryEnabled: true,
+        isAutoSavingLocalHistory: false,
         isBrandingEnabled: false,
         isCustomI18nKey: () => false,
         isFlowMetadataLoading: false,
         isResourcePanelOpen: true,
         isResourcePropertiesPanelOpen: false,
+        isVersionHistoryPanelOpen: false,
         language: "",
         lastInteractedResource: null,
         lastInteractedStepId: "",
+        lastLocalHistoryAutoSaveTimestamp: null,
+        localHistory: [],
         metadata: null,
         onResourceDropOnCanvas: () => {},
         primaryI18nScreen: PreviewScreenType.COMMON,
+        refetchFlow: false,
         resourcePropertiesPanelHeading: null,
+        restoreFromHistory: () => Promise.resolve(false),
         selectedAttributes: {},
         setFlowCompletionConfigs: () => {},
+        setFlowEdgeTypes: () => {},
+        setFlowNodeTypes: () => {},
         setIsOpenResourcePropertiesPanel: () => {},
         setIsResourcePanelOpen: () => {},
+        setIsVersionHistoryPanelOpen: () => {},
         setLanguage: () => {},
         setLastInteractedResource: () => {},
         setLastInteractedStepId: () => {},
+        setLocalHistoryAutoSaveEnabled: () => {},
+        setRefetchFlow: () => {},
         setResourcePropertiesPanelHeading: () => {},
         setSelectedAttributes: () => {},
-        supportedLocales: {}
+        supportedLocales: {},
+        triggerLocalHistoryAutoSave: () => Promise.resolve(false)
     }
 );
 

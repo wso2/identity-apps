@@ -173,7 +173,7 @@ const EditSelfOrganizationForm: FunctionComponent<EditSelfOrganizationFormProps>
             keepDirtyOnReinitialize={ true }
             onSubmit={ handleSubmit }
             validate={ handleValidate }
-            render={ ({ handleSubmit }: FormRenderProps) => {
+            render={ ({ handleSubmit, dirty }: FormRenderProps) => {
                 return (
                     <form
                         onSubmit={ handleSubmit }
@@ -243,6 +243,29 @@ const EditSelfOrganizationForm: FunctionComponent<EditSelfOrganizationFormProps>
                             label={ t("tenants:editSelfOrganization.form.fields.organizationHandle.label") }
                             component={ TextFieldAdapter }
                             readOnly={ true }
+                            InputProps={ {
+                                endAdornment: (
+                                    <Tooltip
+                                        title={ t("tenants:editSelfOrganization.form.fields" +
+                                            ".organizationHandle.hint") }
+                                    >
+                                        <div>
+                                            <IconButton
+                                                aria-label="Copy Organization Handle"
+                                                className="copy-button-adornment"
+                                                onClick={ async () => {
+                                                    await CommonUtils.copyTextToClipboard(organization.orgHandle);
+                                                } }
+                                                edge="end"
+                                                data-componentid={ `${componentId}-org-handle-copy-button` }
+                                            >
+                                                <CopyIcon size={ 12 } />
+                                            </IconButton>
+                                        </div>
+                                    </Tooltip>
+                                ),
+                                readOnly: true
+                            } }
                         />
 
                         <FinalFormField
@@ -280,6 +303,7 @@ const EditSelfOrganizationForm: FunctionComponent<EditSelfOrganizationFormProps>
                                 variant="contained"
                                 color="primary"
                                 type="submit"
+                                disabled={ !dirty }
                             >
                                 { t("tenants:editSelfOrganization.actions.save.label") }
                             </Button>)

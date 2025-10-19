@@ -294,7 +294,11 @@ const useConfirmPasswordField = (): void => {
                                     propertyName = propertyName.substring(7).toLowerCase();
                                 }
 
-                                set(component.components[passwordFieldIndex + 1], `config.${propertyName}`, newValue);
+                                if (component.components[passwordFieldIndex + 1]?.config.identifier ===
+                                    FlowBuilderElementConstants.CONFIRM_PASSWORD_IDENTIFIER) {
+                                    set(component.components[passwordFieldIndex + 1], `config.${propertyName}`,
+                                        newValue);
+                                }
 
                                 return false;
                             }

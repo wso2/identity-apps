@@ -69,6 +69,24 @@ export const common: CommonNS = {
                     message: "ஏதோ தவறு நடந்துவிட்டது"
                 }
             },
+            statusUpdate: {
+                approved: {
+                    description: "அனுமதி கோரிக்கை அனுமதிக்கப்பட்டது.",
+                    message: "அனுமதி கோரிக்கை அனுமதிக்கப்பட்டது"
+                },
+                claimed: {
+                    description: "அனுமதி கோரிக்கை கோரப்பட்டது.",
+                    message: "அனுமதி கோரிக்கை கோரப்பட்டது"
+                },
+                rejected: {
+                    description: "அனுமதி கோரிக்கை நிராகரிக்கப்பட்டது.",
+                    message: "அனுமதி கோரிக்கை நிராகரிக்கப்பட்டது"
+                },
+                released: {
+                    description: "அனுமதி கோரிக்கை வெளியிடப்பட்டது.",
+                    message: "அனுமதி கோரிக்கை வெளியிடப்பட்டது"
+                }
+            },
             updatePendingApprovals: {
                 error: {
                     description: "{{description}}",
@@ -96,20 +114,12 @@ export const common: CommonNS = {
         placeholders: {
             emptyApprovalFilter: {
                 action: "அனைத்தையும் காண்க",
-                subtitles: {
-                    0: "தற்காலிகமாக {{status}} நிலைமையில் எந்த அனுமதிகளும் இல்லை.",
-                    1: "தயவுசெய்து {{status}} நிலைமையில் உங்களிடம் எந்த பணிகளும் உள்ளதா என்பதை சரிபார்க்கவும்",
-                    2: "அவற்றைப் இங்கே காண்க."
-                },
+                subtitle: "{{status}} நிலைமையில் எந்த அனுமதிகளும் இல்லை.",
                 title: "முடிவுகள் எதுவும் கிடைக்கவில்லை"
             },
             emptyApprovalList: {
                 action: "",
-                subtitles: {
-                    0: "தற்காலிகமாக மதிப்பீடு செய்ய எந்த அனுமதிகளும் இல்லை.",
-                    1: "தயவுசெய்து அமைப்பில் செயல்பாடுகளை கட்டுப்படுத்த ஒரு வேலைப்பதிவு சேர்த்துள்ளீர்களா என்பதை சரிபார்க்கவும்.",
-                    2: ""
-                },
+                subtitle: "தற்போது மதிப்பீடு செய்ய எந்த அனுமதிகளும் இல்லை.",
                 title: "அனுமதிகள் இல்லை"
             },
             emptySearchResults: {
@@ -166,6 +176,7 @@ export const common: CommonNS = {
     confirm: "உறுதிப்படுத்தவும்",
     contains: "கொண்டுள்ளது",
     continue: "தொடர்",
+    copied: "நகலெடுக்கப்பட்டது!",
     copyToClipboard: "கிளிப்போர்டுக்கு நகலெடு",
     create: "உருவாக்கு",
     createdOn: "உருவாக்கப்பட்ட தினம்",
@@ -241,6 +252,7 @@ export const common: CommonNS = {
     operations: "செயற்பாடுகள்",
     organizationName: "{{orgName}} நிறுவனம்",
     overview: "கண்ணோட்டம்",
+    parameter: "பரிமாணம்",
     pending: "நிலுவையில்",
     personalInfo: "பயனர் விபரம்",
     pin: "பொருத்து",
@@ -265,6 +277,7 @@ export const common: CommonNS = {
     reserved: "ஒதுக்கப்பட்டவை",
     resetFilters: "வடிகட்டல்களை மீட்டடமை",
     retry: "மீண்டும் முயற்சி செய்",
+    revert: "மீண்டும் அமைக்க",
     revoke: "நீக்கு",
     revokeAll: "அனைத்தையும் நீக்கு",
     samples: "மாதிரிகள்",

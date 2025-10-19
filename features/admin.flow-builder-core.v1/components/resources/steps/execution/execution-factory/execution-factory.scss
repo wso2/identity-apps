@@ -26,4 +26,10 @@
             filter: invert(100%);
         }
     }
+
+    &.apple {
+        img {
+            color: white;
+        }
+    }
 }

@@ -17,9 +17,11 @@
  */
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Controls, Edge, Node, NodeTypes, ReactFlow, ReactFlowProps } from "@xyflow/react";
-import React, { FC, FunctionComponent, ReactElement, useMemo } from "react";
+import { Controls, Edge, EdgeTypes, Node, NodeTypes, ReactFlow, ReactFlowProps } from "@xyflow/react";
+import isEmpty from "lodash-es/isEmpty";
+import React, { FC, FunctionComponent, ReactElement, useEffect, useMemo } from "react";
 import VisualFlowConstants from "../../constants/visual-flow-constants";
+import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import { Resources } from "../../models/resources";
 import generateResourceId from "../../utils/generate-resource-id";
 import getKnownEdgeTypes from "../../utils/get-known-edge-types";
@@ -81,6 +83,8 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
     onNodesDelete,
     onEdgesDelete
 }: VisualFlowPropsInterface): ReactElement => {
+    const { setFlowNodeTypes, flowNodeTypes, setFlowEdgeTypes, flowEdgeTypes } = useAuthenticationFlowBuilderCore();
+
     const edgeTypes: { [key: string]: FC<Edge> } = useMemo(() => {
         return {
             "base-edge": BaseEdge,
@@ -88,6 +92,22 @@ const VisualFlow: FunctionComponent<VisualFlowPropsInterface> = ({
             ...customEdgeTypes
         };
     }, []);
+
+    useEffect(() => {
+        if (!isEmpty(flowNodeTypes)) {
+            return;
+        }
+
+        setFlowNodeTypes(nodeTypes ?? {});
+    }, [ nodeTypes, flowNodeTypes, setFlowNodeTypes ]);
+
+    useEffect(() => {
+        if (!isEmpty(flowEdgeTypes)) {
+            return;
+        }
+
+        setFlowEdgeTypes(edgeTypes as EdgeTypes ?? {});
+    }, [ edgeTypes, flowEdgeTypes, setFlowEdgeTypes ]);
 
     return (
         <>

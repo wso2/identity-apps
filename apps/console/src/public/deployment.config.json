@@ -266,6 +266,43 @@
         "requireSuperTenantInUrls": false
     },
     "ui": {
+        "actions": {
+            "http_client": {
+                "connection_pool_size": "20",
+                "connection_timeout": "2000",
+                "read_timeout": "5000",
+                "request_timeout": "2000",
+                "retry_count": "2"
+            },
+            "maximum_actions_per_action_type": "1",
+            "types": {
+                "authentication": {
+                    "default_userstore": "PRIMARY",
+                    "enable": true,
+                    "version": {
+                        "latest": "v1"
+                    }
+                },
+                "pre_issue_access_token": {
+                    "enable": true,
+                    "version": {
+                        "latest": "v1"
+                    }
+                },
+                "pre_update_password": {
+                    "enable_in_registration_flows": true,
+                    "version": {
+                        "latest": "v1"
+                    }
+                },
+                "pre_update_profile": {
+                    "enable": true,
+                    "version": {
+                        "latest": "v1"
+                    }
+                }
+            }
+        },
         "administratorRoleDisplayName": "Administrator",
         "announcements": [],
         "appCopyright": "${copyright} ${year} WSO2 LLC.",
@@ -393,7 +430,7 @@
                 }
             },
             "ai": {
-                "disabledFeatures": [ "ai.flows.types.list.registration" ],
+                "disabledFeatures": [],
                 "enabled": false,
                 "featureFlags": [
                     {
@@ -509,6 +546,58 @@
                     "update": [
                         "internal_application_mgt_update"
                     ]
+                },
+                "subFeatures": {
+                    "applicationAuthenticationScript": {
+                        "disabledFeatures": [],
+                        "enabled": true,
+                        "featureFlags": [],
+                        "scopes": {
+                            "create": [],
+                            "delete": [],
+                            "feature": [],
+                            "read": [],
+                            "update": [
+                                "internal_application_script_update"
+                            ]
+                        }
+                    },
+                    "applicationBusinessAPIAuthorization": {
+                        "disabledFeatures": [],
+                        "enabled": true,
+                        "featureFlags": [],
+                        "scopes": {
+                            "create": [],
+                            "delete": [],
+                            "feature": [],
+                            "read": [],
+                            "update": [ "internal_application_business_api_update" ]
+                        }
+                    },
+                    "applicationClientSecretManagement": {
+                        "disabledFeatures": [],
+                        "enabled": true,
+                        "featureFlags": [],
+                        "scopes": {
+                            "create": [ "internal_application_mgt_client_secret_create" ],
+                            "delete": [],
+                            "feature": [],
+                            "read": [ "internal_application_mgt_client_secret_view" ],
+                            "update": []
+                        }
+                    },
+                    "applicationInternalAPIAuthorization": {
+                        "disabledFeatures": [],
+                        "enabled": true,
+                        "featureFlags": [],
+                        "scopes": {
+                            "create": [],
+                            "delete": [],
+                            "feature": [],
+                            "read": [],
+                            "update": [ "internal_application_internal_api_update" ]
+                        }
+                    }
                 }
             },
             "approvalWorkflows": {
@@ -541,7 +630,7 @@
             },
             "approvals": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "feature": [
@@ -733,6 +822,24 @@
                     "update": [
                         "internal_application_mgt_update",
                         "internal_user_mgt_update"
+                    ]
+                }
+            },
+            "dynamicClientRegistration": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [
+                        "console:applications"
+                    ],
+                    "read": [
+                        "internal_config_view"
+                    ],
+                    "update": [
+                        "internal_config_update"
                     ]
                 }
             },
@@ -1316,7 +1423,7 @@
             },
             "roleAssignments": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [],
                 "scopes": {
                     "create": [],
@@ -1568,11 +1675,36 @@
                     "update": [
                         "internal_role_mgt_update"
                     ]
+                },
+                "subFeatures": {
+                    "roleAssignments": {
+                        "disabledFeatures": [],
+                        "enabled": true,
+                        "featureFlags": [],
+                        "scopes": {
+                            "update": [
+                                "internal_role_mgt_groups_update",
+                                "internal_role_mgt_update",
+                                "internal_role_mgt_users_update"
+                            ]
+                        }
+                    },
+                    "rolePermissionAssignments": {
+                        "disabledFeatures": [],
+                        "enabled": true,
+                        "featureFlags": [],
+                        "scopes": {
+                            "update": [
+                                "internal_role_mgt_permission_update",
+                                "internal_role_mgt_update"
+                            ]
+                        }
+                    }
                 }
             },
             "userRolesV3": {
                 "disabledFeatures": [],
-                "enabled": true,
+                "enabled": false,
                 "featureFlags": [
                     {
                         "feature": "userRoles",
@@ -1813,7 +1945,7 @@
         "privacyPolicyConfigs": {},
         "productName": "WSO2 Identity Server",
         "productVersionConfig": {
-            "productVersion": ""
+            "productVersion": "7.2.0"
         },
         "routes": {
             "organizationEnabledRoutes": {
@@ -1861,6 +1993,13 @@
         "theme": {
             "name": "wso2is"
         },
-        "useRoleClaimAsGroupClaim": false
+        "useRoleClaimAsGroupClaim": false,
+        "userSurveyBanner": {
+            "buttonText": "Take the 5-Minute Survey",
+            "description": "We value your feedback on WSO2 Identity Server. Complete the survey to help us improve your experience, and receive a <b>$25 Amazon voucher</b> as a token of our appreciation. Survey closes on 20th September, 2025",
+            "enabled": false,
+            "title": "Shape the Future of Identity Server!",
+            "url": "https://docs.google.com/forms/d/e/1FAIpQLSe6Dr_8QmHQmPI1zj07aYVSDPzNbay7Ss3SMsEBTCCaXLPnUw/viewform"
+        }
     }
 }

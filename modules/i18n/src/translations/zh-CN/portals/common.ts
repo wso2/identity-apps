@@ -69,6 +69,24 @@ export const common: CommonNS = {
                     "message": "出现了问题"
                 }
             },
+            "statusUpdate": {
+                "approved": {
+                    "description": "批准请求已被批准。",
+                    "message": "批准请求已批准"
+                },
+                "claimed": {
+                    "description": "批准请求已被认领。",
+                    "message": "批准请求已认领"
+                },
+                "rejected": {
+                    "description": "批准请求已被拒绝。",
+                    "message": "批准请求已拒绝"
+                },
+                "released": {
+                    "description": "批准请求已被释放。",
+                    "message": "批准请求已释放"
+                }
+            },
             "updatePendingApprovals": {
                 "error": {
                     "description": "{{description}}",
@@ -96,20 +114,12 @@ export const common: CommonNS = {
         "placeholders": {
             "emptyApprovalFilter": {
                 "action": "查看全部",
-                "subtitles": {
-                    0: "当前没有处于 {{status}} 状态的批准。",
-                    1: "请检查您是否有任何处于 {{status}} 状态的任务",
-                    2: "在这里查看它们。"
-                },
+                "subtitle": "当前没有处于 {{status}} 状态的批准。",
                 "title": "未找到结果"
             },
             "emptyApprovalList": {
                 "action": "",
-                "subtitles": {
-                    0: "当前没有待审核的批准。",
-                    1: "请检查您是否已添加工作流以控制系统中的操作。",
-                    2: ""
-                },
+                "subtitle": "当前没有待审核的批准。",
                 "title": "没有批准"
             },
             "emptySearchResults": {
@@ -165,6 +175,7 @@ export const common: CommonNS = {
     "confirm": "确认",
     "contains": "包含",
     "continue": "继续",
+    "copied": "复制了",
     "copyToClipboard": "复制到剪贴板",
     "create": "创造",
     "createdOn": "创建于",
@@ -240,6 +251,7 @@ export const common: CommonNS = {
     "operations": "操作",
     "organizationName": "{{orgName}} 组织",
     "overview": "概述",
+    "parameter": "参数",
     "pending": "待处理",
     "personalInfo": "个人信息",
     "pin": "别针",
@@ -264,6 +276,7 @@ export const common: CommonNS = {
     "reserved": "预订的",
     "resetFilters": "重置过滤器",
     "retry": "重试",
+    "revert": "恢复",
     "revoke": "撤销",
     "revokeAll": "撤销所有",
     "samples": "样品",

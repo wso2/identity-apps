@@ -23,6 +23,7 @@ import ButtonFieldAdapter from "./adapters/button-field-adapter";
 import CaptchaWidgetAdapter from "./adapters/captcha-widget-adapter";
 import ImageFieldAdapter from "./adapters/image-field-adapter";
 import InputFieldAdapter from "./adapters/input-field-adapter";
+import ResendButtonAdapter from "./adapters/resend-button-adapter";
 import RichTextAdapter from "./adapters/rich-text-field-adapter";
 import TypographyAdapter from "./adapters/typography-field-adapter";
 import DividerAdapter from "./divider";
@@ -35,6 +36,8 @@ const Field = ({
     flowActionHandler,
     recaptchaRef
 }) => {
+
+    const isDisabled = formState &&Object.keys(formState.errors).length > 0;
 
     switch (component.type) {
         case "TYPOGRAPHY":
@@ -51,13 +54,21 @@ const Field = ({
                 />
             );
         case "BUTTON":
-            return <ButtonFieldAdapter component={ component } handleButtonAction={ flowActionHandler } />;
+            return (
+                <ButtonFieldAdapter
+                    component={ component }
+                    handleButtonAction={ flowActionHandler }
+                    isDisabled={ isDisabled }
+                />
+            );
         case "DIVIDER":
             return <DividerAdapter component={ component } />;
         case "CAPTCHA":
             return <CaptchaWidgetAdapter component={ component } ref={ recaptchaRef } />;
         case "IMAGE":
             return <ImageFieldAdapter component={ component } />;
+        case "RESEND":
+            return  <ResendButtonAdapter component={ component } handleButtonAction={ flowActionHandler } />;
         default:
             return (
                 <InputFieldAdapter

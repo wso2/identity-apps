@@ -121,6 +121,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             extensions: "",
             externalClaims: "",
             fidoConfigs: "",
+            flow: "",
             flowMeta: "",
             getSecret: "",
             getSecretList: "",
@@ -204,6 +205,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
         },
         i18n: null,
         ui: {
+            actions: null,
             adminNotice: {
                 enabled: undefined,
                 plannedRollOutDate: undefined
@@ -323,6 +325,13 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 name: "",
                 path: "",
                 styleSheets: null
+            },
+            userSurveyBanner: {
+                buttonText: "",
+                description: "",
+                enabled: false,
+                title: "",
+                url: ""
             }
         }
     };

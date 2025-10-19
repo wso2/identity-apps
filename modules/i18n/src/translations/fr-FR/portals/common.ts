@@ -69,6 +69,24 @@ export const common: CommonNS = {
                     message: "Une erreur s'est produite"
                 }
             },
+            statusUpdate: {
+                approved: {
+                    description: "La demande d'approbation a été approuvée.",
+                    message: "Demande d'approbation approuvée"
+                },
+                claimed: {
+                    description: "La demande d'approbation a été réclamée.",
+                    message: "Demande d'approbation réclamée"
+                },
+                rejected: {
+                    description: "La demande d'approbation a été rejetée.",
+                    message: "Demande d'approbation rejetée"
+                },
+                released: {
+                    description: "La demande d'approbation a été libérée.",
+                    message: "Demande d'approbation libérée"
+                }
+            },
             updatePendingApprovals: {
                 error: {
                     description: "{{description}}",
@@ -96,20 +114,12 @@ export const common: CommonNS = {
         placeholders: {
             emptyApprovalFilter: {
                 action: "Voir tout",
-                subtitles: {
-                    0: "Il n'y a actuellement aucune approbation dans l'état {{status}}.",
-                    1: "Veuillez vérifier si vous avez des tâches dans l'état {{status}} pour",
-                    2: "les voir ici."
-                },
+                subtitle: "Il n'y a actuellement aucune approbation dans l'état {{status}}.",
                 title: "Aucun résultat trouvé"
             },
             emptyApprovalList: {
                 action: "",
-                subtitles: {
-                    0: "Il n'y a actuellement aucune approbation à examiner.",
-                    1: "Veuillez vérifier si vous avez ajouté un flux de travail pour contrôler les opérations dans le système.",
-                    2: ""
-                },
+                subtitle: "Il n'y a actuellement aucune approbation à examiner.",
                 title: "Aucune approbation"
             },
             emptySearchResults: {
@@ -166,6 +176,7 @@ export const common: CommonNS = {
     confirm: "Confirmer",
     contains: "Contient",
     continue: "Continuer",
+    copied: "Copié!",
     copyToClipboard: "Copier dans le presse-papier",
     create: "Créer",
     createdOn: "Créé le",
@@ -241,6 +252,7 @@ export const common: CommonNS = {
     operations: "Opérations",
     organizationName: "{{orgName}} organisation",
     overview: "Vue d'ensemble",
+    parameter: "Paramètre",
     pending: "En attente",
     personalInfo: "Informations personnelles",
     pin: "Épingler",
@@ -265,6 +277,7 @@ export const common: CommonNS = {
     reserved: "Réservé",
     resetFilters: "Réinitialiser les filtres",
     retry: "Réessayer",
+    revert: "Rétablir",
     revoke: "Révoquer",
     revokeAll: "Tout révoquer",
     samples: "Exemples",

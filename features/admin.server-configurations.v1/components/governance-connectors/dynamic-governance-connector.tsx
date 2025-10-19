@@ -49,14 +49,14 @@ import {
 import { useDispatch } from "react-redux";
 import { Icon } from "semantic-ui-react";
 import DynamicConnectorForm from "./dynamic-connector-form";
-import { updateGovernanceConnector } from "../../api";
-import { ServerConfigurationsConstants } from "../../constants";
+import { updateGovernanceConnector } from "../../api/governance-connectors";
+import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
     UpdateGovernanceConnectorConfigInterface
-} from "../../models";
-import { GovernanceConnectorUtils } from "../../utils";
+} from "../../models/governance-connectors";
+import { GovernanceConnectorUtils } from "../../utils/governance-connector-utils";
 
 /**
  * Prop types for the realm configurations component.

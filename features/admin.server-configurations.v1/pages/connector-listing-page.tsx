@@ -34,15 +34,15 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Placeholder, Ref } from "semantic-ui-react";
-import { getConnectorCategories, getConnectorCategory } from "../api";
+import { getConnectorCategories, getConnectorCategory } from "../api/governance-connectors";
 import GovernanceConnectorCategoriesGrid from "../components/governance-connector-grid";
-import { ServerConfigurationsConstants } from "../constants";
+import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import {
     ConnectorOverrideConfig,
     GovernanceConnectorCategoryInterface,
     GovernanceConnectorInterface
-} from "../models";
-import { GovernanceConnectorUtils } from "../utils";
+} from "../models/governance-connectors";
+import { GovernanceConnectorUtils } from "../utils/governance-connector-utils";
 
 /**
  * Props for the Server Configurations page.
@@ -53,6 +53,15 @@ type ConnectorListingPageInterface = TestableComponentInterface;
  * `GovernanceConnectorInterface` type with `ref` attr.
  */
 type GovernanceConnectorWithRef = GovernanceConnectorInterface & ReferableComponentInterface<HTMLDivElement>;
+
+/**
+ * List of connector IDs that should only be visible in legacy mode
+ */
+const LEGACY_ONLY_CONNECTOR_IDS: string[] = [
+    ServerConfigurationsConstants.PASSWORD_RECOVERY,
+    ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID,
+    ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID
+];
 
 /**
  * Governance connector listing page.
@@ -125,8 +134,7 @@ export const ConnectorListingPage: FunctionComponent<ConnectorListingPageInterfa
                     return false;
                 }
 
-                if (!isLegacyFlowsEnabled && (connector.id === ServerConfigurationsConstants.PASSWORD_RECOVERY ||
-                        connector.id === ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID)) {
+                if (!isLegacyFlowsEnabled && LEGACY_ONLY_CONNECTOR_IDS.includes(connector.id)) {
                     return false;
                 }
 

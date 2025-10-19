@@ -60,13 +60,13 @@ import { getRemoteFetchConfigResourceEndpoints } from "@wso2is/admin.remote-repo
 import { getRolesResourceEndpoints } from "@wso2is/admin.roles.v2/configs/endpoints";
 import { getRulesEndpoints } from "@wso2is/admin.rules.v1/configs/endpoints";
 import { getSecretsManagementEndpoints } from "@wso2is/admin.secrets.v1/configs/endpoints";
-import { getServerConfigurationsResourceEndpoints } from "@wso2is/admin.server-configurations.v1";
+import { getServerConfigurationsResourceEndpoints } from "@wso2is/admin.server-configurations.v1/configs/endpoints";
 import { getSmsTemplateResourceEndpoints } from "@wso2is/admin.sms-templates.v1/configs/endpoints";
 import { getExtensionTemplatesEndpoints } from "@wso2is/admin.template-core.v1/configs/endpoints";
 import { getTenantResourceEndpoints } from "@wso2is/admin.tenants.v1/configs/endpoints";
 import { getUsersResourceEndpoints } from "@wso2is/admin.users.v1/configs/endpoints";
 import { getUserstoreResourceEndpoints } from "@wso2is/admin.userstores.v1/configs/endpoints";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { getValidationServiceEndpoints } from "@wso2is/admin.validation.v1/configs";
 import { getWebhooksResourceEndpoints } from "@wso2is/admin.webhooks.v1/configs/endpoints";
 import { getApprovalsResourceEndpoints } from "@wso2is/common.workflow-approvals.v1";
@@ -388,6 +388,7 @@ export class Config {
      */
     public static getUIConfig(): UIConfigInterface {
         return {
+            actions: window[ "AppUtils" ]?.getConfig()?.ui?.actions,
             adminNotice: {
                 enabled: window[ "AppUtils" ]?.getConfig()?.ui?.adminNotice?.enabled,
                 plannedRollOutDate: window[ "AppUtils" ]?.getConfig()?.ui?.adminNotice?.plannedRollOutDate
@@ -485,7 +486,8 @@ export class Config {
             theme: window[ "AppUtils" ]?.getConfig()?.ui?.theme,
             useRoleClaimAsGroupClaim: window[ "AppUtils" ]?.getConfig()?.ui?.useRoleClaimAsGroupClaim,
             userSchemaURI: window[ "AppUtils" ]?.getConfig()?.ui?.customUserSchemaURI
-                ?? ClaimManagementConstants.DEFAULT_SCIM2_CUSTOM_USER_SCHEMA_URI
+                ?? ClaimManagementConstants.DEFAULT_SCIM2_CUSTOM_USER_SCHEMA_URI,
+            userSurveyBanner: window[ "AppUtils" ]?.getConfig()?.ui?.userSurveyBanner
         };
     }
 }

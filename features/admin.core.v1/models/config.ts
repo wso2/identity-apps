@@ -40,7 +40,9 @@ import { PolicyAdministrationEndpointsInterface } from "@wso2is/admin.policy-adm
 import { RolesResourceEndpointsInterface } from "@wso2is/admin.roles.v2/models/endpoints";
 import { RulesEndpointsInterface } from "@wso2is/admin.rules.v1/models/endpoints";
 import { SecretsManagementEndpoints } from "@wso2is/admin.secrets.v1/models/endpoints";
-import { ServerConfigurationsResourceEndpointsInterface } from "@wso2is/admin.server-configurations.v1";
+import {
+    ServerConfigurationsResourceEndpointsInterface
+} from "@wso2is/admin.server-configurations.v1/models/endpoints";
 import { SMSTemplateResourceEndpointsInterface } from "@wso2is/admin.sms-templates.v1/models/endpoints";
 import { ExtensionTemplatesEndpointsInterface } from "@wso2is/admin.template-core.v1/models/endpoints";
 import { TenantResourceEndpointsInterface } from "@wso2is/admin.tenants.v1/models/endpoints";
@@ -393,9 +395,26 @@ export interface MultiTenancyConfigInterface {
 }
 
 /**
+ * Interface for. Actions UI level configurations.
+ */
+export interface ActionsUIConfigInterface {
+    types: {
+        [ key: string ]: {
+            version: {
+                latest: string;
+            }
+        }
+    }
+}
+
+/**
  * Portal UI config interface inheriting the common configs from core module.
  */
 export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfigInterface> {
+    /**
+     * Actions related configurations.
+     */
+    actions: ActionsUIConfigInterface;
     /**
      * Should the admin notice be enabled.
      */
@@ -614,6 +633,16 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Terms of service URL.
      */
     termsOfUseUrl?: string;
+    /**
+     * User survey banner configurations.
+     */
+    userSurveyBanner: {
+        buttonText: string;
+        description: string;
+        enabled: boolean;
+        title: string;
+        url: string;
+    };
     /**
      * Flow execution configurations.
      */

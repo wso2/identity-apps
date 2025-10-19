@@ -1,5 +1,34 @@
 # @wso2is/common.workflow-approvals.v1
 
+## 1.0.10
+
+### Patch Changes
+
+- [#9291](https://github.com/wso2/identity-apps/pull/9291) [`63e781a91599b7fa77df7adf4032a1d2f5b32d13`](https://github.com/wso2/identity-apps/commit/63e781a91599b7fa77df7adf4032a1d2f5b32d13) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Implement success message for Approval request status changes
+
+- Updated dependencies [[`63e781a91599b7fa77df7adf4032a1d2f5b32d13`](https://github.com/wso2/identity-apps/commit/63e781a91599b7fa77df7adf4032a1d2f5b32d13), [`792e6851be17a77111319ef1978263b76723238c`](https://github.com/wso2/identity-apps/commit/792e6851be17a77111319ef1978263b76723238c)]:
+  - @wso2is/i18n@2.30.45
+  - @wso2is/access-control@3.5.0
+
+## 1.0.9
+
+### Patch Changes
+
+- [#9278](https://github.com/wso2/identity-apps/pull/9278) [`52c5fdd916c73a0d7388203345ecde708ed37e4a`](https://github.com/wso2/identity-apps/commit/52c5fdd916c73a0d7388203345ecde708ed37e4a) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Update Approval API to v2
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.74
+
+## 1.0.8
+
+### Patch Changes
+
+- [#9213](https://github.com/wso2/identity-apps/pull/9213) [`c7ecb39111237521f9fff348cc23d84abb386ccc`](https://github.com/wso2/identity-apps/commit/c7ecb39111237521f9fff348cc23d84abb386ccc) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Support formatted workflow-request properties
+
+- Updated dependencies [[`c7ecb39111237521f9fff348cc23d84abb386ccc`](https://github.com/wso2/identity-apps/commit/c7ecb39111237521f9fff348cc23d84abb386ccc)]:
+  - @wso2is/i18n@2.30.36
+  - @wso2is/admin.core.v1@2.49.66
+
 ## 1.0.7
 
 ### Patch Changes

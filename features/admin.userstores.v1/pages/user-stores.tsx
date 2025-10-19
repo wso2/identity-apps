@@ -37,9 +37,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { useGetUserStores } from "../api/use-get-user-stores";
-import { UserStoresList } from "../components";
-import { UserStoreManagementConstants, UserStoreTypes } from "../constants";
-import { UserStoreListItem } from "../models";
+import { UserStoresList } from "../components/user-stores-list";
+import { UserStoreManagementConstants, UserStoreTypes } from "../constants/user-store-constants";
+import { UserStoreListItem } from "../models/user-stores";
 
 /**
  * Props for the Userstore page.

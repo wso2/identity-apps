@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,10 +20,13 @@ import Alert from "@oxygen-ui/react/Alert";
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import Grid from "@oxygen-ui/react/Grid";
 import TextField from "@oxygen-ui/react/TextField";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { useAPIResources } from "@wso2is/admin.api-resources.v2/api";
 import { APIResourceCategories, APIResourcesConstants } from "@wso2is/admin.api-resources.v2/constants";
 import { APIResourceUtils } from "@wso2is/admin.api-resources.v2/utils/api-resource-utils";
 import { Policy } from "@wso2is/admin.applications.v1/constants/api-authorization";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface, LinkInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Code, EmphasizedSegment } from "@wso2is/react-components";
@@ -35,12 +38,12 @@ import React, {
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Header, Label } from "semantic-ui-react";
 import { RoleAPIResourcesListItem } from "./components/role-api-resources-list-item";
-import { useAPIResourceDetails, useGetAuthorizedAPIList } from "../../../api";
-import { RoleAudienceTypes } from "../../../constants/role-constants";
+import { useAPIResourceDetails, useGetAuthorizedAPIList } from "../../../api/roles";
+import { RoleAudienceTypes, RoleConstants, RoleManagementFeatureKeys } from "../../../constants/role-constants";
 import { APIResourceInterface, AuthorizedAPIListItemInterface, ScopeInterface } from "../../../models/apiResources";
 import { SelectedPermissionsInterface } from "../../../models/roles";
 
@@ -89,6 +92,15 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
 
         const { t } = useTranslation();
         const dispatch: Dispatch = useDispatch();
+
+        const userRolesFeatureConfig: FeatureAccessConfigInterface = useSelector(
+            (state: AppState) => state?.config?.ui?.features?.userRoles);
+        const isEnforceRoleOperationPermissionEnabled: boolean = isFeatureEnabled(
+            userRolesFeatureConfig,
+            RoleConstants.FEATURE_DICTIONARY.get(RoleManagementFeatureKeys.EnforceRoleOperationPermission));
+
+        const hasRolePermissionUpdatePermission: boolean = useRequiredScopes(
+            userRolesFeatureConfig?.subFeatures?.rolePermissionAssignments?.scopes?.update);
 
         const [ previousRoleAudience, setPreviousRoleAudience ] = useState<RoleAudienceTypes>(undefined);
         const [ selectedAPIResources, setSelectedAPIResources ] = useState<APIResourceInterface[]>([]);
@@ -377,6 +389,13 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
 
         return (
             <Grid container direction="column" justifyContent="center" alignItems="flex-start" spacing={ 2 }>
+                { isEnforceRoleOperationPermissionEnabled && !hasRolePermissionUpdatePermission && (
+                    <Grid xs={ 12 }>
+                        <Alert severity="warning">
+                            { t("roles:addRoleWizard.permissions.limitedPermission") }
+                        </Alert>
+                    </Grid>
+                ) }
                 {
                     roleAudience === RoleAudienceTypes.APPLICATION
                         ? (
@@ -398,6 +417,7 @@ export const RolePermissionsList: FunctionComponent<RolePermissionsListProp> =
                 <Grid xs={ 12 }>
                     <Autocomplete
                         fullWidth
+                        disabled={ isEnforceRoleOperationPermissionEnabled && !hasRolePermissionUpdatePermission }
                         aria-label="API resource selection"
                         componentsProps={ {
                             paper: {

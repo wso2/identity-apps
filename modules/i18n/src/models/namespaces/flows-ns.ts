@@ -40,13 +40,17 @@ export interface flowsNS {
                 };
             };
         };
-        tooltip: {
-            disableFlow: string;
-            enableFlow: string;
-        };
     };
     core: {
+        autoSave: {
+            savingInProgress: string;
+        };
         breadcrumb: string;
+        workflowAlert: {
+            description: string;
+            navigation: string;
+            title: string;
+        };
         elements: {
             richText: {
                 linkEditor: {
@@ -97,6 +101,12 @@ export interface flowsNS {
             };
         };
         executions: {
+            confirmationCode: {
+                configurationHint: string;
+            };
+            landing: {
+                message: string;
+            };
             names: {
                 apple: string;
                 confirmationCode: string;
@@ -107,6 +117,9 @@ export interface flowsNS {
                 microsoft: string;
                 passkeyEnrollment: string;
                 magicLink: string;
+            };
+            tooltip: {
+                configurationHint: string;
             };
         };
         labels: {
@@ -124,6 +137,9 @@ export interface flowsNS {
                 errors: string;
                 info: string;
                 warnings: string;
+            };
+            trigger: {
+                label: string;
             };
         };
         notifications: {
@@ -183,6 +199,20 @@ export interface flowsNS {
                     message: string;
                 };
             };
+            restoreFromHistory: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                invalidData: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
             updateI18nKey: {
                 genericError: {
                     description: string;
@@ -193,6 +223,28 @@ export interface flowsNS {
                     message: string;
                 };
             };
+            revertFlow: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+        };
+        modals: {
+            revertFlow: {
+                title: string;
+                description: string;
+                warning: string;
+                assertionHint: string;
+            };
+        };
+        tooltips: {
+            enableFlow: string;
+            disableFlow: string;
         };
         validation: {
             fields: {
@@ -254,6 +306,31 @@ export interface flowsNS {
             warning: string;
             warnings: string;
         };
+        versionHistory: {
+            currentVersion: string;
+            emptyState: string;
+            hint: string;
+            moreActions: string;
+            panelTitle: string;
+            restoreAction: string;
+            restoreDialog: {
+                cancel: string;
+                noFlowData: string;
+                restore: string;
+                restoring: string;
+                title: string;
+                warningAlert: {
+                    title: string;
+                    description: string;
+                };
+                previewContainer: {
+                    title: string;
+                    description: string;
+                };
+            };
+            restoreVersion: string;
+            unknownAuthor: string;
+        };
     };
     label?: string;
     passwordRecovery: {
@@ -275,10 +352,6 @@ export interface flowsNS {
                     hint: string;
                 };
             };
-        };
-        tooltip: {
-            disableFlow: string;
-            enableFlow: string;
         };
     };
     registrationFlow: {
@@ -308,6 +381,7 @@ export interface flowsNS {
                 accountVerification: {
                     label: string;
                     hint: string;
+                    warning: string;
                 };
                 accountActivation: {
                     activateImmediately: {
@@ -324,10 +398,6 @@ export interface flowsNS {
                     hint: string;
                 };
             };
-        };
-        tooltip: {
-            disableFlow: string;
-            enableFlow: string;
         };
     };
 }

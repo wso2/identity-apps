@@ -530,7 +530,13 @@ export interface ApplicationsNS {
                                 accordion: {
                                     title: {
                                         description: string;
-                                        heading: string;
+                                        heading: {
+                                            readOnly: string;
+                                            readWrite: string;
+                                        };
+                                        tooltip: {
+                                            readOnly: string;
+                                        };
                                     };
                                 };
                                 conditionalAuthTour: {
@@ -746,6 +752,20 @@ export interface ApplicationsNS {
                                     heading: string;
                                 };
                             };
+                            validation: {
+                                smsOTPRequiresMobileField: {
+                                    message: string;
+                                };
+                                emailOTPRequiresEmailField: {
+                                    message: string;
+                                };
+                                passwordRecoveryRequiresFactors: {
+                                    message: string;
+                                };
+                                passwordExecutorRequired: {
+                                    message: string;
+                                };
+                            }
                         };
                     };
                     requestPathAuthenticators: {
@@ -964,6 +984,7 @@ export interface ApplicationsNS {
                 }
             };
             apiAuthorization: {
+                limitedAccessMessage: string;
                 m2mPolicyMessage: string;
             };
             roles: {

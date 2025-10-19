@@ -1,5 +1,33 @@
 # @wso2is/admin.claims.v1
 
+## 2.29.12
+
+### Patch Changes
+
+- [#9330](https://github.com/wso2/identity-apps/pull/9330) [`c06595150af8b9756f5d165c0b534dbef4341ce5`](https://github.com/wso2/identity-apps/commit/c06595150af8b9756f5d165c0b534dbef4341ce5) Thanks [@mmafrar](https://github.com/mmafrar)! - fix: Remove index files in `@wso2is/common.userstores.v1` package
+
+- Updated dependencies [[`83c0f480bd104adb25b519b6137c49d6642f6723`](https://github.com/wso2/identity-apps/commit/83c0f480bd104adb25b519b6137c49d6642f6723), [`c06595150af8b9756f5d165c0b534dbef4341ce5`](https://github.com/wso2/identity-apps/commit/c06595150af8b9756f5d165c0b534dbef4341ce5)]:
+  - @wso2is/i18n@2.30.52
+  - @wso2is/admin.extensions.v1@2.40.8
+  - @wso2is/admin.userstores.v1@2.27.39
+  - @wso2is/admin.claims.v1@2.29.12
+  - @wso2is/admin.users.v1@2.36.56
+  - @wso2is/admin.core.v1@2.49.89
+  - @wso2is/admin.server-configurations.v1@2.35.103
+
+## 2.29.11
+
+### Patch Changes
+
+- [#9225](https://github.com/wso2/identity-apps/pull/9225) [`228c95fc49c0af6c336fac509a7e061a14a92145`](https://github.com/wso2/identity-apps/commit/228c95fc49c0af6c336fac509a7e061a14a92145) Thanks [@savindi7](https://github.com/savindi7)! - Fix condition in local claim edit page.
+
+- Updated dependencies [[`228c95fc49c0af6c336fac509a7e061a14a92145`](https://github.com/wso2/identity-apps/commit/228c95fc49c0af6c336fac509a7e061a14a92145), [`c7ecb39111237521f9fff348cc23d84abb386ccc`](https://github.com/wso2/identity-apps/commit/c7ecb39111237521f9fff348cc23d84abb386ccc)]:
+  - @wso2is/admin.claims.v1@2.29.11
+  - @wso2is/i18n@2.30.36
+  - @wso2is/admin.core.v1@2.49.66
+  - @wso2is/admin.server-configurations.v1@2.35.80
+  - @wso2is/admin.users.v1@2.36.33
+
 ## 2.29.10
 
 ### Patch Changes

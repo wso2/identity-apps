@@ -1,5 +1,53 @@
 # @wso2is/admin.approval-workflows.v1
 
+## 1.0.17
+
+### Patch Changes
+
+- [#9289](https://github.com/wso2/identity-apps/pull/9289) [`707752b9e921582fe46f90ba15fa03ed5590e897`](https://github.com/wso2/identity-apps/commit/707752b9e921582fe46f90ba15fa03ed5590e897) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Add required icon to operations field.
+
+- Updated dependencies [[`e88528f09538a6eddcb630e34595becd5c4b546e`](https://github.com/wso2/identity-apps/commit/e88528f09538a6eddcb630e34595becd5c4b546e), [`a80c98397d5ad8dccce306eba62f7f91ccbf0aa9`](https://github.com/wso2/identity-apps/commit/a80c98397d5ad8dccce306eba62f7f91ccbf0aa9)]:
+  - @wso2is/admin.core.v1@2.49.78
+  - @wso2is/i18n@2.30.47
+  - @wso2is/admin.users.v1@2.36.45
+  - @wso2is/admin.roles.v2@2.27.240
+
+## 1.0.16
+
+### Patch Changes
+
+- [#9279](https://github.com/wso2/identity-apps/pull/9279) [`4c0e8530931a622f1ba0650d1b8728d63b0fba13`](https://github.com/wso2/identity-apps/commit/4c0e8530931a622f1ba0650d1b8728d63b0fba13) Thanks [@mmafrar](https://github.com/mmafrar)! - fix: Remove index files in `@wso2is/admin.roles.v2` package
+
+- Updated dependencies [[`4c0e8530931a622f1ba0650d1b8728d63b0fba13`](https://github.com/wso2/identity-apps/commit/4c0e8530931a622f1ba0650d1b8728d63b0fba13)]:
+  - @wso2is/admin.groups.v1@2.27.124
+  - @wso2is/admin.roles.v2@2.27.237
+  - @wso2is/admin.users.v1@2.36.42
+  - @wso2is/admin.core.v1@2.49.75
+
+## 1.0.15
+
+### Patch Changes
+
+- [#9250](https://github.com/wso2/identity-apps/pull/9250) [`3dd8b975c7b8340a528e056286e91bd8118ffd71`](https://github.com/wso2/identity-apps/commit/3dd8b975c7b8340a528e056286e91bd8118ffd71) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Avoid configuring same user management operation for multiple workflows and extend the resend code for email & account pending confirmation scenarios
+
+- Updated dependencies [[`ade32a3834e2654a3450d311d32977eb06419654`](https://github.com/wso2/identity-apps/commit/ade32a3834e2654a3450d311d32977eb06419654), [`8c22c1643d0fec6d23a4e32d89dff8280c5f343b`](https://github.com/wso2/identity-apps/commit/8c22c1643d0fec6d23a4e32d89dff8280c5f343b), [`3dd8b975c7b8340a528e056286e91bd8118ffd71`](https://github.com/wso2/identity-apps/commit/3dd8b975c7b8340a528e056286e91bd8118ffd71), [`907bfbefeefd22d6266bb2ff871506665653baa4`](https://github.com/wso2/identity-apps/commit/907bfbefeefd22d6266bb2ff871506665653baa4)]:
+  - @wso2is/admin.core.v1@2.49.73
+  - @wso2is/i18n@2.30.43
+  - @wso2is/admin.users.v1@2.36.40
+  - @wso2is/admin.roles.v2@2.27.235
+
+## 1.0.14
+
+### Patch Changes
+
+- [#9256](https://github.com/wso2/identity-apps/pull/9256) [`c89fe76f974dfe471318caa08098244279d8cb7d`](https://github.com/wso2/identity-apps/commit/c89fe76f974dfe471318caa08098244279d8cb7d) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Make operations input mandatory in workflow update and creation.
+
+- Updated dependencies [[`c89fe76f974dfe471318caa08098244279d8cb7d`](https://github.com/wso2/identity-apps/commit/c89fe76f974dfe471318caa08098244279d8cb7d)]:
+  - @wso2is/i18n@2.30.41
+  - @wso2is/admin.users.v1@2.36.37
+  - @wso2is/admin.core.v1@2.49.70
+  - @wso2is/admin.roles.v2@2.27.232
+
 ## 1.0.13
 
 ### Patch Changes

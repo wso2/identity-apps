@@ -1,5 +1,85 @@
 # @wso2is/identity-apps-core
 
+## 3.3.22
+
+### Patch Changes
+
+- [#9347](https://github.com/wso2/identity-apps/pull/9347) [`a272c6c8cce236986772d598e843769f683b327d`](https://github.com/wso2/identity-apps/commit/a272c6c8cce236986772d598e843769f683b327d) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Fix redundant enable buttons and other issues.
+
+## 3.3.21
+
+### Patch Changes
+
+- [#9342](https://github.com/wso2/identity-apps/pull/9342) [`878d38cb0c008cd39137476a51c5fd9685d31a6c`](https://github.com/wso2/identity-apps/commit/878d38cb0c008cd39137476a51c5fd9685d31a6c) Thanks [@Malith-19](https://github.com/Malith-19)! - Add a duplicate check for scope population for console role listener.
+
+## 3.3.20
+
+### Patch Changes
+
+- [#9328](https://github.com/wso2/identity-apps/pull/9328) [`db94d96d5a0f05a0e58bff098ace6de8212f563d`](https://github.com/wso2/identity-apps/commit/db94d96d5a0f05a0e58bff098ace6de8212f563d) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Fix checkbox required issue.
+
+## 3.3.19
+
+### Patch Changes
+
+- [#9309](https://github.com/wso2/identity-apps/pull/9309) [`764907f9d7a8c74f9297ad16fcd6c9b26aa8673c`](https://github.com/wso2/identity-apps/commit/764907f9d7a8c74f9297ad16fcd6c9b26aa8673c) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Fix data field validation issue.
+
+## 3.3.18
+
+### Patch Changes
+
+- [#9297](https://github.com/wso2/identity-apps/pull/9297) [`ca5f81dda8c6de01493c5c3a2602843a131b4681`](https://github.com/wso2/identity-apps/commit/ca5f81dda8c6de01493c5c3a2602843a131b4681) Thanks [@savindi7](https://github.com/savindi7)! - Resolve social login icons from local assets in accounts portal.
+
+## 3.3.17
+
+### Patch Changes
+
+- [#9300](https://github.com/wso2/identity-apps/pull/9300) [`cc54379fb970c79b3e1310e50cf7ee2d01a3e1e1`](https://github.com/wso2/identity-apps/commit/cc54379fb970c79b3e1310e50cf7ee2d01a3e1e1) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Add resend support
+
+## 3.3.16
+
+### Patch Changes
+
+- [#9299](https://github.com/wso2/identity-apps/pull/9299) [`1302eb55f9ce99394a3711b64fce381d3280b488`](https://github.com/wso2/identity-apps/commit/1302eb55f9ce99394a3711b64fce381d3280b488) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Handle pending approval error code from the authentication portal login failure page
+
+## 3.3.15
+
+### Patch Changes
+
+- [#9277](https://github.com/wso2/identity-apps/pull/9277) [`3b8fb556dd0314724bad7337ac804d1dcb94d936`](https://github.com/wso2/identity-apps/commit/3b8fb556dd0314724bad7337ac804d1dcb94d936) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Fix ability to continue with the warn logs in flow execution.
+
+* [#9274](https://github.com/wso2/identity-apps/pull/9274) [`e1ff3c7132acd24724018c708c85cb719d1b8ddc`](https://github.com/wso2/identity-apps/commit/e1ff3c7132acd24724018c708c85cb719d1b8ddc) Thanks [@thiva-k](https://github.com/thiva-k)! - Remove recovery screen values
+
+## 3.3.14
+
+### Patch Changes
+
+- [#9226](https://github.com/wso2/identity-apps/pull/9226) [`c0c6f1661754ec47d17aa29ce70610b1e47f8d44`](https://github.com/wso2/identity-apps/commit/c0c6f1661754ec47d17aa29ce70610b1e47f8d44) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Add account portal url.
+
+## 3.3.13
+
+### Patch Changes
+
+- [#9199](https://github.com/wso2/identity-apps/pull/9199) [`406fc4fe26e3fe8148b4207fa046a05f34f2617e`](https://github.com/wso2/identity-apps/commit/406fc4fe26e3fe8148b4207fa046a05f34f2617e) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Improve encoding for request paramater message
+
+* [#9211](https://github.com/wso2/identity-apps/pull/9211) [`00c6ab55c3182e6b3c27986cf21dbae47fee584c`](https://github.com/wso2/identity-apps/commit/00c6ab55c3182e6b3c27986cf21dbae47fee584c) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add validation for Back to Application callback
+
+- [#9179](https://github.com/wso2/identity-apps/pull/9179) [`3cd6ebabbb764cf7374c326786023614a4a1a8e5`](https://github.com/wso2/identity-apps/commit/3cd6ebabbb764cf7374c326786023614a4a1a8e5) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Add config support for scope and authorization details handling
+
+## 3.3.12
+
+### Patch Changes
+
+- [#9204](https://github.com/wso2/identity-apps/pull/9204) [`c94b4df526a8afcca7d2748fed632db4bb431b2e`](https://github.com/wso2/identity-apps/commit/c94b4df526a8afcca7d2748fed632db4bb431b2e) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add a countdown before redirecting after the flow completes
+
+## 3.3.11
+
+### Patch Changes
+
+- [#9202](https://github.com/wso2/identity-apps/pull/9202) [`4cefeafdcd299c0465dbaffbf57adadc432634d7`](https://github.com/wso2/identity-apps/commit/4cefeafdcd299c0465dbaffbf57adadc432634d7) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Adding Error FEE error codes.
+
+* [#9142](https://github.com/wso2/identity-apps/pull/9142) [`390d5f935dd0d9fc70eaa3e1599d6da9d46512ab`](https://github.com/wso2/identity-apps/commit/390d5f935dd0d9fc70eaa3e1599d6da9d46512ab) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add validation to Back to Application URL
+
 ## 3.3.10
 
 ### Patch Changes

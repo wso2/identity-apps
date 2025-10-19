@@ -2749,20 +2749,12 @@ export const console: ConsoleNS = {
                 placeholders: {
                     emptyApprovalFilter: {
                         action: "View all",
-                        subtitles: {
-                            0: "There are currently no approvals in {{status}} state.",
-                            1: "Please check if you have any tasks in {{status}} state to",
-                            2: "view them here."
-                        },
+                        subtitle: "There are currently no approvals in {{status}} state.",
                         title: "No results found"
                     },
                     emptyApprovalList: {
                         action: "",
-                        subtitles: {
-                            0: "There are currently no approvals to review.",
-                            1: "Please check if you have added a workflow to control the operations in the system.",
-                            2: ""
-                        },
+                        subtitle: "There are currently no approvals to review.",
                         title: "No Approvals"
                     },
                     emptySearchResults: {
@@ -8399,16 +8391,6 @@ export const console: ConsoleNS = {
                     }
                 },
                 notifications: {
-                    addApprovalWorkflow: {
-                        genericError: {
-                            description: "There was an error while creating the approval workflow.",
-                            message: "Something went wrong!"
-                        },
-                        success: {
-                            description: "The approval workflow has been added successfully!",
-                            message: "approval workflow added successfully!"
-                        }
-                    },
                     apiLimitReachedError: {
                         error: {
                             description: "You have reached the maximum number of approval workflows allowed.",
@@ -8419,22 +8401,6 @@ export const console: ConsoleNS = {
                         description: "It may take a while for the approval workflow list to be updated. "
                             + "Refresh in a few seconds to get the updated approval workflow list.",
                         message: "Updating approval workflow list takes time"
-                    },
-                    deleteApprovalWorkflow: {
-                        genericError: {
-                            description: "There was an error while deleting the approval workflow.",
-                            message: "Something went wrong!"
-                        },
-                        success: {
-                            description: "The approval workflow has been deleted successfully!",
-                            message: "Approval workflow deleted successfully!"
-                        }
-                    },
-                    fetchApprovalWorkflows: {
-                        genericError: {
-                            description: "An error occurred while fetching approval workflows.",
-                            message: "Something went wrong"
-                        }
                     },
                     testConnection: {
                         genericError: {
@@ -8449,16 +8415,6 @@ export const console: ConsoleNS = {
                     updateDelay: {
                         description: "It might take some time for the updated properties to appear.",
                         message: "Updating properties takes time"
-                    },
-                    updateApprovalWorkflow: {
-                        genericError: {
-                            description: "An error occurred while updating the approval workflow.",
-                            message: "Something went wrong"
-                        },
-                        success: {
-                            description: "This approval workflow has been updated successfully!",
-                            message: "approval workflow updated successfully!"
-                        }
                     }
                 },
                 pageLayout: {
@@ -8512,68 +8468,6 @@ export const console: ConsoleNS = {
                     reset: "Reset Changes",
                     title: "SQL Query Types",
                     update: "Update"
-                }
-            },
-            workflowRequests: {
-                dangerZone: {
-                    delete: {
-                        actionTitle: "Delete Workflow Request",
-                        header: "Delete Workflow Request",
-                        subheader: "Once you delete a workflow request, there is no going back. "
-                            + "Please be certain."
-                    }
-                },
-                notifications: {
-                    deleteWorkflowRequest: {
-                        genericError: {
-                            description: "There was an error while deleting the workflow request.",
-                            message: "Something went wrong!"
-                        },
-                        success: {
-                            description: "The workflow request has been deleted successfully!",
-                            message: "Workflow request deleted successfully!"
-                        }
-                    },
-                    fetchWorkflowRequests: {
-                        genericError: {
-                            description: "An error occurred while fetching workflow requests.",
-                            message: "Something went wrong!"
-                        }
-                    },
-                    fetchWorkflowRequestDetails: {
-                        genericError: {
-                            description: "An error occurred while fetching workflow request details.",
-                            message: "Something went wrong!"
-                        },
-                        success: {
-                            description: "Successfully retrieved workflow request details.",
-                            message: "Retrieval successful!"
-                        }
-                    },
-                    searchWorkflowRequests: {
-                        genericError: {
-                            description: "An error occurred while searching workflow requests.",
-                            message: "Something went wrong!"
-                        }
-                    }
-                },
-                details: {
-                    header: "Workflow Request Details",
-                    fields: {
-                        id: "ID",
-                        eventType: "Event Type",
-                        requestInitiator: "Request Initiator",
-                        status: "Status",
-                        createdAt: "Created At",
-                        updatedAt: "Updated At",
-                        requestParams: "Request Params"
-                    },
-                    loading: "Loading...",
-                    error: {
-                        header: "Error",
-                        content: "Failed to load workflow Request details."
-                    },
-                    backButton: "Back"
                 }
             }
         },
@@ -8674,7 +8568,6 @@ export const console: ConsoleNS = {
             },
             oidcScopesEdit: {
                 backButton: "Go back to Scopes",
-                subTitle: "Add or remove OIDC attributes of the scope",
                 title: "Edit scope: {{ name }}"
             },
             organizations: {

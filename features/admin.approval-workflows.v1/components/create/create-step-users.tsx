@@ -26,7 +26,7 @@ import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { AutoCompleteRenderOption } from
     "@wso2is/admin.roles.v2/components/edit-role/edit-role-common/auto-complete-render-option";
 import { RenderChip } from "@wso2is/admin.roles.v2/components/edit-role/edit-role-common/render-chip";
-import { RoleConstants } from "@wso2is/admin.roles.v2/constants";
+import { RoleConstants } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { RoleManagementUtils } from "@wso2is/admin.roles.v2/utils/role-management-utils";
 import { useUsersList } from "@wso2is/admin.users.v1/api";
 import { UserBasicInterface } from "@wso2is/admin.users.v1/models/user";

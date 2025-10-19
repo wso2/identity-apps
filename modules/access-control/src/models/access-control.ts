@@ -48,6 +48,12 @@ export interface FeatureAccessConfigInterface {
      * Enable the tour option
      */
     tryittourenabled?: boolean;
+    /**
+     * Sub features of the feature.
+     */
+    subFeatures?: {
+        [key: string]: Omit<FeatureAccessConfigInterface, "subFeatures">;
+    };
 }
 
 export interface DeprecatedFeatureInterface {

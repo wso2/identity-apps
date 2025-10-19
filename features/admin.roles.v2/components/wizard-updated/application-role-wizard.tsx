@@ -45,9 +45,9 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownItemProps, DropdownProps, Grid, Header, Label, Modal } from "semantic-ui-react";
-import { createRole, createRoleUsingV3Api } from "../../api";
+import { createRole, createRoleUsingV3Api } from "../../api/roles";
 import useGetRolesList from "../../api/use-get-roles-list";
-import { RoleAudienceTypes, RoleConstants } from "../../constants";
+import { RoleAudienceTypes, RoleConstants } from "../../constants/role-constants";
 import { ScopeInterface } from "../../models/apiResources";
 import { Policy } from "../../models/policies";
 import {

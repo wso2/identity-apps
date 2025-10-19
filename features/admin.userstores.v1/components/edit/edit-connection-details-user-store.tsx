@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,14 +22,14 @@ import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { EmphasizedSegment, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Grid, Header, Icon } from "semantic-ui-react";
-import { SqlEditor } from "..";
-import { patchUserStore, testConnection } from "../../api";
-import { JDBC } from "../../constants";
+import { patchUserStore, testConnection } from "../../api/user-stores";
+import { JDBC } from "../../constants/user-store-constants";
 import {
     PatchData,
     PropertyAttribute,
@@ -38,7 +38,8 @@ import {
     TypeProperty,
     UserStore,
     UserstoreType
-} from "../../models";
+} from "../../models/user-stores";
+import { SqlEditor } from "../sql-editor";
 
 /**
  * Prop types of `EditConnectionDetails` component
@@ -302,6 +303,22 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
             });
     };
 
+    const resolvePasswordFieldValue = (formValue: string): string => {
+        if (isPasswordEditing) {
+            // In this case, an empty string "" can still be the password.
+            // Therefore, we cannot use isEmpty() here.
+            return formValue ?? properties?.required.find(
+                (property: TypeProperty) => property.name === "password")?.value;
+        }
+
+        if (isEmpty(formValue)) {
+            return properties?.required.find(
+                (property: TypeProperty) => property.name === "password")?.value;
+        }
+
+        return formValue;
+    };
+
     return (
         <EmphasizedSegment padded="very">
             <Forms
@@ -444,11 +461,8 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                             setIsTesting(true);
                                             if (type.typeName.includes(JDBC)) {
                                                 const testData: TestConnection = {
-                                                    connectionPassword: formValue?.get("password").toString()
-                                                        ?? properties?.required
-                                                            .find(
-                                                                (property: TypeProperty) => property.name === "password"
-                                                            )?.value,
+                                                    connectionPassword: resolvePasswordFieldValue(
+                                                        formValue?.get("password").toString()),
                                                     connectionURL: formValue?.get("url").toString()
                                                         ?? properties?.required
                                                             .find(

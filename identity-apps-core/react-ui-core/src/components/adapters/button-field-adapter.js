@@ -22,9 +22,30 @@ import { Button } from "semantic-ui-react";
 import { useTranslations } from "../../hooks/use-translations";
 import { resolveElementText } from "../../utils/i18n-utils";
 
-const ButtonAdapter = ({ component, handleButtonAction }) => {
+const ButtonAdapter = ({ component, handleButtonAction, isDisabled }) => {
 
     const { translations } = useTranslations();
+
+    const resolveImageUrl = (imageUrl) => {
+        if (!imageUrl) return null;
+
+        try {
+            new URL(imageUrl);
+
+            return imageUrl;
+        } catch (e) {
+            // Not a valid URL, proceed to construct the full path.
+        }
+
+        const segments = window.location.pathname.split("/");
+        const appBase = segments.includes("accounts")
+            ? "accounts"
+            : segments[1] || "";
+
+        const base = `${window.location.origin}/${appBase}`;
+
+        return `${base}/${imageUrl.replace(/^\//, "")}`;
+    };
 
     switch (component.variant) {
         case "PRIMARY":
@@ -37,6 +58,7 @@ const ButtonAdapter = ({ component, handleButtonAction }) => {
                         ? () => handleButtonAction(component.id, {})
                         : null
                     }
+                    disabled={ isDisabled }
                 >
                     { resolveElementText(translations, component.config.text) }
                 </Button>
@@ -80,9 +102,10 @@ const ButtonAdapter = ({ component, handleButtonAction }) => {
                     >
                         <img
                             className="ui image"
-                            src={ component.config.image }
+                            src={ resolveImageUrl(component.config.image) }
                             alt="Connection Login icon"
-                            role="presentation"></img>
+                            role="presentation"
+                        />
                         <span>{ resolveElementText(translations, component.config.text) }</span>
                     </Button>
                 </div>
@@ -116,7 +139,8 @@ ButtonAdapter.propTypes = {
         type: PropTypes.string,
         variant: PropTypes.string
     }).isRequired,
-    handleButtonAction: PropTypes.func.isRequired
+    handleButtonAction: PropTypes.func.isRequired,
+    isDisabled: PropTypes.bool
 };
 
 export default ButtonAdapter;

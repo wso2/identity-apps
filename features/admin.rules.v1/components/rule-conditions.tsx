@@ -84,6 +84,8 @@ interface ConditionValueInputProps extends ComponentCommonPropsInterface {
     findMetaValuesAgainst: ConditionExpressionMetaInterface;
     expressionField: string;
     setIsResourceMissing: Dispatch<React.SetStateAction<boolean>>;
+    hiddenResources?: string[];
+    hiddenValues?: string[];
 }
 
 /**
@@ -95,6 +97,7 @@ interface ResourceListSelectProps extends ComponentCommonPropsInterface {
     findMetaValuesAgainst: ConditionExpressionMetaInterface;
     initialResourcesLoadUrl: string;
     setIsResourceMissing: Dispatch<React.SetStateAction<boolean>>;
+    hiddenResources?: string[];
 }
 
 /**
@@ -108,6 +111,7 @@ interface ValueInputAutocompleteProps extends ComponentCommonPropsInterface {
     initialResourcesLoadUrl: string;
     filterBaseResourcesUrl: string;
     shouldFetch: boolean;
+    hiddenResources?: string[];
 }
 
 /**
@@ -120,6 +124,9 @@ interface RuleExpressionComponentProps extends IdentifiableComponentInterface {
     index: number;
     isConditionLast: boolean;
     isConditionExpressionRemovable: boolean;
+    hiddenConditions?: string[];
+    hiddenResources?: string[];
+    hiddenValues?: string[];
 }
 
 /**
@@ -148,7 +155,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         addNewRuleConditionExpression,
         conditionExpressionsMeta,
         updateConditionExpression,
-        removeRuleConditionExpression
+        removeRuleConditionExpression,
+        hidden
     } = useRulesContext();
 
     const { t } = useTranslation();
@@ -201,7 +209,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         ruleId,
         conditionId,
         expressionId,
-        shouldFetch
+        shouldFetch,
+        hiddenResources = []
     }: ValueInputAutocompleteProps) => {
 
         const [ inputValue, setInputValue ] = useState<string>(null);
@@ -232,20 +241,28 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
             if (inputValueLabel && filterUrl) {
                 if (filteredResources && Array.isArray(filteredResources[resourceType])) {
                     const filteredOptions: ValueInputAutocompleteOptionsInterface[] =
-                        filteredResources[resourceType].map((resource: ResourceInterface) => ({
-                            id: resource[valueReferenceAttribute],
-                            label: resource[valueDisplayAttribute]
-                        }));
+                        filteredResources[resourceType]
+                            .filter((resource: ResourceInterface) =>
+                                !hiddenResources.includes(resource[valueReferenceAttribute])
+                            )
+                            .map((resource: ResourceInterface) => ({
+                                id: resource[valueReferenceAttribute],
+                                label: resource[valueDisplayAttribute]
+                            }));
 
                     setOptions(filteredOptions);
                 }
             } else {
                 if (initialResources && Array.isArray(initialResources[resourceType])) {
                     const initialOptions: ValueInputAutocompleteOptionsInterface[] =
-                            initialResources[resourceType].map((resource: ResourceInterface) => ({
-                                id: resource[valueReferenceAttribute],
-                                label: resource[valueDisplayAttribute]
-                            }));
+                            initialResources[resourceType]
+                                .filter((resource: ResourceInterface) =>
+                                    !hiddenResources.includes(resource[valueReferenceAttribute])
+                                )
+                                .map((resource: ResourceInterface) => ({
+                                    id: resource[valueReferenceAttribute],
+                                    label: resource[valueDisplayAttribute]
+                                }));
 
                     setOptions(initialOptions);
                 }
@@ -385,7 +402,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         expressionField,
         findMetaValuesAgainst,
         initialResourcesLoadUrl,
-        filterBaseResourcesUrl
+        filterBaseResourcesUrl,
+        hiddenResources = []
     }: ResourceListSelectProps) => {
 
         const [ resourceDetails, setResourceDetails ] = useState<ResourceInterface>(null);
@@ -431,7 +449,9 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         useEffect(() => {
             if (expressionField === "claim" && fetchedResourcesList) {
                 const initialOptions: ValueInputAutocompleteOptionsInterface[] =
-                            fetchedResourcesList?.map((resource: ClaimResourceInterface) => ({
+                            fetchedResourcesList?.filter((resource: ClaimResourceInterface) =>
+                                !hiddenResources.includes(resource[valueReferenceAttribute])
+                            ).map((resource: ClaimResourceInterface) => ({
                                 id: resource[valueReferenceAttribute],
                                 label: resource[valueDisplayAttribute]
                             }));
@@ -597,6 +617,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         initialResourcesLoadUrl={ initialResourcesLoadUrl }
                         filterBaseResourcesUrl={ filterBaseResourcesUrl }
                         shouldFetch={ shouldFetch }
+                        hiddenResources={ hiddenResources }
                     />
                 );
             }
@@ -617,7 +638,9 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         );
                     } }
                 >
-                    { fetchedResourcesList[resourceType]?.map((resource: ResourceInterface, index: number) => (
+                    { fetchedResourcesList[resourceType]?.filter((resource: ResourceInterface) =>
+                        !hiddenResources.includes(resource[valueReferenceAttribute])
+                    ).map((resource: ResourceInterface, index: number) => (
                         <MenuItem value={ resource[valueReferenceAttribute] } key={ `${expressionId}-${index}` }>
                             { resource[valueDisplayAttribute] }
                         </MenuItem>
@@ -642,7 +665,9 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         expressionId,
         expressionValue,
         metaValue,
-        setIsResourceMissing
+        setIsResourceMissing,
+        hiddenResources = [],
+        hiddenValues = []
     }: ConditionValueInputProps) => {
 
         if (metaValue?.inputType === "input" || null) {
@@ -696,7 +721,9 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                             );
                         } }
                     >
-                        { metaValue.values?.map((item: ListDataInterface, index: number) => (
+                        { metaValue.values?.filter((item: ListDataInterface) =>
+                            !hiddenValues.includes(item.name)
+                        ).map((item: ListDataInterface, index: number) => (
                             <MenuItem value={ item.name } key={ `${expressionId}-${index}` }>
                                 { item.displayName }
                             </MenuItem>
@@ -725,6 +752,7 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                             findMetaValuesAgainst={ findMetaValuesAgainst }
                             initialResourcesLoadUrl={ initialResourcesLoadUrl }
                             filterBaseResourcesUrl={ filterBaseResourcesUrl }
+                            hiddenResources={ hiddenResources }
                         />
                     );
                 }
@@ -751,7 +779,10 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         conditionId,
         index,
         isConditionLast,
-        isConditionExpressionRemovable
+        isConditionExpressionRemovable,
+        hiddenConditions = [],
+        hiddenResources = [],
+        hiddenValues = []
     }: RuleExpressionComponentProps) => {
 
         const [ isResourceMissing, setIsResourceMissing ] = useState<boolean>(false);
@@ -812,7 +843,9 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                             );
                         } }
                     >
-                        { conditionExpressionsMeta?.map((item: ConditionExpressionMetaInterface, index: number) => (
+                        { conditionExpressionsMeta?.filter((item: ConditionExpressionMetaInterface) =>
+                            !hiddenConditions.includes(item.field?.name)
+                        ).map((item: ConditionExpressionMetaInterface, index: number) => (
                             <MenuItem value={ item.field?.name } key={ `${expression.id}-${index}` }>
                                 { item.field?.displayName }
                             </MenuItem>
@@ -852,6 +885,8 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         metaValue={ findMetaValuesAgainst?.value }
                         ruleId={ ruleId }
                         setIsResourceMissing={ setIsResourceMissing }
+                        hiddenResources={ hiddenResources }
+                        hiddenValues={ hiddenValues }
                     />
                 </FormControl>
                 { ((!readonly) || (readonly && !isConditionLast)) && (
@@ -914,6 +949,9 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                                                         condition.expressions.length > 1 ||
                                                         ruleInstance.rules.length > 1
                                                     }
+                                                    hiddenConditions={ hidden.conditions }
+                                                    hiddenResources={ hidden.resources }
+                                                    hiddenValues={ hidden.values }
                                                 />
                                             </Box>
                                         )

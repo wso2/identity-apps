@@ -69,6 +69,24 @@ export const common: CommonNS = {
                     message: "Something went wrong"
                 }
             },
+            statusUpdate: {
+                approved: {
+                    description: "The approval request has been approved.",
+                    message: "Approval request approved"
+                },
+                claimed: {
+                    description: "The approval request has been claimed.",
+                    message: "Approval request claimed"
+                },
+                rejected: {
+                    description: "The approval request has been rejected.",
+                    message: "Approval request rejected"
+                },
+                released: {
+                    description: "The approval request has been released.",
+                    message: "Approval request released"
+                }
+            },
             updatePendingApprovals: {
                 error: {
                     description: "{{description}}",
@@ -96,20 +114,12 @@ export const common: CommonNS = {
         placeholders: {
             emptyApprovalFilter: {
                 action: "View all",
-                subtitles: {
-                    0: "There are currently no approvals in {{status}} state.",
-                    1: "Please check if you have any tasks in {{status}} state to",
-                    2: "view them here."
-                },
+                subtitle: "There are currently no approvals in {{status}} state.",
                 title: "No results found"
             },
             emptyApprovalList: {
                 action: "",
-                subtitles: {
-                    0: "There are currently no approvals to review.",
-                    1: "Please check if you have added a workflow to control the operations in the system.",
-                    2: ""
-                },
+                subtitle: "There are currently no approvals to review.",
                 title: "No Approvals"
             },
             emptySearchResults: {
@@ -165,6 +175,7 @@ export const common: CommonNS = {
     confirm: "Confirm",
     contains: "Contains",
     continue: "Continue",
+    copied: "Copied!",
     copyToClipboard: "Copy to clipboard",
     create: "Create",
     createdOn: "Created on",
@@ -240,6 +251,7 @@ export const common: CommonNS = {
     operations: "Operations",
     organizationName: "{{orgName}} organization",
     overview: "Overview",
+    parameter: "Parameter",
     pending: "Pending",
     personalInfo: "Personal Info",
     pin: "Pin",
@@ -264,6 +276,7 @@ export const common: CommonNS = {
     reserved: "Reserved",
     resetFilters: "Reset filters",
     retry: "Retry",
+    revert: "Revert",
     revoke: "Revoke",
     revokeAll: "Revoke all",
     samples: "Samples",

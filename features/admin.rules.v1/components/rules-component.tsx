@@ -19,6 +19,7 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import RuleExecutionComponent from "./rules";
+import { HiddenConfigurationInterface } from "../contexts/rules-context";
 import { ConditionExpressionsMetaDataInterface, RuleExecutionMetaDataInterface } from "../models/meta";
 import { RuleExecuteCollectionWithoutIdInterface, RuleWithoutIdInterface } from "../models/rules";
 import { RulesProvider } from "../providers/rules-provider";
@@ -46,6 +47,11 @@ interface RulesComponentPropsInterface extends IdentifiableComponentInterface {
      * Rule executions meta data.
      */
     ruleExecutionMetaData?: RuleExecutionMetaDataInterface;
+
+    /**
+     * Hidden configuration for filtering UI components.
+     */
+    hidden?: HiddenConfigurationInterface;
 }
 
 /**
@@ -67,13 +73,15 @@ const RulesComponent: FunctionComponent<RulesComponentPropsWithValidation> = ({
     initialData,
     conditionExpressionsMetaData,
     isMultipleRules,
-    ruleExecutionMetaData
+    ruleExecutionMetaData,
+    hidden
 }: RulesComponentPropsWithValidation): ReactElement => (
     <RulesProvider
         initialData={ initialData }
         isMultipleRules={ isMultipleRules }
         conditionExpressionsMetaData={ conditionExpressionsMetaData }
         ruleExecutionMetaData={ ruleExecutionMetaData }
+        hidden={ hidden }
     >
         <RuleExecutionComponent
             data-componentid={ componentId }

@@ -773,7 +773,6 @@ const AuthenticationFlowProvider = (props: PropsWithChildren<AuthenticationFlowP
             ...DefaultFlowConfigurationSequenceTemplate,
             attributeStepId: 1,
             requestPathAuthenticators: [],
-            script: AdaptiveScriptUtils.generateScript(2).join("\n"),
             subjectStepId: 1,
             type: AuthenticationSequenceType.DEFAULT
         };

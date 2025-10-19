@@ -27,14 +27,14 @@ import { LocalAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { ServerConfigurationsConstants } from "../constants";
+import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import {
     GovernanceCategoryForOrgsInterface,
     GovernanceConnectorInterface,
     RealmConfigInterface,
     RevertGovernanceConnectorConfigInterface,
     UpdateGovernanceConnectorConfigInterface
-} from "../models";
+} from "../models/governance-connectors";
 
 /**
  * Initialize an axios Http client.

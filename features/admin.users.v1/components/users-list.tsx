@@ -27,7 +27,7 @@ import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { userConfig } from "@wso2is/admin.extensions.v1/configs/user";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { RealmConfigInterface } from "@wso2is/admin.server-configurations.v1";
+import { RealmConfigInterface } from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { getUserNameWithoutDomain, isFeatureEnabled } from "@wso2is/core/helpers";
 import {

@@ -19,16 +19,17 @@
 import Box from "@oxygen-ui/react/Box";
 import Code from "@oxygen-ui/react/Code";
 import Typography from "@oxygen-ui/react/Typography";
+import loadStaticResource from "@wso2is/admin.core.v1/utils/load-static-resource";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ReactElement, useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import useRequiredFields, { RequiredFieldInterface } from "../../../../../hooks/use-required-fields";
-import { CommonStepFactoryPropsInterface } from "../../common-step-factory";
+import { ExecutionMinimalPropsInterface } from "../execution-minimal";
 
 /**
  * Props interface of {@link AppleExecution}.
  */
-export type AppleExecutionPropsInterface = Pick<CommonStepFactoryPropsInterface, "resource">
+export type AppleExecutionPropsInterface = ExecutionMinimalPropsInterface
     & IdentifiableComponentInterface;
 
 const AppleExecution = ({
@@ -65,7 +66,7 @@ const AppleExecution = ({
 
     return (
         <Box display="flex" gap={ 1 } data-componentid={ componentId } className="flow-builder-execution apple">
-            <img src="https://www.svgrepo.com/show/494331/apple-round.svg" height="20" />
+            <img src={ loadStaticResource("assets/images/icons/apple.svg") } height="20" />
             <Typography variant="body1">{ t("flows:core.executions.names.apple") }</Typography>
         </Box>
     );

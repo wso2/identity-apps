@@ -19,10 +19,11 @@
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
+import moment from "moment";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -37,13 +38,10 @@ import {
     WorkflowInstanceOperationType,
     WorkflowInstanceStatus
 } from "../models/workflowRequests";
-import { formatMsToBackend } from "../utils/formatDateTimeToBackend";
 import { generateFilterString } from "../utils/generateFilterString";
 import "./workflow-requests.scss";
 
-type WorkflowsLogsPageInterface = IdentifiableComponentInterface & {
-    "data-testid"?: string;
-};
+type WorkflowsLogsPageInterface = TestableComponentInterface;
 
 interface FilterTag {
     key: string;
@@ -57,10 +55,10 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
 ): ReactElement => {
 
     const {
-        ["data-testid"]: componentId
+        ["data-testid"]: componentId = "workflow-requests"
     } = props;
 
-    const { t } = useTranslation();
+    const { t } = useTranslation([ "workflowRequests" ]);
     const dispatch: Dispatch = useDispatch();
 
     const [ workflowRequests, setWorkflowRequests ] = useState<WorkflowInstanceListItemInterface[]>([]);
@@ -96,24 +94,24 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
                     && workflowInstancesError.response.data.detail) {
                 dispatch(addAlert({
                     description: t(
-                        "console:manage.features.workflowRequests.notifications." +
+                        "workflowRequests:notifications." +
                         "fetchWorkflowRequests.error.description",
                         { description: workflowInstancesError.response.data.detail }
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.workflowRequests.notifications.fetchWorkflowRequests.error.message"
+                        "workflowRequests:notifications.fetchWorkflowRequests.error.message"
                     )
                 }));
             } else {
                 dispatch(addAlert({
                     description: t(
-                        "console:manage.features.workflowRequests.notifications." +
+                        "workflowRequests:notifications." +
                         "fetchWorkflowRequests.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "console:manage.features.workflowRequests.notifications." +
+                        "workflowRequests:notifications." +
                         "fetchWorkflowRequests.genericError.message"
                     )
                 }));
@@ -122,27 +120,26 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
     }, [ workflowInstancesError, dispatch, t ]);
 
     const INSTANCE_STATUSES: DropdownItemProps[] = [
-        { key: WorkflowInstanceStatus.ALL_TASKS, text: t("approvalWorkflows:status.all"), value: "ALL_TASKS" },
-        { key: WorkflowInstanceStatus.FAILED, text: t("approvalWorkflows:status.failed"), value: "FAILED" },
-        { key: WorkflowInstanceStatus.APPROVED, text: t("approvalWorkflows:status.approved"), value: "APPROVED" },
-        { key: WorkflowInstanceStatus.PENDING, text: t("approvalWorkflows:status.pending"), value: "PENDING" },
-        { key: WorkflowInstanceStatus.DELETED, text: t("approvalWorkflows:status.deleted"), value: "DELETED" },
-        { key: WorkflowInstanceStatus.REJECTED, text: t("approvalWorkflows:status.rejected"), value: "REJECTED" }
+        { key: WorkflowInstanceStatus.ALL_TASKS, text: t("workflowRequests:status.all"), value: "ALL_TASKS" },
+        { key: WorkflowInstanceStatus.FAILED, text: t("workflowRequests:status.failed"), value: "FAILED" },
+        { key: WorkflowInstanceStatus.APPROVED, text: t("workflowRequests:status.approved"), value: "APPROVED" },
+        { key: WorkflowInstanceStatus.PENDING, text: t("workflowRequests:status.pending"), value: "PENDING" },
+        { key: WorkflowInstanceStatus.ABORTED, text: t("workflowRequests:status.aborted"), value: "ABORTED" },
+        { key: WorkflowInstanceStatus.REJECTED, text: t("workflowRequests:status.rejected"), value: "REJECTED" }
     ];
 
-
     const TIME_RANGE_OPTIONS: { key: number; text: string; value: number }[] = [
-        { key: -2, text: t("approvalWorkflows:timeRanges.all"), value: -2 },
-        { key: 0.25, text: t("approvalWorkflows:timeRanges.last15Minutes"), value: 0.25 },
-        { key: 0.5, text: t("approvalWorkflows:timeRanges.last30Minutes"), value: 0.5 },
-        { key: 1, text: t("approvalWorkflows:timeRanges.last1Hour"), value: 1 },
-        { key: 6, text: t("approvalWorkflows:timeRanges.last6Hours"), value: 6 },
-        { key: 12, text: t("approvalWorkflows:timeRanges.last12Hours"), value: 12 },
-        { key: 24, text: t("approvalWorkflows:timeRanges.last24Hours"), value: 24 },
-        { key: 48, text: t("approvalWorkflows:timeRanges.last2Days"), value: 48 },
-        { key: 168, text: t("approvalWorkflows:timeRanges.last7Days"), value: 168 },
-        { key: 720, text: t("approvalWorkflows:timeRanges.last30Days"), value: 720 },
-        { key: -1, text: t("approvalWorkflows:timeRanges.customRange"), value: -1 }
+        { key: -2, text: t("workflowRequests:timeRanges.all"), value: -2 },
+        { key: 0.25, text: t("workflowRequests:timeRanges.last15Minutes"), value: 0.25 },
+        { key: 0.5, text: t("workflowRequests:timeRanges.last30Minutes"), value: 0.5 },
+        { key: 1, text: t("workflowRequests:timeRanges.last1Hour"), value: 1 },
+        { key: 6, text: t("workflowRequests:timeRanges.last6Hours"), value: 6 },
+        { key: 12, text: t("workflowRequests:timeRanges.last12Hours"), value: 12 },
+        { key: 24, text: t("workflowRequests:timeRanges.last24Hours"), value: 24 },
+        { key: 48, text: t("workflowRequests:timeRanges.last2Days"), value: 48 },
+        { key: 168, text: t("workflowRequests:timeRanges.last7Days"), value: 168 },
+        { key: 720, text: t("workflowRequests:timeRanges.last30Days"), value: 720 },
+        { key: -1, text: t("workflowRequests:timeRanges.customRange"), value: -1 }
     ];
 
     const getDisplayLabel = (type: string, value: string): string => {
@@ -150,28 +147,28 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
             case "operationType":
                 switch (value) {
                     case WorkflowInstanceOperationType.ALL:
-                        return t("approvalWorkflows:operationType.all");
+                        return t("workflowRequests:operationType.all");
                     case WorkflowInstanceOperationType.ADD_USER:
-                        return t("approvalWorkflows:operationType.createUser");
+                        return t("workflowRequests:operationType.createUser");
                     case WorkflowInstanceOperationType.SELF_REGISTER_USER:
-                        return t("common:approvalsPage.operationTypes.selfRegisterUser");
+                        return t("workflowRequests:operationType.selfRegisterUser");
                     case WorkflowInstanceOperationType.DELETE_USER:
-                        return t("approvalWorkflows:operationType.deleteUser");
+                        return t("workflowRequests:operationType.deleteUser");
                     case WorkflowInstanceOperationType.UPDATE_ROLES_OF_USERS:
-                        return t("approvalWorkflows:operationType.updateUserRoles");
+                        return t("workflowRequests:operationType.updateUserRoles");
                     case WorkflowInstanceOperationType.ADD_ROLE:
-                        return t("approvalWorkflows:operationType.createRole");
+                        return t("workflowRequests:operationType.createRole");
                     case WorkflowInstanceOperationType.DELETE_ROLE:
-                        return t("approvalWorkflows:operationType.deleteRole");
+                        return t("workflowRequests:operationType.deleteRole");
                     // TODO: Enable these operation types when backend support is added
                     // case WorkflowInstanceOperationType.UPDATE_ROLE_NAME:
-                    //     return t("approvalWorkflows:operationType.updateRoleName");
+                    //     return t("workflowRequests:operationType.updateRoleName");
                     // case WorkflowInstanceOperationType.UPDATE_USERS_OF_ROLES:
-                    //     return t("approvalWorkflows:operationType.updateRoleUsers");
+                    //     return t("workflowRequests:operationType.updateRoleUsers");
                     // case WorkflowInstanceOperationType.DELETE_USER_CLAIMS:
-                    //     return t("approvalWorkflows:operationType.deleteUserClaims");
+                    //     return t("workflowRequests:operationType.deleteUserClaims");
                     // case WorkflowInstanceOperationType.UPDATE_USER_CLAIMS:
-                    //     return t("approvalWorkflows:operationType.updateUserClaims");
+                    //     return t("workflowRequests:operationType.updateUserClaims");
                     default: return value;
                 }
             case "status":
@@ -180,12 +177,30 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
                         (item: DropdownItemProps) => item.value === value
                     )?.text?.toString() || value
                 );
-            case "createdTimeRange":
+            case "createdTimeRange": {
+                if (value === "-1") {
+                    if (createdFromTime && createdToTime) {
+                        return moment(Number(createdFromTime)).format("YYYY-MM-DD") + " to " +
+                            moment(Number(createdToTime)).format("YYYY-MM-DD");
+                    }
+
+                    return t("workflowRequests:timeRanges.customRange");
+                }
+
+                const option: { key: number; text: string; value: number } | undefined = TIME_RANGE_OPTIONS.find(
+                    (item: { key: number; text: string; value: number }) => item.value === Number(value)
+                );
+
+                return option ? option.text : value;
+            }
             case "updatedTimeRange": {
                 if (value === "-1") {
-                    return TIME_RANGE_OPTIONS.find(
-                        (item: { key: number; text: string; value: number }) => item.value === -1
-                    )?.text || value;
+                    if (updatedFromTime && updatedToTime) {
+                        return moment(Number(updatedFromTime)).format("YYYY-MM-DD") + " to " +
+                            moment(Number(updatedToTime)).format("YYYY-MM-DD");
+                    }
+
+                    return t("workflowRequests:timeRanges.customRange");
                 }
 
                 const option: { key: number; text: string; value: number } | undefined = TIME_RANGE_OPTIONS.find(
@@ -308,21 +323,18 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
         searchWorkflowRequests();
     };
 
-
-
     const searchWorkflowRequests = (): void => {
         const generatedFilter: string = generateFilterString(
             status,
             operationType,
-            createdFromTime ? formatMsToBackend(createdFromTime, true) : "",
-            createdToTime ? formatMsToBackend(createdToTime, false) : "",
-            updatedFromTime ? formatMsToBackend(updatedFromTime, true) : "",
-            updatedToTime ? formatMsToBackend(updatedToTime, false) : ""
+            createdFromTime ? moment(Number(createdFromTime)).format("YYYY-MM-DD HH:mm:ss.SSS") : "",
+            createdToTime ? moment(Number(createdToTime)).format("YYYY-MM-DD HH:mm:ss.SSS") : "",
+            updatedFromTime ? moment(Number(updatedFromTime)).format("YYYY-MM-DD HH:mm:ss.SSS") : "",
+            updatedToTime ? moment(Number(updatedToTime)).format("YYYY-MM-DD HH:mm:ss.SSS") : ""
         );
 
         setFilterString(generatedFilter);
         setOffset(0);
-        // The hook will automatically refetch when filterString changes
     };
 
     /**
@@ -345,12 +357,19 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
         setLimit(data.value as number);
     };
 
-    // The hook automatically handles fetching when limit, offset, or filterString changes
-
+    // The hook automatically handles fetching when limit, offset, or filterString changes.
     useEffect(() => {
         searchWorkflowRequests();
-    }, [ status, createdTimeRange, createdFromTime, createdToTime, updatedTimeRange, updatedFromTime,
-        updatedToTime, operationType ]);
+    }, [
+        status,
+        createdTimeRange,
+        createdFromTime,
+        createdToTime,
+        updatedTimeRange,
+        updatedFromTime,
+        updatedToTime,
+        operationType
+    ]);
 
     const activeFilters: FilterTag[] = getActiveFilters();
 
@@ -414,13 +433,6 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
             </div>
         </PageLayout>
     );
-};
-
-/**
- * Default props for the component.
- */
-WorkflowRequestsPage.defaultProps = {
-    "data-testid": "workflow-requests"
 };
 
 /**

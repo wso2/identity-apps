@@ -69,6 +69,24 @@ export const common: CommonNS = {
                     message: "යමක් වැරදී ඇත"
                 }
             },
+            statusUpdate: {
+                approved: {
+                    description: "අනුමත කිරීමේ ඉල්ලීම අනුමත කර ඇත.",
+                    message: "අනුමත කිරීමේ ඉල්ලීම අනුමත කර ඇත"
+                },
+                claimed: {
+                    description: "අනුමත කිරීමේ ඉල්ලීම ගෙන ඇත.",
+                    message: "අනුමත කිරීමේ ඉල්ලීම ගෙන ඇත"
+                },
+                rejected: {
+                    description: "අනුමත කිරීමේ ඉල්ලීම ප්‍රතික්ෂේප කර ඇත.",
+                    message: "අනුමත කිරීමේ ඉල්ලීම ප්‍රතික්ෂේප කර ඇත"
+                },
+                released: {
+                    description: "අනුමත කිරීමේ ඉල්ලීම නිදහස් කර ඇත.",
+                    message: "අනුමත කිරීමේ ඉල්ලීම නිදහස් කර ඇත"
+                }
+            },
             updatePendingApprovals: {
                 error: {
                     description: "{{description}}",
@@ -96,20 +114,12 @@ export const common: CommonNS = {
         placeholders: {
             emptyApprovalFilter: {
                 action: "සියල්ල බලන්න",
-                subtitles: {
-                    0: "{{status}} තත්වයේ දැනට කිසිදු අනුමැතියක් නොමැත.",
-                    1: "කරුණාකර {{status}} තත්වයේ ඔබට ඇති කාර්යයන් පරීක්ෂා කරන්න",
-                    2: "එහිදී ඒවා බලන්න."
-                },
+                subtitle: "{{status}} තත්වයේ දැනට කිසිදු අනුමැතියක් නොමැත.",
                 title: "ප්‍රතිඵල කිසිවක් හමු නොවීය"
             },
             emptyApprovalList: {
                 action: "",
-                subtitles: {
-                    0: "සමාලෝචනය කිරීමට දැනට අනුමැතීන් නොමැත.",
-                    1: "කරුණාකර පද්ධතියේ මෙහෙයුම් පාලනය කිරීමට ඔබ වැඩපිළිවෙළක් එක් කර ඇතිදැයි පරීක්ෂා කරන්න.",
-                    2: ""
-                },
+                subtitle: "සමාලෝචනය කිරීමට දැනට අනුමැතීන් නොමැත",
                 title: "අනුමත කිරීම් නොමැත"
             },
             emptySearchResults: {
@@ -165,6 +175,7 @@ export const common: CommonNS = {
     confirm: "තහවුරු කරන්න",
     contains: "අඩංගු වේ",
     continue: "පවත්වාගෙන යන්න",
+    copied: "පිටපත් කළා!",
     copyToClipboard: "ක්ලිප්බෝඩ් වෙත පිටපත් කරන්න",
     create: "සාදන්න",
     createdOn: "නිර්මාණය කරන ලද්දේ",
@@ -240,6 +251,7 @@ export const common: CommonNS = {
     operations: "මෙහෙයුම්",
     organizationName: "{{orgName}} සංවිධානය",
     overview: "දළ විශ්ලේෂණය",
+    parameter: "පරාමිතිය",
     pending: "අසම්පූර්ණ",
     personalInfo: "පෞද්ගලික තොරතුරු",
     pin: "තබා ගන්න",
@@ -264,6 +276,7 @@ export const common: CommonNS = {
     reserved: "වෙන් කරන ලද",
     resetFilters: "පෙරහන් නැවත සකසන්න",
     retry: "නැවත උත්සාහ කරන්න",
+    revert: "ප්‍රතිස්ථාපනය",
     revoke: "අවලංගු කරන්න",
     revokeAll: "සියල්ල අවලංගු කරන්න",
     samples: "සාම්පල",

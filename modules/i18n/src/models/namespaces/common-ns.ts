@@ -78,6 +78,24 @@ export interface CommonNS {
                     description: string;
                 };
             };
+            statusUpdate: {
+                approved: {
+                    message: string;
+                    description: string;
+                };
+                rejected: {
+                    message: string;
+                    description: string;
+                };
+                claimed: {
+                    message: string;
+                    description: string;
+                };
+                released: {
+                    message: string;
+                    description: string;
+                };
+            };
         };
         operationTypes: {
             addRole: string;
@@ -92,20 +110,12 @@ export interface CommonNS {
                 emptyApprovalList: {
                     action: string;
                     title: string;
-                    subtitles: {
-                        0: string;
-                        1: string;
-                        2: string;
-                    };
+                    subtitle: string;
                 };
                 emptyApprovalFilter: {
                     action: string;
                     title: string;
-                    subtitles: {
-                        0: string;
-                        1: string;
-                        2: string;
-                    };
+                    subtitle: string
                 };
                 emptySearchResults: {
                     action: string;
@@ -158,6 +168,7 @@ export interface CommonNS {
     confirm: string;
     contains: string;
     continue: string;
+    copied: string;
     copyToClipboard: string;
     createdOn: string;
     create: string;
@@ -219,6 +230,7 @@ export interface CommonNS {
     operations: string;
     operationType: string;
     overview: string;
+    parameter: string;
     pending: string;
     personalInfo: string;
     pin: string;
@@ -239,6 +251,7 @@ export interface CommonNS {
     reserved: string;
     resetFilters: string;
     retry: string;
+    revert: string;
     revoke: string;
     revokeAll: string;
     required: string;

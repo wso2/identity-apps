@@ -42,7 +42,7 @@ import { useMyAccountApplicationData } from "../../admin.applications.v1/api/app
 import { useGetApplication } from "../../admin.applications.v1/api/use-get-application";
 import { ApplicationManagementConstants } from "../../admin.applications.v1/constants/application-management";
 import { ApplicationListItemInterface } from "../../admin.applications.v1/models/application";
-import { useUserDetails } from "../api";
+import { useProfileInfo } from "../api";
 import { UserManagementConstants } from "../constants";
 
 /**
@@ -104,21 +104,12 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
 
     const consoleUrl: string = useSelector((state: AppState) => state?.config?.deployment?.clientHost);
     const authenticatedUser: string = useSelector((state: AppState) => state?.auth?.providedUsername);
-    const authenticatedUserProfileInfo: ProfileInfoInterface = useSelector((state: AppState) =>
-        state?.profile?.profileInfo);
     const consumerAccountURL: string = useSelector((state: AppState) =>
         state?.config?.deployment?.accountApp?.tenantQualifiedPath);
     const userFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
         state.config.ui.features?.users);
     const accountAppClientID: string = useSelector((state: AppState) =>
         state.config.deployment.accountApp.clientID);
-    const getUserId = (userId: string): string => {
-        const tenantAwareUserId: string = userId.split("@").length > 1 ? userId.split("@")[0] : userId;
-        const userDomainAwareUserId: string = tenantAwareUserId.split("/").length > 1 ?
-            tenantAwareUserId.split("/")[1] : tenantAwareUserId;
-
-        return userDomainAwareUserId;
-    };
     const {
         data: myAccountApplicationData,
         isLoading: isMyAccountApplicationDataFetchRequestLoading
@@ -130,7 +121,7 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
     const {
         data: authenticatedUserProfileInfoData,
         isLoading: isAuthenticatedUserFetchRequestLoading
-    } = useUserDetails(getUserId(authenticatedUserProfileInfo?.id));
+    } = useProfileInfo();
     const { getUserOrgInLocalStorage } = useOrganizations();
     const isSwitchedFromRootOrg: boolean = getUserOrgInLocalStorage() === "undefined";
     const orgType: OrganizationType = useSelector((state: AppState) => state?.organization?.organizationType);
@@ -391,8 +382,8 @@ export const UserImpersonationAction: FunctionComponent<UserImpersonationActionI
             ? user?.userName?.split("/")[0]
             : userstoresConfig?.primaryUserstoreName;
 
-        const authenticatedUserUserStore: string = authenticatedUserProfileInfo?.id?.split("/").length > 1
-            ? authenticatedUserProfileInfo?.id?.split("/")[0]
+        const authenticatedUserUserStore: string = authenticatedUserProfileInfoData?.userName?.split("/").length > 1
+            ? authenticatedUserProfileInfoData?.userName?.split("/")[0]
             : (
                 orgType === OrganizationType.SUBORGANIZATION ? userstoresConfig?.primaryUserstoreName :
                     (userConfig?.allowImpersonationForPrimaryUserStore

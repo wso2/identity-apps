@@ -18,6 +18,9 @@
 import { approvalWorkflowsNS } from "../../../models";
 
 export const approvalWorkflows: approvalWorkflowsNS = {
+    advancedSearch: {
+        placeholder: "Search by approval workflow name"
+    },
     confirmation: {
         confirm: "Confirm",
         content:
@@ -67,19 +70,23 @@ export const approvalWorkflows: approvalWorkflowsNS = {
             },
             emptyList: {
                 action: "New Approval Workflow",
-                subtitles:
-                "There are currently no approval workflows available. " +
-                "You can add a new approval workflow easily by following the " +
-                "steps in the approval workflow creation wizard.",
+                subtitles: {
+                    0: "There are currently no approval workflows available.",
+                    1: "You can add a new approval workflow easily by following the steps in the approval workflow creation wizard."
+                },
                 title: "Add a new approval workflow"
             },
             emptyListReadOnly: {
-                subtitles: "There are currently no approval workflows available.",
+                subtitles: {
+                    0: "There are currently no approval workflows available."
+                },
                 title: "No approval workflows"
             },
             emptySearch: {
                 action: "Clear search query",
-                subtitles: "We couldn't find any results for {{searchQuery}}. " + "Please try a different search term.",
+                subtitles: {
+                    0: "We couldn't find any results for {{searchQuery}}. Please try a different search term."
+                },
                 title: "No results found"
             }
         },
@@ -92,7 +99,7 @@ export const approvalWorkflows: approvalWorkflowsNS = {
             title: "SQL Query Types",
             update: "Update"
         }
-    } ,
+    },
     forms: {
         configurations: {
             template: {
@@ -149,9 +156,17 @@ export const approvalWorkflows: approvalWorkflowsNS = {
         },
         operations: {
             dropDown: {
+                disabledHint: "A workflow already exists for this operation",
                 label: "Operations",
+                nullValidationErrorMessage: "Please select at least one operation",
                 placeholder: "Type operation/s to search and assign"
             }
+        }
+    },
+    list: {
+        columns: {
+            actions: "Actions",
+            name: "Name"
         }
     },
     notifications: {
@@ -201,6 +216,10 @@ export const approvalWorkflows: approvalWorkflowsNS = {
             genericError: {
                 description: "There was an error while removing workflow operations.",
                 message: "Something went wrong!"
+            },
+            noAssociationsSelectedError: {
+                description: "At least one workflow operation must be selected.",
+                message: "No workflow operations selected"
             },
             success: {
                 description: "Workflow operation has been deleted successfully!",
@@ -252,38 +271,6 @@ export const approvalWorkflows: approvalWorkflowsNS = {
         updateDelay: {
             description: "It might take some time for the updated properties to appear.",
             message: "Updating properties takes time"
-        },
-        deleteWorkflowRequest: {
-            genericError: {
-                description: "An error occurred while deleting the workflow request",
-                message: "Something went wrong"
-            },
-            success: {
-                description: "Workflow request deleted successfully.",
-                message: "Workflow request deleted successfully!"
-            }
-        },
-        fetchWorkflowRequestDetails: {
-            genericError: {
-                description: "An error occurred while fetching the workflow request details",
-                message: "Something went wrong"
-            },
-            success: {
-                description: "Workflow request details fetched successfully.",
-                message: "Workflow request details fetched successfully!"
-            }
-        },
-        fetchWorkflowRequests: {
-            genericError: {
-                description: "An error occurred while fetching the workflow requests",
-                message: "Something went wrong"
-            }
-        },
-        searchWorkflowRequests: {
-            genericError: {
-                description: "An error occurred while searching the workflow requests",
-                message: "Something went wrong"
-            }
         }
     },
     pageLayout: {
@@ -326,91 +313,5 @@ export const approvalWorkflows: approvalWorkflowsNS = {
             primaryAction: "New Approval Workflow",
             title: "Approval Workflows"
         }
-    },
-    list: {
-        columns: {
-            workflowInstanceId: "Operation Type",
-            status: "Status",
-            requestInitiator: "Request Initiator",
-            createdAt: "Created At",
-            updatedAt: "Updated At",
-            actions: "Actions"
-        }
-    },
-    status: {
-        all: "All Tasks",
-        approved: "Approved",
-        deleted: "Deleted",
-        failed: "Failed",
-        pending: "Pending",
-        rejected: "Rejected"
-    },
-    eventType: {
-        all: "All Tasks",
-        myTasks: "My Tasks"
-    },
-    operationType: {
-        all: "All Operations",
-        createUser: "Create User",
-        deleteUser: "Delete User",
-        updateUserRoles: "Update User Roles",
-        createRole: "Create Role",
-        deleteRole: "Delete Role",
-        updateRoleName: "Update Role Name",
-        updateRoleUsers: "Update Role Users",
-        deleteUserClaims: "Delete User Claims",
-        updateUserClaims: "Update User Claims"
-    },
-    details: {
-        header: "Workflow Request Details",
-        fields: {
-            id: "ID",
-            eventType: "Event Type",
-            requestInitiator: "Request Initiator",
-            status: "Status",
-            createdAt: "Created At",
-            updatedAt: "Updated At",
-            requestParams: "Request Params"
-        },
-        loading: "Loading...",
-        error: {
-            header: "Error",
-            content: "Failed to load workflow request details."
-        },
-        backButton: "Back",
-        dangerZone: {
-            header: "Danger Zone",
-            delete: {
-                actionTitle: "Delete Workflow Request",
-                header: "Delete Workflow Request",
-                subheader: "Once you delete a workflow request, there is no going back. Please be certain.",
-                confirm: "Are you sure you want to delete this workflow request? This action cannot be undone."
-            }
-        }
-    },
-    timeRanges: {
-        all: "All",
-        last6Hours: "Last 6 hours",
-        last12Hours: "Last 12 hours",
-        last24Hours: "Last 24 hours",
-        last2Days: "Last 2 days",
-        last7Days: "Last 7 days",
-        last14Days: "Last 14 days",
-        last30Days: "Last 30 days",
-        customRange: "Custom Range",
-        customRangeTitle: "Custom {{label}}",
-        range: "Range"
-    },
-    activeFiltersBar: {
-        removeFilter: "Remove {{filter}} filter",
-        noActiveFilters: "No active filters",
-        clearAll: "Clear all"
-    },
-    filters: {
-        requestType: "Request Type",
-        status: "Status",
-        operationType: "Operation Type",
-        createdTimeRange: "Created Time Range",
-        updatedTimeRange: "Updated Time Range"
     }
 };

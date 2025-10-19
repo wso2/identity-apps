@@ -18,14 +18,16 @@
 
 import Button, { ButtonProps } from "@oxygen-ui/react/Button";
 import Code from "@oxygen-ui/react/Code";
+import loadStaticResource from "@wso2is/admin.core.v1/utils/load-static-resource";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Handle, Position } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import PlaceholderComponent from "./placeholder-component";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
+import usePasswordExecutorValidation from "../../../../hooks/use-password-executor-validation";
 import useRequiredFields, { RequiredFieldInterface } from "../../../../hooks/use-required-fields";
-import { ButtonVariants } from "../../../../models/elements";
+import { ButtonVariants, Element } from "../../../../models/elements";
 import { CommonElementFactoryPropsInterface } from "../common-element-factory";
 import "./button-adapter.scss";
 
@@ -80,6 +82,8 @@ const ButtonAdapter: FunctionComponent<ButtonAdapterPropsInterface> = ({
         fields
     );
 
+    usePasswordExecutorValidation((resource as unknown) as Element);
+
     let config: ButtonProps = {};
     let image: string = "";
 
@@ -105,7 +109,7 @@ const ButtonAdapter: FunctionComponent<ButtonAdapterPropsInterface> = ({
         };
     } else if (resource.variant === ButtonVariants.Social) {
         // TODO: Figure out a way to identify the social connection from the next step.
-        image = "https://www.svgrepo.com/show/475656/google-color.svg";
+        image = "https://www.svgrepo.com/show/475656/google.svg";
 
         config = {
             ...config,
@@ -120,8 +124,8 @@ const ButtonAdapter: FunctionComponent<ButtonAdapterPropsInterface> = ({
             <Button
                 sx={ resource?.config.styles }
                 startIcon={ resource?.config?.image
-                    ? <img src={ resource?.config?.image } height={ 20 } />
-                    : image && <img src={ image } height={ 20 } />
+                    ? <img src={ loadStaticResource(resource?.config?.image) } height={ 20 } />
+                    : image && <img src={ loadStaticResource(image) } height={ 20 } />
                 }
                 { ...config }
             >

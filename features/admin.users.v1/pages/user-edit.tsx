@@ -27,12 +27,14 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { getIdPIcons } from "@wso2is/admin.identity-providers.v1/configs/ui";
-import { useGovernanceConnectors } from "@wso2is/admin.server-configurations.v1/api";
-import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants";
+import { useGovernanceConnectors } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
+import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface
-} from "@wso2is/admin.server-configurations.v1/models";
+} from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import {
     getUserNameWithoutDomain,
@@ -180,7 +182,8 @@ const UserEditPage = (): ReactElement => {
                     connector.properties.map((property: ConnectorPropertyInterface) => {
                         if (property.name === ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION
                             || property.name === ServerConfigurationsConstants.ASK_PASSWORD_EMAIL_OTP
-                            || property.name === ServerConfigurationsConstants.ASK_PASSWORD_SMS_OTP) {
+                            || property.name === ServerConfigurationsConstants.ASK_PASSWORD_SMS_OTP
+                            || property.name === ServerConfigurationsConstants.EMAIL_VERIFICATION_OTP) {
                             properties.push(property);
                         }
                     });

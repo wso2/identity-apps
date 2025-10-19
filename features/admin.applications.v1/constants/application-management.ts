@@ -25,6 +25,14 @@ import { IdentityAppsError } from "@wso2is/core/errors";
 import { ApplicationTemplateCategories, ApplicationTemplateLoadingStrategies } from "../models/application";
 
 /**
+ * Keys used in the application feature dictionary.
+ */
+export enum ApplicationFeatureDictionaryKeys {
+    ApplicationEditEnforceAuthorizedAPIUpdatePermission = "APPLICATION_EDIT_ENFORCE_AUTHORIZED_API_UPDATE_PERMISSION",
+    ApplicationEditEnforceClientSecretPermission = "APPLICATION_EDIT_ENFORCE_CLIENT_SECRET_PERMISSION"
+}
+
+/**
  * Class containing application management constants.
  */
 export class ApplicationManagementConstants {
@@ -90,7 +98,11 @@ export class ApplicationManagementConstants {
         .set("APPLICATION_EDIT_ACCESS_CONFIG_BACK_CHANNEL_LOGOUT",
             "applications.edit.accessConfiguration.backChannelLogout")
         .set("APPLICATION_SHARED_ACCESS_STATUS", "applications.sharedAccess.status")
-        .set("APPLICATION_ROLE_SHARING", "applications.sharedAccess.roleSharing");
+        .set("APPLICATION_ROLE_SHARING", "applications.sharedAccess.roleSharing")
+        .set(ApplicationFeatureDictionaryKeys.ApplicationEditEnforceAuthorizedAPIUpdatePermission,
+            "applications.enforceAuthorizedAPIUpdatePermission")
+        .set(ApplicationFeatureDictionaryKeys.ApplicationEditEnforceClientSecretPermission,
+            "applications.enforceClientSecretPermission");
 
     /**
      * Key for the URL search param for application state.

@@ -1,5 +1,80 @@
 # @wso2is/admin.console-settings.v1
 
+## 2.26.2
+
+### Patch Changes
+
+- [#9330](https://github.com/wso2/identity-apps/pull/9330) [`c06595150af8b9756f5d165c0b534dbef4341ce5`](https://github.com/wso2/identity-apps/commit/c06595150af8b9756f5d165c0b534dbef4341ce5) Thanks [@mmafrar](https://github.com/mmafrar)! - fix: Remove index files in `@wso2is/common.userstores.v1` package
+
+- Updated dependencies [[`83c0f480bd104adb25b519b6137c49d6642f6723`](https://github.com/wso2/identity-apps/commit/83c0f480bd104adb25b519b6137c49d6642f6723), [`c06595150af8b9756f5d165c0b534dbef4341ce5`](https://github.com/wso2/identity-apps/commit/c06595150af8b9756f5d165c0b534dbef4341ce5)]:
+  - @wso2is/i18n@2.30.52
+  - @wso2is/admin.administrators.v1@2.29.207
+  - @wso2is/admin.applications.v1@2.38.4
+  - @wso2is/admin.extensions.v1@2.40.8
+  - @wso2is/admin.userstores.v1@2.27.39
+  - @wso2is/admin.roles.v2@2.27.251
+  - @wso2is/admin.users.v1@2.36.56
+  - @wso2is/admin.core.v1@2.49.89
+  - @wso2is/admin.server-configurations.v1@2.35.103
+
+## 2.26.1
+
+### Patch Changes
+
+- [#9339](https://github.com/wso2/identity-apps/pull/9339) [`8a3d82fa1beac62385e914a29b18879f4cd0c4b3`](https://github.com/wso2/identity-apps/commit/8a3d82fa1beac62385e914a29b18879f4cd0c4b3) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix issue with Role Assignment permission
+
+## 2.26.0
+
+### Minor Changes
+
+- [#9325](https://github.com/wso2/identity-apps/pull/9325) [`82e74eaa2f352274cf36b083bc0eafb26ff6bad7`](https://github.com/wso2/identity-apps/commit/82e74eaa2f352274cf36b083bc0eafb26ff6bad7) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Provide support to list sub features under the console settings
+
+### Patch Changes
+
+- Updated dependencies [[`428be49ea1d8f245ca9217c126b4152e5caf1a9e`](https://github.com/wso2/identity-apps/commit/428be49ea1d8f245ca9217c126b4152e5caf1a9e), [`dae5e73820feef56c679bd4981d8eda876416970`](https://github.com/wso2/identity-apps/commit/dae5e73820feef56c679bd4981d8eda876416970), [`31559adf396bfc4482cf24542ba746e2995ab82b`](https://github.com/wso2/identity-apps/commit/31559adf396bfc4482cf24542ba746e2995ab82b)]:
+  - @wso2is/admin.users.v1@2.36.50
+  - @wso2is/i18n@2.30.49
+  - @wso2is/admin.applications.v1@2.38.0
+  - @wso2is/admin.core.v1@2.49.83
+  - @wso2is/admin.roles.v2@2.27.245
+  - @wso2is/admin.server-configurations.v1@2.35.97
+
+## 2.25.228
+
+### Patch Changes
+
+- [#9279](https://github.com/wso2/identity-apps/pull/9279) [`4c0e8530931a622f1ba0650d1b8728d63b0fba13`](https://github.com/wso2/identity-apps/commit/4c0e8530931a622f1ba0650d1b8728d63b0fba13) Thanks [@mmafrar](https://github.com/mmafrar)! - fix: Remove index files in `@wso2is/admin.roles.v2` package
+
+- Updated dependencies [[`4c0e8530931a622f1ba0650d1b8728d63b0fba13`](https://github.com/wso2/identity-apps/commit/4c0e8530931a622f1ba0650d1b8728d63b0fba13)]:
+  - @wso2is/admin.administrators.v1@2.29.206
+  - @wso2is/admin.applications.v1@2.37.15
+  - @wso2is/admin.roles.v2@2.27.237
+  - @wso2is/admin.users.v1@2.36.42
+  - @wso2is/admin.core.v1@2.49.75
+  - @wso2is/admin.server-configurations.v1@2.35.89
+
+## 2.25.227
+
+### Patch Changes
+
+- [#9259](https://github.com/wso2/identity-apps/pull/9259) [`46a433bb2d3dda5ec4cb881373a0315f1c920653`](https://github.com/wso2/identity-apps/commit/46a433bb2d3dda5ec4cb881373a0315f1c920653) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Handle alert for console role creation when workflow is enabled.
+
+- Updated dependencies [[`8fcc5b62ba17183b0be5bf381e8932f18f10f13b`](https://github.com/wso2/identity-apps/commit/8fcc5b62ba17183b0be5bf381e8932f18f10f13b)]:
+  - @wso2is/i18n@2.30.40
+
+## 2.25.226
+
+### Patch Changes
+
+- [#9233](https://github.com/wso2/identity-apps/pull/9233) [`430474b7380ab51bb527cb389e6a1bdda4640cc2`](https://github.com/wso2/identity-apps/commit/430474b7380ab51bb527cb389e6a1bdda4640cc2) Thanks [@s-vamshi](https://github.com/s-vamshi)! - Fix copy icon hint text in Console settings not updating to "Copied"
+
+- Updated dependencies [[`616d7be338c290eed994a9bcbe31a9d1eb575b5c`](https://github.com/wso2/identity-apps/commit/616d7be338c290eed994a9bcbe31a9d1eb575b5c), [`430474b7380ab51bb527cb389e6a1bdda4640cc2`](https://github.com/wso2/identity-apps/commit/430474b7380ab51bb527cb389e6a1bdda4640cc2)]:
+  - @wso2is/i18n@2.30.38
+  - @wso2is/admin.core.v1@2.49.68
+  - @wso2is/admin.server-configurations.v1@2.35.82
+  - @wso2is/admin.users.v1@2.36.35
+  - @wso2is/admin.roles.v2@2.27.230
+
 ## 2.25.225
 
 ### Patch Changes

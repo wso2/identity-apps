@@ -16,11 +16,13 @@
  * under the License.
  */
 
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import useUserPreferences from "@wso2is/common.ui.v1/hooks/use-user-preferences";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, ReactElement, useEffect } from "react";
 import FloatingPublishButton, { FloatingPublishButtonProps } from "./floating-publish-button";
+import FloatingRevertButton, { FloatingRevertButtonProps } from "./floating-revert-button";
 import FlowBuilderPageHeader from "./flow-builder-page-header";
 import "./flow-builder-page.scss";
 
@@ -29,7 +31,8 @@ import "./flow-builder-page.scss";
  */
 export type FlowBuilderPageProps = IdentifiableComponentInterface &
     HTMLAttributes<HTMLDivElement> &
-    FloatingPublishButtonProps;
+    FloatingPublishButtonProps &
+    FloatingRevertButtonProps;
 
 /**
  * Skeleton for the flow builder page.
@@ -44,9 +47,11 @@ const FlowBuilderPage: FunctionComponent<FlowBuilderPageProps> = ({
     flowType,
     flowTypeDisplayName,
     isPublishing,
-    onPublish
+    onPublish,
+    onRevert
 }: FlowBuilderPageProps): ReactElement => {
     const { setPreferences, leftNavbarCollapsed } = useUserPreferences();
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     /**
      * If the user doesn't have a `leftNavbarCollapsed` preference saved, collapse the navbar for better UX.
@@ -69,6 +74,13 @@ const FlowBuilderPage: FunctionComponent<FlowBuilderPageProps> = ({
                 />
             </div>
             { children }
+            { isSubOrganization() && (
+                <FloatingRevertButton
+                    flowType={ flowType }
+                    flowTypeDisplayName={ flowTypeDisplayName }
+                    onRevert={ onRevert }
+                />
+            ) }
             <FloatingPublishButton
                 flowType={ flowType }
                 isPublishing={ isPublishing }

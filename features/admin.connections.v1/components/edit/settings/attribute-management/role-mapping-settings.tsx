@@ -25,7 +25,7 @@ import {
     OrganizationRoleListResponseInterface
 } from "@wso2is/admin.organizations.v1/models";
 import { getRolesList } from "@wso2is/admin.roles.v2/api/roles";
-import { INTERNAL_DOMAIN } from "@wso2is/admin.roles.v2/constants";
+import { INTERNAL_DOMAIN } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { RoleListInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { DynamicField, KeyValue } from "@wso2is/forms";
 import { Heading, Hint } from "@wso2is/react-components";

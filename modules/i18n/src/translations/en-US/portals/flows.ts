@@ -36,13 +36,12 @@ export const flows: flowsNS = {
                     label: "Send a notification email on flow completion"
                 }
             }
-        },
-        tooltip: {
-            disableFlow: "Click to disable the invited user registration flow",
-            enableFlow: "Click to enable the invited user registration flow"
         }
     },
     core: {
+        autoSave: {
+            savingInProgress: "Auto-saving..."
+        },
         breadcrumb: "Edit {{flowType}} Flow",
         elements: {
             richText: {
@@ -94,6 +93,12 @@ export const flows: flowsNS = {
             }
         },
         executions: {
+            confirmationCode: {
+                configurationHint: "Allow users to set their own passwords during admin-initiated onboarding and configure related settings."
+            },
+            landing:{
+                message: "Configure the {{executor}} settings and publish to apply the changes."
+            },
             names: {
                 apple: "Apple",
                 confirmationCode: "Confirmation Code",
@@ -104,11 +109,22 @@ export const flows: flowsNS = {
                 magicLink: "Magic Link",
                 microsoft: "Microsoft",
                 passkeyEnrollment: "Enroll Passkey"
+            },
+            tooltip: {
+                configurationHint: "Configure"
             }
         },
         labels: {
             disableFlow: "Disable",
             enableFlow: "Enable"
+        },
+        modals: {
+            revertFlow: {
+                assertionHint: "Please confirm your action",
+                description: "This action will permanently delete all customizations and revert the flow back to its initial state.",
+                title: "Revert {{flowType}} Flow?",
+                warning: "This action cannot be undone."
+            }
         },
         notificationPanel: {
             emptyMessages: {
@@ -121,6 +137,9 @@ export const flows: flowsNS = {
                 errors: "Errors",
                 info: "Info",
                 warnings: "Warnings"
+            },
+            trigger: {
+                label: "Notifications"
             }
         },
         notifications: {
@@ -174,6 +193,30 @@ export const flows: flowsNS = {
                     message: "Flow Metadata Fetch Error"
                 }
             },
+            restoreFromHistory: {
+                genericError: {
+                    description: "An error occurred while restoring the flow version.",
+                    message: "Failed to restore version"
+                },
+                invalidData: {
+                    description: "Invalid flow data in history item.",
+                    message: "Failed to restore version"
+                },
+                success: {
+                    description: "Successfully restored flow to version from {{date}}.",
+                    message: "Flow restored successfully"
+                }
+            },
+            revertFlow: {
+                genericError: {
+                    description: "An error occurred while reverting the {{flowType}} flow.",
+                    message: "Revert {{flowType}} Flow Error"
+                },
+                success: {
+                    description: "Successfully reverted the {{flowType}} flow to its initial state.",
+                    message: "{{flowType}} Flow Reverted"
+                }
+            },
             textPreferenceFetch: {
                 genericError: {
                     description: "An error occurred while fetching the custom text preferences.",
@@ -195,6 +238,10 @@ export const flows: flowsNS = {
             end: {
                 flowCompletionProperties: "Flow Completion Properties"
             }
+        },
+        tooltips: {
+            disableFlow: "Disable the {{flowType}} flow",
+            enableFlow: "Enable the {{flowType}} flow"
         },
         validation: {
             fields: {
@@ -250,6 +297,36 @@ export const flows: flowsNS = {
             info: "Info",
             warning: "Warning",
             warnings: "Warnings"
+        },
+        versionHistory: {
+            currentVersion: "Current version",
+            emptyState: "No version history available",
+            hint: "Please note that the version history is stored locally in your browser and will be lost if you clear your browser data or switch to a different browser or device.",
+            moreActions: "More actions",
+            panelTitle: "Version History (Local)",
+            restoreAction: "Restore",
+            restoreDialog: {
+                cancel: "Cancel",
+                noFlowData: "No flow data available to preview.",
+                previewContainer: {
+                    description: "The preview below shows the state of the flow in the selected version.",
+                    title: "Flow Preview"
+                },
+                restore: "Restore",
+                restoring: "Restoring...",
+                title: "Restore this version?",
+                warningAlert: {
+                    description: "If you proceed, the current flow will be replaced with version from <1>{{timestamp}}</1>. Please take a moment to review the flow preview below before confirming since this action cannot be undone.",
+                    title: "Warning"
+                }
+            },
+            restoreVersion: "Restore this version",
+            unknownAuthor: "Unknown"
+        },
+        workflowAlert: {
+            description: "A workflow is engaged for this flow. The following settings will not take effect until the workflow is disabled.",
+            navigation: "Click <1>here</1> to have a look at the currently engaged workflows.",
+            title: "Workflow Engaged"
         }
     },
     label: "Flows",
@@ -270,16 +347,12 @@ export const flows: flowsNS = {
                     hint: "Immediately log the user in once the password recovery is completed, without additional steps.",
                     label: "Auto Login"
                 },
-                description: "The <1>End Screen</1> defines what happens once the password recovery flow is completed. It allows you to control the user&apos;s final experience by selecting one of the following outcomes:",
+                description: "The <1>End Screen</1> defines what happens once the password recovery flow is completed. It allows you to control the user's final experience by selecting one of the following outcomes:",
                 flowCompletionNotification: {
                     hint: "Notify the user via email once the password recovery flow is successfully completed.",
                     label: "Send a notification email on flow completion"
                 }
             }
-        },
-        tooltip: {
-            disableFlow: "Click to disable the password recovery flow",
-            enableFlow: "Click to enable the password recovery flow"
         }
     },
     registrationFlow: {
@@ -317,18 +390,15 @@ export const flows: flowsNS = {
                 },
                 accountVerification: {
                     hint: "Require the user to confirm their account via email before granting access.",
-                    label: "Verify the account on flow completion"
+                    label: "Verify the account on flow completion.",
+                    warning: "When the flow includes an email verification step (e.g. email OTP), this option will not be applied."
                 },
                 autoLogin: {
                     hint: "Immediately log the user in once the flow is completed, without additional steps.",
                     label: "Auto Login"
                 },
-                description: "The <1>End Screen</1> defines what happens once the flow is completed. It allows you to control the user&apos;s final experience by selecting one of the following outcomes:"
+                description: "The <1>End Screen</1> defines what happens once the flow is completed. It allows you to control the user's final experience by selecting one of the following outcomes:"
             }
-        },
-        tooltip: {
-            disableFlow: "Click to disable the registration flow",
-            enableFlow: "Click to enable the registration flow"
         }
     }
 };

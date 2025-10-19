@@ -18,9 +18,9 @@
 
 import {
     GovernanceCategoryForOrgsInterface,
-    GovernanceConnectorCategoryInterface,
-    GovernanceConnectorUtils
-} from "@wso2is/admin.server-configurations.v1";
+    GovernanceConnectorCategoryInterface
+} from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
+import { GovernanceConnectorUtils } from "@wso2is/admin.server-configurations.v1/utils/governance-connector-utils";
 import { AppThemeConfigInterface, FeatureAccessConfigInterface } from "@wso2is/core/models";
 import { StringUtils } from "@wso2is/core/utils";
 import { MultitenantConstants } from "./multitenant-constants";

@@ -418,9 +418,9 @@ export const user: userNS = {
             pendingSelfRegistration: "The account is locked pending user verification via the self-registration email."
         },
         accountState: {
-            pendingAskPassword: "The user has not yet set a password using the setup email sent.",
-            pendingAskPasswordEmailOTP: "The user has not yet set a password using the email OTP sent.",
-            pendingAskPasswordSMSOTP: "The user has not yet set a password using the SMS OTP sent."
+            pendingAskPassword: "The user has not yet completed the registration using the setup email sent.",
+            pendingAskPasswordEmailOTP: "The user has not yet completed the registration using the email OTP sent.",
+            pendingAskPasswordSMSOTP: "The user has not yet completed the registration using the SMS OTP sent."
         },
         confirmationModals: {
             deleteAttributeConfirmation: {
@@ -664,7 +664,7 @@ export const user: userNS = {
             updateProfileInfo: {
                 error: {
                     description: "{{description}}",
-                    message: "Error occurred while updating the profile details"
+                    message: "Profile update failed"
                 },
                 genericError: {
                     description: "Error occurred while updating the profile details.",

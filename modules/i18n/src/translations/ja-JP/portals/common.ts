@@ -69,6 +69,24 @@ export const common: CommonNS = {
                     "message": "何かがうまくいかなかった"
                 }
             },
+            "statusUpdate": {
+                "approved": {
+                    "description": "承認要求が承認されました。",
+                    "message": "承認要求が承認されました"
+                },
+                "claimed": {
+                    "description": "承認要求が要求されました。",
+                    "message": "承認要求が要求されました"
+                },
+                "rejected": {
+                    "description": "承認要求が拒否されました。",
+                    "message": "承認要求が拒否されました"
+                },
+                "released": {
+                    "description": "承認要求がリリースされました。",
+                    "message": "承認要求がリリースされました"
+                }
+            },
             "updatePendingApprovals": {
                 "error": {
                     "description": "{{description}}",
@@ -96,20 +114,12 @@ export const common: CommonNS = {
         "placeholders": {
             "emptyApprovalFilter": {
                 "action": "すべて表示",
-                "subtitles": {
-                    0: "現在、{{status}} 状態の承認はありません。",
-                    1: "タスクが {{status}} 状態にあるかどうかを確認してください。",
-                    2: "ここで表示できます。"
-                },
+                "subtitle": "現在、{{status}} 状態の承認はありません。",
                 "title": "結果が見つかりません"
             },
             "emptyApprovalList": {
                 "action": "",
-                "subtitles": {
-                    0: "現在、承認をレビューするものはありません。",
-                    1: "システム内の操作を制御するためにワークフローを追加したかどうかを確認してください。",
-                    2: ""
-                },
+                "subtitle": "現在、承認をレビューするものはありません。",
                 "title": "承認なし"
             },
             "emptySearchResults": {
@@ -165,6 +175,7 @@ export const common: CommonNS = {
     "confirm": "確認する",
     "contains": "含む",
     "continue": "続く",
+    "copied": "コピーしました",
     "copyToClipboard": "クリップボードにコピー",
     "create": "作成する",
     "createdOn": "に作成されました",
@@ -240,6 +251,7 @@ export const common: CommonNS = {
     "operations": "オペレーション",
     "organizationName": "{{orgName}} 組織",
     "overview": "概要",
+    "parameter": "パラメーター",
     "pending": "保留中",
     "personalInfo": "個人情報",
     "pin": "ピン",
@@ -264,6 +276,7 @@ export const common: CommonNS = {
     "reserved": "予約済み",
     "resetFilters": "フィルターをリセットします",
     "retry": "リトライ",
+    "revert": "元に戻す",
     "revoke": "取り消す",
     "revokeAll": "すべてを取り消します",
     "samples": "サンプル",

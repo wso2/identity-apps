@@ -10,7 +10,7 @@
                 },
                 "display": {
                     "label": "Resolve User",
-                    "image": "https://www.svgrepo.com/show/479898/magnifying-glass-10.svg",
+                    "image": "assets/images/icons/magnifying-glass.svg",
                     "defaultVariant": "PRIMARY"
                 }
             },
@@ -23,7 +23,7 @@
                 },
                 "display": {
                     "label": "Provision Password",
-                    "image": "https://www.svgrepo.com/show/479398/stamp-2.svg",
+                    "image": "assets/images/icons/stamp.svg",
                     "defaultVariant": "PRIMARY"
                 }
             }

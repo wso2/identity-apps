@@ -16,14 +16,36 @@
  * under the License.
  */
 
+import updateFlowConfig from "@wso2is/admin.flow-builder-core.v1/api/update-flow-config";
+import useAuthenticationFlowBuilderCore from
+    "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
 import AuthenticationFlowBuilderCoreProvider
     from "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
+import {
+    getConnectorDetails,
+    updateGovernanceConnector
+} from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
+import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
+import {
+    AskPasswordFormUpdatableConfigsInterface
+} from "@wso2is/admin.server-configurations.v1/models/ask-password";
+import {
+    GovernanceConnectorInterface,
+    UpdateGovernanceConnectorConfigInterface
+} from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
+import { GovernanceConnectorUtils } from "@wso2is/admin.server-configurations.v1/utils/governance-connector-utils";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useReactFlow } from "@xyflow/react";
+import { AxiosError } from "axios";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FC, PropsWithChildren, ReactElement, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
+import { serverConfigurationConfig } from "../../admin.extensions.v1/configs/server-configuration";
 import { FlowTypes } from "../../admin.flows.v1/models/flows";
 import { PreviewScreenType } from "../../common.branding.v1/models";
 import configureAskPasswordFlow from "../api/configure-ask-password-flow";
@@ -66,6 +88,7 @@ const AskPasswordFlowBuilderProvider: FC<AskPasswordFlowBuilderProviderProps> = 
             ResourceProperties={ ResourceProperties }
             flowType={ FlowTypes.INVITED_USER_REGISTRATION }
             screenTypes={ screensList }
+            validationConfig={ { isPasswordExecutorValidationEnabled: true } }
         >
             <FlowContextWrapper>{ children }</FlowContextWrapper>
         </AuthenticationFlowBuilderCoreProvider>
@@ -82,9 +105,10 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
     children
 }: PropsWithChildren<AskPasswordFlowBuilderProviderProps>): ReactElement => {
     const dispatch: Dispatch = useDispatch();
-
+    const { t } = useTranslation();
     const { toObject } = useReactFlow();
     const { data: supportedAttributes } = useGetSupportedProfileAttributes();
+    const { flowCompletionConfigs } = useAuthenticationFlowBuilderCore();
     const {
         data: isNewAskPasswordPortalEnabled,
         mutate: mutateNewAskPasswordPortalEnabledRequest
@@ -92,10 +116,151 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
 
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Attribute[] }>({});
     const [ isPublishing, setIsPublishing ] = useState<boolean>(false);
+    const [
+        invitedUserRegistrationConfig,
+        setInvitedUserRegistrationConfig
+    ] = useState<null | AskPasswordFormUpdatableConfigsInterface>(null);
+    const [ isInvitedUserRegistrationConfigUpdated, setIsInvitedUserRegistrationConfigUpdated ]
+    = useState<boolean>(false);
+    const [ connector, setConnector ] = useState<GovernanceConnectorInterface | undefined>(undefined);
 
+
+    /*
+    * Error handler for governance connector update.
+    *
+    * @param error - Axios error object.
+    */
+    const handleUpdateError = (error: AxiosError) => {
+        if (error.response && error.response.data && error.response.data.detail) {
+            dispatch(
+                addAlert({
+                    description: t(
+                        "governanceConnectors:notifications.updateConnector.error.description",
+                        { description: error.response.data.description }
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "governanceConnectors:notifications.updateConnector.error.message"
+                    )
+                })
+            );
+        } else {
+            // Generic error message.
+            dispatch(
+                addAlert({
+                    description: t(
+                        "governanceConnectors:notifications." +
+                        "updateConnector.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "governanceConnectors:notifications." +
+                        "updateConnector.genericError.message"
+                    )
+                })
+            );
+        }
+    };
+
+    /*
+    * Success handler for governance connector update.
+    */
+    const handleUpdateSuccess = () => {
+        dispatch(
+            addAlert({
+                description: t(
+                    "extensions:manage.serverConfigurations.userOnboarding.inviteUserToSetPassword." +
+                    "notification.success.description"
+                ),
+                level: AlertLevels.SUCCESS,
+                message:
+                t( "governanceConnectors:notifications.updateConnector.success.message" )
+            })
+        );
+    };
+
+    /*
+    * Load connector details.
+    */
+    const loadConnectorDetails = () => {
+        getConnectorDetails(
+            ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
+            ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID
+        ).then((response: GovernanceConnectorInterface) => {
+            // Set connector categoryID if not available
+            if (!response?.categoryId) {
+                response.categoryId = ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID;
+            }
+            setConnector(response);
+        }).catch(() => {
+            setConnector(undefined);
+        });
+    };
+
+    /**
+     * Handles the confirmation code step publish action.
+     *
+     * @returns A promise that resolves to a boolean indicating the success of the publish action.
+     */
+
+    const handleSubmit = (values: AskPasswordFormUpdatableConfigsInterface) => {
+        const data: UpdateGovernanceConnectorConfigInterface = {
+            operation: "UPDATE",
+            properties: []
+        };
+
+        for (const key in values) {
+            data.properties.push({
+                name: GovernanceConnectorUtils.decodeConnectorPropertyName(key),
+                value: values[ key ]
+            });
+        }
+
+        // Special case for password recovery notification based enable since the connector state
+        // depends on the state of recovery options.
+        if (
+            serverConfigurationConfig.connectorToggleName[ connector?.name ] &&
+            serverConfigurationConfig.autoEnableConnectorToggleProperty &&
+            connector?.name !== "account-recovery"
+        ) {
+            data.properties.push({
+                name: GovernanceConnectorUtils.decodeConnectorPropertyName(
+                    serverConfigurationConfig.connectorToggleName[ connector?.name ]
+                ),
+                value: "true"
+            });
+        }
+
+        updateGovernanceConnector(data, connector?.categoryId, connector?.id)
+            .then(() => {
+                handleUpdateSuccess();
+            })
+            .catch((error: AxiosError) => {
+                handleUpdateError(error);
+            }).finally(() => {
+                // Reset the updated state.
+                loadConnectorDetails();
+                setIsInvitedUserRegistrationConfigUpdated(false);
+            });
+    };
+
+    /**
+     * Handles the publish action.
+     *
+     * @returns A promise that resolves to a boolean indicating the success of the publish action.
+     */
     const handlePublish = async (): Promise<boolean> => {
+
+        // Proceed to update the flow.
         setIsPublishing(true);
 
+        // Update invite user registration configurations if updated.
+        if (isInvitedUserRegistrationConfigUpdated && invitedUserRegistrationConfig) {
+
+            handleSubmit(invitedUserRegistrationConfig);
+        }
+
+        // Update the flow.
         const flow: any = toObject();
 
         if (!isNewAskPasswordPortalEnabled) {
@@ -112,6 +277,23 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
             }
 
             mutateNewAskPasswordPortalEnabledRequest();
+        }
+
+        if (!isEmpty(flowCompletionConfigs)) {
+            try {
+                await updateFlowConfig({
+                    flowCompletionConfigs,
+                    flowType: FlowTypes.INVITED_USER_REGISTRATION
+                });
+            } catch (error) {
+                dispatch(
+                    addAlert({
+                        description: t("flows:core.notifications.updateFlowConfig.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("flows:core.notifications.updateFlowConfig.genericError.message")
+                    })
+                );
+            }
         }
 
         try {
@@ -148,10 +330,16 @@ const FlowContextWrapper: FC<AskPasswordFlowBuilderProviderProps> = ({
     return (
         <AskPasswordFlowBuilderContext.Provider
             value={ {
+                connector: connector,
+                invitedUserRegistrationConfig: invitedUserRegistrationConfig,
+                isInvitedUserRegistrationConfigUpdated: isInvitedUserRegistrationConfigUpdated,
                 isNewAskPasswordPortalEnabled,
                 isPublishing,
                 onPublish: handlePublish,
                 selectedAttributes,
+                setConnector: setConnector,
+                setInvitedUserRegistrationConfig: setInvitedUserRegistrationConfig,
+                setIsInvitedUserRegistrationConfigUpdated: setIsInvitedUserRegistrationConfigUpdated,
                 setSelectedAttributes,
                 supportedAttributes
             } }

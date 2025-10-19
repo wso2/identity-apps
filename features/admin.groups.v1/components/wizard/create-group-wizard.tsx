@@ -25,16 +25,16 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs";
-import { assignGroupstoRoles, updateRoleDetails } from "@wso2is/admin.roles.v2/api";
+import { assignGroupstoRoles, updateRoleDetails } from "@wso2is/admin.roles.v2/api/roles";
 import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
-import { RoleConstants } from "@wso2is/admin.roles.v2/constants";
+import { RoleConstants } from "@wso2is/admin.roles.v2/constants/role-constants";
 import {
     BasicRoleInterface,
     PatchRoleDataInterface,
     RolesV2Interface
 } from "@wso2is/admin.roles.v2/models/roles";
 import { UserBasicInterface } from "@wso2is/admin.users.v1/models/user";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,

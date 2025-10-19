@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
 import { FeatureAccessConfigInterface, Show, useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -47,20 +48,24 @@ import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Grid } from "semantic-ui-react";
 import changeActionStatus from "../api/change-action-status";
 import deleteAction from "../api/delete-action";
+import updateAction from "../api/update-action";
 import useGetActionById from "../api/use-get-action-by-id";
 import useGetActionsByType from "../api/use-get-actions-by-type";
+import ActionVersionChips from "../components/action-version-chips";
+import ActionVersionWarningBanner from "../components/action-version-warning-banner";
 import PreIssueAccessTokenActionConfigForm from "../components/pre-issue-access-token-action-config-form";
 import PreUpdatePasswordActionConfigForm from "../components/pre-update-password-action-config-form";
 import PreUpdateProfileActionConfigForm from "../components/pre-update-profile-action-config-form";
 import { ActionsConstants } from "../constants/actions-constants";
+import { ActionVersionInfo, useActionVersioning } from "../hooks/use-action-versioning";
 import {
     ActionConfigFormPropertyInterface, PreUpdatePasswordActionConfigFormPropertyInterface,
     PreUpdatePasswordActionResponseInterface,
     PreUpdateProfileActionConfigFormPropertyInterface,
     PreUpdateProfileActionResponseInterface
 } from "../models/actions";
-import "./action-configuration-page.scss";
 import { useHandleError, useHandleSuccess } from "../util/alert-util";
+import "./action-configuration-page.scss";
 
 /**
  * Props for the Action Configuration page.
@@ -72,7 +77,9 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
 }: ActionConfigurationPageInterface): ReactElement => {
 
     const actionsFeatureConfig: FeatureAccessConfigInterface = useSelector(
-        (state: AppState) => state.config.ui.features.actions);
+        (state: AppState) => state.config.ui.features.actions
+    );
+
     const [ isOpenRevertConfigModal, setOpenRevertConfigModal ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState(false);
     const [ isActive, setIsActive ] = useState<boolean>(false);
@@ -88,10 +95,13 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
     const hasActionUpdatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.update);
     const hasActionCreatePermissions: boolean = useRequiredScopes(actionsFeatureConfig?.scopes?.create);
 
-    const actionTypeApiPath: string = useMemo(() => {
+    const actionType: string = useMemo(() => {
         const path: string[] = history.location.pathname.split("/");
-        const actionType: string = path[path.length - 1];
 
+        return path[path.length - 1];
+    }, [ history.location.pathname ]);
+
+    const actionTypeApiPath: string = useMemo(() => {
         switch (actionType) {
             case ActionsConstants.ACTION_TYPES.PRE_ISSUE_ACCESS_TOKEN.getUrlPath():
                 return ActionsConstants.ACTION_TYPES.PRE_ISSUE_ACCESS_TOKEN.getApiPath();
@@ -132,6 +142,11 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
     } = useGetActionById(actionTypeApiPath, actionId);
 
     const isLoading: boolean = isActionsLoading || !actions || !Array.isArray(actions) || isActionLoading;
+
+    // Use the action versioning hook
+    // In create mode (action is null), show latest version
+    // In edit mode (action exists), show the action's actual version
+    const versionInfo: ActionVersionInfo = useActionVersioning(actionType, action?.version);
 
     const actionCommonInitialValues: ActionConfigFormPropertyInterface =
         useMemo(() => {
@@ -394,21 +409,74 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
             });
     };
 
+    /**
+     * Handles action version update.
+     */
+    const handleVersionUpdate = (): void => {
+        updateAction(actionTypeApiPath, actionId, {
+            version: versionInfo.latestVersion
+        })
+            .then(() => {
+                dispatch(
+                    addAlert<AlertInterface>({
+                        description: t("actions:versioning.notifications.updateVersion.success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("actions:versioning.notifications.updateVersion.success.message")
+                    })
+                );
+
+                mutateAction();
+            })
+            .catch(() => {
+                dispatch(
+                    addAlert<AlertInterface>({
+                        description: t("actions:versioning.notifications.updateVersion.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("actions:versioning.notifications.updateVersion.genericError.message")
+                    })
+                );
+            });
+    };
+
     return (
         <PageLayout
-            title={ resolveActionTitle(actionTypeApiPath) }
+            title={
+                (<Box
+                    sx={ {
+                        alignItems: "center",
+                        display: "flex",
+                        flexDirection: "row",
+                        gap: "8px"
+                    } }
+                >
+                    <div>{ resolveActionTitle(actionTypeApiPath) }</div>
+                    <ActionVersionChips
+                        versionInfo={ versionInfo }
+                        data-componentid={ `${_componentId}-version-chips` }
+                    />
+                </Box>)
+            }
             description={ resolveActionDescription(actionTypeApiPath) }
             backButton={ {
-                "data-componentid": `${ _componentId }-${ actionTypeApiPath }-page-back-button`,
+                "data-componentid": `${_componentId}-${actionTypeApiPath}-page-back-button`,
                 onClick: () => handleBackButtonClick(),
                 text: t("actions:goBackActions")
             } }
+            alertBanner={ !showCreateForm && (
+                <ActionVersionWarningBanner
+                    versionInfo={ versionInfo }
+                    onUpdate={ () => {
+                        handleVersionUpdate();
+                    } }
+                    data-componentid={ `${_componentId}-version-warning` }
+                />
+            ) }
             bottomMargin={ false }
             contentTopMargin={ true }
             pageHeaderMaxWidth={ false }
             data-componentid={ `${ _componentId }-${ actionTypeApiPath }-page-layout` }
         >
-            { actionToggle() }
+            {  actionToggle( ) }
             {
                 <Grid className="grid-form">
                     <Grid.Row columns={ 1 }>
@@ -420,9 +488,9 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                                     isReadOnly={ isReadOnly() }
                                     actionTypeApiPath={ actionTypeApiPath }
                                     isCreateFormState={ showCreateForm }
+                                    versionInfo={ versionInfo }
                                 />
-                            )
-                            }
+                            ) }
                             { actionTypeApiPath === ActionsConstants.PRE_UPDATE_PASSWORD_API_PATH && (
                                 <PreUpdatePasswordActionConfigForm
                                     initialValues={ preUpdatePasswordActionInitialValues }
@@ -430,9 +498,9 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                                     isReadOnly={ isReadOnly() }
                                     actionTypeApiPath={ actionTypeApiPath }
                                     isCreateFormState={ showCreateForm }
+                                    versionInfo={ versionInfo }
                                 />
-                            )
-                            }
+                            ) }
                             { actionTypeApiPath === ActionsConstants.PRE_UPDATE_PROFILE_API_PATH && (
                                 <PreUpdateProfileActionConfigForm
                                     initialValues={ preUpdateProfileActionInitialValues }
@@ -440,29 +508,21 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                                     isReadOnly={ isReadOnly() }
                                     actionTypeApiPath={ actionTypeApiPath }
                                     isCreateFormState={ showCreateForm }
+                                    versionInfo={ versionInfo }
                                 />
-                            )
-                            }
+                            ) }
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
             }
             { !isLoading && !showCreateForm && !isEmpty(actions) && (
-                <Show
-                    when={ actionsFeatureConfig?.scopes?.delete }
-                >
-                    <DangerZoneGroup
-                        sectionHeader={ t("actions:dangerZoneGroup.header") }
-                    >
+                <Show when={ actionsFeatureConfig?.scopes?.delete }>
+                    <DangerZoneGroup sectionHeader={ t("actions:dangerZoneGroup.header") }>
                         <DangerZone
-                            data-componentid={ `${ _componentId }-danger-zone` }
-                            actionTitle={
-                                t("actions:dangerZoneGroup.revertConfig.actionTitle")
-                            }
+                            data-componentid={ `${_componentId}-danger-zone` }
+                            actionTitle={ t("actions:dangerZoneGroup.revertConfig.actionTitle") }
                             header={ t("actions:dangerZoneGroup.revertConfig.heading") }
-                            subheader={
-                                t("actions:dangerZoneGroup.revertConfig.subHeading")
-                            }
+                            subheader={ t("actions:dangerZoneGroup.revertConfig.subHeading") }
                             onActionClick={ (): void => {
                                 setOpenRevertConfigModal(true);
                             } }
@@ -470,7 +530,7 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                     </DangerZoneGroup>
                     <ConfirmationModal
                         primaryActionLoading={ isSubmitting }
-                        data-componentid={ `${ _componentId }-revert-confirmation-modal` }
+                        data-componentid={ `${_componentId}-revert-confirmation-modal` }
                         onClose={ (): void => setOpenRevertConfigModal(false) }
                         type="negative"
                         open={ isOpenRevertConfigModal }
@@ -483,14 +543,12 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header
-                            data-componentid={ `${ _componentId }-revert-confirmation-modal-header` }
+                            data-componentid={ `${_componentId}-revert-confirmation-modal-header` }
                         >
                             { t("actions:confirmationModal.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
-                            data-componentid={
-                                `${ _componentId }revert-confirmation-modal-message`
-                            }
+                            data-componentid={ `${_componentId}revert-confirmation-modal-message` }
                             attached
                             negative
                         >

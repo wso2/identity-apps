@@ -71,7 +71,7 @@ const AIGenerationModal = ({
                 <Typography variant="h5" sx={ { textAlign: "center", marginBottom: "1.25em" } }>
                     <span style={ { marginRight: "0.35rem" } }>Generate the</span>
                     <AIText>
-                       Registration Flow with AI
+                       Flow with AI
                     </AIText>
                 </Typography>
                 <AIPrompt

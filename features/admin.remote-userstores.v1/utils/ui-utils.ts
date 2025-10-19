@@ -17,7 +17,7 @@
  */
 
 import { FeatureAccessConfigInterface } from "@wso2is/access-control";
-import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants";
+import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { RemoteUserStoreConstants, UserStoresFeatureDictionaryKeys } from "../constants/remote-user-stores-constants";
 

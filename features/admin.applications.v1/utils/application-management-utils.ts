@@ -436,7 +436,7 @@ export class ApplicationManagementUtils {
      * @param url - Callback URLs.
      * @returns Prepared callback URL.
      */
-    public static normalizeCallbackUrlsFromRegExp = (raw: string, isMobile: boolean = false): string => {
+    public static normalizeCallbackUrlsFromRegExp = (raw: string): string => {
         const wrapper: RegExp = /^regexp=\((.*)\)$/;
         const match: RegExpMatchArray | null = raw.match(wrapper);
 
@@ -459,7 +459,7 @@ export class ApplicationManagementUtils {
             PatternConstants.MOBILE_DEEP_LINK_URL_REGEX_PATTERN.test(urlString);
 
         const isValidPart = (urlString: string): boolean =>
-            isHttpUrl(urlString) || (isMobile && isMobileDeepLink(urlString));
+            isHttpUrl(urlString) || isMobileDeepLink(urlString);
 
         const allValid = parts.length > 0 && parts.every(isValidPart);
 

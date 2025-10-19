@@ -87,14 +87,18 @@ const InputFieldAdapter = ({ component, formState, formStateHandler, formFieldEr
             return (
                 <OTPFieldAdapter
                     component={ component }
+                    formState={ formState }
                     formStateHandler={ formStateHandler }
+                    fieldErrorHandler={ formFieldError }
                 />
             );
         case "CHECKBOX":
             return (
                 <CheckboxFieldAdapter
                     component={ component }
+                    formState={ formState }
                     formStateHandler={ formStateHandler }
+                    fieldErrorHandler={ formFieldError }
                 />
             );
         case "NUMBER":

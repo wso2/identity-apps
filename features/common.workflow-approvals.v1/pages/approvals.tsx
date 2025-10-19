@@ -286,6 +286,58 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
 
         updatePendingApprovalStatus(id, status, approvalsUrl)
             .then(() => {
+                switch (status) {
+                    case ApprovalStatus.APPROVE:
+                        dispatch(addAlert({
+                            description: t(
+                                "common:approvalsPage.notifications.statusUpdate.approved.description"
+                            ),
+                            level: AlertLevels.SUCCESS,
+                            message: t(
+                                "common:approvalsPage.notifications.statusUpdate.approved.message"
+                            )
+                        }));
+
+                        break;
+                    case ApprovalStatus.REJECT:
+                        dispatch(addAlert({
+                            description: t(
+                                "common:approvalsPage.notifications.statusUpdate.rejected.description"
+                            ),
+                            level: AlertLevels.SUCCESS,
+                            message: t(
+                                "common:approvalsPage.notifications.statusUpdate.rejected.message"
+                            )
+                        }));
+
+                        break;
+                    case ApprovalStatus.CLAIM:
+                        dispatch(addAlert({
+                            description: t(
+                                "common:approvalsPage.notifications.statusUpdate.claimed.description"
+                            ),
+                            level: AlertLevels.SUCCESS,
+                            message: t(
+                                "common:approvalsPage.notifications.statusUpdate.claimed.message"
+                            )
+                        }));
+
+                        break;
+                    case ApprovalStatus.RELEASE:
+                        dispatch(addAlert({
+                            description: t(
+                                "common:approvalsPage.notifications.statusUpdate.released.description"
+                            ),
+                            level: AlertLevels.SUCCESS,
+                            message: t(
+                                "common:approvalsPage.notifications.statusUpdate.released.message"
+                            )
+                        }));
+
+                        break;
+                }
+
+                // Fetch the updated list of approvals.
                 getApprovals(false);
             })
             .catch((error: any) => {

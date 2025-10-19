@@ -26,7 +26,7 @@ import {
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
-import { SMSProviderConstants } from "../constants";
+import { SMSProviderConstants } from "../constants/sms-provider-constants";
 
 interface CustomSMSProviderPageInterface extends IdentifiableComponentInterface {
     isLoading?: boolean;

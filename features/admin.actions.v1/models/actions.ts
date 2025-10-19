@@ -222,6 +222,10 @@ export interface ActionBaseResponseInterface {
      * Status of the Action.
      */
     status: ActionStatus;
+    /**
+     * Version of the Action.
+     */
+    version?: string;
 }
 
 /**
@@ -330,6 +334,10 @@ export interface ActionUpdateInterface {
      * Rule configuration of the Action.
      */
     rule?: RuleWithoutIdInterface | RuleExecuteCollectionWithoutIdInterface | Record<string, never>;
+    /**
+     * Version of the Action.
+     */
+    version?: string;
 }
 
 /**

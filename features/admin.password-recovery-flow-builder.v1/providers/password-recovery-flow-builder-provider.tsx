@@ -17,6 +17,7 @@
  */
 
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
+import updateFlowConfig from "@wso2is/admin.flow-builder-core.v1/api/update-flow-config";
 import useAuthenticationFlowBuilderCore
     from "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
 import AuthenticationFlowBuilderCoreProvider
@@ -25,7 +26,9 @@ import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useReactFlow } from "@xyflow/react";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FC, PropsWithChildren, ReactElement, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { PreviewScreenType } from "../../common.branding.v1/models";
@@ -70,6 +73,10 @@ const PasswordRecoveryFlowBuilderProvider: FC<PasswordRecoveryFlowBuilderProvide
             ResourceProperties={ ResourceProperties }
             flowType={ FlowTypes.PASSWORD_RECOVERY }
             screenTypes={ screensList }
+            validationConfig={ {
+                isPasswordExecutorValidationEnabled: true,
+                isRecoveryFactorValidationEnabled: true
+            } }
         >
             <FlowContextWrapper>{ children }</FlowContextWrapper>
         </AuthenticationFlowBuilderCoreProvider>
@@ -86,8 +93,9 @@ const FlowContextWrapper: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
     children
 }: PropsWithChildren<PasswordRecoveryFlowBuilderProviderProps>): ReactElement => {
     const dispatch: Dispatch = useDispatch();
-
+    const { t } = useTranslation();
     const { toObject } = useReactFlow();
+    const { flowCompletionConfigs } = useAuthenticationFlowBuilderCore();
     const { metadata } = useAuthenticationFlowBuilderCore();
     const {
         data: isNewPasswordRecoveryPortalEnabled,
@@ -139,6 +147,23 @@ const FlowContextWrapper: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
             }
 
             mutateNewPasswordRecoveryPortalEnabledRequest();
+        }
+
+        if (!isEmpty(flowCompletionConfigs)) {
+            try {
+                await updateFlowConfig({
+                    flowCompletionConfigs,
+                    flowType: FlowTypes.PASSWORD_RECOVERY
+                });
+            } catch (error) {
+                dispatch(
+                    addAlert({
+                        description: t("flows:core.notifications.updateFlowConfig.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("flows:core.notifications.updateFlowConfig.genericError.message")
+                    })
+                );
+            }
         }
 
         try {

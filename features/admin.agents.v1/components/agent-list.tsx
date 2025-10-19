@@ -23,9 +23,16 @@ import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
-    AnimatedAvatar, AppAvatar, DataTable, EmptyPlaceholder, PrimaryButton, TableActionsInterface, TableColumnInterface
+    AnimatedAvatar,
+    AppAvatar,
+    ConfirmationModal,
+    DataTable,
+    EmptyPlaceholder,
+    PrimaryButton,
+    TableActionsInterface,
+    TableColumnInterface
 } from "@wso2is/react-components";
-import React, { ReactElement, ReactNode, SyntheticEvent } from "react";
+import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
@@ -56,6 +63,31 @@ export default function AgentList ({
 
     const { t } = useTranslation();
 
+    const [ showAgentDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
+    const [ currentDeletedAgent, setCurrentDeletedAgent ] = useState<UserBasicInterface>();
+
+    /**
+     * Handles agent deletion.
+     *
+     * @param agent - Agent to be deleted.
+     */
+    const handleAgentDelete = (agent: UserBasicInterface): void => {
+        deleteAgent(agent.id).then(() => {
+            dispatch(addAlert({
+                description: "Agent deleted successfully.",
+                level: AlertLevels.SUCCESS,
+                message: "Deleted successfully"
+            }));
+            mutateAgentList();
+        }).catch((_error: any) => {
+            dispatch(addAlert({
+                description: "An error occurred when deleting agent information.",
+                level: AlertLevels.ERROR,
+                message: "Something went wrong"
+            }));
+        });
+    };
+
     const resolveTableActions = (): TableActionsInterface[] => {
         return [
             {
@@ -77,20 +109,8 @@ export default function AgentList ({
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (_e: SyntheticEvent, _agent: UserBasicInterface): void => {
-                    deleteAgent(_agent.id).then(() => {
-                        dispatch(addAlert({
-                            description: "Agent deleted successfully.",
-                            level: AlertLevels.SUCCESS,
-                            message: "Deleted successfully"
-                        }));
-                        mutateAgentList();
-                    }).catch((_error: any) => {
-                        dispatch(addAlert({
-                            description: "An error occurred when deleting agent information.",
-                            level: AlertLevels.ERROR,
-                            message: "Something went wrong"
-                        }));
-                    });
+                    setCurrentDeletedAgent(_agent);
+                    setShowDeleteConfirmationModal(!showAgentDeleteConfirmation);
                 },
                 popupText: (): string => t("common:delete"),
                 renderer: "semantic-icon"
@@ -184,27 +204,56 @@ export default function AgentList ({
     };
 
     return (
-
-        <DataTable<AgentListItemInterface>
-            className="agents-table"
-            externalSearch={ advancedSearch }
-            isLoading={ isLoading }
-            actions={ resolveTableActions() }
-            columns={ resolveTableColumns() }
-            data={ list }
-            onRowClick={ (_e: SyntheticEvent, agent: AgentListItemInterface): void => {
-                history.push(AppConstants.getPaths().get("AGENT_EDIT").replace(":id", agent.id ));
-            } }
-            placeholders={ showPlaceholders() }
-            selectable={ true }
-            showHeader={ false }
-            transparent={
-                !(isLoading)
-                        && (showPlaceholders() !== null)
+        <>
+            <DataTable<AgentListItemInterface>
+                className="agents-table"
+                externalSearch={ advancedSearch }
+                isLoading={ isLoading }
+                actions={ resolveTableActions() }
+                columns={ resolveTableColumns() }
+                data={ list }
+                onRowClick={ (_e: SyntheticEvent, agent: AgentListItemInterface): void => {
+                    history.push(AppConstants.getPaths().get("AGENT_EDIT").replace(":id", agent.id ));
+                } }
+                placeholders={ showPlaceholders() }
+                selectable={ true }
+                showHeader={ false }
+                transparent={
+                    !(isLoading)
+                            && (showPlaceholders() !== null)
+                }
+                data-testid={ componentId }
+            />
+            {
+                showAgentDeleteConfirmation && (
+                    <ConfirmationModal
+                        data-testid={ `${ componentId }-delete-item-confirmation-modal` }
+                        onClose={ (): void => setShowDeleteConfirmationModal(false) }
+                        type="negative"
+                        open={ showAgentDeleteConfirmation }
+                        assertionHint={ t("agents:list.confirmations.deleteItem.assertionHint") }
+                        assertionType="checkbox"
+                        primaryAction="Confirm"
+                        secondaryAction="Cancel"
+                        onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
+                        onPrimaryActionClick={ (): void => {
+                            handleAgentDelete(currentDeletedAgent);
+                            setShowDeleteConfirmationModal(false);
+                        } }
+                        closeOnDimmerClick={ false }
+                    >
+                        <ConfirmationModal.Header>
+                            { t("agents:list.confirmations.deleteItem.header") }
+                        </ConfirmationModal.Header>
+                        <ConfirmationModal.Message attached negative>
+                            { t("agents:list.confirmations.deleteItem.message") }
+                        </ConfirmationModal.Message>
+                        <ConfirmationModal.Content>
+                            { t("agents:list.confirmations.deleteItem.content") }
+                        </ConfirmationModal.Content>
+                    </ConfirmationModal>
+                )
             }
-            data-testid={ componentId }
-        />
-
-
+        </>
     );
 }

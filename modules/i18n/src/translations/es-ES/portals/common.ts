@@ -69,6 +69,24 @@ export const common: CommonNS = {
                     message: "Algo salió mal"
                 }
             },
+            statusUpdate: {
+                approved: {
+                    description: "La solicitud de aprobación ha sido aprobada.",
+                    message: "Solicitud de aprobación aprobada"
+                },
+                claimed: {
+                    description: "La solicitud de aprobación ha sido reclamada.",
+                    message: "Solicitud de aprobación reclamada"
+                },
+                rejected: {
+                    description: "La solicitud de aprobación ha sido rechazada.",
+                    message: "Solicitud de aprobación rechazada"
+                },
+                released: {
+                    description: "La solicitud de aprobación ha sido liberada.",
+                    message: "Solicitud de aprobación liberada"
+                }
+            },
             updatePendingApprovals: {
                 error: {
                     description: "{{description}}",
@@ -96,20 +114,12 @@ export const common: CommonNS = {
         placeholders: {
             emptyApprovalFilter: {
                 action: "Ver todo",
-                subtitles: {
-                    0: "Actualmente no hay aprobaciones en estado {{status}}.",
-                    1: "Por favor, verifique si tiene tareas en estado {{status}} para",
-                    2: "verlas aquí."
-                },
+                subtitle: "Actualmente no hay aprobaciones en estado {{status}}.",
                 title: "No se encontraron resultados"
             },
             emptyApprovalList: {
                 action: "",
-                subtitles: {
-                    0: "Actualmente no hay aprobaciones para revisar.",
-                    1: "Por favor, verifique si ha agregado un flujo de trabajo para controlar las operaciones en el sistema.",
-                    2: ""
-                },
+                subtitle: "Actualmente no hay aprobaciones para revisar.",
                 title: "No hay aprobaciones"
             },
             emptySearchResults: {
@@ -165,6 +175,7 @@ export const common: CommonNS = {
     confirm: "Confirmar",
     contains: "contiene",
     continue: "SEGUIR",
+    copied: "Copiado!",
     copyToClipboard: "Copiar al portapapeles",
     create: "Crear",
     createdOn: "Creado en",
@@ -240,6 +251,7 @@ export const common: CommonNS = {
     operations: "Operaciones",
     organizationName: "organización {{orgName}}",
     overview: "Descripción general",
+    parameter: "Parámetro",
     pending: "Pendiente",
     personalInfo: "Información personal",
     pin: "Alfiler",
@@ -264,6 +276,7 @@ export const common: CommonNS = {
     reserved: "Reservado",
     resetFilters: "Restablecer filtros",
     retry: "Rever",
+    revert: "Revertir",
     revoke: "Revocar",
     revokeAll: "revocar todo",
     samples: "Muestras",

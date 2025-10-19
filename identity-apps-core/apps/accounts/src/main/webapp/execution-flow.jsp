@@ -62,6 +62,7 @@
     String contextPath = request.getContextPath();
     String subPath = servletPath + contextPath;
     String baseURL = accessedURL.substring(0, accessedURL.length() - subPath.length());
+    String accountsBaseURL = ServiceURLBuilder.create().addPath(contextPath).build().getAbsolutePublicURL();
 
     String state = request.getParameter("state");
     String code = request.getParameter("code");
@@ -108,9 +109,10 @@
 
     <script>
         window.onSubmit = function(token) {
-            console.log("Got recaptcha token:", token);
+            console.log("Received the recaptcha token.");
         };
     </script>
+
 </head>
 <body class="login-portal layout authentication-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
   <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
@@ -180,7 +182,7 @@
 
             const Content = () => {
                 const baseUrl = "<%= identityServerEndpointContextParam %>";
-                const accountsPortalUrl = baseUrl + "${pageContext.request.contextPath}";
+                const accountsPortalUrl = "<%= accountsBaseURL %>";
                 const defaultMyAccountUrl = "<%= myaccountUrl %>";
                 const executionFlowApiProxyPath = accountsPortalUrl + "/util/execution-flow-api.jsp";
                 const code = "<%= Encode.forJavaScript(code) != null ? Encode.forJavaScript(code) : null %>";
@@ -199,6 +201,7 @@
                 const [confirmationEffectDone, setConfirmationEffectDone] = useState(false);
                 const [userAssertion, setUserAssertion] = useState(null);
                 const [flowType, setFlowType] = useState("<%= Encode.forJavaScript(flowType) != null ? Encode.forJavaScript(flowType) : null %>");
+                const [ countDownRedirection, setCountDownRedirection ] = useState(null);
 
                 useEffect(() => {
                     const savedFlowId = localStorage.getItem("flowId");
@@ -309,11 +312,11 @@
                             + errorDetails.message + "&" + "ERROR_DESC=" + errorDetails.description + "&" + "SP_ID="
                             + "<%= Encode.forJavaScript(spId) %>" + "&" + "flowType=" + flowType + "&" + "confirmation="
                             + "<%= Encode.forJavaScript(confirmationCode) %>" + "&";
-                        
+
                         if (errorDetails.portalUrlStatus === "true") {
                             errorPageURL += "PORTAL_URL=" + portal_url + "&";
                         }
-                        
+
                         errorPageURL += "SP=" + "<%= Encode.forJavaScript(sp) %>";
 
                         window.location.href = errorPageURL;
@@ -378,18 +381,18 @@
                                 return false;
                             }
 
-                            if (flow.data.redirectURL !== null) {
-                                window.location.href = flow.data.redirectURL;
+                            let redirectionUrl = defaultMyAccountUrl;
 
-                                return true;
+                            if (flow.data.redirectURL !== null) {
+                                redirectionUrl = flow.data.redirectURL;
                             }
 
-                            window.location.href = defaultMyAccountUrl;
+                            setFlowData(flow);
+                            setComponents(flow.data.components || []);
+                            setCountDownRedirection(redirectionUrl);
                             return true;
 
-                        default:
-                            console.log(`Flow status: ${flow.flowStatus}. No special action.`);
-                            return false;
+                        default: return false;
                     }
                 };
 
@@ -471,7 +474,7 @@
                     );
                 }
 
-                if (loading || (!components || components.length === 0)) {
+                if ((loading || !components || components.length === 0) && !countDownRedirection) {
                     return createElement(
                         "div",
                         { className: `registration-content-container loading ${!loading ? "hidden" : ""}` },
@@ -488,6 +491,7 @@
                     createElement(
                         DynamicContent, {
                             contentData: flowData.data && flowData.data,
+                            state: { countDownRedirection },
                             handleFlowRequest: (actionId, formValues) => {
                                 setComponents([]);
                                 localStorage.setItem("actionTrigger", actionId);
