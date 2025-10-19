@@ -139,8 +139,8 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
         getOrganization(organizationId)
             .then((organization: OrganizationResponseInterface) => {
                 setOrganization(organization);
-                const escapedName = organization?.name?.replace(/\\/g, '\\\\');
-                setFilterQuery(`name eq '${escapedName}'`);
+                const escapedOrgName = organization?.name?.replace(/\\/g, '\\\\');
+                setFilterQuery(`name eq '${escapedOrgName}'`);
             }).catch((error: any) => {
                 if (error?.description) {
                     dispatch(addAlert({
