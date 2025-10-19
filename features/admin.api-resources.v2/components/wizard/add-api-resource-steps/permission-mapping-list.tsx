@@ -114,7 +114,7 @@ export const PermissionMappingList: FunctionComponent<PermissionMappingListInter
                 render: (permission: APIResourcePermissionInterface): ReactNode => (
                     <Header as="h6" data-testid={ `${componentId}-description` }>
                         <Header.Content>
-                            <Header.Subheader>
+                            <Header.Subheader className="permission-description">
                                 { permission.description }
                             </Header.Subheader>
                         </Header.Content>
