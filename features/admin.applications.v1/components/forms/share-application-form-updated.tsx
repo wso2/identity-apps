@@ -420,6 +420,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
                 message: t("applications:edit.sections.sharedAccess.notifications." +
                         "noOrganizationsSelected.message")
             }));
+
             return;
         }
         if (isApplicationShareOperationStatusEnabled) {
