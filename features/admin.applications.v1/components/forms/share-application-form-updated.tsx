@@ -423,6 +423,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
 
             return;
         }
+
         if (isApplicationShareOperationStatusEnabled) {
             handleAsyncSharingNotification(shareType);
         }
