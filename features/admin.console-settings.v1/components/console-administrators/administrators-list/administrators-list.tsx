@@ -46,7 +46,7 @@ import { useInvitedUsersList } from "@wso2is/admin.users.v1/api/invite";
 import { UserInviteInterface } from "@wso2is/admin.users.v1/components/guests/models/invite";
 import { AdminAccountTypes, InvitationStatus, UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { resolveUserSearchAttributes } from "@wso2is/admin.users.v1/utils";
-import { UserStoreDropdownItem } from "@wso2is/admin.userstores.v1/models";
+import { UserStoreDropdownItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,

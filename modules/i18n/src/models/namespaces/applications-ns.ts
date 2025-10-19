@@ -893,6 +893,10 @@ export interface ApplicationsNS {
                             description: string;
                         };
                     };
+                    noOrganizationsSelected: {
+                        message: string;
+                        description: string;
+                    };
                     noRolesSelected: {
                         description: string;
                         message: string;

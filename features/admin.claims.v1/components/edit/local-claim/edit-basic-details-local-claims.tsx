@@ -33,11 +33,13 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { getConnectorDetails } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
+import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface,
-    GovernanceConnectorInterface,
-    ServerConfigurationsConstants,
-    getConnectorDetails } from "@wso2is/admin.server-configurations.v1";
+    GovernanceConnectorInterface } from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import { getProfileSchemas } from "@wso2is/admin.users.v1/api";
 import { UserFeatureDictionaryKeys, UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-management-utils";
