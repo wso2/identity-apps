@@ -426,6 +426,7 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
         if (isApplicationShareOperationStatusEnabled) {
             handleAsyncSharingNotification(shareType);
         }
+
         if (shareType === ShareType.UNSHARE) {
             // Unshare the application with all organizations
             unshareWithAllOrganizations();
