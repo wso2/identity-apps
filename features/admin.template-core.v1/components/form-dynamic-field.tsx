@@ -58,7 +58,7 @@ export interface FormDynamicFieldPropsInterface extends IdentifiableComponentInt
 
 /**
  * Renders helper text with markdown support.
- * 
+ *
  * @param text - Text with markdown syntax
  * @returns Rendered markdown
  */
@@ -66,17 +66,21 @@ const renderHelperText = (text: string): ReactElement => {
     return (
         <ReactMarkdown
             components={{
-                // Render paragraphs as spans to keep inline
-                p: ({ node, ...props }) => <span {...props} />,
-                // Render bold text
-                strong: ({ node, ...props }) => <strong {...props} />,
-                // Render italic text
-                em: ({ node, ...props }) => <em {...props} />,
-                // Render inline code
-                code: ({ node, ...props }) => <code {...props} />
+                code: ({ children }: { children: React.ReactNode }): ReactElement => (
+                    <code>{ children }</code>
+                ),
+                em: ({ children }: { children: React.ReactNode }): ReactElement => (
+                    <em>{ children }</em>
+                ),
+                p: ({ children }: { children: React.ReactNode }): ReactElement => (
+                    <span>{ children }</span>
+                ),
+                strong: ({ children }: { children: React.ReactNode }): ReactElement => (
+                    <strong>{ children }</strong>
+                )
             }}
         >
-            {text}
+            { text }
         </ReactMarkdown>
     );
 };
