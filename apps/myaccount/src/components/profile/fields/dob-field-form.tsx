@@ -18,8 +18,8 @@
 
 import { ClaimInputFormat } from "@wso2is/core/models";
 import { Validation } from "@wso2is/forms";
+import dayjs from "dayjs";
 import isEmpty from "lodash-es/isEmpty";
-import moment from "moment";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import DatePickerFieldForm from "./date-picker-field-form";
@@ -49,7 +49,7 @@ const DOBFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
     // If the input type is a date picker, and the initial value is a valid date, render the date picker field form.
     if (schema.inputFormat?.inputType === ClaimInputFormat.DATE_PICKER) {
         // Strictly parse the initial value to avoid invalid date formats.
-        const formattedInitialValue: moment.Moment = moment(initialValue as string, "YYYY-MM-DD", true);
+        const formattedInitialValue: dayjs.Dayjs = dayjs(initialValue as string, "YYYY-MM-DD", true);
 
         if (isEmpty(initialValue) || formattedInitialValue.isValid()) {
             /**
@@ -77,7 +77,7 @@ const DOBFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
                         });
                 }
 
-                if (moment().isBefore(value)) {
+                if (dayjs().isBefore(value)) {
                     return t(
                         "myAccount:components.profile.forms.dateChangeForm.inputs.date.validations.futureDateError", {
                             field: fieldLabel
@@ -124,7 +124,7 @@ const DOBFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
             return;
         }
 
-        if (!moment(value, "YYYY-MM-DD", true).isValid()) {
+        if (!dayjs(value, "YYYY-MM-DD", true).isValid()) {
             validation.isValid = false;
             validation.errorMessages.push(
                 t("myAccount:components.profile.forms.dateChangeForm.inputs.date.validations.invalidFormat", {
@@ -135,7 +135,7 @@ const DOBFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
             return;
         }
 
-        if (moment().isBefore(value)) {
+        if (dayjs().isBefore(value)) {
             validation.isValid = false;
             validation.errorMessages.push(
                 t("myAccount:components.profile.forms.dateChangeForm.inputs.date.validations.futureDateError", {

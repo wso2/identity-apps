@@ -63,8 +63,8 @@ import {
     useMediaContext
 } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
+import dayjs from "dayjs";
 import isEmpty from "lodash-es/isEmpty";
-import moment from "moment";
 import React, { FunctionComponent, MouseEvent, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -2815,7 +2815,7 @@ export const LegacyProfile: FunctionComponent<LegacyProfileProps> = (props: Lega
             }
         // Validate date format and the date is before the current date
         } else if(checkSchemaType(schema.name, ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("DOB"))){
-            if (!moment(value, "YYYY-MM-DD",true).isValid()) {
+            if (!dayjs(value, "YYYY-MM-DD",true).isValid()) {
                 validation.isValid = false;
                 validation.errorMessages
                     .push(t("myAccount:components.profile.forms.dateChangeForm.inputs.date.validations.invalidFormat",
@@ -2823,7 +2823,7 @@ export const LegacyProfile: FunctionComponent<LegacyProfileProps> = (props: Lega
                             field: fieldName
                         }));
             } else {
-                if (moment().isBefore(value)) {
+                if (dayjs().isBefore(value)) {
                     validation.isValid = false;
                     validation.errorMessages
                         .push(t("myAccount:components.profile.forms.dateChangeForm.inputs.date.validations."

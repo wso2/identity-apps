@@ -62,10 +62,10 @@ import {
     SessionManagementProvider,
     SessionTimeoutModalTypes
 } from "@wso2is/react-components";
+import * as dayjs from "dayjs";
 import has from "lodash-es/has";
 import isEmpty from "lodash-es/isEmpty";
 import set from "lodash-es/set";
-import * as moment from "moment";
 import React, { ReactElement, Suspense, useEffect, useMemo, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Trans } from "react-i18next";
@@ -73,8 +73,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { StaticContext } from "react-router";
 import { Redirect, Route, RouteComponentProps, Router, Switch } from "react-router-dom";
 import { Dispatch } from "redux";
-import "moment/locale/si";
-import "moment/locale/fr";
+import "dayjs/locale/si";
+import "dayjs/locale/fr";
 import { getBaseRoutes } from "./configs/routes";
 import DecoratedApp from "./decorated-app";
 import "./app.scss";
@@ -191,10 +191,10 @@ export const App = ({
     }, []);
 
     /**
-     * Set the initial locale in moment
+     * Set the initial locale in dayjs
      */
     useEffect(() => {
-        moment.locale("en");
+        dayjs.locale("en");
     }, []);
 
     /**
