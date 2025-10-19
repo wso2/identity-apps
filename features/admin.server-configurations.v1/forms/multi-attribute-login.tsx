@@ -25,7 +25,7 @@ import { ServerConfigurationsConstants } from "../constants/server-configuration
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface } from "../models/governance-connectors";
-import { GovernanceConnectorUtils } from "../utils";
+import { GovernanceConnectorUtils } from "../utils/governance-connector-utils";
 
 /**
  * Interface for multi attribute login form props.

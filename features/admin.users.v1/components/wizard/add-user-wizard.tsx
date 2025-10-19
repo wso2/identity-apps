@@ -27,10 +27,10 @@ import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores
 import { updateGroupDetails, useGroupList } from "@wso2is/admin.groups.v1/api/groups";
 import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { useGetGovernanceConnectorById } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
 import {
     ServerConfigurationsConstants
-} from "@wso2is/admin.server-configurations.v1";
-import { useGetGovernanceConnectorById } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";

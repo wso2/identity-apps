@@ -21,10 +21,12 @@ import {
     AnalyticsFormValuesInterface
 } from "@wso2is/admin.extensions.v1/components/governance-connectors/models/analytics";
 import {
-    ConnectorPropertyInterface,
-    GovernanceConnectorInterface,
     ServerConfigurationsConstants
-} from "@wso2is/admin.server-configurations.v1";
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
+import {
+    ConnectorPropertyInterface,
+    GovernanceConnectorInterface
+} from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
