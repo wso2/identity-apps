@@ -136,32 +136,34 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
     };
 
     const getOrganizationData: (organizationId: string) => void = useCallback((organizationId: string): void => {
-        getOrganization(organizationId)
-            .then((organization: OrganizationResponseInterface) => {
-                setOrganization(organization);
-                const escapedName = organization?.name?.replace(/\\/g, '\\\\');
-                setFilterQuery(`name eq '${escapedName}'`);
-            }).catch((error: any) => {
-                if (error?.description) {
+            getOrganization(organizationId)
+                .then((organization: OrganizationResponseInterface) => {
+                    setOrganization(organization);
+
+                    const escapedOrgName: string = organization?.name?.replace(/\\/g, "\\\\") ?? "";
+
+                    setFilterQuery(`name eq '${escapedOrgName}'`);
+                }).catch((error: any) => {
+                    if (error?.description) {
+                        dispatch(addAlert({
+                            description: error.description,
+                            level: AlertLevels.ERROR,
+                            message: t("organizations:notifications.fetchOrganization." +
+                                "genericError.message")
+                        }));
+
+                        return;
+                    }
+
                     dispatch(addAlert({
-                        description: error.description,
+                        description: t("organizations:notifications.fetchOrganization." +
+                            "genericError.description"),
                         level: AlertLevels.ERROR,
                         message: t("organizations:notifications.fetchOrganization." +
                             "genericError.message")
                     }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: t("organizations:notifications.fetchOrganization." +
-                        "genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("organizations:notifications.fetchOrganization." +
-                        "genericError.message")
-                }));
-            });
-    }, [ dispatch, t ]);
+                });
+        }, [ dispatch, t ]);
 
     useEffect(() => {
         const path: string[] = location.pathname.split("/");
