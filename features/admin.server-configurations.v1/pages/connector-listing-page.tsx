@@ -34,15 +34,15 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Placeholder, Ref } from "semantic-ui-react";
-import { getConnectorCategories, getConnectorCategory } from "../api";
+import { getConnectorCategories, getConnectorCategory } from "../api/governance-connectors";
 import GovernanceConnectorCategoriesGrid from "../components/governance-connector-grid";
-import { ServerConfigurationsConstants } from "../constants";
+import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import {
     ConnectorOverrideConfig,
     GovernanceConnectorCategoryInterface,
     GovernanceConnectorInterface
-} from "../models";
-import { GovernanceConnectorUtils } from "../utils";
+} from "../models/governance-connectors";
+import { GovernanceConnectorUtils } from "../utils/governance-connector-utils";
 
 /**
  * Props for the Server Configurations page.

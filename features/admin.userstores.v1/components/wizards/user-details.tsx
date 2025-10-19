@@ -22,7 +22,7 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
-import { PropertyAttribute, TypeProperty } from "../../models";
+import { PropertyAttribute, TypeProperty } from "../../models/user-stores";
 
 /**
  * Props interface of {@link UserDetails}

@@ -673,6 +673,10 @@ export const applications: ApplicationsNS = {
                             message: "Application sharing failed!"
                         }
                     },
+                    noOrganizationsSelected: {
+                        description: "Please select at least one organization to share this application.",
+                        message: "No organizations selected!"
+                    },
                     fetchApplicationOrgTree: {
                         genericError: {
                             description: "Error occurred while fetching the shared organizations.",

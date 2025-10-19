@@ -23,7 +23,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SettingsSection } from "./settings-section";
-import { getSettingsSectionIcons } from "../configs";
+import { getSettingsSectionIcons } from "../configs/ui";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import { ConnectorPropertyInterface, GovernanceConnectorInterface } from "../models/governance-connectors";
 

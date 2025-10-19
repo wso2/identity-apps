@@ -18,7 +18,7 @@
 
 import { ApplicationBasicInterface } from "@wso2is/admin.applications.v1/models/application";
 import { CertificateConfigInterface, ExternalEndpoint } from "@wso2is/admin.connections.v1";
-import { GovernanceConnectorInterface } from "@wso2is/admin.server-configurations.v1/models";
+import { GovernanceConnectorInterface } from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import { IdentifiableComponentInterface, LinkInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { FunctionComponent, SVGProps } from "react";
 import { TemplateContentInterface } from "../data/identity-provider-templates";
