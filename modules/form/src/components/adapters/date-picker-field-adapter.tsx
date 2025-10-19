@@ -115,14 +115,14 @@ const DatePickerFieldAdapter: FunctionComponent<DatePickerFieldAdapterPropsInter
                     label={ label }
                     { ...input }
                     value={ formattedValue.isValid() ? formattedValue : null }
-                    onChange={ (date: moment.Moment | null) => {
-                        if (date && date.isValid()) {
+                    onChange={ (date: any) => {
+                        if (date && moment.isMoment(date) && date.isValid()) {
                             input.onChange(date.format(dateFormat));
                         } else {
                             input.onChange("");
                         }
                     } }
-                    { ...rest }
+                    { ...rest as any }
                     format={ dateFormat }
                     readOnly={ readOnly }
                 />
