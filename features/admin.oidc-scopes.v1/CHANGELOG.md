@@ -1,5 +1,17 @@
 # @wso2is/admin.oidc-scopes.v1
 
+## 2.26.1
+
+### Patch Changes
+
+- [#9336](https://github.com/wso2/identity-apps/pull/9336) [`83c0f480bd104adb25b519b6137c49d6642f6723`](https://github.com/wso2/identity-apps/commit/83c0f480bd104adb25b519b6137c49d6642f6723) Thanks [@DuleepAlwis](https://github.com/DuleepAlwis)! - Fix showing unrelated description in scope edit page when scope description is empty
+
+- Updated dependencies [[`83c0f480bd104adb25b519b6137c49d6642f6723`](https://github.com/wso2/identity-apps/commit/83c0f480bd104adb25b519b6137c49d6642f6723), [`c06595150af8b9756f5d165c0b534dbef4341ce5`](https://github.com/wso2/identity-apps/commit/c06595150af8b9756f5d165c0b534dbef4341ce5)]:
+  - @wso2is/i18n@2.30.52
+  - @wso2is/admin.applications.v1@2.38.4
+  - @wso2is/admin.claims.v1@2.29.12
+  - @wso2is/admin.core.v1@2.49.89
+
 ## 2.26.0
 
 ### Minor Changes
