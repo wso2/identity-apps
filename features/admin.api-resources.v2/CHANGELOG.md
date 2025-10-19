@@ -1,5 +1,14 @@
 # @wso2is/admin.api-resources.v2
 
+## 2.26.5
+
+### Patch Changes
+
+- [#9363](https://github.com/wso2/identity-apps/pull/9363) [`929dd9adb8139a6199ff54ec7c6aea87fbc4e63f`](https://github.com/wso2/identity-apps/commit/929dd9adb8139a6199ff54ec7c6aea87fbc4e63f) Thanks [@s-vamshi](https://github.com/s-vamshi)! - Fix scope description overflow issue in the New API Resource modal.
+
+- Updated dependencies [[`840275cc3311ec4dd4aadc7bc1eb3d4e6cc6ca7b`](https://github.com/wso2/identity-apps/commit/840275cc3311ec4dd4aadc7bc1eb3d4e6cc6ca7b)]:
+  - @wso2is/admin.core.v1@2.49.90
+
 ## 2.26.4
 
 ### Patch Changes
