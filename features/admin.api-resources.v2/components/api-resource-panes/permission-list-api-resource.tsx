@@ -151,7 +151,7 @@ export const PermissionListAPIResource: FunctionComponent<PermissionListAPIResou
                 id: "description",
                 key: "description",
                 render: (permission: APIResourcePermissionInterface): ReactNode => (
-                    <Header as="h6" data-testid={ `1${componentId}-description` }>
+                    <Header as="h6" data-testid={ `${componentId}-description` }>
                         <Header.Content>
                             <Header.Subheader className="permission-description">
                                 { permission.description }
