@@ -529,7 +529,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
 
                 if (isSubOrganization()
                         && user[SCIMConfigs?.scim?.systemSchema]?.sharedType
-                        && user[SCIMConfigs?.scim?.systemSchema]?.sharedType!=UserSharedType.INVITED
+                        && user[SCIMConfigs?.scim?.systemSchema]?.sharedType!==UserSharedType.INVITED
                 ) {
                     return true;
                 }
