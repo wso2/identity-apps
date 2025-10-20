@@ -19,6 +19,7 @@
 import OxygenAlert, { AlertProps } from "@oxygen-ui/react/Alert";
 import AppShell from "@oxygen-ui/react/AppShell";
 import Navbar, { NavbarItems } from "@oxygen-ui/react/Navbar";
+import Skeleton from "@oxygen-ui/react/Skeleton";
 import Snackbar from "@oxygen-ui/react/Snackbar";
 import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
@@ -38,6 +39,7 @@ import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import useOrganizations from "@wso2is/admin.organizations.v1/hooks/use-organizations";
 import useUserPreferences from "@wso2is/common.ui.v1/hooks/use-user-preferences";
 import {
     AlertInterface,
@@ -156,6 +158,8 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
     }, [ developFilteredRoutes ]);
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
+
+    const { isOrganizationSwitchRequestLoading } = useOrganizations();
 
     useEffect(() => {
         if (!location?.pathname) {
@@ -422,14 +426,50 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
                     />)
                 }
                 navigation={
-                    (<Navbar
-                        items={
-                            !organizationLoading ? generateNavbarItems() : []
-                        }
-                        fill={ "solid" }
-                        open={ !leftNavbarCollapsed as boolean }
-                        collapsible={ false }
-                    />)
+                    (
+                        <>
+                            { isOrganizationSwitchRequestLoading ? (
+                                <Navbar
+                                    fill="solid"
+                                    open
+                                    collapsible={ false }
+                                    items= { [
+                                        {
+                                            id: "skeleton-group",
+                                            items: Array.from({ length: 4 }).map((_, i) => ({
+                                                disabled: true,
+                                                icon: (
+                                                    <Skeleton
+                                                        variant="circular"
+                                                        width={ 48 }
+                                                        height={ 48 }
+                                                    />
+                                                ),
+                                                id: `skeleton-${i}`,
+                                                label: (
+                                                    <Skeleton
+                                                        variant="rectangular"
+                                                        width="70%"
+                                                        height={ 24 }
+                                                        className="mt-1"
+                                                    />
+                                                )
+                                            }))
+                                        }
+                                    ] }
+                                />
+                            ) : (
+                                <Navbar
+                                    items={
+                                        !organizationLoading ? generateNavbarItems() : []
+                                    }
+                                    fill={ "solid" }
+                                    open={ !leftNavbarCollapsed as boolean }
+                                    collapsible={ false }
+                                />
+                            ) }
+                        </>
+                    )
                 }
             >
                 <ErrorBoundary
