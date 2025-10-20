@@ -436,7 +436,7 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
                                     items= { [
                                         {
                                             id: "skeleton-group",
-                                            items: Array.from({ length: 4 }).map((_, i) => ({
+                                            items: Array.from({ length: 4 }).map((_ : undefined, i:number) => ({
                                                 disabled: true,
                                                 icon: (
                                                     <Skeleton

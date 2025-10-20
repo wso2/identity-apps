@@ -29,8 +29,8 @@ import ListItemIcon from "@oxygen-ui/react/ListItemIcon";
 import ListItemText from "@oxygen-ui/react/ListItemText";
 import Menu from "@oxygen-ui/react/Menu";
 import MenuItem from "@oxygen-ui/react/MenuItem";
-import Typography from "@oxygen-ui/react/Typography";
 import Skeleton from "@oxygen-ui/react/Skeleton";
+import Typography from "@oxygen-ui/react/Typography";
 import {
     ChevronDownIcon,
     DiamondIcon,
