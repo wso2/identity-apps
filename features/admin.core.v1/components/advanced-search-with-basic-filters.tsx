@@ -55,6 +55,10 @@ export interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableCo
      */
     disableSearchFilterDropdown?: boolean;
     /**
+     * Enable appending multiple filter conditions with AND operation.
+     */
+    enableMultipleFilterConditions?: boolean;
+    /**
      * Position of the search dropdown.
      */
     dropdownPosition?: AdvancedSearchPropsInterface["dropdownPosition"];
@@ -172,6 +176,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
         defaultSearchOperator,
         disableSearchFilterDropdown,
         dropdownPosition,
+        enableMultipleFilterConditions,
         enableQuerySearch,
         fill,
         filterAttributeOptions,
@@ -232,8 +237,8 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                     + " "
                     + values?.get(AdvanceSearchConstants.FILTER_VALUES_FIELD_IDENTIFIER);
 
-            // If there's an existing query, append with AND, otherwise use the new condition
-            if (externalSearchQuery && externalSearchQuery.trim() !== "") {
+            // If multiple filter conditions is enabled and there's an existing query, append with AND
+            if (enableMultipleFilterConditions && externalSearchQuery && externalSearchQuery.trim() !== "") {
                 query = externalSearchQuery + " and " + newCondition;
             } else {
                 query = newCondition;
@@ -251,13 +256,15 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
      * @param query - Search query.
      */
     const handleSearchQuerySubmit = (processQuery: boolean, query: string): void => {
-        if (!processQuery) {
-            onFilter(query);
+        let finalQuery: string = query;
 
-            return;
+        if (processQuery) {
+            finalQuery = SearchUtils.buildSearchQuery(query);
         }
 
-        onFilter(SearchUtils.buildSearchQuery(query));
+        // Update the external search query state so it can be used for appending
+        setExternalSearchQuery(finalQuery);
+        onFilter(finalQuery);
     };
 
     /**
@@ -519,6 +526,7 @@ AdvancedSearchWithBasicFilters.defaultProps = {
     "data-testid": "advanced-search",
     disableSearchFilterDropdown: false,
     dropdownPosition: "bottom right",
+    enableMultipleFilterConditions: false,
     enableQuerySearch: commonConfig?.advancedSearchWithBasicFilters?.enableQuerySearch,
     showResetButton: false
 };

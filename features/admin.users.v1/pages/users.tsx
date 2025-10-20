@@ -718,6 +718,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             placeholder={ t("users:advancedSearch.placeholder") }
             defaultSearchAttribute="userName"
             defaultSearchOperator="co"
+            enableMultipleFilterConditions={ true }
             triggerClearQuery={ triggerClearQuery }
             disableSearchAndFilterOptions={ usersList?.totalResults <= 0 && !searchQuery }
         />
