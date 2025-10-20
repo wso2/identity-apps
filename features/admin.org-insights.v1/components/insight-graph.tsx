@@ -21,7 +21,7 @@ import { getThemeVariables } from "@wso2is/admin.core.v1/api/theme";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import moment from "moment";
+import dayjs from "dayjs";
 import React, { FunctionComponent, ReactElement, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -111,7 +111,7 @@ export const InsightsGraph: FunctionComponent<InsightsGraphProps> = (props: Insi
             getInsightsForSelectedPeriod(duration as DurationOption, resourceType, filterQuery)
                 .then((resp: InsightsData) => {
                     setInsightsData(resp);
-                    setLastFetchTimestamp(moment().format("HH:mm:ss"));
+                    setLastFetchTimestamp(dayjs().format("HH:mm:ss"));
                 }).catch((error: Error) => {
                     dispatch(addAlert({
                         description: t(

@@ -17,13 +17,12 @@
  */
 
 import { Show } from "@wso2is/access-control";
-import { AppState } from "@wso2is/admin.core.v1/store";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
-import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
-import { history } from "@wso2is/admin.core.v1/helpers/history";
-
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { RoleConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
@@ -45,7 +44,7 @@ import {
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
-import moment from "moment";
+import dayjs from "dayjs";
 import React, { ReactElement, ReactNode, SyntheticEvent, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -318,11 +317,11 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 id: "lastModified",
                 key: "lastModified",
                 render: (role: RolesInterface) => {
-                    const now: moment.Moment = moment(new Date());
-                    const receivedDate: moment.Moment = moment(role?.meta?.created);
+                    const now: dayjs.Dayjs = dayjs(new Date());
+                    const receivedDate: dayjs.Dayjs = dayjs(role?.meta?.created);
 
                     return t("console:common.dateTime.humanizedDateString", {
-                        date: moment.duration(now.diff(receivedDate)).humanize()
+                        date: dayjs.duration(now.diff(receivedDate)).humanize()
                     });
                 },
                 title: t("roles:list.columns.lastModified")

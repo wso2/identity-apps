@@ -24,8 +24,8 @@ import {
     SharedProfileValueResolvingMethod
 } from "@wso2is/core/models";
 import { CheckboxFieldAdapter, FinalFormField, SwitchFieldAdapter } from "@wso2is/form";
+import dayjs from "dayjs";
 import isEmpty from "lodash-es/isEmpty";
-import moment from "moment";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import CheckBoxGroupFormField from "./check-box-group-form-field";
@@ -507,7 +507,7 @@ const ProfileFormFieldRenderer: FunctionComponent<ProfileFormFieldRendererPropsI
             );
 
         case ClaimInputFormat.DATE_PICKER:{
-            const formattedInitialValue: moment.Moment = moment(initialValue, "YYYY-MM-DD", true);
+            const formattedInitialValue: dayjs.Dayjs = dayjs(initialValue as string, "YYYY-MM-DD", true);
 
             if (isEmpty(initialValue) || formattedInitialValue.isValid()) {
                 return (

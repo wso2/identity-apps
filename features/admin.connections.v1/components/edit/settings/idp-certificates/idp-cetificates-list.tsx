@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { CertificateManagementConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import {
@@ -37,7 +37,7 @@ import {
     ResourceListItem,
     UserAvatar
 } from "@wso2is/react-components";
-import moment from "moment";
+import dayjs from "dayjs";
 import React, { FC, PropsWithChildren, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -236,7 +236,7 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
         let icon: SemanticICONS;
         let iconColor: SemanticCOLORS;
 
-        const expiryDate: moment.Moment = moment(validTill);
+        const expiryDate: dayjs.Dayjs = dayjs(validTill);
 
         const validity: CertificateValidity = CertificateManagementUtils
             .determineCertificateValidityState({

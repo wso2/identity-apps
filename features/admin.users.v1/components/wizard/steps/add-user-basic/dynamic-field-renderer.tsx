@@ -23,8 +23,8 @@ import {
     ProfileSchemaInterface
 } from "@wso2is/core/models";
 import { CheckboxFieldAdapter, FinalFormField, SwitchFieldAdapter } from "@wso2is/form";
+import dayjs from "dayjs";
 import isEmpty from "lodash-es/isEmpty";
-import moment from "moment";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import CheckBoxGroupFormField from "../../../user-profile/fields/check-box-group-form-field";
@@ -311,7 +311,7 @@ const DynamicFieldRenderer: FunctionComponent<DynamicFieldRendererPropsInterface
 
         case ClaimInputFormat.DATE_PICKER:{
             // Strictly parse the initial value to avoid invalid date formats.
-            const formattedInitialValue: moment.Moment = moment(initialValue, "YYYY-MM-DD", true);
+            const formattedInitialValue: dayjs.Dayjs = dayjs(initialValue as string, "YYYY-MM-DD", true);
 
             if (isEmpty(initialValue) || formattedInitialValue.isValid()) {
                 return (

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import moment from "moment";
+import dayjs from "dayjs";
 import React, { ReactElement } from "react";
 import { TooltipProps } from "recharts";
 import {
@@ -42,16 +42,16 @@ export const CustomGraphTooltip = ({ active, payload }: CustomGraphTooltipProps)
             <div className="org-insights-graph-tooltip">
                 <div className="org-insights-tooltip-date-container">
                     <div className="org-insights-current-period-indicator"></div>
-                    <p className="org-insights-tooltip-date">{ moment(currentPeriod.payload.date).format("MMM DD") }</p>
+                    <p className="org-insights-tooltip-date">{ dayjs(currentPeriod.payload.date).format("MMM DD") }</p>
                 </div>
-                <p ><strong>{ currentPeriod.payload.current }</strong></p>                
+                <p ><strong>{ currentPeriod.payload.current }</strong></p>
 
                 { previousPeriod && (
                     <div style={ { marginTop: "5%" } }>
                         <div className="org-insights-tooltip-date-container">
                             <div className="org-insights-previous-period-indicator"></div>
                             <p className="org-insights-tooltip-date">
-                                { moment(previousPeriod.payload.lastPeriodDate).format("MMM DD") }
+                                { dayjs(previousPeriod.payload.lastPeriodDate).format("MMM DD") }
                             </p>
                         </div>
                         <p>
@@ -62,6 +62,6 @@ export const CustomGraphTooltip = ({ active, payload }: CustomGraphTooltipProps)
             </div>
         );
     }
-  
+
     return null;
 };
