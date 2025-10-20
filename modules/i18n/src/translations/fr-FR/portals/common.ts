@@ -224,7 +224,7 @@ export const common: CommonNS = {
     lastSeen: "Dernier vu",
     lastUpdatedOn: "Dernière mise à jour le",
     learnMore: "Apprendre encore plus",
-    lessThanOrEqual: "Inférieur ou égal à",
+    lessThanOrEqual: "Inférieur ou égal",
     lightMode: "Mode lumière",
     loading: "Chargement",
     loginTime: "Heure de connexion",
