@@ -78,7 +78,7 @@ const renderHelperText = (text: string): ReactElement => {
                 strong: ({ children }: { children: React.ReactNode }): ReactElement => (
                     <strong>{ children }</strong>
                 )
-            }}
+            } }
         >
             { text }
         </ReactMarkdown>
