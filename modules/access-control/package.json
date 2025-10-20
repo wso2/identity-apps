@@ -25,7 +25,7 @@
         "lint": "pnpm lint:all",
         "lint:all": "pnpm lint:targeted -- .",
         "lint:autofix": "pnpm lint:all -- --fix",
-        "lint:targeted": "pnpm eslint --ext .js,.jsx,.ts,.tsx --resolve-plugins-relative-to . --max-warnings=0",
+        "lint:targeted": "pnpm eslint --max-warnings=0",
         "test": "jest --passWithNoTests",
         "test:coverage": "jest --passWithNoTests --coverage --collect-coverage",
         "typecheck": "pnpm compile"
@@ -39,12 +39,12 @@
     },
     "devDependencies": {
         "@types/react": "^18.0.18",
-        "@typescript-eslint/eslint-plugin": "^6.5.0",
-        "@typescript-eslint/parser": "^6.5.0",
-        "eslint": "8.46.0",
-        "eslint-plugin-import": "^2.20.2",
-        "eslint-plugin-react": "^7.30.0",
-        "eslint-plugin-react-hooks": "^4.0.0",
+        "@typescript-eslint/eslint-plugin": "^8.18.2",
+        "@typescript-eslint/parser": "^8.18.2",
+        "eslint": "^9.17.0",
+        "eslint-plugin-import": "^2.31.0",
+        "eslint-plugin-react": "^7.37.2",
+        "eslint-plugin-react-hooks": "^5.1.0",
         "rimraf": "^3.0.2",
         "ts-jest": "^29.1.2",
         "typescript": "^4.6.4"
