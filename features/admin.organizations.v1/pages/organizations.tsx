@@ -594,6 +594,7 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
                             ) }
                             defaultSearchAttribute="name"
                             defaultSearchOperator="co"
+                            enableMultipleFilterConditions={ true }
                             triggerClearQuery={ triggerClearQuery }
                             data-componentid={ `${ testId }-list-advanced-search` }
                             data-testid={ `${ testId }-list-advanced-search` }
