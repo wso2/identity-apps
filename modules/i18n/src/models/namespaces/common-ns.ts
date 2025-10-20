@@ -196,6 +196,7 @@ export interface CommonNS {
     finish: string;
     goBackHome: string;
     goFullScreen: string;
+    greaterThanOrEqual: string;
     help: string;
     hide: string;
     hidePassword: string;
@@ -209,6 +210,7 @@ export interface CommonNS {
     lastSeen: string;
     lastUpdatedOn: string;
     learnMore: string;
+    lessThanOrEqual: string;
     lightMode: string;
     loading: string;
     loginTime: string;

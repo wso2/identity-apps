@@ -226,11 +226,18 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
         if (customQuery !== null) {
             query = customQuery;
         } else {
-            query = values.get(AdvanceSearchConstants.FILTER_ATTRIBUTE_FIELD_IDENTIFIER)
+            const newCondition: string = values.get(AdvanceSearchConstants.FILTER_ATTRIBUTE_FIELD_IDENTIFIER)
                     + " "
                     + values.get(AdvanceSearchConstants.FILTER_CONDITION_FIELD_IDENTIFIER)
                     + " "
                     + values?.get(AdvanceSearchConstants.FILTER_VALUES_FIELD_IDENTIFIER);
+
+            // If there's an existing query, append with AND, otherwise use the new condition
+            if (externalSearchQuery && externalSearchQuery.trim() !== "") {
+                query = externalSearchQuery + " and " + newCondition;
+            } else {
+                query = newCondition;
+            }
         }
         setExternalSearchQuery(query);
         onFilter(query);

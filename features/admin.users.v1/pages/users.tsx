@@ -662,10 +662,47 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      *                     If `false`, allows filtering only by username (for invitation list).
      * @returns The search filter component.
      */
+    /**
+     * Filter condition options for user search including ge and le operators.
+     */
+    const userFilterConditionOptions: DropdownChild[] = [
+        {
+            key: 0,
+            text: t("common:startsWith"),
+            value: "sw"
+        },
+        {
+            key: 1,
+            text: t("common:endsWith"),
+            value: "ew"
+        },
+        {
+            key: 2,
+            text: t("common:contains"),
+            value: "co"
+        },
+        {
+            key: 3,
+            text: t("common:equals"),
+            value: "eq"
+        },
+        {
+            key: 4,
+            text: t("common:greaterThanOrEqual"),
+            value: "ge"
+        },
+        {
+            key: 5,
+            text: t("common:lessThanOrEqual"),
+            value: "le"
+        }
+    ];
+
     const advancedSearchFilter = (isUserList: boolean): ReactElement => (
         <AdvancedSearchWithBasicFilters
             onFilter={ handleUserFilter }
             filterAttributeOptions={ resolveFilterAttributeOptions(isUserList) }
+            filterConditionOptions={ userFilterConditionOptions }
             filterAttributePlaceholder={
                 t("users:advancedSearch.form.inputs.filterAttribute" +
                     ".placeholder")
