@@ -65,7 +65,7 @@ export interface FormDynamicFieldPropsInterface extends IdentifiableComponentInt
 const renderHelperText = (text: string): ReactElement => {
     return (
         <ReactMarkdown
-            components={{
+            components={ {
                 code: ({ children }: { children: React.ReactNode }): ReactElement => (
                     <code>{ children }</code>
                 ),
