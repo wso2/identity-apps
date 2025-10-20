@@ -16,7 +16,9 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
 import Skeleton from "@oxygen-ui/react/Skeleton";
+import Typography from "@oxygen-ui/react/Typography";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
@@ -64,6 +66,7 @@ import {
     OrganizationLinkInterface,
     OrganizationListInterface
 } from "../models";
+import "./organizations.scss";
 
 const ORGANIZATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -520,11 +523,25 @@ const OrganizationsPage: FunctionComponent<OrganizationsPageInterface> = (
     return (
         <>
             { isOrganizationSwitchRequestLoading ? (
-                <div className="organization-switch-skeleton p-6">
-                    <Skeleton variant="rectangular" width="100%" height = { 48 } className="mb-4 rounded-lg" />
-                    <Skeleton variant="rectangular" width="100%" height = { 48 } className="mb-4 rounded-lg" />
-                    <Skeleton variant="rectangular" width="100%" height = { 48 } className="mb-4 rounded-lg" />
-                </div>
+                <PageLayout contentTopMargin={ false } data-componentid={ `${testId}-page-layout` }>
+                    <Box className="ui page-layout">
+                        <Box className="organizations-switch-skeleton p-6">
+                            <Typography variant="h4" component="div" className="title">
+                                <Skeleton variant="text" />
+                            </Typography>
+                            <Box className="dashboard-skeleton">
+                                { Array.from({ length: 2 }).map((_: undefined, i: number) => (
+                                    <Box key= { i } className="skeleton-card">
+                                        <Skeleton variant="text" className="text-short" />
+                                        <Skeleton variant="text" className="text-long" />
+                                        <Skeleton variant="rectangular" className="rectangular" />
+                                        <Skeleton variant="rectangular" className="button" />
+                                    </Box>
+                                )) }
+                            </Box>
+                        </Box>
+                    </Box>
+                </PageLayout>
             ) : (
                 <PageLayout
                     action={

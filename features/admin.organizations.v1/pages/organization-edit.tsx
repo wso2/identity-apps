@@ -17,6 +17,9 @@
  */
 
 import { BasicUserInfo } from "@asgardeo/auth-react";
+import Box from "@oxygen-ui/react/Box";
+import Skeleton from "@oxygen-ui/react/Skeleton";
+import Typography from "@oxygen-ui/react/Typography";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import useSignIn from "@wso2is/admin.authentication.v1/hooks/use-sign-in";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -64,6 +67,7 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
     const { switchOrganization } = useOrganizationSwitch();
     const { onSignIn } = useSignIn();
     const { updateOrganizationSwitchRequestLoadingState } = useOrganizations();
+    const { isOrganizationSwitchRequestLoading } = useOrganizations();
 
     useEffect(() => {
         setIsReadOnly(
@@ -209,50 +213,74 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
     };
 
     return (
-        <PageLayout
-            isLoading={ isAuthorizedOrganizationListRequestLoading }
-            title={ organization?.name ?? t("organizations:title") }
-            pageTitle={ organization?.name ?? t("organizations:title") }
-            description={ isReadOnly
-                ? t("organizations:view.description")
-                : t("organizations:edit.description") }
-            image={ (
-                <GenericIcon
-                    defaultIcon
-                    relaxed="very"
-                    shape="rounded"
-                    size="x50"
-                    icon={ OrganizationIcon }
-                />
-            ) }
-            backButton={ {
-                "data-testid": "org-mgt-edit-org-back-button",
-                onClick: goBackToOrganizationList,
-                text: t("organizations:edit.back")
-            } }
-            titleTextAlign="left"
-            bottomMargin={ false }
-            action={ !isReadOnly && organization?.status === "ACTIVE" && (
-                <Button
-                    basic
-                    primary
-                    data-componentid="org-mgt-edit-org-switch-button"
-                    type="button"
-                    onClick={ handleOrganizationSwitch }
+        <>
+            { isOrganizationSwitchRequestLoading ? (
+                <PageLayout contentTopMargin={ false }>
+                    <Box className="ui page-layout">
+                        <Box className="organizations-switch-skeleton p-6">
+                            <Typography variant="h4" component="div" className="title">
+                                <Skeleton variant="text" />
+                            </Typography>
+                            <Box className="dashboard-skeleton">
+                                { Array.from({ length: 2 }).map((_: undefined, i: number) => (
+                                    <Box key= { i } className="skeleton-card">
+                                        <Skeleton variant="text" className="text-short" />
+                                        <Skeleton variant="text" className="text-long" />
+                                        <Skeleton variant="rectangular" className="rectangular" />
+                                        <Skeleton variant="rectangular" className="button" />
+                                    </Box>
+                                )) }
+                            </Box>
+                        </Box>
+                    </Box>
+                </PageLayout>
+            ) : (
+                <PageLayout
+                    isLoading={ isAuthorizedOrganizationListRequestLoading }
+                    title={ organization?.name ?? t("organizations:title") }
+                    pageTitle={ organization?.name ?? t("organizations:title") }
+                    description={ isReadOnly
+                        ? t("organizations:view.description")
+                        : t("organizations:edit.description") }
+                    image={ (
+                        <GenericIcon
+                            defaultIcon
+                            relaxed="very"
+                            shape="rounded"
+                            size="x50"
+                            icon={ OrganizationIcon }
+                        />
+                    ) }
+                    backButton={ {
+                        "data-testid": "org-mgt-edit-org-back-button",
+                        onClick: goBackToOrganizationList,
+                        text: t("organizations:edit.back")
+                    } }
+                    titleTextAlign="left"
+                    bottomMargin={ false }
+                    action={ !isReadOnly && organization?.status === "ACTIVE" && (
+                        <Button
+                            basic
+                            primary
+                            data-componentid="org-mgt-edit-org-switch-button"
+                            type="button"
+                            onClick={ handleOrganizationSwitch }
+                        >
+                            <Icon name="exchange" />
+                            { t("organizations:switching.switchButton") }
+                        </Button>
+                    ) }
                 >
-                    <Icon name="exchange" />
-                    { t("organizations:switching.switchButton") }
-                </Button>
+                    <EditOrganization
+                        organization={ organization }
+                        isReadOnly={ isReadOnly }
+                        featureConfig={ featureConfig }
+                        onOrganizationUpdate={ getOrganizationData }
+                        onOrganizationDelete={ goBackToOrganizationList }
+                    />
+                </PageLayout>
             ) }
-        >
-            <EditOrganization
-                organization={ organization }
-                isReadOnly={ isReadOnly }
-                featureConfig={ featureConfig }
-                onOrganizationUpdate={ getOrganizationData }
-                onOrganizationDelete={ goBackToOrganizationList }
-            />
-        </PageLayout>
+        </>
     );
 };
 

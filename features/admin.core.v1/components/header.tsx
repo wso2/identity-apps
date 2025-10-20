@@ -30,6 +30,7 @@ import ListItemText from "@oxygen-ui/react/ListItemText";
 import Menu from "@oxygen-ui/react/Menu";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Typography from "@oxygen-ui/react/Typography";
+import Skeleton from "@oxygen-ui/react/Skeleton";
 import {
     ChevronDownIcon,
     DiamondIcon,
@@ -46,6 +47,7 @@ import useFeatureGate from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { OrganizationSwitchBreadcrumb } from "@wso2is/admin.organizations.v1/components/organization-switch";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import useOrganizations from "@wso2is/admin.organizations.v1/hooks/use-organizations";
 import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
 import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
 import useRuntimeConfig from "@wso2is/common.ui.v1/hooks/use-runtime-config";
@@ -167,6 +169,8 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
 
     const { isOrganizationManagementEnabled } = useGlobalVariables();
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    const { isOrganizationSwitchRequestLoading } = useOrganizations();
 
     const filteredSupportedI18nLanguages: SupportedLanguagesMeta = useMemo(() => {
         return Object.entries(supportedI18nLanguages)
@@ -561,7 +565,14 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
                 showCollapsibleHamburger
                 onCollapsibleHamburgerClick={ onCollapsibleHamburgerClick }
                 position="fixed"
-                leftAlignedElements={ [ isOrgSwitcherEnabled ? <OrganizationSwitchBreadcrumb /> : null ] }
+                leftAlignedElements={ [ isOrgSwitcherEnabled ? (
+                    isOrganizationSwitchRequestLoading ? (
+                        <Skeleton
+                            variant="text"
+                            className="organization-switch-skeleton"
+                        />
+                    ) : (<OrganizationSwitchBreadcrumb />)
+                ): null ] }
                 rightAlignedElements={ generateHeaderButtons() }
                 userDropdownMenu={ {
                     actionIcon: <LogoutIcon />,
