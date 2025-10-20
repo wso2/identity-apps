@@ -28,9 +28,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Button, Grid, Header, Icon } from "semantic-ui-react";
-import { SqlEditor } from "..";
-import { patchUserStore, testConnection } from "../../api";
-import { JDBC } from "../../constants";
+import { patchUserStore, testConnection } from "../../api/user-stores";
+import { JDBC } from "../../constants/user-store-constants";
 import {
     PatchData,
     PropertyAttribute,
@@ -39,7 +38,8 @@ import {
     TypeProperty,
     UserStore,
     UserstoreType
-} from "../../models";
+} from "../../models/user-stores";
+import { SqlEditor } from "../sql-editor";
 
 /**
  * Prop types of `EditConnectionDetails` component

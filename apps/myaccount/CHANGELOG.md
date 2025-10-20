@@ -1,5 +1,25 @@
 # @wso2is/myaccount
 
+## 2.25.14
+
+### Patch Changes
+
+- [#9324](https://github.com/wso2/identity-apps/pull/9324) [`428be49ea1d8f245ca9217c126b4152e5caf1a9e`](https://github.com/wso2/identity-apps/commit/428be49ea1d8f245ca9217c126b4152e5caf1a9e) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix showing client error messages in user profile pages in console and myaccount
+
+- Updated dependencies [[`428be49ea1d8f245ca9217c126b4152e5caf1a9e`](https://github.com/wso2/identity-apps/commit/428be49ea1d8f245ca9217c126b4152e5caf1a9e)]:
+  - @wso2is/i18n@2.30.49
+
+## 2.25.13
+
+### Patch Changes
+
+- [#9310](https://github.com/wso2/identity-apps/pull/9310) [`c851e8d81a93f1674e501cb7a6a634ede441e1f3`](https://github.com/wso2/identity-apps/commit/c851e8d81a93f1674e501cb7a6a634ede441e1f3) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Add confirmation resend alert message for orchestrated flows.
+
+- Updated dependencies [[`eb9eea6dacb6bc1fab9a305387d75714e18e3309`](https://github.com/wso2/identity-apps/commit/eb9eea6dacb6bc1fab9a305387d75714e18e3309), [`939bb25524a0a248cc482bd1022942583547ebc0`](https://github.com/wso2/identity-apps/commit/939bb25524a0a248cc482bd1022942583547ebc0), [`b84d5d4cab5f0b2201cda15d30196df29af50c36`](https://github.com/wso2/identity-apps/commit/b84d5d4cab5f0b2201cda15d30196df29af50c36)]:
+  - @wso2is/admin.organizations.v1@2.27.8
+  - @wso2is/i18n@2.30.48
+  - @wso2is/core@2.12.3
+
 ## 2.25.12
 
 ### Patch Changes

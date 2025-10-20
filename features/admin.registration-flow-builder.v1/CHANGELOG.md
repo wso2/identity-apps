@@ -1,5 +1,95 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.10.42
+
+### Patch Changes
+
+- Updated dependencies [[`840275cc3311ec4dd4aadc7bc1eb3d4e6cc6ca7b`](https://github.com/wso2/identity-apps/commit/840275cc3311ec4dd4aadc7bc1eb3d4e6cc6ca7b)]:
+  - @wso2is/admin.validation.v1@2.27.147
+  - @wso2is/admin.claims.v1@2.29.13
+  - @wso2is/admin.core.v1@2.49.90
+  - @wso2is/admin.flow-builder-core.v1@0.10.82
+  - @wso2is/admin.flows.v1@1.0.51
+
+## 0.10.41
+
+### Patch Changes
+
+- Updated dependencies [[`c06595150af8b9756f5d165c0b534dbef4341ce5`](https://github.com/wso2/identity-apps/commit/c06595150af8b9756f5d165c0b534dbef4341ce5)]:
+  - @wso2is/admin.claims.v1@2.29.12
+  - @wso2is/admin.core.v1@2.49.89
+  - @wso2is/admin.flow-builder-core.v1@0.10.81
+  - @wso2is/admin.flows.v1@1.0.50
+
+## 0.10.40
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.88
+  - @wso2is/admin.flow-builder-core.v1@0.10.80
+  - @wso2is/admin.flows.v1@1.0.49
+
+## 0.10.39
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.87
+  - @wso2is/admin.flow-builder-core.v1@0.10.79
+  - @wso2is/admin.flows.v1@1.0.48
+
+## 0.10.38
+
+### Patch Changes
+
+- [#9347](https://github.com/wso2/identity-apps/pull/9347) [`a272c6c8cce236986772d598e843769f683b327d`](https://github.com/wso2/identity-apps/commit/a272c6c8cce236986772d598e843769f683b327d) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Fix redundant enable buttons and other issues.
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.86
+  - @wso2is/admin.flow-builder-core.v1@0.10.78
+  - @wso2is/admin.flows.v1@1.0.47
+
+## 0.10.37
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.85
+  - @wso2is/admin.flow-builder-core.v1@0.10.77
+  - @wso2is/admin.flows.v1@1.0.46
+
+## 0.10.36
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.84
+  - @wso2is/admin.flow-builder-core.v1@0.10.76
+  - @wso2is/admin.flows.v1@1.0.45
+
+## 0.10.35
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.83
+  - @wso2is/admin.flow-builder-core.v1@0.10.75
+  - @wso2is/admin.flows.v1@1.0.44
+
+## 0.10.34
+
+### Patch Changes
+
+- [#9314](https://github.com/wso2/identity-apps/pull/9314) [`939bb25524a0a248cc482bd1022942583547ebc0`](https://github.com/wso2/identity-apps/commit/939bb25524a0a248cc482bd1022942583547ebc0) Thanks [@brionmario](https://github.com/brionmario)! - Enhance flow completion properties with workflow engagement alerts
+
+- Updated dependencies [[`327a46c175df2bd96cf4784e5ec82eecae024967`](https://github.com/wso2/identity-apps/commit/327a46c175df2bd96cf4784e5ec82eecae024967), [`939bb25524a0a248cc482bd1022942583547ebc0`](https://github.com/wso2/identity-apps/commit/939bb25524a0a248cc482bd1022942583547ebc0), [`b84d5d4cab5f0b2201cda15d30196df29af50c36`](https://github.com/wso2/identity-apps/commit/b84d5d4cab5f0b2201cda15d30196df29af50c36), [`02a07ae75d678f36dafc6eb9dc73f2dd5a48fc78`](https://github.com/wso2/identity-apps/commit/02a07ae75d678f36dafc6eb9dc73f2dd5a48fc78)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.74
+  - @wso2is/core@2.12.3
+  - @wso2is/admin.rules.v1@0.6.1
+  - @wso2is/admin.core.v1@2.49.82
+  - @wso2is/admin.flows.v1@1.0.43
+
 ## 0.10.33
 
 ### Patch Changes

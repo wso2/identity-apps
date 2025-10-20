@@ -37,7 +37,11 @@ const ButtonAdapter = ({ component, handleButtonAction, isDisabled }) => {
             // Not a valid URL, proceed to construct the full path.
         }
 
-        const appBase = window.location.pathname.split("/")[1];
+        const segments = window.location.pathname.split("/");
+        const appBase = segments.includes("accounts")
+            ? "accounts"
+            : segments[1] || "";
+
         const base = `${window.location.origin}/${appBase}`;
 
         return `${base}/${imageUrl.replace(/^\//, "")}`;

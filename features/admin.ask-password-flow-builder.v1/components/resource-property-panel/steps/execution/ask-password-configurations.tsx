@@ -28,23 +28,28 @@ import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import Radio from "@oxygen-ui/react/Radio";
 import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import Stack from "@oxygen-ui/react/Stack";
-import Switch from "@oxygen-ui/react/Switch";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
 import { ChevronDownIcon } from "@oxygen-ui/react-icons";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import {
-    AskPasswordFormConstants,
-    ConnectorPropertyInterface,
-    GovernanceConnectorConstants,
-    GovernanceConnectorInterface,
+    AskPasswordFormConstants
+} from "@wso2is/admin.server-configurations.v1/constants/ask-password-constants";
+import {
+    GovernanceConnectorConstants
+} from "@wso2is/admin.server-configurations.v1/constants/governance-connector-constants";
+import {
     ServerConfigurationsConstants
-} from "@wso2is/admin.server-configurations.v1";
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import {
     AskPasswordFormUpdatableConfigsInterface,
     AskPasswordFormValuesInterface,
     VerificationOption
 } from "@wso2is/admin.server-configurations.v1/models/ask-password";
+import {
+    ConnectorPropertyInterface,
+    GovernanceConnectorInterface
+} from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import { RadioChild } from "@wso2is/forms";
@@ -111,7 +116,6 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
     const [ askPasswordOption, setAskPasswordOption ] = useState<string>(VerificationOption.EMAIL_LINK);
     const [ expiryTime, setExpiryTime ] = useState<string>("");
     const [ otpLength, setOtpLength ] = useState<string>("");
-    const [ enableAccountActivationEmail, setEnableAccountActivationEmail ] = useState<boolean>(false);
     const [ enableAccountLockOnCreation, setEnableAccountLockOnCreation ] = useState<boolean>(false);
     const [ updatedConfigs, setUpdatedConfigs ] = useState<AskPasswordFormUpdatableConfigsInterface>(undefined);
     const [ otpAccordionExpanded, setOtpAccordionExpanded ] = useState<boolean>(false);
@@ -154,13 +158,11 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
     */
     useEffect(() => {
         if (!initialConnectorValues) return;
-        setIsInviteUserToSetPasswordEnabled(initialConnectorValues.enableInviteUserToSetPassword ?? false);
         setIsUpperCaseEnabled(initialConnectorValues.otpUseUppercase ?? false);
         setIsLowerCaseEnabled(initialConnectorValues.otpUseLowercase ?? false);
         setIsNumericEnabled(initialConnectorValues.otpUseNumeric ?? false);
         setExpiryTime(initialConnectorValues.expiryTime ?? "");
         setOtpLength(initialConnectorValues.otpLength ?? "");
-        setEnableAccountActivationEmail(initialConnectorValues.enableAccountActivationEmail ?? false);
         setEnableAccountLockOnCreation(initialConnectorValues.enableAccountLockOnCreation ?? false);
 
         if (initialConnectorValues.enableSmsOtp) {
@@ -181,9 +183,7 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
     const getUpdatedConfigurations = (values: Record<string, any>) => {
 
         const data: AskPasswordFormUpdatableConfigsInterface = {
-            "EmailVerification.AskPassword.AccountActivation": values.enableAccountActivationEmail !== undefined
-                ? values.enableAccountActivationEmail
-                : initialConnectorValues?.enableAccountActivationEmail,
+            "EmailVerification.AskPassword.AccountActivation": false,
             "EmailVerification.AskPassword.EmailOTP": askPasswordOption === VerificationOption.EMAIL_OTP,
             "EmailVerification.AskPassword.ExpiryTime": values.expiryTime !== undefined
                 ? values.expiryTime
@@ -217,7 +217,6 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
     */
     useEffect(() => {
         setUpdatedConfigs(getUpdatedConfigurations({
-            enableAccountActivationEmail: enableAccountActivationEmail,
             enableAccountLockOnCreation: enableAccountLockOnCreation,
             enableInviteUserToSetPassword: isInviteUserToSetPasswordEnabled,
             expiryTime: expiryTime,
@@ -227,13 +226,11 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
             otpUseUppercase: isUpperCaseEnabled
         }));
     }, [
-        isInviteUserToSetPasswordEnabled,
         isUpperCaseEnabled,
         isLowerCaseEnabled,
         isNumericEnabled,
         expiryTime,
         otpLength,
-        enableAccountActivationEmail,
         enableAccountLockOnCreation,
         askPasswordOption
     ]);
@@ -273,13 +270,6 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
                         resolvedInitialValues = {
                             ...resolvedInitialValues,
                             enableAccountLockOnCreation: CommonUtils.parseBoolean(property.value)
-                        };
-
-                        break;
-                    case ServerConfigurationsConstants.ASK_PASSWORD_ACCOUNT_ACTIVATION:
-                        resolvedInitialValues = {
-                            ...resolvedInitialValues,
-                            enableAccountActivationEmail: CommonUtils.parseBoolean(property.value)
                         };
 
                         break;
@@ -345,7 +335,6 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
         setIsNumericEnabled(resolvedInitialValues?.otpUseNumeric);
         setExpiryTime(resolvedInitialValues?.expiryTime);
         setOtpLength(resolvedInitialValues?.otpLength);
-        setEnableAccountActivationEmail(resolvedInitialValues?.enableAccountActivationEmail);
         setEnableAccountLockOnCreation(resolvedInitialValues?.enableAccountLockOnCreation);
         if (resolvedInitialValues?.enableSmsOtp) {
             setAskPasswordOption(VerificationOption.SMS_OTP);
@@ -360,28 +349,6 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
         return null;
     }
 
-    const connectorToggle = (): ReactElement =>  {
-        return (
-            <FormControlLabel
-                control={
-                    (<Switch
-                        checked={ isInviteUserToSetPasswordEnabled }
-                        onChange={ (event: React.ChangeEvent<HTMLInputElement>) =>
-                            setIsInviteUserToSetPasswordEnabled(event.target.checked)
-                        }
-                        disabled={ readOnly }
-                        data-componentid={ `${ componentId }-invite-user-to-set-password-toggle` }
-                    />)
-                }
-                label={
-                    isInviteUserToSetPasswordEnabled
-                        ? t("extensions:manage.serverConfigurations.generalEnabledLabel")
-                        : t("extensions:manage.serverConfigurations.generalDisabledLabel")
-                }
-            />
-        );
-    };
-
     return (
         <Stack gap={ 1 } data-componentid={ componentId }>
             <Stack gap={ 2 }>
@@ -390,7 +357,6 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
                         { t("flows:core.executions.confirmationCode.configurationHint") }
                     </Alert>
                 </Typography>
-                { ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE ? connectorToggle() : null }
                 <Stack gap={ 1 }>
                     <Typography variant="body1">
                         { t("extensions:manage.serverConfigurations.userOnboarding." +
@@ -403,7 +369,7 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
                                 name="askPasswordOption"
                                 value={ askPasswordOption }
                                 onChange={ (event: React.ChangeEvent<HTMLInputElement>) => {
-                                    if (!isInviteUserToSetPasswordEnabled || readOnly) return;
+                                    if (readOnly) return;
                                     setAskPasswordOption(event.target.value as VerificationOption);
                                 } }
                                 row={ false }
@@ -414,7 +380,7 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
                                         value={ option.value }
                                         control={
                                             (<Radio
-                                                disabled={ !isInviteUserToSetPasswordEnabled || readOnly }
+                                                disabled={ readOnly }
                                                 data-componentid={
                                                     `${ componentId }-ask-password-option-${ option.value }`
                                                 }
@@ -454,7 +420,7 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
                                         .ASK_PASSWORD_FORM_FIELD_CONSTRAINTS.EXPIRY_TIME_MAX_LENGTH,
                                     min: -1
                                 } }
-                                disabled={ !isInviteUserToSetPasswordEnabled || readOnly }
+                                disabled={ readOnly }
                                 data-componentid={ `${ componentId }-link-expiry-time` }
                             />
                             <Typography
@@ -472,28 +438,6 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
                     <FormControlLabel
                         control={
                             (<Checkbox
-                                aria-label="enableAccountActivationEmail"
-                                name="enableAccountActivationEmail"
-                                checked={ enableAccountActivationEmail }
-                                onChange={
-                                    (event: React.ChangeEvent<HTMLInputElement>) =>
-                                        setEnableAccountActivationEmail(event.target.checked)
-                                }
-                                required={ false }
-                                disabled={ !isInviteUserToSetPasswordEnabled || readOnly }
-                                data-componentid={ `${ componentId }-account-activation-email` }
-                            />)
-                        }
-                        label={ t("extensions:manage.serverConfigurations.userOnboarding." +
-                            "inviteUserToSetPassword.form.fields.enableAccountActivationEmail.label") }
-                    />
-                    <FormHelperText>
-                        { t("extensions:manage.serverConfigurations.userOnboarding." +
-                                "inviteUserToSetPassword.form.fields.enableAccountActivationEmail.hint") }
-                    </FormHelperText>
-                    <FormControlLabel
-                        control={
-                            (<Checkbox
                                 aria-label="enableAccountLockOnCreation"
                                 name="enableAccountLockOnCreation"
                                 checked={ enableAccountLockOnCreation }
@@ -502,7 +446,7 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
                                         setEnableAccountLockOnCreation(event.target.checked)
                                 }
                                 required={ false }
-                                disabled={ !isInviteUserToSetPasswordEnabled || readOnly }
+                                disabled={ readOnly }
                                 data-componentid={ `${ componentId }-account-lock-on-creation` }
                             />)
                         }
@@ -545,8 +489,7 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
                                             setIsUpperCaseEnabled(event.target.checked) }
                                         required={ false }
                                         readOnly={ readOnly }
-                                        disabled={ !isInviteUserToSetPasswordEnabled
-                                            || (isUpperCaseEnabled && !isLowerCaseEnabled && !isNumericEnabled)
+                                        disabled={ (isUpperCaseEnabled && !isLowerCaseEnabled && !isNumericEnabled)
                                             || askPasswordOption === VerificationOption.EMAIL_LINK }
                                         data-componentid={ `${ componentId }-sms-otp-uppercase` }
                                     />)
@@ -568,8 +511,7 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
                                             setIsLowerCaseEnabled(event.target.checked) }
                                         required={ false }
                                         readOnly={ readOnly }
-                                        disabled={ !isInviteUserToSetPasswordEnabled
-                                            || (!isUpperCaseEnabled && isLowerCaseEnabled && !isNumericEnabled)
+                                        disabled={ (!isUpperCaseEnabled && isLowerCaseEnabled && !isNumericEnabled)
                                             || askPasswordOption === VerificationOption.EMAIL_LINK }
                                         data-componentid={ `${ componentId }-sms-otp-lowercase` }
                                     />)
@@ -591,8 +533,7 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
                                             setIsNumericEnabled(event.target.checked) }
                                         required={ false }
                                         readOnly={ readOnly }
-                                        disabled={ !isInviteUserToSetPasswordEnabled
-                                            || (!isUpperCaseEnabled && !isLowerCaseEnabled && isNumericEnabled)
+                                        disabled={ (!isUpperCaseEnabled && !isLowerCaseEnabled && isNumericEnabled)
                                             || askPasswordOption === VerificationOption.EMAIL_LINK }
                                         data-componentid={ `${ componentId }-sms-otp-numeric` }
                                     />)
@@ -631,8 +572,7 @@ export const AskPasswordConfigurations: FunctionComponent<AskPasswordConfigurati
                                             minLength: GovernanceConnectorConstants
                                                 .ASK_PASSWORD_FORM_FIELD_CONSTRAINTS.OTP_CODE_LENGTH_MIN_LENGTH
                                         } }
-                                        disabled={ !isInviteUserToSetPasswordEnabled
-                                            || askPasswordOption === VerificationOption.EMAIL_LINK  || readOnly }
+                                        disabled={ askPasswordOption === VerificationOption.EMAIL_LINK  || readOnly }
                                         data-componentid={ `${ componentId }-otp-length` }
                                     />
                                     <Typography

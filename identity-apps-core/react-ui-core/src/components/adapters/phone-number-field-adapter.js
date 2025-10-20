@@ -77,8 +77,8 @@ const PhoneNumberFieldAdapter = ({ component, formState, formStateHandler, field
         setDropdownOpen(false);
     };
 
-    const handleFieldValidation = () => {
-        const { errors, isValid } = validate({ identifier, required }, fullNumber);
+    const handleFieldValidation = ( value ) => {
+        const { errors, isValid } = validate({ identifier, required }, value);
 
         fieldErrorHandler(identifier, isValid ? null : errors);
     };
@@ -158,7 +158,7 @@ const PhoneNumberFieldAdapter = ({ component, formState, formStateHandler, field
                     placeholder={ resolveElementText(translations, placeholder) || "(201) 555-0123" }
                     value={ phoneNumber }
                     onChange={ handlePhoneChange }
-                    onBlur={ handleFieldValidation }
+                    onBlur={ (e) => handleFieldValidation(e.target.value) }
                     required={ required }
                     className="phone-number-input"
                 />

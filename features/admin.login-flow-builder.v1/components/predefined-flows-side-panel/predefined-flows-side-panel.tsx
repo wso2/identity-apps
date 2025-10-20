@@ -180,6 +180,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
 
     const {
         adaptiveAuthTemplates,
+        authenticationSequence,
         authenticators,
         defaultAuthenticationSequence,
         updateAuthenticationSequence,
@@ -231,7 +232,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
     const isScriptUpdatePermissionEnforced: boolean = isFeatureEnabled(applicationsFeatureConfig,
         ENFORCE_SCRIPT_UPDATE_PERMISSION_FEATURE_ID);
     const hasScriptUpdatePermission: boolean = useRequiredScopes(
-        applicationsFeatureConfig?.subFeatures?.authenticationScript?.scopes?.update);
+        applicationsFeatureConfig?.subFeatures?.applicationAuthenticationScript?.scopes?.update);
     const isScriptUpdateReadOnly: boolean = isScriptUpdatePermissionEnforced && !hasScriptUpdatePermission;
 
     /**
@@ -267,9 +268,13 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
 
         const sequence: AuthenticationSequenceInterface = {
             ...template.sequence,
-            script: template.sequence.script ??
-                AdaptiveScriptUtils.generateScript(template.sequence.steps.length + 1).join("\n")
+            script: isScriptUpdateReadOnly ? authenticationSequence?.script
+                : template.sequence.script ?? ""
         };
+
+        if (AdaptiveScriptUtils.isEmptyScript(sequence?.script)) {
+            onConditionalAuthenticationToggle(false);
+        }
 
         if (template.sequenceCategoryId === PredefinedFlowCategories.Social) {
             setSelectedSocialFlowSequence({

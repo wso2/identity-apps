@@ -2907,6 +2907,7 @@ export interface Extensions {
                             enableSMSBasedRecovery: FormAttributes;
                         },
                         smsProviderWarning: string;
+                        smsProviderWarningSubOrg: string;
                         recoveryOptionHeading: string;
                     },
                     heading: string;

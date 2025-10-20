@@ -673,6 +673,10 @@ export const applications: ApplicationsNS = {
                             message: "Application sharing failed!"
                         }
                     },
+                    noOrganizationsSelected: {
+                        description: "Please select at least one organization to share this application.",
+                        message: "No organizations selected!"
+                    },
                     fetchApplicationOrgTree: {
                         genericError: {
                             description: "Error occurred while fetching the shared organizations.",
@@ -788,7 +792,13 @@ export const applications: ApplicationsNS = {
                                 accordion: {
                                     title: {
                                         description: "Add conditions to your login flow.",
-                                        heading: "Conditional Authentication"
+                                        heading: {
+                                            readOnly: "Conditional Authentication (Read only)",
+                                            readWrite: "Conditional Authentication"
+                                        },
+                                        tooltip: {
+                                            readOnly: "You do not have permission to edit the script."
+                                        }
                                     }
                                 },
                                 conditionalAuthTour: {

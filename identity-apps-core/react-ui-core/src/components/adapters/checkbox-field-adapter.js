@@ -17,42 +17,57 @@
  */
 
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useState } from "react";
 import { Checkbox } from "semantic-ui-react";
+import useFieldValidation from "../../hooks/use-field-validations";
 import { useTranslations } from "../../hooks/use-translations";
 import { resolveElementText } from "../../utils/i18n-utils";
 import Hint from "../hint";
+import ValidationError from "../validation-error";
 
-const CheckboxFieldAdapter = ({ component, formStateHandler }) => {
+const CheckboxFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHandler }) => {
 
-    const { identifier, label, hint } = component.config;
+    const { identifier, label, hint, validations, required } = component.config;
     const { translations } = useTranslations();
+    const [ value, setValue ] = useState(false);
+    const { fieldErrors, validate } = useFieldValidation(validations, value);
+
+    const handleFieldValidation = (value) => {
+        const { errors, isValid } = validate({ identifier, required }, value);
+
+        fieldErrorHandler(identifier, isValid ? null : errors);
+    };
+
+    const handleChange = (e, data) => {
+        setValue(data.checked);
+        handleFieldValidation(data.checked);
+        formStateHandler(identifier, data.checked);
+    };
 
     return (
-        <>
+        <div>
             <Checkbox
                 name={ identifier }
                 label={ resolveElementText(translations, label) }
-                onChange={ (e, data) => formStateHandler(identifier, data.checked) }
+                onChange={ handleChange }
             />
             {
                 hint && ( <Hint hint={ hint } /> )
             }
-        </>
+            {
+                <ValidationError
+                    name={ identifier }
+                    errors={ { fieldErrors: fieldErrors, formStateErrors: formState.errors } }
+                />
+            }
+        </div>
     );
 };
 
 CheckboxFieldAdapter.propTypes = {
-    component: PropTypes.shape({
-        config: PropTypes.shape({
-            hint: PropTypes.string,
-            identifier: PropTypes.string.isRequired,
-            label: PropTypes.string.isRequired
-        }).isRequired,
-        id: PropTypes.string,
-        type: PropTypes.string,
-        variant: PropTypes.string
-    }).isRequired,
+    component: PropTypes.object.isRequired,
+    fieldErrorHandler: PropTypes.func.isRequired,
+    formState: PropTypes.object.isRequired,
     formStateHandler: PropTypes.func.isRequired
 };
 

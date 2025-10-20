@@ -412,6 +412,18 @@ export const ApplicationShareFormUpdated: FunctionComponent<ApplicationShareForm
     };
 
     const handleApplicationSharing = (): void => {
+        if (shareType === ShareType.SHARE_SELECTED && selectedOrgIds?.length === 0) {
+            dispatch(addAlert({
+                description: t("applications:edit.sections.sharedAccess.notifications." +
+                        "noOrganizationsSelected.description"),
+                level: AlertLevels.ERROR,
+                message: t("applications:edit.sections.sharedAccess.notifications." +
+                        "noOrganizationsSelected.message")
+            }));
+
+            return;
+        }
+
         if (isApplicationShareOperationStatusEnabled) {
             handleAsyncSharingNotification(shareType);
         }

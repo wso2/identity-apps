@@ -1,5 +1,48 @@
 # @wso2is/admin.login-flow-builder.v1
 
+## 2.27.3
+
+### Patch Changes
+
+- [#9327](https://github.com/wso2/identity-apps/pull/9327) [`840275cc3311ec4dd4aadc7bc1eb3d4e6cc6ca7b`](https://github.com/wso2/identity-apps/commit/840275cc3311ec4dd4aadc7bc1eb3d4e6cc6ca7b) Thanks [@mmafrar](https://github.com/mmafrar)! - fix: Remove index files in `@wso2is/admin.server-configurations.v1` package
+
+- Updated dependencies [[`840275cc3311ec4dd4aadc7bc1eb3d4e6cc6ca7b`](https://github.com/wso2/identity-apps/commit/840275cc3311ec4dd4aadc7bc1eb3d4e6cc6ca7b), [`b8313765f91801be5caeaf8e94b8f88e4d7fe27b`](https://github.com/wso2/identity-apps/commit/b8313765f91801be5caeaf8e94b8f88e4d7fe27b)]:
+  - @wso2is/admin.server-configurations.v1@2.35.104
+  - @wso2is/admin.identity-providers.v1@2.26.208
+  - @wso2is/admin.extensions.v1@2.40.9
+  - @wso2is/admin.core.v1@2.49.90
+  - @wso2is/admin.applications.v1@2.38.5
+
+## 2.27.2
+
+### Patch Changes
+
+- [#9349](https://github.com/wso2/identity-apps/pull/9349) [`8f213eae3ccb1eb49e9fffe8bd9a2950cd07bbe2`](https://github.com/wso2/identity-apps/commit/8f213eae3ccb1eb49e9fffe8bd9a2950cd07bbe2) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Minor improvements to application script editor in read only mode
+
+- Updated dependencies [[`8f213eae3ccb1eb49e9fffe8bd9a2950cd07bbe2`](https://github.com/wso2/identity-apps/commit/8f213eae3ccb1eb49e9fffe8bd9a2950cd07bbe2)]:
+  - @wso2is/admin.applications.v1@2.38.2
+  - @wso2is/admin.core.v1@2.49.85
+  - @wso2is/admin.server-configurations.v1@2.35.99
+
+## 2.27.1
+
+### Patch Changes
+
+- [#9332](https://github.com/wso2/identity-apps/pull/9332) [`bfc3f77d23e8c983f62fac2d4dfb67372e48df6b`](https://github.com/wso2/identity-apps/commit/bfc3f77d23e8c983f62fac2d4dfb67372e48df6b) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Make script read only when edit permission is not present
+
+## 2.27.0
+
+### Minor Changes
+
+- [#9325](https://github.com/wso2/identity-apps/pull/9325) [`31559adf396bfc4482cf24542ba746e2995ab82b`](https://github.com/wso2/identity-apps/commit/31559adf396bfc4482cf24542ba746e2995ab82b) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Rename authenticationScript sub feature to applicationAuthenticationScript
+
+### Patch Changes
+
+- Updated dependencies [[`dae5e73820feef56c679bd4981d8eda876416970`](https://github.com/wso2/identity-apps/commit/dae5e73820feef56c679bd4981d8eda876416970), [`31559adf396bfc4482cf24542ba746e2995ab82b`](https://github.com/wso2/identity-apps/commit/31559adf396bfc4482cf24542ba746e2995ab82b)]:
+  - @wso2is/admin.applications.v1@2.38.0
+  - @wso2is/admin.core.v1@2.49.83
+  - @wso2is/admin.server-configurations.v1@2.35.97
+
 ## 2.26.7
 
 ### Patch Changes

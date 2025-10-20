@@ -30,6 +30,13 @@ export enum RoleAudienceTypes {
 }
 
 /**
+ * Enum for feature keys related to role management.
+ */
+export enum RoleManagementFeatureKeys {
+    EnforceRoleOperationPermission = "ROLE_ENFORCE_ROLE_OPERATION_PERMISSION"
+}
+
+/**
  * Class containing role constants.
  */
 export class RoleConstants {
@@ -50,7 +57,8 @@ export class RoleConstants {
         .set("ROLE_UPDATE", "roles.update")
         .set("ROLE_DELETE", "roles.delete")
         .set("ROLE_READ", "roles.read")
-        .set("ROLE_USERS", "roles.edit.users");
+        .set("ROLE_USERS", "roles.edit.users")
+        .set(RoleManagementFeatureKeys.EnforceRoleOperationPermission, "roles.enforceRoleOperationPermission");
 
     public static readonly SUPER_ADMIN_PERMISSION_KEY: string = "/permission/protected";
 
@@ -127,4 +135,15 @@ export enum Schemas {
     SEARCH_REQUEST = "urn:ietf:params:scim:api:messages:2.0:SearchRequest",
     BULK_REQUEST = "urn:ietf:params:scim:api:messages:2.0:BulkRequest",
     PATCH_OP = "urn:ietf:params:scim:api:messages:2.0:PatchOp"
+}
+
+/**
+ * System reserved roles.
+ */
+export enum SYSTEM_RESERVED_ROLES {
+    ADMIN = "admin",
+    EVERYONE = "everyone",
+    SYSTEM = "system",
+    IMPERSONATOR = "Impersonator",
+    SELF_SIGNUP = "selfsignup"
 }

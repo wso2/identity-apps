@@ -73,6 +73,7 @@ export interface usersNS {
             header: string;
             message: string;
             content: string;
+            legacyContent: string;
         };
         unassignGroup: {
             assertionHint: string;

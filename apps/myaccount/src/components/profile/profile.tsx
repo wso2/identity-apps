@@ -475,15 +475,23 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): R
                     dispatch(getProfileInformation(true));
                 }
             })
-            .catch((error: IdentityAppsApiException) => {
+            .catch((error: { status: string; detail: string }) => {
+                if (error?.status === "400" && error?.detail) {
+                    onAlertFired({
+                        description: t("myAccount:components.profile.notifications.updateProfileInfo." +
+                            "error.description", { description: error.detail }),
+                        level: AlertLevels.ERROR,
+                        message: t("myAccount:components.profile.notifications.updateProfileInfo.error.message")
+                    });
+
+                    return;
+                }
+
                 onAlertFired({
-                    description:
-                        error?.response?.detail ??
-                        t("myAccount:components.profile.notifications.updateProfileInfo.genericError.description"),
+                    description: t("myAccount:components.profile.notifications.updateProfileInfo" +
+                        ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message:
-                        error?.message ??
-                        t("myAccount:components.profile.notifications.updateProfileInfo.genericError.message")
+                    message: t("myAccount:components.profile.notifications.updateProfileInfo.genericError.message")
                 });
             })
             .finally(() => {

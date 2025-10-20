@@ -530,7 +530,13 @@ export interface ApplicationsNS {
                                 accordion: {
                                     title: {
                                         description: string;
-                                        heading: string;
+                                        heading: {
+                                            readOnly: string;
+                                            readWrite: string;
+                                        };
+                                        tooltip: {
+                                            readOnly: string;
+                                        };
                                     };
                                 };
                                 conditionalAuthTour: {
@@ -886,6 +892,10 @@ export interface ApplicationsNS {
                             message: string;
                             description: string;
                         };
+                    };
+                    noOrganizationsSelected: {
+                        message: string;
+                        description: string;
                     };
                     noRolesSelected: {
                         description: string;

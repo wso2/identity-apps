@@ -1,5 +1,44 @@
 # @wso2is/i18n
 
+## 2.30.53
+
+### Patch Changes
+
+- [#9356](https://github.com/wso2/identity-apps/pull/9356) [`b8313765f91801be5caeaf8e94b8f88e4d7fe27b`](https://github.com/wso2/identity-apps/commit/b8313765f91801be5caeaf8e94b8f88e4d7fe27b) Thanks [@sheronjay](https://github.com/sheronjay)! - fix the incorrect toast message to show an error message when trying to share the application while no organizations are selected
+
+## 2.30.52
+
+### Patch Changes
+
+- [#9336](https://github.com/wso2/identity-apps/pull/9336) [`83c0f480bd104adb25b519b6137c49d6642f6723`](https://github.com/wso2/identity-apps/commit/83c0f480bd104adb25b519b6137c49d6642f6723) Thanks [@DuleepAlwis](https://github.com/DuleepAlwis)! - Fix showing unrelated description in scope edit page when scope description is empty
+
+## 2.30.51
+
+### Patch Changes
+
+- [#9347](https://github.com/wso2/identity-apps/pull/9347) [`a272c6c8cce236986772d598e843769f683b327d`](https://github.com/wso2/identity-apps/commit/a272c6c8cce236986772d598e843769f683b327d) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Fix redundant enable buttons and other issues.
+
+## 2.30.50
+
+### Patch Changes
+
+- [#9349](https://github.com/wso2/identity-apps/pull/9349) [`8f213eae3ccb1eb49e9fffe8bd9a2950cd07bbe2`](https://github.com/wso2/identity-apps/commit/8f213eae3ccb1eb49e9fffe8bd9a2950cd07bbe2) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Minor improvements to application script editor in read only mode
+
+## 2.30.49
+
+### Patch Changes
+
+- [#9324](https://github.com/wso2/identity-apps/pull/9324) [`428be49ea1d8f245ca9217c126b4152e5caf1a9e`](https://github.com/wso2/identity-apps/commit/428be49ea1d8f245ca9217c126b4152e5caf1a9e) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Fix showing client error messages in user profile pages in console and myaccount
+
+## 2.30.48
+
+### Patch Changes
+
+- [#9314](https://github.com/wso2/identity-apps/pull/9314) [`939bb25524a0a248cc482bd1022942583547ebc0`](https://github.com/wso2/identity-apps/commit/939bb25524a0a248cc482bd1022942583547ebc0) Thanks [@brionmario](https://github.com/brionmario)! - Enhance flow completion properties with workflow engagement alerts
+
+- Updated dependencies [[`b84d5d4cab5f0b2201cda15d30196df29af50c36`](https://github.com/wso2/identity-apps/commit/b84d5d4cab5f0b2201cda15d30196df29af50c36)]:
+  - @wso2is/core@2.12.3
+
 ## 2.30.47
 
 ### Patch Changes

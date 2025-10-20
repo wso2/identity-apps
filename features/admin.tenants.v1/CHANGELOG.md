@@ -1,5 +1,18 @@
 # @wso2is/admin.tenants.v1
 
+## 2.29.22
+
+### Patch Changes
+
+- [#9316](https://github.com/wso2/identity-apps/pull/9316) [`327a46c175df2bd96cf4784e5ec82eecae024967`](https://github.com/wso2/identity-apps/commit/327a46c175df2bd96cf4784e5ec82eecae024967) Thanks [@savindi7](https://github.com/savindi7)! - Add disabled state to button creating a new organization.
+
+- Updated dependencies [[`eb9eea6dacb6bc1fab9a305387d75714e18e3309`](https://github.com/wso2/identity-apps/commit/eb9eea6dacb6bc1fab9a305387d75714e18e3309), [`939bb25524a0a248cc482bd1022942583547ebc0`](https://github.com/wso2/identity-apps/commit/939bb25524a0a248cc482bd1022942583547ebc0), [`b84d5d4cab5f0b2201cda15d30196df29af50c36`](https://github.com/wso2/identity-apps/commit/b84d5d4cab5f0b2201cda15d30196df29af50c36)]:
+  - @wso2is/admin.organizations.v1@2.27.8
+  - @wso2is/i18n@2.30.48
+  - @wso2is/core@2.12.3
+  - @wso2is/admin.core.v1@2.49.82
+  - @wso2is/admin.users.v1@2.36.49
+
 ## 2.29.21
 
 ### Patch Changes

@@ -43,6 +43,7 @@ import {
 } from "../constants";
 import { AddOrganizationInterface, CheckOrgHandleResponseInterface, GenericOrganization, OrganizationResponseInterface }
     from "../models";
+import "./add-organization-modal.scss";
 
 interface OrganizationAddFormProps {
     name: string;
@@ -95,7 +96,6 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
     const [ orgHandle, setOrgHandle ] = useState<string>();
     const [ isCheckingOrgHandleValidity, setCheckingOrgHandleValidity ] = useState<boolean>(false);
     const [ isOrgHandleDuplicate, setIsOrgHandleDuplicate ] = useState<boolean>(false);
-    const [ isOrgHandleFieldFocused, setIsOrgHandleFieldFocused ] = useState<boolean>(false);
 
     const isOrgHandleDotExtensionMandatory: boolean = useSelector(
         (state: AppState) => state.config?.ui?.multiTenancy?.isTenantDomainDotExtensionMandatory
@@ -364,16 +364,14 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
     const renderOrgHandleAlphabetValidationIcon = (): ReactElement => {
 
         if (!orgHandle || orgHandle === OrganizationManagementConstants.ORG_HANDLE_PLACEHOLDER) {
-            return <Icon name="circle" color="grey" />;
+            return <Icon name="circle" className="validation-icon" />;
         }
 
         if (orgHandle.match(OrganizationManagementConstants.ORG_HANDLE_FIELD_CONSTRAINTS.ORG_HANDLE_FIRST_ALPHABET)) {
             return <Icon name="check circle" color="green"/>;
         }
 
-        return isOrgHandleFieldFocused
-            ? <Icon name="circle" color="grey"/>
-            : <Icon name="remove circle" color="red"/>;
+        return <Icon name="remove circle" color="red"/>;
     };
 
     /**
@@ -384,7 +382,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
     const renderOrgHandleLengthValidationIcon = (): ReactElement => {
 
         if (!orgHandle || orgHandle === OrganizationManagementConstants.ORG_HANDLE_PLACEHOLDER) {
-            return <Icon name="circle" color="grey" />;
+            return <Icon name="circle" className="validation-icon" />;
         }
 
         const minLength: number = OrganizationManagementConstants.ORG_HANDLE_FIELD_CONSTRAINTS.ORG_HANDLE_MIN_LENGTH;
@@ -394,9 +392,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
             return <Icon name="check circle" color="green" />;
         }
 
-        return isOrgHandleFieldFocused
-            ? <Icon name="circle" color="grey" />
-            : <Icon name="remove circle" color="red" />;
+        return <Icon name="remove circle" color="red" />;
     };
 
     /**
@@ -407,7 +403,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
     const renderOrgHandleAlphanumericValidationIcon = (): ReactElement => {
 
         if (!orgHandle || orgHandle === OrganizationManagementConstants.ORG_HANDLE_PLACEHOLDER) {
-            return <Icon name="circle" color="grey" />;
+            return <Icon name="circle" className="validation-icon" />;
         }
 
         const alphanumericValidationRegex: RegExp = isOrgHandleDotExtensionMandatory
@@ -418,9 +414,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
             return <Icon name="check circle" color="green" />;
         }
 
-        return isOrgHandleFieldFocused
-            ? <Icon name="circle" color="grey" />
-            : <Icon name="remove circle" color="red" />;
+        return <Icon name="remove circle" color="red" />;
     };
 
     /**
@@ -431,8 +425,8 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
     const renderOrgHandleUniqueValidationIcon = (): ReactElement => {
 
         if (!orgHandle || orgHandle === OrganizationManagementConstants.ORG_HANDLE_PLACEHOLDER ||
-            isCheckingOrgHandleValidity || isOrgHandleFieldFocused) {
-            return <Icon name="circle" color="grey" />;
+            isCheckingOrgHandleValidity) {
+            return <Icon name="circle" className="validation-icon" />;
         }
 
         if (!isOrgHandleDuplicate) {
@@ -515,7 +509,7 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
             ) }
             <Modal
                 open={ true }
-                className="wizard application-create-wizard"
+                className="wizard application-create-wizard add-organization-modal"
                 size="tiny"
                 dimmer="blurring"
                 onClose={ handleWizardClose }
@@ -622,17 +616,18 @@ export const AddOrganizationModal: FunctionComponent<AddOrganizationModalPropsIn
                                                 }
                                             } }
                                             onBlur={ () => {
-                                                setIsOrgHandleFieldFocused(false);
                                                 if (orgHandle) {
                                                     checkOrgHandleValidity(orgHandle);
                                                 }
                                             } }
-                                            onFocus={ () => setIsOrgHandleFieldFocused(true) }
                                             required={ true }
                                         />
                                     ) }
                                     { isOrgHandleFeatureEnabled && (
-                                        <Grid className="m-0" style={ { marginTop: "-10px" } }>
+                                        <Grid
+                                            className="m-0 orh-handle-field-validation"
+                                            style={ { marginTop: "-10px" } }
+                                        >
                                             <Grid.Row className="p-0">
                                                 { renderOrgHandleAlphabetValidationIcon() }
                                                 <Text muted size={ 12 }>
