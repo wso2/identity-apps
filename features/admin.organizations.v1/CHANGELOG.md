@@ -1,5 +1,17 @@
 # @wso2is/admin.organizations.v1
 
+## 2.27.9
+
+### Patch Changes
+
+- [#9362](https://github.com/wso2/identity-apps/pull/9362) [`25bd51d571bc2a321a8bb79d69a1b64ba63ec038`](https://github.com/wso2/identity-apps/commit/25bd51d571bc2a321a8bb79d69a1b64ba63ec038) Thanks [@JayanaGunaweera01](https://github.com/JayanaGunaweera01)! - Fix organizations with special characters in names becoming read-only by wrapping organization name in single quotes in OData filter query
+
+- Updated dependencies [[`954dc5cf50be6bc850b03a6fcb4ecddaa6521dd6`](https://github.com/wso2/identity-apps/commit/954dc5cf50be6bc850b03a6fcb4ecddaa6521dd6)]:
+  - @wso2is/admin.users.v1@2.36.58
+  - @wso2is/admin.core.v1@2.49.91
+  - @wso2is/i18n@2.30.54
+  - @wso2is/admin.roles.v2@2.27.253
+
 ## 2.27.8
 
 ### Patch Changes

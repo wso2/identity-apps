@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.30.54
+
+### Patch Changes
+
+- [#9368](https://github.com/wso2/identity-apps/pull/9368) [`954dc5cf50be6bc850b03a6fcb4ecddaa6521dd6`](https://github.com/wso2/identity-apps/commit/954dc5cf50be6bc850b03a6fcb4ecddaa6521dd6) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - GE and LE user filtering support and provide multiple filtering capability
+
 ## 2.30.53
 
 ### Patch Changes
