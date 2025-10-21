@@ -291,7 +291,7 @@ const WebhooksPage: FunctionComponent<WebhooksPageInterface> = ({
                 onPageChange={ handlePaginationChange }
                 showPagination={ totalPages > 1 && !isLoading }
                 showTopActionPanel={
-                    isLoading ||
+                    !isLoading ||
                     !((!searchQuery || searchQuery.trim() === "") && enhancedWebhookList?.totalResults <= 0)
                 }
                 totalPages={ totalPages }
