@@ -1,5 +1,28 @@
 # @wso2is/admin.core.v1
 
+## 2.49.91
+
+### Patch Changes
+
+- [#9368](https://github.com/wso2/identity-apps/pull/9368) [`954dc5cf50be6bc850b03a6fcb4ecddaa6521dd6`](https://github.com/wso2/identity-apps/commit/954dc5cf50be6bc850b03a6fcb4ecddaa6521dd6) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - GE and LE user filtering support and provide multiple filtering capability
+
+- Updated dependencies [[`954dc5cf50be6bc850b03a6fcb4ecddaa6521dd6`](https://github.com/wso2/identity-apps/commit/954dc5cf50be6bc850b03a6fcb4ecddaa6521dd6), [`25bd51d571bc2a321a8bb79d69a1b64ba63ec038`](https://github.com/wso2/identity-apps/commit/25bd51d571bc2a321a8bb79d69a1b64ba63ec038)]:
+  - @wso2is/admin.users.v1@2.36.58
+  - @wso2is/i18n@2.30.54
+  - @wso2is/admin.organizations.v1@2.27.9
+  - @wso2is/admin.agents.v1@1.0.98
+  - @wso2is/admin.flow-builder-core.v1@0.10.83
+  - @wso2is/admin.actions.v1@1.14.9
+  - @wso2is/admin.session-management.v1@2.25.214
+  - @wso2is/admin.roles.v2@2.27.253
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.83
+  - @wso2is/admin.branding.v1@2.32.39
+  - @wso2is/admin.email-management.v1@2.25.247
+  - @wso2is/admin.flows.v1@1.0.52
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.83
+  - @wso2is/admin.server-configurations.v1@2.35.105
+  - @wso2is/admin.registration-flow-builder.v1@0.10.43
+
 ## 2.49.90
 
 ### Patch Changes
