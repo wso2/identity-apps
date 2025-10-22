@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -437,12 +437,15 @@ export class ApplicationManagementUtils {
      * @returns Prepared callback URL.
      */
     public static normalizeCallbackUrlsFromRegExp = (raw: string): string => {
-        const wrapper: RegExp = /^regexp=\((.*)\)$/;
-        const match: RegExpMatchArray | null = raw.match(wrapper);
 
-        if (!match) return raw;
+        const wrapperWithParantheses: RegExp =  /^regexp=\((.*)\)$/;
+        const wrapperWithoutParantheses: RegExp =  /^regexp=(.*)$/;
+        const matchWithParantheses: RegExpMatchArray | null = raw.match(wrapperWithParantheses);
+        const matchWithoutParantheses: RegExpMatchArray | null = raw.match(wrapperWithoutParantheses);
 
-        const inner: string = match[1];
+        if (!matchWithParantheses && !matchWithoutParantheses) return raw;
+
+        const inner: string = matchWithParantheses ? matchWithParantheses[1] : matchWithoutParantheses[1];
         const parts: string[] = inner.split("|").map(part => part.trim()).filter(Boolean);
 
         const isHttpUrl = (urlString: string): boolean => {
