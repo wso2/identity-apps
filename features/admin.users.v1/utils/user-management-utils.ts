@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { DecodedIDTokenPayload } from "@asgardeo/auth-react";
 import { UIConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
 import { store } from "@wso2is/admin.core.v1/store";
@@ -67,20 +66,6 @@ export class UserManagementUtils {
         }
 
         return getUserNameWithoutDomain(username) === authenticatedUsername;
-    };
-
-    /**
-     * Checks whether the user is in primary user store.
-     *
-     * @param decodedToken - Decoded ID token payload.
-     * @returns Whether the user is in primary user store.
-     */
-    public static isPrimaryUserStoreUser = (decodedToken: DecodedIDTokenPayload | null): boolean => {
-        if (!decodedToken?.sub) {
-            return false;
-        }
-
-        return !decodedToken.sub.includes("/");
     };
 
     /**
