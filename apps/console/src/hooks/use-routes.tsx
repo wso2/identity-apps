@@ -16,6 +16,10 @@
  * under the License.
  */
 
+import {
+    DecodedIDTokenPayload,
+    useAuthContext
+} from "@asgardeo/auth-react";
 import { AccessControlUtils } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -34,9 +38,11 @@ import {
 import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import useGetSelfAuthenticatedOrganization from "@wso2is/admin.tenants.v1/api/use-get-self-authenticated-organization";
+import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import { RouteInterface } from "@wso2is/core/models";
 import { RouteUtils as CommonRouteUtils } from "@wso2is/core/utils";
 import isEmpty from "lodash-es/isEmpty";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { getAppViewRoutes } from "../configs/routes";
@@ -65,6 +71,7 @@ const useRoutes = (params: UseRoutesParams): useRoutesInterface => {
     const dispatch: Dispatch = useDispatch();
     const { isOrganizationManagementEnabled } = useGlobalVariables();
     const { isSuperOrganization } = useGetCurrentOrganizationType();
+    const { getDecodedIDToken } = useAuthContext();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const loggedUserName: string = useSelector((state: AppState) => state.profile.profileInfo.userName);
@@ -74,8 +81,18 @@ const useRoutes = (params: UseRoutesParams): useRoutesInterface => {
     const isGroupAndRoleSeparationEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isGroupAndRoleSeparationEnabled);
     const routesConfig: RouteConfigInterface = useSelector((state: AppState) => state.config.ui.routes);
+    const [ isPrimaryUserStoreUser, setIsPrimaryUserStoreUser ] = useState<boolean>(false);
 
     const { data: organization } = useGetSelfAuthenticatedOrganization(isAuthenticated);
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            getDecodedIDToken()
+                .then((decodedToken: DecodedIDTokenPayload) => {
+                    setIsPrimaryUserStoreUser(UserManagementUtils.isPrimaryUserStoreUser(decodedToken));
+                });
+        }
+    }, [ isAuthenticated ]);
 
     /**
      * Filter the routes based on the user roles and permissions.
@@ -131,6 +148,12 @@ const useRoutes = (params: UseRoutesParams): useRoutesInterface => {
 
             if(!params.isAgentManagementEnabledForOrg) {
                 additionalRoutes.push(AppConstants.AGENTS_ROUTE);
+            }
+
+            // Approvals tab is disabled in the console for on-prem Identity Server deployments.
+            // For Asgardeo, only primary user store users (Asgardeo admins) can access the Approvals tab.
+            if (!isPrimaryUserStoreUser) {
+                additionalRoutes.push(AppConstants.APPROVALS_ROUTE);
             }
 
             return [ ...additionalRoutes ];
