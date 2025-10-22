@@ -1,5 +1,16 @@
 # @wso2is/admin.organizations.v1
 
+## 2.27.10
+
+### Patch Changes
+
+- [#9379](https://github.com/wso2/identity-apps/pull/9379) [`e15e2b8abf3680d4d89a6f93fe1fdca7a550e432`](https://github.com/wso2/identity-apps/commit/e15e2b8abf3680d4d89a6f93fe1fdca7a550e432) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix broken import paths
+
+- Updated dependencies [[`e15e2b8abf3680d4d89a6f93fe1fdca7a550e432`](https://github.com/wso2/identity-apps/commit/e15e2b8abf3680d4d89a6f93fe1fdca7a550e432)]:
+  - @wso2is/admin.core.v1@2.49.92
+  - @wso2is/admin.users.v1@2.36.59
+  - @wso2is/admin.roles.v2@2.27.254
+
 ## 2.27.9
 
 ### Patch Changes
