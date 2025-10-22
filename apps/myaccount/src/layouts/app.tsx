@@ -99,7 +99,29 @@ export const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactEl
                                                 path={ route.path }
                                                 render={ (renderProps: RouteComponentProps) =>
                                                     route.component
-                                                        ? <route.component { ...renderProps } />
+                                                        ? (
+                                                            <ErrorBoundary
+                                                                onChunkLoadError={ AppUtils.onChunkLoadError }
+                                                                fallback={ (
+                                                                    <EmptyPlaceholder
+                                                                        action={ (
+                                                                            <LinkButton onClick={ () => CommonUtils.refreshPage() }>
+                                                                                { t("myAccount:placeholders.genericError.action") }
+                                                                            </LinkButton>
+                                                                        ) }
+                                                                        image={ getEmptyPlaceholderIllustrations().genericError }
+                                                                        imageSize="tiny"
+                                                                        subtitle={ [
+                                                                            t("myAccount:placeholders.genericError.subtitles.0"),
+                                                                            t("myAccount:placeholders.genericError.subtitles.1")
+                                                                        ] }
+                                                                        title={ t("myAccount:placeholders.genericError.title") }
+                                                                    />
+                                                                ) }
+                                                            >
+                                                                <route.component { ...renderProps } />
+                                                            </ErrorBoundary>
+                                                        )
                                                         : null
                                                 }
                                                 key={ index }

@@ -218,7 +218,42 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
                 path={ route.path }
                 render={ (renderProps: RouteComponentProps): ReactNode =>
                     route.component ? (
-                        <route.component { ...renderProps } />
+                        <ErrorBoundary
+                            onChunkLoadError={ AppUtils.onChunkLoadError }
+                            handleError={ (_error: Error, _errorInfo: React.ErrorInfo) => {
+                                sessionStorage.setItem("auth_callback_url_console", config.deployment.appHomePath);
+                            } }
+                            fallback={
+                                (<EmptyPlaceholder
+                                    action={
+                                        (<LinkButton
+                                            onClick={ () => CommonUtils.refreshPage() }
+                                        >
+                                            { t(
+                                                "console:common.placeholders.brokenPage.action"
+                                            ) }
+                                        </LinkButton>)
+                                    }
+                                    image={
+                                        getEmptyPlaceholderIllustrations().brokenPage
+                                    }
+                                    imageSize="tiny"
+                                    subtitle={ [
+                                        t(
+                                            "console:common.placeholders.brokenPage.subtitles.0"
+                                        ),
+                                        t(
+                                            "console:common.placeholders.brokenPage.subtitles.1"
+                                        )
+                                    ] }
+                                    title={ t(
+                                        "console:common.placeholders.brokenPage.title"
+                                    ) }
+                                />)
+                            }
+                        >
+                            <route.component { ...renderProps } />
+                        </ErrorBoundary>
                     ) : null
                 }
                 key={ key }
