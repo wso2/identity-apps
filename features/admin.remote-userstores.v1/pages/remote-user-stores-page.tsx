@@ -21,7 +21,7 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { sortList } from "@wso2is/admin.core.v1/utils/sort-list";
-import { UserStoresList } from "@wso2is/admin.userstores.v1/components";
+import { UserStoresList } from "@wso2is/admin.userstores.v1/components/user-stores-list";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { TestableComponentInterface } from "@wso2is/core/models";
