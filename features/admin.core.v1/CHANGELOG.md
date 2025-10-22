@@ -1,5 +1,27 @@
 # @wso2is/admin.core.v1
 
+## 2.49.92
+
+### Patch Changes
+
+- [#9379](https://github.com/wso2/identity-apps/pull/9379) [`e15e2b8abf3680d4d89a6f93fe1fdca7a550e432`](https://github.com/wso2/identity-apps/commit/e15e2b8abf3680d4d89a6f93fe1fdca7a550e432) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix broken import paths
+
+- Updated dependencies [[`e15e2b8abf3680d4d89a6f93fe1fdca7a550e432`](https://github.com/wso2/identity-apps/commit/e15e2b8abf3680d4d89a6f93fe1fdca7a550e432)]:
+  - @wso2is/admin.server-configurations.v1@2.35.106
+  - @wso2is/admin.organizations.v1@2.27.10
+  - @wso2is/admin.actions.v1@1.14.10
+  - @wso2is/admin.flow-builder-core.v1@0.10.84
+  - @wso2is/admin.session-management.v1@2.25.215
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.84
+  - @wso2is/admin.branding.v1@2.32.40
+  - @wso2is/admin.email-management.v1@2.25.248
+  - @wso2is/admin.flows.v1@1.0.53
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.84
+  - @wso2is/admin.users.v1@2.36.59
+  - @wso2is/admin.registration-flow-builder.v1@0.10.44
+  - @wso2is/admin.agents.v1@1.0.99
+  - @wso2is/admin.roles.v2@2.27.254
+
 ## 2.49.91
 
 ### Patch Changes
