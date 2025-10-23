@@ -34,7 +34,6 @@ import {
 } from "@wso2is/react-components";
 import React, { ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FixedSizeList as List } from "react-window";
 import {
     Dropdown,
     DropdownItemProps,
@@ -364,10 +363,10 @@ export const ShareApplicationStatusResponseList: React.FunctionComponent<ShareAp
                         ) : (
                             <div
                                 id="scrollableDiv"
-                                style={ { overflow: "auto", height: "600px", position: "relative" } }
+                                style={ { height: "600px", overflow: "auto", position: "relative" } }
                                 onScroll={ (e: React.UIEvent<HTMLDivElement>) => {
                                     const target: HTMLDivElement = e.target as HTMLDivElement;
-                                    const scrollPercentage: number = target.scrollTop / 
+                                    const scrollPercentage: number = target.scrollTop /
                                         (target.scrollHeight - target.clientHeight);
 
                                     if (scrollPercentage > 0.8 && hasMoreItems) {

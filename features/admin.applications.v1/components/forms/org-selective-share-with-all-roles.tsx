@@ -43,7 +43,6 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { FixedSizeList as List } from "react-window";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import useGetApplicationShare from "../../api/use-get-application-share";
@@ -436,10 +435,10 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
                         padding={ 1 }
                         className="roles-selective-share-all-roles"
                         id="scrollableOrgContainer"
-                        style={ { position: "relative", height: "600px", overflow: "auto" } }
+                        style={ { height: "600px", overflow: "auto", position: "relative" } }
                         onScroll={ (e: React.UIEvent<HTMLDivElement>) => {
                             const target: HTMLDivElement = e.target as HTMLDivElement;
-                            const scrollPercentage: number = target.scrollTop / 
+                            const scrollPercentage: number = target.scrollTop /
                                 (target.scrollHeight - target.clientHeight);
 
                             if (scrollPercentage > 0.8 && isNextPageAvailable) {
@@ -448,7 +447,7 @@ const OrgSelectiveShareWithAllRoles = (props: OrgSelectiveShareWithAllRolesProps
                         } }
                     >
                         { isNextPageAvailable && organizationTree.length > 0 && (
-                            <div style={ { position: "absolute", bottom: 0, width: "100%" } }>
+                            <div style={ { bottom: 0, position: "absolute", width: "100%" } }>
                                 <LinearProgress />
                             </div>
                         ) }

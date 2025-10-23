@@ -35,9 +35,9 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { FixedSizeList as List } from "react-window";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
+import { FixedSizeList as List } from "react-window";
 import "./meta-attribute-auto-complete.scss";
 import { Header, Item } from "semantic-ui-react";
 import { useGetOrganizationsMetaAttributes } from "../api/use-get-organizations-meta-attributes";
@@ -238,9 +238,9 @@ const MetaAttributeAutoComplete: FunctionComponent<MetaAttributeAutoCompleteProp
                 );
             };
 
-            const handleScroll = ({ scrollOffset }: { 
-                scrollDirection: "forward" | "backward"; 
-                scrollOffset: number; 
+            const handleScroll = ({ scrollOffset }: {
+                scrollDirection: "forward" | "backward";
+                scrollOffset: number;
                 scrollUpdateWasRequested: boolean;
             }): void => {
                 const scrollPercentage: number = scrollOffset / (itemCount * 40);
