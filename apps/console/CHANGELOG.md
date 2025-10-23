@@ -1,5 +1,27 @@
 # @wso2is/console
 
+## 2.81.15
+
+### Patch Changes
+
+- [#9378](https://github.com/wso2/identity-apps/pull/9378) [`350ed5d20ff23de5c3703e1d07634ad8e485de05`](https://github.com/wso2/identity-apps/commit/350ed5d20ff23de5c3703e1d07634ad8e485de05) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Show approvals tab in console for Asgardeo Admin Users
+
+* [#9387](https://github.com/wso2/identity-apps/pull/9387) [`b402feff2cdbda8c4fed22c008da05020cc72caa`](https://github.com/wso2/identity-apps/commit/b402feff2cdbda8c4fed22c008da05020cc72caa) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Revert filtering improvement
+
+* Updated dependencies [[`350ed5d20ff23de5c3703e1d07634ad8e485de05`](https://github.com/wso2/identity-apps/commit/350ed5d20ff23de5c3703e1d07634ad8e485de05), [`b402feff2cdbda8c4fed22c008da05020cc72caa`](https://github.com/wso2/identity-apps/commit/b402feff2cdbda8c4fed22c008da05020cc72caa)]:
+  - @wso2is/admin.users.v1@2.36.61
+  - @wso2is/admin.core.v1@2.49.94
+  - @wso2is/admin.agents.v1@1.0.101
+  - @wso2is/admin.roles.v2@2.27.256
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.86
+  - @wso2is/admin.branding.v1@2.32.42
+  - @wso2is/admin.email-management.v1@2.25.250
+  - @wso2is/admin.flows.v1@1.0.55
+  - @wso2is/admin.home.v1@1.7.64
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.86
+  - @wso2is/admin.server-configurations.v1@2.35.108
+  - @wso2is/admin.registration-flow-builder.v1@0.10.46
+
 ## 2.81.14
 
 ### Patch Changes
