@@ -256,15 +256,13 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
      * @param query - Search query.
      */
     const handleSearchQuerySubmit = (processQuery: boolean, query: string): void => {
-        let finalQuery: string = query;
+        if (!processQuery) {
+            onFilter(query);
 
-        if (processQuery) {
-            finalQuery = SearchUtils.buildSearchQuery(query);
+            return;
         }
 
-        // Update the external search query state so it can be used for appending
-        setExternalSearchQuery(finalQuery);
-        onFilter(finalQuery);
+        onFilter(SearchUtils.buildSearchQuery(query));
     };
 
     /**
