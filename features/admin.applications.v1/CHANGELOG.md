@@ -1,5 +1,18 @@
 # @wso2is/admin.applications.v1
 
+## 2.38.6
+
+### Patch Changes
+
+- [#9383](https://github.com/wso2/identity-apps/pull/9383) [`712a5ac2992e5660e5f3ac4bfaa2a88b720aa2bf`](https://github.com/wso2/identity-apps/commit/712a5ac2992e5660e5f3ac4bfaa2a88b720aa2bf) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Improve callback URL input normalization by handling optional parentheses
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.93
+  - @wso2is/admin.roles.v2@2.27.255
+  - @wso2is/admin.branding.v1@2.32.41
+  - @wso2is/admin.server-configurations.v1@2.35.107
+  - @wso2is/admin.users.v1@2.36.60
+
 ## 2.38.5
 
 ### Patch Changes
