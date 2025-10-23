@@ -1,5 +1,26 @@
 # @wso2is/console
 
+## 2.81.14
+
+### Patch Changes
+
+- [#9383](https://github.com/wso2/identity-apps/pull/9383) [`712a5ac2992e5660e5f3ac4bfaa2a88b720aa2bf`](https://github.com/wso2/identity-apps/commit/712a5ac2992e5660e5f3ac4bfaa2a88b720aa2bf) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Improve callback URL input normalization by handling optional parentheses
+
+- Updated dependencies [[`712a5ac2992e5660e5f3ac4bfaa2a88b720aa2bf`](https://github.com/wso2/identity-apps/commit/712a5ac2992e5660e5f3ac4bfaa2a88b720aa2bf)]:
+  - @wso2is/admin.applications.v1@2.38.6
+  - @wso2is/admin.agents.v1@1.0.100
+  - @wso2is/admin.core.v1@2.49.93
+  - @wso2is/admin.roles.v2@2.27.255
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.85
+  - @wso2is/admin.branding.v1@2.32.41
+  - @wso2is/admin.email-management.v1@2.25.249
+  - @wso2is/admin.flows.v1@1.0.54
+  - @wso2is/admin.home.v1@1.7.63
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.85
+  - @wso2is/admin.server-configurations.v1@2.35.107
+  - @wso2is/admin.users.v1@2.36.60
+  - @wso2is/admin.registration-flow-builder.v1@0.10.45
+
 ## 2.81.13
 
 ### Patch Changes
