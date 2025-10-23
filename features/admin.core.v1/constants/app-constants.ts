@@ -577,6 +577,11 @@ export class AppConstants {
     public static readonly AGENTS_ROUTE: string = "agents";
 
     /**
+     * Route id of the approvals page.
+     */
+    public static readonly APPROVALS_ROUTE: string = "approvals";
+
+    /**
      * Name of the root node
      */
     public static readonly PERMISSIONS_ROOT_NODE: string = "All Permissions";
