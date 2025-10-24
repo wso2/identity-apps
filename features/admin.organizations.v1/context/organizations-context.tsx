@@ -27,9 +27,17 @@ export type OrganizationsContextProps = {
      */
     isOrganizationSwitchRequestLoading: boolean;
     /**
+     * Is the organization switch transition loading.
+     */
+    isOrganizationSwitchTransitionLoading: boolean;
+    /**
      * Update the application info request loading status.
      */
     updateOrganizationSwitchRequestLoadingState: (status: boolean) => void;
+    /**
+     * Update the organization switch transition status.
+     */
+    updateOrganizationSwitchTransitionLoading: (status: boolean) => void;
 };
 
 /**

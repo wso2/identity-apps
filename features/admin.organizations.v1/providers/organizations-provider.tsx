@@ -41,12 +41,15 @@ const OrganizationsProvider: FunctionComponent<OrganizationsProviderProps> = (
     const { children } = props;
 
     const [ isOrganizationSwitchRequestLoading, setIsOrganizationSwitchRequestLoading ] = useState<boolean>(false);
+    const [ isOrganizationSwitchTransitionLoading, setIsOrganizationSwitchTransitionLoading ]
+    = useState<boolean>(false);
 
     return (
         <OrganizationsContext.Provider
             value={ {
-                isOrganizationSwitchRequestLoading,
-                updateOrganizationSwitchRequestLoadingState: setIsOrganizationSwitchRequestLoading
+                isOrganizationSwitchRequestLoading, isOrganizationSwitchTransitionLoading,
+                updateOrganizationSwitchRequestLoadingState: setIsOrganizationSwitchRequestLoading,
+                updateOrganizationSwitchTransitionLoading: setIsOrganizationSwitchTransitionLoading
             } }
         >
             { children }
