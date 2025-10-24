@@ -303,15 +303,12 @@ export const OrganizationList: FunctionComponent<OrganizationListPropsInterface>
         let response: BasicUserInfo = null;
 
         try {
-            updateOrganizationSwitchRequestLoadingState(true);
             response = await switchOrganization(organization.id);
+            updateOrganizationSwitchRequestLoadingState(true);
             await onSignIn(response, () => null, () => null, () => null);
-
             onListMutate();
             history.push(AppConstants.getPaths().get("GETTING_STARTED"));
-            updateOrganizationSwitchRequestLoadingState(false);
         } catch(e) {
-            updateOrganizationSwitchRequestLoadingState(false);
             // TODO: Handle error
         }
     };

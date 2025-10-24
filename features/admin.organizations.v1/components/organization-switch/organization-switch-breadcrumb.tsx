@@ -183,8 +183,8 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
         let response: BasicUserInfo = null;
 
         try {
-            updateOrganizationSwitchRequestLoadingState(true);
             response = await switchOrganization(organization.id);
+            updateOrganizationSwitchRequestLoadingState(true);
             await onSignIn(
                 response,
                 () => null,
@@ -201,9 +201,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
             if (redirectToStart) {
                 history.push(AppConstants.getPaths().get("GETTING_STARTED"));
             }
-            updateOrganizationSwitchRequestLoadingState(false);
         } catch(e) {
-            updateOrganizationSwitchRequestLoadingState(false);
             // TODO: Handle error
         }
     };
