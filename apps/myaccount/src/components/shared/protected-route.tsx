@@ -24,6 +24,7 @@ import { useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, RouteProps } from "react-router-dom";
 import { AppConstants } from "../../constants";
 import { AppState } from "../../store";
+import RouteErrorBoundary from "./route-error-boundary";
 
 /**
  * Protected route props interface.
@@ -77,11 +78,19 @@ export const ProtectedRoute: FunctionComponent<ProtectedRoutePropsInterface> = (
         const scopes: string[] = allowedScopes?.split(" ");
 
         if (!route?.scope) {
-            return (<Component { ...props } />);
+            return (
+                <RouteErrorBoundary routeName={ props.match?.path }>
+                    <Component { ...props } />
+                </RouteErrorBoundary>
+            );
         }
 
         if (scopes?.includes(route?.scope)) {
-            return <Component { ...props } />;
+            return (
+                <RouteErrorBoundary routeName={ props.match?.path }>
+                    <Component { ...props } />
+                </RouteErrorBoundary>
+            );
         } else {
             return <Redirect to={ AppConstants.getPaths().get("ACCESS_DENIED_ERROR") } />;
         }
