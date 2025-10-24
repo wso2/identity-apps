@@ -162,8 +162,8 @@ export const AddConsumerUserWizardSummary: FunctionComponent<AddConsumerUserWiza
                     </Grid.Column>
                 </Grid.Row>
             ) }
-            { modifiedSummary?.email && 
-            modifiedSummary?.passwordOption && 
+            { modifiedSummary?.email &&
+            modifiedSummary?.passwordOption &&
             modifiedSummary?.passwordOption === "ask-password"
                 ? (
                     <Grid.Row className="summary-field" columns={ 2 }>
