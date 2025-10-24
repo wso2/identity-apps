@@ -774,6 +774,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 showPagination={ true }
                 totalPages={ resolveTotalPages() }
                 totalListSize={ usersList?.totalResults }
+                totalListSizeLabel="Total Users"
+                showTotalListSize={ true }
                 paginationOptions={ {
                     disableNextButton: !isNextPageAvailable,
                     showItemsPerPageDropdown:

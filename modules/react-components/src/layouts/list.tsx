@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Typography from "@oxygen-ui/react/Typography";
 import { UIConstants } from "@wso2is/core/constants";
 import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
@@ -131,6 +132,14 @@ export interface ListLayoutPropsInterface extends PaginationProps, IdentifiableC
      */
     totalListSize?: number;
     /**
+     * Show total list size count.
+     */
+    showTotalListSize?: boolean;
+    /**
+     * Label for total list size (e.g., "Total Users", "Total Applications").
+     */
+    totalListSizeLabel?: string;
+    /**
      * Callback for items per page change.
      * @param event - Click event.
      * @param data - Data.
@@ -181,6 +190,8 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
         sortOptions,
         sortStrategy,
         totalListSize,
+        showTotalListSize,
+        totalListSizeLabel,
         totalPages,
         activePage,
         topActionPanelExtension,
@@ -304,6 +315,24 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                     ) : children
                 }
                 {
+                    showTotalListSize
+                                && totalListSize !== undefined
+                                && totalListSize !== null
+                                && !isLoading
+                                && (
+                                    <div className="list-total-count-wrapper">
+                                        <Typography
+                                            variant="body2"
+                                            className="list-total-count"
+                                            data-componentid={ `${ componentId }-total-count` }
+                                            data-testid={ `${ testId }-total-count` }
+                                        >
+                                            { `${ totalListSizeLabel || "Total" }: ${ totalListSize }` }
+                                        </Typography>
+                                    </div>
+                                )
+                }
+                {
                     (showPagination)
                         ? (
                             <Pagination
@@ -341,5 +370,7 @@ ListLayout.defaultProps = {
     minimalPagination: true,
     showPagination: false,
     showPaginationPageLimit: true,
-    showTopActionPanel: true
+    showTopActionPanel: true,
+    showTotalListSize: false,
+    totalListSizeLabel: "Total"
 };

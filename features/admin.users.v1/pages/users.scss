@@ -30,3 +30,14 @@
 .filter-label-close-icon {
     margin-left: 4px;
 }
+.list-total-count-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 16px;
+}
+
+.list-total-count {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 14px;
+    font-weight: 500;
+}
