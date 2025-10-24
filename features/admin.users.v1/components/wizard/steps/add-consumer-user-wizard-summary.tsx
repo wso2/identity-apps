@@ -162,8 +162,8 @@ export const AddConsumerUserWizardSummary: FunctionComponent<AddConsumerUserWiza
                     </Grid.Column>
                 </Grid.Row>
             ) }
-            { modifiedSummary?.email && 
-            modifiedSummary?.passwordOption && 
+            { modifiedSummary?.email &&
+            modifiedSummary?.passwordOption &&
             modifiedSummary?.passwordOption === "ask-password"
                 ? (
                     <Grid.Row className="summary-field" columns={ 2 }>
@@ -231,8 +231,10 @@ export const AddConsumerUserWizardSummary: FunctionComponent<AddConsumerUserWiza
                                                 }
                                             >
                                                 It seems like the selected email is not registered on Gravatar.
-                                                Sign up for a Gravatar account by visiting 
-                                                <a href="https://www.gravatar.com"> Gravatar Official Website</a> 
+                                                Sign up for a Gravatar account by visiting
+                                                <a href="https://www.gravatar.com">
+                                                    &nbsp;Gravatar Official Website&nbsp;
+                                                </a>
                                                 or use one of the following.
                                             </Trans>
                                         ),
