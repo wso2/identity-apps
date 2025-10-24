@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { FunctionComponent, SVGProps } from "react";
 import {
     CircleUserIcon,
     GearIcon,
@@ -94,6 +95,7 @@ import {
     default as JWTKeyIcon
 } from "../../themes/default/assets/images/illustrations/jwt-key-icon.svg";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
+import { ReactComponent as SiftLogo } from "../../themes/wso2is/assets/images/connectors/sift.svg";
 
 interface GetGovernanceConnectorIllustrationsInterface {
     [key: string]: string;
@@ -155,5 +157,16 @@ export const getConnectorCategoryIcon = (): ConnectorCategoryIconsInterface => {
         [ServerConfigurationsConstants.LOGIN_SECURITY_SETTINGS_CATEGORY_ID]: ShieldUserPencilIcon,
         [ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID]: RobotIcon,
         "default": GearIcon
+    };
+};
+
+/**
+ * Get Sift connector icon.
+ */
+export const getSiftConnectorIcon = (): {
+    sift: FunctionComponent<SVGProps<SVGSVGElement>>;
+} => {
+    return {
+        sift: SiftLogo
     };
 };

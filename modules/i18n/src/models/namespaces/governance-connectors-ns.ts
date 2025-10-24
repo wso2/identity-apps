@@ -338,6 +338,7 @@ export interface governanceConnectorsNS {
                     };
                 };
                 siftConnector: {
+                    title: string;
                     properties: {
                         name: string;
                         description: string;
@@ -346,9 +347,50 @@ export interface governanceConnectorsNS {
                             placeholder: string;
                         };
                     };
+                    eventPublishing: {
+                        title: string;
+                        subtitle: string;
+                        eventProperties: {
+                            title: string;
+                            subtitle: string;
+                            publishUserInfo: {
+                                label: string;
+                                warning: string;
+                            };
+                            events: {
+                                logins: {
+                                    label: string;
+                                    hint: string;
+                                };
+                                logouts: {
+                                    label: string;
+                                    hint: string;
+                                };
+                                registrations: {
+                                    label: string;
+                                    hint: string;
+                                };
+                                credentialUpdates: {
+                                    label: string;
+                                    hint: string;
+                                };
+                                userProfileUpdates: {
+                                    label: string;
+                                    hint: string;
+                                };
+                                userVerifications: {
+                                    label: string;
+                                    hint: string;
+                                };
+                            };
+                        };
+                    };
                     notifications: {
                         configurationUpdate: {
                             success: NotificationItem;
+                            error: NotificationItem;
+                        };
+                        eventPropertiesUpdate: {
                             error: NotificationItem;
                         };
                     };

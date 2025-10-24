@@ -16,21 +16,22 @@
  * under the License.
  */
 
-.sift-connector-form {
-    .oxygen-text-field {
-        min-width: 350px;
-    }
+/**
+ * Interface for the Fraud Detection Configurations.
+ */
+export interface FraudDetectionConfigurationsInterface {
+    publishUserInfo: boolean;
+    events: FraudAnalyticEventPropertyInterface[];
+}
 
-    .MuiIconButton-root {
-        align-items: center;
-        margin-left: 9px;
-        margin-top: 22px;
-    }
-
-    .delete-button {
-        color: var(--negative-color);
-        min-width: 45px;
-        max-height: 45px;
-        padding: 0;
-    }
+/**
+ * Interface for the Fraud Analytic Event Property.
+ */
+export interface FraudAnalyticEventPropertyInterface {
+    eventName: string;
+    enabled: boolean;
+    properties: string[];
+    displayName?: string;
+    description?: string;
+    displayOrder?: number;
 }

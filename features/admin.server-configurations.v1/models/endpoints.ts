@@ -40,4 +40,5 @@ export interface ServerConfigurationsResourceEndpointsInterface {
     selfSignUp: string;
     serverConfigurations: string;
     serverSupportedSchemas: string;
+    fraudDetectionConfigurations: string;
 }
