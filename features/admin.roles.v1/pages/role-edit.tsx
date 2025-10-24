@@ -16,12 +16,12 @@
  * under the License.
  */
 
-import { AppState } from "@wso2is/admin.core.v1/store";
-import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { RolesInterface } from "@wso2is/core/models";
-import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { TabPageLayout } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
