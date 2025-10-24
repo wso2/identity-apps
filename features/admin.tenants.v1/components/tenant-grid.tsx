@@ -23,7 +23,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import InfiniteScroll from "react-infinite-scroll-component";
+import { FixedSizeList as List } from "react-window";
 import TenantCard from "./tenant-card";
 import WithTenantGridPlaceholders from "./with-tenant-grid-placeholders";
 import useTenants from "../hooks/use-tenants";
@@ -82,37 +82,61 @@ const TenantGrid: FunctionComponent<TenantGridProps> = ({
 
     return (
         <div className="tenant-grid">
-            <InfiniteScroll
-                dataLength={ tenantList?.totalResults ?? 0 }
-                next={ handleLoadMore }
-                hasMore={ resolveHasMore() }
-                loader={
-                    (<Box
-                        display="flex"
-                        alignContent="center"
-                        alignItems="center"
-                        justifyContent="center"
-                        flexDirection="column"
-                        gap={ 2 }
-                        className="infinite-loader"
-                    >
-                        <CircularProgress size={ 22 } className="tenant-list-item-loader" />
-                        <Typography variant="h6">{ t("common:loading") }...</Typography>
-                    </Box>)
-                }
-                endMessage={ null }
+            <List
+                height={ 600 }
+                itemCount={ (tenantList?.tenants?.length ?? 0) + (resolveHasMore() ? 1 : 0) }
+                itemSize={ 200 }
+                width="100%"
+                onScroll={ ({ scrollOffset }: { scrollOffset: number }) => {
+                    const listHeight: number = (tenantList?.tenants?.length ?? 0) * 200;
+                    const scrollPercentage: number = scrollOffset / listHeight;
+
+                    if (scrollPercentage > 0.8 && resolveHasMore()) {
+                        handleLoadMore();
+                    }
+                } }
             >
-                <WithTenantGridPlaceholders
-                    data-componentid={ componentId }
-                    onAddTenantModalTrigger={ onAddTenantModalTrigger }
-                >
-                    { tenantList?.tenants?.map((tenant: Tenant) => (
-                        <Grid key={ tenant.id } xs={ 12 } sm={ 12 } md={ 6 } lg={ 4 } xl={ 3 }>
-                            <TenantCard tenant={ tenant } />
-                        </Grid>
-                    )) }
-                </WithTenantGridPlaceholders>
-            </InfiniteScroll>
+                { ({ index, style }: { index: number; style: React.CSSProperties }) => {
+                    // If this is the last item and there are more items to load, show the loading component
+                    if (index === tenantList?.tenants?.length) {
+                        return (
+                            <div style={ style }>
+                                <Box
+                                    display="flex"
+                                    alignContent="center"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                    flexDirection="column"
+                                    gap={ 2 }
+                                    className="infinite-loader"
+                                >
+                                    <CircularProgress size={ 22 } className="tenant-list-item-loader" />
+                                    <Typography variant="h6">{ t("common:loading") }...</Typography>
+                                </Box>
+                            </div>
+                        );
+                    }
+
+                    const tenant: Tenant = tenantList?.tenants?.[index];
+
+                    if (!tenant) {
+                        return null;
+                    }
+
+                    return (
+                        <div style={ style }>
+                            <WithTenantGridPlaceholders
+                                data-componentid={ componentId }
+                                onAddTenantModalTrigger={ onAddTenantModalTrigger }
+                            >
+                                <Grid key={ tenant.id } xs={ 12 } sm={ 12 } md={ 6 } lg={ 4 } xl={ 3 }>
+                                    <TenantCard tenant={ tenant } />
+                                </Grid>
+                            </WithTenantGridPlaceholders>
+                        </div>
+                    );
+                } }
+            </List>
         </div>
     );
 };

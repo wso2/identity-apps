@@ -34,7 +34,7 @@ import {
 } from "@wso2is/react-components";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import InfiniteScroll from "react-infinite-scroll-component";
+import { FixedSizeList as List } from "react-window";
 import { Icon } from "semantic-ui-react";
 import { PolicyList } from "./policy-list";
 import { NewPolicyWizard } from "./wizard/new-policy-wizard";
@@ -343,29 +343,31 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
                             ref={ activeScrollRef }
                             id={ "active-policy-list-container" }
                             className="policy-list-card"
-                        >
-                            <InfiniteScroll
-                                next={ fetchMoreActivePolicies }
-                                hasMore={ hasMoreActivePolicies }
-                                loader={
-                                    (<div style={ { textAlign: "center" } }>
-                                        <CircularProgress />
-                                    </div>)
+                            style={ { overflow: "auto", height: "600px", position: "relative" } }
+                            onScroll={ (e: React.UIEvent<HTMLDivElement>) => {
+                                const target: HTMLDivElement = e.target as HTMLDivElement;
+                                const scrollPercentage: number = target.scrollTop / 
+                                    (target.scrollHeight - target.clientHeight);
+
+                                if (scrollPercentage > 0.8 && hasMoreActivePolicies) {
+                                    fetchMoreActivePolicies();
                                 }
-                                dataLength={ activePoliciesList?.length }
-                                scrollableTarget="active-policy-list-container"
-                                style={ { overflow: "unset" } }
-                            >
-                                <CardContent>
-                                    <PolicyList
-                                        containerId="1"
-                                        policies={ activePoliciesList }
-                                        isDraggable={ true }
-                                        deleteActivePolicy={ handleDeleteActivePolicy }
-                                        deactivatePolicy={ handleDeactivatePolicy }
-                                    />
-                                </CardContent>
-                            </InfiniteScroll>
+                            } }
+                        >
+                            <CardContent>
+                                <PolicyList
+                                    containerId="1"
+                                    policies={ activePoliciesList }
+                                    isDraggable={ true }
+                                    deleteActivePolicy={ handleDeleteActivePolicy }
+                                    deactivatePolicy={ handleDeactivatePolicy }
+                                />
+                                { hasMoreActivePolicies && activePoliciesList?.length > 0 && (
+                                    <div style={ { textAlign: "center", paddingTop: "10px" } }>
+                                        <CircularProgress />
+                                    </div>
+                                ) }
+                            </CardContent>
                         </Card>
                     </DnDProvider>
                 </Grid>
@@ -375,29 +377,31 @@ const PolicyAdministrationPageLayout: FunctionComponent<PolicyAdministrationPage
                         ref={ inactiveScrollRef }
                         id={ "inactive-policy-list-container" }
                         className="policy-list-card"
-                    >
-                        <InfiniteScroll
-                            next={ fetchMoreInactivePolicies }
-                            hasMore={ hasMoreInactivePolicies }
-                            loader={
-                                (<div style={ { textAlign: "center" } }>
-                                    <CircularProgress />
-                                </div>)
+                        style={ { overflow: "auto", height: "600px", position: "relative" } }
+                        onScroll={ (e: React.UIEvent<HTMLDivElement>) => {
+                            const target: HTMLDivElement = e.target as HTMLDivElement;
+                            const scrollPercentage: number = target.scrollTop / 
+                                (target.scrollHeight - target.clientHeight);
+
+                            if (scrollPercentage > 0.8 && hasMoreInactivePolicies) {
+                                fetchMoreInactivePolicies();
                             }
-                            dataLength={ inactivePoliciesList?.length }
-                            scrollableTarget="inactive-policy-list-container"
-                            style={ { overflow: "unset" } }
-                        >
-                            <CardContent>
-                                <PolicyList
-                                    containerId="2"
-                                    policies={ inactivePoliciesList }
-                                    isDraggable={ false }
-                                    deleteInactivePolicy={ handleDeleteInactivePolicy }
-                                    activatePolicy={ handleActivatePolicy }
-                                />
-                            </CardContent>
-                        </InfiniteScroll>
+                        } }
+                    >
+                        <CardContent>
+                            <PolicyList
+                                containerId="2"
+                                policies={ inactivePoliciesList }
+                                isDraggable={ false }
+                                deleteInactivePolicy={ handleDeleteInactivePolicy }
+                                activatePolicy={ handleActivatePolicy }
+                            />
+                            { hasMoreInactivePolicies && inactivePoliciesList?.length > 0 && (
+                                <div style={ { textAlign: "center", paddingTop: "10px" } }>
+                                    <CircularProgress />
+                                </div>
+                            ) }
+                        </CardContent>
                     </Card>
                 </Grid>
             </Grid>
