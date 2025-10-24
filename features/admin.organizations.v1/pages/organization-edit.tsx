@@ -66,8 +66,7 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
 
     const { switchOrganization } = useOrganizationSwitch();
     const { onSignIn } = useSignIn();
-    const { updateOrganizationSwitchRequestLoadingState } = useOrganizations();
-    const { isOrganizationSwitchRequestLoading } = useOrganizations();
+    const { isOrganizationSwitchRequestLoading, updateOrganizationSwitchRequestLoadingState } = useOrganizations();
 
     useEffect(() => {
         setIsReadOnly(
@@ -188,14 +187,12 @@ const OrganizationEditPage: FunctionComponent<OrganizationEditPagePropsInterface
         let response: BasicUserInfo = null;
 
         try {
-            updateOrganizationSwitchRequestLoadingState(true);
             response = await switchOrganization(organization.id);
+            updateOrganizationSwitchRequestLoadingState(true);
             await onSignIn(response, () => null, () => null, () => null);
 
             history.push(AppConstants.getPaths().get("GETTING_STARTED"));
-            updateOrganizationSwitchRequestLoadingState(false);
         } catch(e) {
-            updateOrganizationSwitchRequestLoadingState(false);
             dispatch(
                 addAlert({
                     description: t(

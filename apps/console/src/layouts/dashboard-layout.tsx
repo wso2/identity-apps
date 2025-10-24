@@ -83,6 +83,7 @@ import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Action } from "reduce-reducers";
 import { ThunkDispatch } from "redux-thunk";
 import { getAppViewRoutes } from "../configs/routes";
+import "./dashboard-layout.scss";
 
 /**
  * Parent component for features inherited from Dashboard layout skeleton.
@@ -433,25 +434,17 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
                                     fill="solid"
                                     open
                                     collapsible={ false }
-                                    items= { [
+                                    items={ [
                                         {
-                                            id: "skeleton-group",
-                                            items: Array.from({ length: 4 }).map((_ : undefined, i:number) => ({
+                                            id: "organization-switch-skeleton-group",
+                                            items: Array.from({ length: 4 }).map((_: undefined, i: number) => ({
                                                 disabled: true,
-                                                icon: (
-                                                    <Skeleton
-                                                        variant="circular"
-                                                        width={ 48 }
-                                                        height={ 48 }
-                                                    />
-                                                ),
-                                                id: `skeleton-${i}`,
+                                                id: `skeleton-${ i }`,
                                                 label: (
                                                     <Skeleton
                                                         variant="rectangular"
-                                                        width="70%"
                                                         height={ 24 }
-                                                        className="mt-1"
+                                                        width="100%"
                                                     />
                                                 )
                                             }))
