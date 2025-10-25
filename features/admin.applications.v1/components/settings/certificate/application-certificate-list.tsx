@@ -32,7 +32,7 @@ import {
     ResourceListItem,
     UserAvatar
 } from "@wso2is/react-components";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -223,7 +223,7 @@ export const ApplicationCertificatesListComponent: FunctionComponent<Application
         let icon: SemanticICONS;
         let iconColor: SemanticCOLORS;
 
-        const expiryDate: dayjs.Dayjs = dayjs(validTill);
+        const expiryDate: Dayjs = dayjs(validTill);
 
         const validity: CertificateValidity = CertificateManagementUtils
             .determineCertificateValidityState({

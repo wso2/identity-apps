@@ -18,7 +18,7 @@
 
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { store } from "@wso2is/admin.core.v1/store";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import orderBy from "lodash-es/orderBy";
 import pull from "lodash-es/pull";
 import { getInsights } from "../api/insights";
@@ -127,10 +127,10 @@ const getDatesInRange = (duration: DurationOption): string[] => {
     const dates: string[] = [];
 
     if (timeStamps.endTimestamp && timeStamps.startTimestamp) {
-        const startDate: dayjs.Dayjs = dayjs(timeStamps.startTimestamp);
-        const endDate: dayjs.Dayjs = dayjs(timeStamps.endTimestamp);
+        const startDate: Dayjs = dayjs(timeStamps.startTimestamp);
+        const endDate: Dayjs = dayjs(timeStamps.endTimestamp);
 
-        for (let m: dayjs.Dayjs = dayjs(startDate); m.isBefore(endDate); m.add(1, "days")) {
+        for (let m: Dayjs = dayjs(startDate); m.isBefore(endDate); m.add(1, "days")) {
             dates.push(m.format("YYYY-MM-DD"));
         }
     }

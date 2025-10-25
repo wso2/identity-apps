@@ -18,7 +18,7 @@
 
 import { ClaimInputFormat } from "@wso2is/core/models";
 import { Validation } from "@wso2is/forms";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
@@ -49,7 +49,7 @@ const DOBFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
     // If the input type is a date picker, and the initial value is a valid date, render the date picker field form.
     if (schema.inputFormat?.inputType === ClaimInputFormat.DATE_PICKER) {
         // Strictly parse the initial value to avoid invalid date formats.
-        const formattedInitialValue: dayjs.Dayjs = dayjs(initialValue as string, "YYYY-MM-DD", true);
+        const formattedInitialValue: Dayjs = dayjs(initialValue as string, "YYYY-MM-DD", true);
 
         if (isEmpty(initialValue) || formattedInitialValue.isValid()) {
             /**

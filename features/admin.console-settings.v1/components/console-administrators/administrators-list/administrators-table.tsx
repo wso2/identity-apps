@@ -48,7 +48,7 @@ import {
     UserAvatar,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import duration from "dayjs/plugin/duration";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
@@ -367,8 +367,8 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
                 id: "meta.lastModified",
                 key: "meta.lastModified",
                 render: (user: UserBasicInterface): ReactNode => {
-                    const now: dayjs.Dayjs = dayjs(new Date());
-                    const receivedDate: dayjs.Dayjs = dayjs(user?.meta?.lastModified);
+                    const now: Dayjs = dayjs(new Date());
+                    const receivedDate: Dayjs = dayjs(user?.meta?.lastModified);
 
                     return t("console:common.dateTime.humanizedDateString", {
                         date: dayjs.duration(now.diff(receivedDate)).humanize()

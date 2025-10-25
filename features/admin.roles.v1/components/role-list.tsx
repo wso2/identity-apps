@@ -44,7 +44,7 @@ import {
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import React, { ReactElement, ReactNode, SyntheticEvent, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -317,8 +317,8 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 id: "lastModified",
                 key: "lastModified",
                 render: (role: RolesInterface) => {
-                    const now: dayjs.Dayjs = dayjs(new Date());
-                    const receivedDate: dayjs.Dayjs = dayjs(role?.meta?.created);
+                    const now: Dayjs = dayjs(new Date());
+                    const receivedDate: Dayjs = dayjs(role?.meta?.created);
 
                     return t("console:common.dateTime.humanizedDateString", {
                         date: dayjs.duration(now.diff(receivedDate)).humanize()

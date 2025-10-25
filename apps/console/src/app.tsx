@@ -62,7 +62,7 @@ import {
     SessionManagementProvider,
     SessionTimeoutModalTypes
 } from "@wso2is/react-components";
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 import has from "lodash-es/has";
 import isEmpty from "lodash-es/isEmpty";
 import set from "lodash-es/set";
