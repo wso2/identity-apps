@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,30 +16,30 @@
  * under the License.
  */
 
-import { SelectChangeEvent } from "@mui/material";
-import Card from "@oxygen-ui/react/Card";
-import Grid from "@oxygen-ui/react/Grid";
-import { AppState } from "@wso2is/admin.core.v1/store";
+import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
+import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { DropdownChild, FinalForm, FinalFormField, __DEPRECATED__SelectFieldAdapter } from "@wso2is/form";
-import { FormRenderProps } from "@wso2is/form/src";
+import { CommonUtils } from "@wso2is/core/utils";
+import { DropdownChild, Field, Form } from "@wso2is/form";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
-import { Hint } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { DropdownItemProps, DropdownProps, Grid, Header, Segment } from "semantic-ui-react";
 import { SMSTemplateType } from "../models/sms-templates";
+import "./sms-customization-header.scss";
+
+const FORM_ID: string = "sms-customization-header-form";
 
 interface SMSCustomizationHeaderProps extends IdentifiableComponentInterface {
     /**
      * Selected SMS template id.
      */
-    selectedSmsTemplateId: string;
+    selectedSMSTemplateId: string;
 
     /**
      * Selected SMS template description.
      */
-    selectedSmsTemplateDescription: string;
+    selectedSMSTemplateDescription: string;
 
     /**
      * Selected locale
@@ -53,54 +53,48 @@ interface SMSCustomizationHeaderProps extends IdentifiableComponentInterface {
 
     /**
      * Callback to be called when the template is changed.
-     * @param event - Event to extract the selected value.
+     * @param templateId - selected template id from the dropdown
      */
-    onTemplateSelected: (event: SelectChangeEvent<string>) => void;
+    onTemplateSelected: (templateId: string) => void;
 
     /**
-     * Callback to be called when the locale is changed.
-     * @param event - Event to extract the selected value.
+     * Callback to be called when the locale is change
+     * @param locale - selected locale for template
      */
-    onLocaleChanged: (event: SelectChangeEvent<string>) => void;
+    onLocaleChanged: (localeOption: DropdownProps) => void;
 }
 
+type LocaleOption = DropdownChild & {
+    name: string;
+};
+
+type LocaleOptionList = LocaleOption[];
+
 /**
- * SMS customization header.
+ * Email customization header.
  *
  * @param props - Props injected to the component.
  *
  * @returns Header component for SMS Customization.
  */
-const SMSCustomizationHeader: FunctionComponent<SMSCustomizationHeaderProps> = (
-    props: SMSCustomizationHeaderProps
-): ReactElement => {
-    const {
-        selectedSmsTemplateId,
-        selectedSmsTemplateDescription,
-        selectedLocale,
-        smsTemplatesList,
-        onTemplateSelected,
-        onLocaleChanged,
-        ["data-componentid"]: componentId = "sms-customization-header"
-    } = props;
+const SMSCustomizationHeader: FunctionComponent<SMSCustomizationHeaderProps> = ({
+    selectedSMSTemplateId,
+    selectedSMSTemplateDescription,
+    selectedLocale,
+    smsTemplatesList,
+    onTemplateSelected,
+    onLocaleChanged,
+    ["data-componentid"]: componentId = "sms-customization-header"
+}: SMSCustomizationHeaderProps): ReactElement => {
 
     const { t } = useTranslation();
 
-    const [ localeList, setLocaleList ] = useState<DropdownChild[]>(undefined);
+    const [ localeList, setLocaleList ] =
+        useState<LocaleOptionList>([]);
 
-    const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
-        (state: AppState) => state.global.supportedI18nLanguages
-    );
+    const supportedI18nLanguages: SupportedLanguagesMeta = CommonUtils.getLocaleList();
 
-    /**
-     * Memoized list of SMS template options.
-     *
-     * Generates an array of objects with `text` as the template display name
-     * and `value` as the template ID. Recomputes only when `smsTemplatesList` changes.
-     *
-     * @returns Array of dropdown options.
-     */
-    const smsTemplateListOptions: { text: string; value: string }[] = useMemo(() => {
+    const smsTemplateListOptions: { text: string, value: string }[] = useMemo(() => {
         return smsTemplatesList?.map((template: SMSTemplateType) => {
             return {
                 text: template.displayName,
@@ -114,11 +108,12 @@ const SMSCustomizationHeader: FunctionComponent<SMSCustomizationHeaderProps> = (
             return;
         }
 
-        const localeList: DropdownChild[] = [];
+        const localeList: LocaleOption[] = [];
 
         Object.keys(supportedI18nLanguages).map((key: string) => {
             localeList.push({
                 key: supportedI18nLanguages[key].code,
+                name: `${ supportedI18nLanguages[key].name }, ${ supportedI18nLanguages[key].code }`,
                 text: (
                     <div>
                         <i className={ supportedI18nLanguages[key].flag + " flag" }></i>
@@ -132,69 +127,112 @@ const SMSCustomizationHeader: FunctionComponent<SMSCustomizationHeaderProps> = (
         setLocaleList(localeList);
     }, [ supportedI18nLanguages ]);
 
-    const renderFormFields = (): ReactElement => {
-        return (
-            <Grid container spacing={ 2 } marginTop={ 2 }>
-                <Grid xs={ 12 } md={ 6 } lg={ 5 } xl={ 4 }>
-                    <FinalFormField
-                        key="selectedSmsTemplate"
-                        width={ 16 }
-                        FormControlProps={ {
-                            margin: "dense"
-                        } }
-                        ariaLabel="SMS Template Dropdown"
-                        required={ true }
-                        data-componentid={ `${componentId}-sms-template-list` }
-                        name="selectedSmsTemplate"
-                        type={ "dropdown" }
-                        label={ t("smsTemplates:form.inputs.template.label") }
-                        placeholder={ t("smsTemplates:form.inputs.template.placeholder") }
-                        component={ __DEPRECATED__SelectFieldAdapter }
-                        options={ smsTemplateListOptions }
-                        onChange={ onTemplateSelected }
-                        value={ selectedSmsTemplateId }
-                        defaultValue={ selectedSmsTemplateId }
-                    />
-                    <Hint>{ selectedSmsTemplateDescription ?? null }</Hint>
-                </Grid>
-                <Grid xs={ 12 } md={ 6 } lg={ 5 } xl={ 4 }>
-                    <FinalFormField
-                        key="selectedSmsTemplateLocale"
-                        width={ 16 }
-                        FormControlProps={ {
-                            margin: "dense"
-                        } }
-                        ariaLabel="SMS Template Locale Dropdown"
-                        required={ true }
-                        data-componentid={ `${componentId}-sms-template-locale` }
-                        name="selectedSmsTemplateLocale"
-                        type={ "dropdown" }
-                        label={ t("smsTemplates:form.inputs.locale.label") }
-                        placeholder={ t("smsTemplates:form.inputs.locale.placeholder") }
-                        value={ selectedLocale }
-                        defaultValue={ selectedLocale }
-                        component={ __DEPRECATED__SelectFieldAdapter }
-                        options={ localeList }
-                        onChange={ onLocaleChanged }
-                    />
-                </Grid>
-            </Grid>
-        );
-    };
-
     return (
-        <Card className="mb-4 p-4 pb-2" data-componentid={ componentId }>
-            <FinalForm
-                onSubmit={ () => {} }
-                initialValues={ {
-                    selectedSmsTemplate: selectedSmsTemplateId,
-                    selectedSmsTemplateLocale: selectedLocale
-                } }
-                render={ ({ handleSubmit }: FormRenderProps) => (
-                    <form onSubmit={ handleSubmit }>{ renderFormFields() }</form>
-                ) }
-            />
-        </Card>
+        <Segment
+            className="mb-4 p-4"
+            data-componentid={ componentId }
+            padded={ "very" }
+        >
+            <Form
+                id={ FORM_ID }
+                uncontrolledForm={ true }
+                onSubmit={ () => { return; } }
+            >
+                <Grid>
+                    <Grid.Column
+                        mobile={ 16 }
+                        computer={ 8 }
+                    >
+                        <Field.Dropdown
+                            ariaLabel="Email Template Dropdown"
+                            name="selectedSMSTemplate"
+                            label={ t("extensions:develop.smsTemplates.form.inputs.template.label") }
+                            options={ smsTemplateListOptions }
+                            required={ true }
+                            data-componentid={ `${ componentId }-sms-template-list` }
+                            hint={ selectedSMSTemplateDescription ?? null }
+                            placeholder={ t("extensions:develop.smsTemplates.form.inputs.template.placeholder") }
+                            value={ selectedSMSTemplateId }
+                            listen={ onTemplateSelected }
+                        />
+                    </Grid.Column>
+
+                    <Grid.Column
+                        mobile={ 16 }
+                        computer={ 8 }
+                    >
+                        <Autocomplete
+                            disablePortal
+                            fullWidth
+                            aria-label="Email Template Locale Dropdown"
+                            className="pt-1"
+                            componentsProps={ {
+                                paper: {
+                                    elevation: 2
+                                },
+                                popper: {
+                                    modifiers: [
+                                        {
+                                            enabled: false,
+                                            name: "flip"
+                                        },
+                                        {
+                                            enabled: false,
+                                            name: "preventOverflow"
+                                        }
+                                    ]
+                                }
+                            } }
+                            data-componentid={ `${componentId}-api` }
+                            isOptionEqualToValue={
+                                (option: DropdownItemProps, value: DropdownItemProps) =>
+                                    option.value === value.value
+                            }
+                            getOptionLabel={ (option: DropdownItemProps) => {
+                                return option?.name;
+                            } }
+                            options={ localeList }
+                            onChange={ (
+                                _event: SyntheticEvent<HTMLElement>,
+                                data: DropdownProps
+                            ) => {
+                                onLocaleChanged(data);
+                            } }
+                            noOptionsText={ t("common:noResultsFound") }
+                            renderInput={ (params: AutocompleteRenderInputParams) => {
+
+                                return (
+                                    <TextField
+                                        { ...params }
+                                        label="Locale"
+                                        required
+                                        placeholder="Select Locale"
+                                        size="small"
+                                        variant="outlined"
+                                    />
+                                );
+                            } }
+                            renderOption={ (props: any, localeOption: any) => {
+                                return (
+                                    <div { ...props }>
+                                        <Header.Content>
+                                            { localeOption.text }
+                                        </Header.Content>
+                                    </div>
+                                );
+                            } }
+                            key="locale"
+                            defaultValue={ {
+                                code: "en-US",
+                                flag: "us",
+                                name: "English (United States), en-US"
+                            } }
+                            value={ localeList.find((locale: LocaleOption) => locale.value === selectedLocale) }
+                        />
+                    </Grid.Column>
+                </Grid>
+            </Form>
+        </Segment>
     );
 };
 
