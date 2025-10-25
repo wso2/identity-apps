@@ -1276,9 +1276,6 @@ importers:
       country-language:
         specifier: ^0.1.7
         version: 0.1.7
-      dayjs:
-        specifier: ^1.11.18
-        version: 1.11.18
       deep-equal:
         specifier: ^2.2.2
         version: 2.2.3
@@ -1625,6 +1622,9 @@ importers:
       axios:
         specifier: ^0.19.2
         version: 0.19.2
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -2146,9 +2146,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       node-forge:
         specifier: ^0.10.0
         version: 0.10.0
@@ -2992,6 +2989,9 @@ importers:
       codemirror:
         specifier: ^5.52.0
         version: 5.65.18
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       file-saver:
         specifier: ^2.0.5
         version: 2.0.5
@@ -3004,9 +3004,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       node-forge:
         specifier: ^0.10.0
         version: 0.10.0
@@ -3572,9 +3569,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -3963,9 +3957,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -4366,9 +4357,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -4745,9 +4733,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -5142,9 +5127,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -5530,6 +5512,9 @@ importers:
       country-language:
         specifier: ^0.1.7
         version: 0.1.7
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       deep-equal:
         specifier: ^2.2.2
         version: 2.2.3
@@ -5560,9 +5545,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -5948,6 +5930,9 @@ importers:
       country-language:
         specifier: ^0.1.7
         version: 0.1.7
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       deep-equal:
         specifier: ^2.2.2
         version: 2.2.3
@@ -5978,9 +5963,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -6471,6 +6453,9 @@ importers:
       classnames:
         specifier: ^2.2.6
         version: 2.5.1
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -6483,9 +6468,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       node-forge:
         specifier: ^0.10.0
         version: 0.10.0
@@ -6856,9 +6838,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -7247,9 +7226,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -7623,9 +7599,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -8002,9 +7975,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -8435,9 +8405,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -8926,6 +8893,9 @@ importers:
       classnames:
         specifier: ^2.2.6
         version: 2.5.1
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       dompurify:
         specifier: ^3.0.9
         version: 3.2.4
@@ -9228,6 +9198,9 @@ importers:
       country-language:
         specifier: ^0.1.7
         version: 0.1.7
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       deep-equal:
         specifier: ^2.2.2
         version: 2.2.3
@@ -9258,9 +9231,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -9604,9 +9574,6 @@ importers:
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -9854,9 +9821,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -10242,9 +10206,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -10615,9 +10576,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -11175,9 +11133,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -11491,12 +11446,12 @@ importers:
       axios:
         specifier: ^0.19.2
         version: 0.19.2
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -11693,9 +11648,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -12039,6 +11991,9 @@ importers:
       country-language:
         specifier: ^0.1.7
         version: 0.1.7
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       deep-equal:
         specifier: ^2.2.2
         version: 2.2.3
@@ -12069,9 +12024,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -12451,9 +12403,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -12833,6 +12782,9 @@ importers:
       country-language:
         specifier: ^0.1.7
         version: 0.1.7
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       deep-equal:
         specifier: ^2.2.2
         version: 2.2.3
@@ -12863,9 +12815,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -13417,9 +13366,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -13799,9 +13745,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -14184,9 +14127,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -14757,6 +14697,9 @@ importers:
       country-language:
         specifier: ^0.1.7
         version: 0.1.7
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       deep-equal:
         specifier: ^2.2.2
         version: 2.2.3
@@ -14787,9 +14730,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -15299,6 +15239,9 @@ importers:
       country-language:
         specifier: ^0.1.7
         version: 0.1.7
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       deep-equal:
         specifier: ^2.2.2
         version: 2.2.3
@@ -15329,9 +15272,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -15744,9 +15684,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -16232,9 +16169,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -16578,6 +16512,9 @@ importers:
       country-language:
         specifier: ^0.1.7
         version: 0.1.7
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       deep-equal:
         specifier: ^2.2.2
         version: 2.2.3
@@ -16608,9 +16545,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -17014,9 +16948,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -17396,9 +17327,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -17778,9 +17706,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -18163,9 +18088,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -18476,9 +18398,6 @@ importers:
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -18757,6 +18676,9 @@ importers:
       country-language:
         specifier: ^0.1.7
         version: 0.1.7
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       deep-equal:
         specifier: ^2.2.2
         version: 2.2.3
@@ -18787,9 +18709,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -19317,6 +19236,9 @@ importers:
       country-language:
         specifier: ^0.1.7
         version: 0.1.7
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       deep-equal:
         specifier: ^2.2.2
         version: 2.2.3
@@ -19347,9 +19269,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -19729,9 +19648,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -20123,9 +20039,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -20722,6 +20635,9 @@ importers:
       country-language:
         specifier: ^0.1.7
         version: 0.1.7
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       deep-equal:
         specifier: ^2.2.2
         version: 2.2.3
@@ -20755,9 +20671,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -21131,9 +21044,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -21510,9 +21420,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -22286,6 +22193,9 @@ importers:
       country-language:
         specifier: ^0.1.7
         version: 0.1.7
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       deep-equal:
         specifier: ^2.2.2
         version: 2.2.3
@@ -22316,9 +22226,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
