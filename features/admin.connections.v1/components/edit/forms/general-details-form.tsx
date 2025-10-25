@@ -335,7 +335,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                     label={ t("authenticationProvider:forms." +
                                         "generalDetails.issuer.label") }
                                     hint={ t("authenticationProvider:forms." +
-                                        "generalDetails.issuer.hint") }
+                                        "generalDetails.issuer.hint", {connectionType: (templateType || "").replaceAll("-", " ")}) }
                                     required={
                                         templateType === CommonAuthenticatorConstants
                                             .CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
@@ -372,7 +372,9 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                     placeholder={ t("authenticationProvider:forms." +
                                         "generalDetails.alias.placeholder") }
                                     hint={ t("authenticationProvider:forms." +
-                                        "generalDetails.alias.hint", { productName: config.ui.productName }) }
+                                        "generalDetails.alias.hint", { 
+                                            productName: config.ui.productName,
+                                            connectionType: (templateType || "").replaceAll("-", " ")}) }
                                     validation={ (value: string) => aliasValidation(value) }
                                     value={ editingIDP.alias }
                                     maxLength={ ConnectionUIConstants.IDP_NAME_LENGTH.max }
