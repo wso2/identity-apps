@@ -72,4 +72,20 @@ export class ApplicationTemplateConstants {
         "single-page-application",
         "traditional-web-application"
     ];
+
+    public static readonly EXCLUDED_APP_TEMPLATES_FOR_SUB_ORGANIZATIONS: string[] = [
+        "traditional-web-application",
+        "microsoft-365-v2",
+        "single-page-application",
+        "mobile-application",
+        "mcp-client-application",
+        "slack",
+        "react-application",
+        "nextjs-application",
+        "salesforce",
+        "custom-protocol-application",
+        "microsoft-365",
+        "zoom",
+        "google"
+    ];
 }

@@ -47,7 +47,7 @@ export interface ApplicationConfig {
         showReturnAuthenticatedIdPs: boolean;
         showTrustedAppConsentWarning: boolean;
     };
-    allowedGrantTypes: Record<string, string[]>,
+    getAllowedGrantTypes: (orgType: string) => Record<string, string[]>,
     generalSettings: {
         getFieldReadOnlyStatus: (application: ApplicationInterface, fieldName: string) => boolean;
     };

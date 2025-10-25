@@ -548,53 +548,55 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         >
             <PageLayout
                 pageTitle="Applications"
-                action={ (organizationType !== OrganizationType.SUBORGANIZATION &&
-                    filteredApplicationList?.totalResults > 0) ? (
-                        <>
-                            <Show when={ featureConfig?.applications?.scopes?.create }>
+                action={ (filteredApplicationList?.totalResults > 0) ? (
+                    <>
+                        { organizationType !== OrganizationType.SUBORGANIZATION && (
+                            <Show
+                                when={ featureConfig?.applications?.scopes?.create }>
                                 {
                                     !applicationDisabledFeatures?.includes(
                                         ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATIONS_SETTINGS")
                                     ) &&
-                                    (
-                                        <Popup
-                                            trigger={ (
-                                                <Button
-                                                    data-componentid={ "applications-settings-button" }
-                                                    icon={ GearIcon }
-                                                    onClick={ handleSettingsButton }
-                                                />
-                                            ) }
-                                            content={ t("applications:forms.applicationsSettings.title") }
-                                            position="top center"
-                                            size="mini"
-                                            hideOnScroll
-                                            inverted
-                                        />
-                                    )
+                                        (
+                                            <Popup
+                                                trigger={ (
+                                                    <Button
+                                                        data-componentid={ "applications-settings-button" }
+                                                        icon={ GearIcon }
+                                                        onClick={ handleSettingsButton }
+                                                    />
+                                                ) }
+                                                content={ t("applications:forms.applicationsSettings.title") }
+                                                position="top center"
+                                                size="mini"
+                                                hideOnScroll
+                                                inverted
+                                            />
+                                        )
                                 }
                             </Show>
-                            <Show
-                                when={ featureConfig?.applications?.scopes?.create }
+                        ) }
+                        <Show
+                            when={ featureConfig?.applications?.scopes?.create }
+                        >
+                            <PrimaryButton
+                                onClick={ (): void => {
+                                    eventPublisher.publish("application-click-new-application-button");
+                                    history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
+                                } }
+                                data-testid={ `${ testId }-list-layout-add-button` }
                             >
-                                <PrimaryButton
-                                    onClick={ (): void => {
-                                        eventPublisher.publish("application-click-new-application-button");
-                                        history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
-                                    } }
-                                    data-testid={ `${ testId }-list-layout-add-button` }
-                                >
-                                    <Icon name="add" />
-                                    { t("applications:list.actions.add") }
-                                </PrimaryButton>
-                            </Show>
-                        </>
-                    ) : ( organizationType !== OrganizationType.SUBORGANIZATION ? (
-                        <Show when={ featureConfig?.applications?.scopes?.create }>
-                            {
-                                !applicationDisabledFeatures?.includes(
-                                    ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATIONS_SETTINGS")
-                                ) &&
+                                <Icon name="add" />
+                                { t("applications:list.actions.add") }
+                            </PrimaryButton>
+                        </Show>
+                    </>
+                ) : ( organizationType !== OrganizationType.SUBORGANIZATION ? (
+                    <Show when={ featureConfig?.applications?.scopes?.create }>
+                        {
+                            !applicationDisabledFeatures?.includes(
+                                ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATIONS_SETTINGS")
+                            ) &&
                                 (
                                     <Popup
                                         trigger={ (
@@ -611,10 +613,10 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                         inverted
                                     />
                                 )
-                            }
-                        </Show>
-                    ) : null
-                    ) }
+                        }
+                    </Show>
+                ) : null
+                ) }
                 title={ t("console:develop.pages.applications.title") }
                 description={ organizationType !== OrganizationType.SUBORGANIZATION
                     ? (

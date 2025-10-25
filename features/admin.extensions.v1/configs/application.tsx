@@ -48,6 +48,7 @@ import { Divider, Icon } from "semantic-ui-react";
 import { MarketingConsentModalWrapper } from "./components/marketing-consent/components";
 import { ApplicationConfig, ExtendedFeatureConfigInterface } from "./models";
 import { ApplicationTabIDs } from "./models/application";
+import { OrganizationType } from "../../admin.organizations.v1/constants";
 import MobileAppTemplate from "../application-templates/templates/mobile-application/mobile-application.json";
 import OIDCWebAppTemplate from "../application-templates/templates/oidc-web-application/oidc-web-application.json";
 import SamlWebAppTemplate
@@ -107,74 +108,6 @@ export const applicationConfig: ApplicationConfig = {
         showReturnAuthenticatedIdPs: true,
         showSaaS: true,
         showTrustedAppConsentWarning: false
-    },
-    allowedGrantTypes: {
-        // single page app template
-        [ "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7" ]: [
-            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.IMPLICIT_GRANT,
-            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
-        ],
-        // oidc traditional web app template
-        [ "b9c5e11e-fc78-484b-9bec-015d247561b8" ]: [
-            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
-            ApplicationManagementConstants.IMPLICIT_GRANT,
-            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
-            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
-        ],
-        // oidc standard app template
-        [ "custom-application" ]: [
-            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
-            ApplicationManagementConstants.IMPLICIT_GRANT,
-            ApplicationManagementConstants.PASSWORD,
-            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
-            ApplicationManagementConstants.DEVICE_GRANT,
-            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE,
-            ApplicationManagementConstants.SAML2_BEARER,
-            ApplicationManagementConstants.JWT_BEARER,
-            ApplicationManagementConstants.IWA_NTLM
-        ],
-        [ "m2m-application" ]: [
-            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
-        ],
-        [ "mcp-client-application" ]: [
-            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
-        ],
-        [ "mobile-application" ]: [
-            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.IMPLICIT_GRANT,
-            ApplicationManagementConstants.PASSWORD,
-            ApplicationManagementConstants.DEVICE_GRANT,
-            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
-            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
-        ],
-        [ "nextjs-application" ]: [
-            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
-            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
-            ApplicationManagementConstants.IMPLICIT_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE,
-            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
-        ],
-        [ "react-application" ]: [
-            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
-            ApplicationManagementConstants.IMPLICIT_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
-        ],
-        [ "sub-organization-application" ]: [
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.PASSWORD,
-            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
-        ]
     },
     attributeSettings: {
         advancedAttributeSettings: {
@@ -465,6 +398,79 @@ export const applicationConfig: ApplicationConfig = {
             return true;
         }
     },
+    getAllowedGrantTypes: (orgType : string) => ({
+        // single page app template
+        [ "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.IMPLICIT_GRANT,
+            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
+        ],
+        // oidc traditional web app template
+        [ "b9c5e11e-fc78-484b-9bec-015d247561b8" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.IMPLICIT_GRANT,
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
+            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
+        ],
+        // oidc standard app template
+        [ "custom-application" ]:
+        orgType === OrganizationType.SUBORGANIZATION ? [
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.PASSWORD,
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
+        ] : [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.IMPLICIT_GRANT,
+            ApplicationManagementConstants.PASSWORD,
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
+            ApplicationManagementConstants.DEVICE_GRANT,
+            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE,
+            ApplicationManagementConstants.SAML2_BEARER,
+            ApplicationManagementConstants.JWT_BEARER,
+            ApplicationManagementConstants.IWA_NTLM
+        ],
+        [ "m2m-application" ]: [
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
+        ],
+        [ "mcp-client-application" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
+        ],
+        [ "mobile-application" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.IMPLICIT_GRANT,
+            ApplicationManagementConstants.PASSWORD,
+            ApplicationManagementConstants.DEVICE_GRANT,
+            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
+            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE
+        ],
+        [ "nextjs-application" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
+            ApplicationManagementConstants.IMPLICIT_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE,
+            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
+        ],
+        [ "react-application" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.IMPLICIT_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT
+        ],
+        [ "sub-organization-application" ]: [
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+            ApplicationManagementConstants.PASSWORD,
+            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
+        ]
+    }),
     hiddenGrantTypes: [ ApplicationManagementConstants.ACCOUNT_SWITCH_GRANT ],
     inboundOIDCForm: {
         disabledGrantTypes: {
