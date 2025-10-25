@@ -51,9 +51,9 @@ import {
     LinkButton,
     useMediaContext
 } from "@wso2is/react-components";
+import dayjs from "dayjs";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
-import moment from "moment";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { System } from "react-notification-system";
@@ -129,7 +129,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
      * @param language - Selected language.
      */
     const handleLanguageSwitch = (language: string): void => {
-        moment.locale(language ?? "en");
+        dayjs.locale(language ?? "en");
         I18n.instance.changeLanguage(language).catch((error: string | Record<string, unknown>) => {
             throw new LanguageChangeException(language, error);
         });

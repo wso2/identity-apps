@@ -34,10 +34,10 @@ import { addAlert } from "@wso2is/core/store";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import { EdgeTypes, NodeTypes, ReactFlowProvider, useReactFlow } from "@xyflow/react";
 import { AxiosRequestConfig } from "axios";
+import dayjs from "dayjs";
 import merge from "lodash-es/merge";
 import pick from "lodash-es/pick";
 import startCase from "lodash-es/startCase";
-import moment from "moment";
 import React, {
     FunctionComponent,
     MutableRefObject,
@@ -334,7 +334,7 @@ const FlowContextWrapper = ({
                     dispatch(
                         addAlert({
                             description: t("flows:core.notifications.restoreFromHistory.success.description", {
-                                date: moment(Number(historyItem.timestamp)).format("MMMM DD [at] h:mm A")
+                                date: dayjs(Number(historyItem.timestamp)).format("MMMM DD [at] h:mm A")
                             }),
                             level: AlertLevels.SUCCESS,
                             message: t("flows:core.notifications.restoreFromHistory.success.message")

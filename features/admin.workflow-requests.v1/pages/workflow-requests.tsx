@@ -22,8 +22,8 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout } from "@wso2is/react-components";
+import dayjs from "dayjs";
 import isEmpty from "lodash-es/isEmpty";
-import moment from "moment";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -180,8 +180,8 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
             case "createdTimeRange": {
                 if (value === "-1") {
                     if (createdFromTime && createdToTime) {
-                        return moment(Number(createdFromTime)).format("YYYY-MM-DD") + " to " +
-                            moment(Number(createdToTime)).format("YYYY-MM-DD");
+                        return dayjs(Number(createdFromTime)).format("YYYY-MM-DD") + " to " +
+                            dayjs(Number(createdToTime)).format("YYYY-MM-DD");
                     }
 
                     return t("workflowRequests:timeRanges.customRange");
@@ -196,8 +196,8 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
             case "updatedTimeRange": {
                 if (value === "-1") {
                     if (updatedFromTime && updatedToTime) {
-                        return moment(Number(updatedFromTime)).format("YYYY-MM-DD") + " to " +
-                            moment(Number(updatedToTime)).format("YYYY-MM-DD");
+                        return dayjs(Number(updatedFromTime)).format("YYYY-MM-DD") + " to " +
+                            dayjs(Number(updatedToTime)).format("YYYY-MM-DD");
                     }
 
                     return t("workflowRequests:timeRanges.customRange");
@@ -327,10 +327,10 @@ const WorkflowRequestsPage: FunctionComponent<WorkflowsLogsPageInterface> = (
         const generatedFilter: string = generateFilterString(
             status,
             operationType,
-            createdFromTime ? moment(Number(createdFromTime)).format("YYYY-MM-DD HH:mm:ss.SSS") : "",
-            createdToTime ? moment(Number(createdToTime)).format("YYYY-MM-DD HH:mm:ss.SSS") : "",
-            updatedFromTime ? moment(Number(updatedFromTime)).format("YYYY-MM-DD HH:mm:ss.SSS") : "",
-            updatedToTime ? moment(Number(updatedToTime)).format("YYYY-MM-DD HH:mm:ss.SSS") : ""
+            createdFromTime ? dayjs(Number(createdFromTime)).format("YYYY-MM-DD HH:mm:ss.SSS") : "",
+            createdToTime ? dayjs(Number(createdToTime)).format("YYYY-MM-DD HH:mm:ss.SSS") : "",
+            updatedFromTime ? dayjs(Number(updatedFromTime)).format("YYYY-MM-DD HH:mm:ss.SSS") : "",
+            updatedToTime ? dayjs(Number(updatedToTime)).format("YYYY-MM-DD HH:mm:ss.SSS") : ""
         );
 
         setFilterString(generatedFilter);

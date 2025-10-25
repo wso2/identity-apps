@@ -23,7 +23,7 @@ import {
     Footer as ReusableFooter,
     FooterPropsInterface as ReusableFooterPropsInterface
 } from "@wso2is/react-components";
-import * as moment from "moment";
+import * as dayjs from "dayjs";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -64,7 +64,7 @@ export const Footer: FunctionComponent<FooterPropsInterface> = (
      * @param language - Selected language.
      */
     const handleLanguageSwitch = (language: string): void => {
-        moment.locale(language ?? "en");
+        dayjs.locale(language ?? "en");
         I18n.instance.changeLanguage(language)
             .catch((error: string | Record<string, unknown>) => {
                 throw new LanguageChangeException(language, error);

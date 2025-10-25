@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import moment from "moment";
+import dayjs from "dayjs";
 
 /**
  * Returns a date-time string in human readable format
@@ -27,7 +27,7 @@ import moment from "moment";
 const formatTimestampToDateTime = (dateString: string): string => {
     if (!dateString) return "N/A";
 
-    return moment(dateString).format("DD MMM, YYYY | HH:mm:ss");
+    return dayjs(dateString).format("DD MMM, YYYY | HH:mm:ss");
 };
 
 /**
@@ -39,7 +39,7 @@ const formatTimestampToDateTime = (dateString: string): string => {
 const getDateFromTimestamp = (dateString: string): string => {
     if (!dateString) return "N/A";
 
-    return moment(dateString).format("DD MMM, YYYY");
+    return dayjs(dateString).format("DD MMM, YYYY");
 };
 
 /**
@@ -51,7 +51,7 @@ const getDateFromTimestamp = (dateString: string): string => {
 const getTimeFromTimestamp = (dateString: string): string => {
     if (!dateString) return "N/A";
 
-    return moment(dateString).format("HH:mm:ss");
+    return dayjs(dateString).format("HH:mm:ss");
 };
 
 

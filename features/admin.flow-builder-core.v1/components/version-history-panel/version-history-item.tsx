@@ -39,7 +39,7 @@ import { EllipsisVerticalIcon, EyeIcon } from "@oxygen-ui/react-icons";
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Edge, Node } from "@xyflow/react";
-import moment from "moment";
+import dayjs from "dayjs";
 import React, { FunctionComponent, HTMLAttributes, ReactNode, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -227,7 +227,7 @@ const VersionHistoryItem: FunctionComponent<VersionHistoryItemPropsInterface> = 
                                     marginBottom: "4px"
                                 } }
                             >
-                                { moment(Number(historyItem.timestamp)).format("MMMM DD, h:mm A") }
+                                { dayjs(Number(historyItem.timestamp)).format("MMMM DD, h:mm A") }
                             </Typography>
                             { isCurrentVersion && (
                                 <Typography
@@ -351,12 +351,12 @@ const VersionHistoryItem: FunctionComponent<VersionHistoryItemPropsInterface> = 
                             <Trans
                                 i18nKey="flows:core.versionHistory.restoreDialog.warningAlert.description"
                                 tOptions={ {
-                                    timestamp: moment(Number(historyItem.timestamp)).format("MMMM DD [at] h:mm A")
+                                    timestamp: dayjs(Number(historyItem.timestamp)).format("MMMM DD [at] h:mm A")
                                 } }
                             >
                                 { /* eslint-disable max-len */ }
                                 If you proceed, the current flow will be replaced with version from
-                                <strong>{ moment(Number(historyItem.timestamp)).format("MMMM DD [at] h:mm A") }</strong>.
+                                <strong>{ dayjs(Number(historyItem.timestamp)).format("MMMM DD [at] h:mm A") }</strong>.
                                 Please take a moment to review the flow preview below before confirming since this action cannot be undone.
                                 { /* eslint-enable max-len */ }
                             </Trans>

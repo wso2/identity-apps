@@ -42,7 +42,7 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { LoadableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import moment from "moment";
+import dayjs from "dayjs";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -155,10 +155,10 @@ const TenantCard: FunctionComponent<TenantCardProps> = ({ isLoading, tenant }: T
                                 <Trans
                                     i18nKey="tenants:listing.item.meta.createdOn.label"
                                     tOptions={ {
-                                        date: moment(tenant.createdDate).format("MMM DD, YYYY")
+                                        date: dayjs(tenant.createdDate).format("MMM DD, YYYY")
                                     } }
                                 >
-                                    Created on { moment(tenant.createdDate).format("MMM DD, YYYY") }
+                                    Created on { dayjs(tenant.createdDate).format("MMM DD, YYYY") }
                                 </Trans>
                             </div>
                         </Typography>

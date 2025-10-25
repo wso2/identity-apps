@@ -18,7 +18,7 @@
 
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { LinkButton, Media, Popup, Text, useMediaContext } from "@wso2is/react-components";
-import moment from "moment";
+import dayjs from "dayjs";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -441,7 +441,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
             <Modal.Content>
                 {
                     renderPropertyRow(t("common:createdOn"),
-                        moment(parseInt(approval?.createdTimeInMillis, 10)).format("lll")
+                        dayjs(parseInt(approval?.createdTimeInMillis, 10)).format("lll")
                     )
                 }
                 {

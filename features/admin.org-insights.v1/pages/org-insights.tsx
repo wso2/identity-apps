@@ -20,7 +20,7 @@ import { SelectChangeEvent } from "@mui/material";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select from "@oxygen-ui/react/Select";
 import { DocumentationLink, Hint, PageLayout, useDocumentation } from "@wso2is/react-components";
-import moment from "moment";
+import dayjs from "dayjs";
 import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Tab, TabProps } from "semantic-ui-react";
@@ -38,7 +38,7 @@ const tabIndexToActivityTypeMap: Record<number,ActivityType> = {
 const OrgInsightsPage: FunctionComponent = () => {
     const [ duration, setDuration ] = useState<number>(OrgInsightsConstants.DURATION_OPTIONS[0].value);
     const [ filterQuery, setFilterQuery ] = useState<string>("");
-    const [ lastFetchTimestamp, setLastFetchTimestamp ] = useState<string>(moment().format("HH:mm:ss"));
+    const [ lastFetchTimestamp, setLastFetchTimestamp ] = useState<string>(dayjs().format("HH:mm:ss"));
     const [ selectedActivityType, setSelectedActivityType ] = useState<ActivityType>(ActivityType.LOGIN);
 
     const { t } = useTranslation();

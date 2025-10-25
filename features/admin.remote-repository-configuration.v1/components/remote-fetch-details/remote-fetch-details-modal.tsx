@@ -20,10 +20,11 @@ import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models
 import { addAlert } from "@wso2is/core/store";
 import { CodeEditor, Hint, LinkButton, PrimaryButton, SegmentedAccordion } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
-import moment from "moment";
+import dayjs, { Dayjs } from "dayjs";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import {
     InterfaceConfigDetails,
@@ -45,8 +46,8 @@ interface RemoteFetchDetailsPropsInterface extends IdentifiableComponentInterfac
 /**
  * Remote fetch details modal.
  *
- * @param {RemoteFetchDetailsPropsInterface} props - Props injected to the component.
- * @return {React.ReactElement}
+ * @param props - The {@link RemoteFetchDetailsPropsInterface} injected to the component.
+ * @returns The {@link React.ReactElement} representing the remote fetch details modal.
  */
 export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterface> = (
     props: RemoteFetchDetailsPropsInterface
@@ -59,7 +60,7 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
         [ "data-componentid" ]: componentId
     } = props;
 
-    const dispatch = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
 
@@ -84,10 +85,10 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
     }, []);
 
     const handleAccordionOnClick = (e: SyntheticEvent, { index }: { index: number }): void => {
-        const newIndexes = [ ...activeIndex ];
+        const newIndexes: number[] = [ ...activeIndex ];
 
         if (newIndexes.includes(index)) {
-            const removingIndex = newIndexes.indexOf(index);
+            const removingIndex: number = newIndexes.indexOf(index);
 
             newIndexes.splice(removingIndex, 1);
         } else {
@@ -98,10 +99,10 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
     };
 
     const getHumanizedDeployment = (date: any): string => {
-        const now = moment(new Date());
-        const receivedDate = moment(date);
+        const now: Dayjs = dayjs(new Date());
+        const receivedDate: Dayjs = dayjs(date);
 
-        return "Last deployed " +   moment.duration(now.diff(receivedDate)).humanize() + " ago";
+        return "Last deployed " +   dayjs.duration(now.diff(receivedDate)).humanize() + " ago";
     };
 
     return (

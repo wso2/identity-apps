@@ -42,12 +42,12 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import { ProfileUtils } from "@wso2is/core/utils";
 import { FinalForm, FinalFormField, FormApi, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
+import dayjs from "dayjs";
 import cloneDeep from "lodash-es/cloneDeep";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
 import set from "lodash-es/set";
 import transform from "lodash-es/transform";
-import moment from "moment";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -966,7 +966,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                                 createdDate && (
                                     <Grid xs={ 12 }>
                                         <TextField
-                                            defaultValue={ createdDate ? moment(createdDate).format("YYYY-MM-DD") : "" }
+                                            defaultValue={ createdDate ? dayjs(createdDate).format("YYYY-MM-DD") : "" }
                                             label={ t("user:profile.fields.createdDate") }
                                             name="createdDate"
                                             type="text"
@@ -986,7 +986,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                                     <Grid xs={ 12 }>
                                         <TextField
                                             defaultValue={ modifiedDate
-                                                ? moment(modifiedDate).format("YYYY-MM-DD") : "" }
+                                                ? dayjs(modifiedDate).format("YYYY-MM-DD") : "" }
                                             label={ t("user:profile.fields.modifiedDate") }
                                             name="modifiedDate"
                                             type="text"

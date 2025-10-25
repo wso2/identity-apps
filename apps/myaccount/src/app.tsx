@@ -32,8 +32,8 @@ import {
     SessionManagementProvider,
     SessionTimeoutModalTypes
 } from "@wso2is/react-components";
+import * as dayjs from "dayjs";
 import isEmpty from "lodash-es/isEmpty";
-import * as moment from "moment";
 import React, { ReactElement, Suspense, useContext, useEffect, useState } from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -87,10 +87,10 @@ export const App = (): ReactElement => {
     }, []);
 
     /**
-     * Set the locale for moment library
+     * Set the locale for dayjs library
      */
     useEffect(() => {
-        moment.locale(I18n.instance.language);
+        dayjs.locale(I18n.instance.language);
     }, [ I18n.instance.language ]);
 
     /**

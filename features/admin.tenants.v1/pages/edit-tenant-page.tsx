@@ -29,7 +29,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import { Hint, PageLayout } from "@wso2is/react-components";
 import classNames from "classnames";
-import moment from "moment";
+import dayjs from "dayjs";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import useGetTenant from "../api/use-get-tenant";
@@ -131,7 +131,7 @@ const EditTenantPage: FunctionComponent<EditTenantPageProps> = ({
                 isLoading={ isTenantLoading }
                 description={
                     (<Typography>
-                        { t("tenants:edit.subtitle", { date: moment(tenant?.createdDate).format("MMM DD, YYYY") }) }
+                        { t("tenants:edit.subtitle", { date: dayjs(tenant?.createdDate).format("MMM DD, YYYY") }) }
                     </Typography>)
                 }
                 image={

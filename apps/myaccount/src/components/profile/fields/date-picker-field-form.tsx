@@ -18,8 +18,8 @@
 
 import { DatePickerFieldAdapter, FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
 import { Button, Popup, useMediaContext } from "@wso2is/react-components";
+import dayjs, { Dayjs } from "dayjs";
 import isEmpty from "lodash-es/isEmpty";
-import moment from "moment";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Icon, List } from "semantic-ui-react";
@@ -49,7 +49,7 @@ const DatePickerFieldForm: FunctionComponent<DatePickerFieldFormPropsInterface> 
     const { isMobileViewport } = useMediaContext();
     const { t } = useTranslation();
 
-    const formattedInitialValue: moment.Moment = moment(initialValue as string, "YYYY-MM-DD", true);
+    const formattedInitialValue: Dayjs = dayjs(initialValue as string, "YYYY-MM-DD", true);
     const placeholderText: string = t("myAccount:components.profile.forms.generic.inputs.placeholder",
         { fieldName: fieldLabel.toLowerCase() });
 

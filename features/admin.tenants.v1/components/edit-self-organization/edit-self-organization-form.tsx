@@ -31,7 +31,7 @@ import {
     FormRenderProps,
     TextFieldAdapter
 } from "@wso2is/form";
-import moment from "moment";
+import dayjs from "dayjs";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -84,7 +84,7 @@ const EditSelfOrganizationForm: FunctionComponent<EditSelfOrganizationFormProps>
     const formatDate = (dateString: string): string => {
         if (!dateString) return "";
 
-        return moment(dateString).format("YYYY-MM-DD HH:mm:ss");
+        return dayjs(dateString).format("YYYY-MM-DD HH:mm:ss");
     };
 
     /**
