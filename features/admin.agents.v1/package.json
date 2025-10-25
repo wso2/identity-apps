@@ -56,7 +56,6 @@
         "i18next": "^21.9.1",
         "js-beautify": "^1.13.0",
         "lodash-es": "^4.17.21",
-        "moment": "^2.24.0",
         "node-forge": "^0.10.0",
         "react-helmet": "^5.2.1",
         "react-i18next": "^11.18.5",
