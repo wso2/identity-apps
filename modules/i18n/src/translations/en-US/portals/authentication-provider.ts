@@ -915,7 +915,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
         },
         generalDetails: {
             alias: {
-                hint: "Alias value for {{productName}} in the trusted token issuer.",
+                hint: "Alias value for {{productName}} within this connection.",
                 label: "Alias",
                 placeholder: "Enter the alias."
             },
@@ -934,7 +934,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
                 }
             },
             issuer: {
-                hint: "A unique issuer value of the trusted token issuer.",
+                hint: "A unique issuer value for this connection.",
                 label: "Issuer",
                 placeholder: "Enter the issuer."
             },
