@@ -20,10 +20,11 @@ import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models
 import { addAlert } from "@wso2is/core/store";
 import { CodeEditor, Hint, LinkButton, PrimaryButton, SegmentedAccordion } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
-import dayjs from "dayjs";
-import React, { Dispatch, FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import dayjs, { Dayjs } from "dayjs";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import {
     InterfaceConfigDetails,
@@ -59,7 +60,7 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
         [ "data-componentid" ]: componentId
     } = props;
 
-    const dispatch: Dispatch<any> = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
 
@@ -98,8 +99,8 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
     };
 
     const getHumanizedDeployment = (date: any): string => {
-        const now: dayjs.Dayjs = dayjs(new Date());
-        const receivedDate: dayjs.Dayjs = dayjs(date);
+        const now: Dayjs = dayjs(new Date());
+        const receivedDate: Dayjs = dayjs(date);
 
         return "Last deployed " +   dayjs.duration(now.diff(receivedDate)).humanize() + " ago";
     };

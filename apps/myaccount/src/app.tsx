@@ -32,7 +32,7 @@ import {
     SessionManagementProvider,
     SessionTimeoutModalTypes
 } from "@wso2is/react-components";
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ReactElement, Suspense, useContext, useEffect, useState } from "react";
 import { Trans } from "react-i18next";

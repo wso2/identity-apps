@@ -37,7 +37,7 @@ import {
     ResourceListItem,
     UserAvatar
 } from "@wso2is/react-components";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import React, { FC, PropsWithChildren, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -236,7 +236,7 @@ export const IdpCertificatesList: FC<IdpCertificatesListProps> = (
         let icon: SemanticICONS;
         let iconColor: SemanticCOLORS;
 
-        const expiryDate: dayjs.Dayjs = dayjs(validTill);
+        const expiryDate: Dayjs = dayjs(validTill);
 
         const validity: CertificateValidity = CertificateManagementUtils
             .determineCertificateValidityState({

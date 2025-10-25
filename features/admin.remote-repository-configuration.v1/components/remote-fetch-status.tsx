@@ -20,11 +20,12 @@ import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models
 import { addAlert } from "@wso2is/core/store";
 import { Hint, LinkButton, Popup } from "@wso2is/react-components/src";
 import { AxiosResponse } from "axios";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import duration from "dayjs/plugin/duration";
-import React, { Dispatch, FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import { Button, Icon, Menu } from "semantic-ui-react";
 import { RemoteFetchDetails } from "./remote-fetch-details";
 import {
@@ -37,7 +38,6 @@ import {
 } from "..";
 
 dayjs.extend(duration);
-
 
 /**
  * Remote fetch status props interface.
@@ -62,7 +62,7 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
     const [ openRemoteFetchDetails, setOpenRemoteFetchDetails ] = useState<boolean>(false);
     const [ remoteConfig, setRemoteConfig ] = useState<InterfaceRemoteRepoConfig>(undefined);
 
-    const dispatch: Dispatch<any> = useDispatch();
+    const dispatch: Dispatch = useDispatch();
 
     const { t } = useTranslation();
 
@@ -71,8 +71,8 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
     }, [ remoteConfig != undefined ]);
 
     const getHumanizedDeployment = (date: any): string => {
-        const now: dayjs.Dayjs = dayjs(new Date());
-        const receivedDate: dayjs.Dayjs = dayjs(date);
+        const now: Dayjs = dayjs(new Date());
+        const receivedDate: Dayjs = dayjs(date);
 
         return "Last deployed " +   dayjs.duration(now.diff(receivedDate)).humanize() + " ago";
     };
