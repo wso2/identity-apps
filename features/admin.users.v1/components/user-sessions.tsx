@@ -43,7 +43,8 @@ import {
     Text
 } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
-import moment from "moment";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import React, {
     Fragment,
     FunctionComponent,
@@ -57,6 +58,8 @@ import { Dispatch } from "redux";
 import { Grid, Icon, Label, List, SemanticICONS } from "semantic-ui-react";
 import { getUserSessions, terminateAllUserSessions, terminateUserSession } from "../api";
 import { ApplicationSessionInterface, UserSessionInterface, UserSessionsInterface } from "../models/user";
+
+dayjs.extend(relativeTime);
 
 /**
  * Proptypes for the user sessions component.
@@ -429,7 +432,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                 </Grid.Column>
                                 <Grid.Column width={ 11 }>
                                     <List.Description>
-                                        { moment(parseInt(session.loginTime, 10)).format("lll") }
+                                        { dayjs(parseInt(session.loginTime, 10)).format("lll") }
                                     </List.Description>
                                 </Grid.Column>
                             </Grid.Row>
@@ -444,7 +447,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                 </Grid.Column>
                                 <Grid.Column width={ 11 }>
                                     <List.Description>
-                                        { moment(parseInt(session.lastAccessTime, 10)).fromNow() }
+                                        { dayjs(parseInt(session.lastAccessTime, 10)).fromNow() }
                                     </List.Description>
                                 </Grid.Column>
                             </Grid.Row>
@@ -670,7 +673,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                                             t("users:userSessions." +
                                                                 "components.sessionDetails.labels.lastAccessed",
                                                             {
-                                                                date: moment(
+                                                                date: dayjs(
                                                                     parseInt(session.lastAccessTime, 10)
                                                                 ).fromNow()
                                                             }
