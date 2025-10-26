@@ -1,5 +1,16 @@
 # @wso2is/admin.identity-verification-providers.v1
 
+## 2.27.205
+
+### Patch Changes
+
+- [#9366](https://github.com/wso2/identity-apps/pull/9366) [`d87ae1a2408120ed149b22f69851c3a79a579e29`](https://github.com/wso2/identity-apps/commit/d87ae1a2408120ed149b22f69851c3a79a579e29) Thanks [@s-vamshi](https://github.com/s-vamshi)! - Replaced **Moment.js** with **day.js** in `console` and `myaccount` apps to reduce bundle size and improve performance
+
+- Updated dependencies [[`d87ae1a2408120ed149b22f69851c3a79a579e29`](https://github.com/wso2/identity-apps/commit/d87ae1a2408120ed149b22f69851c3a79a579e29)]:
+  - @wso2is/admin.connections.v1@2.34.8
+  - @wso2is/admin.claims.v1@2.29.14
+  - @wso2is/admin.core.v1@2.49.95
+
 ## 2.27.204
 
 ### Patch Changes
