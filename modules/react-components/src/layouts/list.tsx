@@ -131,6 +131,10 @@ export interface ListLayoutPropsInterface extends PaginationProps, IdentifiableC
      */
     totalListSize?: number;
     /**
+     * Show total list size count.
+     */
+    showTotalListSize?: boolean;
+    /**
      * Callback for items per page change.
      * @param event - Click event.
      * @param data - Data.
@@ -144,6 +148,10 @@ export interface ListLayoutPropsInterface extends PaginationProps, IdentifiableC
      * Top action panel extension.
      */
     topActionPanelExtension?: ReactNode;
+    /**
+     * Current list size (items on current page).
+     */
+    currentListSize?: number;
 }
 
 /**
@@ -162,6 +170,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
         advancedSearchPosition,
         children,
         className,
+        currentListSize,
         defaultListItemLimit,
         disableLeftActionPanel,
         disableRightActionPanel,
@@ -178,6 +187,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
         showPagination,
         showPaginationPageLimit,
         showTopActionPanel,
+        showTotalListSize,
         sortOptions,
         sortStrategy,
         totalListSize,
@@ -309,6 +319,8 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                             <Pagination
                                 minimal={ minimalPagination }
                                 showItemsPerPageDropdown={ showPaginationPageLimit }
+                                showListSummary={ showTotalListSize }
+                                currentListSize={ currentListSize }
                                 data-componentid={ `${ componentId }-pagination` }
                                 data-testid={ `${ testId }-pagination` }
                                 resetPagination={ resetPagination }
@@ -341,5 +353,6 @@ ListLayout.defaultProps = {
     minimalPagination: true,
     showPagination: false,
     showPaginationPageLimit: true,
-    showTopActionPanel: true
+    showTopActionPanel: true,
+    showTotalListSize: false
 };
