@@ -1,5 +1,48 @@
 # @wso2is/admin.organizations.v1
 
+## 2.27.11
+
+### Patch Changes
+
+- [#9366](https://github.com/wso2/identity-apps/pull/9366) [`d87ae1a2408120ed149b22f69851c3a79a579e29`](https://github.com/wso2/identity-apps/commit/d87ae1a2408120ed149b22f69851c3a79a579e29) Thanks [@s-vamshi](https://github.com/s-vamshi)! - Replaced **Moment.js** with **day.js** in `console` and `myaccount` apps to reduce bundle size and improve performance
+
+- Updated dependencies [[`d87ae1a2408120ed149b22f69851c3a79a579e29`](https://github.com/wso2/identity-apps/commit/d87ae1a2408120ed149b22f69851c3a79a579e29)]:
+  - @wso2is/admin.identity-providers.v1@2.26.209
+  - @wso2is/admin.console-settings.v1@2.26.4
+  - @wso2is/admin.authorization.v1@2.25.90
+  - @wso2is/admin.applications.v1@2.38.7
+  - @wso2is/admin.connections.v1@2.34.8
+  - @wso2is/admin.extensions.v1@2.40.10
+  - @wso2is/admin.userstores.v1@2.27.40
+  - @wso2is/admin.tenants.v1@2.29.23
+  - @wso2is/admin.groups.v1@2.27.126
+  - @wso2is/admin.roles.v2@2.27.257
+  - @wso2is/admin.users.v1@2.36.62
+  - @wso2is/admin.core.v1@2.49.95
+
+## 2.27.10
+
+### Patch Changes
+
+- [#9379](https://github.com/wso2/identity-apps/pull/9379) [`e15e2b8abf3680d4d89a6f93fe1fdca7a550e432`](https://github.com/wso2/identity-apps/commit/e15e2b8abf3680d4d89a6f93fe1fdca7a550e432) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix broken import paths
+
+- Updated dependencies [[`e15e2b8abf3680d4d89a6f93fe1fdca7a550e432`](https://github.com/wso2/identity-apps/commit/e15e2b8abf3680d4d89a6f93fe1fdca7a550e432)]:
+  - @wso2is/admin.core.v1@2.49.92
+  - @wso2is/admin.users.v1@2.36.59
+  - @wso2is/admin.roles.v2@2.27.254
+
+## 2.27.9
+
+### Patch Changes
+
+- [#9362](https://github.com/wso2/identity-apps/pull/9362) [`25bd51d571bc2a321a8bb79d69a1b64ba63ec038`](https://github.com/wso2/identity-apps/commit/25bd51d571bc2a321a8bb79d69a1b64ba63ec038) Thanks [@JayanaGunaweera01](https://github.com/JayanaGunaweera01)! - Fix organizations with special characters in names becoming read-only by wrapping organization name in single quotes in OData filter query
+
+- Updated dependencies [[`954dc5cf50be6bc850b03a6fcb4ecddaa6521dd6`](https://github.com/wso2/identity-apps/commit/954dc5cf50be6bc850b03a6fcb4ecddaa6521dd6)]:
+  - @wso2is/admin.users.v1@2.36.58
+  - @wso2is/admin.core.v1@2.49.91
+  - @wso2is/i18n@2.30.54
+  - @wso2is/admin.roles.v2@2.27.253
+
 ## 2.27.8
 
 ### Patch Changes

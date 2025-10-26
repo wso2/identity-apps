@@ -22,7 +22,7 @@ import { CodeEditor, GenericIcon, Heading, LinkButton, Popup, PrimaryButton, Too
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Accordion, Icon, Menu, Segment, Sidebar } from "semantic-ui-react";
-import { RequiredBinary, TypeProperty } from "../models";
+import { RequiredBinary, TypeProperty } from "../models/user-stores";
 
 interface SqlEditorPropsInterface extends TestableComponentInterface {
     onChange: (name: string, value: string) => void;

@@ -35,16 +35,18 @@ import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature
 import useGetFlowConfig from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-config";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { getConnectorCategory } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
+import { useServerConfigs } from "@wso2is/admin.server-configurations.v1/api/server-config";
+import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorCategoryInterface,
     GovernanceConnectorInterface,
-    RealmConfigInterface,
-    ServerConfigurationsConstants,
-    getConnectorCategory,
-    useServerConfigs
-} from "@wso2is/admin.server-configurations.v1";
-import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants";
+    RealmConfigInterface
+} from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
+import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import {
     UserStoreItem,
@@ -660,10 +662,47 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      *                     If `false`, allows filtering only by username (for invitation list).
      * @returns The search filter component.
      */
+    /**
+     * Filter condition options for user search including ge and le operators.
+     */
+    const userFilterConditionOptions: DropdownChild[] = [
+        {
+            key: 0,
+            text: t("common:startsWith"),
+            value: "sw"
+        },
+        {
+            key: 1,
+            text: t("common:endsWith"),
+            value: "ew"
+        },
+        {
+            key: 2,
+            text: t("common:contains"),
+            value: "co"
+        },
+        {
+            key: 3,
+            text: t("common:equals"),
+            value: "eq"
+        },
+        {
+            key: 4,
+            text: t("common:greaterThanOrEqual"),
+            value: "ge"
+        },
+        {
+            key: 5,
+            text: t("common:lessThanOrEqual"),
+            value: "le"
+        }
+    ];
+
     const advancedSearchFilter = (isUserList: boolean): ReactElement => (
         <AdvancedSearchWithBasicFilters
             onFilter={ handleUserFilter }
             filterAttributeOptions={ resolveFilterAttributeOptions(isUserList) }
+            filterConditionOptions={ userFilterConditionOptions }
             filterAttributePlaceholder={
                 t("users:advancedSearch.form.inputs.filterAttribute" +
                     ".placeholder")
@@ -679,6 +718,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             placeholder={ t("users:advancedSearch.placeholder") }
             defaultSearchAttribute="userName"
             defaultSearchOperator="co"
+            enableMultipleFilterConditions={ true }
             triggerClearQuery={ triggerClearQuery }
             disableSearchAndFilterOptions={ usersList?.totalResults <= 0 && !searchQuery }
         />

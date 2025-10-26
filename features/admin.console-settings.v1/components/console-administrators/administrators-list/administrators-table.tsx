@@ -26,7 +26,7 @@ import { UserBasicInterface, UserRoleInterface } from "@wso2is/admin.core.v1/mod
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { userConfig } from "@wso2is/admin.extensions.v1/configs/user";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { useServerConfigs } from "@wso2is/admin.server-configurations.v1";
+import { useServerConfigs } from "@wso2is/admin.server-configurations.v1/api/server-config";
 import { ACCOUNT_LOCK_REASON_MAP, UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { UserListInterface } from "@wso2is/admin.users.v1/models/user";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
@@ -48,8 +48,9 @@ import {
     UserAvatar,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
+import dayjs, { Dayjs } from "dayjs";
+import duration from "dayjs/plugin/duration";
 import isEmpty from "lodash-es/isEmpty";
-import moment from "moment";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -62,6 +63,8 @@ import {
     ReactComponent as RoundedLockSolidIcon
 } from "../../../../themes/default/assets/images/icons/solid-icons/rounded-lock.svg";
 import useConsoleRoles from "../../../hooks/use-console-roles";
+
+dayjs.extend(duration);
 
 /**
  * Props interface of {@link AdministratorsTable}
@@ -364,11 +367,11 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
                 id: "meta.lastModified",
                 key: "meta.lastModified",
                 render: (user: UserBasicInterface): ReactNode => {
-                    const now: moment.Moment = moment(new Date());
-                    const receivedDate: moment.Moment = moment(user?.meta?.lastModified);
+                    const now: Dayjs = dayjs(new Date());
+                    const receivedDate: Dayjs = dayjs(user?.meta?.lastModified);
 
                     return t("console:common.dateTime.humanizedDateString", {
-                        date: moment.duration(now.diff(receivedDate)).humanize()
+                        date: dayjs.duration(now.diff(receivedDate)).humanize()
                     });
                 },
                 title: "Last Modified"

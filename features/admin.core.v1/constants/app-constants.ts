@@ -18,9 +18,9 @@
 
 import {
     GovernanceCategoryForOrgsInterface,
-    GovernanceConnectorCategoryInterface,
-    GovernanceConnectorUtils
-} from "@wso2is/admin.server-configurations.v1";
+    GovernanceConnectorCategoryInterface
+} from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
+import { GovernanceConnectorUtils } from "@wso2is/admin.server-configurations.v1/utils/governance-connector-utils";
 import { AppThemeConfigInterface, FeatureAccessConfigInterface } from "@wso2is/core/models";
 import { StringUtils } from "@wso2is/core/utils";
 import { MultitenantConstants } from "./multitenant-constants";
@@ -575,6 +575,11 @@ export class AppConstants {
      * Route id of the console settings page.
      */
     public static readonly AGENTS_ROUTE: string = "agents";
+
+    /**
+     * Route id of the approvals page.
+     */
+    public static readonly APPROVALS_ROUTE: string = "approvals";
 
     /**
      * Name of the root node

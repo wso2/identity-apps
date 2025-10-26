@@ -74,6 +74,7 @@ const useRoutes = (params: UseRoutesParams): useRoutesInterface => {
     const isGroupAndRoleSeparationEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isGroupAndRoleSeparationEnabled);
     const routesConfig: RouteConfigInterface = useSelector((state: AppState) => state.config.ui.routes);
+    const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
 
     const { data: organization } = useGetSelfAuthenticatedOrganization(isAuthenticated);
 
@@ -131,6 +132,12 @@ const useRoutes = (params: UseRoutesParams): useRoutesInterface => {
 
             if(!params.isAgentManagementEnabledForOrg) {
                 additionalRoutes.push(AppConstants.AGENTS_ROUTE);
+            }
+
+            // In on-premise Identity Server deployments, the Approvals tab is disabled in the Console.
+            // For Asgardeo deployments, only Asgardeo Admins are allowed to access the Approvals tab.
+            if (isPrivilegedUser) {
+                additionalRoutes.push(AppConstants.APPROVALS_ROUTE);
             }
 
             return [ ...additionalRoutes ];

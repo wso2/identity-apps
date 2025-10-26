@@ -17,6 +17,7 @@
  */
 
 import { ResponseMode, Storage } from "@asgardeo/auth-react";
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { ActionsResourceEndpointsInterface } from "@wso2is/admin.actions.v1/models/endpoints";
 import { ApplicationsTemplatesEndpointsInterface } from "@wso2is/admin.application-templates.v1/models/endpoints";
 import {
@@ -40,7 +41,9 @@ import { PolicyAdministrationEndpointsInterface } from "@wso2is/admin.policy-adm
 import { RolesResourceEndpointsInterface } from "@wso2is/admin.roles.v2/models/endpoints";
 import { RulesEndpointsInterface } from "@wso2is/admin.rules.v1/models/endpoints";
 import { SecretsManagementEndpoints } from "@wso2is/admin.secrets.v1/models/endpoints";
-import { ServerConfigurationsResourceEndpointsInterface } from "@wso2is/admin.server-configurations.v1";
+import {
+    ServerConfigurationsResourceEndpointsInterface
+} from "@wso2is/admin.server-configurations.v1/models/endpoints";
 import { SMSTemplateResourceEndpointsInterface } from "@wso2is/admin.sms-templates.v1/models/endpoints";
 import { ExtensionTemplatesEndpointsInterface } from "@wso2is/admin.template-core.v1/models/endpoints";
 import { TenantResourceEndpointsInterface } from "@wso2is/admin.tenants.v1/models/endpoints";
@@ -50,8 +53,7 @@ import { ValidationServiceEndpointsInterface } from "@wso2is/admin.validation.v1
 import {
     CommonConfigInterface,
     CommonDeploymentConfigInterface,
-    CommonUIConfigInterface,
-    FeatureAccessConfigInterface
+    CommonUIConfigInterface
 } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { WorkflowRequestsResourceEndpointsInterface } from "../../admin.workflow-requests.v1/configs/endpoints";

@@ -40,7 +40,7 @@ import { getRoleById, searchRoleList } from "@wso2is/admin.roles.v2/api/roles";
 import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { useGetRoleByIdV3 } from "@wso2is/admin.roles.v2/hooks/use-get-role-by-id-v3";
 import { RolesV2Interface, SearchRoleInterface } from "@wso2is/admin.roles.v2/models/roles";
-import { useServerConfigs } from "@wso2is/admin.server-configurations.v1";
+import { useServerConfigs } from "@wso2is/admin.server-configurations.v1/api/server-config";
 import { TenantInfo } from "@wso2is/admin.tenants.v1/models/tenant";
 import { getAssociationType } from "@wso2is/admin.tenants.v1/utils/tenants";
 import { useInvitedUsersList, useUsersList } from "@wso2is/admin.users.v1/api";
@@ -59,7 +59,7 @@ import {
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import {
     CONSUMER_USERSTORE
-} from "@wso2is/admin.userstores.v1/constants";
+} from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { IdentityAppsError } from "@wso2is/core/errors";
