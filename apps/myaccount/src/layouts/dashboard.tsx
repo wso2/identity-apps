@@ -48,8 +48,7 @@ import {
     ContentLoader,
     EmptyPlaceholder,
     ErrorBoundary,
-    LinkButton,
-    useMediaContext
+    LinkButton
 } from "@wso2is/react-components";
 import dayjs from "dayjs";
 import isEmpty from "lodash-es/isEmpty";
@@ -96,8 +95,6 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
     const { t } = useTranslation();
 
     const dispatch: Dispatch = useDispatch();
-
-    const { isMobileViewport } = useMediaContext();
 
     const { setPreferences, leftNavbarCollapsed } = useUserPreferences();
 
@@ -324,7 +321,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
                             }
                         ] }
                         fill={ "solid" }
-                        open={ isMobileViewport ? false : !leftNavbarCollapsed }
+                        open={ !leftNavbarCollapsed }
                         collapsible={ false }
                     />
                 ) }
