@@ -1,5 +1,18 @@
 # @wso2is/admin.email-management.v1
 
+## 2.25.251
+
+### Patch Changes
+
+- [#9366](https://github.com/wso2/identity-apps/pull/9366) [`d87ae1a2408120ed149b22f69851c3a79a579e29`](https://github.com/wso2/identity-apps/commit/d87ae1a2408120ed149b22f69851c3a79a579e29) Thanks [@s-vamshi](https://github.com/s-vamshi)! - Replaced **Moment.js** with **day.js** in `console` and `myaccount` apps to reduce bundle size and improve performance
+
+- Updated dependencies [[`d87ae1a2408120ed149b22f69851c3a79a579e29`](https://github.com/wso2/identity-apps/commit/d87ae1a2408120ed149b22f69851c3a79a579e29)]:
+  - @wso2is/admin.server-configurations.v1@2.35.109
+  - @wso2is/admin.flow-builder-core.v1@0.10.87
+  - @wso2is/admin.branding.v1@2.32.43
+  - @wso2is/admin.core.v1@2.49.95
+  - @wso2is/admin.flows.v1@1.0.56
+
 ## 2.25.250
 
 ### Patch Changes
