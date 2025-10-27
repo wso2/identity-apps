@@ -23,7 +23,6 @@ export * from "./admin.application-roles.v1/public-api";
 export * from "./admin.application-templates.v1/public-api";
 export * from "./admin.applications.v1/public-api";
 export * from "./admin.authentication.v1/public-api";
-export * from "./admin.authorization.v1/public-api";
 export * from "./admin.branding.v1/public-api";
 export * from "./admin.certificates.v1/public-api";
 export * from "./admin.claims.v1/public-api";
