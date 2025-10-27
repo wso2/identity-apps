@@ -28,12 +28,12 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
-import { Code, FormSection, GenericIcon, Hint } from "@wso2is/react-components";
+import { Code, FormSection, GenericIcon, Heading, Hint } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Icon, SemanticICONS } from "semantic-ui-react";
+import { Divider, Icon, SemanticICONS } from "semantic-ui-react";
 import {
     AuthenticatorSettingsFormModes,
     CommonAuthenticatorFormFieldInterface,
@@ -42,6 +42,7 @@ import {
     CommonAuthenticatorFormMetaInterface,
     CommonAuthenticatorFormPropertyInterface
 } from "../../../models";
+import { validateAMRValue } from "../../utils/connector-utils";
 
 /**
  * Interface for Google Authenticator Form props.
@@ -113,6 +114,8 @@ interface GoogleAuthenticatorFormInitialValuesInterface {
     * Google Authenticator Google One Tap field value.
     */
     IsGoogleOneTapEnabled: boolean;
+
+    amrValue: string;
 }
 
 /**
@@ -548,6 +551,45 @@ export const GoogleAuthenticatorForm: FunctionComponent<GoogleAuthenticatorFormP
                     />
                 ) : null
             }
+            {/* <Divider />
+            <Heading as="h5">
+                {
+                    t("authenticationProvider:forms.authenticatorSettings" +
+                        ".smsOTP.amrHeading.heading")
+                }
+            </Heading>
+            <Field.Input
+                ariaLabel="AMR Value"
+                inputType="text"
+                icon="redo"
+                iconPosition="right"
+                name="amrValue"
+                initialValue={initialValues?.amrValue}
+                label={
+                    t("authenticationProvider:forms.authenticatorSettings" +
+                        ".google.allowedAmrValue.label")
+                }
+                placeholder={
+                    t("authenticationProvider:forms.authenticatorSettings" +
+                        ".google.allowedAmrValue.placeholder")
+                }
+                hint={
+                    (<Trans
+                        i18nKey={
+                            "authenticationProvider:forms.authenticatorSettings" +
+                            ".google.amrValurConstraint.hint"
+                        }
+                    >
+                        The allowed characters are
+                        <Code>letters, numbers and underscore</Code>.
+                    </Trans>)
+                }
+                validation={(value: string) => validateAMRValue(value.toString().trim())}
+                maxLength={255}
+                minLength={2}
+                width={12}
+                data-testid={`${testId}-allowed-amr-value`}
+            /> */}
             {
                 (formFields?.AdditionalQueryParameters?.value
                     && !isEmpty(extractScopes(formFields.AdditionalQueryParameters.value))) && (

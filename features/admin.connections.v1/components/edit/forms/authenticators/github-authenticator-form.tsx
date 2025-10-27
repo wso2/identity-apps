@@ -16,13 +16,15 @@
  * under the License.
  */
 
+import { validateAMRValue } from "@wso2is/admin.identity-providers.v1/components/utils/connector-utils";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
-import { Code, FormSection, GenericIcon, Hint } from "@wso2is/react-components";
+import { Code, FormSection, GenericIcon, Heading, Hint, IconButton } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
+import React, 
+{ FunctionComponent, ReactElement, ReactNode, SVGAttributes,  useCallback, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Icon, SemanticICONS } from "semantic-ui-react";
+import { Divider, Icon, SemanticICONS } from "semantic-ui-react";
 import { ConnectionUIConstants } from "../../../../constants/connection-ui-constants";
 import { FederatedAuthenticatorConstants } from "../../../../constants/federated-authenticator-constants";
 import {
@@ -108,6 +110,10 @@ interface GithubAuthenticatorFormInitialValuesInterface {
      * GitHub Authenticator client id field value.
      */
     ClientId: string;
+    /**
+     * Google Authenticator amr value field value.
+     */
+    amrValue: string;
 }
 
 /**
@@ -180,6 +186,8 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
 
     const [ formFields, setFormFields ] = useState<GithubAuthenticatorFormFieldsInterface>(undefined);
     const [ initialValues, setInitialValues ] = useState<GithubAuthenticatorFormInitialValuesInterface>(undefined);
+    const [isResettingAMR, setIsResettingAMR ] = useState(false);
+    const [ isAMRFieldChanged, setIsAMRFieldChanged ] = useState(false);
 
     /**
      * Flattens and resolved form initial values and field metadata.
@@ -211,9 +219,29 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
             };
         });
 
+        resolvedInitialValues = {
+            ...resolvedInitialValues,
+            amrValue: originalInitialValues.amrValue
+        };
+
         setFormFields(resolvedFormFields);
         setInitialValues(resolvedInitialValues);
     }, [ originalInitialValues ]);
+
+    /**
+     * Handles form submit.
+     * @param values - Form values. 
+     */
+    const handleSubmit = (values: Record<string, unknown>) => {
+        const submitValues = {
+            ...values,
+            amrValue: isAMRFieldChanged ? values.amrValue : ""
+        };
+    
+        onSubmit(getUpdatedConfigurations(submitValues as GithubAuthenticatorFormInitialValuesInterface));
+        setIsResettingAMR(false);
+        setIsAMRFieldChanged(false);
+    };
 
     /**
      * Prepare form values for submitting.
@@ -235,8 +263,21 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
             }
         }
 
+        if (isResettingAMR) {
+            properties.push({
+                key: "amrValue",
+                value: ""
+            });
+        } else {
+            properties.push({
+                key: "amrValue",
+                value: values.amrValue
+            });
+        }
+
         return {
             ...originalInitialValues,
+            amrValue: values.amrValue,
             properties
         };
     };
@@ -279,6 +320,42 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
             icon: "key"
         };
     };
+
+    const ArrowRotateLeft = ({ ...rest }: SVGAttributes<SVGSVGElement>): ReactElement => (
+        <svg
+            stroke="currentColor"
+            fill="currentColor"
+            strokeWidth="0"
+            viewBox="0 0 24 24"
+            height="1em"
+            width="1em"
+            style={{
+                marginRight: "0",
+
+                verticalAlign: "middle"
+            }}
+            xmlns="http://www.w3.org/2000/svg"
+            {...rest}
+        >
+            <path
+                fill="none"
+                stroke="#000"
+                strokeWidth="2"
+                d="M8,3 L3,8 L8,13 M12,20 L15,20 C18.3137085,20 21,17.3137085 21,14 C21,10.6862915 18.3137085,8 15,8 L4,8"
+            ></path>
+        </svg>
+    );
+
+
+    const handleResetAMR = useCallback(() => {
+        console.log("Resetting AMR value");
+        setInitialValues(prevValues => ({
+            ...prevValues,
+            amrValue: originalInitialValues.name || ""
+        }));
+        setIsResettingAMR(true);
+        setIsAMRFieldChanged(false);
+    }, [originalInitialValues.name]);
 
     return (
         <Form
@@ -400,6 +477,68 @@ export const GithubAuthenticatorForm: FunctionComponent<GithubAuthenticatorFormP
                 width={ 16 }
                 data-testid={ `${ testId }-authorized-redirect-url` }
             />
+            <Divider />
+            <Heading as="h5">
+                {
+                    t("authenticationProvider:forms.authenticatorSettings" +
+                        ".smsOTP.amrHeading.heading")
+                }
+            </Heading>
+            <Field.Input
+                ariaLabel="AMR Value"
+                inputType="text"
+                name="amrValue"
+                value={initialValues?.amrValue || ''}
+                label={
+                    t("authenticationProvider:forms.authenticatorSettings" +
+                        ".google.allowedAmrValue.label")
+                }
+                placeholder={
+                    t("authenticationProvider:forms.authenticatorSettings" +
+                        ".google.allowedAmrValue.placeholder")
+                }
+                hint={
+                    (<Trans
+                        i18nKey={
+                            "authenticationProvider:forms.authenticatorSettings" +
+                            ".google.amrValurConstraint.hint"
+                        }
+                    >
+                        The allowed characters are
+                        <Code>letters, numbers and underscore</Code>.
+                    </Trans>)
+                }
+                validation={(value: string) => validateAMRValue(value.toString().trim())}
+                maxLength={255}
+                minLength={2}
+                width={12}
+                data-testid={`${testId}-allowed-amr-value`}
+                iconPosition="right"
+                onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    setIsAMRFieldChanged(true);
+                    setInitialValues(prev => ({
+                        ...prev,
+                        amrValue: event.target.value
+                    }));
+                }}
+            >
+                <input />
+                <IconButton
+                    title={
+                        t("branding:brandingCustomText.form.genericFieldResetTooltip")
+                    }
+                    onClick={(e) => {
+                        e.preventDefault();
+                        handleResetAMR();
+                    }}
+                    style={{
+                        backgroundColor: "white",
+                        cursor: "pointer"
+                    }}
+                >
+                    <ArrowRotateLeft />
+                </IconButton>
+            </Field.Input>
             {
                 formFields?.scope?.value
                 && formFields.scope.value.split
