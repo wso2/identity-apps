@@ -149,11 +149,9 @@ const ProfileAvatar: FunctionComponent<ProfileAvatarPropsInterface> = (
                                                         "noAssociation.content" }
                                             >
                                                 It seems like the selected email is not registered on Gravatar.
-                                                Sign up for a Gravatar account by visiting
-                                                <a href="https://www.gravatar.com">
-                                                    &nbsp;Gravatar Official Website&nbsp;
-                                                </a>
-                                                or use one of the following.
+                                                Sign up for a Gravatar account by visiting&nbsp;
+                                                <a href="https://www.gravatar.com">Gravatar Official Website</a>
+                                                &nbsp;or use one of the following.
                                             </Trans>
                                         ),
                                         header: t("myAccount:modals.editAvatarModal.content.gravatar.errors" +
