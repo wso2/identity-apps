@@ -24,7 +24,6 @@
         "@wso2is/admin.agents.v1": "workspace:^",
         "@wso2is/admin.api-resources.v2": "^2.26.5",
         "@wso2is/admin.applications.v1": "^2.38.7",
-        "@wso2is/admin.authorization.v1": "^2.25.90",
         "@wso2is/admin.connections.v1": "^2.34.8",
         "@wso2is/admin.core.v1": "^2.49.95",
         "@wso2is/admin.extensions.v1": "^2.40.10",
