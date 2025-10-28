@@ -1,5 +1,16 @@
 # @wso2is/admin.organizations.v1
 
+## 2.27.12
+
+### Patch Changes
+
+- [#9371](https://github.com/wso2/identity-apps/pull/9371) [`25b7cfb31d3c004017e955c8fe1309532e3cc1ad`](https://github.com/wso2/identity-apps/commit/25b7cfb31d3c004017e955c8fe1309532e3cc1ad) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Multiple filtering support for organizations listing
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.96
+  - @wso2is/admin.users.v1@2.36.63
+  - @wso2is/admin.roles.v2@2.27.258
+
 ## 2.27.11
 
 ### Patch Changes
