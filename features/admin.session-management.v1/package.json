@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.session-management.v1",
-    "version": "2.25.216",
+    "version": "2.25.217",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -21,7 +21,7 @@
         "@oxygen-ui/react": "^2.4.6",
         "@oxygen-ui/react-icons": "^2.4.6",
         "@wso2is/access-control": "^3.3.20",
-        "@wso2is/admin.core.v1": "^2.49.95",
+        "@wso2is/admin.core.v1": "^2.49.96",
         "@wso2is/admin.organizations.v1": "workspace:^",
         "@wso2is/core": "^2.12.3",
         "@wso2is/dynamic-forms": "^2.4.41",
