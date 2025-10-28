@@ -421,6 +421,7 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
                 </Snackbar>
             ) : null }
             <AppShell
+                className="dashboard-layout"
                 header={
                     (<Header
                         onCollapsibleHamburgerClick={ handleSidePanelToggleClick }

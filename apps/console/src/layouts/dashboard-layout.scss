@@ -16,18 +16,20 @@
  * under the License.
  */
 
- .organization-switch-skeleton-group {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 0.75rem 1rem;
-}
+.dashboard-layout {
+    .organization-switch-skeleton-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 0.75rem 1rem;
+    }
 
-.organization-switch-skeleton-group .MuiSkeleton-root {
-    width: 100%;
-    height: 24px;
-    border-radius: 4px;
-    background-color: var(--oxygen-palette-background-default, #f0f0f0);
-    opacity: 0.85;
-    transition: opacity 0.2s ease-in-out;
+    .organization-switch-skeleton-group .MuiSkeleton-root {
+        width: 100%;
+        height: 24px;
+        border-radius: 4px;
+        background-color: var(--oxygen-palette-background-default, #f0f0f0);
+        opacity: 0.85;
+        transition: opacity 0.2s ease-in-out;
+    }
 }
