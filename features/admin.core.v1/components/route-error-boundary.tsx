@@ -17,91 +17,67 @@
  */
 
 import { CommonUtils } from "@wso2is/core/utils";
-import { EmptyPlaceholder, LinkButton } from "@wso2is/react-components";
-import React, { Component, ErrorInfo, ReactNode } from "react";
-import { Trans, withTranslation, WithTranslation } from "react-i18next";
+import { EmptyPlaceholder, ErrorBoundary, LinkButton } from "@wso2is/react-components";
+import React, { ReactNode } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { getEmptyPlaceholderIllustrations } from "../configs/ui";
 
-interface RouteErrorBoundaryProps extends WithTranslation {
+interface RouteErrorBoundaryProps {
     children: ReactNode;
     routeName?: string;
 }
 
-interface RouteErrorBoundaryState {
-    hasError: boolean;
-    error?: Error;
-}
-
 /**
  * Route-level Error Boundary that isolates errors to specific routes.
+ *
+ * @param props - Props for the component.
+ * @returns Route error boundary component.
  */
-class RouteErrorBoundary extends Component<RouteErrorBoundaryProps, RouteErrorBoundaryState> {
-    constructor(props: RouteErrorBoundaryProps) {
-        super(props);
-        this.state = {
-            hasError: false
-        };
-    }
+const RouteErrorBoundary: React.FC<RouteErrorBoundaryProps> = ({ children, routeName }: RouteErrorBoundaryProps) => {
+    const { t } = useTranslation();
 
-    static getDerivedStateFromError(error: Error): RouteErrorBoundaryState {
-        return {
-            error,
-            hasError: true
-        };
-    }
-
-    componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-        console.error("Route Error Boundary caught an error:", error, errorInfo);
-    }
-
-    componentDidUpdate(prevProps: RouteErrorBoundaryProps): void {
-        if (this.state.hasError && prevProps.children !== this.props.children) {
-            this.setState({ hasError: false, error: undefined });
-        }
-    }
-
-    handleRetry = (): void => {
-        this.setState({ hasError: false, error: undefined });
+    const handleRetry = (): void => {
         CommonUtils.refreshPage();
     };
 
-    render(): ReactNode {
-        const { hasError } = this.state;
-        const { children, t } = this.props;
+    const handleError = (error: Error): void => {
+        console.error("Route Error Boundary caught an error:", error, routeName);
+    };
 
-        if (hasError) {
-            return (
-                <div className="route-error-boundary">
-                    <EmptyPlaceholder
-                        action={
-                            <LinkButton onClick={ this.handleRetry }>
-                                { t("console:common.placeholders.brokenPage.action") }
-                            </LinkButton>
-                        }
-                        image={ getEmptyPlaceholderIllustrations().brokenPage }
-                        imageSize="tiny"
-                        subtitle={ [
-                            <Trans
-                                key="subtitle-0"
-                                i18nKey="console:common.placeholders.brokenPage.subtitles.0"
-                            >
-                                Something went wrong while displaying this page.
-                            </Trans>,
-                            <Trans
-                                key="subtitle-1"
-                                i18nKey="console:common.placeholders.brokenPage.subtitles.1"
-                            >
-                                You can try navigating to other sections using the side panel.
-                            </Trans>
-                        ] }
-                        title={ t("console:common.placeholders.brokenPage.title") }
-                    />
-                </div>
-            );
-        }
+    const renderFallback = (): ReactNode => (
+        <div className="route-error-boundary">
+            <EmptyPlaceholder
+                action={
+                    <LinkButton onClick={ handleRetry }>
+                        { t("console:common.placeholders.brokenPage.action") }
+                    </LinkButton>
+                }
+                image={ getEmptyPlaceholderIllustrations().brokenPage }
+                imageSize="tiny"
+                subtitle={ [
+                    <Trans
+                        key="subtitle-0"
+                        i18nKey="console:common.placeholders.brokenPage.subtitles.0"
+                    >
+                        Something went wrong while displaying this page.
+                    </Trans>,
+                    <Trans
+                        key="subtitle-1"
+                        i18nKey="console:common.placeholders.brokenPage.subtitles.1"
+                    >
+                        You can try navigating to other sections using the side panel.
+                    </Trans>
+                ] }
+                title={ t("console:common.placeholders.brokenPage.title") }
+            />
+        </div>
+    );
 
-        return children;
-    }
-}
+    return (
+        <ErrorBoundary fallback={ renderFallback() } handleError={ handleError } onChunkLoadError={ () => {} }>
+            { children }
+        </ErrorBoundary>
+    );
+};
 
-export default withTranslation()(RouteErrorBoundary);
+export default RouteErrorBoundary;
