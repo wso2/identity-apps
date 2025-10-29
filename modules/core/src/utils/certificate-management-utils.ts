@@ -16,11 +16,16 @@
  * under the License.
  */
 
+import dayjs, { Dayjs } from "dayjs";
+import duration from "dayjs/plugin/duration";
+import relativeTime from "dayjs/plugin/relativeTime";
 import { saveAs } from "file-saver";
-import moment from "moment";
 import * as forge from "node-forge";
 import { CertificateManagementConstants } from "../constants";
 import { Certificate, CertificateValidity, DisplayCertificate } from "../models";
+
+dayjs.extend(duration);
+dayjs.extend(relativeTime);
 
 /**
  * Utility class for certificate management operations.
@@ -305,15 +310,15 @@ export class CertificateManagementUtils {
     public static getValidityPeriodInHumanReadableFormat(validFrom: Date, validTill: Date): string {
 
         const isValid: boolean = new Date() >= validFrom && new Date() <= validTill;
-        const now: moment.Moment = moment(new Date());
-        const receivedDate: moment.Moment = moment(validTill);
+        const now: Dayjs = dayjs(new Date());
+        const receivedDate: Dayjs = dayjs(validTill);
 
         let description: string;
 
         if (isValid) {
-            description = "Valid for " + moment.duration(now.diff(receivedDate)).humanize();
+            description = "Valid for " + dayjs.duration(now.diff(receivedDate)).humanize();
         } else {
-            description = "Expired " + moment.duration(now.diff(receivedDate)).humanize() + " ago";
+            description = "Expired " + dayjs.duration(now.diff(receivedDate)).humanize() + " ago";
         }
 
         return description;
@@ -329,9 +334,9 @@ export class CertificateManagementUtils {
      */
     public static determineCertificateValidityState({ from, to }: { from: Date; to: Date; }): CertificateValidity {
 
-        const _now: moment.Moment = moment(new Date());
-        const _from: moment.Moment = moment(from);
-        const _to: moment.Moment = moment(to);
+        const _now: Dayjs = dayjs(new Date());
+        const _from: Dayjs = dayjs(from);
+        const _to: Dayjs = dayjs(to);
 
         const isValid: boolean = _now.isAfter(_from) && _now.isBefore(_to);
 

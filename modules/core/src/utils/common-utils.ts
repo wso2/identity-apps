@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,9 +18,14 @@
 
 import * as Country from "country-language";
 import { MD5 } from "crypto-js";
+import dayjs from "dayjs";
+import duration from "dayjs/plugin/duration";
+import relativeTime from "dayjs/plugin/relativeTime";
 import sortBy from "lodash-es/sortBy";
-import moment from "moment";
 import { AnnouncementBannerInterface, ProductReleaseTypes } from "../models";
+
+dayjs.extend(duration);
+dayjs.extend(relativeTime);
 
 /**
  * Class containing common utility methods used across application.
@@ -39,10 +44,10 @@ export class CommonUtils {
      * @param date - Date string which needs to be humanize
      */
     static humanizeDateDifference = (date: string): string => {
-        const now = moment(new Date());
-        const receivedDate = moment(date);
+        const now = dayjs(new Date());
+        const receivedDate = dayjs(date);
 
-        return "Last modified " + moment.duration(now.diff(receivedDate)).humanize() + " ago";
+        return "Last modified " + dayjs.duration(now.diff(receivedDate)).humanize() + " ago";
     };
 
     /**
@@ -96,7 +101,7 @@ export class CommonUtils {
         let selected: AnnouncementBannerInterface = null;
 
         for (const item of sorted) {
-            const isExpired = moment.duration(moment.unix(parseInt(item.expire, 10)).diff(moment()))
+            const isExpired = dayjs.duration(dayjs.unix(parseInt(item.expire, 10)).diff(dayjs()))
                 .asMilliseconds() < 0;
             const isSeen = seen.includes(item.id);
 
