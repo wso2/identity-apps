@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.81.19
+
+### Patch Changes
+
+- [#9405](https://github.com/wso2/identity-apps/pull/9405) [`67f7dd9be7ad1d369d441acc63e7603eb4576790`](https://github.com/wso2/identity-apps/commit/67f7dd9be7ad1d369d441acc63e7603eb4576790) Thanks [@s-vamshi](https://github.com/s-vamshi)! - Resolved Dayjs `humanize()` error in Console Settings
+
+- Updated dependencies [[`67f7dd9be7ad1d369d441acc63e7603eb4576790`](https://github.com/wso2/identity-apps/commit/67f7dd9be7ad1d369d441acc63e7603eb4576790)]:
+  - @wso2is/admin.console-settings.v1@2.26.5
+
 ## 2.81.18
 
 ### Patch Changes
