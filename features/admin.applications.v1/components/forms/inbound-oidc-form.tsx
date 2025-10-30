@@ -1784,19 +1784,19 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     useEffect(
         () => {
-            let bindingType = SupportedAccessTokenBindingTypes.NONE as string;
-            
+            let bindingType: string = SupportedAccessTokenBindingTypes.NONE;
+
             if (initialValues?.accessToken?.bindingType) {
                 bindingType = initialValues.accessToken.bindingType;
             } else if (isFAPIApplication) {
-                bindingType = SupportedAccessTokenBindingTypes.CERTIFICATE as string;
+                bindingType = SupportedAccessTokenBindingTypes.CERTIFICATE;
             } else if (metadata?.accessTokenBindingType?.defaultValue) {
                 bindingType = metadata.accessTokenBindingType.defaultValue;
             }
             setCurrentBindingType(bindingType);
         }, [ initialValues?.accessToken?.bindingType,
-                metadata?.accessTokenBindingType?.defaultValue,
-                isFAPIApplication ]
+            metadata?.accessTokenBindingType?.defaultValue,
+            isFAPIApplication ]
     );
     /**
     The following function is used to reset the client authentication method if public client is selected
