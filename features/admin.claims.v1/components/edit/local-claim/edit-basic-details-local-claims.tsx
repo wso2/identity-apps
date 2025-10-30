@@ -535,13 +535,15 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     };
 
     // Temporary fix to check system claims and make them readonly
+    // Note: For system claims, we don't make the entire form read-only anymore.
+    // Instead, we control read-only behavior per field/checkbox.
     const isReadOnly: boolean = useMemo(() => {
-        if (hideSpecialClaims || isAgentAttribute) {
+        if (isAgentAttribute) {
             return true;
         } else {
             return !hasAttributeUpdatePermissions;
         }
-    }, [ featureConfig, allowedScopes, hideSpecialClaims ]);
+    }, [ featureConfig, allowedScopes, isAgentAttribute ]);
 
     const deleteConfirmation = (): ReactElement => (
         <ConfirmationModal
@@ -855,9 +857,13 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
          * This function checks whether the supported by default checkboxes should be disabled.
          *
          * @param isAdminConsole - Is display option for admin console.
+         * @param isSelfRegistration - Is display option for self-registration.
          * @returns Is checkbox disabled.
          */
-        const isSupportedByDefaultCheckboxDisabled = (isAdminConsole?: boolean): boolean => {
+        const isSupportedByDefaultCheckboxDisabled = (
+            isAdminConsole?: boolean,
+            isSelfRegistration?: boolean
+        ): boolean => {
 
             // If hideUserIdDisplayConfigurations is true, disable the checkbox for user id claim.
             // Refer issue - https://github.com/wso2/product-is/issues/24906
@@ -869,6 +875,11 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     return false;
                 }
 
+                return true;
+            }
+
+            // For system claims, disable self-registration as they are created after user creation
+            if (hideSpecialClaims && isSelfRegistration) {
                 return true;
             }
 
@@ -903,7 +914,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         defaultValue={ claim?.profiles?.console?.supportedByDefault ?? claim?.supportedByDefault }
                         data-componentid={
                             `${ testId }-form-console-supported-by-default-checkbox` }
-                        readOnly={ isSupportedByDefaultCheckboxDisabled(true) }
+                        readOnly={ isSupportedByDefaultCheckboxDisabled(true, false) }
                         {
                             ...( isConsoleRequired
                                 ? { checked: true }
@@ -919,7 +930,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         name="endUserSupportedByDefault"
                         defaultValue={ claim?.profiles?.endUser?.supportedByDefault ?? claim?.supportedByDefault }
                         data-componentid={ `${ testId }-form-end-user-supported-by-default-checkbox` }
-                        readOnly={ isSupportedByDefaultCheckboxDisabled() }
+                        readOnly={ isSupportedByDefaultCheckboxDisabled(false, false) }
                         {
                             ...( isEndUserRequired
                                 ? { checked: true }
@@ -937,10 +948,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             claim?.supportedByDefault }
                         data-componentid={
                             `${ testId }-form-self-registration-supported-by-default-checkbox` }
-                        readOnly={ isSupportedByDefaultCheckboxDisabled() }
+                        readOnly={ isSupportedByDefaultCheckboxDisabled(false, true) }
                         {
-                            ...( isSelfRegistrationRequired
-                                ? { checked: true }
+                            ...( isSelfRegistrationRequired || hideSpecialClaims
+                                ? { checked: hideSpecialClaims ? false : true }
                                 : { defaultValue: claim?.profiles?.selfRegistration?.supportedByDefault ??
                                     claim?.supportedByDefault }
                             )
@@ -1058,7 +1069,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     };
 
     const resolveAttributeRequiredRow = (): ReactElement => {
-        const isRequiredCheckboxDisabled: boolean = isReadOnly || isSubOrganization() || !hasMapping
+        const isRequiredCheckboxDisabled: boolean = hideSpecialClaims || isReadOnly || isSubOrganization()
+            || !hasMapping
             || dataType === ClaimDataType.COMPLEX
             || (
                 accountVerificationEnabled
@@ -1092,8 +1104,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             setIsConsoleRequired(value);
                         } }
                         {
-                            ...( isConsoleReadOnly
-                                ? { value: false }
+                            ...( isConsoleReadOnly || hideSpecialClaims
+                                ? { value: hideSpecialClaims ? false : false }
                                 : { defaultValue: claim?.profiles?.console?.required ?? claim?.required }
                             )
                         }
@@ -1110,8 +1122,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             setIsEndUserRequired(value);
                         } }
                         {
-                            ...( isEndUserReadOnly
-                                ? { value: false }
+                            ...( isEndUserReadOnly || hideSpecialClaims
+                                ? { value: hideSpecialClaims ? false : false }
                                 : { defaultValue: claim?.profiles?.endUser?.required ?? claim?.required }
                             )
                         }
@@ -1128,8 +1140,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             setIsSelfRegistrationRequired(value);
                         } }
                         {
-                            ...( isSelfRegistrationReadOnly
-                                ? { value: false }
+                            ...( isSelfRegistrationReadOnly || hideSpecialClaims
+                                ? { value: hideSpecialClaims ? false : false }
                                 : { defaultValue: claim?.profiles?.selfRegistration?.required ?? claim?.required }
                             )
                         }
@@ -1140,8 +1152,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     };
 
     const resolveAttributeReadOnlyRow = (): ReactElement => {
-        const isReadOnlyCheckboxDisabled: boolean = isReadOnly || isSubOrganization() || !hasMapping
-            || dataType === ClaimDataType.COMPLEX;
+        const isReadOnlyCheckboxDisabled: boolean = hideSpecialClaims || isReadOnly || isSubOrganization()
+            || !hasMapping || dataType === ClaimDataType.COMPLEX;
 
         return (
             <TableRow hideBorder>
@@ -1167,6 +1179,12 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         listen ={ (value: boolean) => {
                             setIsConsoleReadOnly(value);
                         } }
+                        {
+                            ...( hideSpecialClaims
+                                ? { checked: true }
+                                : { defaultValue: claim?.profiles?.console?.readOnly ?? claim?.readOnly }
+                            )
+                        }
                     />
                 </TableCell>
                 <TableCell align="center">
@@ -1179,6 +1197,12 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         listen ={ (value: boolean) => {
                             setIsEndUserReadOnly(value);
                         } }
+                        {
+                            ...( hideSpecialClaims
+                                ? { checked: true }
+                                : { defaultValue: claim?.profiles?.endUser?.readOnly ?? claim?.readOnly }
+                            )
+                        }
                     />
                 </TableCell>
                 <TableCell align="center">
@@ -1193,6 +1217,13 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                     setIsSelfRegistrationReadOnly(value);
                                 } }
                                 readOnly
+                                {
+                                    ...( hideSpecialClaims
+                                        ? { checked: true }
+                                        : { defaultValue: claim?.profiles?.selfRegistration?.readOnly
+                                            ?? claim?.readOnly }
+                                    )
+                                }
                             />
                         ) }
                         content={
@@ -1239,9 +1270,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             return true;
         }
 
+        // Show attribute configurations for system claims (hideSpecialClaims=true) as well
+        // They will be displayed in read-only mode with checkboxes checked
         return !isDistinctAttributeProfilesDisabled &&
             claim &&
-            !hideSpecialClaims &&
             mappingChecked &&
             claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI &&
             !isAgentAttribute;
@@ -1266,7 +1298,9 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             return true;
         }
 
-        return !hideSpecialClaims && !isSubOrganization();
+        // Show update button for system claims to allow updating "Display by default" settings
+        // and for all other non-system claims
+        return !isSubOrganization();
     };
 
     return (
@@ -1774,22 +1808,25 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                         <TableBody>
                                             {
                                                 // Hides on user_id, username claims
-                                                !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
-                                                    && claim.claimURI !== ClaimManagementConstants.USER_NAME_CLAIM_URI
+                                                // Show for system claims (hideSpecialClaims=true)
+                                                (!READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
+                                                    && claim.claimURI !== ClaimManagementConstants.USER_NAME_CLAIM_URI)
                                                     && resolveAttributeSupportedByDefaultRow()
                                             }
                                             {
-                                                !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
+                                                // Show for system claims (hideSpecialClaims=true)
+                                                (!READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
                                                     && claim.claimURI !== ClaimManagementConstants.USER_ID_CLAIM_URI
-                                                    && attributeConfig.editAttributes.showRequiredCheckBox
+                                                    && attributeConfig.editAttributes.showRequiredCheckBox)
                                                     && resolveAttributeRequiredRow()
                                             }
                                             {
                                                 // Hides on user_id, username and email claims
-                                                !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
+                                                // Show for system claims (hideSpecialClaims=true)
+                                                (!READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
                                                     && claim.claimURI !== ClaimManagementConstants.USER_ID_CLAIM_URI
                                                     && claim.claimURI !== ClaimManagementConstants.USER_NAME_CLAIM_URI
-                                                    && claim.claimURI !== ClaimManagementConstants.EMAIL_CLAIM_URI
+                                                    && claim.claimURI !== ClaimManagementConstants.EMAIL_CLAIM_URI)
                                                     && resolveAttributeReadOnlyRow()
                                             }
                                         </TableBody>
