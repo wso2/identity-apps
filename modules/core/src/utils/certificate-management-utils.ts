@@ -1,8 +1,8 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the 'License'); you may not use this file except
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -10,17 +10,17 @@
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
- * 'AS IS' BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
  */
 
 import { saveAs } from "file-saver";
+import moment from "moment";
 import * as forge from "node-forge";
 import { CertificateManagementConstants } from "../constants";
 import { Certificate, CertificateValidity, DisplayCertificate } from "../models";
-import moment from "moment";
 
 /**
  * Utility class for certificate management operations.
@@ -74,17 +74,37 @@ export class CertificateManagementUtils {
     }
 
     /**
-     * decodeCertificate|displayCertificate|decodeForgeCertificate|searchIssuerDNAlias|exportCertificate
-     * @param pemCert
-     * @param isBase64Encoded
+     * Validates if a certificate string can be parsed safely.
+     * Supports both PEM formatted certificates (with BEGIN/END headers) and Base64 encoded certificates.
+     *
+     * @param pemCert - The certificate string to validate.
+     * @param isBase64Encoded - Whether to attempt Base64 decoding (default: true).
+     * @returns True if the certificate can be safely parsed, false otherwise.
      */
     public static canSafelyParseCertificate(pemCert: string, isBase64Encoded: boolean = true): boolean {
-        if (isBase64Encoded) {
-            pemCert = this.getBase64DecodedCertificate(pemCert);
+        if (!pemCert) {
+            return false;
         }
-        if (!pemCert) return false;
+
+        let certificateToParse: string = pemCert;
+
+        // Check if the certificate is already in PEM format (has BEGIN/END headers).
+        if (pemCert.includes(CertificateManagementConstants.CERTIFICATE_BEGIN)
+            && pemCert.includes(CertificateManagementConstants.END_LINE)) {
+            certificateToParse = pemCert;
+        } else if (isBase64Encoded) {
+            const decodedCert: string = this.getBase64DecodedCertificate(pemCert);
+
+            if (decodedCert) {
+                certificateToParse = decodedCert;
+            } else {
+                certificateToParse = pemCert;
+            }
+        }
+
         try {
-            forge.pki.certificateFromPem(pemCert);
+            forge.pki.certificateFromPem(certificateToParse);
+
             return true;
         } catch (error) {
             return false;
