@@ -1794,10 +1794,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 bindingType = metadata.accessTokenBindingType.defaultValue;
             }
             setCurrentBindingType(bindingType);
-        }, [ initialValues?.accessToken?.bindingType,
+        }, [
+            initialValues?.accessToken?.bindingType,
             metadata?.accessTokenBindingType?.defaultValue,
-            isFAPIApplication ]
-    );
+            isFAPIApplication
+        ]);
     /**
     The following function is used to reset the client authentication method if public client is selected
     *
