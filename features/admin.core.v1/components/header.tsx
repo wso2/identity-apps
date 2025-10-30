@@ -54,7 +54,7 @@ import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/co
 import { FeatureAccessConfigInterface } from "@wso2is/core/src/models";
 import { CookieStorageUtils, StringUtils, URLUtils } from "@wso2is/core/utils";
 import { I18n, I18nModuleConstants, LanguageChangeException, LocaleMeta, SupportedLanguagesMeta } from "@wso2is/i18n";
-import moment from "moment";
+import dayjs from "dayjs";
 import React, { FunctionComponent, MouseEvent, ReactElement, ReactNode, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -243,7 +243,7 @@ const Header: FunctionComponent<HeaderPropsInterface> = ({
      * @param language - Selected language.
      */
     const handleLanguageSwitch = (language: string): void => {
-        moment.locale(language ?? "en");
+        dayjs.locale(language ?? "en");
         I18n.instance.changeLanguage(language).catch((error: string | Record<string, unknown>) => {
             throw new LanguageChangeException(language, error);
         });

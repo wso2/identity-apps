@@ -1259,6 +1259,12 @@
                         $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
                         invalidInput = true;
                         return false;
+                    } else if (elements[i].type === "hidden" && elements[i].name === "http://wso2.org/claims/country" && elements[i].required && !elements[i].value) {
+                         error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"For.required.fields.cannot.be.empty")%>");
+                         error_msg.show();
+                         $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
+                         invalidInput = true;
+                         return false;
                     }
                 }
 

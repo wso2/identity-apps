@@ -24,7 +24,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import { CircleInfoIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import moment from "moment";
+import dayjs from "dayjs";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import VersionHistoryItem from "./version-history-item";
@@ -150,10 +150,10 @@ const VersionHistoryPanel: FunctionComponent<VersionHistoryPanelPropsInterface> 
                                     item: ExtendedFlowsHistoryInterface,
                                     index: number
                                 ): Record<string, ExtendedFlowsHistoryInterface[]> => {
-                                    const isToday: boolean = moment(Number(item.timestamp)).isSame(moment(), "day");
+                                    const isToday: boolean = dayjs(Number(item.timestamp)).isSame(dayjs(), "day");
                                     const groupKey: string = isToday
                                         ? "Today"
-                                        : moment(Number(item.timestamp)).format("MMMM DD, YYYY");
+                                        : dayjs(Number(item.timestamp)).format("MMMM DD, YYYY");
 
                                     if (!groups[groupKey]) {
                                         groups[groupKey] = [];
@@ -181,8 +181,8 @@ const VersionHistoryPanel: FunctionComponent<VersionHistoryPanelPropsInterface> 
 
                                         // For other dates, sort by most recent first
                                         return (
-                                            moment(dateGroupB, "MMMM DD, YYYY").valueOf() -
-                                            moment(dateGroupA, "MMMM DD, YYYY").valueOf()
+                                            dayjs(dateGroupB, "MMMM DD, YYYY").valueOf() -
+                                            dayjs(dateGroupA, "MMMM DD, YYYY").valueOf()
                                         );
                                     }
                                 )

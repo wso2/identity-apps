@@ -18,7 +18,7 @@
 
 import { IBrowser, IDevice, IOS, TestableComponentInterface } from "@wso2is/core/models";
 import { DangerZone, DangerZoneGroup } from "@wso2is/react-components";
-import moment from "moment";
+import dayjs from "dayjs";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid, Icon, List, SemanticICONS, Table } from "semantic-ui-react";
@@ -250,7 +250,7 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
                                 </Grid.Column>
                                 <Grid.Column width={ 11 }>
                                     <List.Description>
-                                        { moment(parseInt(userSession.loginTime, 10)).format("lll") }
+                                        { dayjs(parseInt(userSession.loginTime, 10)).format("lll") }
                                     </List.Description>
                                 </Grid.Column>
                             </Grid.Row>
@@ -260,7 +260,7 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
                                 </Grid.Column>
                                 <Grid.Column width={ 11 }>
                                     <List.Description>
-                                        { moment(parseInt(userSession.lastAccessTime, 10)).fromNow() }
+                                        { dayjs(parseInt(userSession.lastAccessTime, 10)).fromNow() }
                                     </List.Description>
                                 </Grid.Column>
                             </Grid.Row>

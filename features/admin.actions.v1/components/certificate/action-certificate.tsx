@@ -32,7 +32,7 @@ import {
     UserAvatar
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import moment, { Moment } from "moment";
+import dayjs, { Dayjs } from "dayjs";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Grid, Icon, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
@@ -200,7 +200,7 @@ export const ActionCertificateComponent: FunctionComponent<ActionCertificateProp
         let icon: SemanticICONS;
         let iconColor: SemanticCOLORS;
 
-        const expiryDate: Moment = moment(validTill);
+        const expiryDate: Dayjs = dayjs(validTill);
 
         const validity: CertificateValidity = CertificateManagementUtils
             .determineCertificateValidityState({
