@@ -335,7 +335,12 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                     label={ t("authenticationProvider:forms." +
                                         "generalDetails.issuer.label") }
                                     hint={ t("authenticationProvider:forms." +
-                                        "generalDetails.issuer.hint") }
+                                        "generalDetails.issuer.hint", {
+                                            idpType: templateType === CommonAuthenticatorConstants
+                                                .CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                                                                ? "trusted token issuer"
+                                                                : "external identity provider"
+                                        }) }
                                     required={
                                         templateType === CommonAuthenticatorConstants
                                             .CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
@@ -372,7 +377,13 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                     placeholder={ t("authenticationProvider:forms." +
                                         "generalDetails.alias.placeholder") }
                                     hint={ t("authenticationProvider:forms." +
-                                        "generalDetails.alias.hint", { productName: config.ui.productName }) }
+                                        "generalDetails.alias.hint", { 
+                                            productName: config.ui.productName, 
+                                            idpType: templateType === CommonAuthenticatorConstants
+                                                            .CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                                                                    ? "trusted token issuer"
+                                                                    : "external identity provider"
+                                         }) }
                                     validation={ (value: string) => aliasValidation(value) }
                                     value={ editingIDP.alias }
                                     maxLength={ ConnectionUIConstants.IDP_NAME_LENGTH.max }
