@@ -1,5 +1,26 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.10.89
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.97
+  - @wso2is/admin.branding.v1@2.32.45
+  - @wso2is/admin.flows.v1@1.0.58
+  - @wso2is/admin.registration-flow-builder.v1@0.10.49
+
+## 0.10.88
+
+### Patch Changes
+
+- Updated dependencies [[`25b7cfb31d3c004017e955c8fe1309532e3cc1ad`](https://github.com/wso2/identity-apps/commit/25b7cfb31d3c004017e955c8fe1309532e3cc1ad)]:
+  - @wso2is/admin.organizations.v1@2.27.12
+  - @wso2is/admin.branding.v1@2.32.44
+  - @wso2is/admin.core.v1@2.49.96
+  - @wso2is/admin.flows.v1@1.0.57
+  - @wso2is/admin.registration-flow-builder.v1@0.10.48
+
 ## 0.10.87
 
 ### Patch Changes

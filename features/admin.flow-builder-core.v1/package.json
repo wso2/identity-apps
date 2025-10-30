@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/admin.flow-builder-core.v1",
-    "version": "0.10.87",
+    "version": "0.10.89",
     "description": "Flow builder base package for the WSO2 Identity Server admin portal.",
     "author": "WSO2",
     "license": "Apache-2.0",

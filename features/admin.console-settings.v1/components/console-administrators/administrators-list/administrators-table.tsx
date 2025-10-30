@@ -50,6 +50,7 @@ import {
 } from "@wso2is/react-components";
 import dayjs, { Dayjs } from "dayjs";
 import duration from "dayjs/plugin/duration";
+import relativeTime from "dayjs/plugin/relativeTime";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -65,6 +66,7 @@ import {
 import useConsoleRoles from "../../../hooks/use-console-roles";
 
 dayjs.extend(duration);
+dayjs.extend(relativeTime);
 
 /**
  * Props interface of {@link AdministratorsTable}

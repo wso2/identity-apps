@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.3.24
+
+### Patch Changes
+
+- [#9389](https://github.com/wso2/identity-apps/pull/9389) [`1394b7024c56cec05e39a7c16a26a277e829d44d`](https://github.com/wso2/identity-apps/commit/1394b7024c56cec05e39a7c16a26a277e829d44d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Enforce required status of country attribute value in the self registration form
+
 ## 3.3.23
 
 ### Patch Changes
