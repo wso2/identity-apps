@@ -1,5 +1,16 @@
 # @wso2is/admin.approval-workflows.v1
 
+## 1.0.18
+
+### Patch Changes
+
+- [#9409](https://github.com/wso2/identity-apps/pull/9409) [`8dad25cce04d48957ee8ca116e1fd79f60c7da59`](https://github.com/wso2/identity-apps/commit/8dad25cce04d48957ee8ca116e1fd79f60c7da59) Thanks [@Malith-19](https://github.com/Malith-19)! - Fix the user search crashing the page when empty results and fix infinite loading message to display no options when results become empty both users and roles search.
+
+- Updated dependencies []:
+  - @wso2is/admin.users.v1@2.36.64
+  - @wso2is/admin.core.v1@2.49.97
+  - @wso2is/admin.roles.v2@2.27.259
+
 ## 1.0.17
 
 ### Patch Changes
