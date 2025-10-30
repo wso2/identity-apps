@@ -101,7 +101,6 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
         } else {
             setRoles([]);
         }
-
         setRoleSearchLoading(false);
     }, [ rolesList ]);
 
