@@ -915,7 +915,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
         },
         generalDetails: {
             alias: {
-                hint: "Alias value for {{productName}} in the external identity provider.",
+                hint: "Alias value for {{productName}} in the {{idpType}}.",
                 label: "Alias",
                 placeholder: "Enter the alias."
             },
@@ -934,7 +934,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
                 }
             },
             issuer: {
-                hint: "A unique issuer value of the external identity provider.",
+                hint: "A unique issuer value of the {{idpType}}.",
                 label: "Issuer",
                 placeholder: "Enter the issuer."
             },
