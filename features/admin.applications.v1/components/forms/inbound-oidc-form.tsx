@@ -300,7 +300,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ isSubjectTokenEnabled, setIsSubjectTokenEnabled ] = useState<boolean>(false);
     const [ isSubjectTokenFeatureAvailable, setIsSubjectTokenFeatureAvailable ] = useState<boolean>(false);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
-    const isLegacySessionBoundTokenBehaviourEnabled: boolean = config.ui.enableLegacySessionBoundTokenBehaviour;
+    const isLegacySessionBoundTokenBehaviourEnabled: boolean = config?.ui?.enableLegacySessionBoundTokenBehaviour;
 
     const clientSecret: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const grant: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
@@ -1784,12 +1784,19 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     useEffect(
         () => {
-            setCurrentBindingType(initialValues?.accessToken?.bindingType
-                ? initialValues.accessToken.bindingType
-                : isFAPIApplication ? SupportedAccessTokenBindingTypes.CERTIFICATE
-                    : metadata?.accessTokenBindingType?.defaultValue
-                ?? SupportedAccessTokenBindingTypes.NONE);
-        }, [ initialValues, metadata ]
+            let bindingType = SupportedAccessTokenBindingTypes.NONE as string;
+            
+            if (initialValues?.accessToken?.bindingType) {
+                bindingType = initialValues.accessToken.bindingType;
+            } else if (isFAPIApplication) {
+                bindingType = SupportedAccessTokenBindingTypes.CERTIFICATE as string;
+            } else if (metadata?.accessTokenBindingType?.defaultValue) {
+                bindingType = metadata.accessTokenBindingType.defaultValue;
+            }
+            setCurrentBindingType(bindingType);
+        }, [ initialValues?.accessToken?.bindingType,
+                metadata?.accessTokenBindingType?.defaultValue,
+                isFAPIApplication ]
     );
     /**
     The following function is used to reset the client authentication method if public client is selected
