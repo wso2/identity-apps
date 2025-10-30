@@ -826,6 +826,13 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
             return false;
         }
 
+        // Filter out meta fields (userId, created, modified) as they are already rendered separately
+        if (schema.name === "id" ||
+            schema.name === "meta.created" ||
+            schema.name === "meta.lastModified") {
+            return false;
+        }
+
         if (schema.schemaUri === ProfileConstants.SCIM2_CORE_USER_SCHEMA_ATTRIBUTES.emails &&
             !commonExtensionConfig?.userEditSection?.showEmail) {
             return false;
@@ -895,6 +902,19 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
         return true;
     };
 
+    const getSchemaDisplayName = (schemaName: string): string => {
+
+        const schema: ProfileSchemaInterface = flattenedProfileSchema.find(
+            (s: ProfileSchemaInterface) => s.name === schemaName
+        );
+
+        if (!schema) {
+            return "";
+        }
+
+        return schema.displayName;
+    };
+
     return (
         <FinalForm
             onSubmit={ handleSubmit }
@@ -916,7 +936,11 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                                         key="userID"
                                         component={ TextFieldAdapter }
                                         initialValue={ profileData?.id }
-                                        label={ t("user:profile.fields.userId") }
+                                        label={
+                                            useDefaultLabelsAndOrder
+                                                ? t("user:profile.fields.userId")
+                                                : getSchemaDisplayName("id")
+                                        }
                                         ariaLabel="userID"
                                         name="userID"
                                         type="text"
@@ -977,7 +1001,11 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                                     <Grid xs={ 12 }>
                                         <TextField
                                             defaultValue={ createdDate ? dayjs(createdDate).format("YYYY-MM-DD") : "" }
-                                            label={ t("user:profile.fields.createdDate") }
+                                            label={
+                                                useDefaultLabelsAndOrder
+                                                    ? t("user:profile.fields.createdDate")
+                                                    : getSchemaDisplayName("meta.created")
+                                            }
                                             name="createdDate"
                                             type="text"
                                             InputProps={ {
@@ -997,7 +1025,11 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                                         <TextField
                                             defaultValue={ modifiedDate
                                                 ? dayjs(modifiedDate).format("YYYY-MM-DD") : "" }
-                                            label={ t("user:profile.fields.modifiedDate") }
+                                            label={
+                                                useDefaultLabelsAndOrder
+                                                    ? t("user:profile.fields.modifiedDate")
+                                                    : getSchemaDisplayName("meta.lastModified")
+                                            }
                                             name="modifiedDate"
                                             type="text"
                                             InputProps={ {
