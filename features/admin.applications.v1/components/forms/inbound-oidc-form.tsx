@@ -3075,25 +3075,27 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             requiredErrorMessage=""
                                             type="checkbox"
                                             value={
-                                                initialValues?.accessToken?.revokeTokensWhenIDPSessionTerminated
-                                                ? [ "revokeAccessToken" ]
-                                                : []
+                                                    initialValues?.accessToken?.revokeTokensWhenIDPSessionTerminated
+                                                    ? [ "revokeAccessToken" ]
+                                                    : []
                                             }
-                                            children={[
+                                            children={ [
                                                 {
                                                     label: t(
-                                                        "applications:forms.inboundOIDC.sections.accessToken.fields.revokeToken.label"
+                                                        "applications:forms.inboundOIDC.sections" +
+                                                        ".accessToken.fields.revokeToken.label"
                                                     ),
                                                     value: "revokeAccessToken"
                                                 }
-                                            ]}
+                                            ] }
                                             readOnly={ readOnly }
                                             data-testid={ `${testId}-access-token-revoke-token-checkbox` }
                                         />
                                         <Hint>
                                             <Trans
                                                 i18nKey={
-                                                "applications:forms.inboundOIDC.sections.accessToken.fields.revokeToken.hint"
+                                                    "applications:forms.inboundOIDC.sections.accessToken" +
+                                                    ".fields.revokeToken.hint"
                                                 }
                                             >
                                                 Allow revoking tokens of this application when a bound IDP session gets
@@ -3103,7 +3105,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             </Trans>
                                         </Hint>
                                     </>
-                                    )}
+                                ) }
                             </Grid.Column>
                         </Grid.Row>
                     </div>
