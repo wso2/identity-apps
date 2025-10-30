@@ -3068,39 +3068,39 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         || isLegacySessionBoundTokenBehaviourEnabled) && (
                                     <>
                                         <Field
-                                        ref={ revokeAccessToken }
-                                        name="RevokeAccessToken"
-                                        label=""
-                                        required={ false }
-                                        requiredErrorMessage=""
-                                        type="checkbox"
-                                        value={
-                                            initialValues?.accessToken?.revokeTokensWhenIDPSessionTerminated
-                                            ? [ "revokeAccessToken" ]
-                                            : []
-                                        }
-                                        children={[
-                                            {
-                                            label: t(
-                                                "applications:forms.inboundOIDC.sections.accessToken.fields.revokeToken.label"
-                                            ),
-                                            value: "revokeAccessToken"
+                                            ref={ revokeAccessToken }
+                                            name="RevokeAccessToken"
+                                            label=""
+                                            required={ false }
+                                            requiredErrorMessage=""
+                                            type="checkbox"
+                                            value={
+                                                initialValues?.accessToken?.revokeTokensWhenIDPSessionTerminated
+                                                ? [ "revokeAccessToken" ]
+                                                : []
                                             }
-                                        ]}
-                                        readOnly={ readOnly }
-                                        data-testid={ `${testId}-access-token-revoke-token-checkbox` }
+                                            children={[
+                                                {
+                                                    label: t(
+                                                        "applications:forms.inboundOIDC.sections.accessToken.fields.revokeToken.label"
+                                                    ),
+                                                    value: "revokeAccessToken"
+                                                }
+                                            ]}
+                                            readOnly={ readOnly }
+                                            data-testid={ `${testId}-access-token-revoke-token-checkbox` }
                                         />
                                         <Hint>
-                                        <Trans
-                                            i18nKey={
-                                            "applications:forms.inboundOIDC.sections.accessToken.fields.revokeToken.hint"
-                                            }
-                                        >
-                                            Allow revoking tokens of this application when a bound IDP session gets
-                                            terminated through a user logout. Remember to include either
-                                            <Code withBackground>client_id</Code> or
-                                            <Code withBackground>id_token_hint</Code> in the logout request.
-                                        </Trans>
+                                            <Trans
+                                                i18nKey={
+                                                "applications:forms.inboundOIDC.sections.accessToken.fields.revokeToken.hint"
+                                                }
+                                            >
+                                                Allow revoking tokens of this application when a bound IDP session gets
+                                                terminated through a user logout. Remember to include either
+                                                <Code withBackground>client_id</Code> or
+                                                <Code withBackground>id_token_hint</Code> in the logout request.
+                                            </Trans>
                                         </Hint>
                                     </>
                                     )}
