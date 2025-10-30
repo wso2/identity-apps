@@ -3075,7 +3075,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             requiredErrorMessage=""
                                             type="checkbox"
                                             value={
-                                                    initialValues?.accessToken?.revokeTokensWhenIDPSessionTerminated
+                                                initialValues?.accessToken?.revokeTokensWhenIDPSessionTerminated
                                                     ? [ "revokeAccessToken" ]
                                                     : []
                                             }
