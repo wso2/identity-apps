@@ -228,8 +228,8 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 defaultWhiteLogoUrl: ""
             },
             enableCustomEmailTemplates: undefined,
-            enableOldUIForEmailProvider: undefined,
             enableLegacySessionBoundTokenBehaviour: false,
+            enableOldUIForEmailProvider: undefined,
             features: {
                 applications: null,
                 approvals: null,

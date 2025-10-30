@@ -421,8 +421,8 @@ export class Config {
             },
             enableCustomEmailTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.enableCustomEmailTemplates,
             enableEmailDomain: window[ "AppUtils" ]?.getConfig()?.ui?.enableEmailDomain ?? false,
-            enableLegacySessionBoundTokenBehaviour: window[ "AppUtils" ]?.getConfig()?.ui?.enableLegacySessionBoundTokenBehaviour ?? false,
             enableIdentityClaims: window[ "AppUtils" ]?.getConfig()?.ui?.enableIdentityClaims ?? true,
+            enableLegacySessionBoundTokenBehaviour: window[ "AppUtils" ]?.getConfig()?.ui?.enableLegacySessionBoundTokenBehaviour ?? false,
             enableOldUIForEmailProvider: window[ "AppUtils" ]?.getConfig()?.ui?.enableOldUIForEmailProvider,
             features: window[ "AppUtils" ]?.getConfig()?.ui?.features,
             flowExecution: {
