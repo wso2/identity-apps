@@ -229,6 +229,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             },
             enableCustomEmailTemplates: undefined,
             enableOldUIForEmailProvider: undefined,
+            enableLegacySessionBoundTokenBehaviour: false,
             features: {
                 applications: null,
                 approvals: null,

@@ -321,6 +321,7 @@
         "enableCustomEmailTemplates": true,
         "enableCustomSmsTemplates": true,
         "enableEmailDomain": false,
+        "enableLegacySessionBoundTokenBehaviour": false,
         "enableIdentityClaims": true,
         "enableOldUIForEmailProvider": false,
         "features": {
