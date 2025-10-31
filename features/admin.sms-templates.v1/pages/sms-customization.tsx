@@ -50,6 +50,7 @@ import SMSTemplatePreview from "../components/sms-template-preview";
 import { SMSTemplateConstants } from "../constants/sms-template-constants";
 import { SMSTemplate, SMSTemplateType } from "../models/sms-templates";
 import "./sms-customization.scss";
+import { DropdownProps } from "semantic-ui-react";
 
 type SMSCustomizationPageInterface = IdentifiableComponentInterface;
 
@@ -208,8 +209,7 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
         );
     }, [ smsTemplateError, isSystemTemplate, isInheritedTemplate ]);
 
-    const handleTemplateIdChange = (event: SelectChangeEvent<string>): void => {
-        const templateId: string = event.target.value;
+    const handleTemplateIdChange = (templateId: string): void => {
 
         setShouldFetch(false);
         setIsTemplateNotAvailable(false);
@@ -229,15 +229,14 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
         setIsTemplateNotAvailable(false);
     };
 
-    const handleLocaleChange = (event: SelectChangeEvent<string>): void => {
-        const locale: string = event.target.value;
+    const handleLocaleChange = (localeOption: DropdownProps): void => {
 
         setShouldFetch(false);
         setCurrentSmsTemplate({ ...selectedSmsTemplate });
         setIsTemplateNotAvailable(true);
         setIsSystemTemplate(false);
         setIsInheritedTemplate(false);
-        setSelectedLocale(locale);
+        setSelectedLocale(localeOption?.value as string);
         setShouldFetch(true);
     };
 
@@ -375,8 +374,8 @@ const SMSCustomizationPage: FunctionComponent<SMSCustomizationPageInterface> = (
                 data-componentid={ componentId }
             >
                 <SMSCustomizationHeader
-                    selectedSmsTemplateId={ selectedSmsTemplateId }
-                    selectedSmsTemplateDescription={ selectedSmsTemplateDescription }
+                    selectedSMSTemplateId={ selectedSmsTemplateId }
+                    selectedSMSTemplateDescription={ selectedSmsTemplateDescription }
                     selectedLocale={ selectedLocale }
                     smsTemplatesList={ availableSmsTemplatesList }
                     onTemplateSelected={ handleTemplateIdChange }

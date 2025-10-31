@@ -16,15 +16,17 @@
  * under the License.
  */
 
-import { AppState } from "@wso2is/admin.core.v1/store";
+import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
+import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { CommonUtils } from "@wso2is/core/utils";
 import { DropdownChild, Field, Form } from "@wso2is/form";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { Grid, Segment } from "semantic-ui-react";
+import { DropdownItemProps, DropdownProps, Grid, Header, Segment } from "semantic-ui-react";
 import { EmailTemplateType } from "../models";
+import "./email-customization-header.scss";
 
 const FORM_ID: string = "email-customization-header-form";
 
@@ -59,8 +61,12 @@ interface EmailCustomizationHeaderProps extends IdentifiableComponentInterface {
      * Callback to be called when the locale is change
      * @param locale - selected locale for template
      */
-    onLocaleChanged: (locale: string) => void;
+    onLocaleChanged: (localeOption: DropdownProps) => void;
 }
+
+type LocaleOptionList = DropdownChild & {
+    name: string;
+}[];
 
 /**
  * Email customization header.
@@ -69,27 +75,22 @@ interface EmailCustomizationHeaderProps extends IdentifiableComponentInterface {
  *
  * @returns Header component for Email Customization.
  */
-const EmailCustomizationHeader: FunctionComponent<EmailCustomizationHeaderProps> = (
-    props: EmailCustomizationHeaderProps
-): ReactElement => {
-    const {
-        selectedEmailTemplateId,
-        selectedEmailTemplateDescription,
-        selectedLocale,
-        emailTemplatesList,
-        onTemplateSelected,
-        onLocaleChanged,
-        ["data-componentid"]: componentId
-    } = props;
+const EmailCustomizationHeader: FunctionComponent<EmailCustomizationHeaderProps> = ({
+    selectedEmailTemplateId,
+    selectedEmailTemplateDescription,
+    selectedLocale,
+    emailTemplatesList,
+    onTemplateSelected,
+    onLocaleChanged,
+    ["data-componentid"]: componentId = "email-customization-header"
+}: EmailCustomizationHeaderProps): ReactElement => {
 
     const { t } = useTranslation();
 
     const [ localeList, setLocaleList ] =
-        useState<DropdownChild[]>(undefined);
+        useState<LocaleOptionList[]>([]);
 
-    const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
-        (state: AppState) => state.global.supportedI18nLanguages
-    );
+    const supportedI18nLanguages: SupportedLanguagesMeta = CommonUtils.getLocaleList();
 
     const emailTemplateListOptions: { text: string, value: string }[] = useMemo(() => {
         return emailTemplatesList?.map((template: EmailTemplateType) => {
@@ -105,11 +106,12 @@ const EmailCustomizationHeader: FunctionComponent<EmailCustomizationHeaderProps>
             return;
         }
 
-        const localeList: DropdownChild[] = [];
+        const localeList: LocaleOptionList[] = [];
 
         Object.keys(supportedI18nLanguages).map((key: string) => {
             localeList.push({
                 key: supportedI18nLanguages[key].code,
+                name: `${ supportedI18nLanguages[key].name }, ${ supportedI18nLanguages[key].code }`,
                 text: (
                     <div>
                         <i className={ supportedI18nLanguages[key].flag + " flag" }></i>
@@ -157,30 +159,79 @@ const EmailCustomizationHeader: FunctionComponent<EmailCustomizationHeaderProps>
                         mobile={ 16 }
                         computer={ 8 }
                     >
-                        <Field.Dropdown
-                            ariaLabel="Email Template Locale Dropdown"
-                            name="selectedEmailTemplateLocale"
-                            label={ t("extensions:develop.emailTemplates.form.inputs.locale.label") }
+                        <Autocomplete
+                            disablePortal
+                            fullWidth
+                            aria-label="Email Template Locale Dropdown"
+                            className="pt-1"
+                            componentsProps={ {
+                                paper: {
+                                    elevation: 2
+                                },
+                                popper: {
+                                    modifiers: [
+                                        {
+                                            enabled: false,
+                                            name: "flip"
+                                        },
+                                        {
+                                            enabled: false,
+                                            name: "preventOverflow"
+                                        }
+                                    ]
+                                }
+                            } }
+                            data-componentid={ `${componentId}-api` }
+                            isOptionEqualToValue={
+                                (option: DropdownItemProps, value: DropdownItemProps) =>
+                                    option.value === value.value
+                            }
+                            getOptionLabel={ (option: DropdownItemProps) => {
+                                return option?.name;
+                            } }
                             options={ localeList }
-                            required={ true }
-                            data-componentid={ `${ componentId }-email-template-locale` }
-                            placeholder={ t("extensions:develop.emailTemplates.form.inputs.locale.placeholder") }
-                            defaultValue={ selectedLocale }
-                            value={ selectedLocale }
-                            listen={ onLocaleChanged }
+                            onChange={ (
+                                _event: SyntheticEvent<HTMLElement>,
+                                data: DropdownProps
+                            ) => {
+                                onLocaleChanged(data);
+                            } }
+                            noOptionsText={ t("common:noResultsFound") }
+                            renderInput={ (params: AutocompleteRenderInputParams) => {
+
+                                return (
+                                    <TextField
+                                        { ...params }
+                                        label="Locale"
+                                        required
+                                        placeholder="Select Locale"
+                                        size="small"
+                                        variant="outlined"
+                                    />
+                                );
+                            } }
+                            renderOption={ (props: any, localeOption: any) => {
+                                return (
+                                    <div { ...props }>
+                                        <Header.Content>
+                                            { localeOption.text }
+                                        </Header.Content>
+                                    </div>
+                                );
+                            } }
+                            key="locale"
+                            defaultValue={ {
+                                code: "en-US",
+                                flag: "us",
+                                name: "English (United States), en-US"
+                            } }
+                            value={ localeList.find((locale: LocaleOptionList) => locale.value === selectedLocale) }
                         />
                     </Grid.Column>
                 </Grid>
             </Form>
         </Segment>
     );
-};
-
-/**
- * Default props for the component.
- */
-EmailCustomizationHeader.defaultProps = {
-    "data-componentid": "email-customization-header"
 };
 
 export default EmailCustomizationHeader;

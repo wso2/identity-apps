@@ -44,7 +44,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } 
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { TabProps } from "semantic-ui-react";
+import { DropdownProps, TabProps } from "semantic-ui-react";
 import { useGetCurrentOrganizationType } from "../../admin.organizations.v1/hooks/use-get-organization-type";
 import {
     createNewEmailTemplate,
@@ -297,12 +297,12 @@ const EmailCustomizationPage: FunctionComponent<EmailCustomizationPageInterface>
         setSelectedEmailTemplate({ ...selectedEmailTemplate, ...updatedTemplateAttributes });
     };
 
-    const handleLocaleChange = (locale: string) => {
+    const handleLocaleChange = (localeOption: DropdownProps) => {
         setCurrentEmailTemplate({ ...selectedEmailTemplate });
         setIsTemplateNotAvailable(false);
         setIsSystemTemplate(false);
         setIsInheritedTemplate(false);
-        setSelectedLocale(locale);
+        setSelectedLocale(localeOption?.value as string);
     };
 
     const handleSubmit = () => {
