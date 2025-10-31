@@ -948,6 +948,10 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     maxLengthReached: "Connection name cannot exceed {{ maxLength }} characters.",
                     required: "Connection name is required"
                 }
+            },
+            idpType: {
+                trustedTokenIssuer: "trusted token issuer",
+                externalIdentityProvider: "external identity provider"
             }
         },
         jitProvisioning: {

@@ -912,6 +912,10 @@ export interface AuthenticationProviderNS {
                     invalid: string;
                 }
             };
+            idpType: {
+                trustedTokenIssuer: string;
+                externalIdentityProvider: string;
+            };
         };
         jitProvisioning: {
             accountLinkingAttributes: {
