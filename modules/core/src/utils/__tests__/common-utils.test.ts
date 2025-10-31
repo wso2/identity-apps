@@ -23,7 +23,6 @@ import duration from "dayjs/plugin/duration";
 import { AnnouncementBannerInterface, ProductReleaseTypes } from "../../models";
 import { CommonUtils } from "../common-utils";
 
-
 dayjs.extend(duration);
 
 describe("CommonUtils", () => {
