@@ -16,6 +16,8 @@
   ~ under the License.
 --%>
 
+
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%-- Tenant resolve JSP must be included in the calling script inorder to resolve tenant context --%>
 
 <%@ page import="java.io.File" %>

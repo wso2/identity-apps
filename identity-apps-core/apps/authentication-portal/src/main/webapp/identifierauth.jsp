@@ -16,6 +16,8 @@
   ~ under the License.
 --%>
 
+
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="org.apache.cxf.jaxrs.client.JAXRSClientFactory" %>
 <%@ page import="org.apache.cxf.jaxrs.provider.json.JSONProvider" %>
