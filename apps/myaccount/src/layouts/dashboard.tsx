@@ -48,7 +48,8 @@ import {
     ContentLoader,
     EmptyPlaceholder,
     ErrorBoundary,
-    LinkButton
+    LinkButton,
+    useMediaContext
 } from "@wso2is/react-components";
 import dayjs from "dayjs";
 import isEmpty from "lodash-es/isEmpty";
@@ -96,7 +97,12 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
 
     const dispatch: Dispatch = useDispatch();
 
+    const { isMobileViewport } = useMediaContext();
     const { setPreferences, leftNavbarCollapsed } = useUserPreferences();
+
+    // Track mobile navbar state separately from desktop preference
+    const [ mobileNavbarOpen, setMobileNavbarOpen ] = useState(false);
+    const [ previousViewportWasMobile, setPreviousViewportWasMobile ] = useState(isMobileViewport);
 
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
@@ -263,6 +269,25 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
         );
     }, [ config ]);
 
+    /**
+     * Handle viewport transitions to manage navbar state appropriately
+     * for mobile vs desktop contexts.
+     */
+    useEffect(() => {
+        // Transition: Desktop → Mobile
+        if (!previousViewportWasMobile && isMobileViewport) {
+            // Collapse navbar when entering mobile view for better UX
+            // Do NOT update leftNavbarCollapsed preference (keep desktop preference intact)
+            setMobileNavbarOpen(false);
+        }
+
+        // Transition: Mobile → Desktop
+        // No action needed - will automatically use leftNavbarCollapsed preference
+
+        // Update previous state for next transition detection
+        setPreviousViewportWasMobile(isMobileViewport);
+    }, [ isMobileViewport, previousViewportWasMobile ]);
+
     const handleAnnouncementDismiss = () => {
         setShowAnnouncement(false);
     };
@@ -271,7 +296,13 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
      * Callback for side panel hamburger click.
      */
     const handleSidePanelToggleClick = (): void => {
-        setPreferences({ leftNavbarCollapsed: !leftNavbarCollapsed });
+        if (isMobileViewport) {
+            // In mobile: toggle local state only (don't update stored preference)
+            setMobileNavbarOpen(!mobileNavbarOpen);
+        } else {
+            // In desktop: toggle and save preference
+            setPreferences({ leftNavbarCollapsed: !leftNavbarCollapsed });
+        }
     };
 
     return (
@@ -321,7 +352,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
                             }
                         ] }
                         fill={ "solid" }
-                        open={ !leftNavbarCollapsed }
+                        open={ isMobileViewport ? mobileNavbarOpen : !leftNavbarCollapsed }
                         collapsible={ false }
                     />
                 ) }
