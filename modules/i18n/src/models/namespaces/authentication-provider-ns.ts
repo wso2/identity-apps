@@ -914,7 +914,7 @@ export interface AuthenticationProviderNS {
             };
             idpType: {
                 trustedTokenIssuer: string;
-                externalIdentityProvider: string;
+                externalIdP: string;
             };
         };
         jitProvisioning: {

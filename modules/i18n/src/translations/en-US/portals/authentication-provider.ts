@@ -951,7 +951,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
             },
             idpType: {
                 trustedTokenIssuer: "trusted token issuer",
-                externalIdentityProvider: "external identity provider"
+                externalIdP: "external identity provider"
             }
         },
         jitProvisioning: {
