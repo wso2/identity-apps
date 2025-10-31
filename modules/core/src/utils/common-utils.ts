@@ -18,7 +18,7 @@
 
 import * as Country from "country-language";
 import { MD5 } from "crypto-js";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import duration from "dayjs/plugin/duration";
 import relativeTime from "dayjs/plugin/relativeTime";
 import sortBy from "lodash-es/sortBy";
@@ -44,8 +44,8 @@ export class CommonUtils {
      * @param date - Date string which needs to be humanize
      */
     static humanizeDateDifference = (date: string): string => {
-        const now = dayjs(new Date());
-        const receivedDate = dayjs(date);
+        const now: Dayjs = dayjs(new Date());
+        const receivedDate: Dayjs = dayjs(date);
 
         return "Last modified " + dayjs.duration(now.diff(receivedDate)).humanize() + " ago";
     };
@@ -101,9 +101,9 @@ export class CommonUtils {
         let selected: AnnouncementBannerInterface = null;
 
         for (const item of sorted) {
-            const isExpired = dayjs.duration(dayjs.unix(parseInt(item.expire, 10)).diff(dayjs()))
+            const isExpired: boolean = dayjs.duration(dayjs.unix(parseInt(item.expire, 10)).diff(dayjs()))
                 .asMilliseconds() < 0;
-            const isSeen = seen.includes(item.id);
+            const isSeen: boolean = seen.includes(item.id);
 
             if (!isExpired && !isSeen) {
                 selected = item;
@@ -140,10 +140,10 @@ export class CommonUtils {
      * @param offset - scroll stop offset value.
      */
     public static scrollToTarget (element: Element, offset?: number): void {
-        const bodyRect = document.body.getBoundingClientRect().top;
-        const elementRect = element.getBoundingClientRect().top;
-        const elementPosition = elementRect - bodyRect;
-        const offsetPosition = offset ? elementPosition - offset : elementPosition;
+        const bodyRect: number = document.body.getBoundingClientRect().top;
+        const elementRect: number = element.getBoundingClientRect().top;
+        const elementPosition: number = elementRect - bodyRect;
+        const offsetPosition: number = offset ? elementPosition - offset : elementPosition;
 
         window.scrollTo({
             behavior: "smooth",
@@ -203,7 +203,7 @@ export class CommonUtils {
         text: string;
         value: string;
     }[] {
-        const countryCodesToSkip = [ "AQ", "BQ", "CW", "GG", "IM", "JE", "BL", "MF", "SX", "SS" ];
+        const countryCodesToSkip: string[] = [ "AQ", "BQ", "CW", "GG", "IM", "JE", "BL", "MF", "SX", "SS" ];
         const countries: any[] = Country.getCountries();
         const countryDropDown: {
             flag: string;
@@ -212,7 +212,7 @@ export class CommonUtils {
             value: string;
         }[] = [];
 
-        countries.forEach((country, index) => {
+        countries.forEach((country: any, index: number) => {
             if (!countryCodesToSkip.includes(country.code_2)) {
                 countryDropDown.push({
                     flag: country.code_2.toLowerCase(),
