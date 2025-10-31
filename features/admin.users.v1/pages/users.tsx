@@ -518,6 +518,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     };
 
     const usersList: UserListInterface = useMemo(() => transformUserList(originalUserList), [ originalUserList ]);
+    /**
+     * Extract total users count from API response
+     */
+    const totalUsers: number = useMemo(() => {
+        return originalUserList?.totalResults || 0;
+    }, [ originalUserList ]);
 
     /**
      * Resolves the attributes by which the users can be searched.
@@ -755,7 +761,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         { accountStatusFilter() }
                     </>
                 ) }
-                currentListSize={ usersList?.itemsPerPage }
+                currentListSize={ usersList?.Resources?.length }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 data-testid="user-mgt-user-list-layout"
@@ -773,7 +779,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 }
                 showPagination={ true }
                 totalPages={ resolveTotalPages() }
-                totalListSize={ usersList?.totalResults }
+                totalListSize={ totalUsers }
+                showTotalListSize={ true }
                 paginationOptions={ {
                     disableNextButton: !isNextPageAvailable,
                     showItemsPerPageDropdown:
