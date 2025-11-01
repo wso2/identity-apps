@@ -997,7 +997,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             {
                                 ...( isSelfRegistrationRequired || hideSpecialClaims
                                 // Immutable (special) claims should not be displayed in self-registration
-                                    ? { checked: hideSpecialClaims ? false : true }
+                                    ? { checked: !hideSpecialClaims }
                                     : { defaultValue: claim?.profiles?.selfRegistration?.supportedByDefault ??
                                         claim?.supportedByDefault }
                                 )
