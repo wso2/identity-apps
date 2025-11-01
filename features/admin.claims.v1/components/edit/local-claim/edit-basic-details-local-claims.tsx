@@ -96,7 +96,7 @@ import { Dispatch } from "redux";
 import { Divider, Grid, Icon, Form as SemanticForm } from "semantic-ui-react";
 import { deleteAClaim, getExternalClaims, updateAClaim } from "../../../api";
 import useGetClaimDialects from "../../../api/use-get-claim-dialects";
-import { ClaimFeatureDictionaryKeys, ClaimManagementConstants } from "../../../constants";
+import { ClaimManagementConstants } from "../../../constants";
 import "./edit-basic-details-local-claims.scss";
 
 /**
