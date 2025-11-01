@@ -388,6 +388,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
         if (claim?.claimURI === ClaimManagementConstants.USER_NAME_CLAIM_URI) {
             setIsEndUserRequired(true);
+            setIsSelfRegistrationRequired(true);
         }
     }, [ claim ]);
 
@@ -1192,9 +1193,11 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 setIsSelfRegistrationRequired(value);
                             } }
                             {
-                                ...( isSelfRegistrationReadOnly || hideSpecialClaims
-                                    ? { value: false }
-                                    : { defaultValue: claim?.profiles?.selfRegistration?.required ?? claim?.required }
+                                ...( isSelfRegistrationRequired
+                                ? { checked: true }
+                                : (isSelfRegistrationReadOnly || hideSpecialClaims)
+                                        ? { value: false }
+                                        : { defaultValue: claim?.profiles?.selfRegistration?.required ?? claim?.required }
                                 )
                             }
                         />
@@ -1257,7 +1260,9 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 <Field.Checkbox
                                     ariaLabel="Read-only in self-registration"
                                     name="selfRegistrationReadOnly"
-                                    defaultValue={ claim?.profiles?.selfRegistration?.readOnly ?? claim?.readOnly }
+                                    defaultValue={ hideSpecialClaims
+                                    ? false
+                                    : claim?.profiles?.selfRegistration?.readOnly ?? claim?.readOnly }
                                     data-componentid={ `${ testId }-form-self-registration-readOnly-checkbox` }
                                     listen ={ (value: boolean) => {
                                         setIsSelfRegistrationReadOnly(value);
