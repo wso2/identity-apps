@@ -23,6 +23,7 @@ import { useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, RouteProps } from "react-router-dom";
 import { AppConstants } from "../constants/app-constants";
 import { AppState } from "../store";
+import RouteErrorBoundary from "./route-error-boundary";
 
 /**
  * Protected route component.
@@ -59,7 +60,11 @@ export const ProtectedRoute: FunctionComponent<RouteProps> = (props: RouteProps)
             render={ (renderProps: RouteComponentProps<any>) =>
                 isAuthenticated
                     ? Component
-                        ? <Component { ...renderProps } />
+                        ? (
+                            <RouteErrorBoundary routeName={ renderProps.match?.path }>
+                                <Component { ...renderProps } />
+                            </RouteErrorBoundary>
+                        )
                         : null
                     : <Redirect to={ AppConstants.getAppLoginPath() } />
             }
