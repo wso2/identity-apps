@@ -229,6 +229,8 @@ export class ClaimManagementConstants {
      */
     public static readonly USER_ID_CLAIM_URI: string = "http://wso2.org/claims/userid";
     public static readonly USER_NAME_CLAIM_URI: string = "http://wso2.org/claims/username";
+    public static readonly CREATED_CLAIM_URI: string = "http://wso2.org/claims/created";
+    public static readonly MODIFIED_CLAIM_URI: string = "http://wso2.org/claims/modified";
     public static readonly GROUPS_CLAIM_URI: string = "http://wso2.org/claims/groups";
     public static readonly ROLES_CLAIM_URI: string = "http://wso2.org/claims/roles";
     public static readonly APPLICATION_ROLES_CLAIM_URI: string = "http://wso2.org/claims/applicationRoles";

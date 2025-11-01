@@ -201,7 +201,10 @@ export interface usersNS {
         form: {
             dropdown: {
                 filterAttributeOptions: {
+                    createdTime: string;
+                    modifiedTime: string;
                     username: string;
+                    userId: string;
                     email: string;
                 };
             };

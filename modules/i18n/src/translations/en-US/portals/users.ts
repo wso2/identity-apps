@@ -47,7 +47,10 @@ export const users: usersNS = {
         form: {
             dropdown: {
                 filterAttributeOptions: {
+                    createdTime: "Created Time",
                     email: "Email",
+                    modifiedTime: "Modified Time",
+                    userId: "User ID",
                     username: "Username"
                 }
             },
