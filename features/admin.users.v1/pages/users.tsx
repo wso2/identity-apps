@@ -598,13 +598,48 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         let filterAttributeOptions: DropdownChild[] = [
             {
                 key: 0,
-                text: t("users:advancedSearch.form.dropdown." + "filterAttributeOptions.username"),
+                text: t("users:advancedSearch.form.dropdown.filterAttributeOptions.username"),
                 value: "userName"
             }
         ];
 
+        // Add created time and modified time
+        const createdTimeOption: DropdownChild = {
+            key: "meta.created",
+            text: t("users:advancedSearch.form.dropdown.filterAttributeOptions.createdTime"),
+            value: "urn:ietf:params:scim:schemas:core:2.0:meta.created"
+        };
+
+        const modifiedTimeOption: DropdownChild = {
+            key: "meta.lastModified",
+            text: t("users:advancedSearch.form.dropdown.filterAttributeOptions.modifiedTime"),
+            value: "urn:ietf:params:scim:schemas:core:2.0:meta.lastModified"
+        };
+
+        const userIdOption: DropdownChild = {
+            key: "id",
+            text: t("users:advancedSearch.form.dropdown.filterAttributeOptions.userId"),
+            value: "urn:ietf:params:scim:schemas:core:2.0:id"
+        };
+
+        filterAttributeOptions.push(createdTimeOption);
+        filterAttributeOptions.push(modifiedTimeOption);
+        filterAttributeOptions.push(userIdOption);
+
         if (useConsoleAttributeList) {
-            filterAttributeOptions = filterAttributeOptions.concat(userSearchAttributes);
+            // Filter out duplicates based on value
+            const existingValues: Set<string> = new Set(
+                filterAttributeOptions.map((option: DropdownChild) => option.value)
+            );
+
+            // Also exclude the SCIM format userName as it's already added
+            existingValues.add("urn:ietf:params:scim:schemas:core:2.0:User:userName");
+
+            const uniqueUserSearchAttributes: DropdownChild[] = userSearchAttributes.filter(
+                (option: DropdownChild) => !existingValues.has(option.value)
+            );
+
+            filterAttributeOptions = filterAttributeOptions.concat(uniqueUserSearchAttributes);
         }
 
         return filterAttributeOptions;
