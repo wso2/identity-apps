@@ -122,6 +122,14 @@ const READONLY_CLAIM_CONFIGS: string[] = [
     ClaimManagementConstants.APPLICATION_ROLES_CLAIM_URI
 ];
 
+// Immutable claims that have default labels and display order.
+const IMMUTABLE_CLAIMS_WITH_DEFAULT_LABELS: string[] = [
+    ClaimManagementConstants.USER_ID_CLAIM_URI,
+    ClaimManagementConstants.USER_NAME_CLAIM_URI,
+    ClaimManagementConstants.CREATED_CLAIM_URI,
+    ClaimManagementConstants.MODIFIED_CLAIM_URI
+];
+
 /**
  * This component renders the Basic Details pane of the edit local claim screen
  *
@@ -346,10 +354,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         setIsEndUserReadOnly(claim?.profiles?.endUser?.readOnly ?? claim?.readOnly);
         setIsSelfRegistrationReadOnly(claim?.profiles?.selfRegistration?.readOnly ?? claim?.readOnly);
 
-        if (claim?.claimURI === ClaimManagementConstants.USER_NAME_CLAIM_URI
-            || claim?.claimURI === ClaimManagementConstants.USER_ID_CLAIM_URI
-            || claim?.claimURI === ClaimManagementConstants.CREATED_CLAIM_URI
-            || claim?.claimURI === ClaimManagementConstants.MODIFIED_CLAIM_URI) {
+        if (IMMUTABLE_CLAIMS_WITH_DEFAULT_LABELS.includes(claim?.claimURI)) {
             setIsConsoleRequired(true);
         }
 
@@ -892,7 +897,6 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 return true;
             }
 
-
             return isReadOnly || isSubOrganization() || !hasMapping
                 || dataType === ClaimDataType.COMPLEX
                 || (
@@ -1241,10 +1245,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
         // The following claims are editable if default labels and order are not used.
         // Refer issue - https://github.com/wso2/product-is/issues/24906
-        if (useDefaultLabelsAndOrder && (claim?.claimURI === ClaimManagementConstants.USER_ID_CLAIM_URI
-            || claim?.claimURI === ClaimManagementConstants.USER_NAME_CLAIM_URI
-            || claim?.claimURI === ClaimManagementConstants.CREATED_CLAIM_URI
-            || claim?.claimURI === ClaimManagementConstants.MODIFIED_CLAIM_URI)) {
+        if (useDefaultLabelsAndOrder && IMMUTABLE_CLAIMS_WITH_DEFAULT_LABELS.includes(claim?.claimURI)) {
             return true;
         }
 

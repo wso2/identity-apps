@@ -892,14 +892,28 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
         return true;
     };
 
-    const getSchemaDisplayName = (schemaName: string): string => {
+    /**
+     * Get the display name for a schema field.
+     * If useDefaultLabelsAndOrder is enabled, returns the translated fallback key.
+     * Otherwise, attempts to find the schema and return its displayName.
+     * Falls back to the translated key or schemaName if schema is not found.
+     *
+     * @param schemaName - The schema name to look up.
+     * @param fallbackI18nKey - Optional i18n key to use as fallback.
+     * @returns The display name for the schema field.
+     */
+    const getSchemaDisplayName = (schemaName: string, fallbackI18nKey?: string): string => {
+
+        if (useDefaultLabelsAndOrder && fallbackI18nKey) {
+            return t(fallbackI18nKey);
+        }
 
         const schema: ProfileSchemaInterface = flattenedProfileSchema.find(
             (s: ProfileSchemaInterface) => s.name === schemaName
         );
 
         if (!schema) {
-            return "";
+            return fallbackI18nKey ? t(fallbackI18nKey) : schemaName;
         }
 
         return schema.displayName;
@@ -926,11 +940,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                                         key="userID"
                                         component={ TextFieldAdapter }
                                         initialValue={ profileData?.id }
-                                        label={
-                                            useDefaultLabelsAndOrder
-                                                ? t("user:profile.fields.userId")
-                                                : getSchemaDisplayName("id")
-                                        }
+                                        label={ getSchemaDisplayName("id", "user:profile.fields.userId") }
                                         ariaLabel="userID"
                                         name="userID"
                                         type="text"
@@ -991,11 +1001,10 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                                     <Grid xs={ 12 }>
                                         <TextField
                                             defaultValue={ createdDate ? dayjs(createdDate).format("YYYY-MM-DD") : "" }
-                                            label={
-                                                useDefaultLabelsAndOrder
-                                                    ? t("user:profile.fields.createdDate")
-                                                    : getSchemaDisplayName("meta.created")
-                                            }
+                                            label={ getSchemaDisplayName(
+                                                "meta.created",
+                                                "user:profile.fields.createdDate"
+                                            ) }
                                             name="createdDate"
                                             type="text"
                                             InputProps={ {
@@ -1015,11 +1024,10 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = ({
                                         <TextField
                                             defaultValue={ modifiedDate
                                                 ? dayjs(modifiedDate).format("YYYY-MM-DD") : "" }
-                                            label={
-                                                useDefaultLabelsAndOrder
-                                                    ? t("user:profile.fields.modifiedDate")
-                                                    : getSchemaDisplayName("meta.lastModified")
-                                            }
+                                            label={ getSchemaDisplayName(
+                                                "meta.lastModified",
+                                                "user:profile.fields.modifiedDate"
+                                            ) }
                                             name="modifiedDate"
                                             type="text"
                                             InputProps={ {
