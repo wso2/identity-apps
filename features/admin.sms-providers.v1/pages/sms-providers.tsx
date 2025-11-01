@@ -118,6 +118,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
     } = useSMSProviders();
 
     const [ isLoading, setIsLoading ] = useState(true);
+    const [ isValidationEnabled, setIsValidationEnabled ] = useState(false);
     const [ isChoreoSMSOTPProvider, setChoreoSMSOTPProvider ] = useState<boolean>(false);
     const [ existingSMSProviders, setExistingSMSProviders ] = useState<string[]>([]);
 
@@ -203,6 +204,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             selectedProvider: configuredProvider
         });
         setIsLoading(false);
+        setTimeout(() => setIsValidationEnabled(true), 150);
 
     }, [ originalSMSProviderConfig ]);
 
@@ -382,6 +384,9 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
     const validateForm = (
         values: SMSProviderInterface
     ): SMSProviderConfigFormErrorValidationsInterface => {
+        if (!isValidationEnabled) {
+            return {} as SMSProviderConfigFormErrorValidationsInterface;
+        }
         const error: SMSProviderConfigFormErrorValidationsInterface = {
             contentType: undefined,
             key: undefined,
