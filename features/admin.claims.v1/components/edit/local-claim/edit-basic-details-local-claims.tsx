@@ -174,11 +174,6 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         "attributeDialects.sharedProfileValueResolvingMethod"
     );
 
-    const hideUserIdDisplayConfigurations: boolean = isFeatureEnabled(
-        featureConfig?.attributeDialects,
-        ClaimManagementConstants.FEATURE_DICTIONARY.get(ClaimFeatureDictionaryKeys.HideUserIdDisplayConfigurations)
-    );
-
     const useDefaultLabelsAndOrder: boolean = isFeatureEnabled(
         featureConfig?.users,
         UserManagementConstants.FEATURE_DICTIONARY.get(UserFeatureDictionaryKeys.UseDefaultLabelsAndOrder)
