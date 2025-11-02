@@ -66,6 +66,10 @@ import {
     CustomAuthConnectionInterface,
     SupportedQuickStartTemplateTypes
 } from "../models/connection";
+import { Icon } from "semantic-ui-react";
+import {
+    PrimaryButton,
+} from "@wso2is/react-components";
 import { ConnectionTemplateManagementUtils } from "../utils/connection-template-utils";
 import { ConnectionsManagementUtils, handleGetConnectionsMetaDataError } from "../utils/connection-utils";
 
@@ -696,6 +700,25 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                     imageType: "square"
                 } }
                 title={ resolveConnectorName(connector) }
+                action={ (
+                    <PrimaryButton
+                        data-testid="idp-test-connection-button"
+                        data-componentid="primary-button"
+                        className="ui primary button"
+                        onClick={() => {
+                            // Get tenant domain from location.pathname
+                            const pathParts = location.pathname.split("/");
+                            const tenantIndex = pathParts.indexOf("t");
+                            const tenantDomain = tenantIndex !== -1 ? pathParts[tenantIndex + 1] : "carbon.super";
+                            const idpId = connector?.id;
+                            if (!idpId) return;
+                            history.push(`/t/${tenantDomain}/console/connections/${idpId}/test`);
+                        }}
+                    >
+                        <Icon name="plug" />
+                        Test Connection
+                    </PrimaryButton>
+                ) }
                 contentTopMargin={ true }
                 description={ resolveConnectorDescription(connector) }
                 image={ resolveConnectorImage(connector) }
