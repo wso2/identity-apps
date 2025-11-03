@@ -518,6 +518,10 @@ export const claims: ClaimsNS = {
                     toggle: "Toggle"
                 }
             },
+            managedInUserStore: {
+                hint: "Indicates whether the attribute is managed in the user store.",
+                label: "Managed in User Store"
+            },
             multiValued: {
                 label: "Allow multiple values for this attribute",
                 placeholder: "Select a user attribute"

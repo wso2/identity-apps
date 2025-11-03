@@ -545,6 +545,10 @@ export interface ClaimsNS {
                 validationError: string;
                 validationErrorMessage: string;
             };
+            managedInUserStore: {
+                hint: string;
+                label: string;
+            };
             multiValued: {
                 label: string;
                 placeholder: string;
