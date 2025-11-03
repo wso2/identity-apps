@@ -151,6 +151,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const [ multiValued, setMultiValued ] = useState<boolean>(claim?.multiValued || false);
     const [ subAttributes, setSubAttributes ] = useState<string[]>([]);
     const [ canonicalValues, setCanonicalValues ] = useState<KeyValue[]>();
+    const [ managedInUserStore, setManagedInUserStore ] = useState<boolean>(claim?.managedInUserStore ?? false);
 
     const nameField: MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
     const regExField: MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
@@ -169,6 +170,13 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const hideUserIdDisplayConfigurations: boolean = isFeatureEnabled(
         featureConfig?.attributeDialects,
         ClaimManagementConstants.FEATURE_DICTIONARY.get(ClaimFeatureDictionaryKeys.HideUserIdDisplayConfigurations)
+    );
+
+    const isSelectiveClaimStoreManagementEnabled: boolean = isFeatureEnabled(
+        featureConfig?.attributeDialects,
+        ClaimManagementConstants.FEATURE_DICTIONARY.get(
+            ClaimFeatureDictionaryKeys.SelectiveClaimStoreManagement
+        )
     );
 
     const useDefaultLabelsAndOrder: boolean = isFeatureEnabled(
@@ -345,6 +353,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         setIsConsoleReadOnly(claim?.profiles?.console?.readOnly ?? claim?.readOnly);
         setIsEndUserReadOnly(claim?.profiles?.endUser?.readOnly ?? claim?.readOnly);
         setIsSelfRegistrationReadOnly(claim?.profiles?.selfRegistration?.readOnly ?? claim?.readOnly);
+        setManagedInUserStore(claim?.managedInUserStore ?? false);
     }, [ claim ]);
 
     /**
@@ -815,6 +824,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
         if (isSystemClaim || !isUpdatingSharedProfilesEnabled) {
             delete data.sharedProfileValueResolvingMethod;
+        }
+
+        if (isSelectiveClaimStoreManagementEnabled) {
+            data.managedInUserStore = managedInUserStore;
         }
 
         setIsSubmitting(true);
@@ -1662,6 +1675,24 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 data-testid={ `${ testId }-form-display-order-input` }
                                 hint={ t("claims:local.forms.displayOrderHint") }
                                 readOnly={ isSubOrganization() || isReadOnly }
+                            />
+                        )
+                    }
+                    {
+                        isSelectiveClaimStoreManagementEnabled
+                        && !hideSpecialClaims
+                        && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
+                        && (
+                            <Field.Checkbox
+                                ariaLabel="managedInUserStore"
+                                name="managedInUserStore"
+                                required={ false }
+                                label={ t("claims:local.forms.managedInUserStore.label") }
+                                data-testid={ `${ testId }-form-managed-in-user-store-checkbox` }
+                                readOnly={ isSubOrganization() || isReadOnly }
+                                hint={ t("claims:local.forms.managedInUserStore.hint") }
+                                defaultValue={ claim?.managedInUserStore ?? false }
+                                listen={ setManagedInUserStore }
                             />
                         )
                     }

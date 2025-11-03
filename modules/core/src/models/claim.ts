@@ -34,6 +34,7 @@ export interface Claim {
     regEx: string;
     required: boolean;
     supportedByDefault: boolean;
+    managedInUserStore?: boolean;
     uniquenessScope?: UniquenessScope;
     inputFormat?: InputFormat
     sharedProfileValueResolvingMethod?: SharedProfileValueResolvingMethod;
