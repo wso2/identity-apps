@@ -61,9 +61,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.29.4
-        version: 2.30.1
       node-forge:
         specifier: ^0.10.0
         version: 0.10.0
@@ -43518,8 +43515,6 @@ packages:
       webpack: '*'
     peerDependenciesMeta:
       webpack:
-        optional: true
-      webpack-sources:
         optional: true
     dependencies:
       webpack: 5.84.1(@swc/core@1.3.99)(esbuild@0.18.20)(webpack-cli@4.10.0)
