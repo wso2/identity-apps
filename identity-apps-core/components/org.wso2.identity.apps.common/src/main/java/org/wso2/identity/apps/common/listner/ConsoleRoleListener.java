@@ -440,7 +440,6 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
                 readScopes.remove(apiResource.getViewFeatureScope());
                 for (String readScope : readScopes) {
                     if (readScope.startsWith(CONSOLE_SCOPE_PREFIX) && readScope.endsWith(VIEW_FEATURE_SCOPE_SUFFIX)) {
-                        // Skip if the read scope is a feature scope.
                         apiResources.stream().filter(resource -> readScope.equals(resource.getViewFeatureScope()))
                             .findFirst().map(resource -> apiResourceViewPermissions.addAll(resource.getReadScopes()));
                     }
@@ -455,13 +454,11 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
                 writeScopes.remove(apiResource.getEditFeatureScope());
                 for (String writeScope : writeScopes) {
                     if (writeScope.startsWith(CONSOLE_SCOPE_PREFIX) && writeScope.endsWith(VIEW_FEATURE_SCOPE_SUFFIX)) {
-                        // Skip if the read scope is a feature scope.
                         apiResources.stream().filter(resource -> writeScope.equals(resource.getViewFeatureScope()))
                             .findFirst().map(resource -> apiResourceEditPermissions.addAll(resource.getReadScopes()));
                     }
 
                     if (writeScope.startsWith(CONSOLE_SCOPE_PREFIX) && writeScope.endsWith(EDIT_FEATURE_SCOPE_SUFFIX)) {
-                        // Skip if the write scope is a feature scope.
                         apiResources.stream().filter(resource -> writeScope.equals(resource.getEditFeatureScope()))
                             .findFirst().map(resource -> apiResourceEditPermissions.addAll(resource.getWriteScopes()));
                     }
