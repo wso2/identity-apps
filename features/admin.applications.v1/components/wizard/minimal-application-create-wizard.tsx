@@ -908,6 +908,10 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
      */
     const getSupportedCustomProtocols = (filterProtocol?: string): SupportedAuthProtocolTypes[] => {
 
+        if (orgType === OrganizationType.SUBORGANIZATION) {
+            return [ SupportedAuthProtocolTypes.OAUTH2_OIDC ];
+        }
+
         let supportedProtocols: SupportedAuthProtocolTypes[] = Object.values(SupportedAuthProtocolTypes);
 
         // Filter out legacy and unsupported auth protocols.
@@ -1140,7 +1144,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     </Grid.Row>
                     {
                         // The FAPI App creation checkbox is only present in OIDC Standard-Based apps
-                        customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
+                        orgType !== OrganizationType.SUBORGANIZATION
+                        && customApplicationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC
                         && selectedTemplate?.name === ApplicationTemplateNames.STANDARD_BASED_APPLICATION
                         && isFAPIAppCreationEnabled
                         && (

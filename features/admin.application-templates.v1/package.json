@@ -9,7 +9,8 @@
         "@wso2is/admin.applications.v1": "^2.36.2",
         "@wso2is/admin.core.v1": "^2.46.41",
         "@wso2is/admin.template-core.v1": "^1.5.158",
-        "@wso2is/admin.feature-gate.v1": "^1.7.2"
+        "@wso2is/admin.feature-gate.v1": "^1.7.2",
+        "@wso2is/admin.organizations.v1": "^2.27.2"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^25.0.7",
