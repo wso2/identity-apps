@@ -23,6 +23,8 @@ import { ApplicationManagementUtils } from "@wso2is/admin.applications.v1/utils/
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
+import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import useExtensionTemplates from "@wso2is/admin.template-core.v1/hooks/use-extension-templates";
 import {
     CategorizedExtensionTemplatesInterface,
@@ -72,6 +74,7 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
 
     const { t } = useTranslation();
     const { getLink } = useDocumentation();
+    const { organizationType } = useGetCurrentOrganizationType();
 
     const customInboundProtocols: AuthProtocolMetaListItemInterface[] = useSelector((state: AppState) =>
         state?.application?.meta?.customInboundProtocols);
@@ -109,6 +112,14 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
      * Retrieve the filter tags from the `tags` attribute of the application templates.
      */
     const filterTags: string[] = useMemo(() => {
+
+        // If the current org is a sub-organization, return only OIDC, OAuth2 and Default tags
+        // because currently only the standard based applications and M2M applications are
+        // allowed to be created in the sub organizations.
+        if (organizationType === OrganizationType.SUBORGANIZATION) {
+            return [ "OIDC", "Default", "OAuth2" ];
+        }
+
         if (!templates || !Array.isArray(templates) || templates?.length <= 0) {
             return [];
         }
@@ -180,7 +191,19 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
         }
 
         // Remove hidden application templates based on the UI config.
-        removingApplicationTemplateIds = union(removingApplicationTemplateIds, hiddenApplicationTemplates);
+        if (organizationType === OrganizationType.SUBORGANIZATION) {
+            // Get all template IDs and find excluded ones by removing allowed templates
+            const allTemplateIds: string[] = templates.map((template: ExtensionTemplateListInterface) => template.id);
+            const excludedTemplatesInSubOrg: string[] = allTemplateIds.filter(
+                (templateId: string) =>
+                    !ApplicationTemplateConstants.ALLOWED_APP_TEMPLATES_FOR_SUB_ORGANIZATIONS.includes(templateId)
+            );
+
+            removingApplicationTemplateIds = union(removingApplicationTemplateIds, hiddenApplicationTemplates,
+                excludedTemplatesInSubOrg);
+        } else {
+            removingApplicationTemplateIds = union(removingApplicationTemplateIds, hiddenApplicationTemplates);
+        }
 
         return templates?.filter(
             (template: ExtensionTemplateListInterface) => !removingApplicationTemplateIds.includes(template?.id));

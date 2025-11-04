@@ -1267,9 +1267,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 // Remove un-allowed grant types.
                 if (template
                     && template.id
-                    && get(applicationConfig.allowedGrantTypes, template.id)
-                    && !applicationConfig.allowedGrantTypes[ isSubOrganization() ? "sub-organization-application" :
-                        template.id ].includes(name)
+                    && get(applicationConfig.getAllowedGrantTypes(orgType), template.id)
+                    && !applicationConfig.getAllowedGrantTypes(orgType)[ template.id ].includes(name)
                     && ApplicationManagementConstants.AVAILABLE_GRANT_TYPES.includes(name)) {
 
                     return;
@@ -1277,7 +1276,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
                 if (
                     template?.[ApplicationManagementConstants.ORIGINAL_TEMPLATE_ID_PROPERTY] &&
-                    !applicationConfig.allowedGrantTypes[
+                    !applicationConfig.getAllowedGrantTypes(orgType)[
                         template[ApplicationManagementConstants.ORIGINAL_TEMPLATE_ID_PROPERTY]]?.includes(name)
                 ) {
                     return;
@@ -2345,6 +2344,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 && !isSystemApplication
                 && !isDefaultApplication
                 && !isM2MApplication
+                && !isSubOrganization()
                 && (
                     <Grid.Row columns={ 2 } data-componentid={ testId + "-hybrid-flow" }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
