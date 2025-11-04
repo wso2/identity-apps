@@ -6,7 +6,7 @@
   ~ in compliance with the License.
   ~ You may obtain a copy of the License at
   ~
-  ~  http://www.apache.org/licenses/LICENSE-2.0
+  ~    http://www.apache.org/licenses/LICENSE-2.0
   ~
   ~ Unless required by applicable law or agreed to in writing,
   ~ software distributed under the License is distributed on an
@@ -17,20 +17,30 @@
 --%>
 
 <%@ page import="java.io.File" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
+<%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
+<%@ include file="includes/localize.jsp" %>
 
-<%@include file="includes/localize.jsp" %>
+<%-- Include tenant context --%>
 <jsp:directive.include file="includes/init-url.jsp"/>
 
 <%-- Branding Preferences --%>
 <jsp:directive.include file="includes/branding-preferences.jsp"/>
 
+<% request.setAttribute("pageName","debug-success"); %>
+
+<%-- Data for the layout from the page --%>
 <%
-    request.setAttribute("pageName", "authentication-success");
+    layoutData.put("isResponsePage", true);
+    layoutData.put("isSuccessResponse", true);
+    layoutData.put("isDebugSuccessPage", true);
 %>
 
 <!doctype html>
-<html lang="en-US">
+<html>
 <head>
     <%-- header --%>
     <%
@@ -42,79 +52,65 @@
     <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
-<body class="login-portal layout authentication-portal-layout" data-page="<%= request.getAttribute("pageName") %>">
-<layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>">
-    <layout:component componentName="ProductHeader">
-        <%-- product-title --%>
-        <%
-            File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
-            if (productTitleFile.exists()) {
-        %>
-        <jsp:include page="extensions/product-title.jsp"/>
-        <% } else { %>
-        <jsp:include page="includes/product-title.jsp"/>
-        <% } %>
-    </layout:component>
-    <layout:component componentName="MainSection">
-        <div class="ui segment">
-            <h2 class="ui header"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "Authentication successful")%></h2>
-            <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "You will be redirected shortly")%>...</p>
-        </div>
-    </layout:component>
-    <layout:component componentName="ProductFooter">
-        <%-- product-footer --%>
-        <%
-            File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-            if (productFooterFile.exists()) {
-        %>
-        <jsp:include page="extensions/product-footer.jsp"/>
-        <% } else { %>
-        <jsp:include page="includes/product-footer.jsp"/>
-        <% } %>
-    </layout:component>
-    <layout:component componentName="DynamicSection">
-        <jsp:include page="${pathOfDynamicComponent}"/>
-    </layout:component>
-</layout:main>
+<body class="login-portal layout authentication-portal-layout" onload="loadFunc()" data-response-type="success" data-page="<%= request.getAttribute("pageName") %>">
+    <layout:main layoutName="<%= layout %>" layoutFileRelativePath="<%= layoutFileRelativePath %>" data="<%= layoutData %>" >
+        <layout:component componentName="ProductHeader">
+            <%-- product-title --%>
+            <%
+                File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+                if (productTitleFile.exists()) {
+            %>
+                <jsp:include page="extensions/product-title.jsp"/>
+            <% } else { %>
+                <jsp:include page="includes/product-title.jsp"/>
+            <% } %>
+        </layout:component>
+        <layout:component componentName="MainSection">
+            <div class="ui green segment mt-3 attached">
+                <h3 class="ui header text-center slogan-message mt-4 mb-6">
+                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "Authentication Successful")%>
+                </h3>
+                <p class="portal-tagline-description">
+                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "You will be redirected shortly.")%>
+                </p>
+            </div>
+        </layout:component>
+        <layout:component componentName="ProductFooter">
+            <%-- product-footer --%>
+            <%
+                File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+                if (productFooterFile.exists()) {
+            %>
+                <jsp:include page="extensions/product-footer.jsp"/>
+            <% } else { %>
+                <jsp:include page="includes/product-footer.jsp"/>
+            <% } %>
+        </layout:component>
+        <layout:dynamicComponent filePathStoringVariableName="pathOfDynamicComponent">
+            <jsp:include page="${pathOfDynamicComponent}" />
+        </layout:dynamicComponent>
+    </layout:main>
 
-<%-- footer --%>
-<%
-    File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-    if (footerFile.exists()) {
-%>
-<jsp:include page="extensions/footer.jsp"/>
-<% } else { %>
-<jsp:include page="includes/footer.jsp"/>
-<% } %>
+    <%-- footer --%>
+    <%
+        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+        if (footerFile.exists()) {
+    %>
+        <jsp:include page="extensions/footer.jsp"/>
+    <% } else { %>
+        <jsp:include page="includes/footer.jsp"/>
+    <% } %>
 
-<script type='text/javascript'>
-    try {
-        const urlParams = new URLSearchParams(window.location.search);
-        const state = urlParams.get('state');
-        const idpId = urlParams.get('idpId');
-
-        const baseUrl = (function() {
-            var consoleUrlAttr = '<%= request.getAttribute("consoleUrl") != null ? request.getAttribute("consoleUrl") : "" %>';
-            if (consoleUrlAttr && consoleUrlAttr !== "") return consoleUrlAttr;
-            var tenanted = '<%= request.getAttribute("tenantedConsoleUrl") != null ? request.getAttribute("tenantedConsoleUrl") : "" %>';
-            if (tenanted && tenanted !== "") return tenanted;
-            var serverUrl = '<%= request.getAttribute("serverUrl") != null ? request.getAttribute("serverUrl") : "" %>';
-            var tenantPrefix = '<%= request.getAttribute("tenantPrefix") != null ? request.getAttribute("tenantPrefix") : "" %>';
-            if (serverUrl && tenantPrefix) return serverUrl + tenantPrefix;
-            return (window.location && window.location.origin ? window.location.origin : (window.location.protocol + "//" + window.location.hostname + (window.location.port ? ":" + window.location.port : ""))) + "/t/carbon.super";
-        })();
-
-        var finalUrl = baseUrl + "/console/connections/" + idpId + "/debug-results#status=successful";
-
-        setTimeout(function () {
-            window.location.href = finalUrl;
-        }, 5000);
-
-        window.close();
-    } catch (e) {
-        console.error("Failed to redirect:", e);
-    }
-</script>
-
+    <script type='text/javascript'>
+        function loadFunc() {
+            try {
+                setTimeout(function () {
+                    window.close();
+                }, 4000);
+            } catch (e) {
+                console.warn("Could not close popup:", e);
+            }
+        }
+    </script>
 </body>
 </html>
