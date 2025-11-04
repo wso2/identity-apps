@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.81.23
+
+### Patch Changes
+
+- [#9421](https://github.com/wso2/identity-apps/pull/9421) [`fb7129ebdeedce6b0d53238f81c157691bfc11f9`](https://github.com/wso2/identity-apps/commit/fb7129ebdeedce6b0d53238f81c157691bfc11f9) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Remove stale moment.js dependency
+
 ## 2.81.22
 
 ### Patch Changes
