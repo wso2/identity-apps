@@ -161,6 +161,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const hasBulkUserImportCreatePermissions: boolean = useRequiredScopes(
         featureConfig?.bulkUserImport?.scopes?.create
     );
+    const usersDisabledFeatures: string[] = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.users?.disabledFeatures || []
+    );
+    const isTotalUserCountFeatureDisabled: boolean = useMemo(() => {
+        return usersDisabledFeatures.includes("users.totalUserCount");
+    }, [ usersDisabledFeatures ]);
     const hasGuestUserCreatePermissions: boolean = useRequiredScopes(
         featureConfig?.guestUser?.scopes?.create
     );
@@ -518,6 +524,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     };
 
     const usersList: UserListInterface = useMemo(() => transformUserList(originalUserList), [ originalUserList ]);
+    /**
+     * Extract total users count from API response
+     */
+    const totalUsers: number = useMemo(() => {
+        return originalUserList?.totalResults || 0;
+    }, [ originalUserList ]);
 
     /**
      * Resolves the attributes by which the users can be searched.
@@ -755,7 +767,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         { accountStatusFilter() }
                     </>
                 ) }
-                currentListSize={ usersList?.itemsPerPage }
+                currentListSize={ usersList?.Resources?.length }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 data-testid="user-mgt-user-list-layout"
@@ -773,7 +785,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 }
                 showPagination={ true }
                 totalPages={ resolveTotalPages() }
-                totalListSize={ usersList?.totalResults }
+                totalListSize={ totalUsers }
+                showTotalListSize={ !isTotalUserCountFeatureDisabled }
                 paginationOptions={ {
                     disableNextButton: !isNextPageAvailable,
                     showItemsPerPageDropdown:
@@ -976,6 +989,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 showPagination={ true }
                 totalPages={ resolveTotalPages() }
                 totalListSize={ finalGuestList?.length }
+                showTotalListSize={ !isTotalUserCountFeatureDisabled }
                 isLoading={
                     isUserListFetchRequestLoading
                     || isParentOrgUserInviteListLoading

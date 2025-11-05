@@ -1790,7 +1790,8 @@
             "users": {
                 "disabledFeatures": [
                     "users.add.legacy",
-                    "users.profile.legacy"
+                    "users.profile.legacy",
+                    "users.totalUserCount"
                 ],
                 "enabled": true,
                 "featureFlags": [],
