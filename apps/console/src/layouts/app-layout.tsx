@@ -30,7 +30,7 @@ import {
     ErrorBoundary,
     LinkButton
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, Suspense, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
@@ -52,6 +52,29 @@ const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactElement =
     });
     const appHomePath: string = useSelector((state: AppState) => state.config.deployment.appHomePath);
 
+    const handleRouteChunkError = (_error: Error, _errorInfo: React.ErrorInfo): void => {
+        sessionStorage.setItem("auth_callback_url_console", appHomePath);
+    };
+
+    const brokenPageSubtitles: string[] = [
+        t("console:common.placeholders.brokenPage.subtitles.0"),
+        t("console:common.placeholders.brokenPage.subtitles.1")
+    ];
+
+    const brokenPageFallback: ReactNode = (
+        <EmptyPlaceholder
+            action={ (
+                <LinkButton onClick={ () => CommonUtils.refreshPage() }>
+                    { t("console:common.placeholders.brokenPage.action") }
+                </LinkButton>
+            ) }
+            image={ getEmptyPlaceholderIllustrations().brokenPage }
+            imageSize="tiny"
+            subtitle={ brokenPageSubtitles }
+            title={ t("console:common.placeholders.brokenPage.title") }
+        />
+    );
+
     /**
      * Listen for base name changes and updated the layout routes.
      */
@@ -63,25 +86,8 @@ const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactElement =
         <>
             <ErrorBoundary
                 onChunkLoadError={ AppUtils.onChunkLoadError }
-                handleError={ (_error: Error, _errorInfo: React.ErrorInfo) => {
-                    sessionStorage.setItem("auth_callback_url_console", appHomePath);
-                } }
-                fallback={ (
-                    <EmptyPlaceholder
-                        action={ (
-                            <LinkButton onClick={ () => CommonUtils.refreshPage() }>
-                                { t("console:common.placeholders.brokenPage.action") }
-                            </LinkButton>
-                        ) }
-                        image={ getEmptyPlaceholderIllustrations().brokenPage }
-                        imageSize="tiny"
-                        subtitle={ [
-                            t("console:common.placeholders.brokenPage.subtitles.0"),
-                            t("console:common.placeholders.brokenPage.subtitles.1")
-                        ] }
-                        title={ t("console:common.placeholders.brokenPage.title") }
-                    />
-                ) }
+                handleError={ handleRouteChunkError }
+                fallback={ brokenPageFallback }
             >
                 <Suspense fallback={ <PreLoader /> }>
                     <Switch>
@@ -106,25 +112,8 @@ const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactElement =
                                                         ? (
                                                             <ErrorBoundary
                                                                 onChunkLoadError={ AppUtils.onChunkLoadError }
-                                                                handleError={ (_error: Error, _errorInfo: React.ErrorInfo) => {
-                                                                    sessionStorage.setItem("auth_callback_url_console", appHomePath);
-                                                                } }
-                                                                fallback={ (
-                                                                    <EmptyPlaceholder
-                                                                        action={ (
-                                                                            <LinkButton onClick={ () => CommonUtils.refreshPage() }>
-                                                                                { t("console:common.placeholders.brokenPage.action") }
-                                                                            </LinkButton>
-                                                                        ) }
-                                                                        image={ getEmptyPlaceholderIllustrations().brokenPage }
-                                                                        imageSize="tiny"
-                                                                        subtitle={ [
-                                                                            t("console:common.placeholders.brokenPage.subtitles.0"),
-                                                                            t("console:common.placeholders.brokenPage.subtitles.1")
-                                                                        ] }
-                                                                        title={ t("console:common.placeholders.brokenPage.title") }
-                                                                    />
-                                                                ) }
+                                                                handleError={ handleRouteChunkError }
+                                                                fallback={ brokenPageFallback }
                                                             >
                                                                 <route.component { ...renderProps } />
                                                             </ErrorBoundary>

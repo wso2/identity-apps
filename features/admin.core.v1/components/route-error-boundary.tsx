@@ -21,6 +21,8 @@ import { EmptyPlaceholder, ErrorBoundary, LinkButton } from "@wso2is/react-compo
 import React, { ReactNode } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { getEmptyPlaceholderIllustrations } from "../configs/ui";
+import { AppUtils } from "../utils/app-utils";
+import { EventPublisher } from "../utils/event-publisher";
 
 interface RouteErrorBoundaryProps {
     children: ReactNode;
@@ -33,6 +35,8 @@ interface RouteErrorBoundaryProps {
  * @param props - Props for the component.
  * @returns Route error boundary component.
  */
+const ROUTE_ERROR_EVENT_ID: string = "route-error-boundary";
+
 const RouteErrorBoundary: React.FC<RouteErrorBoundaryProps> = ({ children, routeName }: RouteErrorBoundaryProps) => {
     const { t } = useTranslation();
 
@@ -40,41 +44,58 @@ const RouteErrorBoundary: React.FC<RouteErrorBoundaryProps> = ({ children, route
         CommonUtils.refreshPage();
     };
 
-    const handleError = (error: Error): void => {
-        console.error("Route Error Boundary caught an error:", error, routeName);
+    const handleError = (error: Error, errorInfo: React.ErrorInfo): void => {
+        EventPublisher.getInstance().publish(ROUTE_ERROR_EVENT_ID, {
+            componentStack: errorInfo?.componentStack ?? "N/A",
+            message: error?.message ?? "Unknown error",
+            name: error?.name ?? "Error",
+            route: routeName ?? "unknown"
+        });
     };
 
-    const renderFallback = (): ReactNode => (
-        <div className="route-error-boundary">
-            <EmptyPlaceholder
-                action={
-                    <LinkButton onClick={ handleRetry }>
-                        { t("console:common.placeholders.brokenPage.action") }
-                    </LinkButton>
-                }
-                image={ getEmptyPlaceholderIllustrations().brokenPage }
-                imageSize="tiny"
-                subtitle={ [
-                    <Trans
-                        key="subtitle-0"
-                        i18nKey="console:common.placeholders.brokenPage.subtitles.0"
-                    >
-                        Something went wrong while displaying this page.
-                    </Trans>,
-                    <Trans
-                        key="subtitle-1"
-                        i18nKey="console:common.placeholders.brokenPage.subtitles.1"
-                    >
-                        You can try navigating to other sections using the side panel.
-                    </Trans>
-                ] }
-                title={ t("console:common.placeholders.brokenPage.title") }
-            />
-        </div>
-    );
+    const renderFallback = (): ReactNode => {
+        const brokenPageSubtitles: ReactNode[] = [
+            (
+                <Trans
+                    key="subtitle-0"
+                    i18nKey="console:common.placeholders.brokenPage.subtitles.0"
+                >
+                    Something went wrong while displaying this page.
+                </Trans>
+            ),
+            (
+                <Trans
+                    key="subtitle-1"
+                    i18nKey="console:common.placeholders.brokenPage.subtitles.1"
+                >
+                    You can try navigating to other sections using the side panel.
+                </Trans>
+            )
+        ];
+
+        return (
+            <div className="route-error-boundary">
+                <EmptyPlaceholder
+                    action={ (
+                        <LinkButton onClick={ handleRetry }>
+                            { t("console:common.placeholders.brokenPage.action") }
+                        </LinkButton>
+                    ) }
+                    image={ getEmptyPlaceholderIllustrations().brokenPage }
+                    imageSize="tiny"
+                    subtitle={ brokenPageSubtitles }
+                    title={ t("console:common.placeholders.brokenPage.title") }
+                />
+            </div>
+        );
+    };
 
     return (
-        <ErrorBoundary fallback={ renderFallback() } handleError={ handleError } onChunkLoadError={ () => {} }>
+        <ErrorBoundary
+            fallback={ renderFallback() }
+            handleError={ handleError }
+            onChunkLoadError={ AppUtils.onChunkLoadError }
+        >
             { children }
         </ErrorBoundary>
     );

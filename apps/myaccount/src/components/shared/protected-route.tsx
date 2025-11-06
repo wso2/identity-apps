@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,9 +22,9 @@ import { AuthenticateUtils } from "@wso2is/core/utils";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, RouteProps } from "react-router-dom";
+import RouteErrorBoundary from "./route-error-boundary";
 import { AppConstants } from "../../constants";
 import { AppState } from "../../store";
-import RouteErrorBoundary from "./route-error-boundary";
 
 /**
  * Protected route props interface.
