@@ -282,7 +282,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                 basic
                 padded="very"
                 className="bordered emphasized"
-                style={{ marginTop: "3rem" }}
+                style={{ marginTop: "3rem", maxWidth: "800px"}}
                 data-componentid="emphasized-segment"
                 data-testid="emphasized-segment"
             >

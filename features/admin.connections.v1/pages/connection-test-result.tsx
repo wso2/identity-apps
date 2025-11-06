@@ -40,6 +40,7 @@ const DebugResultPage: React.FC<RouteComponentProps<RouteParams>> = (props) => {
     const [ loading, setLoading ] = useState(false);
     const [ error, setError ] = useState<string | null>(null);
     const [ result, setResult ] = useState<any>(null);
+    const [ isFetched, setIsFetched ] = useState(false);
     const [ sessionId, setSessionId ] = useState<string | null>(() => {
         try {
             return window.sessionStorage.getItem("idpDebugSessionId");
@@ -111,16 +112,16 @@ const DebugResultPage: React.FC<RouteComponentProps<RouteParams>> = (props) => {
         }
     }, [result]);
 
-    const fetchResult = async (sid?: string) => {
+    const fetchResult = async (sid?: string, retryCount: number = 0) => {
         const effectiveSid = sid || sessionId;
         if (!effectiveSid) {
-            setError("No debug session id found. Please run the connection test first.");
+            setError("No debug session id found...");
             return;
         }
 
-        setLoading(true);
-        setError(null);
-        setResult(null);
+    setLoading(true);
+    setError(null);
+    setResult(null);
         try {
             const axios = (await import("axios")).default;
             const response = await axios.get(
@@ -128,13 +129,25 @@ const DebugResultPage: React.FC<RouteComponentProps<RouteParams>> = (props) => {
                 { withCredentials: true }
             );
             setResult(response.data);
+            setIsFetched(true);
             // eslint-disable-next-line no-console
             console.log("[DebugResult] Successfully fetched results:", response.data);
         } catch (err: any) {
             // eslint-disable-next-line no-console
             console.error("[DebugResult] Fetch error:", err?.response?.status, err?.message);
             
-            // If 404, backend might still be processing - show a helpful message
+            // If 404, backend might still be processing - auto-retry up to 2 times
+            if (err?.response?.status === 404 && retryCount < 2) {
+                // eslint-disable-next-line no-console
+                console.log(`[DebugResult] Got 404, retrying... (attempt ${retryCount + 1}/2)`);
+                setError("Backend is processing results, retrying in 2 seconds...");
+                setLoading(false);
+                setTimeout(() => {
+                    fetchResult(effectiveSid, retryCount + 1);
+                }, 2000);
+                return;
+            }
+            
             if (err?.response?.status === 404) {
                 setError("Debug results not yet available. The backend may still be processing the authentication flow. Try refreshing in a few seconds.");
             } else {
@@ -146,12 +159,12 @@ const DebugResultPage: React.FC<RouteComponentProps<RouteParams>> = (props) => {
     };
 
     useEffect(() => {
-        // Auto-fetch when we have a session id
-        if (sessionId) {
+        // Auto-fetch when we have a session id and not already fetched
+        if (sessionId && !isFetched && !error) {
             fetchResult(sessionId);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [sessionId]);
+    }, [sessionId, isFetched, error]);
 
     const renderStatusIcon = (status: TestStatus) => {
         switch (status) {
@@ -168,26 +181,28 @@ const DebugResultPage: React.FC<RouteComponentProps<RouteParams>> = (props) => {
     };
 
     const handleBack = (): void => {
-        history.push(`/t/${tenantDomain}/console/connections/${idpId}`);
+        history.push(`/t/${tenantDomain}/console/connections/${idpId}/test`);
     };
 
     const tabPanes = [
         {
-            menuItem: "General Info",
+            menuItem: "ID Token",
             render: () => (
                 <Tab.Pane>
-                    <pre data-testid="idp-test-result-general-info" style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
-                        {JSON.stringify({
-                            sessionId: result?.sessionId,
-                            idpName: result?.idpName,
-                            authenticator: result?.authenticator,
-                            username: result?.username,
-                            userId: result?.userId,
-                            success: result?.success,
-                            error: result?.error,
-                            timestamp: result?.timestamp
-                        }, null, 2)}
-                    </pre>
+                    <div>
+                        <Header as="h4">ID Token</Header>
+                        <pre data-testid="idp-test-result-id-token" style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+                            {JSON.stringify(result?.idToken, null, 2)}
+                        </pre>
+                        <Header as="h4">IDP Name</Header>
+                        <pre data-testid="idp-test-result-idp-name" style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+                            {JSON.stringify(result?.idpName, null, 2)}
+                        </pre>
+                        <Header as="h4">External Redirect URL</Header>
+                        <pre data-testid="idp-test-result-redirect-url" style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
+                            {JSON.stringify(result?.externalRedirectUrl, null, 2)}
+                        </pre>
+                    </div>
                 </Tab.Pane>
             )
         },
@@ -217,7 +232,9 @@ const DebugResultPage: React.FC<RouteComponentProps<RouteParams>> = (props) => {
             render: () => (
                 <Tab.Pane>
                     <pre data-testid="idp-test-result-logs" style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
-                        {JSON.stringify(result, null, 2)}
+                        {JSON.stringify({
+                            metadata: result?.metadata,
+                        }, null, 2)}
                     </pre>
                 </Tab.Pane>
             )
@@ -233,7 +250,7 @@ const DebugResultPage: React.FC<RouteComponentProps<RouteParams>> = (props) => {
             backButton={{
                 onClick: handleBack,
                 "data-testid": "idp-test-result-back-button",
-                text: t("console:develop.pages.idpTest.backButton", "Go back to Connection")
+                text: t("console:develop.pages.idpTest.backButton", "Go back to Test")
             }}
         >
             {/* Test Status Section */}
