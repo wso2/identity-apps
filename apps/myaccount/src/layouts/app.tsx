@@ -101,18 +101,26 @@ export const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactEl
                                         : (
                                             <Route
                                                 path={ route.path }
-                                                render={ (renderProps: RouteComponentProps) =>
-                                                    route.component
-                                                        ? (
-                                                            <ErrorBoundary
-                                                                onChunkLoadError={ AppUtils.onChunkLoadError }
-                                                                fallback={ genericErrorFallback }
-                                                            >
-                                                                <route.component { ...renderProps } />
-                                                            </ErrorBoundary>
-                                                        )
-                                                        : null
-                                                }
+                                                render={ (renderProps: RouteComponentProps) => {
+                                                    if (!route.component) {
+                                                        return null;
+                                                    }
+
+                                                    const locationKey: string = renderProps.location.key
+                                                        ?? `${ renderProps.location.pathname }::`
+                                                        + `${ renderProps.location.search }::`
+                                                        + `${ renderProps.location.hash }`;
+
+                                                    return (
+                                                        <ErrorBoundary
+                                                            key={ locationKey }
+                                                            onChunkLoadError={ AppUtils.onChunkLoadError }
+                                                            fallback={ genericErrorFallback }
+                                                        >
+                                                            <route.component { ...renderProps } />
+                                                        </ErrorBoundary>
+                                                    );
+                                                } }
                                                 key={ index }
                                                 exact={ route.exact }
                                             />

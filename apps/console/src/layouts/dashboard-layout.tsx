@@ -194,6 +194,29 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
         setPreferences({ leftNavbarCollapsed: !leftNavbarCollapsed });
     };
 
+    const handleRouteChunkError = (_error: Error, _errorInfo: React.ErrorInfo): void => {
+        sessionStorage.setItem("auth_callback_url_console", config.deployment.appHomePath);
+    };
+
+    const brokenPageSubtitles: string[] = [
+        t("console:common.placeholders.brokenPage.subtitles.0"),
+        t("console:common.placeholders.brokenPage.subtitles.1")
+    ];
+
+    const brokenPageFallback: ReactNode = (
+        <EmptyPlaceholder
+            action={ (
+                <LinkButton onClick={ () => CommonUtils.refreshPage() }>
+                    { t("console:common.placeholders.brokenPage.action") }
+                </LinkButton>
+            ) }
+            image={ getEmptyPlaceholderIllustrations().brokenPage }
+            imageSize="tiny"
+            subtitle={ brokenPageSubtitles }
+            title={ t("console:common.placeholders.brokenPage.title") }
+        />
+    );
+
     /**
      * Conditionally renders a route. If a route has defined a Redirect to
      * URL, it will be directed to the specified one. If the route is stated
@@ -216,46 +239,29 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
         ) : (
             <Route
                 path={ route.path }
-                render={ (renderProps: RouteComponentProps): ReactNode =>
-                    route.component ? (
+                render={ (renderProps: RouteComponentProps): ReactNode => {
+                    if (!route.component) {
+                        return null;
+                    }
+
+                    const locationKey: string = renderProps.location.key
+                        ?? [
+                            renderProps.location.pathname,
+                            renderProps.location.search,
+                            renderProps.location.hash
+                        ].join("::");
+
+                    return (
                         <ErrorBoundary
+                            key={ locationKey }
                             onChunkLoadError={ AppUtils.onChunkLoadError }
-                            handleError={ (_error: Error, _errorInfo: React.ErrorInfo) => {
-                                sessionStorage.setItem("auth_callback_url_console", config.deployment.appHomePath);
-                            } }
-                            fallback={
-                                (<EmptyPlaceholder
-                                    action={
-                                        (<LinkButton
-                                            onClick={ () => CommonUtils.refreshPage() }
-                                        >
-                                            { t(
-                                                "console:common.placeholders.brokenPage.action"
-                                            ) }
-                                        </LinkButton>)
-                                    }
-                                    image={
-                                        getEmptyPlaceholderIllustrations().brokenPage
-                                    }
-                                    imageSize="tiny"
-                                    subtitle={ [
-                                        t(
-                                            "console:common.placeholders.brokenPage.subtitles.0"
-                                        ),
-                                        t(
-                                            "console:common.placeholders.brokenPage.subtitles.1"
-                                        )
-                                    ] }
-                                    title={ t(
-                                        "console:common.placeholders.brokenPage.title"
-                                    ) }
-                                />)
-                            }
+                            handleError={ handleRouteChunkError }
+                            fallback={ brokenPageFallback }
                         >
                             <route.component { ...renderProps } />
                         </ErrorBoundary>
-                    ) : null
-                }
+                    );
+                } }
                 key={ key }
                 exact={ route.exact }
             />
@@ -469,37 +475,8 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
             >
                 <ErrorBoundary
                     onChunkLoadError={ AppUtils.onChunkLoadError }
-                    handleError={ (_error: Error, _errorInfo: React.ErrorInfo) => {
-                        sessionStorage.setItem("auth_callback_url_console", config.deployment.appHomePath);
-                    } }
-                    fallback={
-                        (<EmptyPlaceholder
-                            action={
-                                (<LinkButton
-                                    onClick={ () => CommonUtils.refreshPage() }
-                                >
-                                    { t(
-                                        "console:common.placeholders.brokenPage.action"
-                                    ) }
-                                </LinkButton>)
-                            }
-                            image={
-                                getEmptyPlaceholderIllustrations().brokenPage
-                            }
-                            imageSize="tiny"
-                            subtitle={ [
-                                t(
-                                    "console:common.placeholders.brokenPage.subtitles.0"
-                                ),
-                                t(
-                                    "console:common.placeholders.brokenPage.subtitles.1"
-                                )
-                            ] }
-                            title={ t(
-                                "console:common.placeholders.brokenPage.title"
-                            ) }
-                        />)
-                    }
+                    handleError={ handleRouteChunkError }
+                    fallback={ brokenPageFallback }
                 >
                     <Suspense fallback={ <ContentLoader dimmer={ false } /> }>
                         {
