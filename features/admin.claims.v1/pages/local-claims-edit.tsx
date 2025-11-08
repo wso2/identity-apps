@@ -73,6 +73,7 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
     const {
         isLoading: isUserStoreListFetchRequestLoading,
         mutateUserStoreList,
+        readOnlyUserStoreNamesList,
         userStoresList
     } = useUserStores();
 
@@ -150,6 +151,7 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
                     <EditBasicDetailsLocalClaims
                         claim={ claim }
                         update={ getClaim }
+                        readOnlyUserStoreNames={ readOnlyUserStoreNamesList }
                         data-testid="local-claims-basic-details-edit"
                     />
                 </ResourceTab.Pane>

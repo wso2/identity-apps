@@ -520,7 +520,9 @@ export const claims: ClaimsNS = {
             },
             managedInUserStore: {
                 hint: "Indicates whether the attribute is managed in the user store.",
-                label: "Managed in User Store"
+                label: "Managed in User Store",
+                readOnlyUserStoreHint: "At least one read-only user store is configured. "
+                    + "Exclude those domains to ensure identity claims works correctly."
             },
             multiValued: {
                 label: "Allow multiple values for this attribute",
@@ -602,6 +604,7 @@ export const claims: ClaimsNS = {
         },
         mappedAttributes: {
             enableForUserStore: "Enable for this user store",
+            manageInUserStore: "Manage in user store",
             hint: "Enter the attribute from the respective user stores that will be mapped to this attribute.",
             mappedAttributeName: "Mapped Attribute Name"
         },

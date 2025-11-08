@@ -328,7 +328,7 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                                         <Grid.Row columns={ 2 } key={ index } verticalAlign="middle">
                                                             <Grid.Column width={ 6 }>
                                                                 <p>{ t("claims:local.mappedAttributes." +
-                                                                        "enableForUserStore") }</p>
+                                                                        "manageInUserStore") }</p>
                                                             </Grid.Column>
                                                             <Grid.Column width={ 6 }>
                                                                 <Checkbox

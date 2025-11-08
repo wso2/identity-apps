@@ -111,6 +111,10 @@ interface EditBasicDetailsLocalClaimsPropsInterface extends TestableComponentInt
      * The function to be called to initiate an update
      */
     update: () => void;
+    /**
+     * Names of the configured read-only user stores.
+     */
+    readOnlyUserStoreNames?: string[];
 }
 
 const FORM_ID: string = "local-claim-basic-details-form";
@@ -135,6 +139,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const {
         claim,
         update,
+        readOnlyUserStoreNames,
         [ "data-testid" ]: testId
     } = props;
 
@@ -152,6 +157,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const [ subAttributes, setSubAttributes ] = useState<string[]>([]);
     const [ canonicalValues, setCanonicalValues ] = useState<KeyValue[]>();
     const [ managedInUserStore, setManagedInUserStore ] = useState<boolean>(claim?.managedInUserStore ?? false);
+    const isIdentityClaim: boolean = claim?.claimURI?.startsWith("http://wso2.org/claims/identity/") ?? false;
+    const hasReadOnlyUserStoresConfigured: boolean = Boolean(readOnlyUserStoreNames?.length);
 
     const nameField: MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
     const regExField: MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
@@ -1690,7 +1697,13 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 label={ t("claims:local.forms.managedInUserStore.label") }
                                 data-testid={ `${ testId }-form-managed-in-user-store-checkbox` }
                                 readOnly={ isSubOrganization() || isReadOnly }
-                                hint={ t("claims:local.forms.managedInUserStore.hint") }
+                                hint={
+                                    managedInUserStore
+                                    && isIdentityClaim
+                                    && hasReadOnlyUserStoresConfigured
+                                        ? t("claims:local.forms.managedInUserStore.readOnlyUserStoreHint")
+                                        : t("claims:local.forms.managedInUserStore.hint")
+                                }
                                 defaultValue={ claim?.managedInUserStore ?? false }
                                 listen={ setManagedInUserStore }
                             />

@@ -548,6 +548,7 @@ export interface ClaimsNS {
             managedInUserStore: {
                 hint: string;
                 label: string;
+                readOnlyUserStoreHint: string;
             };
             multiValued: {
                 label: string;
@@ -615,6 +616,7 @@ export interface ClaimsNS {
             hint: string;
             mappedAttributeName: string;
             enableForUserStore: string;
+            manageInUserStore: string;
         };
     };
     list: {
