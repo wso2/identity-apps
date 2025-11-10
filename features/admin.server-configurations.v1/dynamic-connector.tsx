@@ -36,8 +36,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Checkbox, CheckboxProps, Divider, Grid, Header, Image, Segment } from "semantic-ui-react";
-import { updateGovernanceConnector } from "./api";
-import { GovernanceConnectorUtils } from "./utils";
+import { updateGovernanceConnector } from "./api/governance-connectors";
+import { GovernanceConnectorUtils } from "./utils/governance-connector-utils";
 
 /**
  * Interface of the prop types of the `ExtendedDynamicConnector`.

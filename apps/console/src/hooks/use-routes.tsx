@@ -33,6 +33,7 @@ import {
 } from "@wso2is/admin.core.v1/store/actions/routes";
 import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import useOrganizations from "@wso2is/admin.organizations.v1/hooks/use-organizations";
 import useGetSelfAuthenticatedOrganization from "@wso2is/admin.tenants.v1/api/use-get-self-authenticated-organization";
 import { RouteInterface } from "@wso2is/core/models";
 import { RouteUtils as CommonRouteUtils } from "@wso2is/core/utils";
@@ -74,8 +75,10 @@ const useRoutes = (params: UseRoutesParams): useRoutesInterface => {
     const isGroupAndRoleSeparationEnabled: boolean = useSelector((state: AppState) =>
         state?.config?.ui?.isGroupAndRoleSeparationEnabled);
     const routesConfig: RouteConfigInterface = useSelector((state: AppState) => state.config.ui.routes);
+    const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
 
     const { data: organization } = useGetSelfAuthenticatedOrganization(isAuthenticated);
+    const { isOrganizationSwitchRequestLoading } = useOrganizations();
 
     /**
      * Filter the routes based on the user roles and permissions.
@@ -133,6 +136,12 @@ const useRoutes = (params: UseRoutesParams): useRoutesInterface => {
                 additionalRoutes.push(AppConstants.AGENTS_ROUTE);
             }
 
+            // In on-premise Identity Server deployments, the Approvals tab is disabled in the Console.
+            // For Asgardeo deployments, only Asgardeo Admins are allowed to access the Approvals tab.
+            if (isPrivilegedUser) {
+                additionalRoutes.push(AppConstants.APPROVALS_ROUTE);
+            }
+
             return [ ...additionalRoutes ];
         };
 
@@ -175,11 +184,13 @@ const useRoutes = (params: UseRoutesParams): useRoutesInterface => {
         }
 
         if (sanitizedAppRoutes.length < 1 && !isUserTenantless) {
-            history.push({
-                pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
-                search:
-                    "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
-            });
+            if (!isOrganizationSwitchRequestLoading) {
+                history.push({
+                    pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
+                    search:
+                        "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
+                });
+            }
         }
     };
 

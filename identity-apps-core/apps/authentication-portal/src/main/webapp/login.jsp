@@ -49,6 +49,7 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.client.model.AuthenticationRequestWrapper" %>
+<%@ page import="javax.servlet.http.HttpServletRequest" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <%@ include file="includes/localize.jsp" %>
@@ -290,7 +291,7 @@
         }
     }
 
-    if (isLoginHintAvailable(inputType)) {
+    if (isLoginHintAvailable(inputType, request)) {
         if (request.getParameter(Constants.LOGIN_HINT) != null) {
             username = request.getParameter(Constants.LOGIN_HINT);
             usernameIdentifier = request.getParameter(Constants.LOGIN_HINT);
@@ -501,7 +502,7 @@
                 <h3 class="ui header">
                     <%  if (Boolean.parseBoolean(promptAccountLinking)) { %>
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "account.linking") %>
-                    <% } else if (isIdentifierFirstLogin(inputType) || isLoginHintAvailable(inputType)) { %>
+                    <% } else if (isIdentifierFirstLogin(inputType) || isLoginHintAvailable(inputType, request)) { %>
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "welcome") %>
                     <% } else { %>
                         <%= i18n(resourceBundle, customText, "login.heading") %>
@@ -514,7 +515,7 @@
                     </p>
                 <% } %>
 
-                <% if (isIdentifierFirstLogin(inputType) || isLoginHintAvailable(inputType)) {
+                <% if (isIdentifierFirstLogin(inputType) || isLoginHintAvailable(inputType, request)) {
 
                     // Remove userstore domain from the username.
                     String[] usernameSplitItems = usernameIdentifier.split("/");
@@ -1549,6 +1550,10 @@
 
         private boolean isLoginHintAvailable(String inputType) {
             return "login_hint".equalsIgnoreCase(inputType);
+        }
+
+        private boolean isLoginHintAvailable(String inputType, HttpServletRequest request) {
+            return "login_hint".equalsIgnoreCase(inputType) || request.getParameter("login_hint") != null;
         }
     %>
 </body>

@@ -1,5 +1,11 @@
 # @wso2is/admin.webhooks.v1
 
+## 1.1.2
+
+### Patch Changes
+
+- [#9376](https://github.com/wso2/identity-apps/pull/9376) [`9fd8a2a1521d31ef8fa3c06708a3f200a0ec2d66`](https://github.com/wso2/identity-apps/commit/9fd8a2a1521d31ef8fa3c06708a3f200a0ec2d66) Thanks [@JayanaGunaweera01](https://github.com/JayanaGunaweera01)! - Fix Action bar is momentarily visible during the Webhooks page suspense state
+
 ## 1.1.1
 
 ### Patch Changes

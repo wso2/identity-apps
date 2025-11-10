@@ -54,6 +54,10 @@ export interface FeatureAccessConfigInterface {
     subFeatures?: {
         [key: string]: Omit<FeatureAccessConfigInterface, "subFeatures">;
     };
+    /**
+     * Feature flags for the feature.
+     */
+    featureFlags?: FeatureFlagsInterface[];
 }
 
 export interface DeprecatedFeatureInterface {
@@ -66,6 +70,29 @@ export interface DeprecatedFeatureInterface {
      */
     deprecatedProperties?: string[];
 }
+
+/**
+ * Interface for feature flags.
+ */
+export interface FeatureFlagsInterface {
+    /**
+     * Identifier of the feature.
+     */
+    feature: string;
+    /**
+     * Value of the feature flag.
+     */
+    flag: string;
+    /**
+     * Specifies whether the feature flag should apply to sub-organizations only.
+     */
+    subOrgsOnly?: string;
+}
+
+/**
+ * Type alias for backward compatibility.
+ */
+export type FeatureAccessConfig = FeatureAccessConfigInterface;
 
 /**
  * Interface for Scopes related to CRUD permission.

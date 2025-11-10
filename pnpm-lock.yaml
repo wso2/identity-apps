@@ -61,9 +61,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.29.4
-        version: 2.30.1
       node-forge:
         specifier: ^0.10.0
         version: 0.10.0
@@ -481,7 +478,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -489,7 +486,7 @@ importers:
         specifier: ^3.5.0
         version: link:../../modules/access-control
       '@wso2is/admin.actions.v1':
-        specifier: ^1.14.8
+        specifier: ^1.14.13
         version: link:../../features/admin.actions.v1
       '@wso2is/admin.administrators.v1':
         specifier: ^2.29.208
@@ -510,10 +507,10 @@ importers:
         specifier: ^1.5.7
         version: link:../../features/admin.application-templates.v1
       '@wso2is/admin.applications.v1':
-        specifier: ^2.38.5
+        specifier: ^2.38.8
         version: link:../../features/admin.applications.v1
       '@wso2is/admin.approval-workflows.v1':
-        specifier: ^1.0.17
+        specifier: ^1.0.18
         version: link:../../features/admin.approval-workflows.v1
       '@wso2is/admin.ask-password-flow-builder.v1':
         specifier: workspace:^
@@ -521,80 +518,77 @@ importers:
       '@wso2is/admin.authentication.v1':
         specifier: ^2.25.207
         version: link:../../features/admin.authentication.v1
-      '@wso2is/admin.authorization.v1':
-        specifier: ^2.25.89
-        version: link:../../features/admin.authorization.v1
       '@wso2is/admin.branding.v1':
-        specifier: ^2.32.38
+        specifier: ^2.32.47
         version: link:../../features/admin.branding.v1
       '@wso2is/admin.certificates.v1':
-        specifier: ^2.25.204
+        specifier: ^2.25.205
         version: link:../../features/admin.certificates.v1
       '@wso2is/admin.claims.v1':
-        specifier: ^2.29.13
+        specifier: ^2.29.14
         version: link:../../features/admin.claims.v1
       '@wso2is/admin.connections.v1':
-        specifier: ^2.34.7
+        specifier: ^2.34.9
         version: link:../../features/admin.connections.v1
       '@wso2is/admin.console-settings.v1':
-        specifier: ^2.26.3
+        specifier: ^2.26.5
         version: link:../../features/admin.console-settings.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.90
+        specifier: ^2.49.99
         version: link:../../features/admin.core.v1
       '@wso2is/admin.email-and-sms.v1':
-        specifier: ^2.25.204
+        specifier: ^2.25.205
         version: link:../../features/admin.email-and-sms.v1
       '@wso2is/admin.email-management.v1':
-        specifier: ^2.25.246
+        specifier: ^2.25.255
         version: link:../../features/admin.email-management.v1
       '@wso2is/admin.email-providers.v1':
-        specifier: ^2.27.3
+        specifier: ^2.27.4
         version: link:../../features/admin.email-providers.v1
       '@wso2is/admin.extensions.v1':
-        specifier: ^2.40.9
+        specifier: ^2.40.10
         version: link:../../features/admin.extensions.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.7.7
         version: link:../../features/admin.feature-gate.v1
       '@wso2is/admin.flows.v1':
-        specifier: ^1.0.51
+        specifier: ^1.0.60
         version: link:../../features/admin.flows.v1
       '@wso2is/admin.groups.v1':
-        specifier: ^2.27.125
+        specifier: ^2.27.126
         version: link:../../features/admin.groups.v1
       '@wso2is/admin.home.v1':
-        specifier: ^1.7.60
+        specifier: ^1.7.69
         version: link:../../features/admin.home.v1
       '@wso2is/admin.identity-verification-providers.v1':
-        specifier: ^2.27.204
+        specifier: ^2.27.205
         version: link:../../features/admin.identity-verification-providers.v1
       '@wso2is/admin.impersonation.v1':
-        specifier: ^1.6.205
+        specifier: ^1.6.206
         version: link:../../features/admin.impersonation.v1
       '@wso2is/admin.logs.v1':
-        specifier: ^1.6.5
+        specifier: ^1.6.6
         version: link:../../features/admin.logs.v1
       '@wso2is/admin.oidc-scopes.v1':
-        specifier: ^2.26.1
+        specifier: ^2.26.2
         version: link:../../features/admin.oidc-scopes.v1
       '@wso2is/admin.org-insights.v1':
-        specifier: ^2.25.204
+        specifier: ^2.25.205
         version: link:../../features/admin.org-insights.v1
       '@wso2is/admin.organization-discovery.v1':
-        specifier: ^2.25.207
+        specifier: ^2.25.208
         version: link:../../features/admin.organization-discovery.v1
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.27.8
+        specifier: ^2.27.13
         version: link:../../features/admin.organizations.v1
       '@wso2is/admin.password-recovery-flow-builder.v1':
         specifier: workspace:^
         version: link:../../features/admin.password-recovery-flow-builder.v1
       '@wso2is/admin.policy-administration.v1':
-        specifier: ^1.0.121
+        specifier: ^1.0.122
         version: link:../../features/admin.policy-administration.v1
       '@wso2is/admin.private-key-jwt.v1':
-        specifier: ^2.25.204
+        specifier: ^2.25.205
         version: link:../../features/admin.private-key-jwt.v1
       '@wso2is/admin.push-providers.v1':
         specifier: ^1.0.92
@@ -603,88 +597,88 @@ importers:
         specifier: workspace:^
         version: link:../../features/admin.registration-flow-builder.v1
       '@wso2is/admin.remote-repository-configuration.v1':
-        specifier: ^2.25.204
+        specifier: ^2.25.205
         version: link:../../features/admin.remote-repository-configuration.v1
       '@wso2is/admin.remote-userstores.v1':
-        specifier: ^1.7.162
+        specifier: ^1.7.163
         version: link:../../features/admin.remote-userstores.v1
       '@wso2is/admin.roles.v1':
-        specifier: ^2.25.205
+        specifier: ^2.25.206
         version: link:../../features/admin.roles.v1
       '@wso2is/admin.roles.v2':
-        specifier: ^2.27.252
+        specifier: ^2.27.261
         version: link:../../features/admin.roles.v2
       '@wso2is/admin.saml2-configuration.v1':
-        specifier: ^2.25.206
+        specifier: ^2.25.207
         version: link:../../features/admin.saml2-configuration.v1
       '@wso2is/admin.secrets.v1':
-        specifier: ^2.25.204
+        specifier: ^2.25.205
         version: link:../../features/admin.secrets.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.104
+        specifier: ^2.35.113
         version: link:../../features/admin.server-configurations.v1
       '@wso2is/admin.session-management.v1':
-        specifier: ^2.25.213
+        specifier: ^2.25.218
         version: link:../../features/admin.session-management.v1
       '@wso2is/admin.sms-providers.v1':
-        specifier: ^2.25.205
+        specifier: ^2.25.206
         version: link:../../features/admin.sms-providers.v1
       '@wso2is/admin.sms-templates.v1':
-        specifier: ^1.0.203
+        specifier: ^1.0.205
         version: link:../../features/admin.sms-templates.v1
       '@wso2is/admin.subscription.v1':
-        specifier: ^1.5.204
+        specifier: ^1.5.205
         version: link:../../features/admin.subscription.v1
       '@wso2is/admin.template-core.v1':
-        specifier: ^1.5.158
+        specifier: ^1.5.160
         version: link:../../features/admin.template-core.v1
       '@wso2is/admin.tenants.v1':
-        specifier: ^2.29.22
+        specifier: ^2.29.23
         version: link:../../features/admin.tenants.v1
       '@wso2is/admin.username-validation.v1':
         specifier: ^1.5.205
         version: link:../../features/admin.username-validation.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.36.57
+        specifier: ^2.36.66
         version: link:../../features/admin.users.v1
       '@wso2is/admin.userstores.v1':
-        specifier: ^2.27.39
+        specifier: ^2.27.40
         version: link:../../features/admin.userstores.v1
       '@wso2is/admin.validation.v1':
-        specifier: ^2.27.147
+        specifier: ^2.27.148
         version: link:../../features/admin.validation.v1
       '@wso2is/admin.webhooks.v1':
-        specifier: ^1.1.1
+        specifier: ^1.1.2
         version: link:../../features/admin.webhooks.v1
       '@wso2is/admin.workflow-requests.v1':
         specifier: workspace:^
         version: link:../../features/admin.workflow-requests.v1
       '@wso2is/admin.wsfed-configuration.v1':
-        specifier: ^2.25.205
+        specifier: ^2.25.206
         version: link:../../features/admin.wsfed-configuration.v1
       '@wso2is/common.ui.v1':
         specifier: ^0.2.0
         version: link:../../features/common.ui.v1
       '@wso2is/common.workflow-approvals.v1':
-        specifier: ^1.0.10
+        specifier: ^1.0.11
         version: link:../../features/common.workflow-approvals.v1
       '@wso2is/core':
-        specifier: ^2.12.3
+        specifier: ^2.12.4
         version: link:../../modules/core
       '@wso2is/dynamic-forms':
         specifier: ^2.4.41
         version: link:../../modules/dynamic-forms
       '@wso2is/form':
-        specifier: ^2.9.1
+        specifier: ^2.9.2
         version: link:../../modules/form
       '@wso2is/forms':
         specifier: ^2.3.25
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.30.53
+        specifier: ^2.30.55
         version: link:../../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.9.23
+        specifier: ^2.9.24
         version: link:../../modules/react-components
       '@wso2is/theme':
         specifier: ^2.8.7
@@ -701,6 +695,9 @@ importers:
       country-language:
         specifier: ^0.1.7
         version: 0.1.7
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       deep-equal:
         specifier: ^2.2.2
         version: 2.2.3
@@ -728,9 +725,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -971,7 +965,7 @@ importers:
         version: 5.16.14(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -979,7 +973,7 @@ importers:
         specifier: ^3.5.0
         version: link:../../modules/access-control
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.27.8
+        specifier: ^2.27.11
         version: link:../../features/admin.organizations.v1
       '@wso2is/common.branding.v1':
         specifier: ^2.27.3
@@ -991,7 +985,7 @@ importers:
         specifier: workspace:^
         version: link:../../features/common.users.v1
       '@wso2is/common.workflow-approvals.v1':
-        specifier: ^1.0.10
+        specifier: ^1.0.11
         version: link:../../features/common.workflow-approvals.v1
       '@wso2is/core':
         specifier: ^2.12.3
@@ -1014,6 +1008,9 @@ importers:
       axios:
         specifier: ^0.19.2
         version: 0.19.2
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -1029,9 +1026,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       path-browserify:
         specifier: ^1.0.1
         version: 1.0.1
@@ -1236,7 +1230,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -1306,9 +1300,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -1585,7 +1576,7 @@ importers:
         version: 5.13.0(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -1593,13 +1584,13 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.claims.v1':
-        specifier: ^2.27.125
+        specifier: ^2.29.14
         version: link:../admin.claims.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.82
+        specifier: ^2.49.99
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
-        specifier: ^2.38.2
+        specifier: ^2.40.10
         version: link:../admin.extensions.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.6.2
@@ -1611,20 +1602,23 @@ importers:
         specifier: ^0.6.1
         version: link:../admin.rules.v1
       '@wso2is/core':
-        specifier: ^2.12.3
+        specifier: ^2.12.4
         version: link:../../modules/core
       '@wso2is/form':
-        specifier: ^2.8.1
+        specifier: ^2.9.2
         version: link:../../modules/form
       '@wso2is/i18n':
-        specifier: ^2.30.48
+        specifier: ^2.30.54
         version: link:../../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.9.21
+        specifier: ^2.9.24
         version: link:../../modules/react-components
       axios:
         specifier: ^0.19.2
         version: 0.19.2
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -1862,7 +1856,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/access-control':
         specifier: ^3.3.20
         version: link:../../modules/access-control
@@ -2038,59 +2032,56 @@ importers:
       '@wso2is/admin.applications.v1':
         specifier: workspace:^
         version: link:../admin.applications.v1
-      '@wso2is/admin.authorization.v1':
-        specifier: ^2.25.88
-        version: link:../admin.authorization.v1
       '@wso2is/admin.branding.v1':
-        specifier: ^2.32.38
+        specifier: ^2.32.47
         version: link:../admin.branding.v1
       '@wso2is/admin.claims.v1':
-        specifier: ^2.29.13
+        specifier: ^2.29.14
         version: link:../admin.claims.v1
       '@wso2is/admin.connections.v1':
-        specifier: ^2.34.7
+        specifier: ^2.34.9
         version: link:../admin.connections.v1
       '@wso2is/admin.console-settings.v1':
-        specifier: ^2.26.3
+        specifier: ^2.26.4
         version: link:../admin.console-settings.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.90
+        specifier: ^2.49.99
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
-        specifier: ^2.40.9
+        specifier: ^2.40.10
         version: link:../admin.extensions.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.7.7
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.identity-providers.v1':
-        specifier: ^2.26.208
+        specifier: ^2.26.209
         version: link:../admin.identity-providers.v1
       '@wso2is/admin.impersonation.v1':
-        specifier: ^1.6.203
+        specifier: ^1.6.206
         version: link:../admin.impersonation.v1
       '@wso2is/admin.login-flow-builder.v1':
         specifier: ^2.27.3
         version: link:../admin.login-flow-builder.v1
       '@wso2is/admin.login-flow.ai.v1':
-        specifier: ^2.27.98
+        specifier: ^2.27.102
         version: link:../admin.login-flow.ai.v1
       '@wso2is/admin.logs.v1':
-        specifier: workspace:^1.5.204
+        specifier: workspace:^1.6.6
         version: link:../admin.logs.v1
       '@wso2is/admin.oidc-scopes.v1':
-        specifier: ^2.26.1
+        specifier: ^2.26.2
         version: link:../admin.oidc-scopes.v1
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.27.8
+        specifier: ^2.27.13
         version: link:../admin.organizations.v1
       '@wso2is/admin.roles.v2':
         specifier: workspace:^
         version: link:../admin.roles.v2
       '@wso2is/admin.secrets.v1':
-        specifier: ^2.25.203
+        specifier: ^2.25.205
         version: link:../admin.secrets.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.104
+        specifier: ^2.35.113
         version: link:../admin.server-configurations.v1
       '@wso2is/admin.template-core.v1':
         specifier: ^1.5.157
@@ -2102,25 +2093,25 @@ importers:
         specifier: workspace:^
         version: link:../admin.userstores.v1
       '@wso2is/admin.validation.v1':
-        specifier: workspace:^2.27.147
+        specifier: workspace:^2.27.148
         version: link:../admin.validation.v1
       '@wso2is/admin.wsfed-configuration.v1':
-        specifier: ^2.25.205
+        specifier: ^2.25.206
         version: link:../admin.wsfed-configuration.v1
       '@wso2is/core':
-        specifier: ^2.12.3
+        specifier: ^2.12.4
         version: link:../../modules/core
       '@wso2is/form':
-        specifier: ^2.9.1
+        specifier: ^2.9.2
         version: link:../../modules/form
       '@wso2is/forms':
         specifier: ^2.3.24
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.30.53
+        specifier: ^2.30.55
         version: link:../../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.9.23
+        specifier: ^2.9.24
         version: link:../../modules/react-components
       '@wso2is/validation':
         specifier: ^2.4.1
@@ -2146,9 +2137,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       node-forge:
         specifier: ^0.10.0
         version: 0.10.0
@@ -2275,7 +2263,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/admin.applications.v1':
         specifier: ^2.38.5
         version: link:../admin.applications.v1
@@ -2547,7 +2535,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -2670,7 +2658,7 @@ importers:
         specifier: ^2.33.87
         version: link:../admin.connections.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.40.6
+        specifier: ^2.49.92
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: ^2.36.128
@@ -2883,7 +2871,7 @@ importers:
         version: 8.9.2(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/material@5.13.0)(@mui/system@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -2896,56 +2884,53 @@ importers:
       '@wso2is/admin.application-templates.v1':
         specifier: ^1.5.4
         version: link:../admin.application-templates.v1
-      '@wso2is/admin.authorization.v1':
-        specifier: ^2.25.89
-        version: link:../admin.authorization.v1
       '@wso2is/admin.branding.v1':
-        specifier: ^2.32.38
+        specifier: ^2.32.46
         version: link:../admin.branding.v1
       '@wso2is/admin.claims.v1':
-        specifier: ^2.29.13
+        specifier: ^2.29.14
         version: link:../admin.claims.v1
       '@wso2is/admin.connections.v1':
-        specifier: ^2.34.7
+        specifier: ^2.34.9
         version: link:../admin.connections.v1
       '@wso2is/admin.console-settings.v1':
-        specifier: ^2.26.3
+        specifier: ^2.26.4
         version: link:../admin.console-settings.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.90
+        specifier: ^2.49.98
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
-        specifier: ^2.40.9
+        specifier: ^2.40.10
         version: link:../admin.extensions.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.7.6
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.identity-providers.v1':
-        specifier: ^2.26.208
+        specifier: ^2.26.209
         version: link:../admin.identity-providers.v1
       '@wso2is/admin.impersonation.v1':
-        specifier: ^1.6.204
+        specifier: ^1.6.206
         version: link:../admin.impersonation.v1
       '@wso2is/admin.login-flow-builder.v1':
         specifier: ^2.27.3
         version: link:../admin.login-flow-builder.v1
       '@wso2is/admin.login-flow.ai.v1':
-        specifier: ^2.27.101
+        specifier: ^2.27.102
         version: link:../admin.login-flow.ai.v1
       '@wso2is/admin.oidc-scopes.v1':
-        specifier: ^2.26.1
+        specifier: ^2.26.2
         version: link:../admin.oidc-scopes.v1
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.27.8
+        specifier: ^2.27.11
         version: link:../admin.organizations.v1
       '@wso2is/admin.roles.v2':
-        specifier: ^2.27.252
+        specifier: ^2.27.260
         version: link:../admin.roles.v2
       '@wso2is/admin.secrets.v1':
-        specifier: ^2.25.204
+        specifier: ^2.25.205
         version: link:../admin.secrets.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.104
+        specifier: ^2.35.112
         version: link:../admin.server-configurations.v1
       '@wso2is/admin.subscription.v1':
         specifier: workspace:^
@@ -2954,13 +2939,13 @@ importers:
         specifier: ^1.5.158
         version: link:../admin.template-core.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.36.57
+        specifier: ^2.36.65
         version: link:../admin.users.v1
       '@wso2is/admin.userstores.v1':
-        specifier: ^2.27.39
+        specifier: ^2.27.40
         version: link:../admin.userstores.v1
       '@wso2is/admin.wsfed-configuration.v1':
-        specifier: ^2.25.205
+        specifier: ^2.25.206
         version: link:../admin.wsfed-configuration.v1
       '@wso2is/common.ui.shared-access.v1':
         specifier: workspace:^
@@ -2975,7 +2960,7 @@ importers:
         specifier: ^2.3.24
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.30.53
+        specifier: ^2.30.55
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.23
@@ -2992,6 +2977,9 @@ importers:
       codemirror:
         specifier: ^5.52.0
         version: 5.65.18
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       file-saver:
         specifier: ^2.0.5
         version: 2.0.5
@@ -3004,9 +2992,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       node-forge:
         specifier: ^0.10.0
         version: 0.10.0
@@ -3108,16 +3093,16 @@ importers:
   features/admin.approval-workflows.v1:
     dependencies:
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.78
+        specifier: ^2.49.97
         version: link:../admin.core.v1
       '@wso2is/admin.groups.v1':
         specifier: ^2.27.124
         version: link:../admin.groups.v1
       '@wso2is/admin.roles.v2':
-        specifier: ^2.27.240
+        specifier: ^2.27.259
         version: link:../admin.roles.v2
       '@wso2is/admin.users.v1':
-        specifier: ^2.36.45
+        specifier: ^2.36.64
         version: link:../admin.users.v1
       '@wso2is/admin.userstores.v1':
         specifier: ^2.26.125
@@ -3221,7 +3206,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -3229,10 +3214,10 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.claims.v1':
-        specifier: ^2.29.13
+        specifier: ^2.29.14
         version: link:../admin.claims.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.90
+        specifier: ^2.49.99
         version: link:../admin.core.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.7.7
@@ -3247,16 +3232,16 @@ importers:
         specifier: ^0.6.1
         version: link:../admin.rules.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.104
+        specifier: ^2.35.113
         version: link:../admin.server-configurations.v1
       '@wso2is/common.ai.v1':
-        specifier: ^2.27.5
+        specifier: ^2.27.6
         version: link:../common.ai.v1
       '@wso2is/common.ui.v1':
         specifier: workspace:^
         version: link:../common.ui.v1
       '@wso2is/core':
-        specifier: ^2.12.3
+        specifier: ^2.12.4
         version: link:../../modules/core
       '@xyflow/react':
         specifier: ^12.3.2
@@ -3358,9 +3343,6 @@ importers:
       '@asgardeo/auth-react':
         specifier: ^5.1.2
         version: 5.2.3(@babel/runtime-corejs3@7.26.7)(react-dom@18.3.1)(react@18.3.1)
-      '@wso2is/admin.authorization.v1':
-        specifier: ^2.25.88
-        version: link:../admin.authorization.v1
       '@wso2is/admin.core.v1':
         specifier: ^2.47.1
         version: link:../admin.core.v1
@@ -3462,379 +3444,6 @@ importers:
         specifier: ^2.0.0
         version: 2.0.0
 
-  features/admin.authorization.v1:
-    dependencies:
-      '@asgardeo/auth-react':
-        specifier: ^5.1.2
-        version: 5.2.3(@babel/runtime-corejs3@7.26.7)(react-dom@18.3.1)(react@18.3.1)
-      '@emotion/react':
-        specifier: ^11.11.0
-        version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
-      '@emotion/styled':
-        specifier: ^11.11.0
-        version: 11.14.0(@emotion/react@11.14.0)(@types/react@18.0.18)(react@18.3.1)
-      '@microsoft/applicationinsights-core-js':
-        specifier: ^3.0.0
-        version: 3.3.5(tslib@2.8.1)
-      '@microsoft/applicationinsights-react-js':
-        specifier: ^3.4.2
-        version: 3.4.3(history@4.10.1)(react@18.3.1)(tslib@2.8.1)
-      '@microsoft/applicationinsights-web':
-        specifier: ^3.0.0
-        version: 3.3.5(tslib@2.8.1)
-      '@monaco-editor/react':
-        specifier: ^4.5.1
-        version: 4.6.0(monaco-editor@0.52.2)(react-dom@18.3.1)(react@18.3.1)
-      '@mui/icons-material':
-        specifier: ^5.11.16
-        version: 5.16.14(@mui/material@5.13.0)(@types/react@18.0.18)(react@18.3.1)
-      '@mui/lab':
-        specifier: 5.0.0-alpha.129
-        version: 5.0.0-alpha.129(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/material@5.13.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
-      '@mui/material':
-        specifier: 5.13.0
-        version: 5.13.0(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
-      '@mui/system':
-        specifier: ^5.12.3
-        version: 5.16.14(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@types/react@18.0.18)(react@18.3.1)
-      '@mui/utils':
-        specifier: ^5.12.3
-        version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
-      '@oxygen-ui/react':
-        specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
-      '@oxygen-ui/react-icons':
-        specifier: ^2.4.6
-        version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
-      '@wso2is/access-control':
-        specifier: ^3.3.20
-        version: link:../../modules/access-control
-      '@wso2is/core':
-        specifier: ^2.7.0
-        version: link:../../modules/core
-      '@wso2is/dynamic-forms':
-        specifier: ^2.4.41
-        version: link:../../modules/dynamic-forms
-      '@wso2is/form':
-        specifier: ^2.7.1
-        version: link:../../modules/form
-      '@wso2is/forms':
-        specifier: ^2.3.22
-        version: link:../../modules/forms
-      '@wso2is/i18n':
-        specifier: ^2.21.2
-        version: link:../../modules/i18n
-      '@wso2is/react-components':
-        specifier: ^2.9.16
-        version: link:../../modules/react-components
-      '@wso2is/theme':
-        specifier: ^2.6.11
-        version: link:../../modules/theme
-      '@wso2is/validation':
-        specifier: ^2.4.1
-        version: link:../../modules/validation
-      axios:
-        specifier: ^0.19.2
-        version: 0.19.2
-      codemirror:
-        specifier: ^5.52.0
-        version: 5.65.18
-      country-language:
-        specifier: ^0.1.7
-        version: 0.1.7
-      deep-equal:
-        specifier: ^2.2.2
-        version: 2.2.3
-      file-saver:
-        specifier: ^2.0.5
-        version: 2.0.5
-      framer-motion:
-        specifier: ^11.1.9
-        version: 11.18.2(react-dom@18.3.1)(react@18.3.1)
-      history:
-        specifier: ^4.9.0
-        version: 4.10.1
-      html-react-parser:
-        specifier: ^2.0.0
-        version: 2.0.0(react@18.3.1)
-      i18next:
-        specifier: ^21.9.1
-        version: 21.10.0
-      i18next-browser-languagedetector:
-        specifier: ^6.1.5
-        version: 6.1.8
-      i18next-xhr-backend:
-        specifier: ^3.2.2
-        version: 3.2.2
-      js-beautify:
-        specifier: ^1.13.0
-        version: 1.15.1
-      lodash-es:
-        specifier: ^4.17.21
-        version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
-      mustache:
-        specifier: ^4.2.0
-        version: 4.2.0
-      node-forge:
-        specifier: ^0.10.0
-        version: 0.10.0
-      rc-tree:
-        specifier: ^4.0.0-beta.2
-        version: 4.2.2(react-dom@18.3.1)(react@18.3.1)
-      react:
-        specifier: ^18.2.0
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.2.0
-        version: 18.3.1(react@18.3.1)
-      react-draggable:
-        specifier: ^4.2.0
-        version: 4.4.6(react-dom@18.3.1)(react@18.3.1)
-      react-helmet:
-        specifier: ^5.2.1
-        version: 5.2.1(react@18.3.1)
-      react-i18next:
-        specifier: ^11.18.5
-        version: 11.18.6(i18next@21.10.0)(react-dom@18.3.1)(react@18.3.1)
-      react-joyride:
-        specifier: ^2.3.0
-        version: 2.9.3(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
-      react-notification-system:
-        specifier: ^0.4.0
-        version: 0.4.0(react-dom@18.3.1)(react@18.3.1)
-      react-redux:
-        specifier: ^7.2.9
-        version: 7.2.9(react-dom@18.3.1)(react@18.3.1)
-      react-router-dom:
-        specifier: ^4.3.1
-        version: 4.3.1(react@18.3.1)
-      recharts:
-        specifier: ^2.6.2
-        version: 2.15.1(react-dom@18.3.1)(react@18.3.1)
-      reduce-reducers:
-        specifier: ^1.0.4
-        version: 1.0.4
-      redux:
-        specifier: ^4.0.4
-        version: 4.2.1
-      redux-form:
-        specifier: ^8.3.7
-        version: 8.3.10(react-redux@7.2.9)(react@18.3.1)(redux@4.2.1)
-      redux-mock-store:
-        specifier: ^1.5.4
-        version: 1.5.5(redux@4.2.1)
-      redux-thunk:
-        specifier: ^2.3.0
-        version: 2.4.2(redux@4.2.1)
-      regenerator-runtime:
-        specifier: ^0.13.9
-        version: 0.13.11
-      semantic-ui-react:
-        specifier: ^2.1.3
-        version: 2.1.5(react-dom@18.3.1)(react@18.3.1)
-      slashes:
-        specifier: ^2.0.2
-        version: 2.0.2
-      styled-components:
-        specifier: ^4.4.1
-        version: 4.4.1(@babel/core@7.26.7)(react-dom@18.3.1)(react@18.3.1)
-      swr:
-        specifier: ^2.0.0
-        version: 2.3.2(react@18.3.1)
-      uuid:
-        specifier: ^8.3.0
-        version: 8.3.2
-    devDependencies:
-      '@pmmmwh/react-refresh-webpack-plugin':
-        specifier: ^0.4.3
-        version: 0.4.3(react-refresh@0.9.0)(webpack-dev-server@3.11.3)(webpack@5.84.1)
-      '@rollup/plugin-commonjs':
-        specifier: ^25.0.7
-        version: 25.0.8(rollup@4.34.4)
-      '@rollup/plugin-dynamic-import-vars':
-        specifier: ^2.1.2
-        version: 2.1.5(rollup@4.34.4)
-      '@rollup/plugin-image':
-        specifier: ^3.0.3
-        version: 3.0.3(rollup@4.34.4)
-      '@rollup/plugin-json':
-        specifier: ^6.1.0
-        version: 6.1.0(rollup@4.34.4)
-      '@rollup/plugin-node-resolve':
-        specifier: ^15.2.3
-        version: 15.3.1(rollup@4.34.4)
-      '@rollup/plugin-typescript':
-        specifier: ^11.1.6
-        version: 11.1.6(rollup@4.34.4)(tslib@2.8.1)(typescript@4.9.5)
-      '@svgr/rollup':
-        specifier: ^6.2.1
-        version: 6.5.1
-      '@svgr/webpack':
-        specifier: 4.3.2
-        version: 4.3.2
-      '@testing-library/dom':
-        specifier: ^7.24.3
-        version: 7.31.2
-      '@testing-library/jest-dom':
-        specifier: ^5.11.9
-        version: 5.17.0
-      '@testing-library/user-event':
-        specifier: ^12.7.3
-        version: 12.8.3(@testing-library/dom@7.31.2)
-      '@types/file-saver':
-        specifier: ^2.0.1
-        version: 2.0.7
-      '@types/history':
-        specifier: ^4.7.3
-        version: 4.7.11
-      '@types/jest':
-        specifier: ^26.0.14
-        version: 26.0.24
-      '@types/lodash-es':
-        specifier: ^4.17.4
-        version: 4.17.12
-      '@types/node':
-        specifier: ^13.9.2
-        version: 13.13.52
-      '@types/node-forge':
-        specifier: ^0.9.3
-        version: 0.9.10
-      '@types/react':
-        specifier: 18.0.18
-        version: 18.0.18
-      '@types/react-dom':
-        specifier: ^18.0.6
-        version: 18.3.5(@types/react@18.0.18)
-      '@types/react-notification-system':
-        specifier: 0.2.39
-        version: 0.2.39
-      '@types/react-redux':
-        specifier: ^7.1.25
-        version: 7.1.34
-      '@types/react-router':
-        specifier: ^5.1.18
-        version: 5.1.20
-      '@types/react-router-dom':
-        specifier: ^5.1.3
-        version: 5.3.3
-      '@types/reactour':
-        specifier: ^1.18.1
-        version: 1.18.5
-      '@types/redux-mock-store':
-        specifier: ^1.0.2
-        version: 1.5.0
-      '@types/testing-library__jest-dom':
-        specifier: ^5.14.3
-        version: 5.14.9
-      '@types/uuid':
-        specifier: ^9.0.1
-        version: 9.0.8
-      '@types/webpack-env':
-        specifier: ^1.16.0
-        version: 1.18.8
-      '@typescript-eslint/eslint-plugin':
-        specifier: ^6.5.0
-        version: 6.5.0(@typescript-eslint/parser@6.5.0)(eslint@8.46.0)(typescript@4.9.5)
-      '@typescript-eslint/parser':
-        specifier: ^6.5.0
-        version: 6.5.0(eslint@8.46.0)(typescript@4.9.5)
-      connect-history-api-fallback:
-        specifier: ^2.0.0
-        version: 2.0.0
-      copy-webpack-plugin:
-        specifier: ^12.0.2
-        version: 12.0.2(webpack@5.84.1)
-      css-loader:
-        specifier: ^1.0.0
-        version: 1.0.1(webpack@5.84.1)
-      eslint:
-        specifier: 8.46.0
-        version: 8.46.0
-      eslint-plugin-import:
-        specifier: ^2.20.2
-        version: 2.31.0(@typescript-eslint/parser@6.5.0)(eslint@8.46.0)
-      eslint-plugin-jest-dom:
-        specifier: ^4.0.1
-        version: 4.0.3(eslint@8.46.0)
-      eslint-plugin-react:
-        specifier: 7.30.0
-        version: 7.30.0(eslint@8.46.0)
-      eslint-plugin-react-hooks:
-        specifier: ^4.0.0
-        version: 4.6.2(eslint@8.46.0)
-      eslint-plugin-testing-library:
-        specifier: ^5.0.5
-        version: 5.11.1(eslint@8.46.0)(typescript@4.9.5)
-      eslint-webpack-plugin:
-        specifier: ^2.5.3
-        version: 2.7.0(eslint@8.46.0)(webpack@5.84.1)
-      fork-ts-checker-webpack-plugin:
-        specifier: ^6.1.0
-        version: 6.5.3(eslint@8.46.0)(typescript@4.9.5)(webpack@5.84.1)
-      jest:
-        specifier: ^26.4.2
-        version: 26.6.3
-      jest-environment-jsdom:
-        specifier: ^26.3.0
-        version: 26.6.2
-      jest-environment-jsdom-global:
-        specifier: ^2.0.4
-        version: 2.0.4(jest-environment-jsdom@26.6.2)
-      json-minimizer-webpack-plugin:
-        specifier: ^4.0.0
-        version: 4.0.0(webpack@5.84.1)
-      msw:
-        specifier: ^0.36.8
-        version: 0.36.8
-      process:
-        specifier: ^0.11.10
-        version: 0.11.10
-      react-refresh:
-        specifier: ^0.9.0
-        version: 0.9.0
-      redux-devtools-extension:
-        specifier: ^2.13.8
-        version: 2.13.9(redux@4.2.1)
-      rimraf:
-        specifier: ^3.0.2
-        version: 3.0.2
-      rollup:
-        specifier: ^4.17.2
-        version: 4.34.4
-      rollup-plugin-dts:
-        specifier: ^6.1.1
-        version: 6.1.1(rollup@4.34.4)(typescript@4.9.5)
-      rollup-plugin-generate-package-json:
-        specifier: ^3.2.0
-        version: 3.2.0(rollup@4.34.4)
-      rollup-plugin-polyfill-node:
-        specifier: ^0.13.0
-        version: 0.13.0(rollup@4.34.4)
-      rollup-plugin-scss:
-        specifier: ^4.0.0
-        version: 4.0.1
-      rollup-plugin-styles:
-        specifier: ^4.0.0
-        version: 4.0.0(rollup@4.34.4)
-      rollup-plugin-svg:
-        specifier: ^2.0.0
-        version: 2.0.0
-      style-loader:
-        specifier: ^0.23.1
-        version: 0.23.1
-      thread-loader:
-        specifier: ^2.1.3
-        version: 2.1.3(webpack@5.84.1)
-      ts-jest:
-        specifier: ^26.4.0
-        version: 26.5.6(jest@26.6.3)(typescript@4.9.5)
-      typescript:
-        specifier: ^4.6.4
-        version: 4.9.5
-
   features/admin.branding.ai.v1:
     dependencies:
       '@asgardeo/auth-react':
@@ -3875,7 +3484,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -3883,19 +3492,19 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.branding.v1':
-        specifier: ^2.30.1
+        specifier: ^2.32.43
         version: link:../admin.branding.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.45.2
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.6.2
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.26.205
+        specifier: ^2.27.11
         version: link:../admin.organizations.v1
       '@wso2is/common.ai.v1':
-        specifier: ^2.27.3
+        specifier: ^2.27.6
         version: link:../common.ai.v1
       '@wso2is/common.branding.v1':
         specifier: ^2.27.1
@@ -3963,9 +3572,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -4266,7 +3872,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -4274,13 +3880,13 @@ importers:
         specifier: ^3.4.1
         version: link:../../modules/access-control
       '@wso2is/admin.branding.ai.v1':
-        specifier: ^2.27.100
+        specifier: ^2.27.101
         version: link:../admin.branding.ai.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.90
+        specifier: ^2.49.99
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
-        specifier: ^2.40.9
+        specifier: ^2.40.10
         version: link:../admin.extensions.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.7.7
@@ -4292,31 +3898,31 @@ importers:
         specifier: workspace:^
         version: link:../admin.flows.v1
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.27.8
+        specifier: ^2.27.13
         version: link:../admin.organizations.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.104
+        specifier: ^2.35.113
         version: link:../admin.server-configurations.v1
       '@wso2is/common.branding.v1':
         specifier: ^2.28.1
         version: link:../common.branding.v1
       '@wso2is/core':
-        specifier: ^2.12.3
+        specifier: ^2.12.4
         version: link:../../modules/core
       '@wso2is/dynamic-forms':
         specifier: ^2.4.41
         version: link:../../modules/dynamic-forms
       '@wso2is/form':
-        specifier: ^2.7.1
+        specifier: ^2.9.2
         version: link:../../modules/form
       '@wso2is/forms':
         specifier: ^2.3.22
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.30.53
+        specifier: ^2.30.55
         version: link:../../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.9.16
+        specifier: ^2.9.24
         version: link:../../modules/react-components
       '@wso2is/theme':
         specifier: ^2.6.11
@@ -4366,9 +3972,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -4669,7 +4272,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -4677,7 +4280,7 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.core.v1':
-        specifier: ^2.45.2
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/core':
         specifier: ^2.7.0
@@ -4745,9 +4348,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -5048,7 +4648,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -5056,28 +4656,28 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.claims.v1':
-        specifier: ^2.29.13
+        specifier: ^2.29.14
         version: 'link:'
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.90
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
-        specifier: ^2.40.9
+        specifier: ^2.40.10
         version: link:../admin.extensions.v1
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.26.205
+        specifier: ^2.27.11
         version: link:../admin.organizations.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.104
+        specifier: ^2.35.109
         version: link:../admin.server-configurations.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.36.57
+        specifier: ^2.36.62
         version: link:../admin.users.v1
       '@wso2is/admin.userstores.v1':
-        specifier: ^2.27.39
+        specifier: ^2.27.40
         version: link:../admin.userstores.v1
       '@wso2is/admin.validation.v1':
-        specifier: ^2.27.147
+        specifier: ^2.27.148
         version: link:../admin.validation.v1
       '@wso2is/core':
         specifier: ^2.12.2
@@ -5142,9 +4742,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -5445,7 +5042,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -5453,49 +5050,49 @@ importers:
         specifier: ^3.5.0
         version: link:../../modules/access-control
       '@wso2is/admin.actions.v1':
-        specifier: ^1.14.0
+        specifier: ^1.14.11
         version: link:../admin.actions.v1
       '@wso2is/admin.application-templates.v1':
         specifier: ^1.4.203
         version: link:../admin.application-templates.v1
       '@wso2is/admin.applications.v1':
-        specifier: ^2.38.4
+        specifier: ^2.38.8
         version: link:../admin.applications.v1
       '@wso2is/admin.claims.v1':
-        specifier: ^2.29.12
+        specifier: ^2.29.14
         version: link:../admin.claims.v1
       '@wso2is/admin.connections.v1':
-        specifier: ^2.34.7
+        specifier: ^2.34.9
         version: 'link:'
       '@wso2is/admin.console-settings.v1':
-        specifier: ^2.26.2
+        specifier: ^2.26.4
         version: link:../admin.console-settings.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.89
+        specifier: ^2.49.98
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
-        specifier: ^2.40.8
+        specifier: ^2.40.10
         version: link:../admin.extensions.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.6.2
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.identity-providers.v1':
-        specifier: ^2.26.207
+        specifier: ^2.26.209
         version: link:../admin.identity-providers.v1
       '@wso2is/admin.identity-verification-providers.v1':
-        specifier: ^2.27.204
+        specifier: ^2.27.205
         version: link:../admin.identity-verification-providers.v1
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.26.211
+        specifier: ^2.27.11
         version: link:../admin.organizations.v1
       '@wso2is/admin.roles.v2':
-        specifier: ^2.27.251
+        specifier: ^2.27.260
         version: link:../admin.roles.v2
       '@wso2is/admin.template-core.v1':
         specifier: ^1.5.157
         version: link:../admin.template-core.v1
       '@wso2is/admin.userstores.v1':
-        specifier: ^2.27.39
+        specifier: ^2.27.40
         version: link:../admin.userstores.v1
       '@wso2is/core':
         specifier: ^2.10.1
@@ -5510,7 +5107,7 @@ importers:
         specifier: ^2.3.24
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.30.52
+        specifier: ^2.30.55
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.21
@@ -5530,6 +5127,9 @@ importers:
       country-language:
         specifier: ^0.1.7
         version: 0.1.7
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       deep-equal:
         specifier: ^2.2.2
         version: 2.2.3
@@ -5560,9 +5160,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -5866,7 +5463,7 @@ importers:
         version: 8.9.2(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/material@5.13.0)(@mui/system@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -5877,40 +5474,40 @@ importers:
         specifier: ^2.29.208
         version: link:../admin.administrators.v1
       '@wso2is/admin.applications.v1':
-        specifier: ^2.38.5
+        specifier: ^2.38.7
         version: link:../admin.applications.v1
       '@wso2is/admin.authentication.v1':
         specifier: ^2.25.203
         version: link:../admin.authentication.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.90
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
-        specifier: ^2.40.9
+        specifier: ^2.40.10
         version: link:../admin.extensions.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.6.2
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.identity-providers.v1':
-        specifier: ^2.26.208
+        specifier: ^2.26.209
         version: link:../admin.identity-providers.v1
       '@wso2is/admin.login-flow.ai.v1':
-        specifier: ^2.27.101
+        specifier: ^2.27.102
         version: link:../admin.login-flow.ai.v1
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.27.3
+        specifier: ^2.27.11
         version: link:../admin.organizations.v1
       '@wso2is/admin.roles.v2':
-        specifier: ^2.27.252
+        specifier: ^2.27.257
         version: link:../admin.roles.v2
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.104
+        specifier: ^2.35.109
         version: link:../admin.server-configurations.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.36.57
+        specifier: ^2.36.62
         version: link:../admin.users.v1
       '@wso2is/admin.userstores.v1':
-        specifier: ^2.27.39
+        specifier: ^2.27.40
         version: link:../admin.userstores.v1
       '@wso2is/common.ui.shared-access.v1':
         specifier: workspace:^
@@ -5948,6 +5545,9 @@ importers:
       country-language:
         specifier: ^0.1.7
         version: 0.1.7
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       deep-equal:
         specifier: ^2.2.2
         version: 2.2.3
@@ -5978,9 +5578,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -6272,7 +5869,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -6280,7 +5877,7 @@ importers:
         specifier: ^3.4.1
         version: link:../../modules/access-control
       '@wso2is/admin.actions.v1':
-        specifier: ^1.14.8
+        specifier: ^1.14.13
         version: link:../admin.actions.v1
       '@wso2is/admin.administrators.v1':
         specifier: ^2.29.208
@@ -6298,10 +5895,10 @@ importers:
         specifier: ^1.5.7
         version: link:../admin.application-templates.v1
       '@wso2is/admin.applications.v1':
-        specifier: ^2.38.5
+        specifier: ^2.38.8
         version: link:../admin.applications.v1
       '@wso2is/admin.approval-workflows.v1':
-        specifier: ^1.0.17
+        specifier: ^1.0.18
         version: link:../admin.approval-workflows.v1
       '@wso2is/admin.ask-password-flow-builder.v1':
         specifier: workspace:^
@@ -6309,38 +5906,35 @@ importers:
       '@wso2is/admin.authentication.v1':
         specifier: ^2.25.207
         version: link:../admin.authentication.v1
-      '@wso2is/admin.authorization.v1':
-        specifier: ^2.25.89
-        version: link:../admin.authorization.v1
       '@wso2is/admin.branding.v1':
-        specifier: ^2.32.38
+        specifier: ^2.32.47
         version: link:../admin.branding.v1
       '@wso2is/admin.certificates.v1':
-        specifier: ^2.25.204
+        specifier: ^2.25.205
         version: link:../admin.certificates.v1
       '@wso2is/admin.claims.v1':
-        specifier: ^2.29.13
+        specifier: ^2.29.14
         version: link:../admin.claims.v1
       '@wso2is/admin.connections.v1':
-        specifier: ^2.34.7
+        specifier: ^2.34.9
         version: link:../admin.connections.v1
       '@wso2is/admin.console-settings.v1':
-        specifier: ^2.26.3
+        specifier: ^2.26.4
         version: link:../admin.console-settings.v1
       '@wso2is/admin.email-and-sms.v1':
-        specifier: ^2.25.204
+        specifier: ^2.25.205
         version: link:../admin.email-and-sms.v1
       '@wso2is/admin.email-management.v1':
-        specifier: ^2.25.246
+        specifier: ^2.25.255
         version: link:../admin.email-management.v1
       '@wso2is/admin.email-providers.v1':
-        specifier: ^2.27.3
+        specifier: ^2.27.4
         version: link:../admin.email-providers.v1
       '@wso2is/admin.email-templates.v1':
-        specifier: ^2.25.205
+        specifier: ^2.25.206
         version: link:../admin.email-templates.v1
       '@wso2is/admin.extensions.v1':
-        specifier: ^2.40.9
+        specifier: ^2.40.10
         version: link:../admin.extensions.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.7.7
@@ -6352,118 +5946,118 @@ importers:
         specifier: workspace:^
         version: link:../admin.flows.v1
       '@wso2is/admin.groups.v1':
-        specifier: ^2.27.125
+        specifier: ^2.27.126
         version: link:../admin.groups.v1
       '@wso2is/admin.identity-providers.v1':
-        specifier: ^2.26.208
+        specifier: ^2.26.209
         version: link:../admin.identity-providers.v1
       '@wso2is/admin.identity-verification-providers.v1':
-        specifier: ^2.27.204
+        specifier: ^2.27.205
         version: link:../admin.identity-verification-providers.v1
       '@wso2is/admin.impersonation.v1':
-        specifier: ^1.6.205
+        specifier: ^1.6.206
         version: link:../admin.impersonation.v1
       '@wso2is/admin.logs.v1':
-        specifier: ^1.6.3
+        specifier: ^1.6.6
         version: link:../admin.logs.v1
       '@wso2is/admin.oidc-scopes.v1':
-        specifier: ^2.26.1
+        specifier: ^2.26.2
         version: link:../admin.oidc-scopes.v1
       '@wso2is/admin.org-insights.v1':
-        specifier: ^2.25.204
+        specifier: ^2.25.205
         version: link:../admin.org-insights.v1
       '@wso2is/admin.organization-discovery.v1':
-        specifier: ^2.25.207
+        specifier: ^2.25.208
         version: link:../admin.organization-discovery.v1
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.27.8
+        specifier: ^2.27.13
         version: link:../admin.organizations.v1
       '@wso2is/admin.password-recovery-flow-builder.v1':
         specifier: workspace:^
         version: link:../admin.password-recovery-flow-builder.v1
       '@wso2is/admin.policy-administration.v1':
-        specifier: ^1.0.121
+        specifier: ^1.0.122
         version: link:../admin.policy-administration.v1
       '@wso2is/admin.private-key-jwt.v1':
-        specifier: ^2.25.204
+        specifier: ^2.25.205
         version: link:../admin.private-key-jwt.v1
       '@wso2is/admin.push-providers.v1':
         specifier: ^1.0.92
         version: link:../admin.push-providers.v1
       '@wso2is/admin.registration-flow-builder.v1':
-        specifier: ^0.10.42
+        specifier: ^0.10.51
         version: link:../admin.registration-flow-builder.v1
       '@wso2is/admin.remote-repository-configuration.v1':
-        specifier: ^2.25.204
+        specifier: ^2.25.205
         version: link:../admin.remote-repository-configuration.v1
       '@wso2is/admin.roles.v1':
-        specifier: ^2.25.205
+        specifier: ^2.25.206
         version: link:../admin.roles.v1
       '@wso2is/admin.roles.v2':
-        specifier: ^2.27.252
+        specifier: ^2.27.261
         version: link:../admin.roles.v2
       '@wso2is/admin.rules.v1':
         specifier: ^0.6.1
         version: link:../admin.rules.v1
       '@wso2is/admin.saml2-configuration.v1':
-        specifier: ^2.25.206
+        specifier: ^2.25.207
         version: link:../admin.saml2-configuration.v1
       '@wso2is/admin.secrets.v1':
-        specifier: ^2.25.204
+        specifier: ^2.25.205
         version: link:../admin.secrets.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.104
+        specifier: ^2.35.113
         version: link:../admin.server-configurations.v1
       '@wso2is/admin.session-management.v1':
-        specifier: ^2.25.213
+        specifier: ^2.25.218
         version: link:../admin.session-management.v1
       '@wso2is/admin.sms-providers.v1':
-        specifier: ^2.25.204
+        specifier: ^2.25.206
         version: link:../admin.sms-providers.v1
       '@wso2is/admin.sms-templates.v1':
-        specifier: ^1.0.203
+        specifier: ^1.0.205
         version: link:../admin.sms-templates.v1
       '@wso2is/admin.subscription.v1':
-        specifier: ^1.5.204
+        specifier: ^1.5.205
         version: link:../admin.subscription.v1
       '@wso2is/admin.template-core.v1':
         specifier: ^1.5.158
         version: link:../admin.template-core.v1
       '@wso2is/admin.tenants.v1':
-        specifier: ^2.29.22
+        specifier: ^2.29.23
         version: link:../admin.tenants.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.36.57
+        specifier: ^2.36.66
         version: link:../admin.users.v1
       '@wso2is/admin.userstores.v1':
-        specifier: ^2.27.39
+        specifier: ^2.27.40
         version: link:../admin.userstores.v1
       '@wso2is/admin.validation.v1':
-        specifier: ^2.27.147
+        specifier: ^2.27.148
         version: link:../admin.validation.v1
       '@wso2is/admin.webhooks.v1':
         specifier: ^1.1.0
         version: link:../admin.webhooks.v1
       '@wso2is/admin.wsfed-configuration.v1':
-        specifier: ^2.25.205
+        specifier: ^2.25.206
         version: link:../admin.wsfed-configuration.v1
       '@wso2is/common.ui.v1':
         specifier: workspace:^
         version: link:../common.ui.v1
       '@wso2is/common.workflow-approvals.v1':
-        specifier: ^1.0.9
+        specifier: ^1.0.11
         version: link:../common.workflow-approvals.v1
       '@wso2is/core':
-        specifier: ^2.12.3
+        specifier: ^2.12.4
         version: link:../../modules/core
       '@wso2is/forms':
         specifier: ^2.3.25
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.30.53
+        specifier: ^2.30.55
         version: link:../../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.9.23
+        specifier: ^2.9.24
         version: link:../../modules/react-components
       axios:
         specifier: ^0.19.2
@@ -6471,6 +6065,9 @@ importers:
       classnames:
         specifier: ^2.2.6
         version: 2.5.1
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       history:
         specifier: ^4.9.0
         version: 4.10.1
@@ -6483,9 +6080,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       node-forge:
         specifier: ^0.10.0
         version: 0.10.0
@@ -6780,7 +6374,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -6788,10 +6382,10 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.core.v1':
-        specifier: ^2.45.2
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.26.205
+        specifier: ^2.27.11
         version: link:../admin.organizations.v1
       '@wso2is/core':
         specifier: ^2.7.0
@@ -6856,9 +6450,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -7159,7 +6750,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -7167,10 +6758,10 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.branding.v1':
-        specifier: ^2.32.38
+        specifier: ^2.32.47
         version: link:../admin.branding.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.90
+        specifier: ^2.49.99
         version: link:../admin.core.v1
       '@wso2is/admin.flow-builder-core.v1':
         specifier: workspace:^
@@ -7179,28 +6770,28 @@ importers:
         specifier: workspace:^
         version: link:../admin.flows.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.104
+        specifier: ^2.35.113
         version: link:../admin.server-configurations.v1
       '@wso2is/common.branding.v1':
         specifier: ^2.27.1
         version: link:../common.branding.v1
       '@wso2is/core':
-        specifier: ^2.12.3
+        specifier: ^2.12.4
         version: link:../../modules/core
       '@wso2is/dynamic-forms':
         specifier: ^2.4.41
         version: link:../../modules/dynamic-forms
       '@wso2is/form':
-        specifier: ^2.7.1
+        specifier: ^2.9.2
         version: link:../../modules/form
       '@wso2is/forms':
         specifier: ^2.3.22
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.30.53
+        specifier: ^2.30.55
         version: link:../../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.9.16
+        specifier: ^2.9.24
         version: link:../../modules/react-components
       '@wso2is/theme':
         specifier: ^2.6.11
@@ -7247,9 +6838,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -7550,7 +7138,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -7558,7 +7146,7 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.core.v1':
-        specifier: ^2.46.42
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/core':
         specifier: ^2.10.2
@@ -7623,9 +7211,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -7926,7 +7511,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -7934,10 +7519,10 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.core.v1':
-        specifier: ^2.45.2
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.26.205
+        specifier: ^2.27.11
         version: link:../admin.organizations.v1
       '@wso2is/core':
         specifier: ^2.7.0
@@ -8002,9 +7587,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -8305,7 +7887,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -8316,61 +7898,58 @@ importers:
         specifier: ^2.25.204
         version: link:../admin.api-resources.v1
       '@wso2is/admin.applications.v1':
-        specifier: ^2.38.5
+        specifier: ^2.38.7
         version: link:../admin.applications.v1
       '@wso2is/admin.authentication.v1':
         specifier: ^2.25.205
         version: link:../admin.authentication.v1
-      '@wso2is/admin.authorization.v1':
-        specifier: ^2.25.89
-        version: link:../admin.authorization.v1
       '@wso2is/admin.claims.v1':
-        specifier: ^2.29.13
+        specifier: ^2.29.14
         version: link:../admin.claims.v1
       '@wso2is/admin.connections.v1':
-        specifier: ^2.34.7
+        specifier: ^2.34.8
         version: link:../admin.connections.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.90
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.7.6
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.groups.v1':
-        specifier: ^2.27.125
+        specifier: ^2.27.126
         version: link:../admin.groups.v1
       '@wso2is/admin.identity-providers.v1':
-        specifier: ^2.26.208
+        specifier: ^2.26.209
         version: link:../admin.identity-providers.v1
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.26.205
+        specifier: ^2.27.11
         version: link:../admin.organizations.v1
       '@wso2is/admin.provisioning.v1':
-        specifier: ^2.25.204
+        specifier: ^2.25.205
         version: link:../admin.provisioning.v1
       '@wso2is/admin.remote-userstores.v1':
         specifier: ^1.7.162
         version: link:../admin.remote-userstores.v1
       '@wso2is/admin.roles.v2':
-        specifier: ^2.27.252
+        specifier: ^2.27.257
         version: link:../admin.roles.v2
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.104
+        specifier: ^2.35.109
         version: link:../admin.server-configurations.v1
       '@wso2is/admin.sms-providers.v1':
-        specifier: ^2.25.204
+        specifier: ^2.25.206
         version: link:../admin.sms-providers.v1
       '@wso2is/admin.tenants.v1':
-        specifier: ^2.29.11
+        specifier: ^2.29.23
         version: link:../admin.tenants.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.36.57
+        specifier: ^2.36.62
         version: link:../admin.users.v1
       '@wso2is/admin.userstores.v1':
-        specifier: ^2.27.39
+        specifier: ^2.27.40
         version: link:../admin.userstores.v1
       '@wso2is/admin.validation.v1':
-        specifier: ^2.27.147
+        specifier: ^2.27.148
         version: link:../admin.validation.v1
       '@wso2is/core':
         specifier: ^2.10.0
@@ -8435,9 +8014,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -8726,7 +8302,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/access-control':
         specifier: ^3.4.1
         version: link:../../modules/access-control
@@ -8883,7 +8459,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -8891,7 +8467,7 @@ importers:
         specifier: workspace:^
         version: link:../admin.branding.v1
       '@wso2is/admin.claims.v1':
-        specifier: ^2.29.13
+        specifier: ^2.29.14
         version: link:../admin.claims.v1
       '@wso2is/admin.core.v1':
         specifier: workspace:^
@@ -8906,7 +8482,7 @@ importers:
         specifier: workspace:^
         version: link:../admin.registration-flow-builder.v1
       '@wso2is/common.ai.v1':
-        specifier: ^2.27.5
+        specifier: ^2.27.6
         version: link:../common.ai.v1
       '@wso2is/common.branding.v1':
         specifier: workspace:^
@@ -8915,7 +8491,7 @@ importers:
         specifier: workspace:^
         version: link:../common.ui.v1
       '@wso2is/core':
-        specifier: ^2.12.3
+        specifier: ^2.12.4
         version: link:../../modules/core
       '@xyflow/react':
         specifier: ^12.3.2
@@ -8926,6 +8502,9 @@ importers:
       classnames:
         specifier: ^2.2.6
         version: 2.5.1
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       dompurify:
         specifier: ^3.0.9
         version: 3.2.4
@@ -9033,7 +8612,7 @@ importers:
         specifier: ^2.4.3
         version: 2.4.3(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.90
+        specifier: ^2.49.99
         version: link:../admin.core.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: workspace:^
@@ -9042,13 +8621,13 @@ importers:
         specifier: workspace:^
         version: link:../admin.flow-builder-core.v1
       '@wso2is/admin.registration-flow-builder.v1':
-        specifier: ^0.10.42
+        specifier: ^0.10.51
         version: link:../admin.registration-flow-builder.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.104
+        specifier: ^2.35.113
         version: link:../admin.server-configurations.v1
       '@wso2is/react-components':
-        specifier: ^2.9.16
+        specifier: ^2.9.24
         version: link:../../modules/react-components
       classnames:
         specifier: ^2.2.6
@@ -9164,7 +8743,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -9172,28 +8751,25 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.applications.v1':
-        specifier: ^2.38.4
+        specifier: ^2.38.7
         version: link:../admin.applications.v1
-      '@wso2is/admin.authorization.v1':
-        specifier: ^2.25.89
-        version: link:../admin.authorization.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.89
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
-        specifier: ^2.40.8
+        specifier: ^2.40.10
         version: link:../admin.extensions.v1
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.26.205
+        specifier: ^2.27.11
         version: link:../admin.organizations.v1
       '@wso2is/admin.roles.v2':
-        specifier: ^2.27.251
+        specifier: ^2.27.257
         version: link:../admin.roles.v2
       '@wso2is/admin.users.v1':
-        specifier: ^2.36.56
+        specifier: ^2.36.62
         version: link:../admin.users.v1
       '@wso2is/admin.userstores.v1':
-        specifier: ^2.27.39
+        specifier: ^2.27.40
         version: link:../admin.userstores.v1
       '@wso2is/core':
         specifier: ^2.9.3
@@ -9228,6 +8804,9 @@ importers:
       country-language:
         specifier: ^0.1.7
         version: 0.1.7
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       deep-equal:
         specifier: ^2.2.2
         version: 2.2.3
@@ -9258,9 +8837,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -9549,18 +9125,18 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/access-control':
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.applications.v1':
-        specifier: ^2.38.5
+        specifier: ^2.38.8
         version: link:../admin.applications.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.90
+        specifier: ^2.49.99
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
-        specifier: ^2.40.9
+        specifier: ^2.40.10
         version: link:../admin.extensions.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.7.7
@@ -9572,7 +9148,7 @@ importers:
         specifier: workspace:^
         version: link:../admin.flows.v1
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.27.8
+        specifier: ^2.27.13
         version: link:../admin.organizations.v1
       '@wso2is/admin.subscription.v1':
         specifier: workspace:^
@@ -9581,16 +9157,16 @@ importers:
         specifier: workspace:^
         version: link:../admin.userstores.v1
       '@wso2is/common.ai.v1':
-        specifier: ^2.27.5
+        specifier: ^2.27.6
         version: link:../common.ai.v1
       '@wso2is/core':
-        specifier: ^2.12.3
+        specifier: ^2.12.4
         version: link:../../modules/core
       '@wso2is/i18n':
-        specifier: ^2.30.53
+        specifier: ^2.30.55
         version: link:../../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.9.16
+        specifier: ^2.9.24
         version: link:../../modules/react-components
       axios:
         specifier: ^0.19.2
@@ -9604,9 +9180,6 @@ importers:
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -9754,7 +9327,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -9762,34 +9335,34 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.applications.v1':
-        specifier: ^2.38.5
+        specifier: ^2.38.7
         version: link:../admin.applications.v1
       '@wso2is/admin.claims.v1':
-        specifier: ^2.29.13
+        specifier: ^2.29.14
         version: link:../admin.claims.v1
       '@wso2is/admin.connections.v1':
-        specifier: ^2.33.99
+        specifier: ^2.34.8
         version: link:../admin.connections.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.90
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
-        specifier: ^2.40.9
+        specifier: ^2.40.10
         version: link:../admin.extensions.v1
       '@wso2is/admin.identity-providers.v1':
-        specifier: ^2.26.208
+        specifier: ^2.26.209
         version: 'link:'
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.26.211
+        specifier: ^2.27.11
         version: link:../admin.organizations.v1
       '@wso2is/admin.roles.v2':
-        specifier: ^2.27.252
+        specifier: ^2.27.257
         version: link:../admin.roles.v2
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.104
+        specifier: ^2.35.109
         version: link:../admin.server-configurations.v1
       '@wso2is/admin.userstores.v1':
-        specifier: ^2.27.33
+        specifier: ^2.27.40
         version: link:../admin.userstores.v1
       '@wso2is/core':
         specifier: ^2.10.1
@@ -9854,9 +9427,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -10157,7 +9727,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -10165,13 +9735,13 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.claims.v1':
-        specifier: ^2.27.123
+        specifier: ^2.29.14
         version: link:../admin.claims.v1
       '@wso2is/admin.connections.v1':
-        specifier: ^2.33.96
+        specifier: ^2.34.8
         version: link:../admin.connections.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.45.2
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.6.2
@@ -10242,9 +9812,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -10545,7 +10112,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -10553,10 +10120,10 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.34
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.47
+        specifier: ^2.35.109
         version: link:../admin.server-configurations.v1
       '@wso2is/core':
         specifier: ^2.7.0
@@ -10615,9 +10182,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -10903,7 +10467,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -11084,7 +10648,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -11092,25 +10656,25 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.applications.v1':
-        specifier: ^2.35.4
+        specifier: ^2.38.7
         version: link:../admin.applications.v1
       '@wso2is/admin.claims.v1':
-        specifier: ^2.27.123
+        specifier: ^2.29.14
         version: link:../admin.claims.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.45.2
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.6.2
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.identity-providers.v1':
-        specifier: ^2.26.206
+        specifier: ^2.26.209
         version: link:../admin.identity-providers.v1
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.26.205
+        specifier: ^2.27.11
         version: link:../admin.organizations.v1
       '@wso2is/common.ai.v1':
-        specifier: ^2.27.3
+        specifier: ^2.27.6
         version: link:../common.ai.v1
       '@wso2is/core':
         specifier: ^2.7.6
@@ -11175,9 +10739,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -11466,9 +11027,9 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/admin.core.v1':
-        specifier: ^2.45.2
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.6.2
@@ -11491,12 +11052,12 @@ importers:
       axios:
         specifier: ^0.19.2
         version: 0.19.2
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -11614,7 +11175,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -11622,13 +11183,13 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.applications.v1':
-        specifier: ^2.38.4
+        specifier: ^2.38.7
         version: link:../admin.applications.v1
       '@wso2is/admin.claims.v1':
-        specifier: ^2.29.12
+        specifier: ^2.29.14
         version: link:../admin.claims.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.89
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/core':
         specifier: ^2.7.0
@@ -11693,9 +11254,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -11996,7 +11554,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -12004,7 +11562,7 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.core.v1':
-        specifier: ^2.45.2
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/core':
         specifier: ^2.7.0
@@ -12039,6 +11597,9 @@ importers:
       country-language:
         specifier: ^0.1.7
         version: 0.1.7
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       deep-equal:
         specifier: ^2.2.2
         version: 2.2.3
@@ -12069,9 +11630,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -12372,7 +11930,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -12380,13 +11938,13 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.90
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.27.1
+        specifier: ^2.27.11
         version: link:../admin.organizations.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.104
+        specifier: ^2.35.109
         version: link:../admin.server-configurations.v1
       '@wso2is/core':
         specifier: ^2.7.0
@@ -12451,9 +12009,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -12754,7 +12309,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -12762,61 +12317,58 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.applications.v1':
-        specifier: ^2.37.18
+        specifier: ^2.38.7
         version: link:../admin.applications.v1
       '@wso2is/admin.authentication.v1':
         specifier: ^2.25.206
         version: link:../admin.authentication.v1
-      '@wso2is/admin.authorization.v1':
-        specifier: ^2.25.89
-        version: link:../admin.authorization.v1
       '@wso2is/admin.connections.v1':
-        specifier: ^2.33.99
+        specifier: ^2.34.8
         version: link:../admin.connections.v1
       '@wso2is/admin.console-settings.v1':
-        specifier: ^2.25.221
+        specifier: ^2.26.4
         version: link:../admin.console-settings.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.82
+        specifier: ^2.49.99
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
-        specifier: ^2.38.2
+        specifier: ^2.40.10
         version: link:../admin.extensions.v1
       '@wso2is/admin.groups.v1':
-        specifier: ^2.27.119
+        specifier: ^2.27.126
         version: link:../admin.groups.v1
       '@wso2is/admin.identity-providers.v1':
-        specifier: ^2.26.207
+        specifier: ^2.26.209
         version: link:../admin.identity-providers.v1
       '@wso2is/admin.roles.v2':
-        specifier: ^2.27.244
+        specifier: ^2.27.261
         version: link:../admin.roles.v2
       '@wso2is/admin.tenants.v1':
-        specifier: ^2.29.22
+        specifier: ^2.29.23
         version: link:../admin.tenants.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.36.49
+        specifier: ^2.36.66
         version: link:../admin.users.v1
       '@wso2is/admin.userstores.v1':
-        specifier: ^2.27.33
+        specifier: ^2.27.40
         version: link:../admin.userstores.v1
       '@wso2is/core':
-        specifier: ^2.12.3
+        specifier: ^2.12.4
         version: link:../../modules/core
       '@wso2is/dynamic-forms':
         specifier: ^2.4.41
         version: link:../../modules/dynamic-forms
       '@wso2is/form':
-        specifier: ^2.7.1
+        specifier: ^2.9.2
         version: link:../../modules/form
       '@wso2is/forms':
         specifier: ^2.3.25
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.30.48
+        specifier: ^2.30.54
         version: link:../../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.9.18
+        specifier: ^2.9.24
         version: link:../../modules/react-components
       '@wso2is/theme':
         specifier: ^2.8.4
@@ -12833,6 +12385,9 @@ importers:
       country-language:
         specifier: ^0.1.7
         version: 0.1.7
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       deep-equal:
         specifier: ^2.2.2
         version: 2.2.3
@@ -12863,9 +12418,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -13154,7 +12706,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -13162,10 +12714,10 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.claims.v1':
-        specifier: ^2.29.13
+        specifier: ^2.29.14
         version: link:../admin.claims.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.90
+        specifier: ^2.49.99
         version: link:../admin.core.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.7.7
@@ -13180,16 +12732,16 @@ importers:
         specifier: ^0.6.1
         version: link:../admin.rules.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.104
+        specifier: ^2.35.113
         version: link:../admin.server-configurations.v1
       '@wso2is/common.ai.v1':
-        specifier: ^2.27.5
+        specifier: ^2.27.6
         version: link:../common.ai.v1
       '@wso2is/common.ui.v1':
         specifier: workspace:^
         version: link:../common.ui.v1
       '@wso2is/core':
-        specifier: ^2.12.3
+        specifier: ^2.12.4
         version: link:../../modules/core
       '@xyflow/react':
         specifier: ^12.3.2
@@ -13326,7 +12878,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -13334,25 +12886,25 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.applications.v1':
-        specifier: ^2.35.4
+        specifier: ^2.38.7
         version: link:../admin.applications.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.45.2
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
-        specifier: ^2.38.2
+        specifier: ^2.40.10
         version: link:../admin.extensions.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.6.2
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.26.205
+        specifier: ^2.27.11
         version: link:../admin.organizations.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.32.5
+        specifier: ^2.36.62
         version: link:../admin.users.v1
       '@wso2is/admin.validation.v1':
-        specifier: ^2.27.144
+        specifier: ^2.27.148
         version: link:../admin.validation.v1
       '@wso2is/core':
         specifier: ^2.7.0
@@ -13417,9 +12969,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -13723,7 +13272,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -13731,10 +13280,10 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.core.v1':
-        specifier: ^2.45.2
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.1
+        specifier: ^2.35.109
         version: link:../admin.server-configurations.v1
       '@wso2is/core':
         specifier: ^2.7.0
@@ -13799,9 +13348,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -14102,7 +13648,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -14110,16 +13656,16 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.applications.v1':
-        specifier: ^2.35.4
+        specifier: ^2.38.7
         version: link:../admin.applications.v1
       '@wso2is/admin.connections.v1':
-        specifier: ^2.33.96
+        specifier: ^2.34.8
         version: link:../admin.connections.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.45.2
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/admin.identity-providers.v1':
-        specifier: ^2.26.206
+        specifier: ^2.26.209
         version: link:../admin.identity-providers.v1
       '@wso2is/core':
         specifier: ^2.7.0
@@ -14184,9 +13730,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -14542,7 +14085,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -14550,16 +14093,16 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.claims.v1':
-        specifier: ^2.29.13
+        specifier: ^2.29.14
         version: link:../admin.claims.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.90
+        specifier: ^2.49.99
         version: link:../admin.core.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.7.7
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.flow-builder-core.v1':
-        specifier: ^0.10.82
+        specifier: ^0.10.91
         version: link:../admin.flow-builder-core.v1
       '@wso2is/admin.flows.v1':
         specifier: workspace:^
@@ -14571,13 +14114,13 @@ importers:
         specifier: workspace:^
         version: link:../admin.validation.v1
       '@wso2is/common.ai.v1':
-        specifier: ^2.27.5
+        specifier: ^2.27.6
         version: link:../common.ai.v1
       '@wso2is/common.branding.v1':
         specifier: workspace:^
         version: link:../common.branding.v1
       '@wso2is/core':
-        specifier: ^2.12.3
+        specifier: ^2.12.4
         version: link:../../modules/core
       '@xyflow/react':
         specifier: ^12.3.2
@@ -14714,7 +14257,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -14722,7 +14265,7 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.core.v1':
-        specifier: ^2.45.2
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/core':
         specifier: ^2.7.0
@@ -14757,6 +14300,9 @@ importers:
       country-language:
         specifier: ^0.1.7
         version: 0.1.7
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       deep-equal:
         specifier: ^2.2.2
         version: 2.2.3
@@ -14787,9 +14333,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -15078,7 +14621,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/admin.applications.v1':
         specifier: ^2.38.4
         version: link:../admin.applications.v1
@@ -15086,13 +14629,13 @@ importers:
         specifier: ^2.29.12
         version: link:../admin.claims.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.89
+        specifier: ^2.49.92
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
         specifier: ^2.40.8
         version: link:../admin.extensions.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.36.56
+        specifier: ^2.36.59
         version: link:../admin.users.v1
       '@wso2is/admin.userstores.v1':
         specifier: ^2.27.39
@@ -15241,7 +14784,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -15249,22 +14792,22 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.core.v1':
-        specifier: ^2.45.2
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/admin.groups.v1':
-        specifier: ^2.27.119
+        specifier: ^2.27.126
         version: link:../admin.groups.v1
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.26.205
+        specifier: ^2.27.11
         version: link:../admin.organizations.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.1
+        specifier: ^2.35.109
         version: link:../admin.server-configurations.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.32.5
+        specifier: ^2.36.62
         version: link:../admin.users.v1
       '@wso2is/admin.userstores.v1':
-        specifier: ^2.27.33
+        specifier: ^2.27.40
         version: link:../admin.userstores.v1
       '@wso2is/core':
         specifier: ^2.7.0
@@ -15299,6 +14842,9 @@ importers:
       country-language:
         specifier: ^0.1.7
         version: 0.1.7
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       deep-equal:
         specifier: ^2.2.2
         version: 2.2.3
@@ -15329,9 +14875,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -15632,7 +15175,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -15646,58 +15189,55 @@ importers:
         specifier: ^2.26.5
         version: link:../admin.api-resources.v2
       '@wso2is/admin.applications.v1':
-        specifier: ^2.38.5
+        specifier: ^2.38.8
         version: link:../admin.applications.v1
-      '@wso2is/admin.authorization.v1':
-        specifier: ^2.25.89
-        version: link:../admin.authorization.v1
       '@wso2is/admin.connections.v1':
-        specifier: ^2.34.7
+        specifier: ^2.34.9
         version: link:../admin.connections.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.90
+        specifier: ^2.49.99
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
-        specifier: ^2.40.9
+        specifier: ^2.40.10
         version: link:../admin.extensions.v1
       '@wso2is/admin.groups.v1':
-        specifier: ^2.27.125
+        specifier: ^2.27.126
         version: link:../admin.groups.v1
       '@wso2is/admin.identity-providers.v1':
-        specifier: ^2.26.208
+        specifier: ^2.26.209
         version: link:../admin.identity-providers.v1
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.27.8
+        specifier: ^2.27.13
         version: link:../admin.organizations.v1
       '@wso2is/admin.remote-userstores.v1':
-        specifier: ^1.7.162
+        specifier: ^1.7.163
         version: link:../admin.remote-userstores.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.104
+        specifier: ^2.35.113
         version: link:../admin.server-configurations.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.36.57
+        specifier: ^2.36.66
         version: link:../admin.users.v1
       '@wso2is/admin.userstores.v1':
-        specifier: ^2.27.39
+        specifier: ^2.27.40
         version: link:../admin.userstores.v1
       '@wso2is/core':
-        specifier: ^2.12.3
+        specifier: ^2.12.4
         version: link:../../modules/core
       '@wso2is/dynamic-forms':
         specifier: ^2.4.41
         version: link:../../modules/dynamic-forms
       '@wso2is/form':
-        specifier: ^2.9.1
+        specifier: ^2.9.2
         version: link:../../modules/form
       '@wso2is/forms':
         specifier: ^2.3.24
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.30.53
+        specifier: ^2.30.55
         version: link:../../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.9.23
+        specifier: ^2.9.24
         version: link:../../modules/react-components
       '@wso2is/theme':
         specifier: ^2.8.7
@@ -15744,9 +15284,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -16035,7 +15572,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/admin.core.v1':
         specifier: ^2.49.82
         version: link:../admin.core.v1
@@ -16159,7 +15696,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -16167,7 +15704,7 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.core.v1':
-        specifier: ^2.46.30
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/core':
         specifier: ^2.10.1
@@ -16232,9 +15769,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -16535,7 +16069,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -16543,7 +16077,7 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.core.v1':
-        specifier: ^2.45.2
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/core':
         specifier: ^2.7.0
@@ -16578,6 +16112,9 @@ importers:
       country-language:
         specifier: ^0.1.7
         version: 0.1.7
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       deep-equal:
         specifier: ^2.2.2
         version: 2.2.3
@@ -16608,9 +16145,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -16911,7 +16445,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -16919,10 +16453,10 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.90
+        specifier: ^2.49.99
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
-        specifier: ^2.40.9
+        specifier: ^2.40.10
         version: link:../admin.extensions.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.7.7
@@ -16934,40 +16468,40 @@ importers:
         specifier: workspace:^
         version: link:../admin.flows.v1
       '@wso2is/admin.identity-providers.v1':
-        specifier: ^2.26.208
+        specifier: ^2.26.209
         version: link:../admin.identity-providers.v1
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.27.8
+        specifier: ^2.27.13
         version: link:../admin.organizations.v1
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.104
+        specifier: ^2.35.113
         version: 'link:'
       '@wso2is/admin.users.v1':
-        specifier: ^2.36.57
+        specifier: ^2.36.66
         version: link:../admin.users.v1
       '@wso2is/admin.validation.v1':
-        specifier: ^2.27.147
+        specifier: ^2.27.148
         version: link:../admin.validation.v1
       '@wso2is/common.ui.v1':
         specifier: ^0.2.0
         version: link:../common.ui.v1
       '@wso2is/core':
-        specifier: ^2.12.3
+        specifier: ^2.12.4
         version: link:../../modules/core
       '@wso2is/dynamic-forms':
         specifier: ^2.4.41
         version: link:../../modules/dynamic-forms
       '@wso2is/form':
-        specifier: ^2.9.1
+        specifier: ^2.9.2
         version: link:../../modules/form
       '@wso2is/forms':
         specifier: ^2.3.25
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.30.53
+        specifier: ^2.30.55
         version: link:../../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.9.23
+        specifier: ^2.9.24
         version: link:../../modules/react-components
       '@wso2is/theme':
         specifier: ^2.8.7
@@ -17014,9 +16548,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -17184,7 +16715,7 @@ importers:
         specifier: ^6.5.0
         version: 6.5.0(eslint@8.46.0)(typescript@4.9.5)
       '@wso2is/admin.registration-flow-builder.v1':
-        specifier: ^0.10.42
+        specifier: ^0.10.51
         version: link:../admin.registration-flow-builder.v1
       connect-history-api-fallback:
         specifier: ^2.0.0
@@ -17320,7 +16851,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -17328,28 +16859,28 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.82
+        specifier: ^2.49.99
         version: link:../admin.core.v1
       '@wso2is/admin.organizations.v1':
         specifier: workspace:^
         version: link:../admin.organizations.v1
       '@wso2is/core':
-        specifier: ^2.12.3
+        specifier: ^2.12.4
         version: link:../../modules/core
       '@wso2is/dynamic-forms':
         specifier: ^2.4.41
         version: link:../../modules/dynamic-forms
       '@wso2is/form':
-        specifier: ^2.7.1
+        specifier: ^2.9.2
         version: link:../../modules/form
       '@wso2is/forms':
         specifier: ^2.3.25
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.30.48
+        specifier: ^2.30.54
         version: link:../../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.9.16
+        specifier: ^2.9.24
         version: link:../../modules/react-components
       '@wso2is/theme':
         specifier: ^2.6.11
@@ -17396,9 +16927,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -17699,7 +17227,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -17707,13 +17235,13 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.connections.v1':
-        specifier: ^2.33.96
+        specifier: ^2.34.8
         version: link:../admin.connections.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.45.2
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
-        specifier: ^2.38.2
+        specifier: ^2.40.10
         version: link:../admin.extensions.v1
       '@wso2is/core':
         specifier: ^2.7.0
@@ -17778,9 +17306,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -18081,7 +17606,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -18089,13 +17614,13 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.branding.v1':
-        specifier: ^2.30.1
+        specifier: ^2.32.43
         version: link:../admin.branding.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.45.2
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.26.205
+        specifier: ^2.27.11
         version: link:../admin.organizations.v1
       '@wso2is/common.branding.v1':
         specifier: ^2.27.1
@@ -18163,9 +17688,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -18454,15 +17976,15 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/access-control':
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.core.v1':
-        specifier: ^2.45.2
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.26.205
+        specifier: ^2.27.11
         version: link:../admin.organizations.v1
       '@wso2is/core':
         specifier: ^2.7.0
@@ -18476,9 +17998,6 @@ importers:
       i18next:
         specifier: ^21.9.1
         version: 21.10.0
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -18603,6 +18122,9 @@ importers:
       react-dom:
         specifier: ^18.2.0
         version: 18.3.1(react@18.3.1)
+      react-markdown:
+        specifier: ^9.0.1
+        version: 9.0.3(@types/react@18.0.18)(react@18.3.1)
       react-redux:
         specifier: ^7.2.9
         version: 7.2.9(react-dom@18.3.1)(react@18.3.1)
@@ -18699,7 +18221,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -18707,22 +18229,22 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.82
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
-        specifier: ^2.38.2
+        specifier: ^2.40.10
         version: link:../admin.extensions.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.6.2
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.27.8
+        specifier: ^2.27.11
         version: link:../admin.organizations.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.36.49
+        specifier: ^2.36.62
         version: link:../admin.users.v1
       '@wso2is/admin.validation.v1':
-        specifier: ^2.27.144
+        specifier: ^2.27.148
         version: link:../admin.validation.v1
       '@wso2is/core':
         specifier: ^2.12.3
@@ -18757,6 +18279,9 @@ importers:
       country-language:
         specifier: ^0.1.7
         version: 0.1.7
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       deep-equal:
         specifier: ^2.2.2
         version: 2.2.3
@@ -18787,9 +18312,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -19078,7 +18600,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/admin.applications.v1':
         specifier: ^2.36.10
         version: link:../admin.applications.v1
@@ -19220,7 +18742,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -19233,17 +18755,14 @@ importers:
       '@wso2is/admin.authentication.v1':
         specifier: ^2.25.206
         version: link:../admin.authentication.v1
-      '@wso2is/admin.authorization.v1':
-        specifier: ^2.25.89
-        version: link:../admin.authorization.v1
       '@wso2is/admin.claims.v1':
-        specifier: ^2.29.13
+        specifier: ^2.29.14
         version: link:../admin.claims.v1
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.90
+        specifier: ^2.49.99
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
-        specifier: ^2.40.9
+        specifier: ^2.40.10
         version: link:../admin.extensions.v1
       '@wso2is/admin.feature-gate.v1':
         specifier: ^1.7.7
@@ -19255,52 +18774,52 @@ importers:
         specifier: workspace:^
         version: link:../admin.flows.v1
       '@wso2is/admin.groups.v1':
-        specifier: ^2.27.125
+        specifier: ^2.27.126
         version: link:../admin.groups.v1
       '@wso2is/admin.identity-providers.v1':
-        specifier: ^2.26.208
+        specifier: ^2.26.209
         version: link:../admin.identity-providers.v1
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.27.8
+        specifier: ^2.27.13
         version: link:../admin.organizations.v1
       '@wso2is/admin.roles.v2':
-        specifier: ^2.27.252
+        specifier: ^2.27.261
         version: link:../admin.roles.v2
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.104
+        specifier: ^2.35.113
         version: link:../admin.server-configurations.v1
       '@wso2is/admin.tenants.v1':
-        specifier: ^2.29.22
+        specifier: ^2.29.23
         version: link:../admin.tenants.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.36.57
+        specifier: ^2.36.66
         version: 'link:'
       '@wso2is/admin.userstores.v1':
-        specifier: ^2.27.39
+        specifier: ^2.27.40
         version: link:../admin.userstores.v1
       '@wso2is/admin.validation.v1':
-        specifier: ^2.27.147
+        specifier: ^2.27.148
         version: link:../admin.validation.v1
       '@wso2is/common.users.v1':
         specifier: workspace:^
         version: link:../common.users.v1
       '@wso2is/core':
-        specifier: ^2.12.3
+        specifier: ^2.12.4
         version: link:../../modules/core
       '@wso2is/dynamic-forms':
         specifier: ^2.4.41
         version: link:../../modules/dynamic-forms
       '@wso2is/form':
-        specifier: ^2.9.1
+        specifier: ^2.9.2
         version: link:../../modules/form
       '@wso2is/forms':
         specifier: ^2.3.23
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.30.53
+        specifier: ^2.30.55
         version: link:../../modules/i18n
       '@wso2is/react-components':
-        specifier: ^2.9.22
+        specifier: ^2.9.24
         version: link:../../modules/react-components
       '@wso2is/theme':
         specifier: ^2.8.6
@@ -19317,6 +18836,9 @@ importers:
       country-language:
         specifier: ^0.1.7
         version: 0.1.7
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       deep-equal:
         specifier: ^2.2.2
         version: 2.2.3
@@ -19347,9 +18869,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -19650,7 +19169,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -19658,10 +19177,10 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.89
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
-        specifier: ^2.40.8
+        specifier: ^2.40.10
         version: link:../admin.extensions.v1
       '@wso2is/admin.remote-userstores.v1':
         specifier: ^1.7.162
@@ -19729,9 +19248,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -20032,7 +19548,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -20040,25 +19556,25 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.90
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/admin.extensions.v1':
-        specifier: ^2.40.9
+        specifier: ^2.40.10
         version: link:../admin.extensions.v1
       '@wso2is/admin.groups.v1':
-        specifier: ^2.27.124
+        specifier: ^2.27.126
         version: link:../admin.groups.v1
       '@wso2is/admin.organizations.v1':
-        specifier: ^2.26.211
+        specifier: ^2.27.11
         version: link:../admin.organizations.v1
       '@wso2is/admin.roles.v2':
-        specifier: ^2.27.252
+        specifier: ^2.27.257
         version: link:../admin.roles.v2
       '@wso2is/admin.server-configurations.v1':
-        specifier: ^2.35.104
+        specifier: ^2.35.109
         version: link:../admin.server-configurations.v1
       '@wso2is/admin.users.v1':
-        specifier: ^2.36.57
+        specifier: ^2.36.62
         version: link:../admin.users.v1
       '@wso2is/core':
         specifier: ^2.10.1
@@ -20123,9 +19639,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -20676,7 +20189,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.5
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.5
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -20684,7 +20197,7 @@ importers:
         specifier: ^3.5.0
         version: link:../../modules/access-control
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.74
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/common.workflow-approvals.v1':
         specifier: workspace:^
@@ -20722,6 +20235,9 @@ importers:
       country-language:
         specifier: ^0.1.7
         version: 0.1.7
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       deep-equal:
         specifier: ^2.2.2
         version: 2.2.3
@@ -20755,9 +20271,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -21058,7 +20571,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -21066,7 +20579,7 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.core.v1':
-        specifier: ^2.46.30
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/core':
         specifier: ^2.10.1
@@ -21131,9 +20644,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -21434,7 +20944,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -21442,7 +20952,7 @@ importers:
         specifier: ^3.3.20
         version: link:../../modules/access-control
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.76
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/common.ui.v1':
         specifier: workspace:^
@@ -21510,9 +21020,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -21801,7 +21308,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/admin.core.v1':
         specifier: ^2.45.2
         version: link:../admin.core.v1
@@ -21892,7 +21399,7 @@ importers:
         version: 8.9.2(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/material@5.13.0)(@mui/system@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -22104,7 +21611,7 @@ importers:
     dependencies:
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -22243,7 +21750,7 @@ importers:
         version: 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -22251,7 +21758,7 @@ importers:
         specifier: ^3.5.0
         version: link:../../modules/access-control
       '@wso2is/admin.core.v1':
-        specifier: ^2.49.74
+        specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/core':
         specifier: ^2.7.0
@@ -22286,6 +21793,9 @@ importers:
       country-language:
         specifier: ^0.1.7
         version: 0.1.7
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       deep-equal:
         specifier: ^2.2.2
         version: 2.2.3
@@ -22316,9 +21826,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       mustache:
         specifier: ^4.2.0
         version: 4.2.0
@@ -22700,6 +22207,9 @@ importers:
       crypto-js:
         specifier: ^3.1.9-1
         version: 3.3.0
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       dompurify:
         specifier: ^3.0.9
         version: 3.2.4
@@ -22715,9 +22225,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.29.4
-        version: 2.30.1
       node-forge:
         specifier: ^0.10.0
         version: 0.10.0
@@ -22793,7 +22300,7 @@ importers:
         version: 5.13.0(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/core':
         specifier: ^2.7.0
         version: link:../core
@@ -22881,22 +22388,25 @@ importers:
         version: 5.13.0(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
       '@mui/x-date-pickers':
         specifier: 6.18.0
-        version: 6.18.0(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/material@5.13.0)(@mui/system@5.16.14)(@types/react@18.0.18)(moment@2.30.1)(react-dom@18.3.1)(react@18.3.1)
+        version: 6.18.0(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/material@5.13.0)(@mui/system@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(moment@2.30.1)(react-dom@18.3.1)(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@wso2is/core':
-        specifier: ^2.10.0
+        specifier: ^2.12.4
         version: link:../core
       '@wso2is/react-components':
-        specifier: ^2.9.16
+        specifier: ^2.9.24
         version: link:../react-components
       '@wso2is/validation':
         specifier: ^2.4.1
         version: link:../validation
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       final-form:
         specifier: ^4.20.2
         version: 4.20.10
@@ -23106,7 +22616,7 @@ importers:
         version: 6.2.1(react@18.3.1)
       '@oxygen-ui/react':
         specifier: ^2.4.6
-        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       '@oxygen-ui/react-icons':
         specifier: ^2.4.6
         version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
@@ -23129,7 +22639,7 @@ importers:
         specifier: ^6.5.9
         version: 6.5.16(react-dom@18.3.1)(react@18.3.1)
       '@wso2is/core':
-        specifier: ^2.7.8
+        specifier: ^2.12.4
         version: link:../core
       '@wso2is/theme':
         specifier: ^2.8.7
@@ -23140,6 +22650,9 @@ importers:
       codemirror:
         specifier: ^5.52.0
         version: 5.65.18
+      dayjs:
+        specifier: ^1.11.18
+        version: 1.11.18
       file-saver:
         specifier: ^2.0.5
         version: 2.0.5
@@ -23155,9 +22668,6 @@ importers:
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
-      moment:
-        specifier: ^2.24.0
-        version: 2.30.1
       react:
         specifier: '*'
         version: 18.3.1
@@ -27960,7 +27470,7 @@ packages:
       - '@types/react'
     dev: false
 
-  /@mui/x-date-pickers@6.18.0(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/material@5.13.0)(@mui/system@5.16.14)(@types/react@18.0.18)(moment@2.30.1)(react-dom@18.3.1)(react@18.3.1):
+  /@mui/x-date-pickers@6.18.0(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/material@5.13.0)(@mui/system@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(moment@2.30.1)(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-y4UlkHQXiNRfb6FWQ/GWir0sZ+9kL+GEEZssG+XWP3KJ+d3lONRteusl4AJkYJBdIAOh+5LnMV9RAQKq9Sl7yw==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
@@ -28006,6 +27516,7 @@ packages:
       '@mui/utils': 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@types/react-transition-group': 4.4.12(@types/react@18.0.18)
       clsx: 2.1.1
+      dayjs: 1.11.18
       moment: 2.30.1
       prop-types: 15.8.1
       react: 18.3.1
@@ -29414,7 +28925,7 @@ packages:
       - moment-jalaali
     dev: false
 
-  /@oxygen-ui/react@2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5):
+  /@oxygen-ui/react@2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5):
     resolution: {integrity: sha512-VGCxO68cpb7ejwR8uApdbhaxk8eDYDfx2KVlXGiIqq3Mo7uKmnP/jP7PAfdCgBFSUF30NY2Bc9oS0cpJc0R5DA==}
     peerDependencies:
       '@emotion/react': ^11.10.5
@@ -29439,7 +28950,7 @@ packages:
       '@mui/system': 5.16.14(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/utils': 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@mui/x-data-grid': 6.20.4(@mui/material@5.13.0)(@mui/system@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
-      '@mui/x-date-pickers': 6.18.0(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/material@5.13.0)(@mui/system@5.16.14)(@types/react@18.0.18)(moment@2.30.1)(react-dom@18.3.1)(react@18.3.1)
+      '@mui/x-date-pickers': 6.18.0(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/material@5.13.0)(@mui/system@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(moment@2.30.1)(react-dom@18.3.1)(react@18.3.1)
       '@oxygen-ui/primitives': 2.4.6
       '@oxygen-ui/react-icons': 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       clsx: 1.2.1
@@ -29459,7 +28970,7 @@ packages:
       - moment-jalaali
     dev: false
 
-  /@oxygen-ui/react@2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5):
+  /@oxygen-ui/react@2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.129)(@mui/material@5.13.0)(@mui/system@5.16.14)(@mui/utils@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5):
     resolution: {integrity: sha512-VGCxO68cpb7ejwR8uApdbhaxk8eDYDfx2KVlXGiIqq3Mo7uKmnP/jP7PAfdCgBFSUF30NY2Bc9oS0cpJc0R5DA==}
     peerDependencies:
       '@emotion/react': ^11.10.5
@@ -29484,7 +28995,7 @@ packages:
       '@mui/system': 5.16.14(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@types/react@18.0.18)(react@18.3.1)
       '@mui/utils': 5.16.14(@types/react@18.0.18)(react@18.3.1)
       '@mui/x-data-grid': 6.20.4(@mui/material@5.13.0)(@mui/system@5.16.14)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
-      '@mui/x-date-pickers': 6.20.2(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/material@5.13.0)(@mui/system@5.16.14)(@types/react@18.0.18)(moment@2.30.1)(react-dom@18.3.1)(react@18.3.1)
+      '@mui/x-date-pickers': 6.18.0(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/material@5.13.0)(@mui/system@5.16.14)(@types/react@18.0.18)(dayjs@1.11.18)(moment@2.30.1)(react-dom@18.3.1)(react@18.3.1)
       '@oxygen-ui/primitives': 2.4.6
       '@oxygen-ui/react-icons': 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
       clsx: 1.2.1
@@ -37777,6 +37288,10 @@ packages:
     resolution: {integrity: sha512-jyCETtSl3VMZMWeRo7iY1FL19ges1t55hMo5yaam4Jrsm5EPL89UQkoQRyiI+Yf4k8r2ZpdngkV8hr1lIdjb3Q==}
     dev: true
 
+  /dayjs@1.11.18:
+    resolution: {integrity: sha512-zFBQ7WFRvVRhKcWoUh+ZA1g2HVgUbsZm9sbddh8EC5iv93sui8DVVz1Npvz+r6meo9VKfa8NyLWBsQK1VvIKPA==}
+    dev: false
+
   /debounce@1.2.1:
     resolution: {integrity: sha512-XRRe6Glud4rd/ZGQfiV1ruXSfbvfJedlV9Y6zOlP+2K04vBYiJEte6stfFkCP03aMnY5tsipamumUjL14fofug==}
 
@@ -44000,8 +43515,6 @@ packages:
       webpack: '*'
     peerDependenciesMeta:
       webpack:
-        optional: true
-      webpack-sources:
         optional: true
     dependencies:
       webpack: 5.84.1(@swc/core@1.3.99)(esbuild@0.18.20)(webpack-cli@4.10.0)

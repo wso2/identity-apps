@@ -53,8 +53,8 @@ import { Field, Forms, Validation } from "@wso2is/forms";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import { Button, Popup } from "@wso2is/react-components";
 import { AxiosError } from "axios";
+import dayjs from "dayjs";
 import isEmpty from "lodash-es/isEmpty";
-import moment from "moment";
 import React, { FunctionComponent, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -1968,7 +1968,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = (
                                         name="createdDate"
                                         type="text"
                                         value={ createdDate ?
-                                            moment(createdDate).format("YYYY-MM-DD") : "" }
+                                            dayjs(createdDate).format("YYYY-MM-DD") : "" }
                                         readOnly={ true }
                                     />
                                 </Form.Field>
@@ -1988,7 +1988,7 @@ const UserProfileForm: FunctionComponent<UserProfileFormPropsInterface> = (
                                         name="modifiedDate"
                                         type="text"
                                         value={ modifiedDate ?
-                                            moment(modifiedDate).format("YYYY-MM-DD") : "" }
+                                            dayjs(modifiedDate).format("YYYY-MM-DD") : "" }
                                         readOnly={ true }
                                     />
                                 </Form.Field>

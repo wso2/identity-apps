@@ -20,7 +20,7 @@ import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { getGroupList } from "@wso2is/admin.groups.v1/api/groups";
 import { GroupListInterface, GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import {
     AlertLevels,
     RoleGroupsInterface,
