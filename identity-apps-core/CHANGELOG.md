@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.3.25
+
+### Patch Changes
+
+- [#9253](https://github.com/wso2/identity-apps/pull/9253) [`287114f2219a9e306824d24a17eddc42445212a7`](https://github.com/wso2/identity-apps/commit/287114f2219a9e306824d24a17eddc42445212a7) Thanks [@UpekshaGalappaththi](https://github.com/UpekshaGalappaththi)! - Adding j2 template for authenticator population validation
+
 ## 3.3.24
 
 ### Patch Changes
