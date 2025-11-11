@@ -1,5 +1,21 @@
 # @wso2is/admin.users.v1
 
+## 2.36.67
+
+### Patch Changes
+
+- [#9382](https://github.com/wso2/identity-apps/pull/9382) [`70b912197809cd7dd4b1f72cb0bfa60d71fb5309`](https://github.com/wso2/identity-apps/commit/70b912197809cd7dd4b1f72cb0bfa60d71fb5309) Thanks [@JayanaGunaweera01](https://github.com/JayanaGunaweera01)! - Implement feature flag for total user count display in console users page
+
+- Updated dependencies [[`70b912197809cd7dd4b1f72cb0bfa60d71fb5309`](https://github.com/wso2/identity-apps/commit/70b912197809cd7dd4b1f72cb0bfa60d71fb5309), [`b6be0d6eb32c04e1048aca9c0ca2f199f6df8f0c`](https://github.com/wso2/identity-apps/commit/b6be0d6eb32c04e1048aca9c0ca2f199f6df8f0c)]:
+  - @wso2is/react-components@2.9.25
+  - @wso2is/admin.users.v1@2.36.67
+  - @wso2is/core@2.12.5
+  - @wso2is/admin.core.v1@2.49.100
+  - @wso2is/admin.roles.v2@2.27.262
+  - @wso2is/admin.flow-builder-core.v1@0.10.92
+  - @wso2is/admin.flows.v1@1.0.61
+  - @wso2is/admin.server-configurations.v1@2.35.114
+
 ## 2.36.66
 
 ### Patch Changes

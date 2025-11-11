@@ -1,5 +1,19 @@
 # @wso2is/admin.connections.v1
 
+## 2.34.10
+
+### Patch Changes
+
+- [#9427](https://github.com/wso2/identity-apps/pull/9427) [`b6be0d6eb32c04e1048aca9c0ca2f199f6df8f0c`](https://github.com/wso2/identity-apps/commit/b6be0d6eb32c04e1048aca9c0ca2f199f6df8f0c) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Implement capability to hide Local Email/SMS OTP authenticators based on deployment config
+
+- Updated dependencies [[`70b912197809cd7dd4b1f72cb0bfa60d71fb5309`](https://github.com/wso2/identity-apps/commit/70b912197809cd7dd4b1f72cb0bfa60d71fb5309), [`b6be0d6eb32c04e1048aca9c0ca2f199f6df8f0c`](https://github.com/wso2/identity-apps/commit/b6be0d6eb32c04e1048aca9c0ca2f199f6df8f0c)]:
+  - @wso2is/react-components@2.9.25
+  - @wso2is/admin.applications.v1@2.38.9
+  - @wso2is/admin.connections.v1@2.34.10
+  - @wso2is/core@2.12.5
+  - @wso2is/admin.core.v1@2.49.100
+  - @wso2is/admin.roles.v2@2.27.262
+
 ## 2.34.9
 
 ### Patch Changes
