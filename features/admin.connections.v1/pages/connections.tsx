@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Show, useRequiredScopes } from "@wso2is/access-control";
+import { FeatureAccessConfigInterface, Show, useRequiredScopes } from "@wso2is/access-control";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
@@ -27,6 +27,7 @@ import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import {
     IdVPTemplateTags
 } from "@wso2is/admin.identity-verification-providers.v1/models/identity-verification-providers";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -50,6 +51,10 @@ import { Dispatch } from "redux";
 import { Icon } from "semantic-ui-react";
 import { useGetAuthenticatorTags } from "../api/authenticators";
 import { AuthenticatorGrid } from "../components/authenticator-grid";
+import {
+    CommonAuthenticatorConstants,
+    ConnectionsFeatureDictionaryKeys
+} from "../constants/common-authenticator-constants";
 import { SearchInputsInterface, useGetCombinedConnectionList } from "../hooks/use-get-combined-connection-list";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 
@@ -66,14 +71,24 @@ type ConnectionsPropsInterface = TestableComponentInterface;
  * @returns React Element
  */
 const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsInterface): ReactElement => {
-    const { [ "data-testid" ]: testId } = props;
+    const { [ "data-testid" ]: testId = "idp" } = props;
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
     const { getLink } = useDocumentation();
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const identityProvidersFeatureConfig: FeatureAccessConfigInterface = featureConfig?.identityProviders;
     const isIdVPFeatureEnabled: boolean = featureConfig?.identityVerificationProviders?.enabled;
+
+    const isLocalEmailOTPAuthenticatorEnabled: boolean = isFeatureEnabled(
+        identityProvidersFeatureConfig,
+        CommonAuthenticatorConstants.FEATURE_DICTIONARY.get(
+            ConnectionsFeatureDictionaryKeys.LocalEmailOTPAuthenticator));
+    const isLocalSMSOTPAuthenticatorEnabled: boolean = isFeatureEnabled(
+        identityProvidersFeatureConfig,
+        CommonAuthenticatorConstants.FEATURE_DICTIONARY.get(
+            ConnectionsFeatureDictionaryKeys.LocalSMSOTPAuthenticator));
 
     const hasIdVPReadPermissions: boolean = useRequiredScopes(
         featureConfig?.identityVerificationProviders?.scopes?.read);
@@ -105,7 +120,9 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
         listOffset,
         searchInputs,
         true,
-        isIdVPFeatureEnabled && hasIdVPReadPermissions
+        isIdVPFeatureEnabled && hasIdVPReadPermissions,
+        !isLocalEmailOTPAuthenticatorEnabled,
+        !isLocalSMSOTPAuthenticatorEnabled
     );
 
     /**
@@ -315,13 +332,6 @@ const ConnectionsPage: FC<ConnectionsPropsInterface> = (props: ConnectionsPropsI
             </GridLayout>
         </PageLayout>
     );
-};
-
-/**
- * Default proptypes for the IDP component.
- */
-ConnectionsPage.defaultProps = {
-    "data-testid": "idp"
 };
 
 /**

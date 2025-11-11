@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -36,7 +36,8 @@ import {
 } from "@wso2is/admin.applications.v1/models/application";
 import { AdaptiveScriptUtils } from "@wso2is/admin.applications.v1/utils/adaptive-script-utils";
 import {
-    CommonAuthenticatorConstants
+    CommonAuthenticatorConstants,
+    ConnectionsFeatureDictionaryKeys
 } from "@wso2is/admin.connections.v1/constants/common-authenticator-constants";
 import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-deployment-configs";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -80,8 +81,13 @@ import { ENFORCE_SCRIPT_UPDATE_PERMISSION_FEATURE_ID } from "../../constants/edi
 import {
     APPLE_LOGIN_SEQUENCE,
     ELK_RISK_BASED_TEMPLATE_NAME,
+    EMAIL_OTP_PASSWORDLESS_SEQUENCE,
+    EMAIL_OTP_SECOND_FACTOR_SEQUENCE,
     PUSH_AUTH_FIRST_FACTOR_SEQUENCE,
-    PUSH_AUTH_SECOND_FACTOR_SEQUENCE } from "../../constants/template-constants";
+    PUSH_AUTH_SECOND_FACTOR_SEQUENCE,
+    SMS_OTP_PASSWORDLESS_SEQUENCE,
+    SMS_OTP_SECOND_FACTOR_SEQUENCE
+} from "../../constants/template-constants";
 import * as FlowSequences from "../../data/flow-sequences";
 import useAuthenticationFlow from "../../hooks/use-authentication-flow";
 import { PredefinedFlowCategories, SocialIdPPlaceholders } from "../../models/predefined-flows";
@@ -229,11 +235,22 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
     const applicationsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
         return state.config?.ui?.features?.applications;
     });
+    const identityProvidersFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config?.ui?.features?.identityProviders);
     const isScriptUpdatePermissionEnforced: boolean = isFeatureEnabled(applicationsFeatureConfig,
         ENFORCE_SCRIPT_UPDATE_PERMISSION_FEATURE_ID);
     const hasScriptUpdatePermission: boolean = useRequiredScopes(
         applicationsFeatureConfig?.subFeatures?.applicationAuthenticationScript?.scopes?.update);
     const isScriptUpdateReadOnly: boolean = isScriptUpdatePermissionEnforced && !hasScriptUpdatePermission;
+
+    const isLocalEmailOTPAuthenticatorEnabled: boolean = isFeatureEnabled(
+        identityProvidersFeatureConfig,
+        CommonAuthenticatorConstants.FEATURE_DICTIONARY.get(
+            ConnectionsFeatureDictionaryKeys.LocalEmailOTPAuthenticator));
+    const isLocalSMSOTPAuthenticatorEnabled: boolean = isFeatureEnabled(
+        identityProvidersFeatureConfig,
+        CommonAuthenticatorConstants.FEATURE_DICTIONARY.get(
+            ConnectionsFeatureDictionaryKeys.LocalSMSOTPAuthenticator));
 
     /**
      * Handles the accordion change event.
@@ -341,6 +358,21 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                     <Typography variant="body1">{ title }</Typography>
                     <Box className="predefined-flow-category-items">
                         { Object.entries(sequenceCategory).map(([ sequenceId, sequence ]: [string, any]) => {
+
+                            // Skip Local Email OTP authenticator based sequences based on the flag.
+                            if (!isLocalEmailOTPAuthenticatorEnabled && (
+                                sequenceId === EMAIL_OTP_SECOND_FACTOR_SEQUENCE ||
+                                sequenceId === EMAIL_OTP_PASSWORDLESS_SEQUENCE)) {
+                                return null;
+                            }
+
+                            // Skip Local SMS OTP authenticator based sequences based on the flag.
+                            if (!isLocalSMSOTPAuthenticatorEnabled && (
+                                sequenceId === SMS_OTP_SECOND_FACTOR_SEQUENCE ||
+                                sequenceId === SMS_OTP_PASSWORDLESS_SEQUENCE)) {
+                                return null;
+                            }
+
                             if (sequenceId === APPLE_LOGIN_SEQUENCE
                                 && new URL(deploymentConfig?.serverOrigin)?.hostname
                                     === CommonAuthenticatorConstants.LOCAL_SERVER_URL) {
