@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Paper from "@oxygen-ui/react/Paper";
 import Table from "@oxygen-ui/react/Table";
@@ -1697,17 +1698,20 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 label={ t("claims:local.forms.managedInUserStore.label") }
                                 data-testid={ `${ testId }-form-managed-in-user-store-checkbox` }
                                 readOnly={ isSubOrganization() || isReadOnly }
-                                hint={
-                                    managedInUserStore
-                                    && isIdentityClaim
-                                    && hasReadOnlyUserStoresConfigured
-                                        ? t("claims:local.forms.managedInUserStore.readOnlyUserStoreHint")
-                                        : t("claims:local.forms.managedInUserStore.hint")
-                                }
+                                hint={ t("claims:local.forms.managedInUserStore.hint") }
                                 defaultValue={ claim?.managedInUserStore ?? false }
                                 listen={ setManagedInUserStore }
                             />
                         )
+                    }
+                    {
+                        isSelectiveClaimStoreManagementEnabled && !hideSpecialClaims
+                        && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
+                        && managedInUserStore && isIdentityClaim && hasReadOnlyUserStoresConfigured
+                        && (
+                            <Alert severity="warning" className="info-box">
+                                { t("claims:local.forms.managedInUserStore.readOnlyUserStoreHint") }
+                            </Alert>)
                     }
                     {
                         isDistinctAttributeProfilesDisabled &&

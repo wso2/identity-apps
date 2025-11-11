@@ -613,6 +613,7 @@ export interface ClaimsNS {
             subheader: string;
         };
         mappedAttributes: {
+            readOnlyUserStore: string;
             hint: string;
             mappedAttributeName: string;
             manageInUserStore: string;

@@ -20,6 +20,7 @@ import Accordion from "@oxygen-ui/react/Accordion";
 import AccordionDetails from "@oxygen-ui/react/AccordionDetails";
 import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
 import Checkbox from "@oxygen-ui/react/Checkbox";
+import Chip from "@oxygen-ui/react/Chip";
 import Typography from "@oxygen-ui/react/Typography";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
@@ -40,7 +41,7 @@ import {
 import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
 import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
 import { EmphasizedSegment, PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -64,6 +65,10 @@ interface EditMappedAttributesLocalClaimsPropsInterface extends IdentifiableComp
      * User stores.
      */
     userStores: UserStoreBasicData[];
+    /**
+     * Names of configured read-only user stores.
+     */
+    readOnlyUserStoreNames?: string[];
 }
 
 /**
@@ -82,6 +87,7 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
         claim,
         update,
         userStores,
+        readOnlyUserStoreNames,
         [ "data-componentid" ]: componentId = "edit-local-claims-mapped-attributes"
     } = props;
 
@@ -92,6 +98,10 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
     const [ submit, setSubmit ] = useTrigger();
 
     const { t } = useTranslation();
+
+    const readOnlyUserStoreSet: Set<string> = useMemo(() =>
+        new Set(readOnlyUserStoreNames?.map((name: string) => name.toUpperCase()) ?? [])
+    , [ readOnlyUserStoreNames ]);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const hiddenUserStores: string[] = useSelector((state: AppState) => state?.config?.ui?.hiddenUserStores);
@@ -111,7 +121,8 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
 
     const shouldShowExcludedUserStores: boolean = isSelectiveClaimStoreManagementEnabled
         ? !!claim?.managedInUserStore
-        : ClaimManagementConstants.USER_STORE_CONFIG_SUPPORTED_CLAIMS.includes(claim.claimURI);
+        : !!claim?.claimURI
+            && ClaimManagementConstants.USER_STORE_CONFIG_SUPPORTED_CLAIMS.includes(claim.claimURI);
 
     /**
      * Fetch the updated SCIM2 schema list.
@@ -295,7 +306,19 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                             data-componentid={ `${componentId}-form-accordion-${store.name}` }
                                         >
                                             <AccordionSummary>
-                                                <Typography variant="h6"> { store.name } </Typography>
+                                                <Typography variant="h6">
+                                                    { store.name }
+                                                </Typography>
+                                                {
+                                                    readOnlyUserStoreSet?.has(store.name?.toUpperCase()) && (
+                                                        <Chip
+                                                            className="ml-2 oxygen-chip-beta"
+                                                            label={
+                                                                t("claims:local.mappedAttributes.readOnlyUserStore")
+                                                            }
+                                                        />
+                                                    )
+                                                }
                                             </AccordionSummary>
                                             <AccordionDetails>
                                                 <Grid>

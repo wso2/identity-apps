@@ -521,8 +521,9 @@ export const claims: ClaimsNS = {
             managedInUserStore: {
                 hint: "Indicates whether the attribute is managed in the user store.",
                 label: "Managed in User Store",
-                readOnlyUserStoreHint: "At least one read-only user store is configured. "
-                    + "Exclude these user store domains to ensure identity claims function correctly."
+                readOnlyUserStoreHint: "One or more user stores are read-only. Some identity attributes require " +
+                    "updates, and managing them in read-only stores may cause issues. To avoid this, exclude those " +
+                    "attributes from read-only stores in the Attribute Mappings section."
             },
             multiValued: {
                 label: "Allow multiple values for this attribute",
@@ -605,7 +606,8 @@ export const claims: ClaimsNS = {
         mappedAttributes: {
             hint: "Enter the attribute from the respective user stores that will be mapped to this attribute.",
             manageInUserStore: "Manage in user store",
-            mappedAttributeName: "Mapped Attribute Name"
+            mappedAttributeName: "Mapped Attribute Name",
+            readOnlyUserStore: "Read Only"
         },
         notifications: {
             addLocalClaim: {
