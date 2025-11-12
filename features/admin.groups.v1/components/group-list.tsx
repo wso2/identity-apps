@@ -39,6 +39,7 @@ import {
 } from "@wso2is/react-components";
 import dayjs, { Dayjs } from "dayjs";
 import duration from "dayjs/plugin/duration";
+import relativeTime from "dayjs/plugin/relativeTime";
 import isEmpty from "lodash-es/isEmpty";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -47,6 +48,7 @@ import { GroupConstants } from "../constants/group-constants";
 import { GroupsInterface } from "../models/groups";
 
 dayjs.extend(duration);
+dayjs.extend(relativeTime);
 
 interface GroupListProps extends SBACInterface<FeatureConfigInterface>,
     LoadableComponentInterface, TestableComponentInterface {
