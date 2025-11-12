@@ -162,7 +162,7 @@ const EditPolicyPage: FunctionComponent<EditPolicyPageProps> = ({
                         inputProps={ { min: 0 } }
                     />
                     <Hint className="hint-text">
-                        { "Specify the evaluation order for this policy." }
+                        { t("policyAdministration:editPolicy.fields.policyOrder.hint") }
                     </Hint>
                 </Box>
             ) }
