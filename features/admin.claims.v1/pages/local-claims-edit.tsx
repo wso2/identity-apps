@@ -108,6 +108,8 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
         return userStores;
     }, [ isUserStoreListFetchRequestLoading, userStoresList ]);
 
+    const showManagedInUserStoreProperty: boolean = useMemo(() => userStores?.length >= 1, [ userStores ]);
+
     useEffect(() => {
         getClaim();
         mutateUserStoreList();
@@ -152,6 +154,7 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
                         claim={ claim }
                         update={ getClaim }
                         readOnlyUserStoreNames={ readOnlyUserStoreNamesList }
+                        showManagedInUserStoreProperty={ showManagedInUserStoreProperty }
                         data-testid="local-claims-basic-details-edit"
                     />
                 </ResourceTab.Pane>
@@ -203,6 +206,7 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
                         claim={ claim }
                         update={ getClaim }
                         readOnlyUserStoreNames={ readOnlyUserStoreNamesList }
+                        showManagedInUserStoreProperty={ showManagedInUserStoreProperty }
                         data-testid="local-claims-basic-details-edit"
                     />
                 </ResourceTab.Pane>
@@ -288,6 +292,7 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
                             <EditBasicDetailsLocalClaims
                                 claim={ claim }
                                 update={ getClaim }
+                                showManagedInUserStoreProperty={ false }
                                 data-testid="local-claims-basic-details-edit"/>)
             }
 

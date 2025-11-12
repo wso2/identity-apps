@@ -116,6 +116,10 @@ interface EditBasicDetailsLocalClaimsPropsInterface extends TestableComponentInt
      * Names of the configured read-only user stores.
      */
     readOnlyUserStoreNames?: string[];
+    /**
+     * Specifies whether the managedInUserStore property should be shown.
+     */
+    showManagedInUserStoreProperty?: boolean;
 }
 
 const FORM_ID: string = "local-claim-basic-details-form";
@@ -141,6 +145,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         claim,
         update,
         readOnlyUserStoreNames,
+        showManagedInUserStoreProperty = true,
         [ "data-testid" ]: testId
     } = props;
 
@@ -186,6 +191,9 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             ClaimFeatureDictionaryKeys.SelectiveClaimStoreManagement
         )
     );
+
+    const showManagedInUserStore: boolean =
+        isSelectiveClaimStoreManagementEnabled && showManagedInUserStoreProperty;
 
     const useDefaultLabelsAndOrder: boolean = isFeatureEnabled(
         featureConfig?.users,
@@ -1687,8 +1695,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         )
                     }
                     {
-                        isSelectiveClaimStoreManagementEnabled
-                        && !hideSpecialClaims
+                        showManagedInUserStore && !hideSpecialClaims
                         && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
                         && (
                             <Field.Checkbox
@@ -1705,7 +1712,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         )
                     }
                     {
-                        isSelectiveClaimStoreManagementEnabled && !hideSpecialClaims
+                        showManagedInUserStore && !hideSpecialClaims
                         && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
                         && managedInUserStore && isIdentityClaim && hasReadOnlyUserStoresConfigured
                         && (
