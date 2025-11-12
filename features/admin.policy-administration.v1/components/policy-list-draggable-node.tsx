@@ -129,7 +129,7 @@ const PolicyListDraggableNode: FunctionComponent<PolicyListDraggableNodePropsInt
                             <Typography
                                 className="policy-order-text"
                                 variant="h6"
-                            >{ policy.policyOrder }</Typography>
+                            >{ policy?.policyOrder }</Typography>
                         ) }
                         position="top center"
                         content={ t("policyAdministration:popup.policyOrder") }
