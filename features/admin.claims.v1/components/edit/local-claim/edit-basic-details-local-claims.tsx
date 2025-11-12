@@ -91,7 +91,7 @@ import React, {
     useRef,
     useState
 } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Icon, Form as SemanticForm } from "semantic-ui-react";
@@ -1710,7 +1710,12 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         && managedInUserStore && isIdentityClaim && hasReadOnlyUserStoresConfigured
                         && (
                             <Alert severity="warning" className="info-box">
-                                { t("claims:local.forms.managedInUserStore.readOnlyUserStoreHint") }
+                                <Trans i18nKey="claims:local.forms.managedInUserStore.readOnlyUserStoreHint">
+                                    One or more user stores are read-only. Some identity attributes require
+                                    updates, and managing them in read-only stores may cause issues. To avoid
+                                    this, exclude those attributes from read-only stores in the
+                                    <strong>Attribute Mappings</strong> section.
+                                </Trans>
                             </Alert>)
                     }
                     {

@@ -519,11 +519,11 @@ export const claims: ClaimsNS = {
                 }
             },
             managedInUserStore: {
-                hint: "Indicates whether the attribute is managed in the user store.",
-                label: "Managed in User Store",
+                hint: "Indicates whether the attribute should be managed in the user store.",
+                label: "Manage in User Store",
                 readOnlyUserStoreHint: "One or more user stores are read-only. Some identity attributes require " +
                     "updates, and managing them in read-only stores may cause issues. To avoid this, exclude those " +
-                    "attributes from read-only stores in the Attribute Mappings section."
+                    "attributes from read-only stores in the <1>Attribute Mappings</1> section."
             },
             multiValued: {
                 label: "Allow multiple values for this attribute",
