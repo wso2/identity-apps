@@ -48,8 +48,10 @@ import {
     UserAvatar,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
+import dayjs, { Dayjs } from "dayjs";
+import duration from "dayjs/plugin/duration";
+import relativeTime from "dayjs/plugin/relativeTime";
 import isEmpty from "lodash-es/isEmpty";
-import moment from "moment";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -62,6 +64,9 @@ import {
     ReactComponent as RoundedLockSolidIcon
 } from "../../../../themes/default/assets/images/icons/solid-icons/rounded-lock.svg";
 import useConsoleRoles from "../../../hooks/use-console-roles";
+
+dayjs.extend(duration);
+dayjs.extend(relativeTime);
 
 /**
  * Props interface of {@link AdministratorsTable}
@@ -364,11 +369,11 @@ const AdministratorsTable: React.FunctionComponent<AdministratorsTablePropsInter
                 id: "meta.lastModified",
                 key: "meta.lastModified",
                 render: (user: UserBasicInterface): ReactNode => {
-                    const now: moment.Moment = moment(new Date());
-                    const receivedDate: moment.Moment = moment(user?.meta?.lastModified);
+                    const now: Dayjs = dayjs(new Date());
+                    const receivedDate: Dayjs = dayjs(user?.meta?.lastModified);
 
                     return t("console:common.dateTime.humanizedDateString", {
-                        date: moment.duration(now.diff(receivedDate)).humanize()
+                        date: dayjs.duration(now.diff(receivedDate)).humanize()
                     });
                 },
                 title: "Last Modified"

@@ -1,5 +1,102 @@
 # @wso2is/admin.agents.v1
 
+## 1.0.107
+
+### Patch Changes
+
+- Updated dependencies [[`70b912197809cd7dd4b1f72cb0bfa60d71fb5309`](https://github.com/wso2/identity-apps/commit/70b912197809cd7dd4b1f72cb0bfa60d71fb5309), [`b6be0d6eb32c04e1048aca9c0ca2f199f6df8f0c`](https://github.com/wso2/identity-apps/commit/b6be0d6eb32c04e1048aca9c0ca2f199f6df8f0c)]:
+  - @wso2is/react-components@2.9.25
+  - @wso2is/admin.users.v1@2.36.67
+  - @wso2is/admin.login-flow-builder.v1@2.27.4
+  - @wso2is/admin.applications.v1@2.38.9
+  - @wso2is/admin.connections.v1@2.34.10
+  - @wso2is/core@2.12.5
+  - @wso2is/admin.core.v1@2.49.100
+  - @wso2is/admin.roles.v2@2.27.262
+  - @wso2is/admin.branding.v1@2.32.48
+  - @wso2is/admin.server-configurations.v1@2.35.114
+
+## 1.0.106
+
+### Patch Changes
+
+- Updated dependencies [[`397c2f51b54805883a12e776f633ab40b9bfe2eb`](https://github.com/wso2/identity-apps/commit/397c2f51b54805883a12e776f633ab40b9bfe2eb), [`b97d714aa9bb358b77baed6446d6761aa99a7cb6`](https://github.com/wso2/identity-apps/commit/b97d714aa9bb358b77baed6446d6761aa99a7cb6), [`49a80a44fa3435ecacd5de2845f052630a134a74`](https://github.com/wso2/identity-apps/commit/49a80a44fa3435ecacd5de2845f052630a134a74)]:
+  - @wso2is/react-components@2.9.24
+  - @wso2is/core@2.12.4
+  - @wso2is/form@2.9.2
+  - @wso2is/admin.organizations.v1@2.27.13
+  - @wso2is/admin.core.v1@2.49.99
+  - @wso2is/admin.branding.v1@2.32.47
+  - @wso2is/admin.server-configurations.v1@2.35.113
+  - @wso2is/admin.users.v1@2.36.66
+  - @wso2is/admin.roles.v2@2.27.261
+
+## 1.0.105
+
+### Patch Changes
+
+- Updated dependencies [[`3b46527220a12d6d0789965a5747b2c318aa9685`](https://github.com/wso2/identity-apps/commit/3b46527220a12d6d0789965a5747b2c318aa9685), [`61db6da35f741250319f38544ab73bad64d58cac`](https://github.com/wso2/identity-apps/commit/61db6da35f741250319f38544ab73bad64d58cac)]:
+  - @wso2is/admin.connections.v1@2.34.9
+  - @wso2is/i18n@2.30.55
+  - @wso2is/admin.applications.v1@2.38.8
+  - @wso2is/admin.core.v1@2.49.98
+  - @wso2is/admin.roles.v2@2.27.260
+  - @wso2is/admin.branding.v1@2.32.46
+  - @wso2is/admin.server-configurations.v1@2.35.112
+  - @wso2is/admin.users.v1@2.36.65
+
+## 1.0.104
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.users.v1@2.36.64
+  - @wso2is/admin.core.v1@2.49.97
+  - @wso2is/admin.roles.v2@2.27.259
+  - @wso2is/admin.branding.v1@2.32.45
+  - @wso2is/admin.server-configurations.v1@2.35.111
+
+## 1.0.103
+
+### Patch Changes
+
+- Updated dependencies [[`25b7cfb31d3c004017e955c8fe1309532e3cc1ad`](https://github.com/wso2/identity-apps/commit/25b7cfb31d3c004017e955c8fe1309532e3cc1ad)]:
+  - @wso2is/admin.organizations.v1@2.27.12
+  - @wso2is/admin.branding.v1@2.32.44
+  - @wso2is/admin.core.v1@2.49.96
+  - @wso2is/admin.server-configurations.v1@2.35.110
+  - @wso2is/admin.users.v1@2.36.63
+  - @wso2is/admin.roles.v2@2.27.258
+
+## 1.0.102
+
+### Patch Changes
+
+- [#9366](https://github.com/wso2/identity-apps/pull/9366) [`d87ae1a2408120ed149b22f69851c3a79a579e29`](https://github.com/wso2/identity-apps/commit/d87ae1a2408120ed149b22f69851c3a79a579e29) Thanks [@s-vamshi](https://github.com/s-vamshi)! - Replaced **Moment.js** with **day.js** in `console` and `myaccount` apps to reduce bundle size and improve performance
+
+- Updated dependencies [[`d87ae1a2408120ed149b22f69851c3a79a579e29`](https://github.com/wso2/identity-apps/commit/d87ae1a2408120ed149b22f69851c3a79a579e29)]:
+  - @wso2is/admin.server-configurations.v1@2.35.109
+  - @wso2is/admin.wsfed-configuration.v1@2.25.206
+  - @wso2is/admin.identity-providers.v1@2.26.209
+  - @wso2is/admin.console-settings.v1@2.26.4
+  - @wso2is/admin.authorization.v1@2.25.90
+  - @wso2is/admin.impersonation.v1@1.6.206
+  - @wso2is/admin.login-flow.ai.v1@2.27.102
+  - @wso2is/admin.organizations.v1@2.27.11
+  - @wso2is/admin.applications.v1@2.38.7
+  - @wso2is/admin.connections.v1@2.34.8
+  - @wso2is/admin.oidc-scopes.v1@2.26.2
+  - @wso2is/admin.extensions.v1@2.40.10
+  - @wso2is/admin.userstores.v1@2.27.40
+  - @wso2is/admin.validation.v1@2.27.148
+  - @wso2is/admin.branding.v1@2.32.43
+  - @wso2is/admin.secrets.v1@2.25.205
+  - @wso2is/admin.claims.v1@2.29.14
+  - @wso2is/admin.roles.v2@2.27.257
+  - @wso2is/admin.users.v1@2.36.62
+  - @wso2is/admin.core.v1@2.49.95
+  - @wso2is/admin.logs.v1@1.6.6
+
 ## 1.0.101
 
 ### Patch Changes

@@ -1,5 +1,23 @@
 # @wso2is/myaccount
 
+## 2.25.16
+
+### Patch Changes
+
+- [#9421](https://github.com/wso2/identity-apps/pull/9421) [`fb7129ebdeedce6b0d53238f81c157691bfc11f9`](https://github.com/wso2/identity-apps/commit/fb7129ebdeedce6b0d53238f81c157691bfc11f9) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Remove stale moment.js dependency
+
+* [#9394](https://github.com/wso2/identity-apps/pull/9394) [`c42c203fcde0a376e6a7a2857956b9ca78ac5836`](https://github.com/wso2/identity-apps/commit/c42c203fcde0a376e6a7a2857956b9ca78ac5836) Thanks [@Ratheshan03](https://github.com/Ratheshan03)! - Fix mobile side panel toggle button not responding on mobile viewports
+
+## 2.25.15
+
+### Patch Changes
+
+- [#9366](https://github.com/wso2/identity-apps/pull/9366) [`d87ae1a2408120ed149b22f69851c3a79a579e29`](https://github.com/wso2/identity-apps/commit/d87ae1a2408120ed149b22f69851c3a79a579e29) Thanks [@s-vamshi](https://github.com/s-vamshi)! - Replaced **Moment.js** with **day.js** in `console` and `myaccount` apps to reduce bundle size and improve performance
+
+- Updated dependencies [[`d87ae1a2408120ed149b22f69851c3a79a579e29`](https://github.com/wso2/identity-apps/commit/d87ae1a2408120ed149b22f69851c3a79a579e29)]:
+  - @wso2is/common.workflow-approvals.v1@1.0.11
+  - @wso2is/admin.organizations.v1@2.27.11
+
 ## 2.25.14
 
 ### Patch Changes

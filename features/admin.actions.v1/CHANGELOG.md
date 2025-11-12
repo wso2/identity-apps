@@ -1,5 +1,36 @@
 # @wso2is/admin.actions.v1
 
+## 1.14.13
+
+### Patch Changes
+
+- Updated dependencies [[`397c2f51b54805883a12e776f633ab40b9bfe2eb`](https://github.com/wso2/identity-apps/commit/397c2f51b54805883a12e776f633ab40b9bfe2eb), [`b97d714aa9bb358b77baed6446d6761aa99a7cb6`](https://github.com/wso2/identity-apps/commit/b97d714aa9bb358b77baed6446d6761aa99a7cb6), [`49a80a44fa3435ecacd5de2845f052630a134a74`](https://github.com/wso2/identity-apps/commit/49a80a44fa3435ecacd5de2845f052630a134a74)]:
+  - @wso2is/react-components@2.9.24
+  - @wso2is/core@2.12.4
+  - @wso2is/form@2.9.2
+  - @wso2is/admin.organizations.v1@2.27.13
+  - @wso2is/admin.core.v1@2.49.99
+
+## 1.14.12
+
+### Patch Changes
+
+- Updated dependencies [[`25b7cfb31d3c004017e955c8fe1309532e3cc1ad`](https://github.com/wso2/identity-apps/commit/25b7cfb31d3c004017e955c8fe1309532e3cc1ad)]:
+  - @wso2is/admin.organizations.v1@2.27.12
+  - @wso2is/admin.core.v1@2.49.96
+
+## 1.14.11
+
+### Patch Changes
+
+- [#9366](https://github.com/wso2/identity-apps/pull/9366) [`d87ae1a2408120ed149b22f69851c3a79a579e29`](https://github.com/wso2/identity-apps/commit/d87ae1a2408120ed149b22f69851c3a79a579e29) Thanks [@s-vamshi](https://github.com/s-vamshi)! - Replaced **Moment.js** with **day.js** in `console` and `myaccount` apps to reduce bundle size and improve performance
+
+- Updated dependencies [[`d87ae1a2408120ed149b22f69851c3a79a579e29`](https://github.com/wso2/identity-apps/commit/d87ae1a2408120ed149b22f69851c3a79a579e29)]:
+  - @wso2is/admin.organizations.v1@2.27.11
+  - @wso2is/admin.extensions.v1@2.40.10
+  - @wso2is/admin.claims.v1@2.29.14
+  - @wso2is/admin.core.v1@2.49.95
+
 ## 1.14.10
 
 ### Patch Changes

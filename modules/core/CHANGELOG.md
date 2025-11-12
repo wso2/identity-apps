@@ -1,5 +1,19 @@
 # @wso2is/core
 
+## 2.12.5
+
+### Patch Changes
+
+- [#9427](https://github.com/wso2/identity-apps/pull/9427) [`b6be0d6eb32c04e1048aca9c0ca2f199f6df8f0c`](https://github.com/wso2/identity-apps/commit/b6be0d6eb32c04e1048aca9c0ca2f199f6df8f0c) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Implement capability to hide Local Email/SMS OTP authenticators based on deployment config
+
+## 2.12.4
+
+### Patch Changes
+
+- [#9404](https://github.com/wso2/identity-apps/pull/9404) [`397c2f51b54805883a12e776f633ab40b9bfe2eb`](https://github.com/wso2/identity-apps/commit/397c2f51b54805883a12e776f633ab40b9bfe2eb) Thanks [@s-vamshi](https://github.com/s-vamshi)! - Replaced **Moment.js** with **day.js** in modules directory to reduce bundle size and improve performance
+
+* [#9408](https://github.com/wso2/identity-apps/pull/9408) [`b97d714aa9bb358b77baed6446d6761aa99a7cb6`](https://github.com/wso2/identity-apps/commit/b97d714aa9bb358b77baed6446d6761aa99a7cb6) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Handle both PEM and Base64 certificate formats in parsing validation
+
 ## 2.12.3
 
 ### Patch Changes

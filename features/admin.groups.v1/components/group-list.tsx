@@ -37,13 +37,18 @@ import {
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
+import dayjs, { Dayjs } from "dayjs";
+import duration from "dayjs/plugin/duration";
+import relativeTime from "dayjs/plugin/relativeTime";
 import isEmpty from "lodash-es/isEmpty";
-import moment, { Moment } from "moment";
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
 import { GroupConstants } from "../constants/group-constants";
 import { GroupsInterface } from "../models/groups";
+
+dayjs.extend(duration);
+dayjs.extend(relativeTime);
 
 interface GroupListProps extends SBACInterface<FeatureConfigInterface>,
     LoadableComponentInterface, TestableComponentInterface {
@@ -275,14 +280,14 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                 id: "lastModified",
                 key: "lastModified",
                 render: (group: GroupsInterface): ReactNode => {
-                    const now: Moment = moment(new Date());
-                    const receivedDate: Moment = moment(group.meta.lastModified ?
+                    const now: Dayjs = dayjs(new Date());
+                    const receivedDate: Dayjs = dayjs(group.meta.lastModified ?
                         group.meta.lastModified :
                         group.meta.created
                     );
 
                     return t("console:common.dateTime.humanizedDateString", {
-                        date: moment.duration(now.diff(receivedDate)).humanize()
+                        date: dayjs.duration(now.diff(receivedDate)).humanize()
                     });
                 },
                 title: t("console:manage.features.groups.list.columns.lastModified")

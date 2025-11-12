@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,6 +27,7 @@ import {
 import { AxiosError } from "axios";
 import get from "lodash-es/get";
 import { useGetAuthenticators } from "../api/authenticators";
+import { LocalAuthenticatorConstants } from "../constants/local-authenticator-constants";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import { AuthenticatorTypes } from "../models/authenticators";
 import { ConnectionInterface, ConnectionTypes } from "../models/connection";
@@ -66,7 +67,9 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
     offset?: number,
     searchInputs?: SearchInputsInterface,
     shouldFetchAuthenticators: boolean = true,
-    shouldFetchIdVPs: boolean = true
+    shouldFetchIdVPs: boolean = true,
+    shouldHideLocalEmailOTPAuthenticator: boolean = false,
+    shouldHideLocalSMSOTPAuthenticator: boolean = false
 ): Omit<RequestResultInterface<Data, Error>, "mutate"> & { mutate: () => void } => {
 
     const {
@@ -108,6 +111,18 @@ export const useGetCombinedConnectionList = <Data = ConnectionInterface[], Error
 
         // Add Local Authenticators to the beginning of the list.
         for (const authenticator of fetchedAuthenticatorsList) {
+            // Skip Local Email OTP authenticator based on the flag.
+            if (shouldHideLocalEmailOTPAuthenticator &&
+                authenticator.id === LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID) {
+                continue;
+            }
+
+            // Skip Local SMS OTP authenticator based on the flag.
+            if (shouldHideLocalSMSOTPAuthenticator &&
+                authenticator.id === LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID) {
+                continue;
+            }
+
             const authenticatorConfig: AuthenticatorExtensionsConfigInterface = get(
                 AuthenticatorMeta.getAuthenticators(),
                 authenticator.id

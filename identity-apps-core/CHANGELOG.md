@@ -1,5 +1,23 @@
 # @wso2is/identity-apps-core
 
+## 3.3.25
+
+### Patch Changes
+
+- [#9253](https://github.com/wso2/identity-apps/pull/9253) [`287114f2219a9e306824d24a17eddc42445212a7`](https://github.com/wso2/identity-apps/commit/287114f2219a9e306824d24a17eddc42445212a7) Thanks [@UpekshaGalappaththi](https://github.com/UpekshaGalappaththi)! - Adding j2 template for authenticator population validation
+
+## 3.3.24
+
+### Patch Changes
+
+- [#9389](https://github.com/wso2/identity-apps/pull/9389) [`1394b7024c56cec05e39a7c16a26a277e829d44d`](https://github.com/wso2/identity-apps/commit/1394b7024c56cec05e39a7c16a26a277e829d44d) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Enforce required status of country attribute value in the self registration form
+
+## 3.3.23
+
+### Patch Changes
+
+- [#9397](https://github.com/wso2/identity-apps/pull/9397) [`c2f3f486477f78ad2f034bdc9e95ebf529e38012`](https://github.com/wso2/identity-apps/commit/c2f3f486477f78ad2f034bdc9e95ebf529e38012) Thanks [@sahandilshan](https://github.com/sahandilshan)! - Show loginhint in multi auth pages
+
 ## 3.3.22
 
 ### Patch Changes

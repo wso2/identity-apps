@@ -54,8 +54,8 @@ import {
     TextDirection
 } from "@wso2is/i18n";
 import { useMediaContext } from "@wso2is/react-components";
+import dayjs from "dayjs";
 import isEmpty from "lodash-es/isEmpty";
-import moment from "moment";
 import React, {
     FunctionComponent,
     MouseEvent,
@@ -206,7 +206,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
      * @param language - Selected language.
      */
     const handleLanguageSwitch = (language: string): void => {
-        moment.locale(language ?? "en");
+        dayjs.locale(language ?? "en");
         I18n.instance.changeLanguage(language).catch((error: string | Record<string, unknown>) => {
             throw new LanguageChangeException(language, error);
         });

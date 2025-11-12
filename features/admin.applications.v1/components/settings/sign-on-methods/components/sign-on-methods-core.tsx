@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,9 +16,11 @@
  * under the License.
  */
 
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { AuthenticatorCreateWizardFactory } from "@wso2is/admin.connections.v1";
 import {
-    CommonAuthenticatorConstants
+    CommonAuthenticatorConstants,
+    ConnectionsFeatureDictionaryKeys
 } from "@wso2is/admin.connections.v1/constants/common-authenticator-constants";
 import {
     FederatedAuthenticatorConstants
@@ -46,6 +48,7 @@ import AuthenticationFlowBuilder
 import AuthenticationFlowProvider
     from "@wso2is/admin.login-flow-builder.v1/providers/authentication-flow-provider";
 import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
@@ -55,7 +58,7 @@ import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider } from "semantic-ui-react";
 import { ApplicationManagementConstants } from "../../../../constants/application-management";
@@ -164,6 +167,17 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
     const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
     const isApplicationShared: boolean = application?.advancedConfigurations?.additionalSpProperties?.find(
         (property: additionalSpProperty) => property?.name === "isAppShared")?.value === "true";
+    const identityProvidersFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: any) => state.config?.ui?.features?.identityProviders);
+
+    const isLocalEmailOTPAuthenticatorEnabled: boolean = isFeatureEnabled(
+        identityProvidersFeatureConfig,
+        CommonAuthenticatorConstants.FEATURE_DICTIONARY.get(
+            ConnectionsFeatureDictionaryKeys.LocalEmailOTPAuthenticator));
+    const isLocalSMSOTPAuthenticatorEnabled: boolean = isFeatureEnabled(
+        identityProvidersFeatureConfig,
+        CommonAuthenticatorConstants.FEATURE_DICTIONARY.get(
+            ConnectionsFeatureDictionaryKeys.LocalSMSOTPAuthenticator));
 
     const [ loginFlow, setLoginFlow ] = useState<LoginFlowTypes>(undefined);
     const [ socialDisclaimerModalType, setSocialDisclaimerModalType ] = useState<LoginFlowTypes>(undefined);
@@ -923,6 +937,16 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
         }
 
         if (!readOnly && !loginFlow && isDefaultFlowConfiguration()) {
+            const hiddenOptions: LoginFlowTypes[] = [ LoginFlowTypes.FACEBOOK_LOGIN, LoginFlowTypes.GITHUB_LOGIN ];
+
+            if (!isLocalEmailOTPAuthenticatorEnabled) {
+                hiddenOptions.push(LoginFlowTypes.SECOND_FACTOR_EMAIL_OTP, LoginFlowTypes.EMAIL_OTP);
+            }
+
+            if (!isLocalSMSOTPAuthenticatorEnabled) {
+                hiddenOptions.push(LoginFlowTypes.SECOND_FACTOR_SMS_OTP, LoginFlowTypes.SMS_OTP);
+            }
+
             return (
                 <SignInMethodLanding
                     readOnly={ readOnly }
@@ -937,6 +961,7 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
                             appleAuthenticators
                         );
                     } }
+                    hiddenOptions={ hiddenOptions }
                     data-componentid={ `${componentId}-landing` }
                 />
             );

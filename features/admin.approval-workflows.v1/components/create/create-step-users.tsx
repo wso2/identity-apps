@@ -99,7 +99,7 @@ const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
      * Only runs on first initialization to prevent resetting manual selections.
      */
     useEffect(() => {
-        if (!initialValues || !userResponse?.Resources.length || hasInitialized) return;
+        if (!initialValues || !userResponse?.Resources?.length || hasInitialized) return;
 
         const stepUsers: string[] = initialValues?.users;
 
@@ -123,6 +123,7 @@ const StepUsersList: FunctionComponent<StepUsersPropsInterface> = (
         } else {
             setUsers([]);
         }
+        setUserSearchLoading(false);
     }, [ userResponse, selectedUsers ]);
 
     /**
