@@ -20,13 +20,14 @@ import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
+import TextField from "@oxygen-ui/react/TextField";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { PageLayout } from "@wso2is/react-components";
+import { Hint, PageLayout } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import "./edit-policy.scss";
 import { useDispatch } from "react-redux";
@@ -37,8 +38,6 @@ import { useGetPolicy } from "../api/use-get-policy";
 import PolicyEditor from "../components/policy-editor/policy-editor";
 import { PolicyInterface } from "../models/policies";
 import { unformatXML } from "../utils/utils";
-
-
 
 type EditPolicyPageProps = IdentifiableComponentInterface & RouteComponentProps;
 
@@ -55,15 +54,18 @@ const EditPolicyPage: FunctionComponent<EditPolicyPageProps> = ({
     const policyId: string = match.params["id"];
     const dispatch: Dispatch = useDispatch();
 
-    const shouldFetchPolicy: boolean = !isEmpty(policyId);
-    const [ updatedPolicyScript, setUpdatedPolicyScript ] = useState<string | undefined>();
-
-
     // Fetch the policy using the useGetPolicy hook
-    const { data: policy, isLoading, error } = useGetPolicy(
-        policyId || "",
-        shouldFetchPolicy
+    const { data: policy, isLoading, error, mutate: mutatePolicy } = useGetPolicy(
+        policyId,
+        !isEmpty(policyId)
     );
+
+    const [ updatedPolicyScript, setUpdatedPolicyScript ] = useState<string | undefined>();
+    const [ policyOrder, setPolicyOrder ] = useState<number>(policy?.policyOrder);
+
+    useEffect(() => {
+        setPolicyOrder(policy?.policyOrder);
+    }, [ policy ]);
 
     const { t } = useTranslation();
 
@@ -83,17 +85,18 @@ const EditPolicyPage: FunctionComponent<EditPolicyPageProps> = ({
         const updatedPolicy: Partial<PolicyInterface> = {
             active: policy.active,
             attributeDTOs: [],
-            policy: unformatXML(updatedPolicyScript),
+            policy: unformatXML(updatedPolicyScript || policy.policy),
             policyEditorData: policy.policyEditorData,
             policyId: policy.policyId,
             policyIdReferences: policy.policyIdReferences,
-            policyOrder: policy.policyOrder,
+            policyOrder: policyOrder ?? policy.policyOrder,
             policySetIdReferences: policy.policySetIdReferences,
             promote: policy.promote
         };
 
         updatePolicy(updatedPolicy)
             .then(() => {
+                mutatePolicy();
                 dispatch(
                     addAlert({
                         description:  t("policyAdministration:alerts.updateSuccess.description"),
@@ -136,6 +139,32 @@ const EditPolicyPage: FunctionComponent<EditPolicyPageProps> = ({
                 <Alert severity="error" title={ t("policyAdministration:editPolicy.errorTitle") }>
                     { t("policyAdministration:editPolicy.errorDescription") }
                 </Alert>
+            ) }
+
+            { !isLoading && !error && policy && (
+                <Box mb={ 2 }>
+                    <label htmlFor="policy-order">
+                        { t("policyAdministration:editPolicy.orderLabel", { defaultValue: "Order" }) }
+                    </label>
+                    <TextField
+                        id="policy-order"
+                        type="number"
+                        value={ policyOrder }
+                        onChange={
+                            (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+                                const value: string = e.target.value;
+
+                                setPolicyOrder(value === "" ? undefined : Number(value));
+                            }
+                        }
+                        variant="outlined"
+                        size="small"
+                        inputProps={ { min: 0 } }
+                    />
+                    <Hint className="hint-text">
+                        { "Specify the evaluation order for this policy." }
+                    </Hint>
+                </Box>
             ) }
 
             { /* Render Policy Script Editor only if policy data is available */ }

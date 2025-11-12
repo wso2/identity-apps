@@ -68,6 +68,7 @@ export interface policyAdministrationNS {
     popup: {
         activate: string,
         deactivate: string,
+        policyOrder: string
     }
     alerts: {
         deleteSuccess: {

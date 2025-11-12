@@ -138,6 +138,17 @@ const PolicyListNode: FunctionComponent<PolicyListDraggableNodePropsInterface> =
                             content={ t("policyAdministration:popup.activate") }
                             inverted
                         />
+                        <Popup
+                            trigger={ (
+                                <Typography
+                                    className="policy-order-text"
+                                    variant="h6"
+                                >{ policy?.policyOrder }</Typography>
+                            ) }
+                            position="top center"
+                            content={ t("policyAdministration:popup.policyOrder") }
+                            inverted
+                        />
                         <Typography className="ellipsis-text">{ policy.policyId }</Typography>
                     </Stack>
                     <Stack direction={ "row" } marginTop={ "3px" }>

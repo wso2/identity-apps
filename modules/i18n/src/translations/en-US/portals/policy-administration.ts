@@ -125,7 +125,8 @@ export const policyAdministration: policyAdministrationNS = {
     },
     popup:{
         activate: "Activate",
-        deactivate: "Deactivate"
+        deactivate: "Deactivate",
+        policyOrder: "Policy Order"
     },
     subtitle: "Create and manage your policies here.",
     title: "Policy Administration"
