@@ -555,7 +555,7 @@ importers:
         specifier: ^1.0.61
         version: link:../../features/admin.flows.v1
       '@wso2is/admin.groups.v1':
-        specifier: ^2.27.126
+        specifier: ^2.27.127
         version: link:../../features/admin.groups.v1
       '@wso2is/admin.home.v1':
         specifier: ^1.7.70
@@ -585,7 +585,7 @@ importers:
         specifier: workspace:^
         version: link:../../features/admin.password-recovery-flow-builder.v1
       '@wso2is/admin.policy-administration.v1':
-        specifier: ^1.0.122
+        specifier: ^1.0.123
         version: link:../../features/admin.policy-administration.v1
       '@wso2is/admin.private-key-jwt.v1':
         specifier: ^2.25.205
@@ -675,7 +675,7 @@ importers:
         specifier: ^2.3.25
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.30.55
+        specifier: ^2.30.56
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.25
@@ -8784,7 +8784,7 @@ importers:
         specifier: ^2.3.22
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.30.52
+        specifier: ^2.30.56
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.16
@@ -12919,7 +12919,7 @@ importers:
         specifier: ^2.3.22
         version: link:../../modules/forms
       '@wso2is/i18n':
-        specifier: ^2.22.3
+        specifier: ^2.30.56
         version: link:../../modules/i18n
       '@wso2is/react-components':
         specifier: ^2.9.16
