@@ -22,11 +22,12 @@ import DialogActions from "@oxygen-ui/react/DialogActions";
 import DialogContent from "@oxygen-ui/react/DialogContent";
 import DialogTitle from "@oxygen-ui/react/DialogTitle";
 import Stack from "@oxygen-ui/react/Stack";
+import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography/Typography";
 import { getCertificateIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FilePicker, PickerResult, XMLFileStrategy } from "@wso2is/react-components";
+import { FilePicker, Hint, PickerResult, XMLFileStrategy } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -58,6 +59,7 @@ export const NewPolicyWizard: FunctionComponent<NewPolicyWizardPropsInterface> =
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
+    const [ policyOrder, setPolicyOrder ] = useState<number>(0);
     const [ selectedXMLFile, setSelectedXMLFile ] = useState<File>(null);
     const [ pastedContent, setPastedContent ] = useState<string>("");
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
@@ -92,7 +94,7 @@ export const NewPolicyWizard: FunctionComponent<NewPolicyWizardPropsInterface> =
             policyEditorData: [],
             policyId: "",
             policyIdReferences: [],
-            policyOrder: 0,
+            policyOrder: policyOrder,
             policySetIdReferences: [],
             policyType: null,
             promote: false,
@@ -141,6 +143,29 @@ export const NewPolicyWizard: FunctionComponent<NewPolicyWizardPropsInterface> =
                 </Typography>
             </DialogTitle>
             <DialogContent className="policy-editor-container" dividers>
+                <Box mb={ 2 }>
+                    <label htmlFor="policy-order">
+                        { t("policyAdministration:editPolicy.orderLabel", { defaultValue: "Order" }) }
+                    </label>
+                    <TextField
+                        id="policy-order"
+                        type="number"
+                        value={ policyOrder }
+                        onChange={
+                            (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+                                const value: string = e.target.value;
+
+                                setPolicyOrder(value === "" ? undefined : Number(value));
+                            }
+                        }
+                        variant="outlined"
+                        size="small"
+                        inputProps={ { min: 0 } }
+                    />
+                    <Hint className="hint-text">
+                        { "Specify the evaluation order for this policy." }
+                    </Hint>
+                </Box>
                 <FilePicker
                     key={ 1 }
                     fileStrategy={ XML_FILE_PROCESSING_STRATEGY }
