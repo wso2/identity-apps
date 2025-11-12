@@ -16,27 +16,20 @@
  * under the License.
  */
 
-.policy-list-node{
-    padding: 0;
-
-    .policy-action-container {
-        margin-left: 10px;
-
-        .ellipsis-text {
-            text-overflow: ellipsis;
-            max-width: 300px;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-
-        .policy-order-text {
-            color: var(--oxygen-palette-text-secondary);
-            font-weight: bold;
-            margin-top: 2px;
-        }
+.dashboard-layout {
+    .organization-switch-skeleton-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 0.75rem 1rem;
     }
-}
 
-.policy-list-node:hover {
-    box-shadow: 0 2px 2px rgba(203, 206, 219, 0.4);
+    .organization-switch-skeleton-group .MuiSkeleton-root {
+        width: 100%;
+        height: 24px;
+        border-radius: 4px;
+        background-color: var(--oxygen-palette-background-default, #f0f0f0);
+        opacity: 0.85;
+        transition: opacity 0.2s ease-in-out;
+    }
 }

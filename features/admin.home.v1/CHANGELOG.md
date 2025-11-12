@@ -1,5 +1,61 @@
 # @wso2is/admin.home.v1
 
+## 1.7.70
+
+### Patch Changes
+
+- Updated dependencies [[`70b912197809cd7dd4b1f72cb0bfa60d71fb5309`](https://github.com/wso2/identity-apps/commit/70b912197809cd7dd4b1f72cb0bfa60d71fb5309), [`b6be0d6eb32c04e1048aca9c0ca2f199f6df8f0c`](https://github.com/wso2/identity-apps/commit/b6be0d6eb32c04e1048aca9c0ca2f199f6df8f0c)]:
+  - @wso2is/react-components@2.9.25
+  - @wso2is/admin.applications.v1@2.38.9
+  - @wso2is/core@2.12.5
+  - @wso2is/admin.core.v1@2.49.100
+  - @wso2is/admin.flow-builder-core.v1@0.10.92
+  - @wso2is/admin.flows.v1@1.0.61
+
+## 1.7.69
+
+### Patch Changes
+
+- [#9348](https://github.com/wso2/identity-apps/pull/9348) [`49a80a44fa3435ecacd5de2845f052630a134a74`](https://github.com/wso2/identity-apps/commit/49a80a44fa3435ecacd5de2845f052630a134a74) Thanks [@roshanemoraes](https://github.com/roshanemoraes)! - Introduce in-app skeleton loader for organization switch transition
+
+- Updated dependencies [[`397c2f51b54805883a12e776f633ab40b9bfe2eb`](https://github.com/wso2/identity-apps/commit/397c2f51b54805883a12e776f633ab40b9bfe2eb), [`b97d714aa9bb358b77baed6446d6761aa99a7cb6`](https://github.com/wso2/identity-apps/commit/b97d714aa9bb358b77baed6446d6761aa99a7cb6), [`49a80a44fa3435ecacd5de2845f052630a134a74`](https://github.com/wso2/identity-apps/commit/49a80a44fa3435ecacd5de2845f052630a134a74)]:
+  - @wso2is/react-components@2.9.24
+  - @wso2is/core@2.12.4
+  - @wso2is/admin.organizations.v1@2.27.13
+  - @wso2is/admin.core.v1@2.49.99
+  - @wso2is/admin.flow-builder-core.v1@0.10.91
+  - @wso2is/admin.flows.v1@1.0.60
+
+## 1.7.68
+
+### Patch Changes
+
+- Updated dependencies [[`3b46527220a12d6d0789965a5747b2c318aa9685`](https://github.com/wso2/identity-apps/commit/3b46527220a12d6d0789965a5747b2c318aa9685), [`61db6da35f741250319f38544ab73bad64d58cac`](https://github.com/wso2/identity-apps/commit/61db6da35f741250319f38544ab73bad64d58cac)]:
+  - @wso2is/i18n@2.30.55
+  - @wso2is/admin.applications.v1@2.38.8
+  - @wso2is/admin.core.v1@2.49.98
+  - @wso2is/admin.flow-builder-core.v1@0.10.90
+  - @wso2is/admin.flows.v1@1.0.59
+
+## 1.7.67
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.97
+  - @wso2is/admin.flow-builder-core.v1@0.10.89
+  - @wso2is/admin.flows.v1@1.0.58
+
+## 1.7.66
+
+### Patch Changes
+
+- Updated dependencies [[`25b7cfb31d3c004017e955c8fe1309532e3cc1ad`](https://github.com/wso2/identity-apps/commit/25b7cfb31d3c004017e955c8fe1309532e3cc1ad)]:
+  - @wso2is/admin.organizations.v1@2.27.12
+  - @wso2is/admin.flow-builder-core.v1@0.10.88
+  - @wso2is/admin.core.v1@2.49.96
+  - @wso2is/admin.flows.v1@1.0.57
+
 ## 1.7.65
 
 ### Patch Changes

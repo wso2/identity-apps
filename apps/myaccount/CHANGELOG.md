@@ -1,5 +1,13 @@
 # @wso2is/myaccount
 
+## 2.25.16
+
+### Patch Changes
+
+- [#9421](https://github.com/wso2/identity-apps/pull/9421) [`fb7129ebdeedce6b0d53238f81c157691bfc11f9`](https://github.com/wso2/identity-apps/commit/fb7129ebdeedce6b0d53238f81c157691bfc11f9) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Remove stale moment.js dependency
+
+* [#9394](https://github.com/wso2/identity-apps/pull/9394) [`c42c203fcde0a376e6a7a2857956b9ca78ac5836`](https://github.com/wso2/identity-apps/commit/c42c203fcde0a376e6a7a2857956b9ca78ac5836) Thanks [@Ratheshan03](https://github.com/Ratheshan03)! - Fix mobile side panel toggle button not responding on mobile viewports
+
 ## 2.25.15
 
 ### Patch Changes

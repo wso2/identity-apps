@@ -915,7 +915,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
         },
         generalDetails: {
             alias: {
-                hint: "Alias value for {{productName}} in the trusted token issuer.",
+                hint: "Alias value for {{productName}} in the {{idpType}}.",
                 label: "Alias",
                 placeholder: "Enter the alias."
             },
@@ -934,7 +934,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
                 }
             },
             issuer: {
-                hint: "A unique issuer value of the trusted token issuer.",
+                hint: "A unique issuer value of the {{idpType}}.",
                 label: "Issuer",
                 placeholder: "Enter the issuer."
             },
@@ -948,6 +948,10 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     maxLengthReached: "Connection name cannot exceed {{ maxLength }} characters.",
                     required: "Connection name is required"
                 }
+            },
+            idpType: {
+                trustedTokenIssuer: "trusted token issuer",
+                externalIdP: "external identity provider"
             }
         },
         jitProvisioning: {

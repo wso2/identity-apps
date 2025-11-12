@@ -20,12 +20,14 @@ import { IdentifiableComponentInterface, TestableComponentInterface } from "@wso
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import {
+    Button,
     Dropdown,
     DropdownItemProps,
     DropdownProps,
     PaginationProps,
     Pagination as SemanticPagination
 } from "semantic-ui-react";
+import "./pagination.scss";
 
 /**
  * Prop types for the pagination component.
@@ -113,7 +115,7 @@ export interface PaginationPropsInterface extends PaginationProps, IdentifiableC
      * @param event - MouseEvent.
      * @param data - Pagination props data.
      */
-    onPageChange?: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, data: PaginationProps) => void;
+    onPageChange?: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent> | null, data: PaginationProps) => void;
     /**
      * Toggles pagination reset.
      */
@@ -159,7 +161,7 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
         previousButtonText,
         resetPagination,
         showItemsPerPageDropdown,
-        showPagesOnMinimalMode,
+        _showPagesOnMinimalMode,
         totalPages,
         activePage: activePageProp,
         listItemLimit,
@@ -220,7 +222,9 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
      */
     const resetAll = (): void => {
         setActivePage(1);
-        onPageChange(null, { activePage: 1, totalPages: totalPages });
+        if (onPageChange) {
+            onPageChange(null, { activePage: 1, totalPages: totalPages });
+        }
     };
 
     /**
@@ -229,9 +233,44 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
      * @param event - Mouse event.
      * @param data - Semantic pagination props.
      */
-    const pageChangeHandler = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, data: PaginationProps): void => {
+    const pageChangeHandler = (
+        event: React.MouseEvent<HTMLAnchorElement, MouseEvent> | null,
+        data: PaginationProps
+    ): void => {
         setActivePage(parseInt(data.activePage.toString()));
-        onPageChange(event, data);
+        if (onPageChange) {
+            onPageChange(event, data);
+        }
+    };
+
+    /**
+     * Renders the list summary showing "X - Y of Total".
+     * @returns the list summary element
+     */
+    const renderListSummary = (): ReactElement | null => {
+        const { totalListSize, currentListSize, showListSummary } = props;
+
+        if (!showListSummary || !totalListSize || totalListSize === 0) {
+            return null;
+        }
+
+        const startIndex: number = ((activePage - 1) * itemsPerPage) + 1;
+        const endIndex: number = Math.min(startIndex + (currentListSize || itemsPerPage) - 1, totalListSize);
+
+        return (
+            <span className="pagination-summary">
+                { `${startIndex} - ${endIndex} of ${totalListSize}` }
+            </span>
+        );
+    };
+
+    /**
+     * Handles button click for minimal pagination.
+     *
+     * @param newPage - The new page number.
+     */
+    const handleMinimalPageChange = (newPage: number): void => {
+        pageChangeHandler(null, { activePage: newPage, totalPages });
     };
 
     /**
@@ -240,7 +279,7 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
      */
     const renderChildren = (): ReactElement => {
 
-        const ItemsPerPageDropdown: ReactElement = (
+        const ItemsPerPageDropdown: ReactElement | false = (
             showItemsPerPageDropdown && (
                 <label className="page-limit-label">
                     { itemsPerPageDropdownLabel }
@@ -253,7 +292,9 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
                         options={ generatePageCountDropdownOptions() }
                         onChange={ (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => {
                             resetAll();
-                            onItemsPerPageDropdownChange(event, data);
+                            if (onItemsPerPageDropdownChange) {
+                                onItemsPerPageDropdownChange(event, data);
+                            }
                             setItemsPerPage(data.value as number);
                         } }
                         selection
@@ -266,33 +307,43 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
             return (
                 <>
                     { ItemsPerPageDropdown }
-                    <SemanticPagination
-                        { ...rest }
-                        totalPages={ totalPages }
-                        className="list-pagination"
-                        data-componentid={ `${ componentId }-steps` }
-                        data-testid={ `${ testId }-steps` }
-                        activePage={ activePage }
-                        onPageChange={ pageChangeHandler }
-                        ellipsisItem={ null }
-                        firstItem={ null }
-                        lastItem={ null }
-                        pageItem={ showPagesOnMinimalMode ? undefined : null }
-                        prevItem={ {
-                            "aria-label": "Previous Page",
-                            content: previousButtonText,
-                            disabled: disablePreviousButton !== undefined
-                                ? disablePreviousButton
-                                : (activePage === 1)
-                        } }
-                        nextItem={ {
-                            "aria-label": "Next Page",
-                            content: nextButtonText,
-                            disabled: disableNextButton !== undefined
-                                ? disableNextButton
-                                : (activePage === totalPages)
-                        } }
-                    />
+                    <div className="minimal-pagination-controls">
+                        <Button
+                            basic
+                            className="minimal-pagination-button"
+                            disabled={ disablePreviousButton ?? (activePage === 1) }
+                            onClick={ () => {
+                                const disabled = disablePreviousButton ?? (activePage === 1);
+
+                                if (!disabled) {
+                                    handleMinimalPageChange(activePage - 1);
+                                }
+                            } }
+                            aria-label="Previous Page"
+                            data-componentid={ `${ componentId }-prev-button` }
+                            data-testid={ `${ testId }-prev-button` }
+                        >
+                            { previousButtonText }
+                        </Button>
+                        { renderListSummary() }
+                        <Button
+                            basic
+                            className="minimal-pagination-button"
+                            disabled={ disableNextButton ?? (activePage === totalPages) }
+                            onClick={ () => {
+                                const disabled = disableNextButton ?? (activePage === totalPages);
+
+                                if (!disabled) {
+                                    handleMinimalPageChange(activePage + 1);
+                                }
+                            } }
+                            aria-label="Next Page"
+                            data-componentid={ `${ componentId }-next-button` }
+                            data-testid={ `${ testId }-next-button` }
+                        >
+                            { nextButtonText }
+                        </Button>
+                    </div>
                 </>
             );
         }
@@ -300,6 +351,7 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
         return (
             <>
                 { ItemsPerPageDropdown }
+                { renderListSummary() }
                 <SemanticPagination
                     { ...rest }
                     totalPages={ totalPages }

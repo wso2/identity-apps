@@ -322,6 +322,7 @@
         "enableCustomSmsTemplates": true,
         "enableEmailDomain": false,
         "enableIdentityClaims": true,
+        "enableLegacySessionBoundTokenBehaviour": false,
         "enableOldUIForEmailProvider": false,
         "features": {
             "accountLogin": {
@@ -1789,7 +1790,8 @@
             "users": {
                 "disabledFeatures": [
                     "users.add.legacy",
-                    "users.profile.legacy"
+                    "users.profile.legacy",
+                    "users.totalUserCount"
                 ],
                 "enabled": true,
                 "featureFlags": [],
