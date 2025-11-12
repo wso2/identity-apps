@@ -211,6 +211,12 @@ export class UserManagementConstants {
     // Feature flags.
     public static readonly ATTRIBUTE_PROFILES_FOR_USER_CREATION_FEATURE_FLAG: string
         = "users.user.creation.attribute.profile";
+
+    /**
+     * Define a count for existing user retrieval in add administrator wizard
+     * since retrieving data without a limit can be slow and may lead to timeouts for large user bases.
+     */
+    public static readonly ADD_EXISTING_USER_WIZARD_RETRIEVAL_COUNT: number = 11;
 }
 
 /**

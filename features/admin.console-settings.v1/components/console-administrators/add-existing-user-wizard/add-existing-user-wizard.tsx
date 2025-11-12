@@ -91,9 +91,6 @@ const AddExistingUserWizard: FunctionComponent<AddExistingUserWizardPropsInterfa
 
     const { assignAdministratorRoles } = useBulkAssignAdministratorRoles();
 
-    // Define a count since retrieving data without a limit can be slow and may lead to timeouts for large user bases.
-    const count: number = 11;
-
     // State for current input value in Autocomplete
     const [ usernameInputValue, setUsernameInputValue ] = useState<string>("");
 
@@ -102,7 +99,7 @@ const AddExistingUserWizard: FunctionComponent<AddExistingUserWizardPropsInterfa
         prospectiveAdministrators,
         isAdministratorsListFetchRequestLoading
     } = useProspectiveAdministrators(
-        count,
+        UserManagementConstants.ADD_EXISTING_USER_WIZARD_RETRIEVAL_COUNT,
         null,
         usernameInputValue ? `userName co ${usernameInputValue}` : "",
         null,
