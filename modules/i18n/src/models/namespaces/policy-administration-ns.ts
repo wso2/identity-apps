@@ -26,6 +26,12 @@ export interface policyAdministrationNS {
     editPolicy: {
         backBtn: string;
         disabledBtnTooltip: string;
+        fields: {
+            policyOrder: {
+                hint: string;
+                label: string;
+            }
+        }
     };
     createPolicy: {
         title: string;
