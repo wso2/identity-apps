@@ -1703,7 +1703,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 name="managedInUserStore"
                                 required={ false }
                                 label={ t("claims:local.forms.managedInUserStore.label") }
-                                data-testid={ `${ testId }-form-managed-in-user-store-checkbox` }
+                                data-componentid={ `${ testId }-form-managed-in-user-store-checkbox` }
                                 readOnly={ isSubOrganization() || isReadOnly }
                                 hint={ t("claims:local.forms.managedInUserStore.hint") }
                                 defaultValue={ claim?.managedInUserStore ?? false }
@@ -1716,7 +1716,11 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
                         && managedInUserStore && isIdentityClaim && hasReadOnlyUserStoresConfigured
                         && (
-                            <Alert severity="warning" className="info-box">
+                            <Alert
+                                severity="warning"
+                                className="info-box"
+                                data-componentid={ `${testId}-managed-in-user-store-read-only-user-store-alert` }
+                            >
                                 <Trans i18nKey="claims:local.forms.managedInUserStore.readOnlyUserStoreHint">
                                     One or more user stores are read-only. Some identity attributes require
                                     updates, and managing them in read-only stores may cause issues. To avoid
