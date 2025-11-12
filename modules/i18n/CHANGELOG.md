@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.30.56
+
+### Patch Changes
+
+- [#9428](https://github.com/wso2/identity-apps/pull/9428) [`a843ee5cbd53e9d2c0918ac6790dbbb7ef52d438`](https://github.com/wso2/identity-apps/commit/a843ee5cbd53e9d2c0918ac6790dbbb7ef52d438) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix errors in XACML policy update in console and introduce policy order field
+
 ## 2.30.55
 
 ### Patch Changes
