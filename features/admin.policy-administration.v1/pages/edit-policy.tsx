@@ -144,7 +144,7 @@ const EditPolicyPage: FunctionComponent<EditPolicyPageProps> = ({
             { !isLoading && !error && policy && (
                 <Box mb={ 2 }>
                     <label htmlFor="policy-order">
-                        { t("policyAdministration:editPolicy.orderLabel", { defaultValue: "Order" }) }
+                        { t("policyAdministration:editPolicy.fields.policyOrder.label") }
                     </label>
                     <TextField
                         id="policy-order"
