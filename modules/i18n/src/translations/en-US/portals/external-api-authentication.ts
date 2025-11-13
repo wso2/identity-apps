@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { EmailProviderNS } from "../../../models/namespaces/email-providers-ns";
+import { ExternalAPIAuthenticationNS } from "../../../models/namespaces/external-api-authentication-ns";
 
-export const emailProviders: EmailProviderNS = {
+export const externalApiAuthentication: ExternalAPIAuthenticationNS = {
     fields: {
         authentication: {
             info: {
