@@ -22,6 +22,12 @@ import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import {
+    handleAuthenticationChangeCancel,
+    renderAuthenticationSectionInfoBox,
+    renderEndpointAuthPropertyFields,
+    showAuthSecretsHint
+} from "@wso2is/admin.core.v1/helpers/external-api-authentication-helpers";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -57,12 +63,6 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Placeholder, Ref } from "semantic-ui-react";
-import {
-    handleAuthenticationChangeCancel,
-    renderAuthenticationSectionInfoBox,
-    renderEndpointAuthPropertyFields,
-    showAuthSecretsHint
-} from "@wso2is/admin.core.v1/helpers/external-api-authentication-helpers";
 import "@wso2is/admin.core.v1/styles/external-api-authentication.scss";
 import { deleteEmailProviderConfigurations,
     updateEmailProviderConfigurations,
@@ -921,7 +921,13 @@ const EmailProvidersPage: FunctionComponent<EmailProvidersPageInterface> = (
                                                                         }
                                                                         width={ 16 }
                                                                     />
-                                                                    { showAuthSecretsHint(!!originalEmailProviderConfig[0], t, Hint) }
+                                                                    {
+                                                                        showAuthSecretsHint(
+                                                                            !!originalEmailProviderConfig[0],
+                                                                            t,
+                                                                            Hint
+                                                                        )
+                                                                    }
 
                                                                     { renderEndpointAuthPropertyFields(
                                                                         endpointAuthType,
