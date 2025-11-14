@@ -1,5 +1,26 @@
 # @wso2is/console
 
+## 2.81.26
+
+### Patch Changes
+
+- [#9391](https://github.com/wso2/identity-apps/pull/9391) [`149e77bc913f686616eddfb42d35220d36ec99ba`](https://github.com/wso2/identity-apps/commit/149e77bc913f686616eddfb42d35220d36ec99ba) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Fix Add administrator functionality does not work correctly with a large user base
+
+- Updated dependencies [[`149e77bc913f686616eddfb42d35220d36ec99ba`](https://github.com/wso2/identity-apps/commit/149e77bc913f686616eddfb42d35220d36ec99ba)]:
+  - @wso2is/admin.console-settings.v1@2.26.6
+  - @wso2is/admin.users.v1@2.36.68
+  - @wso2is/admin.agents.v1@1.0.108
+  - @wso2is/admin.core.v1@2.49.101
+  - @wso2is/admin.roles.v2@2.27.263
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.93
+  - @wso2is/admin.branding.v1@2.32.49
+  - @wso2is/admin.email-management.v1@2.25.257
+  - @wso2is/admin.flows.v1@1.0.62
+  - @wso2is/admin.home.v1@1.7.71
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.93
+  - @wso2is/admin.server-configurations.v1@2.35.115
+  - @wso2is/admin.registration-flow-builder.v1@0.10.53
+
 ## 2.81.25
 
 ### Patch Changes
