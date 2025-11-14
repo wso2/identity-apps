@@ -39,10 +39,7 @@
         }
     }
 
-    String deviceEndpoint = "../oauth2/device";
-    if (StringUtils.isNotBlank(identityServerEndpointContextParam)) {
-        deviceEndpoint = identityServerEndpointContextParam + "/oauth2/device";
-    }
+    String deviceEndpoint = identityServerEndpointContextParam + "/oauth2/device";
 %>
 
 <% request.setAttribute("pageName", "enter-user-code"); %>
