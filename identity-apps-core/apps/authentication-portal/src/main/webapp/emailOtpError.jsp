@@ -19,6 +19,7 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.wso2.carbon.identity.authenticator.emailotp.EmailOTPAuthenticatorConstants" %>
+<%@ page import="org.wso2.carbon.identity.local.auth.emailotp.constant.AuthenticatorConstants" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -60,8 +61,8 @@
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.emailOTP.disabled");
             } else if (errorMessage.equalsIgnoreCase("directly.send.otp.disable")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.user.not.found");
-            } else if (errorMessage.equalsIgnoreCase("resent.count.exceeded")) {
-                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.emailotp.resent.count.exceeded");
+            } else if (errorMessage.equalsIgnoreCase(AuthenticatorConstants.USER_RESEND_COUNT_EXCEEDED)) {
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.emailotp.resend.count.exceeded");
             } else if (errorMessage.equalsIgnoreCase("user.account.locked")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.user.account.locked");
                 String unlockTime = request.getParameter("unlockTime");
