@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 3.3.26
+
+### Patch Changes
+
+- [#9435](https://github.com/wso2/identity-apps/pull/9435) [`fe739bc8de18f09c3e3bf894b690a47ca5efb6e4`](https://github.com/wso2/identity-apps/commit/fe739bc8de18f09c3e3bf894b690a47ca5efb6e4) Thanks [@piraveena](https://github.com/piraveena)! - Improve device code api
+
+* [#9423](https://github.com/wso2/identity-apps/pull/9423) [`8491b27d308e57a9c80a9e8f5855601d0b3f57c7`](https://github.com/wso2/identity-apps/commit/8491b27d308e57a9c80a9e8f5855601d0b3f57c7) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Sort the claims in the self-registration page according to display order.
+
 ## 3.3.25
 
 ### Patch Changes
