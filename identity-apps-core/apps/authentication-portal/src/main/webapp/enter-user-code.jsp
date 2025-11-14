@@ -38,6 +38,8 @@
             errorCode = AuthenticationEndpointUtil.i18n(resourceBundle, error);
         }
     }
+
+    String deviceEndpoint = identityServerEndpointContextParam + "/oauth2/device";
 %>
 
 <% request.setAttribute("pageName", "enter-user-code"); %>
@@ -80,7 +82,7 @@
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, errorCode)%>
                     </div>
                 <% } %>
-                    <form class="ui large form" action="../oauth2/device" method="post" id="loginForm">
+                    <form class="ui large form" action="<%=deviceEndpoint%>" method="post" id="loginForm">
                         <div class="field">
                             <div class="ui fluid left icon input">
                                 <input
