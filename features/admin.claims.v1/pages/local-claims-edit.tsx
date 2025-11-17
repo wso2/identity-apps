@@ -104,19 +104,21 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
         }
 
         const visibleUserStores: UserStoreBasicData[] = userStoresList.filter((store: UserStoreBasicData) =>
-            !hiddenUserStores?.includes(store?.name) &&
-            !systemReservedUserStores?.includes(store?.name)
+            !hiddenUserStores?.includes(store?.name?.toUpperCase()) &&
+            !systemReservedUserStores?.includes(store?.name?.toUpperCase())
         );
 
         const mergedStores: UserStoreBasicData[] = [
             ...initialStores,
             ...visibleUserStores.filter((store: UserStoreBasicData) =>
-                !initialStores.some((existing: UserStoreBasicData) => existing?.name === store?.name)
+                !initialStores.some((existing: UserStoreBasicData) =>
+                    existing?.name?.toUpperCase() === store?.name?.toUpperCase())
             )
         ];
 
         const hasCustomStores: boolean = visibleUserStores.some((store: UserStoreBasicData) =>
-            store?.name !== primaryUserStoreDomainName && store?.name !== CONSUMER_USERSTORE
+            store?.name?.toUpperCase() !== primaryUserStoreDomainName?.toUpperCase()
+            && store?.name?.toUpperCase() !== CONSUMER_USERSTORE
         );
 
         if (!hasCustomStores) {
@@ -124,11 +126,11 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
         }
 
         const defaultUserStore: UserStoreBasicData | undefined = userStoresList.find(
-            (store: UserStoreBasicData) => store?.name === CONSUMER_USERSTORE
+            (store: UserStoreBasicData) => store?.name?.toUpperCase() === CONSUMER_USERSTORE
         );
 
         if (!defaultUserStore || mergedStores.some((store: UserStoreBasicData) =>
-            store?.name === CONSUMER_USERSTORE)) {
+            store?.name?.toUpperCase() === CONSUMER_USERSTORE)) {
             return mergedStores;
         }
 

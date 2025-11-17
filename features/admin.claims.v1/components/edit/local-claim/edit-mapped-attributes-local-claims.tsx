@@ -344,8 +344,8 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                                                 data-componentid={
                                                                     `${componentId}-form-attribute-name-input-
                                                                         ${store.name}` }
-                                                                readOnly={ isReadOnly
-                                                                    || store.name === CONSUMER_USERSTORE }
+                                                                readOnly={ isReadOnly || store.name?.toUpperCase()
+                                                                    === CONSUMER_USERSTORE }
                                                             />
                                                         </Grid.Column>
                                                     </Grid.Row>
