@@ -105,7 +105,7 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
     , [ readOnlyUserStoreNames ]);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const rawHiddenUserStores: string[] = useSelector((state: AppState) => state?.config?.ui?.hiddenUserStores);
+    const hiddenUserStores: string[] = useSelector((state: AppState) => state?.config?.ui?.hiddenUserStores);
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
 
@@ -119,14 +119,6 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
             ClaimFeatureDictionaryKeys.SelectiveClaimStoreManagement
         )
     );
-
-    const hiddenUserStores: string[] = useMemo(() =>
-        rawHiddenUserStores?.filter((store: string) =>
-            store?.toUpperCase() !== CONSUMER_USERSTORE.toUpperCase()) ?? []
-    , [ rawHiddenUserStores ]);
-
-    const isConsumerUserStore = (storeName: string): boolean =>
-        storeName?.toUpperCase() === CONSUMER_USERSTORE.toUpperCase();
 
     const shouldShowExcludedUserStores: boolean = isSelectiveClaimStoreManagementEnabled
         ? !!claim?.managedInUserStore
@@ -352,8 +344,8 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                                                 data-componentid={
                                                                     `${componentId}-form-attribute-name-input-
                                                                         ${store.name}` }
-                                                                readOnly={ isReadOnly
-                                                                    || isConsumerUserStore(store.name)}
+                                                                readOnly={isReadOnly
+                                                                    || store.name === CONSUMER_USERSTORE}
                                                             />
                                                         </Grid.Column>
                                                     </Grid.Row>
