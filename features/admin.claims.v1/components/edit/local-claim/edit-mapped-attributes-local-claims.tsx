@@ -26,6 +26,7 @@ import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { getProfileSchemas } from "@wso2is/admin.users.v1/api";
+import { CONSUMER_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { UserStoreBasicData } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
@@ -104,7 +105,7 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
     , [ readOnlyUserStoreNames ]);
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const hiddenUserStores: string[] = useSelector((state: AppState) => state?.config?.ui?.hiddenUserStores);
+    const rawHiddenUserStores: string[] = useSelector((state: AppState) => state?.config?.ui?.hiddenUserStores);
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
 
@@ -118,6 +119,14 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
             ClaimFeatureDictionaryKeys.SelectiveClaimStoreManagement
         )
     );
+
+    const hiddenUserStores: string[] = useMemo(() =>
+        rawHiddenUserStores?.filter((store: string) =>
+            store?.toUpperCase() !== CONSUMER_USERSTORE.toUpperCase()) ?? []
+    , [ rawHiddenUserStores ]);
+
+    const isConsumerUserStore = (storeName: string): boolean =>
+        storeName?.toUpperCase() === CONSUMER_USERSTORE.toUpperCase();
 
     const shouldShowExcludedUserStores: boolean = isSelectiveClaimStoreManagementEnabled
         ? !!claim?.managedInUserStore
@@ -343,7 +352,8 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                                                 data-componentid={
                                                                     `${componentId}-form-attribute-name-input-
                                                                         ${store.name}` }
-                                                                readOnly={ isReadOnly }
+                                                                readOnly={ isReadOnly
+                                                                    || isConsumerUserStore(store.name)}
                                                             />
                                                         </Grid.Column>
                                                     </Grid.Row>

@@ -24,6 +24,7 @@ import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreBasicData } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { CONSUMER_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { AnimatedAvatar, ResourceTab, ResourceTabPaneInterface, TabPageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -100,7 +101,9 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
 
         if (!isUserStoreListFetchRequestLoading && userStoresList?.length > 0) {
             const filteredUserStores: UserStoreBasicData[] = userStoresList.filter((store: UserStoreBasicData) =>
-                !hiddenUserStores?.includes(store?.name) && !systemReservedUserStores?.includes(store?.name));
+                (!hiddenUserStores?.includes(store?.name)
+                    || store?.name?.toUpperCase() === CONSUMER_USERSTORE.toUpperCase())
+                && !systemReservedUserStores?.includes(store?.name));
 
             userStores.push(...filteredUserStores);
         }
