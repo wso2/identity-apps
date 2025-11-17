@@ -61,6 +61,8 @@ export const handleAuthenticationChangeCancel = (
 ): void => {
     setIsAuthenticationUpdateFormState(false);
     if (formState.current) {
+        const initialAuthType = formState.current.getState()?.initialValues?.authType as string | undefined;
+        formState.current.change("authType", initialAuthType ?? undefined);
         formState.current.change("userName", "");
         formState.current.change("password", "");
         formState.current.change("clientId", "");
@@ -230,7 +232,7 @@ export const renderEndpointAuthPropertyFields = (
                         required={ true }
                         maxLength={ 100 }
                         minLength={ 0 }
-                        data-componentid={ `${componentId}-endpoint-authentication-property-value` }
+                        data-componentid={ `${componentId}-endpoint-authentication-property-clientId` }
                         width={ 16 }
                     />
                     <Field.Input
@@ -255,7 +257,7 @@ export const renderEndpointAuthPropertyFields = (
                         required={ true }
                         maxLength={ 100 }
                         minLength={ 0 }
-                        data-componentid={ `${componentId}-endpoint-authentication-property-value` }
+                        data-componentid={ `${componentId}-endpoint-authentication-property-clientSecret` }
                         width={ 16 }
                     />
                     <Field.Input
@@ -274,7 +276,7 @@ export const renderEndpointAuthPropertyFields = (
                         required={ true }
                         maxLength={ 100 }
                         minLength={ 0 }
-                        data-componentid={ `${componentId}-endpoint-authentication-property-value` }
+                        data-componentid={ `${componentId}-endpoint-authentication-property-tokenEndpoint` }
                         width={ 16 }
                     />
                     <Field.Input
@@ -292,7 +294,7 @@ export const renderEndpointAuthPropertyFields = (
                         required={ true }
                         maxLength={ 100 }
                         minLength={ 0 }
-                        data-componentid={ `${componentId}-endpoint-authentication-property-value` }
+                        data-componentid={ `${componentId}-endpoint-authentication-property-scopes` }
                         width={ 16 }
                     />
                 </>
