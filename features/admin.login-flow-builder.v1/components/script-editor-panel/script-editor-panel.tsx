@@ -262,7 +262,7 @@ const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterf
 
     const ScriptEditorToolbar: ReactElement = (
         <Box className="script-editor-toolbar-container">
-            <ConditionalAuthPremiumBanner/>
+            <ConditionalAuthPremiumBanner />
             <Toolbar variant="dense">
                 <Box>
                     <Typography>{ t("authenticationFlow:scriptEditor.panelHeader") }</Typography>

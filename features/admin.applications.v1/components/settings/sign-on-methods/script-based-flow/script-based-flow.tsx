@@ -1316,6 +1316,31 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                     ) }
                                                 />)
                                             }
+                                            {
+                                                isPremiumOrReadOnly && (
+                                                    <Popup
+                                                        basic
+                                                        inverted
+                                                        position="top center"
+                                                        content={
+                                                            (<p>
+                                                                {
+                                                                    t("applications:featureGate.enabledFeatures.tags." +
+                                                                    "premium.info")
+                                                                }
+                                                            </p>)
+                                                        }
+                                                        trigger={ (
+                                                            <Chip
+                                                                icon = { <DiamondIcon /> }
+                                                                label={ t(FeatureStatusLabel.PREMIUM) }
+                                                                className="oxygen-menu-item-chip oxygen-chip-premium"
+                                                                style={ { height: "fit-content" } }
+                                                            />
+                                                        ) }
+                                                    />
+                                                )
+                                            }
                                         </Heading>
                                         <Text muted compact>
                                             {
@@ -1332,7 +1357,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                         </Text>
                                     </div>
                                 </div>
-                                { /* { renderConditionalAuthTour() } */ }
+                                { renderConditionalAuthTour() }
                             </>
                         ) }
                         hideChevron={ true }
@@ -1343,7 +1368,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                         data-componentid={ `${ componentId }-accordion-content` }
                     >
                         <Sidebar.Pushable className="script-editor-with-template-panel no-border">
-                            <ConditionalAuthPremiumBanner></ConditionalAuthPremiumBanner>
+                            <ConditionalAuthPremiumBanner />
                             { !isPremiumOrReadOnly && (
                                 <ScriptTemplatesSidePanel
                                     onELKModalClose={ () => setIsELKConfigureClicked(false) }

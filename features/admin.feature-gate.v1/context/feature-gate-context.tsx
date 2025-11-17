@@ -24,7 +24,7 @@ import { Context, Dispatch, SetStateAction, createContext } from "react";
 export interface FeatureGateContextProps {
 
     /**
-     * Flag to determine whether conditional authentication is enabled or not.
+     * Flag to determine whether conditional authentication feature is restricted/disabled (e.g., made read-only).
      */
     conditionalAuthPremiumFeature: boolean;
     /**
@@ -32,7 +32,7 @@ export interface FeatureGateContextProps {
      */
     showPreviewFeaturesModal: boolean;
     /**
-     * Setter to set the isConditionalAuthenticationEnabled flag.
+     * Setter to set the conditionalAuthPremiumFeature flag.
      */
     setConditionalAuthPremiumFeature: Dispatch<SetStateAction<boolean>>;
     /**

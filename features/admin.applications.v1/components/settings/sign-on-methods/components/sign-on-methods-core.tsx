@@ -16,8 +16,13 @@
  * under the License.
  */
 
-import { FeatureAccessConfigInterface, FeatureStatus, FeatureTags, 
-    useCheckFeatureStatus, useCheckFeatureTags } from "@wso2is/access-control";
+import {
+    FeatureAccessConfigInterface,
+    FeatureStatus,
+    FeatureTags,
+    useCheckFeatureStatus,
+    useCheckFeatureTags
+} from "@wso2is/access-control";
 import { AuthenticatorCreateWizardFactory } from "@wso2is/admin.connections.v1";
 import {
     CommonAuthenticatorConstants,
@@ -224,9 +229,9 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
 
     useEffect(() => {
         if (adaptiveFeatureStatus === FeatureStatus.ENABLED
-            && adaptiveFeatureTags?.includes(FeatureTags.PREMIUM) &&
-            (tierName === TenantTier.FREE || tierName === TenantTier.ESSENTIALS ||
-            tierName === TenantTier.PROFESSIONAL)) {
+            && adaptiveFeatureTags?.includes(FeatureTags.PREMIUM)
+            && (tierName === TenantTier.FREE || tierName === TenantTier.ESSENTIALS
+                || tierName === TenantTier.PROFESSIONAL)) {
             setConditionalAuthPremiumFeature(true);
         } else {
             setConditionalAuthPremiumFeature(false);

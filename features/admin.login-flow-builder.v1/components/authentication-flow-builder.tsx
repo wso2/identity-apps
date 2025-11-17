@@ -400,7 +400,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
         updateAuthenticationSequenceFromAPI(applicationMetaData?.id, payload)
             .then(() => {
                 updateAdaptiveScript(applicationMetaData?.id, adaptiveScriptToUpdate, !isScriptUpdateReadOnly
-                    || !conditionalAuthPremiumFeature)
+                    && !conditionalAuthPremiumFeature)
                     .then(() => {
                         dispatch(addAlert({
                             description: t("applications:notifications.updateAuthenticationFlow" +

@@ -18,15 +18,13 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import Link from "@oxygen-ui/react/Link";
+import { DiamondIcon } from "@oxygen-ui/react-icons";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import useFeatureGate, { UseFeatureGateInterface } from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import "./conditional-auth-premium-banner.scss";
-import Chip from "@oxygen-ui/react/Chip/Chip";
-import { DiamondIcon } from "@oxygen-ui/react-icons";
-import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 
 /**
  * Conditional authentication premium banner component.
@@ -48,23 +46,14 @@ const ConditionalAuthPremiumBanner = (): ReactElement => {
         <Alert
             className="conditional-auth-premium-banner"
             severity="warning"
-            icon = { false }
-            sx={ {
-                justifyContent: "space-between"
-            } }
+            icon = { <DiamondIcon /> }
         >
-            { <Chip
-                icon = { <DiamondIcon /> }
-                label={ t(FeatureStatusLabel.PREMIUM) }
-                className="oxygen-menu-item-chip oxygen-chip-premium mr-2"
-                style={ { height: "fit-content" } }
-            /> }
-            { <Trans
+            <Trans
                 i18nKey="applications.featureGate.enabledFeatures.tags.premium.info"
             >
-                Unlock <b>custom conditional authentication</b> scripting capabilities with our Enterprise plan.
+                Unlock conditional authentication scripting with our Enterprise plan.
                 Reach us at <Link href={ `mailto:${supportEmail}` }>{ supportEmail }</Link>.
-            </Trans> }
+            </Trans>
         </Alert>
     );
 };

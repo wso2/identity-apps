@@ -166,7 +166,7 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
                                         {
                                             t("applications:edit.sections.signOnMethod." +
                                                 "sections.authenticationFlow.sections.scriptBased.accordion." +
-                                                "title.heading" + ((readOnly && !conditionalAuthPremiumFeature)
+                                                "title.heading" + (readOnly && !conditionalAuthPremiumFeature
                                                 ? ".readOnly" : ".readWrite"))
                                         }
                                     </Typography>
@@ -179,6 +179,31 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
                                                 <Icon name="warning sign" color="yellow" />
                                             </span>
                                         </Tooltip>)
+                                    }
+                                    {
+                                        conditionalAuthPremiumFeature && (
+                                            <Popup
+                                                basic
+                                                inverted
+                                                position="top center"
+                                                content={
+                                                    (<p>
+                                                        {
+                                                            t("applications:featureGate.enabledFeatures.tags." +
+                                                            "premium.info")
+                                                        }
+                                                    </p>)
+                                                }
+                                                trigger={ (
+                                                    <Chip
+                                                        icon = { <DiamondIcon /> }
+                                                        label={ t(FeatureStatusLabel.PREMIUM) }
+                                                        className="oxygen-menu-item-chip oxygen-chip-premium ml-2"
+                                                        style={ { height: "fit-content" } }
+                                                    />
+                                                ) }
+                                            />
+                                        )
                                     }
                                 </div>
                                 <Typography variant="body2">

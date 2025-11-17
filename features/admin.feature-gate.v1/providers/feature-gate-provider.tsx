@@ -45,8 +45,7 @@ const FeatureGateProvider: FC<FeatureGateProviderProps> = ({
                 setConditionalAuthPremiumFeature,
                 setSelectedPreviewFeatureToShow,
                 setShowPreviewFeaturesModal,
-                showPreviewFeaturesModal,
-
+                showPreviewFeaturesModal
             } }
         >
             { children }
