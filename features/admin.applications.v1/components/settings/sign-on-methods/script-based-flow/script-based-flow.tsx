@@ -30,10 +30,6 @@ import Typography from "@oxygen-ui/react/Typography";
 import { DiamondIcon, GearIcon, PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
 import {
     FeatureAccessConfigInterface,
-    FeatureStatus,
-    FeatureTags,
-    useCheckFeatureStatus,
-    useCheckFeatureTags,
     useRequiredScopes
 } from "@wso2is/access-control";
 import { getOperationIcons } from "@wso2is/admin.core.v1/configs/ui";
@@ -56,8 +52,6 @@ import { deleteSecret, getSecretList } from "@wso2is/admin.secrets.v1/api/secret
 import AddSecretWizard from "@wso2is/admin.secrets.v1/components/add-secret-wizard";
 import { ADAPTIVE_SCRIPT_SECRETS } from "@wso2is/admin.secrets.v1/constants/secrets.common";
 import { GetSecretListResponse, SecretModel } from "@wso2is/admin.secrets.v1/models/secret";
-import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
-import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
 import { UIConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
@@ -112,6 +106,8 @@ import {
 } from "../../../../models/application";
 import { AdaptiveScriptUtils } from "../../../../utils/adaptive-script-utils";
 import "./script-based-flow.scss";
+import useFeatureGate, { UseFeatureGateInterface } from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
+import ConditionalAuthPremiumBanner from "../../../banners/conditional-auth-premium-banner";
 
 /**
  * Proptypes for the adaptive scripts component.
@@ -203,9 +199,6 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const [ isEditorFullScreen, setIsEditorFullScreen ] = useState<boolean>(false);
     const [ showAddSecretModal, setShowAddSecretModal ] = useState<boolean>(false);
     const [ editorInstance, setEditorInstance ] = useState<codemirror.Editor>(undefined);
-    const adaptiveFeatureStatus : FeatureStatus = useCheckFeatureStatus("console.application.signIn.adaptiveAuth");
-    const adaptiveFeatureTags: string[] = useCheckFeatureTags("console.application.signIn.adaptiveAuth");
-    const [ isPremiumFeature, setIsPremiumFeature ] = useState<boolean>(false);
     const [ isELKConfigureClicked, setIsELKConfigureClicked ] = useState<boolean>(false);
     const [ isDropdownOpen, setIsDropdownOpen ] = useState<boolean>(false);
     const [ secretsDropdownAnchorEl, setSecretsDropdownAnchorEl ] = useState<null | HTMLElement>(null);
@@ -241,7 +234,9 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         useRequiredScopes(applicationsFeatureConfig?.subFeatures?.applicationAuthenticationScript?.scopes?.update);
     const isScriptUpdateReadOnly: boolean = isScriptUpdatePermissionEnforced && !hasScriptUpdatePermission;
 
-    const { tierName }: UseSubscriptionInterface = useSubscription();
+    const { conditionalAuthPremiumFeature }: UseFeatureGateInterface = useFeatureGate();
+
+    const isPremiumOrReadOnly: boolean = readOnly || conditionalAuthPremiumFeature;
 
     /**
      * Calls method to load secrets to secret list.
@@ -288,17 +283,6 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         }
 
     };
-
-    /**
-     * Check if the feature is a premium.
-     */
-    useEffect(() => {
-        if (adaptiveFeatureStatus === FeatureStatus.ENABLED
-            && adaptiveFeatureTags?.includes(FeatureTags.PREMIUM)
-            && tierName === TenantTier.FREE) {
-            setIsPremiumFeature(true);
-        }
-    }, []);
 
     /**
      * Calls method to load secrets to refresh secret list.
@@ -424,7 +408,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     useEffect(() => {
 
         // If the user has read only access, show the script editor.
-        if (readOnly) {
+        if (isPremiumOrReadOnly) {
             onConditionalAuthenticationToggle(true);
 
             return;
@@ -1292,7 +1276,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                             <>
                                 <div className="conditional-auth-accordion-title">
                                     {
-                                        !readOnly && !isScriptUpdateReadOnly && (
+                                        !isPremiumOrReadOnly && !isScriptUpdateReadOnly && (
                                             <Checkbox
                                                 toggle
                                                 data-tourid="conditional-auth"
@@ -1332,31 +1316,6 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                     ) }
                                                 />)
                                             }
-                                            {
-                                                isPremiumFeature && (
-                                                    <Popup
-                                                        basic
-                                                        inverted
-                                                        position="top center"
-                                                        content={
-                                                            (<p>
-                                                                {
-                                                                    t("applications:featureGate.enabledFeatures.tags." +
-                                                                    "premium.warning")
-                                                                }
-                                                            </p>)
-                                                        }
-                                                        trigger={ (
-                                                            <Chip
-                                                                icon = { <DiamondIcon /> }
-                                                                label={ t(FeatureStatusLabel.PREMIUM) }
-                                                                className="oxygen-menu-item-chip oxygen-chip-premium"
-                                                                style={ { height: "fit-content" } }
-                                                            />
-                                                        ) }
-                                                    />
-                                                )
-                                            }
                                         </Heading>
                                         <Text muted compact>
                                             {
@@ -1373,7 +1332,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                         </Text>
                                     </div>
                                 </div>
-                                { renderConditionalAuthTour() }
+                                { /* { renderConditionalAuthTour() } */ }
                             </>
                         ) }
                         hideChevron={ true }
@@ -1384,7 +1343,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                         data-componentid={ `${ componentId }-accordion-content` }
                     >
                         <Sidebar.Pushable className="script-editor-with-template-panel no-border">
-                            { !readOnly && (
+                            <ConditionalAuthPremiumBanner></ConditionalAuthPremiumBanner>
+                            { !isPremiumOrReadOnly && (
                                 <ScriptTemplatesSidePanel
                                     onELKModalClose={ () => setIsELKConfigureClicked(false) }
                                     isELKConfigureClicked={ isELKConfigureClicked }
@@ -1403,7 +1363,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                         Object.values(scriptTemplates.templatesJSON)
                                     }
                                     visible={ showAuthTemplatesSidePanel }
-                                    readOnly={ readOnly }
+                                    readOnly={ isPremiumOrReadOnly }
                                     data-componentid={ `${ componentId }-script-templates-side-panel` }
                                 />
                             ) }
@@ -1491,7 +1451,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                     size="mini"
                                                 />
                                             </Menu.Item>
-                                            { !readOnly && (
+                                            { !isPremiumOrReadOnly && (
                                                 <Menu.Item
                                                     onClick={ handleScriptTemplateSidebarToggle }
                                                     className="action hamburger"
@@ -1529,7 +1489,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                 preserveStateOnFullScreenChange();
                                             } }
                                             theme={ isEditorDarkMode ? "dark" : "light" }
-                                            readOnly={ readOnly }
+                                            readOnly={ isPremiumOrReadOnly }
                                             translations={ {
                                                 copyCode: t("common:copyToClipboard"),
                                                 exitFullScreen: t("common:exitFullScreen"),

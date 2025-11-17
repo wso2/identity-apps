@@ -2451,6 +2451,7 @@ export interface ApplicationsNS {
         enabledFeatures: {
             tags: {
                 premium: {
+                    info: string;
                     warning: string;
                 };
             };

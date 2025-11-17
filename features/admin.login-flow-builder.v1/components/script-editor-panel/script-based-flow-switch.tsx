@@ -20,16 +20,21 @@ import Accordion from "@oxygen-ui/react/Accordion";
 import AccordionDetails from "@oxygen-ui/react/AccordionDetails";
 import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
 import Box from "@oxygen-ui/react/Box";
+import Chip from "@oxygen-ui/react/Chip";
 import Grid from "@oxygen-ui/react/Grid";
 import Switch from "@oxygen-ui/react/Switch";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
+import { DiamondIcon } from "@oxygen-ui/react-icons";
 import { AdaptiveScriptUtils } from "@wso2is/admin.applications.v1/utils/adaptive-script-utils";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import useFeatureGate, { UseFeatureGateInterface } from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { LOGIN_FLOW_AI_FEATURE_TAG } from "@wso2is/admin.login-flow.ai.v1/constants/login-flow-ai-constants";
 import useAILoginFlow from "@wso2is/admin.login-flow.ai.v1/hooks/use-ai-login-flow";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { Popup } from "@wso2is/react-components";
 import React, {
     PropsWithChildren,
     ReactElement,
@@ -80,6 +85,8 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
 
     const applicationDisabledFeatures: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.features?.applications?.disabledFeatures);
+
+    const { conditionalAuthPremiumFeature }: UseFeatureGateInterface = useFeatureGate();
 
     /**
      * This useEffect is responsible for deciding whether
@@ -159,10 +166,11 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
                                         {
                                             t("applications:edit.sections.signOnMethod." +
                                                 "sections.authenticationFlow.sections.scriptBased.accordion." +
-                                                "title.heading" + (readOnly ? ".readOnly" : ".readWrite"))
+                                                "title.heading" + ((readOnly && !conditionalAuthPremiumFeature)
+                                                ? ".readOnly" : ".readWrite"))
                                         }
                                     </Typography>
-                                    { readOnly && (
+                                    { readOnly && !conditionalAuthPremiumFeature && (
                                         <Tooltip
                                             title={ t("applications:edit.sections.signOnMethod.sections." +
                                                 "authenticationFlow.sections.scriptBased.accordion.title." +

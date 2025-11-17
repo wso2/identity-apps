@@ -28,6 +28,8 @@ import Toolbar from "@oxygen-ui/react/Toolbar";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
+import  ConditionalAuthPremiumBanner
+    from "@wso2is/admin.applications.v1/components/banners/conditional-auth-premium-banner";
 import { ApplicationManagementConstants } from "@wso2is/admin.applications.v1/constants/application-management";
 import { AdaptiveScriptUtils } from "@wso2is/admin.applications.v1/utils/adaptive-script-utils";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -260,6 +262,7 @@ const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterf
 
     const ScriptEditorToolbar: ReactElement = (
         <Box className="script-editor-toolbar-container">
+            <ConditionalAuthPremiumBanner/>
             <Toolbar variant="dense">
                 <Box>
                     <Typography>{ t("authenticationFlow:scriptEditor.panelHeader") }</Typography>
