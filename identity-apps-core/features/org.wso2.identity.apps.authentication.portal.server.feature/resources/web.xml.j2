@@ -134,6 +134,12 @@
         <param-value>{{ authenticationendpoint.authenticator_validation_enabled }}</param-value>
     </context-param>
     {% endif %}
+        {% if authenticationendpoint.default_authenticators is defined %}
+     <context-param>
+        <param-name>DefaultAuthenticators</param-name>
+        <param-value>{{ authenticationendpoint.default_authenticators }}</param-value>
+    </context-param>
+    {% endif %}
 
     <!-- *************** End of Authenticator Validation Configuration ********************** -->
 
