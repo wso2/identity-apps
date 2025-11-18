@@ -1,5 +1,12 @@
 # @wso2is/console
 
+## 2.81.27
+
+### Patch Changes
+
+- Updated dependencies [[`67b67f4d3bd95f507a54196a1f8c0e5a5531baff`](https://github.com/wso2/identity-apps/commit/67b67f4d3bd95f507a54196a1f8c0e5a5531baff)]:
+  - @wso2is/admin.workflow-requests.v1@1.0.16
+
 ## 2.81.26
 
 ### Patch Changes

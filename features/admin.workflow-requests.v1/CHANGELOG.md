@@ -1,5 +1,11 @@
 # @wso2is/admin.workflow-requests.v1
 
+## 1.0.16
+
+### Patch Changes
+
+- [#9438](https://github.com/wso2/identity-apps/pull/9438) [`67b67f4d3bd95f507a54196a1f8c0e5a5531baff`](https://github.com/wso2/identity-apps/commit/67b67f4d3bd95f507a54196a1f8c0e5a5531baff) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Fix daysjs fromnow function not found issue
+
 ## 1.0.15
 
 ### Patch Changes
