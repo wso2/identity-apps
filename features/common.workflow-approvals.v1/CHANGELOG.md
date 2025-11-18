@@ -1,5 +1,14 @@
 # @wso2is/common.workflow-approvals.v1
 
+## 1.0.12
+
+### Patch Changes
+
+- [#9444](https://github.com/wso2/identity-apps/pull/9444) [`aa67836d051e760f914a810a48a0c25c047e89f9`](https://github.com/wso2/identity-apps/commit/aa67836d051e760f914a810a48a0c25c047e89f9) Thanks [@Malith-19](https://github.com/Malith-19)! - Fix the timestamp not showing issue in the approval task page.
+
+- Updated dependencies [[`e254727623263d9cd79e945836f5fb454df4a543`](https://github.com/wso2/identity-apps/commit/e254727623263d9cd79e945836f5fb454df4a543)]:
+  - @wso2is/admin.core.v1@2.49.102
+
 ## 1.0.11
 
 ### Patch Changes

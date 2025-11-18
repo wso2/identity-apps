@@ -1,5 +1,29 @@
 # @wso2is/console
 
+## 2.81.28
+
+### Patch Changes
+
+- [#9444](https://github.com/wso2/identity-apps/pull/9444) [`aa67836d051e760f914a810a48a0c25c047e89f9`](https://github.com/wso2/identity-apps/commit/aa67836d051e760f914a810a48a0c25c047e89f9) Thanks [@Malith-19](https://github.com/Malith-19)! - Fix the timestamp not showing issue in the approval task page.
+
+* [#9442](https://github.com/wso2/identity-apps/pull/9442) [`e254727623263d9cd79e945836f5fb454df4a543`](https://github.com/wso2/identity-apps/commit/e254727623263d9cd79e945836f5fb454df4a543) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Hide meta attributes in My Account user profile UI
+
+* Updated dependencies [[`aa67836d051e760f914a810a48a0c25c047e89f9`](https://github.com/wso2/identity-apps/commit/aa67836d051e760f914a810a48a0c25c047e89f9), [`e254727623263d9cd79e945836f5fb454df4a543`](https://github.com/wso2/identity-apps/commit/e254727623263d9cd79e945836f5fb454df4a543)]:
+  - @wso2is/common.workflow-approvals.v1@1.0.12
+  - @wso2is/admin.core.v1@2.49.102
+  - @wso2is/admin.workflow-requests.v1@1.0.17
+  - @wso2is/admin.users.v1@2.36.69
+  - @wso2is/admin.agents.v1@1.0.109
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.94
+  - @wso2is/admin.branding.v1@2.32.50
+  - @wso2is/admin.email-management.v1@2.25.258
+  - @wso2is/admin.flows.v1@1.0.63
+  - @wso2is/admin.home.v1@1.7.72
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.94
+  - @wso2is/admin.server-configurations.v1@2.35.116
+  - @wso2is/admin.roles.v2@2.27.264
+  - @wso2is/admin.registration-flow-builder.v1@0.10.54
+
 ## 2.81.27
 
 ### Patch Changes
