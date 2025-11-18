@@ -19,6 +19,7 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { LinkButton, Media, Popup, Text, useMediaContext } from "@wso2is/react-components";
 import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -36,6 +37,8 @@ import {
 import { ApprovalStatus, ApprovalTaskDetails } from "../models";
 import "./approval-task.scss";
 import { getOperationTypeTranslationKey } from "../utils/approval-utils";
+
+dayjs.extend(localizedFormat);
 
 /**
  * Prop-types for the approvals edit page component.
