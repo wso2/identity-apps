@@ -1,5 +1,11 @@
 # @wso2is/myaccount
 
+## 2.25.19
+
+### Patch Changes
+
+- [#9445](https://github.com/wso2/identity-apps/pull/9445) [`3ce175a4603f2dd5a8abf110a74dc9e35b0cccc2`](https://github.com/wso2/identity-apps/commit/3ce175a4603f2dd5a8abf110a74dc9e35b0cccc2) Thanks [@Malith-19](https://github.com/Malith-19)! - Fix the timestamp formatting issue in user sessions page.
+
 ## 2.25.18
 
 ### Patch Changes

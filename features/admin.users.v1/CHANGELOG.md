@@ -1,5 +1,19 @@
 # @wso2is/admin.users.v1
 
+## 2.36.70
+
+### Patch Changes
+
+- [#9445](https://github.com/wso2/identity-apps/pull/9445) [`3ce175a4603f2dd5a8abf110a74dc9e35b0cccc2`](https://github.com/wso2/identity-apps/commit/3ce175a4603f2dd5a8abf110a74dc9e35b0cccc2) Thanks [@Malith-19](https://github.com/Malith-19)! - Fix the timestamp formatting issue in user sessions page.
+
+- Updated dependencies [[`3ce175a4603f2dd5a8abf110a74dc9e35b0cccc2`](https://github.com/wso2/identity-apps/commit/3ce175a4603f2dd5a8abf110a74dc9e35b0cccc2)]:
+  - @wso2is/admin.users.v1@2.36.70
+  - @wso2is/admin.core.v1@2.49.103
+  - @wso2is/admin.roles.v2@2.27.265
+  - @wso2is/admin.flow-builder-core.v1@0.10.95
+  - @wso2is/admin.flows.v1@1.0.64
+  - @wso2is/admin.server-configurations.v1@2.35.117
+
 ## 2.36.69
 
 ### Patch Changes
