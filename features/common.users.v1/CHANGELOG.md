@@ -1,5 +1,11 @@
 # @wso2is/common.users.v1
 
+## 1.0.5
+
+### Patch Changes
+
+- [#9442](https://github.com/wso2/identity-apps/pull/9442) [`e254727623263d9cd79e945836f5fb454df4a543`](https://github.com/wso2/identity-apps/commit/e254727623263d9cd79e945836f5fb454df4a543) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Hide meta attributes in My Account user profile UI
+
 ## 1.0.4
 
 ### Patch Changes
