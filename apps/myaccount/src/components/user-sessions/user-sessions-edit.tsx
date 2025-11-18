@@ -19,6 +19,7 @@
 import { IBrowser, IDevice, IOS, TestableComponentInterface } from "@wso2is/core/models";
 import { DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
 import relativeTime from "dayjs/plugin/relativeTime";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
@@ -27,6 +28,7 @@ import { ApplicationSession, UserSession } from "../../models";
 import { EditSection } from "../shared";
 
 dayjs.extend(relativeTime);
+dayjs.extend(localizedFormat);
 
 /**
  * Prop-types for the user sessions edit component.
