@@ -205,7 +205,6 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
                         claim={ claim }
                         update={ getClaim }
                         userStores={ userStores }
-                        readOnlyUserStoreNames={ readOnlyUserStoreNamesList }
                         data-componentid={ `${ testId }-edit-local-claims-mapped-attributes` }
                     />
                 </ResourceTab.Pane>
@@ -257,7 +256,6 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
                         claim={ claim }
                         update={ getClaim }
                         userStores={ userStores }
-                        readOnlyUserStoreNames={ readOnlyUserStoreNamesList }
                         data-componentid={ `${ testId }-edit-local-claims-mapped-attributes` }
                     />
                 </ResourceTab.Pane>

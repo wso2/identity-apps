@@ -27,6 +27,7 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { getProfileSchemas } from "@wso2is/admin.users.v1/api";
 import { CONSUMER_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreBasicData } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
@@ -66,10 +67,6 @@ interface EditMappedAttributesLocalClaimsPropsInterface extends IdentifiableComp
      * User stores.
      */
     userStores: UserStoreBasicData[];
-    /**
-     * Names of configured read-only user stores.
-     */
-    readOnlyUserStoreNames?: string[];
 }
 
 /**
@@ -88,7 +85,6 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
         claim,
         update,
         userStores,
-        readOnlyUserStoreNames,
         [ "data-componentid" ]: componentId = "edit-local-claims-mapped-attributes"
     } = props;
 
@@ -100,9 +96,9 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
 
     const { t } = useTranslation();
 
-    const readOnlyUserStoreSet: Set<string> = useMemo(() =>
-        new Set(readOnlyUserStoreNames?.map((name: string) => name.toUpperCase()) ?? [])
-    , [ readOnlyUserStoreNames ]);
+    const {
+        readOnlyUserStoreNamesList
+    } = useUserStores();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const hiddenUserStores: string[] = useSelector((state: AppState) => state?.config?.ui?.hiddenUserStores);
@@ -311,7 +307,7 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                                     { store.name }
                                                 </Typography>
                                                 {
-                                                    readOnlyUserStoreSet?.has(store.name?.toUpperCase()) && (
+                                                    readOnlyUserStoreNamesList?.includes(store.name?.toUpperCase()) && (
                                                         <Chip
                                                             className="ml-2 oxygen-chip-beta"
                                                             label={
