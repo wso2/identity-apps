@@ -44,6 +44,7 @@ import {
 import { getProfileSchemas } from "@wso2is/admin.users.v1/api";
 import { UserFeatureDictionaryKeys, UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-management-utils";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { IdentityAppsError } from "@wso2is/core/errors";
@@ -113,10 +114,6 @@ interface EditBasicDetailsLocalClaimsPropsInterface extends TestableComponentInt
      */
     update: () => void;
     /**
-     * Names of the configured read-only user stores.
-     */
-    readOnlyUserStoreNames?: string[];
-    /**
      * Specifies whether the managedInUserStore property should be shown.
      */
     showManagedInUserStoreProperty?: boolean;
@@ -144,7 +141,6 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const {
         claim,
         update,
-        readOnlyUserStoreNames,
         showManagedInUserStoreProperty = true,
         [ "data-testid" ]: testId
     } = props;
@@ -164,7 +160,6 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const [ canonicalValues, setCanonicalValues ] = useState<KeyValue[]>();
     const [ managedInUserStore, setManagedInUserStore ] = useState<boolean>(claim?.managedInUserStore ?? false);
     const isIdentityClaim: boolean = claim?.claimURI?.startsWith("http://wso2.org/claims/identity/") ?? false;
-    const hasReadOnlyUserStoresConfigured: boolean = Boolean(readOnlyUserStoreNames?.length);
 
     const nameField: MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
     const regExField: MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
@@ -199,6 +194,12 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         featureConfig?.users,
         UserManagementConstants.FEATURE_DICTIONARY.get(UserFeatureDictionaryKeys.UseDefaultLabelsAndOrder)
     );
+
+    const {
+        readOnlyUserStoreNamesList
+    } = useUserStores();
+
+    const hasReadOnlyUserStoresConfigured: boolean = Boolean(readOnlyUserStoreNamesList?.length);
 
     const [ hideSpecialClaims, setHideSpecialClaims ] = useState<boolean>(true);
     const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);

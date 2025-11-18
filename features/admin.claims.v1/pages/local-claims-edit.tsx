@@ -74,7 +74,6 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
     const {
         isLoading: isUserStoreListFetchRequestLoading,
         mutateUserStoreList,
-        readOnlyUserStoreNamesList,
         userStoresList
     } = useUserStores();
 
@@ -188,7 +187,6 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
                     <EditBasicDetailsLocalClaims
                         claim={ claim }
                         update={ getClaim }
-                        readOnlyUserStoreNames={ readOnlyUserStoreNamesList }
                         showManagedInUserStoreProperty={ showManagedInUserStoreProperty }
                         data-testid="local-claims-basic-details-edit"
                     />
@@ -239,7 +237,6 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
                     <EditBasicDetailsLocalClaims
                         claim={ claim }
                         update={ getClaim }
-                        readOnlyUserStoreNames={ readOnlyUserStoreNamesList }
                         showManagedInUserStoreProperty={ showManagedInUserStoreProperty }
                         data-testid="local-claims-basic-details-edit"
                     />
