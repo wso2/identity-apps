@@ -29,6 +29,7 @@ import {
     TableColumnInterface
 } from "@wso2is/react-components";
 import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import React, { ReactElement, ReactNode, SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { Header } from "semantic-ui-react";
@@ -37,6 +38,8 @@ import {
     WorkflowInstanceStatus
 } from "../models/workflowRequests";
 import "./workflow-requests-list.scss";
+
+dayjs.extend(relativeTime);
 
 /**
  * Props interface for the Workflow Requests List component.
