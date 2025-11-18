@@ -44,6 +44,7 @@ import {
 } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
 import relativeTime from "dayjs/plugin/relativeTime";
 import React, {
     Fragment,
@@ -60,6 +61,7 @@ import { getUserSessions, terminateAllUserSessions, terminateUserSession } from 
 import { ApplicationSessionInterface, UserSessionInterface, UserSessionsInterface } from "../models/user";
 
 dayjs.extend(relativeTime);
+dayjs.extend(localizedFormat);
 
 /**
  * Proptypes for the user sessions component.
