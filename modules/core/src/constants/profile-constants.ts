@@ -135,7 +135,11 @@ export class ProfileConstants {
         .set("VERIFY_EMAIL", "verifyEmail")
         .set("VERIFY_MOBILE", "verifyMobile")
         .set("PENDING_MOBILE", "pendingMobileNumber")
-        .set("PENDING_EMAILS", "pendingEmails");
+        .set("PENDING_EMAILS", "pendingEmails")
+        .set("META_LOCATION", "meta.location")
+        .set("META_CREATED", "meta.created")
+        .set("META_LAST_MODIFIED", "meta.lastModified")
+        .set("META_RESOURCE_TYPE", "meta.resourceType");
 
     /**
      * States if the SCIM schema is mutable.
