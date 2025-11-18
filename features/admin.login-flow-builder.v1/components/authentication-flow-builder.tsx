@@ -162,11 +162,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
 
     const { conditionalAuthPremiumFeature }: UseFeatureGateInterface = useFeatureGate();
 
-    const [ isPremiumOrReadOnly, setIsPremiumOrReadOnly ] = useState<boolean>(false);
-
-    useEffect(() => {
-        setIsPremiumOrReadOnly(readOnly || conditionalAuthPremiumFeature);
-    }, [ readOnly, conditionalAuthPremiumFeature ]);
+    const isPremiumOrReadOnly: boolean = readOnly || conditionalAuthPremiumFeature;
 
     /**
      * Set the active flow mode to the flow mode to switch.
