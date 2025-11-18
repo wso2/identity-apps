@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { UserBasicInterface, UserListInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
+import { UserBasicInterface, UserListInterface } from "@wso2is/admin.core.v1/models/users";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -26,13 +26,13 @@ import { useGetParentOrgUserInvites }
 import { InvitationsInterface } from "@wso2is/admin.users.v1/components/guests/models/invite";
 import { UserAccountTypes } from "@wso2is/admin.users.v1/constants/user-management-constants";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils/user-management-utils";
-import { MultiValueAttributeInterface, RolesInterface } from "@wso2is/core/models";
+import { MultiValueAttributeInterface } from "@wso2is/core/models";
 import { AxiosError } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import useConsoleRoles from "./use-console-roles";
+import useConsoleSettings from "./use-console-settings";
 
 /**
  * Props interface of {@link UseAdministrators}
@@ -103,6 +103,24 @@ const useAdministrators = (
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
 
+    const { consoleId } = useConsoleSettings();
+
+    // Build the filter to fetch only users with console roles
+    const adminUsersFilter: string = useMemo(() => {
+        if (!consoleId) {
+            return null;
+        }
+
+        const roleFilter: string = `roles.audienceId eq ${consoleId}`;
+
+        // Combine with any additional filter if provided
+        if (filter && filter !== "") {
+            return `${roleFilter} and ${filter}`;
+        }
+
+        return roleFilter;
+    }, [ consoleId, filter ]);
+
     const {
         data: originalAdminUserList,
         error: adminUserListFetchError,
@@ -111,19 +129,17 @@ const useAdministrators = (
     } = useUsersList(
         modifiedLimit,
         startIndex + 1,
-        filter === "" ? null : filter,
+        adminUsersFilter,
         attributes,
         domain,
         excludedAttributes,
-        shouldFetch
+        shouldFetch && !!consoleId
     );
 
     const {
         data: invitedAdministrators,
         mutate: mutateInvitedAdministratorsListFetchRequest
     } = useGetParentOrgUserInvites(isSubOrganization());
-
-    const { consoleRoles } = useConsoleRoles(null, null);
 
     /**
      * Transform the original users list response from the API.
@@ -139,26 +155,13 @@ const useAdministrators = (
         const clonedUserList: UserListInterface = cloneDeep(usersList);
         const processedUserList: UserBasicInterface[] = [];
 
-        /**
-         * Checks whether administrator role is present in the user.
-         */
-        const isAdminUser = (user: UserBasicInterface): boolean => {
-            return user?.roles?.some((userRole: UserRoleInterface) => {
-                return consoleRoles?.Resources?.some((consoleRole: RolesInterface) => {
-                    return consoleRole.id === userRole.value;
-                });
-            });
-        };
-
         const isOwner = (user: UserBasicInterface): boolean => {
             return user[SCIMConfigs.scim.systemSchema]?.userAccountType === UserAccountTypes.OWNER;
         };
 
         clonedUserList.Resources = clonedUserList?.Resources?.map((resource: UserBasicInterface) => {
-            // Filter out users belong to groups named "Administrator"
-            if (!isAdminUser(resource)) {
-                return null;
-            }
+            // Since we're already filtering by console roles at the API level,
+            // all returned users are administrators. We just need to sort them properly.
 
             if (isOwner(resource) && UserManagementUtils.isAuthenticatedUser(authenticatedUser, resource?.userName)) {
                 processedUserList[0] = resource;
@@ -234,12 +237,12 @@ const useAdministrators = (
     };
 
     const administrators: UserListInterface = useMemo(() => {
-        if (isEmpty(originalAdminUserList) || isEmpty(consoleRoles)) {
+        if (isEmpty(originalAdminUserList)) {
             return {};
         }
 
         return transformUserList(originalAdminUserList);
-    }, [ originalAdminUserList, consoleRoles ]);
+    }, [ originalAdminUserList ]);
 
     return {
         adminUserListFetchError,
