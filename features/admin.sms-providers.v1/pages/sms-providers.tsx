@@ -35,10 +35,10 @@ import {
     PageLayout,
     useDocumentation
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { Dispatch, FunctionComponent, MutableRefObject, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Dispatch } from "redux";
+import { FormApi } from "final-form";
 import { Divider, Grid, Placeholder } from "semantic-ui-react";
 import CustomSMSProvider from "./custom-sms-provider";
 import TwilioSMSProvider from "./twilio-sms-provider";
@@ -47,6 +47,7 @@ import { createSMSProvider, deleteSMSProviders, updateSMSProvider, useSMSProvide
 import { providerCards } from "../configs/provider-cards";
 import { SMSProviderConstants } from "../constants/sms-provider-constants";
 import {
+    AuthType,
     ContentType,
     SMSProviderAPIInterface,
     SMSProviderAPIResponseInterface,
@@ -75,6 +76,10 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
     const dispatch: Dispatch<any> = useDispatch();
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isDeleting, setIsDeleting ] = useState<boolean>(false);
+    const [ endpointAuthType, setEndpointAuthType ] = useState<AuthType>(null);
+    const [ isAuthenticationUpdateFormState, setIsAuthenticationUpdateFormState ] = useState<boolean>(false);
+    const formStateRef: MutableRefObject<FormApi<Record<string, unknown>, Partial<Record<string, unknown>>>> = 
+        useRef<FormApi<Record<string, unknown>, Partial<Record<string, unknown>>>>(null);
     const defaultProviderParams: {
         [key: string]: SMSProviderInterface;
     } = {
@@ -189,6 +194,19 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                         configuredSMSProvider.key = provider.key;
                         configuredSMSProvider.secret = provider.secret;
                         configuredSMSProvider.sender = provider.sender;
+                        
+                        // Map authentication data
+                        if (provider.authentication) {
+                            configuredSMSProvider.authType = provider.authentication.type;
+                            if (provider.authentication.properties) {
+                                configuredSMSProvider.userName = provider.authentication.properties.username;
+                                configuredSMSProvider.password = provider.authentication.properties.password;
+                                configuredSMSProvider.clientId = provider.authentication.properties.clientId;
+                                configuredSMSProvider.clientSecret = provider.authentication.properties.clientSecret;
+                                configuredSMSProvider.tokenEndpoint = provider.authentication.properties.tokenEndpoint;
+                                configuredSMSProvider.scopes = provider.authentication.properties.scopes;
+                            }
+                        }
                     }
                     acc[configuredProvider] = configuredSMSProvider;
 
@@ -244,6 +262,29 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         setSmsProviderSettings({ ...smsProviderSettings, selectedProvider });
     };
 
+    const handleAuthenticationChange = (): void => {
+        setIsAuthenticationUpdateFormState(true);
+        const currentProvider = smsProviderSettings.providerParams[smsProviderSettings.selectedProvider];
+        
+        if (currentProvider?.authType) {
+            setEndpointAuthType(currentProvider.authType);
+            
+            if (formStateRef.current) {
+                formStateRef.current.change("authType", currentProvider.authType);
+                
+                if (currentProvider.authType === AuthType.BASIC) {
+                    formStateRef.current.change("userName", currentProvider.userName);
+                    formStateRef.current.change("password", null);
+                } else if (currentProvider.authType === AuthType.CLIENT_CREDENTIAL) {
+                    formStateRef.current.change("clientId", currentProvider.clientId);
+                    formStateRef.current.change("tokenEndpoint", currentProvider.tokenEndpoint);
+                    formStateRef.current.change("scopes", currentProvider.scopes);
+                    formStateRef.current.change("clientSecret", null);
+                }
+            }
+        }
+    };
+
     const handleSubmit = async (values: SMSProviderInterface) => {
         setIsSubmitting(true);
         const { selectedProvider } = smsProviderSettings;
@@ -284,6 +325,24 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
 
         if (values.providerURL) {
             submittingValues.providerURL = values.providerURL;
+        }
+
+        // Add authentication data for Custom SMS Provider
+        if (selectedProvider === SMSProviderConstants.CUSTOM_SMS_PROVIDER && values.authType) {
+            submittingValues.authentication = {
+                type: values.authType,
+                properties: {}
+            };
+
+            if (values.authType === AuthType.BASIC) {
+                submittingValues.authentication.properties.username = values.userName;
+                submittingValues.authentication.properties.password = values.password;
+            } else if (values.authType === AuthType.CLIENT_CREDENTIAL) {
+                submittingValues.authentication.properties.clientId = values.clientId;
+                submittingValues.authentication.properties.clientSecret = values.clientSecret;
+                submittingValues.authentication.properties.tokenEndpoint = values.tokenEndpoint;
+                submittingValues.authentication.properties.scopes = values.scopes;
+            }
         }
 
         let handleSMSConfigValues: Promise<SMSProviderAPIResponseInterface>;
@@ -446,6 +505,36 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                     "smsProviders:form.custom.validations.required"
                 );
             }
+            
+            // Validate authentication fields
+            if (values?.authType === AuthType.BASIC) {
+                if (!values?.userName) {
+                    error.userName = t(
+                        "smsProviders:form.custom.validations.required"
+                    );
+                }
+                if (!values?.password && !existingSMSProviders.includes("CustomSMSProvider")) {
+                    error.password = t(
+                        "smsProviders:form.custom.validations.required"
+                    );
+                }
+            } else if (values?.authType === AuthType.CLIENT_CREDENTIAL) {
+                if (!values?.clientId) {
+                    error.clientId = t(
+                        "smsProviders:form.custom.validations.required"
+                    );
+                }
+                if (!values?.clientSecret && !existingSMSProviders.includes("CustomSMSProvider")) {
+                    error.clientSecret = t(
+                        "smsProviders:form.custom.validations.required"
+                    );
+                }
+                if (!values?.tokenEndpoint) {
+                    error.tokenEndpoint = t(
+                        "smsProviders:form.custom.validations.required"
+                    );
+                }
+            }
         }
 
         return error;
@@ -558,7 +647,9 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                             ?.providerParams[smsProviderSettings?.selectedProvider]
                                         :  {}
                                 }
-                                render={ ({ handleSubmit }: FormRenderProps) => (
+                                render={ ({ handleSubmit, form }: FormRenderProps) => {
+                                    formStateRef.current = form;
+                                    return (
                                     <form className="sms-provider-config-form" onSubmit={ handleSubmit } noValidate>
                                         <div className="card-list">
                                             <Grid>
@@ -608,6 +699,18 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                                     isReadOnly={ !hasSMSProvidersUpdatePermission }
                                                     onSubmit={ handleSubmit }
                                                     data-componentid={ "custom-sms-provider" }
+                                                    hasExistingConfig={ existingSMSProviders.includes("CustomSMSProvider") }
+                                                    currentAuthType={ 
+                                                        smsProviderSettings?.providerParams[
+                                                            SMSProviderConstants.CUSTOM_SMS_PROVIDER
+                                                        ]?.authType 
+                                                    }
+                                                    endpointAuthType={ endpointAuthType }
+                                                    setEndpointAuthType={ setEndpointAuthType }
+                                                    isAuthenticationUpdateFormState={ isAuthenticationUpdateFormState }
+                                                    setIsAuthenticationUpdateFormState={ setIsAuthenticationUpdateFormState }
+                                                    formState={ formStateRef }
+                                                    onAuthenticationChange={ handleAuthenticationChange }
                                                 />
                                                 { smsProviderConfig.renderAlternativeSmsProviderOptions({
                                                     existingSMSProviders,
@@ -638,7 +741,8 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
 
 
                                     </form>
-                                ) }
+                                );
+                            } }
                             />
                         </Grid.Column>
                     </Grid.Row>

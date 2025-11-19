@@ -92,6 +92,10 @@ export const resolveAuthTypeDisplayName = (
             return t("externalApiAuthentication:fields.authentication.types.basic.name");
         case "CLIENT_CREDENTIAL":
             return t("externalApiAuthentication:fields.authentication.types.clientCredential.name");
+        case "BEARER":
+            return t("externalApiAuthentication:fields.authentication.types.bearer.name");
+        case "API_KEY":
+            return t("externalApiAuthentication:fields.authentication.types.apiKey.name");
         default:
             return "";
     }
@@ -298,6 +302,64 @@ export const renderEndpointAuthPropertyFields = (
                         width={ 16 }
                     />
                 </>
+            );
+        case "BEARER":
+            return (
+                <Field.Input
+                    ariaLabel="bearerToken"
+                    className="addon-field-wrapper"
+                    name="bearerToken"
+                    inputType="password"
+                    type={ showPrimarySecret ? "text" : "password" }
+                    InputProps={ {
+                        endAdornment: renderInputAdornmentOfSecret(
+                            showPrimarySecret,
+                            () => setShowPrimarySecret(!showPrimarySecret),
+                            componentId
+                        )
+                    } }
+                    label={ t(
+                        "externalApiAuthentication:fields.authenticationTypeDropdown.authProperties.bearerToken.label"
+                    ) }
+                    placeholder={ t(
+                        "externalApiAuthentication:fields.authenticationTypeDropdown.authProperties." +
+                        "bearerToken.placeholder"
+                    ) }
+                    required={ true }
+                    maxLength={ 200 }
+                    minLength={ 0 }
+                    data-componentid={ `${componentId}-endpoint-authentication-property-bearerToken` }
+                    width={ 16 }
+                />
+            );
+        case "API_KEY":
+            return (
+                <Field.Input
+                    ariaLabel="apiKey"
+                    className="addon-field-wrapper"
+                    name="apiKey"
+                    inputType="password"
+                    type={ showPrimarySecret ? "text" : "password" }
+                    InputProps={ {
+                        endAdornment: renderInputAdornmentOfSecret(
+                            showPrimarySecret,
+                            () => setShowPrimarySecret(!showPrimarySecret),
+                            componentId
+                        )
+                    } }
+                    label={ t(
+                        "externalApiAuthentication:fields.authenticationTypeDropdown.authProperties.apiKey.label"
+                    ) }
+                    placeholder={ t(
+                        "externalApiAuthentication:fields.authenticationTypeDropdown.authProperties." +
+                        "apiKey.placeholder"
+                    ) }
+                    required={ true }
+                    maxLength={ 200 }
+                    minLength={ 0 }
+                    data-componentid={ `${componentId}-endpoint-authentication-property-apiKey` }
+                    width={ 16 }
+                />
             );
         default:
             break;

@@ -79,6 +79,12 @@ export const externalApiAuthentication: ExternalAPIAuthenticationNS = {
                             }
                         }
                     }
+                },
+                bearer: {
+                    name: "Bearer Token"
+                },
+                apiKey: {
+                    name: "API Key"
                 }
             }
         },

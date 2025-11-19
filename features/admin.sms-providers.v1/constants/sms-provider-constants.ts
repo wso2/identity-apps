@@ -43,6 +43,29 @@ export class SMSProviderConstants {
     public static readonly SMS_PROVIDER_CONFIG_TEMPLATE_FIELD_MAX_LENGTH: number = 1020;
     public static readonly SMS_REGEX: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+    public static readonly AUTH_TYPES: any[] = [
+        {
+            key: "BASIC",
+            text: "externalApiAuthentication:fields.authentication.types.basic.name",
+            value: "BASIC"
+        },
+        {
+            key: "CLIENT_CREDENTIAL",
+            text: "externalApiAuthentication:fields.authentication.types.clientCredential.name",
+            value: "CLIENT_CREDENTIAL"
+        },
+        {
+            key: "BEARER",
+            text: "externalApiAuthentication:fields.authentication.types.bearer.name",
+            value: "BEARER"
+        },
+        {
+            key: "API_KEY",
+            text: "externalApiAuthentication:fields.authentication.types.apiKey.name",
+            value: "API_KEY"
+        }
+    ];
+
     public static ErrorMessages: {
         SMS_PROVIDER_CONFIG_FETCH_ERROR_CODE: IdentityAppsError;
         SMS_PROVIDER_CONFIG_FETCH_INVALID_STATUS_CODE_ERROR_CODE: IdentityAppsError;

@@ -42,6 +42,10 @@
                 margin-top: 20px;
                 margin-left: 10px;
                 margin-right: 10px;
+                
+                .addon-field-wrapper {
+                    margin-bottom: 16px;
+                }
             }
         }
     
@@ -56,7 +60,7 @@
     
         .hint-text {
             margin-top: 0px;
-            margin-bottom: 8px;
+            margin-bottom: 16px;
         }
     
         .divider-container {
