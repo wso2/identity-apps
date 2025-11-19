@@ -1,5 +1,31 @@
 # @wso2is/admin.core.v1
 
+## 2.49.104
+
+### Patch Changes
+
+- [#9431](https://github.com/wso2/identity-apps/pull/9431) [`d8da0f3e69015ce94b4b2686408e30c6b56d8ae8`](https://github.com/wso2/identity-apps/commit/d8da0f3e69015ce94b4b2686408e30c6b56d8ae8) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Refactor authentication UI configuration for email senders
+
+- Updated dependencies [[`3a3c5cc89e9b44a21328959c3bf9b6205691141d`](https://github.com/wso2/identity-apps/commit/3a3c5cc89e9b44a21328959c3bf9b6205691141d), [`caaf2a112a77d03004170326307d8a706f8ea07e`](https://github.com/wso2/identity-apps/commit/caaf2a112a77d03004170326307d8a706f8ea07e), [`d8da0f3e69015ce94b4b2686408e30c6b56d8ae8`](https://github.com/wso2/identity-apps/commit/d8da0f3e69015ce94b4b2686408e30c6b56d8ae8), [`280eda61f7401701cf5557c549856f10cab9c554`](https://github.com/wso2/identity-apps/commit/280eda61f7401701cf5557c549856f10cab9c554)]:
+  - @wso2is/admin.org-insights.v1@2.25.206
+  - @wso2is/admin.claims.v1@2.29.15
+  - @wso2is/core@2.12.6
+  - @wso2is/i18n@2.30.57
+  - @wso2is/admin.email-providers.v1@2.27.5
+  - @wso2is/admin.identity-providers.v1@2.26.210
+  - @wso2is/admin.connections.v1@2.34.11
+  - @wso2is/admin.flow-builder-core.v1@0.10.96
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.96
+  - @wso2is/admin.branding.v1@2.32.52
+  - @wso2is/admin.email-management.v1@2.25.260
+  - @wso2is/admin.flows.v1@1.0.65
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.96
+  - @wso2is/admin.server-configurations.v1@2.35.118
+  - @wso2is/admin.users.v1@2.36.71
+  - @wso2is/admin.registration-flow-builder.v1@0.10.56
+  - @wso2is/admin.agents.v1@1.0.111
+  - @wso2is/admin.roles.v2@2.27.266
+
 ## 2.49.103
 
 ### Patch Changes
