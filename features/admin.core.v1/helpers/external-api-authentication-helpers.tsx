@@ -303,64 +303,6 @@ export const renderEndpointAuthPropertyFields = (
                     />
                 </>
             );
-        case "BEARER":
-            return (
-                <Field.Input
-                    ariaLabel="bearerToken"
-                    className="addon-field-wrapper"
-                    name="bearerToken"
-                    inputType="password"
-                    type={ showPrimarySecret ? "text" : "password" }
-                    InputProps={ {
-                        endAdornment: renderInputAdornmentOfSecret(
-                            showPrimarySecret,
-                            () => setShowPrimarySecret(!showPrimarySecret),
-                            componentId
-                        )
-                    } }
-                    label={ t(
-                        "externalApiAuthentication:fields.authenticationTypeDropdown.authProperties.bearerToken.label"
-                    ) }
-                    placeholder={ t(
-                        "externalApiAuthentication:fields.authenticationTypeDropdown.authProperties." +
-                        "bearerToken.placeholder"
-                    ) }
-                    required={ true }
-                    maxLength={ 200 }
-                    minLength={ 0 }
-                    data-componentid={ `${componentId}-endpoint-authentication-property-bearerToken` }
-                    width={ 16 }
-                />
-            );
-        case "API_KEY":
-            return (
-                <Field.Input
-                    ariaLabel="apiKey"
-                    className="addon-field-wrapper"
-                    name="apiKey"
-                    inputType="password"
-                    type={ showPrimarySecret ? "text" : "password" }
-                    InputProps={ {
-                        endAdornment: renderInputAdornmentOfSecret(
-                            showPrimarySecret,
-                            () => setShowPrimarySecret(!showPrimarySecret),
-                            componentId
-                        )
-                    } }
-                    label={ t(
-                        "externalApiAuthentication:fields.authenticationTypeDropdown.authProperties.apiKey.label"
-                    ) }
-                    placeholder={ t(
-                        "externalApiAuthentication:fields.authenticationTypeDropdown.authProperties." +
-                        "apiKey.placeholder"
-                    ) }
-                    required={ true }
-                    maxLength={ 200 }
-                    minLength={ 0 }
-                    data-componentid={ `${componentId}-endpoint-authentication-property-apiKey` }
-                    width={ 16 }
-                />
-            );
         default:
             break;
     }

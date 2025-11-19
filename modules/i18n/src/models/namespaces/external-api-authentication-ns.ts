@@ -84,6 +84,37 @@ export interface ExternalAPIAuthenticationNS {
                         };
                     };
                 };
+                bearer: {
+                    name: string;
+                    properties: {
+                        accessToken: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string
+                            };
+                        };
+                    };
+                };
+                apiKey: {
+                    name: string;
+                    properties: {
+                        header: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string
+                            };
+                        };
+                        value: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string
+                            };
+                        };
+                    };
+                };
             }
         };
         authenticationType: {
@@ -142,6 +173,27 @@ export interface ExternalAPIAuthenticationNS {
                     };
                 };
                 scopes: {
+                    label: string;
+                    placeholder: string;
+                    validations: {
+                        required: string;
+                    };
+                };
+                header: {
+                    label: string;
+                    placeholder: string;
+                    validations: {
+                        required: string;
+                    };
+                };
+                value: {
+                    label: string;
+                    placeholder: string;
+                    validations: {
+                        required: string;
+                    };
+                };
+                accessToken: {
                     label: string;
                     placeholder: string;
                     validations: {

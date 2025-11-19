@@ -37,6 +37,9 @@ export interface AuthenticationnInterface {
         clientSecret?: string;
         scopes?: string;
         tokenEndpoint?: string;
+        header?: string;
+        value?: string;
+        accessToken?: string;
     };
 }
 
@@ -80,6 +83,9 @@ export interface SMSProviderInterface {
     clientSecret?: string;
     tokenEndpoint?: string;
     scopes?: string;
+    header?: string;
+    value?: string;
+    accessToken?: string;
 }
 
 export interface SMSProviderAPIInterface {
@@ -127,6 +133,9 @@ export interface SMSProviderConfigFormErrorValidationsInterface {
     clientSecret?: string;
     tokenEndpoint?: string;
     scopes?: string;
+    header?: string;
+    value?: string;
+    accessToken?: string;
 }
 
 export interface SMSProviderCardInterface {
@@ -137,7 +146,7 @@ export interface SMSProviderCardInterface {
 }
 
 export interface DropdownChild {
-    key: string;
+    key: AuthType;
     text: string;
-    value: string;
+    value: AuthType;
 }

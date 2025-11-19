@@ -81,10 +81,35 @@ export const externalApiAuthentication: ExternalAPIAuthenticationNS = {
                     }
                 },
                 bearer: {
-                    name: "Bearer Token"
+                    name: "Bearer Token",
+                    properties: {
+                        accessToken: {
+                            label: "Access Token",
+                            placeholder: "Access Token",
+                            validations: {
+                                empty: "Access token is a required field."
+                            }
+                        }
+                    }
                 },
                 apiKey: {
-                    name: "API Key"
+                    name: "API Key",
+                    properties: {
+                        header: {
+                            label: "Header Name",
+                            placeholder: "Header Name",
+                            validations: {
+                                empty: "Header name is a required field."
+                            }
+                        },
+                        value: {
+                            label: "API Key Value",
+                            placeholder: "API Key Value",
+                            validations: {
+                                empty: "API key value is a required field."
+                            }
+                        }
+                    }
                 }
             }
         },
@@ -141,6 +166,27 @@ export const externalApiAuthentication: ExternalAPIAuthenticationNS = {
                     placeholder: "Username",
                     validations: {
                         required: "Username is a required field."
+                    }
+                },
+                header: {
+                    label: "Header Name",
+                    placeholder: "Enter header name (e.g., X-API-Key)",
+                    validations: {
+                        required: "Header name is a required field."
+                    }
+                },
+                value: {
+                    label: "API Key Value",
+                    placeholder: "Enter API key value",
+                    validations: {
+                        required: "API key value is a required field."
+                    }
+                },
+                accessToken: {
+                    label: "Access Token",
+                    placeholder: "Enter access token",
+                    validations: {
+                        required: "Access token is a required field."
                     }
                 }
             },

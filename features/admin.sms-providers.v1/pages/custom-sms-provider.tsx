@@ -43,6 +43,7 @@ import { Divider, Grid } from "semantic-ui-react";
 import "@wso2is/admin.core.v1/styles/external-api-authentication.scss";
 import { SMSProviderConstants } from "../constants/sms-provider-constants";
 import { AuthType, DropdownChild } from "../models/sms-providers";
+import "./sms-providers.scss";
 
 interface CustomSMSProviderPageInterface extends IdentifiableComponentInterface {
     isLoading?: boolean;
@@ -86,7 +87,6 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
 
     const handleDropdownChange = (value: string) => {
         const authType = value as AuthType;
-        console.log("Dropdown changed to:", authType);
         setLocalAuthType(authType);
         if (setEndpointAuthType) {
             setEndpointAuthType(authType);
@@ -94,8 +94,6 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
     };
     
     const activeAuthType = localAuthType || endpointAuthType;
-    
-    console.log("Active auth type:", activeAuthType, "Local:", localAuthType, "Prop:", endpointAuthType);
 
     return (
         <EmphasizedSegment
@@ -271,18 +269,19 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                 
             {/* Authentication Section */}
             <div className="external-api-auth-config-page">
-                <Divider className="divider-container" />
-                <Heading className="heading-container" as="h5">
-                    {
-                        t("externalApiAuthentication:fields." +
-                        "authenticationTypeDropdown.title")
-                    }
-                </Heading>
+                <div className="form-wrapper">
+                    <Divider className="divider-container" />
+                    <Heading className="heading-container" as="h5">
+                        {
+                            t("externalApiAuthentication:fields." +
+                            "authenticationTypeDropdown.title")
+                        }
+                    </Heading>
 
-                { (
-                    (!hasExistingConfig || isAuthenticationUpdateFormState)
-                ) && (
-                    <Box className="box-container">
+                    { (
+                        (!hasExistingConfig || isAuthenticationUpdateFormState)
+                    ) && (
+                        <Box className="box-container">
                                 <div className="box-field">
                                     <FormSpy subscription={ { values: true } }>
                                         { ({ values }) => {
@@ -471,6 +470,84 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                         </>
                                     ) }
 
+                                    { activeAuthType === AuthType.BEARER && (
+                                        <>
+                                            <FinalFormField
+                                                key="accessToken"
+                                                ariaLabel="accessToken"
+                                                className="addon-field-wrapper"
+                                                name="accessToken"
+                                                type={ showPrimarySecret ? "text" : "password" }
+                                                required={ true }
+                                                data-componentid={ `${componentId}-endpoint-authentication-property-accessToken` }
+                                                label={ t(
+                                                    "externalApiAuthentication:fields.authenticationTypeDropdown.authProperties.accessToken.label"
+                                                ) }
+                                                placeholder={ t(
+                                                    "externalApiAuthentication:fields.authenticationTypeDropdown.authProperties.accessToken.placeholder"
+                                                ) }
+                                                component={ TextFieldAdapter }
+                                                maxLength={ 1000 }
+                                                readOnly={ isReadOnly }
+                                                InputProps={ {
+                                                    endAdornment: renderInputAdornmentOfSecret(
+                                                        showPrimarySecret,
+                                                        () => setShowPrimarySecret(!showPrimarySecret),
+                                                        componentId
+                                                    )
+                                                } }
+                                            />
+                                        </>
+                                    ) }
+
+                                    { activeAuthType === AuthType.API_KEY && (
+                                        <>
+                                            <FinalFormField
+                                                key="header"
+                                                ariaLabel="header"
+                                                className="addon-field-wrapper"
+                                                name="header"
+                                                type="text"
+                                                required={ true }
+                                                data-componentid={ `${componentId}-endpoint-authentication-property-header` }
+                                                label={ t(
+                                                    "externalApiAuthentication:fields.authenticationTypeDropdown.authProperties.header.label"
+                                                ) }
+                                                placeholder={ t(
+                                                    "externalApiAuthentication:fields.authenticationTypeDropdown.authProperties.header.placeholder"
+                                                ) }
+                                                component={ TextFieldAdapter }
+                                                maxLength={ 100 }
+                                                readOnly={ isReadOnly }
+                                            />
+                                            <FinalFormField
+                                                key="value"
+                                                ariaLabel="value"
+                                                className="addon-field-wrapper"
+                                                name="value"
+                                                type={ showPrimarySecret ? "text" : "password" }
+                                                required={ true }
+                                                data-componentid={ `${componentId}-endpoint-authentication-property-value` }
+                                                label={ t(
+                                                    "externalApiAuthentication:fields.authenticationTypeDropdown.authProperties.value.label"
+                                                ) }
+                                                placeholder={ t(
+                                                    "externalApiAuthentication:fields.authenticationTypeDropdown.authProperties.value.placeholder"
+                                                ) }
+                                                component={ TextFieldAdapter }
+                                                maxLength={ 500 }
+                                                readOnly={ isReadOnly }
+                                                InputProps={ {
+                                                    endAdornment: renderInputAdornmentOfSecret(
+                                                        showPrimarySecret,
+                                                        () => setShowPrimarySecret(!showPrimarySecret),
+                                                        componentId
+                                                    )
+                                                } }
+                                            />
+                                        </>
+                                    ) }
+
                                     { isAuthenticationUpdateFormState && formState && (
                                         <Button
                                             onClick={ () =>
@@ -504,6 +581,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                         Button
                     )
                 }
+                </div>
             </div>
                 
             {

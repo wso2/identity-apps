@@ -26,4 +26,25 @@
             background-color: #e9ecef!important;
         }
     }
+
+    // SMS provider-specific authentication field spacing
+    .external-api-auth-config-page {
+        .form-wrapper {
+            .hint-text {
+                margin-bottom: 16px;
+            }
+        }
+
+        .box-container {
+            .box-field {
+                .addon-field-wrapper {
+                    margin-bottom: 16px;
+
+                    &:first-of-type {
+                        margin-top: 8px;
+                    }
+                }
+            }
+        }
+    }
 }

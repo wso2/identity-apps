@@ -205,6 +205,9 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                                 configuredSMSProvider.clientSecret = provider.authentication.properties.clientSecret;
                                 configuredSMSProvider.tokenEndpoint = provider.authentication.properties.tokenEndpoint;
                                 configuredSMSProvider.scopes = provider.authentication.properties.scopes;
+                                configuredSMSProvider.header = provider.authentication.properties.header;
+                                configuredSMSProvider.value = provider.authentication.properties.value;
+                                configuredSMSProvider.accessToken = provider.authentication.properties.accessToken;
                             }
                         }
                     }
@@ -278,6 +281,11 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                 } else if (currentProvider.authType === AuthType.CLIENT_CREDENTIAL) {
                     formStateRef.current.change("clientId", currentProvider.clientId);
                     formStateRef.current.change("tokenEndpoint", currentProvider.tokenEndpoint);
+                } else if (currentProvider.authType === AuthType.BEARER) {
+                    formStateRef.current.change("accessToken", null);
+                } else if (currentProvider.authType === AuthType.API_KEY) {
+                    formStateRef.current.change("header", currentProvider.header);
+                    formStateRef.current.change("value", null);
                     formStateRef.current.change("scopes", currentProvider.scopes);
                     formStateRef.current.change("clientSecret", null);
                 }
@@ -312,12 +320,12 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             contentType: contentType,
             key: selectedProvider === SMSProviderConstants.TWILIO_SMS_PROVIDER ?
                 values?.twilioKey : selectedProvider === SMSProviderConstants.VONAGE_SMS_PROVIDER ?
-                    values.vonageKey : values.key,
+                    values.vonageKey : null,
             properties: properties,
             provider: provider,
             secret: selectedProvider === SMSProviderConstants.TWILIO_SMS_PROVIDER ?
                 values?.twilioSecret : selectedProvider === SMSProviderConstants.VONAGE_SMS_PROVIDER ?
-                    values.vonageSecret : values.secret,
+                    values.vonageSecret : null,
             sender: selectedProvider === SMSProviderConstants.TWILIO_SMS_PROVIDER ?
                 values?.twilioSender : selectedProvider === SMSProviderConstants.VONAGE_SMS_PROVIDER ?
                     values.vonageSender : values.sender
@@ -342,6 +350,11 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                 submittingValues.authentication.properties.clientSecret = values.clientSecret;
                 submittingValues.authentication.properties.tokenEndpoint = values.tokenEndpoint;
                 submittingValues.authentication.properties.scopes = values.scopes;
+            } else if (values.authType === AuthType.BEARER) {
+                submittingValues.authentication.properties.accessToken = values.accessToken;
+            } else if (values.authType === AuthType.API_KEY) {
+                submittingValues.authentication.properties.header = values.header;
+                submittingValues.authentication.properties.value = values.value;
             }
         }
 
@@ -507,13 +520,18 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             }
             
             // Validate authentication fields
+            // When authentication box is expanded (isAuthenticationUpdateFormState=true), 
+            // secrets are always required since backend doesn't return existing secrets
+            const hasExistingConfig: boolean = existingSMSProviders.includes("CustomSMSProvider");
+            const requireSecrets: boolean = !hasExistingConfig || isAuthenticationUpdateFormState;
+
             if (values?.authType === AuthType.BASIC) {
                 if (!values?.userName) {
                     error.userName = t(
                         "smsProviders:form.custom.validations.required"
                     );
                 }
-                if (!values?.password && !existingSMSProviders.includes("CustomSMSProvider")) {
+                if (!values?.password && requireSecrets) {
                     error.password = t(
                         "smsProviders:form.custom.validations.required"
                     );
@@ -524,13 +542,30 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                         "smsProviders:form.custom.validations.required"
                     );
                 }
-                if (!values?.clientSecret && !existingSMSProviders.includes("CustomSMSProvider")) {
+                if (!values?.clientSecret && requireSecrets) {
                     error.clientSecret = t(
                         "smsProviders:form.custom.validations.required"
                     );
                 }
                 if (!values?.tokenEndpoint) {
                     error.tokenEndpoint = t(
+                        "smsProviders:form.custom.validations.required"
+                    );
+                }
+            } else if (values?.authType === AuthType.BEARER) {
+                if (!values?.accessToken && requireSecrets) {
+                    error.accessToken = t(
+                        "smsProviders:form.custom.validations.required"
+                    );
+                }
+            } else if (values?.authType === AuthType.API_KEY) {
+                if (!values?.header) {
+                    error.header = t(
+                        "smsProviders:form.custom.validations.required"
+                    );
+                }
+                if (!values?.value && requireSecrets) {
+                    error.value = t(
                         "smsProviders:form.custom.validations.required"
                     );
                 }
