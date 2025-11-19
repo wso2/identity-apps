@@ -130,7 +130,7 @@ const getDatesInRange = (duration: DurationOption): string[] => {
         const startDate: Dayjs = dayjs(timeStamps.startTimestamp);
         const endDate: Dayjs = dayjs(timeStamps.endTimestamp);
 
-        for (let m: Dayjs = dayjs(startDate); m.isBefore(endDate); m.add(1, "days")) {
+        for (let m: Dayjs = dayjs(startDate); m.isBefore(endDate); m = m.add(1, "days")) {
             dates.push(m.format("YYYY-MM-DD"));
         }
     }
