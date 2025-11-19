@@ -734,6 +734,17 @@ export const console: ConsoleNS = {
                                     invalid: "Allowed OTP resend attempt count should be an integer.",
                                     range: "Allowed OTP resend attempt count should be between 0 & 100."
                                 }
+                            },
+                            resendBlockDuration: {
+                                hint: "The time duration to block OTP resend requests after reaching the max allowed resend attempts",
+                                label: "Resend OTP block time",
+                                placeholder: "Enter resend block time in minutes.",
+                                unit: "minutes",
+                                validations: {
+                                    required: "Resend OTP block time is a required field.",
+                                    invalid: "Resend OTP block time should be an integer.",
+                                    range: "Resend OTP block time should be between 1 minute & 1440 minutes (1 day)."
+                                }
                             }
                         },
                         fido2: {
