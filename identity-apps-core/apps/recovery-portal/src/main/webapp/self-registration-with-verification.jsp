@@ -34,6 +34,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.ReCaptchaApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.ReCaptchaProperties" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.SelfRegistrationMgtClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.SelfRegistrationMgtClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.UsernameRecoveryApi" %>
@@ -88,6 +89,10 @@
     String[] missingClaimDisplayName = new String[0];
     Map<String, Claim> uniquePIIs = null;
     boolean piisConfigured = false;
+    PreferenceRetrievalClient preferenceRetrievalClient = new PreferenceRetrievalClient();
+    Boolean isShowUsernameUnavailabilityEnabled = preferenceRetrievalClient.checkSelfRegistrationShowUsernameUnavailability(tenantDomain);
+    Boolean isAccountVerificationEnabled = preferenceRetrievalClient.checkSelfRegistrationSendConfirmationOnCreation(tenantDomain);
+
     if (request.getParameter(Constants.MISSING_CLAIMS) != null) {
         missingClaimList = request.getParameter(Constants.MISSING_CLAIMS).split(",");
     }
@@ -203,6 +208,7 @@
 
     Integer userNameValidityStatusCode = usernameValidityResponse.getInt("code");
     if (!SelfRegistrationStatusCodes.CODE_USER_NAME_AVAILABLE.equalsIgnoreCase(userNameValidityStatusCode.toString())) {
+        String errorCode = String.valueOf(userNameValidityStatusCode);
         if (allowchangeusername || !skipSignUpEnableCheck) {
             request.setAttribute("error", true);
             request.setAttribute("errorCode", userNameValidityStatusCode);
@@ -211,9 +217,12 @@
                     request.setAttribute("errorMessage", usernameValidityResponse.getString("message"));
                 }
             }
-            request.getRequestDispatcher("register.do").forward(request, response);
+            if (!(isAccountVerificationEnabled && !isShowUsernameUnavailabilityEnabled) ||
+                !SelfRegistrationStatusCodes.ERROR_CODE_USER_ALREADY_EXISTS.equalsIgnoreCase(errorCode)) {
+                request.getRequestDispatcher("register.do").forward(request, response);
+                return;
+            }
         } else {
-            String errorCode = String.valueOf(userNameValidityStatusCode);
             if (SelfRegistrationStatusCodes.ERROR_CODE_INVALID_TENANT.equalsIgnoreCase(errorCode)) {
                 errorMsg = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "invalid.tenant.domain")
                     + " - " + user.getTenantDomain() + ".";
@@ -232,8 +241,8 @@
                 request.setAttribute("username", username);
             }
             request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
-        return;
     }
     String purposes = selfRegistrationMgtClient.getPurposes(user.getTenantDomain(), consentPurposeGroupName,
             consentPurposeGroupType);
