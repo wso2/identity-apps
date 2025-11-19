@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.12.6
+
+### Patch Changes
+
+- [#9419](https://github.com/wso2/identity-apps/pull/9419) [`caaf2a112a77d03004170326307d8a706f8ea07e`](https://github.com/wso2/identity-apps/commit/caaf2a112a77d03004170326307d8a706f8ea07e) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Implement managed in user store attribute property.
+
 ## 2.12.5
 
 ### Patch Changes

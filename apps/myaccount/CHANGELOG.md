@@ -1,5 +1,15 @@
 # @wso2is/myaccount
 
+## 2.25.20
+
+### Patch Changes
+
+- [#9419](https://github.com/wso2/identity-apps/pull/9419) [`caaf2a112a77d03004170326307d8a706f8ea07e`](https://github.com/wso2/identity-apps/commit/caaf2a112a77d03004170326307d8a706f8ea07e) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Implement managed in user store attribute property.
+
+- Updated dependencies [[`caaf2a112a77d03004170326307d8a706f8ea07e`](https://github.com/wso2/identity-apps/commit/caaf2a112a77d03004170326307d8a706f8ea07e), [`d8da0f3e69015ce94b4b2686408e30c6b56d8ae8`](https://github.com/wso2/identity-apps/commit/d8da0f3e69015ce94b4b2686408e30c6b56d8ae8), [`280eda61f7401701cf5557c549856f10cab9c554`](https://github.com/wso2/identity-apps/commit/280eda61f7401701cf5557c549856f10cab9c554)]:
+  - @wso2is/core@2.12.6
+  - @wso2is/i18n@2.30.57
+
 ## 2.25.19
 
 ### Patch Changes

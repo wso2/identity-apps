@@ -1,5 +1,13 @@
 # @wso2is/identity-apps-core
 
+## 3.3.27
+
+### Patch Changes
+
+- [#9437](https://github.com/wso2/identity-apps/pull/9437) [`459ad74c97df491fef2d7bd1a92e03f39ae3af03`](https://github.com/wso2/identity-apps/commit/459ad74c97df491fef2d7bd1a92e03f39ae3af03) Thanks [@UpekshaGalappaththi](https://github.com/UpekshaGalappaththi)! - add default authenticators to whitelist
+
+* [#9449](https://github.com/wso2/identity-apps/pull/9449) [`d488dc64ad6226f7745088b670aa3de64ba93c6a`](https://github.com/wso2/identity-apps/commit/d488dc64ad6226f7745088b670aa3de64ba93c6a) Thanks [@UpekshaGalappaththi](https://github.com/UpekshaGalappaththi)! - Fix indentation
+
 ## 3.3.26
 
 ### Patch Changes
