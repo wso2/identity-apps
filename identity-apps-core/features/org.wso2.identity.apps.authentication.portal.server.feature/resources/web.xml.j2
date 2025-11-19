@@ -128,16 +128,16 @@
 
     <!-- *************** Authenticator Validation Configuration ********************** -->
 
-    {% if authenticationendpoint.authenticator_validation_enabled is defined %}
+    {% if authenticationendpoint.authenticator_validation.enabled is defined %}
      <context-param>
         <param-name>AuthenticatorValidationEnabled</param-name>
-        <param-value>{{ authenticationendpoint.authenticator_validation_enabled }}</param-value>
+        <param-value>{{ authenticationendpoint.authenticator_validation.enabled }}</param-value>
     </context-param>
     {% endif %}
-    {% if authenticationendpoint.default_authenticators is defined %}
+    {% if authenticationendpoint.authenticator_validation.default_authenticators is defined %}
      <context-param>
         <param-name>DefaultAuthenticators</param-name>
-        <param-value>{{ authenticationendpoint.default_authenticators }}</param-value>
+        <param-value>{{ authenticationendpoint.authenticator_validation.default_authenticators }}</param-value>
     </context-param>
     {% endif %}
 
