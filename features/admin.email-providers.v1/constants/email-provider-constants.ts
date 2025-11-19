@@ -99,12 +99,12 @@ export class EmailProviderConstants {
     public static readonly AUTH_TYPES: DropdownChild[] = [
         {
             key: AuthenticationType.BASIC,
-            text: "emailProviders:fields.authentication.types.basic.name",
+            text: "externalApiAuthentication:fields.authentication.types.basic.name",
             value: AuthenticationType.BASIC
         },
         {
             key: AuthenticationType.CLIENT_CREDENTIAL,
-            text: "emailProviders:fields.authentication.types.clientCredential.name",
+            text: "externalApiAuthentication:fields.authentication.types.clientCredential.name",
             value: AuthenticationType.CLIENT_CREDENTIAL
         }
     ];
