@@ -132,6 +132,10 @@ export class ConnectionUIConstants {
         ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH: number;
         ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE: number;
         ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE: number;
+        RESEND_BLOCK_TIME_MIN_VALUE: number;
+        RESEND_BLOCK_TIME_MAX_VALUE: number;
+        RESEND_BLOCK_TIME_MAX_LENGTH: number;
+        RESEND_BLOCK_TIME_MIN_LENGTH: number;
     } = {
             ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH: 10000,
             ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE: 100,
@@ -144,7 +148,11 @@ export class ConnectionUIConstants {
             OTP_LENGTH_MAX_LENGTH: 2,
             OTP_LENGTH_MAX_VALUE: 10,
             OTP_LENGTH_MIN_LENGTH: 1,
-            OTP_LENGTH_MIN_VALUE: 4
+            OTP_LENGTH_MIN_VALUE: 4,
+            RESEND_BLOCK_TIME_MAX_LENGTH: 4,
+            RESEND_BLOCK_TIME_MAX_VALUE: 1440,
+            RESEND_BLOCK_TIME_MIN_LENGTH: 1,
+            RESEND_BLOCK_TIME_MIN_VALUE: 1
         };
 
     public static readonly PUSH_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: {

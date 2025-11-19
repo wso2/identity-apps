@@ -656,6 +656,17 @@ export interface ConsoleNS {
                                     range: string;
                                 };
                             };
+                            resendBlockDuration: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                unit: string;
+                                validations: {
+                                    required: string;
+                                    invalid: string;
+                                    range: string;
+                                };
+                            };
                         };
                         fido2: {
                             allowProgressiveEnrollment: {

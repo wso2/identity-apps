@@ -832,6 +832,17 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     }
                 },
                 hint: "Ensure that an <1>SMS Provider</1> is configured for the OTP feature to work properly.",
+                resendBlockDuration: {
+                    hint: "The time duration to block OTP resend requests after reaching the max allowed resend attempts",
+                    label: "Resend OTP block time",
+                    placeholder: "Enter resend block time in minutes.",
+                    unit: "minutes",
+                    validations: {
+                        required: "Resend OTP block time is a required field.",
+                        invalid: "Resend OTP block time should be an integer.",
+                        range: "Resend OTP block time should be between 1 minute & 1440 minutes (1 day)."
+                    }
+                },
                 tokenLength: {
                     hint: "The number of allowed characters in the OTP. Please " +
                         "pick a value between <1>4-10</1>.",
