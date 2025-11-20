@@ -283,7 +283,7 @@ const ConsoleRolesTable: FunctionComponent<ConsoleRolesTableProps> = (
             },
             {
                 hidden: (_role: RolesInterface) => {
-                    return !hasRoleUpdatePermissions || !isConsoleRolesEditable;
+                    return !hasRoleUpdatePermissions || !isConsoleRolesEditable || _role?.meta?.systemRole;
                 },
                 icon: (): SemanticICONS => "pencil alternate",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void =>
@@ -298,6 +298,7 @@ const ConsoleRolesTable: FunctionComponent<ConsoleRolesTableProps> = (
                 hidden: (role: RolesInterface) => {
                     return isSubOrg ||
                     !isConsoleRolesEditable ||
+                    role?.meta?.systemRole ||
                     (
                         role?.displayName === RoleConstants.ADMIN_ROLE ||
                         role?.displayName === RoleConstants.ADMIN_GROUP ||

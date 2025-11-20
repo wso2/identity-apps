@@ -65,6 +65,8 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
     private static final Log LOG = LogFactory.getLog(ConsoleRoleListener.class);
     private static final String SYSTEM = "system";
     private static final String EVERYONE = "everyone";
+    public static final String REQUIRE_FEATURE_PERMISSIONS = "SCIM2.ConsoleRoles.RequireFeaturePermissions";
+    public static final String IS_CUSTOM_CONSOLE_ROLES_ENABLED = "SCIM2.ConsoleRoles.EnableCustomRoles";
 
     @Override
     public int getDefaultOrderId() {
@@ -214,7 +216,7 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
     private List<Permission> getSystemRolePermissions(String roleName, String tenantDomain)
         throws IdentityRoleManagementException {
 
-        Set<String> featurePermissionsOfRole = IdentityUtil.getSystemRolesWithScopes().get(roleName);
+        Set<String> featurePermissionsOfRole = IdentityUtil.getSystemRolesWithScopesInOriginalCase().get(roleName);
         if (featurePermissionsOfRole == null || featurePermissionsOfRole.isEmpty()) {
             return Collections.emptyList();
         }
@@ -583,7 +585,7 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
 
     private boolean isCustomConsoleRoleEnabled() {
 
-        String isCustomConsoleRoleEnabledValue = IdentityUtil.getProperty("SCIM2.ConsoleRoles.EnableCustomRoles");
+        String isCustomConsoleRoleEnabledValue = IdentityUtil.getProperty(IS_CUSTOM_CONSOLE_ROLES_ENABLED);
         if (StringUtils.isBlank(isCustomConsoleRoleEnabledValue)) {
             return true;
         }
@@ -598,8 +600,7 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
      */
     private boolean isFeaturePermissionsRequired() {
 
-        String isFeaturePermissionsRequiredValue =
-            IdentityUtil.getProperty("SCIM2.ConsoleRoles.RequireFeaturePermissions");
+        String isFeaturePermissionsRequiredValue = IdentityUtil.getProperty(REQUIRE_FEATURE_PERMISSIONS);
         if (StringUtils.isBlank(isFeaturePermissionsRequiredValue)) {
             return false;
         }
