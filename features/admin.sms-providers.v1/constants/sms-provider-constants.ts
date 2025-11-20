@@ -46,6 +46,11 @@ export class SMSProviderConstants {
 
     public static readonly AUTH_TYPES: DropdownChild[] = [
         {
+            key: AuthType.NONE,
+            text: "externalApiAuthentication:fields.authentication.types.none.name",
+            value: AuthType.NONE
+        },
+        {
             key: AuthType.BASIC,
             text: "externalApiAuthentication:fields.authentication.types.basic.name",
             value: AuthType.BASIC

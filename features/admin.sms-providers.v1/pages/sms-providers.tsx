@@ -76,10 +76,10 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
     const dispatch: Dispatch<any> = useDispatch();
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isDeleting, setIsDeleting ] = useState<boolean>(false);
-    const [ endpointAuthType, setEndpointAuthType ] = useState<AuthType>(null);
+    const [ endpointAuthType, setEndpointAuthType ] = useState<AuthType | null>(null);
     const [ isAuthenticationUpdateFormState, setIsAuthenticationUpdateFormState ] = useState<boolean>(false);
-    const formStateRef: MutableRefObject<FormApi<Record<string, unknown>, Partial<Record<string, unknown>>>> =
-        useRef<FormApi<Record<string, unknown>, Partial<Record<string, unknown>>>>(null);
+    const formStateRef: MutableRefObject<FormApi<Record<string, unknown>, Partial<Record<string, unknown>>> | null> =
+        useRef<FormApi<Record<string, unknown>, Partial<Record<string, unknown>>> | null>(null);
     const defaultProviderParams: {
         [key: string]: SMSProviderInterface;
     } = {
@@ -282,13 +282,13 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                 } else if (currentProvider.authType === AuthType.CLIENT_CREDENTIAL) {
                     formStateRef.current.change("clientId", currentProvider.clientId);
                     formStateRef.current.change("tokenEndpoint", currentProvider.tokenEndpoint);
+                    formStateRef.current.change("scopes", currentProvider.scopes);
+                    formStateRef.current.change("clientSecret", null);
                 } else if (currentProvider.authType === AuthType.BEARER) {
                     formStateRef.current.change("accessToken", null);
                 } else if (currentProvider.authType === AuthType.API_KEY) {
                     formStateRef.current.change("header", currentProvider.header);
                     formStateRef.current.change("value", null);
-                    formStateRef.current.change("scopes", currentProvider.scopes);
-                    formStateRef.current.change("clientSecret", null);
                 }
             }
         }
@@ -343,7 +343,9 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
                 type: values.authType
             };
 
-            if (values.authType === AuthType.BASIC) {
+            if (values.authType === AuthType.NONE) {
+                // No properties for NONE type
+            } else if (values.authType === AuthType.BASIC) {
                 submittingValues.authentication.properties.username = values.userName;
                 submittingValues.authentication.properties.password = values.password;
             } else if (values.authType === AuthType.CLIENT_CREDENTIAL) {
@@ -526,7 +528,9 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             const hasExistingConfig: boolean = existingSMSProviders.includes("CustomSMSProvider");
             const requireSecrets: boolean = !hasExistingConfig || isAuthenticationUpdateFormState;
 
-            if (values?.authType === AuthType.BASIC) {
+            if (values?.authType === AuthType.NONE) {
+                // No validation needed for NONE type
+            } else if (values?.authType === AuthType.BASIC) {
                 if (!values?.userName) {
                     error.userName = t(
                         "smsProviders:form.custom.validations.required"

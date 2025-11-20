@@ -267,7 +267,6 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                 </Grid.Row>
             </Grid>
 
-            {/* Authentication Section */}
             <div className="external-api-auth-config-page">
                 <div className="form-wrapper">
                     <Divider className="divider-container" />

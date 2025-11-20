@@ -62,7 +62,8 @@ export const handleAuthenticationChangeCancel = (
     setIsAuthenticationUpdateFormState(false);
 
     if (formState.current) {
-        const initialAuthType: string | undefined = formState.current.getState()?.initialValues?.authType as string | undefined;
+        const initialAuthType: string | undefined =
+            formState.current.getState()?.initialValues?.authType as string | undefined;
 
         formState.current.change("authType", initialAuthType ?? undefined);
         formState.current.change("userName", "");
@@ -71,6 +72,9 @@ export const handleAuthenticationChangeCancel = (
         formState.current.change("clientSecret", "");
         formState.current.change("tokenEndpoint", "");
         formState.current.change("scopes", "");
+        formState.current.change("accessToken", "");
+        formState.current.change("header", "");
+        formState.current.change("value", "");
     }
 };
 
@@ -90,6 +94,8 @@ export const resolveAuthTypeDisplayName = (
     }
 
     switch (authType) {
+        case "NONE":
+            return t("externalApiAuthentication:fields.authentication.types.none.name");
         case "BASIC":
             return t("externalApiAuthentication:fields.authentication.types.basic.name");
         case "CLIENT_CREDENTIAL":

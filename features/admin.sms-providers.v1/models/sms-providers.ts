@@ -44,6 +44,7 @@ export interface AuthenticationnInterface {
 }
 
 export enum AuthType {
+    NONE = "NONE",
     BEARER = "BEARER",
     BASIC = "BASIC",
     API_KEY = "API_KEY",

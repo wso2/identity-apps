@@ -32,6 +32,9 @@ export interface ExternalAPIAuthenticationNS {
             };
             label: string;
             types: {
+                none: {
+                    name: string;
+                };
                 clientCredential: {
                     name: string;
                     properties: {

@@ -28,6 +28,28 @@ export const externalApiAuthentication: ExternalAPIAuthenticationNS = {
             },
             label: "Authentication",
             types: {
+                none: {
+                    name: "None"
+                },
+                apiKey: {
+                    name: "API Key",
+                    properties: {
+                        header: {
+                            label: "Header Name",
+                            placeholder: "Header Name",
+                            validations: {
+                                empty: "Header name is a required field."
+                            }
+                        },
+                        value: {
+                            label: "API Key Value",
+                            placeholder: "API Key Value",
+                            validations: {
+                                empty: "API key value is a required field."
+                            }
+                        }
+                    }
+                },
                 basic: {
                     name: "Basic",
                     properties: {
@@ -43,6 +65,18 @@ export const externalApiAuthentication: ExternalAPIAuthenticationNS = {
                             placeholder: "Username",
                             validations: {
                                 empty: "Username is a required field."
+                            }
+                        }
+                    }
+                },
+                bearer: {
+                    name: "Bearer Token",
+                    properties: {
+                        accessToken: {
+                            label: "Access Token",
+                            placeholder: "Access Token",
+                            validations: {
+                                empty: "Access token is a required field."
                             }
                         }
                     }
@@ -76,37 +110,6 @@ export const externalApiAuthentication: ExternalAPIAuthenticationNS = {
                             placeholder: "Token Endpoint",
                             validations: {
                                 empty: "Token endpoint is a required field."
-                            }
-                        }
-                    }
-                },
-                apiKey: {
-                    name: "API Key",
-                    properties: {
-                        header: {
-                            label: "Header Name",
-                            placeholder: "Header Name",
-                            validations: {
-                                empty: "Header name is a required field."
-                            }
-                        },
-                        value: {
-                            label: "API Key Value",
-                            placeholder: "API Key Value",
-                            validations: {
-                                empty: "API key value is a required field."
-                            }
-                        }
-                    }
-                },
-                bearer: {
-                    name: "Bearer Token",
-                    properties: {
-                        accessToken: {
-                            label: "Access Token",
-                            placeholder: "Access Token",
-                            validations: {
-                                empty: "Access token is a required field."
                             }
                         }
                     }
