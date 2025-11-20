@@ -1,5 +1,14 @@
 # @wso2is/console
 
+## 2.81.31
+
+### Patch Changes
+
+- [#9420](https://github.com/wso2/identity-apps/pull/9420) [`a1c77059eae3e7f6ec3f8ac8365915a9cdaa4383`](https://github.com/wso2/identity-apps/commit/a1c77059eae3e7f6ec3f8ac8365915a9cdaa4383) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Support custom console roles
+
+- Updated dependencies [[`a1c77059eae3e7f6ec3f8ac8365915a9cdaa4383`](https://github.com/wso2/identity-apps/commit/a1c77059eae3e7f6ec3f8ac8365915a9cdaa4383)]:
+  - @wso2is/admin.console-settings.v1@2.26.7
+
 ## 2.81.30
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @wso2is/admin.console-settings.v1
 
+## 2.26.7
+
+### Patch Changes
+
+- [#9420](https://github.com/wso2/identity-apps/pull/9420) [`a1c77059eae3e7f6ec3f8ac8365915a9cdaa4383`](https://github.com/wso2/identity-apps/commit/a1c77059eae3e7f6ec3f8ac8365915a9cdaa4383) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Support custom console roles
+
 ## 2.26.6
 
 ### Patch Changes
