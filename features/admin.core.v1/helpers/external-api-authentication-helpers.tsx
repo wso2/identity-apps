@@ -60,8 +60,10 @@ export const handleAuthenticationChangeCancel = (
     formState: MutableRefObject<FormApi<Record<string, unknown>, Partial<Record<string, unknown>>>>
 ): void => {
     setIsAuthenticationUpdateFormState(false);
+
     if (formState.current) {
-        const initialAuthType = formState.current.getState()?.initialValues?.authType as string | undefined;
+        const initialAuthType: string | undefined = formState.current.getState()?.initialValues?.authType as string | undefined;
+
         formState.current.change("authType", initialAuthType ?? undefined);
         formState.current.change("userName", "");
         formState.current.change("password", "");
