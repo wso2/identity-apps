@@ -65,8 +65,8 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
     private static final Log LOG = LogFactory.getLog(ConsoleRoleListener.class);
     private static final String SYSTEM = "system";
     private static final String EVERYONE = "everyone";
-    public static final String REQUIRE_FEATURE_PERMISSIONS = "SCIM2.ConsoleRoles.RequireFeaturePermissions";
-    public static final String IS_CUSTOM_CONSOLE_ROLES_ENABLED = "SCIM2.ConsoleRoles.EnableCustomRoles";
+    private static final String REQUIRE_FEATURE_PERMISSIONS = "SCIM2.ConsoleRoles.RequireFeaturePermissions";
+    private static final String IS_CUSTOM_CONSOLE_ROLES_ENABLED = "SCIM2.ConsoleRoles.EnableCustomRoles";
 
     @Override
     public int getDefaultOrderId() {
