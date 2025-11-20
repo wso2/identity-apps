@@ -358,7 +358,8 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
 
     private boolean isConsoleRole(RoleBasicInfo role) {
 
-        return !ADMINISTRATOR.equals(role.getName()) && CONSOLE_APP_AUDIENCE_NAME.equals(role.getAudienceName());
+        return role != null && !ADMINISTRATOR.equals(role.getName())
+            && CONSOLE_APP_AUDIENCE_NAME.equals(role.getAudienceName());
     }
 
     /**
@@ -371,9 +372,8 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
      */
     private boolean isConsoleRole(String roleId, String tenantDomain) throws IdentityRoleManagementException {
 
-        RoleManagementService roleManagementService = AppsCommonDataHolder.getInstance().getRoleManagementServiceV2();
-        RoleBasicInfo role = roleManagementService.getRoleBasicInfoById(roleId, tenantDomain);
-        return !ADMINISTRATOR.equals(role.getName()) && role.getAudienceName().equals(CONSOLE_APP_AUDIENCE_NAME);
+        RoleBasicInfo role = getRoleBasicInfo(roleId, tenantDomain);
+        return isConsoleRole(role);
     }
 
     /**

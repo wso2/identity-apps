@@ -17,9 +17,9 @@
  */
 
 import { Show, useRequiredScopes } from "@wso2is/access-control";
-import { AppState } from "@wso2is/admin.core.v1/store";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { RoleConstants } from "@wso2is/core/constants";
 import {
