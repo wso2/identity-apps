@@ -427,47 +427,85 @@ public class ConsoleRoleListener extends AbstractRoleManagementListener {
         }
     }
 
+    /**
+     * Get console feature permissions map for the tenant.
+     *
+     * @param tenantDomain Tenant domain.
+     * @return Map of console feature permissions.
+     * @throws IdentityRoleManagementException If an error occurs while retrieving the console feature permissions.
+     */
     private Map<String, Set<String>> getConsoleFeaturePermissionsMap(String tenantDomain)
         throws IdentityRoleManagementException {
 
         Map<String, Set<String>> featurePermissions = new HashMap<>();
         List<APIResourceCollection> apiResources = getAPIResourceCollections(tenantDomain);
-        for (APIResourceCollection apiResource : apiResources) {
-            if (apiResource.getViewFeatureScope() != null) {
-                Set<String> apiResourceViewPermissions = new HashSet<>(apiResource.getReadScopes());
-                // Check for nested feature scopes in read scopes.
-                List<String> readScopes = new ArrayList<>(apiResource.getReadScopes());
-                readScopes.remove(apiResource.getViewFeatureScope());
-                for (String readScope : readScopes) {
-                    if (readScope.startsWith(CONSOLE_SCOPE_PREFIX) && readScope.endsWith(VIEW_FEATURE_SCOPE_SUFFIX)) {
-                        apiResources.stream().filter(resource -> readScope.equals(resource.getViewFeatureScope()))
-                            .findFirst().map(resource -> apiResourceViewPermissions.addAll(resource.getReadScopes()));
-                    }
-                }
-
-                featurePermissions.put(apiResource.getViewFeatureScope(), apiResourceViewPermissions);
+        Map<String, APIResourceCollection> scopeToResourceMap = new HashMap<>();
+        for (APIResourceCollection resource : apiResources) {
+            if (resource.getViewFeatureScope() != null) {
+                scopeToResourceMap.put(resource.getViewFeatureScope(), resource);
             }
-            if (apiResource.getEditFeatureScope() != null) {
-                Set<String> apiResourceEditPermissions = new HashSet<>(apiResource.getWriteScopes());
-                // Check for nested feature scopes in write scopes.
-                List<String> writeScopes = new ArrayList<>(apiResource.getWriteScopes());
-                writeScopes.remove(apiResource.getEditFeatureScope());
-                for (String writeScope : writeScopes) {
-                    if (writeScope.startsWith(CONSOLE_SCOPE_PREFIX) && writeScope.endsWith(VIEW_FEATURE_SCOPE_SUFFIX)) {
-                        apiResources.stream().filter(resource -> writeScope.equals(resource.getViewFeatureScope()))
-                            .findFirst().map(resource -> apiResourceEditPermissions.addAll(resource.getReadScopes()));
-                    }
-
-                    if (writeScope.startsWith(CONSOLE_SCOPE_PREFIX) && writeScope.endsWith(EDIT_FEATURE_SCOPE_SUFFIX)) {
-                        apiResources.stream().filter(resource -> writeScope.equals(resource.getEditFeatureScope()))
-                            .findFirst().map(resource -> apiResourceEditPermissions.addAll(resource.getWriteScopes()));
-                    }
-                }
-
-                featurePermissions.put(apiResource.getEditFeatureScope(), apiResourceEditPermissions);
+            if (resource.getEditFeatureScope() != null) {
+                scopeToResourceMap.put(resource.getEditFeatureScope(), resource);
             }
         }
+
+        // Resolve permissions for each feature scope recursively.
+        for (APIResourceCollection apiResource : apiResources) {
+            if (apiResource.getViewFeatureScope() != null) {
+                Set<String> viewPermissions = resolveScopes(apiResource.getReadScopes(),
+                    apiResource.getViewFeatureScope(), scopeToResourceMap, new HashSet<>());
+                featurePermissions.put(apiResource.getViewFeatureScope(), viewPermissions);
+            }
+
+            if (apiResource.getEditFeatureScope() != null) {
+                Set<String> editPermissions = resolveScopes(apiResource.getWriteScopes(),
+                    apiResource.getEditFeatureScope(), scopeToResourceMap, new HashSet<>());
+                featurePermissions.put(apiResource.getEditFeatureScope(), editPermissions);
+            }
+        }
+
         return featurePermissions;
+    }
+
+    private Set<String> resolveScopes(List<String> scopes, String currentFeatureScope,
+                                      Map<String, APIResourceCollection> scopeToResourceMap, Set<String> visited) {
+
+        Set<String> resolvedScopes = new HashSet<>(scopes);
+        if (visited.contains(currentFeatureScope)) {
+            return resolvedScopes;
+        }
+        visited.add(currentFeatureScope);
+
+        // Process each scope to find and resolve nested feature scopes
+        for (String scope : scopes) {
+            if (scope.equals(currentFeatureScope)) {
+                continue;
+            }
+
+            // Check if this is a console feature scope
+            if (scope.startsWith(CONSOLE_SCOPE_PREFIX) &&
+                (scope.endsWith(VIEW_FEATURE_SCOPE_SUFFIX) || scope.endsWith(EDIT_FEATURE_SCOPE_SUFFIX))) {
+
+                APIResourceCollection nestedResource = scopeToResourceMap.get(scope);
+                if (nestedResource != null) {
+                    // Get the appropriate scopes based on feature scope type
+                    List<String> nestedScopes;
+                    if (scope.equals(nestedResource.getViewFeatureScope())) {
+                        nestedScopes = nestedResource.getReadScopes();
+                    } else if (scope.equals(nestedResource.getEditFeatureScope())) {
+                        nestedScopes = nestedResource.getWriteScopes();
+                    } else {
+                        nestedScopes = new ArrayList<>();
+                    }
+
+                    // Recursively resolve nested scopes
+                    Set<String> deeplyResolvedScopes = resolveScopes(nestedScopes, scope, scopeToResourceMap, visited);
+                    resolvedScopes.addAll(deeplyResolvedScopes);
+                }
+            }
+        }
+
+        return resolvedScopes;
     }
 
     /**
