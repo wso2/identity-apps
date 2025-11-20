@@ -112,11 +112,11 @@ public class AppsCommonServiceComponent {
                 RoleManagementListener roleManagementListener = new AppPortalRoleManagementListener(true);
                 bundleContext.registerService(RoleManagementListener.class.getName(), roleManagementListener, null);
                 log.debug("AppPortalRoleManagementListener registered successfully.");
-
-                RoleManagementListener consoleRoleListener = new ConsoleRoleListener();
-                bundleContext.registerService(RoleManagementListener.class.getName(), consoleRoleListener, null);
-                log.debug("ConsoleRoleListener registered successfully.");
             }
+
+            RoleManagementListener consoleRoleListener = new ConsoleRoleListener();
+            bundleContext.registerService(RoleManagementListener.class.getName(), consoleRoleListener, null);
+            log.debug("ConsoleRoleListener registered successfully.");
 
             if (!CarbonConstants.ENABLE_LEGACY_AUTHZ_RUNTIME) {
                 TenantMgtListener tenantManagementListener = new AppPortalTenantMgtListener();

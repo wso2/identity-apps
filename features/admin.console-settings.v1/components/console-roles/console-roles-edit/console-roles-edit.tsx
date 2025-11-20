@@ -153,6 +153,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                         <BasicRoleDetails
                             isReadOnly={
                                 isSubOrg || isAdminRole || !isConsoleRolesEditable || !hasRolesUpdatePermissions
+                                || roleObject?.meta?.systemRole
                             }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
@@ -169,6 +170,7 @@ const ConsoleRolesEdit: FunctionComponent<ConsoleRolesEditPropsInterface> = (
                         <ConsoleRolePermissions
                             isReadOnly={
                                 isSubOrg || isAdminRole || !isConsoleRolesEditable || !hasRolesUpdatePermissions
+                                || roleObject?.meta?.systemRole
                             }
                             role={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
