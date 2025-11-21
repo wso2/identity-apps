@@ -1,5 +1,15 @@
 # @wso2is/admin.application-templates.v1
 
+## 1.5.8
+
+### Patch Changes
+
+- [#9455](https://github.com/wso2/identity-apps/pull/9455) [`6dadf0f543699b1b6b841610cccdbb0a6c2dbcce`](https://github.com/wso2/identity-apps/commit/6dadf0f543699b1b6b841610cccdbb0a6c2dbcce) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - enable-app-creation-ui-in-sub-orgs
+
+- Updated dependencies [[`6dadf0f543699b1b6b841610cccdbb0a6c2dbcce`](https://github.com/wso2/identity-apps/commit/6dadf0f543699b1b6b841610cccdbb0a6c2dbcce)]:
+  - @wso2is/admin.applications.v1@2.38.10
+  - @wso2is/admin.core.v1@2.49.105
+
 ## 1.5.7
 
 ### Patch Changes
