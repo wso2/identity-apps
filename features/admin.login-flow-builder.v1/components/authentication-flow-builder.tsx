@@ -62,6 +62,7 @@ import {
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
 import { AuthenticationFlowBuilderModes, AuthenticationFlowBuilderModesInterface } from "../models/flow-builder";
 import "./sign-in-methods.scss";
+import useFeatureGate, { UseFeatureGateInterface } from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
 
 /**
  * Proptypes for the Authentication flow builder component.
@@ -158,6 +159,10 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
         showAuthenticationFlowModeSwitchDisclaimerModal,
         setShowAuthenticationFlowModeSwitchDisclaimerModal
     ] = useState<boolean>(false);
+
+    const { conditionalAuthPremiumFeature }: UseFeatureGateInterface = useFeatureGate();
+
+    const isPremiumOrReadOnly: boolean = readOnly || conditionalAuthPremiumFeature;
 
     /**
      * Set the active flow mode to the flow mode to switch.
@@ -364,7 +369,8 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
 
         if (isRevertFlow) {
             // If the flow is reverting, the script should be cleared first before updating the authentication sequence.
-            updateAdaptiveScript(applicationMetaData?.id, adaptiveScriptToUpdate, !isScriptUpdateReadOnly)
+            updateAdaptiveScript(applicationMetaData?.id, adaptiveScriptToUpdate, !isScriptUpdateReadOnly
+                && !conditionalAuthPremiumFeature)
                 .then(() => {
                     updateAuthenticationSequenceFromAPI(applicationMetaData?.id, payload)
                         .then(() => {
@@ -389,7 +395,8 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
 
         updateAuthenticationSequenceFromAPI(applicationMetaData?.id, payload)
             .then(() => {
-                updateAdaptiveScript(applicationMetaData?.id, adaptiveScriptToUpdate, !isScriptUpdateReadOnly)
+                updateAdaptiveScript(applicationMetaData?.id, adaptiveScriptToUpdate, !isScriptUpdateReadOnly
+                    && !conditionalAuthPremiumFeature)
                     .then(() => {
                         dispatch(addAlert({
                             description: t("applications:notifications.updateAuthenticationFlow" +
@@ -576,7 +583,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                                 />
                             </ReactFlowProvider>
                             { isAdaptiveAuthAvailable && (
-                                <ScriptBasedFlowSwitch readOnly={ readOnly || isScriptUpdateReadOnly } />
+                                <ScriptBasedFlowSwitch readOnly={ isPremiumOrReadOnly || isScriptUpdateReadOnly } />
                             ) }
                             { isAdaptiveAuthAvailable && isConditionalAuthenticationEnabled &&
                                 !isScriptUpdateReadOnly && (

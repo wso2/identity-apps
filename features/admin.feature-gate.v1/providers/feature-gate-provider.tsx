@@ -35,11 +35,14 @@ const FeatureGateProvider: FC<FeatureGateProviderProps> = ({
 }: PropsWithChildren<FeatureGateProviderProps>): ReactElement => {
     const [ showPreviewFeaturesModal, setShowPreviewFeaturesModal ] = useState<boolean>(false);
     const [ selectedPreviewFeatureToShow, setSelectedPreviewFeatureToShow ] = useState<string>("");
+    const [ conditionalAuthPremiumFeature, setConditionalAuthPremiumFeature ] = useState<boolean>(true);
 
     return (
         <FeatureGateContext.Provider
             value={ {
+                conditionalAuthPremiumFeature,
                 selectedPreviewFeatureToShow,
+                setConditionalAuthPremiumFeature,
                 setSelectedPreviewFeatureToShow,
                 setShowPreviewFeaturesModal,
                 showPreviewFeaturesModal

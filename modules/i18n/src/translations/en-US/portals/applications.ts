@@ -2822,6 +2822,7 @@ export const applications: ApplicationsNS = {
         enabledFeatures: {
             tags: {
                 premium: {
+                    info: "Unlock <b>custom conditional authentication</b> scripting capabilities with our Enterprise plan. Reach us at {{ supportEmail }}.",
                     warning: "This is a premium feature and will soon be disabled for the free subscription plan. Upgrade your subscription for uninterrupted access to this feature."
                 }
             }
