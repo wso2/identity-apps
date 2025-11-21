@@ -49,7 +49,7 @@ export const useSMSProviders = <Data = SMSProviderAPIResponseInterface[], Error 
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.smsProviderEndpoint
+        url: store.getState().config.endpoints.smsProviderV2Endpoint
     };
 
     const { data, error, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
@@ -74,7 +74,7 @@ export const createSMSProvider = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store.getState().config.endpoints.smsProviderEndpoint
+        url: store.getState().config.endpoints.smsProviderV2Endpoint
     };
 
     return httpClient(requestConfig)
@@ -113,7 +113,7 @@ export const updateSMSProvider = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: store.getState().config.endpoints.smsProviderEndpoint + "/SMSPublisher"
+        url: store.getState().config.endpoints.smsProviderV2Endpoint + "/SMSPublisher"
     };
 
     return httpClient(requestConfig)
@@ -148,7 +148,7 @@ export const deleteSMSProviders = (): Promise<null | IdentityAppsApiException> =
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: store.getState().config.endpoints.smsProviderEndpoint + "/SMSPublisher"
+        url: store.getState().config.endpoints.smsProviderV2Endpoint + "/SMSPublisher"
     };
 
     return httpClient(requestConfig)
