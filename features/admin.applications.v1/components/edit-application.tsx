@@ -845,7 +845,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_SIGN_ON_METHOD_CONFIG"))
                 && !isM2MApplication
-                && (isSuperOrganization() || (isSubOrganization() && isFragmentApp) || isFirstLevelOrg)) {
+                && (isSuperOrganization() || (isSubOrganization()) || isFirstLevelOrg)) {
 
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
@@ -879,7 +879,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             }
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ADVANCED_SETTINGS"))
-                && !isSubOrganization()
+                && !isFragmentApp
                 && !isM2MApplication
                 && (UIConfig?.legacyMode?.applicationSystemAppsSettings ||
                     application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)) {
