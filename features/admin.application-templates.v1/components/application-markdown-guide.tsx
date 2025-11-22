@@ -81,6 +81,7 @@ interface ModeratedData {
  */
 interface MarkdownGuideDataInterface {
     general?: ApplicationInterface;
+    oidcConfigurations?: OIDCApplicationConfigurationInterface;
     protocol?: {
         oidc?: OIDCDataInterface;
         saml?: SAML2ConfigurationInterface;
@@ -116,7 +117,7 @@ export const ApplicationMarkdownGuide: FunctionComponent<ApplicationMarkdownGuid
 
     const samlConfigurations: SAMLApplicationConfigurationInterface = useSelector(
         (state: AppState) => state?.application?.samlConfigurations);
-    const oidcConfigurations: SAMLApplicationConfigurationInterface = useSelector(
+    const oidcConfigurations: OIDCApplicationConfigurationInterface = useSelector(
         (state: AppState) => state?.application?.oidcConfigurations);
     const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
     const clientOrigin: string = useSelector((state: AppState) => state?.config?.deployment?.clientOrigin);
@@ -190,6 +191,7 @@ export const ApplicationMarkdownGuide: FunctionComponent<ApplicationMarkdownGuid
         set(markdownDataObject, `protocol.${protocolKeyName}`, inboundProtocolConfigurations);
         set(markdownDataObject, "metadata.saml", samlConfigurations);
         set(markdownDataObject, "metadata.oidc", samlConfigurations);
+        markdownDataObject.oidcConfigurations = oidcConfigurations;
         markdownDataObject.tenantDomain = tenantDomain;
         markdownDataObject.clientOrigin = clientOrigin;
         markdownDataObject.serverOrigin = serverOrigin;
