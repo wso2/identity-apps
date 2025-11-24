@@ -185,7 +185,7 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
                                         {
                                             conditionalAuthPremiumFeature && (
                                                 <Chip
-                                                    icon = { <DiamondIcon /> }
+                                                    icon={ <DiamondIcon /> }
                                                     label={ t(FeatureStatusLabel.PREMIUM) }
                                                     className="oxygen-menu-item-chip oxygen-chip-premium ml-2"
                                                     style={ { height: "fit-content" } }

@@ -43,7 +43,7 @@ const ConditionalAuthPremiumBanner = (): ReactElement => {
         <Alert
             className="conditional-auth-premium-banner oxygen-chip-premium"
             severity="warning"
-            icon = { false }
+            icon={ false }
 
         >
             <Trans
