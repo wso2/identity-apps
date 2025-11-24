@@ -19,9 +19,13 @@
 import AppShell from "@oxygen-ui/react/AppShell";
 import { AlertInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
+import { CommonUtils } from "@wso2is/core/utils";
 import {
     Alert,
-    ContentLoader
+    ContentLoader,
+    EmptyPlaceholder,
+    ErrorBoundary,
+    LinkButton
 } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
@@ -30,6 +34,7 @@ import React, {
     useEffect,
     useState
 } from "react";
+import { useTranslation } from "react-i18next";
 import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
@@ -38,8 +43,10 @@ import { Header, ProtectedRoute } from "../components";
 import {
     getDefaultLayoutRoutes
 } from "../configs";
+import { getEmptyPlaceholderIllustrations } from "../configs/ui";
 import { AppConstants, UIConstants } from "../constants";
 import { AppState } from "../store";
+import { AppUtils } from "../utils";
 import "./default.scss";
 
 /**
@@ -51,6 +58,7 @@ import "./default.scss";
  */
 export const DefaultLayout: FunctionComponent = (): ReactElement => {
     const dispatch: Dispatch = useDispatch();
+    const { t } = useTranslation();
 
     const alert: AlertInterface = useSelector(
         (state: AppState) => state.global.alert
@@ -104,7 +112,27 @@ export const DefaultLayout: FunctionComponent = (): ReactElement => {
                                     path={ route.path }
                                     render={ (renderProps: RouteComponentProps) =>
                                         route.component ? (
-                                            <route.component { ...renderProps } />
+                                            <ErrorBoundary
+                                                onChunkLoadError={ AppUtils.onChunkLoadError }
+                                                fallback={ (
+                                                    <EmptyPlaceholder
+                                                        action={ (
+                                                            <LinkButton onClick={ () => CommonUtils.refreshPage() }>
+                                                                { t("myAccount:placeholders.genericError.action") }
+                                                            </LinkButton>
+                                                        ) }
+                                                        image={ getEmptyPlaceholderIllustrations().genericError }
+                                                        imageSize="tiny"
+                                                        subtitle={ [
+                                                            t("myAccount:placeholders.genericError.subtitles.0"),
+                                                            t("myAccount:placeholders.genericError.subtitles.1")
+                                                        ] }
+                                                        title={ t("myAccount:placeholders.genericError.title") }
+                                                    />
+                                                ) }
+                                            >
+                                                <route.component { ...renderProps } />
+                                            </ErrorBoundary>
                                         ) : null
                                     }
                                     key={ index }
