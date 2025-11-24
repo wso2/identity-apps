@@ -202,7 +202,7 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
                                     </Typography>
                                 </Grid>
                             </Grid>
-                            <ConditionalAuthPremiumBanner/>
+                            { conditionalAuthPremiumFeature && (<ConditionalAuthPremiumBanner />) }
                         </Box>
                     </AccordionSummary>
                     <AccordionDetails className="script-based-flow-switch-accordion-details">

@@ -19,7 +19,6 @@
 import Alert from "@oxygen-ui/react/Alert";
 import Link from "@oxygen-ui/react/Link";
 import { AppState } from "@wso2is/admin.core.v1/store";
-import useFeatureGate, { UseFeatureGateInterface } from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
 import React, { ReactElement } from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -30,14 +29,8 @@ import "./conditional-auth-premium-banner.scss";
  */
 const ConditionalAuthPremiumBanner = (): ReactElement => {
 
-    const { conditionalAuthPremiumFeature }: UseFeatureGateInterface = useFeatureGate();
-
     const contactUsURL: string = useSelector((state: AppState) =>
         state.config.deployment.extensions?.contactUsUrl as string);
-
-    if (!conditionalAuthPremiumFeature) {
-        return null;
-    }
 
     return (
         <Alert
@@ -50,7 +43,7 @@ const ConditionalAuthPremiumBanner = (): ReactElement => {
                 i18nKey="applications.featureGate.enabledFeatures.tags.premium.info"
                 className="conditional-auth-premium-text"
             >
-                Unlock conditional authentication scripting with our Enterprise plan.
+                Unlock conditional authentication scripting with our <b>Enterprise plan</b>.
                 <Link href={ contactUsURL }> Contact sales</Link> to upgrade.
             </Trans>
         </Alert>
