@@ -20,12 +20,16 @@ import Accordion from "@oxygen-ui/react/Accordion";
 import AccordionDetails from "@oxygen-ui/react/AccordionDetails";
 import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
 import Box from "@oxygen-ui/react/Box";
+import Chip from "@oxygen-ui/react/Chip";
 import Grid from "@oxygen-ui/react/Grid";
 import Switch from "@oxygen-ui/react/Switch";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
+import { DiamondIcon } from "@oxygen-ui/react-icons";
 import { AdaptiveScriptUtils } from "@wso2is/admin.applications.v1/utils/adaptive-script-utils";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import useFeatureGate, { UseFeatureGateInterface } from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { LOGIN_FLOW_AI_FEATURE_TAG } from "@wso2is/admin.login-flow.ai.v1/constants/login-flow-ai-constants";
 import useAILoginFlow from "@wso2is/admin.login-flow.ai.v1/hooks/use-ai-login-flow";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -43,6 +47,7 @@ import AdaptiveScriptResetConfirmationModal from "./adaptive-script-reset-confir
 import ScriptEditorPanel from "./script-editor-panel";
 import useAuthenticationFlow from "../../hooks/use-authentication-flow";
 import "./script-based-flow-switch.scss";
+import ConditionalAuthPremiumBanner from "@wso2is/admin.applications.v1/components/banners/conditional-auth-premium-banner";
 
 /**
  * Proptypes for the Script Based Flow switching component.
@@ -80,6 +85,8 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
 
     const applicationDisabledFeatures: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.features?.applications?.disabledFeatures);
+
+    const { conditionalAuthPremiumFeature }: UseFeatureGateInterface = useFeatureGate();
 
     /**
      * This useEffect is responsible for deciding whether
@@ -129,6 +136,7 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
             <Box className="script-based-flow-switch" data-componentid={ componentId }>
                 <Accordion expanded={ isConditionalAuthenticationEnabled } elevation={ 0 }>
                     <AccordionSummary>
+                    <Box display="flex" flexDirection="column" width="100%">
                         <Grid className="script-based-flow-switch-accordion-summary">
                             <Grid
                                 xs={ 12 }
@@ -159,10 +167,11 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
                                         {
                                             t("applications:edit.sections.signOnMethod." +
                                                 "sections.authenticationFlow.sections.scriptBased.accordion." +
-                                                "title.heading" + (readOnly ? ".readOnly" : ".readWrite"))
+                                                "title.heading" + (readOnly && !conditionalAuthPremiumFeature
+                                                ? ".readOnly" : ".readWrite"))
                                         }
                                     </Typography>
-                                    { readOnly && (
+                                    { readOnly && !conditionalAuthPremiumFeature && (
                                         <Tooltip
                                             title={ t("applications:edit.sections.signOnMethod.sections." +
                                                 "authenticationFlow.sections.scriptBased.accordion.title." +
@@ -171,6 +180,16 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
                                                 <Icon name="warning sign" color="yellow" />
                                             </span>
                                         </Tooltip>)
+                                    }
+                                    {
+                                        conditionalAuthPremiumFeature && (
+                                            <Chip
+                                                icon = { <DiamondIcon /> }
+                                                label={ t(FeatureStatusLabel.PREMIUM) }
+                                                className="oxygen-menu-item-chip oxygen-chip-premium ml-2"
+                                                style={ { height: "fit-content" } }
+                                            />
+                                        )
                                     }
                                 </div>
                                 <Typography variant="body2">
@@ -182,6 +201,8 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
                                 </Typography>
                             </Grid>
                         </Grid>
+                        <ConditionalAuthPremiumBanner/>
+                     </Box>
                     </AccordionSummary>
                     <AccordionDetails className="script-based-flow-switch-accordion-details">
                         <ScriptEditorPanel readOnly={ readOnly }/>

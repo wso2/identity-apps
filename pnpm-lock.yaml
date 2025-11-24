@@ -10483,6 +10483,9 @@ importers:
       '@wso2is/admin.extensions.v1':
         specifier: ^2.40.9
         version: link:../admin.extensions.v1
+      '@wso2is/admin.feature-gate.v1':
+        specifier: workspace:^
+        version: link:../admin.feature-gate.v1
       '@wso2is/admin.identity-providers.v1':
         specifier: ^2.26.208
         version: link:../admin.identity-providers.v1
@@ -10665,7 +10668,7 @@ importers:
         specifier: ^2.49.95
         version: link:../admin.core.v1
       '@wso2is/admin.feature-gate.v1':
-        specifier: ^1.6.2
+        specifier: workspace:^
         version: link:../admin.feature-gate.v1
       '@wso2is/admin.identity-providers.v1':
         specifier: ^2.26.209

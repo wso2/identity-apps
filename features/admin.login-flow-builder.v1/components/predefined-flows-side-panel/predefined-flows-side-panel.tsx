@@ -92,6 +92,7 @@ import * as FlowSequences from "../../data/flow-sequences";
 import useAuthenticationFlow from "../../hooks/use-authentication-flow";
 import { PredefinedFlowCategories, SocialIdPPlaceholders } from "../../models/predefined-flows";
 import "./predefined-flows-side-panel.scss";
+import useFeatureGate, { UseFeatureGateInterface } from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
 
 /**
  * Proptypes for the Predefined Flows Side Panel component.
@@ -252,6 +253,9 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
         CommonAuthenticatorConstants.FEATURE_DICTIONARY.get(
             ConnectionsFeatureDictionaryKeys.LocalSMSOTPAuthenticator));
 
+    const { conditionalAuthPremiumFeature }: UseFeatureGateInterface = useFeatureGate();
+    const isPremiumOrReadOnly = conditionalAuthPremiumFeature || isScriptUpdateReadOnly;
+
     /**
      * Handles the accordion change event.
      *
@@ -285,7 +289,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
 
         const sequence: AuthenticationSequenceInterface = {
             ...template.sequence,
-            script: isScriptUpdateReadOnly ? authenticationSequence?.script
+            script: isPremiumOrReadOnly ? authenticationSequence?.script
                 : template.sequence.script ?? ""
         };
 
@@ -813,7 +817,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                 { showAdaptiveLoginTemplates &&
                     adaptiveAuthTemplates &&
                     Object.entries(adaptiveAuthTemplates).length > 0 &&
-                    !isScriptUpdateReadOnly && (
+                    !isPremiumOrReadOnly && (
                     <Accordion
                         square
                         disableGutters

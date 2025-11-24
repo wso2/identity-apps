@@ -18,6 +18,7 @@
 
 import { AuthenticationSequenceInterface } from "@wso2is/admin.applications.v1/models/application";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import useFeatureGate, { UseFeatureGateInterface } from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -61,6 +62,8 @@ const AILoginFlowProvider = (props: PropsWithChildren<AILoginFlowProviderProps>)
     const [ promptHistory, setPromptHistory ] = useState<string[]>([]);
     const [ userPrompt, setUserPrompt ] = useState<string>("");
     const [ bannerState, setBannerState ] = useState<BannerState>(BannerState.FULL);
+
+    const { conditionalAuthPremiumFeature }: UseFeatureGateInterface = useFeatureGate();
 
     /**
      * Custom hook to get the login flow generation result.
@@ -114,6 +117,11 @@ const AILoginFlowProvider = (props: PropsWithChildren<AILoginFlowProviderProps>)
      * @param data - Data from the API response.
      */
     const handleGenerate = (data: AuthenticationSequenceInterface) => {
+
+        if (conditionalAuthPremiumFeature) {
+            data.script = null;
+        }
+
         setAiGeneratedLoginFlow(data);
         setGeneratingLoginFlow(false);
         setLoginFlowGenerationCompleted(false);
