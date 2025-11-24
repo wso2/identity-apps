@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { APIAuthorization } from "@wso2is/admin.applications.v1/components/api-authorization/api-authorization";
 import {
     ExtendedClaimInterface,
@@ -34,8 +35,13 @@ import getTryItClientId from "@wso2is/admin.applications.v1/utils/get-try-it-cli
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
-import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import {
+    OrganizationFeatureDictionaryKeys,
+    OrganizationManagementConstants,
+    OrganizationType
+} from "@wso2is/admin.organizations.v1/constants";
 import { ApplicationRoles } from "@wso2is/admin.roles.v2/components/application-roles";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { I18n } from "@wso2is/i18n";
 import {
     Code,
@@ -74,6 +80,14 @@ const APPLICATION_ROLES_INDEX: number = 4;
 const M2M_API_AUTHORIZATION_INDEX: number = 2;
 
 const featureConfig: FeatureConfigInterface = window[ "AppUtils" ].getConfig().ui.features;
+
+const organizationFeatureConfig: FeatureAccessConfigInterface = featureConfig?.organizations;
+
+const isOrganizationApplicationInboundAuthCodeEnabled: boolean = isFeatureEnabled(
+    organizationFeatureConfig,
+    OrganizationManagementConstants.FEATURE_DICTIONARY.get(
+        OrganizationFeatureDictionaryKeys.OrganizationApplicationInboundAuthCode
+    ));
 
 /**
  * Check whether claims is  identity claims or not.
@@ -417,24 +431,29 @@ export const applicationConfig: ApplicationConfig = {
         ],
         // oidc standard app template
         [ "custom-application" ]:
-        orgType === OrganizationType.SUBORGANIZATION ? [
-            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.PASSWORD,
-            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
-        ] : [
-            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
-            ApplicationManagementConstants.IMPLICIT_GRANT,
-            ApplicationManagementConstants.PASSWORD,
-            ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-            ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
-            ApplicationManagementConstants.DEVICE_GRANT,
-            ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE,
-            ApplicationManagementConstants.SAML2_BEARER,
-            ApplicationManagementConstants.JWT_BEARER,
-            ApplicationManagementConstants.IWA_NTLM
-        ],
+        orgType === OrganizationType.SUBORGANIZATION ?
+            (isOrganizationApplicationInboundAuthCodeEnabled ? [
+                ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+                ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+                ApplicationManagementConstants.PASSWORD,
+                ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
+            ] : [
+                ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+                ApplicationManagementConstants.PASSWORD,
+                ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
+            ]) : [
+                ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+                ApplicationManagementConstants.IMPLICIT_GRANT,
+                ApplicationManagementConstants.PASSWORD,
+                ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT,
+                ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+                ApplicationManagementConstants.ORGANIZATION_SWITCH_GRANT,
+                ApplicationManagementConstants.DEVICE_GRANT,
+                ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE,
+                ApplicationManagementConstants.SAML2_BEARER,
+                ApplicationManagementConstants.JWT_BEARER,
+                ApplicationManagementConstants.IWA_NTLM
+            ],
         [ "m2m-application" ]: [
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
         ],
