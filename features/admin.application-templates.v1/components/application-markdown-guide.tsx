@@ -81,7 +81,6 @@ interface ModeratedData {
  */
 interface MarkdownGuideDataInterface {
     general?: ApplicationInterface;
-    oidcConfigurations?: OIDCApplicationConfigurationInterface;
     protocol?: {
         oidc?: OIDCDataInterface;
         saml?: SAML2ConfigurationInterface;
@@ -190,8 +189,7 @@ export const ApplicationMarkdownGuide: FunctionComponent<ApplicationMarkdownGuid
         markdownDataObject.general = application;
         set(markdownDataObject, `protocol.${protocolKeyName}`, inboundProtocolConfigurations);
         set(markdownDataObject, "metadata.saml", samlConfigurations);
-        set(markdownDataObject, "metadata.oidc", samlConfigurations);
-        markdownDataObject.oidcConfigurations = oidcConfigurations;
+        set(markdownDataObject, "metadata.oidc", oidcConfigurations);
         markdownDataObject.tenantDomain = tenantDomain;
         markdownDataObject.clientOrigin = clientOrigin;
         markdownDataObject.serverOrigin = serverOrigin;
