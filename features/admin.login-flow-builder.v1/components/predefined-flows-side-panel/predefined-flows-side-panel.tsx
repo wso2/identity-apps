@@ -42,6 +42,7 @@ import {
 import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-deployment-configs";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/server-configuration";
+import useFeatureGate, { UseFeatureGateInterface } from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
 import { getAuthenticatorIcons } from "@wso2is/admin.identity-providers.v1/configs/ui";
 import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models";
 import {
@@ -92,7 +93,6 @@ import * as FlowSequences from "../../data/flow-sequences";
 import useAuthenticationFlow from "../../hooks/use-authentication-flow";
 import { PredefinedFlowCategories, SocialIdPPlaceholders } from "../../models/predefined-flows";
 import "./predefined-flows-side-panel.scss";
-import useFeatureGate, { UseFeatureGateInterface } from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
 
 /**
  * Proptypes for the Predefined Flows Side Panel component.
@@ -254,7 +254,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
             ConnectionsFeatureDictionaryKeys.LocalSMSOTPAuthenticator));
 
     const { conditionalAuthPremiumFeature }: UseFeatureGateInterface = useFeatureGate();
-    const isPremiumOrReadOnly = conditionalAuthPremiumFeature || isScriptUpdateReadOnly;
+    const isPremiumOrReadOnly: boolean = conditionalAuthPremiumFeature || isScriptUpdateReadOnly;
 
     /**
      * Handles the accordion change event.

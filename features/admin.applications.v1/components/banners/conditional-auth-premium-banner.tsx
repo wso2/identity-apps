@@ -18,11 +18,10 @@
 
 import Alert from "@oxygen-ui/react/Alert";
 import Link from "@oxygen-ui/react/Link";
-import { DiamondIcon } from "@oxygen-ui/react-icons";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import useFeatureGate, { UseFeatureGateInterface } from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
 import React, { ReactElement } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
 import "./conditional-auth-premium-banner.scss";
 
@@ -36,8 +35,6 @@ const ConditionalAuthPremiumBanner = (): ReactElement => {
     const contactUsURL: string = useSelector((state: AppState) =>
         state.config.deployment.extensions?.contactUsUrl as string);
 
-    const { t } = useTranslation();
-
     if (!conditionalAuthPremiumFeature) {
         return null;
     }
@@ -46,7 +43,7 @@ const ConditionalAuthPremiumBanner = (): ReactElement => {
         <Alert
             className="conditional-auth-premium-banner oxygen-chip-premium"
             severity="warning"
-            icon = {false}
+            icon = { false }
 
         >
             <Trans
