@@ -35,17 +35,17 @@ export const externalApiAuthentication: ExternalAPIAuthenticationNS = {
                     name: "API Key",
                     properties: {
                         header: {
-                            label: "Header Name",
-                            placeholder: "Header Name",
+                            label: "Header",
+                            placeholder: "Header",
                             validations: {
-                                empty: "Header name is a required field."
+                                empty: "Header is a required field."
                             }
                         },
                         value: {
-                            label: "API Key Value",
-                            placeholder: "API Key Value",
+                            label: "Value",
+                            placeholder: "Value",
                             validations: {
-                                empty: "API key value is a required field."
+                                empty: "Value is a required field."
                             }
                         }
                     }
