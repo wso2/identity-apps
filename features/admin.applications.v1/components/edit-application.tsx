@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Show, useRequiredScopes } from "@wso2is/access-control";
+import { FeatureAccessConfigInterface, Show, useRequiredScopes } from "@wso2is/access-control";
 import { ApplicationEditForm } from "@wso2is/admin.application-templates.v1/components/application-edit-form";
 import { ApplicationMarkdownGuide } from "@wso2is/admin.application-templates.v1/components/application-markdown-guide";
 import useApplicationTemplateMetadata from
@@ -36,7 +36,8 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { ApplicationTabIDs, applicationConfig } from "@wso2is/admin.extensions.v1";
 import AILoginFlowProvider from "@wso2is/admin.login-flow.ai.v1/providers/ai-login-flow-provider";
-import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { OrganizationFeatureDictionaryKeys, OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { OrganizationManagementConstants } from "@wso2is/admin.organizations.v1/constants/organization-constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
@@ -221,6 +222,20 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [ showDisableConfirmationModal, setShowDisableConfirmationModal ] = useState<boolean>(false);
     const brandingDisabledFeatures: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.features?.branding?.disabledFeatures);
+
+    const organizationFeatureConfig: FeatureAccessConfigInterface = featureConfig?.organizations;
+
+    const isOrganizationApplicationLoginFlowEnabled: boolean = isFeatureEnabled(
+        organizationFeatureConfig,
+        OrganizationManagementConstants.FEATURE_DICTIONARY.get(
+            OrganizationFeatureDictionaryKeys.OrganizationApplicationLoginFlow
+        ));
+
+    const isOrganizationApplicationAdvancedSettingsEnabled: boolean = isFeatureEnabled(
+        organizationFeatureConfig,
+        OrganizationManagementConstants.FEATURE_DICTIONARY.get(
+            OrganizationFeatureDictionaryKeys.OrganizationApplicationAdvancedSettings
+        ));
 
     /**
      * Called when an application updates.
@@ -845,7 +860,9 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_SIGN_ON_METHOD_CONFIG"))
                 && !isM2MApplication
-                && (isSuperOrganization() || (isSubOrganization()) || isFirstLevelOrg)) {
+                && (isSuperOrganization()
+                || (isSubOrganization() && isOrganizationApplicationLoginFlowEnabled)
+                || isFirstLevelOrg)) {
 
                 applicationConfig.editApplication.
                     isTabEnabledForApp(
@@ -881,6 +898,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ADVANCED_SETTINGS"))
                 && !isFragmentApp
                 && !isM2MApplication
+                && (!isSubOrganization() || isOrganizationApplicationAdvancedSettingsEnabled)
                 && (UIConfig?.legacyMode?.applicationSystemAppsSettings ||
                     application?.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME)) {
 

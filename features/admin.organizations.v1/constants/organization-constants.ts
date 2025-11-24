@@ -19,7 +19,14 @@
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { OrganizationInterface } from "../models";
 
+export enum OrganizationFeatureDictionaryKeys {
+    OrganizationApplicationCreation = "ORGANIZATION_APPLICATION_CREATION",
+    OrganizationApplicationInboundAuthCode = "ORGANIZATION_APPLICATION_INBOUND_AUTH_CODE",
+    OrganizationApplicationLoginFlow = "ORGANIZATION_APPLICATION_LOGIN_FLOW",
+    OrganizationApplicationAdvancedSettings = "ORGANIZATION_APPLICATION_ADVANCED_SETTINGS"
+}
 export class OrganizationManagementConstants {
+
     /**
      * Set of keys used to enable/disable features.
      */
@@ -27,7 +34,14 @@ export class OrganizationManagementConstants {
         .set("ORGANIZATION_CREATE", "organizations.create")
         .set("ORGANIZATION_UPDATE", "organizations.update")
         .set("ORGANIZATION_DELETE", "organizations.delete")
-        .set("ORGANIZATION_READ", "organizations.read");
+        .set("ORGANIZATION_READ", "organizations.read")
+        .set(OrganizationFeatureDictionaryKeys.OrganizationApplicationCreation, "organizations.application.creation")
+        .set(OrganizationFeatureDictionaryKeys.OrganizationApplicationInboundAuthCode,
+            "organizations.application.inbound.auth.code")
+        .set(OrganizationFeatureDictionaryKeys.OrganizationApplicationLoginFlow,
+            "organizations.application.login.flow")
+        .set(OrganizationFeatureDictionaryKeys.OrganizationApplicationAdvancedSettings,
+            "organizations.application.advanced.settings");
 
     /**
      * Super organization id as per alpha pack 2

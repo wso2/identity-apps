@@ -27,7 +27,8 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { applicationListConfig } from "@wso2is/admin.extensions.v1/configs/application-list";
-import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { OrganizationFeatureDictionaryKeys, OrganizationType } from "@wso2is/admin.organizations.v1/constants";
+import { OrganizationManagementConstants } from "@wso2is/admin.organizations.v1/constants/organization-constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import useExtensionTemplates from "@wso2is/admin.template-core.v1/hooks/use-extension-templates";
 import { ExtensionTemplateListInterface } from "@wso2is/admin.template-core.v1/models/templates";
@@ -190,6 +191,14 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
     const applicationFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) =>
         state.config.ui.features?.applications
     );
+
+    const organizationFeatureConfig: FeatureAccessConfigInterface = featureConfig?.organizations;
+
+    const isOrganizationApplicationCreationEnabled: boolean = isFeatureEnabled(
+        organizationFeatureConfig,
+        OrganizationManagementConstants.FEATURE_DICTIONARY.get(
+            OrganizationFeatureDictionaryKeys.OrganizationApplicationCreation
+        ));
 
     /**
      * Fetch the application templates if list is not available in redux.
@@ -616,20 +625,21 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 <EmptyPlaceholder
                     className={ !isRenderedOnPortal ? "list-placeholder mr-0" : "" }
                     action={ onEmptyListPlaceholderActionClick
-                        && (
-                            <Show
-                                when={ featureConfig?.applications?.scopes?.create }
-                            >
-                                <PrimaryButton
-                                    onClick={ () => {
-                                        eventPublisher.publish(componentId + "-click-new-application-button");
-                                        onEmptyListPlaceholderActionClick();
-                                    } }>
-                                    <Icon name="add" />
-                                    { t("applications:placeholders.emptyList.action") }
-                                </PrimaryButton>
-                            </Show>
-                        )
+                        && ((organizationType !== OrganizationType.SUBORGANIZATION) ||
+                        isOrganizationApplicationCreationEnabled) && (
+                        <Show
+                            when={ featureConfig?.applications?.scopes?.create }
+                        >
+                            <PrimaryButton
+                                onClick={ () => {
+                                    eventPublisher.publish(componentId + "-click-new-application-button");
+                                    onEmptyListPlaceholderActionClick();
+                                } }>
+                                <Icon name="add" />
+                                { t("applications:placeholders.emptyList.action") }
+                            </PrimaryButton>
+                        </Show>
+                    )
                     }
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
