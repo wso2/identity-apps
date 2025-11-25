@@ -1,5 +1,11 @@
 # @wso2is/form
 
+## 2.9.3
+
+### Patch Changes
+
+- [#9463](https://github.com/wso2/identity-apps/pull/9463) [`471a2ae0e7e95d2376af1e0b325b12efa4e5ced6`](https://github.com/wso2/identity-apps/commit/471a2ae0e7e95d2376af1e0b325b12efa4e5ced6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Use dayjs adapter in date picker field adapter
+
 ## 2.9.2
 
 ### Patch Changes
