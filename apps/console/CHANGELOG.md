@@ -1,5 +1,26 @@
 # @wso2is/console
 
+## 2.81.34
+
+### Patch Changes
+
+- [#9464](https://github.com/wso2/identity-apps/pull/9464) [`158a7887057c55aba93a7e2b263447f85b6f7e46`](https://github.com/wso2/identity-apps/commit/158a7887057c55aba93a7e2b263447f85b6f7e46) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Rename eventPublishing feature name to events
+
+- Updated dependencies [[`158a7887057c55aba93a7e2b263447f85b6f7e46`](https://github.com/wso2/identity-apps/commit/158a7887057c55aba93a7e2b263447f85b6f7e46)]:
+  - @wso2is/admin.core.v1@2.49.107
+  - @wso2is/core@2.12.7
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.99
+  - @wso2is/admin.branding.v1@2.32.55
+  - @wso2is/admin.email-management.v1@2.25.263
+  - @wso2is/admin.flows.v1@1.0.68
+  - @wso2is/admin.home.v1@1.7.77
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.99
+  - @wso2is/admin.server-configurations.v1@2.35.121
+  - @wso2is/admin.users.v1@2.36.74
+  - @wso2is/admin.registration-flow-builder.v1@0.10.59
+  - @wso2is/admin.agents.v1@1.0.114
+  - @wso2is/admin.roles.v2@2.27.269
+
 ## 2.81.33
 
 ### Patch Changes
