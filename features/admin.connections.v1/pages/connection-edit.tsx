@@ -715,7 +715,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                             history.push(`/t/${tenantDomain}/console/connections/${idpId}/test`);
                         }}
                     >
-                        <Icon name="plug" />
+                        <Icon name="flask" />
                         Test Connection
                     </PrimaryButton>
                 ) }

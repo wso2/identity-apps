@@ -602,21 +602,6 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 },
                 {
                     component: lazy(() =>
-                        import("@wso2is/admin.connections.v1/pages/connection-test-result")
-                    ),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
-                    },
-                    id: "identityProvidersTestResult",
-                    name: "Identity Providers Test Result",
-                    // Direct path for debug results
-                    path: "/t/:tenantDomain/console/connections/:idpId/debug-results",
-                    protected: true,
-                    showOnSidePanel: false
-                },
-                {
-                    component: lazy(() =>
                         import("@wso2is/admin.connections.v1/pages/connection-edit")
                     ),
                     exact: true,
