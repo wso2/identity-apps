@@ -1171,7 +1171,7 @@
             },
             {% endif %}
             {% if console.event_publishing is defined %}
-            "eventPublishing": {
+            "events": {
                 "disabledFeatures": [
                     {% if console.event_publishing.disabled_features is defined %}
                     {% for feature in console.event_publishing.disabled_features %}

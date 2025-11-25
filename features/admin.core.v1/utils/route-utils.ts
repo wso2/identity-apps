@@ -551,7 +551,7 @@ export class RouteUtils {
             },
             {
                 category: extensions,
-                id: "eventPublishing",
+                id: "events",
                 order: 2
             }
         ];
