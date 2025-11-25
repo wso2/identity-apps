@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { FormControlProps } from "@oxygen-ui/react/FormControl";
@@ -92,7 +92,7 @@ const DatePickerFieldAdapter: FunctionComponent<DatePickerFieldAdapterPropsInter
 
     return (
         <>
-            <LocalizationProvider dateAdapter={ AdapterMoment }>
+            <LocalizationProvider dateAdapter={ AdapterDayjs }>
                 <DatePicker
                     slots={ { textField: TextField } }
                     slotProps={ {
