@@ -248,7 +248,7 @@ export interface FeatureConfigInterface {
     /**
      * Event Management feature
      */
-    eventPublishing?: FeatureAccessConfigInterface;
+    events?: FeatureAccessConfigInterface;
     /**
      * Organization insights feature
      */

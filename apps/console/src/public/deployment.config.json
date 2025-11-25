@@ -885,7 +885,7 @@
                     ]
                 }
             },
-            "eventPublishing": {
+            "events": {
                 "disabledFeatures": [],
                 "enabled": true,
                 "featureFlags": [],
@@ -897,7 +897,7 @@
                         "internal_event_config_update"
                     ],
                     "feature": [
-                        "console:eventPublishing"
+                        "console:events"
                     ],
                     "read": [
                         "internal_event_config_view"
