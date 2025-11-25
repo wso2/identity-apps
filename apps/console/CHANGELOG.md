@@ -1,5 +1,33 @@
 # @wso2is/console
 
+## 2.81.33
+
+### Patch Changes
+
+- [#9463](https://github.com/wso2/identity-apps/pull/9463) [`471a2ae0e7e95d2376af1e0b325b12efa4e5ced6`](https://github.com/wso2/identity-apps/commit/471a2ae0e7e95d2376af1e0b325b12efa4e5ced6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Use dayjs adapter in date picker field adapter
+
+* [#9460](https://github.com/wso2/identity-apps/pull/9460) [`13becbc4d972e96e59ffffec7bf444811507c3db`](https://github.com/wso2/identity-apps/commit/13becbc4d972e96e59ffffec7bf444811507c3db) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Introduce configs to enable/disable the auth code related UI components
+
+* Updated dependencies [[`471a2ae0e7e95d2376af1e0b325b12efa4e5ced6`](https://github.com/wso2/identity-apps/commit/471a2ae0e7e95d2376af1e0b325b12efa4e5ced6), [`13becbc4d972e96e59ffffec7bf444811507c3db`](https://github.com/wso2/identity-apps/commit/13becbc4d972e96e59ffffec7bf444811507c3db)]:
+  - @wso2is/form@2.9.3
+  - @wso2is/admin.organizations.v1@2.27.14
+  - @wso2is/admin.applications.v1@2.38.11
+  - @wso2is/admin.extensions.v1@2.40.12
+  - @wso2is/admin.actions.v1@1.14.14
+  - @wso2is/admin.session-management.v1@2.25.219
+  - @wso2is/admin.agents.v1@1.0.113
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.98
+  - @wso2is/admin.branding.v1@2.32.54
+  - @wso2is/admin.core.v1@2.49.106
+  - @wso2is/admin.email-management.v1@2.25.262
+  - @wso2is/admin.flows.v1@1.0.67
+  - @wso2is/admin.home.v1@1.7.76
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.98
+  - @wso2is/admin.server-configurations.v1@2.35.120
+  - @wso2is/admin.users.v1@2.36.73
+  - @wso2is/admin.roles.v2@2.27.268
+  - @wso2is/admin.registration-flow-builder.v1@0.10.58
+
 ## 2.81.32
 
 ### Patch Changes
