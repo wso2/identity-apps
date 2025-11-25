@@ -1,5 +1,11 @@
 # @wso2is/core
 
+## 2.12.7
+
+### Patch Changes
+
+- [#9464](https://github.com/wso2/identity-apps/pull/9464) [`158a7887057c55aba93a7e2b263447f85b6f7e46`](https://github.com/wso2/identity-apps/commit/158a7887057c55aba93a7e2b263447f85b6f7e46) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Rename eventPublishing feature name to events
+
 ## 2.12.6
 
 ### Patch Changes
