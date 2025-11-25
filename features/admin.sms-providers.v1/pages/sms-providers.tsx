@@ -338,8 +338,8 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
 
         // Add authentication data for Custom SMS Provider
         // Only include authentication if the auth box is expanded and being updated
-        if (selectedProvider === SMSProviderConstants.CUSTOM_SMS_PROVIDER && 
-            values.authType && 
+        if (selectedProvider === SMSProviderConstants.CUSTOM_SMS_PROVIDER &&
+            values.authType &&
             isAuthenticationUpdateFormState) {
             submittingValues.authentication = {
                 properties: {},
@@ -527,7 +527,7 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
             }
 
             // Validate authentication fields
-            // When authentication box is expanded (isAuthenticationUpdateFormState=true), 
+            // When authentication box is expanded (isAuthenticationUpdateFormState=true),
             // secrets are always required since backend doesn't return existing secrets
             const hasExistingConfig: boolean = existingSMSProviders.includes("CustomSMSProvider");
             const requireSecrets: boolean = !hasExistingConfig || isAuthenticationUpdateFormState;

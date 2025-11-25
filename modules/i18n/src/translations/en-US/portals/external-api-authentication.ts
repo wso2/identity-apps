@@ -28,9 +28,6 @@ export const externalApiAuthentication: ExternalAPIAuthenticationNS = {
             },
             label: "Authentication",
             types: {
-                none: {
-                    name: "None"
-                },
                 apiKey: {
                     name: "API Key",
                     properties: {
@@ -113,6 +110,9 @@ export const externalApiAuthentication: ExternalAPIAuthenticationNS = {
                             }
                         }
                     }
+                },
+                none: {
+                    name: "None"
                 }
             }
         },

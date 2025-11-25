@@ -51,12 +51,12 @@ interface CustomSMSProviderPageInterface extends IdentifiableComponentInterface 
     onSubmit: (values: any) => void;
     hasExistingConfig?: boolean;
     currentAuthType?: AuthType;
-    endpointAuthType?: AuthType;
-    setEndpointAuthType?: (authType: AuthType) => void;
-    isAuthenticationUpdateFormState?: boolean;
-    setIsAuthenticationUpdateFormState?: (state: boolean) => void;
-    formState?: MutableRefObject<FormApi<Record<string, unknown>, Partial<Record<string, unknown>>>>;
-    onAuthenticationChange?: () => void;
+    endpointAuthType: AuthType;
+    setEndpointAuthType: (authType: AuthType) => void;
+    isAuthenticationUpdateFormState: boolean;
+    setIsAuthenticationUpdateFormState: (state: boolean) => void;
+    formState: MutableRefObject<FormApi<Record<string, unknown>, Partial<Record<string, unknown>>>>;
+    onAuthenticationChange: () => void;
 }
 
 const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
@@ -88,9 +88,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
         const authType: AuthType = value as AuthType;
 
         setLocalAuthType(authType);
-        if (setEndpointAuthType) {
-            setEndpointAuthType(authType);
-        }
+        setEndpointAuthType(authType);
     };
 
     const activeAuthType: AuthType = localAuthType || endpointAuthType;
@@ -595,7 +593,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                     </>
                                 ) }
 
-                                { isAuthenticationUpdateFormState && formState && (
+                                { isAuthenticationUpdateFormState && (
                                     <Button
                                         onClick={ () =>
                                             handleAuthenticationChangeCancel(
