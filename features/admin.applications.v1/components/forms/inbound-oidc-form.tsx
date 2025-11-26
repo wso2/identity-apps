@@ -3909,7 +3909,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             <Divider hidden />
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                            <Heading as="h4">Logout URLs</Heading>
+                            <Heading as="h4">Logout URL</Heading>
                             <Divider hidden />
                             <Field
                                 ref={ backChannelLogoutUrl }
