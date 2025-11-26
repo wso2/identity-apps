@@ -42,6 +42,7 @@ import {
 import useDeploymentConfig from "@wso2is/admin.core.v1/hooks/use-deployment-configs";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { serverConfigurationConfig } from "@wso2is/admin.extensions.v1/configs/server-configuration";
+import useFeatureGate, { UseFeatureGateInterface } from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
 import { getAuthenticatorIcons } from "@wso2is/admin.identity-providers.v1/configs/ui";
 import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models";
 import {
@@ -252,6 +253,9 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
         CommonAuthenticatorConstants.FEATURE_DICTIONARY.get(
             ConnectionsFeatureDictionaryKeys.LocalSMSOTPAuthenticator));
 
+    const { conditionalAuthPremiumFeature }: UseFeatureGateInterface = useFeatureGate();
+    const isPremiumOrReadOnly: boolean = conditionalAuthPremiumFeature || isScriptUpdateReadOnly;
+
     /**
      * Handles the accordion change event.
      *
@@ -285,7 +289,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
 
         const sequence: AuthenticationSequenceInterface = {
             ...template.sequence,
-            script: isScriptUpdateReadOnly ? authenticationSequence?.script
+            script: isPremiumOrReadOnly ? authenticationSequence?.script
                 : template.sequence.script ?? ""
         };
 
@@ -813,7 +817,7 @@ const PredefinedFlowsSidePanel: FunctionComponent<PredefinedFlowsSidePanelPropsI
                 { showAdaptiveLoginTemplates &&
                     adaptiveAuthTemplates &&
                     Object.entries(adaptiveAuthTemplates).length > 0 &&
-                    !isScriptUpdateReadOnly && (
+                    !isPremiumOrReadOnly && (
                     <Accordion
                         square
                         disableGutters

@@ -16,7 +16,13 @@
  * under the License.
  */
 
-import { FeatureAccessConfigInterface } from "@wso2is/access-control";
+import {
+    FeatureAccessConfigInterface,
+    FeatureStatus,
+    FeatureTags,
+    useCheckFeatureStatus,
+    useCheckFeatureTags
+} from "@wso2is/access-control";
 import { AuthenticatorCreateWizardFactory } from "@wso2is/admin.connections.v1";
 import {
     CommonAuthenticatorConstants,
@@ -33,6 +39,7 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
+import useFeatureGate, { UseFeatureGateInterface } from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
 import MicrosoftIDPTemplate
     from
     "@wso2is/admin.identity-providers.v1/data/identity-provider-templates/templates/microsoft/microsoft.json";
@@ -48,6 +55,8 @@ import AuthenticationFlowBuilder
 import AuthenticationFlowProvider
     from "@wso2is/admin.login-flow-builder.v1/providers/authentication-flow-provider";
 import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils";
+import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
+import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -211,6 +220,23 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
     ] = useState<"INTERNAL" | "EXTERNAL">(undefined);
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
+
+    const { setConditionalAuthPremiumFeature }: UseFeatureGateInterface
+        = useFeatureGate();
+    const { tierName }: UseSubscriptionInterface = useSubscription();
+    const adaptiveFeatureStatus : FeatureStatus = useCheckFeatureStatus("console.application.signIn.adaptiveAuth");
+    const adaptiveFeatureTags: string[] = useCheckFeatureTags("console.application.signIn.adaptiveAuth");
+
+    useEffect(() => {
+        if (adaptiveFeatureStatus === FeatureStatus.ENABLED
+            && adaptiveFeatureTags?.includes(FeatureTags.PREMIUM) &&
+            (tierName === TenantTier.FREE || tierName === TenantTier.ESSENTIALS
+                || tierName === TenantTier.PROFESSIONAL)) {
+            setConditionalAuthPremiumFeature(true);
+        } else {
+            setConditionalAuthPremiumFeature(false);
+        }
+    }, [ tierName ]);
 
     /**
      * Loads federated authenticators and local authenticators on component load.

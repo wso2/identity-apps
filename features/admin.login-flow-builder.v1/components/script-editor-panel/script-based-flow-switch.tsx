@@ -20,12 +20,18 @@ import Accordion from "@oxygen-ui/react/Accordion";
 import AccordionDetails from "@oxygen-ui/react/AccordionDetails";
 import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
 import Box from "@oxygen-ui/react/Box";
+import Chip from "@oxygen-ui/react/Chip";
 import Grid from "@oxygen-ui/react/Grid";
 import Switch from "@oxygen-ui/react/Switch";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
+import { DiamondIcon } from "@oxygen-ui/react-icons";
+import ConditionalAuthPremiumBanner
+    from "@wso2is/admin.applications.v1/components/banners/conditional-auth-premium-banner";
 import { AdaptiveScriptUtils } from "@wso2is/admin.applications.v1/utils/adaptive-script-utils";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import useFeatureGate, { UseFeatureGateInterface } from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
+import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import { LOGIN_FLOW_AI_FEATURE_TAG } from "@wso2is/admin.login-flow.ai.v1/constants/login-flow-ai-constants";
 import useAILoginFlow from "@wso2is/admin.login-flow.ai.v1/hooks/use-ai-login-flow";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -81,6 +87,8 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
     const applicationDisabledFeatures: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.features?.applications?.disabledFeatures);
 
+    const { conditionalAuthPremiumFeature }: UseFeatureGateInterface = useFeatureGate();
+
     /**
      * This useEffect is responsible for deciding whether
      * the adaptive script section should be enabled or not.
@@ -129,59 +137,73 @@ const ScriptBasedFlowSwitch = (props: PropsWithChildren<ScriptBasedFlowSwitchPro
             <Box className="script-based-flow-switch" data-componentid={ componentId }>
                 <Accordion expanded={ isConditionalAuthenticationEnabled } elevation={ 0 }>
                     <AccordionSummary>
-                        <Grid className="script-based-flow-switch-accordion-summary">
-                            <Grid
-                                xs={ 12 }
-                                sm={ 6 }
-                                md={ 2 }
-                                lg={ 1 }
-                                xl={ 1 }
-                            >
-                                {
-                                    !readOnly && (
-                                        <Switch
-                                            checked={ isConditionalAuthenticationEnabled }
-                                            onChange={ handleSwitchChange }
-                                        />
-                                    )
-                                }
-                            </Grid>
-                            <Grid
-                                className="script-based-flow-switch-text"
-                                xs={ 12 }
-                                sm={ 6 }
-                                md={ 11 }
-                                lg={ 11 }
-                                xl={ 11 }
-                            >
-                                <div className="title">
-                                    <Typography variant="body1">
+                        <Box display="flex" flexDirection="column" width="100%">
+                            <Grid className="script-based-flow-switch-accordion-summary">
+                                <Grid
+                                    xs={ 12 }
+                                    sm={ 6 }
+                                    md={ 2 }
+                                    lg={ 1 }
+                                    xl={ 1 }
+                                >
+                                    {
+                                        !readOnly && (
+                                            <Switch
+                                                checked={ isConditionalAuthenticationEnabled }
+                                                onChange={ handleSwitchChange }
+                                            />
+                                        )
+                                    }
+                                </Grid>
+                                <Grid
+                                    className="script-based-flow-switch-text"
+                                    xs={ 12 }
+                                    sm={ 6 }
+                                    md={ 11 }
+                                    lg={ 11 }
+                                    xl={ 11 }
+                                >
+                                    <div className="title">
+                                        <Typography variant="body1">
+                                            {
+                                                t("applications:edit.sections.signOnMethod." +
+                                                    "sections.authenticationFlow.sections.scriptBased.accordion." +
+                                                    "title.heading" + (readOnly && !conditionalAuthPremiumFeature
+                                                    ? ".readOnly" : ".readWrite"))
+                                            }
+                                        </Typography>
+                                        { readOnly && !conditionalAuthPremiumFeature && (
+                                            <Tooltip
+                                                title={ t("applications:edit.sections.signOnMethod.sections." +
+                                                    "authenticationFlow.sections.scriptBased.accordion.title." +
+                                                    "tooltip.readOnly") }>
+                                                <span>
+                                                    <Icon name="warning sign" color="yellow" />
+                                                </span>
+                                            </Tooltip>)
+                                        }
+                                        {
+                                            conditionalAuthPremiumFeature && (
+                                                <Chip
+                                                    icon={ <DiamondIcon /> }
+                                                    label={ t(FeatureStatusLabel.PREMIUM) }
+                                                    className="oxygen-menu-item-chip oxygen-chip-premium ml-2"
+                                                    style={ { height: "fit-content" } }
+                                                />
+                                            )
+                                        }
+                                    </div>
+                                    <Typography variant="body2">
                                         {
                                             t("applications:edit.sections.signOnMethod." +
                                                 "sections.authenticationFlow.sections.scriptBased.accordion." +
-                                                "title.heading" + (readOnly ? ".readOnly" : ".readWrite"))
+                                                "title.description")
                                         }
                                     </Typography>
-                                    { readOnly && (
-                                        <Tooltip
-                                            title={ t("applications:edit.sections.signOnMethod.sections." +
-                                                "authenticationFlow.sections.scriptBased.accordion.title." +
-                                                "tooltip.readOnly") }>
-                                            <span>
-                                                <Icon name="warning sign" color="yellow" />
-                                            </span>
-                                        </Tooltip>)
-                                    }
-                                </div>
-                                <Typography variant="body2">
-                                    {
-                                        t("applications:edit.sections.signOnMethod." +
-                                            "sections.authenticationFlow.sections.scriptBased.accordion." +
-                                            "title.description")
-                                    }
-                                </Typography>
+                                </Grid>
                             </Grid>
-                        </Grid>
+                            { conditionalAuthPremiumFeature && (<ConditionalAuthPremiumBanner />) }
+                        </Box>
                     </AccordionSummary>
                     <AccordionDetails className="script-based-flow-switch-accordion-details">
                         <ScriptEditorPanel readOnly={ readOnly }/>
