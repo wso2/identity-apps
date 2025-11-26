@@ -17,20 +17,18 @@
  */
 
 import { ProtectedRoute } from "@wso2is/admin.core.v1/components/protected-route";
-import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
+import { createBrokenPageFallback, createRouteErrorHandler } from "@wso2is/admin.core.v1/utils/error-boundary-utils";
 import { RouteUtils } from "@wso2is/admin.core.v1/utils/route-utils";
 import { RouteInterface } from "@wso2is/core/models";
-import { RouteUtils as CommonRouteUtils, CommonUtils } from "@wso2is/core/utils";
+import { RouteUtils as CommonRouteUtils } from "@wso2is/core/utils";
 import {
     ContentLoader,
-    EmptyPlaceholder,
     ErrorBoundary,
-    FullScreenLayout as FullScreenLayoutSkeleton,
-    LinkButton
+    FullScreenLayout as FullScreenLayoutSkeleton
 } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, {
@@ -108,6 +106,10 @@ const FullScreenLayout: FunctionComponent<FullScreenLayoutPropsInterface> = (
      * @param key - Index of the route.
      * @returns Resolved route to be rendered.
      */
+    const handleRouteChunkError = createRouteErrorHandler(appHomePath);
+
+    const brokenPageFallback: ReactNode = createBrokenPageFallback(t);
+
     const renderRoute = (route: RouteInterface, key: number): ReactNode => (
         route.redirectTo
             ? <Redirect key={ key } to={ route.redirectTo }/>
@@ -123,11 +125,22 @@ const FullScreenLayout: FunctionComponent<FullScreenLayoutPropsInterface> = (
                 : (
                     <Route
                         path={ route.path }
-                        render={ (renderProps: RouteComponentProps): ReactNode =>
-                            route.component
-                                ? <route.component { ...renderProps } />
-                                : null
-                        }
+                        render={ (renderProps: RouteComponentProps): ReactNode => {
+                            if (!route.component) {
+                                return null;
+                            }
+
+                            return (
+                                <ErrorBoundary
+                                    key={ renderProps.location.pathname }
+                                    onChunkLoadError={ AppUtils.onChunkLoadError }
+                                    handleError={ handleRouteChunkError }
+                                    fallback={ brokenPageFallback }
+                                >
+                                    <route.component { ...renderProps } />
+                                </ErrorBoundary>
+                            );
+                        } }
                         key={ key }
                         exact={ route.exact }
                     />
@@ -165,25 +178,8 @@ const FullScreenLayout: FunctionComponent<FullScreenLayoutPropsInterface> = (
         <FullScreenLayoutSkeleton>
             <ErrorBoundary
                 onChunkLoadError={ AppUtils.onChunkLoadError }
-                handleError={ (_error: Error, _errorInfo: React.ErrorInfo) => {
-                    sessionStorage.setItem("auth_callback_url_console", appHomePath);
-                } }
-                fallback={ (
-                    <EmptyPlaceholder
-                        action={ (
-                            <LinkButton onClick={ () => CommonUtils.refreshPage() }>
-                                { t("console:common.placeholders.brokenPage.action") }
-                            </LinkButton>
-                        ) }
-                        image={ getEmptyPlaceholderIllustrations().brokenPage }
-                        imageSize="tiny"
-                        subtitle={ [
-                            t("console:common.placeholders.brokenPage.subtitles.0"),
-                            t("console:common.placeholders.brokenPage.subtitles.1")
-                        ] }
-                        title={ t("console:common.placeholders.brokenPage.title") }
-                    />
-                ) }
+                handleError={ handleRouteChunkError }
+                fallback={ brokenPageFallback }
             >
                 <Suspense fallback={ <ContentLoader dimmer={ false } /> }>
                     <Switch>

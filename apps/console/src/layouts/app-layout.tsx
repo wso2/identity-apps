@@ -18,19 +18,16 @@
 
 import { PreLoader } from "@wso2is/admin.core.v1/components/pre-loader";
 import { ProtectedRoute } from "@wso2is/admin.core.v1/components/protected-route";
-import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
+import { createBrokenPageFallback, createRouteErrorHandler } from "@wso2is/admin.core.v1/utils/error-boundary-utils";
 import { RouteInterface } from "@wso2is/core/models";
-import { CommonUtils } from "@wso2is/core/utils";
 import {
     CookieConsentBanner,
-    EmptyPlaceholder,
-    ErrorBoundary,
-    LinkButton
+    ErrorBoundary
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, Suspense, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
@@ -52,6 +49,10 @@ const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactElement =
     });
     const appHomePath: string = useSelector((state: AppState) => state.config.deployment.appHomePath);
 
+    const handleRouteChunkError = createRouteErrorHandler(appHomePath);
+
+    const brokenPageFallback: ReactNode = createBrokenPageFallback(t);
+
     /**
      * Listen for base name changes and updated the layout routes.
      */
@@ -63,25 +64,8 @@ const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactElement =
         <>
             <ErrorBoundary
                 onChunkLoadError={ AppUtils.onChunkLoadError }
-                handleError={ (_error: Error, _errorInfo: React.ErrorInfo) => {
-                    sessionStorage.setItem("auth_callback_url_console", appHomePath);
-                } }
-                fallback={ (
-                    <EmptyPlaceholder
-                        action={ (
-                            <LinkButton onClick={ () => CommonUtils.refreshPage() }>
-                                { t("console:common.placeholders.brokenPage.action") }
-                            </LinkButton>
-                        ) }
-                        image={ getEmptyPlaceholderIllustrations().brokenPage }
-                        imageSize="tiny"
-                        subtitle={ [
-                            t("console:common.placeholders.brokenPage.subtitles.0"),
-                            t("console:common.placeholders.brokenPage.subtitles.1")
-                        ] }
-                        title={ t("console:common.placeholders.brokenPage.title") }
-                    />
-                ) }
+                handleError={ handleRouteChunkError }
+                fallback={ brokenPageFallback }
             >
                 <Suspense fallback={ <PreLoader /> }>
                     <Switch>
@@ -101,11 +85,22 @@ const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactElement =
                                         : (
                                             <Route
                                                 path={ route.path }
-                                                render={ (renderProps: RouteComponentProps) =>
-                                                    route.component
-                                                        ? <route.component { ...renderProps } />
-                                                        : null
-                                                }
+                                                render={ (renderProps: RouteComponentProps) => {
+                                                    if (!route.component) {
+                                                        return null;
+                                                    }
+
+                                                    return (
+                                                        <ErrorBoundary
+                                                            key={ renderProps.location.pathname }
+                                                            onChunkLoadError={ AppUtils.onChunkLoadError }
+                                                            handleError={ handleRouteChunkError }
+                                                            fallback={ brokenPageFallback }
+                                                        >
+                                                            <route.component { ...renderProps } />
+                                                        </ErrorBoundary>
+                                                    );
+                                                } }
                                                 key={ index }
                                                 exact={ route.exact }
                                             />

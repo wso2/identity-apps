@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,6 +22,7 @@ import { AuthenticateUtils } from "@wso2is/core/utils";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, RouteProps } from "react-router-dom";
+import RouteErrorBoundary from "./route-error-boundary";
 import { AppConstants } from "../../constants";
 import { AppState } from "../../store";
 
@@ -77,11 +78,19 @@ export const ProtectedRoute: FunctionComponent<ProtectedRoutePropsInterface> = (
         const scopes: string[] = allowedScopes?.split(" ");
 
         if (!route?.scope) {
-            return (<Component { ...props } />);
+            return (
+                <RouteErrorBoundary routeName={ props.match?.path }>
+                    <Component { ...props } />
+                </RouteErrorBoundary>
+            );
         }
 
         if (scopes?.includes(route?.scope)) {
-            return <Component { ...props } />;
+            return (
+                <RouteErrorBoundary routeName={ props.match?.path }>
+                    <Component { ...props } />
+                </RouteErrorBoundary>
+            );
         } else {
             return <Redirect to={ AppConstants.getPaths().get("ACCESS_DENIED_ERROR") } />;
         }
