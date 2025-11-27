@@ -116,7 +116,7 @@ export const ApplicationMarkdownGuide: FunctionComponent<ApplicationMarkdownGuid
 
     const samlConfigurations: SAMLApplicationConfigurationInterface = useSelector(
         (state: AppState) => state?.application?.samlConfigurations);
-    const oidcConfigurations: SAMLApplicationConfigurationInterface = useSelector(
+    const oidcConfigurations: OIDCApplicationConfigurationInterface = useSelector(
         (state: AppState) => state?.application?.oidcConfigurations);
     const tenantDomain: string = useSelector((state: AppState) => state?.auth?.tenantDomain);
     const clientOrigin: string = useSelector((state: AppState) => state?.config?.deployment?.clientOrigin);
@@ -189,7 +189,7 @@ export const ApplicationMarkdownGuide: FunctionComponent<ApplicationMarkdownGuid
         markdownDataObject.general = application;
         set(markdownDataObject, `protocol.${protocolKeyName}`, inboundProtocolConfigurations);
         set(markdownDataObject, "metadata.saml", samlConfigurations);
-        set(markdownDataObject, "metadata.oidc", samlConfigurations);
+        set(markdownDataObject, "metadata.oidc", oidcConfigurations);
         markdownDataObject.tenantDomain = tenantDomain;
         markdownDataObject.clientOrigin = clientOrigin;
         markdownDataObject.serverOrigin = serverOrigin;
