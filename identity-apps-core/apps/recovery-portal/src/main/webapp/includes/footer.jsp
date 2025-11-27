@@ -16,6 +16,8 @@
   ~ under the License.
 --%>
 
+
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script src="libs/jquery_3.6.0/jquery-3.6.0.min.js"></script>
 <script src="libs/themes/wso2is/semantic.min.js"></script>
 <script src="libs/tldts-6.1.73.umd.min.js" async></script>
