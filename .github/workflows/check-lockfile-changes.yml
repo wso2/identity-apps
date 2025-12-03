@@ -1,0 +1,86 @@
+name: 🔒 Check Lockfile Changes
+
+on:
+  pull_request:
+    types: [opened]
+    branches: [master]
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  check-lockfile:
+    name: Check pnpm-lock.yaml Changes
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🔍 Check if pnpm-lock.yaml was modified
+        id: check-lockfile
+        run: |
+          # Get the list of changed files
+          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          
+          # Check if pnpm-lock.yaml is in the changed files
+          if echo "$CHANGED_FILES" | grep -q "^pnpm-lock.yaml$"; then
+            echo "lockfile_changed=true" >> $GITHUB_OUTPUT
+            echo "⚠️ pnpm-lock.yaml has been modified in this PR"
+          else
+            echo "lockfile_changed=false" >> $GITHUB_OUTPUT
+            echo "✅ pnpm-lock.yaml has not been modified"
+          fi
+
+      - name: 📝 Post warning comment
+        if: steps.check-lockfile.outputs.lockfile_changed == 'true'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const warningMessage = `## ⚠️ Lockfile Change Detected
+            
+            This pull request modifies \`pnpm-lock.yaml\`.
+            
+            If this change is intentional (e.g., dependency updates), please ensure:
+            - All changes are reviewed carefully
+            - If this change is unintentional, consider reverting it
+            
+            _This is an automated warning to help maintain dependency stability._`;
+
+            // Find existing comment
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botComment = comments.find(comment => 
+              comment.user.type === 'Bot' && 
+              comment.body.includes('⚠️ Lockfile Change Detected')
+            );
+
+            // Update or create comment
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: warningMessage
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: warningMessage
+              });
+            }
+
+      - name: ❌ Fail the check
+        if: steps.check-lockfile.outputs.lockfile_changed == 'true'
+        run: |
+          echo "::warning::pnpm-lock.yaml has been modified in this PR. Please review the changes carefully."
+          exit 1
