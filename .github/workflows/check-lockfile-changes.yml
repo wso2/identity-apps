@@ -24,7 +24,7 @@ name: 🔒 Check Lockfile Changes
 
 on:
   pull_request:
-    types: [opened]
+    types: [opened, synchronize]
     branches: [master]
 
 permissions:
