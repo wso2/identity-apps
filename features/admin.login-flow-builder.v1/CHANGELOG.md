@@ -1,5 +1,20 @@
 # @wso2is/admin.login-flow-builder.v1
 
+## 2.28.0
+
+### Minor Changes
+
+- [#9461](https://github.com/wso2/identity-apps/pull/9461) [`6b4e8896dee1319f2abfbf6ea618f3bb48073a17`](https://github.com/wso2/identity-apps/commit/6b4e8896dee1319f2abfbf6ea618f3bb48073a17) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Add feature gate integration for conditional auth scripts
+
+### Patch Changes
+
+- Updated dependencies [[`6b4e8896dee1319f2abfbf6ea618f3bb48073a17`](https://github.com/wso2/identity-apps/commit/6b4e8896dee1319f2abfbf6ea618f3bb48073a17)]:
+  - @wso2is/admin.applications.v1@2.39.0
+  - @wso2is/admin.login-flow.ai.v1@2.27.103
+  - @wso2is/admin.feature-gate.v1@1.7.8
+  - @wso2is/admin.core.v1@2.49.108
+  - @wso2is/admin.server-configurations.v1@2.35.122
+
 ## 2.27.4
 
 ### Patch Changes
