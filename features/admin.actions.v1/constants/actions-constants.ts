@@ -73,6 +73,7 @@ export class ActionsConstants {
 
     public static readonly ACTIONS_CONFIG_PATHS: Record<string, string> = {
         [ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH]: "pre_issue_access_token",
+        [ActionsConstants.PRE_ISSUE_ID_TOKEN_URL_PATH]: "pre_issue_id_token",
         [ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH]: "pre_update_password",
         [ActionsConstants.PRE_UPDATE_PROFILE_URL_PATH]: "pre_update_profile",
         [ActionsConstants.PRE_REGISTRATION_URL_PATH]: "pre_registration"
