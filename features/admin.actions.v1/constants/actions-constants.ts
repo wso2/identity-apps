@@ -131,7 +131,7 @@ export class ActionsConstants {
     } = {
             PRE_ISSUE_ACCESS_TOKEN: new ActionType(
                 ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH, ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_API_PATH),
-            PRE_ISSUE_ID_TOKEN:  new ActionType(
+            PRE_ISSUE_ID_TOKEN: new ActionType(
                 ActionsConstants.PRE_ISSUE_ID_TOKEN_URL_PATH, ActionsConstants.PRE_ISSUE_ID_TOKEN_API_PATH),
             PRE_REGISTRATION: new ActionType(
                 ActionsConstants.PRE_REGISTRATION_URL_PATH, ActionsConstants.PRE_REGISTRATION_API_PATH),
