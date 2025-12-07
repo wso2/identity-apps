@@ -380,6 +380,13 @@ export const actions: actionsNS = {
             },
             heading: "Pre Issue Access Token"
         },
+        preIssueIdToken: {
+            description: {
+                expanded: "Use this action to update claims of the ID token.",
+                shortened: "This action is executed before issuing the ID token to an application."
+            },
+            heading: "Pre Issue ID Token"
+        },
         preRegistration: {
             description: {
                 expanded: "This action is executed before registering a user." +
