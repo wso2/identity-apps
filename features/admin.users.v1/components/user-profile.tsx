@@ -879,7 +879,27 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             };
         }
 
-        updateUserInfo(user.id, data)
+                const removeMetaFieldsFromPatchData = (patchData: PatchRoleDataInterface): PatchRoleDataInterface => {
+
+            if (!patchData || !Array.isArray(patchData.Operations)) {
+                return patchData;
+            }
+
+            const cleanedOperations: ScimOperationsInterface[] = patchData.Operations
+                .filter((operation: ScimOperationsInterface) => {
+                    if (operation.value.meta !== undefined) {
+                        return false;
+                    }
+
+                    return true;
+                });
+
+            return { ...patchData, Operations: cleanedOperations };
+        };
+
+        const sanitizedData: PatchRoleDataInterface = removeMetaFieldsFromPatchData(data);
+
+        updateUserInfo(user.id, sanitizedData)
             .then(() => {
                 onAlertFired({
                     description:
