@@ -2083,6 +2083,10 @@ export const applications: ApplicationsNS = {
                 },
                 refreshToken: {
                     fields: {
+                        extendRenewedRefreshTokenExpiryTime: {
+                            hint: "Select to extend the expiry time of a renewed <1>refresh_token</1>.",
+                            label: "Extend expiry time of renewed refresh tokens"
+                        },
                         expiry: {
                             hint: "Specify the validity period of the <1>refresh_token</1> in seconds.",
                             label: "Refresh token expiry time",

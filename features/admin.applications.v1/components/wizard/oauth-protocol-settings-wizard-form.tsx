@@ -351,6 +351,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
         if (showRefreshToken || (!fields || fields.includes("RefreshToken"))) {
             config.inboundProtocolConfiguration.oidc[ "refreshToken" ] = {
                 expiryInSeconds: parseInt(OIDCMeta?.defaultRefreshTokenExpiryTime, 10),
+                extendRenewedRefreshTokenExpiryTime: values.get("extendExpiryTime").includes("extendExpiryTime"),
                 renewRefreshToken: values.get("RefreshToken").includes("refreshToken")
             };
         }
