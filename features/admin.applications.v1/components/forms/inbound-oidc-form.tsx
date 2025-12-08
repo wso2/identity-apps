@@ -3407,7 +3407,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     <Trans
                                         i18nKey={
                                             "applications:forms.inboundOIDC.sections" +
-                                            ".extendRenewedRefreshTokenExpiryTime.fields.renew.hint"
+                                            ".refreshToken.fields.extendRenewedRefreshTokenExpiryTime.hint"
                                         }
                                     >
                                         Select to extend the expiry time of a renewed
