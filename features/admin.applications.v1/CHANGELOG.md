@@ -1,5 +1,20 @@
 # @wso2is/admin.applications.v1
 
+## 2.39.1
+
+### Patch Changes
+
+- [#9471](https://github.com/wso2/identity-apps/pull/9471) [`b946e9aa72169d6ff007ad3262ed2f9ce76c2496`](https://github.com/wso2/identity-apps/commit/b946e9aa72169d6ff007ad3262ed2f9ce76c2496) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Remove tier dependency
+
+- Updated dependencies [[`b3b3b61d8dd51d4fd0f081bc757de186c63c34df`](https://github.com/wso2/identity-apps/commit/b3b3b61d8dd51d4fd0f081bc757de186c63c34df)]:
+  - @wso2is/admin.extensions.v1@2.40.13
+  - @wso2is/admin.core.v1@2.49.109
+  - @wso2is/i18n@2.30.58
+  - @wso2is/admin.branding.v1@2.32.57
+  - @wso2is/admin.server-configurations.v1@2.35.123
+  - @wso2is/admin.users.v1@2.36.76
+  - @wso2is/admin.roles.v2@2.27.271
+
 ## 2.39.0
 
 ### Minor Changes
