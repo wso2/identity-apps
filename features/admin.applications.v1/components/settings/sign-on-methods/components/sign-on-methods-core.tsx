@@ -228,10 +228,8 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
     const adaptiveFeatureTags: string[] = useCheckFeatureTags("console.application.signIn.adaptiveAuth");
 
     useEffect(() => {
-        if (adaptiveFeatureStatus === FeatureStatus.ENABLED
-            && adaptiveFeatureTags?.includes(FeatureTags.PREMIUM) &&
-            (tierName === TenantTier.FREE || tierName === TenantTier.ESSENTIALS
-                || tierName === TenantTier.PROFESSIONAL)) {
+        if (adaptiveFeatureStatus === FeatureStatus.DISABLED
+            && adaptiveFeatureTags?.includes(FeatureTags.PREMIUM)) {
             setConditionalAuthPremiumFeature(true);
         } else {
             setConditionalAuthPremiumFeature(false);
