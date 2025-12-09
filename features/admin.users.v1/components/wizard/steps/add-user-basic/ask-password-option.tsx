@@ -76,7 +76,7 @@ const AskPasswordOption: FunctionComponent<AskPasswordOptionPropsInterface> = ({
     const { t } = useTranslation();
 
     const isLegacyFlowsEnabled: boolean = useSelector(
-        (state: AppState) => state.config.ui.flowExecution.enableLegacyFlows
+        (state: AppState) => state.config.ui?.flowExecution?.enableLegacyFlows
     );
 
     /**
