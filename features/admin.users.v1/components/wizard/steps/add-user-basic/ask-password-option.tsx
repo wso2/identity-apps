@@ -19,6 +19,7 @@
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import {
     ServerConfigurationsConstants
 } from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
@@ -29,6 +30,7 @@ import { Claim, IdentifiableComponentInterface, ProfileSchemaInterface } from "@
 import { Link, Message, Popup } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Grid, Menu } from "semantic-ui-react";
 import { AskPasswordOptionTypes } from "../../../../constants/user-management-constants";
 import { isFieldDisplayableInUserCreationWizard } from "../../../../utils/user-management-utils";
@@ -72,6 +74,10 @@ const AskPasswordOption: FunctionComponent<AskPasswordOptionPropsInterface> = ({
     ["data-componentid"]: componentId = "ask-password-option"
 }: AskPasswordOptionPropsInterface): ReactElement => {
     const { t } = useTranslation();
+
+    const isLegacyFlowsEnabled: boolean = useSelector(
+        (state: AppState) => state.config.ui?.flowExecution?.enableLegacyFlows
+    );
 
     /**
      * Process connector properties to determine ask password verification option.
@@ -136,16 +142,31 @@ const AskPasswordOption: FunctionComponent<AskPasswordOptionPropsInterface> = ({
     const renderAskPasswordOptionPopupContent = (): ReactElement => {
         if (!isInviteUserToSetPasswordEnabled) {
             return (
-                <Trans
-                    i18nKey="user:modals.addUserWizard.askPassword.emailVerificationDisabled"
-                >
-                    To invite users to set the password, enable email invitations for user password setup from <Link
-                        onClick={ () => history.push(AppConstants.getPaths().get("GOVERNANCE_CONNECTOR_EDIT")
-                            .replace(":categoryId", ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
-                            .replace(":connectorId", ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID)) }
-                        external={ false }
-                    >Login & Registration settings</Link>.
-                </Trans>
+                <>
+                    { isLegacyFlowsEnabled ? (
+                        <Trans
+                            i18nKey="user:modals.addUserWizard.askPassword.emailVerificationDisabled"
+                        >
+                            To invite users to set the password, enable email invitations for user password
+                            setup from <Link
+                                onClick={ () => history.push(AppConstants.getPaths().get("GOVERNANCE_CONNECTOR_EDIT")
+                                    .replace(":categoryId", ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
+                                    .replace(":connectorId", ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID)) }
+                                external={ false }
+                            >Login & Registration settings</Link>.
+                        </Trans>
+                    ) : (
+                        <Trans
+                            i18nKey="user:modals.addUserWizard.askPassword.emailVerificationDisabledWithFlows"
+                        >
+                            To invite users to set the password, enable the invitation flow settings from the <Link
+                                onClick={ () => history.push(AppConstants.getPaths()
+                                    .get("INVITE_USER_PASSWORD_SETUP_FLOW_BUILDER")) }
+                                external={ false }
+                            >Invited User Registration Flow Builder</Link>.
+                        </Trans>
+                    ) }
+                </>
             );
         }
 
