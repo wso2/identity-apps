@@ -1674,6 +1674,7 @@ export interface ApplicationsNS {
                 };
                 logoutURLs: {
                     heading: string;
+                    headingSingular: string;
                     fields: {
                         back: {
                             hint: string;

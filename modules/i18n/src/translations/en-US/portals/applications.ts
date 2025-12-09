@@ -1996,7 +1996,8 @@ export const applications: ApplicationsNS = {
                             }
                         }
                     },
-                    heading: "PKCE"
+                    heading: "Logout URLs",
+                    headingSingular: "Logout URL"
                 },
                 pkce: {
                     description: "The default method used by {{productName}} to generate the challenge " +
