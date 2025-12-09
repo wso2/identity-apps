@@ -379,17 +379,15 @@
             const resendButton = document.getElementById("resend");
             if (!resendButton) return;
 
-            // Use classList to add the disabled style
             resendButton.classList.add("disabled");
 
-            const resendButtonText = resendButton.innerText; // Use innerText for <a> tags
+            const resendButtonText = resendButton.innerText;
             resendButton.innerHTML = Math.floor(WAIT_TIME_SECONDS / 60).toString().padStart(2, '0') + " : " + (WAIT_TIME_SECONDS % 60).toString().padStart(2, '0');
 
             const countdown = new Countdown(
                 Countdown.seconds(WAIT_TIME_SECONDS),
                 () => {
                     resendButton.innerHTML = resendButtonText;
-                    // Use classList to remove the disabled style
                     resendButton.classList.remove("disabled");
                 },
                 (time) => {

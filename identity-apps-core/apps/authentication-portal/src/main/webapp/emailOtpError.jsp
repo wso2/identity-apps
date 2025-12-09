@@ -61,7 +61,7 @@
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.emailOTP.disabled");
             } else if (errorMessage.equalsIgnoreCase("directly.send.otp.disable")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.user.not.found");
-            } else if (errorMessage.equalsIgnoreCase(AuthenticatorConstants.USER_RESEND_COUNT_EXCEEDED)) {
+            } else if (errorMessage.equalsIgnoreCase(AuthenticatorConstants.EMAIL_OTP_RESEND_COUNT_EXCEEDED)) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.emailotp.resend.count.exceeded");
             } else if (errorMessage.equalsIgnoreCase("user.account.locked")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.user.account.locked");

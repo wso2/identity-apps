@@ -129,8 +129,8 @@ export class ConnectionUIConstants {
             OTP_LENGTH_MIN_VALUE: 4,
             RESEND_BLOCK_DURATION_MAX_LENGTH: 10000,
             RESEND_BLOCK_DURATION_MAX_VALUE: 10000,
-            RESEND_BLOCK_DURATION_MIN_LENGTH: 0,
-            RESEND_BLOCK_DURATION_MIN_VALUE: 0
+            RESEND_BLOCK_DURATION_MIN_LENGTH: 1,
+            RESEND_BLOCK_DURATION_MIN_VALUE: 1
         };
 
     /**
