@@ -1,0 +1,278 @@
+/**
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import { TestableComponentInterface } from "@wso2is/core/models";
+import { Field, Form } from "@wso2is/form";
+
+import isBoolean from "lodash-es/isBoolean";
+import isEmpty from "lodash-es/isEmpty";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
+import {
+    CommonAuthenticatorFormFieldInterface,
+    CommonAuthenticatorFormFieldMetaInterface,
+    CommonAuthenticatorFormInitialValuesInterface,
+    CommonAuthenticatorFormMetaInterface,
+    CommonAuthenticatorFormPropertyInterface
+} from "../../../../models/authenticators";
+import {
+    CommonPluggableComponentMetaPropertyInterface,
+    CommonPluggableComponentPropertyInterface
+} from "../../../../models/connection";
+
+interface TOTPAuthenticatorFormPropsInterface extends TestableComponentInterface {
+    /**
+     * TOTP Authenticator Metadata.
+     */
+    metadata: CommonAuthenticatorFormMetaInterface;
+    /**
+     * TOTP Authenticator configured initial values.
+     */
+    initialValues: CommonAuthenticatorFormInitialValuesInterface;
+    /**
+     * Callback for form submit.
+     * @param values - Resolved Form Values.
+     */
+    onSubmit: (values: CommonAuthenticatorFormInitialValuesInterface) => void;
+    /**
+     * Is readonly.
+     */
+    readOnly?: boolean;
+    /**
+     * Flag to trigger form submit externally.
+     */
+    triggerSubmit: boolean;
+    /**
+     * Flag to enable/disable form submit button.
+     */
+    enableSubmitButton: boolean;
+    /**
+     * Flag to show/hide custom properties.
+     * @remarks Not implemented ATM. Do this when needed.
+     */
+    showCustomProperties: boolean;
+    /**
+     * Specifies if the form is submitting.
+     */
+    isSubmitting?: boolean;
+}
+
+/**
+ * Form initial values interface.
+ */
+interface TOTPAuthenticatorFormInitialValuesInterface {
+    /**
+     * Enable progressive enrollment.
+     */
+    TOTP_EnrolUserInAuthenticationFlow: boolean;
+}
+
+/**
+ * Form fields interface.
+ */
+interface TOTPAuthenticatorFormFieldsInterface {
+    /**
+     * Enable progressive enrollment.
+     */
+    TOTP_EnrolUserInAuthenticationFlow: CommonAuthenticatorFormFieldInterface;
+}
+
+/**
+ * Proptypes for the TOTP Authenticator Form error messages.
+ */
+export interface TOTPAuthenticatorFormErrorValidationsInterface {
+    /**
+     * Enable progressive enrollment.
+     */
+    TOTP_EnrolUserInAuthenticationFlow: string;
+}
+
+const FORM_ID: string = "totp-authenticator-form";
+
+/**
+ * TOTP Authenticator Form.
+ *
+ * @param props - Props injected to the component.
+ * @returns Functional component.
+ */
+export const TOTPAuthenticatorForm: FunctionComponent<TOTPAuthenticatorFormPropsInterface> = (
+    props: TOTPAuthenticatorFormPropsInterface
+): ReactElement => {
+
+    const {
+        metadata,
+        initialValues: originalInitialValues,
+        onSubmit,
+        readOnly,
+        isSubmitting,
+        ["data-testid"]: testId
+    } = props;
+
+    const { t } = useTranslation();
+
+    // This can be used when `meta` support is there.
+    const [ , setFormFields ] = useState<TOTPAuthenticatorFormFieldsInterface>(undefined);
+    const [ initialValues, setInitialValues ] = useState<TOTPAuthenticatorFormInitialValuesInterface>(undefined);
+
+    /**
+     * Flattens and resolved form initial values and field metadata.
+     */
+    useEffect(() => {
+
+        if (isEmpty(originalInitialValues?.properties)) {
+            return;
+        }
+
+        let resolvedFormFields: TOTPAuthenticatorFormFieldsInterface = null;
+        let resolvedInitialValues: TOTPAuthenticatorFormInitialValuesInterface = null;
+
+        console.log("TOTP Form - Received originalInitialValues:", originalInitialValues);
+
+        originalInitialValues.properties.forEach((value: CommonAuthenticatorFormPropertyInterface) => {
+            const meta: CommonAuthenticatorFormFieldMetaInterface = metadata?.properties
+                .find((meta: CommonPluggableComponentMetaPropertyInterface) => meta.key === value.key);
+
+            const moderatedName: string = value.name.replace(/\./g, "_");
+
+            console.log(`TOTP Form - Processing property: ${value.name} = ${value.value} (moderated: ${moderatedName})`);
+
+            resolvedFormFields = {
+                ...resolvedFormFields,
+                [moderatedName]: {
+                    meta,
+                    value: (value.value === "true" || value.value === "false")
+                        ? JSON.parse(value.value)
+                        : value.value
+                }
+            };
+
+            resolvedInitialValues = {
+                ...resolvedInitialValues,
+                [moderatedName]: (value.value === "true" || value.value === "false")
+                    ? JSON.parse(value.value)
+                    : value.value
+            };
+        });
+        
+        console.log("TOTP Form - Resolved initial values:", resolvedInitialValues);
+        setFormFields(resolvedFormFields);
+        setInitialValues(resolvedInitialValues);
+    }, [ originalInitialValues ]);
+
+    /**
+     * Prepare form values for submitting.
+     *
+     * @param values - Form values.
+     * @returns Sanitized form values.
+     */
+    const getUpdatedConfigurations = (values: TOTPAuthenticatorFormInitialValuesInterface)
+        : CommonAuthenticatorFormInitialValuesInterface => {
+
+        const properties: CommonPluggableComponentPropertyInterface[] = [];
+
+        for (const [ name, value ] of Object.entries(values)) {
+            if (name != undefined) {
+                const moderatedName: string = name.replace(/_/g, ".");
+
+                properties.push({
+                    name: moderatedName,
+                    value: isBoolean(value) ? value.toString() : value.toString()
+                });
+            }
+        }
+
+        const result: CommonAuthenticatorFormInitialValuesInterface = {
+            ...originalInitialValues,
+            properties
+        };
+
+        // Debug logging
+        console.log("TOTP Form Submit - Values:", values);
+        console.log("TOTP Form Submit - Properties:", properties);
+        console.log("TOTP Form Submit - Result:", result);
+
+        return result;
+    };
+
+    /**
+     * Validates the Form.
+     *
+     * @param values - Form Values.
+     * @returns Form validation
+     */
+    const validateForm = (values: TOTPAuthenticatorFormInitialValuesInterface):
+        TOTPAuthenticatorFormErrorValidationsInterface => {
+
+        const errors: TOTPAuthenticatorFormErrorValidationsInterface = {
+            TOTP_EnrolUserInAuthenticationFlow: undefined
+        };
+
+        return errors;
+    };
+
+    return (
+        <Form
+            id={ FORM_ID }
+            uncontrolledForm={ false }
+            onSubmit={ (values: Record<string, any>) =>{
+                onSubmit(getUpdatedConfigurations(values as TOTPAuthenticatorFormInitialValuesInterface));
+            } }
+            initialValues={ initialValues }
+            validate={ validateForm }
+        >
+            <Field.Checkbox
+                ariaLabel="Enable TOTP device progressive enrollment"
+                name="TOTP_EnrolUserInAuthenticationFlow"
+                label="Enable TOTP device progressive enrollment"
+                hint={
+                    (<Trans
+                        i18nKey={
+                            "authenticationProvider:forms.authenticatorSettings" +
+                            ".totp.enrollUserInAuthenticationFlow.hint"
+                        }
+                    >
+                        When enabled, users may enroll their devices for TOTP at the moment they log in to the application.
+                    </Trans>)
+                }
+                readOnly={ readOnly }
+                width={ 16 }
+                data-testid={ `${ testId }-totp-enrol-user-in-authentication-flow-checkbox` }
+            />
+            <Field.Button
+                form={ FORM_ID }
+                size="small"
+                buttonType="primary_btn"
+                ariaLabel="TOTP Authenticator update button"
+                name="update-button"
+                data-testid={ `${ testId }-submit-button` }
+                disabled={ isSubmitting }
+                loading={ isSubmitting }
+                label={ t("common:update") }
+                hidden={ readOnly }
+            />
+        </Form>
+    );
+};
+
+/**
+ * Default props for the component.
+ */
+TOTPAuthenticatorForm.defaultProps = {
+    "data-testid": "totp-authenticator-form",
+    enableSubmitButton: true
+};
