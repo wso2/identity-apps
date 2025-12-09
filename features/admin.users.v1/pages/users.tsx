@@ -201,7 +201,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ invitedUserListOffset, setInvitedUserListOffset ] = useState<number>(1);
 
     const isLegacyFlowsEnabled: boolean = useSelector(
-        (state: AppState) => state.config.ui.flowExecution.enableLegacyFlows
+        (state: AppState) => state.config.ui?.flowExecution?.enableLegacyFlows
     );
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state?.profile?.profileSchemas);
     const systemReservedUserStores: string[] =
