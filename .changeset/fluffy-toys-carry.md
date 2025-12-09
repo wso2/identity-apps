@@ -3,4 +3,4 @@
 "@wso2is/console": patch
 ---
 
-Validate password against regex only if rule based validation is not enabled
+Validate password against regex only if rule-based validation is not enabled
