@@ -611,6 +611,16 @@ export interface ConsoleNS {
                                     range: string;
                                 };
                             };
+                            resendBlockDuration: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                    invalid: string;
+                                    range: string;
+                                };
+                            };
                             useAlphanumericChars: {
                                 hint: string;
                                 label: string;

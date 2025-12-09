@@ -296,6 +296,17 @@ export interface AuthenticationProviderNS {
                         range: string;
                     };
                 };
+                resendBlockDuration: {
+                    hint: string;
+                    label: string;
+                    placeholder: string;
+                    unit: string;
+                    validations: {
+                        required: string;
+                        invalid: string;
+                        range: string;
+                    };
+                };
                 useAlphanumericChars: {
                     hint: string;
                     label: string;

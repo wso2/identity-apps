@@ -109,6 +109,10 @@ export class ConnectionUIConstants {
         OTP_LENGTH_MAX_VALUE: number;
         OTP_LENGTH_MIN_LENGTH: number;
         OTP_LENGTH_MIN_VALUE: number;
+        RESEND_BLOCK_DURATION_MIN_VALUE: number;
+        RESEND_BLOCK_DURATION_MAX_VALUE: number;
+        RESEND_BLOCK_DURATION_MIN_LENGTH: number;
+        RESEND_BLOCK_DURATION_MAX_LENGTH: number;
 
     } = {
             ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH: 10000,
@@ -122,7 +126,11 @@ export class ConnectionUIConstants {
             OTP_LENGTH_MAX_LENGTH: 2,
             OTP_LENGTH_MAX_VALUE: 10,
             OTP_LENGTH_MIN_LENGTH: 1,
-            OTP_LENGTH_MIN_VALUE: 4
+            OTP_LENGTH_MIN_VALUE: 4,
+            RESEND_BLOCK_DURATION_MAX_LENGTH: 10000,
+            RESEND_BLOCK_DURATION_MAX_VALUE: 10000,
+            RESEND_BLOCK_DURATION_MIN_LENGTH: 0,
+            RESEND_BLOCK_DURATION_MIN_VALUE: 0
         };
 
     /**

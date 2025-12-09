@@ -689,6 +689,17 @@ export const console: ConsoleNS = {
                                     range: "Allowed OTP resend attempt count should be between 0 & 100."
                                 }
                             },
+                            resendBlockDuration: {
+                                hint: "The duration for which the user will be blocked from requesting a new OTP " +
+                                    "after reaching the maximum allowed resend attempts.",
+                                label: "OTP resend block duration",
+                                placeholder: "Enter OTP resend block duration.",
+                                validations: {
+                                    required: "OTP resend block duration is a required field.",
+                                    invalid: "OTP resend block duration should be an integer.",
+                                    range: "OTP resend block duration should be between 0 & 10000 minutes."
+                                }
+                            },
                             useAlphanumericChars: {
                                 hint: "Please check this checkbox to enable alphanumeric characters. Otherwise numeric characters will be used.",
                                 label: "Use alphanumeric characters for OTP",
