@@ -1,5 +1,16 @@
 # @wso2is/features
 
+## 2.27.2
+
+### Patch Changes
+
+- [#9477](https://github.com/wso2/identity-apps/pull/9477) [`aa98380a904e0b336261bc929334387595e5f79d`](https://github.com/wso2/identity-apps/commit/aa98380a904e0b336261bc929334387595e5f79d) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Fix typo in application backchannel logout url section
+
+* [#9473](https://github.com/wso2/identity-apps/pull/9473) [`872561c19d12e4fbbd034fbc6105bd1c008c36e8`](https://github.com/wso2/identity-apps/commit/872561c19d12e4fbbd034fbc6105bd1c008c36e8) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Update Invited User Registration configuration link to correctly redirect to the flow builder UI.
+
+* Updated dependencies [[`aa98380a904e0b336261bc929334387595e5f79d`](https://github.com/wso2/identity-apps/commit/aa98380a904e0b336261bc929334387595e5f79d), [`872561c19d12e4fbbd034fbc6105bd1c008c36e8`](https://github.com/wso2/identity-apps/commit/872561c19d12e4fbbd034fbc6105bd1c008c36e8), [`ae21137b08c1f8bcfb378afe6c995ec750207f25`](https://github.com/wso2/identity-apps/commit/ae21137b08c1f8bcfb378afe6c995ec750207f25)]:
+  - @wso2is/i18n@2.30.60
+
 ## 2.27.1
 
 ### Patch Changes

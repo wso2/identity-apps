@@ -1,5 +1,20 @@
 # @wso2is/admin.identity-providers.v1
 
+## 2.26.211
+
+### Patch Changes
+
+- [#9358](https://github.com/wso2/identity-apps/pull/9358) [`ae21137b08c1f8bcfb378afe6c995ec750207f25`](https://github.com/wso2/identity-apps/commit/ae21137b08c1f8bcfb378afe6c995ec750207f25) Thanks [@UpekshaGalappaththi](https://github.com/UpekshaGalappaththi)! - added email otp resend limit config to console
+
+- Updated dependencies [[`aa98380a904e0b336261bc929334387595e5f79d`](https://github.com/wso2/identity-apps/commit/aa98380a904e0b336261bc929334387595e5f79d), [`872561c19d12e4fbbd034fbc6105bd1c008c36e8`](https://github.com/wso2/identity-apps/commit/872561c19d12e4fbbd034fbc6105bd1c008c36e8), [`ae21137b08c1f8bcfb378afe6c995ec750207f25`](https://github.com/wso2/identity-apps/commit/ae21137b08c1f8bcfb378afe6c995ec750207f25)]:
+  - @wso2is/admin.applications.v1@2.39.2
+  - @wso2is/i18n@2.30.60
+  - @wso2is/admin.identity-providers.v1@2.26.211
+  - @wso2is/admin.connections.v1@2.34.12
+  - @wso2is/admin.core.v1@2.49.111
+  - @wso2is/admin.roles.v2@2.27.273
+  - @wso2is/admin.server-configurations.v1@2.35.125
+
 ## 2.26.210
 
 ### Patch Changes
