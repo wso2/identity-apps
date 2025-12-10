@@ -94,7 +94,9 @@ export class APIResourceUtils {
      */
     public static isSystemAPI(type: string): boolean {
 
-        return type !== APIResourcesConstants.BUSINESS && type !== APIResourcesConstants.MCP;
+        return type !== APIResourcesConstants.BUSINESS && 
+            type !== APIResourcesConstants.MCP && 
+            type !== APIResourcesConstants.VC;
     }
 
     public static resolveApiResourceGroup = (groupName: string): string => {
@@ -107,6 +109,8 @@ export class APIResourceUtils {
                 return "Business APIs";
             case APIResourceCategories.MCP:
                 return "MCP (Model Context Protocol) Servers";
+            case APIResourceCategories.VC:
+                return "VC (Verifiable Credentials) Resources";
             default:
                 return groupName;
         }
