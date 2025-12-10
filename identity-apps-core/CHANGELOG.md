@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.3.29
+
+### Patch Changes
+
+- [#9479](https://github.com/wso2/identity-apps/pull/9479) [`6f89b57450f9826f83c785de4100e330db71ea8d`](https://github.com/wso2/identity-apps/commit/6f89b57450f9826f83c785de4100e330db71ea8d) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Enable email resending blocking for email otp authenicator
+
 ## 3.3.28
 
 ### Patch Changes
