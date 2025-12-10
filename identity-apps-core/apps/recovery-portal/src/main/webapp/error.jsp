@@ -142,6 +142,10 @@
                                 .equals(errorCode)) {
                     %>
                         <%=i18n(recoveryResourceBundle, customText, "otp.expired.message")%>
+                    <% } else if (IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_PASSWORD_HISTORY_VIOLATION.getCode()
+                                .equals(errorCode)) {
+                    %>
+                        <%=i18n(recoveryResourceBundle, customText, "password.recovery.history.violation")%>
                     <% } else if (IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_LOCKED_ACCOUNT.getCode()
                                 .equals(errorCode)) {
                             String[] splitErrorMsg = errorMsg.split("-");
