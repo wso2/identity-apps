@@ -150,7 +150,7 @@ export const AddVCConfigWizard: FunctionComponent<AddVCConfigWizardProps> = ({
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field.Input
                                     ariaLabel="identifier"
-                                    inputType="identifier"
+                                    inputType="default"
                                     name="identifier"
                                     label={ t("verifiableCredentials:wizard.form.identifier.label") }
                                     placeholder={ t("verifiableCredentials:wizard.form.identifier.placeholder") }
