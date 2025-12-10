@@ -71,11 +71,6 @@ export interface ExtendedFeatureResourceEndpointsInterface {
      */
     smsProviderEndpoint : string;
 
-        /**
-     * SMS Publishing  V2 API endpoint.
-     */
-    smsProviderV2Endpoint : string;
-
     /**
      * Event Publishing API endpoint.
      */

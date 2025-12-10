@@ -17,7 +17,6 @@
  */
 
 import { IdentityAppsError } from "@wso2is/core/errors";
-import { AuthType, DropdownChild } from "../models/sms-providers";
 
 export class SMSProviderConstants {
 
@@ -43,34 +42,6 @@ export class SMSProviderConstants {
     public static readonly SMS_PROVIDER_CONFIG_FIELD_MAX_LENGTH: number = 100;
     public static readonly SMS_PROVIDER_CONFIG_TEMPLATE_FIELD_MAX_LENGTH: number = 1020;
     public static readonly SMS_REGEX: RegExp = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    public static readonly AUTH_TYPES: DropdownChild[] = [
-        {
-            key: AuthType.NONE,
-            text: "externalApiAuthentication:fields.authentication.types.none.name",
-            value: AuthType.NONE
-        },
-        {
-            key: AuthType.BASIC,
-            text: "externalApiAuthentication:fields.authentication.types.basic.name",
-            value: AuthType.BASIC
-        },
-        {
-            key: AuthType.CLIENT_CREDENTIAL,
-            text: "externalApiAuthentication:fields.authentication.types.clientCredential.name",
-            value: AuthType.CLIENT_CREDENTIAL
-        },
-        {
-            key: AuthType.BEARER,
-            text: "externalApiAuthentication:fields.authentication.types.bearer.name",
-            value: AuthType.BEARER
-        },
-        {
-            key: AuthType.API_KEY,
-            text: "externalApiAuthentication:fields.authentication.types.apiKey.name",
-            value: AuthType.API_KEY
-        }
-    ];
 
     public static ErrorMessages: {
         SMS_PROVIDER_CONFIG_FETCH_ERROR_CODE: IdentityAppsError;

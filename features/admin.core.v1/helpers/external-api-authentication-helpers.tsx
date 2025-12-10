@@ -60,11 +60,8 @@ export const handleAuthenticationChangeCancel = (
     formState: MutableRefObject<FormApi<Record<string, unknown>, Partial<Record<string, unknown>>>>
 ): void => {
     setIsAuthenticationUpdateFormState(false);
-
     if (formState.current) {
-        const initialAuthType: string | undefined =
-            formState.current.getState()?.initialValues?.authType as string | undefined;
-
+        const initialAuthType = formState.current.getState()?.initialValues?.authType as string | undefined;
         formState.current.change("authType", initialAuthType ?? undefined);
         formState.current.change("userName", "");
         formState.current.change("password", "");
@@ -72,9 +69,6 @@ export const handleAuthenticationChangeCancel = (
         formState.current.change("clientSecret", "");
         formState.current.change("tokenEndpoint", "");
         formState.current.change("scopes", "");
-        formState.current.change("accessToken", "");
-        formState.current.change("header", "");
-        formState.current.change("value", "");
     }
 };
 
@@ -94,16 +88,10 @@ export const resolveAuthTypeDisplayName = (
     }
 
     switch (authType) {
-        case "NONE":
-            return t("externalApiAuthentication:fields.authentication.types.none.name");
         case "BASIC":
             return t("externalApiAuthentication:fields.authentication.types.basic.name");
         case "CLIENT_CREDENTIAL":
             return t("externalApiAuthentication:fields.authentication.types.clientCredential.name");
-        case "BEARER":
-            return t("externalApiAuthentication:fields.authentication.types.bearer.name");
-        case "API_KEY":
-            return t("externalApiAuthentication:fields.authentication.types.apiKey.name");
         default:
             return "";
     }
