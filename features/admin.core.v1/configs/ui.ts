@@ -279,6 +279,7 @@ export type GetSidePanelIconsInterface = {
     identityVerificationProviders: FunctionComponent | ReactNode,
     jwtKey: FunctionComponent | ReactNode,
     mcpServers: FunctionComponent | ReactNode,
+    vcResources: FunctionComponent | ReactNode,
     organization: FunctionComponent | ReactNode,
     organizationLegacy: FunctionComponent | ReactNode,
     overview: FunctionComponent | ReactNode,
@@ -295,6 +296,7 @@ export type GetSidePanelIconsInterface = {
     users: FunctionComponent | ReactNode,
     insights: FunctionComponent | ReactNode,
     agents: FunctionComponent | ReactNode,
+    verifiableCredentials: FunctionComponent | ReactNode,
 };
 
 /**
@@ -336,6 +338,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
         insights: AnalyticsIcon,
         jwtKey: JWTKey,
         mcpServers: MCPServersOutlineIcon,
+        vcResources: CertificateIcon,
         organization: LDAPOutlineIcon,
         organizationLegacy: LDAPOutlineLegacyIcon,
         organizationRoles: OrganizationRolesIcon,
@@ -350,7 +353,8 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
         serverConfigurations: GearsIcon,
         sms: SMSIcon,
         userStore: DatabaseIcon,
-        users: UserIcon
+        users: UserIcon,
+        verifiableCredentials: CertificateIcon
     };
 };
 

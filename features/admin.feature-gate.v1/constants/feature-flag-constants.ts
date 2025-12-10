@@ -37,6 +37,7 @@ class FeatureFlagConstants {
         ACTIONS_TYPES_PRE_UPDATE_PASSWORD: "actions.types.list.preUpdatePassword",
         ACTIONS_TYPES_PRE_UPDATE_PROFILE: "actions.types.list.preUpdateProfile",
         AGENTS: "agents",
+        VERIFIABLE_CREDENTIALS: "verifiableCredentials",
         AI_APPLICATION_LOGIN_FLOW_BANNER: "ai.application.loginFlow.banner",
         AI_BRANDING_BANNER: "ai.branding.banner",
         AI_FLOWS_TYPES_REGISTRATION: "ai.flows.types.list.registration",
@@ -60,6 +61,7 @@ class FeatureFlagConstants {
         LOGIN_AND_REGISTRATION_SELF_REGISTRATION_FLOW_BUILDER:
             "loginAndRegistration.userOnboarding.registrationFlowBuilder",
         MCP_SERVERS: "mcpServers",
+        VC_RESOURCES: "vcResources",
         ORGANIZATION_BRANDING_TEXT: "branding.stylesAndText.organization.text",
         PUSH_PROVIDERS: "pushProviders",
         PUSH_PROVIDER_TEMPLATES: "pushProviders.templates",

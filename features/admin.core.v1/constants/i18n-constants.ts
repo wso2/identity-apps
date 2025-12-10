@@ -307,6 +307,12 @@ export class I18nConstants {
     public static readonly RULES_NAMESPACE: string = I18nModuleConstants.RULES_NAMESPACE;
 
     /**
+         * Verifiable Credentials namespace.
+         */
+    public static readonly VERIFIABLE_CREDENTIALS_NAMESPACE: string =
+        I18nModuleConstants.VERIFIABLE_CREDENTIALS_NAMESPACE;
+
+    /**
      * Custom Authentication namespace.
      */
     public static readonly CUSTOM_AUTHENTICATOR_NAMESPACE: string =
@@ -392,7 +398,8 @@ export class I18nConstants {
         [ I18nConstants.APPROVAL_WORKFLOWS_NAMESPACE, "portals" ],
         [ I18nConstants.AGENTS_NAMESPACE, "portals" ],
         [ I18nConstants.FLOWS_NAMESPACE, "portals" ],
-        [ I18nConstants.COMMON_USERS_NAMESPACE, "portals" ]
+        [ I18nConstants.COMMON_USERS_NAMESPACE, "portals" ],
+        [ I18nConstants.VERIFIABLE_CREDENTIALS_NAMESPACE, "portals" ]
     ]);
 
     /**

@@ -68,6 +68,7 @@ import { getUsersResourceEndpoints } from "@wso2is/admin.users.v1/configs/endpoi
 import { getUserstoreResourceEndpoints } from "@wso2is/admin.userstores.v1/configs/endpoints";
 import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { getValidationServiceEndpoints } from "@wso2is/admin.validation.v1/configs";
+import { getVCResourceEndpoints } from "@wso2is/admin.verifiable-credentials.v1/configs/endpoints";
 import { getWebhooksResourceEndpoints } from "@wso2is/admin.webhooks.v1/configs/endpoints";
 import { getApprovalsResourceEndpoints } from "@wso2is/common.workflow-approvals.v1";
 import {
@@ -286,7 +287,8 @@ export class Config {
                 I18nConstants.APPROVAL_WORKFLOWS_NAMESPACE,
                 I18nConstants.AGENTS_NAMESPACE,
                 I18nConstants.FLOWS_NAMESPACE,
-                I18nConstants.COMMON_USERS_NAMESPACE
+                I18nConstants.COMMON_USERS_NAMESPACE,
+                I18nConstants.VERIFIABLE_CREDENTIALS_NAMESPACE
             ],
             preload: []
         };
@@ -335,6 +337,7 @@ export class Config {
             ...getScopesResourceEndpoints(this.resolveServerHostFromConfig()),
             ...getGroupsResourceEndpoints(this.resolveServerHost()),
             ...getValidationServiceEndpoints(this.resolveServerHost()),
+            ...getVCResourceEndpoints(this.resolveServerHost()),
             ...getRemoteFetchConfigResourceEndpoints(this.resolveServerHostFromConfig()),
             ...getSecretsManagementEndpoints(this.resolveServerHostFromConfig()),
             ...getExtendedFeatureResourceEndpoints(this.resolveServerHost(), this.getDeploymentConfig()),

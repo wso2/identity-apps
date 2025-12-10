@@ -445,12 +445,16 @@ export class AppConstants {
             [ "EDIT_POLICY", `${AppConstants.getAdminViewBasePath()}/policy-administration/edit-policy/:id` ],
             [ "MCP_SERVERS", `${ AppConstants.getDeveloperViewBasePath() }/mcp-servers` ],
             [ "MCP_SERVER_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/mcp-servers/:id` ],
+            [ "VC_RESOURCES", `${ AppConstants.getDeveloperViewBasePath() }/vc-resources` ],
+            [ "VC_RESOURCE_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/vc-resources/:id` ],
             [ "PASSWORD_RECOVERY_FLOW_BUILDER",
                 `${ AppConstants.getDeveloperViewBasePath() }/edit-password-recovery-flow` ],
             [ "INVITE_USER_PASSWORD_SETUP_FLOW_BUILDER",
                 `${ AppConstants.getDeveloperViewBasePath() }/edit-invited-user-registration-flow` ],
             [ "AGENTS", `${AppConstants.getAdminViewBasePath()}/agents` ],
-            [ "AGENT_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/agents/:id` ]
+            [ "AGENT_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/agents/:id` ],
+            [ "VC_CONFIGS", `${AppConstants.getAdminViewBasePath()}/verifiable-credentials` ],
+            [ "VC_CONFIG_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/verifiable-credentials/:id` ]
         ]);
 
         return paths;
@@ -572,9 +576,14 @@ export class AppConstants {
     public static readonly CONSOLE_SETTINGS_ROUTE: string = "consoleSettings";
 
     /**
-     * Route id of the console settings page.
+     * Route id of the agents page.
      */
     public static readonly AGENTS_ROUTE: string = "agents";
+
+    /**
+     * Route id of the verifiable credentials page.
+     */
+    public static readonly VC_CONFIGS_ROUTE: string = "verifiable-credentials";
 
     /**
      * Route id of the approvals page.

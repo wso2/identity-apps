@@ -76,3 +76,4 @@ export * from "./workflow-requests";
 export * from "./agents";
 export * from "./flows";
 export * from "./common-users";
+export * from "./verifiable-credentials";

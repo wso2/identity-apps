@@ -170,5 +170,41 @@ export const apiResources: ApiResourcesNS = {
         },
         editPageTitle: "Edit MCP Server",
         emptyListPlaceholderText: "There are no MCP servers available"
+    },
+    vcResources: {
+        newVcResource: "New VC Resource",
+        wizards: {
+            addVcResource: {
+                title: "Add new VC resource",
+                description: "Register a verifiable credentials resource",
+                steps: {
+                    general: {
+                        fields: {
+                            displayName: {
+                                hint: "Meaningful name to identify your VC resource",
+                                placeholder: "My VC Resource"
+                            },
+                            identifier: {
+                                placeholder: "vc://my-vc-resource"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        deleteVcResource: {
+            actionText: "Delete VC Resource",
+            heading: "Delete VC Resource",
+            subheading: "This action will permanently delete the VC resource. Please be certain before you proceed"
+        },
+        title: "VC Resources",
+        description: "Define resource models and scopes for verifiable credentials to enable fine-grained access control.",
+        searchBarPlaceholder: "Search VC resources by name",
+        backButtonText: "Back to VC Resources",
+        scopes: {
+            subHeading: "Scopes that the VC resource uses to verify the user's permissions to access credentials."
+        },
+        editPageTitle: "Edit VC Resource",
+        emptyListPlaceholderText: "There are no VC resources available"
     }
 };

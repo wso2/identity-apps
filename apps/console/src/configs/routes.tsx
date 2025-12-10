@@ -81,6 +81,8 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         window["AppUtils"]?.getConfig()?.ui?.features?.pushProviders?.enabled;
     const isMcpServersFeatureEnabled: boolean =
         window["AppUtils"]?.getConfig()?.ui?.features?.mcpServers?.enabled;
+    const isVcResourcesFeatureEnabled: boolean =
+        window["AppUtils"]?.getConfig()?.ui?.features?.vcResources?.enabled;
 
     const defaultRoutes: RouteInterface[] = [
         {
@@ -465,6 +467,34 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             name: "Agents",
             order: 1,
             path: AppConstants.getPaths().get("AGENTS"),
+            protected: true,
+            showOnSidePanel: true
+        },
+
+        {
+            children: [
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.verifiable-credentials.v1/pages/verifiable-credentials")),
+                    exact: true,
+                    id: "editVCConfig",
+                    name: "Edit Verifiable Credential Configuration",
+                    path: AppConstants.getPaths().get("VC_CONFIG_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() =>
+                import("@wso2is/admin.verifiable-credentials.v1/pages/verifiable-credentials")),
+            exact: true,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.VERIFIABLE_CREDENTIALS,
+            icon: {
+                icon: getSidePanelIcons().verifiableCredentials
+            },
+            id: "verifiableCredentials",
+            name: "Verifiable Credentials",
+            order: 2,
+            path: AppConstants.getPaths().get("VC_CONFIGS"),
             protected: true,
             showOnSidePanel: true
         },
@@ -1701,6 +1731,41 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 name: "extensions:develop.sidePanel.mcpServers",
                 order: 2,
                 path: AppConstants.getPaths().get("MCP_SERVERS"),
+                protected: true,
+                showOnSidePanel: true
+            }
+        );
+    }
+
+    if (isVcResourcesFeatureEnabled) {
+        defaultRoutes.push(
+            {
+                category: "console:develop.features.sidePanel.categories.application",
+                children: [
+                    {
+                        component: lazy(() =>
+                            import("@wso2is/admin.api-resources.v2/pages/api-resource-edit")
+                        ),
+                        exact: true,
+                        id: "vcResources-edit",
+                        name: "extensions:develop.sidePanel.vcResources",
+                        path: AppConstants.getPaths().get("VC_RESOURCE_EDIT"),
+                        protected: true,
+                        showOnSidePanel: false
+                    }
+                ],
+                component: lazy(() =>
+                    import("@wso2is/admin.api-resources.v2/pages/api-resources")
+                ),
+                exact: true,
+                featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.VC_RESOURCES,
+                icon: {
+                    icon: getSidePanelIcons().vcResources
+                },
+                id: "vcResources",
+                name: "extensions:develop.sidePanel.vcResources",
+                order: 3,
+                path: AppConstants.getPaths().get("VC_RESOURCES"),
                 protected: true,
                 showOnSidePanel: true
             }

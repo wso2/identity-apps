@@ -25,6 +25,7 @@ import { FunctionComponent, SVGProps } from "react";
 export enum ResourceServerType {
     API = "API",
     MCP = "MCP",
+    VC = "VC",
     NONE = "NONE"
 }
 

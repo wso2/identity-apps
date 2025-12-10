@@ -25,6 +25,7 @@ export interface Extensions {
             resourceTypes: {
                 api: string;
                 mcp: string;
+                vc: string;
             },
             pageHeader: {
                 description: string;
@@ -2286,6 +2287,7 @@ export interface Extensions {
         sidePanel: {
             apiResources: string;
             mcpServers: string;
+            vcResources: string;
             branding: string;
             stylesAndText: string;
             monitor: string;

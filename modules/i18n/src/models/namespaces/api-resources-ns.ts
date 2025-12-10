@@ -156,4 +156,40 @@ export interface ApiResourcesNS {
         editPageTitle: string;
         emptyListPlaceholderText: string;
     };
+    vcResources: {
+        newVcResource: string;
+        wizards: {
+            addVcResource: {
+                title: string;
+                description: string;
+                steps: {
+                    general: {
+                        fields: {
+                            displayName: {
+                                hint: string;
+                                placeholder: string;
+                            };
+                            identifier: {
+                                placeholder: string;
+                            };
+                        };
+                    };
+                };
+            };
+        };
+        deleteVcResource: {
+            actionText: string;
+            heading: string;
+            subheading: string;
+        };
+        title: string;
+        description: string;
+        searchBarPlaceholder: string;
+        backButtonText: string;
+        scopes: {
+            subHeading: string;
+        };
+        editPageTitle: string;
+        emptyListPlaceholderText: string;
+    };
 }

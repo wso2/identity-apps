@@ -261,6 +261,9 @@ export class RouteUtils {
         const isMcpServersFeatureEnabled: boolean =
             window["AppUtils"]?.getConfig()?.ui?.features?.mcpServers?.enabled;
 
+        const isVcResourcesFeatureEnabled: boolean =
+            window["AppUtils"]?.getConfig()?.ui?.features?.vcResources?.enabled;
+
         const userManagement: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: SquareUserIcon,
             id: "userManagement",
@@ -381,7 +384,7 @@ export class RouteUtils {
                 category: build,
                 id: "apiResources",
                 order: 2,
-                parent: isMcpServersFeatureEnabled ? resourceServers : null,
+                parent: (isMcpServersFeatureEnabled || isVcResourcesFeatureEnabled) ? resourceServers : null,
                 selected: history.location.pathname.includes("/api-resources")
             },
             {
@@ -390,6 +393,13 @@ export class RouteUtils {
                 order: 2,
                 parent: resourceServers,
                 selected: history.location.pathname.includes("/mcp-servers")
+            },
+            {
+                category: build,
+                id: "vcResources",
+                order: 3,
+                parent: resourceServers,
+                selected: history.location.pathname.includes("/vc-resources")
             },
             {
                 category: organizations,

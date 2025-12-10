@@ -74,7 +74,9 @@ const useApiResourcesPageContent = () => {
 
     const resourceServerType: ResourceServerType = window.location.pathname.includes("mcp-servers")
         ? ResourceServerType.MCP
-        : ResourceServerType.API;
+        : window.location.pathname.includes("vc-resources")
+            ? ResourceServerType.VC
+            : ResourceServerType.API;
 
     function getResourceServerTypeDisplayName(resourceServerType: ResourceServerType) {
         switch(resourceServerType) {
@@ -82,6 +84,8 @@ const useApiResourcesPageContent = () => {
                 return t("extensions:develop.apiResource.resourceTypes.api");
             case ResourceServerType.MCP:
                 return t("extensions:develop.apiResource.resourceTypes.mcp");
+            case ResourceServerType.VC:
+                return t("extensions:develop.apiResource.resourceTypes.vc");
         }
     }
 
@@ -165,6 +169,41 @@ const useApiResourcesPageContent = () => {
             resourceServerListTitle: t("apiResources:mcpServers.title"),
             scopesTabContent: {
                 subHeading: t("apiResources:mcpServers.scopes.subHeading")
+            }
+        },
+        [ResourceServerType.VC]: {
+            addNewResourceButtonText: t("apiResources:vcResources.newVcResource"),
+            createResourceWizard: {
+                description: t("apiResources:vcResources.wizards.addVcResource.description"),
+                displayNameHint: t("apiResources:vcResources.wizards.addVcResource.steps.general.fields" +
+                    ".displayName.hint"),
+                displayNamePlaceholder: t("apiResources:vcResources.wizards.addVcResource.steps.general.fields" +
+                    ".displayName.placeholder"),
+                hiddenSteps: [
+                    AddAPIResourceWizardStepsFormTypes.AUTHORIZATION
+                ],
+                identifierPlaceholder: t(
+                    "apiResources:vcResources.wizards.addVcResource.steps.general.fields" +
+                    ".identifier.placeholder"),
+                title: t("apiResources:vcResources.wizards.addVcResource.title")
+            },
+            defaultSearchFilter: `type eq ${ APIResourcesConstants.VC }`,
+            deleteResourceWizardContent: {
+                buttonText: t("apiResources:vcResources.deleteVcResource.actionText"),
+                heading: t("apiResources:vcResources.deleteVcResource.heading"),
+                subHeading: t("apiResources:vcResources.deleteVcResource.subheading")
+            },
+            resourceEditBackButtonLink: AppConstants.getPaths().get("VC_RESOURCES"),
+            resourceEditBackButtonText: t("apiResources:vcResources.backButtonText"),
+            resourceEditPageTitle: t("apiResources:vcResources.editPageTitle"),
+            resourceEditPath: AppConstants.getPaths().get("VC_RESOURCE_EDIT"),
+            resourceSearchBarPlaceholder: t("apiResources:vcResources.searchBarPlaceholder"),
+            resourceServerEmptyListSubtitle: [ t("apiResources:vcResources.emptyListPlaceholderText") ],
+            resourceServerListDescription: t("apiResources:vcResources.description"),
+            resourceServerListPageTitle: t("apiResources:vcResources.title"),
+            resourceServerListTitle: t("apiResources:vcResources.title"),
+            scopesTabContent: {
+                subHeading: t("apiResources:vcResources.scopes.subHeading")
             }
         }
     };
