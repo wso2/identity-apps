@@ -1,5 +1,19 @@
 # @wso2is/admin.extensions.v1
 
+## 2.40.14
+
+### Patch Changes
+
+- [#9484](https://github.com/wso2/identity-apps/pull/9484) [`587bfbbcbb2723c7d269e847528e37c79776cfd1`](https://github.com/wso2/identity-apps/commit/587bfbbcbb2723c7d269e847528e37c79776cfd1) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Revert "Improve authentication configuration for custom SMS notification provider"
+
+- Updated dependencies [[`587bfbbcbb2723c7d269e847528e37c79776cfd1`](https://github.com/wso2/identity-apps/commit/587bfbbcbb2723c7d269e847528e37c79776cfd1)]:
+  - @wso2is/admin.sms-providers.v1@2.25.208
+  - @wso2is/admin.core.v1@2.49.112
+  - @wso2is/i18n@2.30.61
+  - @wso2is/admin.server-configurations.v1@2.35.126
+  - @wso2is/admin.users.v1@2.36.79
+  - @wso2is/admin.roles.v2@2.27.274
+
 ## 2.40.13
 
 ### Patch Changes

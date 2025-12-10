@@ -1,5 +1,30 @@
 # @wso2is/console
 
+## 2.83.2
+
+### Patch Changes
+
+- [#9481](https://github.com/wso2/identity-apps/pull/9481) [`813f04cfca89ab1cff0af29c54b1c944d17f40bf`](https://github.com/wso2/identity-apps/commit/813f04cfca89ab1cff0af29c54b1c944d17f40bf) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Fix AutoLogin button disabled issue in self registration flow builder.
+
+* [#9484](https://github.com/wso2/identity-apps/pull/9484) [`587bfbbcbb2723c7d269e847528e37c79776cfd1`](https://github.com/wso2/identity-apps/commit/587bfbbcbb2723c7d269e847528e37c79776cfd1) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Revert "Improve authentication configuration for custom SMS notification provider"
+
+* Updated dependencies [[`813f04cfca89ab1cff0af29c54b1c944d17f40bf`](https://github.com/wso2/identity-apps/commit/813f04cfca89ab1cff0af29c54b1c944d17f40bf), [`587bfbbcbb2723c7d269e847528e37c79776cfd1`](https://github.com/wso2/identity-apps/commit/587bfbbcbb2723c7d269e847528e37c79776cfd1)]:
+  - @wso2is/admin.registration-flow-builder.v1@0.10.64
+  - @wso2is/admin.sms-providers.v1@2.25.208
+  - @wso2is/admin.extensions.v1@2.40.14
+  - @wso2is/admin.core.v1@2.49.112
+  - @wso2is/i18n@2.30.61
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.104
+  - @wso2is/admin.branding.v1@2.32.60
+  - @wso2is/admin.email-management.v1@2.25.268
+  - @wso2is/admin.flows.v1@1.0.73
+  - @wso2is/admin.home.v1@1.7.82
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.104
+  - @wso2is/admin.server-configurations.v1@2.35.126
+  - @wso2is/admin.users.v1@2.36.79
+  - @wso2is/admin.agents.v1@1.0.119
+  - @wso2is/admin.roles.v2@2.27.274
+
 ## 2.83.1
 
 ### Patch Changes
