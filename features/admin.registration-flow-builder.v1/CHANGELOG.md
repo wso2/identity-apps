@@ -1,5 +1,16 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.10.64
+
+### Patch Changes
+
+- [#9481](https://github.com/wso2/identity-apps/pull/9481) [`813f04cfca89ab1cff0af29c54b1c944d17f40bf`](https://github.com/wso2/identity-apps/commit/813f04cfca89ab1cff0af29c54b1c944d17f40bf) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Fix AutoLogin button disabled issue in self registration flow builder.
+
+- Updated dependencies [[`587bfbbcbb2723c7d269e847528e37c79776cfd1`](https://github.com/wso2/identity-apps/commit/587bfbbcbb2723c7d269e847528e37c79776cfd1)]:
+  - @wso2is/admin.core.v1@2.49.112
+  - @wso2is/admin.flow-builder-core.v1@0.10.104
+  - @wso2is/admin.flows.v1@1.0.73
+
 ## 0.10.63
 
 ### Patch Changes

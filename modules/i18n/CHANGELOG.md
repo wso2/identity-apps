@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.30.61
+
+### Patch Changes
+
+- [#9484](https://github.com/wso2/identity-apps/pull/9484) [`587bfbbcbb2723c7d269e847528e37c79776cfd1`](https://github.com/wso2/identity-apps/commit/587bfbbcbb2723c7d269e847528e37c79776cfd1) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Revert "Improve authentication configuration for custom SMS notification provider"
+
 ## 2.30.60
 
 ### Patch Changes
