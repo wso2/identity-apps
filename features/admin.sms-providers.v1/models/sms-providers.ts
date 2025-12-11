@@ -23,8 +23,32 @@ export interface SMSProviderAPIResponseInterface {
     key: string;
     secret: string;
     sender: string;
+    authentication: AuthenticationnInterface;
     contentType: string;
     properties: SMSProviderPropertiesInterface[];
+}
+
+export interface AuthenticationnInterface {
+    type: AuthType;
+    properties?: {
+        username?: string;
+        password?: string;
+        clientId?: string;
+        clientSecret?: string;
+        scopes?: string;
+        tokenEndpoint?: string;
+        header?: string;
+        value?: string;
+        accessToken?: string;
+    };
+}
+
+export enum AuthType {
+    NONE = "NONE",
+    BEARER = "BEARER",
+    BASIC = "BASIC",
+    API_KEY = "API_KEY",
+    CLIENT_CREDENTIAL = "CLIENT_CREDENTIAL"
 }
 
 export interface SMSProviderPropertiesInterface {
@@ -53,6 +77,16 @@ export interface SMSProviderInterface {
     headers?: string;
     payload?: string;
     httpMethod?: string;
+    authType?: AuthType;
+    userName?: string;
+    password?: string;
+    clientId?: string;
+    clientSecret?: string;
+    tokenEndpoint?: string;
+    scopes?: string;
+    header?: string;
+    value?: string;
+    accessToken?: string;
 }
 
 export interface SMSProviderAPIInterface {
@@ -62,6 +96,7 @@ export interface SMSProviderAPIInterface {
     key: string;
     secret: string;
     sender: string;
+    authentication?: AuthenticationnInterface;
     contentType: string;
     properties: SMSProviderPropertiesInterface[];
 }
@@ -92,6 +127,16 @@ export interface SMSProviderConfigFormErrorValidationsInterface {
     vonageKey?: string;
     vonageSecret?: string;
     vonageSender?: string;
+    authType?: AuthType;
+    userName?: string;
+    password?: string;
+    clientId?: string;
+    clientSecret?: string;
+    tokenEndpoint?: string;
+    scopes?: string;
+    header?: string;
+    value?: string;
+    accessToken?: string;
 }
 
 export interface SMSProviderCardInterface {
@@ -99,4 +144,10 @@ export interface SMSProviderCardInterface {
     key: string,
     name: string,
     icon: any
+}
+
+export interface DropdownChild {
+    key: AuthType;
+    text: string;
+    value: AuthType;
 }
