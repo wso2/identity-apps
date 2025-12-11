@@ -17,7 +17,6 @@
 --%>
 
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.ResourceBundle" %>
@@ -36,8 +35,24 @@
 <%!
     /**
      * Retrieve the username place holder when alternative
+     * login identifiers are enabled. (Backward compatibility method)
+     *
+     * @param resourceBundle Resource bundle for i18n
+     * @param allowedAttributes Comma separated allowed attributes
+     * @return {String}
+     */
+    public String getUsernameLabel(ResourceBundle resourceBundle, String allowedAttributes) {
+        
+        return getUsernameLabel(resourceBundle, allowedAttributes, null);
+    }
+
+    /**
+     * Retrieve the username place holder when alternative
      * login identifiers are enabled.
      *
+     * @param resourceBundle Resource bundle for i18n
+     * @param allowedAttributes Comma separated allowed attributes
+     * @param tenantDomain The tenant domain
      * @return {String}
      */
     public String getUsernameLabel(ResourceBundle resourceBundle, String allowedAttributes, String tenantDomain) {
@@ -45,6 +60,7 @@
         String[] attributes = allowedAttributes.split(",");
         List<String> attributeList = new ArrayList<>();
         String usernameLabel="";
+        List<String> unknownClaimURIs = new ArrayList<>();
 
         
             for (int index = 0; index < attributes.length; index++) {
@@ -58,7 +74,8 @@
                 } else if (StringUtils.equals(attribute, MOBILE_CLAIM_URI)) {
                     i18nKey = "mobile";
                 } else {
-                    i18nKey = getClaimDisplayName(attribute, tenantDomain);
+                    unknownClaimURIs.add(attribute);
+                    continue;
                 }
         
                 if (i18nKey != null) {
@@ -70,6 +87,9 @@
                 }
             }
 
+            List<String> unknownClaimsDisplayNames = getClaimDisplayNames(unknownClaimURIs, tenantDomain);
+            attributeList.addAll(unknownClaimsDisplayNames);
+
             if (attributeList.size() > 0) {
                 String orString = AuthenticationEndpointUtil.i18n(resourceBundle, "or").toLowerCase(); 
                 usernameLabel = String.join(", ", attributeList.subList(0, attributeList.size() - 1))
@@ -80,35 +100,39 @@
         return usernameLabel;
     }
 
-    /**
-     * Retrieves the display name of a claim based on its URI and tenant domain.
-     *
-     * @param claimUri     The URI of the claim for which the display name is to be retrieved.
-     *                     If the claim URI is blank, the method will return null.
-     * @param tenantDomain The tenant domain in which the claim resides.
-     * 
-     * @return The display name of the claim if found, or null if the claim does not exist
-     *         or an error occurs during retrieval.
-     */
-    private String getClaimDisplayName(String claimUri, String tenantDomain) {
 
-        if (StringUtils.isBlank(claimUri)) {
-            return null;
+    /**
+     * Retrieves the display names of multiple claims based on their URIs and tenant domain.
+     * This method batches the API call for better performance.
+     *
+     * @param claimURIs    The list of claim URIs for which display names are to be retrieved.
+     * @param tenantDomain The tenant domain in which the claims reside.
+     * 
+     * @return A list containing display names of the claims.
+     *         Returns empty list if no claims are found or an error occurs.
+     */
+    private List<String> getClaimDisplayNames(List<String> claimURIs, String tenantDomain) {
+
+        List<String> displayNames = new ArrayList<>();
+
+        if (claimURIs == null || claimURIs.isEmpty() || tenantDomain == null) {
+            return displayNames;
         }
 
         try {
             ClaimRetrievalClient claimRetrievalClient = new ClaimRetrievalClient();
-            List<String> claimURIs = Arrays.asList(claimUri);
             Map<String, LocalClaim> claimResult = claimRetrievalClient.getLocalClaimsByURIs(tenantDomain, claimURIs);
-            LocalClaim claim = claimResult.get(claimUri);
 
-            if (claim != null) {
-                return claim.getDisplayName();
+            for (String claimUri : claimURIs) {
+                LocalClaim claim = claimResult.get(claimUri);
+                if (claim != null && claim.getDisplayName() != null) {
+                    displayNames.add(claim.getDisplayName());
+                }
             }
-            return null;
         } catch (ClaimRetrievalClientException e) {
-            log.error("Error while retrieving claim display name for claim URI: " + claimUri, e);
-            return null;
+            log.error("Error while retrieving claim display names for claim URIs: " + claimURIs, e);
         }
+
+        return displayNames;
     }
 %>
