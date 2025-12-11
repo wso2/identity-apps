@@ -168,6 +168,37 @@ export class ConnectionUIConstants {
         };
 
     /**
+     * TOTP Authenticator Settings Form element constraints.
+     */
+    public static readonly TOTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: {
+        EXPIRY_TIME_MAX_LENGTH: number;
+        EXPIRY_TIME_MAX_VALUE: number;
+        EXPIRY_TIME_MIN_LENGTH: number;
+        EXPIRY_TIME_MIN_VALUE: number;
+        OTP_LENGTH_MAX_LENGTH: number;
+        OTP_LENGTH_MAX_VALUE: number;
+        OTP_LENGTH_MIN_LENGTH: number;
+        OTP_LENGTH_MIN_VALUE: number;
+        WINDOW_SIZE_MAX_LENGTH: number;
+        WINDOW_SIZE_MAX_VALUE: number;
+        WINDOW_SIZE_MIN_LENGTH: number;
+        WINDOW_SIZE_MIN_VALUE: number;
+    } = {
+            EXPIRY_TIME_MAX_LENGTH: 4,
+            EXPIRY_TIME_MAX_VALUE: 1440,
+            EXPIRY_TIME_MIN_LENGTH: 1,
+            EXPIRY_TIME_MIN_VALUE: 1,
+            OTP_LENGTH_MAX_LENGTH: 2,
+            OTP_LENGTH_MAX_VALUE: 10,
+            OTP_LENGTH_MIN_LENGTH: 1,
+            OTP_LENGTH_MIN_VALUE: 4,
+            WINDOW_SIZE_MAX_LENGTH: 1,
+            WINDOW_SIZE_MAX_VALUE: 3,
+            WINDOW_SIZE_MIN_LENGTH: 1,
+            WINDOW_SIZE_MIN_VALUE: 0
+        };
+
+    /**
      * Apple Authenticator Settings Form element constraints.
      */
     public static readonly APPLE_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS: {

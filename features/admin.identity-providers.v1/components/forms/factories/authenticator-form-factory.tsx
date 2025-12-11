@@ -20,6 +20,7 @@ import {
     FederatedAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
+import { TOTPAuthenticatorForm } from "@wso2is/admin.connections.v1/components/edit/forms/authenticators";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1/configs/identity-provider";
 import MicrosoftIDPTemplate from
     "@wso2is/admin.identity-providers.v1/data/identity-provider-templates/templates/microsoft/microsoft.json";
@@ -278,6 +279,20 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
         case LocalAuthenticatorConstants.AUTHENTICATOR_IDS.PUSH_AUTHENTICATOR_ID:
             return (
                 <PushAuthenticatorForm
+                    initialValues={ initialValues }
+                    metadata={ metadata }
+                    onSubmit={ onSubmit }
+                    triggerSubmit={ triggerSubmit }
+                    enableSubmitButton={ enableSubmitButton }
+                    data-testid={ testId }
+                    showCustomProperties={ showCustomProperties }
+                    readOnly={ isReadOnly }
+                    isSubmitting={ isSubmitting }
+                />
+            );
+        case LocalAuthenticatorConstants.AUTHENTICATOR_IDS.TOTP_AUTHENTICATOR_ID:
+            return (
+                <TOTPAuthenticatorForm
                     initialValues={ initialValues }
                     metadata={ metadata }
                     onSubmit={ onSubmit }
