@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.3.30
+
+### Patch Changes
+
+- [#9490](https://github.com/wso2/identity-apps/pull/9490) [`edd8ffadb320ae92dcd103be08239f6a8365e387`](https://github.com/wso2/identity-apps/commit/edd8ffadb320ae92dcd103be08239f6a8365e387) Thanks [@Malith-19](https://github.com/Malith-19)! - Support displaying names of custom login identifiers.
+
 ## 3.3.29
 
 ### Patch Changes
