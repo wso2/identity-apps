@@ -104,6 +104,7 @@
             }
             return null;
         } catch (ClaimRetrievalClientException e) {
+            log.error("Error while retrieving claim display name for claim URI: " + claimUri, e);
             return null;
         }
     }
