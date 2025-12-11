@@ -103,7 +103,7 @@
     if (isEmailUsernameEnabled == true) {
         usernameLabel = "email.username";
     } else if (isMultiAttributeLoginEnabledInTenant) {
-        usernameLabel = getUsernameLabel(resourceBundle, allowedAttributes);
+        usernameLabel = getUsernameLabel(resourceBundle, allowedAttributes, tenantDomain);
         usernamePlaceHolder = "enter.your.identifier";
     }
 %>
