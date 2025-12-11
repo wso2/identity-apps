@@ -59,8 +59,8 @@
         
         String[] attributes = allowedAttributes.split(",");
         List<String> attributeList = new ArrayList<>();
-        String usernameLabel="";
-        List<String> unknownClaimURIs = new ArrayList<>();
+        String usernameLabel = "";
+        List<String> customClaimURIs = new ArrayList<>();
 
         
             for (int index = 0; index < attributes.length; index++) {
@@ -74,7 +74,7 @@
                 } else if (StringUtils.equals(attribute, MOBILE_CLAIM_URI)) {
                     i18nKey = "mobile";
                 } else {
-                    unknownClaimURIs.add(attribute);
+                    customClaimURIs.add(attribute);
                     continue;
                 }
         
@@ -87,16 +87,8 @@
                 }
             }
 
-            List<String> unknownClaimsDisplayNames = getClaimDisplayNames(unknownClaimURIs, tenantDomain);
-
-            // Apply lowercase transformation to maintain consistency with known attributes.
-            for (int i = 0; i < unknownClaimsDisplayNames.size(); i++) {
-                if (i > 0 || attributeList.size() > 0) {
-                    unknownClaimsDisplayNames.set(i, unknownClaimsDisplayNames.get(i).toLowerCase());
-                }
-            }
-
-            attributeList.addAll(unknownClaimsDisplayNames);
+            List<String> customClaimsDisplayNames = getClaimDisplayNames(customClaimURIs, tenantDomain);
+            attributeList.addAll(customClaimsDisplayNames);
 
             if (attributeList.size() > 0) {
                 String orString = AuthenticationEndpointUtil.i18n(resourceBundle, "or").toLowerCase(); 
