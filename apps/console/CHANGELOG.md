@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.83.4
+
+### Patch Changes
+
+- [#9458](https://github.com/wso2/identity-apps/pull/9458) [`68f3c2e3a234da22de13c07e83c2447403b31e79`](https://github.com/wso2/identity-apps/commit/68f3c2e3a234da22de13c07e83c2447403b31e79) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Remove beta tag from password recovery with sms otp feature
+
 ## 2.83.3
 
 ### Patch Changes
