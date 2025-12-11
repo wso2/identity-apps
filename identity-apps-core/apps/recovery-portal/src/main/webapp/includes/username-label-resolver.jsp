@@ -91,6 +91,13 @@
         }
 
         List<String> unknownClaimsDisplayNames = getClaimDisplayNames(unknownClaimURIs, tenantDomain);
+
+        // Apply lowercase transformation to maintain consistency with known attributes.
+        for (int i = 0; i < unknownClaimsDisplayNames.size(); i++) {
+            if (i > 0 || attributeList.size() > 0) {
+                unknownClaimsDisplayNames.set(i, unknownClaimsDisplayNames.get(i).toLowerCase());
+            }
+        }        
         attributeList.addAll(unknownClaimsDisplayNames);
 
         if (attributeList.size() > 0) {
@@ -127,7 +134,7 @@
             for (String claimUri : claimURIs) {
                 LocalClaim claim = claimResult.get(claimUri);
                 if (claim != null && claim.getDisplayName() != null) {
-                    displayNames.add(claim.getDisplayName());
+                    displayNames.add(claim.getDisplayName().toLowerCase());
                 }
             }
         } catch (ClaimRetrievalClientException e) {
