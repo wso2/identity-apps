@@ -48,6 +48,12 @@
                     i18nKey = "email";
                 } else if (StringUtils.equals(attribute, MOBILE_CLAIM_URI)) {
                     i18nKey = "mobile";
+                } else {
+                    if (attribute.startsWith("http://wso2.org/claims/")) {
+                        i18nKey = attribute.substring("http://wso2.org/claims/".length());
+                    } else {
+                        i18nKey = attribute;
+                    }
                 }
         
                 if (i18nKey != null) {
