@@ -106,7 +106,7 @@
                 return claim.getDisplayName();
             }
             return null;
-        } catch (Exception e) {
+        } catch (ClaimRetrievalClientException e) {
             return null;
         }
     }
