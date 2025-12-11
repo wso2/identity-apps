@@ -1,5 +1,27 @@
 # @wso2is/admin.core.v1
 
+## 2.49.113
+
+### Patch Changes
+
+- [#9485](https://github.com/wso2/identity-apps/pull/9485) [`7fe27c3efe25ab647f2f3d12ff2aa93ba750fbec`](https://github.com/wso2/identity-apps/commit/7fe27c3efe25ab647f2f3d12ff2aa93ba750fbec) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Improve authentication configuration for custom SMS notification provider
+
+- Updated dependencies [[`7fe27c3efe25ab647f2f3d12ff2aa93ba750fbec`](https://github.com/wso2/identity-apps/commit/7fe27c3efe25ab647f2f3d12ff2aa93ba750fbec)]:
+  - @wso2is/admin.sms-providers.v1@2.25.209
+  - @wso2is/admin.extensions.v1@2.40.15
+  - @wso2is/i18n@2.30.62
+  - @wso2is/admin.flow-builder-core.v1@0.10.105
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.105
+  - @wso2is/admin.branding.v1@2.32.61
+  - @wso2is/admin.email-management.v1@2.25.269
+  - @wso2is/admin.flows.v1@1.0.74
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.105
+  - @wso2is/admin.server-configurations.v1@2.35.127
+  - @wso2is/admin.users.v1@2.36.80
+  - @wso2is/admin.registration-flow-builder.v1@0.10.65
+  - @wso2is/admin.agents.v1@1.0.120
+  - @wso2is/admin.roles.v2@2.27.275
+
 ## 2.49.112
 
 ### Patch Changes
