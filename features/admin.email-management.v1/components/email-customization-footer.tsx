@@ -26,7 +26,6 @@ import { ButtonProps, Segment } from "semantic-ui-react";
 
 import EmailTemplateCustomizationPremiumBanner from "../components/banners/email-template-customization-premium-banner";
 
-
 interface EmailCustomizationFooterProps extends IdentifiableComponentInterface {
 
     /**
