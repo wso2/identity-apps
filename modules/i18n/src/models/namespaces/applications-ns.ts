@@ -1772,6 +1772,10 @@ export interface ApplicationsNS {
                 refreshToken: {
                     heading: string;
                     fields: {
+                        extendRenewedRefreshTokenExpiryTime: {
+                            hint: string;
+                            label: string;
+                        },
                         expiry: {
                             hint: string;
                             label: string;
