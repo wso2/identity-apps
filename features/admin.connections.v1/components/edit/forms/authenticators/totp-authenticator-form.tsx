@@ -164,7 +164,7 @@ export const TOTPAuthenticatorForm: FunctionComponent<TOTPAuthenticatorFormProps
                     : value.value
             };
         });
-        
+
         setFormFields(resolvedFormFields);
         setInitialValues(resolvedInitialValues);
     }, [ originalInitialValues ]);
@@ -235,7 +235,8 @@ export const TOTPAuthenticatorForm: FunctionComponent<TOTPAuthenticatorFormProps
                             ".totp.enrollUserInAuthenticationFlow.hint"
                         }
                     >
-                        When enabled, users may enroll their devices for TOTP at the moment they log in to the application.
+                        When enabled, users may enroll their devices for TOTP at the moment
+                        they log in to the application.
                     </Trans>)
                 }
                 readOnly={ readOnly }
