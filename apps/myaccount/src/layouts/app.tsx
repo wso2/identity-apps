@@ -25,7 +25,7 @@ import {
     ErrorBoundary,
     LinkButton
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, Suspense, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
@@ -51,6 +51,25 @@ export const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactEl
         return state.config.ui.isCookieConsentBannerEnabled;
     });
 
+    const genericErrorSubtitles: string[] = [
+        t("myAccount:placeholders.genericError.subtitles.0"),
+        t("myAccount:placeholders.genericError.subtitles.1")
+    ];
+
+    const genericErrorFallback: ReactNode = (
+        <EmptyPlaceholder
+            action={ (
+                <LinkButton onClick={ () => CommonUtils.refreshPage() }>
+                    { t("myAccount:placeholders.genericError.action") }
+                </LinkButton>
+            ) }
+            image={ getEmptyPlaceholderIllustrations().genericError }
+            imageSize="tiny"
+            subtitle={ genericErrorSubtitles }
+            title={ t("myAccount:placeholders.genericError.title") }
+        />
+    );
+
     /**
      * Listen for base name changes and updated the routes.
      */
@@ -62,22 +81,7 @@ export const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactEl
         <AppLayoutSkeleton>
             <ErrorBoundary
                 onChunkLoadError={ AppUtils.onChunkLoadError }
-                fallback={ (
-                    <EmptyPlaceholder
-                        action={ (
-                            <LinkButton onClick={ () => CommonUtils.refreshPage() }>
-                                { t("myAccount:placeholders.genericError.action") }
-                            </LinkButton>
-                        ) }
-                        image={ getEmptyPlaceholderIllustrations().genericError }
-                        imageSize="tiny"
-                        subtitle={ [
-                            t("myAccount:placeholders.genericError.subtitles.0"),
-                            t("myAccount:placeholders.genericError.subtitles.1")
-                        ] }
-                        title={ t("myAccount:placeholders.genericError.title") }
-                    />
-                ) }
+                fallback={ genericErrorFallback }
             >
                 <Suspense fallback={ <PreLoader /> }>
                     <Switch>
@@ -97,11 +101,21 @@ export const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactEl
                                         : (
                                             <Route
                                                 path={ route.path }
-                                                render={ (renderProps: RouteComponentProps) =>
-                                                    route.component
-                                                        ? <route.component { ...renderProps } />
-                                                        : null
-                                                }
+                                                render={ (renderProps: RouteComponentProps) => {
+                                                    if (!route.component) {
+                                                        return null;
+                                                    }
+
+                                                    return (
+                                                        <ErrorBoundary
+                                                            key={ renderProps.location.pathname }
+                                                            onChunkLoadError={ AppUtils.onChunkLoadError }
+                                                            fallback={ genericErrorFallback }
+                                                        >
+                                                            <route.component { ...renderProps } />
+                                                        </ErrorBoundary>
+                                                    );
+                                                } }
                                                 key={ index }
                                                 exact={ route.exact }
                                             />
