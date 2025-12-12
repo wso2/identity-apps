@@ -141,15 +141,11 @@ export const TOTPAuthenticatorForm: FunctionComponent<TOTPAuthenticatorFormProps
         let resolvedFormFields: TOTPAuthenticatorFormFieldsInterface = null;
         let resolvedInitialValues: TOTPAuthenticatorFormInitialValuesInterface = null;
 
-        console.log("TOTP Form - Received originalInitialValues:", originalInitialValues);
-
         originalInitialValues.properties.forEach((value: CommonAuthenticatorFormPropertyInterface) => {
             const meta: CommonAuthenticatorFormFieldMetaInterface = metadata?.properties
                 .find((meta: CommonPluggableComponentMetaPropertyInterface) => meta.key === value.key);
 
             const moderatedName: string = value.name.replace(/\./g, "_");
-
-            console.log(`TOTP Form - Processing property: ${value.name} = ${value.value} (moderated: ${moderatedName})`);
 
             resolvedFormFields = {
                 ...resolvedFormFields,
@@ -169,7 +165,6 @@ export const TOTPAuthenticatorForm: FunctionComponent<TOTPAuthenticatorFormProps
             };
         });
         
-        console.log("TOTP Form - Resolved initial values:", resolvedInitialValues);
         setFormFields(resolvedFormFields);
         setInitialValues(resolvedInitialValues);
     }, [ originalInitialValues ]);
@@ -201,21 +196,15 @@ export const TOTPAuthenticatorForm: FunctionComponent<TOTPAuthenticatorFormProps
             properties
         };
 
-        // Debug logging
-        console.log("TOTP Form Submit - Values:", values);
-        console.log("TOTP Form Submit - Properties:", properties);
-        console.log("TOTP Form Submit - Result:", result);
-
         return result;
     };
 
     /**
      * Validates the Form.
      *
-     * @param values - Form Values.
      * @returns Form validation
      */
-    const validateForm = (values: TOTPAuthenticatorFormInitialValuesInterface):
+    const validateForm = ():
         TOTPAuthenticatorFormErrorValidationsInterface => {
 
         const errors: TOTPAuthenticatorFormErrorValidationsInterface = {
