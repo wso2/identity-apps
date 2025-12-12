@@ -159,6 +159,11 @@
                 "description": "This email is sent to confirm the user email address via Email OTP",
                 "displayName": "Confirm Email Address via Email OTP",
                 "id": "RW1haWxDb25maXJtV2l0aE9UUA"
+            },
+            {
+                "description": "This email is sent to verify the user's email address after an email verification request",
+                "displayName": "Verifiy Email Address",
+                "id": "VmVyaWZ5RW1haWxPblVwZGF0ZQ"
             }
         ],
         "outboundProvisioningConnectors": [],
