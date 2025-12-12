@@ -99,7 +99,7 @@
             <% } %>
 
                 <%
-                    List<String> langSwitcherEnabledServlets = Arrays.asList("/password-recovery.jsp", "/register.do", "/passwordreset.do", "/error.jsp", "/self-registration-with-verification.jsp");
+                    List<String> langSwitcherEnabledServlets = Arrays.asList("/password-recovery.jsp", "/register.do", "/passwordreset.do", "/error.jsp", "/self-registration-with-verification.jsp", "/acceptinvitation.do");
                     if (langSwitcherEnabledServlets.contains(request.getServletPath())) {
                         File languageSwitcherFile = new File(getServletContext().getRealPath("extensions/language-switcher.jsp"));
                         if (languageSwitcherFile.exists()) {
