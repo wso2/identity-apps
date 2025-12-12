@@ -86,7 +86,13 @@ export const policyAdministration: policyAdministrationNS = {
     },
     editPolicy: {
         backBtn: "Go back to Policy Administration ",
-        disabledBtnTooltip: "You need to deactivate this policy to enable editing."
+        disabledBtnTooltip: "You need to deactivate this policy to enable editing.",
+        fields: {
+            policyOrder: {
+                hint: "Specify the evaluation order for this policy.",
+                label: "Order"
+            }
+        }
     },
     inactivePoliciesPlaceholder: {
         subtitle: "There are currently no inactive policies to display.",
@@ -125,7 +131,8 @@ export const policyAdministration: policyAdministrationNS = {
     },
     popup:{
         activate: "Activate",
-        deactivate: "Deactivate"
+        deactivate: "Deactivate",
+        policyOrder: "Policy Order"
     },
     subtitle: "Create and manage your policies here.",
     title: "Policy Administration"

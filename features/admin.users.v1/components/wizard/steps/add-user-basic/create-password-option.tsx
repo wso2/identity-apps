@@ -88,7 +88,7 @@ const CreatePasswordOption: FunctionComponent<CreatePasswordOptionPropsInterface
             return t("extensions:manage.features.user.addUser.validation.error.passwordValidation");
         }
 
-        if (!SharedUserStoreUtils.validateInputAgainstRegEx(value, passwordRegex)) {
+        if (!passwordConfig && !SharedUserStoreUtils.validateInputAgainstRegEx(value, passwordRegex)) {
             return t("extensions:manage.features.user.addUser.validation.password");
         }
 

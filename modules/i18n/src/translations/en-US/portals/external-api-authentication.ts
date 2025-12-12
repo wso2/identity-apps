@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { EmailProviderNS } from "../../../models/namespaces/email-providers-ns";
+import { ExternalAPIAuthenticationNS } from "../../../models/namespaces/external-api-authentication-ns";
 
-export const emailProviders: EmailProviderNS = {
+export const externalApiAuthentication: ExternalAPIAuthenticationNS = {
     fields: {
         authentication: {
             info: {
@@ -28,6 +28,25 @@ export const emailProviders: EmailProviderNS = {
             },
             label: "Authentication",
             types: {
+                apiKey: {
+                    name: "API Key",
+                    properties: {
+                        header: {
+                            label: "Header",
+                            placeholder: "Header",
+                            validations: {
+                                empty: "Header is a required field."
+                            }
+                        },
+                        value: {
+                            label: "Value",
+                            placeholder: "Value",
+                            validations: {
+                                empty: "Value is a required field."
+                            }
+                        }
+                    }
+                },
                 basic: {
                     name: "Basic",
                     properties: {
@@ -43,6 +62,18 @@ export const emailProviders: EmailProviderNS = {
                             placeholder: "Username",
                             validations: {
                                 empty: "Username is a required field."
+                            }
+                        }
+                    }
+                },
+                bearer: {
+                    name: "Bearer Token",
+                    properties: {
+                        accessToken: {
+                            label: "Access Token",
+                            placeholder: "Access Token",
+                            validations: {
+                                empty: "Access token is a required field."
                             }
                         }
                     }
@@ -79,6 +110,9 @@ export const emailProviders: EmailProviderNS = {
                             }
                         }
                     }
+                },
+                none: {
+                    name: "None"
                 }
             }
         },
@@ -95,6 +129,13 @@ export const emailProviders: EmailProviderNS = {
         },
         authenticationTypeDropdown: {
             authProperties: {
+                accessToken: {
+                    label: "Access Token",
+                    placeholder: "Enter access token",
+                    validations: {
+                        required: "Access token is a required field."
+                    }
+                },
                 clientID: {
                     label: "Client ID",
                     placeholder: "Client ID",
@@ -107,6 +148,13 @@ export const emailProviders: EmailProviderNS = {
                     placeholder: "Client Secret",
                     validations: {
                         required: "Client Secret is a required field."
+                    }
+                },
+                header: {
+                    label: "Header Name",
+                    placeholder: "Enter header name (e.g., X-API-Key)",
+                    validations: {
+                        required: "Header name is a required field."
                     }
                 },
                 password: {
@@ -135,6 +183,13 @@ export const emailProviders: EmailProviderNS = {
                     placeholder: "Username",
                     validations: {
                         required: "Username is a required field."
+                    }
+                },
+                value: {
+                    label: "API Key Value",
+                    placeholder: "Enter API key value",
+                    validations: {
+                        required: "API key value is a required field."
                     }
                 }
             },

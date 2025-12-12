@@ -601,6 +601,26 @@ export interface ConsoleNS {
                                     required: string;
                                 };
                             };
+                            allowedResendAttemptCount: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                    invalid: string;
+                                    range: string;
+                                };
+                            };
+                            resendBlockDuration: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                    invalid: string;
+                                    range: string;
+                                };
+                            };
                             useAlphanumericChars: {
                                 hint: string;
                                 label: string;
@@ -650,6 +670,17 @@ export interface ConsoleNS {
                                 hint: string;
                                 label: string;
                                 placeholder: string;
+                                validations: {
+                                    required: string;
+                                    invalid: string;
+                                    range: string;
+                                };
+                            };
+                            resendBlockDuration: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                unit: string;
                                 validations: {
                                     required: string;
                                     invalid: string;

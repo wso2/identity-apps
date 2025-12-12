@@ -22,6 +22,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import useOrganizations from "@wso2is/admin.organizations.v1/hooks/use-organizations";
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import {
     Announcement,
@@ -80,6 +81,12 @@ const HomePage: FunctionComponent<HomePageInterface> = (
 
         eventPublisher.publish("console-click-getting-started-menu-item");
     }, [ profileInfo?.id ]);
+
+    const { updateOrganizationSwitchRequestLoadingState } = useOrganizations();
+
+    useEffect(() => {
+        updateOrganizationSwitchRequestLoadingState(false);
+    }, []);
 
     return (
         <PageLayout

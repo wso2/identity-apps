@@ -180,15 +180,13 @@ const FlowCompletionProperties: FunctionComponent<FlowCompletionPropertiesPropsI
                             label={ t("flows:registrationFlow.steps.end.autoLogin.label") }
                             control={
                                 (<Checkbox
-                                    checked={ configs?.isAutoLoginEnabled === "true" }
+                                    checked={ configs?.isAutoLoginEnabled === "true" &&
+                                        !(configs?.isEmailVerificationEnabled === "true"
+                                            && configs?.isAccountLockOnCreationEnabled === "true" ) }
                                     disabled={
                                         metadata?.workflowEnabled ||
-                                        !(
-                                            (configs?.isEmailVerificationEnabled === "true" &&
-                                                configs?.isAccountLockOnCreationEnabled === "false") ||
-                                            (configs?.isEmailVerificationEnabled === "false" &&
-                                                configs?.isAccountLockOnCreationEnabled === "true")
-                                        )
+                                        (configs?.isEmailVerificationEnabled === "true"
+                                            && configs?.isAccountLockOnCreationEnabled === "true")
                                     }
                                     onChange={ (event: ChangeEvent<HTMLInputElement>) => {
                                         setFlowCompletionConfigs({

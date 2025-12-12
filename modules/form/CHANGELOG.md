@@ -1,5 +1,21 @@
 # @wso2is/form
 
+## 2.9.3
+
+### Patch Changes
+
+- [#9463](https://github.com/wso2/identity-apps/pull/9463) [`471a2ae0e7e95d2376af1e0b325b12efa4e5ced6`](https://github.com/wso2/identity-apps/commit/471a2ae0e7e95d2376af1e0b325b12efa4e5ced6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Use dayjs adapter in date picker field adapter
+
+## 2.9.2
+
+### Patch Changes
+
+- [#9404](https://github.com/wso2/identity-apps/pull/9404) [`397c2f51b54805883a12e776f633ab40b9bfe2eb`](https://github.com/wso2/identity-apps/commit/397c2f51b54805883a12e776f633ab40b9bfe2eb) Thanks [@s-vamshi](https://github.com/s-vamshi)! - Replaced **Moment.js** with **day.js** in modules directory to reduce bundle size and improve performance
+
+- Updated dependencies [[`397c2f51b54805883a12e776f633ab40b9bfe2eb`](https://github.com/wso2/identity-apps/commit/397c2f51b54805883a12e776f633ab40b9bfe2eb), [`b97d714aa9bb358b77baed6446d6761aa99a7cb6`](https://github.com/wso2/identity-apps/commit/b97d714aa9bb358b77baed6446d6761aa99a7cb6)]:
+  - @wso2is/react-components@2.9.24
+  - @wso2is/core@2.12.4
+
 ## 2.9.1
 
 ### Patch Changes

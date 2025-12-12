@@ -220,6 +220,7 @@ export interface userNS {
             subTitle: string;
             askPassword: {
                 emailVerificationDisabled: string;
+                emailVerificationDisabledWithFlows: string;
                 mobileNumberAlreadyExists: string;
                 emailInvalid: string;
                 alphanumericUsernameEnabled: string;

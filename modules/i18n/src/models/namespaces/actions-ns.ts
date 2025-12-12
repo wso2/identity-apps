@@ -405,6 +405,13 @@ export interface actionsNS {
             };
             heading: string;
         };
+        preIssueIdToken: {
+            description: {
+                expanded: string;
+                shortened: string;
+            };
+            heading: string;
+        };
         preRegistration: {
             description: {
                 expanded: string;

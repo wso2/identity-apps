@@ -1674,6 +1674,7 @@ export interface ApplicationsNS {
                 };
                 logoutURLs: {
                     heading: string;
+                    headingSingular: string;
                     fields: {
                         back: {
                             hint: string;
@@ -2451,6 +2452,7 @@ export interface ApplicationsNS {
         enabledFeatures: {
             tags: {
                 premium: {
+                    info: string;
                     warning: string;
                 };
             };

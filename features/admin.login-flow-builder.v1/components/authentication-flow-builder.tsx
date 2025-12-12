@@ -36,6 +36,7 @@ import {
 import { AdaptiveScriptUtils } from "@wso2is/admin.applications.v1/utils/adaptive-script-utils";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import useFeatureGate, { UseFeatureGateInterface } from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
 import useAILoginFlow from "@wso2is/admin.login-flow.ai.v1/hooks/use-ai-login-flow";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants/organization-constants";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
@@ -158,6 +159,10 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
         showAuthenticationFlowModeSwitchDisclaimerModal,
         setShowAuthenticationFlowModeSwitchDisclaimerModal
     ] = useState<boolean>(false);
+
+    const { conditionalAuthPremiumFeature }: UseFeatureGateInterface = useFeatureGate();
+
+    const isPremiumOrReadOnly: boolean = readOnly || conditionalAuthPremiumFeature;
 
     /**
      * Set the active flow mode to the flow mode to switch.
@@ -364,7 +369,8 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
 
         if (isRevertFlow) {
             // If the flow is reverting, the script should be cleared first before updating the authentication sequence.
-            updateAdaptiveScript(applicationMetaData?.id, adaptiveScriptToUpdate, !isScriptUpdateReadOnly)
+            updateAdaptiveScript(applicationMetaData?.id, adaptiveScriptToUpdate, !isScriptUpdateReadOnly
+                && !conditionalAuthPremiumFeature)
                 .then(() => {
                     updateAuthenticationSequenceFromAPI(applicationMetaData?.id, payload)
                         .then(() => {
@@ -389,7 +395,8 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
 
         updateAuthenticationSequenceFromAPI(applicationMetaData?.id, payload)
             .then(() => {
-                updateAdaptiveScript(applicationMetaData?.id, adaptiveScriptToUpdate, !isScriptUpdateReadOnly)
+                updateAdaptiveScript(applicationMetaData?.id, adaptiveScriptToUpdate, !isScriptUpdateReadOnly
+                    && !conditionalAuthPremiumFeature)
                     .then(() => {
                         dispatch(addAlert({
                             description: t("applications:notifications.updateAuthenticationFlow" +
@@ -576,7 +583,7 @@ const AuthenticationFlowBuilder: FunctionComponent<AuthenticationFlowBuilderProp
                                 />
                             </ReactFlowProvider>
                             { isAdaptiveAuthAvailable && (
-                                <ScriptBasedFlowSwitch readOnly={ readOnly || isScriptUpdateReadOnly } />
+                                <ScriptBasedFlowSwitch readOnly={ isPremiumOrReadOnly || isScriptUpdateReadOnly } />
                             ) }
                             { isAdaptiveAuthAvailable && isConditionalAuthenticationEnabled &&
                                 !isScriptUpdateReadOnly && (

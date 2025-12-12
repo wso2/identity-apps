@@ -545,6 +545,11 @@ export interface ClaimsNS {
                 validationError: string;
                 validationErrorMessage: string;
             };
+            managedInUserStore: {
+                hint: string;
+                label: string;
+                readOnlyUserStoreHint: string;
+            };
             multiValued: {
                 label: string;
                 placeholder: string;
@@ -608,9 +613,10 @@ export interface ClaimsNS {
             subheader: string;
         };
         mappedAttributes: {
+            readOnlyUserStore: string;
             hint: string;
             mappedAttributeName: string;
-            enableForUserStore: string;
+            manageInUserStore: string;
         };
     };
     list: {

@@ -100,6 +100,10 @@ interface SMSOTPAuthenticatorFormInitialValuesInterface {
      * Number of SMS OTP resend attempts
      */
     SmsOTP_ResendAttemptsCount: number;
+    /**
+     * Resend block time in minutes
+     */
+    SmsOTP_ResendBlockDuration: number;
 }
 
 /**
@@ -122,6 +126,10 @@ interface SMSOTPAuthenticatorFormFieldsInterface {
      * Number of SMS OTP resend attempts
      */
     SmsOTP_ResendAttemptsCount: CommonAuthenticatorFormFieldInterface;
+    /**
+     * Resend block time field
+     */
+    SmsOTP_ResendBlockDuration: CommonAuthenticatorFormFieldInterface;
 }
 
 /**
@@ -144,6 +152,10 @@ export interface SMSOTPAuthenticatorFormErrorValidationsInterface {
      * Number of SMS OTP resend attempts
      */
     SmsOTP_ResendAttemptsCount: string;
+    /**
+     * Resend block time field
+     */
+    SmsOTP_ResendBlockDuration: string;
 }
 
 const FORM_ID: string = "sms-otp-authenticator-form";
@@ -287,7 +299,8 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             SmsOTP_ExpiryTime: undefined,
             SmsOTP_OTPLength: undefined,
             SmsOTP_OtpRegex_UseNumericChars: undefined,
-            SmsOTP_ResendAttemptsCount: undefined
+            SmsOTP_ResendAttemptsCount: undefined,
+            SmsOTP_ResendBlockDuration: undefined
         };
 
         if (!values.SmsOTP_ExpiryTime) {
@@ -339,6 +352,24 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
             // Check for invalid range.
             errors.SmsOTP_ResendAttemptsCount = t("authenticationProvider:forms" +
                 ".authenticatorSettings.smsOTP.allowedResendAttemptCount.validations.range");
+        }
+
+        // Validate resendBlockDuration.
+        if (!values.SmsOTP_ResendBlockDuration) {
+            // Check for required error.
+            errors.SmsOTP_ResendBlockDuration = t("authenticationProvider:forms" +
+                ".authenticatorSettings.smsOTP.resendBlockDuration.validations.required");
+        } else if (!FormValidation.isInteger(values.SmsOTP_ResendBlockDuration as unknown as number)) {
+            // Check for invalid input.
+            errors.SmsOTP_ResendBlockDuration = t("authenticationProvider:forms" +
+                ".authenticatorSettings.smsOTP.resendBlockDuration.validations.invalid");
+        } else if ((values.SmsOTP_ResendBlockDuration < ConnectionUIConstants
+            .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_BLOCK_TIME_MIN_VALUE)
+        || (values.SmsOTP_ResendBlockDuration > ConnectionUIConstants
+            .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_BLOCK_TIME_MAX_VALUE)) {
+            // Check for invalid range.
+            errors.SmsOTP_ResendBlockDuration = t("authenticationProvider:forms" +
+                ".authenticatorSettings.smsOTP.resendBlockDuration.validations.range");
         }
 
         return errors;
@@ -544,6 +575,54 @@ export const SMSOTPAuthenticatorForm: FunctionComponent<SMSOTPAuthenticatorFormP
                     {
                         t("authenticationProvider:forms.authenticatorSettings" +
                             ".smsOTP.allowedResendAttemptCount.unit")
+                    }
+                </Label>
+            </Field.Input>
+            <Field.Input
+                ariaLabel="Resend Block Duration"
+                inputType="number"
+                name="SmsOTP_ResendBlockDuration"
+                label={
+                    t("authenticationProvider:forms.authenticatorSettings" +
+                        ".smsOTP.resendBlockDuration.label")
+                }
+                labelPosition="right"
+                placeholder={
+                    t("authenticationProvider:forms.authenticatorSettings" +
+                        ".smsOTP.resendBlockDuration.placeholder")
+                }
+                hint={
+                    (<Trans
+                        i18nKey={
+                            "authenticationProvider:forms.authenticatorSettings" +
+                            ".smsOTP.resendBlockDuration.hint"
+                        }
+                    >
+                        Please pick a value between <Code>1 minute</Code> & <Code>1440 minutes(1 day)</Code>.
+                    </Trans>)
+                }
+                required={ true }
+                readOnly={ readOnly }
+                min={
+                    ConnectionUIConstants
+                        .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_BLOCK_TIME_MIN_VALUE
+                }
+                maxLength={
+                    ConnectionUIConstants
+                        .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_BLOCK_TIME_MAX_LENGTH
+                }
+                minLength={
+                    ConnectionUIConstants
+                        .SMS_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_BLOCK_TIME_MIN_LENGTH
+                }
+                width={ 12 }
+                data-testid={ `${ testId }-sms-otp-resend-block-time` }
+            >
+                <input />
+                <Label>
+                    {
+                        t("authenticationProvider:forms.authenticatorSettings" +
+                            ".smsOTP.resendBlockDuration.unit")
                     }
                 </Label>
             </Field.Input>

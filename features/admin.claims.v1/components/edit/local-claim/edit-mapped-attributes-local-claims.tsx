@@ -20,13 +20,17 @@ import Accordion from "@oxygen-ui/react/Accordion";
 import AccordionDetails from "@oxygen-ui/react/AccordionDetails";
 import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
 import Checkbox from "@oxygen-ui/react/Checkbox";
+import Chip from "@oxygen-ui/react/Chip";
 import Typography from "@oxygen-ui/react/Typography";
 import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { getProfileSchemas } from "@wso2is/admin.users.v1/api";
+import { CONSUMER_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreBasicData } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
@@ -45,7 +49,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { updateAClaim } from "../../../api";
-import { ClaimManagementConstants } from "../../../constants";
+import { ClaimFeatureDictionaryKeys, ClaimManagementConstants } from "../../../constants";
 
 /**
  * Prop types of `EditMappedAttributesLocalClaims` component
@@ -92,6 +96,10 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
 
     const { t } = useTranslation();
 
+    const {
+        readOnlyUserStoreNamesList
+    } = useUserStores();
+
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const hiddenUserStores: string[] = useSelector((state: AppState) => state?.config?.ui?.hiddenUserStores);
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
@@ -100,6 +108,18 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
     const isReadOnly: boolean = !useRequiredScopes(
         featureConfig?.attributeDialects?.scopes?.update
     );
+
+    const isSelectiveClaimStoreManagementEnabled: boolean = isFeatureEnabled(
+        featureConfig?.attributeDialects,
+        ClaimManagementConstants.FEATURE_DICTIONARY.get(
+            ClaimFeatureDictionaryKeys.SelectiveClaimStoreManagement
+        )
+    );
+
+    const shouldShowExcludedUserStores: boolean = isSelectiveClaimStoreManagementEnabled
+        ? !!claim?.managedInUserStore
+        : !!claim?.claimURI
+            && ClaimManagementConstants.USER_STORE_CONFIG_SUPPORTED_CLAIMS.includes(claim.claimURI);
 
     /**
      * Fetch the updated SCIM2 schema list.
@@ -283,7 +303,19 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                             data-componentid={ `${componentId}-form-accordion-${store.name}` }
                                         >
                                             <AccordionSummary>
-                                                <Typography variant="h6"> { store.name } </Typography>
+                                                <Typography variant="h6">
+                                                    { store.name }
+                                                </Typography>
+                                                {
+                                                    readOnlyUserStoreNamesList?.includes(store.name?.toUpperCase()) && (
+                                                        <Chip
+                                                            className="ml-2 oxygen-chip-beta"
+                                                            label={
+                                                                t("claims:local.mappedAttributes.readOnlyUserStore")
+                                                            }
+                                                        />
+                                                    )
+                                                }
                                             </AccordionSummary>
                                             <AccordionDetails>
                                                 <Grid>
@@ -308,16 +340,16 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                                                 data-componentid={
                                                                     `${componentId}-form-attribute-name-input-
                                                                         ${store.name}` }
-                                                                readOnly={ isReadOnly }
+                                                                readOnly={ isReadOnly || store.name?.toUpperCase()
+                                                                    === CONSUMER_USERSTORE }
                                                             />
                                                         </Grid.Column>
                                                     </Grid.Row>
-                                                    { ClaimManagementConstants.USER_STORE_CONFIG_SUPPORTED_CLAIMS
-                                                        .includes(claim.claimURI) && (
+                                                    { shouldShowExcludedUserStores && (
                                                         <Grid.Row columns={ 2 } key={ index } verticalAlign="middle">
                                                             <Grid.Column width={ 6 }>
                                                                 <p>{ t("claims:local.mappedAttributes." +
-                                                                        "enableForUserStore") }</p>
+                                                                        "manageInUserStore") }</p>
                                                             </Grid.Column>
                                                             <Grid.Column width={ 6 }>
                                                                 <Checkbox

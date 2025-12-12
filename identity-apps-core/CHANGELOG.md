@@ -1,5 +1,45 @@
 # @wso2is/identity-apps-core
 
+## 3.3.30
+
+### Patch Changes
+
+- [#9490](https://github.com/wso2/identity-apps/pull/9490) [`edd8ffadb320ae92dcd103be08239f6a8365e387`](https://github.com/wso2/identity-apps/commit/edd8ffadb320ae92dcd103be08239f6a8365e387) Thanks [@Malith-19](https://github.com/Malith-19)! - Support displaying names of custom login identifiers.
+
+## 3.3.29
+
+### Patch Changes
+
+- [#9479](https://github.com/wso2/identity-apps/pull/9479) [`6f89b57450f9826f83c785de4100e330db71ea8d`](https://github.com/wso2/identity-apps/commit/6f89b57450f9826f83c785de4100e330db71ea8d) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Enable email resending blocking for email otp authenicator
+
+## 3.3.28
+
+### Patch Changes
+
+- [#9420](https://github.com/wso2/identity-apps/pull/9420) [`582c1f2d646d276a6b7c0fda1fffa2f556c2dc31`](https://github.com/wso2/identity-apps/commit/582c1f2d646d276a6b7c0fda1fffa2f556c2dc31) Thanks [@ashanthamara](https://github.com/ashanthamara)! - Add support for system console roles
+
+## 3.3.27
+
+### Patch Changes
+
+- [#9437](https://github.com/wso2/identity-apps/pull/9437) [`459ad74c97df491fef2d7bd1a92e03f39ae3af03`](https://github.com/wso2/identity-apps/commit/459ad74c97df491fef2d7bd1a92e03f39ae3af03) Thanks [@UpekshaGalappaththi](https://github.com/UpekshaGalappaththi)! - add default authenticators to whitelist
+
+* [#9449](https://github.com/wso2/identity-apps/pull/9449) [`d488dc64ad6226f7745088b670aa3de64ba93c6a`](https://github.com/wso2/identity-apps/commit/d488dc64ad6226f7745088b670aa3de64ba93c6a) Thanks [@UpekshaGalappaththi](https://github.com/UpekshaGalappaththi)! - Fix indentation
+
+## 3.3.26
+
+### Patch Changes
+
+- [#9435](https://github.com/wso2/identity-apps/pull/9435) [`fe739bc8de18f09c3e3bf894b690a47ca5efb6e4`](https://github.com/wso2/identity-apps/commit/fe739bc8de18f09c3e3bf894b690a47ca5efb6e4) Thanks [@piraveena](https://github.com/piraveena)! - Improve device code api
+
+* [#9423](https://github.com/wso2/identity-apps/pull/9423) [`8491b27d308e57a9c80a9e8f5855601d0b3f57c7`](https://github.com/wso2/identity-apps/commit/8491b27d308e57a9c80a9e8f5855601d0b3f57c7) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Sort the claims in the self-registration page according to display order.
+
+## 3.3.25
+
+### Patch Changes
+
+- [#9253](https://github.com/wso2/identity-apps/pull/9253) [`287114f2219a9e306824d24a17eddc42445212a7`](https://github.com/wso2/identity-apps/commit/287114f2219a9e306824d24a17eddc42445212a7) Thanks [@UpekshaGalappaththi](https://github.com/UpekshaGalappaththi)! - Adding j2 template for authenticator population validation
+
 ## 3.3.24
 
 ### Patch Changes

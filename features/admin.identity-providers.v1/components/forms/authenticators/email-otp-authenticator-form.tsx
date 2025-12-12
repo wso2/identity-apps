@@ -99,6 +99,14 @@ interface EmailOTPAuthenticatorFormInitialValuesInterface {
      * Allow OTP token to have mix of 0-9 and A-Z characters.
      */
     EmailOTP_UseAlphanumericChars: boolean;
+    /**
+     * Number of Email OTP resend attempts
+     */
+    EmailOTP_ResendAttemptsCount: number;
+    /**
+     * Time duration to block resend attempts
+     */
+    EmailOTP_ResendBlockDuration: number;
 }
 
 /**
@@ -117,6 +125,14 @@ interface EmailOTPAuthenticatorFormFieldsInterface {
      * Allow OTP token to have 0-9 characters only field.
      */
     EmailOTP_UseAlphanumericChars: CommonAuthenticatorFormFieldInterface;
+    /**
+     * Number of Email OTP resend attempts
+     */
+    EmailOTP_ResendAttemptsCount: CommonAuthenticatorFormFieldInterface;
+    /**
+     * Time duration to block resend attempts
+     */
+    EmailOTP_ResendBlockDuration: CommonAuthenticatorFormFieldInterface;
 }
 
 /**
@@ -135,6 +151,15 @@ export interface EmailOTPAuthenticatorFormErrorValidationsInterface {
      * Allow OTP token to have 0-9 characters only field.
      */
     EmailOTP_UseAlphanumericChars: string;
+    /**
+     * Number of Email OTP resend attempts
+     */
+    EmailOTP_ResendAttemptsCount: string;
+    /**
+     * Time duration to block resend attempts
+     */
+    EmailOTP_ResendBlockDuration: string;
+
 }
 
 const FORM_ID: string = "email-otp-authenticator-form";
@@ -164,7 +189,7 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
     const [ , setFormFields ] = useState<EmailOTPAuthenticatorFormFieldsInterface>(undefined);
     const [ initialValues, setInitialValues ] = useState<EmailOTPAuthenticatorFormInitialValuesInterface>(undefined);
 
-    // SMS OTP length unit is set to digits or characters according to the state of this variable
+    // Email OTP length unit is set to digits or characters according to the state of this variable
     const [ isOTPAlphanumeric, setIsOTPAlphanumeric ] = useState<boolean>();
 
     /**
@@ -278,6 +303,8 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
         const errors: EmailOTPAuthenticatorFormErrorValidationsInterface = {
             EmailOTP_ExpiryTime: undefined,
             EmailOTP_OTPLength: undefined,
+            EmailOTP_ResendAttemptsCount: undefined,
+            EmailOTP_ResendBlockDuration: undefined,
             EmailOTP_UseAlphanumericChars: undefined
         };
 
@@ -316,6 +343,41 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
                 `.authenticatorSettings.emailOTP.tokenLength.validations.range.${
                     isOTPAlphanumeric ? "characters" : "digits"
                 }`);
+        }
+
+        if (!values.EmailOTP_ResendAttemptsCount) {
+            // Check for required error.
+            errors.EmailOTP_ResendAttemptsCount = t("authenticationProvider:forms" +
+                        ".authenticatorSettings.emailOTP.allowedResendAttemptCount.validations.required");
+        } else if (!FormValidation.isInteger(values.EmailOTP_ResendAttemptsCount as unknown as number)) {
+            // Check for invalid input.
+            errors.EmailOTP_ResendAttemptsCount = t("authenticationProvider:forms" +
+                        ".authenticatorSettings.emailOTP.allowedResendAttemptCount.validations.invalid");
+        } else if (values.EmailOTP_ResendAttemptsCount < ConnectionUIConstants
+            .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE
+                    || (values.EmailOTP_ResendAttemptsCount > ConnectionUIConstants
+                        .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS
+                        .ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE)) {
+            // Check for invalid range.
+            errors.EmailOTP_ResendAttemptsCount = t("authenticationProvider:forms" +
+                        ".authenticatorSettings.emailOTP.allowedResendAttemptCount.validations.range");
+        }
+
+        if (!values.EmailOTP_ResendBlockDuration) {
+            // Check for required error.
+            errors.EmailOTP_ResendBlockDuration = t("authenticationProvider:forms" +
+                        ".authenticatorSettings.emailOTP.resendBlockDuration.validations.required");
+        } else if (!FormValidation.isInteger(values.EmailOTP_ResendBlockDuration as unknown as number)) {
+            // Check for invalid input.
+            errors.EmailOTP_ResendBlockDuration = t("authenticationProvider:forms" +
+                        ".authenticatorSettings.emailOTP.resendBlockDuration.validations.invalid");
+        } else if (values.EmailOTP_ResendBlockDuration < ConnectionUIConstants
+            .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_BLOCK_DURATION_MIN_VALUE
+                    || (values.EmailOTP_ResendBlockDuration > ConnectionUIConstants
+                        .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_BLOCK_DURATION_MAX_VALUE)) {
+            // Check for invalid range.
+            errors.EmailOTP_ResendBlockDuration = t("authenticationProvider:forms" +
+                        ".authenticatorSettings.emailOTP.resendBlockDuration.validations.range");
         }
 
         return errors;
@@ -444,6 +506,112 @@ export const EmailOTPAuthenticatorForm: FunctionComponent<EmailOTPAuthenticatorF
                     {
                         t("authenticationProvider:forms.authenticatorSettings" +
                             `.emailOTP.tokenLength.unit.${isOTPAlphanumeric? "characters" : "digits"}`)
+                    }
+                </Label>
+            </Field.Input>
+            <Field.Input
+                ariaLabel="Allowed Resend Attempts"
+                inputType="number"
+                name="EmailOTP_ResendAttemptsCount"
+                labelPosition="right"
+                label={
+                    t("authenticationProvider:forms.authenticatorSettings" +
+                                    ".emailOTP.allowedResendAttemptCount.label")
+                }
+                placeholder={
+                    t("authenticationProvider:forms.authenticatorSettings" +
+                                    ".emailOTP.allowedResendAttemptCount.placeholder")
+                }
+                hint={
+                    (<Trans
+                        i18nKey={
+                            "authenticationProvider:forms.authenticatorSettings" +
+                                        ".emailOTP.allowedResendAttemptCount.hint"
+                        }
+                    >
+                        Users will be limited to the specified resend attempt count when trying to resend the Email OTP
+                        code.
+                    </Trans>)
+                }
+                required={ true }
+                readOnly={ readOnly }
+                max={
+                    ConnectionUIConstants
+                        .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MAX_VALUE
+                }
+                min={
+                    ConnectionUIConstants
+                        .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MIN_VALUE
+                }
+                maxLength={
+                    ConnectionUIConstants
+                        .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MAX_LENGTH
+                }
+                minLength={
+                    ConnectionUIConstants
+                        .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.ALLOWED_RESEND_ATTEMPT_COUNT_MIN_LENGTH
+                }
+                width={ 12 }
+                data-testid={ `${ testId }-allowed-resend-attempt-count` }
+            >
+                <input />
+                <Label>
+                    {
+                        t("authenticationProvider:forms.authenticatorSettings" +
+                                        ".emailOTP.allowedResendAttemptCount.unit")
+                    }
+                </Label>
+            </Field.Input>
+            <Field.Input
+                ariaLabel="Time duration to block resend attempts"
+                inputType="number"
+                name="EmailOTP_ResendBlockDuration"
+                labelPosition="right"
+                label={
+                    t("authenticationProvider:forms.authenticatorSettings" +
+                                    ".emailOTP.resendBlockDuration.label")
+                }
+                placeholder={
+                    t("authenticationProvider:forms.authenticatorSettings" +
+                                    ".emailOTP.resendBlockDuration.placeholder")
+                }
+                hint={
+                    (<Trans
+                        i18nKey={
+                            "authenticationProvider:forms.authenticatorSettings" +
+                                        ".emailOTP.resendBlockDuration.hint"
+                        }
+                    >
+                        Users will be blocked from resending the OTP for the specified duration upon exceeding
+                        the allowed resend attempts.
+                    </Trans>)
+                }
+                required={ true }
+                readOnly={ readOnly }
+                max={
+                    ConnectionUIConstants
+                        .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_BLOCK_DURATION_MAX_VALUE
+                }
+                min={
+                    ConnectionUIConstants
+                        .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_BLOCK_DURATION_MIN_VALUE
+                }
+                maxLength={
+                    ConnectionUIConstants
+                        .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_BLOCK_DURATION_MAX_LENGTH
+                }
+                minLength={
+                    ConnectionUIConstants
+                        .EMAIL_OTP_AUTHENTICATOR_SETTINGS_FORM_FIELD_CONSTRAINTS.RESEND_BLOCK_DURATION_MIN_LENGTH
+                }
+                width={ 12 }
+                data-testid={ `${ testId }-resend-block-duration` }
+            >
+                <input />
+                <Label>
+                    {
+                        t("authenticationProvider:forms.authenticatorSettings" +
+                                        ".emailOTP.resendBlockDuration.unit")
                     }
                 </Label>
             </Field.Input>

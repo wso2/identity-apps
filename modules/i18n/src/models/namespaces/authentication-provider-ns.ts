@@ -285,6 +285,28 @@ export interface AuthenticationProviderNS {
                         required: string;
                     };
                 };
+                allowedResendAttemptCount: {
+                    hint: string;
+                    label: string;
+                    placeholder: string;
+                    unit: string;
+                    validations: {
+                        required: string;
+                        invalid: string;
+                        range: string;
+                    };
+                };
+                resendBlockDuration: {
+                    hint: string;
+                    label: string;
+                    placeholder: string;
+                    unit: string;
+                    validations: {
+                        required: string;
+                        invalid: string;
+                        range: string;
+                    };
+                };
                 useAlphanumericChars: {
                     hint: string;
                     label: string;
@@ -341,6 +363,18 @@ export interface AuthenticationProviderNS {
                         range: string;
                     };
                 };
+                resendBlockDuration: {
+                    hint: string;
+                    label: string;
+                    placeholder: string;
+                    unit: string;
+                    validations: {
+                        required: string;
+                        invalid: string;
+                        range: string;
+                    };
+                };
+
             };
             push: {
                 hint: string;
@@ -911,6 +945,10 @@ export interface AuthenticationProviderNS {
                 validations: {
                     invalid: string;
                 }
+            };
+            idpType: {
+                trustedTokenIssuer: string;
+                externalIdP: string;
             };
         };
         jitProvisioning: {

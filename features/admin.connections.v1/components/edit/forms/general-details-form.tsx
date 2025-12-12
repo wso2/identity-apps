@@ -334,8 +334,16 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                     name="idpIssuerName"
                                     label={ t("authenticationProvider:forms." +
                                         "generalDetails.issuer.label") }
-                                    hint={ t("authenticationProvider:forms." +
-                                        "generalDetails.issuer.hint") }
+                                    hint={ t("authenticationProvider:forms.generalDetails.issuer.hint", {
+                                        idpType: templateType === CommonAuthenticatorConstants
+                                            .CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                                            ? t(
+                                                "authenticationProvider:forms.generalDetails.idpType.trustedTokenIssuer"
+                                            )
+                                            : t(
+                                                "authenticationProvider:forms.generalDetails.idpType.externalIdP"
+                                            )
+                                    }) }
                                     required={
                                         templateType === CommonAuthenticatorConstants
                                             .CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
@@ -371,8 +379,18 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                         "forms.generalDetails.name.validations.empty") }
                                     placeholder={ t("authenticationProvider:forms." +
                                         "generalDetails.alias.placeholder") }
-                                    hint={ t("authenticationProvider:forms." +
-                                        "generalDetails.alias.hint", { productName: config.ui.productName }) }
+                                    hint={ t("authenticationProvider:forms.generalDetails.alias.hint", {
+                                        idpType: templateType === CommonAuthenticatorConstants
+                                            .CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER
+                                            ? t(
+                                                "authenticationProvider:forms.generalDetails.idpType.trustedTokenIssuer"
+                                            )
+                                            : t(
+                                                "authenticationProvider:forms.generalDetails.idpType.externalIdP"
+                                            ),
+                                        productName: config.ui.productName
+
+                                    }) }
                                     validation={ (value: string) => aliasValidation(value) }
                                     value={ editingIDP.alias }
                                     maxLength={ ConnectionUIConstants.IDP_NAME_LENGTH.max }

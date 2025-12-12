@@ -37,6 +37,7 @@
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL" %>
 <%@ page import="org.wso2.carbon.identity.core.URLBuilderException" %>
 <%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
 <%@ page import="org.json.JSONArray" %>
 <%@ page import="org.json.JSONObject" %>
 
@@ -78,6 +79,8 @@
     Boolean isMultiAttributeLoginEnabledInTenant;
     String allowedAttributes;
 
+    Boolean preserveCaseSensitivityEnabled = Boolean.parseBoolean(IdentityUtil.getProperty("IdentifierFirst.PreserveCaseSensitivity.Enabled"));
+
     if (StringUtils.isNotBlank(emailUsernameEnable)) {
         isEmailUsernameEnabled = Boolean.valueOf(emailUsernameEnable);
     } else {
@@ -100,7 +103,7 @@
     if (isEmailUsernameEnabled == true) {
         usernameLabel = "email.username";
     } else if (isMultiAttributeLoginEnabledInTenant) {
-        usernameLabel = getUsernameLabel(resourceBundle, allowedAttributes);
+        usernameLabel = getUsernameLabel(resourceBundle, allowedAttributes, tenantDomain);
         usernamePlaceHolder = "enter.your.identifier";
     }
 %>
@@ -198,7 +201,11 @@
                         showUsernameInvalidMessage();
                     }
 
-                    userName.value = sanitizedUsername.toLowerCase();
+                    if (<%=preserveCaseSensitivityEnabled%>) {
+                        userName.value = sanitizedUsername;
+                    } else {
+                        userName.value = sanitizedUsername.toLowerCase();
+                    }
                 }
 
                 var genericReCaptchaEnabled = "<%=genericReCaptchaEnabled%>";

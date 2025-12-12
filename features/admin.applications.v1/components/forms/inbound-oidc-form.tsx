@@ -280,6 +280,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         isTokenBindingTypeSelected,
         setIsTokenBindingTypeSelected
     ] = useState<boolean>(false);
+    const [ currentBindingType, setCurrentBindingType ] = useState<string>("");
     const [ callbackURLsErrorLabel, setCallbackURLsErrorLabel ] = useState<ReactElement>(null);
     const [ allowedOriginsErrorLabel, setAllowedOriginsErrorLabel ] = useState<ReactElement>(null);
     const [ , setPEMSelected ] = useState<boolean>(false);
@@ -299,6 +300,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ isSubjectTokenEnabled, setIsSubjectTokenEnabled ] = useState<boolean>(false);
     const [ isSubjectTokenFeatureAvailable, setIsSubjectTokenFeatureAvailable ] = useState<boolean>(false);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const isLegacySessionBoundTokenBehaviourEnabled: boolean = config?.ui?.enableLegacySessionBoundTokenBehaviour;
 
     const clientSecret: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const grant: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
@@ -1265,9 +1267,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 // Remove un-allowed grant types.
                 if (template
                     && template.id
-                    && get(applicationConfig.allowedGrantTypes, template.id)
-                    && !applicationConfig.allowedGrantTypes[ isSubOrganization() ? "sub-organization-application" :
-                        template.id ].includes(name)
+                    && get(applicationConfig.getAllowedGrantTypes(orgType), template.id)
+                    && !applicationConfig.getAllowedGrantTypes(orgType)[ template.id ].includes(name)
                     && ApplicationManagementConstants.AVAILABLE_GRANT_TYPES.includes(name)) {
 
                     return;
@@ -1275,7 +1276,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
                 if (
                     template?.[ApplicationManagementConstants.ORIGINAL_TEMPLATE_ID_PROPERTY] &&
-                    !applicationConfig.allowedGrantTypes[
+                    !applicationConfig.getAllowedGrantTypes(orgType)[
                         template[ApplicationManagementConstants.ORIGINAL_TEMPLATE_ID_PROPERTY]]?.includes(name)
                 ) {
                     return;
@@ -1780,6 +1781,23 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }, [ initialValues ]
     );
 
+    useEffect(
+        () => {
+            let bindingType: string = SupportedAccessTokenBindingTypes.NONE;
+
+            if (initialValues?.accessToken?.bindingType) {
+                bindingType = initialValues.accessToken.bindingType;
+            } else if (isFAPIApplication) {
+                bindingType = SupportedAccessTokenBindingTypes.CERTIFICATE;
+            } else if (metadata?.accessTokenBindingType?.defaultValue) {
+                bindingType = metadata.accessTokenBindingType.defaultValue;
+            }
+            setCurrentBindingType(bindingType);
+        }, [
+            initialValues?.accessToken?.bindingType,
+            metadata?.accessTokenBindingType?.defaultValue,
+            isFAPIApplication
+        ]);
     /**
     The following function is used to reset the client authentication method if public client is selected
     *
@@ -2326,6 +2344,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 && !isSystemApplication
                 && !isDefaultApplication
                 && !isM2MApplication
+                && !isSubOrganization()
                 && (
                     <Grid.Row columns={ 2 } data-componentid={ testId + "-hybrid-flow" }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -2975,6 +2994,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 readOnly={ readOnly || isFAPIApplication }
                                 data-testid={ `${ testId }-access-token-type-radio-group` }
                                 listen={ (values: Map<string, FormValue>) => {
+                                    setCurrentBindingType(values.get("bindingType") as string);
                                     setIsTokenBindingTypeSelected(
                                         values.get("bindingType") !== SupportedAccessTokenBindingTypes.NONE
                                     );
@@ -3052,41 +3072,48 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         ) }
                         <Grid.Row columns={ 1 } data-componentid={ testId + "-revoke-access-token-upon-user-logout" }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Field
-                                    ref={ revokeAccessToken }
-                                    name="RevokeAccessToken"
-                                    label=""
-                                    required={ false }
-                                    requiredErrorMessage=""
-                                    type="checkbox"
-                                    value={
-                                        initialValues?.accessToken?.revokeTokensWhenIDPSessionTerminated
-                                            ? [ "revokeAccessToken" ]
-                                            : []
-                                    }
-                                    children={ [
-                                        {
-                                            label: t("applications:forms.inboundOIDC" +
-                                                ".sections.accessToken.fields.revokeToken.label"),
-                                            value: "revokeAccessToken"
-                                        }
-                                    ] }
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-access-token-revoke-token-checkbox` }
-                                />
-                                <Hint>
-                                    <Trans
-                                        i18nKey={
-                                            "applications:forms.inboundOIDC.sections" +
-                                            ".accessToken.fields.revokeToken.hint"
-                                        }
-                                    >
-                                        Allow revoking tokens of this application when a bound IDP session gets
-                                        terminated through a user logout. Remember to include either
-                                        <Code withBackground>client_id</Code> or
-                                        <Code withBackground>id_token_hint</Code> in the logout request.
-                                    </Trans>
-                                </Hint>
+                                { (currentBindingType !== SupportedAccessTokenBindingTypes.SSO_SESSION
+                                        || isLegacySessionBoundTokenBehaviourEnabled) && (
+                                    <>
+                                        <Field
+                                            ref={ revokeAccessToken }
+                                            name="RevokeAccessToken"
+                                            label=""
+                                            required={ false }
+                                            requiredErrorMessage=""
+                                            type="checkbox"
+                                            value={
+                                                initialValues?.accessToken?.revokeTokensWhenIDPSessionTerminated
+                                                    ? [ "revokeAccessToken" ]
+                                                    : []
+                                            }
+                                            children={ [
+                                                {
+                                                    label: t(
+                                                        "applications:forms.inboundOIDC.sections" +
+                                                        ".accessToken.fields.revokeToken.label"
+                                                    ),
+                                                    value: "revokeAccessToken"
+                                                }
+                                            ] }
+                                            readOnly={ readOnly }
+                                            data-testid={ `${testId}-access-token-revoke-token-checkbox` }
+                                        />
+                                        <Hint>
+                                            <Trans
+                                                i18nKey={
+                                                    "applications:forms.inboundOIDC.sections.accessToken" +
+                                                    ".fields.revokeToken.hint"
+                                                }
+                                            >
+                                                Allow revoking tokens of this application when a bound IDP session gets
+                                                terminated through a user logout. Remember to include either
+                                                <Code withBackground>client_id</Code> or
+                                                <Code withBackground>id_token_hint</Code> in the logout request.
+                                            </Trans>
+                                        </Hint>
+                                    </>
+                                ) }
                             </Grid.Column>
                         </Grid.Row>
                     </div>
@@ -3882,7 +3909,15 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             <Divider hidden />
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                            <Heading as="h4">Logout URLs</Heading>
+                            <Heading as="h4">
+                                {
+                                    applicationConfig.inboundOIDCForm.showFrontChannelLogout
+                                        ? t("applications:forms.inboundOIDC.sections" +
+                                            ".logoutURLs.heading")
+                                        : t("applications:forms.inboundOIDC.sections" +
+                                            ".logoutURLs.headingSingular")
+                                }
+                            </Heading>
                             <Divider hidden />
                             <Field
                                 ref={ backChannelLogoutUrl }

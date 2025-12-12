@@ -1996,7 +1996,8 @@ export const applications: ApplicationsNS = {
                             }
                         }
                     },
-                    heading: "PKCE"
+                    heading: "Logout URLs",
+                    headingSingular: "Logout URL"
                 },
                 pkce: {
                     description: "The default method used by {{productName}} to generate the challenge " +
@@ -2822,6 +2823,7 @@ export const applications: ApplicationsNS = {
         enabledFeatures: {
             tags: {
                 premium: {
+                    info: "Unlock conditional authentication scripting with our Enterprise plan. <1>Contact sales</1> to upgrade.",
                     warning: "This is a premium feature and will soon be disabled for the free subscription plan. Upgrade your subscription for uninterrupted access to this feature."
                 }
             }

@@ -72,4 +72,9 @@ export class ApplicationTemplateConstants {
         "single-page-application",
         "traditional-web-application"
     ];
+
+    public static readonly ALLOWED_APP_TEMPLATES_FOR_SUB_ORGANIZATIONS: string[] = [
+        "m2m-application",
+        "custom-application"
+    ];
 }

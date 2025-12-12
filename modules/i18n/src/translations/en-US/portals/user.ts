@@ -233,6 +233,8 @@ export const user: userNS = {
                 emailInvalid: "To invite users to set the password, please enter a valid email address.",
                 emailVerificationDisabled: "To invite users to set the password, enable email invitations " +
                     "for user password setup from <1>Login & Registration settings</1>.",
+                emailVerificationDisabledWithFlows: "To invite users to set the password, enable the invitation flow " +
+                    "settings from the <1>Invited User Registration Flow Builder</1>.",
                 inviteOffline: "Invite offline",
                 inviteViaEmail: "Invite via email",
                 inviteViaSMS: "Invite via SMS",

@@ -30,10 +30,6 @@ import Typography from "@oxygen-ui/react/Typography";
 import { DiamondIcon, GearIcon, PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
 import {
     FeatureAccessConfigInterface,
-    FeatureStatus,
-    FeatureTags,
-    useCheckFeatureStatus,
-    useCheckFeatureTags,
     useRequiredScopes
 } from "@wso2is/access-control";
 import { getOperationIcons } from "@wso2is/admin.core.v1/configs/ui";
@@ -41,6 +37,7 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
+import useFeatureGate, { UseFeatureGateInterface } from "@wso2is/admin.feature-gate.v1/hooks/use-feature-gate";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
 import {
     ENFORCE_SCRIPT_UPDATE_PERMISSION_FEATURE_ID,
@@ -56,8 +53,6 @@ import { deleteSecret, getSecretList } from "@wso2is/admin.secrets.v1/api/secret
 import AddSecretWizard from "@wso2is/admin.secrets.v1/components/add-secret-wizard";
 import { ADAPTIVE_SCRIPT_SECRETS } from "@wso2is/admin.secrets.v1/constants/secrets.common";
 import { GetSecretListResponse, SecretModel } from "@wso2is/admin.secrets.v1/models/secret";
-import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
-import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
 import { UIConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
@@ -112,6 +107,7 @@ import {
 } from "../../../../models/application";
 import { AdaptiveScriptUtils } from "../../../../utils/adaptive-script-utils";
 import "./script-based-flow.scss";
+import ConditionalAuthPremiumBanner from "../../../banners/conditional-auth-premium-banner";
 
 /**
  * Proptypes for the adaptive scripts component.
@@ -203,9 +199,6 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
     const [ isEditorFullScreen, setIsEditorFullScreen ] = useState<boolean>(false);
     const [ showAddSecretModal, setShowAddSecretModal ] = useState<boolean>(false);
     const [ editorInstance, setEditorInstance ] = useState<codemirror.Editor>(undefined);
-    const adaptiveFeatureStatus : FeatureStatus = useCheckFeatureStatus("console.application.signIn.adaptiveAuth");
-    const adaptiveFeatureTags: string[] = useCheckFeatureTags("console.application.signIn.adaptiveAuth");
-    const [ isPremiumFeature, setIsPremiumFeature ] = useState<boolean>(false);
     const [ isELKConfigureClicked, setIsELKConfigureClicked ] = useState<boolean>(false);
     const [ isDropdownOpen, setIsDropdownOpen ] = useState<boolean>(false);
     const [ secretsDropdownAnchorEl, setSecretsDropdownAnchorEl ] = useState<null | HTMLElement>(null);
@@ -241,7 +234,9 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         useRequiredScopes(applicationsFeatureConfig?.subFeatures?.applicationAuthenticationScript?.scopes?.update);
     const isScriptUpdateReadOnly: boolean = isScriptUpdatePermissionEnforced && !hasScriptUpdatePermission;
 
-    const { tierName }: UseSubscriptionInterface = useSubscription();
+    const { conditionalAuthPremiumFeature }: UseFeatureGateInterface = useFeatureGate();
+
+    const isPremiumOrReadOnly: boolean = readOnly || conditionalAuthPremiumFeature;
 
     /**
      * Calls method to load secrets to secret list.
@@ -288,17 +283,6 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         }
 
     };
-
-    /**
-     * Check if the feature is a premium.
-     */
-    useEffect(() => {
-        if (adaptiveFeatureStatus === FeatureStatus.ENABLED
-            && adaptiveFeatureTags?.includes(FeatureTags.PREMIUM)
-            && tierName === TenantTier.FREE) {
-            setIsPremiumFeature(true);
-        }
-    }, []);
 
     /**
      * Calls method to load secrets to refresh secret list.
@@ -401,7 +385,9 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
             width = `calc(100% - ${ authTemplatesSidePanelRef?.current?.ref?.current?.offsetWidth }px)`;
         }
 
-        scriptEditorSectionRef.current.style.width = width;
+        if (scriptEditorSectionRef.current) {
+            scriptEditorSectionRef.current.style.width = width;
+        }
     };
 
     /**
@@ -1292,7 +1278,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                             <>
                                 <div className="conditional-auth-accordion-title">
                                     {
-                                        !readOnly && !isScriptUpdateReadOnly && (
+                                        !isPremiumOrReadOnly && !isScriptUpdateReadOnly && (
                                             <Checkbox
                                                 toggle
                                                 data-tourid="conditional-auth"
@@ -1333,30 +1319,14 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                 />)
                                             }
                                             {
-                                                isPremiumFeature && (
-                                                    <Popup
-                                                        basic
-                                                        inverted
-                                                        position="top center"
-                                                        content={
-                                                            (<p>
-                                                                {
-                                                                    t("applications:featureGate.enabledFeatures.tags." +
-                                                                    "premium.warning")
-                                                                }
-                                                            </p>)
-                                                        }
-                                                        trigger={ (
-                                                            <Chip
-                                                                icon = { <DiamondIcon /> }
-                                                                label={ t(FeatureStatusLabel.PREMIUM) }
-                                                                className="oxygen-menu-item-chip oxygen-chip-premium"
-                                                                style={ { height: "fit-content" } }
-                                                            />
-                                                        ) }
+                                                isPremiumOrReadOnly && (
+                                                    <Chip
+                                                        icon = { <DiamondIcon /> }
+                                                        label={ t(FeatureStatusLabel.PREMIUM) }
+                                                        className="oxygen-menu-item-chip oxygen-chip-premium"
+                                                        style={ { height: "fit-content" } }
                                                     />
-                                                )
-                                            }
+                                                ) }
                                         </Heading>
                                         <Text muted compact>
                                             {
@@ -1374,6 +1344,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                     </div>
                                 </div>
                                 { renderConditionalAuthTour() }
+                                { conditionalAuthPremiumFeature && (<ConditionalAuthPremiumBanner />) }
                             </>
                         ) }
                         hideChevron={ true }
@@ -1383,164 +1354,169 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                         className="conditional-auth-accordion-content"
                         data-componentid={ `${ componentId }-accordion-content` }
                     >
-                        <Sidebar.Pushable className="script-editor-with-template-panel no-border">
-                            { !readOnly && (
-                                <ScriptTemplatesSidePanel
-                                    onELKModalClose={ () => setIsELKConfigureClicked(false) }
-                                    isELKConfigureClicked={ isELKConfigureClicked }
-                                    title={
-                                        t("applications:edit.sections" +
-                                            ".signOnMethod.sections" +
-                                            ".authenticationFlow.sections.scriptBased.editor.templates.heading")
-                                    }
-                                    ref={ authTemplatesSidePanelRef }
-                                    onTemplateSelect={ (template: AdaptiveAuthTemplateInterface) => {
-                                        setSelectedAdaptiveAuthTemplate(template);
-                                        setShowScriptTemplateChangeWarning(true);
-                                    } }
-                                    templates={
-                                        scriptTemplates?.templatesJSON &&
-                                        Object.values(scriptTemplates.templatesJSON)
-                                    }
-                                    visible={ showAuthTemplatesSidePanel }
-                                    readOnly={ readOnly }
-                                    data-componentid={ `${ componentId }-script-templates-side-panel` }
-                                />
-                            ) }
-                            <Sidebar.Pusher>
-                                <div className="script-editor-container" ref={ scriptEditorSectionRef }>
-                                    <Menu attached="top" className="action-panel" secondary>
-                                        <Menu.Menu position="right">
-                                            { resolveApiDocumentationLink() }
-                                            { featureConfig?.secretsManagement?.enabled &&
-                                              hasSecretMgtReadPermissions && (
-                                                <Menu.Item
-                                                    className={ `action ${ isDropdownOpen
-                                                        ? "selected-secret"
-                                                        : ""
-                                                    }` }>
-                                                    <div>
-                                                        { renderSecretListDropdown() }
-                                                    </div>
-                                                </Menu.Item>
-                                            ) }
-                                            <Menu.Item className="action">
-                                                <Tooltip
-                                                    compact
-                                                    trigger={ (
-                                                        <div>
-                                                            <GenericIcon
-                                                                hoverable
-                                                                transparent
-                                                                defaultIcon
-                                                                size="micro"
-                                                                hoverType="rounded"
-                                                                icon={ getOperationIcons().maximize }
-                                                                onClick={ () => {
-                                                                    setIsEditorFullScreen(!isEditorFullScreen);
-                                                                } }
-                                                                data-componentid={
-                                                                    `${ componentId }-code-editor-fullscreen-toggle`
-                                                                }
-                                                            />
-                                                        </div>
+                        { !(conditionalAuthPremiumFeature && !authenticationSequence?.script) && (
+                            <Sidebar.Pushable className="script-editor-with-template-panel no-border">
+                                { !isPremiumOrReadOnly && (
+                                    <ScriptTemplatesSidePanel
+                                        onELKModalClose={ () => setIsELKConfigureClicked(false) }
+                                        isELKConfigureClicked={ isELKConfigureClicked }
+                                        title={
+                                            t("applications:edit.sections" +
+                                                ".signOnMethod.sections" +
+                                                ".authenticationFlow.sections.scriptBased.editor.templates.heading")
+                                        }
+                                        ref={ authTemplatesSidePanelRef }
+                                        onTemplateSelect={ (template: AdaptiveAuthTemplateInterface) => {
+                                            setSelectedAdaptiveAuthTemplate(template);
+                                            setShowScriptTemplateChangeWarning(true);
+                                        } }
+                                        templates={
+                                            scriptTemplates?.templatesJSON &&
+                                            Object.values(scriptTemplates.templatesJSON)
+                                        }
+                                        visible={ showAuthTemplatesSidePanel }
+                                        readOnly={ isPremiumOrReadOnly }
+                                        data-componentid={ `${ componentId }-script-templates-side-panel` }
+                                    />
+                                ) }
+                                <Sidebar.Pusher>
+                                    <div className="script-editor-container" ref={ scriptEditorSectionRef }>
+                                        { !conditionalAuthPremiumFeature && (
+                                            <Menu attached="top" className="action-panel" secondary>
+                                                <Menu.Menu position="right">
+                                                    { resolveApiDocumentationLink() }
+                                                    { featureConfig?.secretsManagement?.enabled &&
+                                                    hasSecretMgtReadPermissions && (
+                                                        <Menu.Item
+                                                            className={ `action ${ isDropdownOpen
+                                                                ? "selected-secret"
+                                                                : ""
+                                                            }` }>
+                                                            <div>
+                                                                { renderSecretListDropdown() }
+                                                            </div>
+                                                        </Menu.Item>
                                                     ) }
-                                                    content={ () => {
-                                                        // Need to delay the `Exit Full Screen` text a bit.
-                                                        let content: string = t("common:goFullScreen");
+                                                    <Menu.Item className="action">
+                                                        <Tooltip
+                                                            compact
+                                                            trigger={ (
+                                                                <div>
+                                                                    <GenericIcon
+                                                                        hoverable
+                                                                        transparent
+                                                                        defaultIcon
+                                                                        size="micro"
+                                                                        hoverType="rounded"
+                                                                        icon={ getOperationIcons().maximize }
+                                                                        onClick={ () => {
+                                                                            setIsEditorFullScreen(!isEditorFullScreen);
+                                                                        } }
+                                                                        data-componentid={
+                                                                            `${ componentId }-code-editor-
+                                                                            fullscreen-toggle`
+                                                                        }
+                                                                    />
+                                                                </div>
+                                                            ) }
+                                                            content={ () => {
+                                                                // Need to delay the `Exit Full Screen` text a bit.
+                                                                let content: string = t("common:goFullScreen");
 
-                                                        if (isEditorFullScreen) {
-                                                            setTimeout(() => {
-                                                                content = t("common:exitFullScreen");
-                                                            }, 500);
-                                                        }
+                                                                if (isEditorFullScreen) {
+                                                                    setTimeout(() => {
+                                                                        content = t("common:exitFullScreen");
+                                                                    }, 500);
+                                                                }
 
-                                                        return content;
-                                                    } }
-                                                    size="mini"
-                                                />
-                                            </Menu.Item>
-                                            <Menu.Item className="action">
-                                                <Tooltip
-                                                    compact
-                                                    trigger={ (
-                                                        <div>
-                                                            <GenericIcon
-                                                                hoverable
-                                                                defaultIcon
-                                                                transparent
-                                                                size="micro"
-                                                                hoverType="rounded"
-                                                                icon={
-                                                                    isEditorDarkMode
-                                                                        ? getOperationIcons().lightMode
-                                                                        : getOperationIcons().darkMode
-                                                                }
-                                                                onClick={ handleEditorDarkModeToggle }
-                                                                data-componentid={
-                                                                    `${ componentId }-code-editor-mode-toggle`
-                                                                }
-                                                            />
-                                                        </div>
+                                                                return content;
+                                                            } }
+                                                            size="mini"
+                                                        />
+                                                    </Menu.Item>
+                                                    <Menu.Item className="action">
+                                                        <Tooltip
+                                                            compact
+                                                            trigger={ (
+                                                                <div>
+                                                                    <GenericIcon
+                                                                        hoverable
+                                                                        defaultIcon
+                                                                        transparent
+                                                                        size="micro"
+                                                                        hoverType="rounded"
+                                                                        icon={
+                                                                            isEditorDarkMode
+                                                                                ? getOperationIcons().lightMode
+                                                                                : getOperationIcons().darkMode
+                                                                        }
+                                                                        onClick={ handleEditorDarkModeToggle }
+                                                                        data-componentid={
+                                                                            `${ componentId }-code-editor-mode-toggle`
+                                                                        }
+                                                                    />
+                                                                </div>
+                                                            ) }
+                                                            content={
+                                                                isEditorDarkMode
+                                                                    ? t("common:lightMode")
+                                                                    : t("common:darkMode")
+                                                            }
+                                                            size="mini"
+                                                        />
+                                                    </Menu.Item>
+                                                    { !isPremiumOrReadOnly && (
+                                                        <Menu.Item
+                                                            onClick={ handleScriptTemplateSidebarToggle }
+                                                            className="action hamburger"
+                                                            data-componentid={
+                                                                `${ componentId }-script-template-sidebar-toggle`
+                                                            }
+                                                        >
+                                                            <Icon name="bars"/>
+                                                        </Menu.Item>
                                                     ) }
-                                                    content={
-                                                        isEditorDarkMode
-                                                            ? t("common:lightMode")
-                                                            : t("common:darkMode")
-                                                    }
-                                                    size="mini"
-                                                />
-                                            </Menu.Item>
-                                            { !readOnly && (
-                                                <Menu.Item
-                                                    onClick={ handleScriptTemplateSidebarToggle }
-                                                    className="action hamburger"
-                                                    data-componentid={
-                                                        `${ componentId }-script-template-sidebar-toggle`
-                                                    }
-                                                >
-                                                    <Icon name="bars"/>
-                                                </Menu.Item>
-                                            ) }
-                                        </Menu.Menu>
-                                    </Menu>
-                                    <div className="code-editor-wrapper">
-                                        <CodeEditor
-                                            editorDidMount={ (editor: codemirror.Editor) => {
-                                                setEditorInstance(editor);
-                                            } }
-                                            lint
-                                            allowFullScreen
-                                            controlledFullScreenMode={ false }
-                                            triggerFullScreen={ isEditorFullScreen }
-                                            language="javascript"
-                                            sourceCode={ sourceCode }
-                                            options={ {
-                                                lineWrapping: true
-                                            } }
-                                            onChange={ (editor: codemirror.Editor,
-                                                data: codemirror.EditorChange,
-                                                value: string) => {
-                                                setInternalScript(value);
-                                                onScriptChange(value);
-                                            } }
-                                            onFullScreenToggle={ (isFullScreen: boolean) => {
-                                                setIsEditorFullScreen(isFullScreen);
-                                                preserveStateOnFullScreenChange();
-                                            } }
-                                            theme={ isEditorDarkMode ? "dark" : "light" }
-                                            readOnly={ readOnly }
-                                            translations={ {
-                                                copyCode: t("common:copyToClipboard"),
-                                                exitFullScreen: t("common:exitFullScreen"),
-                                                goFullScreen: t("common:goFullScreen")
-                                            } }
-                                            data-componentid={ `${ componentId }-code-editor` }
-                                        />
+                                                </Menu.Menu>
+                                            </Menu>
+                                        ) }
+                                        <div className="code-editor-wrapper">
+                                            <CodeEditor
+                                                editorDidMount={ (editor: codemirror.Editor) => {
+                                                    setEditorInstance(editor);
+                                                } }
+                                                lint
+                                                allowFullScreen
+                                                controlledFullScreenMode={ false }
+                                                triggerFullScreen={ isEditorFullScreen }
+                                                language="javascript"
+                                                sourceCode={ sourceCode }
+                                                options={ {
+                                                    lineWrapping: true
+                                                } }
+                                                onChange={ (editor: codemirror.Editor,
+                                                    data: codemirror.EditorChange,
+                                                    value: string) => {
+                                                    setInternalScript(value);
+                                                    onScriptChange(value);
+                                                } }
+                                                onFullScreenToggle={ (isFullScreen: boolean) => {
+                                                    setIsEditorFullScreen(isFullScreen);
+                                                    preserveStateOnFullScreenChange();
+                                                } }
+                                                theme={ isEditorDarkMode ? "dark" : "light" }
+                                                readOnly={ isPremiumOrReadOnly }
+                                                translations={ {
+                                                    copyCode: t("common:copyToClipboard"),
+                                                    exitFullScreen: t("common:exitFullScreen"),
+                                                    goFullScreen: t("common:goFullScreen")
+                                                } }
+                                                data-componentid={ `${ componentId }-code-editor` }
+                                            />
+                                        </div>
                                     </div>
-                                </div>
-                            </Sidebar.Pusher>
-                        </Sidebar.Pushable>
+                                </Sidebar.Pusher>
+                            </Sidebar.Pushable>
+                        ) }
                     </SegmentedAccordion.Content>
                 </SegmentedAccordion>
                 { showAddSecretModal && renderAddSecretModal() }

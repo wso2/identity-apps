@@ -322,6 +322,7 @@
         "enableCustomSmsTemplates": true,
         "enableEmailDomain": false,
         "enableIdentityClaims": true,
+        "enableLegacySessionBoundTokenBehaviour": false,
         "enableOldUIForEmailProvider": false,
         "features": {
             "accountLogin": {
@@ -884,7 +885,7 @@
                     ]
                 }
             },
-            "eventPublishing": {
+            "events": {
                 "disabledFeatures": [],
                 "enabled": true,
                 "featureFlags": [],
@@ -896,7 +897,7 @@
                         "internal_event_config_update"
                     ],
                     "feature": [
-                        "console:eventPublishing"
+                        "console:events"
                     ],
                     "read": [
                         "internal_event_config_view"
@@ -1789,7 +1790,8 @@
             "users": {
                 "disabledFeatures": [
                     "users.add.legacy",
-                    "users.profile.legacy"
+                    "users.profile.legacy",
+                    "users.totalUserCount"
                 ],
                 "enabled": true,
                 "featureFlags": [],
@@ -1983,7 +1985,6 @@
         },
         "selfAppIdentifier": "Console",
         "showAppSwitchButton": true,
-        "showSmsOtpPwdRecoveryFeatureStatusChip": false,
         "showStatusLabelForNewAuthzRuntimeFeatures": false,
         "systemAppsIdentifiers": [
             "Console",

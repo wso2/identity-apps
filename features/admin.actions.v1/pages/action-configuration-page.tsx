@@ -54,6 +54,7 @@ import useGetActionsByType from "../api/use-get-actions-by-type";
 import ActionVersionChips from "../components/action-version-chips";
 import ActionVersionWarningBanner from "../components/action-version-warning-banner";
 import PreIssueAccessTokenActionConfigForm from "../components/pre-issue-access-token-action-config-form";
+import PreIssueIdTokenActionConfigForm from "../components/pre-issue-id-token-action-config-form";
 import PreUpdatePasswordActionConfigForm from "../components/pre-update-password-action-config-form";
 import PreUpdateProfileActionConfigForm from "../components/pre-update-profile-action-config-form";
 import { ActionsConstants } from "../constants/actions-constants";
@@ -105,6 +106,8 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
         switch (actionType) {
             case ActionsConstants.ACTION_TYPES.PRE_ISSUE_ACCESS_TOKEN.getUrlPath():
                 return ActionsConstants.ACTION_TYPES.PRE_ISSUE_ACCESS_TOKEN.getApiPath();
+            case ActionsConstants.ACTION_TYPES.PRE_ISSUE_ID_TOKEN.getUrlPath():
+                return ActionsConstants.ACTION_TYPES.PRE_ISSUE_ID_TOKEN.getApiPath();
             case ActionsConstants.ACTION_TYPES.PRE_UPDATE_PASSWORD.getUrlPath():
                 return ActionsConstants.ACTION_TYPES.PRE_UPDATE_PASSWORD.getApiPath();
             case ActionsConstants.ACTION_TYPES.PRE_UPDATE_PROFILE.getUrlPath():
@@ -275,6 +278,8 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
         switch(actionType) {
             case ActionsConstants.ACTION_TYPES.PRE_ISSUE_ACCESS_TOKEN.getApiPath():
                 return t("actions:types.preIssueAccessToken.heading");
+            case ActionsConstants.ACTION_TYPES.PRE_ISSUE_ID_TOKEN.getApiPath():
+                return t("actions:types.preIssueIdToken.heading");
             case ActionsConstants.ACTION_TYPES.PRE_UPDATE_PASSWORD.getApiPath():
                 return t("actions:types.preUpdatePassword.heading");
             case ActionsConstants.ACTION_TYPES.PRE_UPDATE_PROFILE.getApiPath():
@@ -296,6 +301,20 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                         <DocumentationLink
                             link={
                                 getLink("develop.actions.types.preIssueAccessToken.learnMore")
+                            }
+                            showEmptyLink={ false }
+                        >
+                            { t("common:learnMore") }
+                        </DocumentationLink>
+                    </>
+                );
+            case ActionsConstants.ACTION_TYPES.PRE_ISSUE_ID_TOKEN.getApiPath():
+                return (
+                    <>
+                        { t("actions:types.preIssueIdToken.description.expanded") }
+                        <DocumentationLink
+                            link={
+                                getLink("develop.actions.types.preIssueIdToken.learnMore")
                             }
                             showEmptyLink={ false }
                         >
@@ -483,6 +502,16 @@ const ActionConfigurationPage: FunctionComponent<ActionConfigurationPageInterfac
                         <Grid.Column width={ 16 }>
                             { actionTypeApiPath === ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_API_PATH && (
                                 <PreIssueAccessTokenActionConfigForm
+                                    initialValues={ actionCommonInitialValues }
+                                    isLoading={ isLoading }
+                                    isReadOnly={ isReadOnly() }
+                                    actionTypeApiPath={ actionTypeApiPath }
+                                    isCreateFormState={ showCreateForm }
+                                    versionInfo={ versionInfo }
+                                />
+                            ) }
+                            { actionTypeApiPath === ActionsConstants.PRE_ISSUE_ID_TOKEN_API_PATH && (
+                                <PreIssueIdTokenActionConfigForm
                                     initialValues={ actionCommonInitialValues }
                                     isLoading={ isLoading }
                                     isReadOnly={ isReadOnly() }

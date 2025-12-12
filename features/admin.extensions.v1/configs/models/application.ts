@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { OrganizationType } from "@wso2is/access-control";
 import {
     ExtendedClaimInterface,
     ExtendedExternalClaimInterface,
@@ -47,7 +48,7 @@ export interface ApplicationConfig {
         showReturnAuthenticatedIdPs: boolean;
         showTrustedAppConsentWarning: boolean;
     };
-    allowedGrantTypes: Record<string, string[]>,
+    getAllowedGrantTypes: (orgType: OrganizationType) => Record<string, string[]>,
     generalSettings: {
         getFieldReadOnlyStatus: (application: ApplicationInterface, fieldName: string) => boolean;
     };

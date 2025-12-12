@@ -16,16 +16,19 @@
  * under the License.
  */
 
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import {
     ConnectionTemplateInterface
 } from "@wso2is/admin.connections.v1";
 import { useGetConnectionTemplates } from "@wso2is/admin.connections.v1/api/use-get-connection-templates";
 import {
-    CommonAuthenticatorConstants
+    CommonAuthenticatorConstants,
+    ConnectionsFeatureDictionaryKeys
 } from "@wso2is/admin.connections.v1/constants/common-authenticator-constants";
 import {
     FederatedAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
+import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { AuthenticatorMeta } from "@wso2is/admin.connections.v1/meta/authenticator-meta";
 import { ConnectionsManagementUtils, resolveConnectionName } from "@wso2is/admin.connections.v1/utils/connection-utils";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
@@ -39,6 +42,7 @@ import {
     GenericAuthenticatorInterface
 } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import useAuthenticationFlow from "@wso2is/admin.login-flow-builder.v1/hooks/use-authentication-flow";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
@@ -183,6 +187,8 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     const dispatch: Dispatch = useDispatch();
 
     const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
+    const identityProvidersFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config?.ui?.features?.identityProviders);
 
     // External connection resources URL from the UI config.
     const connectionResourcesUrl: string = UIConfig?.connectionResourcesUrl;
@@ -204,6 +210,15 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
     const [ showAddNewAuthenticatorView, setShowAddNewAuthenticatorView ] = useState<boolean>(false);
     const [ filterLabels, setFilterLabels ] = useState<string[]>([]);
     const [ selectedFilterLabels, setSelectedFilterLabels ] = useState<string[]>([]);
+
+    const isLocalEmailOTPAuthenticatorEnabled: boolean = isFeatureEnabled(
+        identityProvidersFeatureConfig,
+        CommonAuthenticatorConstants.FEATURE_DICTIONARY.get(
+            ConnectionsFeatureDictionaryKeys.LocalEmailOTPAuthenticator));
+    const isLocalSMSOTPAuthenticatorEnabled: boolean = isFeatureEnabled(
+        identityProvidersFeatureConfig,
+        CommonAuthenticatorConstants.FEATURE_DICTIONARY.get(
+            ConnectionsFeatureDictionaryKeys.LocalSMSOTPAuthenticator));
 
     /**
      * Fetch connection templates list when the add new authenticator modal is open.
@@ -287,9 +302,21 @@ export const AddAuthenticatorModal: FunctionComponent<AddAuthenticatorModalProps
                 t(AuthenticatorMeta.getAuthenticatorTypeDisplayName(AuthenticatorCategories.TWO_FACTOR_CUSTOM)))
         ];
 
-        // Remove organization SSO authenticator from the list, as organization SSO authenticator
-        // should be handled automatically in the login flow, based on whether the app is shared or not.
         _filteredAuthenticators = _filteredAuthenticators.filter((authenticator: GenericAuthenticatorInterface) => {
+            // Hide Local Email OTP Authenticator if the feature flag is disabled.
+            if (!isLocalEmailOTPAuthenticatorEnabled &&
+                authenticator.id === LocalAuthenticatorConstants.AUTHENTICATOR_IDS.EMAIL_OTP_AUTHENTICATOR_ID) {
+                return false;
+            }
+
+            // Hide Local SMS OTP Authenticator if the feature flag is disabled.
+            if (!isLocalSMSOTPAuthenticatorEnabled &&
+                authenticator.id === LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID) {
+                return false;
+            }
+
+            // Remove organization SSO authenticator from the list, as organization SSO authenticator
+            // should be handled automatically in the login flow, based on whether the app is shared or not.
             return (
                 authenticator.defaultAuthenticator.name !==
                     FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.ORGANIZATION_ENTERPRISE_AUTHENTICATOR_NAME

@@ -24,7 +24,8 @@ import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
  */
 export enum ClaimFeatureDictionaryKeys {
     MobileVerificationByPrivilegedUsers = "MOBILE_VERIFICATION_BY_PRIVILEGED_USERS",
-    HideUserIdDisplayConfigurations = "HIDE_USER_ID_DISPLAY_CONFIGURATIONS"
+    HideUserIdDisplayConfigurations = "HIDE_USER_ID_DISPLAY_CONFIGURATIONS",
+    SelectiveClaimStoreManagement = "SELECTIVE_CLAIM_STORE_MANAGEMENT"
 }
 
 /**
@@ -50,6 +51,9 @@ export class ClaimManagementConstants {
         .set(
             ClaimFeatureDictionaryKeys.HideUserIdDisplayConfigurations,
             "attributeDialects.userID.general.hideDisplayConfigurations"
+        )
+        .set(ClaimFeatureDictionaryKeys.SelectiveClaimStoreManagement,
+            "attributeDialects.selectiveClaimStoreManagement"
         );
 
     /**
