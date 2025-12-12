@@ -162,7 +162,7 @@
             },
             {
                 "description": "This email is sent to verify the user's email address after an email verification request",
-                "displayName": "Verifiy Email Address",
+                "displayName": "Verify Email Address",
                 "id": "VmVyaWZ5RW1haWxPblVwZGF0ZQ"
             }
         ],
