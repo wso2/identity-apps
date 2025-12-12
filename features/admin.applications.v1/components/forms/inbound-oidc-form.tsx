@@ -241,6 +241,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         applicationFeatureConfig,
         ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG_BACK_CHANNEL_LOGOUT")
     );
+    const isFrontChannelLogoutEnabled: boolean = isFeatureEnabled(
+        applicationFeatureConfig,
+        ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG_FRONT_CHANNEL_LOGOUT")
+    );
     const isEnforceClientSecretPermissionEnabled: boolean = isFeatureEnabled(
         applicationFeatureConfig,
         ApplicationManagementConstants.FEATURE_DICTIONARY.get(
@@ -3959,7 +3963,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     </Grid.Row>
                 )
             }
-            { applicationConfig.inboundOIDCForm.showFrontChannelLogout
+            { isFrontChannelLogoutEnabled
+                && !isSPAApplication
+                && !isSubOrganization()
                 && !isSystemApplication
                 && !isDefaultApplication
                 && (
@@ -3995,9 +4001,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 readOnly={ readOnly }
                                 data-testid={ `${ testId }-front-channel-logout-url-input` }
                             />
+                            <Hint>
+                                { t("applications:forms.inboundOIDC.sections" +
+                                        ".logoutURLs.fields.front.hint", {
+                                    productName: config.ui.productName
+                                }) }
+                            </Hint>
                         </Grid.Column>
                     </Grid.Row>
-                ) }
+                )
+            }
+
             { /*Request Object Signature*/ }
             {
                 !isSPAApplication
