@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.83.5
+
+### Patch Changes
+
+- [#9491](https://github.com/wso2/identity-apps/pull/9491) [`c371bc283ed83f0bfe02b1cdca2dfa82888795c1`](https://github.com/wso2/identity-apps/commit/c371bc283ed83f0bfe02b1cdca2dfa82888795c1) Thanks [@savindi7](https://github.com/savindi7)! - Add Express.js logo.
+
 ## 2.83.4
 
 ### Patch Changes
