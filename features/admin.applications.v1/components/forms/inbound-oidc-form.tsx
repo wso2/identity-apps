@@ -3964,20 +3964,20 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             ".logoutURLs.headingSingular")
                                 }
                             </Heading>
-                            
+
                             { isBackChannelLogoutEnabled && !isSPAApplication && (
                                 <><Field
-                                    ref={backChannelLogoutUrl}
+                                    ref={ backChannelLogoutUrl }
                                     name="backChannelLogoutUrl"
-                                    label={t("applications:forms.inboundOIDC.sections" +
-                                        ".logoutURLs.fields.back.label")}
-                                    required={false}
-                                    requiredErrorMessage={t("applications:forms.inboundOIDC.sections" +
-                                        ".logoutURLs.fields.back.validations.empty")}
-                                    placeholder={t("applications:forms.inboundOIDC.sections" +
-                                        ".logoutURLs.fields.back.placeholder")}
+                                    label={ t("applications:forms.inboundOIDC.sections" +
+                                        ".logoutURLs.fields.back.label") }
+                                    required={ false }
+                                    requiredErrorMessage={ t("applications:forms.inboundOIDC.sections" +
+                                        ".logoutURLs.fields.back.validations.empty") }
+                                    placeholder={ t("applications:forms.inboundOIDC.sections" +
+                                        ".logoutURLs.fields.back.placeholder") }
                                     type="text"
-                                    validation={(value: string, validation: Validation) => {
+                                    validation={ (value: string, validation: Validation) => {
                                         if (!FormValidation.url(value)) {
                                             validation.isValid = false;
                                             validation.errorMessages.push((
@@ -3986,14 +3986,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             ));
                                         }
                                     } }
-                                    value={initialValues?.logout?.backChannelLogoutUrl}
-                                    readOnly={readOnly}
-                                    data-testid={`${testId}-back-channel-logout-url-input`} /><Hint>
-                                        {t("applications:forms.inboundOIDC.sections" +
-                                            ".logoutURLs.fields.back.hint", {
-                                            productName: config.ui.productName
-                                        })}
-                                    </Hint></>
+                                    value={ initialValues?.logout?.backChannelLogoutUrl }
+                                    readOnly={ readOnly }
+                                    data-testid={ `${ testId }-back-channel-logout-url-input` } /><Hint>
+                                    { t("applications:forms.inboundOIDC.sections" +
+                                        ".logoutURLs.fields.back.hint", {
+                                        productName: config.ui.productName
+                                    }) }
+                                </Hint></>
                             ) }
                         </Grid.Column>
                     </Grid.Row>
@@ -4039,10 +4039,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 data-testid={ `${ testId }-front-channel-logout-url-input` }
                             />
                             <Hint>
-                                {t("applications:forms.inboundOIDC.sections" +
+                                { t("applications:forms.inboundOIDC.sections" +
                                     ".logoutURLs.fields.front.hint", {
                                     productName: config.ui.productName
-                                })}
+                                }) }
                             </Hint>
                         </Grid.Column>
                     </Grid.Row>
