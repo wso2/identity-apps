@@ -251,10 +251,9 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
             panes.push(...tabPaneExtensions);
         }
 
-        // If the MFA is TOTP/Magic Link skip the settings tab.
+        // If the MFA is Magic Link skip the settings tab.
         if (
             ![
-                LocalAuthenticatorConstants.AUTHENTICATOR_IDS.TOTP_AUTHENTICATOR_ID,
                 LocalAuthenticatorConstants.AUTHENTICATOR_IDS.MAGIC_LINK_AUTHENTICATOR_ID
             ].includes(authenticator.id)
         ) {
@@ -276,7 +275,6 @@ export const EditMultiFactorAuthenticator: FunctionComponent<EditMultiFactorAuth
     const resolveDefaultActiveIndex = (activeIndex: number): number => {
 
         if (![
-            LocalAuthenticatorConstants.AUTHENTICATOR_IDS.TOTP_AUTHENTICATOR_ID,
             LocalAuthenticatorConstants.AUTHENTICATOR_IDS.MAGIC_LINK_AUTHENTICATOR_ID
         ].includes(authenticator.id)) {
             return activeIndex;
