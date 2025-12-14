@@ -1686,6 +1686,7 @@ export interface ApplicationsNS {
                             };
                         };
                         front: {
+                            hint: string;
                             label: string;
                             placeholder: string;
                             validations: {
