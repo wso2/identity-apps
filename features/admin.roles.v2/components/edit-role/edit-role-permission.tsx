@@ -413,7 +413,10 @@ export const UpdatedRolePermissionDetails: FunctionComponent<RolePermissionDetai
             // Check if permission is of type RolePermissionInterface
             if (typeof permission !== "string") {
                 // Extract the API resource id from the permission object.
-                const apiResourceId: string = permission["$ref"].split("/").reverse()[2];
+                // Pattern: api-resources/<apiresourceId>/scopes
+                const parts: string[] = permission["$ref"].split("/");
+                const apiResourcesIndex: number = parts.indexOf("api-resources");
+                const apiResourceId: string = apiResourcesIndex !== -1 ? parts[apiResourcesIndex + 1] : null;
 
                 // Populate the selected permissions list.
                 if (!currentPermissions.find((selectedPermission: SelectedPermissionsInterface) =>
