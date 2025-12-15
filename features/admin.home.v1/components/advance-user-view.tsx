@@ -608,7 +608,7 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                                 i18nKey={ "console:common.quickStart.sections.adminNotice.description" }
                                 tOptions={ { date: plannedRollOutDate } }
                             >
-                                Effective <b>{ plannedRollOutDate }</b>, organizations will inherit settings across 
+                                Effective <b>{ plannedRollOutDate }</b>, organizations will inherit settings across
                                 multiple key areas from their parent organizations.
                             </Trans>
                             <Accordion
@@ -616,39 +616,41 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                                 onChange={ () => setAccordionExpanded(!accordionExpanded) }
                                 elevation={ 0 }
                                 square
-                                sx={{
-                                    mt: 0.5,
+                                sx={ {
+                                    "&:before": { display: "none" },
                                     backgroundColor: "transparent",
-                                    "&:before": { display: "none" }
-                                }}
+                                    mt: 0.5
+                                } }
                             >
                                 <AccordionSummary
-                                    sx={{
-                                        minHeight: "unset",
-                                        padding: 0,
-                                        "&.Mui-expanded": {
-                                            minHeight: "unset"
-                                        },
+                                    sx={ {
                                         "& .MuiAccordionSummary-content": {
                                             margin: 0,
                                             marginTop: 1
-                                        }
-                                    }}
+                                        },
+                                        "&.Mui-expanded": {
+                                            minHeight: "unset"
+                                        },
+                                        minHeight: "unset",
+                                        padding: 0
+                                    } }
                                 >
                                     <Typography variant="body1" color="primary">
                                         { accordionExpanded ? "> Hide affected features" : "> View affected features" }
                                     </Typography>
                                 </AccordionSummary>
 
-                                <AccordionDetails sx={{
-                                    pt: 0,
-                                    pb: 0,
-                                    pl: 2
-                                }}>
-                                    <ul style={{
-                                    margin: 0,
-                                    paddingLeft: "1rem"
-                                    }}>
+                                <AccordionDetails 
+                                    sx={ {
+                                        pb: 0,
+                                        pl: 2,
+                                        pt: 0,
+                                    } }>
+                                    <ul
+                                        style={ {
+                                            margin: 0,
+                                            paddingLeft: "1rem"
+                                        } }>
                                         <li>Login & Registration settings</li>
                                         <li>Custom User Attributes</li>
                                         <li>OIDC Scopes</li>
