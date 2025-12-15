@@ -17,8 +17,8 @@
  */
 
 import Accordion from "@oxygen-ui/react/Accordion";
-import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
 import AccordionDetails from "@oxygen-ui/react/AccordionDetails";
+import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
 import Link from "@oxygen-ui/react/Link/Link";
 import Typography from "@oxygen-ui/react/Typography";
 import { GearIcon } from "@oxygen-ui/react-icons";
@@ -59,14 +59,12 @@ import axios from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Button, Card, Grid, Icon, Placeholder } from "semantic-ui-react";
-// import { Accordion, Button, Card, Grid, Icon, Placeholder } from "semantic-ui-react";
+import { Button, Card, Grid, Placeholder } from "semantic-ui-react";
 import { CardExpandedNavigationButton } from "./card-expanded-navigation-button";
 import { DynamicApplicationContextCard } from "./dynamic-application-context-card";
 import { FeatureCarousel } from "./new-feature-announcement/new-feature-announcement";
 import { getGettingStartedCardIllustrations } from "../configs/ui";
 import HomeConstants from "../constants/home-constants";
-// import Accordion from "@oxygen-ui/react/Accordion/Accordion";
 
 /**
  * Proptypes for the overview page component.
@@ -606,60 +604,61 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                     ) }
                     description={ (
                         <>
-                        <Trans
-                            i18nKey={ "console:common.quickStart.sections.adminNotice.description" }
-                            tOptions={ { date: plannedRollOutDate } }
-                        >
-                            Effective <b>{ plannedRollOutDate }</b>, organizations will inherit settings across multiple key areas from their parent organizations.
-                        </Trans>
-                        <Accordion
-                            expanded={ accordionExpanded }
-                            onChange={ () => setAccordionExpanded(!accordionExpanded) }
-                            elevation={ 0 }
-                            square
-                            sx={{
-                                mt: 0.5,
-                                backgroundColor: "transparent",
-                                "&:before": { display: "none" }
-                            }}
-                        >
-                            <AccordionSummary
+                            <Trans
+                                i18nKey={ "console:common.quickStart.sections.adminNotice.description" }
+                                tOptions={ { date: plannedRollOutDate } }
+                            >
+                                Effective <b>{ plannedRollOutDate }</b>, organizations will inherit settings across 
+                                multiple key areas from their parent organizations.
+                            </Trans>
+                            <Accordion
+                                expanded={ accordionExpanded }
+                                onChange={ () => setAccordionExpanded(!accordionExpanded) }
+                                elevation={ 0 }
+                                square
                                 sx={{
-                                    minHeight: "unset",
-                                    padding: 0,
-                                    "&.Mui-expanded": {
-                                        minHeight: "unset"
-                                    },
-                                    "& .MuiAccordionSummary-content": {
-                                        margin: 0,
-                                        marginTop: 1
-                                    }
+                                    mt: 0.5,
+                                    backgroundColor: "transparent",
+                                    "&:before": { display: "none" }
                                 }}
                             >
-                                <Typography variant="body1" color="primary">
-                                    { accordionExpanded ? "> Hide affected features" : "> View affected features" }
-                                </Typography>
-                            </AccordionSummary>
+                                <AccordionSummary
+                                    sx={{
+                                        minHeight: "unset",
+                                        padding: 0,
+                                        "&.Mui-expanded": {
+                                            minHeight: "unset"
+                                        },
+                                        "& .MuiAccordionSummary-content": {
+                                            margin: 0,
+                                            marginTop: 1
+                                        }
+                                    }}
+                                >
+                                    <Typography variant="body1" color="primary">
+                                        { accordionExpanded ? "> Hide affected features" : "> View affected features" }
+                                    </Typography>
+                                </AccordionSummary>
 
-                            <AccordionDetails sx={{
-                                pt: 0,
-                                pb: 0,
-                                pl: 2
-                            }}>
-                                <ul style={{
-                                margin: 0,
-                                paddingLeft: "1rem"
+                                <AccordionDetails sx={{
+                                    pt: 0,
+                                    pb: 0,
+                                    pl: 2
                                 }}>
-                                    <li>Login & Registration settings</li>
-                                    <li>Custom User Attributes</li>
-                                    <li>OIDC Scopes</li>
-                                    <li>Flows</li>
-                                    <li>Connections</li>
-                                    <li>Attribute Update Verification Settings</li>
-                                </ul>
-                            </AccordionDetails>
-                        </Accordion>
-                            </>
+                                    <ul style={{
+                                    margin: 0,
+                                    paddingLeft: "1rem"
+                                    }}>
+                                        <li>Login & Registration settings</li>
+                                        <li>Custom User Attributes</li>
+                                        <li>OIDC Scopes</li>
+                                        <li>Flows</li>
+                                        <li>Connections</li>
+                                        <li>Attribute Update Verification Settings</li>
+                                    </ul>
+                                </AccordionDetails>
+                            </Accordion>
+                        </>
                     ) }
                     // If it's necessary to add instructions, uncomment this and use as necessary.
                     // instructions={ [
