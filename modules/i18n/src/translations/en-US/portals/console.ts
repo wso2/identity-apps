@@ -293,12 +293,16 @@ export const console: ConsoleNS = {
                     heading: "Add social login"
                 },
                 adminNotice: {
-                    title: "Changes to Console Role Permissions",
-                    description: "Starting <1>{{date}}</1>, we are updating the permissions of the <3>Editor - Users</3> and <5>Editor - Applications</5> Console roles.",
-                    moreDetails: "See <1>documentation</1> for recommended workarounds and more details.",
+                    title: "Upcoming Enhancements to Organizations",
+                    description: "Effective <1>{{date}}</1>, organizations will inherit settings across multiple key areas from their parent organizations. During this window, updates to configurations made by admins may not be reflected immediately.",
+                    moreDetails: "<p>See <1>documentation</1> for more details on the behavioral changes.</p>",
                     instructions: {
-                        0: "<1>Editor - Users</1>: No longer able to edit role metadata or change permissions.",
-                        1: "<1>Editor - Applications</1>: No longer able to assign roles to users or groups."
+                        0: "<1>Login & Registration settings</1>",
+                        1: "<1>Custom User Attributes</1>",
+                        2: "<1>OIDC Scopes</1>",
+                        3: "<1>Flows</1>",
+                        4: "<1>Connections</1>",
+                        5: "<1>Attribute Update Verification Settings</1>"
                     }
                 },
                 integrateApps: {
