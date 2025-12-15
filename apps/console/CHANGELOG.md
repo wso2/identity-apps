@@ -1,5 +1,15 @@
 # @wso2is/console
 
+## 2.83.6
+
+### Patch Changes
+
+- [#9504](https://github.com/wso2/identity-apps/pull/9504) [`7235241ab4238e0ccac40f6f982bbbe06522b52f`](https://github.com/wso2/identity-apps/commit/7235241ab4238e0ccac40f6f982bbbe06522b52f) Thanks [@AmshikaH](https://github.com/AmshikaH)! - Add organization version banner
+
+- Updated dependencies [[`7235241ab4238e0ccac40f6f982bbbe06522b52f`](https://github.com/wso2/identity-apps/commit/7235241ab4238e0ccac40f6f982bbbe06522b52f)]:
+  - @wso2is/admin.home.v1@1.7.84
+  - @wso2is/i18n@2.30.63
+
 ## 2.83.5
 
 ### Patch Changes
