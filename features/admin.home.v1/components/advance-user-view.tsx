@@ -16,7 +16,11 @@
  * under the License.
  */
 
+import Accordion from "@oxygen-ui/react/Accordion";
+import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
+import AccordionDetails from "@oxygen-ui/react/AccordionDetails";
 import Link from "@oxygen-ui/react/Link/Link";
+import Typography from "@oxygen-ui/react/Typography";
 import { GearIcon } from "@oxygen-ui/react-icons";
 import { FeatureAccessConfigInterface, FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
 import {
@@ -55,12 +59,14 @@ import axios from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Button, Card, Grid, Placeholder } from "semantic-ui-react";
+import { Button, Card, Grid, Icon, Placeholder } from "semantic-ui-react";
+// import { Accordion, Button, Card, Grid, Icon, Placeholder } from "semantic-ui-react";
 import { CardExpandedNavigationButton } from "./card-expanded-navigation-button";
 import { DynamicApplicationContextCard } from "./dynamic-application-context-card";
 import { FeatureCarousel } from "./new-feature-announcement/new-feature-announcement";
 import { getGettingStartedCardIllustrations } from "../configs/ui";
 import HomeConstants from "../constants/home-constants";
+// import Accordion from "@oxygen-ui/react/Accordion/Accordion";
 
 /**
  * Proptypes for the overview page component.
@@ -120,6 +126,7 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
     const [ isPlaygroundExist, setisPlaygroundExist ] = useState(undefined);
     const [ showWizardLogin, setShowWizardLogin ] = useState<boolean>(false);
     const [ inboundProtocolConfig, setInboundProtocolConfig ] = useState<any>(undefined);
+    const [ accordionExpanded, setAccordionExpanded ] = useState<boolean>(false);
 
     const [
         isTryItApplicationSearchRequestLoading,
@@ -594,44 +601,88 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                 <AdminNotice
                     title={ (
                         <Trans i18nKey={ "console:common.quickStart.sections.adminNotice.title" }>
-                            Changes to Console Role Permissions
+                            Upcoming Enhancements to Organizations
                         </Trans>
                     ) }
                     description={ (
+                        <>
                         <Trans
                             i18nKey={ "console:common.quickStart.sections.adminNotice.description" }
-                            tOptions={ { date: plannedRollOutDate } }>
-                            Starting <b>{ plannedRollOutDate }</b>, we are updating some of the permissions in
-                            the <b>Editor - Users</b> and <b>Editor - Applications</b>.
+                            tOptions={ { date: plannedRollOutDate } }
+                        >
+                            Effective <b>{ plannedRollOutDate }</b>, organizations will inherit settings across multiple key areas from their parent organizations.
                         </Trans>
+                        <Accordion
+                            expanded={ accordionExpanded }
+                            onChange={ () => setAccordionExpanded(!accordionExpanded) }
+                            elevation={ 0 }
+                            square
+                            sx={{
+                                mt: 0.5,
+                                backgroundColor: "transparent",
+                                "&:before": { display: "none" }
+                            }}
+                        >
+                            <AccordionSummary
+                                sx={{
+                                    minHeight: "unset",
+                                    padding: 0,
+                                    "&.Mui-expanded": {
+                                        minHeight: "unset"
+                                    },
+                                    "& .MuiAccordionSummary-content": {
+                                        margin: 0,
+                                        marginTop: 1
+                                    }
+                                }}
+                            >
+                                <Typography variant="body1" color="primary">
+                                    { accordionExpanded ? "> Hide affected features" : "> View affected features" }
+                                </Typography>
+                            </AccordionSummary>
+
+                            <AccordionDetails sx={{
+                                pt: 0,
+                                pb: 0,
+                                pl: 2
+                            }}>
+                                <ul style={{
+                                margin: 0,
+                                paddingLeft: "1rem"
+                                }}>
+                                    <li>Login & Registration settings</li>
+                                    <li>Custom User Attributes</li>
+                                    <li>OIDC Scopes</li>
+                                    <li>Flows</li>
+                                    <li>Connections</li>
+                                    <li>Attribute Update Verification Settings</li>
+                                </ul>
+                            </AccordionDetails>
+                        </Accordion>
+                            </>
                     ) }
-                    instructions={ [
-                        <Trans
-                            components={ { 1: <b /> } }
-                            i18nKey={ "console:common.quickStart.sections.adminNotice.instructions.0" }
-                            key="admin-notice-instruction-0"
-                        >
-                            <b>Editor - Users</b>: No longer able to edit role metadata or change permissions.
-                        </Trans>,
-                        <Trans
-                            components={ { 1: <b /> } }
-                            i18nKey={ "console:common.quickStart.sections.adminNotice.instructions.1" }
-                            key="admin-notice-instruction-1"
-                        >
-                            <b>Editor - Applications</b>: No longer able to assign roles to users or groups.
-                        </Trans>
-                    ] }
+                    // If it's necessary to add instructions, uncomment this and use as necessary.
+                    // instructions={ [
+                    //     <Trans
+                    //         components={ { 1: <b /> } }
+                    //         i18nKey={ "console:common.quickStart.sections.adminNotice.instructions.0" }
+                    //         key="admin-notice-instruction-0"
+                    //     >
+                    //         <b>Login & Registration settings</b>
+                    //     </Trans>
+                    // ] }
+                    instructions={ [] }
                     moreDetails={ (
                         <Trans i18nKey={ "console:common.quickStart.sections.adminNotice.moreDetails" } >
                             See
                             <Link
                                 href={ Config?.getDeploymentConfig()?.docSiteURL
-                                    + "/references/user-management/user-roles/#change-in-role-permissions" }
+                                    + "/guides/organization-management/inheritance-in-organizations" }
                                 target="_blank"
                                 rel="noreferrer"
                             >
                                 documentation
-                            </Link> for recommended workarounds and more details.
+                            </Link> for more details on the behavioral changes.
                         </Trans>
                     ) }
                     setDisplayBanner={ setAdminNoticeEnabled }
