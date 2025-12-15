@@ -34,7 +34,8 @@ const ValidationProvider = ({
     children,
     validationConfig = {
         isOTPValidationEnabled: false,
-        isRecoveryFactorValidationEnabled: false
+        isRecoveryFactorValidationEnabled: false,
+        isOTPButtonValidationEnabled: false
     }
 }: PropsWithChildren<ValidationProviderProps>): ReactElement => {
     const [ notifications, setNotifications ] = useState<Map<string, Notification>>(new Map());
