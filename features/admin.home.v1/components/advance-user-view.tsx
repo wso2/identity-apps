@@ -640,11 +640,11 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                                     </Typography>
                                 </AccordionSummary>
 
-                                <AccordionDetails 
+                                <AccordionDetails
                                     sx={ {
                                         pb: 0,
                                         pl: 2,
-                                        pt: 0,
+                                        pt: 0
                                     } }>
                                     <ul
                                         style={ {
