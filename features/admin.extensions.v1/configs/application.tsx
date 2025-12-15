@@ -93,7 +93,7 @@ const applicationFeatureConfig: FeatureAccessConfigInterface = featureConfig?.ap
 const isFrontChannelLogoutEnabled: boolean = isFeatureEnabled(
     applicationFeatureConfig,
     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG_FRONT_CHANNEL_LOGOUT")
-)
+);
 
 /**
  * Check whether claims is  identity claims or not.
