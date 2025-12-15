@@ -43,21 +43,25 @@ const useOTPButtonValidation = (node: Node): void => {
     const validationData: {
         formsWithOTP: Array<{ form: Element; buttonsInsideForm: number }>;
         buttonsOutsideAllForms: number;
+        totalButtons: number;
     } = useMemo(() => {
         if (!isOTPButtonValidationEnabled || !node?.data?.components) {
-            return { formsWithOTP: [], buttonsOutsideAllForms: 0 };
+            return { buttonsOutsideAllForms: 0, formsWithOTP: [], totalButtons: 0 };
         }
 
         const components: Element[] = node.data.components as Element[];
         const formsWithOTP: Array<{ form: Element; buttonsInsideForm: number }> = [];
-        let buttonsOutsideAllForms = 0;
+        let buttonsOutsideAllForms: number = 0;
+        let totalButtons: number = 0;
 
         /**
          * Recursively count buttons within a component tree.
          */
         const countButtonsRecursive = (comps: Element[]): number => {
-            let count = 0;
+            let count: number = 0;
+
             for (const comp of comps) {
+
                 if (comp.type === ElementTypes.Button) {
                     count++;
                 }
@@ -65,6 +69,7 @@ const useOTPButtonValidation = (node: Node): void => {
                     count += countButtonsRecursive(comp.components);
                 }
             }
+
             return count;
         };
 
@@ -72,7 +77,9 @@ const useOTPButtonValidation = (node: Node): void => {
          * Recursively check for OTP inputs in components.
          */
         const hasOTPRecursive = (comps: Element[]): boolean => {
+
             for (const comp of comps) {
+
                 if (comp.type === ElementTypes.Input && comp.variant === InputVariants.OTP) {
                     return true;
                 }
@@ -80,6 +87,7 @@ const useOTPButtonValidation = (node: Node): void => {
                     return true;
                 }
             }
+
             return false;
         };
 
@@ -87,28 +95,26 @@ const useOTPButtonValidation = (node: Node): void => {
          * Process components in a single pass: identify forms, check for OTP, and count buttons.
          */
         const processComponents = (comps: Element[]): void => {
+
             for (const comp of comps) {
-                // Check if this is a form component
+
                 if (comp.type === BlockTypes.Form && comp.components) {
-                    const hasOTP = hasOTPRecursive(comp.components);
-                    const buttonsInForm = countButtonsRecursive(comp.components);
+                    const hasOTP: boolean = hasOTPRecursive(comp.components);
+                    const buttonsInForm: number = countButtonsRecursive(comp.components);
 
                     if (hasOTP) {
-                        // Form has OTP - track it with its button count
                         formsWithOTP.push({
-                            form: comp,
-                            buttonsInsideForm: buttonsInForm
+                            buttonsInsideForm: buttonsInForm,
+                            form: comp
                         });
                     } else {
-                        // Form doesn't have OTP - its buttons count as outside
                         buttonsOutsideAllForms += buttonsInForm;
                     }
+                    totalButtons += buttonsInForm;
                 } else {
-                    // Not a form - count buttons as outside
                     if (comp.type === ElementTypes.Button) {
                         buttonsOutsideAllForms++;
                     }
-                    // Recursively process nested components
                     if (Array.isArray(comp.components)) {
                         processComponents(comp.components);
                     }
@@ -119,10 +125,11 @@ const useOTPButtonValidation = (node: Node): void => {
         processComponents(components);
 
         return {
+            buttonsOutsideAllForms,
             formsWithOTP,
-            buttonsOutsideAllForms
+            totalButtons
         };
-    }, [ node?.data?.components, isOTPButtonValidationEnabled, node ]);
+    }, [ node?.data?.components, isOTPButtonValidationEnabled ]);
 
     const baseNotificationId: string = `otp-button-validation-${node?.id}`;
 
@@ -131,42 +138,32 @@ const useOTPButtonValidation = (node: Node): void => {
      */
     useEffect(() => {
         return () => {
-            // Remove all potential notifications for this node
-            // We remove notifications for all forms that currently have OTP
-            validationData.formsWithOTP.forEach(({ form }) => {
-                removeNotification(`${baseNotificationId}-${form.id}`);
-            });
-            // Also remove the multiple forms notification and view notification
+
             removeNotification(baseNotificationId);
             removeNotification(`${baseNotificationId}-view`);
+            removeNotification(`${baseNotificationId}-form`);
         };
-    }, [ validationData.formsWithOTP, baseNotificationId, removeNotification ]);
+    }, []);
 
     /**
      * Handle validation updates in useEffect to avoid setState during render.
      */
     useEffect(() => {
         if (!isOTPButtonValidationEnabled || !node || validationData.formsWithOTP.length === 0) {
-            // Remove any existing notifications when validation is disabled or no forms with OTP
+
             removeNotification(baseNotificationId);
             removeNotification(`${baseNotificationId}-view`);
-            // Remove all form notifications
-            validationData.formsWithOTP.forEach(({ form }) => {
-                removeNotification(`${baseNotificationId}-${form.id}`);
-            });
+            removeNotification(`${baseNotificationId}-form`);
+
             return;
         }
-        
+
         const { formsWithOTP, buttonsOutsideAllForms } = validationData;
-        
-        // Remove existing notifications first (will be re-added if needed)
+
         removeNotification(baseNotificationId);
         removeNotification(`${baseNotificationId}-view`);
-        formsWithOTP.forEach(({ form }) => {
-            removeNotification(`${baseNotificationId}-${form.id}`);
-        });
+        removeNotification(`${baseNotificationId}-form`);
 
-        // Check if there are multiple form components with OTP
         if (formsWithOTP.length > 1) {
             const notification: Notification = new Notification(
                 baseNotificationId,
@@ -179,14 +176,13 @@ const useOTPButtonValidation = (node: Node): void => {
             addNotification(notification);
         }
 
-        // For each form with OTP, check if there are more than 1 action button
-        formsWithOTP.forEach(({ form, buttonsInsideForm }) => {
+        formsWithOTP.forEach(({ form, buttonsInsideForm }: { form: Element; buttonsInsideForm: number }) => {
             if (buttonsInsideForm > 1) {
-                const formNotificationId: string = `${baseNotificationId}-${form.id}`;
-                
-                const message = t("flowBuilder:validation.otpStepSingleActionButton.message",
-                        "Forms with an OTP step can have only one action button other than the Resend button.");
-                
+                const formNotificationId: string = `${baseNotificationId}-form`;
+
+                const message: string = t("flowBuilder:validation.otpStepSingleActionButton.message",
+                    "Forms with an OTP step can have only one action button other than the Resend button.");
+
                 const notification: Notification = new Notification(
                     formNotificationId,
                     message,
@@ -198,13 +194,13 @@ const useOTPButtonValidation = (node: Node): void => {
             }
         });
 
-        // Check if there are buttons in components outside forms
         if (buttonsOutsideAllForms > 0 && formsWithOTP.length > 0) {
             const viewNotificationId: string = `${baseNotificationId}-view`;
             const notification: Notification = new Notification(
                 viewNotificationId,
                 t("flowBuilder:validation.otpStepButtonsOutsideForm.message",
-                    "Action buttons outside forms with OTP steps are not allowed."),
+                    "Steps that include an OTP form component can have action buttons " +
+                    "only within the OTP form component itself."),
                 NotificationType.ERROR
             );
 
@@ -212,13 +208,12 @@ const useOTPButtonValidation = (node: Node): void => {
             addNotification(notification);
         }
     }, [
-        validationData,
-        node?.id,
+        baseNotificationId,
         isOTPButtonValidationEnabled,
-        t,
-        addNotification,
-        removeNotification,
-        baseNotificationId
+        node?.id,
+        validationData.buttonsOutsideAllForms,
+        validationData.formsWithOTP.length,
+        validationData.totalButtons
     ]);
 };
 

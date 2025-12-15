@@ -1148,7 +1148,7 @@ export const applications: ApplicationsNS = {
                                     message: "Forms with a Password field requires a 'Provision Password' Action to be configured for the button."
                                 },
                                 otpStepButtonsOutsideForm: {
-                                    message: "Action buttons outside forms with OTP steps are not allowed."
+                                    message: "Steps that include an OTP form component can have action buttons only within the OTP form component itself."
                                 },
                                 otpStepSingleActionButton: {
                                     message: "Forms with an OTP step can have only one action button other than the Resend button."

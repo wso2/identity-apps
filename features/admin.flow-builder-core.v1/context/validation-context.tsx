@@ -125,9 +125,9 @@ export const ValidationContext: Context<ValidationContextProps> = createContext<
     setCurrentActiveTab: null,
     setOpenValidationPanel: null,
     validationConfig: {
+        isOTPButtonValidationEnabled: false,
         isOTPValidationEnabled: false,
         isPasswordExecutorValidationEnabled: false,
-        isRecoveryFactorValidationEnabled: false,
-        isOTPButtonValidationEnabled: false
+        isRecoveryFactorValidationEnabled: false
     }
 });
