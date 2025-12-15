@@ -294,7 +294,7 @@ export const console: ConsoleNS = {
                 },
                 adminNotice: {
                     title: "Upcoming Enhancements to Organizations",
-                    description: "Effective <1>{{date}}</1>, organizations will inherit settings across multiple key areas from their parent organizations.",
+                    description: "Effective <1>{{date}}</1>, organizations will inherit settings across multiple key areas from their parent organizations. During this window, updates to configurations made by admins may not be reflected immediately.",
                     moreDetails: "<p>See <1>documentation</1> for more details on the behavioral changes.</p>",
                     instructions: {
                         0: "<1>Login & Registration settings</1>",
