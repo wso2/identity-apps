@@ -24,7 +24,7 @@ import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-
 import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
 import Header from "@wso2is/admin.core.v1/components/header";
 import { ProtectedRoute } from "@wso2is/admin.core.v1/components/protected-route";
-import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -36,7 +36,7 @@ import { RouteUtils } from "@wso2is/admin.core.v1/utils/route-utils";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { AlertInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
-import { RouteUtils as CommonRouteUtils, CommonUtils } from "@wso2is/core/utils";
+import { RouteUtils as CommonRouteUtils } from "@wso2is/core/utils";
 import { Alert, ContentLoader, ErrorBoundary } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, Suspense, useEffect, useState } from "react";
@@ -125,7 +125,7 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = ({
      * @param key - Index of the route.
      * @returns Resolved route to be rendered.
      */
-    const handleRouteChunkError = createRouteErrorHandler(appHomePath);
+    const handleRouteChunkError: ((_error: Error, _errorInfo: React.ErrorInfo) => void) = createRouteErrorHandler(appHomePath);
 
     const brokenPageFallback: ReactNode = createBrokenPageFallback(t);
 
@@ -149,7 +149,6 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = ({
 
                     return (
                         <ErrorBoundary
-                            key={ renderProps.location.pathname }
                             onChunkLoadError={ AppUtils.onChunkLoadError }
                             handleError={ handleRouteChunkError }
                             fallback={ brokenPageFallback }

@@ -29,14 +29,14 @@ interface RouteErrorBoundaryProps {
     routeName?: string;
 }
 
+const ROUTE_ERROR_EVENT_ID: string = "route-error-boundary";
+
 /**
  * Route-level Error Boundary that isolates errors to specific routes.
  *
  * @param props - Props for the component.
  * @returns Route error boundary component.
  */
-const ROUTE_ERROR_EVENT_ID: string = "route-error-boundary";
-
 const RouteErrorBoundary: React.FC<RouteErrorBoundaryProps> = ({ children, routeName }: RouteErrorBoundaryProps) => {
     const { t } = useTranslation();
 

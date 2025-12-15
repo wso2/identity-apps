@@ -106,7 +106,7 @@ const FullScreenLayout: FunctionComponent<FullScreenLayoutPropsInterface> = (
      * @param key - Index of the route.
      * @returns Resolved route to be rendered.
      */
-    const handleRouteChunkError = createRouteErrorHandler(appHomePath);
+    const handleRouteChunkError: ((_error: Error, _errorInfo: React.ErrorInfo) => void) = createRouteErrorHandler(appHomePath);
 
     const brokenPageFallback: ReactNode = createBrokenPageFallback(t);
 
@@ -132,7 +132,6 @@ const FullScreenLayout: FunctionComponent<FullScreenLayoutPropsInterface> = (
 
                             return (
                                 <ErrorBoundary
-                                    key={ renderProps.location.pathname }
                                     onChunkLoadError={ AppUtils.onChunkLoadError }
                                     handleError={ handleRouteChunkError }
                                     fallback={ brokenPageFallback }

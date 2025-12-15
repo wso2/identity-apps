@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { getEmptyPlaceholderIllustrations } from "../configs/ui";
-import { EmptyPlaceholder, LinkButton } from "@wso2is/react-components";
 import { CommonUtils } from "@wso2is/core/utils";
+import { EmptyPlaceholder, LinkButton } from "@wso2is/react-components";
 import React, { ReactNode } from "react";
+import { getEmptyPlaceholderIllustrations } from "../configs/ui";
 
 /**
  * Creates a route chunk error handler that stores the app home path in sessionStorage.

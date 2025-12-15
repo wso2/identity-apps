@@ -24,7 +24,6 @@ import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
 import Header from "@wso2is/admin.core.v1/components/header";
 import { ProtectedRoute } from "@wso2is/admin.core.v1/components/protected-route";
-import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -33,6 +32,7 @@ import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reduce
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
 import { CommonUtils as ConsoleCommonUtils } from "@wso2is/admin.core.v1/utils/common-utils";
+import { createBrokenPageFallback, createRouteErrorHandler } from "@wso2is/admin.core.v1/utils/error-boundary-utils";
 import { RouteUtils } from "@wso2is/admin.core.v1/utils/route-utils";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
@@ -55,10 +55,8 @@ import { RouteUtils as CommonRouteUtils, CommonUtils } from "@wso2is/core/utils"
 import {
     Alert,
     ContentLoader,
-    EmptyPlaceholder,
     ErrorBoundary,
-    GenericIcon,
-    LinkButton
+    GenericIcon
 } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
@@ -194,28 +192,10 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
         setPreferences({ leftNavbarCollapsed: !leftNavbarCollapsed });
     };
 
-    const handleRouteChunkError = (_error: Error, _errorInfo: React.ErrorInfo): void => {
-        sessionStorage.setItem("auth_callback_url_console", config.deployment.appHomePath);
-    };
+    const handleRouteChunkError: ((_error: Error, _errorInfo: React.ErrorInfo) => void) =
+        createRouteErrorHandler(config.deployment.appHomePath);
 
-    const brokenPageSubtitles: string[] = [
-        t("console:common.placeholders.brokenPage.subtitles.0"),
-        t("console:common.placeholders.brokenPage.subtitles.1")
-    ];
-
-    const brokenPageFallback: ReactNode = (
-        <EmptyPlaceholder
-            action={ (
-                <LinkButton onClick={ () => CommonUtils.refreshPage() }>
-                    { t("console:common.placeholders.brokenPage.action") }
-                </LinkButton>
-            ) }
-            image={ getEmptyPlaceholderIllustrations().brokenPage }
-            imageSize="tiny"
-            subtitle={ brokenPageSubtitles }
-            title={ t("console:common.placeholders.brokenPage.title") }
-        />
-    );
+    const brokenPageFallback: ReactNode = createBrokenPageFallback(t);
 
     /**
      * Conditionally renders a route. If a route has defined a Redirect to
@@ -246,7 +226,6 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
 
                     return (
                         <ErrorBoundary
-                            key={ renderProps.location.pathname }
                             onChunkLoadError={ AppUtils.onChunkLoadError }
                             handleError={ handleRouteChunkError }
                             fallback={ brokenPageFallback }

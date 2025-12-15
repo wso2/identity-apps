@@ -49,7 +49,7 @@ const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactElement =
     });
     const appHomePath: string = useSelector((state: AppState) => state.config.deployment.appHomePath);
 
-    const handleRouteChunkError = createRouteErrorHandler(appHomePath);
+    const handleRouteChunkError: ((_error: Error, _errorInfo: React.ErrorInfo) => void) = createRouteErrorHandler(appHomePath);
 
     const brokenPageFallback: ReactNode = createBrokenPageFallback(t);
 
@@ -92,7 +92,6 @@ const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactElement =
 
                                                     return (
                                                         <ErrorBoundary
-                                                            key={ renderProps.location.pathname }
                                                             onChunkLoadError={ AppUtils.onChunkLoadError }
                                                             handleError={ handleRouteChunkError }
                                                             fallback={ brokenPageFallback }

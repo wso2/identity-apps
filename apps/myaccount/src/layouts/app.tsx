@@ -108,7 +108,6 @@ export const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactEl
 
                                                     return (
                                                         <ErrorBoundary
-                                                            key={ renderProps.location.pathname }
                                                             onChunkLoadError={ AppUtils.onChunkLoadError }
                                                             fallback={ genericErrorFallback }
                                                         >
