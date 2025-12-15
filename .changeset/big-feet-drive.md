@@ -1,7 +1,7 @@
 ---
-"@wso2is/admin.home.v1": minor
-"@wso2is/console": minor
-"@wso2is/i18n": minor
+"@wso2is/admin.home.v1": patch
+"@wso2is/console": patch
+"@wso2is/i18n": patch
 ---
 
 Add organization version banner
