@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.30.64
+
+### Patch Changes
+
+- [#9503](https://github.com/wso2/identity-apps/pull/9503) [`c79ac826da3188d9b7d76699fbf74e007353a8f5`](https://github.com/wso2/identity-apps/commit/c79ac826da3188d9b7d76699fbf74e007353a8f5) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Fix user choice decision on OTP steps.
+
 ## 2.30.63
 
 ### Patch Changes

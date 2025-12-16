@@ -1,5 +1,17 @@
 # @wso2is/admin.flow-builder-core.v1
 
+## 0.10.106
+
+### Patch Changes
+
+- [#9503](https://github.com/wso2/identity-apps/pull/9503) [`c79ac826da3188d9b7d76699fbf74e007353a8f5`](https://github.com/wso2/identity-apps/commit/c79ac826da3188d9b7d76699fbf74e007353a8f5) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Fix user choice decision on OTP steps.
+
+- Updated dependencies []:
+  - @wso2is/admin.branding.v1@2.32.62
+  - @wso2is/admin.core.v1@2.49.114
+  - @wso2is/admin.flows.v1@1.0.75
+  - @wso2is/admin.registration-flow-builder.v1@0.10.66
+
 ## 0.10.105
 
 ### Patch Changes
