@@ -20,7 +20,9 @@
  * Interface for the Fraud Detection Configurations.
  */
 export interface FraudDetectionConfigurationsInterface {
+    logRequestPayload: boolean;
     publishUserInfo: boolean;
+    publishDeviceMetadata: boolean;
     events: FraudAnalyticEventPropertyInterface[];
 }
 
@@ -34,4 +36,13 @@ export interface FraudAnalyticEventPropertyInterface {
     displayName?: string;
     description?: string;
     displayOrder?: number;
+}
+
+/**
+ * Interface for the Fraud Analytic Event Metadata.
+ */
+export interface FraudAnalyticEventMetadataInterface {
+    displayName: string;
+    description: string;
+    displayOrder: number;
 }

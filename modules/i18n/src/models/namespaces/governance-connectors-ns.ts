@@ -353,8 +353,15 @@ export interface governanceConnectorsNS {
                         eventProperties: {
                             title: string;
                             subtitle: string;
+                            piiPublishingWarning: string;
+                            publishDeviceMetadata: {
+                                label: string;
+                                description: string;
+                                warning: string;
+                            };
                             publishUserInfo: {
                                 label: string;
+                                description: string;
                                 warning: string;
                             };
                             events: {
@@ -384,12 +391,15 @@ export interface governanceConnectorsNS {
                                 };
                             };
                         };
+                        eventDiagnostics: {
+                            title: string;
+                            logRequestPayload: {
+                                label: string;
+                                description: string;
+                            };
+                        };
                     };
                     notifications: {
-                        configurationUpdate: {
-                            success: NotificationItem;
-                            error: NotificationItem;
-                        };
                         eventPropertiesUpdate: {
                             error: NotificationItem;
                         };

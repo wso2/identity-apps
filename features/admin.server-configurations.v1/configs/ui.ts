@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { FunctionComponent, SVGProps } from "react";
 import {
     CircleUserIcon,
     GearIcon,
@@ -31,6 +30,7 @@ import {
     VerticleFilterBarsIcon
 } from "@oxygen-ui/react-icons";
 import UsernameValidationIcon from "@wso2is/admin.extensions.v1/assets/images/icons/username-validation-icon.svg";
+import { FunctionComponent, SVGProps } from "react";
 import {
     default as LockRecoverIcon
 } from "../../themes/default/assets/images/icons/lock-recover-icon.svg";
@@ -94,8 +94,8 @@ import {
 import {
     default as JWTKeyIcon
 } from "../../themes/default/assets/images/illustrations/jwt-key-icon.svg";
-import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 import { ReactComponent as SiftLogo } from "../../themes/wso2is/assets/images/connectors/sift.svg";
+import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 
 interface GetGovernanceConnectorIllustrationsInterface {
     [key: string]: string;

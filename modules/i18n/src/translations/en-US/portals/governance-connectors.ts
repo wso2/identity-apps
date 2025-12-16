@@ -283,10 +283,19 @@ export const governanceConnectors: governanceConnectorsNS = {
                         eventProperties: {
                             title: "Events to Publish",
                             subtitle: "Select the events you want to publish to Sift for analysis.",
+                            piiPublishingWarning: "You’ve enabled sending both user profile and device data (e.g., email, name, IP address) to Sift. " +
+                                "Ensure this complies with your organization's privacy policy.",
+                            publishDeviceMetadata: {
+                                label: "Include user device metadata in the event payload",
+                                description: "Publish user device metadata like IP address and user agent.",
+                                warning: "This will send IP addresses and user agents, which may be considered personal data. " +
+                                    "Ensure this complies with your organization's privacy policy and data-sharing agreements."
+                            },
                             publishUserInfo: {
-                                label: "Include Personally Identifiable Information (PII) in event payload",
-                                warning: "This will send sensitive user data (like email, IP address, and name) to Sift. " +
-                                    "Ensure this complies with your organization's privacy policy."
+                                label: "Include user profile information in the event payload",
+                                description: "Publish user attributes like username, email, mobile, etc.",
+                                warning: "This will send sensitive, direct user identifiers to Sift. " +
+                                    "Ensure this complies with your organization's privacy policy and data-sharing agreements."
                             },
                             events: {
                                 logins: {
@@ -314,6 +323,13 @@ export const governanceConnectors: governanceConnectorsNS = {
                                     hint: "Publish notification based user verification events."
                                 }
                             }
+                        },
+                        eventDiagnostics: {
+                            title: "Diagnostic Logging",
+                            logRequestPayload: {
+                                label: "Log event payloads locally",
+                                description: "Save a copy of each event payload to local diagnostic logs for debugging purposes."
+                            }
                         }
                     },
                     properties: {
@@ -325,16 +341,6 @@ export const governanceConnectors: governanceConnectorsNS = {
                         }
                     },
                     notifications: {
-                        configurationUpdate: {
-                            error: {
-                                description: "An error occurred while updating the Sift configuration.",
-                                message: "Update Error"
-                            },
-                            success: {
-                                description: "Successfully updated the Sift configuration.",
-                                message: "Update Successful"
-                            }
-                        },
                         eventPropertiesUpdate: {
                             error: {
                                 description: "An error occurred while updating the event publishing configurations.",
