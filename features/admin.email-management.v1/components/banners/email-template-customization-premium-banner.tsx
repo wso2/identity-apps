@@ -39,6 +39,7 @@ const EmailTemplateCustomizationPremiumBanner = (): ReactElement => {
             icon={ false }
         >
             <Trans
+                i18nKey="emailTemplates.updateTemplate.tags.premium.info"
                 className="email-template-premium-text"
             >
                 Unlock email template customization with our <b>Paid plans</b>.

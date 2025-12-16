@@ -209,6 +209,13 @@ export const emailTemplates: emailTemplatesNS = {
             title: "No results found"
         }
     },
+    updateTemplate: {
+        tags: {
+            premium: {
+                info: "Unlock email template customization with our Paid plan. <1>Contact Us</1> to upgrade."
+            }
+        }
+    },
     viewTemplate: {
         heading: "Email Template Preview"
     },

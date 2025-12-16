@@ -203,6 +203,13 @@ export interface emailTemplatesNS {
             subtitles: string;
         };
     };
+    updateTemplate: {
+        tags: {
+            premium: {
+                info: string;
+            }
+        }
+    };
     viewTemplate: {
         heading: string;
     };
