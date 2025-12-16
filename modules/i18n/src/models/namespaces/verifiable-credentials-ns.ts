@@ -91,6 +91,16 @@ export interface VerifiableCredentialsNS {
                 label: string;
                 hint: string;
             };
+            expiresIn: {
+                label: string;
+                placeholder: string;
+                hint: string;
+            };
+            claims: {
+                label: string;
+                placeholder: string;
+                hint: string;
+            };
         };
         dangerZone: {
             header: string;
@@ -110,6 +120,12 @@ export interface VerifiableCredentialsNS {
         };
     };
     notifications: {
+        fetchClaims: {
+            error: {
+                message: string;
+                description: string;
+            };
+        };
         deleteTemplate: {
             success: {
                 message: string;

@@ -99,6 +99,16 @@ export const verifiableCredentials: VerifiableCredentialsNS = {
             identifier: {
                 label: "Identifier",
                 hint: "A unique identifier for the credential template. This cannot be changed."
+            },
+            expiresIn: {
+                label: "Expiration Time",
+                placeholder: "Enter expiration time in seconds",
+                hint: "The validity period of the credential in seconds. For example, 31536000 seconds equals 1 year."
+            },
+            claims: {
+                label: "Claims",
+                placeholder: "Search and select claims",
+                hint: "Select the user claims to include in the verifiable credential."
             }
         },
         dangerZone: {
@@ -119,6 +129,12 @@ export const verifiableCredentials: VerifiableCredentialsNS = {
         }
     },
     notifications: {
+        fetchClaims: {
+            error: {
+                message: "Error Fetching Claims",
+                description: "An error occurred while fetching the claims list."
+            }
+        },
         deleteTemplate: {
             success: {
                 message: "Deleted Successfully",
