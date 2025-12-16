@@ -16,12 +16,14 @@
  * under the License.
  */
 
+import { AppState } from "@wso2is/admin.core.v1/store";
 import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
 import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, MouseEvent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { ButtonProps, Segment } from "semantic-ui-react";
 
 import EmailTemplateCustomizationPremiumBanner from "../components/banners/email-template-customization-premium-banner";
@@ -39,8 +41,6 @@ interface EmailCustomizationFooterProps extends IdentifiableComponentInterface {
      * @param data - Button Props
      */
     onSaveButtonClick: (e: MouseEvent<HTMLButtonElement>, data: ButtonProps) => void;
-
-    readOnly?: boolean;
 }
 
 /**
@@ -62,6 +62,8 @@ const EmailCustomizationFooter: FunctionComponent<EmailCustomizationFooterProps>
 
     const { tierName }: UseSubscriptionInterface = useSubscription();
     const { t } = useTranslation();
+    const disableEmailTemplateForFreeTier: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.disableEmailTemplateForFreeTier);
 
     return (
         <Segment
@@ -70,9 +72,9 @@ const EmailCustomizationFooter: FunctionComponent<EmailCustomizationFooterProps>
             padded={ true }
             data-componentid={ componentId }
         >
-            { tierName === TenantTier.FREE && (
+            { disableEmailTemplateForFreeTier && tierName === TenantTier.FREE &&
                 <Segment basic><EmailTemplateCustomizationPremiumBanner /></Segment>
-            ) }
+            }
             <PrimaryButton
                 size="small"
                 loading={ isSaveButtonLoading }

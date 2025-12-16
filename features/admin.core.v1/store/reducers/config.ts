@@ -223,6 +223,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             connectionResourcesUrl: "",
             cookiePolicyUrl: "",
             customContent: {},
+            disableEmailTemplateForFreeTier: false,
             emailTemplates: {
                 defaultLogoUrl: "",
                 defaultWhiteLogoUrl: ""

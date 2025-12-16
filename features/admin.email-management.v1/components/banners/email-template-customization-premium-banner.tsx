@@ -37,13 +37,11 @@ const EmailTemplateCustomizationPremiumBanner = (): ReactElement => {
             className="email-template-premium-banner oxygen-chip-premium"
             severity="warning"
             icon={ false }
-
         >
             <Trans
-                i18nKey="email.template.featureGate.enabledFeatures.tags.premium.info"
                 className="email-template-premium-text"
             >
-                Unlock email template customization with our <b>Enterprise plan</b>.
+                Unlock email template customization with our <b>Paid plans</b>.
                 <Link href={ contactUsURL }> Contact Us</Link> to upgrade.
             </Trans>
         </Alert>
