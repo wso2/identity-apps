@@ -30,13 +30,13 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Modal } from "semantic-ui-react";
-import { addVCCredentialConfiguration } from "../../api/verifiable-credentials";
-import { VCCredentialConfiguration, VCCredentialConfigurationCreationModel } from "../../models/verifiable-credentials";
+import { addVCTemplate } from "../../api/verifiable-credentials";
+import { VCTemplate, VCTemplateCreationModel } from "../../models/verifiable-credentials";
 
 /**
- * Prop types for the Add VC Config Wizard component.
+ * Prop types for the Add VC Template Wizard component.
  */
-interface AddVCConfigWizardProps extends IdentifiableComponentInterface {
+interface AddVCTemplateWizardProps extends IdentifiableComponentInterface {
     /**
      * Callback to close the wizard.
      */
@@ -48,56 +48,67 @@ interface AddVCConfigWizardProps extends IdentifiableComponentInterface {
 }
 
 /**
- * Form values for the VC configuration creation.
+ * Form values for the VC template creation.
  */
-interface VCConfigFormValues {
+interface VCTemplateFormValues {
     identifier: string;
     displayName: string;
-    scope: string;
 }
 
-const FORM_ID: string = "vc-config-create-form";
+const FORM_ID: string = "vc-template-create-form";
 
 /**
- * Add Verifiable Credential Configuration Wizard component.
+ * Add Verifiable Credential Template Wizard component.
  *
  * @param props - Props injected to the component.
  * @returns React element.
  */
-export const AddVCConfigWizard: FunctionComponent<AddVCConfigWizardProps> = ({
+export const AddVCTemplateWizard: FunctionComponent<AddVCTemplateWizardProps> = ({
     closeWizard,
     onSuccess,
-    "data-componentid": componentId = "add-vc-config-wizard"
-}: AddVCConfigWizardProps): ReactElement => {
+    "data-componentid": componentId = "add-vc-template-wizard"
+}: AddVCTemplateWizardProps): ReactElement => {
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
     /**
+     * Validates the identifier to ensure it doesn't contain spaces.
+     *
+     * @param value - Identifier value.
+     * @returns Error message if invalid, undefined if valid.
+     */
+    const validateIdentifier = (value: string): string | undefined => {
+        if (value && value.match(/\s/) !== null) {
+            return t("verifiableCredentials:wizard.form.identifier.validation");
+        }
+
+        return undefined;
+    };
+
+    /**
      * Handles the form submission.
      *
      * @param values - Form values.
      */
-    const handleFormSubmit = (values: VCConfigFormValues): void => {
+    const handleFormSubmit = (values: VCTemplateFormValues): void => {
         setIsSubmitting(true);
 
-        const configData: VCCredentialConfigurationCreationModel = {
+        const templateData: VCTemplateCreationModel = {
             claims: [],
-            displayName: values.displayName,
+            displayName: values.displayName || values.identifier,
             expiresIn: 31536000,
             format: "jwt_vc_json",
-            identifier: values.identifier,
-            scope: values.scope,
-            type: values.identifier
+            identifier: values.identifier
         };
 
-        addVCCredentialConfiguration(configData)
-            .then((_response: VCCredentialConfiguration) => {
+        addVCTemplate(templateData)
+            .then((_response: VCTemplate) => {
                 dispatch(addAlert<AlertInterface>({
-                    description: t("verifiableCredentials:notifications.createConfig.success.description"),
+                    description: t("verifiableCredentials:notifications.createTemplate.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("verifiableCredentials:notifications.createConfig.success.message")
+                    message: t("verifiableCredentials:notifications.createTemplate.success.message")
                 }));
 
                 onSuccess?.();
@@ -106,15 +117,15 @@ export const AddVCConfigWizard: FunctionComponent<AddVCConfigWizardProps> = ({
             .catch((error: AxiosError) => {
                 if (error?.response?.status === 409) {
                     dispatch(addAlert<AlertInterface>({
-                        description: t("verifiableCredentials:notifications.createConfig.duplicateError.description"),
+                        description: t("verifiableCredentials:notifications.createTemplate.duplicateError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("verifiableCredentials:notifications.createConfig.duplicateError.message")
+                        message: t("verifiableCredentials:notifications.createTemplate.duplicateError.message")
                     }));
                 } else {
                     dispatch(addAlert<AlertInterface>({
-                        description: t("verifiableCredentials:notifications.createConfig.error.description"),
+                        description: t("verifiableCredentials:notifications.createTemplate.error.description"),
                         level: AlertLevels.ERROR,
-                        message: t("verifiableCredentials:notifications.createConfig.error.message")
+                        message: t("verifiableCredentials:notifications.createTemplate.error.message")
                     }));
                 }
             })
@@ -158,6 +169,7 @@ export const AddVCConfigWizard: FunctionComponent<AddVCConfigWizardProps> = ({
                                     required={ true }
                                     maxLength={ 100 }
                                     minLength={ 1 }
+                                    validation={ validateIdentifier }
                                     data-componentid={ `${componentId}-identifier-input` }
                                     width={ 16 }
                                 />
@@ -172,27 +184,10 @@ export const AddVCConfigWizard: FunctionComponent<AddVCConfigWizardProps> = ({
                                     label={ t("verifiableCredentials:wizard.form.displayName.label") }
                                     placeholder={ t("verifiableCredentials:wizard.form.displayName.placeholder") }
                                     hint={ t("verifiableCredentials:wizard.form.displayName.hint") }
-                                    required={ true }
+                                    required={ false }
                                     maxLength={ 255 }
                                     minLength={ 1 }
                                     data-componentid={ `${componentId}-display-name-input` }
-                                    width={ 16 }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Field.Input
-                                    ariaLabel="scope"
-                                    inputType="default"
-                                    name="scope"
-                                    label={ t("verifiableCredentials:wizard.form.scope.label") }
-                                    placeholder={ t("verifiableCredentials:wizard.form.scope.placeholder") }
-                                    hint={ t("verifiableCredentials:wizard.form.scope.hint") }
-                                    required={ true }
-                                    maxLength={ 255 }
-                                    minLength={ 1 }
-                                    data-componentid={ `${componentId}-scope-input` }
                                     width={ 16 }
                                 />
                             </Grid.Column>
@@ -233,4 +228,4 @@ export const AddVCConfigWizard: FunctionComponent<AddVCConfigWizardProps> = ({
     );
 };
 
-export default AddVCConfigWizard;
+export default AddVCTemplateWizard;

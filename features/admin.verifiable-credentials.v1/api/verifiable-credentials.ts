@@ -22,9 +22,9 @@ import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 import {
-    VCCredentialConfiguration,
-    VCCredentialConfigurationCreationModel,
-    VCCredentialConfigurationUpdateModel
+    VCTemplate,
+    VCTemplateCreationModel,
+    VCTemplateUpdateModel
 } from "../models/verifiable-credentials";
 
 /**
@@ -34,21 +34,21 @@ const httpClient: HttpClientInstance =
     AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
- * Add a new VC credential configuration.
+ * Add a new VC template.
  *
- * @param data - The configuration data to create.
- * @returns Promise with the created configuration.
+ * @param data - The template data to create.
+ * @returns Promise with the created template.
  */
-export const addVCCredentialConfiguration = (
-    data: VCCredentialConfigurationCreationModel
-): Promise<VCCredentialConfiguration> => {
+export const addVCTemplate = (
+    data: VCTemplateCreationModel
+): Promise<VCTemplate> => {
     const requestConfig: RequestConfigInterface = {
         data,
         headers: {
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store.getState().config.endpoints.vcCredentialConfigurations
+        url: store.getState().config.endpoints.vcTemplates
     };
 
     return httpClient(requestConfig)
@@ -61,18 +61,18 @@ export const addVCCredentialConfiguration = (
 };
 
 /**
- * Get a single VC credential configuration by ID.
+ * Get a single VC template by ID.
  *
- * @param configId - The ID of the configuration to retrieve.
- * @returns Promise with the configuration data.
+ * @param templateId - The ID of the template to retrieve.
+ * @returns Promise with the template data.
  */
-export const getVCCredentialConfiguration = (configId: string): Promise<VCCredentialConfiguration> => {
+export const getVCTemplate = (templateId: string): Promise<VCTemplate> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${store.getState().config.endpoints.vcCredentialConfigurations}/${configId}`
+        url: `${store.getState().config.endpoints.vcTemplates}/${templateId}`
     };
 
     return httpClient(requestConfig)
@@ -85,23 +85,23 @@ export const getVCCredentialConfiguration = (configId: string): Promise<VCCreden
 };
 
 /**
- * Update an existing VC credential configuration.
+ * Update an existing VC template.
  *
- * @param configId - The ID of the configuration to update.
- * @param data - The updated configuration data.
- * @returns Promise with the updated configuration.
+ * @param templateId - The ID of the template to update.
+ * @param data - The updated template data.
+ * @returns Promise with the updated template.
  */
-export const updateVCCredentialConfiguration = (
-    configId: string,
-    data: VCCredentialConfigurationUpdateModel
-): Promise<VCCredentialConfiguration> => {
+export const updateVCTemplate = (
+    templateId: string,
+    data: VCTemplateUpdateModel
+): Promise<VCTemplate> => {
     const requestConfig: RequestConfigInterface = {
         data,
         headers: {
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: `${store.getState().config.endpoints.vcCredentialConfigurations}/${configId}`
+        url: `${store.getState().config.endpoints.vcTemplates}/${templateId}`
     };
 
     return httpClient(requestConfig)
@@ -114,18 +114,18 @@ export const updateVCCredentialConfiguration = (
 };
 
 /**
- * Delete a VC credential configuration.
+ * Delete a VC template.
  *
- * @param configId - The ID of the configuration to delete.
+ * @param templateId - The ID of the template to delete.
  * @returns Promise with the response.
  */
-export const deleteVCCredentialConfiguration = (configId: string): Promise<AxiosResponse> => {
+export const deleteVCTemplate = (templateId: string): Promise<AxiosResponse> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: `${store.getState().config.endpoints.vcCredentialConfigurations}/${configId}`
+        url: `${store.getState().config.endpoints.vcTemplates}/${templateId}`
     };
 
     return httpClient(requestConfig)
@@ -138,18 +138,18 @@ export const deleteVCCredentialConfiguration = (configId: string): Promise<Axios
 };
 
 /**
- * Generate or regenerate a credential offer for a configuration.
+ * Generate or regenerate a credential offer for a template.
  *
- * @param configId - The ID of the configuration.
- * @returns Promise with the updated configuration containing the offer.
+ * @param templateId - The ID of the template.
+ * @returns Promise with the updated template containing the offer.
  */
-export const generateVCCredentialOffer = (configId: string): Promise<VCCredentialConfiguration> => {
+export const generateVCCredentialOffer = (templateId: string): Promise<VCTemplate> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: `${store.getState().config.endpoints.vcCredentialConfigurations}/${configId}/offer`
+        url: `${store.getState().config.endpoints.vcTemplates}/${templateId}/offer`
     };
 
     return httpClient(requestConfig)
@@ -162,18 +162,18 @@ export const generateVCCredentialOffer = (configId: string): Promise<VCCredentia
 };
 
 /**
- * Revoke a credential offer for a configuration.
+ * Revoke a credential offer for a template.
  *
- * @param configId - The ID of the configuration.
- * @returns Promise with the updated configuration (offerId set to null).
+ * @param templateId - The ID of the template.
+ * @returns Promise with the updated template (offerId set to null).
  */
-export const revokeVCCredentialOffer = (configId: string): Promise<VCCredentialConfiguration> => {
+export const revokeVCCredentialOffer = (templateId: string): Promise<VCTemplate> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: `${store.getState().config.endpoints.vcCredentialConfigurations}/${configId}/offer`
+        url: `${store.getState().config.endpoints.vcTemplates}/${templateId}/offer`
     };
 
     return httpClient(requestConfig)

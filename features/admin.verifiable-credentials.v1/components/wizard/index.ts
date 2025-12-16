@@ -16,4 +16,4 @@
  * under the License.
  */
 
-export { default as AddVCConfigWizard, AddVCConfigWizard as AddVCConfigWizardComponent } from "./add-vc-config";
+export { default as AddVCTemplateWizard, AddVCTemplateWizard as AddVCTemplateWizardComponent } from "./add-vc-template";

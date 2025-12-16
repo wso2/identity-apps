@@ -32,16 +32,16 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { VCCredentialConfigList } from "../components/vc-credential-config-list";
-import { AddVCConfigWizard } from "../components/wizard";
-import { useGetVCConfigs } from "../hooks/use-get-vc-configs";
+import { VCTemplateList } from "../components/vc-template-list";
+import { AddVCTemplateWizard } from "../components/wizard";
+import { useGetVCTemplates } from "../hooks/use-get-vc-templates";
 import { PaginationLink } from "../models/verifiable-credentials";
 import "./verifiable-credentials.scss";
 
 type VerifiableCredentialsPageProps = IdentifiableComponentInterface;
 
 /**
- * Verifiable Credentials configurations list page.
+ * Verifiable Credentials templates list page.
  *
  * @param props - Props injected to the component.
  * @returns React element.
@@ -63,25 +63,25 @@ const VerifiableCredentials = ({
     const [ listItemLimit, setListItemLimit ] = useState<number>(
         UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT
     );
-    const [ isAddConfigWizardOpen, setIsAddConfigWizardOpen ] = useState<boolean>(false);
+    const [ isAddTemplateWizardOpen, setIsAddTemplateWizardOpen ] = useState<boolean>(false);
 
     const {
-        data: configList,
-        isLoading: isConfigListLoading,
-        error: configListError,
-        mutate: mutateConfigList
-    } = useGetVCConfigs(listItemLimit, before, after, searchQuery, null, true);
+        data: templateList,
+        isLoading: isTemplateListLoading,
+        error: templateListError,
+        mutate: mutateTemplateList
+    } = useGetVCTemplates(listItemLimit, before, after, searchQuery, null, true);
 
     /**
-     * Update pagination cursors when config list changes.
+     * Update pagination cursors when template list changes.
      */
     useEffect(() => {
-        if (configList) {
+        if (templateList) {
             setNextAfter(undefined);
             setNextBefore(undefined);
 
-            if (configList.links && configList.links.length > 0) {
-                configList.links.forEach((link: PaginationLink) => {
+            if (templateList.links && templateList.links.length > 0) {
+                templateList.links.forEach((link: PaginationLink) => {
                     if (link.rel === "next" || link.rel === "after") {
                         // Extract cursor from URL
                         const afterMatch: RegExpMatchArray = link.href.match(/after=([^&]*)/);
@@ -99,37 +99,37 @@ const VerifiableCredentials = ({
                 });
             }
         }
-    }, [ configList ]);
+    }, [ templateList ]);
 
     /**
      * Handle fetch errors.
      */
     useEffect(() => {
-        if (configListError) {
+        if (templateListError) {
             dispatch(addAlert<AlertInterface>({
-                description: t("verifiableCredentials:notifications.fetchConfigs.error.description"),
+                description: t("verifiableCredentials:notifications.fetchTemplates.error.description"),
                 level: AlertLevels.ERROR,
-                message: t("verifiableCredentials:notifications.fetchConfigs.error.message")
+                message: t("verifiableCredentials:notifications.fetchTemplates.error.message")
             }));
         }
-    }, [ configListError ]);
+    }, [ templateListError ]);
 
     /**
      * Refresh list when needed.
      */
     useEffect(() => {
         if (isListUpdated) {
-            mutateConfigList();
+            mutateTemplateList();
             setListUpdated(false);
         }
     }, [ isListUpdated ]);
 
     /**
-     * Handles the configuration filter.
+     * Handles the template filter.
      *
      * @param query - Search query.
      */
-    const handleConfigFilter = (query: string): void => {
+    const handleTemplateFilter = (query: string): void => {
         setSearchQuery(query);
         setAfter(undefined);
         setBefore(undefined);
@@ -213,16 +213,16 @@ const VerifiableCredentials = ({
             contentTopMargin={ true }
             pageHeaderMaxWidth={ false }
             action={
-                configList?.VCCredentialConfigurations?.length > 0 &&
-                !isConfigListLoading && (
+                templateList?.VCTemplates?.length > 0 &&
+                !isTemplateListLoading && (
                     <PrimaryButton
                         onClick={ () => {
-                            setIsAddConfigWizardOpen(true);
+                            setIsAddTemplateWizardOpen(true);
                         } }
                         data-testid={ `${componentId}-add-button` }
                     >
                         <Icon name="add" />
-                        { t("verifiableCredentials:buttons.addConfig") }
+                        { t("verifiableCredentials:buttons.addTemplate") }
                     </PrimaryButton>
                 )
             }
@@ -230,7 +230,7 @@ const VerifiableCredentials = ({
             <ListLayout
                 advancedSearch={
                     (<AdvancedSearchWithBasicFilters
-                        onFilter={ handleConfigFilter }
+                        onFilter={ handleTemplateFilter }
                         filterAttributeOptions={ [
                             {
                                 key: 0,
@@ -260,22 +260,22 @@ const VerifiableCredentials = ({
                         data-testid={ `${componentId}-list-advanced-search` }
                     />)
                 }
-                currentListSize={ configList?.VCCredentialConfigurations?.length ?? 0 }
-                isLoading={ isConfigListLoading }
+                currentListSize={ templateList?.VCTemplates?.length ?? 0 }
+                isLoading={ isTemplateListLoading }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 onPageChange={ handlePaginationChange }
                 onSortStrategyChange={ () => {} }
                 showPagination={ true }
                 showTopActionPanel={
-                    isConfigListLoading ||
-                    (configList?.VCCredentialConfigurations?.length > 0) ||
+                    isTemplateListLoading ||
+                    (templateList?.VCTemplates?.length > 0) ||
                     searchQuery !== null
                 }
                 sortOptions={ null }
                 sortStrategy={ null }
-                totalPages={ Math.ceil((configList?.totalResults ?? 0) / listItemLimit) || 1 }
-                totalListSize={ configList?.totalResults ?? 0 }
+                totalPages={ Math.ceil((templateList?.totalResults ?? 0) / listItemLimit) || 1 }
+                totalListSize={ templateList?.totalResults ?? 0 }
                 paginationOptions={ {
                     disableNextButton: !nextAfter,
                     disablePreviousButton: !nextBefore
@@ -283,10 +283,10 @@ const VerifiableCredentials = ({
                 activePage={ activePage }
                 data-testid={ `${componentId}-list-layout` }
             >
-                <VCCredentialConfigList
+                <VCTemplateList
                     advancedSearch={
                         (<AdvancedSearchWithBasicFilters
-                            onFilter={ handleConfigFilter }
+                            onFilter={ handleTemplateFilter }
                             filterAttributeOptions={ [
                                 {
                                     key: 0,
@@ -311,21 +311,21 @@ const VerifiableCredentials = ({
                             data-testid={ `${componentId}-list-advanced-search-inner` }
                         />)
                     }
-                    mutateConfigList={ handleListRefresh }
-                    isLoading={ isConfigListLoading }
-                    list={ configList?.VCCredentialConfigurations ?? [] }
+                    mutateTemplateList={ handleListRefresh }
+                    isLoading={ isTemplateListLoading }
+                    list={ templateList?.VCTemplates ?? [] }
                     onSearchQueryClear={ handleSearchQueryClear }
                     searchQuery={ searchQuery }
-                    setShowAddConfigWizard={ () => {
-                        setIsAddConfigWizardOpen(true);
+                    setShowAddTemplateWizard={ () => {
+                        setIsAddTemplateWizardOpen(true);
                     } }
                     data-componentid={ `${componentId}-list` }
                 />
             </ListLayout>
 
-            { isAddConfigWizardOpen && (
-                <AddVCConfigWizard
-                    closeWizard={ () => setIsAddConfigWizardOpen(false) }
+            { isAddTemplateWizardOpen && (
+                <AddVCTemplateWizard
+                    closeWizard={ () => setIsAddTemplateWizardOpen(false) }
                     onSuccess={ handleListRefresh }
                     data-componentid={ `${componentId}-add-wizard` }
                 />

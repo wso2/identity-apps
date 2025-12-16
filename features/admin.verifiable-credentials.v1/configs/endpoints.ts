@@ -26,6 +26,6 @@ import { VCResourceEndpointsInterface } from "../models/endpoints";
  */
 export const getVCResourceEndpoints = (serverHost: string): VCResourceEndpointsInterface => {
     return {
-        vcCredentialConfigurations: `${serverHost}/api/server/v1/vc/credential-configurations`
+        vcTemplates: `${serverHost}/api/server/v1/vc-templates`
     };
 };

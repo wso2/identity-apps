@@ -17,10 +17,10 @@
  */
 
 export * from "./api/verifiable-credentials";
-export * from "./components/vc-credential-config-list";
+export * from "./components/vc-template-list";
 export * from "./constants/verifiable-credentials";
-export * from "./hooks/use-get-vc-config";
-export * from "./hooks/use-get-vc-configs";
+export * from "./hooks/use-get-vc-template";
+export * from "./hooks/use-get-vc-templates";
 export * from "./models/endpoints";
 export * from "./models/verifiable-credentials";
 export { default as VerifiableCredentials } from "./pages/verifiable-credentials";

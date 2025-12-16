@@ -23,7 +23,7 @@ export interface VerifiableCredentialsNS {
         description: string;
     };
     buttons: {
-        addConfig: string;
+        addTemplate: string;
     };
     placeholders: {
         emptyList: {
@@ -68,13 +68,9 @@ export interface VerifiableCredentialsNS {
                 label: string;
                 placeholder: string;
                 hint: string;
+                validation: string;
             };
             displayName: {
-                label: string;
-                placeholder: string;
-                hint: string;
-            };
-            scope: {
                 label: string;
                 placeholder: string;
                 hint: string;
@@ -82,8 +78,39 @@ export interface VerifiableCredentialsNS {
             submitButton: string;
         };
     };
+    editPage: {
+        title: string;
+        backButton: string;
+        form: {
+            displayName: {
+                label: string;
+                placeholder: string;
+                hint: string;
+            };
+            identifier: {
+                label: string;
+                hint: string;
+            };
+        };
+        dangerZone: {
+            header: string;
+            delete: {
+                header: string;
+                subheader: string;
+                actionTitle: string;
+            };
+        };
+        confirmations: {
+            deleteTemplate: {
+                header: string;
+                message: string;
+                content: string;
+                assertionHint: string;
+            };
+        };
+    };
     notifications: {
-        deleteConfig: {
+        deleteTemplate: {
             success: {
                 message: string;
                 description: string;
@@ -93,19 +120,19 @@ export interface VerifiableCredentialsNS {
                 description: string;
             };
         };
-        fetchConfigs: {
+        fetchTemplates: {
             error: {
                 message: string;
                 description: string;
             };
         };
-        fetchConfig: {
+        fetchTemplate: {
             error: {
                 message: string;
                 description: string;
             };
         };
-        createConfig: {
+        createTemplate: {
             success: {
                 message: string;
                 description: string;
@@ -115,6 +142,16 @@ export interface VerifiableCredentialsNS {
                 description: string;
             };
             duplicateError: {
+                message: string;
+                description: string;
+            };
+        };
+        updateTemplate: {
+            success: {
+                message: string;
+                description: string;
+            };
+            error: {
                 message: string;
                 description: string;
             };

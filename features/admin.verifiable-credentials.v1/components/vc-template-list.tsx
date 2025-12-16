@@ -34,69 +34,69 @@ import {
 import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import { deleteVCCredentialConfiguration } from "../api/verifiable-credentials";
-import { VCCredentialConfigurationListItem } from "../models/verifiable-credentials";
+import { Header, Icon, SemanticICONS } from "semantic-ui-react";
+import { deleteVCTemplate } from "../api/verifiable-credentials";
+import { VCTemplateListItem } from "../models/verifiable-credentials";
 
-interface VCCredentialConfigListProps extends IdentifiableComponentInterface {
+interface VCTemplateListProps extends IdentifiableComponentInterface {
     advancedSearch: ReactNode;
     isLoading: boolean;
-    mutateConfigList: () => void;
-    list: VCCredentialConfigurationListItem[];
+    mutateTemplateList: () => void;
+    list: VCTemplateListItem[];
     onSearchQueryClear?: () => void;
     searchQuery?: string;
-    setShowAddConfigWizard: () => void;
+    setShowAddTemplateWizard: () => void;
 }
 
 /**
- * Verifiable Credentials configuration list component.
+ * Verifiable Credentials template list component.
  *
  * @param props - Props injected to the component.
  * @returns React element.
  */
-export const VCCredentialConfigList = ({
+export const VCTemplateList = ({
     advancedSearch,
     isLoading,
     list,
-    mutateConfigList,
+    mutateTemplateList,
     onSearchQueryClear: _onSearchQueryClear,
     searchQuery: _searchQuery,
-    setShowAddConfigWizard,
+    setShowAddTemplateWizard,
     ["data-componentid"]: componentId
-}: VCCredentialConfigListProps): ReactElement => {
+}: VCTemplateListProps): ReactElement => {
     const dispatch: any = useDispatch();
     const { t } = useTranslation();
 
     const [ showDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
-    const [ currentDeletedConfig, setCurrentDeletedConfig ] = useState<VCCredentialConfigurationListItem>();
+    const [ currentDeletedTemplate, setCurrentDeletedTemplate ] = useState<VCTemplateListItem>();
 
     /**
-     * Handles configuration deletion.
+     * Handles template deletion.
      *
-     * @param config - Configuration to be deleted.
+     * @param template - Template to be deleted.
      */
-    const handleConfigDelete = (config: VCCredentialConfigurationListItem): void => {
-        deleteVCCredentialConfiguration(config.id)
+    const handleTemplateDelete = (template: VCTemplateListItem): void => {
+        deleteVCTemplate(template.id)
             .then(() => {
                 dispatch(
                     addAlert({
                         description: t(
-                            "verifiableCredentials:notifications.deleteConfig.success.description"
+                            "verifiableCredentials:notifications.deleteTemplate.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
-                        message: t("verifiableCredentials:notifications.deleteConfig.success.message")
+                        message: t("verifiableCredentials:notifications.deleteTemplate.success.message")
                     })
                 );
-                mutateConfigList();
+                mutateTemplateList();
             })
             .catch(() => {
                 dispatch(
                     addAlert({
                         description: t(
-                            "verifiableCredentials:notifications.deleteConfig.error.description"
+                            "verifiableCredentials:notifications.deleteTemplate.error.description"
                         ),
                         level: AlertLevels.ERROR,
-                        message: t("verifiableCredentials:notifications.deleteConfig.error.message")
+                        message: t("verifiableCredentials:notifications.deleteTemplate.error.message")
                     })
                 );
             });
@@ -113,9 +113,9 @@ export const VCCredentialConfigList = ({
                 "data-testid": `${componentId}-item-edit-button`,
                 hidden: (): boolean => false,
                 icon: (): SemanticICONS => "pencil alternate",
-                onClick: (_e: SyntheticEvent, config: VCCredentialConfigurationListItem): void =>
+                onClick: (_e: SyntheticEvent, template: VCTemplateListItem): void =>
                     history.push(
-                        AppConstants.getPaths().get("VC_CONFIG_EDIT").replace(":id", config.id)
+                        AppConstants.getPaths().get("VC_TEMPLATE_EDIT").replace(":id", template.id)
                     ),
                 popupText: (): string => t("common:edit"),
                 renderer: "semantic-icon"
@@ -124,8 +124,8 @@ export const VCCredentialConfigList = ({
                 "data-testid": `${componentId}-item-delete-button`,
                 hidden: (): boolean => false,
                 icon: (): SemanticICONS => "trash alternate",
-                onClick: (_e: SyntheticEvent, config: VCCredentialConfigurationListItem): void => {
-                    setCurrentDeletedConfig(config);
+                onClick: (_e: SyntheticEvent, template: VCTemplateListItem): void => {
+                    setCurrentDeletedTemplate(template);
                     setShowDeleteConfirmationModal(true);
                 },
                 popupText: (): string => t("common:delete"),
@@ -146,7 +146,7 @@ export const VCCredentialConfigList = ({
                 dataIndex: "displayName",
                 id: "displayName",
                 key: "displayName",
-                render: (config: VCCredentialConfigurationListItem): ReactNode => {
+                render: (template: VCTemplateListItem): ReactNode => {
                     return (
                         <Header
                             image
@@ -157,7 +157,7 @@ export const VCCredentialConfigList = ({
                             <AppAvatar
                                 image={
                                     (<AnimatedAvatar
-                                        name={ config.displayName }
+                                        name={ template.displayName }
                                         size="mini"
                                         data-testid={ `${componentId}-item-avatar` }
                                     />)
@@ -167,12 +167,7 @@ export const VCCredentialConfigList = ({
                                 data-testid={ `${componentId}-item-image` }
                             />
                             <Header.Content>
-                                { config.displayName }
-                                <Header.Subheader>
-                                    <Label size="mini" className="compact">
-                                        { config.scope }
-                                    </Label>
-                                </Header.Subheader>
+                                { template.displayName }
                             </Header.Content>
                         </Header>
                     );
@@ -184,8 +179,8 @@ export const VCCredentialConfigList = ({
                 dataIndex: "identifier",
                 id: "identifier",
                 key: "identifier",
-                render: (config: VCCredentialConfigurationListItem): ReactNode => {
-                    return <div>{ config.identifier }</div>;
+                render: (template: VCTemplateListItem): ReactNode => {
+                    return <div>{ template.identifier }</div>;
                 },
                 title: t("verifiableCredentials:list.columns.identifier")
             },
@@ -201,7 +196,7 @@ export const VCCredentialConfigList = ({
     };
 
     /**
-     * Shows placeholder when there are no configurations.
+     * Shows placeholder when there are no templates.
      *
      * @returns React element.
      */
@@ -213,10 +208,10 @@ export const VCCredentialConfigList = ({
                     action={
                         (<PrimaryButton
                             data-testid={ `${componentId}-empty-placeholder-add-button` }
-                            onClick={ () => setShowAddConfigWizard() }
+                            onClick={ () => setShowAddTemplateWizard() }
                         >
                             <Icon name="add" />
-                            { t("verifiableCredentials:buttons.addConfig") }
+                            { t("verifiableCredentials:buttons.addTemplate") }
                         </PrimaryButton>)
                     }
                     image={ getEmptyPlaceholderIllustrations().newList }
@@ -232,16 +227,16 @@ export const VCCredentialConfigList = ({
 
     return (
         <>
-            <DataTable<VCCredentialConfigurationListItem>
-                className="vc-configs-table"
+            <DataTable<VCTemplateListItem>
+                className="vc-templates-table"
                 externalSearch={ advancedSearch }
                 isLoading={ isLoading }
                 actions={ resolveTableActions() }
                 columns={ resolveTableColumns() }
                 data={ list }
-                onRowClick={ (_e: SyntheticEvent, config: VCCredentialConfigurationListItem): void => {
+                onRowClick={ (_e: SyntheticEvent, template: VCTemplateListItem): void => {
                     history.push(
-                        AppConstants.getPaths().get("VC_CONFIG_EDIT").replace(":id", config.id)
+                        AppConstants.getPaths().get("VC_TEMPLATE_EDIT").replace(":id", template.id)
                     );
                 } }
                 placeholders={ showPlaceholders() }
@@ -262,7 +257,7 @@ export const VCCredentialConfigList = ({
                     secondaryAction={ t("common:cancel") }
                     onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
                     onPrimaryActionClick={ (): void => {
-                        handleConfigDelete(currentDeletedConfig);
+                        handleTemplateDelete(currentDeletedTemplate);
                         setShowDeleteConfirmationModal(false);
                     } }
                     closeOnDimmerClick={ false }

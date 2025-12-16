@@ -16,13 +16,5 @@
  * under the License.
  */
 
-export * from "./api/verifiable-credentials";
-export * from "./components/vc-template-list";
-export * from "./components/wizard";
-export * from "./constants/verifiable-credentials";
-export * from "./hooks/use-get-vc-template";
-export * from "./hooks/use-get-vc-templates";
-export * from "./models/endpoints";
-export * from "./models/verifiable-credentials";
-export { default as VCTemplateEditPage } from "./pages/vc-template-edit";
-export { default as VerifiableCredentials } from "./pages/verifiable-credentials";
+export * from "./use-get-vc-template";
+export * from "./use-get-vc-templates";

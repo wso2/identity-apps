@@ -23,25 +23,42 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import { VCCredentialConfiguration } from "../models/verifiable-credentials";
+import { VCTemplateList } from "../models/verifiable-credentials";
 
 /**
- * Hook to get a single VC credential configuration by ID.
+ * Hook to get the VC templates list with cursor-based pagination.
  *
- * @param configId - The ID of the configuration to fetch.
+ * @param limit - The maximum number of templates to return.
+ * @param before - Base64 encoded cursor for backward pagination.
+ * @param after - Base64 encoded cursor for forward pagination.
+ * @param filter - The filter to be applied (e.g., "identifier eq EmployeeBadge").
+ * @param attributes - The attributes to be returned.
  * @param shouldFetch - Whether to fetch the data.
- * @returns RequestResultInterface with the configuration data.
+ * @returns RequestResultInterface with the template list.
  */
-export const useGetVCConfig = (
-    configId: string,
+export const useGetVCTemplates = (
+    limit?: number,
+    before?: string,
+    after?: string,
+    filter?: string,
+    attributes?: string,
     shouldFetch: boolean = true
-): RequestResultInterface<VCCredentialConfiguration, RequestErrorInterface> => {
+): RequestResultInterface<VCTemplateList, RequestErrorInterface> => {
+    const params: Record<string, any> = {};
+
+    if (limit) params.limit = limit;
+    if (before) params.before = before;
+    if (after) params.after = after;
+    if (filter) params.filter = filter;
+    if (attributes) params.attributes = attributes;
+
     const requestConfig: RequestConfigInterface = {
         headers: {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${store.getState().config.endpoints.vcCredentialConfigurations}/${configId}`
+        params,
+        url: store.getState().config.endpoints.vcTemplates
     };
 
     const {
@@ -50,8 +67,8 @@ export const useGetVCConfig = (
         isLoading,
         isValidating,
         mutate
-    } = useRequest<VCCredentialConfiguration, RequestErrorInterface>(
-        shouldFetch && configId ? requestConfig : null
+    } = useRequest<VCTemplateList, RequestErrorInterface>(
+        shouldFetch ? requestConfig : null
     );
 
     return {

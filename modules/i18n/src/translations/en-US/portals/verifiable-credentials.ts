@@ -29,15 +29,15 @@ export const verifiableCredentials: VerifiableCredentialsNS = {
     page: {
         title: "Verifiable Credentials",
         heading: "Verifiable Credentials",
-        description: "Configure credential types that can be issued to users as verifiable credentials."
+        description: "Configure credential templates that can be issued to users as verifiable credentials."
     },
     buttons: {
-        addConfig: "New Credential Type"
+        addTemplate: "New Credential Template"
     },
     placeholders: {
         emptyList: {
-            title: "No Credential Types Configured",
-            subtitle: "There are no credential types configured at the moment. You can add a new credential type by clicking on the button below."
+            title: "No Credential Templates Configured",
+            subtitle: "There are no credential templates configured at the moment. You can add a new credential template by clicking on the button below."
         },
         emptySearch: {
             title: "No Results Found",
@@ -63,69 +63,106 @@ export const verifiableCredentials: VerifiableCredentialsNS = {
         confirmations: {
             deleteItem: {
                 header: "Are you sure?",
-                message: "This action is irreversible and will permanently delete the credential configuration.",
-                content: "If you delete this credential configuration, users will no longer be able to obtain credentials of this type. Please proceed with caution.",
+                message: "This action is irreversible and will permanently delete the credential template.",
+                content: "If you delete this credential template, users will no longer be able to obtain credentials of this type. Please proceed with caution.",
                 assertionHint: "Please confirm your action."
             }
         }
     },
     wizard: {
-        title: "Create Credential Type",
-        subtitle: "Configure a new verifiable credential type that can be issued to users.",
+        title: "Create Credential Template",
+        subtitle: "Configure a new verifiable credential template that can be issued to users.",
         form: {
             identifier: {
                 label: "Identifier",
                 placeholder: "Enter a unique identifier",
-                hint: "A unique identifier for the credential type. This will also be used as the credential type."
+                hint: "A unique identifier for the credential template. This will also be used as the credential type.",
+                validation: "Identifier cannot contain spaces."
             },
             displayName: {
                 label: "Display Name",
                 placeholder: "Enter a display name",
-                hint: "A human-readable name for the credential type that will be shown to users."
-            },
-            scope: {
-                label: "Scope",
-                placeholder: "Enter the scope",
-                hint: "The OAuth scope required to issue credentials of this type."
+                hint: "A human-readable name for the credential template that will be shown to users."
             },
             submitButton: "Create"
         }
     },
+    editPage: {
+        title: "Edit Credential Template",
+        backButton: "Go back to Verifiable Credentials",
+        form: {
+            displayName: {
+                label: "Display Name",
+                placeholder: "Enter a display name",
+                hint: "A human-readable name for the credential template that will be shown to users."
+            },
+            identifier: {
+                label: "Identifier",
+                hint: "A unique identifier for the credential template. This cannot be changed."
+            }
+        },
+        dangerZone: {
+            header: "Danger Zone",
+            delete: {
+                header: "Delete Credential Template",
+                subheader: "Once you delete a credential template, there is no going back. Please be certain.",
+                actionTitle: "Delete Credential Template"
+            }
+        },
+        confirmations: {
+            deleteTemplate: {
+                header: "Are you sure?",
+                message: "This action is irreversible and will permanently delete the credential template.",
+                content: "If you delete this credential template, users will no longer be able to obtain credentials of this type. Please proceed with caution.",
+                assertionHint: "Please confirm your action."
+            }
+        }
+    },
     notifications: {
-        deleteConfig: {
+        deleteTemplate: {
             success: {
                 message: "Deleted Successfully",
-                description: "The credential configuration has been deleted successfully."
+                description: "The credential template has been deleted successfully."
             },
             error: {
                 message: "Deletion Failed",
-                description: "An error occurred while deleting the credential configuration."
+                description: "An error occurred while deleting the credential template."
             }
         },
-        fetchConfigs: {
+        fetchTemplates: {
             error: {
                 message: "Retrieval Failed",
-                description: "An error occurred while fetching the credential configurations."
+                description: "An error occurred while fetching the credential templates."
             }
         },
-        fetchConfig: {
+        fetchTemplate: {
             error: {
                 message: "Retrieval Failed",
-                description: "An error occurred while fetching the credential configuration details."
+                description: "An error occurred while fetching the credential template details."
             }
         },
-        createConfig: {
+        createTemplate: {
             success: {
                 message: "Created Successfully",
-                description: "The credential configuration has been created successfully."
+                description: "The credential template has been created successfully."
             },
             error: {
                 message: "Creation Failed",
-                description: "An error occurred while creating the credential configuration."
+                description: "An error occurred while creating the credential template."
             },
             duplicateError: {
                 message: "Duplicate Identifier",
-                description: "A credential configuration with this identifier already exists. Please use a different identifier."
+                description: "A credential template with this identifier already exists. Please use a different identifier."
+            }
+        },
+        updateTemplate: {
+            success: {
+                message: "Updated Successfully",
+                description: "The credential template has been updated successfully."
+            },
+            error: {
+                message: "Update Failed",
+                description: "An error occurred while updating the credential template."
             }
         }
     }

@@ -25,60 +25,56 @@ export interface PaginationLink {
 }
 
 /**
- * Interface for VC Credential Configuration (full object).
+ * Interface for VC Template (full object).
  */
-export interface VCCredentialConfiguration {
+export interface VCTemplate {
     id: string;
     identifier: string;
     displayName: string;
-    scope: string;
+    description?: string;
     format: string;
-    type: string;
     claims: string[];
     expiresIn: number;
     offerId?: string | null;
 }
 
 /**
- * Interface for VC Credential Configuration List Item (summary view).
+ * Interface for VC Template List Item (summary view).
  */
-export interface VCCredentialConfigurationListItem {
+export interface VCTemplateListItem {
     id: string;
     identifier: string;
     displayName: string;
-    scope: string;
 }
 
 /**
- * Interface for VC Credential Configuration List response.
+ * Interface for VC Template List response.
  */
-export interface VCCredentialConfigurationList {
+export interface VCTemplateList {
     totalResults: number;
     links?: PaginationLink[];
-    VCCredentialConfigurations: VCCredentialConfigurationListItem[];
+    VCTemplates: VCTemplateListItem[];
 }
 
 /**
- * Interface for creating a new VC Credential Configuration.
+ * Interface for creating a new VC Template.
  */
-export interface VCCredentialConfigurationCreationModel {
+export interface VCTemplateCreationModel {
     identifier: string;
     displayName?: string;
-    scope: string;
+    description?: string;
     format: string;
-    type: string;
     claims: string[];
     expiresIn: number;
 }
 
 /**
- * Interface for updating an existing VC Credential Configuration.
+ * Interface for updating an existing VC Template.
  */
-export interface VCCredentialConfigurationUpdateModel {
+export interface VCTemplateUpdateModel {
     displayName?: string;
-    scope?: string;
+    description?: string;
     format?: string;
-    type?: string;
     claims?: string[];
     expiresIn?: number;
 }

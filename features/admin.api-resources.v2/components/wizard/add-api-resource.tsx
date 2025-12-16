@@ -160,8 +160,6 @@ export const AddAPIResource: FunctionComponent<AddAPIResourcePropsInterface> = (
 
         if (resourceServerType === ResourceServerType.MCP) {
             apiResourceBody.resourceType = APIResourceType.MCP;
-        } else if (resourceServerType === ResourceServerType.VC) {
-            apiResourceBody.resourceType = APIResourceType.VC;
         }
 
         createAPIResource(apiResourceBody)

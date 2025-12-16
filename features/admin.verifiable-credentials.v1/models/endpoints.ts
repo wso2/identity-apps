@@ -20,5 +20,5 @@
  * Interface for Verifiable Credentials resource endpoints.
  */
 export interface VCResourceEndpointsInterface {
-    vcCredentialConfigurations: string;
+    vcTemplates: string;
 }
