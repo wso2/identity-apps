@@ -68,7 +68,7 @@
     String enterUsernameHereText = "Enter.your.username.here";
     if (isMultiAttributeLoginEnabledInTenant) {
         if (allowedAttributes != null) {
-            usernameLabel = getUsernameLabel(recoveryResourceBundle, allowedAttributes);
+            usernameLabel = getUsernameLabel(recoveryResourceBundle, allowedAttributes, tenantDomain);
             enterUsernameHereText = "Enter.your.identifier";
         }
     }
