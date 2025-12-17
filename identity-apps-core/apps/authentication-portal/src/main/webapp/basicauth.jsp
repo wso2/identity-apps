@@ -315,7 +315,7 @@
 
     if (isMultiAttributeLoginEnabledInTenant) {
         if (allowedAttributes != null) {
-            usernameLabel = getUsernameLabel(resourceBundle, allowedAttributes);
+            usernameLabel = getUsernameLabel(resourceBundle, allowedAttributes, tenantDomain);
             usernamePlaceHolder = "enter.your.identifier";
         }
     }
