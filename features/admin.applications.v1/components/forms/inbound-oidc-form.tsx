@@ -3410,8 +3410,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             ".refreshToken.fields.extendRenewedRefreshTokenExpiryTime.hint"
                                         }
                                     >
-                                        Select to extend the expiry time of a renewed
-                                        <Code withBackground>refresh_token</Code>
+                                        Select to ensure renewed refresh tokens retain the remaining validity period
+                                         from the original token instead of receiving a fresh expiry time.
                                     </Trans>
                                 </Hint>
                             </Grid.Column>
