@@ -649,6 +649,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Enable legacy session bound token behaviour.
      */
     enableLegacySessionBoundTokenBehaviour: boolean;
+    /**
+     * Disable email template feature for free tier tenants.
+     */
+    disableEmailTemplateForFreeTier: boolean;
 }
 
 /**
