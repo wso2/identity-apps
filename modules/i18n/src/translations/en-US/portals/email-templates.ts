@@ -18,13 +18,31 @@
 import { emailTemplatesNS } from "../../../models";
 
 export const emailTemplates: emailTemplatesNS = {
+    advancedSearch: {
+        error: "Filter query format incorrect",
+        form: {
+            inputs: {
+                filterAttribute: {
+                    placeholder: "E.g. Name etc."
+                },
+                filterCondition: {
+                    placeholder: "E.g. Starts with etc."
+                },
+                filterValue: {
+                    placeholder: "E.g. TOTP, passwordResetSuccess etc."
+                }
+            }
+        },
+        placeholder: "Search by email template type"
+    },
     buttons: {
+        createTemplateType: "Create Template Type",
         deleteTemplate: "Delete Template",
         editTemplate: "Edit Template",
         newTemplate: "New Template",
-        viewTemplate: "View Template",
-        createTemplateType: "Create Template Type",
-        newType: "New Template Type"
+        newType: "New Template Type",
+        viewTemplate: "View Template"
+
     },
     confirmations: {
         deleteTemplate: {
@@ -54,6 +72,19 @@ export const emailTemplates: emailTemplatesNS = {
             }
         }
     },
+    forms: {
+        addTemplateType: {
+            fields: {
+                type: {
+                    label: "Template Type Name",
+                    placeholder: "Enter a template type name",
+                    validations: {
+                        empty: "Template type name is required to proceed."
+                    }
+                }
+            }
+        }
+    },
     list: {
         actions: "Actions",
         name: "Name"
@@ -73,6 +104,20 @@ export const emailTemplates: emailTemplatesNS = {
                 message: "Creating email template is successful"
             }
         },
+        createTemplateType: {
+            error: {
+                description: "{{description}}",
+                message: "Error creating email template type."
+            },
+            genericError: {
+                description: "Couldn't create email template type.",
+                message: "Something went wrong"
+            },
+            success: {
+                description: "Successfully created the email template type.",
+                message: "Creating email template type is successful"
+            }
+        },
         deleteTemplate: {
             error: {
                 description: "{{description}}",
@@ -87,6 +132,20 @@ export const emailTemplates: emailTemplatesNS = {
                 message: "Email template delete successful"
             }
         },
+        deleteTemplateType: {
+            error: {
+                description: "{{description}}",
+                message: "Error deleting email template type."
+            },
+            genericError: {
+                description: "Couldn't delete email template type.",
+                message: "Something went wrong"
+            },
+            success: {
+                description: "Successfully deleted the email template type.",
+                message: "Email template type delete successful"
+            }
+        },
         getTemplateDetails: {
             error: {
                 description: "{{description}}",
@@ -98,6 +157,20 @@ export const emailTemplates: emailTemplatesNS = {
             },
             success: {
                 description: "Successfully retrieved the email template details.",
+                message: "Retrieval successful"
+            }
+        },
+        getTemplateTypes: {
+            error: {
+                description: "{{description}}",
+                message: "Retrieval error"
+            },
+            genericError: {
+                description: "Couldn't retrieve the email template types.",
+                message: "Something went wrong"
+            },
+            success: {
+                description: "Successfully retrieved the email template types.",
                 message: "Retrieval successful"
             }
         },
@@ -135,48 +208,6 @@ export const emailTemplates: emailTemplatesNS = {
                 message: "Email template update successful"
             }
         },
-        createTemplateType: {
-            error: {
-                description: "{{description}}",
-                message: "Error creating email template type."
-            },
-            genericError: {
-                description: "Couldn't create email template type.",
-                message: "Something went wrong"
-            },
-            success: {
-                description: "Successfully created the email template type.",
-                message: "Creating email template type is successful"
-            }
-        },
-        deleteTemplateType: {
-            error: {
-                description: "{{description}}",
-                message: "Error deleting email template type."
-            },
-            genericError: {
-                description: "Couldn't delete email template type.",
-                message: "Something went wrong"
-            },
-            success: {
-                description: "Successfully deleted the email template type.",
-                message: "Email template type delete successful"
-            }
-        },
-        getTemplateTypes: {
-            error: {
-                description: "{{description}}",
-                message: "Retrieval error"
-            },
-            genericError: {
-                description: "Couldn't retrieve the email template types.",
-                message: "Something went wrong"
-            },
-            success: {
-                description: "Successfully retrieved the email template types.",
-                message: "Retrieval successful"
-            }
-        },
         updateTemplateType: {
             error: {
                 description: "{{description}}",
@@ -212,7 +243,7 @@ export const emailTemplates: emailTemplatesNS = {
     updateTemplate: {
         tags: {
             premium: {
-                info: "Unlock email template customization with our Paid plan. <1>Contact Us</1> to upgrade."
+                info: "Unlock email template customization with our Paid plans. <1>Contact Us</1> to upgrade."
             }
         }
     },
@@ -229,35 +260,5 @@ export const emailTemplates: emailTemplatesNS = {
             },
             subHeading: "Create a new template type to associate with email requirements."
         }
-    },
-    forms: {
-        addTemplateType: {
-            fields: {
-                type: {
-                    label: "Template Type Name",
-                    placeholder: "Enter a template type name",
-                    validations: {
-                        empty: "Template type name is required to proceed."
-                    }
-                }
-            }
-        }
-    },
-    advancedSearch: {
-        error: "Filter query format incorrect",
-        form: {
-            inputs: {
-                filterAttribute: {
-                    placeholder: "E.g. Name etc."
-                },
-                filterCondition: {
-                    placeholder: "E.g. Starts with etc."
-                },
-                filterValue: {
-                    placeholder: "E.g. TOTP, passwordResetSuccess etc."
-                }
-            }
-        },
-        placeholder: "Search by email template type"
     }
 };
