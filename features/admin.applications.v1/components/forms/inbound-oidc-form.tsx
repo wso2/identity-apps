@@ -1031,6 +1031,18 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     };
 
     /**
+     * Checks if a binding type is allowed for sub-organizations.
+     * Sub-organizations can only use SSO-session or None binding types.
+     *
+     * @param bindingType - The binding type to check.
+     * @returns true if the binding type is allowed for sub-organizations, false otherwise.
+     */
+    const isAllowedBindingTypeForSubOrg = (bindingType: string): boolean => {
+        return bindingType === SupportedAccessTokenBindingTypes.SSO_SESSION ||
+            bindingType === SupportedAccessTokenBindingTypes.NONE;
+    };
+
+    /**
      * Creates options for Radio using MetadataPropertyInterface options.
      *
      * @param metadataProp - Metadata.
@@ -1057,6 +1069,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 // as they are analogous to SPA and OIDC web applications, respectively.
                 } else if ((isSPAApplication || isOIDCWebApplication || isReactApplication
                     || isNextJSApplication) && isBinding && ele === "cookie") {
+                    return false;
+                // For sub-organizations, show only sso-session and none token binding
+                } else if (isSubOrganization() && isBinding && !isAllowedBindingTypeForSubOrg(ele)) {
                     return false;
                 } else {
                     allowedList.push({
@@ -2968,7 +2983,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
             {
                 !isM2MApplication
-                && !isSubOrganization()
                 && !isSystemApplication
                 && !isDefaultApplication
                 && !isMcpClientApplication
