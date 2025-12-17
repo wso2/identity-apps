@@ -31,6 +31,7 @@
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.AUTHENTICATION_MECHANISM_NOT_CONFIGURED" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.ENABLE_AUTHENTICATION_WITH_REST_API" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.ERROR_WHILE_BUILDING_THE_ACCOUNT_RECOVERY_ENDPOINT_URL" %>
+<%@ page import="static org.wso2.carbon.identity.application.authentication.framework.util.FrameworkConstants.JSAttributes.JS_IDENTIFIER_FIRST_USER_INPUT" %>
 <%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 <%@ page import="org.wso2.carbon.CarbonConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
@@ -520,6 +521,10 @@
                     // Remove userstore domain from the username.
                     String[] usernameSplitItems = usernameIdentifier.split("/");
                     String sanitizeUserName = usernameSplitItems[usernameSplitItems.length - 1];
+                    String identifierFirstUserInput = request.getParameter(JS_IDENTIFIER_FIRST_USER_INPUT);
+                    if (StringUtils.isBlank(identifierFirstUserInput) || identifierFirstUserInput == "null") {
+                        identifierFirstUserInput = sanitizeUserName;
+                    }
                 %>
                 <div class="identifier-container">
                     <img
@@ -531,8 +536,8 @@
                             class="ellipsis"
                             data-position="top left"
                             data-variation="inverted"
-                            data-content="<%=Encode.forHtmlAttribute(sanitizeUserName)%>">
-                        <%=Encode.forHtmlContent(sanitizeUserName)%>
+                            data-content="<%=Encode.forHtmlAttribute(identifierFirstUserInput)%>">
+                        <%=Encode.forHtmlContent(identifierFirstUserInput)%>
                     </span>
                 </div>
                 <% } %>

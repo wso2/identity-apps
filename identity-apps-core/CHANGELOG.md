@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.3.31
+
+### Patch Changes
+
+- [#9433](https://github.com/wso2/identity-apps/pull/9433) [`1341fc5665a13206364e0766044bce1a425fe43e`](https://github.com/wso2/identity-apps/commit/1341fc5665a13206364e0766044bce1a425fe43e) Thanks [@KaveeshaPiumini](https://github.com/KaveeshaPiumini)! - Update login.jsp to use user input as the username label
+
 ## 3.3.30
 
 ### Patch Changes

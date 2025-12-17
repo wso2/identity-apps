@@ -765,6 +765,15 @@ export interface ApplicationsNS {
                                 passwordExecutorRequired: {
                                     message: string;
                                 };
+                                otpStepButtonsOutsideForm: {
+                                    message: string;
+                                };
+                                otpStepSingleActionButton: {
+                                    message: string;
+                                };
+                                otpStepMultipleForms: {
+                                    message: string;
+                                };
                             }
                         };
                     };

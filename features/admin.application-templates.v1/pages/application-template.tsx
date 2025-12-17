@@ -18,12 +18,16 @@
 
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-flag-label";
+import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { ExtensionTemplateListInterface, ResourceTypes } from "@wso2is/admin.template-core.v1/models/templates";
 import ExtensionTemplatesProvider from "@wso2is/admin.template-core.v1/provider/extension-templates-provider";
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { FeatureAccessConfigInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import ApplicationCreationAdapter from "../components/application-creation-adapter";
 import ApplicationTemplateGrid from "../components/application-templates-grid";
 import { ApplicationTemplateConstants } from "../constants/templates";
@@ -59,6 +63,11 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
         history.push(AppConstants.getPaths().get("APPLICATIONS"));
     };
 
+    const organizationsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.features?.organizations);
+
+    const { isSubOrganization } = useGetCurrentOrganizationType();
+
     return (
         <ExtensionTemplatesProvider
             resourceType={ ResourceTypes.APPLICATIONS }
@@ -66,7 +75,14 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
         >
             <PageLayout
                 pageTitle="Register New Application"
-                title={ t("console:develop.pages.applicationTemplate.title") }
+                title={ (<>
+                    { t("console:develop.pages.applicationTemplate.title") }
+                    { isSubOrganization() && (<FeatureFlagLabel
+                        featureFlags={ organizationsFeatureConfig?.featureFlags }
+                        featureKey="orgApplicationTemplates"
+                        type="chip"
+                    />) }
+                </>) }
                 contentTopMargin={ true }
                 description={ t("console:develop.pages.applicationTemplate.subTitle") }
                 backButton={ {
