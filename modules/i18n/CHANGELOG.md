@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.30.65
+
+### Patch Changes
+
+- [#9495](https://github.com/wso2/identity-apps/pull/9495) [`2f8ade07e7c226c701496b6d3e56c6a75a303894`](https://github.com/wso2/identity-apps/commit/2f8ade07e7c226c701496b6d3e56c6a75a303894) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - UI to show email template customization blocking
+
 ## 2.30.64
 
 ### Patch Changes
