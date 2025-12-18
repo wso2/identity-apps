@@ -1827,6 +1827,11 @@
                 "enabled": true,
                 "featureFlags": [],
                 "scopes": {
+                    "create": ["internal_vc_template_create"],
+                    "delete": ["internal_vc_template_delete"],
+                    "feature": ["console:verifiableCredentials"],
+                    "read": ["internal_vc_template_view"],
+                    "update": ["internal_vc_template_update"]
                 }
             },
             "webhooks": {
