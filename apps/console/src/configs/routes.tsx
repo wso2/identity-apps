@@ -470,13 +470,14 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         },
 
         {
+            category: "console:develop.features.sidePanel.categories.application",
             children: [
                 {
                     component: lazy(() =>
                         import("@wso2is/admin.verifiable-credentials.v1/pages/vc-template-edit")),
                     exact: true,
                     id: "editVCTemplate",
-                    name: "Edit Verifiable Credential Template",
+                    name: "Edit Verifiable Credential",
                     path: AppConstants.getPaths().get("VC_TEMPLATE_EDIT"),
                     protected: true,
                     showOnSidePanel: false

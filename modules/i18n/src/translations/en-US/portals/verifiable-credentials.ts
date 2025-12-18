@@ -106,9 +106,9 @@ export const verifiableCredentials: VerifiableCredentialsNS = {
                 hint: "The validity period of the credential in seconds. For example, 31536000 seconds equals 1 year."
             },
             claims: {
-                label: "Claims",
-                placeholder: "Search and select claims",
-                hint: "Select the user claims to include in the verifiable credential."
+                label: "Attributes",
+                placeholder: "Search and select attributes",
+                hint: "Select the user attributes to include in the verifiable credential."
             }
         },
         dangerZone: {
