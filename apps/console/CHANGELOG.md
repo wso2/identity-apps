@@ -1,5 +1,31 @@
 # @wso2is/console
 
+## 2.85.0
+
+### Minor Changes
+
+- [#9519](https://github.com/wso2/identity-apps/pull/9519) [`3f87a4388d00676d4f78206edce7f353cf63c0e8`](https://github.com/wso2/identity-apps/commit/3f87a4388d00676d4f78206edce7f353cf63c0e8) Thanks [@AmshikaH](https://github.com/AmshikaH)! - Enable Attribute Update Verification Settings in V1 Sub-Orgs
+
+### Patch Changes
+
+- Updated dependencies [[`3f87a4388d00676d4f78206edce7f353cf63c0e8`](https://github.com/wso2/identity-apps/commit/3f87a4388d00676d4f78206edce7f353cf63c0e8)]:
+  - @wso2is/admin.organizations.v1@2.28.0
+  - @wso2is/admin.claims.v1@2.30.0
+  - @wso2is/admin.actions.v1@1.15.1
+  - @wso2is/admin.session-management.v1@2.25.220
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.109
+  - @wso2is/admin.branding.v1@2.32.65
+  - @wso2is/admin.core.v1@2.49.117
+  - @wso2is/admin.email-management.v1@2.25.273
+  - @wso2is/admin.flows.v1@1.0.78
+  - @wso2is/admin.home.v1@1.7.88
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.109
+  - @wso2is/admin.server-configurations.v1@2.35.131
+  - @wso2is/admin.users.v1@2.36.84
+  - @wso2is/admin.registration-flow-builder.v1@0.10.69
+  - @wso2is/admin.agents.v1@1.0.124
+  - @wso2is/admin.roles.v2@2.27.279
+
 ## 2.84.0
 
 ### Minor Changes
