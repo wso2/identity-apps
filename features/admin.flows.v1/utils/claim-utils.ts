@@ -27,7 +27,7 @@ import { Claim } from "@wso2is/core/models";
  * @returns Transformed and sorted array of claims with username claim included.
  */
 
-export const transformClaimsWithUsername = (claims: Claim[] | undefined): Claim[] => {
+const transformClaimsWithUsername = (claims: Claim[] | undefined): Claim[] => {
 
     if (!claims) {
         return [];
@@ -57,3 +57,5 @@ export const transformClaimsWithUsername = (claims: Claim[] | undefined): Claim[
         return displayNameA.localeCompare(displayNameB);
     });
 };
+
+export { transformClaimsWithUsername };
