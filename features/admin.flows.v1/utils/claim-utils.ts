@@ -18,6 +18,7 @@
 
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { Claim } from "@wso2is/core/models";
+
 /**
  * Transforms the claims to ensure the username claim is always included.
  * Sorts the claims by displayName alphabetically.
@@ -25,8 +26,9 @@ import { Claim } from "@wso2is/core/models";
  * @param claims - Array of claims to transform.
  * @returns Transformed and sorted array of claims with username claim included.
  */
+
 export const transformClaimsWithUsername = (claims: Claim[] | undefined): Claim[] => {
-    
+
     if (!claims) {
         return [];
     }

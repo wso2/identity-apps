@@ -115,7 +115,7 @@ const FlowContextWrapper: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Attribute[] }>({});
     const [ isPublishing, setIsPublishing ] = useState<boolean>(false);
 
-    const shouldFetchClaims = !!metadata?.attributeProfile;
+    const shouldFetchClaims: boolean = !!metadata?.attributeProfile;
 
     const { data: claimsData } = useGetAllLocalClaims<Attribute[]>(
         params,
