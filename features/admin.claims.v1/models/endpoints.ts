@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import { ORGANIZATION_TYPE } from "@wso2is/admin.organizations.v1/constants";
-
 /**
  * Interface for the Claim Management feature resource endpoints.
  */
@@ -35,51 +33,4 @@ export interface ServerSupportedClaimsInterface {
     id: string;
     name: string;
     attributes: string[];
-}
-
-/**
- * Represents the response structure for retrieving details of the
- * currently authenticated organization.
- */
-export interface OrganizationSelfResponse {
-    /**
-     * The unique identifier of the organization.
-     */
-    id: string;
-    /**
-     * The name of the organization.
-     */
-    name: string;
-    /**
-     * The organization handle.
-     */
-    orgHandle: string;
-    /**
-     * The description of the organization.
-     */
-    description: string;
-    /**
-     * The status of the organization.
-     */
-    status: string;
-    /**
-     * The version of the organization.
-     */
-    version: string;
-    /**
-     * The date when the organization was created.
-     */
-    created: string;
-    /**
-     * The date when the organization was last modified.
-     */
-    lastModified: string;
-    /**
-     * The type of the organization.
-     */
-    type: ORGANIZATION_TYPE;
-    /**
-     * Whether the organization has child organizations.
-     */
-    hasChildren: boolean;
 }

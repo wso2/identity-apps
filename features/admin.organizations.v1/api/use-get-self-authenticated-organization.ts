@@ -23,7 +23,7 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import { OrganizationSelfResponse } from "../models/endpoints";
+import { OrganizationSelfResponse } from "../models/organizations";
 
 /**
  * Hook to get the current authenticated organization details.
