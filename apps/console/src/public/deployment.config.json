@@ -1959,6 +1959,7 @@
                 "approvalWorkflows": "v0.0.0",
                 "approvals": "v0.0.0",
                 "attributeDialects": "v0.0.0",
+                "attributeUpdateVerificationSettings": "v1.0.0",
                 "branding": "v0.0.0",
                 "consoleSettings": "v0.0.0",
                 "emailTemplates": "v0.0.0",
