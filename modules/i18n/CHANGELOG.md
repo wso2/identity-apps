@@ -1,5 +1,23 @@
 # @wso2is/i18n
 
+## 2.31.0
+
+### Minor Changes
+
+- [#9470](https://github.com/wso2/identity-apps/pull/9470) [`e7718a8ac92149d0a3ea0901ed9e5678b1377487`](https://github.com/wso2/identity-apps/commit/e7718a8ac92149d0a3ea0901ed9e5678b1377487) Thanks [@Malith-19](https://github.com/Malith-19)! - Add refresh token extend expiry time application config support.
+
+## 2.30.65
+
+### Patch Changes
+
+- [#9495](https://github.com/wso2/identity-apps/pull/9495) [`2f8ade07e7c226c701496b6d3e56c6a75a303894`](https://github.com/wso2/identity-apps/commit/2f8ade07e7c226c701496b6d3e56c6a75a303894) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - UI to show email template customization blocking
+
+## 2.30.64
+
+### Patch Changes
+
+- [#9503](https://github.com/wso2/identity-apps/pull/9503) [`c79ac826da3188d9b7d76699fbf74e007353a8f5`](https://github.com/wso2/identity-apps/commit/c79ac826da3188d9b7d76699fbf74e007353a8f5) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Fix user choice decision on OTP steps.
+
 ## 2.30.63
 
 ### Patch Changes

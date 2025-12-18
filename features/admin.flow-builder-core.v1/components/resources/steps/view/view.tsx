@@ -31,6 +31,7 @@ import React, { FunctionComponent, HTMLAttributes, MouseEvent, ReactElement, use
 import ReorderableElement from "./reorderable-element";
 import VisualFlowConstants from "../../../../constants/visual-flow-constants";
 import useRecoveryFactorValidation from "../../../../hooks/use-factor-validation";
+import useOTPButtonValidation from "../../../../hooks/use-otp-button-validation";
 import useOTPValidation from "../../../../hooks/use-otp-validation";
 import { Element } from "../../../../models/elements";
 import { EventTypes } from "../../../../models/extension";
@@ -109,6 +110,7 @@ export const View: FunctionComponent<ViewPropsInterface> = ({
     const { deleteElements, updateNodeData } = useReactFlow();
 
     useOTPValidation((node as unknown) as Node);
+    useOTPButtonValidation((node as unknown) as Node);
     useRecoveryFactorValidation((node as unknown) as Node);
 
     useEffect(() => {

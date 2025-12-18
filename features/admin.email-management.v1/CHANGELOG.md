@@ -1,5 +1,43 @@
 # @wso2is/admin.email-management.v1
 
+## 2.25.272
+
+### Patch Changes
+
+- Updated dependencies [[`e7718a8ac92149d0a3ea0901ed9e5678b1377487`](https://github.com/wso2/identity-apps/commit/e7718a8ac92149d0a3ea0901ed9e5678b1377487)]:
+  - @wso2is/i18n@2.31.0
+  - @wso2is/admin.core.v1@2.49.116
+  - @wso2is/admin.flow-builder-core.v1@0.10.108
+  - @wso2is/admin.branding.v1@2.32.64
+  - @wso2is/admin.flows.v1@1.0.77
+  - @wso2is/admin.server-configurations.v1@2.35.130
+
+## 2.25.271
+
+### Patch Changes
+
+- [#9495](https://github.com/wso2/identity-apps/pull/9495) [`2f8ade07e7c226c701496b6d3e56c6a75a303894`](https://github.com/wso2/identity-apps/commit/2f8ade07e7c226c701496b6d3e56c6a75a303894) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - UI to show email template customization blocking
+
+- Updated dependencies [[`2f8ade07e7c226c701496b6d3e56c6a75a303894`](https://github.com/wso2/identity-apps/commit/2f8ade07e7c226c701496b6d3e56c6a75a303894)]:
+  - @wso2is/admin.core.v1@2.49.115
+  - @wso2is/i18n@2.30.65
+  - @wso2is/admin.flow-builder-core.v1@0.10.107
+  - @wso2is/admin.branding.v1@2.32.63
+  - @wso2is/admin.flows.v1@1.0.76
+  - @wso2is/admin.server-configurations.v1@2.35.129
+
+## 2.25.270
+
+### Patch Changes
+
+- Updated dependencies [[`c79ac826da3188d9b7d76699fbf74e007353a8f5`](https://github.com/wso2/identity-apps/commit/c79ac826da3188d9b7d76699fbf74e007353a8f5)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.106
+  - @wso2is/i18n@2.30.64
+  - @wso2is/admin.branding.v1@2.32.62
+  - @wso2is/admin.core.v1@2.49.114
+  - @wso2is/admin.flows.v1@1.0.75
+  - @wso2is/admin.server-configurations.v1@2.35.128
+
 ## 2.25.269
 
 ### Patch Changes

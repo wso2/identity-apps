@@ -765,6 +765,15 @@ export interface ApplicationsNS {
                                 passwordExecutorRequired: {
                                     message: string;
                                 };
+                                otpStepButtonsOutsideForm: {
+                                    message: string;
+                                };
+                                otpStepSingleActionButton: {
+                                    message: string;
+                                };
+                                otpStepMultipleForms: {
+                                    message: string;
+                                };
                             }
                         };
                     };
@@ -1772,6 +1781,10 @@ export interface ApplicationsNS {
                 refreshToken: {
                     heading: string;
                     fields: {
+                        extendRenewedRefreshTokenExpiryTime: {
+                            hint: string;
+                            label: string;
+                        },
                         expiry: {
                             hint: string;
                             label: string;

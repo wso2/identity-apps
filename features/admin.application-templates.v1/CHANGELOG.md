@@ -1,5 +1,14 @@
 # @wso2is/admin.application-templates.v1
 
+## 1.5.9
+
+### Patch Changes
+
+- [#9502](https://github.com/wso2/identity-apps/pull/9502) [`731936a0f5c346fc612bebd3a1578f42746a3e8b`](https://github.com/wso2/identity-apps/commit/731936a0f5c346fc612bebd3a1578f42746a3e8b) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Update label in sub organization application templates
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.114
+
 ## 1.5.8
 
 ### Patch Changes

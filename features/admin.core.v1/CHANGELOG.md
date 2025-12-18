@@ -1,5 +1,63 @@
 # @wso2is/admin.core.v1
 
+## 2.49.116
+
+### Patch Changes
+
+- Updated dependencies [[`e7718a8ac92149d0a3ea0901ed9e5678b1377487`](https://github.com/wso2/identity-apps/commit/e7718a8ac92149d0a3ea0901ed9e5678b1377487)]:
+  - @wso2is/admin.applications.v1@2.40.0
+  - @wso2is/i18n@2.31.0
+  - @wso2is/admin.agents.v1@1.0.123
+  - @wso2is/admin.roles.v2@2.27.278
+  - @wso2is/admin.flow-builder-core.v1@0.10.108
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.108
+  - @wso2is/admin.branding.v1@2.32.64
+  - @wso2is/admin.email-management.v1@2.25.272
+  - @wso2is/admin.flows.v1@1.0.77
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.108
+  - @wso2is/admin.server-configurations.v1@2.35.130
+  - @wso2is/admin.users.v1@2.36.83
+  - @wso2is/admin.registration-flow-builder.v1@0.10.68
+
+## 2.49.115
+
+### Patch Changes
+
+- [#9495](https://github.com/wso2/identity-apps/pull/9495) [`2f8ade07e7c226c701496b6d3e56c6a75a303894`](https://github.com/wso2/identity-apps/commit/2f8ade07e7c226c701496b6d3e56c6a75a303894) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - UI to show email template customization blocking
+
+- Updated dependencies [[`2f8ade07e7c226c701496b6d3e56c6a75a303894`](https://github.com/wso2/identity-apps/commit/2f8ade07e7c226c701496b6d3e56c6a75a303894)]:
+  - @wso2is/admin.email-management.v1@2.25.271
+  - @wso2is/i18n@2.30.65
+  - @wso2is/admin.flow-builder-core.v1@0.10.107
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.107
+  - @wso2is/admin.branding.v1@2.32.63
+  - @wso2is/admin.flows.v1@1.0.76
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.107
+  - @wso2is/admin.server-configurations.v1@2.35.129
+  - @wso2is/admin.users.v1@2.36.82
+  - @wso2is/admin.registration-flow-builder.v1@0.10.67
+  - @wso2is/admin.agents.v1@1.0.122
+  - @wso2is/admin.roles.v2@2.27.277
+
+## 2.49.114
+
+### Patch Changes
+
+- Updated dependencies [[`c79ac826da3188d9b7d76699fbf74e007353a8f5`](https://github.com/wso2/identity-apps/commit/c79ac826da3188d9b7d76699fbf74e007353a8f5), [`731936a0f5c346fc612bebd3a1578f42746a3e8b`](https://github.com/wso2/identity-apps/commit/731936a0f5c346fc612bebd3a1578f42746a3e8b)]:
+  - @wso2is/admin.flow-builder-core.v1@0.10.106
+  - @wso2is/i18n@2.30.64
+  - @wso2is/admin.application-templates.v1@1.5.9
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.106
+  - @wso2is/admin.branding.v1@2.32.62
+  - @wso2is/admin.email-management.v1@2.25.270
+  - @wso2is/admin.flows.v1@1.0.75
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.106
+  - @wso2is/admin.server-configurations.v1@2.35.128
+  - @wso2is/admin.users.v1@2.36.81
+  - @wso2is/admin.registration-flow-builder.v1@0.10.66
+  - @wso2is/admin.agents.v1@1.0.121
+  - @wso2is/admin.roles.v2@2.27.276
+
 ## 2.49.113
 
 ### Patch Changes

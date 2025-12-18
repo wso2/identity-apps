@@ -1146,6 +1146,15 @@ export const applications: ApplicationsNS = {
                                 },
                                 passwordExecutorRequired: {
                                     message: "Forms with a Password field requires a 'Provision Password' Action to be configured for the button."
+                                },
+                                otpStepButtonsOutsideForm: {
+                                    message: "Steps that include an OTP form component can have action buttons only within the OTP form component itself."
+                                },
+                                otpStepSingleActionButton: {
+                                    message: "Forms with an OTP step can have only one action button other than the Resend button."
+                                },
+                                otpStepMultipleForms: {
+                                    message: "Multiple forms with OTP steps are not allowed."
                                 }
                             }
                         }
@@ -2084,6 +2093,11 @@ export const applications: ApplicationsNS = {
                 },
                 refreshToken: {
                     fields: {
+                        extendRenewedRefreshTokenExpiryTime: {
+                            hint: "Select to ensure renewed refresh tokens retain the remaining validity period from " +
+                                "the original token instead of receiving a fresh expiry time.",
+                            label: "Extend expiry time of renewed refresh tokens"
+                        },
                         expiry: {
                             hint: "Specify the validity period of the <1>refresh_token</1> in seconds.",
                             label: "Refresh token expiry time",

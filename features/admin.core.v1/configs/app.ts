@@ -415,6 +415,7 @@ export class Config {
             cookiePolicyUrl: window[ "AppUtils" ]?.getConfig()?.ui?.cookiePolicyUrl,
             customContent: window[ "AppUtils" ]?.getConfig()?.ui?.customContent ??
                 UIConstants.DEFAULT_CUSTOM_CONTENT_CONFIGS,
+            disableEmailTemplateForFreeTier: window[ "AppUtils" ]?.getConfig()?.ui?.disableEmailTemplateForFreeTier,
             emailTemplates: {
                 defaultLogoUrl: window[ "AppUtils" ]?.getConfig()?.ui?.emailTemplates?.defaultLogoUrl,
                 defaultWhiteLogoUrl: window[ "AppUtils" ]?.getConfig()?.ui?.emailTemplates?.defaultWhiteLogoUrl
