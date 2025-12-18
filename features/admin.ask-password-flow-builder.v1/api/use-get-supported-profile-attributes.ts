@@ -52,7 +52,7 @@ const useGetSupportedProfileAttributes = <Data = Attribute[], Error = RequestErr
 ): RequestResultInterface<Data, Error> => {
     const { metadata } = useAuthenticationFlowBuilderCore();
 
-    const shouldFetchClaims = shouldFetch && !!metadata?.attributeProfile;
+    const shouldFetchClaims: boolean = shouldFetch && !!metadata?.attributeProfile;
 
     const { data, error, isLoading, isValidating, mutate } = useGetAllLocalClaims<Data, Error>(
         params,
