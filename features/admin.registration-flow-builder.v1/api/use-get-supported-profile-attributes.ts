@@ -62,7 +62,6 @@ const useGetSupportedProfileAttributes = <Data = Attribute[], Error = RequestErr
                 filter: null,
                 limit: null,
                 offset: null,
-                profile: metadata?.attributeProfile,
                 sort: null
             },
             url: store.getState().config.endpoints.localClaims
@@ -75,8 +74,9 @@ const useGetSupportedProfileAttributes = <Data = Attribute[], Error = RequestErr
 
     /**
      * Transform the claims to ensure the username claim is always included.
+     * Sort the claims by displayName alphabetically.
      */
-    const supportedAttributes: Attribute[] = useMemo(() => {
+    const getSortedAttributesWithUsername: Attribute[] = useMemo(() => {
         const claims: Attribute[] = data as Attribute[];
 
         if (!claims) {
@@ -86,21 +86,30 @@ const useGetSupportedProfileAttributes = <Data = Attribute[], Error = RequestErr
         const usernameExists: boolean = claims.some(
             ((attribute: Attribute) => attribute.claimURI === ClaimManagementConstants.USER_NAME_CLAIM_URI));
 
+        let allClaims: Attribute[];
+
         if (usernameExists) {
-            return claims;
+            allClaims = [ ...claims ];
+        } else {
+            allClaims = [
+                {
+                    claimURI: ClaimManagementConstants.USER_NAME_CLAIM_URI,
+                    displayName: "Username"
+                },
+                ...claims
+            ] as Attribute[];
         }
 
-        return [
-            {
-                claimURI: ClaimManagementConstants.USER_NAME_CLAIM_URI,
-                displayName: "Username"
-            },
-            ...claims
-        ] as Attribute[];
+        return allClaims.sort((a: Attribute, b: Attribute) => {
+            const displayNameA: string = a?.displayName?.toLowerCase() ?? "";
+            const displayNameB: string = b?.displayName?.toLowerCase() ?? "";
+
+            return displayNameA.localeCompare(displayNameB);
+        });
     }, [ data ]);
 
     return {
-        data: supportedAttributes as Data,
+        data: getSortedAttributesWithUsername as Data,
         error,
         isLoading,
         isValidating,
