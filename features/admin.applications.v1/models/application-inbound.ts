@@ -134,6 +134,7 @@ interface AccessTokenConfigurationInterface {
 interface RefreshTokenConfigurationInterface {
     expiryInSeconds?: number;
     renewRefreshToken?: boolean;
+    extendRenewedRefreshTokenExpiryTime?: boolean;
 }
 
 /**
