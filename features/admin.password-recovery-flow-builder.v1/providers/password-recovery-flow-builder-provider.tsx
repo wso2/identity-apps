@@ -23,7 +23,7 @@ import useAuthenticationFlowBuilderCore
 import AuthenticationFlowBuilderCoreProvider
     from "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
-import { AlertLevels } from "@wso2is/core/models";
+import { AlertLevels, HttpMethods } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useReactFlow } from "@xyflow/react";
 import isEmpty from "lodash-es/isEmpty";
@@ -41,6 +41,11 @@ import PasswordRecoveryFlowConstants from "../constants/password-recovery-flow-c
 import PasswordRecoveryFlowBuilderContext from "../context/password-recovery-flow-builder-context";
 import { Attribute } from "../models/attributes";
 import transformFlow from "../utils/transform-flow";
+import useRequest, {
+    RequestConfigInterface,
+    RequestErrorInterface
+} from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
 
 /**
  * Props interface of {@link PasswordRecoveryFlowBuilderProvider}
@@ -105,27 +110,96 @@ const FlowContextWrapper: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Attribute[] }>({});
     const [ isPublishing, setIsPublishing ] = useState<boolean>(false);
 
-    /**
-     * Transform the attribute metadata to ensure the username claim is always included.
-     */
-    const supportedAttributes: Attribute[] = useMemo(() => {
-        const claims: any = (metadata?.attributeMetadata ?? []).map((attr: any) => ({
-            claimURI: attr.claimURI,
-            displayName: attr.name
-        }));
-
-        if (claims.some((a: any) => a.claimURI === ClaimManagementConstants.USER_NAME_CLAIM_URI)) {
-            return claims as Attribute[];
+    const requestConfig: RequestConfigInterface = useMemo(() => {
+        if (!metadata?.attributeProfile) {
+            return null;
         }
 
-        return [
-            {
-                claimURI: ClaimManagementConstants.USER_NAME_CLAIM_URI,
-                displayName: "Username"
+        return {
+            headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json"
             },
-            ...claims
-        ] as Attribute[];
-    }, [ metadata?.attributeMetadata ]);
+            method: HttpMethods.GET,
+            params: {
+                "exclude-hidden-claims": true,
+                "exclude-identity-claims": true,
+                filter: null,
+                limit: null,
+                offset: null,
+                sort: null
+            },
+            url: store.getState().config.endpoints.localClaims
+        };
+    }, [ metadata?.attributeProfile ]);
+
+    const { data: claimsData } = useRequest<Attribute[], RequestErrorInterface>(
+        requestConfig ? requestConfig : null
+    );
+
+    /**
+     * Transform the claims to ensure the username claim is always included.
+     * Sort the claims by displayName alphabetically.
+     */
+    const getSortedAttributesWithUsername: Attribute[] = useMemo(() => {
+        const claims: Attribute[] = claimsData as Attribute[];
+
+        if (!claims || claims.length === 0) {
+            // Fallback to metadata if API data is not available
+            const metadataClaims: any = (metadata?.attributeMetadata ?? []).map((attr: any) => ({
+                claimURI: attr.claimURI,
+                displayName: attr.name
+            }));
+
+            let allClaims: Attribute[];
+
+            if (metadataClaims.some((a: any) => a.claimURI === ClaimManagementConstants.USER_NAME_CLAIM_URI)) {
+                allClaims = [ ...metadataClaims ] as Attribute[];
+            } else {
+                allClaims = [
+                    {
+                        claimURI: ClaimManagementConstants.USER_NAME_CLAIM_URI,
+                        displayName: "Username"
+                    },
+                    ...metadataClaims
+                ] as Attribute[];
+            }
+
+            return allClaims.sort((a: Attribute, b: Attribute) => {
+                const displayNameA: string = a?.displayName?.toLowerCase() ?? "";
+                const displayNameB: string = b?.displayName?.toLowerCase() ?? "";
+
+                return displayNameA.localeCompare(displayNameB);
+            });
+        }
+
+        let allClaims: Attribute[];
+
+        const usernameExists: boolean = claims.some(
+            ((attribute: Attribute) => attribute.claimURI === ClaimManagementConstants.USER_NAME_CLAIM_URI));
+
+        if (usernameExists) {
+            allClaims = [ ...claims ];
+        } else {
+            allClaims = [
+                {
+                    claimURI: ClaimManagementConstants.USER_NAME_CLAIM_URI,
+                    displayName: "Username"
+                },
+                ...claims
+            ] as Attribute[];
+        }
+
+        // Sort by displayName alphabetically (case-insensitive)
+        return allClaims.sort((a: Attribute, b: Attribute) => {
+            const displayNameA: string = a?.displayName?.toLowerCase() ?? "";
+            const displayNameB: string = b?.displayName?.toLowerCase() ?? "";
+
+            return displayNameA.localeCompare(displayNameB);
+        });
+    }, [ claimsData, metadata?.attributeMetadata ]);
+
+    const supportedAttributes: Attribute[] = getSortedAttributesWithUsername;
 
 
     const handlePublish = async (): Promise<boolean> => {
