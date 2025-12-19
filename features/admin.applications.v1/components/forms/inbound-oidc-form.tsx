@@ -318,6 +318,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const applicationAccessTokenExpiryInSeconds: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const refreshToken: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const expiryInSeconds: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const extendExpiryTime: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const audience: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const encryption: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const algorithm: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
@@ -1463,6 +1464,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     expiryInSeconds: values.get("expiryInSeconds")
                         ? parseInt(values.get("expiryInSeconds"), 10)
                         : Number(metadata?.defaultRefreshTokenExpiryTime),
+                    extendRenewedRefreshTokenExpiryTime: values.get("extendExpiryTime")?.includes("extendExpiryTime"),
                     renewRefreshToken: values.get("RefreshToken")?.length > 0
                 },
                 scopeValidators: values.get("scopeValidator"),
@@ -1888,6 +1890,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 break;
             case "expiryInSeconds":
                 expiryInSeconds.current.scrollIntoView(options);
+
+                break;
+            case "extendExpiryTime":
+                extendExpiryTime.current.scrollIntoView(options);
 
                 break;
             case "subjectToken":
@@ -3369,6 +3375,42 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         Select to issue a new <Code withBackground>refresh_token</Code>
                                         each time a <Code withBackground>refresh_token</Code> is
                                         exchanged. The existing token will be invalidated.
+                                    </Trans>
+                                </Hint>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Field
+                                    ref={ extendExpiryTime }
+                                    name="extendExpiryTime"
+                                    label=""
+                                    required={ false }
+                                    type="checkbox"
+                                    value={
+                                        initialValues?.refreshToken?.extendRenewedRefreshTokenExpiryTime
+                                            ? [ "extendExpiryTime" ]
+                                            : []
+                                    }
+                                    children={ [
+                                        {
+                                            label: t("applications:forms.inboundOIDC.sections.refreshToken."
+                                                + "fields.extendRenewedRefreshTokenExpiryTime.label"),
+                                            value: "extendExpiryTime"
+                                        }
+                                    ] }
+                                    readOnly={ readOnly }
+                                    data-testid={ `${ testId }-extend-refresh-token-expiry-time-checkbox` }
+                                />
+                                <Hint>
+                                    <Trans
+                                        i18nKey={
+                                            "applications:forms.inboundOIDC.sections" +
+                                            ".refreshToken.fields.extendRenewedRefreshTokenExpiryTime.hint"
+                                        }
+                                    >
+                                        Select to ensure renewed refresh tokens retain the remaining validity period
+                                         from the original token instead of receiving a fresh expiry time.
                                     </Trans>
                                 </Hint>
                             </Grid.Column>
