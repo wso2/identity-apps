@@ -16,14 +16,15 @@
  * under the License.
  */
 
-import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
+import useGetAllLocalClaims from "@wso2is/admin.claims.v1/api/use-get-all-local-claims";
 import updateFlowConfig from "@wso2is/admin.flow-builder-core.v1/api/update-flow-config";
 import useAuthenticationFlowBuilderCore
     from "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
 import AuthenticationFlowBuilderCoreProvider
     from "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
-import { AlertLevels, HttpMethods } from "@wso2is/core/models";
+import { transformClaimsWithUsername } from "@wso2is/admin.flows.v1/utils/claim-utils";
+import { AlertLevels, ClaimsGetParams } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useReactFlow } from "@xyflow/react";
 import isEmpty from "lodash-es/isEmpty";
@@ -41,16 +42,20 @@ import PasswordRecoveryFlowConstants from "../constants/password-recovery-flow-c
 import PasswordRecoveryFlowBuilderContext from "../context/password-recovery-flow-builder-context";
 import { Attribute } from "../models/attributes";
 import transformFlow from "../utils/transform-flow";
-import useRequest, {
-    RequestConfigInterface,
-    RequestErrorInterface
-} from "@wso2is/admin.core.v1/hooks/use-request";
-import { store } from "@wso2is/admin.core.v1/store";
 
 /**
  * Props interface of {@link PasswordRecoveryFlowBuilderProvider}
  */
 export type PasswordRecoveryFlowBuilderProviderProps = PropsWithChildren<unknown>;
+
+const params: ClaimsGetParams = {
+    "exclude-hidden-claims": true,
+    "exclude-identity-claims": true,
+    filter: null,
+    limit: null,
+    offset: null,
+    sort: null
+};
 
 /**
  * This component provides password recovery flow builder related context to its children.
@@ -110,31 +115,11 @@ const FlowContextWrapper: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Attribute[] }>({});
     const [ isPublishing, setIsPublishing ] = useState<boolean>(false);
 
-    const requestConfig: RequestConfigInterface = useMemo(() => {
-        if (!metadata?.attributeProfile) {
-            return null;
-        }
+    const shouldFetchClaims: boolean = !!metadata?.attributeProfile;
 
-        return {
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
-            },
-            method: HttpMethods.GET,
-            params: {
-                "exclude-hidden-claims": true,
-                "exclude-identity-claims": true,
-                filter: null,
-                limit: null,
-                offset: null,
-                sort: null
-            },
-            url: store.getState().config.endpoints.localClaims
-        };
-    }, [ metadata?.attributeProfile ]);
-
-    const { data: claimsData } = useRequest<Attribute[], RequestErrorInterface>(
-        requestConfig ? requestConfig : null
+    const { data: claimsData } = useGetAllLocalClaims<Attribute[]>(
+        params,
+        shouldFetchClaims
     );
 
     /**
@@ -151,52 +136,10 @@ const FlowContextWrapper: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
                 displayName: attr.name
             }));
 
-            let allClaims: Attribute[];
-
-            if (metadataClaims.some((a: any) => a.claimURI === ClaimManagementConstants.USER_NAME_CLAIM_URI)) {
-                allClaims = [ ...metadataClaims ] as Attribute[];
-            } else {
-                allClaims = [
-                    {
-                        claimURI: ClaimManagementConstants.USER_NAME_CLAIM_URI,
-                        displayName: "Username"
-                    },
-                    ...metadataClaims
-                ] as Attribute[];
-            }
-
-            return allClaims.sort((a: Attribute, b: Attribute) => {
-                const displayNameA: string = a?.displayName?.toLowerCase() ?? "";
-                const displayNameB: string = b?.displayName?.toLowerCase() ?? "";
-
-                return displayNameA.localeCompare(displayNameB);
-            });
+            return transformClaimsWithUsername(metadataClaims as Attribute[]);
         }
 
-        let allClaims: Attribute[];
-
-        const usernameExists: boolean = claims.some(
-            ((attribute: Attribute) => attribute.claimURI === ClaimManagementConstants.USER_NAME_CLAIM_URI));
-
-        if (usernameExists) {
-            allClaims = [ ...claims ];
-        } else {
-            allClaims = [
-                {
-                    claimURI: ClaimManagementConstants.USER_NAME_CLAIM_URI,
-                    displayName: "Username"
-                },
-                ...claims
-            ] as Attribute[];
-        }
-
-        // Sort by displayName alphabetically (case-insensitive)
-        return allClaims.sort((a: Attribute, b: Attribute) => {
-            const displayNameA: string = a?.displayName?.toLowerCase() ?? "";
-            const displayNameB: string = b?.displayName?.toLowerCase() ?? "";
-
-            return displayNameA.localeCompare(displayNameB);
-        });
+        return transformClaimsWithUsername(claims);
     }, [ claimsData, metadata?.attributeMetadata ]);
 
     const supportedAttributes: Attribute[] = getSortedAttributesWithUsername;
