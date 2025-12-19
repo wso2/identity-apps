@@ -63,12 +63,12 @@ const useGetSupportedProfileAttributes = <Data = Attribute[], Error = RequestErr
      * Transform the claims to ensure the username claim is always included.
      * Sort the claims by displayName alphabetically.
      */
-    const getSortedAttributesWithUsername: Attribute[] = useMemo(() => {
+    const sortedAttributesWithUsername: Attribute[] = useMemo(() => {
         return transformClaimsWithUsername(data as Attribute[]);
     }, [ data ]);
 
     return {
-        data: getSortedAttributesWithUsername as Data,
+        data: sortedAttributesWithUsername as Data,
         error,
         isLoading,
         isValidating,

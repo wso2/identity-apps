@@ -126,7 +126,7 @@ const FlowContextWrapper: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
      * Transform the claims to ensure the username claim is always included.
      * Sort the claims by displayName alphabetically.
      */
-    const getSortedAttributesWithUsername: Attribute[] = useMemo(() => {
+    const sortedAttributesWithUsername: Attribute[] = useMemo(() => {
         const claims: Attribute[] = claimsData as Attribute[];
 
         if (!claims || claims.length === 0) {
@@ -141,9 +141,6 @@ const FlowContextWrapper: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
 
         return transformClaimsWithUsername(claims);
     }, [ claimsData, metadata?.attributeMetadata ]);
-
-    const supportedAttributes: Attribute[] = getSortedAttributesWithUsername;
-
 
     const handlePublish = async (): Promise<boolean> => {
         setIsPublishing(true);
@@ -222,7 +219,7 @@ const FlowContextWrapper: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
                 onPublish: handlePublish,
                 selectedAttributes,
                 setSelectedAttributes,
-                supportedAttributes
+                supportedAttributes: sortedAttributesWithUsername
             } }
         >
             { children }
