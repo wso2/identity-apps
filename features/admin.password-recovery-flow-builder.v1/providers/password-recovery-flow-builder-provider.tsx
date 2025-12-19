@@ -16,14 +16,15 @@
  * under the License.
  */
 
-import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
+import useGetAllLocalClaims from "@wso2is/admin.claims.v1/api/use-get-all-local-claims";
 import updateFlowConfig from "@wso2is/admin.flow-builder-core.v1/api/update-flow-config";
 import useAuthenticationFlowBuilderCore
     from "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
 import AuthenticationFlowBuilderCoreProvider
     from "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
 import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
-import { AlertLevels } from "@wso2is/core/models";
+import { transformClaimsWithUsername } from "@wso2is/admin.flows.v1/utils/claim-utils";
+import { AlertLevels, ClaimsGetParams } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useReactFlow } from "@xyflow/react";
 import isEmpty from "lodash-es/isEmpty";
@@ -46,6 +47,15 @@ import transformFlow from "../utils/transform-flow";
  * Props interface of {@link PasswordRecoveryFlowBuilderProvider}
  */
 export type PasswordRecoveryFlowBuilderProviderProps = PropsWithChildren<unknown>;
+
+const params: ClaimsGetParams = {
+    "exclude-hidden-claims": true,
+    "exclude-identity-claims": true,
+    filter: null,
+    limit: null,
+    offset: null,
+    sort: null
+};
 
 /**
  * This component provides password recovery flow builder related context to its children.
@@ -105,28 +115,32 @@ const FlowContextWrapper: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Attribute[] }>({});
     const [ isPublishing, setIsPublishing ] = useState<boolean>(false);
 
-    /**
-     * Transform the attribute metadata to ensure the username claim is always included.
-     */
-    const supportedAttributes: Attribute[] = useMemo(() => {
-        const claims: any = (metadata?.attributeMetadata ?? []).map((attr: any) => ({
-            claimURI: attr.claimURI,
-            displayName: attr.name
-        }));
+    const shouldFetchClaims: boolean = !!metadata?.attributeProfile;
 
-        if (claims.some((a: any) => a.claimURI === ClaimManagementConstants.USER_NAME_CLAIM_URI)) {
-            return claims as Attribute[];
+    const { data: claimsData } = useGetAllLocalClaims<Attribute[]>(
+        params,
+        shouldFetchClaims
+    );
+
+    /**
+     * Transform the claims to ensure the username claim is always included.
+     * Sort the claims by displayName alphabetically.
+     */
+    const sortedAttributesWithUsername: Attribute[] = useMemo(() => {
+        const claims: Attribute[] = claimsData as Attribute[];
+
+        if (!claims || claims.length === 0) {
+            // Fallback to metadata if API data is not available
+            const metadataClaims: any = (metadata?.attributeMetadata ?? []).map((attr: any) => ({
+                claimURI: attr.claimURI,
+                displayName: attr.name
+            }));
+
+            return transformClaimsWithUsername(metadataClaims as Attribute[]);
         }
 
-        return [
-            {
-                claimURI: ClaimManagementConstants.USER_NAME_CLAIM_URI,
-                displayName: "Username"
-            },
-            ...claims
-        ] as Attribute[];
-    }, [ metadata?.attributeMetadata ]);
-
+        return transformClaimsWithUsername(claims);
+    }, [ claimsData, metadata?.attributeMetadata ]);
 
     const handlePublish = async (): Promise<boolean> => {
         setIsPublishing(true);
@@ -205,7 +219,7 @@ const FlowContextWrapper: FC<PasswordRecoveryFlowBuilderProviderProps> = ({
                 onPublish: handlePublish,
                 selectedAttributes,
                 setSelectedAttributes,
-                supportedAttributes
+                supportedAttributes: sortedAttributesWithUsername
             } }
         >
             { children }

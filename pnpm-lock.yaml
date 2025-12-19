@@ -8617,6 +8617,9 @@ importers:
       '@oxygen-ui/react-icons':
         specifier: ^2.4.3
         version: 2.4.3(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+      '@wso2is/admin.claims.v1':
+        specifier: ^2.29.15
+        version: link:../admin.claims.v1
       '@wso2is/admin.core.v1':
         specifier: ^2.49.117
         version: link:../admin.core.v1

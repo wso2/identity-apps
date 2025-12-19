@@ -17,3 +17,4 @@
  */
 
 export { default as FlowsPage } from "./pages/flows-page";
+export { transformClaimsWithUsername } from "./utils/claim-utils";
