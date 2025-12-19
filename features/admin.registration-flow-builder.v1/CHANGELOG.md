@@ -1,5 +1,16 @@
 # @wso2is/admin.registration-flow-builder.v1
 
+## 0.10.70
+
+### Patch Changes
+
+- [#9523](https://github.com/wso2/identity-apps/pull/9523) [`79aed5f2d9eb20195308e20391c4793ed2bc3fdc`](https://github.com/wso2/identity-apps/commit/79aed5f2d9eb20195308e20391c4793ed2bc3fdc) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Allow All the User claims for inbox mapping in flow builder.
+
+- Updated dependencies [[`79aed5f2d9eb20195308e20391c4793ed2bc3fdc`](https://github.com/wso2/identity-apps/commit/79aed5f2d9eb20195308e20391c4793ed2bc3fdc)]:
+  - @wso2is/admin.flows.v1@1.0.79
+  - @wso2is/admin.core.v1@2.49.118
+  - @wso2is/admin.flow-builder-core.v1@0.10.110
+
 ## 0.10.69
 
 ### Patch Changes
