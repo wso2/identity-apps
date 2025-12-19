@@ -24,7 +24,7 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface, RouteConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
-import useGetSelfAuthenticatedOrganization 
+import useGetSelfAuthenticatedOrganization
     from "@wso2is/admin.organizations.v1/api/use-get-self-authenticated-organization";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
