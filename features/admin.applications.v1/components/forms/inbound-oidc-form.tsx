@@ -4004,7 +4004,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 && !isDefaultApplication
                 && !isMobileApplication
                 && !isMcpClientApplication
-                && !isM2MApplication
+                && !isM2MApplication && !isSubOrganization()
                 && (
                     <Grid.Row columns={ 1 } data-componentid={ testId + "-frontchannel-logout-url" }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
