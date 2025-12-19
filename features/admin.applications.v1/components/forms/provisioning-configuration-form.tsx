@@ -18,7 +18,6 @@
 
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
-import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreItem, UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { TestableComponentInterface } from "@wso2is/core/models";
@@ -69,7 +68,6 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
         state?.config?.ui?.primaryUserStoreDomainName ?? userstoresConfig.primaryUserstoreName);
 
     const { t } = useTranslation();
-    const { isSuperOrganization } = useGetCurrentOrganizationType();
 
     const {
         isLoading: isUserStoreListFetchRequestLoading,
@@ -90,7 +88,7 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
 
         if (readOnly) return storeOptions;
 
-        if (isSuperOrganization() && !isUserStoreListFetchRequestLoading && userStoresList?.length > 0) {
+        if (!isUserStoreListFetchRequestLoading && userStoresList?.length > 0) {
             userStoresList.forEach((store: UserStoreListItem, index: number) => {
                 const isReadOnly: boolean = isUserStoreReadOnly(store.name);
                 const isEnabled: boolean = store.enabled;
