@@ -108,7 +108,7 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
         }
 
         return storeOptions;
-    }, [ isUserStoreListFetchRequestLoading, userStoresList ]);
+    }, [ isSubOrganization, isUserStoreListFetchRequestLoading, userStoresList ]);
 
     useEffect(() => {
         if (config?.inboundProvisioning?.proxyMode) {
