@@ -113,6 +113,7 @@ export const DefaultLayout: FunctionComponent = (): ReactElement => {
                                     render={ (renderProps: RouteComponentProps) =>
                                         route.component ? (
                                             <ErrorBoundary
+                                                key={ renderProps.location.pathname }
                                                 onChunkLoadError={ AppUtils.onChunkLoadError }
                                                 fallback={ (
                                                     <EmptyPlaceholder

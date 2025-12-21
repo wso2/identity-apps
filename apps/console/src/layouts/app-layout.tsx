@@ -92,6 +92,7 @@ const AppLayout: FunctionComponent<Record<string, unknown>> = (): ReactElement =
 
                                                     return (
                                                         <ErrorBoundary
+                                                            key={ renderProps.location.pathname }
                                                             onChunkLoadError={ AppUtils.onChunkLoadError }
                                                             handleError={ handleRouteChunkError }
                                                             fallback={ brokenPageFallback }

@@ -226,6 +226,7 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
 
                     return (
                         <ErrorBoundary
+                            key={ renderProps.location.pathname }
                             onChunkLoadError={ AppUtils.onChunkLoadError }
                             handleError={ handleRouteChunkError }
                             fallback={ brokenPageFallback }

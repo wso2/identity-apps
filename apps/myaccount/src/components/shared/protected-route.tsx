@@ -79,7 +79,10 @@ export const ProtectedRoute: FunctionComponent<ProtectedRoutePropsInterface> = (
 
         if (!route?.scope) {
             return (
-                <RouteErrorBoundary routeName={ props.match?.path }>
+                <RouteErrorBoundary
+                    key={ props.location.pathname }
+                    routeName={ props.match?.path }
+                >
                     <Component { ...props } />
                 </RouteErrorBoundary>
             );
@@ -87,7 +90,10 @@ export const ProtectedRoute: FunctionComponent<ProtectedRoutePropsInterface> = (
 
         if (scopes?.includes(route?.scope)) {
             return (
-                <RouteErrorBoundary routeName={ props.match?.path }>
+                <RouteErrorBoundary
+                    key={ props.location.pathname }
+                    routeName={ props.match?.path }
+                >
                     <Component { ...props } />
                 </RouteErrorBoundary>
             );

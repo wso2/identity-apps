@@ -61,7 +61,10 @@ export const ProtectedRoute: FunctionComponent<RouteProps> = (props: RouteProps)
                 isAuthenticated
                     ? Component
                         ? (
-                            <RouteErrorBoundary routeName={ renderProps.match?.path }>
+                            <RouteErrorBoundary
+                                key={ renderProps.location.pathname }
+                                routeName={ renderProps.match?.path }
+                            >
                                 <Component { ...renderProps } />
                             </RouteErrorBoundary>
                         )
