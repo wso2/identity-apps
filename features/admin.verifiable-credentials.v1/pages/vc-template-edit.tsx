@@ -211,9 +211,13 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
 
     /**
      * Fetch the VC template.
+     *
+     * @param shouldShowLoader - Should show the loader.
      */
-    const fetchVCTemplate = (): void => {
-        setIsLoading(true);
+    const fetchVCTemplate = (shouldShowLoader: boolean = true): void => {
+        if (shouldShowLoader) {
+            setIsLoading(true);
+        }
 
         getVCTemplate(templateId)
             .then((response: VCTemplate) => {
@@ -227,7 +231,9 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
                 }));
             })
             .finally(() => {
-                setIsLoading(false);
+                if (shouldShowLoader) {
+                    setIsLoading(false);
+                }
             });
     };
 
@@ -531,7 +537,7 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
                             <ResourceTab.Pane controlledSegmentation>
                                 <VCTemplateOffer
                                     template={ vcTemplate }
-                                    onUpdate={ fetchVCTemplate }
+                                    onUpdate={ () => fetchVCTemplate(false) }
                                     data-componentid={ `${componentId}-offer` }
                                 />
                             </ResourceTab.Pane>
