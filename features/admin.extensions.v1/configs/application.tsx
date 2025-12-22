@@ -90,7 +90,7 @@ const isOrganizationApplicationInboundAuthCodeEnabled: boolean = isFeatureEnable
     ));
 
 const isFrontChannelLogoutEnabled: boolean = isFeatureEnabled(
-   featureConfig?.applications,
+    featureConfig?.applications,
     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG_FRONT_CHANNEL_LOGOUT")
 );
 
