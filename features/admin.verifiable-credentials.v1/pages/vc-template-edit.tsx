@@ -50,6 +50,7 @@ import {
     updateVCTemplate
 } from "../api/verifiable-credentials";
 import { ClaimAttributeOption } from "../components/claim-attribute-option";
+import { VCTemplateOffer } from "../components/vc-template-offer";
 import {
     VCTemplate,
     VCTemplateUpdateModel
@@ -486,6 +487,14 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
                         </form>
                     </EmphasizedSegment>
                 ) }
+            />
+
+            <Divider hidden />
+
+            <VCTemplateOffer
+                template={ vcTemplate }
+                onUpdate={ fetchVCTemplate }
+                data-componentid={ `${componentId}-offer` }
             />
 
             <Divider hidden />

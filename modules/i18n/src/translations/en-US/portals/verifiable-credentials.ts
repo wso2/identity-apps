@@ -128,6 +128,36 @@ export const verifiableCredentials: VerifiableCredentialsNS = {
             }
         }
     },
+    offer: {
+        title: "Offer",
+        empty: "No offer has been created for this credential.",
+        active: "An offer URI is active. You can regenerate it or revoke it.",
+        generate: "Generate",
+        regenerate: "Regenerate",
+        revoke: "Revoke",
+        notifications: {
+            generate: {
+                success: {
+                    message: "Offer Generated",
+                    description: "Credential offer generated successfully."
+                },
+                error: {
+                    message: "Generation Failed",
+                    description: "Failed to generate credential offer."
+                }
+            },
+            revoke: {
+                success: {
+                    message: "Offer Revoked",
+                    description: "Credential offer revoked successfully."
+                },
+                error: {
+                    message: "Revocation Failed",
+                    description: "Failed to revoke credential offer."
+                }
+            }
+        }
+    },
     notifications: {
         fetchClaims: {
             error: {

@@ -119,6 +119,36 @@ export interface VerifiableCredentialsNS {
             };
         };
     };
+    offer: {
+        title: string;
+        empty: string;
+        active: string;
+        generate: string;
+        regenerate: string;
+        revoke: string;
+        notifications: {
+            generate: {
+                success: {
+                    message: string;
+                    description: string;
+                };
+                error: {
+                    message: string;
+                    description: string;
+                };
+            };
+            revoke: {
+                success: {
+                    message: string;
+                    description: string;
+                };
+                error: {
+                    message: string;
+                    description: string;
+                };
+            };
+        };
+    };
     notifications: {
         fetchClaims: {
             error: {
