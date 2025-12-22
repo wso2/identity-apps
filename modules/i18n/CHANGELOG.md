@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.31.1
+
+### Patch Changes
+
+- [#9499](https://github.com/wso2/identity-apps/pull/9499) [`635763853fbf901546fd6833097159f96a21bd6f`](https://github.com/wso2/identity-apps/commit/635763853fbf901546fd6833097159f96a21bd6f) Thanks [@piraveena](https://github.com/piraveena)! - Add OIDC Frontchannel logout UI
+
 ## 2.31.0
 
 ### Minor Changes

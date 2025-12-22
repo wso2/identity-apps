@@ -1,5 +1,28 @@
 # @wso2is/console
 
+## 2.85.2
+
+### Patch Changes
+
+- [#9499](https://github.com/wso2/identity-apps/pull/9499) [`635763853fbf901546fd6833097159f96a21bd6f`](https://github.com/wso2/identity-apps/commit/635763853fbf901546fd6833097159f96a21bd6f) Thanks [@piraveena](https://github.com/piraveena)! - Add OIDC Frontchannel logout UI
+
+- Updated dependencies [[`635763853fbf901546fd6833097159f96a21bd6f`](https://github.com/wso2/identity-apps/commit/635763853fbf901546fd6833097159f96a21bd6f)]:
+  - @wso2is/admin.applications.v1@2.40.1
+  - @wso2is/admin.extensions.v1@2.40.16
+  - @wso2is/i18n@2.31.1
+  - @wso2is/admin.agents.v1@1.0.126
+  - @wso2is/admin.core.v1@2.49.119
+  - @wso2is/admin.roles.v2@2.27.281
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.111
+  - @wso2is/admin.branding.v1@2.32.67
+  - @wso2is/admin.email-management.v1@2.25.275
+  - @wso2is/admin.flows.v1@1.0.80
+  - @wso2is/admin.home.v1@1.7.90
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.111
+  - @wso2is/admin.server-configurations.v1@2.35.133
+  - @wso2is/admin.users.v1@2.36.86
+  - @wso2is/admin.registration-flow-builder.v1@0.10.71
+
 ## 2.85.1
 
 ### Patch Changes
