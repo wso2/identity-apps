@@ -241,6 +241,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         applicationFeatureConfig,
         ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG_BACK_CHANNEL_LOGOUT")
     );
+    const isFrontChannelLogoutEnabled: boolean = isFeatureEnabled(
+        applicationFeatureConfig,
+        ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG_FRONT_CHANNEL_LOGOUT")
+    );
     const isEnforceClientSecretPermissionEnabled: boolean = isFeatureEnabled(
         applicationFeatureConfig,
         ApplicationManagementConstants.FEATURE_DICTIONARY.get(
@@ -3940,9 +3944,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
             { /* Logout */ }
             {
-                !isSPAApplication
-                && !isSubOrganization()
-                && isBackChannelLogoutEnabled
+                !isSubOrganization()
+                && (isBackChannelLogoutEnabled || isFrontChannelLogoutEnabled)
                 && !isSystemApplication
                 && !isDefaultApplication
                 && (
@@ -3954,57 +3957,56 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                             <Heading as="h4">
                                 {
-                                    applicationConfig.inboundOIDCForm.showFrontChannelLogout
+                                    (isBackChannelLogoutEnabled && isFrontChannelLogoutEnabled)
                                         ? t("applications:forms.inboundOIDC.sections" +
                                             ".logoutURLs.heading")
                                         : t("applications:forms.inboundOIDC.sections" +
                                             ".logoutURLs.headingSingular")
                                 }
                             </Heading>
-                            <Divider hidden />
-                            <Field
-                                ref={ backChannelLogoutUrl }
-                                name="backChannelLogoutUrl"
-                                label={
-                                    t("applications:forms.inboundOIDC.sections" +
-                                            ".logoutURLs.fields.back.label")
-                                }
-                                required={ false }
-                                requiredErrorMessage={
-                                    t("applications:forms.inboundOIDC.sections" +
-                                            ".logoutURLs.fields.back.validations.empty")
-                                }
-                                placeholder={
-                                    t("applications:forms.inboundOIDC.sections" +
-                                            ".logoutURLs.fields.back.placeholder")
-                                }
-                                type="text"
-                                validation={ (value: string, validation: Validation) => {
-                                    if (!FormValidation.url(value)) {
-                                        validation.isValid = false;
-                                        validation.errorMessages.push((
-                                            t("applications:forms.inboundOIDC.sections" +
+
+                            { isBackChannelLogoutEnabled && !isSPAApplication && (
+                                <><Field
+                                    ref={ backChannelLogoutUrl }
+                                    name="backChannelLogoutUrl"
+                                    label={ t("applications:forms.inboundOIDC.sections" +
+                                        ".logoutURLs.fields.back.label") }
+                                    required={ false }
+                                    requiredErrorMessage={ t("applications:forms.inboundOIDC.sections" +
+                                        ".logoutURLs.fields.back.validations.empty") }
+                                    placeholder={ t("applications:forms.inboundOIDC.sections" +
+                                        ".logoutURLs.fields.back.placeholder") }
+                                    type="text"
+                                    validation={ (value: string, validation: Validation) => {
+                                        if (!FormValidation.url(value)) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push((
+                                                t("applications:forms.inboundOIDC.sections" +
                                                     ".logoutURLs.fields.back.validations.invalid")
-                                        ));
-                                    }
-                                } }
-                                value={ initialValues?.logout?.backChannelLogoutUrl }
-                                readOnly={ readOnly }
-                                data-testid={ `${ testId }-back-channel-logout-url-input` }
-                            />
-                            <Hint>
-                                { t("applications:forms.inboundOIDC.sections" +
+                                            ));
+                                        }
+                                    } }
+                                    value={ initialValues?.logout?.backChannelLogoutUrl }
+                                    readOnly={ readOnly }
+                                    data-testid={ `${ testId }-back-channel-logout-url-input` }
+                                />
+                                <Hint>
+                                    { t("applications:forms.inboundOIDC.sections" +
                                         ".logoutURLs.fields.back.hint", {
-                                    productName: config.ui.productName
-                                }) }
-                            </Hint>
+                                        productName: config.ui.productName
+                                    }) }
+                                </Hint></>
+                            ) }
                         </Grid.Column>
                     </Grid.Row>
                 )
             }
-            { applicationConfig.inboundOIDCForm.showFrontChannelLogout
+            { isFrontChannelLogoutEnabled
                 && !isSystemApplication
                 && !isDefaultApplication
+                && !isMobileApplication
+                && !isMcpClientApplication
+                && !isM2MApplication && !isSubOrganization()
                 && (
                     <Grid.Row columns={ 1 } data-componentid={ testId + "-frontchannel-logout-url" }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -4038,6 +4040,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 readOnly={ readOnly }
                                 data-testid={ `${ testId }-front-channel-logout-url-input` }
                             />
+                            <Hint>
+                                { t("applications:forms.inboundOIDC.sections" +
+                                    ".logoutURLs.fields.front.hint", {
+                                    productName: config.ui.productName
+                                }) }
+                            </Hint>
                         </Grid.Column>
                     </Grid.Row>
                 ) }

@@ -1997,8 +1997,9 @@ export const applications: ApplicationsNS = {
                             }
                         },
                         front: {
+                            hint: "{{productName}} triggers the browser to load this client URL when the user logs out.",
                             label: "Front channel logout URL",
-                            placeholder: "Enter the Front Channel Logout URL",
+                            placeholder: "https://myapp.io/logout",
                             validations: {
                                 empty: "Please fill the Front Channel Logout URL",
                                 invalid: "Please add valid URL"
