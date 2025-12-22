@@ -3989,8 +3989,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     value={ initialValues?.logout?.backChannelLogoutUrl }
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-back-channel-logout-url-input` }
-                            />
-                            <Hint>
+                                />
+                                <Hint>
                                     { t("applications:forms.inboundOIDC.sections" +
                                         ".logoutURLs.fields.back.hint", {
                                         productName: config.ui.productName
