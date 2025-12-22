@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.3.32
+
+### Patch Changes
+
+- [#9512](https://github.com/wso2/identity-apps/pull/9512) [`24c0d6aa8815408ca240be81e8b73f9e202ab792`](https://github.com/wso2/identity-apps/commit/24c0d6aa8815408ca240be81e8b73f9e202ab792) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Improvement to prompting challenge questions in the post-authentication handle
+
 ## 3.3.31
 
 ### Patch Changes
