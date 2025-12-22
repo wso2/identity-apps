@@ -89,6 +89,10 @@ export const verifiableCredentials: VerifiableCredentialsNS = {
     },
     editPage: {
         title: "Edit Credential Template",
+        tabs: {
+            general: "General",
+            offer: "Offer"
+        },
         backButton: "Go back to Verifiable Credentials",
         form: {
             displayName: {

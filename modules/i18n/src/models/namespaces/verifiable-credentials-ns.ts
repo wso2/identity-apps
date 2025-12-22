@@ -80,6 +80,10 @@ export interface VerifiableCredentialsNS {
     };
     editPage: {
         title: string;
+        tabs: {
+            general: string;
+            offer: string;
+        };
         backButton: string;
         form: {
             displayName: {
