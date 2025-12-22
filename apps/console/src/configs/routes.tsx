@@ -492,7 +492,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             },
             id: "verifiableCredentials",
             name: "Verifiable Credentials",
-            order: 2,
+            order: 3,
             path: AppConstants.getPaths().get("VC_TEMPLATES"),
             protected: true,
             showOnSidePanel: true
@@ -822,7 +822,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             id: "branding",
             name: "extensions:develop.sidePanel.stylesAndText",
             order: 13,
-            path: `${ AppConstants.getDeveloperViewBasePath() }/branding`,
+            path: `${AppConstants.getDeveloperViewBasePath()}/branding`,
             protected: true,
             showOnSidePanel: true
         },
@@ -836,7 +836,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             id: "emailTemplates",
             name: "Email Templates",
             order: 14,
-            path: `${ AppConstants.getDeveloperViewBasePath() }/email-management`,
+            path: `${AppConstants.getDeveloperViewBasePath()}/email-management`,
             protected: true,
             showOnSidePanel: true
         },
@@ -865,7 +865,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             exact: true,
             icon: { icon: <EnvelopeGearIcon fill="black" className="icon" /> },
             id: "notificationChannels",
-            name:  isPushProviderFeatureEnabled ? "Notification Channels" : "Email & SMS",
+            name: isPushProviderFeatureEnabled ? "Notification Channels" : "Email & SMS",
             order: 16,
             path: isPushProviderFeatureEnabled
                 ? AppConstants.getPaths().get("NOTIFICATION_CHANNELS")
@@ -1233,14 +1233,14 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             ],
             component: lazy(() => import("@wso2is/admin.logs.v1/pages/logs-page")),
             exact: true,
-            featureGateIds: [ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER ],
+            featureGateIds: [FeatureGateConstants.SAAS_FEATURES_IDENTIFIER],
             icon: {
                 icon: import("@wso2is/admin.extensions.v1/assets/images/icons/event-publishing.svg")
             },
             id: "logs",
             name: "extensions:develop.sidePanel.monitor",
             order: 22,
-            path: `${ AppConstants.getDeveloperViewBasePath() }/logs`,
+            path: `${AppConstants.getDeveloperViewBasePath()}/logs`,
             protected: true,
             showOnSidePanel: true
         },
@@ -1249,7 +1249,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             component: lazy(() => import("@wso2is/admin.org-insights.v1/pages/org-insights")),
             exact: true,
             featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.INSIGHTS,
-            featureGateIds: [ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER ],
+            featureGateIds: [FeatureGateConstants.SAAS_FEATURES_IDENTIFIER],
             icon: {
                 icon: <LightbulbOnIcon fill="black" className="icon" />
             },
