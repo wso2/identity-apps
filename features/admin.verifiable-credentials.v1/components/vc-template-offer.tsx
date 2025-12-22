@@ -29,7 +29,7 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Button, Divider, Grid, Header, Icon, Message } from "semantic-ui-react";
+import { Button, Divider, Grid, Icon, Message } from "semantic-ui-react";
 import { generateVCCredentialOffer, revokeVCCredentialOffer } from "../api/verifiable-credentials";
 import { VCTemplate } from "../models/verifiable-credentials";
 
@@ -148,11 +148,7 @@ export const VCTemplateOffer: FunctionComponent<VCTemplateOfferPropsInterface> =
     return (
         <EmphasizedSegment padded="very">
             <Grid>
-                <Grid.Row>
-                    <Grid.Column width={ 16 }>
-                        <Header as="h4">{ t("verifiableCredentials:offer.title") }</Header>
-                    </Grid.Column>
-                </Grid.Row>
+
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
                         {
