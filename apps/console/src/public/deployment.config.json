@@ -161,14 +161,14 @@
                 "id": "RW1haWxDb25maXJtV2l0aE9UUA"
             },
             {
-                "description": "This email is sent when the user changes the email address",
-                "displayName": "Email Update Verification",
-                "id": "VmVyaWZ5RW1haWxPblVwZGF0ZQ"
-            },
-            {
                 "id": "UmVzZW5kVmVyaWZ5RW1haWxPblVwZGF0ZQ",
                 "displayName": "Resend Email Update Verification",
                 "description": "This email is used to re-send the notification to verify the email address update"
+            },
+            {
+                "description": "This email is sent when the user changes the email address",
+                "displayName": "Email Update Verification",
+                "id": "VmVyaWZ5RW1haWxPblVwZGF0ZQ"
             }
         ],
         "outboundProvisioningConnectors": [],
