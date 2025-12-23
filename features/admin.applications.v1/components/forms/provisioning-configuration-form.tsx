@@ -69,7 +69,7 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
         state?.config?.ui?.primaryUserStoreDomainName ?? userstoresConfig.primaryUserstoreName);
 
     const { t } = useTranslation();
-    const { isSuperOrganization } = useGetCurrentOrganizationType();
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     const {
         isLoading: isUserStoreListFetchRequestLoading,
@@ -90,7 +90,7 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
 
         if (readOnly) return storeOptions;
 
-        if (isSuperOrganization() && !isUserStoreListFetchRequestLoading && userStoresList?.length > 0) {
+        if (!isSubOrganization() && !isUserStoreListFetchRequestLoading && userStoresList?.length > 0) {
             userStoresList.forEach((store: UserStoreListItem, index: number) => {
                 const isReadOnly: boolean = isUserStoreReadOnly(store.name);
                 const isEnabled: boolean = store.enabled;
@@ -108,7 +108,7 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
         }
 
         return storeOptions;
-    }, [ isUserStoreListFetchRequestLoading, userStoresList ]);
+    }, [ isSubOrganization, isUserStoreListFetchRequestLoading, userStoresList ]);
 
     useEffect(() => {
         if (config?.inboundProvisioning?.proxyMode) {
