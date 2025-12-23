@@ -141,7 +141,7 @@ export const VCTemplateOffer: FunctionComponent<VCTemplateOfferPropsInterface> =
                                                 </Grid.Column>
                                                 <Grid.Column width={ 4 }>
                                                     <Button
-                                                        primary
+                                                        color="red"
                                                         className="fluid"
                                                         loading={ isGenerating }
                                                         disabled={ isGenerating || readOnly }
