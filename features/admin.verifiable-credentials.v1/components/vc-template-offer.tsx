@@ -29,8 +29,8 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Button, Divider, Grid, Icon, Message } from "semantic-ui-react";
-import { generateVCCredentialOffer, revokeVCCredentialOffer } from "../api/verifiable-credentials";
+import { Button, Grid, Icon, Message } from "semantic-ui-react";
+import { generateVCCredentialOffer } from "../api/verifiable-credentials";
 import { VCTemplate } from "../models/verifiable-credentials";
 
 /**
@@ -72,9 +72,7 @@ export const VCTemplateOffer: FunctionComponent<VCTemplateOfferPropsInterface> =
     const dispatch: Dispatch = useDispatch();
 
     const [ isGenerating, setIsGenerating ] = useState<boolean>(false);
-    const [ isRevoking, setIsRevoking ] = useState<boolean>(false);
     const [ showRegenerateConfirmation, setShowRegenerateConfirmation ] = useState<boolean>(false);
-    const [ showRevokeConfirmation, setShowRevokeConfirmation ] = useState<boolean>(false);
 
     /**
      * Generates or regenerates the credential offer.
@@ -104,33 +102,7 @@ export const VCTemplateOffer: FunctionComponent<VCTemplateOfferPropsInterface> =
             });
     };
 
-    /**
-     * Revokes the credential offer.
-     */
-    const handleRevokeOffer = (): void => {
-        setIsRevoking(true);
-        revokeVCCredentialOffer(template.id)
-            .then(() => {
-                dispatch(addAlert({
-                    description: t("verifiableCredentials:offer.notifications.revoke.success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("verifiableCredentials:offer.notifications.revoke.success.message")
-                }));
-                onUpdate(template.id);
-                setShowRevokeConfirmation(false);
-            })
-            .catch((error: AxiosError) => {
-                dispatch(addAlert({
-                    description: error?.response?.data?.description
-                        || t("verifiableCredentials:offer.notifications.revoke.error.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("verifiableCredentials:offer.notifications.revoke.error.message")
-                }));
-            })
-            .finally(() => {
-                setIsRevoking(false);
-            });
-    };
+
 
     /**
      * Constructs the offer URI.
@@ -159,32 +131,28 @@ export const VCTemplateOffer: FunctionComponent<VCTemplateOfferPropsInterface> =
                                             <Icon name="info circle" />
                                             { t("verifiableCredentials:offer.active") }
                                         </Message>
-                                        <CopyInputField
-                                            value={ getOfferURI() }
-                                            data-testid={ `${testId}-offer-uri` }
-                                        />
-                                        <Divider hidden />
-                                        <div className="button-container">
-                                            <Button
-                                                primary
-                                                loading={ isGenerating }
-                                                disabled={ isGenerating || readOnly }
-                                                onClick={ () => setShowRegenerateConfirmation(true) }
-                                                data-testid={ `${testId}-regenerate-button` }
-                                            >
-                                                { t("verifiableCredentials:offer.regenerate") }
-                                            </Button>
-                                            <Button
-                                                color="red"
-                                                loading={ isRevoking }
-                                                disabled={ isRevoking || readOnly }
-                                                onClick={ () => setShowRevokeConfirmation(true) }
-                                                data-testid={ `${testId}-revoke-button` }
-                                                style={ { marginLeft: "10px" } }
-                                            >
-                                                { t("verifiableCredentials:offer.revoke") }
-                                            </Button>
-                                        </div>
+                                        <Grid>
+                                            <Grid.Row>
+                                                <Grid.Column width={ 12 }>
+                                                    <CopyInputField
+                                                        value={ getOfferURI() }
+                                                        data-testid={ `${testId}-offer-uri` }
+                                                    />
+                                                </Grid.Column>
+                                                <Grid.Column width={ 4 }>
+                                                    <Button
+                                                        primary
+                                                        className="fluid"
+                                                        loading={ isGenerating }
+                                                        disabled={ isGenerating || readOnly }
+                                                        onClick={ () => setShowRegenerateConfirmation(true) }
+                                                        data-testid={ `${testId}-regenerate-button` }
+                                                    >
+                                                        { t("verifiableCredentials:offer.regenerate") }
+                                                    </Button>
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                        </Grid>
                                     </>
                                 )
                                 : (
@@ -236,34 +204,7 @@ export const VCTemplateOffer: FunctionComponent<VCTemplateOfferPropsInterface> =
                     </ConfirmationModal>
                 )
             }
-            {
-                showRevokeConfirmation && (
-                    <ConfirmationModal
-                        primaryActionLoading={ isRevoking }
-                        onClose={ (): void => setShowRevokeConfirmation(false) }
-                        type="negative"
-                        open={ showRevokeConfirmation }
-                        assertionHint={ t("verifiableCredentials:offer.revoke") }
-                        assertionType="checkbox"
-                        primaryAction={ t("common:confirm") }
-                        secondaryAction={ t("common:cancel") }
-                        onSecondaryActionClick={ (): void => setShowRevokeConfirmation(false) }
-                        onPrimaryActionClick={ handleRevokeOffer }
-                        data-testid={ `${testId}-revoke-confirmation-modal` }
-                        closeOnDimmerClick={ false }
-                    >
-                        <ConfirmationModal.Header>
-                            { t("verifiableCredentials:offer.revoke") }
-                        </ConfirmationModal.Header>
-                        <ConfirmationModal.Message attached warning>
-                            { t("verifiableCredentials:offer.active") }
-                        </ConfirmationModal.Message>
-                        <ConfirmationModal.Content>
-                            { t("verifiableCredentials:offer.active") }
-                        </ConfirmationModal.Content>
-                    </ConfirmationModal>
-                )
-            }
+
         </EmphasizedSegment>
     );
 };
