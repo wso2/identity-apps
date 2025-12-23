@@ -173,8 +173,8 @@ export const verifiableCredentials: VerifiableCredentialsNS = {
     notifications: {
         fetchClaims: {
             error: {
-                message: "Error Fetching Claims",
-                description: "An error occurred while fetching the claims list."
+                message: "Error Fetching Attributes",
+                description: "An error occurred while fetching the attributes list."
             }
         },
         deleteTemplate: {
