@@ -1,5 +1,19 @@
 # @wso2is/admin.extensions.v1
 
+## 2.40.17
+
+### Patch Changes
+
+- [#9530](https://github.com/wso2/identity-apps/pull/9530) [`92250311d25574063f8a28c39d0927d0a33a2407`](https://github.com/wso2/identity-apps/commit/92250311d25574063f8a28c39d0927d0a33a2407) Thanks [@piraveena](https://github.com/piraveena)! - Add OIDC Frontchannel logout UI
+
+- Updated dependencies [[`92250311d25574063f8a28c39d0927d0a33a2407`](https://github.com/wso2/identity-apps/commit/92250311d25574063f8a28c39d0927d0a33a2407)]:
+  - @wso2is/admin.applications.v1@2.40.2
+  - @wso2is/i18n@2.31.2
+  - @wso2is/admin.core.v1@2.49.120
+  - @wso2is/admin.roles.v2@2.27.282
+  - @wso2is/admin.server-configurations.v1@2.35.134
+  - @wso2is/admin.users.v1@2.36.87
+
 ## 2.40.16
 
 ### Patch Changes
