@@ -19,6 +19,7 @@
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
+import debounce, { DebouncedFunc } from "lodash-es/debounce";
 import isEqual from "lodash-es/isEqual";
 import React, {
     ForwardRefExoticComponent,
@@ -27,6 +28,7 @@ import React, {
     ReactElement,
     RefAttributes,
     forwardRef,
+    useCallback,
     useEffect,
     useImperativeHandle,
     useRef,
@@ -98,11 +100,12 @@ const GeneralApprovalWorkflowDetailsForm: ForwardRefExoticComponent<RefAttribute
             const { t } = useTranslation([ "approvalWorkflows" ]);
 
             const [ filterQuery, setFilterQuery ] = useState<string>("");
+            const [ shouldCheckDuplicate, setShouldCheckDuplicate ] = useState<boolean>(false);
 
             const {
                 data: workflowResponse,
                 error: workflowsError
-            } = useGetApprovalWorkflows(null, null, filterQuery, true);
+            } = useGetApprovalWorkflows(null, null, filterQuery, shouldCheckDuplicate);
 
             // Expose triggerSubmit to the parent via the ref
             useImperativeHandle(ref, () => ({
@@ -136,6 +139,18 @@ const GeneralApprovalWorkflowDetailsForm: ForwardRefExoticComponent<RefAttribute
                     );
                 }
             }, [ workflowsError ]);
+
+            /**
+             * Debounced function to check for duplicate workflow names.
+             * This prevents API calls on every keystroke.
+             */
+            const checkDuplicateName: DebouncedFunc<(name: string) => void> = useCallback(
+                debounce((name: string) => {
+                    setFilterQuery(name);
+                    setShouldCheckDuplicate(true);
+                }, 500),
+                []
+            );
 
             const validateForm = (
                 values: GeneralDetailsFormValuesInterface
@@ -172,20 +187,24 @@ const GeneralApprovalWorkflowDetailsForm: ForwardRefExoticComponent<RefAttribute
                             "approvalWorkflows:forms.general.name.validationErrorMessages.invalidInputErrorMessage",
                             { invalidString }
                         );
-                    }
-                    setFilterQuery(values?.name);
-                    const nameExists: boolean =
-                    workflowResponse?.workflows?.some((workflow: { id: string; name: string }) => {
-                        return (
-                            workflow.name === values.name &&
-                            (approvalWorkflowId ? approvalWorkflowId !== workflow.id : true)
-                        );
-                    }) ?? false;
+                    } else {
+                        // Only check for duplicate names after other validations pass
+                        // Trigger the debounced duplicate check
+                        checkDuplicateName(values?.name);
 
-                    if (nameExists) {
-                        error.name = t(
-                            "approvalWorkflows:forms.general.name.validationErrorMessages.alreadyExistsErrorMessage"
-                        );
+                        const nameExists: boolean =
+                        workflowResponse?.workflows?.some((workflow: { id: string; name: string }) => {
+                            return (
+                                workflow.name === values.name &&
+                                (approvalWorkflowId ? approvalWorkflowId !== workflow.id : true)
+                            );
+                        }) ?? false;
+
+                        if (nameExists) {
+                            error.name = t(
+                                "approvalWorkflows:forms.general.name.validationErrorMessages.alreadyExistsErrorMessage"
+                            );
+                        }
                     }
                 }
 
