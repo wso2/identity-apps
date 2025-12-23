@@ -129,6 +129,14 @@ export interface VerifiableCredentialsNS {
         active: string;
         generate: string;
         regenerate: string;
+        confirmation: {
+            regenerate: {
+                header: string;
+                message: string;
+                content: string;
+                assertionHint: string;
+            }
+        };
         revoke: string;
         notifications: {
             generate: {

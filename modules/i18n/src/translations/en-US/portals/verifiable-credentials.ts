@@ -29,7 +29,7 @@ export const verifiableCredentials: VerifiableCredentialsNS = {
     page: {
         title: "Verifiable Credentials",
         heading: "Verifiable Credentials",
-        description: "Configure credential templates that can be issued to users as verifiable credentials."
+        description: "Create and manage templates for issuing verifiable credentials to users."
     },
     buttons: {
         addTemplate: "New Credential Template"
@@ -37,7 +37,7 @@ export const verifiableCredentials: VerifiableCredentialsNS = {
     placeholders: {
         emptyList: {
             title: "No Credential Templates Configured",
-            subtitle: "There are no credential templates configured at the moment. You can add a new credential template by clicking on the button below."
+            subtitle: "There are no credential templates configured at the moment. Click on the button to add a new credential template."
         },
         emptySearch: {
             title: "No Results Found",
@@ -62,7 +62,7 @@ export const verifiableCredentials: VerifiableCredentialsNS = {
         },
         confirmations: {
             deleteItem: {
-                header: "Are you sure?",
+                header: "Delete Credential Template?",
                 message: "This action is irreversible and will permanently delete the credential template.",
                 content: "If you delete this credential template, users will no longer be able to obtain credentials of this type. Please proceed with caution.",
                 assertionHint: "Please confirm your action."
@@ -102,12 +102,12 @@ export const verifiableCredentials: VerifiableCredentialsNS = {
             },
             identifier: {
                 label: "Identifier",
-                hint: "A unique identifier for the credential template. This cannot be changed."
+                hint: "The unique identifier for the credential template. This cannot be modified."
             },
             expiresIn: {
-                label: "Expiration Time",
-                placeholder: "Enter expiration time in seconds",
-                hint: "The validity period of the credential in seconds. For example, 31536000 seconds equals 1 year."
+                label: "Validity Period",
+                placeholder: "Enter validity period in seconds",
+                hint: "Enter the validity period in seconds (e.g., 31536000 for 1 year)."
             },
             claims: {
                 label: "Attributes",
@@ -119,7 +119,7 @@ export const verifiableCredentials: VerifiableCredentialsNS = {
             header: "Danger Zone",
             delete: {
                 header: "Delete Credential Template",
-                subheader: "Once you delete a credential template, there is no going back. Please be certain.",
+                subheader: "This action is irreversible. Please proceed with caution.",
                 actionTitle: "Delete Credential Template"
             }
         },
@@ -134,10 +134,18 @@ export const verifiableCredentials: VerifiableCredentialsNS = {
     },
     offer: {
         title: "Offer",
-        empty: "No offer has been created for this credential.",
-        active: "An offer URI is active. You can regenerate it or revoke it.",
+        empty: "No active offer for this credential template.",
+        active: "A credential offer is currently active. You can regenerate it using the option below.",
         generate: "Generate",
         regenerate: "Regenerate",
+        confirmation: {
+            regenerate: {
+                header: "Regenerate Credential Offer",
+                message: "This action will revoke the currently active offer.",
+                content: "Are you sure you want to regenerate the credential offer? The previous offer link will no longer be valid.",
+                assertionHint: "Confirm regeneration"
+            }
+        },
         revoke: "Revoke",
         notifications: {
             generate: {

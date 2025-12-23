@@ -183,7 +183,7 @@ export const VCTemplateOffer: FunctionComponent<VCTemplateOfferPropsInterface> =
                         onClose={ (): void => setShowRegenerateConfirmation(false) }
                         type="warning"
                         open={ showRegenerateConfirmation }
-                        assertionHint={ t("verifiableCredentials:offer.regenerate") }
+                        assertionHint={ t("verifiableCredentials:offer.confirmation.regenerate.assertionHint") }
                         assertionType="checkbox"
                         primaryAction={ t("common:confirm") }
                         secondaryAction={ t("common:cancel") }
@@ -193,13 +193,13 @@ export const VCTemplateOffer: FunctionComponent<VCTemplateOfferPropsInterface> =
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header>
-                            { t("verifiableCredentials:offer.regenerate") }
+                            { t("verifiableCredentials:offer.confirmation.regenerate.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message attached warning>
-                            { t("verifiableCredentials:offer.active") }
+                            { t("verifiableCredentials:offer.confirmation.regenerate.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
-                            { t("verifiableCredentials:offer.active") }
+                            { t("verifiableCredentials:offer.confirmation.regenerate.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )
