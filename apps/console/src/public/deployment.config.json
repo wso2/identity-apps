@@ -161,9 +161,9 @@
                 "id": "RW1haWxDb25maXJtV2l0aE9UUA"
             },
             {
-                "id": "UmVzZW5kVmVyaWZ5RW1haWxPblVwZGF0ZQ",
+                "description": "This email is used to re-send the notification to verify the email address update",
                 "displayName": "Resend Email Update Verification",
-                "description": "This email is used to re-send the notification to verify the email address update"
+                "id": "UmVzZW5kVmVyaWZ5RW1haWxPblVwZGF0ZQ"
             },
             {
                 "description": "This email is sent when the user changes the email address",
