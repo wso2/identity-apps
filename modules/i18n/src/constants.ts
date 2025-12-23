@@ -401,6 +401,11 @@ export class I18nModuleConstants {
     public static readonly FLOWS_NAMESPACE: string = "flows";
 
     /**
+     * Verifiable Credentials namespace.
+     */
+    public static readonly VERIFIABLE_CREDENTIALS_NAMESPACE: string = "verifiableCredentials";
+
+    /**
      * Constant representing the text direction handling attribute.
      */
     public static readonly TEXT_DIRECTION_ATTRIBUTE: string = "dir";

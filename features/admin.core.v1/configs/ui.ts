@@ -295,6 +295,7 @@ export type GetSidePanelIconsInterface = {
     users: FunctionComponent | ReactNode,
     insights: FunctionComponent | ReactNode,
     agents: FunctionComponent | ReactNode,
+    verifiableCredentials: FunctionComponent | ReactNode,
 };
 
 /**
@@ -350,7 +351,8 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
         serverConfigurations: GearsIcon,
         sms: SMSIcon,
         userStore: DatabaseIcon,
-        users: UserIcon
+        users: UserIcon,
+        verifiableCredentials: CertificateIcon
     };
 };
 
