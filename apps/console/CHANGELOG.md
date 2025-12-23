@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.85.4
+
+### Patch Changes
+
+- [#9497](https://github.com/wso2/identity-apps/pull/9497) [`e8b0f5da5a90e1dfc397dd48bb14d3ba72bdd385`](https://github.com/wso2/identity-apps/commit/e8b0f5da5a90e1dfc397dd48bb14d3ba72bdd385) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add email template for verify email
+
 ## 2.85.3
 
 ### Patch Changes
