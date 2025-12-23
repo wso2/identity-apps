@@ -219,7 +219,7 @@ const VerifiableCredentials = ({
                         onClick={ () => {
                             setIsAddTemplateWizardOpen(true);
                         } }
-                        data-testid={ `${componentId}-add-button` }
+                        data-componentid={ `${componentId}-add-button` }
                     >
                         <Icon name="add" />
                         { t("verifiableCredentials:buttons.addTemplate") }
@@ -257,7 +257,7 @@ const VerifiableCredentials = ({
                         defaultSearchAttribute="identifier"
                         defaultSearchOperator="co"
                         triggerClearQuery={ false }
-                        data-testid={ `${componentId}-list-advanced-search` }
+                        data-componentid={ `${componentId}-list-advanced-search` }
                     />)
                 }
                 currentListSize={ templateList?.VCTemplates?.length ?? 0 }
@@ -265,7 +265,7 @@ const VerifiableCredentials = ({
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 onPageChange={ handlePaginationChange }
-                onSortStrategyChange={ () => {} }
+                onSortStrategyChange={ () => { } }
                 showPagination={ true }
                 showTopActionPanel={
                     isTemplateListLoading ||
@@ -281,7 +281,7 @@ const VerifiableCredentials = ({
                     disablePreviousButton: !nextBefore
                 } }
                 activePage={ activePage }
-                data-testid={ `${componentId}-list-layout` }
+                data-componentid={ `${componentId}-list-layout` }
             >
                 <VCTemplateList
                     advancedSearch={
@@ -308,7 +308,7 @@ const VerifiableCredentials = ({
                             defaultSearchAttribute="identifier"
                             defaultSearchOperator="co"
                             triggerClearQuery={ false }
-                            data-testid={ `${componentId}-list-advanced-search-inner` }
+                            data-componentid={ `${componentId}-list-advanced-search-inner` }
                         />)
                     }
                     mutateTemplateList={ handleListRefresh }

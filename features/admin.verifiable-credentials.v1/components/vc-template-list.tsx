@@ -110,7 +110,7 @@ export const VCTemplateList = ({
     const resolveTableActions = (): TableActionsInterface[] => {
         return [
             {
-                "data-testid": `${componentId}-item-edit-button`,
+                "data-componentid": `${componentId}-item-edit-button`,
                 hidden: (): boolean => false,
                 icon: (): SemanticICONS => "pencil alternate",
                 onClick: (_e: SyntheticEvent, template: VCTemplateListItem): void =>
@@ -121,7 +121,7 @@ export const VCTemplateList = ({
                 renderer: "semantic-icon"
             },
             {
-                "data-testid": `${componentId}-item-delete-button`,
+                "data-componentid": `${componentId}-item-delete-button`,
                 hidden: (): boolean => false,
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (_e: SyntheticEvent, template: VCTemplateListItem): void => {
@@ -152,19 +152,19 @@ export const VCTemplateList = ({
                             image
                             as="h6"
                             className="header-with-icon"
-                            data-testid={ `${componentId}-item-heading` }
+                            data-componentid={ `${componentId}-item-heading` }
                         >
                             <AppAvatar
                                 image={
                                     (<AnimatedAvatar
                                         name={ template.displayName }
                                         size="mini"
-                                        data-testid={ `${componentId}-item-avatar` }
+                                        data-componentid={ `${componentId}-item-avatar` }
                                     />)
                                 }
                                 size="mini"
                                 spaced="right"
-                                data-testid={ `${componentId}-item-image` }
+                                data-componentid={ `${componentId}-item-image` }
                             />
                             <Header.Content>
                                 { template.displayName }
@@ -207,7 +207,7 @@ export const VCTemplateList = ({
                     className="list-placeholder mr-0"
                     action={
                         (<PrimaryButton
-                            data-testid={ `${componentId}-empty-placeholder-add-button` }
+                            data-componentid={ `${componentId}-empty-placeholder-add-button` }
                             onClick={ () => setShowAddTemplateWizard() }
                         >
                             <Icon name="add" />
@@ -217,7 +217,7 @@ export const VCTemplateList = ({
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     subtitle={ [ t("verifiableCredentials:placeholders.emptyList.subtitle") ] }
-                    data-testid={ `${componentId}-empty-placeholder` }
+                    data-componentid={ `${componentId}-empty-placeholder` }
                 />
             );
         }
@@ -243,11 +243,11 @@ export const VCTemplateList = ({
                 selectable={ true }
                 showHeader={ false }
                 transparent={ !isLoading && showPlaceholders() !== null }
-                data-testid={ componentId }
+                data-componentid={ componentId }
             />
             { showDeleteConfirmation && (
                 <ConfirmationModal
-                    data-testid={ `${componentId}-delete-confirmation-modal` }
+                    data-componentid={ `${componentId}-delete-confirmation-modal` }
                     onClose={ (): void => setShowDeleteConfirmationModal(false) }
                     type="negative"
                     open={ showDeleteConfirmation }

@@ -17,7 +17,7 @@
  */
 
 import { Config } from "@wso2is/admin.core.v1/configs/app";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
@@ -36,7 +36,7 @@ import { VCTemplate } from "../models/verifiable-credentials";
 /**
  * Prop types for the VC template offer component.
  */
-interface VCTemplateOfferPropsInterface extends TestableComponentInterface {
+interface VCTemplateOfferPropsInterface extends IdentifiableComponentInterface {
     /**
      * VC Template object.
      */
@@ -65,7 +65,7 @@ export const VCTemplateOffer: FunctionComponent<VCTemplateOfferPropsInterface> =
         template,
         onUpdate,
         readOnly,
-        ["data-testid"]: testId
+        ["data-componentid"]: componentId
     } = props;
 
     const { t } = useTranslation();
@@ -136,7 +136,7 @@ export const VCTemplateOffer: FunctionComponent<VCTemplateOfferPropsInterface> =
                                                 <Grid.Column width={ 12 }>
                                                     <CopyInputField
                                                         value={ getOfferURI() }
-                                                        data-testid={ `${testId}-offer-uri` }
+                                                        data-componentid={ `${componentId}-offer-uri` }
                                                     />
                                                 </Grid.Column>
                                                 <Grid.Column width={ 4 }>
@@ -146,7 +146,7 @@ export const VCTemplateOffer: FunctionComponent<VCTemplateOfferPropsInterface> =
                                                         loading={ isGenerating }
                                                         disabled={ isGenerating || readOnly }
                                                         onClick={ () => setShowRegenerateConfirmation(true) }
-                                                        data-testid={ `${testId}-regenerate-button` }
+                                                        data-componentid={ `${componentId}-regenerate-button` }
                                                     >
                                                         { t("verifiableCredentials:offer.regenerate") }
                                                     </Button>
@@ -166,7 +166,7 @@ export const VCTemplateOffer: FunctionComponent<VCTemplateOfferPropsInterface> =
                                             loading={ isGenerating }
                                             disabled={ isGenerating || readOnly }
                                             onClick={ handleGenerateOffer }
-                                            data-testid={ `${testId}-generate-button` }
+                                            data-componentid={ `${componentId}-generate-button` }
                                         >
                                             { t("verifiableCredentials:offer.generate") }
                                         </Button>
@@ -189,7 +189,7 @@ export const VCTemplateOffer: FunctionComponent<VCTemplateOfferPropsInterface> =
                         secondaryAction={ t("common:cancel") }
                         onSecondaryActionClick={ (): void => setShowRegenerateConfirmation(false) }
                         onPrimaryActionClick={ handleGenerateOffer }
-                        data-testid={ `${testId}-regenerate-confirmation-modal` }
+                        data-componentid={ `${componentId}-regenerate-confirmation-modal` }
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header>
