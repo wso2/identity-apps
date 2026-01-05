@@ -83,6 +83,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
     const [ showPrimarySecret, setShowPrimarySecret ] = useState<boolean>(false);
     const [ showSecondarySecret, setShowSecondarySecret ] = useState<boolean>(false);
     const [ localAuthType, setLocalAuthType ] = useState<AuthType>(endpointAuthType);
+    const [ shouldShowAuthUpdateAlert, setShouldShowAuthUpdateAlert ] = useState<boolean>(false);
 
     const handleDropdownChange = (value: string) => {
         const authType: AuthType = value as AuthType;
@@ -265,7 +266,10 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                 </Grid.Row>
             </Grid>
 
-            <div className="external-api-auth-config-page">
+            <div 
+                className="external-api-auth-config-page"
+                id={ `${componentId}-authentication-section` }
+            >
                 <div className="form-wrapper">
                     <Divider className="divider-container" />
                     <Heading className="heading-container" as="h5">
@@ -274,10 +278,17 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                     </Heading>
 
                     { (
-                        (!hasExistingConfig || isAuthenticationUpdateFormState)
+                        (!hasExistingConfig || isAuthenticationUpdateFormState || !currentAuthType)
                     ) && (
                         <Box className="box-container">
                             <div className="box-field">
+                                {
+                                    (hasExistingConfig && isAuthenticationUpdateFormState && shouldShowAuthUpdateAlert) && (
+                                        <Alert severity="warning" className="authentication-update-alert" sx={ { mb: 2 } }>
+                                            { t("smsProviders:form.custom.authentication.updateRequired") }
+                                        </Alert>
+                                    )
+                                }
                                 <FormSpy subscription={ { values: true } }>
                                     { ({ values }: { values: Record<string, unknown> }) => {
                                         const currentAuthType: string = values?.authType as string;
@@ -595,12 +606,13 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
 
                                 { isAuthenticationUpdateFormState && (
                                     <Button
-                                        onClick={ () =>
+                                        onClick={ () => {
+                                            setShouldShowAuthUpdateAlert(false);
                                             handleAuthenticationChangeCancel(
                                                 setIsAuthenticationUpdateFormState,
                                                 formState
-                                            )
-                                        }
+                                            );
+                                        } }
                                         variant="outlined"
                                         size="small"
                                         className="secondary-button"
@@ -614,7 +626,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                     ) }
 
                     {
-                        (hasExistingConfig && !isAuthenticationUpdateFormState) &&
+                        (hasExistingConfig && !isAuthenticationUpdateFormState && currentAuthType) &&
                         renderAuthenticationSectionInfoBox(
                             currentAuthType,
                             componentId,
@@ -638,7 +650,14 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <PrimaryButton
                                         size="small"
-                                        onClick={ onSubmit }
+                                        onClick={ () => {
+                                            if (hasExistingConfig && currentAuthType && !isAuthenticationUpdateFormState) {
+                                                setShouldShowAuthUpdateAlert(true);
+                                                setIsAuthenticationUpdateFormState(true);
+                                            } else {
+                                                onSubmit();
+                                            }
+                                        } }
                                         ariaLabel="SMS provider form update button"
                                         data-componentid={ `${componentId}-update-button` }
                                         loading={ isLoading }
