@@ -1,5 +1,18 @@
 # @wso2is/admin.roles.v2
 
+## 2.27.283
+
+### Patch Changes
+
+- [#9496](https://github.com/wso2/identity-apps/pull/9496) [`4d89bb8bc532a5da5a3f216ba0ca586c2d317e28`](https://github.com/wso2/identity-apps/commit/4d89bb8bc532a5da5a3f216ba0ca586c2d317e28) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Update the logic to extract api resource id
+
+- Updated dependencies [[`deb32665d46730819819b89dd2f62b9f875a57ce`](https://github.com/wso2/identity-apps/commit/deb32665d46730819819b89dd2f62b9f875a57ce)]:
+  - @wso2is/admin.applications.v1@2.40.3
+  - @wso2is/admin.agents.v1@1.0.128
+  - @wso2is/admin.core.v1@2.49.121
+  - @wso2is/admin.server-configurations.v1@2.35.135
+  - @wso2is/admin.users.v1@2.36.88
+
 ## 2.27.282
 
 ### Patch Changes

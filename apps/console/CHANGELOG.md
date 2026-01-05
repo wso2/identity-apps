@@ -1,5 +1,30 @@
 # @wso2is/console
 
+## 2.85.4
+
+### Patch Changes
+
+- [#9496](https://github.com/wso2/identity-apps/pull/9496) [`4d89bb8bc532a5da5a3f216ba0ca586c2d317e28`](https://github.com/wso2/identity-apps/commit/4d89bb8bc532a5da5a3f216ba0ca586c2d317e28) Thanks [@NutharaNR](https://github.com/NutharaNR)! - Update the logic to extract api resource id
+
+* [#9534](https://github.com/wso2/identity-apps/pull/9534) [`deb32665d46730819819b89dd2f62b9f875a57ce`](https://github.com/wso2/identity-apps/commit/deb32665d46730819819b89dd2f62b9f875a57ce) Thanks [@Malith-19](https://github.com/Malith-19)! - Fix the extendRenewedRefreshTokenExpiryTime property not updated in SPA.
+
+- [#9497](https://github.com/wso2/identity-apps/pull/9497) [`e8b0f5da5a90e1dfc397dd48bb14d3ba72bdd385`](https://github.com/wso2/identity-apps/commit/e8b0f5da5a90e1dfc397dd48bb14d3ba72bdd385) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Add email template for verify email
+
+- Updated dependencies [[`4d89bb8bc532a5da5a3f216ba0ca586c2d317e28`](https://github.com/wso2/identity-apps/commit/4d89bb8bc532a5da5a3f216ba0ca586c2d317e28), [`deb32665d46730819819b89dd2f62b9f875a57ce`](https://github.com/wso2/identity-apps/commit/deb32665d46730819819b89dd2f62b9f875a57ce)]:
+  - @wso2is/admin.roles.v2@2.27.283
+  - @wso2is/admin.applications.v1@2.40.3
+  - @wso2is/admin.agents.v1@1.0.128
+  - @wso2is/admin.core.v1@2.49.121
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.113
+  - @wso2is/admin.branding.v1@2.32.69
+  - @wso2is/admin.email-management.v1@2.25.277
+  - @wso2is/admin.flows.v1@1.0.82
+  - @wso2is/admin.home.v1@1.7.92
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.113
+  - @wso2is/admin.server-configurations.v1@2.35.135
+  - @wso2is/admin.users.v1@2.36.88
+  - @wso2is/admin.registration-flow-builder.v1@0.10.73
+
 ## 2.85.3
 
 ### Patch Changes
