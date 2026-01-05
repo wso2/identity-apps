@@ -185,6 +185,10 @@ import {
     ReactComponent as MCPServersOutlineIcon
 } from "../../themes/wso2is/assets/images/icons/outline-icons/mcp-servers-outline.svg";
 
+import {
+    ReactComponent as VerifiableCredentialsOutlineIcon
+} from "../../themes/default/assets/images/icons/outline-icons/verifiable-credentials-outline.svg";
+
 /**
  * Typed interface of {@link getTechnologyLogos}
  */
@@ -352,7 +356,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
         sms: SMSIcon,
         userStore: DatabaseIcon,
         users: UserIcon,
-        verifiableCredentials: CertificateIcon
+        verifiableCredentials: VerifiableCredentialsOutlineIcon
     };
 };
 
