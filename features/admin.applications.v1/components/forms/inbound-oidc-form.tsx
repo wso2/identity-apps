@@ -1681,6 +1681,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 expiryInSeconds: values.get("expiryInSeconds")
                     ? parseInt(values.get("expiryInSeconds"), 10)
                     : Number(metadata?.defaultRefreshTokenExpiryTime),
+                extendRenewedRefreshTokenExpiryTime: values.get("extendExpiryTime")?.includes("extendExpiryTime"),
                 renewRefreshToken: values.get("RefreshToken")?.length > 0
             },
             subjectToken: {
