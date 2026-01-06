@@ -267,9 +267,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                     appName: selectedApplicationData?.name
                 });
             } else {
-                return t("extensions:develop.branding.pageHeader.preSelectedApplicationBrandingtitle", {
-                    appName: selectedApplicationData?.name
-                });
+                return t("extensions:develop.branding.pageHeader.applicationBrandingtitle");
             }
 
         }
