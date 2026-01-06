@@ -219,9 +219,6 @@ export const MultiAttributeLoginForm: FunctionComponent<MultiAttributeLoginFormP
         return null;
     }
 
-
-
-
     return (
         <Form
             id={ FORM_ID }
