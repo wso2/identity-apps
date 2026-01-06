@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TOTPAuthenticatorForm } from "@wso2is/admin.connections.v1/components/edit/forms/authenticators";
 import {
     FederatedAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
@@ -278,6 +279,20 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
         case LocalAuthenticatorConstants.AUTHENTICATOR_IDS.PUSH_AUTHENTICATOR_ID:
             return (
                 <PushAuthenticatorForm
+                    initialValues={ initialValues }
+                    metadata={ metadata }
+                    onSubmit={ onSubmit }
+                    triggerSubmit={ triggerSubmit }
+                    enableSubmitButton={ enableSubmitButton }
+                    data-testid={ testId }
+                    showCustomProperties={ showCustomProperties }
+                    readOnly={ isReadOnly }
+                    isSubmitting={ isSubmitting }
+                />
+            );
+        case LocalAuthenticatorConstants.AUTHENTICATOR_IDS.TOTP_AUTHENTICATOR_ID:
+            return (
+                <TOTPAuthenticatorForm
                     initialValues={ initialValues }
                     metadata={ metadata }
                     onSubmit={ onSubmit }
