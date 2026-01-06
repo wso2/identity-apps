@@ -37,7 +37,7 @@ import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
 import { AnimatePresence, LayoutGroup, Variants, motion } from "framer-motion";
 import React, {
-    FunctionComponent, HTMLProps, ReactElement, SyntheticEvent, useEffect, useMemo, useState
+    FunctionComponent, HTMLProps, ReactElement, SyntheticEvent, useEffect, useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -476,8 +476,8 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                                                 application?.name) &&
                                                             !ApplicationManagementConstants.DEFAULT_APPS.includes(
                                                                 application?.name) &&
-                                                            !(application?.templateId === ApplicationManagementConstants.
-                                                                M2M_APP_TEMPLATE_ID)
+                                                            !(application?.templateId ===
+                                                                ApplicationManagementConstants.M2M_APP_TEMPLATE_ID)
                                                         )
                                                     }
                                                     ListboxComponent={ customListboxComponent }
