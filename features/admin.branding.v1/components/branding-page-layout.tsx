@@ -301,7 +301,6 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
         setShouldFetchApplications(true);
     };
 
-
     /**
      * Custom listbox component with infinite scroll.
      */
