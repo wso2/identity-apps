@@ -1,5 +1,18 @@
 # @wso2is/admin.applications.v1
 
+## 2.40.5
+
+### Patch Changes
+
+- [#9526](https://github.com/wso2/identity-apps/pull/9526) [`e6a47d39182d59cc184545565e44b5614ee8bbed`](https://github.com/wso2/identity-apps/commit/e6a47d39182d59cc184545565e44b5614ee8bbed) Thanks [@copilot-swe-agent](https://github.com/apps/copilot-swe-agent)! - Fix secondary user stores not appearing in application inbound provisioning for tenant organizations by removing the isSuperOrganization check
+
+- Updated dependencies []:
+  - @wso2is/admin.branding.v1@2.32.71
+  - @wso2is/admin.core.v1@2.49.123
+  - @wso2is/admin.roles.v2@2.27.285
+  - @wso2is/admin.server-configurations.v1@2.35.137
+  - @wso2is/admin.users.v1@2.36.90
+
 ## 2.40.4
 
 ### Patch Changes
