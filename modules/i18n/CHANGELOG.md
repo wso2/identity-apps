@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.31.3
+
+### Patch Changes
+
+- [#9505](https://github.com/wso2/identity-apps/pull/9505) [`9828efe39a89615b2e0840867b30e15009fd9c40`](https://github.com/wso2/identity-apps/commit/9828efe39a89615b2e0840867b30e15009fd9c40) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Update the validation hint and error message for the group name field
+
 ## 2.31.2
 
 ### Patch Changes
