@@ -1,5 +1,19 @@
 # @wso2is/admin.branding.v1
 
+## 2.32.70
+
+### Patch Changes
+
+- [#9538](https://github.com/wso2/identity-apps/pull/9538) [`2156200ab4df846653f0eb3b74d0ba9fd6f66858`](https://github.com/wso2/identity-apps/commit/2156200ab4df846653f0eb3b74d0ba9fd6f66858) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Improve app branding UX by loading all available applications in the application dropdown through infinite scrolling
+
+- Updated dependencies [[`2156200ab4df846653f0eb3b74d0ba9fd6f66858`](https://github.com/wso2/identity-apps/commit/2156200ab4df846653f0eb3b74d0ba9fd6f66858), [`9828efe39a89615b2e0840867b30e15009fd9c40`](https://github.com/wso2/identity-apps/commit/9828efe39a89615b2e0840867b30e15009fd9c40)]:
+  - @wso2is/admin.applications.v1@2.40.4
+  - @wso2is/i18n@2.31.3
+  - @wso2is/admin.flow-builder-core.v1@0.10.114
+  - @wso2is/admin.core.v1@2.49.122
+  - @wso2is/admin.flows.v1@1.0.83
+  - @wso2is/admin.server-configurations.v1@2.35.136
+
 ## 2.32.69
 
 ### Patch Changes
