@@ -1832,6 +1832,13 @@
                     ]
                 }
             },
+            "verifiableCredentials": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "featureFlags": [],
+                "scopes": {
+                }
+            },
             "webhooks": {
                 "disabledFeatures": [
                     "webhooks.settings"

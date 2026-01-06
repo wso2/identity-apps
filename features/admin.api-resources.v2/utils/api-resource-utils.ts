@@ -94,7 +94,8 @@ export class APIResourceUtils {
      */
     public static isSystemAPI(type: string): boolean {
 
-        return type !== APIResourcesConstants.BUSINESS && type !== APIResourcesConstants.MCP;
+        return type !== APIResourcesConstants.BUSINESS && 
+            type !== APIResourcesConstants.MCP;
     }
 
     public static resolveApiResourceGroup = (groupName: string): string => {
