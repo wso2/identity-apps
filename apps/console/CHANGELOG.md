@@ -1,5 +1,26 @@
 # @wso2is/console
 
+## 2.85.6
+
+### Patch Changes
+
+- [#9526](https://github.com/wso2/identity-apps/pull/9526) [`e6a47d39182d59cc184545565e44b5614ee8bbed`](https://github.com/wso2/identity-apps/commit/e6a47d39182d59cc184545565e44b5614ee8bbed) Thanks [@copilot-swe-agent](https://github.com/apps/copilot-swe-agent)! - Fix secondary user stores not appearing in application inbound provisioning for tenant organizations by removing the isSuperOrganization check
+
+- Updated dependencies [[`e6a47d39182d59cc184545565e44b5614ee8bbed`](https://github.com/wso2/identity-apps/commit/e6a47d39182d59cc184545565e44b5614ee8bbed)]:
+  - @wso2is/admin.applications.v1@2.40.5
+  - @wso2is/admin.agents.v1@1.0.130
+  - @wso2is/admin.branding.v1@2.32.71
+  - @wso2is/admin.core.v1@2.49.123
+  - @wso2is/admin.roles.v2@2.27.285
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.115
+  - @wso2is/admin.email-management.v1@2.25.279
+  - @wso2is/admin.flows.v1@1.0.84
+  - @wso2is/admin.home.v1@1.7.94
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.115
+  - @wso2is/admin.server-configurations.v1@2.35.137
+  - @wso2is/admin.users.v1@2.36.90
+  - @wso2is/admin.registration-flow-builder.v1@0.10.75
+
 ## 2.85.5
 
 ### Patch Changes
