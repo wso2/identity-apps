@@ -1559,7 +1559,8 @@ export const extensions: Extensions = {
             pageHeader: {
                 application: "Application",
                 applicationBrandingtitle: "Application Branding",
-                applicationBrandingDescription: "Customize consumer-facing user interfaces of applications.",
+                preSelectedApplicationBrandingtitle: "Application Branding - {{ appName }}",
+                applicationBrandingDescription: "Customize consumer-facing user interfaces of application/s.",
                 applicationListWarning: "Select an application from the list above to customize the branding preferences.",
                 defaultBrandingAppliedMessage: "Organization branding has been applied to this application because no app-specific branding is set.",
                 backButtonText: "Go back to Application Settings",

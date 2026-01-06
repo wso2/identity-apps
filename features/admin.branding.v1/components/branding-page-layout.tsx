@@ -19,9 +19,11 @@
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
+import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import Paper from "@oxygen-ui/react/Paper";
 import TextField from "@oxygen-ui/react/TextField";
 import { BuildingIcon, TilesIcon } from "@oxygen-ui/react-icons";
+import { useGetApplication } from "@wso2is/admin.applications.v1/api/use-get-application";
 import BrandingAIBanner from "@wso2is/admin.branding.ai.v1/components/branding-ai-banner";
 import useAIBrandingPreference from "@wso2is/admin.branding.ai.v1/hooks/use-ai-branding-preference";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -34,8 +36,11 @@ import { AlertLevels, FeatureFlagsInterface, IdentifiableComponentInterface } fr
 import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, PageLayout, useDocumentation } from "@wso2is/react-components";
 import { AnimatePresence, LayoutGroup, Variants, motion } from "framer-motion";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import React, {
+    FunctionComponent, HTMLProps, ReactElement, SyntheticEvent, useEffect, useMemo, useState
+} from "react";
 import { useTranslation } from "react-i18next";
+import InfiniteScroll from "react-infinite-scroll-component";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import BrandingCore from "./branding-core";
@@ -57,6 +62,19 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
     const {
         ["data-componentid"]: componentId
     } = props;
+
+    const [ applications, setApplications ] = useState<ApplicationListItemInterface[]>([]);
+    const [ hasMoreApplications, setHasMoreApplications ] = useState(true);
+    const [ appListOffset, setAppListOffset ] = useState<number>(0);
+    const [ shouldFetchApplications, setShouldFetchApplications ] = useState<boolean>(true);
+
+    const [ appIdFromQueryParam, setAppIdFromQueryParam ] = useState<string | null>(null);
+
+    const {
+        data: selectedApplicationData,
+        isLoading: isApplicationFetchRequestLoading,
+        error: applicationFetchRequestError
+    } = useGetApplication(appIdFromQueryParam as string, Boolean(appIdFromQueryParam));
 
     const { getLink } = useDocumentation();
 
@@ -83,8 +101,10 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
     const {
         data: applicationList,
         isLoading: isApplicationListFetchRequestLoading,
+        isValidating: isApplicationListFetchRequestValidating,
         error: applicationListFetchRequestError
-    } = useApplicationList("templateId", null, null, null, brandingMode === BrandingModes.APPLICATION);
+    } = useApplicationList("templateId", 10, appListOffset, null,
+        brandingMode === BrandingModes.APPLICATION && shouldFetchApplications);
 
     const brandingDisabledFeatures: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.features?.branding?.disabledFeatures);
@@ -118,27 +138,77 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
         }
     };
 
+    useEffect(() => {
+        if (!history?.location?.search) {
+            return;
+        }
+
+        const params: any = new URLSearchParams(history?.location?.search);
+        const appIdFromQuery: string | null = params.get("appId");
+
+        if (!appIdFromQuery) {
+            return;
+        }
+
+        setAppIdFromQueryParam(appIdFromQuery);
+
+        return () => {
+            setAppIdFromQueryParam(null);
+            setIsBrandingAppsRedirect(false);
+            setSelectedApplication(null);
+            setBrandingMode(BrandingModes.ORGANIZATION);
+        };
+
+    }, [ history?.location?.search ]);
+
+    useEffect(() => {
+        if (!applicationList || isApplicationListFetchRequestLoading
+            || isApplicationListFetchRequestValidating) return;
+
+        const updatedApplicationList: ApplicationListItemInterface[] = applicationList.applications;
+
+        setShouldFetchApplications(false);
+
+        setApplications((prevOptions: ApplicationListItemInterface[]) => [
+            ...prevOptions,
+            ...(updatedApplicationList || [])
+        ]);
+
+        let nextFound: boolean = false;
+
+        applicationList?.links?.forEach((link: any) => {
+            if (link.rel === "next") {
+                setHasMoreApplications(true);
+                nextFound = true;
+            }
+        });
+
+        if (!nextFound) {
+            setHasMoreApplications(false);
+        }
+    }, [ applicationList ]);
+
     /**
     * Fetch the identity provider id & name when calling the app edit through connected apps
     */
     useEffect(() => {
-        if (brandingDisabledFeatures.includes(BrandingPreferencesConstants.APP_WISE_BRANDING_FEATURE_TAG) ||
-            !history?.location?.state) {
+        if (
+            brandingDisabledFeatures.includes(BrandingPreferencesConstants.APP_WISE_BRANDING_FEATURE_TAG) ||
+            isApplicationFetchRequestLoading || applicationFetchRequestError
+        ) {
             return;
         }
-
-        setIsBrandingAppsRedirect(true);
-        setBrandingMode(BrandingModes.APPLICATION);
 
         // Check if application ID from state is available in the application list.
-        if (applicationList?.applications?.find((app: ApplicationListItemInterface) =>
-            app.id === history.location.state)) {
-
-            setSelectedApplication(history.location.state as string);
+        if (selectedApplicationData?.id === appIdFromQueryParam) {
+            setIsBrandingAppsRedirect(true);
+            setBrandingMode(BrandingModes.APPLICATION);
+            setSelectedApplication(appIdFromQueryParam);
 
             return;
         }
-    }, [ history?.location?.state, applicationList ]);
+    }, [ selectedApplicationData, isApplicationFetchRequestLoading, applicationFetchRequestError,
+        appIdFromQueryParam ]);
 
     /**
      * Handles the application list fetch request error.
@@ -192,7 +262,16 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
         }
 
         if (brandingMode === BrandingModes.APPLICATION) {
-            return t("extensions:develop.branding.pageHeader.applicationBrandingtitle");
+            if (history.location.state) {
+                return t("extensions:develop.branding.pageHeader.preSelectedApplicationBrandingtitle", {
+                    appName: selectedApplicationData?.name
+                });
+            } else {
+                return t("extensions:develop.branding.pageHeader.preSelectedApplicationBrandingtitle", {
+                    appName: selectedApplicationData?.name
+                });
+            }
+
         }
 
         if (brandingMode === BrandingModes.ORGANIZATION) {
@@ -213,6 +292,45 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
 
         return t("extensions:develop.branding.pageHeader.description");
     };
+
+    /**
+     * Loads more application options when scrolled to the bottom.
+     */
+    const loadMoreApplications = () => {
+        if (!hasMoreApplications) return;
+
+        setAppListOffset((prevOffset: number) => prevOffset + 10);
+        setShouldFetchApplications(true);
+    };
+
+
+    /**
+     * Custom listbox component with infinite scroll.
+     */
+    const customListboxComponent: React.ForwardRefExoticComponent<
+        HTMLProps<HTMLDivElement> & React.RefAttributes<HTMLDivElement>
+    > = React.forwardRef<HTMLDivElement, HTMLProps<HTMLDivElement>>(
+        (listboxProps: React.HTMLProps<HTMLDivElement>, ref: React.ForwardedRef<HTMLDivElement>) => {
+            return (
+                <div
+                    ref={ ref }
+                    { ...listboxProps }
+                    id="autocomplete-scroll-container"
+                    style={ { maxHeight: 250, overflow: "auto" } }
+                >
+                    <InfiniteScroll
+                        dataLength={ applications.length }
+                        next={ loadMoreApplications }
+                        hasMore={ hasMoreApplications }
+                        loader={ <CircularProgress size={ 22 } className="list-item-loader" /> }
+                        scrollableTarget="autocomplete-scroll-container" // attach here!
+                    >
+                        { listboxProps.children }
+                    </InfiniteScroll>
+                </div>
+            );
+        }
+    );
 
     return (
         <PageLayout
@@ -260,7 +378,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                     </div>
                     {
                         !brandingDisabledFeatures.includes(
-                            BrandingPreferencesConstants.APP_WISE_BRANDING_FEATURE_TAG) && (
+                            BrandingPreferencesConstants.APP_WISE_BRANDING_FEATURE_TAG) && !appIdFromQueryParam && (
                             <div className="branding-mode-container">
                                 <LayoutGroup>
                                     <motion.div
@@ -315,71 +433,74 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
                                             </ToggleButtonGroup>
                                         </Paper>
                                     </motion.div>
-                                    { brandingMode === BrandingModes.APPLICATION && (
-                                        <motion.div
-                                            initial="enter"
-                                            animate="in"
-                                            exit="exit"
-                                            transition={ {
-                                                damping: 50,
-                                                stiffness: 400,
-                                                type: "spring"
-                                            } }
-                                            variants={ animationVariants }
-                                            layout
-                                        >
-                                            <Autocomplete
-                                                data-componentId={ `${componentId}-application-dropdown` }
-                                                sx={ { width: 190 } }
-                                                readOnly={ isBrandingAppsRedirect }
-                                                clearIcon={ null }
-                                                options={ applicationList?.applications ?? [] }
-                                                value={ applicationList?.applications?.find(
-                                                    (app: ApplicationListItemInterface) =>
-                                                        app.id === selectedApplication) }
-                                                onChange={ (
-                                                    event: SyntheticEvent<Element, Event>,
-                                                    application: ApplicationListItemInterface
-                                                ) => {
-                                                    setSelectedApplication(application.id);
-                                                    setMergedBrandingPreference(null);
+                                    {
+                                        brandingMode === BrandingModes.APPLICATION &&
+                                    !appIdFromQueryParam && (
+                                            <motion.div
+                                                initial="enter"
+                                                animate="in"
+                                                exit="exit"
+                                                transition={ {
+                                                    damping: 50,
+                                                    stiffness: 400,
+                                                    type: "spring"
                                                 } }
-                                                isOptionEqualToValue={ (
-                                                    option: ApplicationListItemInterface,
-                                                    value: ApplicationListItemInterface
-                                                ) =>
-                                                    option.id === value.id
-                                                }
-                                                filterOptions={ (options: ApplicationListItemInterface[]) =>
-                                                    options.filter((application: ApplicationListItemInterface) =>
-                                                        !ApplicationManagementConstants.SYSTEM_APPS.includes(
-                                                            application?.name) &&
-                                                        !ApplicationManagementConstants.DEFAULT_APPS.includes(
-                                                            application?.name) &&
-                                                        !(application?.templateId === ApplicationManagementConstants.
-                                                            M2M_APP_TEMPLATE_ID)
-                                                    )
-                                                }
-                                                loading={ isApplicationListFetchRequestLoading }
-                                                getOptionLabel={ (application: ApplicationListItemInterface) =>
-                                                    application.name }
-                                                renderInput={ (params: AutocompleteRenderInputParams) => (
-                                                    <TextField
-                                                        { ...params }
-                                                        size="small"
-                                                        placeholder={ isBrandingAppsRedirect
-                                                            ? applicationList?.applications?.find(
-                                                                (app: ApplicationListItemInterface) =>
-                                                                    app.id === selectedApplication)?.name
-                                                            : t("extensions:develop.branding.pageHeader." +
-                                                                "selectApplication") }
-                                                        margin="none"
-                                                        value={ selectedApplication }
-                                                    />
-                                                ) }
-                                            />
-                                        </motion.div>
-                                    ) }
+                                                variants={ animationVariants }
+                                                layout
+                                            >
+                                                <Autocomplete
+                                                    data-componentId={ `${componentId}-application-dropdown` }
+                                                    sx={ { width: 190 } }
+                                                    readOnly={ isBrandingAppsRedirect }
+                                                    clearIcon={ null }
+                                                    options={ applications ?? [] }
+                                                    value={ applications?.find(
+                                                        (app: ApplicationListItemInterface) =>
+                                                            app.id === selectedApplication) }
+                                                    onChange={ (
+                                                        event: SyntheticEvent<Element, Event>,
+                                                        application: ApplicationListItemInterface
+                                                    ) => {
+                                                        setSelectedApplication(application.id);
+                                                        setMergedBrandingPreference(null);
+                                                    } }
+                                                    isOptionEqualToValue={ (
+                                                        option: ApplicationListItemInterface,
+                                                        value: ApplicationListItemInterface
+                                                    ) =>
+                                                        option.id === value.id
+                                                    }
+                                                    filterOptions={ (options: ApplicationListItemInterface[]) =>
+                                                        options.filter((application: ApplicationListItemInterface) =>
+                                                            !ApplicationManagementConstants.SYSTEM_APPS.includes(
+                                                                application?.name) &&
+                                                            !ApplicationManagementConstants.DEFAULT_APPS.includes(
+                                                                application?.name) &&
+                                                            !(application?.templateId === ApplicationManagementConstants.
+                                                                M2M_APP_TEMPLATE_ID)
+                                                        )
+                                                    }
+                                                    ListboxComponent={ customListboxComponent }
+                                                    loading={ isApplicationListFetchRequestLoading }
+                                                    getOptionLabel={ (application: ApplicationListItemInterface) =>
+                                                        application.name }
+                                                    renderInput={ (params: AutocompleteRenderInputParams) => (
+                                                        <TextField
+                                                            { ...params }
+                                                            size="small"
+                                                            placeholder={ isBrandingAppsRedirect
+                                                                ? applicationList?.applications?.find(
+                                                                    (app: ApplicationListItemInterface) =>
+                                                                        app.id === selectedApplication)?.name
+                                                                : t("extensions:develop.branding.pageHeader." +
+                                                                    "selectApplication") }
+                                                            margin="none"
+                                                            value={ selectedApplication }
+                                                        />
+                                                    ) }
+                                                />
+                                            </motion.div>
+                                        ) }
                                 </LayoutGroup>
                             </div>
                         )
