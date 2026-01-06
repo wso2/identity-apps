@@ -1070,8 +1070,6 @@
                                         continue;
                                     }
 
-                                    if (localAuthenticator.startsWith(CUSTOM_LOCAL_AUTHENTICATOR_PREFIX)) {
-
                                         String customLocalAuthenticatorImageURL = "libs/themes/default/assets/images/authenticators/custom-authenticator.svg";
                                         String customLocalAuthenticatorDisplayName = localAuthenticator;
                                         Map<String, String> authenticatorConfigMap = new HashMap<>();
@@ -1082,13 +1080,17 @@
                                             // Exception is ignored and the default values will be used as a fallback.
                                         }
 
-                                        if (MapUtils.isNotEmpty(authenticatorConfigMap) && authenticatorConfigMap.containsKey("definedBy")
-                                            && authenticatorConfigMap.get("definedBy").equals("USER")) {
+                                        if (MapUtils.isNotEmpty(authenticatorConfigMap)) {
+
+                                          if (authenticatorConfigMap.get("displayName") != null) {
+                                            customLocalAuthenticatorDisplayName = authenticatorConfigMap.get("displayName");
+                                          }
+
+                                          if (authenticatorConfigMap.containsKey("definedBy") && authenticatorConfigMap.get("definedBy").equals("USER")) {
 
                                             if (authenticatorConfigMap.containsKey("image")) {
                                                 customLocalAuthenticatorImageURL = authenticatorConfigMap.get("image");
                                             }
-                                            customLocalAuthenticatorDisplayName = authenticatorConfigMap.get("displayName");
                             %>
                                 <div class="social-login blurring social-dimmer">
                                     <div class="field">
@@ -1117,8 +1119,7 @@
                             <br>
                             <%
                                             continue;
-                                        }
-                                    }
+                                        } else {
                             %>
                                 <div class="social-login blurring social-dimmer">
                                     <div class="field">
@@ -1138,13 +1139,15 @@
                                                 role="presentation">
                                             <span>
                                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
-                                                <%=localAuthenticator%>
+                                                <%=Encode.forHtmlAttribute(customLocalAuthenticatorDisplayName)%>
                                             </span>
                                             </button>
                                     </div>
                             </div>
                             <br>
                             <%
+                                   }
+                                  }
                                 }
                                     }
                                 }
