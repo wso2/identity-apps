@@ -262,7 +262,7 @@ const BrandingPageLayout: FunctionComponent<BrandingPageLayoutInterface> = (
         }
 
         if (brandingMode === BrandingModes.APPLICATION) {
-            if (history.location.state) {
+            if (appIdFromQueryParam && selectedApplicationData) {
                 return t("extensions:develop.branding.pageHeader.preSelectedApplicationBrandingtitle", {
                     appName: selectedApplicationData?.name
                 });
