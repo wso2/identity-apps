@@ -276,6 +276,62 @@ export const governanceConnectors: governanceConnectorsNS = {
                     }
                 },
                 siftConnector: {
+                    title: "Sift Integration",
+                    eventPublishing: {
+                        title: "Configure Event Publishing",
+                        subtitle: "Choose which user activities to publish to Sift and what data to include in the payload.",
+                        eventProperties: {
+                            title: "Events to Publish",
+                            subtitle: "Select the events you want to publish to Sift for analysis.",
+                            piiPublishingWarning: "You’ve enabled sending both user profile and device data (e.g., email, name, IP address) to Sift. " +
+                                "Ensure this complies with your organization's privacy policy.",
+                            publishDeviceMetadata: {
+                                label: "Include user device metadata in the event payload",
+                                description: "Publish user device metadata like IP address and user agent.",
+                                warning: "This will send IP addresses and user agents, which may be considered personal data. " +
+                                    "Ensure this complies with your organization's privacy policy and data-sharing agreements."
+                            },
+                            publishUserInfo: {
+                                label: "Include user profile information in the event payload",
+                                description: "Publish user attributes like username, email, mobile, etc.",
+                                warning: "This will send sensitive, direct user identifiers to Sift. " +
+                                    "Ensure this complies with your organization's privacy policy and data-sharing agreements."
+                            },
+                            events: {
+                                logins: {
+                                    label: "Logins",
+                                    hint: "Publish user login events."
+                                },
+                                logouts: {
+                                    label: "Logouts",
+                                    hint: "Publish user logout events."
+                                },
+                                registrations: {
+                                    label: "Registrations",
+                                    hint: "Publish user registration events."
+                                },
+                                credentialUpdates: {
+                                    label: "Credential Updates",
+                                    hint: "Publish user credential update events."
+                                },
+                                userProfileUpdates: {
+                                    label: "User Profile Updates",
+                                    hint: "Publish user profile update events."
+                                },
+                                userVerifications: {
+                                    label: "User Verifications",
+                                    hint: "Publish notification based user verification events."
+                                }
+                            }
+                        },
+                        eventDiagnostics: {
+                            title: "Diagnostic Logging",
+                            logRequestPayload: {
+                                label: "Log event payloads locally",
+                                description: "Save a copy of each event payload to local diagnostic logs for debugging purposes."
+                            }
+                        }
+                    },
                     properties: {
                         name: "Fraud Detection",
                         description: "Integrate Sift to detect and prevent fraudulent account logins.",
@@ -285,14 +341,10 @@ export const governanceConnectors: governanceConnectorsNS = {
                         }
                     },
                     notifications: {
-                        configurationUpdate: {
+                        eventPropertiesUpdate: {
                             error: {
-                                description: "An error occurred while updating the Sift configuration.",
-                                message: "Update Error"
-                            },
-                            success: {
-                                description: "Successfully updated the Sift configuration.",
-                                message: "Update Successful"
+                                description: "An error occurred while updating the event publishing configurations.",
+                                message: "Event Configurations Update Error"
                             }
                         }
                     }
