@@ -20,6 +20,8 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.EncodedControl" %>
 <%@ page import="java.nio.charset.StandardCharsets" %>
 <%@ page import="java.util.*" %>
+<%@ page import="java.io.FileReader" %>
+<%@ page import="java.io.BufferedReader" %>
 <%@ page import="org.json.JSONObject" %>
 <%@ page import="java.util.Calendar" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
@@ -99,6 +101,8 @@
     Locale userLocale = browserLocale;
     String localeFromCookie = null;
     String BUNDLE = "org.wso2.carbon.identity.application.authentication.endpoint.i18n.Resources";
+    String SUPPORTED_LANGUAGES_ATTR = "supportedLanguages";
+    String LANGUAGE_SUPPORTED_COUNTRIES_ATTR = "languageSupportedCountries";
 
     // List of screen names for retrieving text branding customizations.
     List<String> screenNames = new ArrayList<>();
@@ -107,23 +111,49 @@
     // Map to store default supported language codes.
     // TODO: Use this map to generate the `language-switcher.jsp`.
     Map<String, String> supportedLanguages = new HashMap<>();
-    supportedLanguages.put("en", "US");
-    supportedLanguages.put("fr", "FR");
-    supportedLanguages.put("es", "ES");
-    supportedLanguages.put("pt", "PT");
-    supportedLanguages.put("de", "DE");
-    supportedLanguages.put("zh", "CN");
-    supportedLanguages.put("ja", "JP");
-
     List<String> languageSupportedCountries = new ArrayList<>();
-    languageSupportedCountries.add("US");
-    languageSupportedCountries.add("FR");
-    languageSupportedCountries.add("ES");
-    languageSupportedCountries.add("PT");
-    languageSupportedCountries.add("DE");
-    languageSupportedCountries.add("CN");
-    languageSupportedCountries.add("JP");
-    languageSupportedCountries.add("BR");
+
+    // Dynamically load supported languages from languageOptions.properties
+    // Use application scope to cache the parsed language options
+    Map<String, String> cachedSupportedLanguages = (Map<String, String>) request.getAttribute(SUPPORTED_LANGUAGES_ATTR);
+    List<String> cachedLanguageSupportedCountries = (List<String>) request.getAttribute(LANGUAGE_SUPPORTED_COUNTRIES_ATTR);
+
+    if (cachedSupportedLanguages != null && cachedLanguageSupportedCountries != null) {
+        supportedLanguages = cachedSupportedLanguages;
+        languageSupportedCountries = cachedLanguageSupportedCountries;
+    } else {
+        // Specify the file path
+        String filePath = application.getRealPath("/") + "/WEB-INF/classes/LanguageOptions.properties";
+
+        // Use a BufferedReader to read the file content
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                // Ignore comments and empty lines
+                if (!line.trim().startsWith("#") && !line.trim().isEmpty()) {
+                    // Split the line into key and value using '=' as the delimiter
+                    String[] keyValue = line.split("=");
+                    // Split the key further using '.' as the delimiter
+                    String[] parts = keyValue[0].split("\\.");
+                    String languageCode = parts[parts.length - 1];
+                    // Split the value further using ',' as the delimiter
+                    String[] values = keyValue[1].split(",");
+                    String country = values[0];
+                    String displayName = values[1];
+                    // Add the values to the list.
+                    supportedLanguages.put(languageCode, country);
+                    if (!languageSupportedCountries.contains(country)) {
+                        languageSupportedCountries.add(country);
+                    }
+                }
+            }
+
+            request.setAttribute(SUPPORTED_LANGUAGES_ATTR, supportedLanguages);
+            request.setAttribute(LANGUAGE_SUPPORTED_COUNTRIES_ATTR, languageSupportedCountries);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
 
     // Check cookie for the user selected language first
     Cookie[] cookies = request.getCookies();
