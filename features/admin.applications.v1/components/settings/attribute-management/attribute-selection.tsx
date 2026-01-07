@@ -169,7 +169,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
         claimConfigurations?.claimMappings?.map((claim: ClaimMappingInterface) => {
             if (
-                !filterSelectedExternalClaims.find(
+                !tempFilterSelectedExternalClaims.find(
                     (selectedExternalClaim: ExtendedExternalClaimInterface) =>
                         selectedExternalClaim?.mappedLocalClaimURI === claim.localClaim.uri
                 )
@@ -450,9 +450,6 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                     initialAvailableClaims.push(claim);
                 }
             });
-            const tempFilterSelectedExternalClaims: ExtendedExternalClaimInterface[] =
-            [ ...filterSelectedExternalClaims ];
-
             claimConfigurations?.claimMappings?.map((claimMapping: ClaimMappingInterface) => {
                 claims?.map((claim: ExtendedClaimInterface) => {
                     if (claimMapping.localClaim.uri === claim.claimURI){
@@ -473,7 +470,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                     }
                 });
             });
-            setFilterSelectedExternalClaims(tempFilterSelectedExternalClaims);
+            setFilterSelectedExternalClaims(initialSelectedClaims);
             setSelectedExternalClaims(initialSelectedClaims);
             setExternalClaims(initialAvailableClaims);
             setAvailableExternalClaims(initialAvailableClaims);
