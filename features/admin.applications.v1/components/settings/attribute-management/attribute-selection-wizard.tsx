@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,7 +27,6 @@ import {
     TransferListItem
 } from "@wso2is/react-components";
 import sortBy from "lodash-es/sortBy";
-import union from "lodash-es/union";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal } from "semantic-ui-react";
@@ -49,9 +48,9 @@ interface AttributeSelectionWizardPropsInterface extends TestableComponentInterf
 /**
  * Attribute selection wizard component.
  *
- * @param {AttributeSelectionWizardPropsInterface} props - Props injected to the component.
+ * @param props - Props injected to the component.
  *
- * @return {React.ReactElement}
+ * @returns Attribute selection wizard component.
  */
 export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizardPropsInterface> = (
     props: AttributeSelectionWizardPropsInterface
@@ -80,22 +79,31 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
     };
 
     // search operation for available claims.
-    const searchTempAvailable = (event) => {
-        const changeValue = event.target.value;
+    const searchTempAvailable = (event: any) => {
+        const changeValue: any = event.target.value;
 
         if (changeValue.length > 0) {
-            const displayNameFilterClaims = tempAvailableClaims.filter((item) =>
-                item.displayName.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
-            const uriFilterClaims = tempAvailableClaims.filter((item) =>
-                item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+            const displayNameFilterClaims: ExtendedClaimInterface[] = tempAvailableClaims.filter(
+                (item: ExtendedClaimInterface) =>
+                    item.displayName.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+            const uriFilterClaims: ExtendedClaimInterface[] = tempAvailableClaims.filter(
+                (item: ExtendedClaimInterface) =>
+                    item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
 
-            setFilterTempAvailableClaims(sortBy(union(displayNameFilterClaims, uriFilterClaims), "displayName"));
+            // Deduplicate based on claimURI
+            const combinedClaims: ExtendedClaimInterface[] = [ ...displayNameFilterClaims, ...uriFilterClaims ];
+            const uniqueClaims: ExtendedClaimInterface[] =
+                combinedClaims.reduce((acc: ExtendedClaimInterface[], claim: ExtendedClaimInterface) => {
+                    if (!acc.find((c: ExtendedClaimInterface) => c.claimURI === claim.claimURI)) {
+                        acc.push(claim);
+                    }
+
+                    return acc;
+                }, []);
+
+            setFilterTempAvailableClaims(sortBy(uniqueClaims, "displayName"));
         } else {
-            if (selectedClaims.length > 0) {
-                setFilterTempAvailableClaims(sortBy(union(selectedClaims, availableClaims ), "displayName"));
-            } else {
-                setFilterTempAvailableClaims(sortBy(tempAvailableClaims, "displayName"));
-            }
+            setFilterTempAvailableClaims(sortBy(tempAvailableClaims, "displayName"));
         }
     };
 
@@ -103,11 +111,14 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
      * The following method handles the onChange event of the
      * checkbox field of an unassigned item.
      */
-    const handleUnassignedItemCheckboxChange = (claim) => {
-        const checkedRoles = [ ...tempSelectedClaims ];
+    const handleUnassignedItemCheckboxChange = (claim: ExtendedClaimInterface) => {
+        const checkedRoles: ExtendedClaimInterface[] = [ ...tempSelectedClaims ];
+        const existingClaimIndex: number = checkedRoles.findIndex(
+            (c: ExtendedClaimInterface) => c.claimURI === claim.claimURI
+        );
 
-        if (checkedRoles?.includes(claim)) {
-            checkedRoles.splice(checkedRoles.indexOf(claim), 1);
+        if (existingClaimIndex !== -1) {
+            checkedRoles.splice(existingClaimIndex, 1);
             setTempSelectedClaims(checkedRoles);
         } else {
             claim.requested = true;
@@ -139,17 +150,21 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
      */
     useEffect(() => {
         if (showAddModal) {
-            if (selectedClaims.length > 0) {
-                const sortedClaims = sortBy(union(selectedClaims, availableClaims ), "displayName");
+            // Combine and deduplicate claims based on claimURI
+            const allClaims: ExtendedClaimInterface[] = [ ...selectedClaims, ...availableClaims ];
+            const uniqueClaims: ExtendedClaimInterface[] =
+                allClaims.reduce((acc: ExtendedClaimInterface[], claim: ExtendedClaimInterface) => {
+                    if (!acc.find((c: ExtendedClaimInterface) => c.claimURI === claim.claimURI)) {
+                        acc.push(claim);
+                    }
 
-                setTempAvailableClaims(sortedClaims);
-                setFilterTempAvailableClaims(sortedClaims);
-            } else {
-                const sortedClaims = sortBy(availableClaims, "displayName");
+                    return acc;
+                }, []);
 
-                setTempAvailableClaims(sortedClaims);
-                setFilterTempAvailableClaims(sortedClaims);
-            }
+            const sortedClaims: ExtendedClaimInterface[] = sortBy(uniqueClaims, "displayName");
+
+            setTempAvailableClaims(sortedClaims);
+            setFilterTempAvailableClaims(sortedClaims);
             setTempSelectedClaims(selectedClaims);
         } else {
             setTempAvailableClaims([]);
@@ -162,9 +177,11 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
      *  Save the selected claims
      */
     const updateSelectedClaims = (() => {
-        const selectedClaimsValues = [ ...tempSelectedClaims ];
-        const removedClaims = selectedClaims.filter((claim) => !selectedClaimsValues?.includes(claim));
-        const addedClaims = selectedClaimsValues.filter((claim) => !selectedClaims?.includes(claim));
+        const selectedClaimsValues: ExtendedClaimInterface[] = [ ...tempSelectedClaims ];
+        const removedClaims: ExtendedClaimInterface[] =
+            selectedClaims.filter((claim: ExtendedClaimInterface) => !selectedClaimsValues?.includes(claim));
+        const addedClaims: ExtendedClaimInterface[] =
+            selectedClaimsValues.filter((claim: ExtendedClaimInterface) => !selectedClaims?.includes(claim));
 
         updateMappings(addedClaims, removedClaims);
         setInitialSelectedClaims(selectedClaimsValues);
@@ -203,7 +220,11 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                             + "emptyPlaceholders.default") }
                     >
                         {
-                            filterTempAvailableClaims?.map((claim, index) => {
+                            filterTempAvailableClaims?.map((claim: ExtendedClaimInterface, index: number) => {
+                                const isChecked: boolean = tempSelectedClaims.some(
+                                    (c: ExtendedClaimInterface) => c.claimURI === claim.claimURI
+                                );
+
                                 return (
                                     <TransferListItem
                                         handleItemChange={ () => handleUnassignedItemCheckboxChange(claim) }
@@ -211,7 +232,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                                         listItem={ claim.displayName }
                                         listItemId={ claim.id }
                                         listItemIndex={ claim.claimURI }
-                                        isItemChecked={ tempSelectedClaims.includes(claim) }
+                                        isItemChecked={ isChecked }
                                         showSecondaryActions={ false }
                                         showListSubItem={ true }
                                         listSubItem={ (
