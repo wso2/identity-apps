@@ -162,8 +162,6 @@
             request.setAttribute(SUPPORTED_LANGUAGES_ATTR, supportedLanguages);
             request.setAttribute(LANGUAGE_SUPPORTED_COUNTRIES_ATTR, languageSupportedCountries);
         } catch (Exception e) {
-            // Log the error and fall back to default English.
-            System.err.println("Failed to load LanguageOptions.properties: " + e.getMessage());
             if (supportedLanguages.isEmpty()) {
                 supportedLanguages.put("en", "US");
                 languageSupportedCountries.add("US");
