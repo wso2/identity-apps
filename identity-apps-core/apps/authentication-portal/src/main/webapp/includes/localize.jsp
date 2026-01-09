@@ -132,14 +132,23 @@
                 // Ignore comments and empty lines
                 if (!line.trim().startsWith("#") && !line.trim().isEmpty()) {
                     // Split the line into key and value using '=' as the delimiter
-                    String[] keyValue = line.split("=");
+                    String[] keyValue = line.split("=", 2);
+                    if (keyValue.length < 2) {
+                        continue; // Skip malformed lines
+                    }
                     // Split the key further using '.' as the delimiter
                     String[] parts = keyValue[0].split("\\.");
+                    if (parts.length == 0) {
+                        continue;
+                    }
                     String languageCode = parts[parts.length - 1];
                     // Split the value further using ',' as the delimiter
                     String[] values = keyValue[1].split(",");
+                    if (values.length < 2) {
+                        continue; // Skip lines without proper country,displayName format
+                    }
                     String country = values[0];
-                    String displayName = values[1];
+                    // displayName is available in values[1] if needed in the future
                     // Add the values to the list.
                     supportedLanguages.put(languageCode, country);
                     if (!languageSupportedCountries.contains(country)) {
