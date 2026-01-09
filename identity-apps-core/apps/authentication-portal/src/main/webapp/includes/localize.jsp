@@ -20,8 +20,7 @@
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.EncodedControl" %>
 <%@ page import="java.nio.charset.StandardCharsets" %>
 <%@ page import="java.util.*" %>
-<%@ page import="java.io.FileInputStream" %>
-<%@ page import="java.io.InputStreamReader" %>
+<%@ page import="java.io.FileReader" %>
 <%@ page import="java.io.BufferedReader" %>
 <%@ page import="org.json.JSONObject" %>
 <%@ page import="java.util.Calendar" %>
@@ -127,8 +126,7 @@
         String filePath = application.getRealPath("/") + "/WEB-INF/classes/LanguageOptions.properties";
 
         // Use a BufferedReader to read the file content
-        try (BufferedReader bufferedReader = new BufferedReader(
-                new InputStreamReader(new FileInputStream(filePath), StandardCharsets.UTF_8))) {
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = bufferedReader.readLine()) != null) {
                 // Ignore comments and empty lines
@@ -162,12 +160,7 @@
             request.setAttribute(SUPPORTED_LANGUAGES_ATTR, supportedLanguages);
             request.setAttribute(LANGUAGE_SUPPORTED_COUNTRIES_ATTR, languageSupportedCountries);
         } catch (Exception e) {
-            // Log the error and fall back to default English.
-            System.err.println("Failed to load LanguageOptions.properties: " + e.getMessage());
-            if (supportedLanguages.isEmpty()) {
-                supportedLanguages.put("en", "US");
-                languageSupportedCountries.add("US");
-            }
+            throw e;
         }
     }
 
