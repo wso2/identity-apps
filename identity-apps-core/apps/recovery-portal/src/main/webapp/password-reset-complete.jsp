@@ -266,9 +266,11 @@
         && callback.contains(MY_ACCOUNT_APP_NAME.toLowerCase().replaceAll("\\s+", "")))) {
 
         if (StringUtils.isBlank(applicationAccessURLWithoutEncoding)) {
-            applicationAccessURLWithoutEncoding = IdentityManagementEndpointUtil.getUserPortalUrl(
+            applicationAccessURLWithoutEncoding = StringUtils.trim(IdentityManagementEndpointUtil.getUserPortalUrl(
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL),
-                tenantDomain);
+                tenantDomain
+            )
+                );
         }
 	}
 
