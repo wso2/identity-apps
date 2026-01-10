@@ -280,9 +280,9 @@
 <%!
     private boolean isUserPortalUrl(String callback, String tenantDomain, ServletContext application) {
 
-        String userPortalUrl = IdentityManagementEndpointUtil.getUserPortalUrl(
+        String userPortalUrl = StringUtils.trim(IdentityManagementEndpointUtil.getUserPortalUrl(
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL),
-                tenantDomain);
+                tenantDomain));
         return StringUtils.equals(callback, userPortalUrl);
     }
 
