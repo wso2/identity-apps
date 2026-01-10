@@ -24,19 +24,20 @@ import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-
 import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
 import Header from "@wso2is/admin.core.v1/components/header";
 import { ProtectedRoute } from "@wso2is/admin.core.v1/components/protected-route";
-import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
+import { createBrokenPageFallback, createRouteErrorHandler } from "@wso2is/admin.core.v1/utils/error-boundary-utils";
 import { RouteUtils } from "@wso2is/admin.core.v1/utils/route-utils";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import { AlertInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
-import { RouteUtils as CommonRouteUtils, CommonUtils } from "@wso2is/core/utils";
-import { Alert, ContentLoader, EmptyPlaceholder, ErrorBoundary, LinkButton } from "@wso2is/react-components";
+import { RouteUtils as CommonRouteUtils } from "@wso2is/core/utils";
+import { Alert, ContentLoader, ErrorBoundary } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -124,6 +125,10 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = ({
      * @param key - Index of the route.
      * @returns Resolved route to be rendered.
      */
+    const handleRouteChunkError: ((_error: Error, _errorInfo: React.ErrorInfo) => void) = createRouteErrorHandler(appHomePath);
+
+    const brokenPageFallback: ReactNode = createBrokenPageFallback(t);
+
     const renderRoute = (route: RouteInterface, key: number): ReactNode =>
         route.redirectTo ? (
             <Redirect key={ key } to={ route.redirectTo } />
@@ -137,9 +142,22 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = ({
         ) : (
             <Route
                 path={ route.path }
-                render={ (renderProps: RouteComponentProps): ReactNode =>
-                    route.component ? <route.component { ...renderProps } /> : null
-                }
+                render={ (renderProps: RouteComponentProps): ReactNode => {
+                    if (!route.component) {
+                        return null;
+                    }
+
+                    return (
+                        <ErrorBoundary
+                            key={ renderProps.location.pathname }
+                            onChunkLoadError={ AppUtils.onChunkLoadError }
+                            handleError={ handleRouteChunkError }
+                            fallback={ brokenPageFallback }
+                        >
+                            <route.component { ...renderProps } />
+                        </ErrorBoundary>
+                    );
+                } }
                 key={ key }
                 exact={ route.exact }
             />
@@ -202,25 +220,8 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = ({
             >
                 <ErrorBoundary
                     onChunkLoadError={ AppUtils.onChunkLoadError }
-                    handleError={ (_error: Error, _errorInfo: React.ErrorInfo) => {
-                        sessionStorage.setItem("auth_callback_url_console", appHomePath);
-                    } }
-                    fallback={
-                        (<EmptyPlaceholder
-                            action={
-                                (<LinkButton onClick={ () => CommonUtils.refreshPage() }>
-                                    { t("console:common.placeholders.brokenPage.action") }
-                                </LinkButton>)
-                            }
-                            image={ getEmptyPlaceholderIllustrations().brokenPage }
-                            imageSize="tiny"
-                            subtitle={ [
-                                t("console:common.placeholders.brokenPage.subtitles.0"),
-                                t("console:common.placeholders.brokenPage.subtitles.1")
-                            ] }
-                            title={ t("console:common.placeholders.brokenPage.title") }
-                        />)
-                    }
+                    handleError={ handleRouteChunkError }
+                    fallback={ brokenPageFallback }
                 >
                     <Suspense fallback={ <ContentLoader dimmer={ false } /> }>
                         { isMarketingConsentBannerEnabled && applicationConfig.marketingConsent.getBannerComponent() }
