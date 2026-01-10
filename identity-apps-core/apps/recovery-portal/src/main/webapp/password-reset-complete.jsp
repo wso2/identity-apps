@@ -143,8 +143,8 @@
     String applicationAccessURLWithoutEncoding = null;
     if (StringUtils.isNotBlank(applicationName)) {
         try {
-            applicationAccessURLWithoutEncoding = applicationDataRetrieval.getApplicationAccessURL(tenantDomain,
-                    applicationName);
+            applicationAccessURLWithoutEncoding = StringUtils.trim(applicationDataRetrieval.getApplicationAccessURL(tenantDomain,
+                    applicationName));
             applicationAccessURLWithoutEncoding = IdentityManagementEndpointUtil.replaceUserTenantHintPlaceholder(
                     applicationAccessURLWithoutEncoding, userTenantDomain);
             applicationAccessURLWithoutEncoding = IdentityManagementEndpointUtil.getOrganizationIdHintReplacedURL(
