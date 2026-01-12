@@ -140,13 +140,15 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
     const [ isSelectNoneHidden, setIsSelectNoneHidden ] = useState<boolean>(true);
     const [ m2mApplication, setM2MApplication ] = useState<boolean>(false);
     const [ isScopeSelectDropdownReady, setIsScopeSelectDropdownReady ] = useState<boolean>(true);
+    const [ isDropdownOpen, setIsDropdownOpen ] = useState<boolean>(false);
+    const [ hasStartedFetchingAllResources, setHasStartedFetchingAllResources ] = useState<boolean>(false);
 
     const {
         data: currentAPIResourcesListData,
         isLoading: iscurrentAPIResourcesListLoading,
         error: currentAPIResourcesFetchRequestError,
         mutate: mutatecurrentAPIResourcesList
-    } = useAPIResources(apiCallNextAfterValue);
+    } = useAPIResources(apiCallNextAfterValue, null, null, isDropdownOpen || !hasStartedFetchingAllResources);
 
     const {
         data: currentAPIResourceScopeListData,
@@ -261,7 +263,12 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                 }
             });
 
-            if (isAfterValueExists) {
+            // If this is the first page load, mark that we've started and stop automatic fetching
+            if (!hasStartedFetchingAllResources) {
+                setHasStartedFetchingAllResources(true);
+                setIsAPIResourcesListLoading(false);
+            } else if (isAfterValueExists && isDropdownOpen) {
+                // Only continue fetching if the dropdown is open
                 mutatecurrentAPIResourcesList();
             } else {
                 setIsAPIResourcesListLoading(false);
@@ -443,115 +450,117 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                 </Heading>
             </Modal.Header>
             <Modal.Content className="content-container" scrolling>
-                {
-                    iscurrentAPIResourcesListLoading || isAPIResourcesListLoading
-                        ? <ContentLoader inline="centered" active />
-                        : (
-                            <Grid>
-                                <Grid.Row>
-                                    <Grid.Column width={ 12 } className="mb-2">
-                                        <Grid.Row className="mb-3">
-                                            <Autocomplete
-                                                disablePortal
-                                                fullWidth
-                                                aria-label="API resource selection"
-                                                className="pt-2"
-                                                componentsProps={ {
-                                                    paper: {
-                                                        elevation: 2
-                                                    },
-                                                    popper: {
-                                                        modifiers: [
-                                                            {
-                                                                enabled: false,
-                                                                name: "flip"
-                                                            },
-                                                            {
-                                                                enabled: false,
-                                                                name: "preventOverflow"
-                                                            }
-                                                        ]
-                                                    }
-                                                } }
-                                                data-componentid={ `${componentId}-api` }
-                                                getOptionLabel={ (apiResourcesListOption: DropdownProps) =>
-                                                    apiResourcesListOption.text }
-                                                groupBy={ (apiResourcesListOption: DropdownItemProps) =>
-                                                    APIResourceUtils
-                                                        .resolveApiResourceGroup(apiResourcesListOption?.type) }
-                                                isOptionEqualToValue={
-                                                    (option: DropdownItemProps, value: DropdownItemProps) =>
-                                                        option.value === value.value
+                <Grid>
+                    <Grid.Row>
+                        <Grid.Column width={ 12 } className="mb-2">
+                            <Grid.Row className="mb-3">
+                                <Autocomplete
+                                    disablePortal
+                                    fullWidth
+                                    aria-label="API resource selection"
+                                    className="pt-2"
+                                    componentsProps={ {
+                                        paper: {
+                                            elevation: 2
+                                        },
+                                        popper: {
+                                            modifiers: [
+                                                {
+                                                    enabled: false,
+                                                    name: "flip"
+                                                },
+                                                {
+                                                    enabled: false,
+                                                    name: "preventOverflow"
                                                 }
-                                                renderOption={ (props: any, apiResourcesListOption: any) =>
-                                                    (<div { ...props }>
-                                                        <Header.Content>
-                                                            { apiResourcesListOption.text }
-                                                            { (
-                                                                apiResourcesListOption.type ===
-                                                                    APIResourcesConstants.BUSINESS
-                                                                || apiResourcesListOption.type ==
-                                                                    APIResourcesConstants.MCP
-                                                            ) && (
-                                                                <Header.Subheader>
-                                                                    <Code
-                                                                        className="inline-code compact transparent"
-                                                                        withBackground={ false }
-                                                                    >
-                                                                        { apiResourcesListOption?.identifier }
-                                                                    </Code>
-                                                                    <Label
-                                                                        pointing="left"
-                                                                        size="mini"
-                                                                        className="client-id-label">
-                                                                        { t("extensions:develop.apiResource.table." +
-                                                                            "identifier.label", {
-                                                                            resourceText: resourceText
-                                                                        }) }
-                                                                    </Label>
-                                                                </Header.Subheader>
-                                                            ) }
-                                                        </Header.Content>
-                                                    </div>) }
-                                                options={ allAPIResourcesDropdownOptions
-                                                    ?.filter((item: DropdownItemProps) =>
-                                                        item?.type === APIResourceCategories.TENANT ||
-                                                        item?.type === APIResourceCategories.ORGANIZATION ||
-                                                        item?.type === APIResourceCategories.BUSINESS ||
-                                                        (originalTemplateId === "mcp-client-application" &&
-                                                            item?.type === APIResourceCategories.MCP)
-                                                    ).sort((a: DropdownItemProps, b: DropdownItemProps) =>
-                                                        APIResourceUtils.sortApiResourceTypes(a, b)
-                                                    )
-                                                }
-                                                getOptionDisabled={ (apiResourcesListOption: DropdownItemProps) =>
-                                                    apiResourcesListOption?.disabled }
-                                                onChange={ (
-                                                    event: SyntheticEvent<HTMLElement>,
-                                                    data: DropdownProps
-                                                ) => handleAPIResourceSelect(data) }
-                                                noOptionsText={ t("common:noResultsFound") }
-                                                renderInput={ (params: AutocompleteRenderInputParams) => (
-                                                    <TextField
-                                                        { ...params }
-                                                        label={ startCase(t("extensions:develop.applications.edit." +
-                                                            "sections.apiAuthorization.sections.apiSubscriptions." +
-                                                            "wizards.authorizeAPIResource.fields.apiResource.label", {
-                                                            resourceText: resourceText
-                                                        })) }
-                                                        placeholder={ t("extensions:develop.applications.edit." +
-                                                            "sections.apiAuthorization.sections.apiSubscriptions." +
-                                                            "wizards.authorizeAPIResource.fields.apiResource." +
-                                                            "placeholder", {
-                                                            resourceText: resourceText
-                                                        }) }
-                                                        size="small"
-                                                        variant="outlined"
-                                                    />
+                                            ]
+                                        }
+                                    } }
+                                    data-componentid={ `${componentId}-api` }
+                                    getOptionLabel={ (apiResourcesListOption: DropdownProps) =>
+                                        apiResourcesListOption.text }
+                                    groupBy={ (apiResourcesListOption: DropdownItemProps) =>
+                                        APIResourceUtils
+                                            .resolveApiResourceGroup(apiResourcesListOption?.type) }
+                                    isOptionEqualToValue={
+                                        (option: DropdownItemProps, value: DropdownItemProps) =>
+                                            option.value === value.value
+                                    }
+                                    loading={ isAPIResourcesListLoading }
+                                    onOpen={ () => {
+                                        if (!isDropdownOpen) {
+                                            setIsDropdownOpen(true);
+                                        }
+                                    } }
+                                    renderOption={ (props: any, apiResourcesListOption: any) =>
+                                        (<div { ...props }>
+                                            <Header.Content>
+                                                { apiResourcesListOption.text }
+                                                { (
+                                                    apiResourcesListOption.type ===
+                                                        APIResourcesConstants.BUSINESS
+                                                    || apiResourcesListOption.type ==
+                                                        APIResourcesConstants.MCP
+                                                ) && (
+                                                    <Header.Subheader>
+                                                        <Code
+                                                            className="inline-code compact transparent"
+                                                            withBackground={ false }
+                                                        >
+                                                            { apiResourcesListOption?.identifier }
+                                                        </Code>
+                                                        <Label
+                                                            pointing="left"
+                                                            size="mini"
+                                                            className="client-id-label">
+                                                            { t("extensions:develop.apiResource.table." +
+                                                                "identifier.label", {
+                                                                resourceText: resourceText
+                                                            }) }
+                                                        </Label>
+                                                    </Header.Subheader>
                                                 ) }
-                                                key="apiResource"
-                                            />
-                                            { isApplicationEditEnforceAuthorizedAPIUpdatePermissionEnabled &&
+                                            </Header.Content>
+                                        </div>) }
+                                    options={ allAPIResourcesDropdownOptions
+                                        ?.filter((item: DropdownItemProps) =>
+                                            item?.type === APIResourceCategories.TENANT ||
+                                            item?.type === APIResourceCategories.ORGANIZATION ||
+                                            item?.type === APIResourceCategories.BUSINESS ||
+                                            (originalTemplateId === "mcp-client-application" &&
+                                                item?.type === APIResourceCategories.MCP)
+                                        ).sort((a: DropdownItemProps, b: DropdownItemProps) =>
+                                            APIResourceUtils.sortApiResourceTypes(a, b)
+                                        )
+                                    }
+                                    getOptionDisabled={ (apiResourcesListOption: DropdownItemProps) =>
+                                        apiResourcesListOption?.disabled }
+                                    onChange={ (
+                                        event: SyntheticEvent<HTMLElement>,
+                                        data: DropdownProps
+                                    ) => handleAPIResourceSelect(data) }
+                                    noOptionsText={ t("common:noResultsFound") }
+                                    renderInput={ (params: AutocompleteRenderInputParams) => (
+                                        <TextField
+                                            { ...params }
+                                            label={ startCase(t("extensions:develop.applications.edit." +
+                                                "sections.apiAuthorization.sections.apiSubscriptions." +
+                                                "wizards.authorizeAPIResource.fields.apiResource.label", {
+                                                resourceText: resourceText
+                                            })) }
+                                            placeholder={ t("extensions:develop.applications.edit." +
+                                                "sections.apiAuthorization.sections.apiSubscriptions." +
+                                                "wizards.authorizeAPIResource.fields.apiResource." +
+                                                "placeholder", {
+                                                resourceText: resourceText
+                                            }) }
+                                            size="small"
+                                            variant="outlined"
+                                        />
+                                    ) }
+                                    key="apiResource"
+                                />
+                                { isApplicationEditEnforceAuthorizedAPIUpdatePermissionEnabled &&
                                                 (!hasInternalAPIResourceAuthorizationPermission ||
                                                     !hasBusinessAPIResourceAuthorizationPermission
                                                 ) && (
@@ -837,8 +846,6 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
-                        )
-                }
             </Modal.Content>
             <Modal.Actions>
                 <Grid>
