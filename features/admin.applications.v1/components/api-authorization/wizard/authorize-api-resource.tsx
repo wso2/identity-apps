@@ -771,7 +771,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                     />
                                                 ) }
                                                 key="policy"
-                                                defaultValue={ selectedPolicy }
+                                                value={ selectedPolicy }
                                             />
                                             <Hint
                                                 className="mb-1"
