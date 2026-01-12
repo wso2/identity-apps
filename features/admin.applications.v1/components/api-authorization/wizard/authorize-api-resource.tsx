@@ -698,7 +698,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                             variant="outlined"
                                         />
                                     ) }
-                                    key="apiResource"
+                                    key="scopes"
                                     value={ authorizedScopes }
                                 />
                                 <Hint disabled={ !selectedAPIResource }>
