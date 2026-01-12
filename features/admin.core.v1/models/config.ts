@@ -589,10 +589,6 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     connectionTemplates?: any;
     /**
-     * Config if beta tag should be displayed for sms otp for password recovery feature.
-     */
-    showSmsOtpPwdRecoveryFeatureStatusChip?: boolean;
-    /**
      * Config to check whether consent is required for trusted apps.
      */
     isTrustedAppConsentRequired?: boolean;
@@ -653,6 +649,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Enable legacy session bound token behaviour.
      */
     enableLegacySessionBoundTokenBehaviour: boolean;
+    /**
+     * Disable email template feature for free tier tenants.
+     */
+    disableEmailTemplateForFreeTier: boolean;
 }
 
 /**

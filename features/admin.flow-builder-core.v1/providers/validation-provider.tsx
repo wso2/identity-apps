@@ -33,6 +33,7 @@ export interface ValidationProviderProps {
 const ValidationProvider = ({
     children,
     validationConfig = {
+        isOTPButtonValidationEnabled: false,
         isOTPValidationEnabled: false,
         isRecoveryFactorValidationEnabled: false
     }

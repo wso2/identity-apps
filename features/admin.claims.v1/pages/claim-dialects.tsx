@@ -21,14 +21,17 @@ import { getDialects } from "@wso2is/admin.claims.v1/api";
 import { getSidePanelIcons, getTechnologyLogos } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { FeatureConfigInterface, RouteConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
+import useGetSelfAuthenticatedOrganization
+    from "@wso2is/admin.organizations.v1/api/use-get-self-authenticated-organization";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, ClaimDialect, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { RouteUtils as CommonRouteUtils } from "@wso2is/core/utils";
 import {
     AnimatedAvatar,
     DocumentationLink,
@@ -105,6 +108,22 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
 
     const isAttributeDialectReadOnly: boolean = !hasAttributeDialectsUpdatePermissions
         || (isSubOrganization() && configuredUserStoreCount < 1);
+
+    const routesConfig: RouteConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.routes
+    );
+
+    const isAuthenticated: boolean = useSelector((state: AppState) => state?.auth?.isAuthenticated);
+
+    const { data: organization, isLoading: isOrgLoading } = useGetSelfAuthenticatedOrganization(isAuthenticated);
+
+    const enabledOrganizationRoutes: string[] = CommonRouteUtils.getOrganizationEnabledRoutes(
+        routesConfig?.organizationEnabledRoutes ?? {},
+        organization?.version
+    );
+
+    const isAttributeUpdateVerificationUIEnabled: boolean =
+    enabledOrganizationRoutes.includes("attributeUpdateVerificationSettings");
 
     /**
      * Fetches all the dialects.
@@ -346,9 +365,10 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                 </List.Item>
                                             </List>
                                         </EmphasizedSegment>
-                                        { !isSubOrganization() &&
-                                        featureConfig?.attributeVerification?.enabled &&
-                                        hasAttributeVerificationReadPermissions && (
+                                        { ((isSubOrganization() && !isOrgLoading &&
+                                        isAttributeUpdateVerificationUIEnabled) ||
+                                        (!isSubOrganization() && featureConfig?.attributeVerification?.enabled &&
+                                        hasAttributeVerificationReadPermissions)) && (
                                             <EmphasizedSegment
                                                 onClick={ () => {
                                                     history.push(AppConstants.getPaths()

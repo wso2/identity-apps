@@ -945,7 +945,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                             onClick={ () => {
                                                 history.push({
                                                     pathname: AppConstants.getPaths().get("BRANDING"),
-                                                    state: appId
+                                                    search: `?appId=${encodeURIComponent(appId ?? "")}`
                                                 });
                                             } }
                                         >

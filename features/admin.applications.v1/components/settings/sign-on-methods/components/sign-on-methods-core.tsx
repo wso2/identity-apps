@@ -56,7 +56,6 @@ import AuthenticationFlowProvider
     from "@wso2is/admin.login-flow-builder.v1/providers/authentication-flow-provider";
 import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils";
 import useSubscription, { UseSubscriptionInterface } from "@wso2is/admin.subscription.v1/hooks/use-subscription";
-import { TenantTier } from "@wso2is/admin.subscription.v1/models/tenant-tier";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -228,10 +227,8 @@ export const SignOnMethodsCore: FunctionComponent<SignOnMethodsCorePropsInterfac
     const adaptiveFeatureTags: string[] = useCheckFeatureTags("console.application.signIn.adaptiveAuth");
 
     useEffect(() => {
-        if (adaptiveFeatureStatus === FeatureStatus.ENABLED
-            && adaptiveFeatureTags?.includes(FeatureTags.PREMIUM) &&
-            (tierName === TenantTier.FREE || tierName === TenantTier.ESSENTIALS
-                || tierName === TenantTier.PROFESSIONAL)) {
+        if (adaptiveFeatureStatus === FeatureStatus.DISABLED
+            && adaptiveFeatureTags?.includes(FeatureTags.PREMIUM)) {
             setConditionalAuthPremiumFeature(true);
         } else {
             setConditionalAuthPremiumFeature(false);

@@ -16,26 +16,33 @@
  * under the License.
  */
 
-import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
-import useRequest, {
-    RequestConfigInterface,
+import useGetAllLocalClaims from "@wso2is/admin.claims.v1/api/use-get-all-local-claims";
+import {
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
-import { store } from "@wso2is/admin.core.v1/store";
 import useAuthenticationFlowBuilderCore from
     "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
-import { HttpMethods } from "@wso2is/core/models";
+import { transformClaimsWithUsername } from "@wso2is/admin.flows.v1/utils/claim-utils";
+import { ClaimsGetParams } from "@wso2is/core/models";
 import { useMemo } from "react";
 import { Attribute } from "../models/attributes";
 
+const params: ClaimsGetParams = {
+    "exclude-hidden-claims": true,
+    "exclude-identity-claims": true,
+    filter: null,
+    limit: null,
+    offset: null,
+    sort: null
+};
+
 /**
- * Hook to get the list of tenants.
+ * Hook to get the list of supported profile attributes (local claims).
  *
- * This function calls the GET method of the following endpoint to get the list of tenants.
- * - `https://{serverUrl}/t/{tenantDomain}/api/server/v1/tenants`
- * For more details, refer to the documentation:
- * {@link https://is.docs.wso2.com/en/latest/apis/tenant-management-rest-api/#tag/Tenants/operation/retrieveTenants}
+ * This hook uses useGetAllLocalClaims to fetch local claims with specific filters,
+ * then transforms the data to ensure the username claim is included and sorts
+ * the claims alphabetically by displayName.
  *
  * @param shouldFetch - Should fetch the data.
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
@@ -45,62 +52,23 @@ const useGetSupportedProfileAttributes = <Data = Attribute[], Error = RequestErr
 ): RequestResultInterface<Data, Error> => {
     const { metadata } = useAuthenticationFlowBuilderCore();
 
-    const requestConfig: RequestConfigInterface = useMemo(() => {
-        if (!metadata?.attributeProfile) {
-            return null;
-        }
+    const shouldFetchClaims: boolean = shouldFetch && !!metadata?.attributeProfile;
 
-        return {
-            headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json"
-            },
-            method: HttpMethods.GET,
-            params: {
-                "exclude-hidden-claims": true,
-                "exclude-identity-claims": true,
-                filter: null,
-                limit: null,
-                offset: null,
-                profile: metadata?.attributeProfile,
-                sort: null
-            },
-            url: store.getState().config.endpoints.localClaims
-        };
-    }, [ metadata?.attributeProfile ]);
-
-    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
-        shouldFetch ? requestConfig : null
+    const { data, error, isLoading, isValidating, mutate } = useGetAllLocalClaims<Data, Error>(
+        params,
+        shouldFetchClaims
     );
 
     /**
      * Transform the claims to ensure the username claim is always included.
+     * Sort the claims by displayName alphabetically.
      */
-    const supportedAttributes: Attribute[] = useMemo(() => {
-        const claims: Attribute[] = data as Attribute[];
-
-        if (!claims) {
-            return [];
-        }
-
-        const usernameExists: boolean = claims.some(
-            ((attribute: Attribute) => attribute.claimURI === ClaimManagementConstants.USER_NAME_CLAIM_URI));
-
-        if (usernameExists) {
-            return claims;
-        }
-
-        return [
-            {
-                claimURI: ClaimManagementConstants.USER_NAME_CLAIM_URI,
-                displayName: "Username"
-            },
-            ...claims
-        ] as Attribute[];
+    const sortedAttributesWithUsername: Attribute[] = useMemo(() => {
+        return transformClaimsWithUsername(data as Attribute[]);
     }, [ data ]);
 
     return {
-        data: supportedAttributes as Data,
+        data: sortedAttributesWithUsername as Data,
         error,
         isLoading,
         isValidating,

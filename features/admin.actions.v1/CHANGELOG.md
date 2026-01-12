@@ -1,5 +1,27 @@
 # @wso2is/admin.actions.v1
 
+## 1.15.1
+
+### Patch Changes
+
+- Updated dependencies [[`3f87a4388d00676d4f78206edce7f353cf63c0e8`](https://github.com/wso2/identity-apps/commit/3f87a4388d00676d4f78206edce7f353cf63c0e8)]:
+  - @wso2is/admin.organizations.v1@2.28.0
+  - @wso2is/admin.claims.v1@2.30.0
+  - @wso2is/admin.core.v1@2.49.117
+
+## 1.15.0
+
+### Minor Changes
+
+- [#9468](https://github.com/wso2/identity-apps/pull/9468) [`cde3e581d475f5fc3fea5295c53fc1925b3eaeb4`](https://github.com/wso2/identity-apps/commit/cde3e581d475f5fc3fea5295c53fc1925b3eaeb4) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Add Pre Issue ID Token action
+
+### Patch Changes
+
+- Updated dependencies [[`cde3e581d475f5fc3fea5295c53fc1925b3eaeb4`](https://github.com/wso2/identity-apps/commit/cde3e581d475f5fc3fea5295c53fc1925b3eaeb4)]:
+  - @wso2is/admin.feature-gate.v1@1.7.9
+  - @wso2is/admin.core.v1@2.49.110
+  - @wso2is/i18n@2.30.59
+
 ## 1.14.14
 
 ### Patch Changes

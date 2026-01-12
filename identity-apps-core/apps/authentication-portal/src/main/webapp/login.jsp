@@ -31,6 +31,7 @@
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.AUTHENTICATION_MECHANISM_NOT_CONFIGURED" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.ENABLE_AUTHENTICATION_WITH_REST_API" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.ERROR_WHILE_BUILDING_THE_ACCOUNT_RECOVERY_ENDPOINT_URL" %>
+<%@ page import="static org.wso2.carbon.identity.application.authentication.framework.util.FrameworkConstants.JSAttributes.JS_IDENTIFIER_FIRST_USER_INPUT" %>
 <%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 <%@ page import="org.wso2.carbon.CarbonConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
@@ -520,6 +521,10 @@
                     // Remove userstore domain from the username.
                     String[] usernameSplitItems = usernameIdentifier.split("/");
                     String sanitizeUserName = usernameSplitItems[usernameSplitItems.length - 1];
+                    String identifierFirstUserInput = request.getParameter(JS_IDENTIFIER_FIRST_USER_INPUT);
+                    if (StringUtils.isBlank(identifierFirstUserInput) || identifierFirstUserInput == "null") {
+                        identifierFirstUserInput = sanitizeUserName;
+                    }
                 %>
                 <div class="identifier-container">
                     <img
@@ -531,8 +536,8 @@
                             class="ellipsis"
                             data-position="top left"
                             data-variation="inverted"
-                            data-content="<%=Encode.forHtmlAttribute(sanitizeUserName)%>">
-                        <%=Encode.forHtmlContent(sanitizeUserName)%>
+                            data-content="<%=Encode.forHtmlAttribute(identifierFirstUserInput)%>">
+                        <%=Encode.forHtmlContent(identifierFirstUserInput)%>
                     </span>
                 </div>
                 <% } %>
@@ -867,7 +872,7 @@
                                 <button class="ui blue labeled icon button fluid"
                                     onclick="handleNoDomain(this,
                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
-                                        'IWAAuthenticator')"
+                                        '<%=IWA_AUTHENTICATOR%>')"
                                     id="icon-<%=iconId%>"
                                     title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> IWA">
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <strong>IWA</strong>
@@ -1065,8 +1070,6 @@
                                         continue;
                                     }
 
-                                    if (localAuthenticator.startsWith(CUSTOM_LOCAL_AUTHENTICATOR_PREFIX)) {
-
                                         String customLocalAuthenticatorImageURL = "libs/themes/default/assets/images/authenticators/custom-authenticator.svg";
                                         String customLocalAuthenticatorDisplayName = localAuthenticator;
                                         Map<String, String> authenticatorConfigMap = new HashMap<>();
@@ -1077,13 +1080,17 @@
                                             // Exception is ignored and the default values will be used as a fallback.
                                         }
 
-                                        if (MapUtils.isNotEmpty(authenticatorConfigMap) && authenticatorConfigMap.containsKey("definedBy")
-                                            && authenticatorConfigMap.get("definedBy").equals("USER")) {
+                                        if (MapUtils.isNotEmpty(authenticatorConfigMap)) {
+
+                                          if (authenticatorConfigMap.get("displayName") != null) {
+                                            customLocalAuthenticatorDisplayName = authenticatorConfigMap.get("displayName");
+                                          }
+
+                                          if (authenticatorConfigMap.containsKey("definedBy") && authenticatorConfigMap.get("definedBy").equals("USER")) {
 
                                             if (authenticatorConfigMap.containsKey("image")) {
                                                 customLocalAuthenticatorImageURL = authenticatorConfigMap.get("image");
                                             }
-                                            customLocalAuthenticatorDisplayName = authenticatorConfigMap.get("displayName");
                             %>
                                 <div class="social-login blurring social-dimmer">
                                     <div class="field">
@@ -1112,8 +1119,7 @@
                             <br>
                             <%
                                             continue;
-                                        }
-                                    }
+                                        } else {
                             %>
                                 <div class="social-login blurring social-dimmer">
                                     <div class="field">
@@ -1133,13 +1139,15 @@
                                                 role="presentation">
                                             <span>
                                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
-                                                <%=localAuthenticator%>
+                                                <%=Encode.forHtmlAttribute(customLocalAuthenticatorDisplayName)%>
                                             </span>
                                             </button>
                                     </div>
                             </div>
                             <br>
                             <%
+                                   }
+                                  }
                                 }
                                     }
                                 }

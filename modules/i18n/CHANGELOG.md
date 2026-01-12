@@ -1,5 +1,81 @@
 # @wso2is/i18n
 
+## 2.31.3
+
+### Patch Changes
+
+- [#9505](https://github.com/wso2/identity-apps/pull/9505) [`9828efe39a89615b2e0840867b30e15009fd9c40`](https://github.com/wso2/identity-apps/commit/9828efe39a89615b2e0840867b30e15009fd9c40) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Update the validation hint and error message for the group name field
+
+## 2.31.2
+
+### Patch Changes
+
+- [#9530](https://github.com/wso2/identity-apps/pull/9530) [`92250311d25574063f8a28c39d0927d0a33a2407`](https://github.com/wso2/identity-apps/commit/92250311d25574063f8a28c39d0927d0a33a2407) Thanks [@piraveena](https://github.com/piraveena)! - Add OIDC Frontchannel logout UI
+
+## 2.31.1
+
+### Patch Changes
+
+- [#9499](https://github.com/wso2/identity-apps/pull/9499) [`635763853fbf901546fd6833097159f96a21bd6f`](https://github.com/wso2/identity-apps/commit/635763853fbf901546fd6833097159f96a21bd6f) Thanks [@piraveena](https://github.com/piraveena)! - Add OIDC Frontchannel logout UI
+
+## 2.31.0
+
+### Minor Changes
+
+- [#9470](https://github.com/wso2/identity-apps/pull/9470) [`e7718a8ac92149d0a3ea0901ed9e5678b1377487`](https://github.com/wso2/identity-apps/commit/e7718a8ac92149d0a3ea0901ed9e5678b1377487) Thanks [@Malith-19](https://github.com/Malith-19)! - Add refresh token extend expiry time application config support.
+
+## 2.30.65
+
+### Patch Changes
+
+- [#9495](https://github.com/wso2/identity-apps/pull/9495) [`2f8ade07e7c226c701496b6d3e56c6a75a303894`](https://github.com/wso2/identity-apps/commit/2f8ade07e7c226c701496b6d3e56c6a75a303894) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - UI to show email template customization blocking
+
+## 2.30.64
+
+### Patch Changes
+
+- [#9503](https://github.com/wso2/identity-apps/pull/9503) [`c79ac826da3188d9b7d76699fbf74e007353a8f5`](https://github.com/wso2/identity-apps/commit/c79ac826da3188d9b7d76699fbf74e007353a8f5) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Fix user choice decision on OTP steps.
+
+## 2.30.63
+
+### Patch Changes
+
+- [#9504](https://github.com/wso2/identity-apps/pull/9504) [`7235241ab4238e0ccac40f6f982bbbe06522b52f`](https://github.com/wso2/identity-apps/commit/7235241ab4238e0ccac40f6f982bbbe06522b52f) Thanks [@AmshikaH](https://github.com/AmshikaH)! - Add organization version banner
+
+## 2.30.62
+
+### Patch Changes
+
+- [#9485](https://github.com/wso2/identity-apps/pull/9485) [`7fe27c3efe25ab647f2f3d12ff2aa93ba750fbec`](https://github.com/wso2/identity-apps/commit/7fe27c3efe25ab647f2f3d12ff2aa93ba750fbec) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Improve authentication configuration for custom SMS notification provider
+
+## 2.30.61
+
+### Patch Changes
+
+- [#9484](https://github.com/wso2/identity-apps/pull/9484) [`587bfbbcbb2723c7d269e847528e37c79776cfd1`](https://github.com/wso2/identity-apps/commit/587bfbbcbb2723c7d269e847528e37c79776cfd1) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Revert "Improve authentication configuration for custom SMS notification provider"
+
+## 2.30.60
+
+### Patch Changes
+
+- [#9477](https://github.com/wso2/identity-apps/pull/9477) [`aa98380a904e0b336261bc929334387595e5f79d`](https://github.com/wso2/identity-apps/commit/aa98380a904e0b336261bc929334387595e5f79d) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Fix typo in application backchannel logout url section
+
+* [#9473](https://github.com/wso2/identity-apps/pull/9473) [`872561c19d12e4fbbd034fbc6105bd1c008c36e8`](https://github.com/wso2/identity-apps/commit/872561c19d12e4fbbd034fbc6105bd1c008c36e8) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Update Invited User Registration configuration link to correctly redirect to the flow builder UI.
+
+- [#9358](https://github.com/wso2/identity-apps/pull/9358) [`ae21137b08c1f8bcfb378afe6c995ec750207f25`](https://github.com/wso2/identity-apps/commit/ae21137b08c1f8bcfb378afe6c995ec750207f25) Thanks [@UpekshaGalappaththi](https://github.com/UpekshaGalappaththi)! - added email otp resend limit config to console
+
+## 2.30.59
+
+### Patch Changes
+
+- [#9468](https://github.com/wso2/identity-apps/pull/9468) [`cde3e581d475f5fc3fea5295c53fc1925b3eaeb4`](https://github.com/wso2/identity-apps/commit/cde3e581d475f5fc3fea5295c53fc1925b3eaeb4) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Add Pre Issue ID Token action
+
+## 2.30.58
+
+### Patch Changes
+
+- [#9452](https://github.com/wso2/identity-apps/pull/9452) [`b3b3b61d8dd51d4fd0f081bc757de186c63c34df`](https://github.com/wso2/identity-apps/commit/b3b3b61d8dd51d4fd0f081bc757de186c63c34df) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Improve authentication configuration for custom SMS notification provider
+
 ## 2.30.57
 
 ### Patch Changes

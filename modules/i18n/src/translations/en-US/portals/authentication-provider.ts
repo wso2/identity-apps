@@ -303,6 +303,29 @@ export const authenticationProvider:AuthenticationProviderNS = {
                         required: "Email OTP length is a required field."
                     }
                 },
+                allowedResendAttemptCount: {
+                    hint: "The number of allowed OTP resend attempts.",
+                    label: "Allowed OTP resend attempt count",
+                    placeholder: "Enter allowed resend attempt count.",
+                    unit: "attempts",
+                    validations: {
+                        invalid: "Allowed OTP resend attempt count should be an integer.",
+                        range: "Allowed OTP resend attempt count should be between 0 & 100.",
+                        required: "Allowed OTP resend attempt count is a required field."
+                    }
+                },
+                resendBlockDuration: {
+                    hint: "The duration for which OTP resend is blocked after " +
+                        "exceeding the allowed resend attempt count.",
+                    label: "Resend block duration",
+                    placeholder: "Enter resend block duration.",
+                    unit: "minutes",
+                    validations: {
+                        invalid: "Resend block duration should be an integer.",
+                        range: "Resend block duration should be between 0 & 10000 minutes.",
+                        required: "Resend block duration is a required field."
+                    }
+                },
                 useAlphanumericChars: {
                     hint: "Please check this checkbox to enable alphanumeric "+
                     "characters. Otherwise numeric characters will be used.",

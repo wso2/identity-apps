@@ -1474,6 +1474,7 @@ export interface Extensions {
             pageHeader: {
                 application: string;
                 applicationBrandingtitle: string;
+                preSelectedApplicationBrandingtitle: string;
                 applicationBrandingDescription: string;
                 applicationListWarning: string;
                 defaultBrandingAppliedMessage: string;

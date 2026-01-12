@@ -433,6 +433,8 @@ export class AppConstants {
             [ "WEBHOOK_SETTINGS", `${ AppConstants.getDeveloperViewBasePath() }/webhook-settings` ],
             [ "PRE_ISSUE_ACCESS_TOKEN_EDIT",
                 `${AppConstants.getAdminViewBasePath()}/actions/pre-issue-access-token` ],
+            [ "PRE_ISSUE_ID_TOKEN_EDIT",
+                `${AppConstants.getAdminViewBasePath()}/actions/pre-issue-id-token` ],
             [ "PRE_UPDATE_PASSWORD_EDIT",
                 `${AppConstants.getAdminViewBasePath()}/actions/pre-update-password` ],
             [ "PRE_UPDATE_PROFILE_EDIT",

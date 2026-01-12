@@ -35,6 +35,11 @@ export interface ValidationConfig {
      * Whether password executor validation is enabled.
      */
     isPasswordExecutorValidationEnabled?: boolean;
+    /**
+     * Whether OTP button validation is enabled.
+     * Validates that forms with OTP steps have only one action button (resend button is allowed).
+     */
+    isOTPButtonValidationEnabled?: boolean;
 }
 
 /**
@@ -120,6 +125,7 @@ export const ValidationContext: Context<ValidationContextProps> = createContext<
     setCurrentActiveTab: null,
     setOpenValidationPanel: null,
     validationConfig: {
+        isOTPButtonValidationEnabled: false,
         isOTPValidationEnabled: false,
         isPasswordExecutorValidationEnabled: false,
         isRecoveryFactorValidationEnabled: false

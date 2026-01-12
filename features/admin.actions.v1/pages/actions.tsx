@@ -126,6 +126,17 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
             type: ActionType.PRE_ISSUE_ACCESS_TOKEN
         },
         {
+            description: t("actions:types.preIssueIdToken.description.shortened"),
+            disabled: isActionTypeDisabled(ActionsConstants.PRE_ISSUE_ID_TOKEN_API_PATH),
+            featureStatusKey: getFeatureFlagStatus(ActionsConstants.PRE_ISSUE_ID_TOKEN_API_PATH),
+            heading: t("actions:types.preIssueIdToken.heading"),
+            icon: <KeyFlowIcon size="small" className="icon"/>,
+            identifier: ActionsConstants.PRE_ISSUE_ID_TOKEN_URL_PATH,
+            route: isActionTypeDisabled(ActionsConstants.PRE_ISSUE_ID_TOKEN_API_PATH) ? undefined :
+                AppConstants.getPaths().get("PRE_ISSUE_ID_TOKEN_EDIT"),
+            type: ActionType.PRE_ISSUE_ID_TOKEN
+        },
+        {
             description: t("actions:types.preUpdatePassword.description.shortened"),
             disabled: isActionTypeDisabled(ActionsConstants.PRE_UPDATE_PASSWORD_API_PATH),
             featureStatusKey: getFeatureFlagStatus(ActionsConstants.PRE_UPDATE_PASSWORD_API_PATH),
@@ -168,6 +179,7 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
 
         const actionTypeToFeatureKeyMap: Record<string, string> = {
             [ActionType.PRE_ISSUE_ACCESS_TOKEN]:  ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_API_PATH,
+            [ActionType.PRE_ISSUE_ID_TOKEN]: ActionsConstants.PRE_ISSUE_ID_TOKEN_API_PATH,
             [ActionType.PRE_UPDATE_PASSWORD]: ActionsConstants.PRE_UPDATE_PASSWORD_API_PATH,
             [ActionType.PRE_UPDATE_PROFILE]: ActionsConstants.PRE_UPDATE_PROFILE_API_PATH,
             [ActionType.PRE_REGISTRATION]: ActionsConstants.PRE_REGISTRATION_API_PATH
@@ -205,6 +217,10 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
                         actionTypeCounts.preIssueAccessToken = actionType.count;
 
                         break;
+                    case ActionType.PRE_ISSUE_ID_TOKEN:
+                        actionTypeCounts.preIssueIdToken = actionType.count;
+
+                        break;
                     case ActionType.PRE_UPDATE_PASSWORD:
                         actionTypeCounts.preUpdatePassword = actionType.count;
 
@@ -233,6 +249,11 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
         typeCounts?.preIssueAccessToken > 0);
 
     const {
+        data: preIssueIdTokenActions
+    } = useGetActionsByType(ActionsConstants.PRE_ISSUE_ID_TOKEN_API_PATH,
+        typeCounts?.preIssueIdToken > 0);
+
+    const {
         data: preUpdatePasswordActions
     } = useGetActionsByType(ActionsConstants.PRE_UPDATE_PASSWORD_API_PATH,
         typeCounts?.preUpdatePassword > 0);
@@ -251,6 +272,10 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
     const preIssueAccessTokenVersionInfo: ActionVersionInfo = useActionVersioning(
         ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH,
         preIssueAccessTokenActions?.[0]?.version
+    );
+    const preIssueIdTokenVersionInfo: ActionVersionInfo = useActionVersioning(
+        ActionsConstants.PRE_ISSUE_ID_TOKEN_URL_PATH,
+        preIssueIdTokenActions?.[0]?.version
     );
     const preUpdatePasswordVersionInfo: ActionVersionInfo = useActionVersioning(
         ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH,
@@ -276,6 +301,11 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
             case ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH:
                 versionInfo = preIssueAccessTokenVersionInfo;
                 hasConfiguredActions = !!preIssueAccessTokenActions?.[0];
+
+                break;
+            case ActionsConstants.PRE_ISSUE_ID_TOKEN_URL_PATH:
+                versionInfo = preIssueIdTokenVersionInfo;
+                hasConfiguredActions = !!preIssueIdTokenActions?.[0];
 
                 break;
             case ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH:
@@ -366,6 +396,10 @@ export const ActionTypesListingPage: FunctionComponent<ActionTypesListingPageInt
         switch (actionType) {
             case ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH:
                 count = typeCounts?.preIssueAccessToken;
+
+                break;
+            case ActionsConstants.PRE_ISSUE_ID_TOKEN_URL_PATH:
+                count = typeCounts?.preIssueIdToken;
 
                 break;
             case ActionsConstants.PRE_UPDATE_PASSWORD_URL_PATH:

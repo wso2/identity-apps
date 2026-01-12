@@ -765,6 +765,15 @@ export interface ApplicationsNS {
                                 passwordExecutorRequired: {
                                     message: string;
                                 };
+                                otpStepButtonsOutsideForm: {
+                                    message: string;
+                                };
+                                otpStepSingleActionButton: {
+                                    message: string;
+                                };
+                                otpStepMultipleForms: {
+                                    message: string;
+                                };
                             }
                         };
                     };
@@ -1674,6 +1683,7 @@ export interface ApplicationsNS {
                 };
                 logoutURLs: {
                     heading: string;
+                    headingSingular: string;
                     fields: {
                         back: {
                             hint: string;
@@ -1685,6 +1695,7 @@ export interface ApplicationsNS {
                             };
                         };
                         front: {
+                            hint: string;
                             label: string;
                             placeholder: string;
                             validations: {
@@ -1771,6 +1782,10 @@ export interface ApplicationsNS {
                 refreshToken: {
                     heading: string;
                     fields: {
+                        extendRenewedRefreshTokenExpiryTime: {
+                            hint: string;
+                            label: string;
+                        },
                         expiry: {
                             hint: string;
                             label: string;

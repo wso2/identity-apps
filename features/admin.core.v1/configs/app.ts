@@ -417,6 +417,7 @@ export class Config {
             cookiePolicyUrl: window["AppUtils"]?.getConfig()?.ui?.cookiePolicyUrl,
             customContent: window["AppUtils"]?.getConfig()?.ui?.customContent ??
                 UIConstants.DEFAULT_CUSTOM_CONTENT_CONFIGS,
+            disableEmailTemplateForFreeTier: window[ "AppUtils" ]?.getConfig()?.ui?.disableEmailTemplateForFreeTier,
             emailTemplates: {
                 defaultLogoUrl: window["AppUtils"]?.getConfig()?.ui?.emailTemplates?.defaultLogoUrl,
                 defaultWhiteLogoUrl: window["AppUtils"]?.getConfig()?.ui?.emailTemplates?.defaultWhiteLogoUrl
@@ -478,10 +479,8 @@ export class Config {
             routes: window["AppUtils"]?.getConfig()?.ui?.routes ?? {
                 organizationEnabledRoutes: AppConstants.ORGANIZATION_ENABLED_ROUTES
             },
-            selfAppIdentifier: window["AppUtils"]?.getConfig()?.ui?.selfAppIdentifier,
-            showAppSwitchButton: window["AppUtils"]?.getConfig()?.ui?.showAppSwitchButton,
-            showSmsOtpPwdRecoveryFeatureStatusChip:
-                window["AppUtils"]?.getConfig()?.ui?.showSmsOtpPwdRecoveryFeatureStatusChip,
+            selfAppIdentifier: window[ "AppUtils" ]?.getConfig()?.ui?.selfAppIdentifier,
+            showAppSwitchButton: window[ "AppUtils" ]?.getConfig()?.ui?.showAppSwitchButton,
             showStatusLabelForNewAuthzRuntimeFeatures:
                 window["AppUtils"]?.getConfig()?.ui?.showStatusLabelForNewAuthzRuntimeFeatures,
             systemAppsIdentifiers: window["AppUtils"]?.getConfig()?.ui?.systemAppsIdentifiers,

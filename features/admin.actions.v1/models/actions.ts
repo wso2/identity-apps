@@ -37,7 +37,8 @@ export enum ActionType {
     PRE_ISSUE_ACCESS_TOKEN = "PRE_ISSUE_ACCESS_TOKEN",
     PRE_UPDATE_PASSWORD = "PRE_UPDATE_PASSWORD",
     PRE_UPDATE_PROFILE = "PRE_UPDATE_PROFILE",
-    PRE_REGISTRATION = "PRE_REGISTRATION"
+    PRE_REGISTRATION = "PRE_REGISTRATION",
+    PRE_ISSUE_ID_TOKEN = "PRE_ISSUE_ID_TOKEN"
 }
 
 /**
@@ -421,6 +422,10 @@ export interface ActionTypesCountInterface {
      * Count of the configured actions of type PRE_REGISTRATION.
      */
     preRegistration?: number;
+    /**
+     * Count of the configured actions of type PRE_ISSUE_ID_TOKEN.
+     */
+    preIssueIdToken?: number;
 }
 
 /**
