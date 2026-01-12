@@ -487,19 +487,16 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                             option.value === value.value
                                     }
                                     loading={ isAPIResourcesListLoading }
-                                    onOpen={ () => {
-                                        if (!isDropdownOpen) {
-                                            setIsDropdownOpen(true);
-                                        }
-                                    } }
+                                    onOpen={ () => setIsDropdownOpen(true) }
+                                    onClose={ () => setIsDropdownOpen(false) }
                                     renderOption={ (props: any, apiResourcesListOption: any) =>
                                         (<div { ...props }>
                                             <Header.Content>
                                                 { apiResourcesListOption.text }
-                                                { (
+                                                 { (
                                                     apiResourcesListOption.type ===
                                                         APIResourcesConstants.BUSINESS
-                                                    || apiResourcesListOption.type ==
+                                                    || apiResourcesListOption.type ===
                                                         APIResourcesConstants.MCP
                                                 ) && (
                                                     <Header.Subheader>
