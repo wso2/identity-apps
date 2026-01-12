@@ -32,7 +32,6 @@ import { AlertInterface, AlertLevels, IdentifiableComponentInterface, LinkInterf
 import { addAlert } from "@wso2is/core/store";
 import {
     Code,
-    ContentLoader,
     DocumentationLink,
     Heading,
     Hint,
@@ -495,7 +494,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                         (<div { ...props }>
                                             <Header.Content>
                                                 { apiResourcesListOption.text }
-                                                 { (
+                                                { (
                                                     apiResourcesListOption.type ===
                                                         APIResourcesConstants.BUSINESS
                                                     || apiResourcesListOption.type ===
@@ -563,18 +562,161 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                 (!hasInternalAPIResourceAuthorizationPermission ||
                                                     !hasBusinessAPIResourceAuthorizationPermission
                                                 ) && (
-                                                <Hint warning>
-                                                    { t("applications:edit.sections.apiAuthorization." +
+                                    <Hint warning>
+                                        { t("applications:edit.sections.apiAuthorization." +
                                                         "limitedAccessMessage") }
-                                                </Hint>
-                                            ) }
-                                        </Grid.Row>
-                                        <Grid.Row>
+                                    </Hint>
+                                ) }
+                            </Grid.Row>
+                            <Grid.Row>
+                                <Autocomplete
+                                    disablePortal
+                                    fullWidth
+                                    multiple
+                                    aria-label="Authorized scope selection"
+                                    className="pt-2"
+                                    componentsProps={ {
+                                        paper: {
+                                            elevation: 2
+                                        },
+                                        popper: {
+                                            modifiers: [
+                                                {
+                                                    enabled: false,
+                                                    name: "flip"
+                                                },
+                                                {
+                                                    enabled: false,
+                                                    name: "preventOverflow"
+                                                }
+                                            ]
+                                        }
+                                    } }
+                                    data-componentid={ `${componentId}-scopes` }
+                                    disabled={
+                                        !selectedAPIResource || isScopeSelectDropdownReady
+                                    }
+                                    getOptionLabel={ (scopesDropdownOption: DropdownProps) =>
+                                        scopesDropdownOption?.text?.toString() }
+                                    isOptionEqualToValue={
+                                        (option: DropdownItemProps, value: DropdownItemProps) =>
+                                            option?.value === value?.value
+                                    }
+                                    loading={ isScopesDropdownLoading }
+                                    options={ scopesDropdownOptions }
+                                    onChange={ (
+                                        event: SyntheticEvent<HTMLElement>,
+                                        data: DropdownItemProps[]
+                                    ) => handleScopesDropdownChange(event, data) }
+                                    noOptionsText={ t("common:noResultsFound") }
+                                    renderInput={ (params: AutocompleteRenderInputParams) => (
+                                        <TextField
+                                            { ...params }
+                                            label={ (
+                                                <div
+                                                    className="authorized-scope-select-input"
+                                                >
+                                                    <Typography
+                                                        variant="subtitle1"
+                                                    >
+                                                        { t("extensions:develop.applications" +
+                                                                        ".edit.sections." +
+                                                                        "apiAuthorization.sections.apiSubscriptions" +
+                                                                        ".wizards.authorizeAPIResource.fields" +
+                                                                        ".scopes.label", {
+                                                            resourceText: resourceText
+                                                        })
+                                                        }
+                                                    </Typography>
+                                                    {
+                                                        isScopeSelectDropdownReady
+                                                            ? (
+                                                                <Typography>
+                                                                    { t("common:loading") }
+                                                                </Typography>
+                                                            )
+                                                            : (
+                                                                <Text
+                                                                    className="mb-0"
+                                                                    muted
+                                                                    subHeading
+                                                                    size={ 12 }
+                                                                >
+                                                                    <Button
+                                                                        variant="text"
+                                                                        size="small"
+                                                                        disabled={
+                                                                            !selectedAPIResource
+                                                                                        || isSelectAllHidden
+                                                                        }
+                                                                        onClick={
+                                                                            () =>
+                                                                                handleBulkDropdownChange(
+                                                                                    false
+                                                                                )
+                                                                        }
+                                                                    >
+                                                                        {
+                                                                            t("extensions:develop" +
+                                                                                          ".applications.edit" +
+                                                                                          ".sections.apiAuthorization" +
+                                                                                          ".sections." +
+                                                                                          "apiSubscriptions" +
+                                                                                          ".scopesSection.selectAll")
+                                                                        }
+                                                                    </Button>
+                                                                |
+                                                                    <Button
+                                                                        variant="text"
+                                                                        size="small"
+                                                                        disabled={
+                                                                            !selectedAPIResource
+                                                                                        || isSelectNoneHidden
+                                                                        }
+                                                                        onClick={
+                                                                            () =>
+                                                                                handleBulkDropdownChange(
+                                                                                    true
+                                                                                )
+                                                                        }
+                                                                    >
+                                                                        {
+                                                                            t("extensions:develop" +
+                                                                                          ".applications.edit" +
+                                                                                          ".sections" +
+                                                                                          ".apiAuthorization.sections" +
+                                                                                          ".apiSubscriptions." +
+                                                                                          "scopesSection.selectNone")
+                                                                        }
+                                                                    </Button>
+                                                                </Text>)
+                                                    }
+                                                </div>)
+                                            }
+                                            disabled={ !selectedAPIResource }
+                                            size="small"
+                                            variant="outlined"
+                                        />
+                                    ) }
+                                    key="apiResource"
+                                    value={ authorizedScopes }
+                                />
+                                <Hint disabled={ !selectedAPIResource }>
+                                    { t("extensions:develop.applications.edit.sections." +
+                                                    "apiAuthorization.sections.apiSubscriptions.wizards." +
+                                                    "authorizeAPIResource.fields.scopes.hint", {
+                                        resourceText: resourceText
+                                    }) }
+                                </Hint>
+                            </Grid.Row>
+                            {
+                                !m2mApplication && originalTemplateId !== "mcp-client-application" && (
+                                    <Grid.Row columns={ 1 } className="pt-2">
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
                                             <Autocomplete
                                                 disablePortal
                                                 fullWidth
-                                                multiple
-                                                aria-label="Authorized scope selection"
+                                                aria-label="Authorization policy selection"
                                                 className="pt-2"
                                                 componentsProps={ {
                                                     paper: {
@@ -593,209 +735,66 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                         ]
                                                     }
                                                 } }
-                                                data-componentid={ `${componentId}-scopes` }
+                                                data-componentid={ `${componentId}-policy` }
                                                 disabled={
-                                                    !selectedAPIResource || isScopeSelectDropdownReady
+                                                    !selectedAPIResource
+                                                                || selectedAPIResourceRequiresAuthorization
                                                 }
                                                 getOptionLabel={ (scopesDropdownOption: DropdownProps) =>
                                                     scopesDropdownOption?.text?.toString() }
-                                                isOptionEqualToValue={
-                                                    (option: DropdownItemProps, value: DropdownItemProps) =>
-                                                        option?.value === value?.value
+                                                isOptionEqualToValue={ (
+                                                    option: DropdownItemProps,
+                                                    value: Policy) =>
+                                                    option?.value === value
                                                 }
-                                                loading={ isScopesDropdownLoading }
-                                                options={ scopesDropdownOptions }
+                                                loading={ isPolicyDropdownLoading }
+                                                options={ policyDropdownOptions }
                                                 onChange={ (
                                                     event: SyntheticEvent<HTMLElement>,
-                                                    data: DropdownItemProps[]
-                                                ) => handleScopesDropdownChange(event, data) }
+                                                    data: DropdownItemProps
+                                                ) => {
+                                                    setSelectedPolicy(data);
+                                                } }
                                                 noOptionsText={ t("common:noResultsFound") }
                                                 renderInput={ (params: AutocompleteRenderInputParams) => (
                                                     <TextField
                                                         { ...params }
-                                                        label={ (
-                                                            <div
-                                                                className="authorized-scope-select-input"
-                                                            >
-                                                                <Typography
-                                                                    variant="subtitle1"
-                                                                >
-                                                                    { t("extensions:develop.applications" +
-                                                                        ".edit.sections." +
-                                                                        "apiAuthorization.sections.apiSubscriptions" +
-                                                                        ".wizards.authorizeAPIResource.fields" +
-                                                                        ".scopes.label", {
-                                                                        resourceText: resourceText
-                                                                    })
-                                                                    }
-                                                                </Typography>
-                                                                {
-                                                                    isScopeSelectDropdownReady
-                                                                        ? (
-                                                                            <Typography>
-                                                                                { t("common:loading") }
-                                                                            </Typography>
-                                                                        )
-                                                                        : (
-                                                                            <Text
-                                                                                className="mb-0"
-                                                                                muted
-                                                                                subHeading
-                                                                                size={ 12 }
-                                                                            >
-                                                                                <Button
-                                                                                    variant="text"
-                                                                                    size="small"
-                                                                                    disabled={
-                                                                                        !selectedAPIResource
-                                                                                        || isSelectAllHidden
-                                                                                    }
-                                                                                    onClick={
-                                                                                        () =>
-                                                                                            handleBulkDropdownChange(
-                                                                                                false
-                                                                                            )
-                                                                                    }
-                                                                                >
-                                                                                    {
-                                                                                        t("extensions:develop" +
-                                                                                          ".applications.edit" +
-                                                                                          ".sections.apiAuthorization" +
-                                                                                          ".sections." +
-                                                                                          "apiSubscriptions" +
-                                                                                          ".scopesSection.selectAll")
-                                                                                    }
-                                                                                </Button>
-                                                                |
-                                                                                <Button
-                                                                                    variant="text"
-                                                                                    size="small"
-                                                                                    disabled={
-                                                                                        !selectedAPIResource
-                                                                                        || isSelectNoneHidden
-                                                                                    }
-                                                                                    onClick={
-                                                                                        () =>
-                                                                                            handleBulkDropdownChange(
-                                                                                                true
-                                                                                            )
-                                                                                    }
-                                                                                >
-                                                                                    {
-                                                                                        t("extensions:develop" +
-                                                                                          ".applications.edit" +
-                                                                                          ".sections" +
-                                                                                          ".apiAuthorization.sections" +
-                                                                                          ".apiSubscriptions." +
-                                                                                          "scopesSection.selectNone")
-                                                                                    }
-                                                                                </Button>
-                                                                            </Text>)
-                                                                }
-                                                            </div>)
-                                                        }
-                                                        disabled={ !selectedAPIResource }
-                                                        size="small"
-                                                        variant="outlined"
-                                                    />
-                                                ) }
-                                                key="apiResource"
-                                                value={ authorizedScopes }
-                                            />
-                                            <Hint disabled={ !selectedAPIResource }>
-                                                { t("extensions:develop.applications.edit.sections." +
-                                                    "apiAuthorization.sections.apiSubscriptions.wizards." +
-                                                    "authorizeAPIResource.fields.scopes.hint", {
-                                                    resourceText: resourceText
-                                                }) }
-                                            </Hint>
-                                        </Grid.Row>
-                                        {
-                                            !m2mApplication && originalTemplateId !== "mcp-client-application" && (
-                                                <Grid.Row columns={ 1 } className="pt-2">
-                                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
-                                                        <Autocomplete
-                                                            disablePortal
-                                                            fullWidth
-                                                            aria-label="Authorization policy selection"
-                                                            className="pt-2"
-                                                            componentsProps={ {
-                                                                paper: {
-                                                                    elevation: 2
-                                                                },
-                                                                popper: {
-                                                                    modifiers: [
-                                                                        {
-                                                                            enabled: false,
-                                                                            name: "flip"
-                                                                        },
-                                                                        {
-                                                                            enabled: false,
-                                                                            name: "preventOverflow"
-                                                                        }
-                                                                    ]
-                                                                }
-                                                            } }
-                                                            data-componentid={ `${componentId}-policy` }
-                                                            disabled={
-                                                                !selectedAPIResource
-                                                                || selectedAPIResourceRequiresAuthorization
-                                                            }
-                                                            getOptionLabel={ (scopesDropdownOption: DropdownProps) =>
-                                                                scopesDropdownOption?.text?.toString() }
-                                                            isOptionEqualToValue={ (
-                                                                option: DropdownItemProps,
-                                                                value: Policy) =>
-                                                                option?.value === value
-                                                            }
-                                                            loading={ isPolicyDropdownLoading }
-                                                            options={ policyDropdownOptions }
-                                                            onChange={ (
-                                                                event: SyntheticEvent<HTMLElement>,
-                                                                data: DropdownItemProps
-                                                            ) => {
-                                                                setSelectedPolicy(data);
-                                                            } }
-                                                            noOptionsText={ t("common:noResultsFound") }
-                                                            renderInput={ (params: AutocompleteRenderInputParams) => (
-                                                                <TextField
-                                                                    { ...params }
-                                                                    label={ t(
-                                                                        "extensions:develop.applications." +
+                                                        label={ t(
+                                                            "extensions:develop.applications." +
                                                                         "edit.sections.apiAuthorization." +
                                                                         "sections.apiSubscriptions.wizards." +
                                                                         "authorizeAPIResource.fields.policy" +
                                                                         ".label"
-                                                                    ) }
-                                                                    size="small"
-                                                                    variant="outlined"
-                                                                />
-                                                            ) }
-                                                            key="policy"
-                                                            defaultValue={ selectedPolicy }
-                                                        />
-                                                        <Hint
-                                                            className="mb-1"
-                                                            disabled={
-                                                                !selectedAPIResource
+                                                        ) }
+                                                        size="small"
+                                                        variant="outlined"
+                                                    />
+                                                ) }
+                                                key="policy"
+                                                defaultValue={ selectedPolicy }
+                                            />
+                                            <Hint
+                                                className="mb-1"
+                                                disabled={
+                                                    !selectedAPIResource
                                                                 || selectedAPIResourceRequiresAuthorization
-                                                            }
-                                                        >
-                                                            {
-                                                                t(
-                                                                    "extensions:develop.applications.edit.sections." +
+                                                }
+                                            >
+                                                {
+                                                    t(
+                                                        "extensions:develop.applications.edit.sections." +
                                                                     "apiAuthorization.sections.apiSubscriptions." +
                                                                     "wizards.authorizeAPIResource.fields.policy.hint"
-                                                                )
-                                                            }
-                                                        </Hint>
-                                                    </Grid.Column>
-                                                </Grid.Row>
-                                            )
-                                        }
-                                        { /* Need to add doc links to the following content of the message box */ }
-                                        {
-                                            !m2mApplication
+                                                    )
+                                                }
+                                            </Hint>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                )
+                            }
+                            { /* Need to add doc links to the following content of the message box */ }
+                            {
+                                !m2mApplication
                                             && selectedAPIResource
                                             && selectedPolicy
                                             && (
@@ -825,26 +824,26 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                     </Grid.Column>
                                                 </Grid.Row>
                                             )
-                                        }
-                                        {
-                                            m2mApplication && (
-                                                <Grid.Row columns={ 1 } className="pt-0">
-                                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
-                                                        <Alert severity="info">
-                                                            {
-                                                                t(
-                                                                    "applications:edit." +
+                            }
+                            {
+                                m2mApplication && (
+                                    <Grid.Row columns={ 1 } className="pt-0">
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
+                                            <Alert severity="info">
+                                                {
+                                                    t(
+                                                        "applications:edit." +
                                                                     "sections.apiAuthorization.m2mPolicyMessage"
-                                                                )
-                                                            }
-                                                        </Alert>
-                                                    </Grid.Column>
-                                                </Grid.Row>
-                                            )
-                                        }
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
+                                                    )
+                                                }
+                                            </Alert>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                )
+                            }
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
             </Modal.Content>
             <Modal.Actions>
                 <Grid>
