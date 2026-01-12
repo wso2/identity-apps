@@ -25,7 +25,7 @@ class FeatureFlagConstants {
      * Private constructor to avoid object instantiation from outside
      * the class.
      */
-    private constructor() { }
+    private constructor() {}
 
     /**
      * Key map for feature flags.

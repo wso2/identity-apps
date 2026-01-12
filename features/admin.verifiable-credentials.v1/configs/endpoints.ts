@@ -16,15 +16,15 @@
  * under the License.
  */
 
-import { VCResourceEndpointsInterface } from "../models/endpoints";
+import { VCTemplateEndpointsInterface } from "../models/endpoints";
 
 /**
- * Returns the verifiable credentials resource endpoints.
+ * Returns the verifiable credentials template endpoints.
  *
  * @param serverHost - The server host URL.
- * @returns The verifiable credentials resource endpoints.
+ * @returns The verifiable credentials template endpoints.
  */
-export const getVCResourceEndpoints = (serverHost: string): VCResourceEndpointsInterface => {
+export const getVCTemplateEndpoints = (serverHost: string): VCTemplateEndpointsInterface => {
     return {
         vcTemplates: `${serverHost}/api/server/v1/vc-templates`
     };

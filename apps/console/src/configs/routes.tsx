@@ -1233,7 +1233,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             ],
             component: lazy(() => import("@wso2is/admin.logs.v1/pages/logs-page")),
             exact: true,
-            featureGateIds: [FeatureGateConstants.SAAS_FEATURES_IDENTIFIER],
+            featureGateIds: [ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER ],
             icon: {
                 icon: import("@wso2is/admin.extensions.v1/assets/images/icons/event-publishing.svg")
             },
@@ -1249,7 +1249,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             component: lazy(() => import("@wso2is/admin.org-insights.v1/pages/org-insights")),
             exact: true,
             featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.INSIGHTS,
-            featureGateIds: [FeatureGateConstants.SAAS_FEATURES_IDENTIFIER],
+            featureGateIds: [ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER ],
             icon: {
                 icon: <LightbulbOnIcon fill="black" className="icon" />
             },

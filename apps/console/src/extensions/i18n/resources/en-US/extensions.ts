@@ -30,8 +30,7 @@ export const extensions: Extensions = {
         apiResource: {
             resourceTypes: {
                 api: "API resource",
-                mcp: "MCP server",
-                vc: "VC resource"
+                mcp: "MCP server"
             },
             pageHeader: {
                 description: "Create and manage the APIs used to define the API scopes/permissions that can be consumed by your applications.",
@@ -914,7 +913,7 @@ export const extensions: Extensions = {
                         tokenRequest: "The API request used by the application to obtain an access token from {{ productName }}.",
                         tokenEndpoint: "The token endpoint of {{ productName }}.",
                         scopes: "The list of authorized scopes." +
-                                "Include required scopes by authorizing APIs through the <1>API Authorization</1> tab"
+                            "Include required scopes by authorizing APIs through the <1>API Authorization</1> tab"
                     }
                 }
             }
@@ -1834,8 +1833,8 @@ export const extensions: Extensions = {
                         title: "Configure Choreo as SMS Provider",
                         enableRequiredNote: {
                             message: "Asgardeo publishes identity events to Choreo, where Choreo webhooks can be used to" +
-                            " integrate with multiple services to send SMS notifications and run custom business" +
-                            " logic. <1>Learn More</1>"
+                                " integrate with multiple services to send SMS notifications and run custom business" +
+                                " logic. <1>Learn More</1>"
                         }
                     },
                     errorNotifications: {
@@ -2226,18 +2225,18 @@ export const extensions: Extensions = {
                                 parameters: {
                                     progressiveEnrollment: {
                                         description: "Activate this option to allow users to enroll for a " +
-                                        "passkey during login.",
+                                            "passkey during login.",
                                         label: "Progressive Passkey Enrollment:",
                                         note: "When the Passkey is set as a <1>first factor</1> option, " +
-                                        "users need to add an <3>adaptive script</3> to verify the user's " +
-                                        "identity prior to passkey enrollment. To include the script, users " +
-                                        "can use the <5>Passkeys Progressive Enrollment</5> template available " +
-                                        "in the <7>Sign-In-Method</7> tab of the application."
+                                            "users need to add an <3>adaptive script</3> to verify the user's " +
+                                            "identity prior to passkey enrollment. To include the script, users " +
+                                            "can use the <5>Passkeys Progressive Enrollment</5> template available " +
+                                            "in the <7>Sign-In-Method</7> tab of the application."
                                     },
                                     usernamelessAuthentication: {
                                         description: "Enabling this feature allows users to log in with a passkey " +
-                                        "without entering a username, creating a more streamlined " +
-                                        "sign-in experience.",
+                                            "without entering a username, creating a more streamlined " +
+                                            "sign-in experience.",
                                         label: "Usernameless Authentication:"
                                     }
                                 },
@@ -2353,11 +2352,11 @@ export const extensions: Extensions = {
                 queryButton: {
                     label: "Run Query"
                 },
-                downloadButton : {
-                    label : "Download"
+                downloadButton: {
+                    label: "Download"
                 },
                 viewButton: {
-                    label : "View"
+                    label: "View"
                 },
                 delayMessage: {
                     text: "Some queries may take longer to load."
@@ -2372,7 +2371,7 @@ export const extensions: Extensions = {
                     actionId: "Action",
                     targetId: "Target"
                 },
-                logDataviewer : {
+                logDataviewer: {
                     panelName: "AuditLog Data Viewer",
                     download: "Download",
                     copy: "Copy",
@@ -2669,9 +2668,9 @@ export const extensions: Extensions = {
                     header: "Before you proceed",
                     message: "Uniqueness validation for the selected attribute(s) will be applied across user stores.",
                     content: "This setting ensures values of selected attribute(s) remain unique across the " +
-                    "organization for new users, which is required for alternate login identifiers to work. " +
-                    "However, it does not guarantee uniqueness for attribute(s) of existing users that remain " +
-                    "unchanged.",
+                        "organization for new users, which is required for alternate login identifiers to work. " +
+                        "However, it does not guarantee uniqueness for attribute(s) of existing users that remain " +
+                        "unchanged.",
                     assertionHint: "I understand and wish to proceed"
                 }
             },
@@ -3370,7 +3369,7 @@ export const extensions: Extensions = {
                         }
                     },
                     subHeading:
-                    "Enable self-service password recovery for users on the login page."
+                        "Enable self-service password recovery for users on the login page."
                 },
                 usernameRecovery: {
                     form: {
@@ -3852,11 +3851,11 @@ export const extensions: Extensions = {
                             "Please provide an email address to proceed with inviting the user to reset the password.",
                         emailResetWarning: {
                             emailLink: "An email with a link to reset the password will be sent to the provided " +
-                            "email address for the user to set their own password.",
+                                "email address for the user to set their own password.",
                             emailOTP: "An email with a OTP to reset the password will be sent to the provided " +
-                            "email address for the user to set their own password.",
+                                "email address for the user to set their own password.",
                             smsOTP: "An SMS with a OTP to reset the password will be sent to the provided " +
-                            "mobile number for the user to set their own password."
+                                "mobile number for the user to set their own password."
                         },
                         passwordResetConfigDisabled: "Password reset via recovery email is not enabled. Please make " +
                             "sure to enable it from <1> " +

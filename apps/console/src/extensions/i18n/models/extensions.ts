@@ -25,7 +25,6 @@ export interface Extensions {
             resourceTypes: {
                 api: string;
                 mcp: string;
-                vc: string;
             },
             pageHeader: {
                 description: string;
@@ -2205,10 +2204,10 @@ export interface Extensions {
                     label: string;
                 };
                 downloadButton: {
-                    label : string;
+                    label: string;
                 };
                 viewButton: {
-                    label : string;
+                    label: string;
                 };
                 delayMessage: {
                     text: string;
@@ -2223,7 +2222,7 @@ export interface Extensions {
                     actionId: string,
                     targetId: string
                 },
-                logDataviewer : {
+                logDataviewer: {
                     panelName: string,
                     download: string,
                     copy: string,

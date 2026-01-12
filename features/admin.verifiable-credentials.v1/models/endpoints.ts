@@ -17,8 +17,8 @@
  */
 
 /**
- * Interface for Verifiable Credentials resource endpoints.
+ * Interface for Verifiable Credentials template endpoints.
  */
-export interface VCResourceEndpointsInterface {
+export interface VCTemplateEndpointsInterface {
     vcTemplates: string;
 }
