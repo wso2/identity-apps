@@ -143,12 +143,14 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
     const [ isDropdownOpen, setIsDropdownOpen ] = useState<boolean>(false);
     const [ hasStartedFetchingAllResources, setHasStartedFetchingAllResources ] = useState<boolean>(false);
 
+    const shouldFetchAPIResources: boolean = isDropdownOpen || !hasStartedFetchingAllResources;
+
     const {
         data: currentAPIResourcesListData,
         isLoading: iscurrentAPIResourcesListLoading,
         error: currentAPIResourcesFetchRequestError,
         mutate: mutatecurrentAPIResourcesList
-    } = useAPIResources(apiCallNextAfterValue, null, null, isDropdownOpen || !hasStartedFetchingAllResources);
+    } = useAPIResources(apiCallNextAfterValue, null, null, shouldFetchAPIResources);
 
     const {
         data: currentAPIResourceScopeListData,
@@ -267,8 +269,8 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
             if (!hasStartedFetchingAllResources) {
                 setHasStartedFetchingAllResources(true);
                 setIsAPIResourcesListLoading(false);
-            } else if (isAfterValueExists && isDropdownOpen) {
-                // Only continue fetching if the dropdown is open
+            } else if (isAfterValueExists && shouldFetchAPIResources) {
+                // Only continue fetching if we should be fetching (dropdown is open or initial load)
                 mutatecurrentAPIResourcesList();
             } else {
                 setIsAPIResourcesListLoading(false);
