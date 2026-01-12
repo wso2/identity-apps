@@ -25,7 +25,7 @@ class FeatureFlagConstants {
      * Private constructor to avoid object instantiation from outside
      * the class.
      */
-    private constructor() {}
+    private constructor() { }
 
     /**
      * Key map for feature flags.
@@ -37,7 +37,6 @@ class FeatureFlagConstants {
         ACTIONS_TYPES_PRE_UPDATE_PASSWORD: "actions.types.list.preUpdatePassword",
         ACTIONS_TYPES_PRE_UPDATE_PROFILE: "actions.types.list.preUpdateProfile",
         AGENTS: "agents",
-        VERIFIABLE_CREDENTIALS: "verifiableCredentials",
         AI_APPLICATION_LOGIN_FLOW_BANNER: "ai.application.loginFlow.banner",
         AI_BRANDING_BANNER: "ai.branding.banner",
         AI_FLOWS_TYPES_REGISTRATION: "ai.flows.types.list.registration",
@@ -68,6 +67,7 @@ class FeatureFlagConstants {
         SMS_TEMPLATES: "smsTemplates",
         USER_ROLES: "userRoles",
         USER_STORES: "userStores",
+        VERIFIABLE_CREDENTIALS: "verifiableCredentials",
         WEBHOOKS: "webhooks",
         WORKFLOW_INSTANCES: "workflowInstances"
     };

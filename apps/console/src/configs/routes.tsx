@@ -1693,7 +1693,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             icon: null,
             id: "multiAttributeLogin",
             name: "governanceConnectors:connectorCategories.accountManagement." +
-            "connectors.multiattributeLoginHandler.friendlyName",
+                "connectors.multiattributeLoginHandler.friendlyName",
             order: 999,
             path: AppConstants.getPaths().get("MULTI_ATTRIBUTE_LOGIN"),
             protected: true,

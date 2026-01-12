@@ -24,5 +24,6 @@ export * from "./hooks/use-get-vc-template";
 export * from "./hooks/use-get-vc-templates";
 export * from "./models/endpoints";
 export * from "./models/verifiable-credentials";
+
 export { default as VCTemplateEditPage } from "./pages/vc-template-edit";
 export { default as VerifiableCredentials } from "./pages/verifiable-credentials";

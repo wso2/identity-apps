@@ -94,7 +94,7 @@ export class APIResourceUtils {
      */
     public static isSystemAPI(type: string): boolean {
 
-        return type !== APIResourcesConstants.BUSINESS && 
+        return type !== APIResourcesConstants.BUSINESS &&
             type !== APIResourcesConstants.MCP;
     }
 
@@ -152,7 +152,7 @@ export class APIResourceUtils {
     public static checkIfAPIResourcePropertyManaged = (properties: Property[]): boolean => {
         if (properties && properties?.length > 0) {
             const isChoreoAPIProperty: Property =
-            properties.find((property: Property) => property?.name === APIResourcesConstants.IS_CHOREO_API);
+                properties.find((property: Property) => property?.name === APIResourcesConstants.IS_CHOREO_API);
 
             return isChoreoAPIProperty ? isChoreoAPIProperty?.value === "true" : false;
         }
@@ -171,6 +171,6 @@ export class APIResourceUtils {
         const bIndex: number = apiResourceSortingOrder.indexOf(secondItem?.type);
 
         return (aIndex === -1 ? apiResourceSortingOrder.length : aIndex)
-                - (bIndex === -1 ? apiResourceSortingOrder.length : bIndex);
+            - (bIndex === -1 ? apiResourceSortingOrder.length : bIndex);
     };
 }

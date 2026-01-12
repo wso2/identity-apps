@@ -23,4 +23,5 @@ export * from "./hooks/use-get-vc-template";
 export * from "./hooks/use-get-vc-templates";
 export * from "./models/endpoints";
 export * from "./models/verifiable-credentials";
+
 export { default as VerifiableCredentials } from "./pages/verifiable-credentials";
