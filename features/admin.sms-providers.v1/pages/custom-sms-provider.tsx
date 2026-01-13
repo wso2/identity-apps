@@ -650,12 +650,13 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                     <PrimaryButton
                                         size="small"
+                                        type="button"
                                         onClick={ () => {
                                             if (hasExistingConfig && currentAuthType && !isAuthenticationUpdateFormState) {
                                                 setShouldShowAuthUpdateAlert(true);
                                                 setIsAuthenticationUpdateFormState(true);
                                             } else {
-                                                onSubmit();
+                                                formState.current?.submit();
                                             }
                                         } }
                                         ariaLabel="SMS provider form update button"

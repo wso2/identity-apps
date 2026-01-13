@@ -337,9 +337,10 @@ const SMSProviders: FunctionComponent<SMSProviderPageInterface> = (
         }
 
         // Add authentication data for Custom SMS Provider
-        // Always include authentication for Custom SMS Provider if authType is set
+        // Only include authentication if the auth box is expanded and being updated
         if (selectedProvider === SMSProviderConstants.CUSTOM_SMS_PROVIDER &&
-            values.authType) {
+            values.authType &&
+            isAuthenticationUpdateFormState) {
             submittingValues.authentication = {
                 properties: {},
                 type: values.authType
