@@ -3946,7 +3946,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             { /* Logout */ }
             {
                 !isSubOrganization()
-                && (isBackChannelLogoutEnabled || isFrontChannelLogoutEnabled)
+                && ((isBackChannelLogoutEnabled && !isSPAApplication)
+                    || (isFrontChannelLogoutEnabled && !isMobileApplication
+                        && !isMcpClientApplication && !isM2MApplication))
                 && !isSystemApplication
                 && !isDefaultApplication
                 && (
@@ -3958,7 +3960,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                             <Heading as="h4">
                                 {
-                                    (isBackChannelLogoutEnabled && isFrontChannelLogoutEnabled)
+                                    ((isBackChannelLogoutEnabled && !isSPAApplication)
+                                        && (isFrontChannelLogoutEnabled && !isMobileApplication
+                                            && !isMcpClientApplication && !isM2MApplication))
                                         ? t("applications:forms.inboundOIDC.sections" +
                                             ".logoutURLs.heading")
                                         : t("applications:forms.inboundOIDC.sections" +
