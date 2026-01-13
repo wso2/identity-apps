@@ -103,6 +103,9 @@ import {
 import {
     ReactComponent as RemoteLoggingIcon
 } from "../../themes/default/assets/images/icons/outline-icons/remote-logging.svg";
+import {
+    ReactComponent as VerifiableCredentialsOutlineIcon
+} from "../../themes/default/assets/images/icons/outline-icons/verifiable-credentials-outline.svg";
 import { ReactComponent as PinIcon } from "../../themes/default/assets/images/icons/pin-icon.svg";
 import { ReactComponent as PlugIcon } from "../../themes/default/assets/images/icons/plug-icon.svg";
 import {
@@ -185,9 +188,6 @@ import {
     ReactComponent as MCPServersOutlineIcon
 } from "../../themes/wso2is/assets/images/icons/outline-icons/mcp-servers-outline.svg";
 
-import {
-    ReactComponent as VerifiableCredentialsOutlineIcon
-} from "../../themes/default/assets/images/icons/outline-icons/verifiable-credentials-outline.svg";
 
 /**
  * Typed interface of {@link getTechnologyLogos}
