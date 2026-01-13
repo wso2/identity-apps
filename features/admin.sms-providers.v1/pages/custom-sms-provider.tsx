@@ -21,7 +21,6 @@ import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import {
-    handleAuthenticationChangeCancel,
     renderAuthenticationSectionInfoBox,
     renderInputAdornmentOfSecret,
     showAuthSecretsHint
@@ -48,6 +47,7 @@ interface CustomSMSProviderPageInterface extends IdentifiableComponentInterface 
     isLoading?: boolean;
     isReadOnly: boolean;
     "data-componentid": string;
+    onSubmit: (values: any) => void;
     hasExistingConfig?: boolean;
     currentAuthType?: AuthType;
     endpointAuthType: AuthType;
@@ -66,6 +66,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
         ["data-componentid"]: componentId,
         isLoading,
         isReadOnly,
+        onSubmit,
         hasExistingConfig,
         currentAuthType,
         endpointAuthType,
@@ -281,8 +282,16 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                         <Box className="box-container">
                             <div className="box-field">
                                 {
-                                    (hasExistingConfig && isAuthenticationUpdateFormState && shouldShowAuthUpdateAlert) && (
-                                        <Alert severity="warning" className="authentication-update-alert" sx={ { mb: 2 } }>
+                                    (
+                                        hasExistingConfig &&
+                                        isAuthenticationUpdateFormState &&
+                                        shouldShowAuthUpdateAlert
+                                    ) && (
+                                        <Alert
+                                            severity="warning"
+                                            className="authentication-update-alert"
+                                            sx={ { mb: 2 } }
+                                        >
                                             { t("smsProviders:form.custom.authentication.updateRequired") }
                                         </Alert>
                                     )
@@ -606,10 +615,8 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                     <Button
                                         onClick={ () => {
                                             setShouldShowAuthUpdateAlert(false);
-                                            handleAuthenticationChangeCancel(
-                                                setIsAuthenticationUpdateFormState,
-                                                formState
-                                            );
+                                            setIsAuthenticationUpdateFormState(false);
+                                            formState.current.reset();
                                         } }
                                         variant="outlined"
                                         size="small"
@@ -658,7 +665,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                                 setShouldShowAuthUpdateAlert(true);
                                                 setIsAuthenticationUpdateFormState(true);
                                             } else {
-                                                formState.current?.submit();
+                                                onSubmit(formState.current?.getState().values);
                                             }
                                         } }
                                         ariaLabel="SMS provider form update button"
