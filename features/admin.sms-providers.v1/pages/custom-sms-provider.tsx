@@ -48,7 +48,6 @@ interface CustomSMSProviderPageInterface extends IdentifiableComponentInterface 
     isLoading?: boolean;
     isReadOnly: boolean;
     "data-componentid": string;
-    onSubmit: (values: any) => void;
     hasExistingConfig?: boolean;
     currentAuthType?: AuthType;
     endpointAuthType: AuthType;
@@ -67,7 +66,6 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
         ["data-componentid"]: componentId,
         isLoading,
         isReadOnly,
-        onSubmit,
         hasExistingConfig,
         currentAuthType,
         endpointAuthType,
@@ -266,7 +264,7 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                 </Grid.Row>
             </Grid>
 
-            <div 
+            <div
                 className="external-api-auth-config-page"
                 id={ `${componentId}-authentication-section` }
             >
@@ -652,7 +650,11 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                         size="small"
                                         type="button"
                                         onClick={ () => {
-                                            if (hasExistingConfig && currentAuthType && !isAuthenticationUpdateFormState) {
+                                            if (
+                                                hasExistingConfig &&
+                                                currentAuthType &&
+                                                !isAuthenticationUpdateFormState
+                                            ) {
                                                 setShouldShowAuthUpdateAlert(true);
                                                 setIsAuthenticationUpdateFormState(true);
                                             } else {
