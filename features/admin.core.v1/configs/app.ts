@@ -336,7 +336,6 @@ export class Config {
             ...getScopesResourceEndpoints(this.resolveServerHostFromConfig()),
             ...getGroupsResourceEndpoints(this.resolveServerHost()),
             ...getValidationServiceEndpoints(this.resolveServerHost()),
-            ...getVCTemplateEndpoints(this.resolveServerHost()),
             ...getRemoteFetchConfigResourceEndpoints(this.resolveServerHostFromConfig()),
             ...getSecretsManagementEndpoints(this.resolveServerHostFromConfig()),
             ...getExtendedFeatureResourceEndpoints(this.resolveServerHost(), this.getDeploymentConfig()),
@@ -363,6 +362,7 @@ export class Config {
             ...getWebhooksResourceEndpoints(this.resolveServerHost()),
             ...getAgentsResourceEndpoints(this.resolveServerHost()),
             ...getFlowBuilderCoreResourceEndpoints(this.resolveServerHost()),
+            ...getVCTemplateEndpoints(this.resolveServerHost()),
             CORSOrigins: `${this.resolveServerHostFromConfig()}/api/server/v1/cors/origins`,
             asyncStatus: `${this.resolveServerHost(false, true)}/api/server/v1/async-operations`,
             // TODO: Remove this endpoint and use ID token to get the details
@@ -417,7 +417,7 @@ export class Config {
             cookiePolicyUrl: window["AppUtils"]?.getConfig()?.ui?.cookiePolicyUrl,
             customContent: window["AppUtils"]?.getConfig()?.ui?.customContent ??
                 UIConstants.DEFAULT_CUSTOM_CONTENT_CONFIGS,
-            disableEmailTemplateForFreeTier: window[ "AppUtils" ]?.getConfig()?.ui?.disableEmailTemplateForFreeTier,
+            disableEmailTemplateForFreeTier: window["AppUtils"]?.getConfig()?.ui?.disableEmailTemplateForFreeTier,
             emailTemplates: {
                 defaultLogoUrl: window["AppUtils"]?.getConfig()?.ui?.emailTemplates?.defaultLogoUrl,
                 defaultWhiteLogoUrl: window["AppUtils"]?.getConfig()?.ui?.emailTemplates?.defaultWhiteLogoUrl
@@ -479,8 +479,8 @@ export class Config {
             routes: window["AppUtils"]?.getConfig()?.ui?.routes ?? {
                 organizationEnabledRoutes: AppConstants.ORGANIZATION_ENABLED_ROUTES
             },
-            selfAppIdentifier: window[ "AppUtils" ]?.getConfig()?.ui?.selfAppIdentifier,
-            showAppSwitchButton: window[ "AppUtils" ]?.getConfig()?.ui?.showAppSwitchButton,
+            selfAppIdentifier: window["AppUtils"]?.getConfig()?.ui?.selfAppIdentifier,
+            showAppSwitchButton: window["AppUtils"]?.getConfig()?.ui?.showAppSwitchButton,
             showStatusLabelForNewAuthzRuntimeFeatures:
                 window["AppUtils"]?.getConfig()?.ui?.showStatusLabelForNewAuthzRuntimeFeatures,
             systemAppsIdentifiers: window["AppUtils"]?.getConfig()?.ui?.systemAppsIdentifiers,
