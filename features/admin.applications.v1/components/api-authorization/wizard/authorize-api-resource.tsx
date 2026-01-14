@@ -269,8 +269,8 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                 setHasStartedFetchingAllResources(true);
                 setIsAPIResourcesListLoading(false);
             } else if (isAfterValueExists && shouldFetchAPIResources) {
-                // Only continue fetching if we should be fetching (dropdown is open or initial load)
-                mutatecurrentAPIResourcesList();
+                // The next page will be fetched automatically when apiCallNextAfterValue changes
+                // No need to call mutatecurrentAPIResourcesList() which would cause duplicate requests
             } else {
                 setIsAPIResourcesListLoading(false);
             }
