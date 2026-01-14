@@ -46,6 +46,11 @@ export const claims: ClaimsNS = {
             description: "The SCIM2 protocol representation for "
                 + "attributes that will be used in the SCIM2 API.",
             heading: "SCIM 2.0"
+        },
+        vc: {
+            description: "The Verifiable Credentials representation for user "
+                + "attributes.",
+            heading: "Verifiable Credentials"
         }
     },
     dialects: {

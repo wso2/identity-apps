@@ -85,11 +85,15 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
 
     const { filterUserStores, userStoresList, mutateUserStoreList } = useUserStores();
 
+    const isVcFeatureEnabled: boolean =
+        window["AppUtils"]?.getConfig()?.ui?.features?.verifiableCredentials?.enabled;
+
     const { isSubOrganization } = useGetCurrentOrganizationType();
     const [ addEditClaim, setAddEditClaim ] = useState(false);
     const [ isLoading, setIsLoading ] = useState(true);
     const [ oidcAttributeMappings, setOidcAttributeMappings ] = useState<ClaimDialect[]>([]);
     const [ scimAttributeMappings, setScimAttributeMappings ] = useState<ClaimDialect[]>([]);
+    const [ vcAttributeMappings, setVcAttributeMappings ] = useState<ClaimDialect[]>([]);
     const [ axschemaAttributeMappings, setAxschemaAttributeMappings ] = useState<ClaimDialect[]>([]);
     const [ eidasAttributeMappings, setEidasAttributeMappings ] = useState<ClaimDialect[]>([]);
     const [ otherAttributeMappings, setOtherAttributeMappings ] = useState<ClaimDialect[]>([]);
@@ -162,6 +166,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
 
                 const oidc: ClaimDialect[] = [];
                 const scim: ClaimDialect[] = [];
+                const vc: ClaimDialect[] = [];
                 const axschema: ClaimDialect[] = [];
                 const eidas: ClaimDialect[] = [];
                 const agent: ClaimDialect[] = [];
@@ -176,6 +181,8 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                     } else if (Object.values(ClaimManagementConstants.SCIM_TABS).map(
                         (tab: { name: string; uri: string }) => tab.uri).includes(attributeMapping.dialectURI)) {
                         scim.push(attributeMapping);
+                    } else if (ClaimManagementConstants.VC_MAPPING.includes(attributeMapping.dialectURI)) {
+                        vc.push(attributeMapping);
                     } else if (ClaimManagementConstants.AXSCHEMA_MAPPING === attributeMapping.dialectURI) {
                         axschema.push(attributeMapping);
                     } else if (Object.values(ClaimManagementConstants.EIDAS_TABS).map(
@@ -194,6 +201,11 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
 
                 setOidcAttributeMappings(oidc);
                 setScimAttributeMappings(scim);
+                if (isVcFeatureEnabled) {
+                    setVcAttributeMappings(vc);
+                } else {
+                    setVcAttributeMappings([]);
+                }
                 setAxschemaAttributeMappings(axschema);
                 // TODO: Remove eiDAS temporally. Need to update it to version 2 and re-enable it.
                 setEidasAttributeMappings(null);
@@ -629,6 +641,76 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                         : t("common:view") }
                                                     trigger={ (hasAttributeDialectsUpdatePermissions &&
                                                         attributeConfig.isSCIMEditable)
+                                                        && !isSubOrganization()
+                                                        ? <Icon color="grey" name="pencil" />
+                                                        : <Icon color="grey" name="eye" />
+                                                    }
+                                                    inverted
+                                                />
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    </Grid>
+                                </List.Item>
+                            </List>
+                        </EmphasizedSegment>
+                    )) }
+                    { isLoading ? ( renderSegmentPlaceholder()
+                    ) : ( vcAttributeMappings?.length > 0 && (
+                        <EmphasizedSegment
+                            onClick={ () => {
+                                history.push(
+                                    AppConstants.getPaths()
+                                        .get("ATTRIBUTE_MAPPINGS")
+                                        .replace(":type", ClaimManagementConstants.VC)
+                                        .replace(
+                                            ":customAttributeMappingID",
+                                            ""
+                                        )
+                                );
+                            } }
+                            className="clickable"
+                            data-testid={ `${ testId }-vc-dialect-container` }
+                        >
+                            <List>
+                                <List.Item>
+                                    <Grid>
+                                        <Grid.Row columns={ 2 }>
+                                            <Grid.Column width={ 12 }>
+                                                <GenericIcon
+                                                    verticalAlign="middle"
+                                                    rounded
+                                                    icon={ getTechnologyLogos().vc }
+                                                    spaced="right"
+                                                    size="mini"
+                                                    floated="left"
+                                                />
+                                                <List.Header>
+                                                    { t(
+                                                        "claims:" +
+                                                        "attributeMappings." +
+                                                        "vc.heading"
+                                                    ) }
+                                                </List.Header>
+                                                <List.Description
+                                                    data-testid={ `${ testId }-vc-dialect-description` }
+                                                >
+                                                    { t(
+                                                        "claims:attributeMappings" +
+                                                ".vc.description"
+                                                    ) }
+                                                </List.Description>
+                                            </Grid.Column>
+                                            <Grid.Column
+                                                width={ 4 }
+                                                verticalAlign="middle"
+                                                textAlign="right"
+                                            >
+                                                <Popup
+                                                    content={ (hasAttributeDialectsUpdatePermissions)
+                                                        && !isSubOrganization()
+                                                        ? t("common:edit")
+                                                        : t("common:view") }
+                                                    trigger={ (hasAttributeDialectsUpdatePermissions)
                                                         && !isSubOrganization()
                                                         ? <Icon color="grey" name="pencil" />
                                                         : <Icon color="grey" name="eye" />

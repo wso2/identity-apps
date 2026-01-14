@@ -187,6 +187,10 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                     return t(
                         "claims:attributeMappings.scim.heading"
                     );
+                case ClaimManagementConstants.VC:
+                    return t(
+                        "claims:attributeMappings.vc.heading"
+                    );
                 case ClaimManagementConstants.AXSCHEMA:
                     return t(
                         "claims:attributeMappings.axschema.heading"
@@ -244,6 +248,8 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                             </DocumentationLink>
                         </>
                     );
+                case ClaimManagementConstants.VC:
+                    return t("claims:attributeMappings.vc.description");
                 case ClaimManagementConstants.AXSCHEMA:
                     return t("claims:attributeMappings.axschema.description");
                 case ClaimManagementConstants.EIDAS:
@@ -280,6 +286,17 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                             verticalAlign="middle"
                             rounded
                             icon={ getTechnologyLogos().scim }
+                            spaced="right"
+                            size="tiny"
+                            floated="left"
+                        />
+                    );
+                case ClaimManagementConstants.VC:
+                    return (
+                        <GenericIcon
+                            verticalAlign="middle"
+                            rounded
+                            icon={ getTechnologyLogos().vc }
                             spaced="right"
                             size="tiny"
                             floated="left"
@@ -382,6 +399,8 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                         } else if (Object.values(ClaimManagementConstants.SCIM_TABS).map(
                             (tab: { name: string; uri: string }) => tab.uri).includes(attributeMapping.dialectURI)) {
                             type === ClaimManagementConstants.SCIM && attributeMappings.push(attributeMapping);
+                        } else if (ClaimManagementConstants.VC_MAPPING.includes(attributeMapping.dialectURI)) {
+                            type === ClaimManagementConstants.VC && attributeMappings.push(attributeMapping);
                         } else if (ClaimManagementConstants.AXSCHEMA_MAPPING === attributeMapping.dialectURI) {
                             type === ClaimManagementConstants.AXSCHEMA && attributeMappings.push(attributeMapping);
                         } else if (Object.values(ClaimManagementConstants.EIDAS_TABS).map(

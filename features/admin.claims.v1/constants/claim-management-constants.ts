@@ -125,7 +125,8 @@ export class ClaimManagementConstants {
             "dXJuOmlldGY6cGFyYW1zOnNjaW06c2NoZW1hczpleHRlbnNpb246ZW50ZXJwcmlzZToyLjA6VXNlcg")
         .set("SCIM_SCHEMAS_CORE", "dXJuOnNjaW06c2NoZW1hczpjb3JlOjEuMA")
         .set("SCIM2_SCHEMAS_EXT_SYSTEM", "dXJuOnNjaW06d3NvMjpzY2hlbWE")
-        .set("SCIM2_FOR_AGENTS", "dXJuOnNjaW06d3NvMjphZ2VudDpzY2hlbWE");
+        .set("SCIM2_FOR_AGENTS", "dXJuOnNjaW06d3NvMjphZ2VudDpzY2hlbWE")
+        .set("VC", "aHR0cDovL3dzbzIub3JnL3ZjL2NsYWlt");
 
     /**
      * Set of dialects packed OOTB.
@@ -166,10 +167,15 @@ export class ClaimManagementConstants {
         "urn:scim:wso2:agent:schema"
     ];
 
+    public static readonly VC_MAPPING: string[] = [
+        "http://wso2.org/vc/claim"
+    ];
+
     public static readonly AXSCHEMA_MAPPING: string = "http://axschema.org";
 
     public static readonly OIDC: string = "oidc";
     public static readonly SCIM: string = "scim";
+    public static readonly VC: string = "vc";
     public static readonly AXSCHEMA: string = "axschema";
     public static readonly EIDAS: string = "eidas";
     public static readonly AGENT: string = "agent";
