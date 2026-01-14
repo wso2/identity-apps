@@ -1,5 +1,14 @@
 # @wso2is/admin.feature-gate.v1
 
+## 1.7.10
+
+### Patch Changes
+
+- [#9550](https://github.com/wso2/identity-apps/pull/9550) [`b41960bcdbf7454020a3466d745d80bcc0e4cc05`](https://github.com/wso2/identity-apps/commit/b41960bcdbf7454020a3466d745d80bcc0e4cc05) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add verifiable credentials management UI
+
+- Updated dependencies [[`b41960bcdbf7454020a3466d745d80bcc0e4cc05`](https://github.com/wso2/identity-apps/commit/b41960bcdbf7454020a3466d745d80bcc0e4cc05)]:
+  - @wso2is/admin.core.v1@2.49.125
+
 ## 1.7.9
 
 ### Patch Changes
