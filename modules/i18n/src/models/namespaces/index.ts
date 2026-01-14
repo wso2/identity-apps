@@ -75,3 +75,4 @@ export * from "./workflow-requests-ns";
 export * from "./agents-ns";
 export * from "./flows-ns";
 export * from "./common-users-ns";
+export * from "./verifiable-credentials-ns";

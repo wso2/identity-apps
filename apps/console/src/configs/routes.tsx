@@ -189,6 +189,34 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
+            category: "console:develop.features.sidePanel.categories.application",
+            children: [
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.verifiable-credentials.v1/pages/vc-template-edit")),
+                    exact: true,
+                    id: "editVCTemplate",
+                    name: "Edit Verifiable Credential",
+                    path: AppConstants.getPaths().get("VC_TEMPLATE_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() =>
+                import("@wso2is/admin.verifiable-credentials.v1/pages/verifiable-credentials")),
+            exact: true,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.VERIFIABLE_CREDENTIALS,
+            icon: {
+                icon: getSidePanelIcons().verifiableCredentials
+            },
+            id: "verifiableCredentials",
+            name: "Verifiable Credentials",
+            order: 3,
+            path: AppConstants.getPaths().get("VC_TEMPLATES"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
             component: lazy(() =>
                 import("@wso2is/admin.home.v1/pages/home-page")),
             exact: false,
