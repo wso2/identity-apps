@@ -76,13 +76,13 @@ export const verifiableCredentials: VerifiableCredentialsNS = {
             identifier: {
                 label: "Identifier",
                 placeholder: "Enter a unique identifier",
-                hint: "A unique identifier for the credential template. This will also be used as the credential type.",
+                hint: "A unique identifier for the credential template.",
                 validation: "Identifier cannot contain spaces."
             },
             displayName: {
                 label: "Display Name",
                 placeholder: "Enter a display name",
-                hint: "A human-readable name for the credential template that will be shown to users."
+                hint: "A human-readable name for the credential template."
             },
             submitButton: "Create"
         }
@@ -97,17 +97,15 @@ export const verifiableCredentials: VerifiableCredentialsNS = {
         form: {
             displayName: {
                 label: "Display Name",
-                placeholder: "Enter a display name",
-                hint: "A human-readable name for the credential template that will be shown to users."
+                placeholder: "Enter a display name"
             },
             identifier: {
-                label: "Identifier",
-                hint: "The unique identifier for the credential template. This cannot be modified."
+                label: "Identifier"
             },
             expiresIn: {
                 label: "Validity Period",
                 placeholder: "Enter validity period in seconds",
-                hint: "Enter the validity period in seconds (e.g., 31536000 for 1 year)."
+                hint: "Enter the validity period in seconds."
             },
             claims: {
                 label: "Attributes",

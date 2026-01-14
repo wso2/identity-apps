@@ -60,29 +60,6 @@ export const addVCTemplate = (
         });
 };
 
-/**
- * Get a single VC template by ID.
- *
- * @param templateId - The ID of the template to retrieve.
- * @returns Promise with the template data.
- */
-export const getVCTemplate = (templateId: string): Promise<VCTemplate> => {
-    const requestConfig: RequestConfigInterface = {
-        headers: {
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        url: `${store.getState().config.endpoints.vcTemplates}/${templateId}`
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            return Promise.resolve(response?.data);
-        })
-        .catch((error: AxiosError) => {
-            return Promise.reject(error);
-        });
-};
 
 /**
  * Update an existing VC template.

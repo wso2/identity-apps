@@ -167,7 +167,7 @@ export const VCTemplateList = ({
                                 data-componentid={ `${componentId}-item-image` }
                             />
                             <Header.Content>
-                                { template.displayName }
+                                { template?.displayName }
                             </Header.Content>
                         </Header>
                     );
@@ -180,7 +180,7 @@ export const VCTemplateList = ({
                 id: "identifier",
                 key: "identifier",
                 render: (template: VCTemplateListItem): ReactNode => {
-                    return <div>{ template.identifier }</div>;
+                    return <div>{ template?.identifier }</div>;
                 },
                 title: t("verifiableCredentials:list.columns.identifier")
             },

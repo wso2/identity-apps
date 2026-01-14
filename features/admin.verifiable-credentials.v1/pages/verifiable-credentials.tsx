@@ -33,7 +33,7 @@ import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { VCTemplateList } from "../components/vc-template-list";
-import { AddVCTemplateWizard } from "../components/wizard";
+import AddVCTemplateWizard from "../components/wizard/add-vc-template";
 import { useGetVCTemplates } from "../hooks/use-get-vc-templates";
 import { PaginationLink } from "../models/verifiable-credentials";
 import "./verifiable-credentials.scss";

@@ -18,18 +18,13 @@
 
 import { AlertInterface, AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Form } from "@wso2is/form";
-import {
-    Heading,
-    LinkButton,
-    PrimaryButton
-} from "@wso2is/react-components";
+import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form/src";
+import { Button } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
-import { Grid, Modal } from "semantic-ui-react";
+import { Modal } from "semantic-ui-react";
 import { addVCTemplate } from "../../api/verifiable-credentials";
 import { VCTemplate, VCTemplateCreationModel } from "../../models/verifiable-credentials";
 
@@ -55,21 +50,19 @@ interface VCTemplateFormValues {
     displayName: string;
 }
 
-const FORM_ID: string = "vc-template-create-form";
-
 /**
  * Add Verifiable Credential Template Wizard component.
  *
  * @param props - Props injected to the component.
  * @returns React element.
  */
-export const AddVCTemplateWizard: FunctionComponent<AddVCTemplateWizardProps> = ({
+export default function AddVCTemplateWizard({
     closeWizard,
     onSuccess,
-    "data-componentid": componentId = "add-vc-template-wizard"
-}: AddVCTemplateWizardProps): ReactElement => {
+    [ "data-componentid" ]: componentId = "add-vc-template-wizard"
+}: AddVCTemplateWizardProps) {
     const { t } = useTranslation();
-    const dispatch: Dispatch = useDispatch();
+    const dispatch: any = useDispatch();
 
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
 
@@ -93,6 +86,16 @@ export const AddVCTemplateWizard: FunctionComponent<AddVCTemplateWizardProps> = 
      * @param values - Form values.
      */
     const handleFormSubmit = (values: VCTemplateFormValues): void => {
+        if (!values?.identifier) {
+            return;
+        }
+
+        const validationError: string | undefined = validateIdentifier(values.identifier);
+
+        if (validationError) {
+            return;
+        }
+
         setIsSubmitting(true);
 
         const templateData: VCTemplateCreationModel = {
@@ -136,96 +139,72 @@ export const AddVCTemplateWizard: FunctionComponent<AddVCTemplateWizardProps> = 
 
     return (
         <Modal
-            dimmer="blurring"
-            size="small"
+            data-testid={ componentId }
+            data-componentid={ componentId }
             open={ true }
+            className="wizard"
+            dimmer="blurring"
+            size="tiny"
+            onClose={ closeWizard }
             closeOnDimmerClick={ false }
             closeOnEscape
-            data-componentid={ componentId }
         >
-            <Modal.Header className="wizard-header">
-                { t("verifiableCredentials:wizard.title") }
-                <Heading as="h6">
-                    { t("verifiableCredentials:wizard.subtitle") }
-                </Heading>
-            </Modal.Header>
-            <Modal.Content className="content-container" scrolling>
-                <Form
-                    id={ FORM_ID }
-                    uncontrolledForm={ true }
+            <Modal.Header>{ t("verifiableCredentials:wizard.title") }</Modal.Header>
+            <Modal.Content>
+                <FinalForm
                     onSubmit={ handleFormSubmit }
-                    data-componentid={ `${componentId}-form` }
-                >
-                    <Grid>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Field.Input
-                                    ariaLabel="identifier"
-                                    inputType="default"
+                    render={ ({ handleSubmit }: FormRenderProps) => {
+                        return (
+                            <form id="addVCTemplateForm" onSubmit={ handleSubmit }>
+                                <FinalFormField
                                     name="identifier"
                                     label={ t("verifiableCredentials:wizard.form.identifier.label") }
                                     placeholder={ t("verifiableCredentials:wizard.form.identifier.placeholder") }
-                                    hint={ t("verifiableCredentials:wizard.form.identifier.hint") }
                                     required={ true }
-                                    maxLength={ 100 }
-                                    minLength={ 1 }
-                                    validation={ validateIdentifier }
-                                    data-componentid={ `${componentId}-identifier-input` }
-                                    width={ 16 }
+                                    autoComplete="new-password"
+                                    component={ TextFieldAdapter }
+                                    helperText={ t("verifiableCredentials:wizard.form.identifier.hint") }
                                 />
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Field.Input
-                                    ariaLabel="displayName"
-                                    inputType="name"
-                                    name="displayName"
+                                <FinalFormField
                                     label={ t("verifiableCredentials:wizard.form.displayName.label") }
+                                    name="displayName"
                                     placeholder={ t("verifiableCredentials:wizard.form.displayName.placeholder") }
-                                    hint={ t("verifiableCredentials:wizard.form.displayName.hint") }
-                                    required={ false }
-                                    maxLength={ 255 }
-                                    minLength={ 1 }
-                                    data-componentid={ `${componentId}-display-name-input` }
-                                    width={ 16 }
+                                    className="mt-3"
+                                    autoComplete="new-password"
+                                    component={ TextFieldAdapter }
+                                    helperText={ t("verifiableCredentials:wizard.form.displayName.hint") }
                                 />
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                </Form>
+                            </form>
+                        );
+                    } }
+                />
             </Modal.Content>
+
             <Modal.Actions>
-                <Grid>
-                    <Grid.Row column={ 1 }>
-                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            <LinkButton
-                                tabIndex={ 5 }
-                                floated="left"
-                                onClick={ closeWizard }
-                                data-componentid={ `${componentId}-cancel-button` }
-                            >
-                                { t("common:cancel") }
-                            </LinkButton>
-                        </Grid.Column>
-                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            <PrimaryButton
-                                tabIndex={ 6 }
-                                floated="right"
-                                type="submit"
-                                form={ FORM_ID }
-                                loading={ isSubmitting }
-                                disabled={ isSubmitting }
-                                data-componentid={ `${componentId}-create-button` }
-                            >
-                                { t("verifiableCredentials:wizard.form.submitButton") }
-                            </PrimaryButton>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
+                <Button
+                    className="link-button"
+                    basic
+                    primary
+                    onClick={ closeWizard }
+                    data-testid={ `${componentId}-cancel-button` }
+                >
+                    { t("common:cancel") }
+                </Button>
+                <Button
+                    primary={ true }
+                    type="submit"
+                    disabled={ isSubmitting }
+                    loading={ isSubmitting }
+                    onClick={ () => {
+                        document
+                            .getElementById("addVCTemplateForm")
+                            .dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+                    } }
+                    data-testid={ `${componentId}-create-button` }
+                >
+                    { t("verifiableCredentials:wizard.form.submitButton") }
+                </Button>
             </Modal.Actions>
         </Modal>
     );
-};
-
-export default AddVCTemplateWizard;
+}

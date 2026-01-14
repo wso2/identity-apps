@@ -102,8 +102,6 @@ export const VCTemplateOffer: FunctionComponent<VCTemplateOfferPropsInterface> =
             });
     };
 
-
-
     /**
      * Constructs the offer URI.
      */
@@ -204,7 +202,6 @@ export const VCTemplateOffer: FunctionComponent<VCTemplateOfferPropsInterface> =
                     </ConfirmationModal>
                 )
             }
-
         </EmphasizedSegment>
     );
 };

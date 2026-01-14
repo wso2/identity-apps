@@ -89,11 +89,9 @@ export interface VerifiableCredentialsNS {
             displayName: {
                 label: string;
                 placeholder: string;
-                hint: string;
             };
             identifier: {
                 label: string;
-                hint: string;
             };
             expiresIn: {
                 label: string;

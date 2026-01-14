@@ -47,15 +47,12 @@ import { Dispatch } from "redux";
 import { Divider, Grid } from "semantic-ui-react";
 import {
     deleteVCTemplate,
-    getVCTemplate,
     updateVCTemplate
 } from "../api/verifiable-credentials";
 import { ClaimAttributeOption } from "../components/claim-attribute-option";
 import { VCTemplateOffer } from "../components/vc-template-offer";
-import {
-    VCTemplate,
-    VCTemplateUpdateModel
-} from "../models/verifiable-credentials";
+import { useGetVCTemplate } from "../hooks/use-get-vc-template";
+import { VCTemplateUpdateModel } from "../models/verifiable-credentials";
 import "./vc-template-edit.scss";
 
 /**
@@ -91,8 +88,6 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
     const dispatch: Dispatch = useDispatch();
 
     const [ templateId, setTemplateId ] = useState<string>(null);
-    const [ vcTemplate, setVCTemplate ] = useState<VCTemplate>(null);
-    const [ isLoading, setIsLoading ] = useState<boolean>(true);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ showDeleteConfirmation, setShowDeleteConfirmation ] = useState<boolean>(false);
     const [ isDeleting, setIsDeleting ] = useState<boolean>(false);
@@ -113,15 +108,27 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
     }, []);
 
     /**
-     * Fetch the VC template when templateId is available.
+     * Fetch the VC template using the useGetVCTemplate hook.
+     */
+    const {
+        data: vcTemplate,
+        isLoading,
+        error: fetchError,
+        mutate: mutateVCTemplate
+    } = useGetVCTemplate(templateId, !!templateId);
+
+    /**
+     * Handle errors from the VC template fetch.
      */
     useEffect(() => {
-        if (!templateId) {
-            return;
+        if (fetchError) {
+            dispatch(addAlert<AlertInterface>({
+                description: t("verifiableCredentials:notifications.fetchTemplate.error.description"),
+                level: AlertLevels.ERROR,
+                message: t("verifiableCredentials:notifications.fetchTemplate.error.message")
+            }));
         }
-
-        fetchVCTemplate();
-    }, [ templateId ]);
+    }, [ fetchError ]);
 
     /**
      * Fetch local and external claims on component mount.
@@ -210,34 +217,6 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
     };
 
     /**
-     * Fetch the VC template.
-     *
-     * @param shouldShowLoader - Should show the loader.
-     */
-    const fetchVCTemplate = (shouldShowLoader: boolean = true): void => {
-        if (shouldShowLoader) {
-            setIsLoading(true);
-        }
-
-        getVCTemplate(templateId)
-            .then((response: VCTemplate) => {
-                setVCTemplate(response);
-            })
-            .catch(() => {
-                dispatch(addAlert<AlertInterface>({
-                    description: t("verifiableCredentials:notifications.fetchTemplate.error.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("verifiableCredentials:notifications.fetchTemplate.error.message")
-                }));
-            })
-            .finally(() => {
-                if (shouldShowLoader) {
-                    setIsLoading(false);
-                }
-            });
-    };
-
-    /**
      * Handle form submission for updating the VC template.
      *
      * @param values - Form values.
@@ -252,8 +231,8 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
         };
 
         updateVCTemplate(templateId, updateData)
-            .then((response: VCTemplate) => {
-                setVCTemplate(response);
+            .then(() => {
+                mutateVCTemplate();
                 dispatch(addAlert<AlertInterface>({
                     description: t("verifiableCredentials:notifications.updateTemplate.success.description"),
                     level: AlertLevels.SUCCESS,
@@ -370,11 +349,6 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
                                                                 placeholder={
                                                                     t("verifiableCredentials:editPage.form.displayName.placeholder") // eslint-disable-line max-len
                                                                 }
-                                                                helperText={
-                                                                    (<Hint className="hint" compact>
-                                                                        { t("verifiableCredentials:editPage.form.displayName.hint") /* eslint-disable-line max-len */ }
-                                                                    </Hint>)
-                                                                }
                                                                 component={ TextFieldAdapter }
                                                                 maxLength={ 255 }
                                                                 minLength={ 1 }
@@ -392,9 +366,6 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
                                                                     `${componentId}-identifier-copy-field`
                                                                 }
                                                             />
-                                                            <p className="hint-description">
-                                                                { t("verifiableCredentials:editPage.form.identifier.hint") /* eslint-disable-line max-len */ }
-                                                            </p>
                                                         </Grid.Column>
                                                     </Grid.Row>
                                                     <Grid.Row columns={ 1 }>
@@ -537,7 +508,7 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
                             <ResourceTab.Pane controlledSegmentation>
                                 <VCTemplateOffer
                                     template={ vcTemplate }
-                                    onUpdate={ () => fetchVCTemplate(false) }
+                                    onUpdate={ () => mutateVCTemplate() }
                                     data-componentid={ `${componentId}-offer` }
                                 />
                             </ResourceTab.Pane>
