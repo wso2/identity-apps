@@ -385,6 +385,11 @@ export class I18nModuleConstants {
     public static readonly COMMON_USERS_NAMESPACE: string = "commonUsers";
 
     /**
+     * Verifiable Credentials namespace.
+     */
+    public static readonly VERIFIABLE_CREDENTIALS_NAMESPACE: string = "verifiableCredentials";
+
+    /**
      * Constant representing the locale preference key.
      * This key is used to store the user's language preference in cookies or local storage.
      */
