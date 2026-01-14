@@ -432,7 +432,7 @@
     String cdmProfileId = null;
     if (cookies != null) {
         for (javax.servlet.http.Cookie cookie : cookies) {
-            if ("cdm_profile_id".equals(cookie.getName())) {
+            if ("cds_profile".equals(cookie.getName())) {
                 cdmProfileId = cookie.getValue();
                 break;
             }
@@ -441,8 +441,7 @@
 
     if (cdmProfileId != null) {
         // Set as a request attribute to be used in your form
-        System.out.println("CDM Profile ID: " + cdmProfileId);
-        request.setAttribute("cdm_profile_id", cdmProfileId);
+        request.setAttribute("cds_profile_id", cdmProfileId);
     }
 %>
 

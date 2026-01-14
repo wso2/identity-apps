@@ -331,10 +331,10 @@
         }
 
         // After existing claim population loop
-        String profileIdValue = request.getParameter("http://wso2.org/claims/profileId");
+        String profileIdValue = request.getParameter("http://wso2.org/claims/identity/profileId");
         if (StringUtils.isNotBlank(profileIdValue)) {
             Claim profileIdClaim = new Claim();
-            profileIdClaim.setUri("http://wso2.org/claims/profileId");
+            profileIdClaim.setUri("http://wso2.org/claims/identity/profileId");
             profileIdClaim.setValue(profileIdValue);
             userClaimList.add(profileIdClaim);
         }
