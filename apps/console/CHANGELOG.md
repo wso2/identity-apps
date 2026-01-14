@@ -1,5 +1,32 @@
 # @wso2is/console
 
+## 2.85.8
+
+### Patch Changes
+
+- [#9546](https://github.com/wso2/identity-apps/pull/9546) [`7c61029c15fa4aea3b0d37beff93271e8d942b17`](https://github.com/wso2/identity-apps/commit/7c61029c15fa4aea3b0d37beff93271e8d942b17) Thanks [@copilot-swe-agent](https://github.com/apps/copilot-swe-agent)! - Hide "Logout URL" heading when no logout fields are rendered
+
+* [#9550](https://github.com/wso2/identity-apps/pull/9550) [`b41960bcdbf7454020a3466d745d80bcc0e4cc05`](https://github.com/wso2/identity-apps/commit/b41960bcdbf7454020a3466d745d80bcc0e4cc05) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add verifiable credentials management UI
+
+* Updated dependencies [[`7c61029c15fa4aea3b0d37beff93271e8d942b17`](https://github.com/wso2/identity-apps/commit/7c61029c15fa4aea3b0d37beff93271e8d942b17), [`b41960bcdbf7454020a3466d745d80bcc0e4cc05`](https://github.com/wso2/identity-apps/commit/b41960bcdbf7454020a3466d745d80bcc0e4cc05)]:
+  - @wso2is/admin.applications.v1@2.40.7
+  - @wso2is/admin.feature-gate.v1@1.7.10
+  - @wso2is/admin.core.v1@2.49.125
+  - @wso2is/theme@2.8.8
+  - @wso2is/i18n@2.31.4
+  - @wso2is/admin.verifiable-credentials.v1@1.0.0
+  - @wso2is/admin.agents.v1@1.0.132
+  - @wso2is/admin.branding.v1@2.32.73
+  - @wso2is/admin.flows.v1@1.0.86
+  - @wso2is/admin.roles.v2@2.27.287
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.117
+  - @wso2is/admin.email-management.v1@2.25.281
+  - @wso2is/admin.home.v1@1.7.96
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.117
+  - @wso2is/admin.registration-flow-builder.v1@0.10.77
+  - @wso2is/admin.server-configurations.v1@2.35.139
+  - @wso2is/admin.users.v1@2.36.92
+
 ## 2.85.7
 
 ### Patch Changes

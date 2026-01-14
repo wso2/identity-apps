@@ -1,5 +1,22 @@
 # @wso2is/admin.applications.v1
 
+## 2.40.7
+
+### Patch Changes
+
+- [#9546](https://github.com/wso2/identity-apps/pull/9546) [`7c61029c15fa4aea3b0d37beff93271e8d942b17`](https://github.com/wso2/identity-apps/commit/7c61029c15fa4aea3b0d37beff93271e8d942b17) Thanks [@copilot-swe-agent](https://github.com/apps/copilot-swe-agent)! - Hide "Logout URL" heading when no logout fields are rendered
+
+- Updated dependencies [[`b41960bcdbf7454020a3466d745d80bcc0e4cc05`](https://github.com/wso2/identity-apps/commit/b41960bcdbf7454020a3466d745d80bcc0e4cc05)]:
+  - @wso2is/admin.feature-gate.v1@1.7.10
+  - @wso2is/admin.core.v1@2.49.125
+  - @wso2is/i18n@2.31.4
+  - @wso2is/admin.branding.v1@2.32.73
+  - @wso2is/admin.login-flow-builder.v1@2.28.2
+  - @wso2is/admin.login-flow.ai.v1@2.27.105
+  - @wso2is/admin.roles.v2@2.27.287
+  - @wso2is/admin.server-configurations.v1@2.35.139
+  - @wso2is/admin.users.v1@2.36.92
+
 ## 2.40.6
 
 ### Patch Changes
