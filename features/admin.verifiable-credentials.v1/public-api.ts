@@ -17,3 +17,4 @@
  */
 
 export { default as VCTemplateEditPage } from "./pages/vc-template-edit";
+export { default as VerifiableCredentialsPage } from "./pages/verifiable-credentials";
