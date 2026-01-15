@@ -147,8 +147,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
     const {
         data: currentAPIResourcesListData,
         isLoading: iscurrentAPIResourcesListLoading,
-        error: currentAPIResourcesFetchRequestError,
-        mutate: mutatecurrentAPIResourcesList
+        error: currentAPIResourcesFetchRequestError
     } = useAPIResources(apiCallNextAfterValue, null, null, shouldFetchAPIResources);
 
     const {
@@ -250,16 +249,12 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
             // Add the current API resources to the all API resources list.
             setAllAPIResourcesListData([ ...allAPIResourcesListData, ...currentAPIResourcesListData.apiResources ]);
 
-            // Check if there are more API resources to be fetched.
-            let isAfterValueExists: boolean = false;
-
             currentAPIResourcesListData?.links?.forEach((value: LinkInterface) => {
                 if (value.rel === APIResourcesConstants.NEXT_REL) {
                     afterValue = value.href.split(`${APIResourcesConstants.AFTER}=`)[1];
 
                     if (afterValue !== apiCallNextAfterValue) {
                         setAPICallNextAfterValue(afterValue);
-                        isAfterValueExists = true;
                     }
                 }
             });
@@ -268,9 +263,6 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
             if (!hasStartedFetchingAllResources) {
                 setHasStartedFetchingAllResources(true);
                 setIsAPIResourcesListLoading(false);
-            } else if (isAfterValueExists && shouldFetchAPIResources) {
-                // The next page will be fetched automatically when apiCallNextAfterValue changes
-                // No need to call mutatecurrentAPIResourcesList() which would cause duplicate requests
             } else {
                 setIsAPIResourcesListLoading(false);
             }
