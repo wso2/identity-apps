@@ -1,5 +1,18 @@
 # @wso2is/admin.applications.v1
 
+## 2.40.8
+
+### Patch Changes
+
+- [#9552](https://github.com/wso2/identity-apps/pull/9552) [`17bada0aa5d243ee9a97c9c99922cec079246fb5`](https://github.com/wso2/identity-apps/commit/17bada0aa5d243ee9a97c9c99922cec079246fb5) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Implement lazy loading for API resource authorization modal
+
+- Updated dependencies []:
+  - @wso2is/admin.branding.v1@2.32.74
+  - @wso2is/admin.core.v1@2.49.126
+  - @wso2is/admin.roles.v2@2.27.288
+  - @wso2is/admin.server-configurations.v1@2.35.140
+  - @wso2is/admin.users.v1@2.36.93
+
 ## 2.40.7
 
 ### Patch Changes
