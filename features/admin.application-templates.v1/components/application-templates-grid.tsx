@@ -183,11 +183,18 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
      * @returns Filtered application templates list.
      */
     const removeIrrelevantTemplates = (templates: ExtensionTemplateListInterface[]) => {
+        const isVcFeatureEnabled: boolean =
+            window["AppUtils"]?.getConfig()?.ui?.features?.verifiableCredentials?.enabled;
         let removingApplicationTemplateIds: string[] = [];
 
         // Remove custom protocol application templates if there are no custom inbound protocols.
         if (!showCustomProtocolApplicationTemplate) {
             removingApplicationTemplateIds.push(ApplicationTemplateConstants.CUSTOM_PROTOCOL_APPLICATION_TEMPLATE_ID);
+        }
+
+        // Remove Digital Wallet template if VC feature is not enabled.
+        if (!isVcFeatureEnabled) {
+            removingApplicationTemplateIds.push("digital-wallet-application");
         }
 
         // Remove hidden application templates based on the UI config.

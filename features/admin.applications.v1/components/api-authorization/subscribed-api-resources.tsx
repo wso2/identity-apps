@@ -148,9 +148,14 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
 
     const { t } = useTranslation();
 
-    const resourceText: string = originalTemplateId === "mcp-client-application"
+    const isDigitalWallet: boolean = originalTemplateId === "digital-wallet-application" || 
+        templateId === "digital-wallet-application";
+    const isMCPClient: boolean = originalTemplateId === "mcp-client-application";
+    const resourceText: string = isMCPClient
         ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.genericResource")
-        : t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.apiResource");
+        : isDigitalWallet
+            ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.vcResource")
+            : t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.apiResource");
 
     const [ activeSubscribedAPIResource, setActiveSubscribedAPIResource ] = useState<string>(null);
     const [ searchQuery, setSearchQuery ] = useState<string>(null);
@@ -418,6 +423,8 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
         ReactElement => (
         <ScopeForm
             appId={ appId }
+            templateId={ templateId }
+            originalTemplateId={ originalTemplateId }
             subscribedAPIResource={ subscribedAPIResource }
             isScopesAvailableForUpdate={ isScopesAvailableForUpdate }
             bulkChangeAllAuthorizedScopes={ bulkChangeAllAuthorizedScopes }
@@ -491,12 +498,14 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
                                             onChange={ searchSubscribedAPIResources }
                                             placeholder={ t("extensions:develop.applications.edit.sections." +
                                                 "apiAuthorization.sections.apiSubscriptions.search", {
-                                                resourceText:  originalTemplateId ===
-                                                    ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION
+                                                resourceText:  isMCPClient
                                                     ? t("extensions:develop.applications.edit.sections.apiAuthorization"
                                                         + ".resourceText.genericResource")
-                                                    : t("extensions:develop.applications.edit.sections.apiAuthorization"
-                                                        + ".resourceText.apiResource")
+                                                    : isDigitalWallet
+                                                        ? t("extensions:develop.applications.edit.sections.apiAuthorization"
+                                                            + ".resourceText.vcResource")
+                                                        : t("extensions:develop.applications.edit.sections.apiAuthorization"
+                                                            + ".resourceText.apiResource")
 
                                             }) }
                                             floated="right"
@@ -532,7 +541,7 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
                                                                         resolveSubscribedAPIResourcesListHeader(
                                                                             subscribedAPIResource)
                                                                     ) }
-                                                                    hideChevron={ false }
+                                                                    hideChevron={ isDigitalWallet }
                                                                     actions={
                                                                         createAccordionAction(subscribedAPIResource)
                                                                     }
