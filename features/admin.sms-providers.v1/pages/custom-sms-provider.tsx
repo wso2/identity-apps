@@ -97,7 +97,8 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
      */
     const resetAuthenticationFields = (): void => {
         if (formState.current) {
-            const initialValues = formState.current.getState()?.initialValues;
+            const initialValues: Partial<Record<string, unknown>> = formState.current.getState()?.initialValues;
+
             formState.current.change("authType", initialValues?.authType ?? undefined);
             formState.current.change("userName", initialValues?.userName ?? "");
             formState.current.change("password", initialValues?.password ?? "");
