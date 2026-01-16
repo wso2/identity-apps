@@ -347,13 +347,15 @@ export const renderAuthenticationSectionInfoBox = (
             >
                 <Trans
                     i18nKey={
-                        t("actions:fields.authentication.info.title.otherAuthType",
-                            {
-                                authType: resolveAuthTypeDisplayName(
-                                    currentAuthType,
-                                    t
-                                )
-                            } )
+                        currentAuthType === "NONE"
+                            ? t("actions:fields.authentication.info.title.noneAuthType")
+                            : t("actions:fields.authentication.info.title.otherAuthType",
+                                {
+                                    authType: resolveAuthTypeDisplayName(
+                                        currentAuthType,
+                                        t
+                                    )
+                                } )
                     }
                     components={ { strong: <strong/> } }
                 />
