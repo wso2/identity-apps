@@ -91,6 +91,26 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
         setEndpointAuthType(authType);
     };
 
+    /**
+     * Resets all authentication fields to their initial values to preserve existing data.
+     * This is called when the user cancels editing the authentication configuration.
+     */
+    const resetAuthenticationFields = (): void => {
+        if (formState.current) {
+            const initialValues = formState.current.getState()?.initialValues;
+            formState.current.change("authType", initialValues?.authType ?? undefined);
+            formState.current.change("userName", initialValues?.userName ?? "");
+            formState.current.change("password", initialValues?.password ?? "");
+            formState.current.change("clientId", initialValues?.clientId ?? "");
+            formState.current.change("clientSecret", initialValues?.clientSecret ?? "");
+            formState.current.change("tokenEndpoint", initialValues?.tokenEndpoint ?? "");
+            formState.current.change("scopes", initialValues?.scopes ?? "");
+            formState.current.change("accessToken", initialValues?.accessToken ?? "");
+            formState.current.change("header", initialValues?.header ?? "");
+            formState.current.change("value", initialValues?.value ?? "");
+        }
+    };
+
     const activeAuthType: AuthType = localAuthType || endpointAuthType;
 
     return (
@@ -616,7 +636,9 @@ const CustomSMSProvider: FunctionComponent<CustomSMSProviderPageInterface> = (
                                         onClick={ () => {
                                             setShouldShowAuthUpdateAlert(false);
                                             setIsAuthenticationUpdateFormState(false);
-                                            formState.current.reset();
+                                            setLocalAuthType(currentAuthType);
+                                            setEndpointAuthType(currentAuthType);
+                                            resetAuthenticationFields();
                                         } }
                                         variant="outlined"
                                         size="small"
