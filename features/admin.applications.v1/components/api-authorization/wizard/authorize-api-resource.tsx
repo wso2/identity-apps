@@ -32,7 +32,6 @@ import { AlertInterface, AlertLevels, IdentifiableComponentInterface, LinkInterf
 import { addAlert } from "@wso2is/core/store";
 import {
     Code,
-    ContentLoader,
     DocumentationLink,
     Heading,
     Hint,
@@ -146,13 +145,16 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
     const [ isSelectNoneHidden, setIsSelectNoneHidden ] = useState<boolean>(true);
     const [ m2mApplication, setM2MApplication ] = useState<boolean>(false);
     const [ isScopeSelectDropdownReady, setIsScopeSelectDropdownReady ] = useState<boolean>(true);
+    const [ isDropdownOpen, setIsDropdownOpen ] = useState<boolean>(false);
+    const [ hasStartedFetchingAllResources, setHasStartedFetchingAllResources ] = useState<boolean>(false);
+
+    const shouldFetchAPIResources: boolean = isDropdownOpen || !hasStartedFetchingAllResources;
 
     const {
         data: currentAPIResourcesListData,
         isLoading: iscurrentAPIResourcesListLoading,
-        error: currentAPIResourcesFetchRequestError,
-        mutate: mutatecurrentAPIResourcesList
-    } = useAPIResources(apiCallNextAfterValue);
+        error: currentAPIResourcesFetchRequestError
+    } = useAPIResources(apiCallNextAfterValue, null, null, shouldFetchAPIResources);
 
     const {
         data: currentAPIResourceScopeListData,
@@ -253,22 +255,20 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
             // Add the current API resources to the all API resources list.
             setAllAPIResourcesListData([ ...allAPIResourcesListData, ...currentAPIResourcesListData.apiResources ]);
 
-            // Check if there are more API resources to be fetched.
-            let isAfterValueExists: boolean = false;
-
             currentAPIResourcesListData?.links?.forEach((value: LinkInterface) => {
                 if (value.rel === APIResourcesConstants.NEXT_REL) {
                     afterValue = value.href.split(`${APIResourcesConstants.AFTER}=`)[1];
 
                     if (afterValue !== apiCallNextAfterValue) {
                         setAPICallNextAfterValue(afterValue);
-                        isAfterValueExists = true;
                     }
                 }
             });
 
-            if (isAfterValueExists) {
-                mutatecurrentAPIResourcesList();
+            // If this is the first page load, mark that we've started and stop automatic fetching
+            if (!hasStartedFetchingAllResources) {
+                setHasStartedFetchingAllResources(true);
+                setIsAPIResourcesListLoading(false);
             } else {
                 setIsAPIResourcesListLoading(false);
             }
@@ -458,365 +458,350 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                 </Heading>
             </Modal.Header>
             <Modal.Content className="content-container" scrolling>
-                {
-                    iscurrentAPIResourcesListLoading || isAPIResourcesListLoading
-                        ? <ContentLoader inline="centered" active />
-                        : (
-                            <Grid>
-                                <Grid.Row>
-                                    <Grid.Column width={ 12 } className="mb-2">
-                                        <Grid.Row className="mb-3">
-                                            <Autocomplete
-                                                disablePortal
-                                                fullWidth
-                                                aria-label="API resource selection"
-                                                className="pt-2"
-                                                componentsProps={ {
-                                                    paper: {
-                                                        elevation: 2
-                                                    },
-                                                    popper: {
-                                                        modifiers: [
-                                                            {
-                                                                enabled: false,
-                                                                name: "flip"
-                                                            },
-                                                            {
-                                                                enabled: false,
-                                                                name: "preventOverflow"
-                                                            }
-                                                        ]
-                                                    }
-                                                } }
-                                                data-componentid={ `${componentId}-api` }
-                                                getOptionLabel={ (apiResourcesListOption: DropdownProps) =>
-                                                    apiResourcesListOption.text }
-                                                groupBy={ (apiResourcesListOption: DropdownItemProps) =>
-                                                    APIResourceUtils
-                                                        .resolveApiResourceGroup(apiResourcesListOption?.type) }
-                                                isOptionEqualToValue={
-                                                    (option: DropdownItemProps, value: DropdownItemProps) =>
-                                                        option.value === value.value
+                <Grid>
+                    <Grid.Row>
+                        <Grid.Column width={ 12 } className="mb-2">
+                            <Grid.Row className="mb-3">
+                                <Autocomplete
+                                    disablePortal
+                                    fullWidth
+                                    aria-label="API resource selection"
+                                    className="pt-2"
+                                    componentsProps={ {
+                                        paper: {
+                                            elevation: 2
+                                        },
+                                        popper: {
+                                            modifiers: [
+                                                {
+                                                    enabled: false,
+                                                    name: "flip"
+                                                },
+                                                {
+                                                    enabled: false,
+                                                    name: "preventOverflow"
                                                 }
-                                                renderOption={ (props: any, apiResourcesListOption: any) =>
-                                                    (<div { ...props }>
-                                                        <Header.Content>
-                                                            { apiResourcesListOption.text }
-                                                            { (
-                                                                apiResourcesListOption.type ===
-                                                                    APIResourcesConstants.BUSINESS
-                                                                || apiResourcesListOption.type ==
-                                                                    APIResourcesConstants.MCP
-                                                            ) && (
-                                                                <Header.Subheader>
-                                                                    <Code
-                                                                        className="inline-code compact transparent"
-                                                                        withBackground={ false }
-                                                                    >
-                                                                        { apiResourcesListOption?.identifier }
-                                                                    </Code>
-                                                                    <Label
-                                                                        pointing="left"
-                                                                        size="mini"
-                                                                        className="client-id-label">
-                                                                        { t("extensions:develop.apiResource.table." +
-                                                                            "identifier.label", {
-                                                                            resourceText: resourceText
-                                                                        }) }
-                                                                    </Label>
-                                                                </Header.Subheader>
-                                                            ) }
-                                                        </Header.Content>
-                                                    </div>) }
-                                                options={ allAPIResourcesDropdownOptions
-                                                    ?.filter((item: DropdownItemProps) => {
-                                                        // For Digital Wallet apps, show ONLY VC type resources
-                                                        if (isDigitalWallet) {
-                                                            return item?.type === APIResourceCategories.VC;
-                                                        }
-                                                        // For MCP client apps, show MCP type resources along with others
-                                                        if (isMCPClient) {
-                                                            return item?.type === APIResourceCategories.TENANT ||
-                                                                item?.type === APIResourceCategories.ORGANIZATION ||
-                                                                item?.type === APIResourceCategories.BUSINESS ||
-                                                                item?.type === APIResourceCategories.MCP;
-                                                        }
-                                                        // For other apps, show standard types
-                                                        return item?.type === APIResourceCategories.TENANT ||
-                                                            item?.type === APIResourceCategories.ORGANIZATION ||
-                                                            item?.type === APIResourceCategories.BUSINESS;
-                                                    }).sort((a: DropdownItemProps, b: DropdownItemProps) =>
-                                                        APIResourceUtils.sortApiResourceTypes(a, b)
-                                                    )
-                                                }
-                                                getOptionDisabled={ (apiResourcesListOption: DropdownItemProps) =>
-                                                    apiResourcesListOption?.disabled }
-                                                onChange={ (
-                                                    event: SyntheticEvent<HTMLElement>,
-                                                    data: DropdownProps
-                                                ) => handleAPIResourceSelect(data) }
-                                                noOptionsText={ t("common:noResultsFound") }
-                                                renderInput={ (params: AutocompleteRenderInputParams) => (
-                                                    <TextField
-                                                        { ...params }
-                                                        label={ startCase(t("extensions:develop.applications.edit." +
-                                                            "sections.apiAuthorization.sections.apiSubscriptions." +
-                                                            "wizards.authorizeAPIResource.fields.apiResource.label", {
-                                                            resourceText: resourceText
-                                                        })) }
-                                                        placeholder={ t("extensions:develop.applications.edit." +
-                                                            "sections.apiAuthorization.sections.apiSubscriptions." +
-                                                            "wizards.authorizeAPIResource.fields.apiResource." +
-                                                            "placeholder", {
-                                                            resourceText: resourceText
-                                                        }) }
-                                                        size="small"
-                                                        variant="outlined"
-                                                    />
+                                            ]
+                                        }
+                                    } }
+                                    data-componentid={ `${componentId}-api` }
+                                    getOptionLabel={ (apiResourcesListOption: DropdownProps) =>
+                                        apiResourcesListOption.text }
+                                    groupBy={ (apiResourcesListOption: DropdownItemProps) =>
+                                        APIResourceUtils
+                                            .resolveApiResourceGroup(apiResourcesListOption?.type) }
+                                    isOptionEqualToValue={
+                                        (option: DropdownItemProps, value: DropdownItemProps) =>
+                                            option.value === value.value
+                                    }
+                                    loading={ isAPIResourcesListLoading }
+                                    onOpen={ () => setIsDropdownOpen(true) }
+                                    onClose={ () => setIsDropdownOpen(false) }
+                                    renderOption={ (props: any, apiResourcesListOption: any) =>
+                                        (<div { ...props }>
+                                            <Header.Content>
+                                                { apiResourcesListOption.text }
+                                                { (
+                                                    apiResourcesListOption.type ===
+                                                        APIResourcesConstants.BUSINESS
+                                                    || apiResourcesListOption.type ===
+                                                        APIResourcesConstants.MCP
+                                                ) && (
+                                                    <Header.Subheader>
+                                                        <Code
+                                                            className="inline-code compact transparent"
+                                                            withBackground={ false }
+                                                        >
+                                                            { apiResourcesListOption?.identifier }
+                                                        </Code>
+                                                        <Label
+                                                            pointing="left"
+                                                            size="mini"
+                                                            className="client-id-label">
+                                                            { t("extensions:develop.apiResource.table." +
+                                                                "identifier.label", {
+                                                                resourceText: resourceText
+                                                            }) }
+                                                        </Label>
+                                                    </Header.Subheader>
                                                 ) }
-                                                key="apiResource"
-                                            />
-                                            { isApplicationEditEnforceAuthorizedAPIUpdatePermissionEnabled &&
+                                            </Header.Content>
+                                        </div>) }
+                                    options={ allAPIResourcesDropdownOptions
+                                        ?.filter((item: DropdownItemProps) =>
+                                            item?.type === APIResourceCategories.TENANT ||
+                                            item?.type === APIResourceCategories.ORGANIZATION ||
+                                            item?.type === APIResourceCategories.BUSINESS ||
+                                            (originalTemplateId === "mcp-client-application" &&
+                                                item?.type === APIResourceCategories.MCP)
+                                        ).sort((a: DropdownItemProps, b: DropdownItemProps) =>
+                                            APIResourceUtils.sortApiResourceTypes(a, b)
+                                        )
+                                    }
+                                    getOptionDisabled={ (apiResourcesListOption: DropdownItemProps) =>
+                                        apiResourcesListOption?.disabled }
+                                    onChange={ (
+                                        event: SyntheticEvent<HTMLElement>,
+                                        data: DropdownProps
+                                    ) => handleAPIResourceSelect(data) }
+                                    noOptionsText={ t("common:noResultsFound") }
+                                    renderInput={ (params: AutocompleteRenderInputParams) => (
+                                        <TextField
+                                            { ...params }
+                                            label={ startCase(t("extensions:develop.applications.edit." +
+                                                "sections.apiAuthorization.sections.apiSubscriptions." +
+                                                "wizards.authorizeAPIResource.fields.apiResource.label", {
+                                                resourceText: resourceText
+                                            })) }
+                                            placeholder={ t("extensions:develop.applications.edit." +
+                                                "sections.apiAuthorization.sections.apiSubscriptions." +
+                                                "wizards.authorizeAPIResource.fields.apiResource." +
+                                                "placeholder", {
+                                                resourceText: resourceText
+                                            }) }
+                                            size="small"
+                                            variant="outlined"
+                                        />
+                                    ) }
+                                    key="apiResource"
+                                />
+                                { isApplicationEditEnforceAuthorizedAPIUpdatePermissionEnabled &&
                                                 (!hasInternalAPIResourceAuthorizationPermission ||
                                                     !hasBusinessAPIResourceAuthorizationPermission
                                                 ) && (
-                                                <Hint warning>
-                                                    { t("applications:edit.sections.apiAuthorization." +
+                                    <Hint warning>
+                                        { t("applications:edit.sections.apiAuthorization." +
                                                         "limitedAccessMessage") }
-                                                </Hint>
-                                            ) }
-                                        </Grid.Row>
-                                        {
-                                            !isDigitalWallet && (
-                                                <Grid.Row>
-                                                    <Autocomplete
-                                                        disablePortal
-                                                        fullWidth
-                                                        multiple
-                                                        aria-label="Authorized scope selection"
-                                                className="pt-2"
-                                                componentsProps={ {
-                                                    paper: {
-                                                        elevation: 2
-                                                    },
-                                                    popper: {
-                                                        modifiers: [
-                                                            {
-                                                                enabled: false,
-                                                                name: "flip"
-                                                            },
-                                                            {
-                                                                enabled: false,
-                                                                name: "preventOverflow"
-                                                            }
-                                                        ]
-                                                    }
-                                                } }
-                                                data-componentid={ `${componentId}-scopes` }
-                                                disabled={
-                                                    !selectedAPIResource || isScopeSelectDropdownReady
+                                    </Hint>
+                                ) }
+                            </Grid.Row>
+                            <Grid.Row>
+                                <Autocomplete
+                                    disablePortal
+                                    fullWidth
+                                    multiple
+                                    aria-label="Authorized scope selection"
+                                    className="pt-2"
+                                    componentsProps={ {
+                                        paper: {
+                                            elevation: 2
+                                        },
+                                        popper: {
+                                            modifiers: [
+                                                {
+                                                    enabled: false,
+                                                    name: "flip"
+                                                },
+                                                {
+                                                    enabled: false,
+                                                    name: "preventOverflow"
                                                 }
-                                                getOptionLabel={ (scopesDropdownOption: DropdownProps) =>
-                                                    scopesDropdownOption?.text?.toString() }
-                                                isOptionEqualToValue={
-                                                    (option: DropdownItemProps, value: DropdownItemProps) =>
-                                                        option?.value === value?.value
-                                                }
-                                                loading={ isScopesDropdownLoading }
-                                                options={ scopesDropdownOptions }
-                                                onChange={ (
-                                                    event: SyntheticEvent<HTMLElement>,
-                                                    data: DropdownItemProps[]
-                                                ) => handleScopesDropdownChange(event, data) }
-                                                noOptionsText={ t("common:noResultsFound") }
-                                                renderInput={ (params: AutocompleteRenderInputParams) => (
-                                                    <TextField
-                                                        { ...params }
-                                                        label={ (
-                                                            <div
-                                                                className="authorized-scope-select-input"
-                                                            >
-                                                                <Typography
-                                                                    variant="subtitle1"
-                                                                >
-                                                                    { t("extensions:develop.applications" +
+                                            ]
+                                        }
+                                    } }
+                                    data-componentid={ `${componentId}-scopes` }
+                                    disabled={
+                                        !selectedAPIResource || isScopeSelectDropdownReady
+                                    }
+                                    getOptionLabel={ (scopesDropdownOption: DropdownProps) =>
+                                        scopesDropdownOption?.text?.toString() }
+                                    isOptionEqualToValue={
+                                        (option: DropdownItemProps, value: DropdownItemProps) =>
+                                            option?.value === value?.value
+                                    }
+                                    loading={ isScopesDropdownLoading }
+                                    options={ scopesDropdownOptions }
+                                    onChange={ (
+                                        event: SyntheticEvent<HTMLElement>,
+                                        data: DropdownItemProps[]
+                                    ) => handleScopesDropdownChange(event, data) }
+                                    noOptionsText={ t("common:noResultsFound") }
+                                    renderInput={ (params: AutocompleteRenderInputParams) => (
+                                        <TextField
+                                            { ...params }
+                                            label={ (
+                                                <div
+                                                    className="authorized-scope-select-input"
+                                                >
+                                                    <Typography
+                                                        variant="subtitle1"
+                                                    >
+                                                        { t("extensions:develop.applications" +
                                                                         ".edit.sections." +
                                                                         "apiAuthorization.sections.apiSubscriptions" +
                                                                         ".wizards.authorizeAPIResource.fields" +
                                                                         ".scopes.label", {
-                                                                        resourceText: resourceText
-                                                                    })
-                                                                    }
+                                                            resourceText: resourceText
+                                                        })
+                                                        }
+                                                    </Typography>
+                                                    {
+                                                        isScopeSelectDropdownReady
+                                                            ? (
+                                                                <Typography>
+                                                                    { t("common:loading") }
                                                                 </Typography>
-                                                                {
-                                                                    isScopeSelectDropdownReady
-                                                                        ? (
-                                                                            <Typography>
-                                                                                { t("common:loading") }
-                                                                            </Typography>
-                                                                        )
-                                                                        : (
-                                                                            <Text
-                                                                                className="mb-0"
-                                                                                muted
-                                                                                subHeading
-                                                                                size={ 12 }
-                                                                            >
-                                                                                <Button
-                                                                                    variant="text"
-                                                                                    size="small"
-                                                                                    disabled={
-                                                                                        !selectedAPIResource
+                                                            )
+                                                            : (
+                                                                <Text
+                                                                    className="mb-0"
+                                                                    muted
+                                                                    subHeading
+                                                                    size={ 12 }
+                                                                >
+                                                                    <Button
+                                                                        variant="text"
+                                                                        size="small"
+                                                                        disabled={
+                                                                            !selectedAPIResource
                                                                                         || isSelectAllHidden
-                                                                                    }
-                                                                                    onClick={
-                                                                                        () =>
-                                                                                            handleBulkDropdownChange(
-                                                                                                false
-                                                                                            )
-                                                                                    }
-                                                                                >
-                                                                                    {
-                                                                                        t("extensions:develop" +
+                                                                        }
+                                                                        onClick={
+                                                                            () =>
+                                                                                handleBulkDropdownChange(
+                                                                                    false
+                                                                                )
+                                                                        }
+                                                                    >
+                                                                        {
+                                                                            t("extensions:develop" +
                                                                                           ".applications.edit" +
                                                                                           ".sections.apiAuthorization" +
                                                                                           ".sections." +
                                                                                           "apiSubscriptions" +
                                                                                           ".scopesSection.selectAll")
-                                                                                    }
-                                                                                </Button>
+                                                                        }
+                                                                    </Button>
                                                                 |
-                                                                                <Button
-                                                                                    variant="text"
-                                                                                    size="small"
-                                                                                    disabled={
-                                                                                        !selectedAPIResource
+                                                                    <Button
+                                                                        variant="text"
+                                                                        size="small"
+                                                                        disabled={
+                                                                            !selectedAPIResource
                                                                                         || isSelectNoneHidden
-                                                                                    }
-                                                                                    onClick={
-                                                                                        () =>
-                                                                                            handleBulkDropdownChange(
-                                                                                                true
-                                                                                            )
-                                                                                    }
-                                                                                >
-                                                                                    {
-                                                                                        t("extensions:develop" +
+                                                                        }
+                                                                        onClick={
+                                                                            () =>
+                                                                                handleBulkDropdownChange(
+                                                                                    true
+                                                                                )
+                                                                        }
+                                                                    >
+                                                                        {
+                                                                            t("extensions:develop" +
                                                                                           ".applications.edit" +
                                                                                           ".sections" +
                                                                                           ".apiAuthorization.sections" +
                                                                                           ".apiSubscriptions." +
                                                                                           "scopesSection.selectNone")
-                                                                                    }
-                                                                                </Button>
-                                                                            </Text>)
-                                                                }
-                                                            </div>)
-                                                        }
-                                                        disabled={ !selectedAPIResource }
-                                                        size="small"
-                                                        variant="outlined"
-                                                    />
-                                                ) }
-                                                key="apiResource"
-                                                value={ authorizedScopes }
-                                            />
-                                            <Hint disabled={ !selectedAPIResource }>
-                                                { t("extensions:develop.applications.edit.sections." +
+                                                                        }
+                                                                    </Button>
+                                                                </Text>)
+                                                    }
+                                                </div>)
+                                            }
+                                            disabled={ !selectedAPIResource }
+                                            size="small"
+                                            variant="outlined"
+                                        />
+                                    ) }
+                                    key="scopes"
+                                    value={ authorizedScopes }
+                                />
+                                <Hint disabled={ !selectedAPIResource }>
+                                    { t("extensions:develop.applications.edit.sections." +
                                                     "apiAuthorization.sections.apiSubscriptions.wizards." +
                                                     "authorizeAPIResource.fields.scopes.hint", {
-                                                    resourceText: resourceText
-                                                }) }
-                                            </Hint>
-                                        </Grid.Row>
-                                            )
-                                        }
-                                        {
-                                            !m2mApplication && !isMCPClient && (
-                                                <Grid.Row columns={ 1 } className="pt-2">
-                                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
-                                                        <Autocomplete
-                                                            disablePortal
-                                                            fullWidth
-                                                            aria-label="Authorization policy selection"
-                                                            className="pt-2"
-                                                            componentsProps={ {
-                                                                paper: {
-                                                                    elevation: 2
-                                                                },
-                                                                popper: {
-                                                                    modifiers: [
-                                                                        {
-                                                                            enabled: false,
-                                                                            name: "flip"
-                                                                        },
-                                                                        {
-                                                                            enabled: false,
-                                                                            name: "preventOverflow"
-                                                                        }
-                                                                    ]
-                                                                }
-                                                            } }
-                                                            data-componentid={ `${componentId}-policy` }
-                                                            disabled={
-                                                                !selectedAPIResource
+                                        resourceText: resourceText
+                                    }) }
+                                </Hint>
+                            </Grid.Row>
+                            {
+                                !m2mApplication && originalTemplateId !== "mcp-client-application" && (
+                                    <Grid.Row columns={ 1 } className="pt-2">
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
+                                            <Autocomplete
+                                                disablePortal
+                                                fullWidth
+                                                aria-label="Authorization policy selection"
+                                                className="pt-2"
+                                                componentsProps={ {
+                                                    paper: {
+                                                        elevation: 2
+                                                    },
+                                                    popper: {
+                                                        modifiers: [
+                                                            {
+                                                                enabled: false,
+                                                                name: "flip"
+                                                            },
+                                                            {
+                                                                enabled: false,
+                                                                name: "preventOverflow"
+                                                            }
+                                                        ]
+                                                    }
+                                                } }
+                                                data-componentid={ `${componentId}-policy` }
+                                                disabled={
+                                                    !selectedAPIResource
                                                                 || selectedAPIResourceRequiresAuthorization
-                                                            }
-                                                            getOptionLabel={ (scopesDropdownOption: DropdownProps) =>
-                                                                scopesDropdownOption?.text?.toString() }
-                                                            isOptionEqualToValue={ (
-                                                                option: DropdownItemProps,
-                                                                value: Policy) =>
-                                                                option?.value === value
-                                                            }
-                                                            loading={ isPolicyDropdownLoading }
-                                                            options={ policyDropdownOptions }
-                                                            onChange={ (
-                                                                event: SyntheticEvent<HTMLElement>,
-                                                                data: DropdownItemProps
-                                                            ) => {
-                                                                setSelectedPolicy(data);
-                                                            } }
-                                                            noOptionsText={ t("common:noResultsFound") }
-                                                            renderInput={ (params: AutocompleteRenderInputParams) => (
-                                                                <TextField
-                                                                    { ...params }
-                                                                    label={ t(
-                                                                        "extensions:develop.applications." +
+                                                }
+                                                getOptionLabel={ (scopesDropdownOption: DropdownProps) =>
+                                                    scopesDropdownOption?.text?.toString() }
+                                                isOptionEqualToValue={ (
+                                                    option: DropdownItemProps,
+                                                    value: Policy) =>
+                                                    option?.value === value
+                                                }
+                                                loading={ isPolicyDropdownLoading }
+                                                options={ policyDropdownOptions }
+                                                onChange={ (
+                                                    event: SyntheticEvent<HTMLElement>,
+                                                    data: DropdownItemProps
+                                                ) => {
+                                                    setSelectedPolicy(data);
+                                                } }
+                                                noOptionsText={ t("common:noResultsFound") }
+                                                renderInput={ (params: AutocompleteRenderInputParams) => (
+                                                    <TextField
+                                                        { ...params }
+                                                        label={ t(
+                                                            "extensions:develop.applications." +
                                                                         "edit.sections.apiAuthorization." +
                                                                         "sections.apiSubscriptions.wizards." +
                                                                         "authorizeAPIResource.fields.policy" +
                                                                         ".label"
-                                                                    ) }
-                                                                    size="small"
-                                                                    variant="outlined"
-                                                                />
-                                                            ) }
-                                                            key="policy"
-                                                            defaultValue={ selectedPolicy }
-                                                        />
-                                                        <Hint
-                                                            className="mb-1"
-                                                            disabled={
-                                                                !selectedAPIResource
+                                                        ) }
+                                                        size="small"
+                                                        variant="outlined"
+                                                    />
+                                                ) }
+                                                key="policy"
+                                                value={ selectedPolicy }
+                                            />
+                                            <Hint
+                                                className="mb-1"
+                                                disabled={
+                                                    !selectedAPIResource
                                                                 || selectedAPIResourceRequiresAuthorization
-                                                            }
-                                                        >
-                                                            {
-                                                                t(
-                                                                    "extensions:develop.applications.edit.sections." +
+                                                }
+                                            >
+                                                {
+                                                    t(
+                                                        "extensions:develop.applications.edit.sections." +
                                                                     "apiAuthorization.sections.apiSubscriptions." +
                                                                     "wizards.authorizeAPIResource.fields.policy.hint"
-                                                                )
-                                                            }
-                                                        </Hint>
-                                                    </Grid.Column>
-                                                </Grid.Row>
-                                            )
-                                        }
-                                        { /* Need to add doc links to the following content of the message box */ }
-                                        {
-                                            !m2mApplication
+                                                    )
+                                                }
+                                            </Hint>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                )
+                            }
+                            { /* Need to add doc links to the following content of the message box */ }
+                            {
+                                !m2mApplication
                                             && selectedAPIResource
                                             && selectedPolicy
                                             && (
@@ -846,28 +831,26 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                                     </Grid.Column>
                                                 </Grid.Row>
                                             )
-                                        }
-                                        {
-                                            m2mApplication && (
-                                                <Grid.Row columns={ 1 } className="pt-0">
-                                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
-                                                        <Alert severity="info">
-                                                            {
-                                                                t(
-                                                                    "applications:edit." +
+                            }
+                            {
+                                m2mApplication && (
+                                    <Grid.Row columns={ 1 } className="pt-0">
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
+                                            <Alert severity="info">
+                                                {
+                                                    t(
+                                                        "applications:edit." +
                                                                     "sections.apiAuthorization.m2mPolicyMessage"
-                                                                )
-                                                            }
-                                                        </Alert>
-                                                    </Grid.Column>
-                                                </Grid.Row>
-                                            )
-                                        }
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                        )
-                }
+                                                    )
+                                                }
+                                            </Alert>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                )
+                            }
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
             </Modal.Content>
             <Modal.Actions>
                 <Grid>
