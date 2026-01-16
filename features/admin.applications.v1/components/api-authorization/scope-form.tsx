@@ -104,8 +104,7 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
-    const isDigitalWallet: boolean = originalTemplateId === "digital-wallet-application" ||
-    templateId === "digital-wallet-application";
+    const isDigitalWallet: boolean = originalTemplateId === "digital-wallet-application";
 
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ isUpdateButtonDisabled, setIsUpdateButtonDisabled ] = useState<boolean>(true);
@@ -380,144 +379,144 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
         setIsUpdateButtonDisabled(true);
     };
 
+    if (isDigitalWallet) {
+        return null;
+    }
+
     return (
-        <>
-            { !isDigitalWallet && (
-                <EmphasizedSegment padded="very">
-                    {
-                        showPlaceHolders
-                            ? getPlaceholders()
-                            : (
-                                <Grid>
-                                    <Grid.Row columns={ 1 }>
-                                        <Grid.Column>
-                                            <Form>
-                                                <Form.Field>
-                                                    <Grid>
-                                                        <Grid.Row columns={ 2 }>
-                                                            <Grid.Column
-                                                                className="pb-1"
-                                                                floated="left"
-                                                                stretched
-                                                                verticalAlign="bottom"
-                                                            >
-                                                                <label>
-                                                                    { t("extensions:develop.applications.edit.sections." +
+        <EmphasizedSegment padded="very">
+            {
+                showPlaceHolders
+                    ? getPlaceholders()
+                    : (
+                        <Grid>
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column>
+                                    <Form>
+                                        <Form.Field>
+                                            <Grid>
+                                                <Grid.Row columns={ 2 }>
+                                                    <Grid.Column
+                                                        className="pb-1"
+                                                        floated="left"
+                                                        stretched
+                                                        verticalAlign="bottom"
+                                                    >
+                                                        <label>
+                                                            { t("extensions:develop.applications.edit.sections." +
                                                                 "apiAuthorization.sections.apiSubscriptions." +
                                                                 "scopesSection.label" ) }
-                                                                </label>
-                                                            </Grid.Column>
-                                                            <Grid.Column floated="right" textAlign="right">
-                                                                {
-                                                                    isScopesAvailableForUpdate && (
-                                                                        <Text className="mb-0" muted subHeading size={ 12 }>
-                                                                            <Button
-                                                                                variant="text"
-                                                                                size="small"
-                                                                                tabIndex={ 6 }
-                                                                                disabled={ isSelectAllDisabled }
-                                                                                onClick={ () =>
-                                                                                    handleBulkDropdownChange(
-                                                                                        currentAPIResourceScopeListData
-                                                                                            ? currentAPIResourceScopeListData
-                                                                                            : [],
-                                                                                        false ) }
-                                                                            >
-                                                                                {
-                                                                                    t("extensions:develop.applications.edit." +
+                                                        </label>
+                                                    </Grid.Column>
+                                                    <Grid.Column floated="right" textAlign="right">
+                                                        {
+                                                            isScopesAvailableForUpdate && (
+                                                                <Text className="mb-0" muted subHeading size={ 12 }>
+                                                                    <Button
+                                                                        variant="text"
+                                                                        size="small"
+                                                                        tabIndex={ 6 }
+                                                                        disabled={ isSelectAllDisabled }
+                                                                        onClick={ () =>
+                                                                            handleBulkDropdownChange(
+                                                                                currentAPIResourceScopeListData
+                                                                                    ? currentAPIResourceScopeListData
+                                                                                    : [],
+                                                                                false ) }
+                                                                    >
+                                                                        {
+                                                                            t("extensions:develop.applications.edit." +
                                                                             "sections.apiAuthorization.sections." +
                                                                             "apiSubscriptions.scopesSection.selectAll" )
-                                                                                }
-                                                                            </Button>
+                                                                        }
+                                                                    </Button>
                                                                     |
-                                                                            <Button
-                                                                                variant="text"
-                                                                                size="small"
-                                                                                tabIndex={ 7 }
-                                                                                disabled={ isSelectNoneDisabled }
-                                                                                onClick={ () =>
-                                                                                    handleBulkDropdownChange(
-                                                                                        currentAPIResourceScopeListData
-                                                                                            ? currentAPIResourceScopeListData
-                                                                                            : [],
-                                                                                        true ) }
-                                                                            >
-                                                                                {
-                                                                                    t("extensions:develop.applications.edit." +
+                                                                    <Button
+                                                                        variant="text"
+                                                                        size="small"
+                                                                        tabIndex={ 7 }
+                                                                        disabled={ isSelectNoneDisabled }
+                                                                        onClick={ () =>
+                                                                            handleBulkDropdownChange(
+                                                                                currentAPIResourceScopeListData
+                                                                                    ? currentAPIResourceScopeListData
+                                                                                    : [],
+                                                                                true ) }
+                                                                    >
+                                                                        {
+                                                                            t("extensions:develop.applications.edit." +
                                                                             "sections.apiAuthorization.sections." +
                                                                             "apiSubscriptions.scopesSection." +
                                                                             "selectNone" )
-                                                                                }
-                                                                            </Button>
-                                                                        </Text>
-                                                                    )
-                                                                }
-                                                            </Grid.Column>
-                                                        </Grid.Row>
-                                                    </Grid>
-                                                    <Dropdown
-                                                        placeholder={ t("extensions:develop.applications.edit.sections." +
+                                                                        }
+                                                                    </Button>
+                                                                </Text>
+                                                            )
+                                                        }
+                                                    </Grid.Column>
+                                                </Grid.Row>
+                                            </Grid>
+                                            <Dropdown
+                                                placeholder={ t("extensions:develop.applications.edit.sections." +
                                                     "apiAuthorization.sections.apiSubscriptions.scopesSection." +
                                                     "placeholder") }
-                                                        fluid
-                                                        multiple
-                                                        search
-                                                        selection
-                                                        options={
-                                                            dropdownOptions
-                                                                ? dropdownOptions
-                                                                : []
-                                                        }
-                                                        defaultValue={ defaultDropdownValues }
-                                                        value={ selectedScopes }
-                                                        onChange={ handleDropdownChange }
-                                                        disabled={ !isScopesAvailableForUpdate }
-                                                    />
-                                                    <Hint>
-                                                        { t("extensions:develop.applications.edit.sections." +
+                                                fluid
+                                                multiple
+                                                search
+                                                selection
+                                                options={
+                                                    dropdownOptions
+                                                        ? dropdownOptions
+                                                        : []
+                                                }
+                                                defaultValue={ defaultDropdownValues }
+                                                value={ selectedScopes }
+                                                onChange={ handleDropdownChange }
+                                                disabled={ !isScopesAvailableForUpdate }
+                                            />
+                                            <Hint>
+                                                { t("extensions:develop.applications.edit.sections." +
                                                     "apiAuthorization.sections.apiSubscriptions.scopesSection." +
                                                     "hint") }
-                                                    </Hint>
-                                                </Form.Field>
-                                            </Form>
+                                            </Hint>
+                                        </Form.Field>
+                                    </Form>
+                                </Grid.Column>
+                            </Grid.Row>
+                            {
+                                isScopesAvailableForUpdate && (
+                                    <Grid.Row>
+                                        <Grid.Column floated="left">
+                                            <LinkButton
+                                                size="small"
+                                                floated="left"
+                                                tabIndex={ 8 }
+                                                onClick={ resetDropdown }
+                                                data-componentid={ `${componentId}-cancel-btn` }
+                                                disabled={ isUpdateButtonDisabled }
+                                            >
+                                                { t("common:cancel") }
+                                            </LinkButton>
+
+                                            <PrimaryButton
+                                                size="small"
+                                                floated="right"
+                                                tabIndex={ 9 }
+                                                onClick={ updateScopesOfAPIResource }
+                                                data-componentid={ `${componentId}-update-btn` }
+                                                disabled={ isUpdateButtonDisabled }
+                                            >
+                                                { t("extensions:develop.applications.edit.sections.apiAuthorization." +
+                                                    "sections.policySection.buttons.update") }
+                                            </PrimaryButton>
                                         </Grid.Column>
                                     </Grid.Row>
-                                    {
-                                        isScopesAvailableForUpdate && (
-                                            <Grid.Row>
-                                                <Grid.Column floated="left">
-                                                    <LinkButton
-                                                        size="small"
-                                                        floated="left"
-                                                        tabIndex={ 8 }
-                                                        onClick={ resetDropdown }
-                                                        data-componentid={ `${componentId}-cancel-btn` }
-                                                        disabled={ isUpdateButtonDisabled }
-                                                    >
-                                                        { t("common:cancel") }
-                                                    </LinkButton>
-
-                                                    <PrimaryButton
-                                                        size="small"
-                                                        floated="right"
-                                                        tabIndex={ 9 }
-                                                        onClick={ updateScopesOfAPIResource }
-                                                        data-componentid={ `${componentId}-update-btn` }
-                                                        disabled={ isUpdateButtonDisabled }
-                                                    >
-                                                        { t("extensions:develop.applications.edit.sections.apiAuthorization." +
-                                                    "sections.policySection.buttons.update") }
-                                                    </PrimaryButton>
-                                                </Grid.Column>
-                                            </Grid.Row>
-                                        )
-                                    }
-                                </Grid>
-                            )
-                    }
-                </EmphasizedSegment>
-            ) }
-        </>
+                                )
+                            }
+                        </Grid>
+                    )
+            }
+        </EmphasizedSegment>
     );
 };
 

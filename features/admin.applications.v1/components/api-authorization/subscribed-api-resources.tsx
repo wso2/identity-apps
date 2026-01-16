@@ -148,8 +148,7 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
 
     const { t } = useTranslation();
 
-    const isDigitalWallet: boolean = originalTemplateId === "digital-wallet-application" || 
-        templateId === "digital-wallet-application";
+    const isDigitalWallet: boolean = originalTemplateId === "digital-wallet-application";
     const isMCPClient: boolean = originalTemplateId === "mcp-client-application";
     const resourceText: string = isMCPClient
         ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.genericResource")

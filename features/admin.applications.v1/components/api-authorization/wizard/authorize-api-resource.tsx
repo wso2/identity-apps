@@ -99,8 +99,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
     const dispatch: Dispatch = useDispatch();
     const { getLink } = useDocumentation();
 
-    const isDigitalWallet: boolean = originalTemplateId === "digital-wallet-application" ||
-        templateId === "digital-wallet-application";
+    const isDigitalWallet: boolean = originalTemplateId === "digital-wallet-application";
     const isMCPClient: boolean = originalTemplateId === "mcp-client-application";
 
     const resourceText: string = isMCPClient
