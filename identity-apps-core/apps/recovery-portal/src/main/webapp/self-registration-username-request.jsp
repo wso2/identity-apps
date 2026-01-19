@@ -896,7 +896,7 @@
                                    value="<%=value%>" class="form-control">
                         </div>
                         <% } %>
-                        <input type="hidden" name="http://wso2.org/claims/identity/profileId" value="<%= cdsProfileCookie != null ? cdsProfileCookie : "" %>">
+                        <input type="hidden" name="http://wso2.org/claims/identity/cdsProfile" value="<%= cdsProfileCookie != null ? cdsProfileCookie : "" %>">
 
                         <div id="password-validation-block">
                             <div id="length-block" class="password-policy-description mb-2" style="display: none;">

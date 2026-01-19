@@ -331,10 +331,10 @@
         }
 
         // After existing claim population loop
-        String cdsProfileCookie = request.getParameter("http://wso2.org/claims/identity/profileId");
+        String cdsProfileCookie = request.getParameter("http://wso2.org/claims/identity/cdsProfile");
         if (StringUtils.isNotBlank(cdsProfileCookie)) {
             Claim profileIdClaim = new Claim();
-            profileIdClaim.setUri("http://wso2.org/claims/identity/profileId");
+            profileIdClaim.setUri("http://wso2.org/claims/identity/cdsProfile");
             profileIdClaim.setValue(cdsProfileCookie);
             userClaimList.add(profileIdClaim);
         }
