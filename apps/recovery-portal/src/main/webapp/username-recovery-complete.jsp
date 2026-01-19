@@ -17,6 +17,7 @@
   --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.CallBackValidator" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.IdentityRecoveryException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
@@ -121,7 +122,7 @@
                 onHide: function () {
                     <%
                     try {
-                        if (callback != null) {
+                        if (callback != null && AuthenticationEndpointUtil.isSchemeSafeURL(callback)) {
                     %>
                     location.href = "<%= IdentityManagementEndpointUtil.getURLEncodedCallback(callback)%>";
                     <%
