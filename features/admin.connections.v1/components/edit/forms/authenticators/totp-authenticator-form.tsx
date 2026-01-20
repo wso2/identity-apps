@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,7 +18,6 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
-
 import isBoolean from "lodash-es/isBoolean";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -53,19 +52,6 @@ interface TOTPAuthenticatorFormPropsInterface extends TestableComponentInterface
      * Is readonly.
      */
     readOnly?: boolean;
-    /**
-     * Flag to trigger form submit externally.
-     */
-    triggerSubmit: boolean;
-    /**
-     * Flag to enable/disable form submit button.
-     */
-    enableSubmitButton: boolean;
-    /**
-     * Flag to show/hide custom properties.
-     * @remarks Not implemented ATM. Do this when needed.
-     */
-    showCustomProperties: boolean;
     /**
      * Specifies if the form is submitting.
      */
@@ -181,12 +167,12 @@ export const TOTPAuthenticatorForm: FunctionComponent<TOTPAuthenticatorFormProps
         const properties: CommonPluggableComponentPropertyInterface[] = [];
 
         for (const [ name, value ] of Object.entries(values)) {
-            if (name != undefined) {
+            if (name !== undefined) {
                 const moderatedName: string = name.replace(/_/g, ".");
 
                 properties.push({
                     name: moderatedName,
-                    value: isBoolean(value) ? value.toString() : value.toString()
+                    value: value.toString()                
                 });
             }
         }
@@ -218,7 +204,7 @@ export const TOTPAuthenticatorForm: FunctionComponent<TOTPAuthenticatorFormProps
         <Form
             id={ FORM_ID }
             uncontrolledForm={ false }
-            onSubmit={ (values: Record<string, any>) =>{
+            onSubmit={ (values: Record<string, any>) => {
                 onSubmit(getUpdatedConfigurations(values as TOTPAuthenticatorFormInitialValuesInterface));
             } }
             initialValues={ initialValues }
@@ -263,6 +249,5 @@ export const TOTPAuthenticatorForm: FunctionComponent<TOTPAuthenticatorFormProps
  * Default props for the component.
  */
 TOTPAuthenticatorForm.defaultProps = {
-    "data-testid": "totp-authenticator-form",
-    enableSubmitButton: true
+    "data-testid": "totp-authenticator-form"
 };
