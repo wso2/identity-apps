@@ -94,6 +94,10 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
+    const isVcFeatureEnabled: boolean = useSelector((state: AppState) => {
+        return state.config.ui.features.verifiableCredentials?.enabled;
+    });
+
     /**
      * Fetch the custom inbound protocols.
      */
@@ -183,8 +187,6 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
      * @returns Filtered application templates list.
      */
     const removeIrrelevantTemplates = (templates: ExtensionTemplateListInterface[]) => {
-        const isVcFeatureEnabled: boolean =
-            window["AppUtils"]?.getConfig()?.ui?.features?.verifiableCredentials?.enabled;
         let removingApplicationTemplateIds: string[] = [];
 
         // Remove custom protocol application templates if there are no custom inbound protocols.
@@ -194,7 +196,7 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
 
         // Remove Digital Wallet template if VC feature is not enabled.
         if (!isVcFeatureEnabled) {
-            removingApplicationTemplateIds.push("digital-wallet-application");
+            removingApplicationTemplateIds.push(ApplicationTemplateConstants.DIGITAL_WALLET_APPLICATION);
         }
 
         // Remove hidden application templates based on the UI config.

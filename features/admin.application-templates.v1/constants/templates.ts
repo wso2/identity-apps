@@ -77,4 +77,6 @@ export class ApplicationTemplateConstants {
         "m2m-application",
         "custom-application"
     ];
+
+    public static readonly DIGITAL_WALLET_APPLICATION: string = "digital-wallet-application";
 }
