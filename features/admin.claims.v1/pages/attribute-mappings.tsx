@@ -188,9 +188,7 @@ export const AttributeMappings: FunctionComponent<RouteChildrenProps<AttributeMa
                         "claims:attributeMappings.scim.heading"
                     );
                 case ClaimManagementConstants.VC:
-                    return t(
-                        "claims:attributeMappings.vc.heading"
-                    );
+                    return t("claims:attributeMappings.vc.heading");
                 case ClaimManagementConstants.AXSCHEMA:
                     return t(
                         "claims:attributeMappings.axschema.heading"
