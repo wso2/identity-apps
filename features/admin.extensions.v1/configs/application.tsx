@@ -245,8 +245,8 @@ export const applicationConfig: ApplicationConfig = {
                             ? I18n.instance.t(
                                 "extensions:develop.applications.edit.sections.resourceAuthorization.title"
                             )
-                            : (application?.originalTemplateId === ApplicationTemplateIdTypes.DIGITAL_WALLET_APPLICATION ||
-                                application?.templateId === ApplicationTemplateIdTypes.DIGITAL_WALLET_APPLICATION)
+                            : (application?.originalTemplateId
+                                === ApplicationTemplateIdTypes.DIGITAL_WALLET_APPLICATION)
                                 ? I18n.instance.t(
                                     "extensions:develop.applications.edit.sections.resourceAuthorization.title"
                                 )
@@ -466,6 +466,10 @@ export const applicationConfig: ApplicationConfig = {
                 ApplicationManagementConstants.JWT_BEARER,
                 ApplicationManagementConstants.IWA_NTLM
             ],
+        [ "digital-wallet-application" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT
+        ],
         [ "m2m-application" ]: [
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
         ],
@@ -473,10 +477,6 @@ export const applicationConfig: ApplicationConfig = {
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
-        ],
-        [ "digital-wallet-application" ]: [
-            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT
         ],
         [ "mobile-application" ]: [
             ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,

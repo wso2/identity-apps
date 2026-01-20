@@ -422,7 +422,6 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
         ReactElement => (
         <ScopeForm
             appId={ appId }
-            templateId={ templateId }
             originalTemplateId={ originalTemplateId }
             subscribedAPIResource={ subscribedAPIResource }
             isScopesAvailableForUpdate={ isScopesAvailableForUpdate }
@@ -501,11 +500,10 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
                                                     ? t("extensions:develop.applications.edit.sections.apiAuthorization"
                                                         + ".resourceText.genericResource")
                                                     : isDigitalWallet
-                                                        ? t("extensions:develop.applications.edit.sections.apiAuthorization"
-                                                            + ".resourceText.vcResource")
-                                                        : t("extensions:develop.applications.edit.sections.apiAuthorization"
-                                                            + ".resourceText.apiResource")
-
+                                                        ? t("extensions:develop.applications.edit.sections" +
+                                                            ".apiAuthorization.resourceText.vcResource")
+                                                        : t("extensions:develop.applications.edit.sections" +
+                                                            ".apiAuthorization.resourceText.apiResource")
                                             }) }
                                             floated="right"
                                             size="small"
@@ -530,7 +528,8 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
                                                                     data-componentid={
                                                                         `${componentId}-title`
                                                                     }
-                                                                    active={ activeSubscribedAPIResource
+                                                                    active={ !isDigitalWallet &&
+                                                                        activeSubscribedAPIResource
                                                                         === subscribedAPIResource.id }
                                                                     accordionIndex={ subscribedAPIResource.id }
                                                                     onClick={ () =>
@@ -546,7 +545,8 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
                                                                     }
                                                                 />
                                                                 <SegmentedAccordion.Content
-                                                                    active={ activeSubscribedAPIResource
+                                                                    active={ !isDigitalWallet &&
+                                                                        activeSubscribedAPIResource
                                                                         === subscribedAPIResource.id }
                                                                     data-componentid={
                                                                         `${componentId}-${subscribedAPIResource.id}

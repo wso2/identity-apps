@@ -50,10 +50,6 @@ interface ScopeFormInterface extends
      */
     appId: string;
     /**
-     * Template ID.
-     */
-    templateId?: string;
-    /**
      * Original Template ID.
      */
     originalTemplateId?: string;
@@ -91,7 +87,6 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
 
     const {
         appId,
-        templateId,
         originalTemplateId,
         subscribedAPIResource,
         isScopesAvailableForUpdate,
