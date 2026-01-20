@@ -1,5 +1,26 @@
 # @wso2is/admin.core.v1
 
+## 2.49.128
+
+### Patch Changes
+
+- [#9551](https://github.com/wso2/identity-apps/pull/9551) [`e55860bfd704400196f590ad8153a8abe795a803`](https://github.com/wso2/identity-apps/commit/e55860bfd704400196f590ad8153a8abe795a803) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add VC claims UI
+
+- Updated dependencies [[`e55860bfd704400196f590ad8153a8abe795a803`](https://github.com/wso2/identity-apps/commit/e55860bfd704400196f590ad8153a8abe795a803), [`69bd0fae1c4407b03856f4d2ff8607b3bf026940`](https://github.com/wso2/identity-apps/commit/69bd0fae1c4407b03856f4d2ff8607b3bf026940)]:
+  - @wso2is/admin.claims.v1@2.30.1
+  - @wso2is/i18n@2.31.6
+  - @wso2is/admin.flow-builder-core.v1@0.10.120
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.120
+  - @wso2is/admin.branding.v1@2.32.76
+  - @wso2is/admin.email-management.v1@2.25.284
+  - @wso2is/admin.flows.v1@1.0.89
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.120
+  - @wso2is/admin.server-configurations.v1@2.35.142
+  - @wso2is/admin.users.v1@2.36.95
+  - @wso2is/admin.registration-flow-builder.v1@0.10.80
+  - @wso2is/admin.agents.v1@1.0.135
+  - @wso2is/admin.roles.v2@2.27.290
+
 ## 2.49.127
 
 ### Patch Changes
