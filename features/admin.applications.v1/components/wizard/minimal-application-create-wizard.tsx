@@ -1186,7 +1186,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         && (isFirstLevelOrg || window[ "AppUtils" ].getConfig().organizationName)
                         && orgType !== OrganizationType.SUBORGANIZATION
                         && template?.id !== ApplicationTemplateIdTypes.M2M_APPLICATION
-                        && template?.id !== ApplicationTemplateIdTypes.DIGITAL_WALLET_APPLICATION
                         && !isClientSecretHashEnabled
                         && (
                             <Show
@@ -1221,7 +1220,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         && isAgentManagementEnabledForOrg
                         && orgType !== OrganizationType.SUBORGANIZATION
                         && template?.id !== ApplicationTemplateIdTypes.M2M_APPLICATION
-                        && template?.id !== ApplicationTemplateIdTypes.DIGITAL_WALLET_APPLICATION
                         && (
                             selectedTemplate.authenticationProtocol === SupportedAuthProtocolTypes.OIDC ||
                             selectedTemplate.authenticationProtocol === SupportedAuthProtocolTypes.OAUTH2_OIDC ||
