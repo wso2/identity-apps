@@ -534,7 +534,10 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                             }
                                             // For MCP client apps, show MCP type resources along with others
                                             if (isMCPClient) {
-                                                return item?.type === APIResourceCategories.MCP;
+                                                return item?.type === APIResourceCategories.MCP ||
+                                                    item?.type === APIResourceCategories.TENANT ||
+                                                    item?.type === APIResourceCategories.ORGANIZATION ||
+                                                    item?.type === APIResourceCategories.BUSINESS;
                                             }
 
                                             // For other apps, show standard types
