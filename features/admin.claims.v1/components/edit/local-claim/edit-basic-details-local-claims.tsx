@@ -226,6 +226,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     const { UIConfig } = useUIConfig();
 
+    const enableLegacyFlows: boolean = UIConfig?.flowExecution?.enableLegacyFlows ?? true;
+
     const isAgentAttribute: boolean = useMemo(() => {
         const agentAttributeProperty: Property = claim?.properties?.find(
             (property: Property) => property.key === "isAgentClaim"
@@ -811,17 +813,19 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             (isEndUserRequired || !!values.endUserSupportedByDefault)
                             : claim?.profiles?.endUser?.supportedByDefault
                     },
-                    selfRegistration: {
-                        readOnly: values?.selfRegistrationReadOnly !== undefined
-                            ? !!values.selfRegistrationReadOnly
-                            : claim?.profiles?.selfRegistration?.readOnly,
-                        required: values?.selfRegistrationRequired !== undefined ?
-                            !!values.selfRegistrationRequired
-                            : claim?.profiles?.selfRegistration?.required,
-                        supportedByDefault: values?.selfRegistrationSupportedByDefault !== undefined ?
-                            (isSelfRegistrationRequired || !!values.selfRegistrationSupportedByDefault)
-                            : claim?.profiles?.selfRegistration?.supportedByDefault
-                    }
+                    ...(enableLegacyFlows && {
+                        selfRegistration: {
+                            readOnly: values?.selfRegistrationReadOnly !== undefined
+                                ? !!values.selfRegistrationReadOnly
+                                : claim?.profiles?.selfRegistration?.readOnly,
+                            required: values?.selfRegistrationRequired !== undefined ?
+                                !!values.selfRegistrationRequired
+                                : claim?.profiles?.selfRegistration?.required,
+                            supportedByDefault: values?.selfRegistrationSupportedByDefault !== undefined ?
+                                (isSelfRegistrationRequired || !!values.selfRegistrationSupportedByDefault)
+                                : claim?.profiles?.selfRegistration?.supportedByDefault
+                        }
+                    })
                 },
                 properties: claim?.properties,
                 readOnly: values?.readOnly !== undefined ? !!values.readOnly : claim?.readOnly,
@@ -959,24 +963,26 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         }
                     />
                 </TableCell>
-                <TableCell align="center">
-                    <Field.Checkbox
-                        ariaLabel="Display by default in self-registration"
-                        name="selfRegistrationSupportedByDefault"
-                        defaultValue={ claim?.profiles?.selfRegistration?.supportedByDefault ??
-                            claim?.supportedByDefault }
-                        data-componentid={
-                            `${ testId }-form-self-registration-supported-by-default-checkbox` }
-                        readOnly={ isSupportedByDefaultCheckboxDisabled() }
-                        {
-                            ...( isSelfRegistrationRequired
-                                ? { checked: true }
-                                : { defaultValue: claim?.profiles?.selfRegistration?.supportedByDefault ??
-                                    claim?.supportedByDefault }
-                            )
-                        }
-                    />
-                </TableCell>
+                { enableLegacyFlows && (
+                    <TableCell align="center">
+                        <Field.Checkbox
+                            ariaLabel="Display by default in self-registration"
+                            name="selfRegistrationSupportedByDefault"
+                            defaultValue={ claim?.profiles?.selfRegistration?.supportedByDefault ??
+                                claim?.supportedByDefault }
+                            data-componentid={
+                                `${ testId }-form-self-registration-supported-by-default-checkbox` }
+                            readOnly={ isSupportedByDefaultCheckboxDisabled() }
+                            {
+                                ...( isSelfRegistrationRequired
+                                    ? { checked: true }
+                                    : { defaultValue: claim?.profiles?.selfRegistration?.supportedByDefault ??
+                                        claim?.supportedByDefault }
+                                )
+                            }
+                        />
+                    </TableCell>
+                ) }
             </TableRow>
         );
     };
@@ -1147,24 +1153,26 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         }
                     />
                 </TableCell>
-                <TableCell align="center">
-                    <Field.Checkbox
-                        ariaLabel="Required in self-registration"
-                        name="selfRegistrationRequired"
-                        defaultValue={ claim?.profiles?.selfRegistration?.required ?? claim?.required }
-                        data-componentid={ `${ testId }-form-self-registration-required-checkbox` }
-                        readOnly={ isRequiredCheckboxDisabled || isSelfRegistrationReadOnly }
-                        listen ={ (value: boolean) => {
-                            setIsSelfRegistrationRequired(value);
-                        } }
-                        {
-                            ...( isSelfRegistrationReadOnly
-                                ? { value: false }
-                                : { defaultValue: claim?.profiles?.selfRegistration?.required ?? claim?.required }
-                            )
-                        }
-                    />
-                </TableCell>
+                { enableLegacyFlows && (
+                    <TableCell align="center">
+                        <Field.Checkbox
+                            ariaLabel="Required in self-registration"
+                            name="selfRegistrationRequired"
+                            defaultValue={ claim?.profiles?.selfRegistration?.required ?? claim?.required }
+                            data-componentid={ `${ testId }-form-self-registration-required-checkbox` }
+                            readOnly={ isRequiredCheckboxDisabled || isSelfRegistrationReadOnly }
+                            listen ={ (value: boolean) => {
+                                setIsSelfRegistrationRequired(value);
+                            } }
+                            {
+                                ...( isSelfRegistrationReadOnly
+                                    ? { value: false }
+                                    : { defaultValue: claim?.profiles?.selfRegistration?.required ?? claim?.required }
+                                )
+                            }
+                        />
+                    </TableCell>
+                ) }
             </TableRow>
         );
     };
@@ -1211,26 +1219,28 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         } }
                     />
                 </TableCell>
-                <TableCell align="center">
-                    <Tooltip
-                        trigger={ (
-                            <Field.Checkbox
-                                ariaLabel="Read-only in self-registration"
-                                name="selfRegistrationReadOnly"
-                                defaultValue={ claim?.profiles?.selfRegistration?.readOnly ?? claim?.readOnly }
-                                data-componentid={ `${ testId }-form-self-registration-readOnly-checkbox` }
-                                listen ={ (value: boolean) => {
-                                    setIsSelfRegistrationReadOnly(value);
-                                } }
-                                readOnly
-                            />
-                        ) }
-                        content={
-                            t("claims:local.forms.profiles.selfRegistrationReadOnlyHint")
-                        }
-                        compact
-                    />
-                </TableCell>
+                { enableLegacyFlows && (
+                    <TableCell align="center">
+                        <Tooltip
+                            trigger={ (
+                                <Field.Checkbox
+                                    ariaLabel="Read-only in self-registration"
+                                    name="selfRegistrationReadOnly"
+                                    defaultValue={ claim?.profiles?.selfRegistration?.readOnly ?? claim?.readOnly }
+                                    data-componentid={ `${ testId }-form-self-registration-readOnly-checkbox` }
+                                    listen ={ (value: boolean) => {
+                                        setIsSelfRegistrationReadOnly(value);
+                                    } }
+                                    readOnly
+                                />
+                            ) }
+                            content={
+                                t("claims:local.forms.profiles.selfRegistrationReadOnlyHint")
+                            }
+                            compact
+                        />
+                    </TableCell>
+                ) }
             </TableRow>
         );
     };
@@ -1831,9 +1841,11 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                                 <TableCell align="center">
                                                     { t("claims:local.forms.profiles.endUserProfile") }
                                                 </TableCell>
-                                                <TableCell align="center">
-                                                    { t("claims:local.forms.profiles.selfRegistration") }
-                                                </TableCell>
+                                                { enableLegacyFlows && (
+                                                    <TableCell align="center">
+                                                        { t("claims:local.forms.profiles.selfRegistration") }
+                                                    </TableCell>
+                                                ) }
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
