@@ -48,8 +48,7 @@ export const claims: ClaimsNS = {
             heading: "SCIM 2.0"
         },
         vc: {
-            description: "The Verifiable Credentials representation for user "
-                + "attributes.",
+            description: "The Verifiable Credentials representation for user attributes.",
             heading: "Verifiable Credentials"
         }
     },
