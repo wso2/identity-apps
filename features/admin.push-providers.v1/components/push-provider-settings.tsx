@@ -23,7 +23,7 @@ import { ExtensionTemplateCommonInterface } from "@wso2is/admin.template-core.v1
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { PushProviderAPIInterface, PushProviderPropertiesInterface } from "../models/push-providers";
+import { PushProviderAddAPIInterface, PushProviderPropertiesInterface, PushProviderUpdateAPIInterface } from "../models/push-providers";
 import { PushProviderTemplateInterface, PushProviderTemplateMetadataInterface } from "../models/templates";
 
 /**
@@ -34,7 +34,7 @@ interface PushProviderSettingsPropsInterface extends IdentifiableComponentInterf
     /**
      * Push Provider interface
      */
-    pushProvider: PushProviderAPIInterface;
+    pushProvider: PushProviderAddAPIInterface;
 
     /**
      * Push Provider template info
@@ -64,12 +64,12 @@ interface PushProviderSettingsPropsInterface extends IdentifiableComponentInterf
     /**
      * Callback to update the push provider
      */
-    handleUpdate: (data: PushProviderAPIInterface, callback?: () => void) => void;
+    handleUpdate: (data: PushProviderUpdateAPIInterface, callback?: () => void) => void;
 
     /**
      * Callback to create the push provider
      */
-    handleCreate: (data: PushProviderAPIInterface, callback?: () => void) => void;
+    handleCreate: (data: PushProviderAddAPIInterface, callback?: () => void) => void;
 }
 
 export const PushProviderSettings: FunctionComponent<PushProviderSettingsPropsInterface> = (
@@ -80,6 +80,7 @@ export const PushProviderSettings: FunctionComponent<PushProviderSettingsPropsIn
         isLoading,
         handleDelete,
         handleCreate,
+        handleUpdate,
         ["data-componentid"]: componentId = "push-provider-settings"
     }: PushProviderSettingsPropsInterface
 ): ReactElement => {
@@ -141,12 +142,21 @@ export const PushProviderSettings: FunctionComponent<PushProviderSettingsPropsIn
             });
         }
 
-        const payload: PushProviderAPIInterface = {
-            properties: providerProperties,
-            provider: pushProviderTemplateData.payload.provider
-        };
-
-        handleCreate(payload, callback);
+        
+        if (pushProvider) {
+            const payload: PushProviderUpdateAPIInterface = {
+                properties: providerProperties,
+                provider: pushProviderTemplateData.payload.provider
+            };
+            handleUpdate(payload, callback);
+        } else {
+            const payload: PushProviderAddAPIInterface = {
+                name: pushProviderTemplateData.payload.name,
+                properties: providerProperties,
+                provider: pushProviderTemplateData.payload.provider
+            };
+            handleCreate(payload, callback);
+        }
     };
 
     return (

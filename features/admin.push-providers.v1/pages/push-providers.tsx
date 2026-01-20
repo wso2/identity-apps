@@ -39,7 +39,7 @@ import useGetPushProvidersList from "../api/use-get-push-providers";
 import { PushProviderSettings } from "../components/push-provider-settings";
 import PushProvidersGrid from "../components/push-providers-grid";
 import { PushProviderConstants } from "../constants/push-provider-constants";
-import { PushProviderAPIInterface, PushProviderAPIResponseInterface } from "../models/push-providers";
+import { PushProviderAddAPIInterface, PushProviderAPIResponseInterface, PushProviderUpdateAPIInterface } from "../models/push-providers";
 
 type PushProvidersPageInterface = IdentifiableComponentInterface;
 
@@ -83,6 +83,8 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
         mutate: mutatePushProvidersListFetchRequest
     } = useGetPushProvidersList();
 
+    console.log("pushProvidersList", pushProvidersList);
+
     useEffect(() => {
         if (pushProvidersList?.length > 0) {
             setPushProvider(pushProvidersList[0]);
@@ -104,8 +106,15 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
         history.push(`${AppConstants.getPaths().get("NOTIFICATION_CHANNELS")}`);
     };
 
+    const handlePushTemplateSelect = (template: ExtensionTemplateListInterface) => {
+        setPushProvider(pushProvidersList?.find(provider => 
+            PushProviderConstants.PUSH_PROVIDER_TEMPLATE_NAME_MAPPING.get(template.id) === provider.provider
+        ) || null);
+        setSelectedTemplate(template);
+    }
+
     const handlePushProviderDelete = (): void => {
-        deletePushProvider()
+        deletePushProvider(pushProvider.name)
             .then(() => {
                 dispatch(addAlert({
                     description: t("pushProviders:alerts.delete.success.description"),
@@ -132,8 +141,8 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
             });;
     };
 
-    const handlePushProviderUpdate = ( data: PushProviderAPIInterface ): void => {
-        updatePushProvider(data)
+    const handlePushProviderUpdate = ( data: PushProviderUpdateAPIInterface ): void => {
+        updatePushProvider(pushProvider.name, data)
             .then(() => {
                 dispatch(addAlert({
                     description: t("pushProviders:alerts.create.success.description"),
@@ -158,7 +167,7 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
             });
     };
 
-    const handlePushProviderCreate = ( data: PushProviderAPIInterface, callback: () => void ): void => {
+    const handlePushProviderCreate = ( data: PushProviderAddAPIInterface, callback: () => void ): void => {
         createPushProvider(data)
             .then(() => {
                 dispatch(addAlert({
@@ -204,9 +213,7 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
                 categories={ PushProviderConstants.NOTIFICATION_PROVIDER_CATEGORIES_INFO }
             >
                 <PushProvidersGrid
-                    onTemplateSelect={ (template: ExtensionTemplateListInterface) => {
-                        setSelectedTemplate(template);
-                    } }
+                    onTemplateSelect={ handlePushTemplateSelect }
                     onTemplatesLoad={ (templates: ExtensionTemplateListInterface[]) => {
                         setAvailableTemplates(templates);
                     } }

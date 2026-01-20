@@ -22,7 +22,7 @@ import { store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AcceptHeaderValues, ContentTypeHeaderValues, HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
-import { PushProviderAPIInterface, PushProviderAPIResponseInterface } from "../models/push-providers";
+import { PushProviderAddAPIInterface, PushProviderUpdateAPIInterface, PushProviderAPIResponseInterface } from "../models/push-providers";
 
 const httpClient: (
     config: HttpRequestConfig
@@ -30,7 +30,7 @@ const httpClient: (
     AsgardeoSPAClient.getInstance()
 );
 
-export const createPushProvider = async (data: PushProviderAPIInterface):
+export const createPushProvider = async (data: PushProviderAddAPIInterface):
     Promise<PushProviderAPIResponseInterface> => {
 
     const requestConfig: RequestConfigInterface = {
@@ -70,7 +70,7 @@ export const createPushProvider = async (data: PushProviderAPIInterface):
         });
 };
 
-export const updatePushProvider = async (data: PushProviderAPIInterface):
+export const updatePushProvider = async (name: string, data: PushProviderUpdateAPIInterface):
     Promise<HttpResponse | undefined> => {
 
     const requestConfig: RequestConfigInterface = {
@@ -80,7 +80,7 @@ export const updatePushProvider = async (data: PushProviderAPIInterface):
             "Content-Type": ContentTypeHeaderValues.APP_JSON
         },
         method: HttpMethods.PUT,
-        url: store.getState().config.endpoints.pushProviders + "/PushPublisher"
+        url: store.getState().config.endpoints.pushProviders + `/${name}`
     };
 
     return httpClient(requestConfig)
@@ -97,7 +97,7 @@ export const updatePushProvider = async (data: PushProviderAPIInterface):
         });
 };
 
-export const deletePushProvider = async (): Promise<AxiosResponse> => {
+export const deletePushProvider = async (name: string): Promise<AxiosResponse> => {
 
     const requestConfig: RequestConfigInterface = {
         headers: {
@@ -105,7 +105,7 @@ export const deletePushProvider = async (): Promise<AxiosResponse> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: store.getState().config.endpoints.pushProviders + "/PushPublisher"
+        url: store.getState().config.endpoints.pushProviders + `/${name}`
     };
 
     return httpClient(requestConfig)
