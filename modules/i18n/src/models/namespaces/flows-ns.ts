@@ -54,6 +54,7 @@ export interface flowsNS {
         elements: {
             richText: {
                 linkEditor: {
+                    openInNewTab: string;
                     placeholder: string;
                     predefinedUrls: {
                         applicationAccessUrl: string;

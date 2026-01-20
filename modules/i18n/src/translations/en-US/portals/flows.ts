@@ -46,6 +46,7 @@ export const flows: flowsNS = {
         elements: {
             richText: {
                 linkEditor: {
+                    openInNewTab: "Open in new tab",
                     placeholder: "Enter link URL here...",
                     predefinedUrls: {
                         applicationAccessUrl: "Application Access URL",
