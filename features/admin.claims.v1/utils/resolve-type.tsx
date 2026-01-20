@@ -33,6 +33,8 @@ export const resolveType = (attributeType: string, capitalize?: boolean, shortFo
             return shortForm? "OIDC" : "OpenID Connect";
         case ClaimManagementConstants.SCIM:
             return "SCIM";
+        case ClaimManagementConstants.VC:
+            return shortForm ? "VC" : "Verifiable Credentials";
         case ClaimManagementConstants.AXSCHEMA:
             return "Axschema";
         case ClaimManagementConstants.EIDAS:
