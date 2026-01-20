@@ -85,8 +85,9 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
 
     const { filterUserStores, userStoresList, mutateUserStoreList } = useUserStores();
 
-    const isVcFeatureEnabled: boolean =
-        window["AppUtils"]?.getConfig()?.ui?.features?.verifiableCredentials?.enabled;
+    const isVcFeatureEnabled: boolean = useSelector((state: AppState) => {
+        return state.config.ui.features.verifiableCredentials?.enabled;
+    });
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
     const [ addEditClaim, setAddEditClaim ] = useState(false);
@@ -203,8 +204,6 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                 setScimAttributeMappings(scim);
                 if (isVcFeatureEnabled) {
                     setVcAttributeMappings(vc);
-                } else {
-                    setVcAttributeMappings([]);
                 }
                 setAxschemaAttributeMappings(axschema);
                 // TODO: Remove eiDAS temporally. Need to update it to version 2 and re-enable it.
