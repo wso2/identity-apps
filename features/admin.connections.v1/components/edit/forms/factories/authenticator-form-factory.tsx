@@ -252,10 +252,7 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     initialValues={ initialValues }
                     metadata={ metadata }
                     onSubmit={ onSubmit }
-                    triggerSubmit={ triggerSubmit }
-                    enableSubmitButton={ enableSubmitButton }
                     data-testid={ testId }
-                    showCustomProperties={ showCustomProperties }
                     readOnly={ isReadOnly }
                     isSubmitting={ isSubmitting }
                 />

@@ -172,7 +172,7 @@ export const TOTPAuthenticatorForm: FunctionComponent<TOTPAuthenticatorFormProps
 
                 properties.push({
                     name: moderatedName,
-                    value: value.toString()                
+                    value: value.toString()
                 });
             }
         }
