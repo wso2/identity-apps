@@ -1,5 +1,17 @@
 # @wso2is/theme
 
+## 2.8.9
+
+### Patch Changes
+
+- [#9551](https://github.com/wso2/identity-apps/pull/9551) [`e55860bfd704400196f590ad8153a8abe795a803`](https://github.com/wso2/identity-apps/commit/e55860bfd704400196f590ad8153a8abe795a803) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add VC claims UI
+
+## 2.8.8
+
+### Patch Changes
+
+- [#9550](https://github.com/wso2/identity-apps/pull/9550) [`b41960bcdbf7454020a3466d745d80bcc0e4cc05`](https://github.com/wso2/identity-apps/commit/b41960bcdbf7454020a3466d745d80bcc0e4cc05) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add verifiable credentials management UI
+
 ## 2.8.7
 
 ### Patch Changes

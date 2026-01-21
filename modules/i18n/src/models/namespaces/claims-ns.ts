@@ -37,6 +37,10 @@ export interface ClaimsNS {
             heading: string;
             description: string;
         };
+        vc: {
+            heading: string;
+            description: string;
+        };
         custom: {
             heading: string;
             description: string;

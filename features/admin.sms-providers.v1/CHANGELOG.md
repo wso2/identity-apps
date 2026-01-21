@@ -1,5 +1,15 @@
 # @wso2is/admin.sms-providers.v1
 
+## 2.25.210
+
+### Patch Changes
+
+- [#9549](https://github.com/wso2/identity-apps/pull/9549) [`d043b95d80f40064b94dacb723ca99d60a6f0362`](https://github.com/wso2/identity-apps/commit/d043b95d80f40064b94dacb723ca99d60a6f0362) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Improve custom SMS provider UX
+
+- Updated dependencies [[`d043b95d80f40064b94dacb723ca99d60a6f0362`](https://github.com/wso2/identity-apps/commit/d043b95d80f40064b94dacb723ca99d60a6f0362)]:
+  - @wso2is/admin.core.v1@2.49.127
+  - @wso2is/i18n@2.31.5
+
 ## 2.25.209
 
 ### Patch Changes

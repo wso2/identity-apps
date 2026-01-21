@@ -89,6 +89,11 @@ const isOrganizationApplicationInboundAuthCodeEnabled: boolean = isFeatureEnable
         OrganizationFeatureDictionaryKeys.OrganizationApplicationInboundAuthCode
     ));
 
+const isFrontChannelLogoutEnabled: boolean = isFeatureEnabled(
+    featureConfig?.applications,
+    ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG_FRONT_CHANNEL_LOGOUT")
+);
+
 /**
  * Check whether claims is  identity claims or not.
  *
@@ -509,7 +514,7 @@ export const applicationConfig: ApplicationConfig = {
         shouldValidateCertificate: true,
         showCertificates: true,
         showClientSecretMessage: false,
-        showFrontChannelLogout: false,
+        showFrontChannelLogout: isFrontChannelLogoutEnabled,
         showIdTokenEncryption: true,
         showIdTokenResponseSigningAlgorithm: true,
         showNativeClientSecretMessage: false,

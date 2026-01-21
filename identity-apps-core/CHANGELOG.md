@@ -1,5 +1,21 @@
 # @wso2is/identity-apps-core
 
+## 3.3.33
+
+### Patch Changes
+
+- [#9536](https://github.com/wso2/identity-apps/pull/9536) [`6e703e8107c85302d4b4e3f1ea5ffdac5ec95365`](https://github.com/wso2/identity-apps/commit/6e703e8107c85302d4b4e3f1ea5ffdac5ec95365) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix custom authenticators not showing the defined friendlyName
+
+* [#9487](https://github.com/wso2/identity-apps/pull/9487) [`5277345b4dcaa5d7497a64a8920c2e591e5def8c`](https://github.com/wso2/identity-apps/commit/5277345b4dcaa5d7497a64a8920c2e591e5def8c) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Provide translation support for password history violation error message
+
+- [#9509](https://github.com/wso2/identity-apps/pull/9509) [`a3e3f1d83692ea3bac0c581d99c7d8cad975b8bc`](https://github.com/wso2/identity-apps/commit/a3e3f1d83692ea3bac0c581d99c7d8cad975b8bc) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Fix IWA NTLM Authenticator Name at Login Page
+
+## 3.3.32
+
+### Patch Changes
+
+- [#9512](https://github.com/wso2/identity-apps/pull/9512) [`24c0d6aa8815408ca240be81e8b73f9e202ab792`](https://github.com/wso2/identity-apps/commit/24c0d6aa8815408ca240be81e8b73f9e202ab792) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Improvement to prompting challenge questions in the post-authentication handle
+
 ## 3.3.31
 
 ### Patch Changes

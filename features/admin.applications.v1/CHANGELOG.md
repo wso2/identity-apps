@@ -1,5 +1,134 @@
 # @wso2is/admin.applications.v1
 
+## 2.40.8
+
+### Patch Changes
+
+- [#9552](https://github.com/wso2/identity-apps/pull/9552) [`17bada0aa5d243ee9a97c9c99922cec079246fb5`](https://github.com/wso2/identity-apps/commit/17bada0aa5d243ee9a97c9c99922cec079246fb5) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Implement lazy loading for API resource authorization modal
+
+- Updated dependencies []:
+  - @wso2is/admin.branding.v1@2.32.74
+  - @wso2is/admin.core.v1@2.49.126
+  - @wso2is/admin.roles.v2@2.27.288
+  - @wso2is/admin.server-configurations.v1@2.35.140
+  - @wso2is/admin.users.v1@2.36.93
+
+## 2.40.7
+
+### Patch Changes
+
+- [#9546](https://github.com/wso2/identity-apps/pull/9546) [`7c61029c15fa4aea3b0d37beff93271e8d942b17`](https://github.com/wso2/identity-apps/commit/7c61029c15fa4aea3b0d37beff93271e8d942b17) Thanks [@copilot-swe-agent](https://github.com/apps/copilot-swe-agent)! - Hide "Logout URL" heading when no logout fields are rendered
+
+- Updated dependencies [[`b41960bcdbf7454020a3466d745d80bcc0e4cc05`](https://github.com/wso2/identity-apps/commit/b41960bcdbf7454020a3466d745d80bcc0e4cc05)]:
+  - @wso2is/admin.feature-gate.v1@1.7.10
+  - @wso2is/admin.core.v1@2.49.125
+  - @wso2is/i18n@2.31.4
+  - @wso2is/admin.branding.v1@2.32.73
+  - @wso2is/admin.login-flow-builder.v1@2.28.2
+  - @wso2is/admin.login-flow.ai.v1@2.27.105
+  - @wso2is/admin.roles.v2@2.27.287
+  - @wso2is/admin.server-configurations.v1@2.35.139
+  - @wso2is/admin.users.v1@2.36.92
+
+## 2.40.6
+
+### Patch Changes
+
+- [#9541](https://github.com/wso2/identity-apps/pull/9541) [`cf69e93cb486fafbd069dfe8f9de280e4a6106c0`](https://github.com/wso2/identity-apps/commit/cf69e93cb486fafbd069dfe8f9de280e4a6106c0) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix duplicate user attributes being shown in attribute selection wizard in saml applications
+
+- Updated dependencies []:
+  - @wso2is/admin.branding.v1@2.32.72
+  - @wso2is/admin.core.v1@2.49.124
+  - @wso2is/admin.roles.v2@2.27.286
+  - @wso2is/admin.server-configurations.v1@2.35.138
+  - @wso2is/admin.users.v1@2.36.91
+
+## 2.40.5
+
+### Patch Changes
+
+- [#9526](https://github.com/wso2/identity-apps/pull/9526) [`e6a47d39182d59cc184545565e44b5614ee8bbed`](https://github.com/wso2/identity-apps/commit/e6a47d39182d59cc184545565e44b5614ee8bbed) Thanks [@copilot-swe-agent](https://github.com/apps/copilot-swe-agent)! - Fix secondary user stores not appearing in application inbound provisioning for tenant organizations by removing the isSuperOrganization check
+
+- Updated dependencies []:
+  - @wso2is/admin.branding.v1@2.32.71
+  - @wso2is/admin.core.v1@2.49.123
+  - @wso2is/admin.roles.v2@2.27.285
+  - @wso2is/admin.server-configurations.v1@2.35.137
+  - @wso2is/admin.users.v1@2.36.90
+
+## 2.40.4
+
+### Patch Changes
+
+- [#9538](https://github.com/wso2/identity-apps/pull/9538) [`2156200ab4df846653f0eb3b74d0ba9fd6f66858`](https://github.com/wso2/identity-apps/commit/2156200ab4df846653f0eb3b74d0ba9fd6f66858) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Improve app branding UX by loading all available applications in the application dropdown through infinite scrolling
+
+- Updated dependencies [[`2156200ab4df846653f0eb3b74d0ba9fd6f66858`](https://github.com/wso2/identity-apps/commit/2156200ab4df846653f0eb3b74d0ba9fd6f66858), [`9828efe39a89615b2e0840867b30e15009fd9c40`](https://github.com/wso2/identity-apps/commit/9828efe39a89615b2e0840867b30e15009fd9c40)]:
+  - @wso2is/admin.branding.v1@2.32.70
+  - @wso2is/i18n@2.31.3
+  - @wso2is/admin.core.v1@2.49.122
+  - @wso2is/admin.roles.v2@2.27.284
+  - @wso2is/admin.server-configurations.v1@2.35.136
+  - @wso2is/admin.users.v1@2.36.89
+
+## 2.40.3
+
+### Patch Changes
+
+- [#9534](https://github.com/wso2/identity-apps/pull/9534) [`deb32665d46730819819b89dd2f62b9f875a57ce`](https://github.com/wso2/identity-apps/commit/deb32665d46730819819b89dd2f62b9f875a57ce) Thanks [@Malith-19](https://github.com/Malith-19)! - Fix the extendRenewedRefreshTokenExpiryTime property not updated in SPA.
+
+- Updated dependencies [[`4d89bb8bc532a5da5a3f216ba0ca586c2d317e28`](https://github.com/wso2/identity-apps/commit/4d89bb8bc532a5da5a3f216ba0ca586c2d317e28)]:
+  - @wso2is/admin.roles.v2@2.27.283
+  - @wso2is/admin.core.v1@2.49.121
+  - @wso2is/admin.branding.v1@2.32.69
+  - @wso2is/admin.server-configurations.v1@2.35.135
+  - @wso2is/admin.users.v1@2.36.88
+
+## 2.40.2
+
+### Patch Changes
+
+- [#9530](https://github.com/wso2/identity-apps/pull/9530) [`92250311d25574063f8a28c39d0927d0a33a2407`](https://github.com/wso2/identity-apps/commit/92250311d25574063f8a28c39d0927d0a33a2407) Thanks [@piraveena](https://github.com/piraveena)! - Add OIDC Frontchannel logout UI
+
+- Updated dependencies [[`92250311d25574063f8a28c39d0927d0a33a2407`](https://github.com/wso2/identity-apps/commit/92250311d25574063f8a28c39d0927d0a33a2407)]:
+  - @wso2is/admin.extensions.v1@2.40.17
+  - @wso2is/i18n@2.31.2
+  - @wso2is/admin.core.v1@2.49.120
+  - @wso2is/admin.roles.v2@2.27.282
+  - @wso2is/admin.branding.v1@2.32.68
+  - @wso2is/admin.server-configurations.v1@2.35.134
+  - @wso2is/admin.users.v1@2.36.87
+
+## 2.40.1
+
+### Patch Changes
+
+- [#9499](https://github.com/wso2/identity-apps/pull/9499) [`635763853fbf901546fd6833097159f96a21bd6f`](https://github.com/wso2/identity-apps/commit/635763853fbf901546fd6833097159f96a21bd6f) Thanks [@piraveena](https://github.com/piraveena)! - Add OIDC Frontchannel logout UI
+
+- Updated dependencies [[`635763853fbf901546fd6833097159f96a21bd6f`](https://github.com/wso2/identity-apps/commit/635763853fbf901546fd6833097159f96a21bd6f)]:
+  - @wso2is/admin.extensions.v1@2.40.16
+  - @wso2is/i18n@2.31.1
+  - @wso2is/admin.core.v1@2.49.119
+  - @wso2is/admin.roles.v2@2.27.281
+  - @wso2is/admin.branding.v1@2.32.67
+  - @wso2is/admin.server-configurations.v1@2.35.133
+  - @wso2is/admin.users.v1@2.36.86
+
+## 2.40.0
+
+### Minor Changes
+
+- [#9470](https://github.com/wso2/identity-apps/pull/9470) [`e7718a8ac92149d0a3ea0901ed9e5678b1377487`](https://github.com/wso2/identity-apps/commit/e7718a8ac92149d0a3ea0901ed9e5678b1377487) Thanks [@Malith-19](https://github.com/Malith-19)! - Add refresh token extend expiry time application config support.
+
+### Patch Changes
+
+- Updated dependencies [[`e7718a8ac92149d0a3ea0901ed9e5678b1377487`](https://github.com/wso2/identity-apps/commit/e7718a8ac92149d0a3ea0901ed9e5678b1377487)]:
+  - @wso2is/i18n@2.31.0
+  - @wso2is/admin.core.v1@2.49.116
+  - @wso2is/admin.roles.v2@2.27.278
+  - @wso2is/admin.branding.v1@2.32.64
+  - @wso2is/admin.server-configurations.v1@2.35.130
+  - @wso2is/admin.users.v1@2.36.83
+
 ## 2.39.2
 
 ### Patch Changes

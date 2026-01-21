@@ -19,6 +19,7 @@ import { RoleSharingInterface } from "@wso2is/admin.applications.v1/models/appli
 import { ApplicationSharingPolicy, RoleSharingModes } from "@wso2is/admin.console-settings.v1/models/shared-access";
 import { ScimOperationsInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { RolesInterface } from "@wso2is/core/models";
+import { ORGANIZATION_TYPE } from "../constants";
 
 export interface OrganizationInterface {
     id: string;
@@ -174,4 +175,51 @@ export interface GetOrganizationsParamsInterface {
 
 export interface SelectedOrganizationRoleInterface extends OrganizationRoleInterface {
     selected: boolean;
+}
+
+/**
+ * Represents the response structure for retrieving details of the
+ * currently authenticated organization.
+ */
+export interface OrganizationSelfResponse {
+    /**
+     * The unique identifier of the organization.
+     */
+    id: string;
+    /**
+     * The name of the organization.
+     */
+    name: string;
+    /**
+     * The organization handle.
+     */
+    orgHandle: string;
+    /**
+     * The description of the organization.
+     */
+    description: string;
+    /**
+     * The status of the organization.
+     */
+    status: string;
+    /**
+     * The version of the organization.
+     */
+    version: string;
+    /**
+     * The date when the organization was created.
+     */
+    created: string;
+    /**
+     * The date when the organization was last modified.
+     */
+    lastModified: string;
+    /**
+     * The type of the organization.
+     */
+    type: ORGANIZATION_TYPE;
+    /**
+     * Whether the organization has child organizations.
+     */
+    hasChildren: boolean;
 }

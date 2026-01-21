@@ -68,6 +68,7 @@ class FeatureFlagConstants {
         SMS_TEMPLATES: "smsTemplates",
         USER_ROLES: "userRoles",
         USER_STORES: "userStores",
+        VERIFIABLE_CREDENTIALS: "verifiableCredentials",
         WEBHOOKS: "webhooks",
         WORKFLOW_INSTANCES: "workflowInstances"
     };

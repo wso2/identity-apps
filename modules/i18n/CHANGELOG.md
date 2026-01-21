@@ -1,5 +1,53 @@
 # @wso2is/i18n
 
+## 2.31.6
+
+### Patch Changes
+
+- [#9551](https://github.com/wso2/identity-apps/pull/9551) [`e55860bfd704400196f590ad8153a8abe795a803`](https://github.com/wso2/identity-apps/commit/e55860bfd704400196f590ad8153a8abe795a803) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add VC claims UI
+
+## 2.31.5
+
+### Patch Changes
+
+- [#9549](https://github.com/wso2/identity-apps/pull/9549) [`d043b95d80f40064b94dacb723ca99d60a6f0362`](https://github.com/wso2/identity-apps/commit/d043b95d80f40064b94dacb723ca99d60a6f0362) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Improve custom SMS provider UX
+
+## 2.31.4
+
+### Patch Changes
+
+- [#9550](https://github.com/wso2/identity-apps/pull/9550) [`b41960bcdbf7454020a3466d745d80bcc0e4cc05`](https://github.com/wso2/identity-apps/commit/b41960bcdbf7454020a3466d745d80bcc0e4cc05) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add verifiable credentials management UI
+
+## 2.31.3
+
+### Patch Changes
+
+- [#9505](https://github.com/wso2/identity-apps/pull/9505) [`9828efe39a89615b2e0840867b30e15009fd9c40`](https://github.com/wso2/identity-apps/commit/9828efe39a89615b2e0840867b30e15009fd9c40) Thanks [@UdeshAthukorala](https://github.com/UdeshAthukorala)! - Update the validation hint and error message for the group name field
+
+## 2.31.2
+
+### Patch Changes
+
+- [#9530](https://github.com/wso2/identity-apps/pull/9530) [`92250311d25574063f8a28c39d0927d0a33a2407`](https://github.com/wso2/identity-apps/commit/92250311d25574063f8a28c39d0927d0a33a2407) Thanks [@piraveena](https://github.com/piraveena)! - Add OIDC Frontchannel logout UI
+
+## 2.31.1
+
+### Patch Changes
+
+- [#9499](https://github.com/wso2/identity-apps/pull/9499) [`635763853fbf901546fd6833097159f96a21bd6f`](https://github.com/wso2/identity-apps/commit/635763853fbf901546fd6833097159f96a21bd6f) Thanks [@piraveena](https://github.com/piraveena)! - Add OIDC Frontchannel logout UI
+
+## 2.31.0
+
+### Minor Changes
+
+- [#9470](https://github.com/wso2/identity-apps/pull/9470) [`e7718a8ac92149d0a3ea0901ed9e5678b1377487`](https://github.com/wso2/identity-apps/commit/e7718a8ac92149d0a3ea0901ed9e5678b1377487) Thanks [@Malith-19](https://github.com/Malith-19)! - Add refresh token extend expiry time application config support.
+
+## 2.30.65
+
+### Patch Changes
+
+- [#9495](https://github.com/wso2/identity-apps/pull/9495) [`2f8ade07e7c226c701496b6d3e56c6a75a303894`](https://github.com/wso2/identity-apps/commit/2f8ade07e7c226c701496b6d3e56c6a75a303894) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - UI to show email template customization blocking
+
 ## 2.30.64
 
 ### Patch Changes

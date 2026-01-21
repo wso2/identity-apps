@@ -1695,6 +1695,7 @@ export interface ApplicationsNS {
                             };
                         };
                         front: {
+                            hint: string;
                             label: string;
                             placeholder: string;
                             validations: {
@@ -1781,6 +1782,10 @@ export interface ApplicationsNS {
                 refreshToken: {
                     heading: string;
                     fields: {
+                        extendRenewedRefreshTokenExpiryTime: {
+                            hint: string;
+                            label: string;
+                        },
                         expiry: {
                             hint: string;
                             label: string;

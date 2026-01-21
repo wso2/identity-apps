@@ -241,6 +241,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         applicationFeatureConfig,
         ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG_BACK_CHANNEL_LOGOUT")
     );
+    const isFrontChannelLogoutEnabled: boolean = isFeatureEnabled(
+        applicationFeatureConfig,
+        ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG_FRONT_CHANNEL_LOGOUT")
+    );
     const isEnforceClientSecretPermissionEnabled: boolean = isFeatureEnabled(
         applicationFeatureConfig,
         ApplicationManagementConstants.FEATURE_DICTIONARY.get(
@@ -318,6 +322,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const applicationAccessTokenExpiryInSeconds: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const refreshToken: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const expiryInSeconds: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const extendExpiryTime: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const audience: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const encryption: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const algorithm: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
@@ -1463,6 +1468,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     expiryInSeconds: values.get("expiryInSeconds")
                         ? parseInt(values.get("expiryInSeconds"), 10)
                         : Number(metadata?.defaultRefreshTokenExpiryTime),
+                    extendRenewedRefreshTokenExpiryTime: values.get("extendExpiryTime")?.includes("extendExpiryTime"),
                     renewRefreshToken: values.get("RefreshToken")?.length > 0
                 },
                 scopeValidators: values.get("scopeValidator"),
@@ -1675,6 +1681,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 expiryInSeconds: values.get("expiryInSeconds")
                     ? parseInt(values.get("expiryInSeconds"), 10)
                     : Number(metadata?.defaultRefreshTokenExpiryTime),
+                extendRenewedRefreshTokenExpiryTime: values.get("extendExpiryTime")?.includes("extendExpiryTime"),
                 renewRefreshToken: values.get("RefreshToken")?.length > 0
             },
             subjectToken: {
@@ -1888,6 +1895,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 break;
             case "expiryInSeconds":
                 expiryInSeconds.current.scrollIntoView(options);
+
+                break;
+
+            case "extendExpiryTime":
+                extendExpiryTime.current.scrollIntoView(options);
 
                 break;
             case "subjectToken":
@@ -3376,6 +3388,42 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                                 <Field
+                                    ref={ extendExpiryTime }
+                                    name="extendExpiryTime"
+                                    label=""
+                                    required={ false }
+                                    type="checkbox"
+                                    value={
+                                        initialValues?.refreshToken?.extendRenewedRefreshTokenExpiryTime
+                                            ? [ "extendExpiryTime" ]
+                                            : []
+                                    }
+                                    children={ [
+                                        {
+                                            label: t("applications:forms.inboundOIDC.sections.refreshToken."
+                                                + "fields.extendRenewedRefreshTokenExpiryTime.label"),
+                                            value: "extendExpiryTime"
+                                        }
+                                    ] }
+                                    readOnly={ readOnly }
+                                    data-testid={ `${ testId }-extend-refresh-token-expiry-time-checkbox` }
+                                />
+                                <Hint>
+                                    <Trans
+                                        i18nKey={
+                                            "applications:forms.inboundOIDC.sections" +
+                                            ".refreshToken.fields.extendRenewedRefreshTokenExpiryTime.hint"
+                                        }
+                                    >
+                                        Select to ensure renewed refresh tokens retain the remaining validity period
+                                         from the original token instead of receiving a fresh expiry time.
+                                    </Trans>
+                                </Hint>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Field
                                     ref={ expiryInSeconds }
                                     name="expiryInSeconds"
                                     label={
@@ -3897,9 +3945,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
             { /* Logout */ }
             {
-                !isSPAApplication
-                && !isSubOrganization()
-                && isBackChannelLogoutEnabled
+                !isSubOrganization()
+                && ((isBackChannelLogoutEnabled && !isSPAApplication)
+                    || (isFrontChannelLogoutEnabled && !isMobileApplication
+                        && !isMcpClientApplication && !isM2MApplication))
                 && !isSystemApplication
                 && !isDefaultApplication
                 && (
@@ -3911,57 +3960,58 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                             <Heading as="h4">
                                 {
-                                    applicationConfig.inboundOIDCForm.showFrontChannelLogout
+                                    ((isBackChannelLogoutEnabled && !isSPAApplication)
+                                        && (isFrontChannelLogoutEnabled && !isMobileApplication
+                                            && !isMcpClientApplication && !isM2MApplication))
                                         ? t("applications:forms.inboundOIDC.sections" +
                                             ".logoutURLs.heading")
                                         : t("applications:forms.inboundOIDC.sections" +
                                             ".logoutURLs.headingSingular")
                                 }
                             </Heading>
-                            <Divider hidden />
-                            <Field
-                                ref={ backChannelLogoutUrl }
-                                name="backChannelLogoutUrl"
-                                label={
-                                    t("applications:forms.inboundOIDC.sections" +
-                                            ".logoutURLs.fields.back.label")
-                                }
-                                required={ false }
-                                requiredErrorMessage={
-                                    t("applications:forms.inboundOIDC.sections" +
-                                            ".logoutURLs.fields.back.validations.empty")
-                                }
-                                placeholder={
-                                    t("applications:forms.inboundOIDC.sections" +
-                                            ".logoutURLs.fields.back.placeholder")
-                                }
-                                type="text"
-                                validation={ (value: string, validation: Validation) => {
-                                    if (!FormValidation.url(value)) {
-                                        validation.isValid = false;
-                                        validation.errorMessages.push((
-                                            t("applications:forms.inboundOIDC.sections" +
+
+                            { isBackChannelLogoutEnabled && !isSPAApplication && (
+                                <><Field
+                                    ref={ backChannelLogoutUrl }
+                                    name="backChannelLogoutUrl"
+                                    label={ t("applications:forms.inboundOIDC.sections" +
+                                        ".logoutURLs.fields.back.label") }
+                                    required={ false }
+                                    requiredErrorMessage={ t("applications:forms.inboundOIDC.sections" +
+                                        ".logoutURLs.fields.back.validations.empty") }
+                                    placeholder={ t("applications:forms.inboundOIDC.sections" +
+                                        ".logoutURLs.fields.back.placeholder") }
+                                    type="text"
+                                    validation={ (value: string, validation: Validation) => {
+                                        if (!FormValidation.url(value)) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push((
+                                                t("applications:forms.inboundOIDC.sections" +
                                                     ".logoutURLs.fields.back.validations.invalid")
-                                        ));
-                                    }
-                                } }
-                                value={ initialValues?.logout?.backChannelLogoutUrl }
-                                readOnly={ readOnly }
-                                data-testid={ `${ testId }-back-channel-logout-url-input` }
-                            />
-                            <Hint>
-                                { t("applications:forms.inboundOIDC.sections" +
+                                            ));
+                                        }
+                                    } }
+                                    value={ initialValues?.logout?.backChannelLogoutUrl }
+                                    readOnly={ readOnly }
+                                    data-testid={ `${ testId }-back-channel-logout-url-input` }
+                                />
+                                <Hint>
+                                    { t("applications:forms.inboundOIDC.sections" +
                                         ".logoutURLs.fields.back.hint", {
-                                    productName: config.ui.productName
-                                }) }
-                            </Hint>
+                                        productName: config.ui.productName
+                                    }) }
+                                </Hint></>
+                            ) }
                         </Grid.Column>
                     </Grid.Row>
                 )
             }
-            { applicationConfig.inboundOIDCForm.showFrontChannelLogout
+            { isFrontChannelLogoutEnabled
                 && !isSystemApplication
                 && !isDefaultApplication
+                && !isMobileApplication
+                && !isMcpClientApplication
+                && !isM2MApplication && !isSubOrganization()
                 && (
                     <Grid.Row columns={ 1 } data-componentid={ testId + "-frontchannel-logout-url" }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -3995,6 +4045,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 readOnly={ readOnly }
                                 data-testid={ `${ testId }-front-channel-logout-url-input` }
                             />
+                            <Hint>
+                                { t("applications:forms.inboundOIDC.sections" +
+                                    ".logoutURLs.fields.front.hint", {
+                                    productName: config.ui.productName
+                                }) }
+                            </Hint>
                         </Grid.Column>
                     </Grid.Row>
                 ) }

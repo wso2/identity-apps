@@ -1997,8 +1997,9 @@ export const applications: ApplicationsNS = {
                             }
                         },
                         front: {
+                            hint: "{{productName}} triggers the browser to load this client URL when the user logs out.",
                             label: "Front channel logout URL",
-                            placeholder: "Enter the Front Channel Logout URL",
+                            placeholder: "https://myapp.io/logout",
                             validations: {
                                 empty: "Please fill the Front Channel Logout URL",
                                 invalid: "Please add valid URL"
@@ -2093,6 +2094,11 @@ export const applications: ApplicationsNS = {
                 },
                 refreshToken: {
                     fields: {
+                        extendRenewedRefreshTokenExpiryTime: {
+                            hint: "Select to ensure renewed refresh tokens retain the remaining validity period from " +
+                                "the original token instead of receiving a fresh expiry time.",
+                            label: "Extend expiry time of renewed refresh tokens"
+                        },
                         expiry: {
                             hint: "Specify the validity period of the <1>refresh_token</1> in seconds.",
                             label: "Refresh token expiry time",
