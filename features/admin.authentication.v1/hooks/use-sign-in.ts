@@ -57,6 +57,7 @@ import axios, { AxiosResponse } from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
+import { ApplicationManagementUtils } from "../../admin.applications.v1/utils/application-management-utils";
 import { getProfileInformation } from "../store/actions";
 import { AuthenticateUtils } from "../utils/authenticate-utils";
 
@@ -559,6 +560,8 @@ const useSignIn = (): UseSignInInterface => {
                 true
             )
         );
+
+        await ApplicationManagementUtils.getOIDCApplicationMeta();
 
         if (isFirstLevelOrg) {
             await dispatch(getServerConfigurations());

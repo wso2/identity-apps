@@ -352,6 +352,8 @@ export class ApplicationManagementConstants {
     public static readonly APPLICATION_STATUS_UPDATE_ERROR: string = "Error occurred while updating the " +
         "status of the application. ";
 
+    public static readonly INVALID_TENANT_URL_FORMAT: string = "Invalid tenant URL format";
+
     public static readonly SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID: string = "second-factor-authenticators";
     public static readonly EXTERNAL_AUTHENTICATORS_DROPPABLE_ID: string = "external-authenticators";
     public static readonly SOCIAL_LOGIN_HEADER: string = "Social Login";
