@@ -2917,6 +2917,20 @@ export const applications: ApplicationsNS = {
                 message: "Application deleted"
             }
         },
+        exportApplication: {
+            error: {
+                description: "{{description}}",
+                message: "Export Error"
+            },
+            genericError: {
+                description: "Failed to export the application.",
+                message: "Something went wrong"
+            },
+            success: {
+                description: "Successfully exported the application.",
+                message: "Application exported"
+            }
+        },
         deleteCertificateGenericError: {
             description: "Something went wrong. We were unable to delete the application certificate.",
             message: "Failed to update the application"

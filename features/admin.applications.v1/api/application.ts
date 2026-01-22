@@ -1324,3 +1324,36 @@ export const useMyAccountStatus = <Data = MyAccountPortalStatusInterface, Error 
         mutate
     };
 };
+
+/**
+ * Exports an application configuration as a file.
+ *
+ * @param id - Application ID.
+ * @param exportSecrets - Whether to export secrets.
+ * @returns A promise containing the response with the file blob.
+ */
+export const exportApplication = (id: string, exportSecrets: boolean = false): Promise<Blob> => {
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Accept": "application/octet-stream",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost
+        },
+        method: HttpMethods.GET,
+        params: {
+            exportSecrets
+        },
+        responseType: "blob",
+        url: store.getState().config.endpoints.applications + "/" + id + "/export"
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to export application."));
+            }
+
+            return Promise.resolve(response.data as Blob);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};

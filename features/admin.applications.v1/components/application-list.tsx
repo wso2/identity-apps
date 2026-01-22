@@ -61,7 +61,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import { deleteApplication } from "../api/application";
+import { deleteApplication, exportApplication } from "../api/application";
 import { ApplicationManagementConstants } from "../constants/application-management";
 import {
     ApplicationAccessTypes,
@@ -303,6 +303,55 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
             })
             .finally(() => {
                 setLoading(false);
+            });
+    };
+
+    /**
+     * Exports an application when the export button is clicked.
+     *
+     * @param appId - Application id.
+     * @param appName - Application name.
+     */
+    const handleApplicationExport = (appId: string, appName: string): void => {
+
+        exportApplication(appId)
+            .then((blob: Blob) => {
+                const url: string = window.URL.createObjectURL(blob);
+                const link: HTMLAnchorElement = document.createElement("a");
+
+                link.href = url;
+                link.download = `${ appName }.xml`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+
+                dispatch(addAlert({
+                    description: t("applications:notifications.exportApplication.success" +
+                        ".description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("applications:notifications.exportApplication.success.message")
+                }));
+            })
+            .catch((error: AxiosError) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("applications:notifications.exportApplication.error" +
+                            ".message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("applications:notifications.exportApplication" +
+                        ".genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("applications:notifications.exportApplication.genericError" +
+                        ".message")
+                }));
             });
     };
 
@@ -549,6 +598,17 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         }
 
         return [
+            {
+                "data-testid": `${ testId }-item-export-button`,
+                hidden: (): boolean => !isFeatureEnabled(featureConfig?.applications,
+                    ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT")),
+                icon: (): SemanticICONS => "download",
+                onClick: (e: SyntheticEvent, app: ApplicationListItemInterface): void => {
+                    handleApplicationExport(app.id, app.name);
+                },
+                popupText: (): string => t("common:export"),
+                renderer: "semantic-icon"
+            },
             {
                 "data-testid": `${ testId }-item-edit-button`,
                 hidden: (): boolean => !isFeatureEnabled(featureConfig?.applications,

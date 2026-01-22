@@ -2539,6 +2539,20 @@ export interface ApplicationsNS {
                 description: string;
             };
         };
+        exportApplication: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
         deleteOptionErrorDueToSecondFactorsOnRight: {
             error: {
                 message: string;
