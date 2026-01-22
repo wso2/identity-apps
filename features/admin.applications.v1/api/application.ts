@@ -22,7 +22,7 @@ import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
-import { store } from "@wso2is/admin.core.v1/store";
+import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
@@ -1051,14 +1051,25 @@ export const getApplicationTemplateList = (limit?: number, offset?: number,
  * @throws IdentityAppsApiException
  */
 export const getOIDCApplicationConfigurations = (): Promise<OIDCApplicationConfigurationInterface> => {
+    const state: AppState = store.getState();
+    const wellKnownEndpoint: string = state.config.endpoints.wellKnown;
+
+    let url: string = wellKnownEndpoint;
+
+    const organizationId: string | undefined = state.organization?.organization?.id;
+    const isFirstLevelOrganization: boolean = state.organization?.isFirstLevelOrganization ?? true;
+
+    if (organizationId && !isFirstLevelOrganization) {
+        url = insertOrgIdToURL(wellKnownEndpoint, organizationId);
+    }
+
     const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.wellKnown
+        url
     };
 
     return httpClient(requestConfig)
@@ -1101,6 +1112,37 @@ export const getOIDCApplicationConfigurations = (): Promise<OIDCApplicationConfi
                 error.response,
                 error.config);
         });
+};
+
+/**
+ * Inserting the organization id into an endpoint URL which needs to be executed
+ * in tenant perspective from an organization.
+ *
+ * @param urlString - The URL string to insert the organization id into.
+ * @param orgId - The organization id to insert.
+ * @returns A URL in tenant perspective to call from an organization.
+ * @throws IdentityAppsApiException
+ */
+export const insertOrgIdToURL = (urlString: string, orgId: string) => {
+    const url: URL = new URL(urlString);
+
+    const parts: string[] = url.pathname.split("/").filter(Boolean);
+    // sample for parts = ["t", "<TENANT_DOMAIN>", "oauth2", "token", ".well-known", "openid-configuration"]
+
+    const tenantIndex: number = parts.indexOf("t");
+
+    if (tenantIndex === -1 || parts.length <= tenantIndex + 1) {
+        throw new IdentityAppsApiException(
+            ApplicationManagementConstants.INVALID_TENANT_URL_FORMAT,
+            null);
+    }
+
+    // Inserting o/{orgId} after /t/<TENANT_DOMAIN>/
+    parts.splice(tenantIndex + 2, 0, "o", orgId);
+
+    url.pathname = "/" + parts.join("/");
+
+    return url.toString();
 };
 
 /**
