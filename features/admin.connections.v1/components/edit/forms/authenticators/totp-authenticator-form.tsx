@@ -22,7 +22,6 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import {
-    CommonAuthenticatorFormFieldInterface,
     CommonAuthenticatorFormFieldMetaInterface,
     CommonAuthenticatorFormInitialValuesInterface,
     CommonAuthenticatorFormMetaInterface,
@@ -114,9 +113,6 @@ export const TOTPAuthenticatorForm: FunctionComponent<TOTPAuthenticatorFormProps
         let resolvedInitialValues: TOTPAuthenticatorFormInitialValuesInterface = null;
 
         originalInitialValues.properties.forEach((value: CommonAuthenticatorFormPropertyInterface) => {
-            const meta: CommonAuthenticatorFormFieldMetaInterface = metadata?.properties
-                .find((meta: CommonPluggableComponentMetaPropertyInterface) => meta.key === value.key);
-
             const moderatedName: string = value.name.replace(/\./g, "_");
 
             resolvedInitialValues = {
