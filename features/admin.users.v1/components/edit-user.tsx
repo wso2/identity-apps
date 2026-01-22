@@ -277,6 +277,16 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         />
                     </ResourceTab.Pane>
                 )
+            },
+            {
+                menuItem: "Sharing",
+                render: () => (
+                    <ResourceTab.Pane controlledSegmentation attached={ false }>
+                        <div>
+                            <p>Sharing tab content will be implemented here.</p>
+                        </div>
+                    </ResourceTab.Pane>
+                )
             }
         );
 
