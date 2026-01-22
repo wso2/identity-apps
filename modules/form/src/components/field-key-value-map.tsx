@@ -17,15 +17,16 @@
  */
 
 import Box from "@oxygen-ui/react/Box";
+import Button from "@oxygen-ui/react/Button";
 import FormControl from "@oxygen-ui/react/FormControl";
-import IconButton from "@oxygen-ui/react/IconButton";
 import InputLabel from "@oxygen-ui/react/InputLabel";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
-import { PlusIcon, XMarkIcon } from "@oxygen-ui/react-icons";
-import React, { ReactElement, ReactNode, useState } from "react";
-import { Label } from "semantic-ui-react";
+import { PlusIcon } from "@oxygen-ui/react-icons";
+import { DataTable, EmptyPlaceholder, TableActionsInterface, TableColumnInterface } from "@wso2is/react-components";
+import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
+import { Grid, Header, Label, SemanticICONS } from "semantic-ui-react";
 
 /**
  * Interface for the items passed as key options.
@@ -140,15 +141,15 @@ export const KeyValueMapField = ({
     const handleAddPair = (): void => {
         if (selectedKey && inputValue) {
             const updatedPairs: { key: string; value: string }[] = [...keyValuePairs, { key: selectedKey, value: inputValue }];
-            
+
             setKeyValuePairs(updatedPairs);
             setSelectedKey("");
             setInputValue("");
-            
+
             // Update form value
             if (onChange) {
                 const formValue: Record<string, string> = {};
-                
+
                 updatedPairs.forEach(pair => {
                     formValue[pair.key] = pair.value;
                 });
@@ -160,21 +161,105 @@ export const KeyValueMapField = ({
     /**
      * Handles removing a key-value pair.
      */
-    const handleRemovePair = (index: number): void => {
-        const updatedPairs: { key: string; value: string }[] = [...keyValuePairs];
+    const handleRemovePair = (pair: { key: string; value: string }): void => {
+        const updatedPairs: { key: string; value: string }[] = keyValuePairs.filter(
+            p => p.key !== pair.key
+        );
 
-        updatedPairs.splice(index, 1);
         setKeyValuePairs(updatedPairs);
-        
+
         // Update form value
         if (onChange) {
             const formValue: Record<string, string> = {};
-            
-            updatedPairs.forEach(pair => {
-                formValue[pair.key] = pair.value;
+
+            updatedPairs.forEach(p => {
+                formValue[p.key] = p.value;
             });
             onChange(formValue);
         }
+    };
+
+    /**
+     * Resolves data table actions.
+     */
+    const resolveTableActions = (): TableActionsInterface[] => {
+        if (readOnly) {
+            return [];
+        }
+
+        return [
+            {
+                icon: (): SemanticICONS => "trash alternate",
+                onClick: (e: SyntheticEvent, pair: { key: string; value: string }): void => {
+                    handleRemovePair(pair);
+                },
+                popupText: (): string => "Remove",
+                renderer: "semantic-icon"
+            }
+        ];
+    };
+
+    /**
+     * Resolves data table columns.
+     */
+    const resolveTableColumns = (): TableColumnInterface[] => {
+        return [
+            {
+                allowToggleVisibility: false,
+                dataIndex: "key",
+                id: "key",
+                key: "key",
+                render: (pair: { key: string; value: string }): ReactNode => (
+                    <Header as="h6" data-testid={`${dataComponentId}-key-${pair.key}`}>
+                        <Header.Content>
+                            {keyOptions.find(option => option.value === pair.key)?.text}
+                        </Header.Content>
+                    </Header>
+                ),
+                title: keyName || "Key",
+                width: 2
+            },
+            {
+                allowToggleVisibility: false,
+                dataIndex: "value",
+                id: "value",
+                key: "value",
+                render: (pair: { key: string; value: string }): ReactNode => (
+                    <Header as="h6" data-testid={`${dataComponentId}-value-${pair.key}`}>
+                        <Header.Content>
+                            <Label>
+                                {pair.value}
+                            </Label>
+                        </Header.Content>
+                    </Header>
+                ),
+                title: "Value"
+            },
+            {
+                allowToggleVisibility: false,
+                dataIndex: "action",
+                id: "actions",
+                key: "actions",
+                textAlign: "right",
+                title: "",
+                width: 1
+            }
+        ];
+    };
+
+    /**
+     * Empty placeholder for the list.
+     */
+    const showPlaceholders = (): ReactElement => {
+        if (keyValuePairs?.length === 0) {
+            return (
+                <EmptyPlaceholder
+                    subtitle={[`No ${label} are added yet`]}
+                />
+            );
+        }
+
+        return null;
     };
 
     return (
@@ -183,95 +268,97 @@ export const KeyValueMapField = ({
                 {label}
             </InputLabel>
 
-            <Box display="flex" gap={1} mb={2} >
-                <FormControl
-                    size="small"
-                    variant="outlined"
-                    sx={{ minWidth: 200, maxWidth: 200 }}
-                    disabled={readOnly}
-                >
-                    <Select
-                        value={selectedKey}
-                        onChange={(e) => setSelectedKey(e.target.value as string)}
-                        displayEmpty
-                        disabled={readOnly}
-                        data-componentid={`${dataComponentId}-key-select`}
-                    >
-                        <MenuItem value="" disabled>
-                            {`Select ${keyName ? keyName : "Key"}`}
-                        </MenuItem>
-                        {keyOptions
-                            .filter(option => !keyValuePairs.some(pair => pair.key === option.value))
-                            .map((option: DropDownItemInterface) => (
-                                <MenuItem key={option.value} value={option.value}>
-                                    {option.text}
-                                </MenuItem>
-                            ))}
-                    </Select>
-                </FormControl>
-
-                {valuetype == KeyValueMapValueFieldTypes.TEXT &&
-                    <Box sx={{ flex: 1 }}>
-                        <TextField
+            <Grid>
+                <Grid.Row className="pb-0">
+                    <Grid.Column mobile={16} tablet={6} computer={3} className="pb-2">
+                        <FormControl
                             fullWidth
                             size="small"
                             variant="outlined"
-                            placeholder={placeholder || ""}
-                            value={inputValue}
-                            onChange={(e) => setInputValue(e.target.value)}
                             disabled={readOnly}
-                            data-componentid={`${dataComponentId}-value-input`}
-                        />
-                    </Box>
-                }
-
-                <IconButton
-                    onClick={handleAddPair}
-                    disabled={readOnly || !selectedKey || !inputValue}
-                    data-componentid={`${dataComponentId}-add-button`}
-                    variant="contained"
-                    sx={{ width: 40, height: 40 }}
-                >
-                    <PlusIcon />
-                </IconButton>
-            </Box>
-
-            {keyValuePairs.length > 0 ? (
-                <Box display="flex" flexDirection="column" gap={1} mb={2}>
-                    {keyValuePairs.map((pair: { key: string; value: string }, index: number) => (
-                        <Box
-                            key={index}
-                            display="flex"
-                            alignItems="center"
-                            gap={1}
-                            p={1}
-                            bgcolor="grey.100"
-                            borderRadius={1}
-                            data-componentid={`${dataComponentId}-pair-${index}`}
                         >
-                            <Box flex={1}>
-                                <strong>{keyOptions.find(option => option.value === pair.key)?.text}:</strong> {pair.value}
-                            </Box>
-                            {!readOnly && (
-                                <IconButton
-                                    size="small"
-                                    onClick={() => handleRemovePair(index)}
-                                    data-componentid={`${dataComponentId}-remove-${index}`}
-                                >
-                                    <XMarkIcon />
-                                </IconButton>
-                            )}
+                            <Select
+                                value={selectedKey}
+                                onChange={(e) => setSelectedKey(e.target.value as string)}
+                                displayEmpty
+                                disabled={readOnly}
+                                data-componentid={`${dataComponentId}-key-select`}
+                            >
+                                <MenuItem value="" disabled>
+                                    {`Select ${keyName ? keyName : "Key"}`}
+                                </MenuItem>
+                                {keyOptions
+                                    .filter(option => !keyValuePairs.some(pair => pair.key === option.value))
+                                    .map((option: DropDownItemInterface) => (
+                                        <MenuItem key={option.value} value={option.value}>
+                                            {option.text}
+                                        </MenuItem>
+                                    ))}
+                            </Select>
+                        </FormControl>
+                    </Grid.Column>
+
+                    {valuetype == KeyValueMapValueFieldTypes.TEXT && (
+                        <Grid.Column mobile={16} tablet={6} computer={11} className="pb-2">
+                            <TextField
+                                fullWidth
+                                size="small"
+                                variant="outlined"
+                                placeholder={placeholder || ""}
+                                value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)}
+                                disabled={readOnly}
+                                data-componentid={`${dataComponentId}-value-input`}
+                            />
+                        </Grid.Column>
+                    )}
+
+                    <Grid.Column mobile={16} tablet={4} computer={2} className="pb-2">
+                        <Button
+                            onClick={handleAddPair}
+                            disabled={readOnly || !selectedKey || !inputValue}
+                            data-componentid={`${dataComponentId}-add-button`}
+                            variant="contained"
+                            color="secondary"
+                            size="small"
+                            startIcon={<PlusIcon />}
+                            fullWidth
+                        >
+                            Add
+                        </Button>
+                    </Grid.Column>
+                </Grid.Row>
+
+                <Grid.Row>
+                    <Grid.Column width={16}>
+                        <Box
+                            p={2}
+                            border="1px solid"
+                            borderColor="divider"
+                            borderRadius={1}
+                            minHeight={60}
+                        >
+                        
+                            <DataTable<{ key: string; value: string }>
+                                className="key-value-map-table"
+                                columnCount={3}
+                                loadingStateOptions={{
+                                    count: 5,
+                                    imageType: "square"
+                                }}
+                                onRowClick={() => null}
+                                showHeader={false}
+                                placeholders={showPlaceholders()}
+                                transparent={true}
+                                data-testid={dataComponentId}
+                                actions={resolveTableActions()}
+                                columns={resolveTableColumns()}
+                                data={keyValuePairs}
+                            />
                         </Box>
-                    ))}
-                </Box>
-            ) : (
-                <Label
-                    aria-label={`${label}-no-pairs-label`}
-                    data-componentid={`${dataComponentId}-no-pairs-label`}
-                >
-                    {`No ${label} are added yet`}
-                </Label>
-            )}
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
         </Box>
     );
 };
