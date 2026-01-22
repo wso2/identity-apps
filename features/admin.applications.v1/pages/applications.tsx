@@ -51,13 +51,16 @@ import {
 } from "@wso2is/react-components";
 import cloneDeep from "lodash-es/cloneDeep";
 import find from "lodash-es/find";
+import { AxiosError } from "axios";
 import React, {
+    ChangeEvent,
     FunctionComponent,
     MouseEvent,
     ReactElement,
     ReactNode,
     SyntheticEvent,
     useEffect,
+    useRef,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
@@ -72,7 +75,7 @@ import {
     List,
     PaginationProps
 } from "semantic-ui-react";
-import { useApplicationList, useMyAccountApplicationData } from "../api/application";
+import { importApplication, useApplicationList, useMyAccountApplicationData } from "../api/application";
 import { useGetApplication } from "../api/use-get-application";
 import { ApplicationList } from "../components/application-list";
 import { ApplicationManagementConstants } from "../constants/application-management";
@@ -147,6 +150,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const [ strongAuth, _setStrongAuth ] = useState<boolean>(undefined);
     const [ filteredApplicationList, setFilteredApplicationList ] = useState<ApplicationListInterface>(null);
     const [ myAccountAppId, setMyAccountAppId ] = useState<string>(null);
+    const [ isImporting, setIsImporting ] = useState<boolean>(false);
+    const fileInputRef: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
 
     const { organizationType } = useGetCurrentOrganizationType();
 
@@ -407,6 +412,54 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     };
 
     /**
+     * Handles application import from file.
+     *
+     * @param event - File input change event.
+     */
+    const handleApplicationImport = (event: ChangeEvent<HTMLInputElement>): void => {
+        const file: File = event.target.files?.[0];
+
+        if (!file) {
+            return;
+        }
+
+        setIsImporting(true);
+        importApplication(file)
+            .then(() => {
+                dispatch(addAlert({
+                    description: t("applications:notifications.importApplication.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("applications:notifications.importApplication.success.message")
+                }));
+                mutateApplicationListFetchRequest();
+            })
+            .catch((error: AxiosError) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("applications:notifications.importApplication.error.message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("applications:notifications.importApplication.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("applications:notifications.importApplication.genericError.message")
+                }));
+            })
+            .finally(() => {
+                setIsImporting(false);
+                // Reset the file input to allow re-selecting the same file
+                if (fileInputRef.current) {
+                    fileInputRef.current.value = "";
+                }
+            });
+    };
+
+    /**
      * Navigate to the my account edit page.
      */
     const navigateToMyAccountSettings = (): void => {
@@ -591,6 +644,24 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                             <Show
                                 when={ featureConfig?.applications?.scopes?.create }
                             >
+                                <input
+                                    ref={ fileInputRef }
+                                    type="file"
+                                    accept=".xml"
+                                    hidden
+                                    onChange={ handleApplicationImport }
+                                    data-testid={ `${ testId }-import-file-input` }
+                                />
+                                <Button
+                                    basic
+                                    loading={ isImporting }
+                                    disabled={ isImporting }
+                                    onClick={ (): void => fileInputRef.current?.click() }
+                                    data-testid={ `${ testId }-list-layout-import-button` }
+                                >
+                                    <Icon name="upload" />
+                                    { t("applications:list.actions.import") }
+                                </Button>
                                 <PrimaryButton
                                     onClick={ (): void => {
                                         eventPublisher.publish("application-click-new-application-button");

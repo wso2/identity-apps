@@ -1357,3 +1357,37 @@ export const exportApplication = (id: string, exportSecrets: boolean = false): P
             return Promise.reject(error);
         });
 };
+
+/**
+ * Imports an application configuration from a file.
+ *
+ * @param file - The XML file containing the application configuration.
+ * @returns A promise containing the response.
+ */
+export const importApplication = (file: File): Promise<any> => {
+    const formData: FormData = new FormData();
+
+    formData.append("file", file);
+
+    const requestConfig: AxiosRequestConfig = {
+        data: formData,
+        headers: {
+            "Accept": "*/*",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "multipart/form-data"
+        },
+        method: HttpMethods.POST,
+        url: store.getState().config.endpoints.applications + "/import"
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 201 && response.status !== 200) {
+                return Promise.reject(new Error("Failed to import application."));
+            }
+
+            return Promise.resolve(response);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};

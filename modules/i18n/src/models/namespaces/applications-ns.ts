@@ -2402,6 +2402,7 @@ export interface ApplicationsNS {
         };
         actions: {
             add: string;
+            import: string;
             predefined: string;
             custom: string;
         };
@@ -2540,6 +2541,20 @@ export interface ApplicationsNS {
             };
         };
         exportApplication: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
+        importApplication: {
             error: {
                 message: string;
                 description: string;

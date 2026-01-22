@@ -2766,6 +2766,7 @@ export const applications: ApplicationsNS = {
         actions: {
             add: "New Application",
             custom: "Custom",
+            import: "Import",
             predefined: "Use Predefined"
         },
         columns: {
@@ -2929,6 +2930,20 @@ export const applications: ApplicationsNS = {
             success: {
                 description: "Successfully exported the application.",
                 message: "Application exported"
+            }
+        },
+        importApplication: {
+            error: {
+                description: "{{description}}",
+                message: "Import Error"
+            },
+            genericError: {
+                description: "Failed to import the application.",
+                message: "Something went wrong"
+            },
+            success: {
+                description: "Successfully imported the application.",
+                message: "Application imported"
             }
         },
         deleteCertificateGenericError: {
