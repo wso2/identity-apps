@@ -25,18 +25,20 @@ import unset from "lodash-es/unset";
  *
  * @param formValues - Object containing form values.
  * @param fieldName - Base field name to collapse into.
+ * @param delimiter - Delimiter used between the base field name and the object keys.
  */
 const extractObjectField = (
     formValues: Record<string, unknown>,
-    fieldName: string
+    fieldName: string,
+    delimiter: string = ":"
 ): void => {
     const collapsedObject: Record<string, unknown> = {};
     const keysToRemove: string[] = [];
 
     // Find all keys that start with "fieldName:"
     for (const key of Object.keys(formValues)) {
-        if (key.startsWith(`${fieldName}:`)) {
-            const objectKey: string = key.substring(fieldName.length + 1);
+        if (key.startsWith(`${fieldName}${delimiter}`)) {
+            const objectKey: string = key.substring(fieldName.length + delimiter.length);
             const value: unknown = get(formValues, key);
 
             collapsedObject[objectKey] = value;

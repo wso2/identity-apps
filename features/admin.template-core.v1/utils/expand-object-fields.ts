@@ -25,10 +25,12 @@ import unset from "lodash-es/unset";
  *
  * @param formValues - Object containing form values.
  * @param fieldName - Path of the field value within the object.
+ * @param delimiter - Delimiter to use between the base field name and the object keys.
  */
 const expandObjectFields = (
     formValues: Record<string, unknown>,
-    fieldName: string
+    fieldName: string,
+    delimiter: string = ":"
 ): void => {
     const fieldValue: unknown = get(formValues, fieldName);
 
@@ -37,7 +39,7 @@ const expandObjectFields = (
 
         // Expand each key-value pair in the object
         for (const [key, value] of Object.entries(objectValue)) {
-            const expandedKey: string = `${fieldName}:${key}`;
+            const expandedKey: string = `${fieldName}${delimiter}${key}`;
 
             set(formValues, expandedKey, value);
         }
