@@ -229,7 +229,8 @@ export enum CommonValidationHandlers {
  * Supported common initialize handlers.
  */
 export enum CommonInitializeHandlers {
-    EXTRACT_TEMPLATED_FIELDS = "extractTemplatedFields"
+    EXTRACT_TEMPLATED_FIELDS = "extractTemplatedFields",
+    EXTRACT_OBJECT_FIELDS = "extractObjectFields"
 }
 
 /**
@@ -239,5 +240,6 @@ export enum CommonSubmissionHandlers {
     UNIQUE_ID_GENERATOR = "uniqueIDGenerator",
     DISABLE_PROPERTY = "disableProperty",
     DEPENDENT_PROPERTY = "dependentProperty",
-    TEMPLATED_PROPERTY = "templatedProperty"
+    TEMPLATED_PROPERTY = "templatedProperty",
+    EXPAND_OBJECT_PROPERTY = "expandObjectProperty"
 }
