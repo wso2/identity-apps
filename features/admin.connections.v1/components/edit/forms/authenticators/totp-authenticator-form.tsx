@@ -22,13 +22,11 @@ import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import {
-    CommonAuthenticatorFormFieldMetaInterface,
     CommonAuthenticatorFormInitialValuesInterface,
     CommonAuthenticatorFormMetaInterface,
     CommonAuthenticatorFormPropertyInterface
 } from "../../../../models/authenticators";
 import {
-    CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface
 } from "../../../../models/connection";
 
@@ -89,7 +87,6 @@ export const TOTPAuthenticatorForm: FunctionComponent<TOTPAuthenticatorFormProps
 ): ReactElement => {
 
     const {
-        metadata,
         initialValues: originalInitialValues,
         onSubmit,
         readOnly,
