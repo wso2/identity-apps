@@ -893,6 +893,12 @@ export interface AuthenticationProviderNS {
                     ariaLabel: string;
                 };
             };
+            totp: {
+                enrollUserInAuthenticationFlow: {
+                    hint: string;
+                    label: string;
+                };
+            };
         };
         outboundConnectorAccordion: {
             default: {

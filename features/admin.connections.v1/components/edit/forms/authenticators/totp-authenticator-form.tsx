@@ -68,16 +68,6 @@ interface TOTPAuthenticatorFormInitialValuesInterface {
 }
 
 /**
- * Form fields interface.
- */
-interface TOTPAuthenticatorFormFieldsInterface {
-    /**
-     * Enable progressive enrollment.
-     */
-    TOTP_EnrolUserInAuthenticationFlow: CommonAuthenticatorFormFieldInterface;
-}
-
-/**
  * Proptypes for the TOTP Authenticator Form error messages.
  */
 export interface TOTPAuthenticatorFormErrorValidationsInterface {
@@ -110,8 +100,6 @@ export const TOTPAuthenticatorForm: FunctionComponent<TOTPAuthenticatorFormProps
 
     const { t } = useTranslation();
 
-    // This can be used when `meta` support is there.
-    const [ , setFormFields ] = useState<TOTPAuthenticatorFormFieldsInterface>(undefined);
     const [ initialValues, setInitialValues ] = useState<TOTPAuthenticatorFormInitialValuesInterface>(undefined);
 
     /**
@@ -123,7 +111,6 @@ export const TOTPAuthenticatorForm: FunctionComponent<TOTPAuthenticatorFormProps
             return;
         }
 
-        let resolvedFormFields: TOTPAuthenticatorFormFieldsInterface = null;
         let resolvedInitialValues: TOTPAuthenticatorFormInitialValuesInterface = null;
 
         originalInitialValues.properties.forEach((value: CommonAuthenticatorFormPropertyInterface) => {
@@ -131,16 +118,6 @@ export const TOTPAuthenticatorForm: FunctionComponent<TOTPAuthenticatorFormProps
                 .find((meta: CommonPluggableComponentMetaPropertyInterface) => meta.key === value.key);
 
             const moderatedName: string = value.name.replace(/\./g, "_");
-
-            resolvedFormFields = {
-                ...resolvedFormFields,
-                [moderatedName]: {
-                    meta,
-                    value: (value.value === "true" || value.value === "false")
-                        ? JSON.parse(value.value)
-                        : value.value
-                }
-            };
 
             resolvedInitialValues = {
                 ...resolvedInitialValues,
@@ -150,7 +127,6 @@ export const TOTPAuthenticatorForm: FunctionComponent<TOTPAuthenticatorFormProps
             };
         });
 
-        setFormFields(resolvedFormFields);
         setInitialValues(resolvedInitialValues);
     }, [ originalInitialValues ]);
 
@@ -184,21 +160,6 @@ export const TOTPAuthenticatorForm: FunctionComponent<TOTPAuthenticatorFormProps
         return result;
     };
 
-    /**
-     * Validates the Form.
-     *
-     * @returns Form validation
-     */
-    const validateForm = ():
-        TOTPAuthenticatorFormErrorValidationsInterface => {
-
-        const errors: TOTPAuthenticatorFormErrorValidationsInterface = {
-            TOTP_EnrolUserInAuthenticationFlow: undefined
-        };
-
-        return errors;
-    };
-
     return (
         <Form
             id={ FORM_ID }
@@ -207,7 +168,6 @@ export const TOTPAuthenticatorForm: FunctionComponent<TOTPAuthenticatorFormProps
                 onSubmit(getUpdatedConfigurations(values as TOTPAuthenticatorFormInitialValuesInterface));
             } }
             initialValues={ initialValues }
-            validate={ validateForm }
         >
             <Field.Checkbox
                 ariaLabel="Enable TOTP device progressive enrollment"
