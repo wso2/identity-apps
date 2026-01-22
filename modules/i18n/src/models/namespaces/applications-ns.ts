@@ -194,6 +194,21 @@ export interface ApplicationsNS {
             content: string;
             assertionHint: string;
         };
+        exportApplication: {
+            title: string;
+            description: string;
+            secretsOption: {
+                withoutSecrets: {
+                    label: string;
+                    hint: string;
+                };
+                withSecrets: {
+                    label: string;
+                    hint: string;
+                };
+            };
+            warning: string;
+        };
         disableApplication: {
             header: string;
             message: string;

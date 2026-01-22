@@ -62,6 +62,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import { deleteApplication, exportApplication } from "../api/application";
+import ExportApplicationModal from "./modals/export-application-modal";
 import { ApplicationManagementConstants } from "../constants/application-management";
 import {
     ApplicationAccessTypes,
@@ -177,7 +178,9 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
     const hasApplicationDeletePermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.delete);
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
+    const [ showExportModal, setShowExportModal ] = useState<boolean>(false);
     const [ deletingApplication, setDeletingApplication ] = useState<ApplicationListItemInterface>(undefined);
+    const [ exportingApplication, setExportingApplication ] = useState<ApplicationListItemInterface>(undefined);
     const [ loading, setLoading ] = useState(false);
     const [
         isApplicationTemplateRequestLoading,
@@ -307,20 +310,33 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
     };
 
     /**
-     * Exports an application when the export button is clicked.
+     * Shows the export modal when the export button is clicked.
      *
      * @param appId - Application id.
      * @param appName - Application name.
      */
-    const handleApplicationExport = (appId: string, appName: string): void => {
+    const handleApplicationExport = (app: ApplicationListItemInterface): void => {
+        setExportingApplication(app);
+        setShowExportModal(true);
+    };
 
-        exportApplication(appId)
+    /**
+     * Performs the actual export of the application.
+     *
+     * @param exportSecrets - Whether to export secrets.
+     */
+    const performExport = (exportSecrets: boolean): void => {
+        if (!exportingApplication) {
+            return;
+        }
+
+        exportApplication(exportingApplication.id, exportSecrets)
             .then((blob: Blob) => {
                 const url: string = window.URL.createObjectURL(blob);
                 const link: HTMLAnchorElement = document.createElement("a");
 
                 link.href = url;
-                link.download = `${ appName }.xml`;
+                link.download = `${ exportingApplication.name }.xml`;
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
@@ -352,6 +368,9 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     message: t("applications:notifications.exportApplication.genericError" +
                         ".message")
                 }));
+            })
+            .finally(() => {
+                setExportingApplication(undefined);
             });
     };
 
@@ -604,7 +623,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT")),
                 icon: (): SemanticICONS => "download",
                 onClick: (e: SyntheticEvent, app: ApplicationListItemInterface): void => {
-                    handleApplicationExport(app.id, app.name);
+                    handleApplicationExport(app);
                 },
                 popupText: (): string => t("common:export"),
                 renderer: "semantic-icon"
@@ -821,6 +840,20 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                 )
                         }
                     </ConfirmationModal>
+            )
+            }
+            {
+                exportingApplication && (
+                    <ExportApplicationModal
+                        open={ showExportModal }
+                        applicationName={ exportingApplication.name }
+                        onExport={ performExport }
+                        onClose={ () => {
+                            setShowExportModal(false);
+                            setExportingApplication(undefined);
+                        } }
+                        data-testid={ `${ testId }-export-modal` }
+                    />
                 )
             }
         </>

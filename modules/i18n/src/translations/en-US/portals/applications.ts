@@ -262,6 +262,25 @@ export const applications: ApplicationsNS = {
             message: "If you delete this application, authentication flows for this application will " +
                 "stop working. Please proceed with caution."
         },
+        exportApplication: {
+            title: "Export Application",
+            description: "Choose whether to include sensitive credentials in the exported " +
+                "configuration for \"{{ appName }}\".",
+            secretsOption: {
+                withoutSecrets: {
+                    label: "Export without secrets",
+                    hint: "Export the application configuration without any sensitive information. " +
+                        "You will need to manually configure secrets after importing."
+                },
+                withSecrets: {
+                    label: "Export with secrets",
+                    hint: "Include client secrets and other sensitive credentials in the export. " +
+                        "Use this option only if you trust the destination."
+                }
+            },
+            warning: "Exporting secrets can pose a security risk. Ensure you handle the exported " +
+                "file securely and only share it with trusted parties."
+        },
         disableApplication: {
             header: "Are you sure?",
             content: {
