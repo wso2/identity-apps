@@ -1,5 +1,18 @@
 # @wso2is/admin.applications.v1
 
+## 2.40.9
+
+### Patch Changes
+
+- [#9561](https://github.com/wso2/identity-apps/pull/9561) [`990145c9e05c34eaea4f2ae774f8a91cd0246f8c`](https://github.com/wso2/identity-apps/commit/990145c9e05c34eaea4f2ae774f8a91cd0246f8c) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Construct well-known endpoint to execute in tenant perspective path
+
+- Updated dependencies []:
+  - @wso2is/admin.branding.v1@2.32.77
+  - @wso2is/admin.core.v1@2.49.129
+  - @wso2is/admin.roles.v2@2.27.291
+  - @wso2is/admin.server-configurations.v1@2.35.143
+  - @wso2is/admin.users.v1@2.36.96
+
 ## 2.40.8
 
 ### Patch Changes
