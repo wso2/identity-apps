@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { DropDownItemInterface, SupportedFileTypes } from "@wso2is/form";
+import { DropDownItemInterface, KeyValueMapValueFieldTypes, SupportedFileTypes } from "@wso2is/form";
 
 /**
  * Interface to define a dynamic form.
@@ -143,6 +143,24 @@ export interface DynamicDropdownFieldInterface extends DynamicFieldInterface {
 }
 
 /**
+ * Data types required to render the dynamic key value map.
+ */
+export interface DynamicKeyValueMapFieldInterface extends DynamicFieldInterface {
+    /**
+     * Key name for the key value map field.
+     */
+    keyName: string;
+    /**
+     * Key placeholder for the key value map field.
+     */
+    keyOptions: DropDownItemInterface[];
+    /**
+     * Value type for the key value map field.
+     */
+    valueType: KeyValueMapValueFieldTypes;
+}
+
+/**
  * Interface for the handlers of dynamic fields.
  */
 export interface DynamicFieldHandlerInterface {
@@ -183,7 +201,11 @@ export enum DynamicInputFieldTypes {
     /**
      * Dropdown field.
      */
-    SELECT = "select"
+    SELECT = "select",
+    /**
+     * Multimap field.
+     */
+    KEYVALUEMAP = "keyvaluemap"
 }
 
 /**
