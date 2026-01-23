@@ -79,7 +79,7 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
     const [ groupSearchValue, setGroupSearchValue ] = useState<string>(undefined);
     const [ isGroupSearchLoading, setGroupSearchLoading ] = useState<boolean>(false);
     const excludedAttributes: string = "members,roles,meta";
-    
+
     const {
         data: originalGroupList,
         isLoading: isGroupListFetchRequestLoading,
