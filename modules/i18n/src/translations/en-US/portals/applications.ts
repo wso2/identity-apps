@@ -262,6 +262,32 @@ export const applications: ApplicationsNS = {
             message: "If you delete this application, authentication flows for this application will " +
                 "stop working. Please proceed with caution."
         },
+        exportApplication: {
+            title: "Export Application",
+            description: "Choose whether to include sensitive credentials in the exported " +
+                "configuration for \"{{ appName }}\".",
+            secretsOption: {
+                title: "Secrets",
+                withoutSecrets: {
+                    label: "Export without secrets",
+                    hint: "Export the application configuration without any sensitive information. " +
+                        "You will need to manually configure secrets after importing."
+                },
+                withSecrets: {
+                    label: "Export with secrets",
+                    hint: "Include client secrets and other sensitive credentials in the export. " +
+                        "Use this option only if you trust the destination."
+                }
+            },
+            formatOption: {
+                title: "Export Format",
+                xml: "XML",
+                json: "JSON",
+                yaml: "YAML"
+            },
+            warning: "Exporting secrets can pose a security risk. Ensure you handle the exported " +
+                "file securely and only share it with trusted parties."
+        },
         disableApplication: {
             header: "Are you sure?",
             content: {
@@ -2766,6 +2792,7 @@ export const applications: ApplicationsNS = {
         actions: {
             add: "New Application",
             custom: "Custom",
+            import: "Import",
             predefined: "Use Predefined"
         },
         columns: {
@@ -2915,6 +2942,34 @@ export const applications: ApplicationsNS = {
             success: {
                 description: "Successfully deleted the application.",
                 message: "Application deleted"
+            }
+        },
+        exportApplication: {
+            error: {
+                description: "{{description}}",
+                message: "Export Error"
+            },
+            genericError: {
+                description: "Failed to export the application.",
+                message: "Something went wrong"
+            },
+            success: {
+                description: "Successfully exported the application.",
+                message: "Application exported"
+            }
+        },
+        importApplication: {
+            error: {
+                description: "{{description}}",
+                message: "Import Error"
+            },
+            genericError: {
+                description: "Failed to import the application.",
+                message: "Something went wrong"
+            },
+            success: {
+                description: "Successfully imported the application.",
+                message: "Application imported"
             }
         },
         deleteCertificateGenericError: {

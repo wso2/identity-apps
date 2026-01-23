@@ -60,8 +60,9 @@ import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useE
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import { deleteApplication } from "../api/application";
+import { Button, Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
+import { deleteApplication, ExportFormat, exportApplication, exportFormatToFileExtension } from "../api/application";
+import ExportApplicationModal from "./modals/export-application-modal";
 import { ApplicationManagementConstants } from "../constants/application-management";
 import {
     ApplicationAccessTypes,
@@ -105,6 +106,14 @@ export interface ApplicationListPropsInterface extends SBACInterface<FeatureConf
      */
     onEmptyListPlaceholderActionClick?: () => void;
     /**
+     * Callback to be fired when clicked on the import application action.
+     */
+    onApplicationImport?: () => void;
+    /**
+     * Is application import in progress.
+     */
+    isImporting?: boolean;
+    /**
      * Search query for the list.
      */
     searchQuery?: string;
@@ -146,6 +155,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         onListItemClick,
         onEmptyListPlaceholderActionClick,
         onSearchQueryClear,
+        onApplicationImport,
+        isImporting,
         searchQuery,
         selection,
         showListItemActions,
@@ -177,7 +188,9 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
     const hasApplicationDeletePermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.delete);
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
+    const [ showExportModal, setShowExportModal ] = useState<boolean>(false);
     const [ deletingApplication, setDeletingApplication ] = useState<ApplicationListItemInterface>(undefined);
+    const [ exportingApplication, setExportingApplication ] = useState<ApplicationListItemInterface>(undefined);
     const [ loading, setLoading ] = useState(false);
     const [
         isApplicationTemplateRequestLoading,
@@ -303,6 +316,72 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
             })
             .finally(() => {
                 setLoading(false);
+            });
+    };
+
+    /**
+     * Shows the export modal when the export button is clicked.
+     *
+     * @param appId - Application id.
+     * @param appName - Application name.
+     */
+    const handleApplicationExport = (app: ApplicationListItemInterface): void => {
+        setExportingApplication(app);
+        setShowExportModal(true);
+    };
+
+    /**
+     * Performs the actual export of the application.
+     *
+     * @param exportSecrets - Whether to export secrets.
+     * @param format - The export format.
+     */
+    const performExport = (exportSecrets: boolean, format: ExportFormat): void => {
+        if (!exportingApplication) {
+            return;
+        }
+
+        exportApplication(exportingApplication.id, exportSecrets, format)
+            .then((blob: Blob) => {
+                const url: string = window.URL.createObjectURL(blob);
+                const link: HTMLAnchorElement = document.createElement("a");
+
+                link.href = url;
+                link.download = `${ exportingApplication.name }${ exportFormatToFileExtension[format] }`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+
+                dispatch(addAlert({
+                    description: t("applications:notifications.exportApplication.success" +
+                        ".description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("applications:notifications.exportApplication.success.message")
+                }));
+            })
+            .catch((error: AxiosError) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("applications:notifications.exportApplication.error" +
+                            ".message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("applications:notifications.exportApplication" +
+                        ".genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("applications:notifications.exportApplication.genericError" +
+                        ".message")
+                }));
+            })
+            .finally(() => {
+                setExportingApplication(undefined);
             });
     };
 
@@ -550,6 +629,17 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
 
         return [
             {
+                "data-testid": `${ testId }-item-export-button`,
+                hidden: (): boolean => !isFeatureEnabled(featureConfig?.applications,
+                    ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT")),
+                icon: (): SemanticICONS => "download",
+                onClick: (e: SyntheticEvent, app: ApplicationListItemInterface): void => {
+                    handleApplicationExport(app);
+                },
+                popupText: (): string => t("common:export"),
+                renderer: "semantic-icon"
+            },
+            {
                 "data-testid": `${ testId }-item-edit-button`,
                 hidden: (): boolean => !isFeatureEnabled(featureConfig?.applications,
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT")),
@@ -630,6 +720,21 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         <Show
                             when={ featureConfig?.applications?.scopes?.create }
                         >
+                            {
+                                onApplicationImport && (
+                                    <Button
+                                        basic
+                                        className="mr-3"
+                                        loading={ isImporting }
+                                        disabled={ isImporting }
+                                        onClick={ onApplicationImport }
+                                        data-testid={ `${ testId }-import-button` }
+                                    >
+                                        <Icon name="upload" />
+                                        { t("applications:list.actions.import") }
+                                    </Button>
+                                )
+                            }
                             <PrimaryButton
                                 onClick={ () => {
                                     eventPublisher.publish(componentId + "-click-new-application-button");
@@ -761,6 +866,20 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                 )
                         }
                     </ConfirmationModal>
+            )
+            }
+            {
+                exportingApplication && (
+                    <ExportApplicationModal
+                        open={ showExportModal }
+                        applicationName={ exportingApplication.name }
+                        onExport={ performExport }
+                        onClose={ () => {
+                            setShowExportModal(false);
+                            setExportingApplication(undefined);
+                        } }
+                        data-testid={ `${ testId }-export-modal` }
+                    />
                 )
             }
         </>

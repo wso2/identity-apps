@@ -194,6 +194,28 @@ export interface ApplicationsNS {
             content: string;
             assertionHint: string;
         };
+        exportApplication: {
+            title: string;
+            description: string;
+            secretsOption: {
+                title: string;
+                withoutSecrets: {
+                    label: string;
+                    hint: string;
+                };
+                withSecrets: {
+                    label: string;
+                    hint: string;
+                };
+            };
+            formatOption: {
+                title: string;
+                xml: string;
+                json: string;
+                yaml: string;
+            };
+            warning: string;
+        };
         disableApplication: {
             header: string;
             message: string;
@@ -2402,6 +2424,7 @@ export interface ApplicationsNS {
         };
         actions: {
             add: string;
+            import: string;
             predefined: string;
             custom: string;
         };
@@ -2526,6 +2549,34 @@ export interface ApplicationsNS {
             };
         };
         deleteApplication: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
+        exportApplication: {
+            error: {
+                message: string;
+                description: string;
+            };
+            genericError: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
+        importApplication: {
             error: {
                 message: string;
                 description: string;

@@ -1324,3 +1324,119 @@ export const useMyAccountStatus = <Data = MyAccountPortalStatusInterface, Error 
         mutate
     };
 };
+
+/**
+ * Export format types supported by the API.
+ */
+export type ExportFormat = "xml" | "json" | "yaml";
+
+/**
+ * Mapping of export formats to their corresponding Accept header values.
+ */
+const exportFormatToAcceptHeader: Record<ExportFormat, string> = {
+    json: "application/json",
+    xml: "application/xml",
+    yaml: "application/yaml"
+};
+
+/**
+ * Mapping of export formats to their file extensions.
+ */
+export const exportFormatToFileExtension: Record<ExportFormat, string> = {
+    json: ".json",
+    xml: ".xml",
+    yaml: ".yaml"
+};
+
+/**
+ * Exports an application configuration as a file.
+ *
+ * @param id - Application ID.
+ * @param exportSecrets - Whether to export secrets.
+ * @param format - The format to export the application in.
+ * @returns A promise containing the response with the file blob.
+ */
+export const exportApplication = (
+    id: string,
+    exportSecrets: boolean = false,
+    format: ExportFormat = "xml"
+): Promise<Blob> => {
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Accept": exportFormatToAcceptHeader[format],
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost
+        },
+        method: HttpMethods.GET,
+        params: {
+            exportSecrets
+        },
+        responseType: "blob",
+        url: store.getState().config.endpoints.applications + "/" + id + "/exportFile"
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to export application."));
+            }
+
+            return Promise.resolve(response.data as Blob);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Gets the content type based on file extension.
+ *
+ * @param fileName - The name of the file.
+ * @returns The appropriate content type for the file.
+ */
+const getImportContentType = (fileName: string): string => {
+    const extension: string = fileName.split(".").pop()?.toLowerCase() || "";
+
+    switch (extension) {
+        case "json":
+            return "application/json";
+        case "yaml":
+        case "yml":
+            return "application/yaml";
+        case "xml":
+        default:
+            return "application/xml";
+    }
+};
+
+/**
+ * Imports an application configuration from a file.
+ *
+ * @param file - The file containing the application configuration (XML, JSON, or YAML).
+ * @returns A promise containing the response.
+ */
+export const importApplication = (file: File): Promise<any> => {
+    const formData: FormData = new FormData();
+
+    formData.append("file", file);
+
+    const requestConfig: AxiosRequestConfig = {
+        data: formData,
+        headers: {
+            "Accept": "*/*",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "multipart/form-data"
+        },
+        method: HttpMethods.POST,
+        url: store.getState().config.endpoints.applications + "/import"
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 201 && response.status !== 200) {
+                return Promise.reject(new Error("Failed to import application."));
+            }
+
+            return Promise.resolve(response);
+        }).catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
+};
