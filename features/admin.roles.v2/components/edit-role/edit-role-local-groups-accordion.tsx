@@ -78,7 +78,8 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
     const [ groupsOptions, setGroupsOptions ] = useState<IdentityProviderGroupInterface[]>([]);
     const [ groupSearchValue, setGroupSearchValue ] = useState<string>(undefined);
     const [ isGroupSearchLoading, setGroupSearchLoading ] = useState<boolean>(false);
-
+    const excludedAttributes: string = "members,roles,meta";
+    
     const {
         data: originalGroupList,
         isLoading: isGroupListFetchRequestLoading,
@@ -87,7 +88,7 @@ export const EditRoleLocalGroupsAccordion: FunctionComponent<EditRoleLocalGroups
         null,
         null,
         groupSearchValue ? `displayName co ${ groupSearchValue }` : null,
-        null
+        null, excludedAttributes
     );
 
     /**

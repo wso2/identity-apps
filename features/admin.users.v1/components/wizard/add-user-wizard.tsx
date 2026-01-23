@@ -170,7 +170,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         UserManagementConstants.ATTRIBUTE_PROFILES_FOR_USER_CREATION_FEATURE_FLAG
     );
 
-    const excludedAttributes: string = "members";
+    const excludedAttributes: string = "members,roles,meta";
 
     const {
         data: validationData

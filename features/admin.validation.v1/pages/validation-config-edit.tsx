@@ -179,7 +179,7 @@ export const ValidationConfigEditPage: FunctionComponent<MyAccountSettingsEditPa
         null,
         null,
         null,
-        "members,roles",
+        "members,roles,meta",
         !isRuleBasedPasswordExpiryDisabled
     );
 

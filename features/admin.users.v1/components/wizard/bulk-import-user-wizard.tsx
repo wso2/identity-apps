@@ -225,7 +225,6 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         state.config.ui.features.bulkUserImport.fileImportTimeout);
     const userLimit: number = useSelector((state: AppState) =>
         state.config.ui.features.bulkUserImport.userLimit);
-
     const systemReservedUserStores: string[] = useSelector((state: AppState) =>
         state?.config?.ui?.systemReservedUserStores);
 
@@ -238,6 +237,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     }, [ userLimit ]);
 
     const optionsArray: string[] = [];
+    const excludedAttributes: string = "members,roles,meta";
 
     const {
         data: groupList,
@@ -247,7 +247,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         null,
         null,
         selectedUserStore,
-        "members"
+        excludedAttributes
     );
 
     const {
