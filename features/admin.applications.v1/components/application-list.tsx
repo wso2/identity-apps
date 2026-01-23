@@ -60,7 +60,7 @@ import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useE
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
-import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
+import { Button, Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import { deleteApplication, ExportFormat, exportApplication, exportFormatToFileExtension } from "../api/application";
 import ExportApplicationModal from "./modals/export-application-modal";
 import { ApplicationManagementConstants } from "../constants/application-management";
@@ -106,6 +106,14 @@ export interface ApplicationListPropsInterface extends SBACInterface<FeatureConf
      */
     onEmptyListPlaceholderActionClick?: () => void;
     /**
+     * Callback to be fired when clicked on the import application action.
+     */
+    onApplicationImport?: () => void;
+    /**
+     * Is application import in progress.
+     */
+    isImporting?: boolean;
+    /**
      * Search query for the list.
      */
     searchQuery?: string;
@@ -147,6 +155,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         onListItemClick,
         onEmptyListPlaceholderActionClick,
         onSearchQueryClear,
+        onApplicationImport,
+        isImporting,
         searchQuery,
         selection,
         showListItemActions,
@@ -710,6 +720,21 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         <Show
                             when={ featureConfig?.applications?.scopes?.create }
                         >
+                            {
+                                onApplicationImport && (
+                                    <Button
+                                        basic
+                                        className="mr-3"
+                                        loading={ isImporting }
+                                        disabled={ isImporting }
+                                        onClick={ onApplicationImport }
+                                        data-testid={ `${ testId }-import-button` }
+                                    >
+                                        <Icon name="upload" />
+                                        { t("applications:list.actions.import") }
+                                    </Button>
+                                )
+                            }
                             <PrimaryButton
                                 onClick={ () => {
                                     eventPublisher.publish(componentId + "-click-new-application-button");

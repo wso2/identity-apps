@@ -644,14 +644,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                             <Show
                                 when={ featureConfig?.applications?.scopes?.create }
                             >
-                                <input
-                                    ref={ fileInputRef }
-                                    type="file"
-                                    accept=".xml,.json,.yaml,.yml"
-                                    hidden
-                                    onChange={ handleApplicationImport }
-                                    data-testid={ `${ testId }-import-file-input` }
-                                />
+
                                 <Button
                                     basic
                                     loading={ isImporting }
@@ -732,6 +725,21 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                         && myAccountApplicationData?.applications?.length !== 0
                         && renderTenantedMyAccountLink()
                 }
+                { (organizationType !== OrganizationType.SUBORGANIZATION ||
+                    isOrganizationApplicationCreationEnabled) && (
+                    <Show
+                        when={ featureConfig?.applications?.scopes?.create }
+                    >
+                        <input
+                            ref={ fileInputRef }
+                            type="file"
+                            accept=".xml,.json,.yaml,.yml"
+                            hidden
+                            onChange={ handleApplicationImport }
+                            data-testid={ `${ testId }-import-file-input` }
+                        />
+                    </Show>
+                ) }
                 <ListLayout
                     advancedSearch={ (
                         <AdvancedSearchWithBasicFilters
@@ -850,6 +858,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                         isLoading={
                             isApplicationListFetchRequestLoading || isMyAccountApplicationDataFetchRequestLoading
                         }
+                        isImporting={ isImporting }
                         list={ filteredApplicationList }
                         onApplicationDelete={ handleApplicationDelete }
                         onEmptyListPlaceholderActionClick={
@@ -857,6 +866,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                 history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
                             }
                         }
+                        onApplicationImport={ () => fileInputRef.current?.click() }
                         onSearchQueryClear={ handleSearchQueryClear }
                         searchQuery={ searchQuery }
                         data-testid={ `${ testId }-list` }
