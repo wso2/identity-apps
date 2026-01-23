@@ -98,6 +98,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
     const domain: string = user?.userName?.split("/")?.length > 1
         ? user.userName.split("/")[0]
         : userstoresConfig.primaryUserstoreName;
+    const excludedAttributes: string = "members,roles,meta";
 
     const {
         data: originalGroupsList,
@@ -108,7 +109,8 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         null,
         null,
         searchQuery,
-        domain
+        domain,
+        excludedAttributes
     );
 
     const groupsList: GroupsInterface[] = useMemo(() => {

@@ -62,7 +62,7 @@ export const AddUserGroups: FunctionComponent<AddConsumerUserGroupPropsInterface
     const [ , setIsSelectUnassignedAllGroupsChecked ] = useState<boolean>(false);
     const [ searchQuery, setSearchQuery ] = useState<string>(null);
 
-    const excludedAttributes: string = "members";
+    const excludedAttributes: string = "members,roles,meta";
 
     const {
         data: originalGroupList,
