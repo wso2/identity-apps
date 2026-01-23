@@ -647,7 +647,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                 <input
                                     ref={ fileInputRef }
                                     type="file"
-                                    accept=".xml"
+                                    accept=".xml,.json,.yaml,.yml"
                                     hidden
                                     onChange={ handleApplicationImport }
                                     data-testid={ `${ testId }-import-file-input` }

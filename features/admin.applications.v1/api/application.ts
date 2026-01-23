@@ -1371,7 +1371,7 @@ export const exportApplication = (
             exportSecrets
         },
         responseType: "blob",
-        url: store.getState().config.endpoints.applications + "/" + id + "/export"
+        url: store.getState().config.endpoints.applications + "/" + id + "/exportFile"
     };
 
     return httpClient(requestConfig)
@@ -1387,9 +1387,30 @@ export const exportApplication = (
 };
 
 /**
+ * Gets the content type based on file extension.
+ *
+ * @param fileName - The name of the file.
+ * @returns The appropriate content type for the file.
+ */
+const getImportContentType = (fileName: string): string => {
+    const extension: string = fileName.split(".").pop()?.toLowerCase() || "";
+
+    switch (extension) {
+        case "json":
+            return "application/json";
+        case "yaml":
+        case "yml":
+            return "application/yaml";
+        case "xml":
+        default:
+            return "application/xml";
+    }
+};
+
+/**
  * Imports an application configuration from a file.
  *
- * @param file - The XML file containing the application configuration.
+ * @param file - The file containing the application configuration (XML, JSON, or YAML).
  * @returns A promise containing the response.
  */
 export const importApplication = (file: File): Promise<any> => {
