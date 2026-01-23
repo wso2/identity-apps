@@ -267,6 +267,7 @@ export const applications: ApplicationsNS = {
             description: "Choose whether to include sensitive credentials in the exported " +
                 "configuration for \"{{ appName }}\".",
             secretsOption: {
+                title: "Secrets",
                 withoutSecrets: {
                     label: "Export without secrets",
                     hint: "Export the application configuration without any sensitive information. " +
@@ -277,6 +278,12 @@ export const applications: ApplicationsNS = {
                     hint: "Include client secrets and other sensitive credentials in the export. " +
                         "Use this option only if you trust the destination."
                 }
+            },
+            formatOption: {
+                title: "Export Format",
+                xml: "XML",
+                json: "JSON",
+                yaml: "YAML"
             },
             warning: "Exporting secrets can pose a security risk. Ensure you handle the exported " +
                 "file securely and only share it with trusted parties."

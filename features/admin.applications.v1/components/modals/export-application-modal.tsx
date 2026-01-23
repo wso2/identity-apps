@@ -25,6 +25,7 @@ import DialogContent from "@oxygen-ui/react/DialogContent";
 import DialogTitle from "@oxygen-ui/react/DialogTitle";
 import FormControl from "@oxygen-ui/react/FormControl";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
+import FormLabel from "@oxygen-ui/react/FormLabel";
 import Radio from "@oxygen-ui/react/Radio";
 import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import Stack from "@oxygen-ui/react/Stack";
@@ -32,6 +33,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { ExportFormat } from "../../api/application";
 
 /**
  * Props interface of {@link ExportApplicationModal}
@@ -44,8 +46,9 @@ export interface ExportApplicationModalProps extends DialogProps, IdentifiableCo
     /**
      * Callback to be called when the export is triggered.
      * @param exportSecrets - Whether to export secrets or not.
+     * @param format - The selected export format.
      */
-    onExport: (exportSecrets: boolean) => void;
+    onExport: (exportSecrets: boolean, format: ExportFormat) => void;
     /**
      * Callback to be called when the modal is closed.
      */
@@ -53,7 +56,7 @@ export interface ExportApplicationModalProps extends DialogProps, IdentifiableCo
 }
 
 /**
- * Modal to confirm application export with option to include secrets.
+ * Modal to confirm application export with option to include secrets and select format.
  *
  * @param props - Props injected to the component.
  * @returns Export Application Modal component.
@@ -68,19 +71,27 @@ const ExportApplicationModal: FunctionComponent<ExportApplicationModalProps> = (
 }: ExportApplicationModalProps): ReactElement => {
     const { t } = useTranslation();
     const [ exportSecrets, setExportSecrets ] = useState<boolean>(false);
+    const [ exportFormat, setExportFormat ] = useState<ExportFormat>("xml");
 
     /**
-     * Handles the radio button change.
+     * Handles the secrets radio button change.
      */
-    const handleRadioChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    const handleSecretsRadioChange = (event: ChangeEvent<HTMLInputElement>): void => {
         setExportSecrets(event.target.value === "true");
+    };
+
+    /**
+     * Handles the format radio button change.
+     */
+    const handleFormatRadioChange = (event: ChangeEvent<HTMLInputElement>): void => {
+        setExportFormat(event.target.value as ExportFormat);
     };
 
     /**
      * Handles the export button click.
      */
     const handleExport = (): void => {
-        onExport(exportSecrets);
+        onExport(exportSecrets, exportFormat);
         onClose();
     };
 
@@ -100,16 +111,23 @@ const ExportApplicationModal: FunctionComponent<ExportApplicationModalProps> = (
                 </Typography>
             </DialogTitle>
             <DialogContent dividers>
-                <Stack spacing={ 2 }>
+                <Stack spacing={ 3 }>
                     <Typography variant="body2">
                         { t("applications:confirmations.exportApplication.description",
                             { appName: applicationName }) }
                     </Typography>
+
+                    {/* Export Secrets Option */}
                     <FormControl component="fieldset" fullWidth>
+                        <FormLabel component="legend">
+                            <Typography variant="subtitle2" fontWeight="500">
+                                { t("applications:confirmations.exportApplication.secretsOption.title") }
+                            </Typography>
+                        </FormLabel>
                         <RadioGroup
                             value={ String(exportSecrets) }
-                            onChange={ handleRadioChange }
-                            data-componentid={ `${componentId}-radio-group` }
+                            onChange={ handleSecretsRadioChange }
+                            data-componentid={ `${componentId}-secrets-radio-group` }
                         >
                             <FormControlLabel
                                 value="false"
@@ -147,6 +165,41 @@ const ExportApplicationModal: FunctionComponent<ExportApplicationModalProps> = (
                             />
                         </RadioGroup>
                     </FormControl>
+
+                    {/* Export Format Option */}
+                    <FormControl component="fieldset" fullWidth>
+                        <FormLabel component="legend">
+                            <Typography variant="subtitle2" fontWeight="500">
+                                { t("applications:confirmations.exportApplication.formatOption.title") }
+                            </Typography>
+                        </FormLabel>
+                        <RadioGroup
+                            row
+                            value={ exportFormat }
+                            onChange={ handleFormatRadioChange }
+                            data-componentid={ `${componentId}-format-radio-group` }
+                        >
+                            <FormControlLabel
+                                value="xml"
+                                control={ <Radio /> }
+                                label={ t("applications:confirmations.exportApplication.formatOption.xml") }
+                                data-componentid={ `${componentId}-xml-format-option` }
+                            />
+                            <FormControlLabel
+                                value="json"
+                                control={ <Radio /> }
+                                label={ t("applications:confirmations.exportApplication.formatOption.json") }
+                                data-componentid={ `${componentId}-json-format-option` }
+                            />
+                            <FormControlLabel
+                                value="yaml"
+                                control={ <Radio /> }
+                                label={ t("applications:confirmations.exportApplication.formatOption.yaml") }
+                                data-componentid={ `${componentId}-yaml-format-option` }
+                            />
+                        </RadioGroup>
+                    </FormControl>
+
                     { exportSecrets && (
                         <Alert severity="warning" data-componentid={ `${componentId}-warning` }>
                             { t("applications:confirmations.exportApplication.warning") }

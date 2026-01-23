@@ -198,6 +198,7 @@ export interface ApplicationsNS {
             title: string;
             description: string;
             secretsOption: {
+                title: string;
                 withoutSecrets: {
                     label: string;
                     hint: string;
@@ -206,6 +207,12 @@ export interface ApplicationsNS {
                     label: string;
                     hint: string;
                 };
+            };
+            formatOption: {
+                title: string;
+                xml: string;
+                json: string;
+                yaml: string;
             };
             warning: string;
         };

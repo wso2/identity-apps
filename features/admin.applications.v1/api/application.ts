@@ -1326,16 +1326,44 @@ export const useMyAccountStatus = <Data = MyAccountPortalStatusInterface, Error 
 };
 
 /**
+ * Export format types supported by the API.
+ */
+export type ExportFormat = "xml" | "json" | "yaml";
+
+/**
+ * Mapping of export formats to their corresponding Accept header values.
+ */
+const exportFormatToAcceptHeader: Record<ExportFormat, string> = {
+    json: "application/json",
+    xml: "application/xml",
+    yaml: "application/yaml"
+};
+
+/**
+ * Mapping of export formats to their file extensions.
+ */
+export const exportFormatToFileExtension: Record<ExportFormat, string> = {
+    json: ".json",
+    xml: ".xml",
+    yaml: ".yaml"
+};
+
+/**
  * Exports an application configuration as a file.
  *
  * @param id - Application ID.
  * @param exportSecrets - Whether to export secrets.
+ * @param format - The format to export the application in.
  * @returns A promise containing the response with the file blob.
  */
-export const exportApplication = (id: string, exportSecrets: boolean = false): Promise<Blob> => {
+export const exportApplication = (
+    id: string,
+    exportSecrets: boolean = false,
+    format: ExportFormat = "xml"
+): Promise<Blob> => {
     const requestConfig: AxiosRequestConfig = {
         headers: {
-            "Accept": "application/octet-stream",
+            "Accept": exportFormatToAcceptHeader[format],
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost
         },
         method: HttpMethods.GET,

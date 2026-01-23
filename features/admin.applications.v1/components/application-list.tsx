@@ -61,7 +61,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
-import { deleteApplication, exportApplication } from "../api/application";
+import { deleteApplication, ExportFormat, exportApplication, exportFormatToFileExtension } from "../api/application";
 import ExportApplicationModal from "./modals/export-application-modal";
 import { ApplicationManagementConstants } from "../constants/application-management";
 import {
@@ -324,19 +324,20 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
      * Performs the actual export of the application.
      *
      * @param exportSecrets - Whether to export secrets.
+     * @param format - The export format.
      */
-    const performExport = (exportSecrets: boolean): void => {
+    const performExport = (exportSecrets: boolean, format: ExportFormat): void => {
         if (!exportingApplication) {
             return;
         }
 
-        exportApplication(exportingApplication.id, exportSecrets)
+        exportApplication(exportingApplication.id, exportSecrets, format)
             .then((blob: Blob) => {
                 const url: string = window.URL.createObjectURL(blob);
                 const link: HTMLAnchorElement = document.createElement("a");
 
                 link.href = url;
-                link.download = `${ exportingApplication.name }.xml`;
+                link.download = `${ exportingApplication.name }${ exportFormatToFileExtension[format] }`;
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
