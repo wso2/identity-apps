@@ -24,19 +24,25 @@ import IconButton from "@oxygen-ui/react/IconButton";
 import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import Typography from "@oxygen-ui/react/Typography";
 import { TrashIcon } from "@oxygen-ui/react-icons";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
+import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
 import CheckboxAdapter from "@wso2is/form/src/components/adapters/checkbox-field-adapter";
 import { ContentLoader, GenericIcon, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Icon } from "semantic-ui-react";
 import updateEventPublishingConfigurations from "../../api/event-publishing-configurations";
 import useFraudDetectionConfigurations from "../../api/use-fraud-detection-configurations";
 import { getSiftConnectorIcon } from "../../configs/ui";
+import {
+    GovernanceConnectorConstants,
+    GovernanceConnectorFeatureDictionaryKeys
+} from "../../constants/governance-connector-constants";
 import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
 import {
     FraudAnalyticEventMetadataInterface,
@@ -87,6 +93,16 @@ const SiftConnectorForm: FunctionComponent<SiftConnectorFormPropsInterface> = ({
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
 
+    const governanceConnectorsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.governanceConnectors
+    );
+    const showFraudDetectionEventPublishingConfiguration: boolean = isFeatureEnabled(
+        governanceConnectorsFeatureConfig,
+        GovernanceConnectorConstants.featureDictionary[
+            GovernanceConnectorFeatureDictionaryKeys.HIDE_FRAUD_DETECTION_EVENT_PUBLISHING_CONFIGURATION
+        ]
+    );
+
     const [ isShow, setIsShow ] = useState<boolean>(false);
 
     const {
@@ -94,7 +110,7 @@ const SiftConnectorForm: FunctionComponent<SiftConnectorFormPropsInterface> = ({
         error: fraudDetectionConfigurationsError,
         isLoading: isFraudDetectionConfigurationsLoading,
         mutate: mutateEventPublishingConfigurations
-    } = useFraudDetectionConfigurations(true);
+    } = useFraudDetectionConfigurations(showFraudDetectionEventPublishingConfiguration);
 
     const eventMetadata: Record<string, FraudAnalyticEventMetadataInterface> = GovernanceConnectorUtils
         .resolveEventPropertyMappings();
@@ -433,9 +449,15 @@ const SiftConnectorForm: FunctionComponent<SiftConnectorFormPropsInterface> = ({
     return (
         <div className="sift-connector-form">
             <FinalForm
-                onSubmit={ (values: Record<string, unknown>) =>
-                    handleEventPublishingSubmit(values)
-                }
+                onSubmit={ (values: Record<string, unknown>) => {
+                    if (!showFraudDetectionEventPublishingConfiguration) {
+                        // Only submit API key
+                        onSubmit(getUpdatedAPIKey(values));
+                    } else {
+                        // Submit event publishing configurations
+                        handleEventPublishingSubmit(values);
+                    }
+                } }
                 data-componentid={ `${ componentId }-configuration-form` }
                 initialValues={ resolveInitialFormValues() }
                 render={ ({ handleSubmit, form }: FormRenderProps) => (
@@ -501,30 +523,35 @@ const SiftConnectorForm: FunctionComponent<SiftConnectorFormPropsInterface> = ({
                                     )
                                 }
                             </Stack>
-                            <Divider />
                             {
                                 (fraudDetectionConfigurationsError && isFraudDetectionConfigurationsLoading)
                                     ? <ContentLoader />
-                                    : (
-                                        <Box mt={ 4 } mb={ 3 }>
-                                            <Typography
-                                                variant="h5"
-                                                className="sift-connector-form-event-publish-title"
-                                            >
-                                                { t("governanceConnectors:connectorCategories.loginAttemptsSecurity" +
-                                                    ".connectors.siftConnector.eventPublishing.title") }
-                                            </Typography>
-                                            <Typography
-                                                mb={ 2 }
-                                                variant="body2"
-                                                className="sift-connector-form-event-publish-sub-title"
-                                            >
-                                                { t("governanceConnectors:connectorCategories.loginAttemptsSecurity" +
-                                                    ".connectors.siftConnector.eventPublishing.subtitle") }
-                                            </Typography>
-                                            { renderEventPublishingSection(form) }
-                                        </Box>
-                                    )
+                                    : showFraudDetectionEventPublishingConfiguration
+                                        && (
+                                            <>
+                                                <Divider />
+                                                <Box mt={ 4 } mb={ 3 }>
+                                                    <Typography
+                                                        variant="h5"
+                                                        className="sift-connector-form-event-publish-title"
+                                                    >
+                                                        { t("governanceConnectors:connectorCategories" +
+                                                            ".loginAttemptsSecurity.connectors.siftConnector" +
+                                                            ".eventPublishing.title") }
+                                                    </Typography>
+                                                    <Typography
+                                                        mb={ 2 }
+                                                        variant="body2"
+                                                        className="sift-connector-form-event-publish-sub-title"
+                                                    >
+                                                        { t("governanceConnectors:connectorCategories" +
+                                                            ".loginAttemptsSecurity.connectors.siftConnector" +
+                                                            ".eventPublishing.subtitle") }
+                                                    </Typography>
+                                                    { renderEventPublishingSection(form) }
+                                                </Box>
+                                            </>
+                                        )
 
                             }
                             <PrimaryButton
