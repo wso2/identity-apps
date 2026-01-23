@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.3.34
+
+### Patch Changes
+
+- [#8480](https://github.com/wso2/identity-apps/pull/8480) [`6445a627169239c85a8b5976748eaf0cf1e7a254`](https://github.com/wso2/identity-apps/commit/6445a627169239c85a8b5976748eaf0cf1e7a254) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Add CDS support for registration
+
 ## 3.3.33
 
 ### Patch Changes
