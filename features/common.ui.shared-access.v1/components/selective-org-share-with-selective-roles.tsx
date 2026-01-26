@@ -79,7 +79,7 @@ import { DropdownProps } from "semantic-ui-react";
 import { CustomTreeItem } from "./custom-tree-item";
 
 interface SelectiveOrgShareWithSelectiveRolesProps extends IdentifiableComponentInterface {
-    applicationId: string;
+    applicationId?: string;
     applicationRolesList: RolesV2Interface[];
     roleSelections: Record<string, SelectedOrganizationRoleInterface[]>;
     setRoleSelections: ReactDispatch<SetStateAction<Record<string, SelectedOrganizationRoleInterface[]>>>;
@@ -101,6 +101,7 @@ interface SelectiveOrgShareWithSelectiveRolesProps extends IdentifiableComponent
     clearAdvancedRoleSharing?: boolean;
     disableOrgSelection?: boolean;
     enableAdminRole?: boolean;
+    userId?: string;
 }
 
 interface TreeViewBaseItemWithRoles extends TreeViewBaseItem {
