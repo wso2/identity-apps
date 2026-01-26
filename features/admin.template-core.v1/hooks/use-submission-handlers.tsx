@@ -27,6 +27,7 @@ import {
 import disableProperty from "../utils/disable-property";
 import templatedProperty from "../utils/templated-property";
 import uniqueIDGenerator from "../utils/unique-id-generator";
+import expandObjectFields from "../utils/expand-object-fields";
 
 /**
  * Function definition for custom submission handler.
@@ -103,6 +104,13 @@ const useSubmissionHandlers = (
                         props?.propertyPath as string
                     );
 
+                    break;
+                case CommonSubmissionHandlers.EXPAND_OBJECT_PROPERTY:
+                    expandObjectFields(
+                        values,
+                        field?.name,
+                        props?.delimiter as string
+                    )
                     break;
                 default:
                     if (customSubmissionHandlers) {
