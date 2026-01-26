@@ -25,7 +25,7 @@ import Select from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
 import { PlusIcon } from "@oxygen-ui/react-icons";
 import { DataTable, EmptyPlaceholder, TableActionsInterface, TableColumnInterface } from "@wso2is/react-components";
-import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
+import React, { ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { Grid, Header, Label, SemanticICONS } from "semantic-ui-react";
 
 /**
@@ -135,6 +135,17 @@ export const KeyValueMapField = ({
         return [];
     });
 
+    useEffect(() => {
+        // Update local state if form value changes externally
+        if (value && typeof value === 'object') {
+            setKeyValuePairs(
+                Object.entries(value)
+                    .filter(([_, val]) => val)
+                    .map(([key, val]) => ({ key, value: val as string }))
+            );
+        }
+    }, [value]);
+
     /**
      * Handles adding a new key-value pair.
      */
@@ -142,7 +153,6 @@ export const KeyValueMapField = ({
         if (selectedKey && inputValue) {
             const updatedPairs: { key: string; value: string }[] = [...keyValuePairs, { key: selectedKey, value: inputValue }];
 
-            setKeyValuePairs(updatedPairs);
             setSelectedKey("");
             setInputValue("");
 
@@ -165,8 +175,6 @@ export const KeyValueMapField = ({
         const updatedPairs: { key: string; value: string }[] = keyValuePairs.filter(
             p => p.key !== pair.key
         );
-
-        setKeyValuePairs(updatedPairs);
 
         // Update form value
         if (onChange) {
