@@ -245,6 +245,9 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
                             header={ t("pushProviders:dangerZoneGroup.revertConfig.heading") }
                             subheader={ t("pushProviders:dangerZoneGroup.revertConfig.subHeading") }
                             onActionClick={ (): void => {
+                                if (!pushProvider) {
+                                    return;
+                                }
                                 setOpenRevertConfigModal(true);
                             } }
                         />
