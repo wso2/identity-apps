@@ -83,8 +83,6 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
         mutate: mutatePushProvidersListFetchRequest
     } = useGetPushProvidersList();
 
-    console.log("pushProvidersList", pushProvidersList);
-
     useEffect(() => {
         if (pushProvidersList?.length > 0) {
             setPushProvider(pushProvidersList[0]);
@@ -141,7 +139,7 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
             });;
     };
 
-    const handlePushProviderUpdate = ( data: PushProviderUpdateAPIInterface ): void => {
+    const handlePushProviderUpdate = ( data: PushProviderUpdateAPIInterface, callback: () => void ): void => {
         updatePushProvider(pushProvider.name, data)
             .then(() => {
                 dispatch(addAlert({
@@ -160,6 +158,7 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
                 }));
             })
             .finally(() => {
+                callback();
                 setIsSubmitting(false);
                 mutatePushProvidersListFetchRequest();
                 mutatePushProviderTemplateFetchRequest();
