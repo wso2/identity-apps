@@ -2721,7 +2721,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 && !isSubOrganization()
                 && !isSystemApplication
                 && !isDefaultApplication
-                && applicationConfig?.inboundOIDCForm?.showRequestObjectConfigurations
+                && (applicationConfig?.inboundOIDCForm?.showRequestObjectConfigurations
+                    || applicationConfig.inboundOIDCForm.showRequestObjectSignatureValidation)
                 && (
                     <Grid.Row columns={ 1 } data-componentid={ testId + "-request-object" }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
@@ -2733,114 +2734,168 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 { t("applications:forms.inboundOIDC.sections." +
                                         "requestObject.heading") }
                             </Heading>
-                            <Field
-                                ref={ requestObjectSigningAlg }
-                                name="requestObjectSigningAlg"
-                                label={
-                                    t("applications:forms.inboundOIDC.sections" +
-                                            ".requestObject.fields.requestObjectSigningAlg.label")
-                                }
-                                required={ false }
-                                type="dropdown"
-                                disabled={ false }
-                                default={
-                                    initialValues?.requestObject?.requestObjectSigningAlg ?
-                                        initialValues.requestObject.requestObjectSigningAlg : null
-                                }
-                                placeholder={
-                                    t("applications:forms.inboundOIDC.sections" +
-                                            ".requestObject.fields.requestObjectSigningAlg.placeholder")
-                                }
-                                children={ isFAPIApplication ?
-                                    getAllowedList(metadata?.fapiMetadata?.allowedSignatureAlgorithms)
-                                    : getAllowedList(metadata?.requestObjectSignatureAlgorithm) }
-                                readOnly={ readOnly }
-                                data-componentId={ `${ componentId }-request-object-signing-algorithm-dropdown` }
-                            />
-                            <Hint>
-                                <Trans
-                                    i18nKey={
-                                        "applications:forms.inboundOIDC.sections" +
-                                            ".requestObject.fields.requestObjectSigningAlg.hint"
-                                    }
-                                >
-                                        The dropdown contains the supported <Code withBackground>request object</Code>
-                                        signing algorithms.
-                                </Trans>
-                            </Hint>
+                            { applicationConfig.inboundOIDCForm.showRequestObjectSignatureValidation && (
+                                <>
+                                    <Field
+                                        ref={ enableRequestObjectSignatureValidation }
+                                        name="enableRequestObjectSignatureValidation"
+                                        label=""
+                                        required={ false }
+                                        requiredErrorMessage="this is needed"
+                                        type="checkbox"
+                                        value={
+                                            initialValues?.validateRequestObjectSignature
+                                                ? [ "EnableRequestObjectSignatureValidation" ]
+                                                : []
+                                        }
+                                        readOnly={ readOnly }
+                                        data-testid={ `${ testId }-request-object-signature-validation-checkbox` }
+                                    >
+                                        { [
+                                            {
+                                                label: t("applications:forms.inboundOIDC.sections" +
+                                                    ".requestObjectSignature.fields.signatureValidation.label"),
+                                                value: "EnableRequestObjectSignatureValidation"
+                                            }
+                                        ] }
+                                    </Field>
+                                    <Hint>
+                                        <Trans
+                                            i18nKey={
+                                                "applications:forms.inboundOIDC.sections" +
+                                                ".requestObjectSignature.description"
+                                            }
+                                            tOptions={ { productName: config.ui.productName } }
+                                        >
+                                            Select to enable signature validation to accept only signed 
+                                            <Code>request objects</Code> in the authorization request.
+                                        </Trans>
+                                    </Hint>
+                                </>
+                            ) }
                         </Grid.Column>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                            <Field
-                                ref={ requestObjectEncryptionAlgorithm }
-                                name="requestObjectEncryptionAlgorithm"
-                                label={
-                                    t("applications:forms.inboundOIDC.sections" +
-                                            ".requestObject.fields.requestObjectEncryptionAlgorithm.label")
-                                }
-                                required={ false }
-                                type="dropdown"
-                                disabled={ false }
-                                default={
-                                    initialValues?.requestObject?.encryption?.algorithm ?
-                                        initialValues.requestObject.encryption.algorithm : null
-                                }
-                                placeholder={
-                                    t("applications:forms.inboundOIDC.sections" +
-                                            ".requestObject.fields.requestObjectEncryptionAlgorithm.placeholder")
-                                }
-                                children={ isFAPIApplication ?
-                                    getAllowedList(metadata?.fapiMetadata?.allowedEncryptionAlgorithms) :
-                                    getAllowedList(metadata?.requestObjectEncryptionAlgorithm) }
-                                readOnly={ readOnly }
-                                data-componentId={ `${ componentId }-request-object-encryption-algorithm-dropdown` }
-                            />
-                            <Hint>
-                                <Trans
-                                    i18nKey={
-                                        "applications:forms.inboundOIDC.sections" +
-                                            ".requestObject.fields.requestObjectEncryptionAlgorithm.hint"
-                                    }
-                                >
-                                        The dropdown contains the supported <Code withBackground>request object</Code>
-                                        encryption algorithms.
-                                </Trans>
-                            </Hint>
-                        </Grid.Column>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                            <Field
-                                ref={ requestObjectEncryptionMethod }
-                                name="requestObjectEncryptionMethod"
-                                label={
-                                    t("applications:forms.inboundOIDC.sections" +
-                                            ".requestObject.fields.requestObjectEncryptionMethod.label")
-                                }
-                                required={ false }
-                                type="dropdown"
-                                disabled={ false }
-                                default={
-                                    initialValues?.requestObject?.encryption?.method
-                                        ? initialValues.requestObject.encryption.method : null
-                                }
-                                placeholder={
-                                    t("applications:forms.inboundOIDC.sections" +
-                                            ".requestObject.fields.requestObjectEncryptionMethod.placeholder")
-                                }
-                                children={ getAllowedList(metadata?.requestObjectEncryptionMethod) }
-                                readOnly={ readOnly }
-                                data-componentId={ `${ componentId }-request-object-encryption-method-dropdown` }
-                            />
-                            <Hint>
-                                <Trans
-                                    i18nKey={
-                                        "applications:forms.inboundOIDC.sections" +
-                                            ".requestObject.fields.requestObjectEncryptionMethod.hint"
-                                    }
-                                >
-                                        The dropdown contains the supported <Code withBackground>request object</Code>
-                                        encryption methods.
-                                </Trans>
-                            </Hint>
-                        </Grid.Column>
+                        { applicationConfig?.inboundOIDCForm?.showRequestObjectConfigurations && (
+                            <>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <Field
+                                        ref={ requestObjectSigningAlg }
+                                        name="requestObjectSigningAlg"
+                                        label={
+                                            t("applications:forms.inboundOIDC.sections" +
+                                                    ".requestObject.fields.requestObjectSigningAlg.label")
+                                        }
+                                        required={ false }
+                                        type="dropdown"
+                                        disabled={ false }
+                                        default={
+                                            initialValues?.requestObject?.requestObjectSigningAlg ?
+                                                initialValues.requestObject.requestObjectSigningAlg : null
+                                        }
+                                        placeholder={
+                                            t("applications:forms.inboundOIDC.sections" +
+                                                    ".requestObject.fields.requestObjectSigningAlg.placeholder")
+                                        }
+                                        readOnly={ readOnly }
+                                        data-componentId={
+                                            `${ componentId }-request-object-signing-algorithm-dropdown`
+                                        }
+                                    >
+                                        { isFAPIApplication ?
+                                            getAllowedList(metadata?.fapiMetadata?.allowedSignatureAlgorithms)
+                                            : getAllowedList(metadata?.requestObjectSignatureAlgorithm) }
+                                    </Field>
+                                    <Hint>
+                                        <Trans
+                                            i18nKey={
+                                                "applications:forms.inboundOIDC.sections" +
+                                                    ".requestObject.fields.requestObjectSigningAlg.hint"
+                                            }
+                                        >
+                                            The dropdown contains the supported <Code withBackground>request
+                                            object</Code> signing algorithms.
+                                        </Trans>
+                                    </Hint>
+                                </Grid.Column>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <Field
+                                        ref={ requestObjectEncryptionAlgorithm }
+                                        name="requestObjectEncryptionAlgorithm"
+                                        label={
+                                            t("applications:forms.inboundOIDC.sections" +
+                                                    ".requestObject.fields.requestObjectEncryptionAlgorithm.label")
+                                        }
+                                        required={ false }
+                                        type="dropdown"
+                                        disabled={ false }
+                                        default={
+                                            initialValues?.requestObject?.encryption?.algorithm ?
+                                                initialValues.requestObject.encryption.algorithm : null
+                                        }
+                                        placeholder={
+                                            t("applications:forms.inboundOIDC.sections.requestObject" +
+                                                    ".fields.requestObjectEncryptionAlgorithm.placeholder")
+                                        }
+                                        readOnly={ readOnly }
+                                        data-componentId={
+                                            `${ componentId }-request-object-encryption-algorithm-dropdown`
+                                        }
+                                    >
+                                        { isFAPIApplication ?
+                                            getAllowedList(metadata?.fapiMetadata?.allowedEncryptionAlgorithms) :
+                                            getAllowedList(metadata?.requestObjectEncryptionAlgorithm) }
+                                    </Field>
+                                    <Hint>
+                                        <Trans
+                                            i18nKey={
+                                                "applications:forms.inboundOIDC.sections" +
+                                                    ".requestObject.fields.requestObjectEncryptionAlgorithm.hint"
+                                            }
+                                        >
+                                            The dropdown contains the supported <Code withBackground>request
+                                            object</Code> encryption algorithms.
+                                        </Trans>
+                                    </Hint>
+                                </Grid.Column>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                    <Field
+                                        ref={ requestObjectEncryptionMethod }
+                                        name="requestObjectEncryptionMethod"
+                                        label={
+                                            t("applications:forms.inboundOIDC.sections" +
+                                                    ".requestObject.fields.requestObjectEncryptionMethod.label")
+                                        }
+                                        required={ false }
+                                        type="dropdown"
+                                        disabled={ false }
+                                        default={
+                                            initialValues?.requestObject?.encryption?.method
+                                                ? initialValues.requestObject.encryption.method : null
+                                        }
+                                        placeholder={
+                                            t("applications:forms.inboundOIDC.sections" +
+                                                    ".requestObject.fields.requestObjectEncryptionMethod.placeholder")
+                                        }
+                                        readOnly={ readOnly }
+                                        data-componentId={
+                                            `${ componentId }-request-object-encryption-method-dropdown`
+                                        }
+                                    >
+                                        { getAllowedList(metadata?.requestObjectEncryptionMethod) }
+                                    </Field>
+                                    <Hint>
+                                        <Trans
+                                            i18nKey={
+                                                "applications:forms.inboundOIDC.sections" +
+                                                    ".requestObject.fields.requestObjectEncryptionMethod.hint"
+                                            }
+                                        >
+                                            The dropdown contains the supported <Code withBackground>request
+                                            object</Code> encryption methods.
+                                        </Trans>
+                                    </Hint>
+                                </Grid.Column>
+                            </>
+                        ) }
                     </Grid.Row>
                 ) }
 
@@ -4068,65 +4123,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         </Grid.Column>
                     </Grid.Row>
                 ) }
-            { /*Request Object Signature*/ }
-            {
-                !isSPAApplication
-                && applicationConfig.inboundOIDCForm.showRequestObjectSignatureValidation
-                && !isSystemApplication
-                && !isDefaultApplication
-                && (
-                    <>
-                        <Grid.Row columns={ 2 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Divider />
-                                <Divider hidden />
-                            </Grid.Column>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
-                                <Heading as="h4">
-                                    { t("applications:forms.inboundOIDC.sections" +
-                                        ".requestObjectSignature.heading") }
-                                </Heading>
-                                <Field
-                                    ref={ enableRequestObjectSignatureValidation }
-                                    name="enableRequestObjectSignatureValidation"
-                                    label=""
-                                    required={ false }
-                                    requiredErrorMessage="this is needed"
-                                    type="checkbox"
-                                    value={
-                                        initialValues?.validateRequestObjectSignature
-                                            ? [ "EnableRequestObjectSignatureValidation" ]
-                                            : []
-                                    }
-                                    children={ [
-                                        {
-                                            label: t("applications:forms.inboundOIDC" +
-                                                ".sections.requestObjectSignature.fields.signatureValidation.label"),
-                                            value: "EnableRequestObjectSignatureValidation"
-                                        }
-                                    ] }
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-request-object-signature-validation-checkbox` }
-                                />
-                                <Hint>
-                                    <Trans
-                                        i18nKey={
-                                            "applications:forms.inboundOIDC.sections" +
-                                            ".requestObjectSignature.description"
-                                        }
-                                        tOptions={ { productName: config.ui.productName } }
-                                    >
-                                        WSO2 Identity Server supports receiving an OIDC authentication request as
-                                        a request object that is passed in a single, self-contained request
-                                        parameter. Enable signature validation to accept only signed
-                                        <Code>request</Code> objects in the authorization request.
-                                    </Trans>
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </>
-                )
-            }
             { /* Scope Validators */ }
             { applicationConfig.inboundOIDCForm.showScopeValidators
                 && !isSystemApplication
