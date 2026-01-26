@@ -117,6 +117,9 @@ export class UserManagementConstants {
     public static readonly RESEND_CODE_REQUEST_ERROR: string = "Error occured while resending the " +
         "verification link/code.";
 
+    public static readonly USER_SHARING_ERROR: string = "Error occurred while sharing the user.";
+    public static readonly USER_UNSHARING_ERROR: string = "Error occurred while unsharing the user.";
+
     public static readonly WSO2_LOCAL_CLAIM_DIALECT: string = "http://wso2.org/claims";
     public static readonly SCIM2_USER_SCHEMA: string = "urn:ietf:params:scim:schemas:core:2.0:User";
     public static readonly BULK_REQUEST_SCHEMA: string = "urn:ietf:params:scim:api:messages:2.0:BulkRequest";

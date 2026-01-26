@@ -39,6 +39,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, TabProps } from "semantic-ui-react";
+import { ShareUserForm } from "./share-user-form";
 import { UserGroupsList } from "./user-groups-edit";
 import { UserProfile } from "./user-profile";
 import { UserRolesList } from "./user-roles-list";
@@ -282,9 +283,10 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                 menuItem: "Sharing",
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
-                        <div>
-                            <p>Sharing tab content will be implemented here.</p>
-                        </div>
+                        <ShareUserForm
+                            user={ user }
+                            readOnly={ isReadOnly }
+                        />
                     </ResourceTab.Pane>
                 )
             }
