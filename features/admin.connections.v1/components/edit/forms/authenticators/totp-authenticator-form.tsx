@@ -20,7 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Form } from "@wso2is/form";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import {useTranslation } from "react-i18next";
 import {
     CommonAuthenticatorFormInitialValuesInterface,
     CommonAuthenticatorFormMetaInterface,
@@ -165,8 +165,12 @@ export const TOTPAuthenticatorForm: FunctionComponent<TOTPAuthenticatorFormProps
             <Field.Checkbox
                 ariaLabel="Enable TOTP device progressive enrollment"
                 name="TOTP_EnrolUserInAuthenticationFlow"
-                label={ t("authenticationProvider:forms.authenticatorSettings.totp.enrollUserInAuthenticationFlow.label") }
-                hint={ t("authenticationProvider:forms.authenticatorSettings.totp.enrollUserInAuthenticationFlow.hint") }
+                label={
+                    t("authenticationProvider:forms.authenticatorSettings.totp.enrollUserInAuthenticationFlow.label")
+                }
+                hint={
+                     t("authenticationProvider:forms.authenticatorSettings.totp.enrollUserInAuthenticationFlow.hint") 
+                }
                 readOnly={ readOnly }
                 width={ 16 }
                 data-testid={ `${ testId }-totp-enrol-user-in-authentication-flow-checkbox` }
