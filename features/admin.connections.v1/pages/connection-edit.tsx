@@ -700,7 +700,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                     imageType: "square"
                 } }
                 title={ resolveConnectorName(connector) }
-                action={ (
+                action={ ConnectionsManagementUtils.isConnectorIdentityProvider(connector) ? (
                     <PrimaryButton
                         data-testid="idp-test-connection-button"
                         data-componentid="primary-button"
@@ -718,7 +718,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                         <Icon name="flask" />
                         Test Connection
                     </PrimaryButton>
-                ) }
+                ) : null }
                 contentTopMargin={ true }
                 description={ resolveConnectorDescription(connector) }
                 image={ resolveConnectorImage(connector) }
