@@ -165,18 +165,8 @@ export const TOTPAuthenticatorForm: FunctionComponent<TOTPAuthenticatorFormProps
             <Field.Checkbox
                 ariaLabel="Enable TOTP device progressive enrollment"
                 name="TOTP_EnrolUserInAuthenticationFlow"
-                label="Enable TOTP device progressive enrollment"
-                hint={
-                    (<Trans
-                        i18nKey={
-                            "authenticationProvider:forms.authenticatorSettings" +
-                            ".totp.enrollUserInAuthenticationFlow.hint"
-                        }
-                    >
-                        When enabled, users may enroll their devices for TOTP at the moment
-                        they log in to the application.
-                    </Trans>)
-                }
+                label={ t("authenticationProvider:forms.authenticatorSettings.totp.enrollUserInAuthenticationFlow.label") }
+                hint={ t("authenticationProvider:forms.authenticatorSettings.totp.enrollUserInAuthenticationFlow.hint") }
                 readOnly={ readOnly }
                 width={ 16 }
                 data-testid={ `${ testId }-totp-enrol-user-in-authentication-flow-checkbox` }
