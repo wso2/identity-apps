@@ -314,7 +314,7 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
                     </Box>
                     { isEditPage && (<div className="approval-steps-hint">
                         <Hint className="hint" compact>
-                            { t("approvalWorkflows:pageLayout.create.stepper.step3.hint") }
+                            { t("approvalWorkflows:pageLayout.create.stepper.step4.hint") }
                         </Hint>
                     </div>) }
 

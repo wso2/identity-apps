@@ -59,4 +59,47 @@ export type EntityType = (typeof ENTITY_TYPES)[keyof typeof ENTITY_TYPES];
  */
 export const WORKFLOW_ENGINE: string = "WorkflowEngine";
 
+/**
+ * Mapping of operation types to their allowed rule fields.
+ * Used to filter available fields in the rule builder per operation type.
+ */
+export const OPERATION_FIELD_MAPPING: Record<string, string[]> = {
+    ADD_USER: [
+        "user.domain",
+        "requester.domain",
+        "requester.groups",
+        "requester.roles"
+    ],
+    DELETE_USER: [
+        "user.domain",
+        "user.groups",
+        "user.roles",
+        "requester.domain",
+        "requester.groups",
+        "requester.roles"
+    ],
+    ADD_ROLE: [
+        "role.audience",
+        "role.permissions",
+        "requester.domain",
+        "requester.groups",
+        "requester.roles"
+    ],
+    UPDATE_ROLES_OF_USERS: [
+        "role.name",
+        "role.audience",
+        "role.hasAddedUsers",
+        "role.hasDeletedUsers",
+        "user.domain",
+        "user.groups",
+        "user.roles",
+        "requester.domain",
+        "requester.groups",
+        "requester.roles"
+    ],
+    SELF_REGISTER_USER: [
+        "user.domain"
+    ]
+};
+
 export default ApprovalWorkflowConstants;

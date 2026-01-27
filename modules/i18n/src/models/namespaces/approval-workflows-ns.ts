@@ -163,8 +163,30 @@ export interface approvalWorkflowsNS {
                 },
                 step3: {
                     title:  string,
+                    description: string
+                },
+                step4: {
+                    title:  string,
                     description: string,
                     hint: string
+                }
+            },
+            ruleConditions: {
+                configureRuleButton: string,
+                configured: string,
+                noRuleConfigured: {
+                    message: string,
+                    title: string
+                },
+                notConfigured: string,
+                table: {
+                    operation: string,
+                    rules: string,
+                    actions: string
+                },
+                modal: {
+                    title: string,
+                    subtitle: string
                 }
             }
         };

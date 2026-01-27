@@ -40,6 +40,7 @@ import ConfigurationsForm, { ConfigurationsFormRef } from "../components/create/
 import GeneralApprovalWorkflowDetailsForm, {
     GeneralApprovalWorkflowDetailsFormRef
 } from "../components/create/general-approval-workflow-details-form";
+import RuleConditionsStep from "../components/create/rule-conditions-step";
 import WorkflowOperationsDetailsForm, {
     WorkflowOperationsDetailsFormRef
 } from "../components/create/workflow-operations-details-form";
@@ -54,6 +55,7 @@ import {
     WorkflowOperationsDetailsFormValuesInterface
 } from "../models/ui";
 import { WorkflowAssociationPayload } from "../models/workflow-associations";
+import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 
 /**
  * Interface which captures create approval workflow props.
@@ -125,8 +127,30 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
     };
 
     /**
+     * Handles rule configuration updates for operations.
+     * @param operationValue - The operation identifier.
+     * @param rule - The configured rule.
+     */
+    const handleRuleUpdate = (operationValue: string, rule: RuleWithoutIdInterface) => {
+        setApprovalWorkflowFormData((prevData: ApprovalWorkflowFormDataInterface) => {
+            const updatedOperationRules: Record<string, RuleWithoutIdInterface> = {
+                ...prevData?.workflowOperationsDetails?.operationRules,
+                [operationValue]: rule
+            };
+
+            return {
+                ...prevData,
+                workflowOperationsDetails: {
+                    ...prevData.workflowOperationsDetails,
+                    operationRules: updatedOperationRules
+                }
+            };
+        });
+    };
+
+    /**
      * Handles the step details form submission.
-     * @param values - Step 03 form values.
+     * @param values - Step 04 form values.
      */
     const onConfigurationDetailsFormSubmit = (values: ConfigurationsFormValuesInterface) => {
         //Check if there are any empty steps
@@ -202,11 +226,17 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
                 try {
                     const associationPayloads: WorkflowAssociationPayload[] =
                         approvalWorkflowFormData.workflowOperationsDetails.matchedOperations.map(
-                            (operation: DropdownPropsInterface) => ({
-                                associationName: `Association for ${operation.value ?? operation.value}`,
-                                operation: operation.value,
-                                workflowId: response.id
-                            })
+                            (operation: DropdownPropsInterface) => {
+                                const rule: RuleWithoutIdInterface =
+                                    approvalWorkflowFormData.workflowOperationsDetails.operationRules?.[operation.value];
+
+                                return {
+                                    associationName: `Association for ${operation.value ?? operation.value}`,
+                                    operation: operation.value,
+                                    workflowId: response.id,
+                                    ...(rule && rule.rules && rule.rules.length > 0 ? { rule } : {})
+                                };
+                            }
                         );
 
                     // Wait for all associations to complete
@@ -378,11 +408,66 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
                                 </Typography>)
                             }
                         >
-                            <Typography variant="h4" data-componentid={ `${componentId}-step-2-title` }>
+                            <Typography variant="h4" data-componentid={ `${componentId}-step-3-title` }>
                                 { t("approvalWorkflows:pageLayout.create.stepper.step3.title") }
                             </Typography>
                         </StepLabel>
-                        <StepContent data-componentid={ `${componentId}-step-2-content` }>
+                        <StepContent data-componentid={ `${componentId}-step-3-content` }>
+                            <RuleConditionsStep
+                                selectedOperations={
+                                    approvalWorkflowFormData?.workflowOperationsDetails?.matchedOperations ?? []
+                                }
+                                operationRules={
+                                    approvalWorkflowFormData?.workflowOperationsDetails?.operationRules ?? {}
+                                }
+                                onRuleUpdate={ handleRuleUpdate }
+                                isReadOnly={ !hasApprovalWorkflowCreatePermission }
+                                data-componentid={ `${componentId}-rule-conditions-step` }
+                            />
+                            <div
+                                className="step-actions-container"
+                                data-componentid={ `${componentId}-step-3-actions-container` }
+                            >
+                                <Button
+                                    variant="outlined"
+                                    disabled={
+                                        !hasApprovalWorkflowCreatePermission || isApprovalWorkflowCreateRequestLoading
+                                    }
+                                    onClick={ () => {
+                                        setActiveStep((prevActiveStep: number) => prevActiveStep - 1);
+                                    } }
+                                    data-componentid={ `${componentId}-step-3-previous-button` }
+                                >
+                                    { t("common:previous") }
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    disabled={ null }
+                                    onClick={ () => {
+                                        setActiveStep(3);
+                                    } }
+                                    loading={ isApprovalWorkflowCreateRequestLoading }
+                                    data-componentid={ `${componentId}-step-3-next-button` }
+                                >
+                                    { t("common:next") }
+                                </Button>
+                            </div>
+                        </StepContent>
+                    </Step>
+
+                    <Step data-componentid={ `${componentId}-step-4` }>
+                        <StepLabel
+                            optional={
+                                (<Typography variant="body2" data-componentid={ `${componentId}-step-4-description` }>
+                                    { t("approvalWorkflows:pageLayout.create.stepper.step4.description") }
+                                </Typography>)
+                            }
+                        >
+                            <Typography variant="h4" data-componentid={ `${componentId}-step-4-title` }>
+                                { t("approvalWorkflows:pageLayout.create.stepper.step4.title") }
+                            </Typography>
+                        </StepLabel>
+                        <StepContent data-componentid={ `${componentId}-step-4-content` }>
                             <ConfigurationsForm
                                 ref={ configurationsFormRef }
                                 isReadOnly={ !hasApprovalWorkflowCreatePermission }
@@ -393,7 +478,7 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
                             />
                             <div
                                 className="step-actions-container"
-                                data-componentid={ `${componentId}-step-actions-container` }
+                                data-componentid={ `${componentId}-step-4-actions-container` }
                             >
                                 <Button
                                     variant="outlined"
@@ -404,7 +489,7 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
                                         setActiveStep((prevActiveStep: number) => prevActiveStep - 1);
                                         setHasErrors(false);
                                     } }
-                                    data-componentid={ `${componentId}-previous-button` }
+                                    data-componentid={ `${componentId}-step-4-previous-button` }
                                 >
                                     { t("common:previous") }
                                 </Button>
@@ -416,7 +501,7 @@ const ApprovalWorkflowCreatePage: FunctionComponent<CreateApprovalWorkflowProps>
                                             configurationsFormRef.current.triggerSubmit();
                                     } }
                                     loading={ isApprovalWorkflowCreateRequestLoading }
-                                    data-componentid={ `${componentId}-finish-button` }
+                                    data-componentid={ `${componentId}-step-4-finish-button` }
                                 >
                                     { t("common:finish") }
                                 </Button>

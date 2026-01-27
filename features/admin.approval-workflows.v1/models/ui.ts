@@ -17,6 +17,7 @@
  */
 
 import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
+import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { RolesInterface } from "@wso2is/core/models";
 
 /**
@@ -67,6 +68,11 @@ export interface WorkflowOperationsDetailsFormValuesInterface {
      * Name of the workflow.
      */
     matchedOperations: DropdownPropsInterface[];
+
+    /**
+     * Rules configured for each operation.
+     */
+    operationRules?: Record<string, RuleWithoutIdInterface>;
 }
 
 /**

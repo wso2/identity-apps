@@ -38,13 +38,20 @@ const useGetResourceListOrResourceDetails = <Data = any, Error = RequestErrorInt
     endpointPath: string,
     shouldFetch: boolean
 ): RequestResultInterface<Data, Error> => {
+    // Determine the base URL based on endpoint type
+    // SCIM endpoints use serverOrigin, not apiRoot
+    const isScimEndpoint = endpointPath?.startsWith('/scim2/');
+    const baseUrl = isScimEndpoint 
+        ? store.getState().config.deployment.serverOrigin 
+        : store.getState().config.endpoints.apiRoot;
+    
     const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.apiRoot + endpointPath
+        url: baseUrl + endpointPath
     };
 
     const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(

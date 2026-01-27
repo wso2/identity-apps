@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
+
 export interface WorkflowAssociationPayload {
     /**
      * Name of the workflow association.
@@ -32,6 +34,10 @@ export interface WorkflowAssociationPayload {
      */
     workflowId: string;
 
+    /**
+     * Rule configuration for the workflow association.
+     */
+    rule?: RuleWithoutIdInterface;
 }
 
 export interface WorkflowOperations {

@@ -416,24 +416,52 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         let resourceType: string;
         let shouldFetch: boolean = false;
 
+        // Check if this is a generic workflow field (domain, groups, roles, etc.)
+        const useGenericList = expressionField?.includes('domain') || 
+                            expressionField?.includes('groups') || 
+                            expressionField?.includes('roles') ||
+                            expressionField?.includes('permissions') ||
+                            expressionField?.includes('audience');
+
+        // Fix URL path - remove /api/server/v1 prefix if present since apiRoot already includes it
+        const normalizeUrl = (url: string): string => {
+            if (url?.startsWith('/api/server/v1/')) {
+                return url.replace('/api/server/v1', '');
+            }
+            if (url?.startsWith('/scim2/')) {
+                // SCIM endpoints should use scim2 base, not apiRoot
+                return url;
+            }
+            return url;
+        };
+        
+        const normalizedInitialUrl = normalizeUrl(initialResourcesLoadUrl);
+        const normalizedFilterUrl = normalizeUrl(filterBaseResourcesUrl);
+
         // TODO: Handle other resource types once the API is updated with the required data.
         if (expressionField === "application") {
             resourceType = "applications";
             shouldFetch = true;
         } else if (expressionField === "claim") {
             shouldFetch = false;
+        } else if (useGenericList) {
+        // For generic workflow fields, we'll handle them below
+            shouldFetch = true;
         }
 
         const {
             data: fetchedResourcesList,
             isLoading: isResourcesListLoading
-        } = useGetResourceListOrResourceDetails(initialResourcesLoadUrl, true);
+        } = useGetResourceListOrResourceDetails(normalizedInitialUrl, shouldFetch);
 
+        // Only fetch resource details for application fields (not for workflow fields like domain, groups, roles)
+        const shouldFetchResourceDetails: boolean = expressionField === "application" && shouldFetch && !!expressionValue;
+        
         const {
             data: resourcesDetails,
             isLoading: isResourceDetailsLoading,
             error: resourceDetailsError
-        } = useGetResourceListOrResourceDetails(`/${resourceType}/${expressionValue}`, shouldFetch);
+        } = useGetResourceListOrResourceDetails(`/${resourceType}/${expressionValue}`, shouldFetchResourceDetails);
 
         useEffect(() => {
             if (!isResourceDetailsLoading) {
@@ -497,7 +525,9 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
         }, [ fetchedResourcesList ]);
 
         if (isResourcesListLoading || !fetchedResourcesList) {
-            return;
+            return (
+                <CircularProgress size={ 20 } />
+            );
         }
 
         if (expressionField == "claim") {
@@ -590,6 +620,60 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 />
             );
 
+        } else if (useGenericList) {
+            // Handle generic workflow fields (domain, groups, roles, etc.)
+            let resourceList = [];
+            
+            // Handle different API response formats
+            if (Array.isArray(fetchedResourcesList)) {
+                resourceList = fetchedResourcesList;
+            } else if (fetchedResourcesList?.Resources) {
+                resourceList = fetchedResourcesList.Resources;
+            } else if (fetchedResourcesList?.userStores) {
+                resourceList = fetchedResourcesList.userStores;
+            }
+
+            if (expressionValue === "" && resourceList.length > 0) {
+                handleExpressionChangeDebounced(
+                    resourceList[0]?.[valueReferenceAttribute],
+                    ruleId,
+                    conditionId,
+                    expressionId,
+                    ExpressionFieldTypes.Value,
+                    false
+                );
+            }
+
+            return (
+                <Select
+                    disabled={ readonly }
+                    value={ expressionValue }
+                    data-componentid={ componentId }
+                    MenuProps={ {
+                        disablePortal: false,
+                        sx: { zIndex: 9999 }
+                    } }
+                    onChange={ (e: SelectChangeEvent) => {
+                        updateConditionExpression(
+                            e.target.value,
+                            ruleId,
+                            conditionId,
+                            expressionId,
+                            ExpressionFieldTypes.Value,
+                            true
+                        );
+                    } }
+                >
+                    { resourceList?.filter((resource: ResourceInterface) =>
+                        !hiddenResources.includes(resource[valueReferenceAttribute])
+                    ).map((resource: ResourceInterface, index: number) => (
+                        <MenuItem value={ resource[valueReferenceAttribute] } key={ `${expressionId}-${index}` }>
+                            { resource[valueDisplayAttribute] }
+                        </MenuItem>
+                    )) }
+                </Select>
+            );
+
         } else if (resourceType == "applications") {
             // Set first value of the list if option is empty
             if (expressionValue === "") {
@@ -627,6 +711,10 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                     disabled={ readonly }
                     value={ expressionValue }
                     data-componentid={ componentId }
+                    MenuProps={ {
+                        disablePortal: false,
+                        sx: { zIndex: 9999 }
+                    } }
                     onChange={ (e: SelectChangeEvent) => {
                         updateConditionExpression(
                             e.target.value,
@@ -710,6 +798,10 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         disabled={ readonly }
                         value={ expressionValue }
                         data-componentid={ componentId }
+                        MenuProps={ {
+                            disablePortal: false,
+                            sx: { zIndex: 9999 }
+                        } }
                         onChange={ (e: SelectChangeEvent) => {
                             updateConditionExpression(
                                 e.target.value,
@@ -738,8 +830,16 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                 const filterBaseResourcesUrl: string = metaValue?.links.find(
                     (link: LinkInterface) => link.rel === "filter")?.href;
 
+                // Check if this is a generic workflow field
+                const isWorkflowField = expressionField?.includes('domain') || 
+                                       expressionField?.includes('groups') || 
+                                       expressionField?.includes('roles') ||
+                                       expressionField?.includes('permissions') ||
+                                       expressionField?.includes('audience');
+
                 if ((expressionField === "application" && initialResourcesLoadUrl && filterBaseResourcesUrl) ||
-                    (expressionField === "claim" && initialResourcesLoadUrl)) {
+                    (expressionField === "claim" && initialResourcesLoadUrl) ||
+                    (isWorkflowField && initialResourcesLoadUrl)) {
 
                     return (
                         <ResourceListSelect
@@ -824,6 +924,10 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         disabled={ readonly }
                         value={ expression.field }
                         data-componentid={ "rules-condition-expression-input-field-select" }
+                        MenuProps={ {
+                            disablePortal: false,
+                            sx: { zIndex: 9999 }
+                        } }
                         onChange={ (e: SelectChangeEvent) => {
                             updateConditionExpression(
                                 e.target.value,
@@ -857,6 +961,10 @@ const RuleConditions: FunctionComponent<RulesComponentPropsInterface> = ({
                         disabled={ readonly }
                         value={ expression.operator }
                         data-componentid={ "rules-condition-expression-input-operator-select" }
+                        MenuProps={ {
+                            disablePortal: false,
+                            sx: { zIndex: 9999 }
+                        } }
                         onChange={ (e: SelectChangeEvent) => {
                             updateConditionExpression(
                                 e.target.value,
