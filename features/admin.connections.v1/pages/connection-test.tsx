@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -30,6 +30,8 @@ import {
 } from "@wso2is/react-components";
 import React, { useState, useRef, Fragment, useEffect } from "react";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
+
 import { useTranslation } from "react-i18next";
 import { RouteComponentProps } from "react-router-dom";
 import { Header, Icon, List, Segment, Tab } from "semantic-ui-react";
@@ -63,6 +65,8 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
     const { tenantDomain = "", idpId = "" } = props.match.params || {};
 
     const { t } = useTranslation();
+    const { resourceEndpoints } = useResourceEndpoints();
+
 
     const [ connectionStatus, setConnectionStatus ] = useState<TestStatus>("idle");
     const [ authStatus, setAuthStatus ] = useState<TestStatus>("idle");
@@ -74,6 +78,31 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
     const [ hasError, setHasError ] = useState(false);
     const [ activeTab, setActiveTab ] = useState(0);
     const [ showResults, setShowResults ] = useState(false);
+
+    const popupInterval = useRef<any>(null);
+    const fetchTimer = useRef<any>(null);
+
+    /**
+     * Clears all running timers for popup monitoring and result fetching.
+     */
+    const clearTimers = (): void => {
+        if (popupInterval.current) {
+            clearInterval(popupInterval.current);
+            popupInterval.current = null;
+        }
+        if (fetchTimer.current) {
+            clearTimeout(fetchTimer.current);
+            fetchTimer.current = null;
+        }
+    };
+
+    /**
+     * Effect to clear timers on component unmount.
+     */
+    useEffect(() => {
+        return () => clearTimers();
+    }, []);
+
 
     /**
      * Fetches the test results from the backend.
@@ -91,10 +120,11 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
         try {
             const axios = (await import("axios")).default;
             const response = await axios.get(
-                `https://localhost:9443/api/server/v1/debug/result/${sid}`,
+                `${resourceEndpoints.debugResult}/${sid}`,
                 { withCredentials: true }
             );
             setResult(response.data);
+
             setShowResults(true);
             // eslint-disable-next-line no-console
             console.log("[ConnectionTest] Successfully fetched results:", response.data);
@@ -133,10 +163,11 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
             };
 
             const response = await axios.post(
-                `https://localhost:9443/api/server/v1/debug/`,
+                resourceEndpoints.debug,
                 payload,
                 { withCredentials: true }
             );
+
 
             const newDebugId = response.data.result.debugId;
             const authorizationUrl = response.data.result.authorizationUrl;
@@ -144,17 +175,20 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
 
             setDebugId(newDebugId);
 
+            // Clear any existing timers from previous runs
+            clearTimers();
+
             // Open authorizationUrl in a new tab if present
             if (authorizationUrl) {
                 const authPopup = window.open(authorizationUrl, "_blank");
                 
                 // Monitor the popup and fetch results when it closes
-                const checkPopupClosed = setInterval(() => {
+                popupInterval.current = setInterval(() => {
                     try {
                         if (authPopup && authPopup.closed) {
-                            clearInterval(checkPopupClosed);
+                            clearTimers();
                             // Fetch results after popup closes
-                            setTimeout(() => {
+                            fetchTimer.current = setTimeout(() => {
                                 fetchResult(newDebugId);
                             }, 1000);
                         }
@@ -164,16 +198,17 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                 }, 500);
 
                 // Set a timeout to fetch results after 30 seconds in case popup detection doesn't work
-                setTimeout(() => {
-                    clearInterval(checkPopupClosed);
+                fetchTimer.current = setTimeout(() => {
+                    clearTimers();
                     fetchResult(newDebugId);
                 }, 30000);
             } else {
                 // If no authorizationUrl, fetch results immediately
-                setTimeout(() => {
+                fetchTimer.current = setTimeout(() => {
                     fetchResult(newDebugId);
                 }, 2000);
             }
+
 
             // Update status based on response
             if (status === "SUCCESS") {
@@ -182,6 +217,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                 setConnectionStatus("error");
             }
         } catch (error: any) {
+            clearTimers();
             setConnectionStatus("error");
             setAuthStatus("error");
             setClaimsStatus("error");

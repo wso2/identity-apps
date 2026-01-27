@@ -37,6 +37,8 @@ export const getConnectionResourceEndpoints = (serverHost: string): ConnectionRe
         localAuthenticators: `${ serverHost }/api/server/v1/configs/authenticators`,
         multiFactorAuthenticators: `${ serverHost }/api/server/v1/identity-governance/${
             CommonAuthenticatorConstants.MFA_CONNECTOR_CATEGORY_ID
-        }`
+        }`,
+        debug: `${ serverHost }/api/server/v1/debug`,
+        debugResult: `${ serverHost }/api/server/v1/debug/result`
     };
 };

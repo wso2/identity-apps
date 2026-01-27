@@ -35,53 +35,14 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
     I18nModuleOptionsInterface,
     UIConfigInterface> = {
 
-        deployment: {
-            __experimental__platformIdP: null,
-            accountApp: {
-                basePath: "",
-                centralAppPath: "",
-                displayName: "",
-                path: "",
-                tenantQualifiedPath: ""
-            },
-            adminApp: {
-                basePath: "",
-                displayName: "",
-                path: "",
-                tenantQualifiedPath: ""
-            },
-            allowMultipleAppProtocols: undefined,
-            appBaseName: "",
-            appBaseNameWithoutTenant: "",
-            appHomePath: "",
-            appLoginPath: "",
-            appLogoutPath: "",
-            centralDeploymentEnabled: undefined,
-            clientHost: "",
-            clientID: "",
-            clientOrigin: "",
-            clientOriginWithTenant: "",
-            customServerHost: "",
-            developerApp: {
-                basePath: "",
-                displayName: "",
-                path: "",
-                tenantQualifiedPath: ""
-            },
-            docSiteURL: "",
-            extensions: null,
-            helpCenterURL: "",
-            idpConfigs: null,
-            loginCallbackUrl: "",
-            organizationPrefix: "",
-            regionSelectionEnabled: undefined,
-            serverHost: "",
-            serverOrigin: "",
-            superTenant: "",
-            tenant: "",
-            tenantContext: null,
-            tenantPath: "",
-            tenantPrefix: ""
+    deployment: {
+        __experimental__platformIdP: null,
+        accountApp: {
+            basePath: "",
+            centralAppPath: "",
+            displayName: "",
+            path: "",
+            tenantQualifiedPath: ""
         },
         endpoints: {
             CORSOrigins: "",
@@ -191,11 +152,199 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             workflowAssociations: "",
             workflowInstances: "",
             workflows: ""
+        adminApp: {
+            basePath: "",
+            displayName: "",
+            path: "",
+            tenantQualifiedPath: ""
         },
+        allowMultipleAppProtocols: undefined,
+        appBaseName: "",
+        appBaseNameWithoutTenant: "",
+        appHomePath: "",
+        appLoginPath: "",
+        appLogoutPath: "",
+        centralDeploymentEnabled: undefined,
+        clientHost: "",
+        clientID: "",
+        clientOrigin: "",
+        clientOriginWithTenant: "",
+        customServerHost: "",
+        developerApp: {
+            basePath: "",
+            displayName: "",
+            path: "",
+            tenantQualifiedPath: ""
+        },
+        docSiteURL: "",
+        extensions: null,
+        helpCenterURL: "",
+        idpConfigs: null,
+        loginCallbackUrl: "",
+        organizationPrefix: "",
+        regionSelectionEnabled: undefined,
+        serverHost: "",
+        serverOrigin: "",
+        superTenant: "",
+        tenant: "",
+        tenantContext: null,
+        tenantPath: "",
+        tenantPrefix: ""
+    },
+    endpoints: {
+        CORSOrigins: "",
+        accountDisabling: "",
+        accountLocking: "",
+        accountRecovery: "",
+        actions: "",
+        adminAdvisoryBanner: "",
+        apiRoot: "",
+        applicationTemplate: "",
+        applicationTemplateMetadata: "",
+        applications: "",
+        asyncStatus: "",
+        authenticatorTags: "",
+        authenticators: "",
+        brandingPreference: "",
+        brandingPreferenceSubOrg: "",
+        brandingTextPreference: "",
+        brandingTextPreferenceSubOrg: "",
+        breadcrumb: "",
+        bulk: "",
+        captchaForSSOLogin: "",
+        certificates: "",
+        claims: "",
+        clientCertificates: "",
+        createSecret: "",
+        createSecretType: "",
+        customAuthenticators: "",
+        dcrConfiguration: "",
+        debug: "",
+        debugResult: "",
+        deleteSecret: "",
+        deleteSecretType: "",
+        deploymentUnits: "",
+        entitlementPoliciesApi: "",
+        entitlementPolicyCombiningAlgorithmApi: "",
+        entitlementPolicyPublishApi: "",
+        extensionTemplates: "",
+        extensions: "",
+        externalClaims: "",
+        fidoConfigs: "",
+        flow: "",
+        flowMeta: "",
+        getSecret: "",
+        getSecretList: "",
+        getSecretType: "",
+        governanceConnectorCategories: "",
+        groupMetadata: "",
+        groups: "",
+        guests: "",
+        guestsList: "",
+        identityProviders: "",
+        impersonationConfigurations: "",
+        localAuthenticators: "",
+        localClaims: "",
+        loginPolicies: "",
+        me: "",
+        multiFactorAuthenticators: "",
+        myAccountConfigMgt: "",
+        oidcScopes: "",
+        organizations: "",
+        passiveStsConfigurations: "",
+        passwordExpiry: "",
+        passwordHistory: "",
+        passwordPolicies: "",
+        passwordPoliciesUpdate: "",
+        passwordPolicy: "",
+        permission: "",
+        publicCertificates: "",
+        remoteLogPublishEndpoint: "",
+        remoteLogging: "",
+        requestPathAuthenticators: "",
+        resendCode: "",
+        resourceTypes: "",
+        roles: "",
+        rolesV2: "",
+        rolesV3: "",
+        rolesWithoutOrgPath: "",
+        rootOrganization: "",
+        rootUsersOrganization: "",
+        rulesMetaData: "",
+        saml2Configurations: "",
+        saml2Meta: "",
+        schemas: "",
+        selfSignUp: "",
+        serverConfigurations: "",
+        serverSupportedSchemas: "",
+        smsTemplates: "",
+        tenantAssociationApi: "",
+        tenantManagementApi: "",
+        tenantSubscriptionApi: "",
+        tenants: "",
+        updateSecret: "",
+        updateSecretType: "",
+        userSessions: "",
+        userStores: "",
+        users: "",
+        usersOrganization: "",
+        usersSuperOrganization: "",
+        validationServiceMgt: "",
+        validationServiceMgtSubOrg: "",
+        wellKnown: "",
+        workflowAssociations: "",
+        workflowInstances: "",
+        workflows: ""
+    },
+    features: {
+        applications: null,
+        approvals: null,
+        attributeDialects: null,
+        certificates: null,
+        emailTemplates: null,
+        governanceConnectors: null,
+        groups: null,
+        guestUser: null,
+        identityProviders: null,
+        oidcScopes: null,
+        remoteFetchConfig: null,
+        roles: null,
+        secretsManagement: null,
+        userStores: null,
+        users: null
+    },
+    i18n: null,
+    ui: {
+        actions: null,
+        adminNotice: {
+            enabled: undefined,
+            plannedRollOutDate: undefined
+        },
+        announcements: [],
+        appCopyright: "",
+        appLogo: {
+            defaultLogoPath: "",
+            defaultWhiteLogoPath: ""
+        },
+        appName: "",
+        appTitle: "",
+        applicationTemplateLoadingStrategy: undefined,
+        asyncOperationStatusPollingInterval: null,
+        connectionResourcesUrl: "",
+        cookiePolicyUrl: "",
+        customContent: {},
+        emailTemplates: {
+            defaultLogoUrl: "",
+            defaultWhiteLogoUrl: ""
+        },
+        enableCustomEmailTemplates: undefined,
+        enableLegacySessionBoundTokenBehaviour: false,
+        enableOldUIForEmailProvider: undefined,
         features: {
             applications: null,
             approvals: null,
             attributeDialects: null,
+            attributeVerification: null,
             certificates: null,
             emailTemplates: null,
             governanceConnectors: null,
@@ -209,18 +358,25 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             userStores: null,
             users: null
         },
-        i18n: null,
-        ui: {
-            actions: null,
-            adminNotice: {
-                enabled: undefined,
-                plannedRollOutDate: undefined
+        flowExecution: {
+            enableLegacyFlows: true
+        },
+        googleOneTapEnabledTenants: [],
+        gravatarConfig: {
+            defaultImage: "",
+            fallback: null,
+            size: null
+        },
+        hiddenAuthenticators: [],
+        hiddenConnectionTemplates: [],
+        hiddenUserStores: [],
+        i18nConfigs: null,
+        identityProviderTemplates: {
+            apple: {
+                enabled: false
             },
-            announcements: [],
-            appCopyright: "",
-            appLogo: {
-                defaultLogoPath: "",
-                defaultWhiteLogoPath: ""
+            enterpriseOIDC: {
+                enabled: false
             },
             appName: "",
             appTitle: "",
@@ -255,15 +411,17 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 secretsManagement: null,
                 userStores: null,
                 users: null
+            enterpriseSAML: {
+                enabled: false
             },
-            flowExecution: {
-                enableLegacyFlows: true
+            facebook: {
+                enabled: false
             },
-            googleOneTapEnabledTenants: [],
-            gravatarConfig: {
-                defaultImage: "",
-                fallback: null,
-                size: null
+            github: {
+                enabled: false
+            },
+            google: {
+                enabled: false
             },
             hiddenAuthenticators: [],
             hiddenConnectionTemplates: [],
@@ -340,6 +498,59 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
                 enabled: false,
                 title: "",
                 url: ""
+            microsoft: {
+                enabled: false
             }
+        },
+        isClaimUniquenessValidationEnabled: undefined,
+        isClientSecretHashEnabled: undefined,
+        isCookieConsentBannerEnabled: undefined,
+        isCustomClaimMappingEnabled: undefined,
+        isCustomClaimMappingMergeEnabled: undefined,
+        isDefaultDialectEditingEnabled: undefined,
+        isDialectAddingEnabled: undefined,
+        isEditingSystemRolesAllowed: undefined,
+        isGroupAndRoleSeparationEnabled: undefined,
+        isHeaderAvatarLabelAllowed: undefined,
+        isLeftNavigationCategorized: undefined,
+        isMarketingConsentBannerEnabled: undefined,
+        isPasswordInputValidationEnabled: undefined,
+        isRequestPathAuthenticationEnabled: undefined,
+        isSAASDeployment: undefined,
+        isSignatureValidationCertificateAliasEnabled: undefined,
+        isTrustedAppConsentRequired: undefined,
+        isWSFedProtocolTemplateEnabled: undefined,
+        listAllAttributeDialects: undefined,
+        multiTenancy: {
+            isTenantDomainDotExtensionMandatory: true,
+            tenantDomainIllegalCharactersRegex: "",
+            tenantDomainRegex: ""
+        },
+        passwordPolicyConfigs: null,
+        primaryUserStoreDomainName: "",
+        privacyPolicyConfigs: null,
+        productName: "",
+        productVersionConfig: null,
+        routes: {
+            organizationEnabledRoutes: undefined
+        },
+        selfAppIdentifier: "",
+        showAppSwitchButton: undefined,
+        showSmsOtpPwdRecoveryFeatureStatusChip: undefined,
+        showStatusLabelForNewAuthzRuntimeFeatures: undefined,
+        systemAppsIdentifiers: [],
+        systemReservedUserStores: [],
+        theme: {
+            name: "",
+            path: "",
+            styleSheets: null
+        },
+        userSurveyBanner: {
+            buttonText: "",
+            description: "",
+            enabled: false,
+            title: "",
+            url: ""
         }
-    };
+    }
+};
