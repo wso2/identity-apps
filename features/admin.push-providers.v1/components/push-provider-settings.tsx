@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import cloneDeep from "lodash-es/cloneDeep";
 import { TemplateDynamicForm } from "@wso2is/admin.template-core.v1/components/template-dynamic-form";
 import { DynamicFilePickerFieldInterface, DynamicFormInterface,
     DynamicInputFieldTypes }from "@wso2is/admin.template-core.v1/models/dynamic-fields";
@@ -75,6 +76,7 @@ interface PushProviderSettingsPropsInterface extends IdentifiableComponentInterf
 export const PushProviderSettings: FunctionComponent<PushProviderSettingsPropsInterface> = (
     {
         pushProvider,
+        pushProviderTemplateInfo,
         pushProviderTemplateData,
         pushProviderTemplateMetadata,
         isLoading,
@@ -109,7 +111,7 @@ export const PushProviderSettings: FunctionComponent<PushProviderSettingsPropsIn
             return null;
         }
 
-        const templateMetadata: PushProviderTemplateMetadataInterface = pushProviderTemplateMetadata;
+        const templateMetadata: PushProviderTemplateMetadataInterface = cloneDeep(pushProviderTemplateMetadata);
         const { form: formMetadata } = templateMetadata?.edit;
 
         formMetadata.fields = formMetadata.fields.map((field: DynamicFilePickerFieldInterface) => {
@@ -161,6 +163,7 @@ export const PushProviderSettings: FunctionComponent<PushProviderSettingsPropsIn
 
     return (
         <TemplateDynamicForm
+            key = { pushProviderTemplateInfo?.id }
             form={ renderFormMetadata }
             initialFormValues={ initialFormValues as unknown as Record<string, unknown> }
             templatePayload={ pushProviderTemplateData?.payload as unknown as Record<string, unknown> }
