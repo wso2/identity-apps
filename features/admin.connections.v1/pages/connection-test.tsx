@@ -36,7 +36,9 @@ import { Header, Icon, List, Segment, Tab } from "semantic-ui-react";
 import { ConnectionsManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-utils";
 import { AuthenticatorMeta } from "../meta/authenticator-meta";
 import { getConnectionDetails } from "../api/connections";
-import { Code } from "@wso2is/react-components";
+import { EmptyPlaceholder } from "@wso2is/react-components";
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+
 
 /**
  * Interface for the route parameters.
@@ -612,64 +614,31 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
             bottomMargin={false}
             data-testid={`${testId}-page-layout`}
         >
-            {!showResults && (
+            { !showResults && (
                 <>
                     <div style={{ marginTop: "2rem" }}>
                         <PrimaryButton
                             data-testid="idp-run-tests-button"
-                            onClick={handleRunTests}
-                            loading={connectionStatus === "pending" || authStatus === "pending" || claimsStatus === "pending"}
+                            onClick={ handleRunTests }
+                            loading={ connectionStatus === "pending" || authStatus === "pending" || claimsStatus === "pending" }
                         >
                             <Icon name="play" />
                             Run Tests
                         </PrimaryButton>
                     </div>
-                    <Segment
-                        basic
-                        padded="very"
-                        className="bordered emphasized"
-                        style={{ marginTop: "3rem", maxWidth: "800px"}}
-                        data-componentid="emphasized-segment"
-                        data-testid="emphasized-segment"
-                    >
-                        <Header as="h3" data-testid="test-status-header">
-                            {t("console:develop.pages.idpTest.statusHeader", "Test Status")}
-                        </Header>
-                        <List divided relaxed verticalAlign="middle" data-testid="test-status-list">
-                            <List.Item>
-                                <List.Content floated="right">
-                                    {renderStatusIcon(connectionStatus)}
-                                </List.Content>
-                                <List.Content>
-                                    <List.Header>
-                                        {t("console:develop.pages.idpTest.connectionCreation", "Connection Creation")}
-                                    </List.Header>
-                                </List.Content>
-                            </List.Item>
-                            <List.Item>
-                                <List.Content floated="right">
-                                    {renderStatusIcon(authStatus)}
-                                </List.Content>
-                                <List.Content>
-                                    <List.Header>
-                                        {t("console:develop.pages.idpTest.authentication", "Authentication")}
-                                    </List.Header>
-                                </List.Content>
-                            </List.Item>
-                            <List.Item>
-                                <List.Content floated="right">
-                                    {renderStatusIcon(claimsStatus)}
-                                </List.Content>
-                                <List.Content>
-                                    <List.Header>
-                                        {t("console:develop.pages.idpTest.claimsMapping", "Claims Mapping")}
-                                    </List.Header>
-                                </List.Content>
-                            </List.Item>
-                        </List>
-                    </Segment>
+                    <EmptyPlaceholder
+                        image={ getEmptyPlaceholderIllustrations().newList }
+                        imageSize="tiny"
+                        subtitle={ [
+                            t("console:develop.pages.idpTest.runTestPlaceholder",
+                                "Click on the 'Run Tests' button to start testing the connection.")
+                        ] }
+                        data-componentid={ `${ testId }-placeholder` }
+                        data-testid={ `${ testId }-placeholder` }
+                    />
                 </>
-            )}
+            ) }
+
 
             {showResults && (
                 <>
