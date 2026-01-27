@@ -137,12 +137,15 @@ export const KeyValueMapField = ({
 
     useEffect(() => {
         // Update local state if form value changes externally
-        if (value && typeof value === 'object') {
+        if (value && typeof value === 'object' && Object.keys(value).length > 0) {
             setKeyValuePairs(
                 Object.entries(value)
                     .filter(([_, val]) => val)
                     .map(([key, val]) => ({ key, value: val as string }))
             );
+        } else {
+            // Clear the pairs when form is reset or value is empty
+            setKeyValuePairs([]);
         }
     }, [value]);
 
