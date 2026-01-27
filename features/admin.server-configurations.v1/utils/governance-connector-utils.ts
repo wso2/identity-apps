@@ -28,6 +28,7 @@ import { I18n } from "@wso2is/i18n";
 import camelCase from "lodash-es/camelCase";
 import { getConnectorCategories } from "../api/governance-connectors";
 import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
+import { FraudAnalyticEventMetadataInterface } from "../models/fraud-detection";
 import {
     ConnectorOverrideConfig,
     ConnectorPropertyInterface,
@@ -37,7 +38,6 @@ import {
     GovernanceConnectorsInterface
 } from "../models/governance-connectors";
 import { SetGovernanceConnectorCategory } from "../store/actions/governance-connector";
-import { FraudAnalyticEventMetadataInterface } from "../models/fraud-detection";
 
 /**
  * Utility class for governance connectors.

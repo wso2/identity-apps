@@ -28,7 +28,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
+import { FinalForm, FinalFormField, FormApi, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
 import CheckboxAdapter from "@wso2is/form/src/components/adapters/checkbox-field-adapter";
 import { ContentLoader, GenericIcon, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
@@ -226,7 +226,7 @@ const SiftConnectorForm: FunctionComponent<SiftConnectorFormPropsInterface> = ({
      *
      * @returns ReactElement
      */
-    const renderEventPublishingSection = (form): ReactElement => {
+    const renderEventPublishingSection = (form: FormApi<Record<string, unknown>>): ReactElement => {
         return (
             <>
                 <Box mt={ 2 } mb={ 1 } width="40%">
@@ -271,7 +271,7 @@ const SiftConnectorForm: FunctionComponent<SiftConnectorFormPropsInterface> = ({
                             (form.getState().values.publishUserInfo &&
                             !form.getState().values.publishDeviceMetadata) && (
                                 <Alert
-                                    sx={ { marginTop: "6px", marginBottom: "8px" } }
+                                    sx={ { marginBottom: "8px", marginTop: "6px" } }
                                     severity="warning"
                                     data-componentid="include-pii-warning-message"
                                 >
@@ -311,12 +311,12 @@ const SiftConnectorForm: FunctionComponent<SiftConnectorFormPropsInterface> = ({
                             (form.getState().values.publishDeviceMetadata &&
                             !form.getState().values.publishUserInfo) && (
                                 <Alert
-                                    sx={ { marginTop: "6px", marginBottom: "8px" } }
+                                    sx={ { marginBottom: "8px", marginTop: "6px" } }
                                     severity="warning"
                                     data-componentid="include-pii-warning-message"
                                 >
                                     { t("governanceConnectors:connectorCategories.loginAttemptsSecurity" +
-                                        ".connectors.siftConnector.eventPublishing.eventProperties" + 
+                                        ".connectors.siftConnector.eventPublishing.eventProperties" +
                                             ".publishDeviceMetadata.warning") }
                                 </Alert>
                             )
