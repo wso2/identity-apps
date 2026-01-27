@@ -2767,7 +2767,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             }
                                             tOptions={ { productName: config.ui.productName } }
                                         >
-                                            Select to enable signature validation to accept only signed 
+                                            Select to enable signature validation to accept only signed
                                             <Code>request objects</Code> in the authorization request.
                                         </Trans>
                                     </Hint>
