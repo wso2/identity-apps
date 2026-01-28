@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.31.7
+
+### Patch Changes
+
+- [#9494](https://github.com/wso2/identity-apps/pull/9494) [`a757fe4e3523dea2d65cd6e51d2d57de107fb123`](https://github.com/wso2/identity-apps/commit/a757fe4e3523dea2d65cd6e51d2d57de107fb123) Thanks [@LinukaAr](https://github.com/LinukaAr)! - Introduce a org level config to govern TOTP
+
 ## 2.31.6
 
 ### Patch Changes
