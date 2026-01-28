@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.31.8
+
+### Patch Changes
+
+- [#9570](https://github.com/wso2/identity-apps/pull/9570) [`6a610a51801cefbc7be622af214e6867d07f8fb1`](https://github.com/wso2/identity-apps/commit/6a610a51801cefbc7be622af214e6867d07f8fb1) Thanks [@hwupathum](https://github.com/hwupathum)! - Enable request object signature validation config by default
+
 ## 2.31.7
 
 ### Patch Changes

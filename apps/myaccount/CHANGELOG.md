@@ -1,5 +1,14 @@
 # @wso2is/myaccount
 
+## 2.25.21
+
+### Patch Changes
+
+- [#9572](https://github.com/wso2/identity-apps/pull/9572) [`04cbc551c944c2dc0f0f4961a2ebe6c51ac8f02e`](https://github.com/wso2/identity-apps/commit/04cbc551c944c2dc0f0f4961a2ebe6c51ac8f02e) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix flash of disabled features during app initialization
+
+- Updated dependencies [[`6a610a51801cefbc7be622af214e6867d07f8fb1`](https://github.com/wso2/identity-apps/commit/6a610a51801cefbc7be622af214e6867d07f8fb1)]:
+  - @wso2is/i18n@2.31.8
+
 ## 2.25.20
 
 ### Patch Changes
