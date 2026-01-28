@@ -1,5 +1,17 @@
 # @wso2is/console
 
+## 2.87.0
+
+### Minor Changes
+
+- [#9494](https://github.com/wso2/identity-apps/pull/9494) [`a757fe4e3523dea2d65cd6e51d2d57de107fb123`](https://github.com/wso2/identity-apps/commit/a757fe4e3523dea2d65cd6e51d2d57de107fb123) Thanks [@LinukaAr](https://github.com/LinukaAr)! - Introduce a org level config to govern TOTP
+
+### Patch Changes
+
+- Updated dependencies [[`a757fe4e3523dea2d65cd6e51d2d57de107fb123`](https://github.com/wso2/identity-apps/commit/a757fe4e3523dea2d65cd6e51d2d57de107fb123)]:
+  - @wso2is/admin.connections.v1@2.35.0
+  - @wso2is/i18n@2.31.7
+
 ## 2.86.3
 
 ### Patch Changes
