@@ -109,7 +109,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const isApplicationsPageVisible: boolean = useSelector((state: AppState) => state.global.isApplicationsPageVisible);
 
-    const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(null);
+    const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface | null>(null);
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>();
     const [ showAnnouncement, setShowAnnouncement ] = useState<boolean>(true);
     const [ dashboardLayoutRoutes, setDashboardLayoutRoutes ] = useState<RouteInterface[]>([]);
