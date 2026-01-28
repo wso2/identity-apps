@@ -46,6 +46,10 @@ export const claims: ClaimsNS = {
             description: "The SCIM2 protocol representation for "
                 + "attributes that will be used in the SCIM2 API.",
             heading: "SCIM 2.0"
+        },
+        vc: {
+            description: "The Verifiable Credentials representation for user attributes.",
+            heading: "Verifiable Credentials"
         }
     },
     dialects: {
@@ -518,6 +522,13 @@ export const claims: ClaimsNS = {
                     toggle: "Toggle"
                 }
             },
+            managedInUserStore: {
+                hint: "Indicates whether the attribute should be managed in the user store.",
+                label: "Manage in User Store",
+                readOnlyUserStoreHint: "One or more user stores are read-only. Some identity attributes require " +
+                    "updates, and managing them in read-only stores may cause issues. To avoid this, exclude those " +
+                    "attributes from read-only stores in the <1>Attribute Mappings</1> section."
+            },
             multiValued: {
                 label: "Allow multiple values for this attribute",
                 placeholder: "Select a user attribute"
@@ -597,9 +608,10 @@ export const claims: ClaimsNS = {
             uniquenessScopeHint: "Select the scope to validate the uniqueness of the attribute value."
         },
         mappedAttributes: {
-            enableForUserStore: "Enable for this user store",
             hint: "Enter the attribute from the respective user stores that will be mapped to this attribute.",
-            mappedAttributeName: "Mapped Attribute Name"
+            manageInUserStore: "Manage in user store",
+            mappedAttributeName: "Mapped Attribute Name",
+            readOnlyUserStore: "Read Only"
         },
         notifications: {
             addLocalClaim: {

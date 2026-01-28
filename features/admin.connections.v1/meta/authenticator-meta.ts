@@ -378,7 +378,7 @@ export class AuthenticatorMeta {
                 },
                 isComingSoon: false,
                 isEnabled: true,
-                useAuthenticatorsAPI: true
+                useAuthenticatorsAPI: false
             },
             [ LocalAuthenticatorConstants.AUTHENTICATOR_IDS.FIDO_AUTHENTICATOR_ID ]: {
                 content: {

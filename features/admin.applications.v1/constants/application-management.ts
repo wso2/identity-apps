@@ -97,6 +97,8 @@ export class ApplicationManagementConstants {
         .set("APPLICATION_OUTDATED_APP_BANNER", "applications.outdatedAppBanner")
         .set("APPLICATION_EDIT_ACCESS_CONFIG_BACK_CHANNEL_LOGOUT",
             "applications.edit.accessConfiguration.backChannelLogout")
+        .set("APPLICATION_EDIT_ACCESS_CONFIG_FRONT_CHANNEL_LOGOUT",
+            "applications.edit.accessConfiguration.frontChannelLogout")
         .set("APPLICATION_SHARED_ACCESS_STATUS", "applications.sharedAccess.status")
         .set("APPLICATION_ROLE_SHARING", "applications.sharedAccess.roleSharing")
         .set(ApplicationFeatureDictionaryKeys.ApplicationEditEnforceAuthorizedAPIUpdatePermission,
@@ -349,6 +351,8 @@ export class ApplicationManagementConstants {
 
     public static readonly APPLICATION_STATUS_UPDATE_ERROR: string = "Error occurred while updating the " +
         "status of the application. ";
+
+    public static readonly INVALID_TENANT_URL_FORMAT: string = "Invalid tenant URL format";
 
     public static readonly SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID: string = "second-factor-authenticators";
     public static readonly EXTERNAL_AUTHENTICATORS_DROPPABLE_ID: string = "external-authenticators";

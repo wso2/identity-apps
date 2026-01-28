@@ -315,7 +315,7 @@
 
     if (isMultiAttributeLoginEnabledInTenant) {
         if (allowedAttributes != null) {
-            usernameLabel = getUsernameLabel(resourceBundle, allowedAttributes);
+            usernameLabel = getUsernameLabel(resourceBundle, allowedAttributes, tenantDomain);
             usernamePlaceHolder = "enter.your.identifier";
         }
     }
@@ -593,7 +593,7 @@
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "Updated.the.password.successfully")%>
         </div>
    <% } %>
-    <% if (!isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType)) { %>
+    <% if (!isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType, request)) { %>
             <div class="field m-0">
                 <% String loginInputLabel=i18n(resourceBundle, customText, "login.identifier.input.label" , "", false); %>
                     <% if (StringUtils.isNotBlank(loginInputLabel)) { %>
@@ -744,7 +744,7 @@
         <% if (isRecoveryEPAvailable && (isUsernameRecoveryEnabledInTenant || isPasswordRecoveryEnabledInTenant || dynamicPortalPWEnabled)) { %>
         <div class="field external-link-container text-small">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password")%>
-            <% if (!isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType) && isUsernameRecoveryEnabledInTenant) { %>
+            <% if (!isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType, request) && isUsernameRecoveryEnabledInTenant) { %>
             <a
                 id="usernameRecoverLink"
                 href="<%=StringEscapeUtils.escapeHtml4(getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, true, urlParameters))%>"
@@ -754,7 +754,7 @@
             </a>
         <% } %>
 
-        <% if (!isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType)
+        <% if (!isIdentifierFirstLogin(inputType) && !isLoginHintAvailable(inputType, request)
                && isUsernameRecoveryEnabledInTenant
                && (isPasswordRecoveryEnabledInTenant || dynamicPortalPWEnabled)) { %>
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password.or")%>
@@ -820,7 +820,7 @@
 
     <% if (isSelfSignUpEPAvailable
         && !isIdentifierFirstLogin(inputType)
-        && !isLoginHintAvailable(inputType)
+        && !isLoginHintAvailable(inputType, request)
         && ( (isSelfSignUpEnabledInTenant && isSelfSignUpEnabledInTenantPreferences)
             || (dynamicPortalSREnabled && !isIdentifierFirstLogin(inputType) && !CONSOLE.equals(sp)) ) ) { %>
         <div class="mt-4 mb-4">

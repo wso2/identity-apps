@@ -433,6 +433,8 @@ export class AppConstants {
             [ "WEBHOOK_SETTINGS", `${ AppConstants.getDeveloperViewBasePath() }/webhook-settings` ],
             [ "PRE_ISSUE_ACCESS_TOKEN_EDIT",
                 `${AppConstants.getAdminViewBasePath()}/actions/pre-issue-access-token` ],
+            [ "PRE_ISSUE_ID_TOKEN_EDIT",
+                `${AppConstants.getAdminViewBasePath()}/actions/pre-issue-id-token` ],
             [ "PRE_UPDATE_PASSWORD_EDIT",
                 `${AppConstants.getAdminViewBasePath()}/actions/pre-update-password` ],
             [ "PRE_UPDATE_PROFILE_EDIT",
@@ -450,7 +452,9 @@ export class AppConstants {
             [ "INVITE_USER_PASSWORD_SETUP_FLOW_BUILDER",
                 `${ AppConstants.getDeveloperViewBasePath() }/edit-invited-user-registration-flow` ],
             [ "AGENTS", `${AppConstants.getAdminViewBasePath()}/agents` ],
-            [ "AGENT_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/agents/:id` ]
+            [ "AGENT_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/agents/:id` ],
+            [ "VC_TEMPLATES", `${AppConstants.getAdminViewBasePath()}/verifiable-credentials` ],
+            [ "VC_TEMPLATE_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/verifiable-credentials/:id` ]
         ]);
 
         return paths;
@@ -575,6 +579,16 @@ export class AppConstants {
      * Route id of the console settings page.
      */
     public static readonly AGENTS_ROUTE: string = "agents";
+
+    /**
+     * Route id of the approvals page.
+     */
+    public static readonly APPROVALS_ROUTE: string = "approvals";
+
+    /**
+     * Route id of the verifiable credentials page.
+     */
+    public static readonly VC_TEMPLATES_ROUTE: string = "verifiable-credentials";
 
     /**
      * Name of the root node

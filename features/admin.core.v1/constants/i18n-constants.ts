@@ -198,9 +198,10 @@ export class I18nConstants {
     public static readonly PUSH_PROVIDERS_NAMESPACE: string = I18nModuleConstants.PUSH_PROVIDERS_NAMESPACE;
 
     /**
-     * Email Providers namespace.
+     * External API Authentication namespace.
      */
-    public static readonly EMAIL_PROVIDERS_NAMESPACE: string = I18nModuleConstants.EMAIL_PROVIDERS_NAMESPACE;
+    public static readonly EXTERNAL_API_AUTHENTICATION_NAMESPACE: string =
+        I18nModuleConstants.EXTERNAL_API_AUTHENTICATION_NAMESPACE;
 
     /**
      * SMS Templates namespace.
@@ -330,6 +331,12 @@ export class I18nConstants {
     public static readonly COMMON_USERS_NAMESPACE: string = I18nModuleConstants.COMMON_USERS_NAMESPACE;
 
     /**
+     * Verifiable Credentials namespace.
+     */
+    public static readonly VERIFIABLE_CREDENTIALS_NAMESPACE: string =
+        I18nModuleConstants.VERIFIABLE_CREDENTIALS_NAMESPACE;
+
+    /**
      * Locations of the I18n namespaces.
      */
     public static readonly BUNDLE_NAMESPACE_DIRECTORIES: Map<string, string> = new Map<string, string>([
@@ -387,11 +394,12 @@ export class I18nConstants {
         [ I18nConstants.REMOTE_USER_STORES_NAMESPACE, "portals" ],
         [ I18nConstants.RULES_NAMESPACE, "portals" ],
         [ I18nConstants.PUSH_PROVIDERS_NAMESPACE, "portals" ],
-        [ I18nConstants.EMAIL_PROVIDERS_NAMESPACE, "portals" ],
+        [ I18nConstants.EXTERNAL_API_AUTHENTICATION_NAMESPACE, "portals" ],
         [ I18nConstants.APPROVAL_WORKFLOWS_NAMESPACE, "portals" ],
         [ I18nConstants.AGENTS_NAMESPACE, "portals" ],
         [ I18nConstants.FLOWS_NAMESPACE, "portals" ],
-        [ I18nConstants.COMMON_USERS_NAMESPACE, "portals" ]
+        [ I18nConstants.COMMON_USERS_NAMESPACE, "portals" ],
+        [ I18nConstants.VERIFIABLE_CREDENTIALS_NAMESPACE, "portals" ]
     ]);
 
     /**

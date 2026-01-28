@@ -38,6 +38,9 @@ export const smsProviders: smsProvidersNS = {
     description: "Configure the SMS provider settings according to your SMS provider.",
     form: {
         custom: {
+            authentication: {
+                updateRequired: "Please reconfigure the authentication details before proceeding."
+            },
             contentType: {
                 hint: "The content type of the API request. Accepted values are 'FORM' or 'JSON'",
                 label: "Content Type",

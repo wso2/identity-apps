@@ -46,6 +46,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
+<%@ page import="org.wso2.carbon.identity.recovery.IdentityRecoveryConstants" %>
 <%@ page import="org.wso2.carbon.user.core.util.UserCoreUtil" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 
@@ -216,6 +217,16 @@
             request.setAttribute("flowConfirmationCode", recoveryResponse.getFlowConfirmationCode());
         } catch (ApiException e) {
             IdentityManagementEndpointUtil.addErrorInformation(request, e);
+            String errorCode = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorCode"));
+            // Manage user doesn't have any recovery option set up.
+            if (errorCode.equals(
+                    IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_NO_VERIFIED_CHANNELS_FOR_USER.getCode()
+                )) {
+                request.setAttribute("resendCode", UUID.randomUUID().toString());
+                request.setAttribute("flowConfirmationCode", UUID.randomUUID().toString());
+                request.getRequestDispatcher("sms-and-email-otp.jsp").forward(request, response);
+                return;
+            }
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }

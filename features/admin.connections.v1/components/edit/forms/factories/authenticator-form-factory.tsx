@@ -39,7 +39,8 @@ import {
     GithubAuthenticatorForm,
     GoogleAuthenticatorForm,
     MicrosoftAuthenticatorForm,
-    SMSOTPAuthenticatorForm
+    SMSOTPAuthenticatorForm,
+    TOTPAuthenticatorForm
 } from "../authenticators";
 import { SamlAuthenticatorSettingsForm } from "../authenticators/saml-authenticator-form";
 import { SIWEAuthenticatorForm } from "../authenticators/swe-authenticator-form";
@@ -241,6 +242,17 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
                     enableSubmitButton={ enableSubmitButton }
                     data-testid={ testId }
                     showCustomProperties={ showCustomProperties }
+                    readOnly={ isReadOnly }
+                    isSubmitting={ isSubmitting }
+                />
+            );
+        case LocalAuthenticatorConstants.AUTHENTICATOR_IDS.TOTP_AUTHENTICATOR_ID:
+            return (
+                <TOTPAuthenticatorForm
+                    initialValues={ initialValues }
+                    metadata={ metadata }
+                    onSubmit={ onSubmit }
+                    data-testid={ testId }
                     readOnly={ isReadOnly }
                     isSubmitting={ isSubmitting }
                 />

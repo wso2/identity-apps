@@ -6,7 +6,8 @@
         "experimentalDecorators": true,
         "importHelpers": true,
         "lib": [
-            "ESNext"
+            "ESNext",
+            "dom"
         ],
         "module": "esnext",
         "moduleResolution": "node",

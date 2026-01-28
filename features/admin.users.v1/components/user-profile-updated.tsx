@@ -77,8 +77,8 @@ import {
     useConfirmationModalAlert
 } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
+import dayjs from "dayjs";
 import isEmpty from "lodash-es/isEmpty";
-import moment from "moment";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -2506,7 +2506,7 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                                                         component={ TextFieldAdapter }
                                                         label={ t("user:profile.fields.createdDate") }
                                                         initialValue={ createdDate
-                                                            ? moment(createdDate).format("YYYY-MM-DD")
+                                                            ? dayjs(createdDate).format("YYYY-MM-DD")
                                                             : ""
                                                         }
                                                         ariaLabel="createdDate"
@@ -2528,7 +2528,7 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                                                         component={ TextFieldAdapter }
                                                         label={ t("user:profile.fields.modifiedDate") }
                                                         initialValue={ modifiedDate
-                                                            ? moment(modifiedDate).format("YYYY-MM-DD")
+                                                            ? dayjs(modifiedDate).format("YYYY-MM-DD")
                                                             : ""
                                                         }
                                                         ariaLabel="modifiedDate"

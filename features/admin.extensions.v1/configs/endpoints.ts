@@ -53,6 +53,7 @@ export const getExtendedFeatureResourceEndpoints = (serverHost: string,
         remoteUserStoreAgentToken: `${ serverHost }/api/remote-userstore/v1/token`,
         resendEndpoint: `${ serverHost }/api/asgardeo-guest/v1/users/invite/{}/resend`,
         smsProviderEndpoint: `${ serverHost }/api/server/v1/notification-senders/sms`,
+        smsProviderV2Endpoint: `${ serverHost }/api/server/v2/notification-senders/sms`,
         userEndpoint: `${ serverHost }/api/asgardeo-guest/v1/users`
     };
 };

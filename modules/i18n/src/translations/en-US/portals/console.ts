@@ -293,12 +293,16 @@ export const console: ConsoleNS = {
                     heading: "Add social login"
                 },
                 adminNotice: {
-                    title: "Changes to Console Role Permissions",
-                    description: "Starting <1>{{date}}</1>, we are updating the permissions of the <3>Editor - Users</3> and <5>Editor - Applications</5> Console roles.",
-                    moreDetails: "See <1>documentation</1> for recommended workarounds and more details.",
+                    title: "Upcoming Enhancements to Organizations",
+                    description: "Effective <1>{{date}}</1>, organizations will inherit settings across multiple key areas from their parent organizations. During this window, updates to configurations made by admins may not be reflected immediately.",
+                    moreDetails: "<p>See <1>documentation</1> for more details on the behavioral changes.</p>",
                     instructions: {
-                        0: "<1>Editor - Users</1>: No longer able to edit role metadata or change permissions.",
-                        1: "<1>Editor - Applications</1>: No longer able to assign roles to users or groups."
+                        0: "<1>Login & Registration settings</1>",
+                        1: "<1>Custom User Attributes</1>",
+                        2: "<1>OIDC Scopes</1>",
+                        3: "<1>Flows</1>",
+                        4: "<1>Connections</1>",
+                        5: "<1>Attribute Update Verification Settings</1>"
                     }
                 },
                 integrateApps: {
@@ -679,6 +683,27 @@ export const console: ConsoleNS = {
                                     required: "Email OTP length is a required field."
                                 }
                             },
+                            allowedResendAttemptCount: {
+                                hint: "The number of allowed OTP resend attempts.",
+                                label: "Allowed OTP resend attempt count",
+                                placeholder: "Enter allowed resend attempt count.",
+                                validations: {
+                                    required: "Allowed OTP resend attempt count is a required field.",
+                                    invalid: "Allowed OTP resend attempt count should be an integer.",
+                                    range: "Allowed OTP resend attempt count should be between 0 & 100."
+                                }
+                            },
+                            resendBlockDuration: {
+                                hint: "The duration for which the user will be blocked from requesting a new OTP " +
+                                    "after reaching the maximum allowed resend attempts.",
+                                label: "OTP resend block duration",
+                                placeholder: "Enter OTP resend block duration.",
+                                validations: {
+                                    required: "OTP resend block duration is a required field.",
+                                    invalid: "OTP resend block duration should be an integer.",
+                                    range: "OTP resend block duration should be between 0 & 10000 minutes."
+                                }
+                            },
                             useAlphanumericChars: {
                                 hint: "Please check this checkbox to enable alphanumeric characters. Otherwise numeric characters will be used.",
                                 label: "Use alphanumeric characters for OTP",
@@ -733,6 +758,17 @@ export const console: ConsoleNS = {
                                     required: "Allowed OTP resend attempt count is a required field.",
                                     invalid: "Allowed OTP resend attempt count should be an integer.",
                                     range: "Allowed OTP resend attempt count should be between 0 & 100."
+                                }
+                            },
+                            resendBlockDuration: {
+                                hint: "The time duration to block OTP resend requests after reaching the max allowed resend attempts",
+                                label: "Resend OTP block time",
+                                placeholder: "Enter resend block time in minutes.",
+                                unit: "minutes",
+                                validations: {
+                                    required: "Resend OTP block time is a required field.",
+                                    invalid: "Resend OTP block time should be an integer.",
+                                    range: "Resend OTP block time should be between 1 minute & 1440 minutes (1 day)."
                                 }
                             }
                         },

@@ -1,5 +1,64 @@
 # @wso2is/myaccount
 
+## 2.25.21
+
+### Patch Changes
+
+- [#9572](https://github.com/wso2/identity-apps/pull/9572) [`04cbc551c944c2dc0f0f4961a2ebe6c51ac8f02e`](https://github.com/wso2/identity-apps/commit/04cbc551c944c2dc0f0f4961a2ebe6c51ac8f02e) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Fix flash of disabled features during app initialization
+
+- Updated dependencies [[`6a610a51801cefbc7be622af214e6867d07f8fb1`](https://github.com/wso2/identity-apps/commit/6a610a51801cefbc7be622af214e6867d07f8fb1)]:
+  - @wso2is/i18n@2.31.8
+
+## 2.25.20
+
+### Patch Changes
+
+- [#9419](https://github.com/wso2/identity-apps/pull/9419) [`caaf2a112a77d03004170326307d8a706f8ea07e`](https://github.com/wso2/identity-apps/commit/caaf2a112a77d03004170326307d8a706f8ea07e) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Implement managed in user store attribute property.
+
+- Updated dependencies [[`caaf2a112a77d03004170326307d8a706f8ea07e`](https://github.com/wso2/identity-apps/commit/caaf2a112a77d03004170326307d8a706f8ea07e), [`d8da0f3e69015ce94b4b2686408e30c6b56d8ae8`](https://github.com/wso2/identity-apps/commit/d8da0f3e69015ce94b4b2686408e30c6b56d8ae8), [`280eda61f7401701cf5557c549856f10cab9c554`](https://github.com/wso2/identity-apps/commit/280eda61f7401701cf5557c549856f10cab9c554)]:
+  - @wso2is/core@2.12.6
+  - @wso2is/i18n@2.30.57
+
+## 2.25.19
+
+### Patch Changes
+
+- [#9445](https://github.com/wso2/identity-apps/pull/9445) [`3ce175a4603f2dd5a8abf110a74dc9e35b0cccc2`](https://github.com/wso2/identity-apps/commit/3ce175a4603f2dd5a8abf110a74dc9e35b0cccc2) Thanks [@Malith-19](https://github.com/Malith-19)! - Fix the timestamp formatting issue in user sessions page.
+
+## 2.25.18
+
+### Patch Changes
+
+- [#9442](https://github.com/wso2/identity-apps/pull/9442) [`e254727623263d9cd79e945836f5fb454df4a543`](https://github.com/wso2/identity-apps/commit/e254727623263d9cd79e945836f5fb454df4a543) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Hide meta attributes in My Account user profile UI
+
+- Updated dependencies [[`aa67836d051e760f914a810a48a0c25c047e89f9`](https://github.com/wso2/identity-apps/commit/aa67836d051e760f914a810a48a0c25c047e89f9), [`e254727623263d9cd79e945836f5fb454df4a543`](https://github.com/wso2/identity-apps/commit/e254727623263d9cd79e945836f5fb454df4a543)]:
+  - @wso2is/common.workflow-approvals.v1@1.0.12
+  - @wso2is/common.users.v1@1.0.5
+
+## 2.25.17
+
+### Patch Changes
+
+- [#9438](https://github.com/wso2/identity-apps/pull/9438) [`67b67f4d3bd95f507a54196a1f8c0e5a5531baff`](https://github.com/wso2/identity-apps/commit/67b67f4d3bd95f507a54196a1f8c0e5a5531baff) Thanks [@bhagyasakalanka](https://github.com/bhagyasakalanka)! - Fix daysjs fromnow function not found issue
+
+## 2.25.16
+
+### Patch Changes
+
+- [#9421](https://github.com/wso2/identity-apps/pull/9421) [`fb7129ebdeedce6b0d53238f81c157691bfc11f9`](https://github.com/wso2/identity-apps/commit/fb7129ebdeedce6b0d53238f81c157691bfc11f9) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Remove stale moment.js dependency
+
+* [#9394](https://github.com/wso2/identity-apps/pull/9394) [`c42c203fcde0a376e6a7a2857956b9ca78ac5836`](https://github.com/wso2/identity-apps/commit/c42c203fcde0a376e6a7a2857956b9ca78ac5836) Thanks [@Ratheshan03](https://github.com/Ratheshan03)! - Fix mobile side panel toggle button not responding on mobile viewports
+
+## 2.25.15
+
+### Patch Changes
+
+- [#9366](https://github.com/wso2/identity-apps/pull/9366) [`d87ae1a2408120ed149b22f69851c3a79a579e29`](https://github.com/wso2/identity-apps/commit/d87ae1a2408120ed149b22f69851c3a79a579e29) Thanks [@s-vamshi](https://github.com/s-vamshi)! - Replaced **Moment.js** with **day.js** in `console` and `myaccount` apps to reduce bundle size and improve performance
+
+- Updated dependencies [[`d87ae1a2408120ed149b22f69851c3a79a579e29`](https://github.com/wso2/identity-apps/commit/d87ae1a2408120ed149b22f69851c3a79a579e29)]:
+  - @wso2is/common.workflow-approvals.v1@1.0.11
+  - @wso2is/admin.organizations.v1@2.27.11
+
 ## 2.25.14
 
 ### Patch Changes

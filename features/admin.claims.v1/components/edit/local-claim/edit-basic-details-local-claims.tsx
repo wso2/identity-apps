@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Paper from "@oxygen-ui/react/Paper";
 import Table from "@oxygen-ui/react/Table";
@@ -43,6 +44,7 @@ import {
 import { getProfileSchemas } from "@wso2is/admin.users.v1/api";
 import { UserFeatureDictionaryKeys, UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-management-utils";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { IdentityAppsError } from "@wso2is/core/errors";
@@ -90,7 +92,7 @@ import React, {
     useRef,
     useState
 } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Icon, Form as SemanticForm } from "semantic-ui-react";
@@ -111,6 +113,10 @@ interface EditBasicDetailsLocalClaimsPropsInterface extends TestableComponentInt
      * The function to be called to initiate an update
      */
     update: () => void;
+    /**
+     * Specifies whether the managedInUserStore property should be shown.
+     */
+    showManagedInUserStoreProperty?: boolean;
 }
 
 const FORM_ID: string = "local-claim-basic-details-form";
@@ -135,6 +141,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const {
         claim,
         update,
+        showManagedInUserStoreProperty = true,
         [ "data-testid" ]: testId
     } = props;
 
@@ -151,6 +158,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const [ multiValued, setMultiValued ] = useState<boolean>(claim?.multiValued || false);
     const [ subAttributes, setSubAttributes ] = useState<string[]>([]);
     const [ canonicalValues, setCanonicalValues ] = useState<KeyValue[]>();
+    const [ managedInUserStore, setManagedInUserStore ] = useState<boolean>(claim?.managedInUserStore ?? false);
+    const isIdentityClaim: boolean = claim?.claimURI?.startsWith("http://wso2.org/claims/identity/") ?? false;
 
     const nameField: MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
     const regExField: MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
@@ -171,10 +180,26 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         ClaimManagementConstants.FEATURE_DICTIONARY.get(ClaimFeatureDictionaryKeys.HideUserIdDisplayConfigurations)
     );
 
+    const isSelectiveClaimStoreManagementEnabled: boolean = isFeatureEnabled(
+        featureConfig?.attributeDialects,
+        ClaimManagementConstants.FEATURE_DICTIONARY.get(
+            ClaimFeatureDictionaryKeys.SelectiveClaimStoreManagement
+        )
+    );
+
+    const showManagedInUserStore: boolean =
+        isSelectiveClaimStoreManagementEnabled && showManagedInUserStoreProperty;
+
     const useDefaultLabelsAndOrder: boolean = isFeatureEnabled(
         featureConfig?.users,
         UserManagementConstants.FEATURE_DICTIONARY.get(UserFeatureDictionaryKeys.UseDefaultLabelsAndOrder)
     );
+
+    const {
+        readOnlyUserStoreNamesList
+    } = useUserStores();
+
+    const hasReadOnlyUserStoresConfigured: boolean = Boolean(readOnlyUserStoreNamesList?.length);
 
     const [ hideSpecialClaims, setHideSpecialClaims ] = useState<boolean>(true);
     const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
@@ -200,6 +225,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const { data: validationData } = useValidationConfigData();
 
     const { UIConfig } = useUIConfig();
+
+    const enableLegacyFlows: boolean = UIConfig?.flowExecution?.enableLegacyFlows ?? true;
 
     const isAgentAttribute: boolean = useMemo(() => {
         const agentAttributeProperty: Property = claim?.properties?.find(
@@ -345,6 +372,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         setIsConsoleReadOnly(claim?.profiles?.console?.readOnly ?? claim?.readOnly);
         setIsEndUserReadOnly(claim?.profiles?.endUser?.readOnly ?? claim?.readOnly);
         setIsSelfRegistrationReadOnly(claim?.profiles?.selfRegistration?.readOnly ?? claim?.readOnly);
+        setManagedInUserStore(claim?.managedInUserStore ?? false);
     }, [ claim ]);
 
     /**
@@ -785,17 +813,19 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             (isEndUserRequired || !!values.endUserSupportedByDefault)
                             : claim?.profiles?.endUser?.supportedByDefault
                     },
-                    selfRegistration: {
-                        readOnly: values?.selfRegistrationReadOnly !== undefined
-                            ? !!values.selfRegistrationReadOnly
-                            : claim?.profiles?.selfRegistration?.readOnly,
-                        required: values?.selfRegistrationRequired !== undefined ?
-                            !!values.selfRegistrationRequired
-                            : claim?.profiles?.selfRegistration?.required,
-                        supportedByDefault: values?.selfRegistrationSupportedByDefault !== undefined ?
-                            (isSelfRegistrationRequired || !!values.selfRegistrationSupportedByDefault)
-                            : claim?.profiles?.selfRegistration?.supportedByDefault
-                    }
+                    ...(enableLegacyFlows && {
+                        selfRegistration: {
+                            readOnly: values?.selfRegistrationReadOnly !== undefined
+                                ? !!values.selfRegistrationReadOnly
+                                : claim?.profiles?.selfRegistration?.readOnly,
+                            required: values?.selfRegistrationRequired !== undefined ?
+                                !!values.selfRegistrationRequired
+                                : claim?.profiles?.selfRegistration?.required,
+                            supportedByDefault: values?.selfRegistrationSupportedByDefault !== undefined ?
+                                (isSelfRegistrationRequired || !!values.selfRegistrationSupportedByDefault)
+                                : claim?.profiles?.selfRegistration?.supportedByDefault
+                        }
+                    })
                 },
                 properties: claim?.properties,
                 readOnly: values?.readOnly !== undefined ? !!values.readOnly : claim?.readOnly,
@@ -815,6 +845,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
         if (isSystemClaim || !isUpdatingSharedProfilesEnabled) {
             delete data.sharedProfileValueResolvingMethod;
+        }
+
+        if (isSelectiveClaimStoreManagementEnabled) {
+            data.managedInUserStore = managedInUserStore;
         }
 
         setIsSubmitting(true);
@@ -929,24 +963,26 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         }
                     />
                 </TableCell>
-                <TableCell align="center">
-                    <Field.Checkbox
-                        ariaLabel="Display by default in self-registration"
-                        name="selfRegistrationSupportedByDefault"
-                        defaultValue={ claim?.profiles?.selfRegistration?.supportedByDefault ??
-                            claim?.supportedByDefault }
-                        data-componentid={
-                            `${ testId }-form-self-registration-supported-by-default-checkbox` }
-                        readOnly={ isSupportedByDefaultCheckboxDisabled() }
-                        {
-                            ...( isSelfRegistrationRequired
-                                ? { checked: true }
-                                : { defaultValue: claim?.profiles?.selfRegistration?.supportedByDefault ??
-                                    claim?.supportedByDefault }
-                            )
-                        }
-                    />
-                </TableCell>
+                { enableLegacyFlows && (
+                    <TableCell align="center">
+                        <Field.Checkbox
+                            ariaLabel="Display by default in self-registration"
+                            name="selfRegistrationSupportedByDefault"
+                            defaultValue={ claim?.profiles?.selfRegistration?.supportedByDefault ??
+                                claim?.supportedByDefault }
+                            data-componentid={
+                                `${ testId }-form-self-registration-supported-by-default-checkbox` }
+                            readOnly={ isSupportedByDefaultCheckboxDisabled() }
+                            {
+                                ...( isSelfRegistrationRequired
+                                    ? { checked: true }
+                                    : { defaultValue: claim?.profiles?.selfRegistration?.supportedByDefault ??
+                                        claim?.supportedByDefault }
+                                )
+                            }
+                        />
+                    </TableCell>
+                ) }
             </TableRow>
         );
     };
@@ -1117,24 +1153,26 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         }
                     />
                 </TableCell>
-                <TableCell align="center">
-                    <Field.Checkbox
-                        ariaLabel="Required in self-registration"
-                        name="selfRegistrationRequired"
-                        defaultValue={ claim?.profiles?.selfRegistration?.required ?? claim?.required }
-                        data-componentid={ `${ testId }-form-self-registration-required-checkbox` }
-                        readOnly={ isRequiredCheckboxDisabled || isSelfRegistrationReadOnly }
-                        listen ={ (value: boolean) => {
-                            setIsSelfRegistrationRequired(value);
-                        } }
-                        {
-                            ...( isSelfRegistrationReadOnly
-                                ? { value: false }
-                                : { defaultValue: claim?.profiles?.selfRegistration?.required ?? claim?.required }
-                            )
-                        }
-                    />
-                </TableCell>
+                { enableLegacyFlows && (
+                    <TableCell align="center">
+                        <Field.Checkbox
+                            ariaLabel="Required in self-registration"
+                            name="selfRegistrationRequired"
+                            defaultValue={ claim?.profiles?.selfRegistration?.required ?? claim?.required }
+                            data-componentid={ `${ testId }-form-self-registration-required-checkbox` }
+                            readOnly={ isRequiredCheckboxDisabled || isSelfRegistrationReadOnly }
+                            listen ={ (value: boolean) => {
+                                setIsSelfRegistrationRequired(value);
+                            } }
+                            {
+                                ...( isSelfRegistrationReadOnly
+                                    ? { value: false }
+                                    : { defaultValue: claim?.profiles?.selfRegistration?.required ?? claim?.required }
+                                )
+                            }
+                        />
+                    </TableCell>
+                ) }
             </TableRow>
         );
     };
@@ -1181,26 +1219,28 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         } }
                     />
                 </TableCell>
-                <TableCell align="center">
-                    <Tooltip
-                        trigger={ (
-                            <Field.Checkbox
-                                ariaLabel="Read-only in self-registration"
-                                name="selfRegistrationReadOnly"
-                                defaultValue={ claim?.profiles?.selfRegistration?.readOnly ?? claim?.readOnly }
-                                data-componentid={ `${ testId }-form-self-registration-readOnly-checkbox` }
-                                listen ={ (value: boolean) => {
-                                    setIsSelfRegistrationReadOnly(value);
-                                } }
-                                readOnly
-                            />
-                        ) }
-                        content={
-                            t("claims:local.forms.profiles.selfRegistrationReadOnlyHint")
-                        }
-                        compact
-                    />
-                </TableCell>
+                { enableLegacyFlows && (
+                    <TableCell align="center">
+                        <Tooltip
+                            trigger={ (
+                                <Field.Checkbox
+                                    ariaLabel="Read-only in self-registration"
+                                    name="selfRegistrationReadOnly"
+                                    defaultValue={ claim?.profiles?.selfRegistration?.readOnly ?? claim?.readOnly }
+                                    data-componentid={ `${ testId }-form-self-registration-readOnly-checkbox` }
+                                    listen ={ (value: boolean) => {
+                                        setIsSelfRegistrationReadOnly(value);
+                                    } }
+                                    readOnly
+                                />
+                            ) }
+                            content={
+                                t("claims:local.forms.profiles.selfRegistrationReadOnlyHint")
+                            }
+                            compact
+                        />
+                    </TableCell>
+                ) }
             </TableRow>
         );
     };
@@ -1666,6 +1706,41 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         )
                     }
                     {
+                        showManagedInUserStore && !hideSpecialClaims
+                        && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
+                        && (
+                            <Field.Checkbox
+                                ariaLabel="managedInUserStore"
+                                name="managedInUserStore"
+                                required={ false }
+                                label={ t("claims:local.forms.managedInUserStore.label") }
+                                data-componentid={ `${ testId }-form-managed-in-user-store-checkbox` }
+                                readOnly={ isSubOrganization() || isReadOnly }
+                                hint={ t("claims:local.forms.managedInUserStore.hint") }
+                                defaultValue={ claim?.managedInUserStore ?? false }
+                                listen={ setManagedInUserStore }
+                            />
+                        )
+                    }
+                    {
+                        showManagedInUserStore && !hideSpecialClaims
+                        && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
+                        && managedInUserStore && isIdentityClaim && hasReadOnlyUserStoresConfigured
+                        && (
+                            <Alert
+                                severity="warning"
+                                className="info-box"
+                                data-componentid={ `${testId}-managed-in-user-store-read-only-user-store-alert` }
+                            >
+                                <Trans i18nKey="claims:local.forms.managedInUserStore.readOnlyUserStoreHint">
+                                    One or more user stores are read-only. Some identity attributes require
+                                    updates, and managing them in read-only stores may cause issues. To avoid
+                                    this, exclude those attributes from read-only stores in the
+                                    <strong>Attribute Mappings</strong> section.
+                                </Trans>
+                            </Alert>)
+                    }
+                    {
                         isDistinctAttributeProfilesDisabled &&
                         claim && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
                             && attributeConfig.editAttributes.showRequiredCheckBox
@@ -1766,9 +1841,11 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                                 <TableCell align="center">
                                                     { t("claims:local.forms.profiles.endUserProfile") }
                                                 </TableCell>
-                                                <TableCell align="center">
-                                                    { t("claims:local.forms.profiles.selfRegistration") }
-                                                </TableCell>
+                                                { enableLegacyFlows && (
+                                                    <TableCell align="center">
+                                                        { t("claims:local.forms.profiles.selfRegistration") }
+                                                    </TableCell>
+                                                ) }
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>

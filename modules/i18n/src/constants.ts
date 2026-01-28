@@ -385,15 +385,20 @@ export class I18nModuleConstants {
     public static readonly COMMON_USERS_NAMESPACE: string = "commonUsers";
 
     /**
+     * Verifiable Credentials namespace.
+     */
+    public static readonly VERIFIABLE_CREDENTIALS_NAMESPACE: string = "verifiableCredentials";
+
+    /**
      * Constant representing the locale preference key.
      * This key is used to store the user's language preference in cookies or local storage.
      */
     public static readonly PREFERENCE_STORAGE_KEY: string = "ui_lang";
 
     /**
-     * Email Provider namespace.
+     * External API Authentication namespace.
      */
-    public static readonly EMAIL_PROVIDERS_NAMESPACE: string = "emailProviders";
+    public static readonly EXTERNAL_API_AUTHENTICATION_NAMESPACE: string = "externalApiAuthentication";
 
     /**
      * Flows namespace.

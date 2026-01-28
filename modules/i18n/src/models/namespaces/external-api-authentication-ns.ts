@@ -16,7 +16,7 @@
  * under the License.
  */
 
-export interface EmailProviderNS {
+export interface ExternalAPIAuthenticationNS {
     showPassword: {
         alert: {
             title: string;
@@ -32,6 +32,9 @@ export interface EmailProviderNS {
             };
             label: string;
             types: {
+                none: {
+                    name: string;
+                };
                 clientCredential: {
                     name: string;
                     properties: {
@@ -76,6 +79,37 @@ export interface EmailProviderNS {
                             };
                         };
                         username: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string
+                            };
+                        };
+                    };
+                };
+                bearer: {
+                    name: string;
+                    properties: {
+                        accessToken: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string
+                            };
+                        };
+                    };
+                };
+                apiKey: {
+                    name: string;
+                    properties: {
+                        header: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string
+                            };
+                        };
+                        value: {
                             label: string;
                             placeholder: string;
                             validations: {
@@ -142,6 +176,27 @@ export interface EmailProviderNS {
                     };
                 };
                 scopes: {
+                    label: string;
+                    placeholder: string;
+                    validations: {
+                        required: string;
+                    };
+                };
+                header: {
+                    label: string;
+                    placeholder: string;
+                    validations: {
+                        required: string;
+                    };
+                };
+                value: {
+                    label: string;
+                    placeholder: string;
+                    validations: {
+                        required: string;
+                    };
+                };
+                accessToken: {
                     label: string;
                     placeholder: string;
                     validations: {

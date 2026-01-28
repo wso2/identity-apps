@@ -56,7 +56,6 @@
         "jshint": "^2.13.4",
         "jsrsasign": "^10.5.26",
         "lodash-es": "^4.17.21",
-        "moment": "^2.29.4",
         "node-forge": "^0.10.0",
         "rc-tree": "^4.0.0-beta.2",
         "react-app-polyfill": "^1.0.4",

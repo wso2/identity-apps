@@ -191,7 +191,7 @@
         usernamePlaceHolder = "enter.your.email";
     } else if (isMultiAttributeLoginEnabledInTenant) {
         if (allowedAttributes != null) {
-            usernameLabel = getUsernameLabel(recoveryResourceBundle, allowedAttributes);
+            usernameLabel = getUsernameLabel(recoveryResourceBundle, allowedAttributes, tenantDomain);
             usernamePlaceHolder = "Enter.your.identifier";
         }
     }

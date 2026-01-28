@@ -1171,7 +1171,7 @@
             },
             {% endif %}
             {% if console.event_publishing is defined %}
-            "eventPublishing": {
+            "events": {
                 "disabledFeatures": [
                     {% if console.event_publishing.disabled_features is defined %}
                     {% for feature in console.event_publishing.disabled_features %}
@@ -2668,6 +2668,7 @@
         },
         "flowExecution": {
             "enableLegacyFlows": {{ flow_execution.enable_legacy_flows }}
-        }
+        },
+        "enableLegacySessionBoundTokenBehaviour": {{ oauth.enable_legacy_session_bound_token_behaviour }}
     }
 }

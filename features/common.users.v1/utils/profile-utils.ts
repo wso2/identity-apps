@@ -399,8 +399,34 @@ export const getFlattenedInitialValues = (
                         _flattenedInitialValues[schema.name] = preparedInitialValues[
                             schemaNameParts[0]]?.[schemaNameParts[1]];
                     } else {
-                        _flattenedInitialValues[encodedSchemaId][schema.name] = preparedInitialValues[
-                            schema.schemaId]?.[schemaNameParts[0]]?.[schemaNameParts[1]];
+                        if (schema.schemaId === ProfileConstants.SCIM2_CORE_SCHEMA) {
+                            /**
+                             * Handles core schema extended attributes.
+                             * Even though they are extended attributes,
+                             * they are available at the root level in SCIM payloads.
+                             * @example
+                             * ```
+                             * Suppose: Profile data:
+                             * {
+                             *   ...
+                             *   "id": "abcd-1234",
+                             *   "userName": "jdoe",
+                             *   "meta": {
+                             *     ...,
+                             *     "created": "2023-01-01T00:00:00Z",
+                             *     "lastModified": "2023-01-02T00:00:00Z",
+                             *     ...
+                             *   }
+                             *   ...
+                             * }
+                             * ```
+                             */
+                            _flattenedInitialValues[schema.name] = preparedInitialValues[
+                                schemaNameParts[0]]?.[schemaNameParts[1]];
+                        } else {
+                            _flattenedInitialValues[encodedSchemaId][schema.name] = preparedInitialValues[
+                                schema.schemaId]?.[schemaNameParts[0]]?.[schemaNameParts[1]];
+                        }
                     }
                 }
             } else {
@@ -484,6 +510,10 @@ export const extractAttributeValue = (
     schema: ProfileSchemaInterface
 ): unknown => {
     if (schema.extended) {
+        if (schema.schemaId === ProfileConstants.SCIM2_CORE_SCHEMA) {
+            return flattenedProfileData[schema.name];
+        }
+
         const encodedSchemaId: string = schema.schemaId.replace(/\./g, "__DOT__");
 
         return flattenedProfileData[encodedSchemaId]?.[schema.name];

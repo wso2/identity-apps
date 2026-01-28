@@ -37,6 +37,10 @@ export interface ClaimsNS {
             heading: string;
             description: string;
         };
+        vc: {
+            heading: string;
+            description: string;
+        };
         custom: {
             heading: string;
             description: string;
@@ -545,6 +549,11 @@ export interface ClaimsNS {
                 validationError: string;
                 validationErrorMessage: string;
             };
+            managedInUserStore: {
+                hint: string;
+                label: string;
+                readOnlyUserStoreHint: string;
+            };
             multiValued: {
                 label: string;
                 placeholder: string;
@@ -608,9 +617,10 @@ export interface ClaimsNS {
             subheader: string;
         };
         mappedAttributes: {
+            readOnlyUserStore: string;
             hint: string;
             mappedAttributeName: string;
-            enableForUserStore: string;
+            manageInUserStore: string;
         };
     };
     list: {

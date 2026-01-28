@@ -392,6 +392,12 @@ export class RouteUtils {
                 selected: history.location.pathname.includes("/mcp-servers")
             },
             {
+                category: build,
+                id: "verifiableCredentials",
+                order: 3,
+                selected: history.location.pathname.includes("/verifiable-credentials")
+            },
+            {
                 category: organizations,
                 id: "organizations",
                 selected: history.location.pathname.includes("/organizations")
@@ -551,7 +557,7 @@ export class RouteUtils {
             },
             {
                 category: extensions,
-                id: "eventPublishing",
+                id: "events",
                 order: 2
             }
         ];

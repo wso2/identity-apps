@@ -17,6 +17,7 @@
  */
 
 import { ResponseMode, Storage } from "@asgardeo/auth-react";
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { ActionsResourceEndpointsInterface } from "@wso2is/admin.actions.v1/models/endpoints";
 import { ApplicationsTemplatesEndpointsInterface } from "@wso2is/admin.application-templates.v1/models/endpoints";
 import {
@@ -52,8 +53,7 @@ import { ValidationServiceEndpointsInterface } from "@wso2is/admin.validation.v1
 import {
     CommonConfigInterface,
     CommonDeploymentConfigInterface,
-    CommonUIConfigInterface,
-    FeatureAccessConfigInterface
+    CommonUIConfigInterface
 } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { WorkflowRequestsResourceEndpointsInterface } from "../../admin.workflow-requests.v1/configs/endpoints";
@@ -248,7 +248,7 @@ export interface FeatureConfigInterface {
     /**
      * Event Management feature
      */
-    eventPublishing?: FeatureAccessConfigInterface;
+    events?: FeatureAccessConfigInterface;
     /**
      * Organization insights feature
      */
@@ -589,10 +589,6 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     connectionTemplates?: any;
     /**
-     * Config if beta tag should be displayed for sms otp for password recovery feature.
-     */
-    showSmsOtpPwdRecoveryFeatureStatusChip?: boolean;
-    /**
      * Config to check whether consent is required for trusted apps.
      */
     isTrustedAppConsentRequired?: boolean;
@@ -649,6 +645,14 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
     flowExecution: {
         enableLegacyFlows: boolean;
     };
+    /**
+     * Enable legacy session bound token behaviour.
+     */
+    enableLegacySessionBoundTokenBehaviour: boolean;
+    /**
+     * Disable email template feature for free tier tenants.
+     */
+    disableEmailTemplateForFreeTier: boolean;
 }
 
 /**

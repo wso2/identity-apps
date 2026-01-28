@@ -67,6 +67,9 @@
 <%@ page import="java.util.Enumeration" %>
 <%@ page import="org.json.JSONObject" %>
 <%@ page import="org.json.JSONArray" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Collections" %>
+<%@ page import="java.util.Comparator" %>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
@@ -200,6 +203,7 @@
     boolean isSSOLoginAuthenticatorConfigured = false;
     boolean emailDomainDiscoveryEnabled = false;
     boolean emailDomainBasedSelfSignupEnabled = false;
+    boolean sortByDisplayOrder = Boolean.parseBoolean(IdentityUtil.getProperty("Recovery.V09Api.IncludeDisplayOrderPropertyInClaims"));
     // Enable basic account creation flow if there are no authenticators configured.
     if (configuredAuthenticators == null) {
         isBasic = true;
@@ -437,6 +441,22 @@
 %>
 
 <% request.setAttribute("pageName", "self-registration-username-request"); %>
+<%
+    String cdsProfileCookie = null;
+    if (cookies != null) {
+        for (javax.servlet.http.Cookie cookie : cookies) {
+            if ("cds_profile".equals(cookie.getName())) {
+                cdsProfileCookie = cookie.getValue();
+                break;
+            }
+        }
+    }
+
+    if (cdsProfileCookie != null) {
+        // Set as a request attribute to be used in your form
+        request.setAttribute("cds_profile", cdsProfileCookie);
+    }
+%>
 
 <!doctype html>
 <html lang="en-US">
@@ -888,6 +908,8 @@
                                    value="<%=value%>" class="form-control">
                         </div>
                         <% } %>
+                        <input type="hidden" name="http://wso2.org/claims/cdsProfile" value="<%= cdsProfileCookie != null ? cdsProfileCookie : "" %>">
+
                         <div id="password-validation-block">
                             <div id="length-block" class="password-policy-description mb-2" style="display: none;">
                                 <i id="password-validation-neutral-length" class="inverted grey circle icon"></i>
@@ -1021,6 +1043,28 @@
                                 </div>
                                 <% }
                                 }%>
+                                <%
+                                    // Sort claims before rendering if config is enabled.
+                                    if (sortByDisplayOrder) {
+                                        List<Claim> claimList = new ArrayList<>(Arrays.asList(claims));
+                                        claimList.forEach(claim -> {
+                                            if (claim.getDisplayOrder() == null) {
+                                                claim.setDisplayOrder("0");
+                                            }
+                                        });
+
+                                        Collections.sort(claimList, new Comparator<Claim>() {
+                                            @Override
+                                            public int compare(Claim c1, Claim c2) {
+                                                int d1 = Integer.parseInt(c1.getDisplayOrder());
+                                                int d2 = Integer.parseInt(c2.getDisplayOrder());
+                                                return Integer.compare(d1, d2);
+                                            }
+                                        });
+
+                                        claims = claimList.toArray(new Claim[0]);
+                                    }
+                                %>
                                 <%
                                     }
                                     List<String> missingClaims = null;

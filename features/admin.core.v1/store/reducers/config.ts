@@ -224,11 +224,13 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             connectionResourcesUrl: "",
             cookiePolicyUrl: "",
             customContent: {},
+            disableEmailTemplateForFreeTier: false,
             emailTemplates: {
                 defaultLogoUrl: "",
                 defaultWhiteLogoUrl: ""
             },
             enableCustomEmailTemplates: undefined,
+            enableLegacySessionBoundTokenBehaviour: false,
             enableOldUIForEmailProvider: undefined,
             features: {
                 applications: null,
@@ -318,7 +320,6 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             },
             selfAppIdentifier: "",
             showAppSwitchButton: undefined,
-            showSmsOtpPwdRecoveryFeatureStatusChip: undefined,
             showStatusLabelForNewAuthzRuntimeFeatures: undefined,
             systemAppsIdentifiers: [],
             systemReservedUserStores: [],

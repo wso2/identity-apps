@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { FormControlProps } from "@oxygen-ui/react/FormControl";
 import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import TextField from "@oxygen-ui/react/TextField";
-import moment from "moment";
+import dayjs, { Dayjs } from "dayjs";
 import React, { FunctionComponent, ReactElement } from "react";
 import { FieldRenderProps } from "react-final-form";
 
@@ -85,14 +85,14 @@ const DatePickerFieldAdapter: FunctionComponent<DatePickerFieldAdapterPropsInter
         ...rest
     } = props;
 
-    // Parse the input value to a moment object.
-    const formattedValue: moment.Moment = moment(input.value, dateFormat);
+    // Parse the input value to a dayjs object.
+    const formattedValue: Dayjs = dayjs(input.value, dateFormat);
 
     const isError: boolean = (meta.error || meta.submitError) && meta.touched;
 
     return (
         <>
-            <LocalizationProvider dateAdapter={ AdapterMoment }>
+            <LocalizationProvider dateAdapter={ AdapterDayjs }>
                 <DatePicker
                     slots={ { textField: TextField } }
                     slotProps={ {
@@ -115,7 +115,7 @@ const DatePickerFieldAdapter: FunctionComponent<DatePickerFieldAdapterPropsInter
                     label={ label }
                     { ...input }
                     value={ formattedValue.isValid() ? formattedValue : null }
-                    onChange={ (date: moment.Moment | null) => {
+                    onChange={ (date: Dayjs | null) => {
                         if (date && date.isValid()) {
                             input.onChange(date.format(dateFormat));
                         } else {

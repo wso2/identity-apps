@@ -125,6 +125,24 @@
     {% endif %}
 
     <!-- *************** End of Account Recovery Endpoint Context URL Configuration ********************** -->
+
+    <!-- *************** Authenticator Validation Configuration ********************** -->
+
+    {% if authenticationendpoint.authenticator_validation.enabled is defined %}
+        <context-param>
+            <param-name>AuthenticatorValidationEnabled</param-name>
+            <param-value>{{ authenticationendpoint.authenticator_validation.enabled }}</param-value>
+        </context-param>
+    {% endif %}
+    {% if authenticationendpoint.authenticator_validation.default_authenticators is defined %}
+        <context-param>
+            <param-name>DefaultAuthenticators</param-name>
+            <param-value>{{ authenticationendpoint.authenticator_validation.default_authenticators }}</param-value>
+        </context-param>
+    {% endif %}
+
+    <!-- *************** End of Authenticator Validation Configuration ********************** -->
+
     <!-- *************** Identity Server Endpoint URL Configuration ********************** -->
     {% if authenticationendpoint.identity_server_endpoint_url is defined %}
     <context-param>

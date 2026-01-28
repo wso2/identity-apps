@@ -112,7 +112,7 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
         defaultExpandedIfPermissionsAreSelected,
         initialValues,
         onPermissionsChange,
-        "data-componentid": componentId
+        "data-componentid": componentId = "create-console-role-wizard-basic-info-form"
     } = props;
 
     const { t } = useTranslation();
@@ -162,15 +162,16 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
 
     // Flatten the feature config to easily access sub features.
     const flattenedFeatureConfig: FeatureConfigInterface = useMemo(() => {
-        // TODO: Define proper type for these variables.
-        const topLevelFeatures: any = mapValues(
+        const topLevelFeatures: Record<string, Omit<FeatureAccessConfigInterface, "subFeatures">> = mapValues(
             featureConfig,
             (feature: FeatureAccessConfigInterface) => omit(feature, [ "subFeatures" ])
         );
 
-        const subLevelFeatures: any = fromPairs(flatMap(values(featureConfig), (feature) => {
-            return Object.entries((feature as FeatureAccessConfigInterface).subFeatures || {});
-        }));
+        const subLevelFeatures: Record<string, Omit<FeatureAccessConfigInterface, "subFeatures">> = fromPairs(
+            flatMap(values(featureConfig), (feature: FeatureAccessConfigInterface) => {
+                return Object.entries(feature.subFeatures || {});
+            })
+        );
 
         return {
             ...topLevelFeatures,
@@ -624,13 +625,6 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
             </div>
         </div>
     );
-};
-
-/**
- * Default props for the component.
- */
-CreateConsoleRoleWizardPermissionsForm.defaultProps = {
-    "data-componentid": "create-console-role-wizard-basic-info-form"
 };
 
 export default CreateConsoleRoleWizardPermissionsForm;

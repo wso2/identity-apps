@@ -77,11 +77,12 @@ export const meta: LocaleMeta = {
         I18nModuleConstants.REMOTE_USER_STORES_NAMESPACE,
         I18nModuleConstants.RULES_NAMESPACE,
         I18nModuleConstants.PUSH_PROVIDERS_NAMESPACE,
-        I18nModuleConstants.EMAIL_PROVIDERS_NAMESPACE,
+        I18nModuleConstants.EXTERNAL_API_AUTHENTICATION_NAMESPACE,
         I18nModuleConstants.WEBHOOKS_NAMESPACE,
         I18nModuleConstants.APPROVAL_WORKFLOWS_NAMESPACE,
         I18nModuleConstants.AGENTS_NAMESPACE,
         I18nModuleConstants.FLOWS_NAMESPACE,
-        I18nModuleConstants.COMMON_USERS_NAMESPACE
+        I18nModuleConstants.COMMON_USERS_NAMESPACE,
+        I18nModuleConstants.VERIFIABLE_CREDENTIALS_NAMESPACE
     ]
 };

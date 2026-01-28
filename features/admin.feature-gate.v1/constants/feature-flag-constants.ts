@@ -33,6 +33,7 @@ class FeatureFlagConstants {
     public static readonly FEATURE_FLAG_KEY_MAP: { [key: string]: string } = {
         ACTIONS: "actions",
         ACTIONS_TYPES_PRE_ISSUE_ACCESS_TOKEN: "actions.types.list.preIssueAccessToken",
+        ACTIONS_TYPES_PRE_ISSUE_ID_TOKEN: "actions.types.list.preIssueIdToken",
         ACTIONS_TYPES_PRE_REGISTRATION: "actions.types.list.preRegistration",
         ACTIONS_TYPES_PRE_UPDATE_PASSWORD: "actions.types.list.preUpdatePassword",
         ACTIONS_TYPES_PRE_UPDATE_PROFILE: "actions.types.list.preUpdateProfile",
@@ -67,6 +68,7 @@ class FeatureFlagConstants {
         SMS_TEMPLATES: "smsTemplates",
         USER_ROLES: "userRoles",
         USER_STORES: "userStores",
+        VERIFIABLE_CREDENTIALS: "verifiableCredentials",
         WEBHOOKS: "webhooks",
         WORKFLOW_INSTANCES: "workflowInstances"
     };

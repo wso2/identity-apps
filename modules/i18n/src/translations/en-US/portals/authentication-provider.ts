@@ -303,6 +303,29 @@ export const authenticationProvider:AuthenticationProviderNS = {
                         required: "Email OTP length is a required field."
                     }
                 },
+                allowedResendAttemptCount: {
+                    hint: "The number of allowed OTP resend attempts.",
+                    label: "Allowed OTP resend attempt count",
+                    placeholder: "Enter allowed resend attempt count.",
+                    unit: "attempts",
+                    validations: {
+                        invalid: "Allowed OTP resend attempt count should be an integer.",
+                        range: "Allowed OTP resend attempt count should be between 0 & 100.",
+                        required: "Allowed OTP resend attempt count is a required field."
+                    }
+                },
+                resendBlockDuration: {
+                    hint: "The duration for which OTP resend is blocked after " +
+                        "exceeding the allowed resend attempt count.",
+                    label: "Resend block duration",
+                    placeholder: "Enter resend block duration.",
+                    unit: "minutes",
+                    validations: {
+                        invalid: "Resend block duration should be an integer.",
+                        range: "Resend block duration should be between 0 & 10000 minutes.",
+                        required: "Resend block duration is a required field."
+                    }
+                },
                 useAlphanumericChars: {
                     hint: "Please check this checkbox to enable alphanumeric "+
                     "characters. Otherwise numeric characters will be used.",
@@ -832,6 +855,17 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     }
                 },
                 hint: "Ensure that an <1>SMS Provider</1> is configured for the OTP feature to work properly.",
+                resendBlockDuration: {
+                    hint: "The time duration to block OTP resend requests after reaching the max allowed resend attempts",
+                    label: "Resend OTP block time",
+                    placeholder: "Enter resend block time in minutes.",
+                    unit: "minutes",
+                    validations: {
+                        required: "Resend OTP block time is a required field.",
+                        invalid: "Resend OTP block time should be an integer.",
+                        range: "Resend OTP block time should be between 1 minute & 1440 minutes (1 day)."
+                    }
+                },
                 tokenLength: {
                     hint: "The number of allowed characters in the OTP. Please " +
                         "pick a value between <1>4-10</1>.",
@@ -896,6 +930,12 @@ export const authenticationProvider:AuthenticationProviderNS = {
                         required: "Enablin push notification device progressive enrollment is required."
                     }
                 }
+            },
+            totp: {
+                enrollUserInAuthenticationFlow: {
+                    hint: "When enabled, users may enroll their devices for TOTP at the moment they log in to the application.",
+                    label: "Enable TOTP device progressive enrollment"
+                }
             }
         },
         certificateSection: {
@@ -915,7 +955,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
         },
         generalDetails: {
             alias: {
-                hint: "Alias value for {{productName}} in the trusted token issuer.",
+                hint: "Alias value for {{productName}} in the {{idpType}}.",
                 label: "Alias",
                 placeholder: "Enter the alias."
             },
@@ -934,7 +974,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
                 }
             },
             issuer: {
-                hint: "A unique issuer value of the trusted token issuer.",
+                hint: "A unique issuer value of the {{idpType}}.",
                 label: "Issuer",
                 placeholder: "Enter the issuer."
             },
@@ -948,6 +988,10 @@ export const authenticationProvider:AuthenticationProviderNS = {
                     maxLengthReached: "Connection name cannot exceed {{ maxLength }} characters.",
                     required: "Connection name is required"
                 }
+            },
+            idpType: {
+                trustedTokenIssuer: "trusted token issuer",
+                externalIdP: "external identity provider"
             }
         },
         jitProvisioning: {

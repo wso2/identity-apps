@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2019-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,12 +19,15 @@
 import { UserAgentParser } from "@wso2is/core/helpers";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { GenericIcon, Media, Text } from "@wso2is/react-components";
-import moment from "moment";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import React, { FunctionComponent, MouseEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, ButtonProps, Grid, Icon, List, SemanticICONS } from "semantic-ui-react";
 import { UserSessionsEdit } from "./user-sessions-edit";
 import { UserSession } from "../../models";
+
+dayjs.extend(relativeTime);
 
 /**
  * Prop-types for the user sessions list component.
@@ -167,7 +170,7 @@ export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
                                                         {
                                                             t("myAccount:components.userSessions.lastAccessed",
                                                                 {
-                                                                    date: moment(
+                                                                    date: dayjs(
                                                                         parseInt(userSession.lastAccessTime, 10)
                                                                     ).fromNow()
                                                                 }

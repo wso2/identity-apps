@@ -45,6 +45,7 @@ import OrganizationSwitchDropdown from "./organization-switch-dropdown";
 import { useGetOrganizationBreadCrumb } from "../../api";
 import { useGetCurrentOrganizationType } from "../../hooks/use-get-organization-type";
 import useOrganizationSwitch from "../../hooks/use-organization-switch";
+import useOrganizations from "../../hooks/use-organizations";
 import {
     BreadcrumbItem,
     BreadcrumbList,
@@ -68,6 +69,8 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
     const { switchOrganization } = useOrganizationSwitch();
 
     const { organizationType } = useGetCurrentOrganizationType();
+
+    const { updateOrganizationSwitchRequestLoadingState } = useOrganizations();
 
     const [ isDropDownOpen, setIsDropDownOpen ] = useState<boolean>(false);
     const tenantDomain: string = useSelector(
@@ -181,6 +184,7 @@ export const OrganizationSwitchBreadcrumb: FunctionComponent<OrganizationSwitchD
 
         try {
             response = await switchOrganization(organization.id);
+            updateOrganizationSwitchRequestLoadingState(true);
             await onSignIn(
                 response,
                 () => null,

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,10 +22,13 @@ import {
     IdentifiableComponentInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
-import moment from "moment";
+import dayjs from "dayjs";
+import duration from "dayjs/plugin/duration";
 import React, { Fragment, FunctionComponent, ReactElement } from "react";
 import { Divider, Grid, Icon, Segment, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 import { Popup } from "../popup";
+
+dayjs.extend(duration);
 
 /**
  * Prop types of the `Certificate` component.
@@ -83,12 +86,12 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
         let iconColor: SemanticCOLORS = null;
         let popupText = "";
 
-        const currentDate = moment(new Date());
-        const expiryDate = moment(validTill);
+        const currentDate = dayjs(new Date());
+        const expiryDate = dayjs(validTill);
         const isValid = new Date() <= validTill;
 
         if (isValid) {
-            if (Math.abs(moment.duration(currentDate.diff(expiryDate)).months()) > 1) {
+            if (Math.abs(dayjs.duration(currentDate.diff(expiryDate)).months()) > 1) {
                 icon = "check circle";
                 iconColor = "green";
                 popupText = "Certificate is valid.";
@@ -124,8 +127,8 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
         let iconColor: SemanticCOLORS = null;
         let popupText = "";
 
-        const currentDate = moment(new Date());
-        const expiryDate = moment(validFrom);
+        const currentDate = dayjs(new Date());
+        const expiryDate = dayjs(validFrom);
         const isValid = new Date() >= validFrom;
 
         if (isValid) {
@@ -133,7 +136,7 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
             iconColor = "green";
             popupText = "Certificate is valid.";
         } else {
-            if (Math.abs(moment.duration(currentDate.diff(expiryDate)).months()) > 1) {
+            if (Math.abs(dayjs.duration(currentDate.diff(expiryDate)).months()) > 1) {
                 icon = "times circle";
                 iconColor = "red";
                 popupText = "Certificate is still not valid.";

@@ -28,7 +28,8 @@ import {
     TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
-import moment from "moment";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 import React, { ReactElement, ReactNode, SyntheticEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { Header } from "semantic-ui-react";
@@ -37,6 +38,8 @@ import {
     WorkflowInstanceStatus
 } from "../models/workflowRequests";
 import "./workflow-requests-list.scss";
+
+dayjs.extend(relativeTime);
 
 /**
  * Props interface for the Workflow Requests List component.
@@ -247,13 +250,13 @@ const WorkflowRequestsList: React.FunctionComponent<WorkflowRequestsListProps> =
         const diffDays: number = diffMs / (1000 * 60 * 60 * 24);
 
         if (diffMs < 0) {
-            return moment(dateString).format("MMM DD, YYYY, hh:mm A");
+            return dayjs(dateString).format("MMM DD, YYYY, hh:mm A");
         }
 
         if (diffDays <= 30) {
-            return moment(dateString).fromNow();
+            return dayjs(dateString).fromNow();
         } else {
-            return moment(dateString).format("MMM DD, YYYY, hh:mm A");
+            return dayjs(dateString).format("MMM DD, YYYY, hh:mm A");
         }
     };
 

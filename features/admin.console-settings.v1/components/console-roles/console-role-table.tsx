@@ -17,9 +17,9 @@
  */
 
 import { Show, useRequiredScopes } from "@wso2is/access-control";
-import { AppState } from "@wso2is/admin.core.v1/store";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { RoleConstants } from "@wso2is/core/constants";
 import {
@@ -283,7 +283,7 @@ const ConsoleRolesTable: FunctionComponent<ConsoleRolesTableProps> = (
             },
             {
                 hidden: (_role: RolesInterface) => {
-                    return !hasRoleUpdatePermissions || !isConsoleRolesEditable;
+                    return !hasRoleUpdatePermissions || !isConsoleRolesEditable || _role?.meta?.systemRole;
                 },
                 icon: (): SemanticICONS => "pencil alternate",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void =>
@@ -298,6 +298,7 @@ const ConsoleRolesTable: FunctionComponent<ConsoleRolesTableProps> = (
                 hidden: (role: RolesInterface) => {
                     return isSubOrg ||
                     !isConsoleRolesEditable ||
+                    role?.meta?.systemRole ||
                     (
                         role?.displayName === RoleConstants.ADMIN_ROLE ||
                         role?.displayName === RoleConstants.ADMIN_GROUP ||

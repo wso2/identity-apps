@@ -159,6 +159,16 @@
                 "description": "This email is sent to confirm the user email address via Email OTP",
                 "displayName": "Confirm Email Address via Email OTP",
                 "id": "RW1haWxDb25maXJtV2l0aE9UUA"
+            },
+            {
+                "description": "This email is used to re-send the notification to verify the email address update",
+                "displayName": "Resend Email Update Verification",
+                "id": "UmVzZW5kVmVyaWZ5RW1haWxPblVwZGF0ZQ"
+            },
+            {
+                "description": "This email is sent when the user changes the email address",
+                "displayName": "Email Update Verification",
+                "id": "VmVyaWZ5RW1haWxPblVwZGF0ZQ"
             }
         ],
         "outboundProvisioningConnectors": [],
@@ -322,6 +332,7 @@
         "enableCustomSmsTemplates": true,
         "enableEmailDomain": false,
         "enableIdentityClaims": true,
+        "enableLegacySessionBoundTokenBehaviour": false,
         "enableOldUIForEmailProvider": false,
         "features": {
             "accountLogin": {
@@ -884,7 +895,7 @@
                     ]
                 }
             },
-            "eventPublishing": {
+            "events": {
                 "disabledFeatures": [],
                 "enabled": true,
                 "featureFlags": [],
@@ -896,7 +907,7 @@
                         "internal_event_config_update"
                     ],
                     "feature": [
-                        "console:eventPublishing"
+                        "console:events"
                     ],
                     "read": [
                         "internal_event_config_view"
@@ -1695,7 +1706,7 @@
                         "featureFlags": [],
                         "scopes": {
                             "update": [
-                                "internal_role_mgt_permission_update",
+                                "internal_role_mgt_permissions_update",
                                 "internal_role_mgt_update"
                             ]
                         }
@@ -1789,7 +1800,8 @@
             "users": {
                 "disabledFeatures": [
                     "users.add.legacy",
-                    "users.profile.legacy"
+                    "users.profile.legacy",
+                    "users.totalUserCount"
                 ],
                 "enabled": true,
                 "featureFlags": [],
@@ -1817,6 +1829,25 @@
                     "update": [
                         "internal_session_delete",
                         "internal_user_mgt_update"
+                    ]
+                }
+            },
+            "verifiableCredentials": {
+                "disabledFeatures": [],
+                "enabled": false,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [
+                            "internal_vc_template_create"
+                    ],
+                    "delete": [
+                            "internal_vc_template_delete"
+                    ],
+                    "read": [
+                            "internal_vc_template_view"
+                    ],
+                    "update": [
+                            "internal_vc_template_update"
                     ]
                 }
             },
@@ -1957,6 +1988,7 @@
                 "approvalWorkflows": "v0.0.0",
                 "approvals": "v0.0.0",
                 "attributeDialects": "v0.0.0",
+                "attributeUpdateVerificationSettings": "v1.0.0",
                 "branding": "v0.0.0",
                 "consoleSettings": "v0.0.0",
                 "emailTemplates": "v0.0.0",
@@ -1983,7 +2015,6 @@
         },
         "selfAppIdentifier": "Console",
         "showAppSwitchButton": true,
-        "showSmsOtpPwdRecoveryFeatureStatusChip": false,
         "showStatusLabelForNewAuthzRuntimeFeatures": false,
         "systemAppsIdentifiers": [
             "Console",
