@@ -1,5 +1,11 @@
 # @wso2is/theme
 
+## 2.9.0
+
+### Minor Changes
+
+- [#9510](https://github.com/wso2/identity-apps/pull/9510) [`91b0b1df1fd63f08e507507e32fdb97f512e15ec`](https://github.com/wso2/identity-apps/commit/91b0b1df1fd63f08e507507e32fdb97f512e15ec) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve Sift configuration page
+
 ## 2.8.9
 
 ### Patch Changes

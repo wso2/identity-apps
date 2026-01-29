@@ -1,5 +1,27 @@
 # @wso2is/admin.core.v1
 
+## 2.50.0
+
+### Minor Changes
+
+- [#9510](https://github.com/wso2/identity-apps/pull/9510) [`91b0b1df1fd63f08e507507e32fdb97f512e15ec`](https://github.com/wso2/identity-apps/commit/91b0b1df1fd63f08e507507e32fdb97f512e15ec) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve Sift configuration page
+
+### Patch Changes
+
+- Updated dependencies [[`91b0b1df1fd63f08e507507e32fdb97f512e15ec`](https://github.com/wso2/identity-apps/commit/91b0b1df1fd63f08e507507e32fdb97f512e15ec)]:
+  - @wso2is/admin.server-configurations.v1@2.36.0
+  - @wso2is/i18n@2.32.0
+  - @wso2is/admin.flow-builder-core.v1@0.10.125
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.125
+  - @wso2is/admin.branding.v1@2.32.81
+  - @wso2is/admin.email-management.v1@2.25.289
+  - @wso2is/admin.flows.v1@1.0.94
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.125
+  - @wso2is/admin.users.v1@2.36.100
+  - @wso2is/admin.registration-flow-builder.v1@0.10.85
+  - @wso2is/admin.agents.v1@1.0.140
+  - @wso2is/admin.roles.v2@2.27.295
+
 ## 2.49.132
 
 ### Patch Changes
