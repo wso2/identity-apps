@@ -123,6 +123,7 @@ export const commonConfigReducerInitialState: CommonConfigReducerStateInterface<
             fidoConfigs: "",
             flow: "",
             flowMeta: "",
+            fraudDetectionConfigurations: "",
             getSecret: "",
             getSecretList: "",
             getSecretType: "",

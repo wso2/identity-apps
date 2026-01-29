@@ -20,7 +20,8 @@
  * Keys used in feature dictionary.
  */
 export enum GovernanceConnectorFeatureDictionaryKeys {
-    HIDE_INVITED_USER_REGISTRATION_TOGGLE = "hideInvitedUserRegistrationToggle"
+    HIDE_INVITED_USER_REGISTRATION_TOGGLE = "hideInvitedUserRegistrationToggle",
+    HIDE_FRAUD_DETECTION_EVENT_PUBLISHING_CONFIGURATION = "hideFraudDetectionEventPublishingConfiguration"
 }
 
 /**
@@ -35,7 +36,9 @@ export class GovernanceConnectorConstants {
      */
     public static readonly featureDictionary: Record<string, string> = {
         [GovernanceConnectorFeatureDictionaryKeys.HIDE_INVITED_USER_REGISTRATION_TOGGLE]:
-            "governanceConnectors.invitedUserRegistration.enableDisableControl"
+            "governanceConnectors.invitedUserRegistration.enableDisableControl",
+        [GovernanceConnectorFeatureDictionaryKeys.HIDE_FRAUD_DETECTION_EVENT_PUBLISHING_CONFIGURATION]:
+            "governanceConnectors.fraudDetection.eventPublishingConfigurations"
     };
 
     /**
