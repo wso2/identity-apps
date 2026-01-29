@@ -516,6 +516,13 @@ export const myAccount: MyAccountNS = {
                 },
                 tooltip: "Apps"
             },
+            dropdown: {
+                footer: {
+                    cookiePolicy: "Cookies",
+                    privacyPolicy: "Privacy",
+                    termsOfService: "Terms"
+                }
+            },
             organizationLabel: "This account is managed by"
         },
         linkedAccounts: {
@@ -1226,6 +1233,9 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 generic: {
+                    dropdown: {
+                        placeholder: "Select your {{fieldName}}"
+                    },
                     inputs: {
                         placeholder: "Enter your {{fieldName}}",
                         readonly: {
@@ -1233,9 +1243,13 @@ export const myAccount: MyAccountNS = {
                             popup: "Contact the administrator to update your {{fieldName}}"
                         },
                         validations: {
+                            duplicate: "{{fieldName}} can not have duplicate values",
                             empty: "{{fieldName}} is a required field",
                             invalidFormat: "The format of the {{fieldName}} entered is incorrect"
                         }
+                    },
+                    radioGroup: {
+                        optionNone: "None"
                     }
                 },
                 mobileChangeForm: {
@@ -1352,7 +1366,7 @@ export const myAccount: MyAccountNS = {
                 updateProfileInfo: {
                     error: {
                         description: "{{description}}",
-                        message: "Error occurred while updating the profile details"
+                        message: "Profile update failed"
                     },
                     genericError: {
                         description: "Error occurred while updating the profile details",

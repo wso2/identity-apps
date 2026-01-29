@@ -17,3 +17,4 @@
  */
 
 export { default as WebhookEditPage } from "./pages/webhook-edit-page";
+export { default as WebhookSettingsPage } from "./pages/webhook-settings-page";

@@ -22,14 +22,25 @@ import { Context, Dispatch, SetStateAction, createContext } from "react";
  * Props interface of {@link FeatureGateContext}
  */
 export interface FeatureGateContextProps {
+
+    /**
+     * Flag to determine whether conditional authentication feature is restricted/disabled (e.g., made read-only).
+     */
+    conditionalAuthPremiumFeature: boolean;
     /**
      * Flag to determine whether the preview features modal should be shown or not.
      */
     showPreviewFeaturesModal: boolean;
     /**
+     * Setter to set the conditionalAuthPremiumFeature flag.
+     */
+    setConditionalAuthPremiumFeature: Dispatch<SetStateAction<boolean>>;
+    /**
      * Setter to set the showPreviewFeaturesModal flag.
      */
     setShowPreviewFeaturesModal: Dispatch<SetStateAction<boolean>>;
+    selectedPreviewFeatureToShow: string;
+    setSelectedPreviewFeatureToShow: Dispatch<SetStateAction<string>>;
 }
 
 /**
@@ -39,6 +50,10 @@ const FeatureGateContext: Context<
     FeatureGateContextProps
 > = createContext<null | FeatureGateContextProps>(
     {
+        conditionalAuthPremiumFeature: true,
+        selectedPreviewFeatureToShow: "",
+        setConditionalAuthPremiumFeature: () => {},
+        setSelectedPreviewFeatureToShow: () => {},
         setShowPreviewFeaturesModal: () => {},
         showPreviewFeaturesModal: false
     }

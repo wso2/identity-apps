@@ -34,7 +34,10 @@ export enum UserFeatureDictionaryKeys {
     UserRoles = "USER_ROLES",
     UserSharedProfiles = "USER_SHARED_PROFILES",
     UserImpersonation = "USER_IMPERSONATION",
-    UserLegacyProfile = "USER_LEGACY_PROFILE"
+    UserLegacyProfile = "USER_LEGACY_PROFILE",
+    UserLegacyAddUser = "USER_LEGACY_ADD_USER",
+    HideReadOnlyAttributesWhenEmpty = "HIDE_READ_ONLY_ATTRIBUTES_WHEN_EMPTY",
+    UseDefaultLabelsAndOrder = "USE_DEFAULT_LABELS_AND_ORDER"
 }
 
 /**
@@ -86,7 +89,10 @@ export class UserManagementConstants {
         .set("USER_ROLES", "users.edit.roles")
         .set("USER_SHARED_PROFILES", "users.updateSharedProfiles")
         .set("USER_IMPERSONATION", "users.user.impersonation")
-        .set(UserFeatureDictionaryKeys.UserLegacyProfile, "users.profile.legacy");
+        .set(UserFeatureDictionaryKeys.HideReadOnlyAttributesWhenEmpty, "profile.hideReadonlyAttributesWhenEmpty")
+        .set(UserFeatureDictionaryKeys.UserLegacyProfile, "users.profile.legacy")
+        .set(UserFeatureDictionaryKeys.UserLegacyAddUser, "users.add.legacy")
+        .set(UserFeatureDictionaryKeys.UseDefaultLabelsAndOrder, "users.profile.useDefaultLabelsAndOrder");
 
     // API errors
     public static readonly USER_INFO_UPDATE_ERROR: string = "Could not update the user information.";
@@ -205,6 +211,12 @@ export class UserManagementConstants {
     // Feature flags.
     public static readonly ATTRIBUTE_PROFILES_FOR_USER_CREATION_FEATURE_FLAG: string
         = "users.user.creation.attribute.profile";
+
+    /**
+     * Define a count for existing user retrieval in add administrator wizard
+     * since retrieving data without a limit can be slow and may lead to timeouts for large user bases.
+     */
+    public static readonly ADD_EXISTING_USER_WIZARD_RETRIEVAL_COUNT: number = 11;
 }
 
 /**
@@ -415,6 +427,8 @@ export enum RecoveryScenario {
     USERNAME_RECOVERY = "USERNAME_RECOVERY",
     SELF_SIGN_UP = "SELF_SIGN_UP",
     ASK_PASSWORD = "ASK_PASSWORD",
+    ASK_PASSWORD_VIA_EMAIL_OTP = "ASK_PASSWORD_VIA_EMAIL_OTP",
+    ASK_PASSWORD_VIA_SMS_OTP = "ASK_PASSWORD_VIA_SMS_OTP",
     ADMIN_FORCED_PASSWORD_RESET_VIA_EMAIL_LINK = "ADMIN_FORCED_PASSWORD_RESET_VIA_EMAIL_LINK",
     ADMIN_FORCED_PASSWORD_RESET_VIA_OTP = "ADMIN_FORCED_PASSWORD_RESET_VIA_OTP",
     ADMIN_FORCED_PASSOWRD_RESET_VIA_SMS_OTP = "ADMIN_FORCED_PASSWORD_RESET_VIA_SMS_OTP",
@@ -425,7 +439,9 @@ export enum RecoveryScenario {
     LITE_SIGN_UP = "LITE_SIGN_UP",
     TENANT_ADMIN_ASK_PASSWORD = "TENANT_ADMIN_ASK_PASSWORD",
     PASSWORD_EXPIRY = "PASSWORD_EXPIRY",
-    ADMIN_INVITE_SET_PASSWORD_OFFLINE = "ADMIN_INVITE_SET_PASSWORD_OFFLINE"
+    ADMIN_INVITE_SET_PASSWORD_OFFLINE = "ADMIN_INVITE_SET_PASSWORD_OFFLINE",
+    EMAIL_VERIFICATION = "EMAIL_VERIFICATION",
+    EMAIL_VERIFICATION_OTP = "EMAIL_VERIFICATION_OTP"
 }
 
 /**
@@ -479,7 +495,11 @@ export const RECOVERY_SCENARIO_TO_RECOVERY_OPTION_TYPE_MAP: Record<string, strin
     [RecoveryScenario.ADMIN_FORCED_PASSWORD_RESET_VIA_EMAIL_LINK]: [ RecoveryOptionTypes.LINK ],
     [RecoveryScenario.ADMIN_FORCED_PASSWORD_RESET_VIA_OTP]: [ RecoveryOptionTypes.CODE ],
     [RecoveryScenario.ADMIN_FORCED_PASSOWRD_RESET_VIA_SMS_OTP]: [ RecoveryOptionTypes.CODE ],
-    [RecoveryScenario.ASK_PASSWORD]: [ RecoveryOptionTypes.LINK ]
+    [RecoveryScenario.ASK_PASSWORD]: [ RecoveryOptionTypes.LINK ],
+    [RecoveryScenario.ASK_PASSWORD_VIA_EMAIL_OTP]: [ RecoveryOptionTypes.CODE ],
+    [RecoveryScenario.ASK_PASSWORD_VIA_SMS_OTP]: [ RecoveryOptionTypes.CODE ],
+    [RecoveryScenario.EMAIL_VERIFICATION]: [ RecoveryOptionTypes.LINK ],
+    [RecoveryScenario.EMAIL_VERIFICATION_OTP]: [ RecoveryOptionTypes.CODE ]
 };
 
 /**

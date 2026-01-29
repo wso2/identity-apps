@@ -64,6 +64,9 @@ export class AdministratorConstants {
     // Timeout for the debounce function.
     public static readonly DEBOUNCE_TIMEOUT: number = 1000;
 
+    //SCIM2 Roles V3 API specific permission for user role management
+    public static readonly INTERNAL_ROLE_MGT_USERS_UPDATE_PERMISSION: string = "internal_role_mgt_users_update";
+
     /**
      * Get the consumer users paths as a map.
      *

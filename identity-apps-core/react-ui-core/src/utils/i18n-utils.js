@@ -64,7 +64,7 @@ export const resolveElementText = (translations, text) => {
         return "";
     }
 
-    const i18nKeyMatch = text.match(/^\{(.+)\}$/);
+    const i18nKeyMatch = text.match(/^\{\{(.+)\}\}$/);
 
     if (i18nKeyMatch) {
         return getTranslationByKey(translations, i18nKeyMatch[1]);

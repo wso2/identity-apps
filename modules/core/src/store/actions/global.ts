@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2020, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -22,13 +22,14 @@ import {
     HideAJAXTopLoadingBarAction,
     InitializeAlertSystemAction,
     SetSupportedI18nLanguagesActionInterface,
+    SetSupportedLocaleExtensionsActionInterface,
     ShowAJAXTopLoadingBarAction
 } from "./types";
 
 /**
  * Show AJAX top loading bar loader action.
  *
- * @return {ShowAJAXTopLoadingBarAction}
+ * @returns Redux action of type `SHOW_AJAX_TOP_LOADING_BAR`.
  */
 export const showAJAXTopLoadingBar = (): ShowAJAXTopLoadingBarAction => ({
     type: CommonGlobalActionTypes.SHOW_AJAX_TOP_LOADING_BAR
@@ -37,7 +38,7 @@ export const showAJAXTopLoadingBar = (): ShowAJAXTopLoadingBarAction => ({
 /**
  * Hide AJAX top loading bar loader action.
  *
- * @return {HideAJAXTopLoadingBarAction}
+ * @returns Redux action of type `HIDE_AJAX_TOP_LOADING_BAR`.
  */
 export const hideAJAXTopLoadingBar = (): HideAJAXTopLoadingBarAction => ({
     type: CommonGlobalActionTypes.HIDE_AJAX_TOP_LOADING_BAR
@@ -46,33 +47,51 @@ export const hideAJAXTopLoadingBar = (): HideAJAXTopLoadingBarAction => ({
 /**
  * Dispatches an action to initialize the alerting system.
  *
- * @param {T} alertSystem - Alert system object.
- *
- * @return {InitializeAlertSystemAction<T>}
+ * @param alertSystem - Alert system object.
+ * @returns Redux action of type `INITIALIZE_ALERT_SYSTEM`.
  */
-export const initializeAlertSystem = <T = {}>(alertSystem: T): InitializeAlertSystemAction<T> => ({
-    payload: alertSystem,
-    type: CommonGlobalActionTypes.INITIALIZE_ALERT_SYSTEM
-});
+export const initializeAlertSystem = <T = any>(
+    alertSystem: T
+): InitializeAlertSystemAction<T> => ({
+        payload: alertSystem,
+        type: CommonGlobalActionTypes.INITIALIZE_ALERT_SYSTEM
+    });
 
 /**
  * Dispatches an action to add a new alert.
  *
- * @param {T} alert - Alert
- * @return {AddAlertAction<T>}
+ * @param alert - Alert
+ * @returns Redux action of type `ADD_ALERT`.
  */
-export const addAlert = <T = {}>(alert: T): AddAlertAction<T> => ({
-    payload: alert,
-    type: CommonGlobalActionTypes.ADD_ALERT
-});
+export const addAlert = <T = Record<string, unknown>>(
+    alert: T
+): AddAlertAction<T> => ({
+        payload: alert,
+        type: CommonGlobalActionTypes.ADD_ALERT
+    });
 
 /**
  * Redux action to set the supported i18n languages.
  *
- * @param {T} languages - Supported i18n languages.
- * @return {SetSupportedI18nLanguagesActionInterface<T>}
+ * @param languages - Supported i18n languages.
+ * @returns Redux action of type `SET_SUPPORTED_I18N_LANGUAGES`.
  */
-export const setSupportedI18nLanguages = <T = {}>(languages: T): SetSupportedI18nLanguagesActionInterface<T> => ({
-    payload: languages,
-    type: CommonGlobalActionTypes.SET_SUPPORTED_I18N_LANGUAGES
-});
+export const setSupportedI18nLanguages = <T = Record<string, unknown>>(
+    languages: T
+): SetSupportedI18nLanguagesActionInterface<T> => ({
+        payload: languages,
+        type: CommonGlobalActionTypes.SET_SUPPORTED_I18N_LANGUAGES
+    });
+
+/**
+ * Redux action to set the supported locale extensions.
+ *
+ * @param locales - Supported locale extensions.
+ * @returns an action of type `SET_SUPPORTED_LOCALE_EXTENSIONS`
+ */
+export const setSupportedLocaleExtensions = <T = Record<string, unknown>>(
+    languages: T
+): SetSupportedLocaleExtensionsActionInterface<T> => ({
+        payload: languages,
+        type: CommonGlobalActionTypes.SET_SUPPORTED_LOCALE_EXTENSIONS
+    });

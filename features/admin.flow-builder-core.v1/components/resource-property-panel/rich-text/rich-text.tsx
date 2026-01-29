@@ -16,173 +16,163 @@
  * under the License.
  */
 
+import { AutoLinkNode, LinkNode } from "@lexical/link";
 import { AutoFocusPlugin } from "@lexical/react/LexicalAutoFocusPlugin";
 import { InitialConfigType, LexicalComposer } from "@lexical/react/LexicalComposer";
 import { ContentEditable } from "@lexical/react/LexicalContentEditable";
 import { LexicalErrorBoundary } from "@lexical/react/LexicalErrorBoundary";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
+import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
 import { RichTextPlugin } from "@lexical/react/LexicalRichTextPlugin";
+import { HeadingNode } from "@lexical/rich-text";
 import Paper from "@oxygen-ui/react/Paper";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import {
-    $isTextNode,
-    DOMConversionMap,
-    DOMExportOutput,
-    DOMExportOutputMap,
-    Klass,
-    LexicalEditor,
-    LexicalNode,
-    ParagraphNode,
-    TextNode
-} from "lexical";
-import React, { FunctionComponent, HTMLAttributes, ReactElement, useEffect } from "react";
-import ToolbarPlugin, { ToolbarPluginProps } from "./plugins/toolbar-plugin";
-import { parseAllowedColor, parseAllowedFontSize } from "./style-config";
+import { EditorThemeClasses, ParagraphNode, TextNode } from "lexical";
+import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import HTMLPlugin from "./helper-plugins/html-plugin";
+import CustomLinkPlugin from "./helper-plugins/link-plugin";
+import ToolbarPlugin, { ToolbarPluginProps } from "./helper-plugins/toolbar-plugin";
+import { Resource } from "../../../models/resources";
 import "./rich-text.scss";
 
-const removeStylesExportDOM = (editor: LexicalEditor, target: LexicalNode): DOMExportOutput => {
-    const output = target.exportDOM(editor);
-
-    if (output && output.element instanceof HTMLElement) {
-        // Remove all inline styles and classes if the element is an HTMLElement
-        // Children are checked as well since TextNode can be nested
-        // in i, b, and strong tags.
-        for (const el of [ output.element, ...output.element.querySelectorAll("[style],[class],[dir=\"ltr\"]") ]) {
-            el.removeAttribute("class");
-            el.removeAttribute("style");
-            if (el.getAttribute("dir") === "ltr") {
-                el.removeAttribute("dir");
-            }
-        }
-    }
-
-    return output;
-};
-
-const exportMap: DOMExportOutputMap = new Map<
-    Klass<LexicalNode>,
-    (editor: LexicalEditor, target: LexicalNode) => DOMExportOutput
-        >([
-            [ ParagraphNode, removeStylesExportDOM ],
-            [ TextNode, removeStylesExportDOM ]
-        ]);
-
-const getExtraStyles = (element: HTMLElement): string => {
-    // Parse styles from pasted input, but only if they match exactly the
-    // sort of styles that would be produced by exportDOM
-    let extraStyles = "";
-    const fontSize = parseAllowedFontSize(element.style.fontSize);
-    const backgroundColor = parseAllowedColor(element.style.backgroundColor);
-    const color = parseAllowedColor(element.style.color);
-
-    if (fontSize !== "" && fontSize !== "15px") {
-        extraStyles += `font-size: ${fontSize};`;
-    }
-    if (backgroundColor !== "" && backgroundColor !== "rgb(255, 255, 255)") {
-        extraStyles += `background-color: ${backgroundColor};`;
-    }
-    if (color !== "" && color !== "rgb(0, 0, 0)") {
-        extraStyles += `color: ${color};`;
-    }
-
-    return extraStyles;
-};
-
-const constructImportMap = (): DOMConversionMap => {
-    const importMap: DOMConversionMap = {};
-
-    // Wrap all TextNode importers with a function that also imports
-    // the custom styles implemented by the playground
-    for (const [ tag, fn ] of Object.entries(TextNode.importDOM() || {})) {
-        importMap[tag] = importNode => {
-            const importer = fn(importNode);
-
-            if (!importer) {
-                return null;
-            }
-
-            return {
-                ...importer,
-                conversion: element => {
-                    const output = importer.conversion(element);
-
-                    if (
-                        output === null ||
-                        output.forChild === undefined ||
-                        output.after !== undefined ||
-                        output.node !== null
-                    ) {
-                        return output;
-                    }
-                    const extraStyles = getExtraStyles(element);
-
-                    if (extraStyles) {
-                        const { forChild } = output;
-
-                        return {
-                            ...output,
-                            forChild: (child, parent) => {
-                                const textNode = forChild(child, parent);
-
-                                if ($isTextNode(textNode)) {
-                                    textNode.setStyle(textNode.getStyle() + extraStyles);
-                                }
-
-                                return textNode;
-                            }
-                        };
-                    }
-
-                    return output;
-                }
-            };
-        };
-    }
-
-    return importMap;
-};
-
-const editorConfig: InitialConfigType = {
-    html: {
-        export: exportMap,
-        import: constructImportMap()
+/**
+ * Theme classes for the rich text editor.
+ */
+const ThemeClasses: EditorThemeClasses = {
+    heading: {
+        h1: "rich-text-heading-h1",
+        h2: "rich-text-heading-h2",
+        h3: "rich-text-heading-h3",
+        h4: "rich-text-heading-h4",
+        h5: "rich-text-heading-h5",
+        h6: "rich-text-heading-h6"
     },
+    link: "rich-text-link",
+    paragraph: "rich-text-paragraph",
+    text: {
+        bold: "rich-text-bold",
+        italic: "rich-text-italic",
+        underline: "rich-text-underline"
+    }
+};
+
+/**
+ * Configs for the rich text editor.
+ */
+const editorConfig: InitialConfigType = {
     namespace: "Rich Text",
-    nodes: [ ParagraphNode, TextNode ],
+    nodes: [
+        ParagraphNode,
+        TextNode,
+        HeadingNode,
+        LinkNode,
+        AutoLinkNode
+    ],
     onError(error: Error) {
         throw error;
-    }
+    },
+    theme: ThemeClasses
 };
 
-export interface RichTextProps extends IdentifiableComponentInterface, HTMLAttributes<HTMLDivElement> {
+/**
+ * Props interface for the RichText component.
+ */
+export interface RichTextProps extends IdentifiableComponentInterface {
+    /**
+     * Options to customize the rich text editor toolbar.
+     */
     ToolbarProps?: ToolbarPluginProps;
+    /**
+     * Listener for changes in the rich text editor content.
+     *
+     * @param value - The HTML string representation of the rich text editor content.
+     */
+    onChange: (value: string) => void;
+    /**
+     * Additional CSS class names to apply to the rich text editor container.
+     */
+    className?: string;
+    /**
+     * The resource associated with the rich text editor.
+     */
+    resource: Resource;
+    /**
+     * Whether the rich text editor is disabled. If true, the editor will not be editable.
+     */
+    disabled?: boolean;
+    /**
+     * Whether the rich text editor has an error state.
+     */
+    hasError?: boolean;
 }
 
+/**
+ * Rich text editor component.
+ */
 const RichText: FunctionComponent<RichTextProps> = ({
     "data-componentid": componentId = "rich-text",
     ToolbarProps,
-    className
+    className,
+    onChange,
+    resource,
+    disabled,
+    hasError = false
 }: RichTextProps): ReactElement => {
+    const { t } = useTranslation();
+
+    /**
+     * Check if the resource.config.text matches the i18n pattern.
+     */
+    const isI18nPattern: boolean = useMemo(() => {
+        if (!resource?.config?.text) return false;
+
+        const i18nPattern: RegExp = /^\{\{[^}]+\}\}$/;
+
+        return i18nPattern.test(resource.config.text.trim());
+    }, [ resource?.config?.text ]);
+
     return (
         <LexicalComposer initialConfig={ editorConfig }>
             <div className={ classNames("OxygenRichText-root", className) } data-componentid={ componentId }>
-                <ToolbarPlugin { ...ToolbarProps } />
-                <Paper className="OxygenRichText-editor-root" variant="outlined">
-                    <RichTextPlugin
-                        contentEditable={
-                            (<ContentEditable
-                                className="OxygenRichText-editor-input"
-                                aria-placeholder="Enter some rich text..."
-                                placeholder={
-                                    <div className="OxygenRichText-editor-input-placeholder">Enter some rich text.</div>
+                <ToolbarPlugin { ...ToolbarProps } disabled={ isI18nPattern || disabled } />
+                <Paper
+                    className={ classNames(
+                        "OxygenRichText-editor-root",
+                        { "error": hasError }
+                    ) }
+                    variant="outlined"
+                >
+                    { isI18nPattern ? (
+                        <div className="OxygenRichText-i18n-placeholder">
+                            <div className="OxygenRichText-i18n-placeholder-key">
+                                { resource.config.text }
+                            </div>
+                        </div>
+                    ) : (
+                        <>
+                            <RichTextPlugin
+                                contentEditable={
+                                    (<ContentEditable
+                                        className="OxygenRichText-editor-input"
+                                        aria-placeholder="Enter some rich text..."
+                                        placeholder={ (
+                                            <div className="OxygenRichText-editor-input-placeholder">
+                                                { t("flows:core.elements.richText.placeholder") }
+                                            </div>
+                                        ) }
+                                    />)
                                 }
-                            />)
-                        }
-                        ErrorBoundary={ LexicalErrorBoundary }
-                    />
-                    <HistoryPlugin />
-                    <AutoFocusPlugin />
+                                ErrorBoundary={ LexicalErrorBoundary }
+                            />
+                            <HistoryPlugin />
+                            <AutoFocusPlugin />
+                            <LinkPlugin />
+                            <CustomLinkPlugin />
+                            <HTMLPlugin resource={ resource } onChange={ onChange } disabled={ disabled } />
+                        </>
+                    ) }
                 </Paper>
             </div>
         </LexicalComposer>

@@ -514,6 +514,13 @@ export const myAccount: MyAccountNS = {
                 },
                 tooltip: "Apps"
             },
+            dropdown: {
+                footer: {
+                    cookiePolicy: "කුකී නීතිය",
+                    privacyPolicy: "පුද්ගලිකත්වය",
+                    termsOfService: "සේවා නියමයන්"
+                }
+            },
             organizationLabel: "මෙම ගිණුම කළමනාකරණය කරන්නේ"
         },
         linkedAccounts: {
@@ -1222,6 +1229,9 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 generic: {
+                    dropdown: {
+                        placeholder: "ඔබගේ {{fieldName}} තෝරන්න"
+                    },
                     inputs: {
                         placeholder: "{{fieldName}} ඇතුල් කරන්න",
                         readonly: {
@@ -1229,9 +1239,13 @@ export const myAccount: MyAccountNS = {
                             popup: "මෙම ක්ෂේත්‍රය යාවත්කාලීන කිරීමට පරිපාලක අමතන්න {{fieldName}}"
                         },
                         validations: {
+                            duplicate: "{{fieldName}} හි අනුපිටපත් අගයන් තිබිය නොහැක",
                             empty: "{{fieldName}} අත්\u200Dයවශ්\u200Dය ක්ෂේත්\u200Dරයකි",
                             invalidFormat: "ඇතුළත් කළ {{fieldName}} ආකෘතිය වැරදිය"
                         }
+                    },
+                    radioGroup: {
+                        optionNone: "කිසිවක් නැත"
                     }
                 },
                 mobileChangeForm: {

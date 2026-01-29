@@ -35,8 +35,9 @@ import {
 import React, { FunctionComponent, ReactElement, ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Header, Icon, Label, SemanticCOLORS } from "semantic-ui-react";
+import { Header, Icon, Label } from "semantic-ui-react";
 import { WebhookListInterface, WebhookListItemInterface, WebhookStatus } from "../models/webhooks";
+import "./webhook-list.scss";
 
 export interface WebhookListPropsInterface extends IdentifiableComponentInterface {
     /**
@@ -56,10 +57,14 @@ export interface WebhookListPropsInterface extends IdentifiableComponentInterfac
      */
     list: WebhookListInterface;
     /**
+     * Specifies whether the WebSub Hub adapter mode is enabled.
+     */
+    isWebSubHubAdapterMode?: boolean;
+    /**
      * Callback for webhook deletion.
      */
     onWebhookDelete: (webhook: WebhookListItemInterface) => void;
-    /**∏
+    /**
      * Callback for webhook edit.
      */
     onWebhookEdit: (webhook: WebhookListItemInterface) => void;
@@ -86,6 +91,7 @@ export interface WebhookListPropsInterface extends IdentifiableComponentInterfac
 const WebhookList: FunctionComponent<WebhookListPropsInterface> = ({
     isLoading,
     list,
+    isWebSubHubAdapterMode,
     onWebhookDelete,
     onWebhookEdit,
     onEmptyListPlaceholderActionClick,
@@ -105,14 +111,6 @@ const WebhookList: FunctionComponent<WebhookListPropsInterface> = ({
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingWebhook, setDeletingWebhook ] = useState<WebhookListItemInterface | undefined>(undefined);
-
-    /**
-     * Check if webhook uses WebSubHub adapter.
-     */
-    const isWebSubHubAdapterMode = (): boolean => {
-        // todo: Make this dynamic based on the system configured adapter from metadata.
-        return true;
-    };
 
     /**
      * Redirects to the webhook edit page when the edit webhook is clicked.
@@ -185,17 +183,15 @@ const WebhookList: FunctionComponent<WebhookListPropsInterface> = ({
                 render: (webhook: WebhookListItemInterface): ReactNode => {
                     const isActive: boolean =
                         webhook.status === WebhookStatus.ACTIVE || webhook.status === WebhookStatus.PARTIALLY_ACTIVE;
-                    const labelColor: SemanticCOLORS = isActive ? "green" : "grey";
                     const labelText: string = isActive
                         ? t("webhooks:common.status.active")
                         : t("webhooks:common.status.inactive");
 
                     return (
                         <Label
-                            color={ labelColor }
                             size="mini"
-                            className="compact-label"
-                            style={ { minWidth: "60px", textAlign: "center" } }
+                            color={ isActive ? undefined : "grey" }
+                            className={ `compact-label ${isActive ? "webhook-status-label active" : ""}` }
                         >
                             { labelText }
                         </Label>
@@ -235,6 +231,7 @@ const WebhookList: FunctionComponent<WebhookListPropsInterface> = ({
 
         const isDeleteEnabled = (webhook: WebhookListItemInterface): boolean => {
             if (!isWebSubHubAdapterMode) {
+
                 return true;
             }
 
@@ -289,7 +286,7 @@ const WebhookList: FunctionComponent<WebhookListPropsInterface> = ({
             );
         }
 
-        if (list?.totalResults === 0) {
+        if (list?.totalResults === 0 && !isLoading) {
             return (
                 <EmptyPlaceholder
                     action={

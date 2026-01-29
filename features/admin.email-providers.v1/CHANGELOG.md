@@ -1,5 +1,35 @@
 # @wso2is/admin.email-providers.v1
 
+## 2.27.5
+
+### Patch Changes
+
+- [#9431](https://github.com/wso2/identity-apps/pull/9431) [`d8da0f3e69015ce94b4b2686408e30c6b56d8ae8`](https://github.com/wso2/identity-apps/commit/d8da0f3e69015ce94b4b2686408e30c6b56d8ae8) Thanks [@Thisara-Welmilla](https://github.com/Thisara-Welmilla)! - Refactor authentication UI configuration for email senders
+
+- Updated dependencies [[`caaf2a112a77d03004170326307d8a706f8ea07e`](https://github.com/wso2/identity-apps/commit/caaf2a112a77d03004170326307d8a706f8ea07e), [`d8da0f3e69015ce94b4b2686408e30c6b56d8ae8`](https://github.com/wso2/identity-apps/commit/d8da0f3e69015ce94b4b2686408e30c6b56d8ae8), [`280eda61f7401701cf5557c549856f10cab9c554`](https://github.com/wso2/identity-apps/commit/280eda61f7401701cf5557c549856f10cab9c554)]:
+  - @wso2is/core@2.12.6
+  - @wso2is/i18n@2.30.57
+  - @wso2is/admin.core.v1@2.49.104
+
+## 2.27.4
+
+### Patch Changes
+
+- [#9366](https://github.com/wso2/identity-apps/pull/9366) [`d87ae1a2408120ed149b22f69851c3a79a579e29`](https://github.com/wso2/identity-apps/commit/d87ae1a2408120ed149b22f69851c3a79a579e29) Thanks [@s-vamshi](https://github.com/s-vamshi)! - Replaced **Moment.js** with **day.js** in `console` and `myaccount` apps to reduce bundle size and improve performance
+
+- Updated dependencies [[`d87ae1a2408120ed149b22f69851c3a79a579e29`](https://github.com/wso2/identity-apps/commit/d87ae1a2408120ed149b22f69851c3a79a579e29)]:
+  - @wso2is/admin.core.v1@2.49.95
+
+## 2.27.3
+
+### Patch Changes
+
+- [#8605](https://github.com/wso2/identity-apps/pull/8605) [`f53aa7eec0893f28795ccb6afb92082be934a44c`](https://github.com/wso2/identity-apps/commit/f53aa7eec0893f28795ccb6afb92082be934a44c) Thanks [@lashinijay](https://github.com/lashinijay)! - Remove showPasswordOfEmailProvider config
+
+- Updated dependencies [[`f53aa7eec0893f28795ccb6afb92082be934a44c`](https://github.com/wso2/identity-apps/commit/f53aa7eec0893f28795ccb6afb92082be934a44c)]:
+  - @wso2is/admin.core.v1@2.46.42
+  - @wso2is/core@2.10.2
+
 ## 2.27.2
 
 ### Patch Changes

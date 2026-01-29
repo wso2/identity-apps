@@ -21,7 +21,7 @@ export const claims: ClaimsNS = {
     attributeMappings: {
         agent: {
             description: "The SCIM protocol representation for AI agent attributes used in agent identity management APIs.",
-            heading: "SCIM for AI Agents"
+            heading: "SCIM 2.0 for AI Agents"
         },
         axschema: {
             description: "The Attribute Exchange Schema (axschema) representation "
@@ -43,9 +43,13 @@ export const claims: ClaimsNS = {
             heading: "OpenID Connect"
         },
         scim: {
-            description: "The SCIM2 protocol representation for user "
+            description: "The SCIM2 protocol representation for "
                 + "attributes that will be used in the SCIM2 API.",
             heading: "SCIM 2.0"
+        },
+        vc: {
+            description: "The Verifiable Credentials representation for user attributes.",
+            heading: "Verifiable Credentials"
         }
     },
     dialects: {
@@ -74,7 +78,7 @@ export const claims: ClaimsNS = {
             content: "If you delete this attribute mapping, all the associated {{type}} attributes will "
                 + "also be deleted. Please proceed with caution.",
             header: "Are you sure?",
-            hint: "Please type <1>{{confirm}}</1> to confirm.",
+            hint: "Please confirm your action.",
             message: "This action is irreversible and will permanently delete the selected attribute " +
                 "mapping."
         },
@@ -189,7 +193,7 @@ export const claims: ClaimsNS = {
             manageAttributeMappings: {
                 agent: {
                     description: "The SCIM protocol representation for AI agent attributes used in agent identity management APIs.",
-                    heading: "SCIM for AI Agents"
+                    heading: "SCIM 2.0 for AI Agents"
                 },
                 custom: {
                     description: "Communicate information about the user via custom mappings.",
@@ -386,7 +390,8 @@ export const claims: ClaimsNS = {
                 title: {
                     dialect: "Add an Attribute Mapping",
                     external: "Add an {{type}} Attribute",
-                    local: "Add an Attribute"
+                    local: "Add an Attribute",
+                    readOnlyDialect: "No {{type}} Attributes Added"
                 }
             },
             emptySearch: {
@@ -473,8 +478,10 @@ export const claims: ClaimsNS = {
                 label: "Data Type",
                 options: {
                     boolean: "Boolean",
+                    date: "Date",
                     dateTime: "DateTime",
                     decimal: "Decimal",
+                    epoch: "Epoch",
                     integer: "Integer",
                     object: "Object",
                     options: "Options",
@@ -515,6 +522,13 @@ export const claims: ClaimsNS = {
                     toggle: "Toggle"
                 }
             },
+            managedInUserStore: {
+                hint: "Indicates whether the attribute should be managed in the user store.",
+                label: "Manage in User Store",
+                readOnlyUserStoreHint: "One or more user stores are read-only. Some identity attributes require " +
+                    "updates, and managing them in read-only stores may cause issues. To avoid this, exclude those " +
+                    "attributes from read-only stores in the <1>Attribute Mappings</1> section."
+            },
             multiValued: {
                 label: "Allow multiple values for this attribute",
                 placeholder: "Select a user attribute"
@@ -535,7 +549,7 @@ export const claims: ClaimsNS = {
             profiles: {
                 administratorConsole: "Administrator Console",
                 attributeConfigurations: {
-                    description: "Configure attribute profiles for different flows.",
+                    description: "Define how attributes appear and behave in different flows. These settings control only the user interface. They do not affect backend or API validation.",
                     title: "Attribute Configurations"
                 },
                 displayByDefault: "Display",
@@ -576,9 +590,9 @@ export const claims: ClaimsNS = {
             },
             subAttributes: {
                 label: "The sub-attributes of the attribute",
-                placeholder: "Select subattributes",
+                placeholder: "Select sub-attributes",
                 validationError: "At least one sub-attribute must be provided.",
-                validationErrorMessage: "Sub-attributes are required for complex data types."
+                validationErrorMessage: "Sub-attributes are required for the Object data type."
             },
             supportedByDefault: {
                 label: "Display this attribute on the user's profile"
@@ -594,9 +608,10 @@ export const claims: ClaimsNS = {
             uniquenessScopeHint: "Select the scope to validate the uniqueness of the attribute value."
         },
         mappedAttributes: {
-            enableForUserStore: "Enable for this user store",
             hint: "Enter the attribute from the respective user stores that will be mapped to this attribute.",
-            mappedAttributeName: "Mapped Attribute Name"
+            manageInUserStore: "Manage in user store",
+            mappedAttributeName: "Mapped Attribute Name",
+            readOnlyUserStore: "Read Only"
         },
         notifications: {
             addLocalClaim: {

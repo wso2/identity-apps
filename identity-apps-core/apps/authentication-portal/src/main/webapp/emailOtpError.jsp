@@ -19,6 +19,7 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.wso2.carbon.identity.authenticator.emailotp.EmailOTPAuthenticatorConstants" %>
+<%@ page import="org.wso2.carbon.identity.local.auth.emailotp.constant.AuthenticatorConstants" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -42,6 +43,7 @@
 
     String errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
     String authenticationFailed = "false";
+    boolean isErrorFallbackLocale = !userLocale.toLanguageTag().equals("en_US");
 
     if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
         authenticationFailed = "true";
@@ -59,6 +61,8 @@
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.emailOTP.disabled");
             } else if (errorMessage.equalsIgnoreCase("directly.send.otp.disable")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.user.not.found");
+            } else if (errorMessage.equalsIgnoreCase(AuthenticatorConstants.EMAIL_OTP_RESEND_COUNT_EXCEEDED)) {
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.emailotp.resend.count.exceeded");
             } else if (errorMessage.equalsIgnoreCase("user.account.locked")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.user.account.locked");
                 String unlockTime = request.getParameter("unlockTime");
@@ -67,6 +71,8 @@
                 }
             } else if (errorMessage.equalsIgnoreCase(EmailOTPAuthenticatorConstants.ERROR_TENANT_MISMATCH_MSG)) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "user.tenant.domain.mismatch.message");
+            } else if (isErrorFallbackLocale) {
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry");
             }
         }
     }

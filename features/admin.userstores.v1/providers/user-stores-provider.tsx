@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import { useRequiredScopes } from "@wso2is/access-control";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
-import { AlertLevels, FeatureAccessConfigInterface } from "@wso2is/core/models";
+import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";

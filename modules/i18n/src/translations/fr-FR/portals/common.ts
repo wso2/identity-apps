@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,8 +35,117 @@ export const common: CommonNS = {
     applicationName: "Nom de l'application",
     applications: "Applications",
     approvalStatus: "Statut d'approbation",
+    approvals: "Approbations",
+    approvalsPage: {
+        list: {
+            columns: {
+                actions: "Actes",
+                name: "Nom"
+            }
+        },
+        modals: {
+            description: "Examinez les tâches opérationnelles nécessitant votre approbation",
+            header: "Approbations",
+            subHeader: "Examinez les tâches opérationnelles nécessitant votre approbation"
+        },
+        notifications: {
+            fetchApprovalDetails: {
+                error: {
+                    description: "{{description}}",
+                    message: "Erreur lors de la récupération des détails d'approbation"
+                },
+                genericError: {
+                    description: "Les détails d'approbation n'ont pas pu être récupérés.",
+                    message: "Une erreur s'est produite"
+                }
+            },
+            fetchPendingApprovals: {
+                error: {
+                    description: "{{description}}",
+                    message: "Erreur lors de la récupération des approbations en attente"
+                },
+                genericError: {
+                    description: "Les approbations en attente n'ont pas pu être récupérées.",
+                    message: "Une erreur s'est produite"
+                }
+            },
+            statusUpdate: {
+                approved: {
+                    description: "La demande d'approbation a été approuvée.",
+                    message: "Demande d'approbation approuvée"
+                },
+                claimed: {
+                    description: "La demande d'approbation a été réclamée.",
+                    message: "Demande d'approbation réclamée"
+                },
+                rejected: {
+                    description: "La demande d'approbation a été rejetée.",
+                    message: "Demande d'approbation rejetée"
+                },
+                released: {
+                    description: "La demande d'approbation a été libérée.",
+                    message: "Demande d'approbation libérée"
+                }
+            },
+            updatePendingApprovals: {
+                error: {
+                    description: "{{description}}",
+                    message: "Erreur lors de la mise à jour de l'approbation"
+                },
+                genericError: {
+                    description: "La demande d'approbation en attente n'a pas pu être mise à jour.",
+                    message: "Une erreur s'est produite"
+                },
+                success: {
+                    description: "La demande d'approbation a été mise à jour avec succès.",
+                    message: "Mise à jour réussie"
+                }
+            }
+        },
+        operationTypes: {
+            addRole: "Ajouter un rôle",
+            addUser: "Ajouter un utilisateur",
+            all: "Toutes les opérations",
+            deleteRole: "Supprimer un rôle",
+            deleteUser: "Supprimer un utilisateur",
+            selfRegisterUser: "Auto-enregistrement de l’utilisateur",
+            updateRolesOfUser: "Mettre à jour les utilisateurs du rôle"
+        },
+        placeholders: {
+            emptyApprovalFilter: {
+                action: "Voir tout",
+                subtitle: "Il n'y a actuellement aucune approbation dans l'état {{status}}.",
+                title: "Aucun résultat trouvé"
+            },
+            emptyApprovalList: {
+                action: "",
+                subtitle: "Il n'y a actuellement aucune approbation à examiner.",
+                title: "Aucune approbation"
+            },
+            emptySearchResults: {
+                action: "Voir tout",
+                subtitles: {
+                    0: "Nous n'avons pas pu trouver le flux de travail que vous avez recherché.",
+                    1: "Veuillez vérifier si vous avez un flux de travail avec ce nom dans",
+                    2: "le système."
+                },
+                title: "Aucune approbation"
+            },
+            searchApprovals: "Rechercher par nom de flux de travail"
+        },
+        propertyMessages: {
+            assignedUsersDeleted: "Les utilisateurs assignés ont été supprimés.",
+            roleDeleted: "Le rôle a été supprimé.",
+            selfRegistration: "Auto-enregistrement",
+            unassignedUsersDeleted: "Les utilisateurs non assignés ont été supprimés."
+        },
+        subTitle: "Examinez les tâches opérationnelles nécessitant votre approbation",
+        title: "Approbations"
+    },
     approve: "Approuver",
+    approved: "Approuvé",
     apps: "Applications",
+    assignYourself: "Assignez-vous",
     assignee: "Cessionnaire",
     assignees: "Contrôleurs",
     asyncOperationErrorMessage: {
@@ -58,7 +167,6 @@ export const common: CommonNS = {
         heading: "Quelque chose s'est mal passé",
         primaryActionText: "Recharger l'application"
     },
-    claim: "Claim",
     clear: "Effacer",
     clientId: "Identité du client",
     close: "Fermer",
@@ -68,6 +176,7 @@ export const common: CommonNS = {
     confirm: "Confirmer",
     contains: "Contient",
     continue: "Continuer",
+    copied: "Copié!",
     copyToClipboard: "Copier dans le presse-papier",
     create: "Créer",
     createdOn: "Créé le",
@@ -101,6 +210,7 @@ export const common: CommonNS = {
     goBackHome: "Revenir à l'accueil",
     goFullScreen: "Ouvrir en plein écran",
     good: "Bien",
+    greaterThanOrEqual: "Supérieur ou égal",
     help: "Aide",
     hide: "Cacher",
     hidePassword: "Cacher le mot de passe",
@@ -114,6 +224,7 @@ export const common: CommonNS = {
     lastSeen: "Dernier vu",
     lastUpdatedOn: "Dernière mise à jour le",
     learnMore: "Apprendre encore plus",
+    lessThanOrEqual: "Inférieur ou égal",
     lightMode: "Mode lumière",
     loading: "Chargement",
     loginTime: "Heure de connexion",
@@ -136,11 +247,15 @@ export const common: CommonNS = {
     new: "Nouveau",
     next: "Suivant",
     noResultsFound: "Aucun résultat trouvé",
+    none: "Aucun",
     okay: "d'accord",
     operatingSystem: "Système d'exploitation",
+    operationType: "Type d'opération",
     operations: "Opérations",
     organizationName: "{{orgName}} organisation",
     overview: "Vue d'ensemble",
+    parameter: "Paramètre",
+    pending: "En attente",
     personalInfo: "Informations personnelles",
     pin: "Épingler",
     pinned: "Épinglé",
@@ -152,25 +267,30 @@ export const common: CommonNS = {
     priority: "Priorité",
     privacy: "Vie privée",
     properties: "Propriétés",
+    publish: "Publier",
     ready: "Prêt",
     regenerate: "Régénérer",
     register: "Inscrire",
     reject: "Rejeter",
-    release: "Version",
+    rejected: "Rejeté",
     remove: "Retirer",
     removeAll: "Tout retirer",
     required: "Ceci est nécessaire",
     reserved: "Réservé",
     resetFilters: "Réinitialiser les filtres",
     retry: "Réessayer",
+    revert: "Rétablir",
     revoke: "Révoquer",
     revokeAll: "Tout révoquer",
     samples: "Exemples",
     save: "Sauvegarder",
+    saveDraft: "Enregistrer le brouillon",
     sdks: "SDKs",
     search: "Rechercher",
     searching: "Recherche",
     security: "Sécurité",
+    selectAll: "Sélectionnez tout",
+    selectNone: "Sélectionnez aucun",
     services: "Services",
     settings: "Paramètres",
     setup: "Installer",
@@ -191,6 +311,7 @@ export const common: CommonNS = {
     terminateSession: "Terminer la session",
     tooShort: "Trop court",
     type: "Type",
+    unassign: "Désassigner",
     unpin: "Détacher",
     unpinned: "Détaché",
     update: "Mettre à jour",
@@ -198,6 +319,7 @@ export const common: CommonNS = {
     verified: "Vérifié",
     verify: "Vérifier",
     view: "Voir",
+    viewDetails: "Voir les détails",
     weak: "Faible",
     weakPassword: "La force du mot de passe doit au moins être bonne."
 };

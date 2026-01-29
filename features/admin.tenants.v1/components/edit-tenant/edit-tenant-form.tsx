@@ -23,11 +23,13 @@ import Stack from "@oxygen-ui/react/Stack";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography/Typography";
 import { CopyIcon, GlobeIcon } from "@oxygen-ui/react-icons";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { generatePassword, getConfiguration } from "@wso2is/admin.users.v1/utils/generate-password.utils";
 import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-management-utils";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api/validation-config";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models/validation-config";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CommonUtils } from "@wso2is/core/utils";
@@ -40,10 +42,10 @@ import {
     TextFieldAdapter,
     Tools
 } from "@wso2is/form";
-import { Hint, PasswordValidation } from "@wso2is/react-components";
+import { PasswordValidation } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import updateTenantOwner from "../../api/update-tenant-owner";
@@ -67,8 +69,9 @@ export type EditTenantFormProps = IdentifiableComponentInterface & {
     onSubmit?: () => void;
 };
 
-export type EditTenantFormValues = Omit<Pick<Tenant, "domain" | "id">, "name"> & { organizationName: string }
-    & Omit<TenantOwner, "additionalDetails">;
+export type EditTenantFormValues = Omit<Pick<Tenant, "domain" | "id">, "name" | "domain">
+    & { organizationHandle: string; organizationName: string }
+    & Omit<TenantOwner, "additionalDetails" | "id">;
 
 export type EditTenantFormErrors = Partial<EditTenantFormValues>;
 
@@ -106,13 +109,18 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
         return getConfiguration(validationData);
     }, [ validationData ]);
 
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const isOrgDisplayNameFeatureEnabled: boolean = isFeatureEnabled(
+        featureConfig.organizations, "organizationDisplayName"
+    );
+
     /**
      * Handles the form submit action.
      * @param values - Form values.
      */
     const handleSubmit = (values: EditTenantFormValues): void => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { domain, id, organizationName, username, ...rest } = values;
+        const { organizationHandle, id, organizationName, username, ...rest } = values;
 
         updateTenantOwner(tenant?.id, { id: tenant?.owners[0]?.id, ...rest } as TenantOwner)
             .then(() => {
@@ -291,11 +299,11 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
     return (
         <FinalForm
             initialValues={ {
-                domain: tenant?.domain,
                 email: tenant?.owners[0]?.email,
                 firstname: tenant?.owners[0]?.firstname,
                 id: tenant?.id,
                 lastname: tenant?.owners[0]?.lastname,
+                organizationHandle: tenant?.domain,
                 organizationName: tenant?.name,
                 password: "",
                 username: tenant?.owners[0]?.username
@@ -332,61 +340,49 @@ const EditTenantForm: FunctionComponent<EditTenantFormProps> = ({
                         onSubmit={ handleSubmit }
                         className="edit-tenant-form"
                     >
+                        { isOrgDisplayNameFeatureEnabled && (
+                            <FinalFormField
+                                key="organizationName"
+                                width={ 16 }
+                                className="text-field-container"
+                                ariaLabel="organizationName"
+                                required={ false }
+                                data-componentid={ `${componentId}-organization-name` }
+                                name="organizationName"
+                                type="text"
+                                label={ t("tenants:common.form.fields.organizationName.label") }
+                                component={ TextFieldAdapter }
+                                readOnly={ true }
+                                InputProps={ {
+                                    endAdornment: (
+                                        <Tooltip title="Copy">
+                                            <div>
+                                                <IconButton
+                                                    aria-label="Reset field to default"
+                                                    className="reset-field-to-default-adornment"
+                                                    onClick={ async () => {
+                                                        await CommonUtils.copyTextToClipboard(tenant?.name);
+                                                    } }
+                                                    edge="end"
+                                                >
+                                                    <CopyIcon size={ 12 } />
+                                                </IconButton>
+                                            </div>
+                                        </Tooltip>
+                                    ),
+                                    readOnly: true
+                                } }
+                            />
+                        ) }
                         <FinalFormField
-                            key="organizationName"
+                            key="organizationHandle"
                             width={ 16 }
                             className="text-field-container"
-                            ariaLabel="organizationName"
+                            ariaLabel="organizationHandle"
                             required={ true }
-                            data-componentid={ `${componentId}-organization-name` }
-                            name="organizationName"
+                            data-componentid={ `${componentId}-organizationHandle` }
+                            name="organizationHandle"
                             type="text"
-                            label={ t("tenants:common.form.fields.organizationName.label") }
-                            component={ TextFieldAdapter }
-                            readOnly={ true }
-                            InputProps={ {
-                                endAdornment: (
-                                    <Tooltip title="Copy">
-                                        <div>
-                                            <IconButton
-                                                aria-label="Reset field to default"
-                                                className="reset-field-to-default-adornment"
-                                                onClick={ async () => {
-                                                    await CommonUtils.copyTextToClipboard(tenant?.name);
-                                                } }
-                                                edge="end"
-                                            >
-                                                <CopyIcon size={ 12 } />
-                                            </IconButton>
-                                        </div>
-                                    </Tooltip>
-                                ),
-                                readOnly: true
-                            } }
-                        />
-                        <FinalFormField
-                            key="domain"
-                            width={ 16 }
-                            className="text-field-container"
-                            ariaLabel="domain"
-                            required={ true }
-                            data-componentid={ `${componentId}-domain` }
-                            name="domain"
-                            type="text"
-                            helperText={
-                                (<Hint>
-                                    <Typography variant="inherit">
-                                        <Trans i18nKey="tenants:common.form.fields.domain.helperText">
-                                            Enter a unique domain name for your organization. The domain name should be
-                                            in the format of
-                                            <Typography component="span" variant="inherit" fontWeight="bold">
-                                                example.com
-                                            </Typography>
-                                            .
-                                        </Trans>
-                                    </Typography>
-                                </Hint>)
-                            }
                             label={ t("tenants:common.form.fields.domain.label") }
                             placeholder={ t("tenants:common.form.fields.domain.placeholder") }
                             component={ TextFieldAdapter }

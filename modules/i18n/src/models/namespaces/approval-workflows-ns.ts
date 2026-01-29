@@ -16,6 +16,9 @@
  * under the License.
  */
 export interface approvalWorkflowsNS {
+    advancedSearch: {
+        placeholder: string;
+    };
     notifications: {
         fetchApprovalWorkflows: {
             genericError: {
@@ -37,6 +40,10 @@ export interface approvalWorkflowsNS {
         };
         deleteWorkflowAssociation: {
             genericError: {
+                message: string;
+                description: string;
+            };
+            noAssociationsSelectedError: {
                 message: string;
                 description: string;
             };
@@ -217,7 +224,9 @@ export interface approvalWorkflowsNS {
         operations: {
             dropDown: {
                 label: string;
+                nullValidationErrorMessage: string;
                 placeholder: string;
+                disabledHint: string;
             }
         }
     };
@@ -240,46 +249,59 @@ export interface approvalWorkflowsNS {
             description: {
                 label: string,
                 placeholder: string
-            },
-    },
-    dangerZone: {
-        delete: {
-            actionTitle: string;
-            header: string;
-            subheader: string;
+            }
+        },
+        dangerZone: {
+            delete: {
+                actionTitle: string;
+                header: string;
+                subheader: string;
+            };
+        };
+        placeholders: {
+            emptyList: {
+                action: string;
+                title: string;
+                subtitles: {
+                    0: string;
+                    1: string;
+                };
+            };
+            emptyListReadOnly: {
+                title: string;
+                subtitles: {
+                    0: string;
+                };
+            };
+            emptySearch: {
+                action: string;
+                title: string;
+                subtitles: {
+                    0: string;
+                };
+            };
+            ApprovalWorkflowError: {
+                subtitles: {
+                    0: string,
+                    1: string;
+                },
+                title: string;
+            }
+        };
+        sqlEditor: {
+            reset: string;
+            title: string;
+            create: string;
+            update: string;
+            read: string;
+            delete: string;
+            darkMode: string;
         };
     };
-    placeholders: {
-        emptySearch: {
-            action: string;
-            title: string;
-            subtitles: string;
+    list: {
+        columns: {
+            actions: string;
+            name: string;
         };
-        emptyList: {
-            action: string;
-            title: string;
-            subtitles: string;
-        };
-        emptyListReadOnly: {
-            title: string;
-            subtitles: string;
-        };
-        ApprovalWorkflowError: {
-            subtitles: {
-                0: string,
-                1: string;
-            },
-            title: string;
-        }
     };
-    sqlEditor: {
-        reset: string;
-        title: string;
-        create: string;
-        update: string;
-        read: string;
-        delete: string;
-        darkMode: string;
-    };
-}
 }

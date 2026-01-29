@@ -17,8 +17,8 @@
  */
 
 import Code from "@oxygen-ui/react/Code";
-import useGetRegistrationFlowBuilderEnabledStatus
-    from "@wso2is/admin.server-configurations.v1/api/use-get-self-registration-enabled-status";
+import useGetFlowConfig from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-config";
+import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { BrandingPreferenceInterface } from "@wso2is/common.branding.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
@@ -101,8 +101,8 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
     const [ recoveryPortalURL, setRecoveryPortalURL ] = useState<string>(initialValues.urls.recoveryPortalURL);
     const [ selfSignUpURL, setSelfSignUpURL ] = useState<string>(initialValues.urls.selfSignUpURL);
 
-    const { data: isDynamicPortalEnabled } = useGetRegistrationFlowBuilderEnabledStatus();
-
+    const { data: invitedUserRegistrationFlowConfig } = useGetFlowConfig(FlowTypes.INVITED_USER_REGISTRATION);
+    const { data: passwordRecoveryFlowConfig } = useGetFlowConfig(FlowTypes.PASSWORD_RECOVERY);
 
     /**
      * Broadcast values to the outside when internals change.
@@ -268,7 +268,7 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
                 data-testid={ `${ componentId }-cookie-policy-url` }
                 validation={ validateTemplatableURLs }
             />
-            { isDynamicPortalEnabled && ( <Field.Input
+            { (invitedUserRegistrationFlowConfig?.isEnabled || passwordRecoveryFlowConfig?.isEnabled) && ( <Field.Input
                 ariaLabel="Branding preference recovery portal URL"
                 inputType="url"
                 name="urls.recoveryPortalURL"
@@ -283,7 +283,8 @@ export const AdvanceForm: FunctionComponent<AdvanceFormPropsInterface> = forward
                     Link to your organization&apos;s Recovery portal. You can use placeholders like
                         <Code>&#123;&#123;lang&#125;&#125;</Code>, <Code>&#123;&#123;country&#125;&#125;</Code>,
                     or <Code>&#123;&#123;locale&#125;&#125;</Code> to customize the URL for different
-                    regions or languages.
+                    regions or languages. Note: This overrides the URL of the recovery flow
+                         you create using the flow builder in Flows.
                     </Trans>
                 ) }
                 required={ false }

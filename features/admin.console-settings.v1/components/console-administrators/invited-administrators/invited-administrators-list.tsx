@@ -26,7 +26,7 @@ import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/ho
 import { deleteParentOrgInvite } from "@wso2is/admin.users.v1/components/guests/api/invite";
 import { UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { UserInviteInterface } from "@wso2is/admin.users.v1/models/user";
-import { UserStoreDropdownItem } from "@wso2is/admin.userstores.v1/models";
+import { UserStoreDropdownItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import {
     AlertLevels,
     IdentifiableComponentInterface

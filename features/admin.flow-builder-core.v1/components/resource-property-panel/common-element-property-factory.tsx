@@ -16,16 +16,15 @@
  * under the License.
  */
 
-import Checkbox from "@oxygen-ui/react/Checkbox";
-import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import startCase from "lodash-es/startCase";
-import React, { ChangeEvent, FunctionComponent, ReactElement } from "react";
-import RichText from "./rich-text/rich-text";
+import React, { FunctionComponent, ReactElement } from "react";
+import CheckboxPropertyField from "./checkbox-property-field";
+import RichTextWithTranslation from "./rich-text/rich-text-with-translation";
+import TextPropertyField from "./text-property-field";
+import FlowBuilderElementConstants from "../../constants/flow-builder-element-constants";
 import { ElementTypes } from "../../models/elements";
 import { Resource } from "../../models/resources";
-import FlowBuilderElementConstants from "../../constants/flow-builder-element-constants";
 
 /**
  * Props interface of {@link CommonElementPropertyFactory}
@@ -72,18 +71,23 @@ const CommonElementPropertyFactory: FunctionComponent<CommonElementPropertyFacto
 }: CommonElementPropertyFactoryPropsInterface): ReactElement | null => {
     if (propertyKey === "text") {
         if (resource.type === ElementTypes.RichText) {
-            return <RichText ToolbarProps={ { history: false, strikeThrough: false } } { ...rest } />;
+            return (
+                <RichTextWithTranslation
+                    onChange={ (html: string) => onChange(`config.${propertyKey}`, html, resource) }
+                    resource={ resource }
+                    { ...rest }
+                />
+            );
         }
     }
 
     if (typeof propertyValue === "boolean") {
         return (
-            <FormControlLabel
-                control={ <Checkbox defaultChecked={ propertyValue } /> }
-                label={ startCase(propertyKey) }
-                onChange={ (e: ChangeEvent<HTMLInputElement>) =>
-                    onChange(`config.${propertyKey}`, e.target.checked, resource)
-                }
+            <CheckboxPropertyField
+                resource={ resource }
+                propertyKey={ propertyKey }
+                propertyValue={ propertyValue }
+                onChange={ onChange }
                 data-componentid={ `${componentId}-${propertyKey}` }
                 { ...rest }
             />
@@ -92,14 +96,11 @@ const CommonElementPropertyFactory: FunctionComponent<CommonElementPropertyFacto
 
     if (typeof propertyValue === "string") {
         return (
-            <TextField
-                fullWidth
-                label={ startCase(propertyKey) }
-                defaultValue={ propertyValue }
-                onChange={ (e: ChangeEvent<HTMLInputElement>) =>
-                    onChange(`config.${propertyKey}`, e.target.value, resource)
-                }
-                placeholder={ `Enter ${startCase(propertyKey)}` }
+            <TextPropertyField
+                resource={ resource }
+                propertyKey={ propertyKey }
+                propertyValue={ propertyValue }
+                onChange={ onChange }
                 data-componentid={ `${componentId}-${propertyKey}` }
                 { ...rest }
             />

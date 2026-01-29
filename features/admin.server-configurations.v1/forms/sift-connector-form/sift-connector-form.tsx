@@ -16,19 +16,41 @@
  * under the License.
  */
 
+import { Grid, Stack } from "@mui/material";
+import Alert from "@oxygen-ui/react/Alert";
+import Box from "@oxygen-ui/react/Box";
+import FormGroup from "@oxygen-ui/react/FormGroup";
 import IconButton from "@oxygen-ui/react/IconButton";
 import InputAdornment from "@oxygen-ui/react/InputAdornment";
-import Stack from "@oxygen-ui/react/Stack";
+import Typography from "@oxygen-ui/react/Typography";
 import { TrashIcon } from "@oxygen-ui/react-icons";
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
-import { PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
+import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { FinalForm, FinalFormField, FormApi, FormRenderProps, TextFieldAdapter } from "@wso2is/form";
+import CheckboxAdapter from "@wso2is/form/src/components/adapters/checkbox-field-adapter";
+import { ContentLoader, GenericIcon, PrimaryButton } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Icon } from "semantic-ui-react";
+import { useDispatch, useSelector } from "react-redux";
+import { Dispatch } from "redux";
+import { Divider, Icon } from "semantic-ui-react";
+import updateEventPublishingConfigurations from "../../api/event-publishing-configurations";
+import useFraudDetectionConfigurations from "../../api/use-fraud-detection-configurations";
+import { getSiftConnectorIcon } from "../../configs/ui";
+import {
+    GovernanceConnectorConstants,
+    GovernanceConnectorFeatureDictionaryKeys
+} from "../../constants/governance-connector-constants";
 import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
+import {
+    FraudAnalyticEventMetadataInterface,
+    FraudAnalyticEventPropertyInterface,
+    FraudDetectionConfigurationsInterface
+} from "../../models/fraud-detection";
 import { GovernanceConnectorInterface } from "../../models/governance-connectors";
-import { GovernanceConnectorUtils } from "../../utils";
+import { GovernanceConnectorUtils } from "../../utils/governance-connector-utils";
 import "./sift-connector-form.scss";
 
 /**
@@ -69,9 +91,65 @@ const SiftConnectorForm: FunctionComponent<SiftConnectorFormPropsInterface> = ({
 }: SiftConnectorFormPropsInterface): ReactElement => {
 
     const { t } = useTranslation();
+    const dispatch: Dispatch = useDispatch();
 
-    const [ apiKey, setApiKey ] = useState<string>(initialValues?.properties[0]?.value ?? "");
-    const [ isShow, setIsShow ] = useState(false);
+    const governanceConnectorsFeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.governanceConnectors
+    );
+    const showFraudDetectionEventPublishingConfiguration: boolean = isFeatureEnabled(
+        governanceConnectorsFeatureConfig,
+        GovernanceConnectorConstants.featureDictionary[
+            GovernanceConnectorFeatureDictionaryKeys.HIDE_FRAUD_DETECTION_EVENT_PUBLISHING_CONFIGURATION
+        ]
+    );
+
+    const [ isShow, setIsShow ] = useState<boolean>(false);
+
+    const {
+        data: fraudDetectionConfigurations,
+        error: fraudDetectionConfigurationsError,
+        isLoading: isFraudDetectionConfigurationsLoading,
+        mutate: mutateEventPublishingConfigurations
+    } = useFraudDetectionConfigurations(showFraudDetectionEventPublishingConfiguration);
+
+    const eventMetadata: Record<string, FraudAnalyticEventMetadataInterface> = GovernanceConnectorUtils
+        .resolveEventPropertyMappings();
+
+    // Memoize enriched fraud detection configurations
+    const enrichedFraudDetectionConfigurations: FraudDetectionConfigurationsInterface | undefined = useMemo(() => {
+        if (!fraudDetectionConfigurations) return undefined;
+
+        return {
+            ...fraudDetectionConfigurations,
+            events: fraudDetectionConfigurations.events.map((event: FraudAnalyticEventPropertyInterface) => ({
+                ...event,
+                description: eventMetadata[event.eventName]?.description || "",
+                displayName: eventMetadata[event.eventName]?.displayName || event.eventName
+            }))
+        };
+    }, [ fraudDetectionConfigurations, eventMetadata ]);
+
+    // Split events into two columns
+    const { leftColumnEvents, rightColumnEvents } = useMemo(() => {
+        if (!enrichedFraudDetectionConfigurations?.events) {
+            return { leftColumnEvents: [], rightColumnEvents: [] };
+        }
+
+        enrichedFraudDetectionConfigurations.events.sort(
+            (a: FraudAnalyticEventPropertyInterface, b: FraudAnalyticEventPropertyInterface) => {
+                const orderA: number = eventMetadata[a.eventName]?.displayOrder || 0;
+                const orderB: number = eventMetadata[b.eventName]?.displayOrder || 0;
+
+                return orderA - orderB;
+            }
+        );
+        const midPoint: number = Math.ceil(enrichedFraudDetectionConfigurations.events.length / 2);
+
+        return {
+            leftColumnEvents: enrichedFraudDetectionConfigurations.events.slice(0, midPoint),
+            rightColumnEvents: enrichedFraudDetectionConfigurations.events.slice(midPoint)
+        };
+    }, [ enrichedFraudDetectionConfigurations ]);
 
     /**
      * Get updated API Key.
@@ -81,20 +159,13 @@ const SiftConnectorForm: FunctionComponent<SiftConnectorFormPropsInterface> = ({
      */
     const getUpdatedAPIKey = (values: Record<string, unknown>) => {
 
-        let data: { [ key: string]: unknown } = {
-            [ ServerConfigurationsConstants.SIFT_CONNECTOR_API_KEY_PROPERTY ]: ""
+        const encodedApiKeyProperty: string = GovernanceConnectorUtils
+            .encodeConnectorPropertyName(ServerConfigurationsConstants.SIFT_CONNECTOR_API_KEY_PROPERTY);
+
+        const data: { [ key: string]: unknown } = {
+            [ ServerConfigurationsConstants.SIFT_CONNECTOR_API_KEY_PROPERTY ]:
+                values[encodedApiKeyProperty] || ""
         };
-
-        if (Object.keys(values).length === 0) {
-            return data;
-        }
-
-        for (const key in values) {
-            data = {
-                ...data,
-                [ GovernanceConnectorUtils.decodeConnectorPropertyName(key) ]: values[ key ]
-            };
-        }
 
         return data;
     };
@@ -118,93 +189,383 @@ const SiftConnectorForm: FunctionComponent<SiftConnectorFormPropsInterface> = ({
         </InputAdornment>
     );
 
+    /**
+     * Render event selection checkbox.
+     *
+     * @param event - Fraud analytic event property.
+     * @returns ReactElement
+     */
+    const renderEventSelectionCheckbox = (event: FraudAnalyticEventPropertyInterface): ReactElement => {
+        return (
+            <Box mb={ 2 } key={ event.eventName } className="channel-checkbox-container">
+                <FinalFormField
+                    ariaLabel={ event.eventName }
+                    data-componentid={ `${componentId}-${event.eventName}-checkbox` }
+                    name={ `events.${GovernanceConnectorUtils.encodeConnectorPropertyName(event.eventName)}` }
+                    component={ CheckboxAdapter }
+                    checked={ event.enabled }
+                    label={
+                        (<Box className="checkbox-label">
+                            <Box className="event-name-container">
+                                <Typography variant="body1" component="span" className="event-name">
+                                    { t(event.displayName) }
+                                </Typography>
+                            </Box>
+                            <Typography variant="caption" component="div" className="event-description">
+                                { t(event.description) }
+                            </Typography>
+                        </Box>)
+                    }
+                />
+            </Box>
+        );
+    };
+
+    /**
+     * Render event publishing section.
+     *
+     * @returns ReactElement
+     */
+    const renderEventPublishingSection = (form: FormApi<Record<string, unknown>>): ReactElement => {
+        return (
+            <>
+                <Box mt={ 2 } mb={ 1 } width="40%">
+                    {
+                        (form.getState().values.publishDeviceMetadata &&
+                        form.getState().values.publishUserInfo) && (
+                            <Alert
+                                severity="warning"
+                                data-componentid="include-pii-warning-message"
+                            >
+                                { t("governanceConnectors:connectorCategories.loginAttemptsSecurity.connectors" +
+                                    ".siftConnector.eventPublishing.eventProperties.piiPublishingWarning") }
+                            </Alert>
+                        )
+                    }
+                </Box>
+                <Box mb={ 2 } width="40%">
+                    <FormGroup>
+                        <FinalFormField
+                            ariaLabel="Include PII in event payload"
+                            data-componentid={ `${componentId}-include-pii-checkbox` }
+                            name="publishUserInfo"
+                            component={ CheckboxAdapter }
+                            label={
+                                (<Box className="checkbox-label">
+                                    <Box className="event-name-container">
+                                        <Typography variant="body1" component="span" className="event-name">
+                                            { t("governanceConnectors:connectorCategories.loginAttemptsSecurity" +
+                                                ".connectors.siftConnector.eventPublishing.eventProperties" +
+                                                    ".publishUserInfo.label") }
+                                        </Typography>
+                                    </Box>
+                                    <Typography variant="caption" component="div" className="event-description">
+                                        { t("governanceConnectors:connectorCategories.loginAttemptsSecurity" +
+                                            ".connectors.siftConnector.eventPublishing.eventProperties" +
+                                                ".publishUserInfo.description") }
+                                    </Typography>
+                                </Box>)
+                            }
+                        />
+                        {
+                            (form.getState().values.publishUserInfo &&
+                            !form.getState().values.publishDeviceMetadata) && (
+                                <Alert
+                                    sx={ { marginBottom: "8px", marginTop: "6px" } }
+                                    severity="warning"
+                                    data-componentid="include-pii-warning-message"
+                                >
+                                    { t("governanceConnectors:connectorCategories.loginAttemptsSecurity" +
+                                        ".connectors.siftConnector.eventPublishing.eventProperties" +
+                                            ".publishUserInfo.warning") }
+                                </Alert>
+                            )
+                        }
+                    </FormGroup>
+                </Box>
+                <Box mb={ 3 } width="40%">
+                    <FormGroup>
+                        <FinalFormField
+                            ariaLabel="Include user device metadata in event payload"
+                            data-componentid={ `${componentId}-include-device-metadata-checkbox` }
+                            name="publishDeviceMetadata"
+                            component={ CheckboxAdapter }
+                            label={
+                                (<Box className="checkbox-label">
+                                    <Box className="event-name-container">
+                                        <Typography variant="body1" component="span" className="event-name">
+                                            { t("governanceConnectors:connectorCategories.loginAttemptsSecurity" +
+                                                ".connectors.siftConnector.eventPublishing.eventProperties" +
+                                                    ".publishDeviceMetadata.label") }
+                                        </Typography>
+                                    </Box>
+                                    <Typography variant="caption" component="div" className="event-description">
+                                        { t("governanceConnectors:connectorCategories.loginAttemptsSecurity" +
+                                            ".connectors.siftConnector.eventPublishing.eventProperties" +
+                                                ".publishDeviceMetadata.description") }
+                                    </Typography>
+                                </Box>)
+                            }
+                        />
+                        {
+                            (form.getState().values.publishDeviceMetadata &&
+                            !form.getState().values.publishUserInfo) && (
+                                <Alert
+                                    sx={ { marginBottom: "8px", marginTop: "6px" } }
+                                    severity="warning"
+                                    data-componentid="include-pii-warning-message"
+                                >
+                                    { t("governanceConnectors:connectorCategories.loginAttemptsSecurity" +
+                                        ".connectors.siftConnector.eventPublishing.eventProperties" +
+                                            ".publishDeviceMetadata.warning") }
+                                </Alert>
+                            )
+                        }
+                    </FormGroup>
+                </Box>
+                <Box mb={ 1 }>
+                    <Typography variant="h6" className="heading-container">
+                        { t("governanceConnectors:connectorCategories.loginAttemptsSecurity.connectors." +
+                            "siftConnector.eventPublishing.eventProperties.title") }
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" className="section-description">
+                        { t("governanceConnectors:connectorCategories.loginAttemptsSecurity.connectors." +
+                            "siftConnector.eventPublishing.eventProperties.subtitle") }
+                    </Typography>
+                </Box>
+                <Grid mb={ 1 } container spacing={ 1 } className="channel-grid">
+                    <Grid item xs={ 8 } md={ 4 }>
+                        <FormGroup>
+                            { leftColumnEvents?.map((event: FraudAnalyticEventPropertyInterface) =>
+                                renderEventSelectionCheckbox(event)) }
+                        </FormGroup>
+                    </Grid>
+                    <Grid item xs={ 8 } md={ 4 }>
+                        <FormGroup>
+                            { rightColumnEvents?.map(
+                                (event: FraudAnalyticEventPropertyInterface) =>
+                                    renderEventSelectionCheckbox(event)
+                            ) }
+                        </FormGroup>
+                    </Grid>
+                </Grid>
+                <Box mb={ 1 }>
+                    <Typography variant="h6" className="heading-container">
+                        { t("governanceConnectors:connectorCategories.loginAttemptsSecurity.connectors." +
+                            "siftConnector.eventPublishing.eventDiagnostics.title") }
+                    </Typography>
+                </Box>
+                <Box mb={ 2 } width="40%">
+                    <FormGroup>
+                        <FinalFormField
+                            ariaLabel="Log request payload"
+                            data-componentid={ `${componentId}-log-request-payload-checkbox` }
+                            name="logRequestPayload"
+                            component={ CheckboxAdapter }
+                            label={
+                                (<Box className="checkbox-label">
+                                    <Box className="event-name-container">
+                                        <Typography variant="body1" component="span" className="event-name">
+                                            { t("governanceConnectors:connectorCategories.loginAttemptsSecurity" +
+                                                ".connectors.siftConnector.eventPublishing.eventDiagnostics." +
+                                                    "logRequestPayload.label") }
+                                        </Typography>
+                                    </Box>
+                                    <Typography variant="caption" component="div" className="event-description">
+                                        { t("governanceConnectors:connectorCategories.loginAttemptsSecurity" +
+                                            ".connectors.siftConnector.eventPublishing.eventDiagnostics." +
+                                                "logRequestPayload.description") }
+                                    </Typography>
+                                </Box>)
+                            }
+                        />
+                    </FormGroup>
+                </Box>
+            </>
+        );
+    };
+
+    /**
+     * Handle form submission for event publishing configurations.
+     *
+     * @param values - Form values.
+     */
+    const handleEventPublishingSubmit = (values: Record<string, unknown>) => {
+        const eventPublishingPayload: FraudDetectionConfigurationsInterface = {
+            events: enrichedFraudDetectionConfigurations?.events.map((event: FraudAnalyticEventPropertyInterface) => ({
+                enabled: values.events?.[ GovernanceConnectorUtils
+                    .encodeConnectorPropertyName(event.eventName)] as boolean,
+                eventName: event.eventName,
+                properties: []
+            })) || [],
+            logRequestPayload: values.logRequestPayload as boolean || false,
+            publishDeviceMetadata: values.publishDeviceMetadata as boolean || false,
+            publishUserInfo: values.publishUserInfo as boolean || false
+        };
+
+        updateEventPublishingConfigurations(eventPublishingPayload).then(() => {
+            if (values[GovernanceConnectorUtils.encodeConnectorPropertyName(
+                ServerConfigurationsConstants.SIFT_CONNECTOR_API_KEY_PROPERTY
+            )] !== undefined) {
+                onSubmit(getUpdatedAPIKey(values));
+            }
+
+            mutateEventPublishingConfigurations();
+        }).catch(() => {
+            dispatch(
+                addAlert({
+                    description: t("governanceConnectors:connectorCategories.loginAttemptsSecurity" +
+                        ".connectors.siftConnector.notifications.eventPropertiesUpdate.error.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("governanceConnectors:connectorCategories.loginAttemptsSecurity" +
+                        ".connectors.siftConnector.notifications.eventPropertiesUpdate.error.message")
+                })
+            );
+        });
+    };
+
+    /**  * Resolve initial form values.
+     *
+     * @returns Initial form values.
+     */
+    const resolveInitialFormValues = () => {
+        return {
+            [ GovernanceConnectorUtils
+                .encodeConnectorPropertyName(ServerConfigurationsConstants.SIFT_CONNECTOR_API_KEY_PROPERTY)
+            ]: initialValues?.properties[0]?.value ?? "",
+            events: enrichedFraudDetectionConfigurations?.events.reduce(
+                (formValue: Record<string, boolean>, event: FraudAnalyticEventPropertyInterface) => {
+
+                    formValue[GovernanceConnectorUtils.encodeConnectorPropertyName(event.eventName)] = event.enabled;
+
+                    return formValue;
+                }, {} as Record<string, boolean>) ?? {},
+            logRequestPayload: enrichedFraudDetectionConfigurations?.logRequestPayload ?? false,
+            publishDeviceMetadata: enrichedFraudDetectionConfigurations?.publishDeviceMetadata ?? false,
+            publishUserInfo: enrichedFraudDetectionConfigurations?.publishUserInfo ?? false
+        };
+    };
+
     return (
         <div className="sift-connector-form">
             <FinalForm
-                onSubmit={ (values: Record<string, unknown>) =>
-                    onSubmit(getUpdatedAPIKey(values))
-                }
-                data-componentid={ `${ componentId }-configuration-form` }
-                initialValues={
-                    {
-                        [ GovernanceConnectorUtils
-                            .encodeConnectorPropertyName(ServerConfigurationsConstants.SIFT_CONNECTOR_API_KEY_PROPERTY)
-                        ]: initialValues?.properties[0]?.value ?? ""
+                onSubmit={ (values: Record<string, unknown>) => {
+                    if (!showFraudDetectionEventPublishingConfiguration) {
+                        // Only submit API key
+                        onSubmit(getUpdatedAPIKey(values));
+                    } else {
+                        // Submit event publishing configurations
+                        handleEventPublishingSubmit(values);
                     }
-                }
+                } }
+                data-componentid={ `${ componentId }-configuration-form` }
+                initialValues={ resolveInitialFormValues() }
                 render={ ({ handleSubmit, form }: FormRenderProps) => (
-                    <form onSubmit={ handleSubmit }>
-                        <Stack direction="row" spacing={ 2 } mb={ 3 }>
-                            <FinalFormField
-                                className="addon-field-wrapper"
-                                key={ ServerConfigurationsConstants.SIFT_CONNECTOR_API_KEY_PROPERTY }
-                                FormControlProps={ {
-                                    margin: "dense"
-                                } }
-                                ariaLabel="API Key Input"
-                                data-componentid={ `${componentId}-configuration-form-api-key` }
-                                name={
-                                    GovernanceConnectorUtils
-                                        .encodeConnectorPropertyName(ServerConfigurationsConstants
-                                            .SIFT_CONNECTOR_API_KEY_PROPERTY)
-                                }
-                                inputType="password"
-                                type={ isShow ? "text" : "password" }
-                                label={ t("governanceConnectors:connectorCategories" +
-                                    ".loginAttemptsSecurity.connectors.siftConnector" +
-                                    ".properties.siftConnectorApiKey.label")
-                                }
-                                placeholder={ t("governanceConnectors:connectorCategories" +
-                                    ".loginAttemptsSecurity.connectors.siftConnector" +
-                                    ".properties.siftConnectorApiKey.placeholder")
-                                }
-                                component={ TextFieldAdapter }
-                                autoComplete="new-password"
-                                InputProps={ {
-                                    endAdornment: renderInputAdornment()
-                                } }
-                                initialValue={ initialValues?.properties[0]?.value ?? "" }
-                                onChange={ (e: React.ChangeEvent<HTMLInputElement>) => {
-                                    const value: string = e.target.value;
-
-                                    setApiKey(value);
-                                    form.change(GovernanceConnectorUtils
-                                        .encodeConnectorPropertyName(ServerConfigurationsConstants
-                                            .SIFT_CONNECTOR_API_KEY_PROPERTY), value
-                                    );
-                                } }
-                                value={ apiKey }
+                    <React.Fragment>
+                        <Box mb={ 4 } display="flex">
+                            <GenericIcon
+                                bordered
+                                shape="rounded"
+                                floated="left"
+                                spaced="right"
+                                transparent
+                                icon={ getSiftConnectorIcon().sift }
                             />
+                            <Typography variant="h4" component="h2" className="sift-connector-title">
+                                { t("governanceConnectors:connectorCategories.loginAttemptsSecurity.connectors" +
+                                    ".siftConnector.title") }
+                            </Typography>
+                        </Box>
+                        <form onSubmit={ handleSubmit }>
+                            <Stack direction="row" spacing={ 2 } mb={ 4 }>
+                                <FinalFormField
+                                    className="addon-field-wrapper"
+                                    key={ ServerConfigurationsConstants.SIFT_CONNECTOR_API_KEY_PROPERTY }
+                                    FormControlProps={ {
+                                        margin: "dense"
+                                    } }
+                                    ariaLabel="API Key Input"
+                                    data-componentid={ `${componentId}-configuration-form-api-key` }
+                                    name={ GovernanceConnectorUtils.encodeConnectorPropertyName(
+                                        ServerConfigurationsConstants.SIFT_CONNECTOR_API_KEY_PROPERTY) }
+                                    inputType="password"
+                                    type={ isShow ? "text" : "password" }
+                                    label={ t("governanceConnectors:connectorCategories.loginAttemptsSecurity" +
+                                        ".connectors.siftConnector.properties.siftConnectorApiKey.label") }
+                                    placeholder={ t("governanceConnectors:connectorCategories" +
+                                        ".loginAttemptsSecurity.connectors.siftConnector." +
+                                            "properties.siftConnectorApiKey.placeholder") }
+                                    component={ TextFieldAdapter }
+                                    autoComplete="new-password"
+                                    InputProps={ {
+                                        endAdornment: renderInputAdornment()
+                                    } }
+                                />
+                                {
+                                    form.getState().values[GovernanceConnectorUtils
+                                        .encodeConnectorPropertyName(ServerConfigurationsConstants
+                                            .SIFT_CONNECTOR_API_KEY_PROPERTY)] && (
+                                        <IconButton
+                                            className="delete-button"
+                                            onClick={ () => {
+                                                form.change(
+                                                    GovernanceConnectorUtils
+                                                        .encodeConnectorPropertyName(ServerConfigurationsConstants
+                                                            .SIFT_CONNECTOR_API_KEY_PROPERTY), ""
+                                                );
+                                            } }
+                                            data-componentid={
+                                                `${ componentId }-configuration-form-api-key-delete-button`
+                                            }
+                                        >
+                                            <TrashIcon />
+                                        </IconButton>
+                                    )
+                                }
+                            </Stack>
                             {
-                                (apiKey && apiKey !== "") && (
-                                    <IconButton
-                                        className="delete-button"
-                                        onClick={ () => {
-                                            setApiKey("");
-                                            form.change(
-                                                GovernanceConnectorUtils
-                                                    .encodeConnectorPropertyName(ServerConfigurationsConstants
-                                                        .SIFT_CONNECTOR_API_KEY_PROPERTY), ""
-                                            );
-                                        } }
-                                        data-componentid={ `${ componentId }-configuration-form-api-key-delete-button` }
-                                    >
-                                        <TrashIcon />
-                                    </IconButton>
-                                )
+                                (fraudDetectionConfigurationsError && isFraudDetectionConfigurationsLoading)
+                                    ? <ContentLoader />
+                                    : showFraudDetectionEventPublishingConfiguration
+                                        && (
+                                            <>
+                                                <Divider />
+                                                <Box mt={ 4 } mb={ 3 }>
+                                                    <Typography
+                                                        variant="h5"
+                                                        className="sift-connector-form-event-publish-title"
+                                                    >
+                                                        { t("governanceConnectors:connectorCategories" +
+                                                            ".loginAttemptsSecurity.connectors.siftConnector" +
+                                                            ".eventPublishing.title") }
+                                                    </Typography>
+                                                    <Typography
+                                                        mb={ 2 }
+                                                        variant="body2"
+                                                        className="sift-connector-form-event-publish-sub-title"
+                                                    >
+                                                        { t("governanceConnectors:connectorCategories" +
+                                                            ".loginAttemptsSecurity.connectors.siftConnector" +
+                                                            ".eventPublishing.subtitle") }
+                                                    </Typography>
+                                                    { renderEventPublishingSection(form) }
+                                                </Box>
+                                            </>
+                                        )
+
                             }
-                        </Stack>
-                        <PrimaryButton
-                            size="small"
-                            disabled={ isSubmitting || readOnly }
-                            loading={ isSubmitting }
-                            data-componentid={
-                                `${ componentId }-configuration-form-submit-button`
-                            }
-                        >
-                            { t("common:update") }
-                        </PrimaryButton>
-                    </form>
+                            <PrimaryButton
+                                size="small"
+                                disabled={ isSubmitting || readOnly }
+                                loading={ isSubmitting }
+                                data-componentid={
+                                    `${ componentId }-configuration-form-submit-button`
+                                }
+                            >
+                                { t("common:update") }
+                            </PrimaryButton>
+                        </form>
+                    </React.Fragment>
                 ) }
             />
         </div>

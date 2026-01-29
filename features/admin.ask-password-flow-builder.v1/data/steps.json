@@ -1,0 +1,23 @@
+[
+    {
+        "resourceType": "STEP",
+        "category": "WORKFLOW",
+        "type": "EXECUTION",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Passkey View",
+            "image": "assets/images/icons/fingerprint.svg",
+            "showOnResourcePanel": true
+        },
+        "data": {
+            "action": {
+                "type": "EXECUTOR",
+                "executor": {
+                    "name": "FIDO2Executor"
+                },
+                "next": ""
+            }
+        }
+    }
+]

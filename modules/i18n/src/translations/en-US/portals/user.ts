@@ -154,6 +154,12 @@ export const user: userNS = {
                         empty: "First name is a required field"
                     }
                 },
+                generic: {
+                    placeholder: "Enter the {{label}}",
+                    validations: {
+                        empty: "{{label}} is a required field"
+                    }
+                },
                 lastName: {
                     label: "Last Name",
                     placeholder: "Enter the last name",
@@ -227,8 +233,13 @@ export const user: userNS = {
                 emailInvalid: "To invite users to set the password, please enter a valid email address.",
                 emailVerificationDisabled: "To invite users to set the password, enable email invitations " +
                     "for user password setup from <1>Login & Registration settings</1>.",
+                emailVerificationDisabledWithFlows: "To invite users to set the password, enable the invitation flow " +
+                    "settings from the <1>Invited User Registration Flow Builder</1>.",
                 inviteOffline: "Invite offline",
-                inviteViaEmail: "Invite via email"
+                inviteViaEmail: "Invite via email",
+                inviteViaSMS: "Invite via SMS",
+                mobileNumberAlreadyExists: "Mobile number is required for SMS OTP, enable mobile number attribute from <1>Attributes</1>.",
+                offlineInviteUnavailableWithWorkflow: "Inviting users offline is disabled because workflow approval is required for user creation."
             },
             buttons: {
                 next: "Next",
@@ -409,7 +420,9 @@ export const user: userNS = {
             pendingSelfRegistration: "The account is locked pending user verification via the self-registration email."
         },
         accountState: {
-            pendingAskPassword: "The user has not yet set a password using the setup email sent."
+            pendingAskPassword: "The user has not yet completed the registration using the setup email sent.",
+            pendingAskPasswordEmailOTP: "The user has not yet completed the registration using the email OTP sent.",
+            pendingAskPasswordSMSOTP: "The user has not yet completed the registration using the SMS OTP sent."
         },
         confirmationModals: {
             deleteAttributeConfirmation: {
@@ -436,6 +449,13 @@ export const user: userNS = {
             userName: "Username"
         },
         forms: {
+            email: {
+                primaryEmail: {
+                    validations: {
+                        empty: "Primary email address is required"
+                    }
+                }
+            },
             emailChangeForm: {
                 inputs: {
                     email: {
@@ -455,7 +475,15 @@ export const user: userNS = {
                     placeholder: "Enter your {{fieldName}}",
                     validations: {
                         empty: "{{fieldName}} is a required field",
-                        invalidFormat: "The {{fieldName}} is not of the correct format"
+                        invalidFormat: "The {{fieldName}} is not of the correct format",
+                        required: "{{fieldName}} is required"
+                    }
+                }
+            },
+            mobile: {
+                primaryMobile: {
+                    validations: {
+                        empty: "Primary mobile number is required"
                     }
                 }
             },
@@ -638,7 +666,7 @@ export const user: userNS = {
             updateProfileInfo: {
                 error: {
                     description: "{{description}}",
-                    message: "Error occurred while updating the profile details"
+                    message: "Profile update failed"
                 },
                 genericError: {
                     description: "Error occurred while updating the profile details.",

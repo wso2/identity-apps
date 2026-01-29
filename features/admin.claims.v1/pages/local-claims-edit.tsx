@@ -20,8 +20,9 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { attributeConfig, userstoresConfig } from "@wso2is/admin.extensions.v1";
+import { CONSUMER_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
-import { UserStoreBasicData } from "@wso2is/admin.userstores.v1/models";
+import { UserStoreBasicData } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AnimatedAvatar, ResourceTab, ResourceTabPaneInterface, TabPageLayout } from "@wso2is/react-components";
@@ -78,6 +79,8 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
 
     const claimID: string = match.params.id;
     const hiddenUserStores: string[] = useSelector((state: AppState) => state?.config?.ui?.hiddenUserStores);
+    const systemReservedUserStores: string[] =
+        useSelector((state: AppState) => state?.config?.ui?.systemReservedUserStores);
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
 
@@ -86,26 +89,60 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
     const defaultActiveIndex: string = ClaimTabIDs.GENERAL;
 
     const userStores: UserStoreBasicData[] = useMemo(() => {
-        const userStores: UserStoreBasicData[] = [];
+        const initialStores: UserStoreBasicData[] = [];
 
         if (userstoresConfig?.primaryUserstoreName === primaryUserStoreDomainName) {
-            userStores.push({
+            initialStores.push({
                 id: primaryUserStoreDomainName,
                 name: primaryUserStoreDomainName
             });
         }
 
-        if (!isUserStoreListFetchRequestLoading && userStoresList?.length > 0) {
-            const filteredUserStores: UserStoreBasicData[] = hiddenUserStores?.length > 0
-                ? userStoresList.filter((store: UserStoreBasicData) =>
-                    !hiddenUserStores?.includes(store?.name))
-                : userStoresList;
-
-            userStores.push(...filteredUserStores);
+        if (isUserStoreListFetchRequestLoading || !userStoresList?.length) {
+            return initialStores;
         }
 
-        return userStores;
-    }, [ isUserStoreListFetchRequestLoading, userStoresList ]);
+        const visibleUserStores: UserStoreBasicData[] = userStoresList.filter((store: UserStoreBasicData) =>
+            !hiddenUserStores?.includes(store?.name?.toUpperCase()) &&
+            !systemReservedUserStores?.includes(store?.name?.toUpperCase())
+        );
+
+        const mergedStores: UserStoreBasicData[] = [
+            ...initialStores,
+            ...visibleUserStores.filter((store: UserStoreBasicData) =>
+                !initialStores.some((existing: UserStoreBasicData) =>
+                    existing?.name?.toUpperCase() === store?.name?.toUpperCase())
+            )
+        ];
+
+        const hasCustomStores: boolean = visibleUserStores.some((store: UserStoreBasicData) =>
+            store?.name?.toUpperCase() !== primaryUserStoreDomainName?.toUpperCase()
+            && store?.name?.toUpperCase() !== CONSUMER_USERSTORE
+        );
+
+        if (!hasCustomStores) {
+            return mergedStores;
+        }
+
+        const defaultUserStore: UserStoreBasicData | undefined = userStoresList.find(
+            (store: UserStoreBasicData) => store?.name?.toUpperCase() === CONSUMER_USERSTORE
+        );
+
+        if (!defaultUserStore || mergedStores.some((store: UserStoreBasicData) =>
+            store?.name?.toUpperCase() === CONSUMER_USERSTORE)) {
+            return mergedStores;
+        }
+
+        return [ ...mergedStores, defaultUserStore ];
+    }, [
+        hiddenUserStores,
+        isUserStoreListFetchRequestLoading,
+        primaryUserStoreDomainName,
+        systemReservedUserStores,
+        userStoresList
+    ]);
+
+    const showManagedInUserStoreProperty: boolean = useMemo(() => userStores?.length >= 1, [ userStores ]);
 
     useEffect(() => {
         getClaim();
@@ -150,6 +187,7 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
                     <EditBasicDetailsLocalClaims
                         claim={ claim }
                         update={ getClaim }
+                        showManagedInUserStoreProperty={ showManagedInUserStoreProperty }
                         data-testid="local-claims-basic-details-edit"
                     />
                 </ResourceTab.Pane>
@@ -199,6 +237,7 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
                     <EditBasicDetailsLocalClaims
                         claim={ claim }
                         update={ getClaim }
+                        showManagedInUserStoreProperty={ showManagedInUserStoreProperty }
                         data-testid="local-claims-basic-details-edit"
                     />
                 </ResourceTab.Pane>
@@ -283,6 +322,7 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
                             <EditBasicDetailsLocalClaims
                                 claim={ claim }
                                 update={ getClaim }
+                                showManagedInUserStoreProperty={ false }
                                 data-testid="local-claims-basic-details-edit"/>)
             }
 

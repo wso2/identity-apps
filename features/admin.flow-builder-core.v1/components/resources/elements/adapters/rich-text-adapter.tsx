@@ -16,13 +16,27 @@
  * under the License.
  */
 
-import Typography from "@oxygen-ui/react/Typography";
+import Code from "@oxygen-ui/react/Code";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Encode } from "@wso2is/core/utils";
-import parse, { domToReact } from "html-react-parser";
-import React, { FunctionComponent, ReactElement } from "react";
-import { Element } from "../../../../models/elements";
+import DOMPurify from "dompurify";
+import parse from "html-react-parser";
+import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import { Trans, useTranslation } from "react-i18next";
+import PlaceholderComponent from "./placeholder-component";
+import useRequiredFields, { RequiredFieldInterface } from "../../../../hooks/use-required-fields";
 import { CommonElementFactoryPropsInterface } from "../common-element-factory";
+import "./rich-text-adapter.scss";
+
+// Register DOMPurify hook once at module level to handle anchor tags.
+DOMPurify.addHook("afterSanitizeAttributes", (node: Element) => {
+    if (node.hasAttribute("target")) {
+        const target: string | null = node.getAttribute("target");
+
+        if (target === "_blank") {
+            node.setAttribute("rel", "noopener noreferrer");
+        }
+    }
+});
 
 /**
  * Props interface of {@link RichTextAdapter}
@@ -37,16 +51,47 @@ export type RichTextAdapterPropsInterface = IdentifiableComponentInterface & Com
  */
 const RichTextAdapter: FunctionComponent<RichTextAdapterPropsInterface> = ({
     resource
-}: RichTextAdapterPropsInterface): ReactElement => (
-    <>
-        { parse(Encode.forHtml(resource?.config?.text), {
-            replace(domNode: any) {
-                if (((domNode as unknown) as any).name === "h1") {
-                    <Typography variant="h1">{ domToReact(((domNode as unknown) as any).children) }</Typography>;
-                }
+}: RichTextAdapterPropsInterface): ReactElement => {
+    const { t } = useTranslation();
+
+    const generalMessage: ReactElement = useMemo(() => {
+        return (
+            <Trans
+                i18nKey="flows:core.validation.fields.richText.general"
+                values={ { id: resource.id } }
+            >
+                Required fields are not properly configured for the rich text with ID{ " " }
+                <Code>{ resource.id }</Code>.
+            </Trans>
+        );
+    }, [ resource?.id ]);
+
+    const fields: RequiredFieldInterface[] = useMemo(() => {
+        return [
+            {
+                errorMessage: t("flows:core.validation.fields.richText.text"),
+                name: "text"
             }
-        }) }
-    </>
-);
+        ];
+    }, [ t ]);
+
+    useRequiredFields(
+        resource,
+        generalMessage,
+        fields
+    );
+
+    const sanitizedHtml: string = DOMPurify.sanitize(resource?.config?.text || "", {
+        ADD_ATTR: [ "target" ]
+    });
+
+    return (
+        <div className="rich-text-content">
+            <PlaceholderComponent value={ resource?.config?.text }>
+                { parse(sanitizedHtml) }
+            </PlaceholderComponent>
+        </div>
+    );
+};
 
 export default RichTextAdapter;

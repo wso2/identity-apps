@@ -46,6 +46,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClient" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.PreferenceRetrievalClientException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
+<%@ page import="org.wso2.carbon.identity.recovery.IdentityRecoveryConstants" %>
 <%@ page import="org.wso2.carbon.user.core.util.UserCoreUtil" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 
@@ -96,24 +97,6 @@
 
             return this.value.equals(otherValue);
         }
-    }
-%>
-<%! 
-    /**
-    * This generates a random number to provide a sample number for a invalid username
-    * to avoid letting external entities learning of the existing usernames. The same 
-    * random number string will be generated for the same username each time.
-    */
-    public static String getRandomNumberString(int len, String seed) {
-
-        StringBuilder sb = new StringBuilder(len);
-        Random random = new Random(seed.hashCode());
-
-        for (int i = 0; i < len; i++) {
-            Integer numAtIndex = random.nextInt(10);
-            sb.append(numAtIndex.toString());
-        }
-        return sb.toString();
     }
 %>
 <%!
@@ -176,7 +159,6 @@
         String flawConfirmationCode = "";
         String recoveryCode = "";
         String channelId = "";
-        String screenValue = "";
 
         try {
             // Initiate password recovery.
@@ -192,7 +174,6 @@
                 /** Handle invalid username scenario. proceeds to next level without warning to 
                 avoid an attacker bruteforcing to learn the usernames. */
                 
-                request.setAttribute("screenValue", "******" + getRandomNumberString(4, username));
                 request.setAttribute("resendCode", UUID.randomUUID().toString());
                 request.setAttribute("flowConfirmationCode", UUID.randomUUID().toString());
                 request.getRequestDispatcher("sms-and-email-otp.jsp").forward(request, response);
@@ -207,7 +188,6 @@
                         flawConfirmationCode = recoveryType.getFlowConfirmationCode();
                         if (ch.getType().equals(targetChannel)) {
                             channelId = ch.getId();
-                            screenValue = ch.getValue();
                             break;
                         }
                     }
@@ -221,11 +201,9 @@
              * Manage user don't have phone number set up in the account.
              */
             if (StringUtils.isBlank(channelId)) {
-                String recoveryPageQueryString = request.getParameter("urlQuery");
-                request.setAttribute("error", true);
-                request.setAttribute("errorMsg", "Channel.unavailable.for.user");
-                String redirectString = "recoveraccountrouter.do?" + recoveryPageQueryString;
-                request.getRequestDispatcher(redirectString).forward(request, response);
+                request.setAttribute("resendCode", UUID.randomUUID().toString());
+                request.setAttribute("flowConfirmationCode", UUID.randomUUID().toString());
+                request.getRequestDispatcher("sms-and-email-otp.jsp").forward(request, response);
                 return;
             }
 
@@ -235,11 +213,20 @@
             recoveryRequest.setRecoveryCode(recoveryCode);
             RecoveryResponse recoveryResponse = 
                 recoveryApiV2.recoverPassword(recoveryRequest, tenantDomain, requestHeaders);
-            request.setAttribute("screenValue", screenValue);
             request.setAttribute("resendCode", recoveryResponse.getResendCode());
             request.setAttribute("flowConfirmationCode", recoveryResponse.getFlowConfirmationCode());
         } catch (ApiException e) {
             IdentityManagementEndpointUtil.addErrorInformation(request, e);
+            String errorCode = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorCode"));
+            // Manage user doesn't have any recovery option set up.
+            if (errorCode.equals(
+                    IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_NO_VERIFIED_CHANNELS_FOR_USER.getCode()
+                )) {
+                request.setAttribute("resendCode", UUID.randomUUID().toString());
+                request.setAttribute("flowConfirmationCode", UUID.randomUUID().toString());
+                request.getRequestDispatcher("sms-and-email-otp.jsp").forward(request, response);
+                return;
+            }
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }

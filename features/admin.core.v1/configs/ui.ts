@@ -16,7 +16,9 @@
  * under the License.
  */
 
-import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants";
+import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import { FunctionComponent, ReactNode } from "react";
 import { ReactComponent as AlertIcon } from "../../themes/default/assets/images/icons/alert-icon.svg";
 import {
@@ -101,6 +103,9 @@ import {
 import {
     ReactComponent as RemoteLoggingIcon
 } from "../../themes/default/assets/images/icons/outline-icons/remote-logging.svg";
+import {
+    ReactComponent as VerifiableCredentialsOutlineIcon
+} from "../../themes/default/assets/images/icons/outline-icons/verifiable-credentials-outline.svg";
 import { ReactComponent as PinIcon } from "../../themes/default/assets/images/icons/pin-icon.svg";
 import { ReactComponent as PlugIcon } from "../../themes/default/assets/images/icons/plug-icon.svg";
 import {
@@ -179,6 +184,7 @@ import { ReactComponent as PythonLogo } from "../../themes/default/assets/images
 import { ReactComponent as ReactLogo } from "../../themes/default/assets/images/technologies/react-logo.svg";
 import { ReactComponent as VueLogo } from "../../themes/default/assets/images/technologies/vue-logo.svg";
 import { ReactComponent as WindowsLogo } from "../../themes/default/assets/images/technologies/windows-logo.svg";
+import VCLogo from "../../themes/default/assets/images/vc-attributes.svg";
 import {
     ReactComponent as MCPServersOutlineIcon
 } from "../../themes/wso2is/assets/images/icons/outline-icons/mcp-servers-outline.svg";
@@ -213,6 +219,7 @@ interface GetTechnologyLogosInterface {
     react: FunctionComponent | ReactNode,
     saml: string,
     scim: string,
+    vc: string,
     vue: FunctionComponent | ReactNode,
     windows: FunctionComponent | ReactNode,
     wsFed: FunctionComponent | ReactNode,
@@ -249,6 +256,7 @@ export const getTechnologyLogos = (): GetTechnologyLogosInterface => {
         react: ReactLogo,
         saml: SamlLogo,
         scim: SCIMLogo,
+        vc: VCLogo,
         vue: VueLogo,
         windows: WindowsLogo,
         wsFed: WSFedLogo
@@ -296,6 +304,7 @@ export type GetSidePanelIconsInterface = {
     users: FunctionComponent | ReactNode,
     insights: FunctionComponent | ReactNode,
     agents: FunctionComponent | ReactNode,
+    verifiableCredentials: FunctionComponent | ReactNode,
     traits: FunctionComponent | ReactNode,
     appData: FunctionComponent | ReactNode
 };
@@ -354,6 +363,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
         sms: SMSIcon,
         userStore: DatabaseIcon,
         users: UserIcon,
+        verifiableCredentials: VerifiableCredentialsOutlineIcon,
         traits: TraitIcon,
         appData: ApplicationDataIcon,
     };

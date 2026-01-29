@@ -25,7 +25,7 @@ import { ServerConfigurationsConstants } from "../constants/server-configuration
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface } from "../models/governance-connectors";
-import { GovernanceConnectorUtils } from "../utils";
+import { GovernanceConnectorUtils } from "../utils/governance-connector-utils";
 
 /**
  * Interface for multi attribute login form props.
@@ -156,7 +156,7 @@ export const MultiAttributeLoginForm: FunctionComponent<MultiAttributeLoginFormP
                 placeholder={ "Enter allowed attribute list" }
                 labelPosition="top"
                 minLength={ 3 }
-                maxLength={ 100 }
+                maxLength={ 1000 }
                 readOnly={ readOnly }
                 initialValue={ initialFormValues?.[ "account.multiattributelogin.handler.allowedattributes" ] }
                 data-componentid={ `${ componentId }-allowed-attribute-list` }

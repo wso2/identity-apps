@@ -19,17 +19,21 @@
 import Alert from "@oxygen-ui/react/Alert";
 import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Button from "@oxygen-ui/react/Button";
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import {
     AuthenticationSequenceInterface,
     AuthenticationStepInterface,
     AuthenticatorInterface
 } from "@wso2is/admin.applications.v1/models/application";
+import { AdaptiveScriptUtils } from "@wso2is/admin.applications.v1/utils/adaptive-script-utils";
 import useMultiFactorAuthenticatorDetails
     from "@wso2is/admin.connections.v1/api/use-multi-factor-authentication-details";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { ConnectorPropertyInterface } from "@wso2is/admin.server-configurations.v1";
+import { AppState } from "@wso2is/admin.core.v1/store";
+import { ConnectorPropertyInterface } from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { DocumentationLink, Link, useDocumentation } from "@wso2is/react-components";
@@ -49,7 +53,7 @@ import React, {
     useState
 } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import ReactFlow, {
     Background,
     BackgroundVariant,
@@ -66,6 +70,7 @@ import AuthenticationFlowRevertDisclaimerModal from "./authentication-flow-rever
 import StepAdditionEdge from "./edges/step-addition-edge";
 import DoneNode from "./nodes/done-node";
 import SignInBoxNode from "./nodes/sign-in-box-node/sign-in-box-node";
+import { ENFORCE_SCRIPT_UPDATE_PERMISSION_FEATURE_ID } from "../constants/editor-constants";
 import { FIDO_AUTHENTICATOR_ID } from "../constants/template-constants";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
 import "reactflow/dist/style.css";
@@ -140,6 +145,15 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
         visualEditorFlowNodeMeta
     } = useAuthenticationFlow();
 
+    const applicationsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
+        return state.config?.ui?.features?.applications;
+    });
+    const isScriptUpdatePermissionEnforced: boolean = isFeatureEnabled(applicationsFeatureConfig,
+        ENFORCE_SCRIPT_UPDATE_PERMISSION_FEATURE_ID);
+    const hasScriptUpdatePermission: boolean = useRequiredScopes(
+        applicationsFeatureConfig?.subFeatures?.applicationAuthenticationScript?.scopes?.update);
+    const isScriptUpdateReadOnly: boolean = isScriptUpdatePermissionEnforced && !hasScriptUpdatePermission;
+
     const {
         data: FIDOAuthenticatorDetails,
         error: FIDOAuthenticatorDetailsFetchError,
@@ -155,6 +169,7 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
     const [ showRevertDisclaimerModal, setShowRevertDisclaimerModal ] = useState<boolean>(false);
     const [ showInfoAlert, setShowInfoAlert ] = useState<boolean>(false);
     const [ InfoAlertContent, setAlertInfoContent ] = useState<ReactElement>(undefined);
+    const [ infoAlertType, setInfoAlertType ] = useState<"info" | "warning">("info");
     const [ infoAlertBoxHeight, setInfoAlertBoxHeight ] = useState<number>(0);
     const [ isPasskeyProgressiveEnrollmentEnabled, setIsPasskeyProgressiveEnrollmentEnabled ] =
         useState<boolean>(undefined);
@@ -421,6 +436,7 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                             </DocumentationLink>
                         </>
                     );
+                    setInfoAlertType("info");
 
                 } else {
                     setAlertInfoContent(
@@ -450,6 +466,7 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                             </DocumentationLink>
                         </>
                     );
+                    setInfoAlertType("info");
                 }
             } else {
                 setAlertInfoContent(
@@ -483,11 +500,63 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                         </DocumentationLink>
                     </>
                 );
+                setInfoAlertType("info");
             }
 
             setShowInfoAlert(true);
         } else {
             setShowInfoAlert(false);
+        }
+    }, [ isPasskeyProgressiveEnrollmentEnabled, authenticationSequence?.steps ]);
+
+    useEffect(() => {
+        const isIdentifierFirstAsFirstFactorOption: boolean = !!authenticationSequence?.steps[0]?.options.find(
+            (authenticator: AuthenticatorInterface) =>
+                authenticator?.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .IDENTIFIER_FIRST_AUTHENTICATOR_NAME
+        );
+        const isTOTPAsSecondFactorOption: boolean = !!authenticationSequence?.steps[1]?.options.find(
+            (authenticator: AuthenticatorInterface) =>
+                authenticator?.authenticator === LocalAuthenticatorConstants.AUTHENTICATOR_NAMES
+                    .TOTP_AUTHENTICATOR_NAME
+        );
+
+        if (isTOTPAsSecondFactorOption) {
+            if (isIdentifierFirstAsFirstFactorOption) {
+                setAlertInfoContent(
+                    <>
+                        <AlertTitle>
+                            {
+                                t("applications:edit.sections" +
+                                ".signOnMethod.sections.landing.flowBuilder." +
+                                "types.totp.info.totpWithIdentifierFirstEnabled")
+                            }
+                        </AlertTitle>
+                        <Trans
+                            i18nKey={
+                                t("applications:edit.sections" +
+                                ".signOnMethod.sections.landing.flowBuilder." +
+                                "types.totp.info.totpWithIdentifierFirstEnabledMessage")
+                            }
+                        >
+                            Configuring TOTP authenticator with
+                            Identifier First handler is not recommended as <strong>TOTP progressive
+                            enrollment</strong> is enabled by default. You can disable TOTP
+                            progressive enrollment through <strong> Conditional Authentication</strong> script.
+                        </Trans>
+                        <DocumentationLink
+                            link={
+                                getLink("develop.applications.editApplication.signInMethod.totp")
+                            }
+                            showEmptyLink={ false }
+                        >
+                            { t("common:learnMore") }
+                        </DocumentationLink>
+                    </>
+                );
+                setInfoAlertType("warning");
+                setShowInfoAlert(true);
+            }
         }
     }, [ isPasskeyProgressiveEnrollmentEnabled, authenticationSequence?.steps ]);
 
@@ -519,7 +588,7 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                     showInfoAlert ? (
                         <Alert
                             className="visual-editor-info-message"
-                            severity="info"
+                            severity={ infoAlertType }
                             onClose={ () => setShowInfoAlert(false) }
                             ref={ infoAlertRef }
                         >
@@ -527,16 +596,19 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                         </Alert>
                     ): null
                 }
-                <Button
-                    className="revert-to-default-button"
-                    color="secondary"
-                    onClick={ () => setShowRevertDisclaimerModal(true) }
-                    data-componentid={ `${componentId}-revert-button` }
-                    style={ { marginTop: `${infoAlertBoxHeight + 15}px` } }
-                >
-                    <ArrowRotateLeft />
-                    { t("authenticationFlow:visualEditor.actions.revert.label") }
-                </Button>
+                { /* Revert button will be shown only if the script is empty */ }
+                { (!isScriptUpdateReadOnly || AdaptiveScriptUtils.isEmptyScript(authenticationSequence?.script)) &&
+                    (<Button
+                        className="revert-to-default-button"
+                        color="secondary"
+                        onClick={ () => setShowRevertDisclaimerModal(true) }
+                        data-componentid={ `${componentId}-revert-button` }
+                        style={ { marginTop: `${infoAlertBoxHeight + 15}px` } }
+                    >
+                        <ArrowRotateLeft />
+                        { t("authenticationFlow:visualEditor.actions.revert.label") }
+                    </Button>)
+                }
                 <ReactFlow
                     fitView
                     nodeTypes={ nodeTypes }
@@ -547,18 +619,19 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                 >
                     <Background color={ "#e1e1e1" } gap={ 16 } variant={ BackgroundVariant.Dots } size={ 2 } />
                     <Controls />
-                    { (!isAdaptiveAuthAvailable || !isConditionalAuthenticationEnabled) && (
-                        <Button
-                            color="primary"
-                            variant="contained"
-                            className="update-button"
-                            onClick={ () => onUpdate(authenticationSequence) }
-                            disabled={ !isValidAuthenticationFlow }
-                            data-componentid={ `${componentId}-update-button` }
-                        >
-                            { t("authenticationFlow:visualEditor.actions.update.label") }
-                        </Button>
-                    ) }
+                    { (!isAdaptiveAuthAvailable || !isConditionalAuthenticationEnabled || isScriptUpdateReadOnly)
+                        && (
+                            <Button
+                                color="primary"
+                                variant="contained"
+                                className="update-button"
+                                onClick={ () => onUpdate(authenticationSequence) }
+                                disabled={ !isValidAuthenticationFlow }
+                                data-componentid={ `${componentId}-update-button` }
+                            >
+                                { t("authenticationFlow:visualEditor.actions.update.label") }
+                            </Button>
+                        ) }
                 </ReactFlow>
             </div>
             { showAuthenticatorAddModal && (

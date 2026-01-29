@@ -36,7 +36,7 @@ import {
     EmphasizedSegment
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import moment from "moment";
+import dayjs from "dayjs";
 import React, {
     FormEvent,
     FunctionComponent,
@@ -121,10 +121,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
         setShowOrgDeleteConfirmationModal
     ] = useState(false);
 
-    const isOrgHandleFeatureEnabled: boolean = isFeatureEnabled(
-        featureConfig.organizations,
-        "organizations.orgHandle"
-    );
+    const isOrgHandleFeatureEnabled: boolean = isFeatureEnabled(featureConfig.organizations, "organizationHandle");
 
     const handleSubmit: (values: OrganizationResponseInterface) => Promise<void> = useCallback(
         async (values: OrganizationResponseInterface): Promise<void> => {
@@ -523,7 +520,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                         ) }
                                         type="text"
                                         readOnly={ true }
-                                        value={ moment(organization.created).format(
+                                        value={ dayjs(organization.created).format(
                                             "YYYY-MM-DD hh:mm:ss"
                                         ) }
                                         ariaLabel={ t(
@@ -545,7 +542,7 @@ export const OrganizationOverview: FunctionComponent<OrganizationOverviewPropsIn
                                         ) }
                                         type="text"
                                         readOnly={ true }
-                                        value={ moment(
+                                        value={ dayjs(
                                             organization.lastModified
                                         ).format("YYYY-MM-DD hh:mm:ss") }
                                         ariaLabel={ t(

@@ -65,7 +65,10 @@ interface ActionsDocumentationLinksInterface {
         preUpdateProfile: {
             learnMore: string;
         }
-    }
+    };
+    versioning: {
+        learnMore: string;
+    };
 }
 
 /**
@@ -161,6 +164,11 @@ interface ApplicationsDocumentationLinksInterface {
                     addAllRequestedClaimsInJWTAccessToken: {
                         documentationLink: string;
                     }
+                },
+                version300: {
+                    linkedLocalAccountAttributeHandling: {
+                        documentationLink: string;
+                    }
                 }
             }
         }
@@ -212,6 +220,7 @@ interface ApplicationsDocumentationLinksInterface {
         },
         signInMethod: {
             fido: string;
+            totp: string;
         };
         singlePageApplication: {
             quickStart: {

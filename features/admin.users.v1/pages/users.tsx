@@ -32,17 +32,21 @@ import { userstoresConfig } from "@wso2is/admin.extensions.v1";
 import { userConfig } from "@wso2is/admin.extensions.v1/configs";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
+import useGetFlowConfig from "@wso2is/admin.flow-builder-core.v1/api/use-get-flow-config";
+import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { getConnectorCategory } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
+import { useServerConfigs } from "@wso2is/admin.server-configurations.v1/api/server-config";
+import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorCategoryInterface,
     GovernanceConnectorInterface,
-    RealmConfigInterface,
-    ServerConfigurationsConstants,
-    getConnectorCategory,
-    useServerConfigs
-} from "@wso2is/admin.server-configurations.v1";
-import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants";
+    RealmConfigInterface
+} from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
+import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import {
     UserStoreItem,
@@ -157,8 +161,18 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const hasBulkUserImportCreatePermissions: boolean = useRequiredScopes(
         featureConfig?.bulkUserImport?.scopes?.create
     );
+    const usersDisabledFeatures: string[] = useSelector((state: AppState) =>
+        state?.config?.ui?.features?.users?.disabledFeatures || []
+    );
+    const isTotalUserCountFeatureDisabled: boolean = useMemo(() => {
+        return usersDisabledFeatures.includes("users.totalUserCount");
+    }, [ usersDisabledFeatures ]);
     const hasGuestUserCreatePermissions: boolean = useRequiredScopes(
         featureConfig?.guestUser?.scopes?.create
+    );
+
+    const { data: invitedUserRegistrationConfigs } = useGetFlowConfig(
+        FlowTypes.INVITED_USER_REGISTRATION
     );
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
@@ -185,6 +199,10 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const [ invitedUserListItemLimit, setInvitedUserListItemLimit ]
         = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ invitedUserListOffset, setInvitedUserListOffset ] = useState<number>(1);
+
+    const isLegacyFlowsEnabled: boolean = useSelector(
+        (state: AppState) => state.config.ui.flowExecution.enableLegacyFlows
+    );
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state?.profile?.profileSchemas);
     const systemReservedUserStores: string[] =
         useSelector((state: AppState) => state?.config?.ui?.systemReservedUserStores);
@@ -288,7 +306,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 if (
                     store.name.toUpperCase() !== userstoresConfig.primaryUserstoreName
                         && store.enabled
-                        && !systemReservedUserStores.includes(store.name)
+                        && !systemReservedUserStores?.includes(store.name)
                 ) {
                     const storeOption: UserStoreItem = {
                         disabled: store.typeName === RemoteUserStoreManagerType.RemoteUserStoreManager,
@@ -506,6 +524,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     };
 
     const usersList: UserListInterface = useMemo(() => transformUserList(originalUserList), [ originalUserList ]);
+    /**
+     * Extract total users count from API response
+     */
+    const totalUsers: number = useMemo(() => {
+        return originalUserList?.totalResults || 0;
+    }, [ originalUserList ]);
 
     /**
      * Resolves the attributes by which the users can be searched.
@@ -615,7 +639,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                     (property: ConnectorPropertyInterface) =>
                         property.name === ServerConfigurationsConstants.EMAIL_VERIFICATION_ENABLED);
 
-                setEmailVerificationEnabled(emailVerification.value === "true");
+                setEmailVerificationEnabled(emailVerification.value === "true" ||
+                    invitedUserRegistrationConfigs?.isEnabled);
             }).catch((error: AxiosError) => {
                 handleAlerts({
                     description: error?.response?.data?.description ?? t(
@@ -649,10 +674,47 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      *                     If `false`, allows filtering only by username (for invitation list).
      * @returns The search filter component.
      */
+    /**
+     * Filter condition options for user search including ge and le operators.
+     */
+    const userFilterConditionOptions: DropdownChild[] = [
+        {
+            key: 0,
+            text: t("common:startsWith"),
+            value: "sw"
+        },
+        {
+            key: 1,
+            text: t("common:endsWith"),
+            value: "ew"
+        },
+        {
+            key: 2,
+            text: t("common:contains"),
+            value: "co"
+        },
+        {
+            key: 3,
+            text: t("common:equals"),
+            value: "eq"
+        },
+        {
+            key: 4,
+            text: t("common:greaterThanOrEqual"),
+            value: "ge"
+        },
+        {
+            key: 5,
+            text: t("common:lessThanOrEqual"),
+            value: "le"
+        }
+    ];
+
     const advancedSearchFilter = (isUserList: boolean): ReactElement => (
         <AdvancedSearchWithBasicFilters
             onFilter={ handleUserFilter }
             filterAttributeOptions={ resolveFilterAttributeOptions(isUserList) }
+            filterConditionOptions={ userFilterConditionOptions }
             filterAttributePlaceholder={
                 t("users:advancedSearch.form.inputs.filterAttribute" +
                     ".placeholder")
@@ -668,6 +730,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             placeholder={ t("users:advancedSearch.placeholder") }
             defaultSearchAttribute="userName"
             defaultSearchOperator="co"
+            enableMultipleFilterConditions={ true }
             triggerClearQuery={ triggerClearQuery }
             disableSearchAndFilterOptions={ usersList?.totalResults <= 0 && !searchQuery }
         />
@@ -704,7 +767,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         { accountStatusFilter() }
                     </>
                 ) }
-                currentListSize={ usersList?.itemsPerPage }
+                currentListSize={ usersList?.Resources?.length }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 data-testid="user-mgt-user-list-layout"
@@ -722,7 +785,8 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 }
                 showPagination={ true }
                 totalPages={ resolveTotalPages() }
-                totalListSize={ usersList?.totalResults }
+                totalListSize={ totalUsers }
+                showTotalListSize={ !isTotalUserCountFeatureDisabled }
                 paginationOptions={ {
                     disableNextButton: !isNextPageAvailable,
                     showItemsPerPageDropdown:
@@ -925,6 +989,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 showPagination={ true }
                 totalPages={ resolveTotalPages() }
                 totalListSize={ finalGuestList?.length }
+                showTotalListSize={ !isTotalUserCountFeatureDisabled }
                 isLoading={
                     isUserListFetchRequestLoading
                     || isParentOrgUserInviteListLoading
@@ -1024,17 +1089,30 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                     { t("users:confirmations.addMultipleUser.message") }
                 </ConfirmationModal.Message>
                 <ConfirmationModal.Content>
-                    <Trans i18nKey="users:confirmations.addMultipleUser.content">
-                        Invite User to Set Password should be enabled to add multiple users.
-                        Please enable email invitations for user password setup from
-                        <Link
-                            onClick={ () => history.push(AppConstants.getPaths().get("GOVERNANCE_CONNECTOR_EDIT")
-                                .replace(":categoryId", ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
-                                .replace(":connectorId", ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID)) }
-                            external={ false }>
-                            Login & Registration settings
-                        </Link>
-                    </Trans>
+                    { isLegacyFlowsEnabled ? (
+                        <Trans i18nKey="users:confirmations.addMultipleUser.legacyContent">
+                            Invite User to Set Password should be enabled to add multiple users.
+                            Please enable email invitations for user password setup from
+                            <Link
+                                onClick={ () => history.push(AppConstants.getPaths().get("GOVERNANCE_CONNECTOR_EDIT")
+                                    .replace(":categoryId", ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
+                                    .replace(":connectorId", ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID)) }
+                                external={ false }>
+                                Login & Registration settings
+                            </Link>
+                        </Trans>
+                    ) : (
+                        <Trans i18nKey="users:confirmations.addMultipleUser.content">
+                            Invite User to Set Password should be enabled to add multiple users.
+                            Please enable user password setup invitations from the
+                            <Link
+                                onClick={ () => history.push(AppConstants.getPaths()
+                                    .get("INVITE_USER_PASSWORD_SETUP_FLOW_BUILDER")) }
+                                external={ false }>
+                                Invited User Registration Flow Builder.
+                            </Link>
+                        </Trans>
+                    ) }
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         );
@@ -1095,7 +1173,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 ) : renderUsersList()
             }
             {
-                showWizard && (
+                showWizard && !connectorConfigLoading && (
                     <AddUserWizard
                         data-componentid={ "user-mgt-add-user-wizard-modal" }
                         data-testid={ "user-mgt-add-user-wizard-modal" }

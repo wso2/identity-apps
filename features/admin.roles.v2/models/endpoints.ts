@@ -23,6 +23,7 @@ export interface RolesResourceEndpointsInterface {
     roles: string;
     // TODO: This need to be removed once the Role V2 endpoint is enabled.
     rolesV2: string;
+    rolesV3: string;
     permission: string;
     rolesWithoutOrgPath: string;
 }

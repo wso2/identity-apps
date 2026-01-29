@@ -21,20 +21,23 @@ import Box from "@oxygen-ui/react/Box";
 import Card from "@oxygen-ui/react/Card";
 import CardContent from "@oxygen-ui/react/CardContent";
 import Divider from "@oxygen-ui/react/Divider";
+import FormHelperText from "@oxygen-ui/react/FormHelperText";
 import Grid from "@oxygen-ui/react/Grid";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
+import loadStaticResource from "@wso2is/admin.core.v1/utils/load-static-resource";
 import {
     CommonResourcePropertiesPropsInterface
 } from "@wso2is/admin.flow-builder-core.v1/components/resource-property-panel/resource-properties";
 // eslint-disable-next-line max-len
 import useAuthenticationFlowBuilderCore from "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
+import useValidationStatus from "@wso2is/admin.flow-builder-core.v1/hooks/use-validation-status";
 import { Element } from "@wso2is/admin.flow-builder-core.v1/models/elements";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import isEqual from "lodash-es/isEqual";
 import omit from "lodash-es/omit";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import useGetRegistrationFlowCoreActions from "../../../api/use-get-registration-flow-builder-actions";
 import "./button-extended-properties.scss";
 
@@ -57,6 +60,20 @@ const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsI
 }: ButtonExtendedPropertiesPropsInterface): ReactElement => {
     const { data: actions } = useGetRegistrationFlowCoreActions();
     const { lastInteractedResource, setLastInteractedResource } = useAuthenticationFlowBuilderCore();
+    const { selectedNotification } = useValidationStatus();
+
+    /**
+     * Get the error message for the identifier field.
+     */
+    const errorMessage: string = useMemo(() => {
+        const key: string = `${resource?.id}_action`;
+
+        if (selectedNotification?.hasResourceFieldNotification(key)) {
+            return selectedNotification?.getResourceFieldNotification(key);
+        }
+
+        return "";
+    }, [ resource, selectedNotification ]);
 
     return (
         <Stack className="button-extended-properties" gap={ 2 } data-componentid={ componentId }>
@@ -92,6 +109,7 @@ const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsI
                                 >
                                     <Card
                                         className={ classNames("extended-property action-type", {
+                                            error: !!errorMessage,
                                             selected: isEqual(
                                                 omit((lastInteractedResource as Element)?.action, "next"),
                                                 actionType.action
@@ -103,7 +121,7 @@ const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsI
                                             <Box display="flex" flexDirection="row" gap={ 1 } alignItems="center">
                                                 <Avatar
                                                     className="action-type-icon"
-                                                    src={ actionType?.display?.image }
+                                                    src={ loadStaticResource(actionType?.display?.image) }
                                                     variant="rounded"
                                                 />
                                                 <Typography variant="body2" className="action-type-name">
@@ -117,6 +135,13 @@ const ButtonExtendedProperties: FunctionComponent<ButtonExtendedPropertiesPropsI
                         </Grid>
                     </Box>
                 )) }
+                {
+                    errorMessage && (
+                        <FormHelperText error>
+                            { errorMessage }
+                        </FormHelperText>
+                    )
+                }
             </div>
             <Divider />
         </Stack>

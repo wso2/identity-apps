@@ -55,6 +55,10 @@ export interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableCo
      */
     disableSearchFilterDropdown?: boolean;
     /**
+     * Enable appending multiple filter conditions with AND operation.
+     */
+    enableMultipleFilterConditions?: boolean;
+    /**
      * Position of the search dropdown.
      */
     dropdownPosition?: AdvancedSearchPropsInterface["dropdownPosition"];
@@ -111,6 +115,10 @@ export interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableCo
      */
     predefinedDefaultSearchStrategy?: string;
     /**
+     * Enable recursive search option checkbox
+     */
+    recursiveSearch?: boolean;
+    /**
      * Custom CSS styles for main text input box.
      */
     style?: CSSProperties | undefined;
@@ -122,6 +130,10 @@ export interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableCo
      * Reset button text.
      */
     resetButtonLabel?: string;
+    /**
+     * Reset recursive search state.
+     */
+    resetRecursiveSearchState?: () => void;
     /**
      * Show reset button flag.
      */
@@ -164,6 +176,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
         defaultSearchOperator,
         disableSearchFilterDropdown,
         dropdownPosition,
+        enableMultipleFilterConditions,
         enableQuerySearch,
         fill,
         filterAttributeOptions,
@@ -178,6 +191,8 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
         getQuery,
         placeholder,
         predefinedDefaultSearchStrategy,
+        recursiveSearch,
+        resetRecursiveSearchState,
         resetButtonLabel,
         showResetButton,
         style,
@@ -192,6 +207,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
     const [ isFormSubmitted, setIsFormSubmitted ] = useState<boolean>(false);
     const [ isFiltersReset, setIsFiltersReset ] = useState<boolean>(false);
     const [ externalSearchQuery, setExternalSearchQuery ] = useState<string>("");
+
     const sessionTimedOut: boolean = React.useContext(SessionTimedOutContext);
     const formRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
     const [ filterGroups, setFilterGroups ] = useState([
@@ -235,11 +251,18 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
         if (customQuery !== null) {
             query = customQuery;
         } else {
-            query = values.get(AdvanceSearchConstants.FILTER_ATTRIBUTE_FIELD_IDENTIFIER)
+            const newCondition: string = values.get(AdvanceSearchConstants.FILTER_ATTRIBUTE_FIELD_IDENTIFIER)
                     + " "
                     + values.get(AdvanceSearchConstants.FILTER_CONDITION_FIELD_IDENTIFIER)
                     + " "
                     + values?.get(AdvanceSearchConstants.FILTER_VALUES_FIELD_IDENTIFIER);
+
+            // If multiple filter conditions is enabled and there's an existing query, append with AND
+            if (enableMultipleFilterConditions && externalSearchQuery && externalSearchQuery.trim() !== "") {
+                query = externalSearchQuery + " and " + newCondition;
+            } else {
+                query = newCondition;
+            }
         }
         setExternalSearchQuery(query);
         onFilter(query);
@@ -274,6 +297,10 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
      */
     const handleExternalSearchQueryClear = (): void => {
         setExternalSearchQuery("");
+
+        if (resetRecursiveSearchState) {
+            resetRecursiveSearchState();
+        }
     };
 
     /**
@@ -464,6 +491,21 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                 />
                             </Form.Group>
                             <Divider hidden/>
+                            { recursiveSearch && (
+                                <>
+                                    <Form.Group>
+                                        <Field
+                                            label={ t("console:common.advancedSearch.form.inputs" +
+                                                ".filterRecursiveToggle.label") }
+                                            name={ AdvanceSearchConstants.FILTER_RECURSIVE_FIELD_IDENTIFIER }
+                                            type="toggle"
+                                            defaultChecked="true"
+                                            data-componentid={ `${ testId }-filter-recursive` }
+                                        />
+                                    </Form.Group>
+                                    <Divider hidden/>
+                                </>
+                            ) }
                             <Form.Group inline>
                                 <PrimaryButton
                                     size="small"
@@ -502,6 +544,7 @@ AdvancedSearchWithBasicFilters.defaultProps = {
     "data-testid": "advanced-search",
     disableSearchFilterDropdown: false,
     dropdownPosition: "bottom right",
+    enableMultipleFilterConditions: false,
     enableQuerySearch: commonConfig?.advancedSearchWithBasicFilters?.enableQuerySearch,
     showResetButton: false
 };

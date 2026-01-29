@@ -1,5 +1,11 @@
 # @wso2is/access-control
 
+## 3.5.0
+
+### Minor Changes
+
+- [#9288](https://github.com/wso2/identity-apps/pull/9288) [`792e6851be17a77111319ef1978263b76723238c`](https://github.com/wso2/identity-apps/commit/792e6851be17a77111319ef1978263b76723238c) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Implement sub feature config support in deployment configuration
+
 ## 3.4.1
 
 ### Patch Changes

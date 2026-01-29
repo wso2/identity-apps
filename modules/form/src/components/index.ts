@@ -20,16 +20,24 @@ export * from "./adapters/__DEPRECATED__adapters";
 export * from "./adapters/text-field-adapter";
 export * from "./adapters/url-field-adapter";
 export * from "./adapters/file-picker-adapter";
-export * from "./adapters/select-field-adapter";
+export * from "./adapters/__DEPRECATED__select-field-adapter";
 export * from "./adapters/checkbox-field-adapter";
+export * from "./adapters/checkbox-group-field-adapter";
+export * from "./adapters/checkbox-field-adapter";
+export * from "./adapters/switch-field-adapter";
+export * from "./adapters/date-picker-field-adapter";
 
 export { default as TextFieldAdapter } from "./adapters/text-field-adapter";
+export { default as __DEPRECATED__SelectFieldAdapter } from "./adapters/__DEPRECATED__select-field-adapter";
 export { default as SelectFieldAdapter } from "./adapters/select-field-adapter";
 export { default as AutocompleteFieldAdapter } from "./adapters/autocomplete-field-adapter";
 export { default as URLFieldAdapter } from "./adapters/url-field-adapter";
 export { default as CheckboxFieldAdapter } from "./adapters/checkbox-field-adapter";
+export { default as CheckboxGroupFieldAdapter } from "./adapters/checkbox-group-field-adapter";
+export { default as SwitchFieldAdapter } from "./adapters/switch-field-adapter";
 export { default as FilePickerAdapter } from "./adapters/file-picker-adapter";
 export { default as RadioGroupFieldAdapter } from "./adapters/radio-group-field-adapter";
+export { default as DatePickerFieldAdapter } from "./adapters/date-picker-field-adapter";
 
 export * from "./field";
 export * from "./field-button";
@@ -50,9 +58,14 @@ export * from "./wizardPage";
 // Export react-final-form components with a different name.
 export { Form as FinalForm } from "react-final-form";
 export { Field as FinalFormField } from "react-final-form";
-export { FormRenderProps } from "react-final-form";
 export { FormSpy } from "react-final-form";
-export { FormProps } from "react-final-form";
+
+// Import types from react-final-form
+import type { FormProps as ReactFinalFormProps, FormRenderProps as ReactFinalFormRenderProps } from "react-final-form";
+
+// Re-export types
+export type FormProps = ReactFinalFormProps;
+export type FormRenderProps = ReactFinalFormRenderProps;
 
 export * from "final-form";
 export * as ReactFinalForm from "react-final-form";

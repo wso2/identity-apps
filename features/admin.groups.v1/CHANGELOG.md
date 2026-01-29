@@ -1,5 +1,91 @@
 # @wso2is/admin.groups.v1
 
+## 2.27.127
+
+### Patch Changes
+
+- [#9428](https://github.com/wso2/identity-apps/pull/9428) [`a843ee5cbd53e9d2c0918ac6790dbbb7ef52d438`](https://github.com/wso2/identity-apps/commit/a843ee5cbd53e9d2c0918ac6790dbbb7ef52d438) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Fix errors in XACML policy update in console and introduce policy order field
+
+- Updated dependencies [[`a843ee5cbd53e9d2c0918ac6790dbbb7ef52d438`](https://github.com/wso2/identity-apps/commit/a843ee5cbd53e9d2c0918ac6790dbbb7ef52d438)]:
+  - @wso2is/i18n@2.30.56
+
+## 2.27.126
+
+### Patch Changes
+
+- [#9366](https://github.com/wso2/identity-apps/pull/9366) [`d87ae1a2408120ed149b22f69851c3a79a579e29`](https://github.com/wso2/identity-apps/commit/d87ae1a2408120ed149b22f69851c3a79a579e29) Thanks [@s-vamshi](https://github.com/s-vamshi)! - Replaced **Moment.js** with **day.js** in `console` and `myaccount` apps to reduce bundle size and improve performance
+
+- Updated dependencies [[`d87ae1a2408120ed149b22f69851c3a79a579e29`](https://github.com/wso2/identity-apps/commit/d87ae1a2408120ed149b22f69851c3a79a579e29)]:
+  - @wso2is/admin.authorization.v1@2.25.90
+  - @wso2is/admin.organizations.v1@2.27.11
+  - @wso2is/admin.applications.v1@2.38.7
+  - @wso2is/admin.extensions.v1@2.40.10
+  - @wso2is/admin.userstores.v1@2.27.40
+  - @wso2is/admin.roles.v2@2.27.257
+  - @wso2is/admin.users.v1@2.36.62
+  - @wso2is/admin.core.v1@2.49.95
+
+## 2.27.125
+
+### Patch Changes
+
+- [#9330](https://github.com/wso2/identity-apps/pull/9330) [`c06595150af8b9756f5d165c0b534dbef4341ce5`](https://github.com/wso2/identity-apps/commit/c06595150af8b9756f5d165c0b534dbef4341ce5) Thanks [@mmafrar](https://github.com/mmafrar)! - fix: Remove index files in `@wso2is/common.userstores.v1` package
+
+- Updated dependencies [[`83c0f480bd104adb25b519b6137c49d6642f6723`](https://github.com/wso2/identity-apps/commit/83c0f480bd104adb25b519b6137c49d6642f6723), [`c06595150af8b9756f5d165c0b534dbef4341ce5`](https://github.com/wso2/identity-apps/commit/c06595150af8b9756f5d165c0b534dbef4341ce5)]:
+  - @wso2is/i18n@2.30.52
+  - @wso2is/admin.applications.v1@2.38.4
+  - @wso2is/admin.extensions.v1@2.40.8
+  - @wso2is/admin.userstores.v1@2.27.39
+  - @wso2is/admin.roles.v2@2.27.251
+  - @wso2is/admin.users.v1@2.36.56
+  - @wso2is/admin.core.v1@2.49.89
+
+## 2.27.124
+
+### Patch Changes
+
+- [#9279](https://github.com/wso2/identity-apps/pull/9279) [`4c0e8530931a622f1ba0650d1b8728d63b0fba13`](https://github.com/wso2/identity-apps/commit/4c0e8530931a622f1ba0650d1b8728d63b0fba13) Thanks [@mmafrar](https://github.com/mmafrar)! - fix: Remove index files in `@wso2is/admin.roles.v2` package
+
+- Updated dependencies [[`4c0e8530931a622f1ba0650d1b8728d63b0fba13`](https://github.com/wso2/identity-apps/commit/4c0e8530931a622f1ba0650d1b8728d63b0fba13)]:
+  - @wso2is/admin.applications.v1@2.37.15
+  - @wso2is/admin.roles.v2@2.27.237
+  - @wso2is/admin.users.v1@2.36.42
+  - @wso2is/admin.core.v1@2.49.75
+
+## 2.27.123
+
+### Patch Changes
+
+- [#8610](https://github.com/wso2/identity-apps/pull/8610) [`86a1c84f5ad6986d1398cd8f0d03918d1e73d766`](https://github.com/wso2/identity-apps/commit/86a1c84f5ad6986d1398cd8f0d03918d1e73d766) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add roles v3 changes.
+
+- Updated dependencies [[`86a1c84f5ad6986d1398cd8f0d03918d1e73d766`](https://github.com/wso2/identity-apps/commit/86a1c84f5ad6986d1398cd8f0d03918d1e73d766)]:
+  - @wso2is/admin.roles.v2@2.27.175
+  - @wso2is/admin.users.v1@2.34.3
+  - @wso2is/admin.core.v1@2.46.41
+
+## 2.27.122
+
+### Patch Changes
+
+- [#8551](https://github.com/wso2/identity-apps/pull/8551) [`6c6bee5696d3e1f675cfbb3bc1df4e5694ea0aaa`](https://github.com/wso2/identity-apps/commit/6c6bee5696d3e1f675cfbb3bc1df4e5694ea0aaa) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Hide system reserved user stores in groups list & other minor bug fixes
+
+- Updated dependencies [[`6c6bee5696d3e1f675cfbb3bc1df4e5694ea0aaa`](https://github.com/wso2/identity-apps/commit/6c6bee5696d3e1f675cfbb3bc1df4e5694ea0aaa)]:
+  - @wso2is/admin.users.v1@2.33.9
+  - @wso2is/admin.core.v1@2.46.14
+
+## 2.27.121
+
+### Patch Changes
+
+- [#8540](https://github.com/wso2/identity-apps/pull/8540) [`da3d9e07eb5b80dac59bde32117c86e77b29f9d5`](https://github.com/wso2/identity-apps/commit/da3d9e07eb5b80dac59bde32117c86e77b29f9d5) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - UI improvements to agent management
+
+- Updated dependencies [[`da3d9e07eb5b80dac59bde32117c86e77b29f9d5`](https://github.com/wso2/identity-apps/commit/da3d9e07eb5b80dac59bde32117c86e77b29f9d5)]:
+  - @wso2is/admin.userstores.v1@2.27.37
+  - @wso2is/admin.roles.v2@2.27.161
+  - @wso2is/admin.users.v1@2.33.8
+  - @wso2is/i18n@2.24.16
+  - @wso2is/admin.core.v1@2.46.12
+
 ## 2.27.120
 
 ### Patch Changes

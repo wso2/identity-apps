@@ -58,10 +58,12 @@
             }
         }
         if (!isErrorMessageFromErrorCodeAdded && request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
-            errorMessage = Encode.forHtmlAttribute(request.getParameter(Constants.AUTH_FAILURE_MSG));
-             if (errorMessage.equalsIgnoreCase("authentication.fail.message") ||
-                     errorMessage.equalsIgnoreCase("login.fail.message")) {
+            String error = Encode.forHtmlAttribute(request.getParameter(Constants.AUTH_FAILURE_MSG));
+             if (error.equalsIgnoreCase("authentication.fail.message") ||
+                     error.equalsIgnoreCase("login.fail.message")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle,"error.retry");
+            } else if (!error.equalsIgnoreCase(AuthenticationEndpointUtil.i18n(resourceBundle, error))) {
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, error);
             }
         }
     }

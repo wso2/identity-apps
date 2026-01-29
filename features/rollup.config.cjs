@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -49,7 +49,6 @@ module.exports = [
             "./admin.application-templates.v1/public-api.ts",
             "./admin.applications.v1/public-api.ts",
             "./admin.authentication.v1/public-api.ts",
-            "./admin.authorization.v1/public-api.ts",
             "./admin.branding.v1/public-api.ts",
             "./admin.certificates.v1/public-api.ts",
             "./admin.claims.v1/public-api.ts",
@@ -86,9 +85,11 @@ module.exports = [
             "./admin.users.v1/public-api.ts",
             "./admin.userstores.v1/public-api.ts",
             "./admin.validation.v1/public-api.ts",
-            "./admin.workflow-approvals.v1/public-api.ts",
             "./admin.wsfed-configuration.v1/public-api.ts",
-            "./admin.approval-workflows.v1/public-api.ts"
+            "./admin.approval-workflows.v1/public-api.ts",
+            "./common.ui.profile.v1/public-api.ts",
+            "./common.ui.shared-access.v1/public-api.ts",
+            "./common.workflow-approvals.v1/public-api.ts"
         ],
         onwarn,
         output: [
@@ -126,7 +127,6 @@ module.exports = [
                         "./admin.applications.v1": "./admin.applications.v1/public-api.js",
                         "./admin.approval-workflows.v1": "./admin.approval-workflows.v1/public-api.js",
                         "./admin.authentication.v1": "./admin.authentication.v1/public-api.js",
-                        "./admin.authorization.v1": "./admin.authorization.v1/public-api.js",
                         "./admin.branding.v1": "./admin.branding.v1/public-api.js",
                         "./admin.certificates.v1": "./admin.certificates.v1/public-api.js",
                         "./admin.claims.v1": "./admin.claims.v1/public-api.js",
@@ -165,9 +165,10 @@ module.exports = [
                         "./admin.users.v1": "./admin.users.v1/public-api.js",
                         "./admin.userstores.v1": "./admin.userstores.v1/public-api.js",
                         "./admin.validation.v1": "./admin.validation.v1/public-api.js",
-                        "./admin.workflow-approvals.v1":
-                            "./admin.workflow-approvals.v1/public-api.js",
-                        "./admin.wsfed-configuration.v1": "./admin.wsfed-configuration.v1/public-api.js"
+                        "./admin.wsfed-configuration.v1": "./admin.wsfed-configuration.v1/public-api.js",
+                        "./common.ui.profile.v1": "./common.ui.profile.v1/public-api.ts",
+                        "./common.ui.shared-access.v1": "./common.ui.shared-access.v1/public-api.js",
+                        "./common.workflow-approvals.v1": "./common.workflow-approvals.v1/public-api.js"
                     },
                     main: "./index.js",
                     module: "./index.js",

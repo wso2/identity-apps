@@ -25,10 +25,12 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
-import { getGovernanceConnectors } from "@wso2is/admin.server-configurations.v1/api";
-import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants";
+import { getGovernanceConnectors } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
+import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import { ConnectorPropertyInterface, GovernanceConnectorInterface }
-    from "@wso2is/admin.server-configurations.v1/models";
+    from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import { getUserDetails, updateUserInfo } from "@wso2is/admin.users.v1/api/users";
 import { EditUser } from "@wso2is/admin.users.v1/components/edit-user";
 import { UserManagementConstants } from "@wso2is/admin.users.v1/constants/user-management-constants";
@@ -385,9 +387,9 @@ const ConsoleAdministratorsEditPage: FunctionComponent<ConsoleAdministratorsEdit
                                                     }
                                                 >
                                                     It seems like the selected email is not registered on Gravatar.
-                                                    Sign up for a Gravatar account by visiting
-                                                    <a href="https://www.gravatar.com"> Gravatar Official Website</a>
-                                                    or use one of the following.
+                                                    Sign up for a Gravatar account by visiting&nbsp;
+                                                    <a href="https://www.gravatar.com">Gravatar Official Website</a>
+                                                    &nbsp;or use one of the following.
                                                 </Trans>
                                             ),
                                             header: t("console:common.modals.editAvatarModal.content.gravatar.errors" +

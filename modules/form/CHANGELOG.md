@@ -1,5 +1,44 @@
 # @wso2is/form
 
+## 2.9.3
+
+### Patch Changes
+
+- [#9463](https://github.com/wso2/identity-apps/pull/9463) [`471a2ae0e7e95d2376af1e0b325b12efa4e5ced6`](https://github.com/wso2/identity-apps/commit/471a2ae0e7e95d2376af1e0b325b12efa4e5ced6) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - Use dayjs adapter in date picker field adapter
+
+## 2.9.2
+
+### Patch Changes
+
+- [#9404](https://github.com/wso2/identity-apps/pull/9404) [`397c2f51b54805883a12e776f633ab40b9bfe2eb`](https://github.com/wso2/identity-apps/commit/397c2f51b54805883a12e776f633ab40b9bfe2eb) Thanks [@s-vamshi](https://github.com/s-vamshi)! - Replaced **Moment.js** with **day.js** in modules directory to reduce bundle size and improve performance
+
+- Updated dependencies [[`397c2f51b54805883a12e776f633ab40b9bfe2eb`](https://github.com/wso2/identity-apps/commit/397c2f51b54805883a12e776f633ab40b9bfe2eb), [`b97d714aa9bb358b77baed6446d6761aa99a7cb6`](https://github.com/wso2/identity-apps/commit/b97d714aa9bb358b77baed6446d6761aa99a7cb6)]:
+  - @wso2is/react-components@2.9.24
+  - @wso2is/core@2.12.4
+
+## 2.9.1
+
+### Patch Changes
+
+- [#9118](https://github.com/wso2/identity-apps/pull/9118) [`4975f1232482847ddc0496b85ca54b505bf6a8a4`](https://github.com/wso2/identity-apps/commit/4975f1232482847ddc0496b85ca54b505bf6a8a4) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Introduce date picker field support for user profile UIs
+
+## 2.9.0
+
+### Minor Changes
+
+- [#8509](https://github.com/wso2/identity-apps/pull/8509) [`c3debfc1bfab856c701eda6df14b097c7b296cae`](https://github.com/wso2/identity-apps/commit/c3debfc1bfab856c701eda6df14b097c7b296cae) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Introduce new form field adapters
+
+### Patch Changes
+
+- Updated dependencies [[`c3debfc1bfab856c701eda6df14b097c7b296cae`](https://github.com/wso2/identity-apps/commit/c3debfc1bfab856c701eda6df14b097c7b296cae)]:
+  - @wso2is/core@2.10.0
+
+## 2.8.1
+
+### Patch Changes
+
+- [#8518](https://github.com/wso2/identity-apps/pull/8518) [`542afdfe17cf91bef172e141de787436f9f59d7e`](https://github.com/wso2/identity-apps/commit/542afdfe17cf91bef172e141de787436f9f59d7e) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Introduce improved `SelectFieldAdapter` component
+
 ## 2.8.0
 
 ### Minor Changes

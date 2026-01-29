@@ -21,7 +21,7 @@ import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { sortList } from "@wso2is/admin.core.v1/utils/sort-list";
-import { UserStoresList } from "@wso2is/admin.userstores.v1/components";
+import { UserStoresList } from "@wso2is/admin.userstores.v1/components/user-stores-list";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { TestableComponentInterface } from "@wso2is/core/models";
@@ -76,6 +76,8 @@ const RemoteUserStoresPage: FunctionComponent<RemoteUserStoresPagePropsInterface
     ];
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const systemReservedUserStores: string[] = useSelector((state: AppState) =>
+        state?.config?.ui?.systemReservedUserStores);
 
     const [ userStores, setUserStores ] = useState<UserStoreListItem[]>([]);
     const [ offset, setOffset ] = useState(0);
@@ -107,7 +109,9 @@ const RemoteUserStoresPage: FunctionComponent<RemoteUserStoresPagePropsInterface
         }
 
         const userStores: UserStoreListItem[] = originalUserStoreList.filter(
-            (userStore: UserStoreListItem) => userStore.id !== RemoteUserStoreConstants.CUSTOMER_USERSTORE_ID
+            (userStore: UserStoreListItem) =>
+                userStore.id !== RemoteUserStoreConstants.CUSTOMER_USERSTORE_ID &&
+                !systemReservedUserStores?.includes(userStore?.name)
         );
 
         setUserStores(userStores);

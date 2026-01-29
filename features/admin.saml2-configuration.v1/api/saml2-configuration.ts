@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -59,6 +59,44 @@ export const useSaml2Config = <
         isValidating,
         mutate: mutate
     };
+};
+
+/**
+ * Revert saml2 configurations.
+ *
+ * @returns a promise to revert the saml2 configurations.
+ */
+export const revertSaml2Configurations = (): Promise<void> => {
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.DELETE,
+        url: Config.getServiceResourceEndpoints().saml2Configurations
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 204) {
+                throw new IdentityAppsApiException(
+                    Saml2ConfigurationConstants.ErrorMessages
+                        .SAML2_CONFIG_REVERT_INVALID_STATUS_CODE_ERROR_CODE.getErrorMessage(),
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve();
+        }).catch((error: AxiosError) => {
+            const errorMessage: string = Saml2ConfigurationConstants.ErrorMessages
+                .SAML2_CONFIG_REVERT_ERROR_CODE.getErrorMessage();
+
+            throw new IdentityAppsApiException(errorMessage, error.stack, error.response?.data?.code, error.request,
+                error.response, error.config);
+        });
 };
 
 /**

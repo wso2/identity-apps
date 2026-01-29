@@ -189,6 +189,10 @@ export class AppConstants {
         .set("SECURITY_ACCOUNT_RECOVERY", "security.accountRecovery")
         .set("SECURITY_ACCOUNT_RECOVERY_CHALLENGE_QUESTIONS", "security.accountRecovery.challengeQuestions")
         .set("SECURITY_ACCOUNT_RECOVERY_EMAIL_RECOVERY", "security.accountRecovery.emailRecovery")
+        .set(
+            "SECURITY_ACCOUNT_RECOVERY_LEGACY_RECOVERY_METHOD_STATUS_CHECK",
+            "security.accountRecovery.legacyRecoveryMethodStatusCheck"
+        )
         .set("SECURITY_MFA", "security.mfa")
         .set("SECURITY_MFA_SMS", "security.mfa.sms")
         .set("SECURITY_MFA_FIDO", "security.mfa.fido")
@@ -198,7 +202,8 @@ export class AppConstants {
         .set("SECURITY_ACTIVE_SESSIONS", "security.activeSessions")
         .set("SECURITY_CONSENTS", "security.manageConsents")
         .set("SECURITY_LOGIN_VERIFY_DATA", "security.loginVerifyData")
-        .set("SECURITY_LOGIN_VERIFY_DATA_TYPINGDNA", "security.loginVerifyData.typingDNA");
+        .set("SECURITY_LOGIN_VERIFY_DATA_TYPINGDNA", "security.loginVerifyData.typingDNA")
+        .set("LEGACY_FLOWS", "legacyFlows");
 
     /**
      * Get all the app paths as a map.
@@ -210,6 +215,7 @@ export class AppConstants {
         return new Map<string, string>()
             .set("ACCESS_DENIED_ERROR", `${ this.getMainViewBasePath() }/access-denied-error`)
             .set("APPLICATIONS", `${ this.getMainViewBasePath() }/applications`)
+            .set("APPROVALS", `${ this.getMainViewBasePath() }/approvals`)
             .set("LOGIN", window[ "AppUtils" ].getConfig().routes.login)
             .set("LOGOUT", window[ "AppUtils" ].getConfig().routes.logout)
             .set("LOGIN_ERROR", `${ this.getMainViewBasePath() }/login-error`)

@@ -1,5 +1,56 @@
 # @wso2is/admin.feature-gate.v1
 
+## 1.7.10
+
+### Patch Changes
+
+- [#9550](https://github.com/wso2/identity-apps/pull/9550) [`b41960bcdbf7454020a3466d745d80bcc0e4cc05`](https://github.com/wso2/identity-apps/commit/b41960bcdbf7454020a3466d745d80bcc0e4cc05) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add verifiable credentials management UI
+
+- Updated dependencies [[`b41960bcdbf7454020a3466d745d80bcc0e4cc05`](https://github.com/wso2/identity-apps/commit/b41960bcdbf7454020a3466d745d80bcc0e4cc05)]:
+  - @wso2is/admin.core.v1@2.49.125
+
+## 1.7.9
+
+### Patch Changes
+
+- [#9468](https://github.com/wso2/identity-apps/pull/9468) [`cde3e581d475f5fc3fea5295c53fc1925b3eaeb4`](https://github.com/wso2/identity-apps/commit/cde3e581d475f5fc3fea5295c53fc1925b3eaeb4) Thanks [@ImalshaD](https://github.com/ImalshaD)! - Add Pre Issue ID Token action
+
+- Updated dependencies [[`cde3e581d475f5fc3fea5295c53fc1925b3eaeb4`](https://github.com/wso2/identity-apps/commit/cde3e581d475f5fc3fea5295c53fc1925b3eaeb4)]:
+  - @wso2is/admin.core.v1@2.49.110
+
+## 1.7.8
+
+### Patch Changes
+
+- [#9461](https://github.com/wso2/identity-apps/pull/9461) [`6b4e8896dee1319f2abfbf6ea618f3bb48073a17`](https://github.com/wso2/identity-apps/commit/6b4e8896dee1319f2abfbf6ea618f3bb48073a17) Thanks [@ThaminduR](https://github.com/ThaminduR)! - Add feature gate integration for conditional auth scripts
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.108
+
+## 1.7.7
+
+### Patch Changes
+
+- [#9125](https://github.com/wso2/identity-apps/pull/9125) [`c54e1c5fa53794bb4347eb29711fb6d14da2c056`](https://github.com/wso2/identity-apps/commit/c54e1c5fa53794bb4347eb29711fb6d14da2c056) Thanks [@PasinduYeshan](https://github.com/PasinduYeshan)! - Add feature flags for workflow feature
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.46
+
+## 1.7.6
+
+### Patch Changes
+
+- [#8511](https://github.com/wso2/identity-apps/pull/8511) [`90acfab75f677280eb39db0fc26d4e8e63024985`](https://github.com/wso2/identity-apps/commit/90acfab75f677280eb39db0fc26d4e8e63024985) Thanks [@pavinduLakshan](https://github.com/pavinduLakshan)! - UI improvements to the agents feature
+
+- Updated dependencies [[`90acfab75f677280eb39db0fc26d4e8e63024985`](https://github.com/wso2/identity-apps/commit/90acfab75f677280eb39db0fc26d4e8e63024985)]:
+  - @wso2is/admin.core.v1@2.46.7
+
+## 1.7.5
+
+### Patch Changes
+
+- [#8501](https://github.com/wso2/identity-apps/pull/8501) [`14a8747910ed801671508c60c5769781fa022674`](https://github.com/wso2/identity-apps/commit/14a8747910ed801671508c60c5769781fa022674) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Disable the AI-generation template of registration flow builder
+
 ## 1.7.4
 
 ### Patch Changes

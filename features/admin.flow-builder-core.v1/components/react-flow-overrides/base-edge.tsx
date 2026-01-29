@@ -44,6 +44,7 @@ const BaseEdge: FunctionComponent<BaseEdgePropsInterface> = ({
     label,
     style,
     selected,
+    deletable,
     ...rest
 }: BaseEdgePropsInterface): ReactElement => {
     const { deleteElements } = useReactFlow();
@@ -111,7 +112,7 @@ const BaseEdge: FunctionComponent<BaseEdgePropsInterface> = ({
                         className="edge-label-renderer__deletable-edge nodrag nopan"
                     >
                         { label }
-                        { isEdgeSelected && (
+                        { isEdgeSelected && deletable && (
                             <div
                                 className="edge-delete-button"
                                 onClick={ handleDelete }

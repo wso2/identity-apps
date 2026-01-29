@@ -21,7 +21,10 @@ import React from "react";
 
 import ButtonFieldAdapter from "./adapters/button-field-adapter";
 import CaptchaWidgetAdapter from "./adapters/captcha-widget-adapter";
+import ImageFieldAdapter from "./adapters/image-field-adapter";
 import InputFieldAdapter from "./adapters/input-field-adapter";
+import ResendButtonAdapter from "./adapters/resend-button-adapter";
+import RichTextAdapter from "./adapters/rich-text-field-adapter";
 import TypographyAdapter from "./adapters/typography-field-adapter";
 import DividerAdapter from "./divider";
 
@@ -34,9 +37,13 @@ const Field = ({
     recaptchaRef
 }) => {
 
+    const isDisabled = formState &&Object.keys(formState.errors).length > 0;
+
     switch (component.type) {
         case "TYPOGRAPHY":
             return <TypographyAdapter component={ component } />;
+        case "RICH_TEXT":
+            return <RichTextAdapter component={ component } />;
         case "INPUT":
             return (
                 <InputFieldAdapter
@@ -47,11 +54,21 @@ const Field = ({
                 />
             );
         case "BUTTON":
-            return <ButtonFieldAdapter component={ component } handleButtonAction={ flowActionHandler } />;
+            return (
+                <ButtonFieldAdapter
+                    component={ component }
+                    handleButtonAction={ flowActionHandler }
+                    isDisabled={ isDisabled }
+                />
+            );
         case "DIVIDER":
             return <DividerAdapter component={ component } />;
         case "CAPTCHA":
             return <CaptchaWidgetAdapter component={ component } ref={ recaptchaRef } />;
+        case "IMAGE":
+            return <ImageFieldAdapter component={ component } />;
+        case "RESEND":
+            return  <ResendButtonAdapter component={ component } handleButtonAction={ flowActionHandler } />;
         default:
             return (
                 <InputFieldAdapter
@@ -70,6 +87,7 @@ Field.propTypes = {
     formFieldError: PropTypes.func,
     formState: PropTypes.object,
     formStateHandler: PropTypes.func,
+    recaptchaRef: PropTypes.object,
     setRecaptchaRef: PropTypes.func
 };
 

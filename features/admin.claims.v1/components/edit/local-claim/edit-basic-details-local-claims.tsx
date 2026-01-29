@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
 import IconButton from "@oxygen-ui/react/IconButton";
 import Paper from "@oxygen-ui/react/Paper";
 import Table from "@oxygen-ui/react/Table";
@@ -33,17 +34,22 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import { getConnectorDetails } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
+import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface,
-    GovernanceConnectorInterface,
-    ServerConfigurationsConstants,
-    getConnectorDetails } from "@wso2is/admin.server-configurations.v1";
+    GovernanceConnectorInterface } from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import { getProfileSchemas } from "@wso2is/admin.users.v1/api";
+import { UserFeatureDictionaryKeys, UserManagementConstants } from "@wso2is/admin.users.v1/constants";
 import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-management-utils";
+import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
@@ -52,6 +58,7 @@ import {
     ClaimDialect,
     ClaimInputFormat,
     ExternalClaim,
+    LabelValue,
     ProfileSchemaInterface,
     SharedProfileValueResolvingMethod,
     TestableComponentInterface,
@@ -59,7 +66,6 @@ import {
 } from "@wso2is/core/models";
 import { Property } from "@wso2is/core/src/models";
 import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
-
 import { Field, Form } from "@wso2is/form";
 import { DropDownItemInterface } from "@wso2is/form/src";
 import { DynamicField , KeyValue } from "@wso2is/forms";
@@ -86,13 +92,13 @@ import React, {
     useRef,
     useState
 } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Icon, Form as SemanticForm } from "semantic-ui-react";
 import { deleteAClaim, getExternalClaims, updateAClaim } from "../../../api";
 import useGetClaimDialects from "../../../api/use-get-claim-dialects";
-import { ClaimManagementConstants } from "../../../constants";
+import { ClaimFeatureDictionaryKeys, ClaimManagementConstants } from "../../../constants";
 import "./edit-basic-details-local-claims.scss";
 
 /**
@@ -107,6 +113,10 @@ interface EditBasicDetailsLocalClaimsPropsInterface extends TestableComponentInt
      * The function to be called to initiate an update
      */
     update: () => void;
+    /**
+     * Specifies whether the managedInUserStore property should be shown.
+     */
+    showManagedInUserStoreProperty?: boolean;
 }
 
 const FORM_ID: string = "local-claim-basic-details-form";
@@ -131,6 +141,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const {
         claim,
         update,
+        showManagedInUserStoreProperty = true,
         [ "data-testid" ]: testId
     } = props;
 
@@ -147,6 +158,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const [ multiValued, setMultiValued ] = useState<boolean>(claim?.multiValued || false);
     const [ subAttributes, setSubAttributes ] = useState<string[]>([]);
     const [ canonicalValues, setCanonicalValues ] = useState<KeyValue[]>();
+    const [ managedInUserStore, setManagedInUserStore ] = useState<boolean>(claim?.managedInUserStore ?? false);
+    const isIdentityClaim: boolean = claim?.claimURI?.startsWith("http://wso2.org/claims/identity/") ?? false;
 
     const nameField: MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
     const regExField: MutableRefObject<HTMLElement> = useRef<HTMLElement>(null);
@@ -161,6 +174,33 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const isUpdatingSharedProfilesEnabled: boolean = !featureConfig?.attributeDialects?.disabledFeatures?.includes(
         "attributeDialects.sharedProfileValueResolvingMethod"
     );
+
+    const hideUserIdDisplayConfigurations: boolean = isFeatureEnabled(
+        featureConfig?.attributeDialects,
+        ClaimManagementConstants.FEATURE_DICTIONARY.get(ClaimFeatureDictionaryKeys.HideUserIdDisplayConfigurations)
+    );
+
+    const isSelectiveClaimStoreManagementEnabled: boolean = isFeatureEnabled(
+        featureConfig?.attributeDialects,
+        ClaimManagementConstants.FEATURE_DICTIONARY.get(
+            ClaimFeatureDictionaryKeys.SelectiveClaimStoreManagement
+        )
+    );
+
+    const showManagedInUserStore: boolean =
+        isSelectiveClaimStoreManagementEnabled && showManagedInUserStoreProperty;
+
+    const useDefaultLabelsAndOrder: boolean = isFeatureEnabled(
+        featureConfig?.users,
+        UserManagementConstants.FEATURE_DICTIONARY.get(UserFeatureDictionaryKeys.UseDefaultLabelsAndOrder)
+    );
+
+    const {
+        readOnlyUserStoreNamesList
+    } = useUserStores();
+
+    const hasReadOnlyUserStoresConfigured: boolean = Boolean(readOnlyUserStoreNamesList?.length);
+
     const [ hideSpecialClaims, setHideSpecialClaims ] = useState<boolean>(true);
     const [ usernameConfig, setUsernameConfig ] = useState<ValidationFormInterface>(undefined);
     const [ connector, setConnector ] = useState<GovernanceConnectorInterface>(undefined);
@@ -185,6 +225,16 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     const { data: validationData } = useValidationConfigData();
 
     const { UIConfig } = useUIConfig();
+
+    const enableLegacyFlows: boolean = UIConfig?.flowExecution?.enableLegacyFlows ?? true;
+
+    const isAgentAttribute: boolean = useMemo(() => {
+        const agentAttributeProperty: Property = claim?.properties?.find(
+            (property: Property) => property.key === "isAgentClaim"
+        );
+
+        return agentAttributeProperty?.value === "true";
+    }, [ claim ]);
 
     const sharedProfileValueResolvingMethodOptions: DropDownItemInterface[] = [
         {
@@ -226,12 +276,20 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             value: ClaimDataType.BOOLEAN
         },
         {
+            text: t("claims:local.forms.dataType.options.object"),
+            value: ClaimDataType.COMPLEX
+        },
+        {
+            text: t("claims:local.forms.dataType.options.date"),
+            value: ClaimDataType.DATE
+        },
+        {
             text: t("claims:local.forms.dataType.options.dateTime"),
             value: ClaimDataType.DATE_TIME
         },
         {
-            text: t("claims:local.forms.dataType.options.object"),
-            value: ClaimDataType.COMPLEX
+            text: t("claims:local.forms.dataType.options.epoch"),
+            value: ClaimDataType.EPOCH
         }
     ];
 
@@ -285,7 +343,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
         if (claim?.canonicalValues && Array.isArray(claim.canonicalValues)) {
             setCanonicalValues(
-                claim.canonicalValues.map((item: any) => ({
+                claim.canonicalValues.map((item: LabelValue) => ({
                     key: item.label,
                     value: item.value
                 }))
@@ -314,6 +372,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
         setIsConsoleReadOnly(claim?.profiles?.console?.readOnly ?? claim?.readOnly);
         setIsEndUserReadOnly(claim?.profiles?.endUser?.readOnly ?? claim?.readOnly);
         setIsSelfRegistrationReadOnly(claim?.profiles?.selfRegistration?.readOnly ?? claim?.readOnly);
+        setManagedInUserStore(claim?.managedInUserStore ?? false);
     }, [ claim ]);
 
     /**
@@ -505,7 +564,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     // Temporary fix to check system claims and make them readonly
     const isReadOnly: boolean = useMemo(() => {
-        if (hideSpecialClaims) {
+        if (hideSpecialClaims || isAgentAttribute) {
             return true;
         } else {
             return !hasAttributeUpdatePermissions;
@@ -754,17 +813,19 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             (isEndUserRequired || !!values.endUserSupportedByDefault)
                             : claim?.profiles?.endUser?.supportedByDefault
                     },
-                    selfRegistration: {
-                        readOnly: values?.selfRegistrationReadOnly !== undefined
-                            ? !!values.selfRegistrationReadOnly
-                            : claim?.profiles?.selfRegistration?.readOnly,
-                        required: values?.selfRegistrationRequired !== undefined ?
-                            !!values.selfRegistrationRequired
-                            : claim?.profiles?.selfRegistration?.required,
-                        supportedByDefault: values?.selfRegistrationSupportedByDefault !== undefined ?
-                            (isSelfRegistrationRequired || !!values.selfRegistrationSupportedByDefault)
-                            : claim?.profiles?.selfRegistration?.supportedByDefault
-                    }
+                    ...(enableLegacyFlows && {
+                        selfRegistration: {
+                            readOnly: values?.selfRegistrationReadOnly !== undefined
+                                ? !!values.selfRegistrationReadOnly
+                                : claim?.profiles?.selfRegistration?.readOnly,
+                            required: values?.selfRegistrationRequired !== undefined ?
+                                !!values.selfRegistrationRequired
+                                : claim?.profiles?.selfRegistration?.required,
+                            supportedByDefault: values?.selfRegistrationSupportedByDefault !== undefined ?
+                                (isSelfRegistrationRequired || !!values.selfRegistrationSupportedByDefault)
+                                : claim?.profiles?.selfRegistration?.supportedByDefault
+                        }
+                    })
                 },
                 properties: claim?.properties,
                 readOnly: values?.readOnly !== undefined ? !!values.readOnly : claim?.readOnly,
@@ -784,6 +845,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
         if (isSystemClaim || !isUpdatingSharedProfilesEnabled) {
             delete data.sharedProfileValueResolvingMethod;
+        }
+
+        if (isSelectiveClaimStoreManagementEnabled) {
+            data.managedInUserStore = managedInUserStore;
         }
 
         setIsSubmitting(true);
@@ -819,14 +884,37 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     };
 
     const resolveAttributeSupportedByDefaultRow = (): ReactElement => {
-        const isSupportedByDefaultCheckboxDisabled: boolean = isReadOnly || isSubOrganization() || !hasMapping
-            || (
-                accountVerificationEnabled
-                && selfRegistrationEnabled
-                && claim?.claimURI ===
-                    ClaimManagementConstants.EMAIL_CLAIM_URI
-                && usernameConfig?.enableValidator === "true"
-            );
+
+        /**
+         * This function checks whether the supported by default checkboxes should be disabled.
+         *
+         * @param isAdminConsole - Is display option for admin console.
+         * @returns Is checkbox disabled.
+         */
+        const isSupportedByDefaultCheckboxDisabled = (isAdminConsole?: boolean): boolean => {
+
+            // If hideUserIdDisplayConfigurations is true, disable the checkbox for user id claim.
+            // Refer issue - https://github.com/wso2/product-is/issues/24906
+            if (!hideUserIdDisplayConfigurations && claim?.claimURI === ClaimManagementConstants.USER_ID_CLAIM_URI) {
+                // Disable only the admin console checkbox as the support is only tested in Admin Console for now.
+                // Further supported can be given under effort tracked
+                // with issue - https://github.com/wso2/product-is/issues/25482
+                if (isAdminConsole) {
+                    return false;
+                }
+
+                return true;
+            }
+
+            return isReadOnly || isSubOrganization() || !hasMapping
+                || dataType === ClaimDataType.COMPLEX
+                || (
+                    accountVerificationEnabled
+                    && selfRegistrationEnabled
+                    && claim?.claimURI === ClaimManagementConstants.EMAIL_CLAIM_URI
+                    && usernameConfig?.enableValidator === "true"
+                );
+        };
 
         return (
             <TableRow>
@@ -849,7 +937,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         defaultValue={ claim?.profiles?.console?.supportedByDefault ?? claim?.supportedByDefault }
                         data-componentid={
                             `${ testId }-form-console-supported-by-default-checkbox` }
-                        readOnly={ isSupportedByDefaultCheckboxDisabled }
+                        readOnly={ isSupportedByDefaultCheckboxDisabled(true) }
                         {
                             ...( isConsoleRequired
                                 ? { checked: true }
@@ -865,7 +953,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         name="endUserSupportedByDefault"
                         defaultValue={ claim?.profiles?.endUser?.supportedByDefault ?? claim?.supportedByDefault }
                         data-componentid={ `${ testId }-form-end-user-supported-by-default-checkbox` }
-                        readOnly={ isSupportedByDefaultCheckboxDisabled }
+                        readOnly={ isSupportedByDefaultCheckboxDisabled() }
                         {
                             ...( isEndUserRequired
                                 ? { checked: true }
@@ -875,30 +963,51 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         }
                     />
                 </TableCell>
-                <TableCell align="center">
-                    <Field.Checkbox
-                        ariaLabel="Display by default in self-registration"
-                        name="selfRegistrationSupportedByDefault"
-                        defaultValue={ claim?.profiles?.selfRegistration?.supportedByDefault ??
-                            claim?.supportedByDefault }
-                        data-componentid={
-                            `${ testId }-form-self-registration-supported-by-default-checkbox` }
-                        readOnly={ isSupportedByDefaultCheckboxDisabled }
-                        {
-                            ...( isSelfRegistrationRequired
-                                ? { checked: true }
-                                : { defaultValue: claim?.profiles?.selfRegistration?.supportedByDefault ??
-                                    claim?.supportedByDefault }
-                            )
-                        }
-                    />
-                </TableCell>
+                { enableLegacyFlows && (
+                    <TableCell align="center">
+                        <Field.Checkbox
+                            ariaLabel="Display by default in self-registration"
+                            name="selfRegistrationSupportedByDefault"
+                            defaultValue={ claim?.profiles?.selfRegistration?.supportedByDefault ??
+                                claim?.supportedByDefault }
+                            data-componentid={
+                                `${ testId }-form-self-registration-supported-by-default-checkbox` }
+                            readOnly={ isSupportedByDefaultCheckboxDisabled() }
+                            {
+                                ...( isSelfRegistrationRequired
+                                    ? { checked: true }
+                                    : { defaultValue: claim?.profiles?.selfRegistration?.supportedByDefault ??
+                                        claim?.supportedByDefault }
+                                )
+                            }
+                        />
+                    </TableCell>
+                ) }
             </TableRow>
         );
     };
 
-    const setDefaultInputTypeForDataType = (dataType: ClaimDataType, multiValued: boolean): void => {
+    const isInputTypeValidForDataType = (
+        inputType: string,
+        dataType: ClaimDataType,
+        multiValued: boolean
+    ): boolean => {
+        const validOptions: DropDownItemInterface[] = resolveInputFormatOptions(dataType, multiValued);
 
+        return validOptions.some((option: DropDownItemInterface) => option.value === inputType);
+    };
+
+    const setDefaultInputTypeForDataType = (dataType: ClaimDataType, multiValued: boolean): void => {
+        // If current inputType is valid for the new dataType and multiValued combination, keep it
+        const currentInputType: string | undefined = claim?.inputFormat?.inputType;
+
+        if (currentInputType && isInputTypeValidForDataType(currentInputType, dataType, multiValued)) {
+            setInputType(currentInputType);
+
+            return;
+        }
+
+        // Otherwise, set to appropriate default
         switch (dataType) {
             case ClaimDataType.OPTIONS:
                 setInputType(multiValued ? ClaimInputFormat.MULTI_SELECT_DROPDOWN : ClaimInputFormat.DROPDOWN);
@@ -922,7 +1031,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             }
         ];
 
-        if (dataType === ClaimDataType.DATE_TIME) {
+        if (dataType === ClaimDataType.DATE) {
             return [
                 ...textInputOption,
                 {
@@ -986,6 +1095,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     const resolveAttributeRequiredRow = (): ReactElement => {
         const isRequiredCheckboxDisabled: boolean = isReadOnly || isSubOrganization() || !hasMapping
+            || dataType === ClaimDataType.COMPLEX
             || (
                 accountVerificationEnabled
                 && selfRegistrationEnabled
@@ -1043,30 +1153,33 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         }
                     />
                 </TableCell>
-                <TableCell align="center">
-                    <Field.Checkbox
-                        ariaLabel="Required in self-registration"
-                        name="selfRegistrationRequired"
-                        defaultValue={ claim?.profiles?.selfRegistration?.required ?? claim?.required }
-                        data-componentid={ `${ testId }-form-self-registration-required-checkbox` }
-                        readOnly={ isRequiredCheckboxDisabled || isSelfRegistrationReadOnly }
-                        listen ={ (value: boolean) => {
-                            setIsSelfRegistrationRequired(value);
-                        } }
-                        {
-                            ...( isSelfRegistrationReadOnly
-                                ? { value: false }
-                                : { defaultValue: claim?.profiles?.selfRegistration?.required ?? claim?.required }
-                            )
-                        }
-                    />
-                </TableCell>
+                { enableLegacyFlows && (
+                    <TableCell align="center">
+                        <Field.Checkbox
+                            ariaLabel="Required in self-registration"
+                            name="selfRegistrationRequired"
+                            defaultValue={ claim?.profiles?.selfRegistration?.required ?? claim?.required }
+                            data-componentid={ `${ testId }-form-self-registration-required-checkbox` }
+                            readOnly={ isRequiredCheckboxDisabled || isSelfRegistrationReadOnly }
+                            listen ={ (value: boolean) => {
+                                setIsSelfRegistrationRequired(value);
+                            } }
+                            {
+                                ...( isSelfRegistrationReadOnly
+                                    ? { value: false }
+                                    : { defaultValue: claim?.profiles?.selfRegistration?.required ?? claim?.required }
+                                )
+                            }
+                        />
+                    </TableCell>
+                ) }
             </TableRow>
         );
     };
 
     const resolveAttributeReadOnlyRow = (): ReactElement => {
-        const isReadOnlyCheckboxDisabled: boolean = isReadOnly || isSubOrganization() || !hasMapping;
+        const isReadOnlyCheckboxDisabled: boolean = isReadOnly || isSubOrganization() || !hasMapping
+            || dataType === ClaimDataType.COMPLEX;
 
         return (
             <TableRow hideBorder>
@@ -1106,28 +1219,94 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         } }
                     />
                 </TableCell>
-                <TableCell align="center">
-                    <Tooltip
-                        trigger={ (
-                            <Field.Checkbox
-                                ariaLabel="Read-only in self-registration"
-                                name="selfRegistrationReadOnly"
-                                defaultValue={ claim?.profiles?.selfRegistration?.readOnly ?? claim?.readOnly }
-                                data-componentid={ `${ testId }-form-self-registration-readOnly-checkbox` }
-                                listen ={ (value: boolean) => {
-                                    setIsSelfRegistrationReadOnly(value);
-                                } }
-                                readOnly
-                            />
-                        ) }
-                        content={
-                            t("claims:local.forms.profiles.selfRegistrationReadOnlyHint")
-                        }
-                        compact
-                    />
-                </TableCell>
+                { enableLegacyFlows && (
+                    <TableCell align="center">
+                        <Tooltip
+                            trigger={ (
+                                <Field.Checkbox
+                                    ariaLabel="Read-only in self-registration"
+                                    name="selfRegistrationReadOnly"
+                                    defaultValue={ claim?.profiles?.selfRegistration?.readOnly ?? claim?.readOnly }
+                                    data-componentid={ `${ testId }-form-self-registration-readOnly-checkbox` }
+                                    listen ={ (value: boolean) => {
+                                        setIsSelfRegistrationReadOnly(value);
+                                    } }
+                                    readOnly
+                                />
+                            ) }
+                            content={
+                                t("claims:local.forms.profiles.selfRegistrationReadOnlyHint")
+                            }
+                            compact
+                        />
+                    </TableCell>
+                ) }
             </TableRow>
         );
+    };
+
+    /**
+     * Check if the display name field should be read-only.
+     *
+     * @returns boolean - True if the display name field should be read-only, false otherwise.
+     */
+    const isDisplayNameReadOnly = (): boolean => {
+
+        // If we are not using default labels and order, the display name field is editable for
+        // user ID and username claims.
+        // Refer issue - https://github.com/wso2/product-is/issues/24906
+        if (!useDefaultLabelsAndOrder && (claim?.claimURI === ClaimManagementConstants.USER_ID_CLAIM_URI
+            || claim?.claimURI === ClaimManagementConstants.USER_NAME_CLAIM_URI)) {
+            return false;
+        }
+        if (claim?.claimURI === ClaimManagementConstants.USER_ID_CLAIM_URI) {
+            return true;
+        }
+
+        return isReadOnly || isSubOrganization();
+    };
+
+    /**
+     * Check if the attribute configurations section should be shown.
+     *
+     * @returns boolean - Whether to show attribute configurations section.
+     */
+    const showAttributeConfigurations = (): boolean => {
+
+        // Show for user ID claim when hideUserIdDisplayConfigurations is false.
+        // Refer issue - https://github.com/wso2/product-is/issues/24906
+        if (!hideUserIdDisplayConfigurations && claim?.claimURI === ClaimManagementConstants.USER_ID_CLAIM_URI) {
+            return true;
+        }
+
+        return !isDistinctAttributeProfilesDisabled &&
+            claim &&
+            !hideSpecialClaims &&
+            mappingChecked &&
+            claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI &&
+            !isAgentAttribute;
+    };
+
+    /**
+     * Check if the update button should be shown.
+     *
+     * @returns boolean - Whether to show the update button.
+     */
+    const showUpdateButton = (): boolean => {
+
+        // Show for username and user ID claims when useDefaultLabelsAndOrder is false.
+        // Refer issue - https://github.com/wso2/product-is/issues/24906
+        if (!useDefaultLabelsAndOrder && (claim?.claimURI === ClaimManagementConstants.USER_ID_CLAIM_URI
+            || claim?.claimURI === ClaimManagementConstants.USER_NAME_CLAIM_URI)) {
+            return true;
+        }
+
+        // Show for user ID claim when hideUserIdDisplayConfigurations is false.
+        if (!hideUserIdDisplayConfigurations && claim?.claimURI === ClaimManagementConstants.USER_ID_CLAIM_URI) {
+            return true;
+        }
+
+        return !hideSpecialClaims && !isSubOrganization();
     };
 
     return (
@@ -1178,8 +1357,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         maxLength={ 30 }
                         minLength={ 1 }
                         hint={ t("claims:local.forms.nameHint") }
-                        readOnly={ isSubOrganization() || isReadOnly }
-
+                        readOnly={ isDisplayNameReadOnly() }
                     />
                     <Field.Textarea
                         ariaLabel="description"
@@ -1197,7 +1375,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         minLength={ 3 }
                         data-testid={ `${ testId }-form-description-input` }
                         hint={ t("claims:local.forms.descriptionHint") }
-                        readOnly={ isSubOrganization() || isReadOnly }
+                        readOnly={ isSubOrganization() ||
+                            isReadOnly ||
+                            claim.claimURI === ClaimManagementConstants.USER_ID_CLAIM_URI
+                        }
                     />
                     <Field.Dropdown
                         ariaLabel={ t("claims:local.forms.dataType.label") }
@@ -1212,13 +1393,36 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             event: React.SyntheticEvent<HTMLElement, Event>,
                             data: { value: string }
                         ) => {
-                            setSubAttributes([]);
-                            setCanonicalValues([]);
-                            setDataType(data.value);
-                            setDefaultInputTypeForDataType(data.value as ClaimDataType, multiValued);
-                            if (data.value === ClaimDataType.COMPLEX || data.value === ClaimDataType.BOOLEAN) {
-                                setMultiValued(false);
+                            if (data.value === ClaimDataType.COMPLEX) {
+                                setSubAttributes(claim?.subAttributes ?? []);
+                            } else {
+                                setSubAttributes([]);
                             }
+
+                            if (data.value === ClaimDataType.OPTIONS) {
+                                setCanonicalValues(claim?.canonicalValues?.map((item: LabelValue) => ({
+                                    key: item.label,
+                                    value: item.value
+                                })));
+                            } else {
+                                setCanonicalValues([]);
+                            }
+
+                            setDataType(data.value);
+
+                            let newMultiValued: boolean;
+
+                            if (data.value === ClaimDataType.COMPLEX || data.value === ClaimDataType.BOOLEAN
+                                || data.value === ClaimDataType.DATE || data.value === ClaimDataType.DATE_TIME
+                                || data.value === ClaimDataType.EPOCH) {
+                                newMultiValued = false;
+                                setMultiValued(false);
+                            } else {
+                                newMultiValued = claim?.multiValued;
+                                setMultiValued(claim?.multiValued);
+                            }
+
+                            setDefaultInputTypeForDataType(data.value as ClaimDataType, newMultiValued);
                         } }
                     />
 
@@ -1304,12 +1508,17 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         hint={ isSystemClaim
                             ? t("claims:local.forms.multiValuedSystemClaimHint")
                             : t("claims:local.forms.multiValuedHint") }
-                        readOnly={ isSubOrganization() || isSystemClaim || isReadOnly
-                            || dataType === ClaimDataType.COMPLEX || dataType === ClaimDataType.BOOLEAN
+                        readOnly={
+                            isSubOrganization() || isSystemClaim || isReadOnly ||
+                            dataType === ClaimDataType.COMPLEX || dataType === ClaimDataType.BOOLEAN ||
+                            dataType === ClaimDataType.DATE || dataType === ClaimDataType.DATE_TIME ||
+                            dataType === ClaimDataType.EPOCH
                         }
                         listen={ (checked: boolean) => {
                             setMultiValued(checked);
-                            setDefaultInputTypeForDataType(dataType as ClaimDataType, checked);
+                            if (dataType === ClaimDataType.OPTIONS) {
+                                setDefaultInputTypeForDataType(dataType as ClaimDataType, checked);
+                            }
                         } }
                     />
 
@@ -1331,8 +1540,10 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             } }
                         />
                     ) }
-                    { !attributeConfig.localAttributes.createWizard.showRegularExpression && !hideSpecialClaims
-                        && (
+                    {
+                        !attributeConfig.localAttributes.createWizard.showRegularExpression &&
+                        !hideSpecialClaims &&
+                        claim.claimURI !== ClaimManagementConstants.USER_ID_CLAIM_URI && (
                             <Field.Input
                                 ariaLabel="regularExpression"
                                 inputType="default"
@@ -1370,7 +1581,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     {
                         claim && UIConfig?.isClaimUniquenessValidationEnabled
                             && !hideSpecialClaims
-                            && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI) && (
+                            && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
+                            && !isAgentAttribute && (
                             <Field.Dropdown
                                 ariaLabel="uniqueness-scope-dropdown"
                                 name={ ClaimManagementConstants.UNIQUENESS_SCOPE_PROPERTY_NAME }
@@ -1398,7 +1610,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     }
                     { !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI) && mappingChecked
                         ? (
-                            !hideSpecialClaims && !hasMapping &&
+                            !hideSpecialClaims && !hasMapping && !isAgentAttribute &&
                             (<Grid.Row columns={ 1 } >
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                                     <Message
@@ -1494,6 +1706,41 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         )
                     }
                     {
+                        showManagedInUserStore && !hideSpecialClaims
+                        && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
+                        && (
+                            <Field.Checkbox
+                                ariaLabel="managedInUserStore"
+                                name="managedInUserStore"
+                                required={ false }
+                                label={ t("claims:local.forms.managedInUserStore.label") }
+                                data-componentid={ `${ testId }-form-managed-in-user-store-checkbox` }
+                                readOnly={ isSubOrganization() || isReadOnly }
+                                hint={ t("claims:local.forms.managedInUserStore.hint") }
+                                defaultValue={ claim?.managedInUserStore ?? false }
+                                listen={ setManagedInUserStore }
+                            />
+                        )
+                    }
+                    {
+                        showManagedInUserStore && !hideSpecialClaims
+                        && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
+                        && managedInUserStore && isIdentityClaim && hasReadOnlyUserStoresConfigured
+                        && (
+                            <Alert
+                                severity="warning"
+                                className="info-box"
+                                data-componentid={ `${testId}-managed-in-user-store-read-only-user-store-alert` }
+                            >
+                                <Trans i18nKey="claims:local.forms.managedInUserStore.readOnlyUserStoreHint">
+                                    One or more user stores are read-only. Some identity attributes require
+                                    updates, and managing them in read-only stores may cause issues. To avoid
+                                    this, exclude those attributes from read-only stores in the
+                                    <strong>Attribute Mappings</strong> section.
+                                </Trans>
+                            </Alert>)
+                    }
+                    {
                         isDistinctAttributeProfilesDisabled &&
                         claim && !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
                             && attributeConfig.editAttributes.showRequiredCheckBox
@@ -1573,8 +1820,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                     }
                     {
                         // Hides on groups claim
-                        !isDistinctAttributeProfilesDisabled && claim && !hideSpecialClaims && mappingChecked
-                            && claim.claimURI !== ClaimManagementConstants.GROUPS_CLAIM_URI && (
+                        showAttributeConfigurations() && (
                             <>
                                 <Divider />
                                 <Heading as="h4">
@@ -1595,21 +1841,23 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                                 <TableCell align="center">
                                                     { t("claims:local.forms.profiles.endUserProfile") }
                                                 </TableCell>
-                                                <TableCell align="center">
-                                                    { t("claims:local.forms.profiles.selfRegistration") }
-                                                </TableCell>
+                                                { enableLegacyFlows && (
+                                                    <TableCell align="center">
+                                                        { t("claims:local.forms.profiles.selfRegistration") }
+                                                    </TableCell>
+                                                ) }
                                             </TableRow>
                                         </TableHead>
                                         <TableBody>
                                             {
                                                 // Hides on user_id, username claims
                                                 !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
-                                                    && claim.claimURI !== ClaimManagementConstants.USER_ID_CLAIM_URI
                                                     && claim.claimURI !== ClaimManagementConstants.USER_NAME_CLAIM_URI
                                                     && resolveAttributeSupportedByDefaultRow()
                                             }
                                             {
                                                 !READONLY_CLAIM_CONFIGS.includes(claim?.claimURI)
+                                                    && claim.claimURI !== ClaimManagementConstants.USER_ID_CLAIM_URI
                                                     && attributeConfig.editAttributes.showRequiredCheckBox
                                                     && resolveAttributeRequiredRow()
                                             }
@@ -1628,8 +1876,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         )
                     }
                     {
-                        !hideSpecialClaims && !isSubOrganization() &&
-                        (
+                        showUpdateButton() && (
                             <Show
                                 when={ featureConfig?.attributeDialects?.scopes?.update }
                             >

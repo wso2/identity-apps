@@ -18,7 +18,11 @@
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { Config } from "@wso2is/admin.core.v1/configs/app";
-import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
+import useRequest, {
+    RequestConfigInterface,
+    RequestErrorInterface,
+    RequestResultInterface
+} from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -37,6 +41,34 @@ import { AttributeDataType } from "../constants";
  */
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
     .httpRequest.bind(AsgardeoSPAClient.getInstance());
+
+/**
+ * Hook to retrieve the profile information of the currently authenticated user.
+ *
+ * @returns A request result interface containing the profile information.
+ */
+export const useProfileInfo = <Data = ProfileInfoInterface, Error = RequestErrorInterface>(
+): RequestResultInterface<Data, Error> => {
+
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/scim+json"
+        },
+        method: HttpMethods.GET,
+        url: Config.getServiceResourceEndpoints().me
+    };
+
+    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(requestConfig);
+
+    return {
+        data,
+        error,
+        isLoading,
+        isValidating,
+        mutate
+    };
+};
 
 /**
  * Retrieve the user profile details of the currently authenticated user.
@@ -212,22 +244,34 @@ export const getProfileSchemas = (): Promise<ProfileSchemaInterface[]> => {
             // appended to the attribute object.
             response.data.map((schema: SchemaResponseInterface) => {
                 schema.attributes.map((attribute: ProfileSchemaInterface) => {
-                    if (schema.id !== ProfileConstants.SCIM2_CORE_USER_SCHEMA
-                        && schema.id !== ProfileConstants.SCIM2_CORE_SCHEMA) {
+                    const isExtended: boolean = schema.id !== ProfileConstants.SCIM2_CORE_USER_SCHEMA &&
+                        schema.id !== ProfileConstants.SCIM2_CORE_SCHEMA;
+                    const schemaUri: string = `${schema.id}:${attribute.name}`;
+
+                    if (isExtended) {
                         const modifiedSubAttributes: ProfileSchemaInterface[] = [];
 
-                        if(attribute.type === AttributeDataType.COMPLEX) {
+                        if (attribute.type === AttributeDataType.COMPLEX) {
                             attribute.subAttributes.map((subAttribute: ProfileSchemaInterface) => {
-                                modifiedSubAttributes.push({ ...subAttribute,  extended: true, schemaId: schema.id });
-                            }
-                            );
+                                modifiedSubAttributes.push({
+                                    ...subAttribute,
+                                    extended: true,
+                                    schemaId: schema.id,
+                                    schemaUri: `${schemaUri}.${subAttribute.name}`
+                                });
+                            });
                             attribute.subAttributes = modifiedSubAttributes;
                         }
-                        schemaAttributes.push({ ...attribute, extended: true, schemaId: schema.id });
+                        schemaAttributes.push({ ...attribute, extended: true, schemaId: schema.id, schemaUri });
 
                         return;
                     }
-                    schemaAttributes.push(attribute);
+
+                    schemaAttributes.push({
+                        ...attribute,
+                        schemaId: schema.id,
+                        schemaUri
+                    });
                 });
             });
 

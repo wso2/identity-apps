@@ -22,15 +22,20 @@ name: 🚀 Release
 
 on:
     push:
-        branches: [ master ]
+        branches: [ master, next ]
         paths-ignore:
             - "LICENSE"
     workflow_dispatch:
 
+# Prevent multiple concurrent runs of this workflow. New runs will be queued.
+concurrency:
+    group: release
+    cancel-in-progress: false
+
 env:
     GH_TOKEN: ${{ secrets.RELEASE_BOT_TOKEN }}
     SHOULD_GENERATE_CHANGESET: 'true'
-    BRANCH: master
+    BRANCH: ${{ github.ref_name }}
     IS_HOTFIX: 'false'
     BOT_USERNAME: ${{ secrets.RELEASE_BOT_USER_NAME }}
     BOT_EMAIL: ${{ secrets.RELEASE_BOT_EMAIL }}
@@ -41,7 +46,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                node-version: [20]
+                node-version: [lts/*]
                 maven-version: [3.8.6]
                 java-version: [11]
                 pnpm-version: [8.7.4]
@@ -167,10 +172,10 @@ jobs:
               id: changesets
               uses: changesets/action@v1.4.9
               with:
-                  title: "[Release] [GitHub Action] Update package versions"
+                  title: "[Release] [GitHub Action] [${{ github.ref_name }}] Update package versions"
                   publish: pnpm run publish:packages
                   version: pnpm run version:packages
-                  commit: "[WSO2 Release] [GitHub Action] [Release] [skip ci] update package versions"
+                  commit: "[WSO2 Release] [GitHub Action] [Release] [${{ github.ref_name }}] [skip ci] update package versions"
               env:
                   GITHUB_TOKEN: ${{ env.GH_TOKEN }}
 

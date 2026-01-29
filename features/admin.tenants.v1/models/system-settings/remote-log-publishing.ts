@@ -51,7 +51,7 @@ export interface RemoteLogPublishingConfigurationInterface {
 	/**
 	 * Remote server password
 	 */
-	password: string,
+	password?: string,
 	/**
 	 * Path to keystore location.
 	 */
@@ -59,7 +59,7 @@ export interface RemoteLogPublishingConfigurationInterface {
 	/**
 	 * Keystore password.
 	 */
-	keystorePassword: string,
+	keystorePassword?: string,
 	/**
 	 * Path to truststore location.
 	 */
@@ -67,5 +67,5 @@ export interface RemoteLogPublishingConfigurationInterface {
 	/**
 	 * Truststore password.
 	 */
-	truststorePassword: string
+	truststorePassword?: string
 }

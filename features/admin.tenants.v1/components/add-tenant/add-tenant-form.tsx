@@ -21,6 +21,7 @@ import InputAdornment from "@oxygen-ui/react/InputAdornment";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography/Typography";
 import { GlobeIcon } from "@oxygen-ui/react-icons";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { SharedUserStoreUtils } from "@wso2is/admin.core.v1/utils/user-store-utils";
 import { generatePassword, getConfiguration } from "@wso2is/admin.users.v1/utils/generate-password.utils";
@@ -28,6 +29,7 @@ import getUsertoreUsernameValidationPattern from "@wso2is/admin.users.v1/utils/g
 import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-management-utils";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api/validation-config";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models/validation-config";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     FinalForm,
@@ -61,8 +63,9 @@ export interface AddTenantFormProps extends IdentifiableComponentInterface {
     onSubmit?: (payload: AddTenantRequestPayload) => void;
 }
 
-export type AddTenantFormValues = Omit<Pick<Tenant, "domain" | "id">, "name"> & { organizationName: string }
-    & Omit<TenantOwner, "additionalDetails">;
+export type AddTenantFormValues = Omit<Pick<Tenant, "domain" | "id">, "name" | "domain">
+    & { organizationHandle: string; organizationName: string }
+    & Omit<TenantOwner, "additionalDetails" | "id">;
 
 export type AddTenantFormErrors = Partial<AddTenantFormValues>;
 
@@ -100,6 +103,11 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
         return getConfiguration(validationData);
     }, [ validationData ]);
 
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const isOrgDisplayNameFeatureEnabled: boolean = isFeatureEnabled(
+        featureConfig.organizations, "organizationDisplayName"
+    );
+
     /**
      * Form validator to validate the username against the userstore regex.
      * @param value - Input value.
@@ -118,7 +126,7 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
     };
 
     /**
-     * Form validator to validate the tenant domain availability.
+     * Form validator to validate the organization handle (tenant domain) availability.
      *
      * @remarks
      * Implements the same validation logic that's set in the backend.
@@ -126,7 +134,7 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
      * @param value - Input value.
      * @returns An error if the value is not valid else undefined.
      */
-    const validateDomain: (value: string) => Promise<string | undefined> = useCallback(
+    const validateOrganizationHandle: (value: string) => Promise<string | undefined> = useCallback(
         memoize(
             async (value: string): Promise<string | undefined> => {
                 if (!value) {
@@ -202,10 +210,10 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
      * @param values - Form values.
      */
     const handleSubmit = (values: AddTenantFormValues): void => {
-        const { domain, organizationName, ...rest } = values;
+        const { organizationHandle, organizationName, ...rest } = values;
 
         const payload: AddTenantRequestPayload = {
-            domain,
+            domain: organizationHandle,
             name: organizationName,
             owners: [
                 {
@@ -225,16 +233,16 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
      */
     const handleValidate = (values: AddTenantFormValues): AddTenantFormErrors => {
         const errors: AddTenantFormErrors = {
-            domain: undefined,
             email: undefined,
             firstname: undefined,
             lastname: undefined,
+            organizationHandle: undefined,
             password: undefined,
             username: undefined
         };
 
-        if (!values.domain) {
-            errors.domain = t("tenants:common.form.fields.domain.validations.required");
+        if (!values.organizationHandle) {
+            errors.organizationHandle = t("tenants:common.form.fields.domain.validations.required");
         }
 
         if (!values.firstname) {
@@ -353,49 +361,47 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                         onSubmit={ handleSubmit }
                         className="add-tenant-form"
                     >
+                        { isOrgDisplayNameFeatureEnabled && (
+                            <FinalFormField
+                                key="organizationName"
+                                width={ 16 }
+                                className="text-field-container"
+                                ariaLabel="organizationName"
+                                required={ false }
+                                data-componentid={ `${componentId}-organization-name` }
+                                name="organizationName"
+                                type="text"
+                                helperText={ (
+                                    <Hint>
+                                        <Typography variant="inherit">
+                                            <Trans
+                                                i18nKey="tenants:common.form.fields.organizationName.helperText"
+                                                components={ { bold: <span style={ { fontWeight: "bold" } } /> } }
+                                            />
+                                        </Typography>
+                                    </Hint>
+                                ) }
+                                label={ t("tenants:common.form.fields.organizationName.label") }
+                                placeholder={ t("tenants:common.form.fields.organizationName.placeholder") }
+                                component={ TextFieldAdapter }
+                                maxLength={ 100 }
+                                minLength={ 1 }
+                                validate={ validateOrganizationName }
+                            />
+                        ) }
                         <FinalFormField
-                            key="organizationName"
+                            key="organizationHandle"
                             width={ 16 }
                             className="text-field-container"
-                            ariaLabel="organizationName"
+                            ariaLabel="organizationHandle"
                             required={ true }
-                            data-componentid={ `${componentId}-organization-name` }
-                            name="organizationName"
+                            data-componentid={ `${componentId}-organizationHandle` }
+                            name="organizationHandle"
                             type="text"
                             helperText={
                                 (<Hint>
                                     <Typography variant="inherit">
-                                        { t("tenants:common.form.fields.organizationName.helperText") }
-                                    </Typography>
-                                </Hint>)
-                            }
-                            label={ t("tenants:common.form.fields.organizationName.label") }
-                            placeholder={ t("tenants:common.form.fields.organizationName.placeholder") }
-                            component={ TextFieldAdapter }
-                            maxLength={ 100 }
-                            minLength={ 1 }
-                            validate={ validateOrganizationName }
-                        />
-                        <FinalFormField
-                            key="domain"
-                            width={ 16 }
-                            className="text-field-container"
-                            ariaLabel="domain"
-                            required={ true }
-                            data-componentid={ `${componentId}-domain` }
-                            name="domain"
-                            type="text"
-                            helperText={
-                                (<Hint>
-                                    <Typography variant="inherit">
-                                        <Trans i18nKey="tenants:common.form.fields.domain.helperText">
-                                            Enter a unique domain name for your organization. The domain name should be
-                                            in the format of
-                                            <Typography component="span" variant="inherit" fontWeight="bold">
-                                                example.com
-                                            </Typography>
-                                            .
-                                        </Trans>
+                                        { t("tenants:common.form.fields.domain.helperText") }
                                     </Typography>
                                 </Hint>)
                             }
@@ -409,7 +415,7 @@ const AddTenantForm: FunctionComponent<AddTenantFormProps> = ({
                                     <GlobeIcon />
                                 </InputAdornment>)
                             }
-                            validate={ validateDomain }
+                            validate={ validateOrganizationHandle }
                         />
                         <Typography variant="h5" className="add-tenant-form-sub-title">
                             { t("tenants:addTenant.form.adminDetails.title") }

@@ -1,5 +1,42 @@
 # @wso2is/features
 
+## 2.27.3
+
+### Patch Changes
+
+- [#9458](https://github.com/wso2/identity-apps/pull/9458) [`68f3c2e3a234da22de13c07e83c2447403b31e79`](https://github.com/wso2/identity-apps/commit/68f3c2e3a234da22de13c07e83c2447403b31e79) Thanks [@RushanNanayakkara](https://github.com/RushanNanayakkara)! - Remove beta tag from password recovery with sms otp feature
+
+## 2.27.2
+
+### Patch Changes
+
+- [#9477](https://github.com/wso2/identity-apps/pull/9477) [`aa98380a904e0b336261bc929334387595e5f79d`](https://github.com/wso2/identity-apps/commit/aa98380a904e0b336261bc929334387595e5f79d) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Fix typo in application backchannel logout url section
+
+* [#9473](https://github.com/wso2/identity-apps/pull/9473) [`872561c19d12e4fbbd034fbc6105bd1c008c36e8`](https://github.com/wso2/identity-apps/commit/872561c19d12e4fbbd034fbc6105bd1c008c36e8) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Update Invited User Registration configuration link to correctly redirect to the flow builder UI.
+
+* Updated dependencies [[`aa98380a904e0b336261bc929334387595e5f79d`](https://github.com/wso2/identity-apps/commit/aa98380a904e0b336261bc929334387595e5f79d), [`872561c19d12e4fbbd034fbc6105bd1c008c36e8`](https://github.com/wso2/identity-apps/commit/872561c19d12e4fbbd034fbc6105bd1c008c36e8), [`ae21137b08c1f8bcfb378afe6c995ec750207f25`](https://github.com/wso2/identity-apps/commit/ae21137b08c1f8bcfb378afe6c995ec750207f25)]:
+  - @wso2is/i18n@2.30.60
+
+## 2.27.1
+
+### Patch Changes
+
+- [#8753](https://github.com/wso2/identity-apps/pull/8753) [`205047328ca8cd5191f32229f8744fd34f9cc105`](https://github.com/wso2/identity-apps/commit/205047328ca8cd5191f32229f8744fd34f9cc105) Thanks [@DonOmalVindula](https://github.com/DonOmalVindula)! - Refactor role sharing component use a common component
+
+- Updated dependencies [[`205047328ca8cd5191f32229f8744fd34f9cc105`](https://github.com/wso2/identity-apps/commit/205047328ca8cd5191f32229f8744fd34f9cc105)]:
+  - @wso2is/i18n@2.30.2
+
+## 2.27.0
+
+### Minor Changes
+
+- [#8592](https://github.com/wso2/identity-apps/pull/8592) [`3632b9dfe3fe2dbfd0a0d272b2bf1e1a43a6a523`](https://github.com/wso2/identity-apps/commit/3632b9dfe3fe2dbfd0a0d272b2bf1e1a43a6a523) Thanks [@Malith-19](https://github.com/Malith-19)! - Move the Approvals to common component.
+
+### Patch Changes
+
+- Updated dependencies [[`3632b9dfe3fe2dbfd0a0d272b2bf1e1a43a6a523`](https://github.com/wso2/identity-apps/commit/3632b9dfe3fe2dbfd0a0d272b2bf1e1a43a6a523)]:
+  - @wso2is/i18n@2.26.2
+
 ## 2.26.90
 
 ### Patch Changes

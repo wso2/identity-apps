@@ -1,5 +1,17 @@
 # @wso2is/forms
 
+## 2.3.25
+
+### Patch Changes
+
+- [#8867](https://github.com/wso2/identity-apps/pull/8867) [`0c714793f572a0e1566e9aae0d4ce767823e1a9d`](https://github.com/wso2/identity-apps/commit/0c714793f572a0e1566e9aae0d4ce767823e1a9d) Thanks [@jeradrutnam](https://github.com/jeradrutnam)! - Improve organization nested search feature
+
+## 2.3.24
+
+### Patch Changes
+
+- [#8696](https://github.com/wso2/identity-apps/pull/8696) [`ab46bb12e16988d1910e0659a4d22cb4337f6a5b`](https://github.com/wso2/identity-apps/commit/ab46bb12e16988d1910e0659a4d22cb4337f6a5b) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Support for account linking based on a matching a user attribute
+
 ## 2.3.23
 
 ### Patch Changes

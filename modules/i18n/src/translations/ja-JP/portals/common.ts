@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,8 +35,117 @@ export const common: CommonNS = {
     "applicationName": "アプリケーション名",
     "applications": "アプリケーション",
     "approvalStatus": "承認状況",
+    "approvals": "承認",
+    "approvalsPage": {
+        "list": {
+            "columns": {
+                "actions": "アクション",
+                "name": "名前"
+            }
+        },
+        "modals": {
+            "description": "あなたの承認を必要とする運用タスクを確認します",
+            "header": "承認",
+            "subHeader": "あなたの承認を必要とする運用タスクを確認します"
+        },
+        "notifications": {
+            "fetchApprovalDetails": {
+                "error": {
+                    "description": "{{description}}",
+                    "message": "承認の詳細を取得中にエラーが発生しました"
+                },
+                "genericError": {
+                    "description": "承認の詳細を取得できませんでした。",
+                    "message": "何かがうまくいかなかった"
+                }
+            },
+            "fetchPendingApprovals": {
+                "error": {
+                    "description": "{{description}}",
+                    "message": "承認の取得中にエラーが発生しました"
+                },
+                "genericError": {
+                    "description": "保留中の承認を取得できませんでした。",
+                    "message": "何かがうまくいかなかった"
+                }
+            },
+            "statusUpdate": {
+                "approved": {
+                    "description": "承認要求が承認されました。",
+                    "message": "承認要求が承認されました"
+                },
+                "claimed": {
+                    "description": "承認要求が要求されました。",
+                    "message": "承認要求が要求されました"
+                },
+                "rejected": {
+                    "description": "承認要求が拒否されました。",
+                    "message": "承認要求が拒否されました"
+                },
+                "released": {
+                    "description": "承認要求がリリースされました。",
+                    "message": "承認要求がリリースされました"
+                }
+            },
+            "updatePendingApprovals": {
+                "error": {
+                    "description": "{{description}}",
+                    "message": "承認の更新中にエラーが発生しました"
+                },
+                "genericError": {
+                    "description": "保留中の承認を更新できませんでした。",
+                    "message": "何かがうまくいかなかった"
+                },
+                "success": {
+                    "description": "承認が正常に更新されました。",
+                    "message": "更新に成功しました"
+                }
+            }
+        },
+        operationTypes: {
+            "addRole": "ロールを追加",
+            "addUser": "ユーザーを追加",
+            "all": "すべての操作",
+            "deleteRole": "ロールを削除",
+            "deleteUser": "ユーザーを削除",
+            "selfRegisterUser": "ユーザーの自己登録",
+            "updateRolesOfUser": "ロールのユーザーを更新"
+        },
+        "placeholders": {
+            "emptyApprovalFilter": {
+                "action": "すべて表示",
+                "subtitle": "現在、{{status}} 状態の承認はありません。",
+                "title": "結果が見つかりません"
+            },
+            "emptyApprovalList": {
+                "action": "",
+                "subtitle": "現在、承認をレビューするものはありません。",
+                "title": "承認なし"
+            },
+            "emptySearchResults": {
+                "action": "すべて表示",
+                "subtitles": {
+                    0: "検索したワークフローが見つかりませんでした。",
+                    1: "その名前のワークフローがあるかどうかを確認してください。",
+                    2: "システム内で。"
+                },
+                "title": "承認なし"
+            },
+            "searchApprovals": "ワークフロー名で検索"
+        },
+        propertyMessages: {
+            assignedUsersDeleted: "割り当てられたユーザー/sは削除されています。",
+            roleDeleted: "役割が削除されました。",
+            selfRegistration: "自己登録",
+            unassignedUsersDeleted: "割り当てられていないユーザー/sは削除されています。"
+        },
+        "subTitle": "承認を必要とする運用タスクを確認します",
+        "title": "承認"
+    },
     "approve": "承認する",
+    "approved": "承認済み",
     "apps": "アプリ",
+    "assignYourself": "自分に割り当てる",
     "assignee": "譲受人",
     "assignees": "譲受人",
     "asyncOperationErrorMessage": {
@@ -57,7 +166,6 @@ export const common: CommonNS = {
         "heading": "何かがうまくいかなかった",
         "primaryActionText": "アプリをリロードします"
     },
-    "claim": "請求",
     "clear": "クリア",
     "clientId": "クライアントID",
     "close": "近い",
@@ -67,6 +175,7 @@ export const common: CommonNS = {
     "confirm": "確認する",
     "contains": "含む",
     "continue": "続く",
+    "copied": "コピーしました",
     "copyToClipboard": "クリップボードにコピー",
     "create": "作成する",
     "createdOn": "に作成されました",
@@ -100,6 +209,7 @@ export const common: CommonNS = {
     "goBackHome": "家に帰ります",
     "goFullScreen": "フルスクリーンに行きます",
     "good": "良い",
+    "greaterThanOrEqual": "以上",
     "help": "ヘルプ",
     "hide": "隠れる",
     "hidePassword": "パスワードを非表示にします",
@@ -113,6 +223,7 @@ export const common: CommonNS = {
     "lastSeen": "最後に見たのは",
     "lastUpdatedOn": "最後に更新されました",
     "learnMore": "もっと詳しく知る",
+    "lessThanOrEqual": "以下",
     "lightMode": "ライトモード",
     "loading": "読み込み",
     "loginTime": "ログイン時間",
@@ -135,11 +246,15 @@ export const common: CommonNS = {
     "new": "新しい",
     "next": "次",
     "noResultsFound": "結果が見つかりません",
+    "none": "なし",
     "okay": "わかった",
     "operatingSystem": "オペレーティング·システム",
+    "operationType": "操作タイプ",
     "operations": "オペレーション",
     "organizationName": "{{orgName}} 組織",
     "overview": "概要",
+    "parameter": "パラメーター",
+    "pending": "保留中",
     "personalInfo": "個人情報",
     "pin": "ピン",
     "pinned": "ピン留め",
@@ -151,25 +266,30 @@ export const common: CommonNS = {
     "priority": "優先度",
     "privacy": "プライバシー",
     "properties": "プロパティ",
+    "publish": "公開",
     "ready": "準備ができて",
     "regenerate": "再生",
     "register": "登録する",
     "reject": "拒否する",
-    "release": "リリース",
+    "rejected": "拒否されました",
     "remove": "取り除く",
     "removeAll": "すべて削除する",
     "required": "これが必要です。",
     "reserved": "予約済み",
     "resetFilters": "フィルターをリセットします",
     "retry": "リトライ",
+    "revert": "元に戻す",
     "revoke": "取り消す",
     "revokeAll": "すべてを取り消します",
     "samples": "サンプル",
     "save": "保存",
+    "saveDraft": "下書きを保存",
     "sdks": "SDKs",
     "search": "検索",
     "searching": "検索",
     "security": "安全",
+    "selectAll": "すべてを選択します",
+    "selectNone": "なしを選択します",
     "services": "サービス",
     "settings": "設定",
     "setup": "設定",
@@ -190,6 +310,7 @@ export const common: CommonNS = {
     "terminateSession": "セッションを終了します",
     "tooShort": "短すぎる",
     "type": "タイプ",
+    "unassign": "割り当て解除",
     "unpin": "運品",
     "unpinned": "インプインしていない",
     "update": "アップデート",
@@ -197,6 +318,7 @@ export const common: CommonNS = {
     "verified": "検証",
     "verify": "確認する",
     "view": "ビュー",
+    "viewDetails": "詳細を表示",
     "weak": "弱い",
     "weakPassword": "パスワードの強度は少なくとも良いはずです。"
 };

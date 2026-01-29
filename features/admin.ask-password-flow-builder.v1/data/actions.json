@@ -1,0 +1,19 @@
+[
+    {
+        "types": [
+            {
+                "action": {
+                    "type": "EXECUTOR",
+                    "executor": {
+                        "name": "PasswordProvisioningExecutor"
+                    }
+                },
+                "display": {
+                    "label": "Provision Password",
+                    "image": "assets/images/icons/stamp.svg",
+                    "defaultVariant": "PRIMARY"
+                }
+            }
+        ]
+    }
+]

@@ -24,7 +24,8 @@ import { attributeConfig } from "@wso2is/admin.extensions.v1";
 import { getProfileSchemas } from "@wso2is/admin.users.v1/api";
 import { WizardStepInterface } from "@wso2is/admin.users.v1/models/user";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
-import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
+import { IdentityAppsError } from "@wso2is/core/errors";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, Claim, ProfileSchemaInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { ClaimDialect } from "@wso2is/core/src/models";
@@ -38,7 +39,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { addDialect, addExternalClaim, addLocalClaim } from "../../api";
+import { addDialect, addExternalClaim, addLocalClaim, getADialect } from "../../api";
 import { getAddLocalClaimWizardStepIcons } from "../../configs";
 import { ClaimManagementConstants } from "../../constants";
 import { BasicDetailsLocalClaims, MappedAttributes, SummaryLocalClaims } from "../wizard";
@@ -59,10 +60,6 @@ interface AddLocalClaimsPropsInterface extends TestableComponentInterface {
      * Function to be called to initiate an update
      */
     update: () => void;
-    /**
-     * The base URI of the claim
-     */
-    claimURIBase: string;
 }
 
 /**
@@ -80,7 +77,6 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
         open,
         onClose,
         update,
-        claimURIBase,
         [ "data-testid" ]: testId
     } = props;
 
@@ -95,9 +91,12 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
     const [ scimMapping, setScimMapping ] = useState<boolean>(false);
     const [ oidcMapping, setOidcMapping ] = useState<boolean>(false);
     const [ createdClaim, setCreatedClaim ] = useState<string>(null);
+    const [ claimURIBase, setClaimURIBase ] = useState("");
     const skipSCIM: MutableRefObject<boolean> = useRef(false);
 
     const hiddenUserStores: string[] = useSelector((state: AppState) => state.config.ui.hiddenUserStores);
+    const systemReservedUserStores: string[] =
+        useSelector((state: AppState) => state.config.ui.systemReservedUserStores);
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
     const userSchemaURI: string = useSelector((state: AppState) => state?.config?.ui?.userSchemaURI);
@@ -118,15 +117,41 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
     } = useUserStores();
 
     /**
+     * Load the base claim URI for new claims.
+     */
+    useEffect(() => {
+        getADialect("local").then((response: any) => {
+            setClaimURIBase(response.dialectURI);
+        }).catch((error: IdentityAppsError) => {
+            dispatch(addAlert(
+                {
+                    description: error?.description
+                        || t("claims:local.notifications.getLocalDialect.genericError.message"),
+                    level: AlertLevels.ERROR,
+                    message: error?.message
+                        || t("claims:local.notifications.getLocalDialect.genericError.message")
+                }
+            ));
+        });
+    }, []);
+
+    /**
      * Conditionally disable map attribute step
      * if there are no secondary user stores and
      * if the user stores are disabled
      */
     useEffect(() => {
 
-        let userStoresEnabled: boolean = false;
+        if (systemReservedUserStores?.length > 0) {
+            const userPluggedUserStores: UserStoreListItem[] = userStoresList.filter(
+                (userStore: UserStoreListItem) => !systemReservedUserStores?.includes(userStore.name) &&
+                    !hiddenUserStores?.includes(userStore.name)
+            );
 
-        if ( hiddenUserStores && hiddenUserStores.length > 0) {
+            setShowMapAttributes(userPluggedUserStores?.length > 0);
+        } else if (hiddenUserStores && hiddenUserStores.length > 0) {
+            let userStoresEnabled: boolean = false;
+
             attributeConfig.localAttributes.isUserStoresHidden(hiddenUserStores).then((state: UserStoreListItem[]) => {
                 state.map((store: UserStoreListItem) => {
                     if(store.enabled){

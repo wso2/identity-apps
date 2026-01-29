@@ -900,9 +900,20 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                         </Grid.Row>
                     )
                 }
+                { hint && (
+                    <Grid.Row className="urlComponentHint">
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ computerSize }>
+                            <Hint>
+                                { hint }
+                            </Hint>
+                        </Grid.Column>
+                    </Grid.Row>
+                ) }
                 { urlState && urlState.split(",").map((url) => {
                     if (url !== "") {
-                        if (skipValidation || skipInternalValidation) {
+                        const isRegexWrapper: boolean = /^regexp=\(.+\)$/.test(url);
+
+                        if (skipValidation || skipInternalValidation || isRegexWrapper) {
                             return (
                                 <Grid.Row key={ url } className={ "urlComponentTagRow" }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ computerSize }>
@@ -926,15 +937,6 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                         }
                     }
                 }) }
-                { hint && (
-                    <Grid.Row className={ "urlComponentTagRow" }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ computerSize }>
-                            <Hint>
-                                { hint }
-                            </Hint>
-                        </Grid.Column>
-                    </Grid.Row>
-                ) }
             </>
         )
     );

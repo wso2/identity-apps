@@ -98,7 +98,6 @@ export const pages: pagesNS = {
     },
     oidcScopesEdit: {
         backButton: "Go back to Scopes",
-        subTitle: "Add or remove OIDC attributes of the scope",
         title: "Edit scope: {{ name }}"
     },
     organizations: {
@@ -136,5 +135,9 @@ export const pages: pagesNS = {
     webhooks: {
         subTitle: "Create webhooks to notify external services when certain events happen.",
         title: "Webhooks"
-    }
+    },
+    workflowRequestsPage: {
+        subTitle: "View and manage workflow requests.",
+        title: "Workflow Requests"
+    },
 };

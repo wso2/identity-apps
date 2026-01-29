@@ -130,6 +130,12 @@ export interface userNS {
                         empty: string;
                     };
                 };
+                generic: {
+                    placeholder: string;
+                    validations: {
+                        empty: string;
+                    };
+                };
                 lastName: {
                     label: string;
                     placeholder: string;
@@ -214,10 +220,14 @@ export interface userNS {
             subTitle: string;
             askPassword: {
                 emailVerificationDisabled: string;
+                emailVerificationDisabledWithFlows: string;
+                mobileNumberAlreadyExists: string;
                 emailInvalid: string;
                 alphanumericUsernameEnabled: string;
                 inviteViaEmail: string;
                 inviteOffline: string;
+                inviteViaSMS: string;
+                offlineInviteUnavailableWithWorkflow: string;
             };
             steps: {
                 basicDetails: string;
@@ -389,6 +399,8 @@ export interface userNS {
         };
         accountState: {
             pendingAskPassword: string;
+            pendingAskPasswordSMSOTP: string;
+            pendingAskPasswordEmailOTP: string;
         };
         fields: {
             createdDate: string;
@@ -414,6 +426,7 @@ export interface userNS {
                     validations: {
                         empty: string;
                         invalidFormat: string;
+                        required: string;
                     };
                 };
             };
@@ -428,6 +441,20 @@ export interface userNS {
                         };
                         note: string;
                     };
+                };
+            };
+            email: {
+                primaryEmail: {
+                    validations: {
+                        empty: string;
+                    }
+                };
+            };
+            mobile: {
+                primaryMobile: {
+                    validations: {
+                        empty: string;
+                    }
                 };
             };
             mobileChangeForm: {

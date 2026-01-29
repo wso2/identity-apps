@@ -199,16 +199,14 @@ const AdaptiveAuthTemplateInfoModal: FunctionComponent<AdaptiveAuthTemplateInfoM
                                     "templateDescription.description.parameters"
                             ) }
                         </h4>
-                        <Table definition>
+                        <Table celled>
                             <Table.Header>
                                 <Table.Row>
-                                    <Table.HeaderCell />
                                     <Table.HeaderCell>
-                                        { t(
-                                            "applications:edit.sections" +
-                                                ".signOnMethod.sections.templateDescription.description" +
-                                                ".description"
-                                        ) }
+                                        { t("common:parameter") }
+                                    </Table.HeaderCell>
+                                    <Table.HeaderCell>
+                                        { t("common:description") }
                                     </Table.HeaderCell>
                                 </Table.Row>
                             </Table.Header>

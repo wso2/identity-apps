@@ -30,6 +30,7 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { MultitenantConstants } from "@wso2is/admin.core.v1/constants/multitenant-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import { AppComponentProps } from "@wso2is/admin.core.v1/models/common";
 import { DeploymentConfigInterface, UIConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { setFilteredDevelopRoutes, setSanitizedDevelopRoutes } from "@wso2is/admin.core.v1/store/actions/routes";
@@ -47,6 +48,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     setDeploymentConfigs,
     setSupportedI18nLanguages,
+    setSupportedLocaleExtensions,
     setUIConfigs
 } from "@wso2is/core/store";
 import {
@@ -59,10 +61,14 @@ import {
     I18nInstanceInitException,
     I18nModuleConstants,
     LanguageChangeException,
+    LocaleMeta,
+    SupportedLanguagesMeta,
     isLanguageSupported
 } from "@wso2is/i18n";
 import axios, { AxiosResponse } from "axios";
+import cloneDeep from "lodash-es/cloneDeep";
 import has from "lodash-es/has";
+import merge from "lodash-es/merge";
 import React, {
     FunctionComponent,
     LazyExoticComponent,
@@ -77,7 +83,7 @@ import { Dispatch } from "redux";
 import { getAppViewRoutes } from "./configs/routes";
 import useRoutes from "./hooks/use-routes";
 
-const App: LazyExoticComponent<FunctionComponent> = lazy(() => import("./app"));
+const App: LazyExoticComponent<FunctionComponent<AppComponentProps>> = lazy(() => import("./app"));
 
 type AppPropsInterface = IdentifiableComponentInterface;
 
@@ -91,7 +97,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const {
         on,
         signIn,
-        state
+        state: { isAuthenticated }
     } = useAuthContext();
 
     const dispatch: Dispatch<any> = useDispatch();
@@ -104,8 +110,6 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
     const { data: tenantTier } = useGetTenantTier();
 
-    const { filterRoutes } = useRoutes();
-
     const isFirstLevelOrg: boolean = useSelector(
         (state: AppState) => state.organization.isFirstLevelOrganization
     );
@@ -113,6 +117,11 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const [ renderApp, setRenderApp ] = useState<boolean>(false);
     const [ routesFiltered, setRoutesFiltered ] = useState<boolean>(false);
     const [ isUserTenantless, setIsUserTenantless ] = useState(undefined);
+    const [ isAgentManagementEnabledForOrg ,setIsAgentManagementEnabledForOrg ] = useState(false);
+
+    const { filterRoutes } = useRoutes({
+        isAgentManagementEnabledForOrg
+    });
 
     useEffect(() => {
         dispatch(
@@ -279,7 +288,7 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
      * Load localization files.
      */
     useEffect(() => {
-        if (!state.isAuthenticated) {
+        if (!isAuthenticated) {
             return;
         }
 
@@ -287,71 +296,114 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         const resolvedAppBaseNameWithoutTenant: string = StringUtils.removeSlashesFromPath(
             Config.getDeploymentConfig().appBaseNameWithoutTenant
         )
-            ? `/${ StringUtils.removeSlashesFromPath(
-                Config.getDeploymentConfig().appBaseNameWithoutTenant
-            ) }`
+            ? `/${StringUtils.removeSlashesFromPath(Config.getDeploymentConfig().appBaseNameWithoutTenant)}`
             : "";
 
         const metaFileNames: string[] = I18nModuleConstants.META_FILENAME.split(".");
-        const metaFileName: string = `${ metaFileNames[ 0 ] }.${ process.env.metaHash }.${ metaFileNames[ 1 ] }`;
+        const metaFileName: string = `${metaFileNames[0]}.${process.env.metaHash}.${metaFileNames[1]}`;
 
         // Since the portals are not deployed per tenant, looking for static resources in tenant qualified URLs
         // will fail. This constructs the path without the tenant, therefore it'll look for the file in
         // `https://localhost:9443/<PORTAL>/resources/i18n/meta.json` rather than looking for the file in
         // `https://localhost:9443/t/wso2.com/<PORTAL>/resources/i18n/meta.json`.
-        const metaPath: string = `${ resolvedAppBaseNameWithoutTenant }/${ StringUtils.removeSlashesFromPath(
+        const metaPath: string = `${resolvedAppBaseNameWithoutTenant}/${StringUtils.removeSlashesFromPath(
             Config.getI18nConfig().resourcePath
-        ) }/${ metaFileName }`;
+        )}/${metaFileName}`;
 
-        // Fetch the meta file to get the supported languages and paths.
-        axios
-            .get(metaPath)
-            .then((response: AxiosResponse) => {
-                // Set up the i18n module.
-                I18n.init(
+        const metaExtensionsPath: string = `${resolvedAppBaseNameWithoutTenant}/${StringUtils.removeSlashesFromPath(
+            Config.getI18nConfig().resourceExtensionsPath
+        )}/${I18nModuleConstants.META_FILENAME}`;
+
+        // Fetch the meta file to get the supported languages using an IIFE with async/await.
+        (async () => {
+            try {
+                const defaultMetaResponse: AxiosResponse = await axios.get(metaPath);
+                let defaultMeta: SupportedLanguagesMeta = cloneDeep(defaultMetaResponse?.data);
+                let extendedMetaResponse: Partial<AxiosResponse>;
+
+                // Filter out the languages that are supported to be used to translate the app.
+                // TODO: Remove this logic once https://github.com/wso2/product-is/issues/24778 is addressed.
+                defaultMeta = Object.keys(defaultMeta).reduce((acc: SupportedLanguagesMeta, lang: string) => {
+                    const bundle: LocaleMeta = defaultMeta[lang];
+
+                    acc[lang] = {
+                        showOnLanguageSwitcher: bundle.showOnLanguageSwitcher ?? bundle.enabled,
+                        ...bundle
+                    };
+
+                    if (acc[lang].showOnLanguageSwitcher === undefined) {
+                        let showOnLanguageSwitcher: boolean = true;
+
+                        if (!Config.getAppSupportedLocales().includes(lang)) {
+                            showOnLanguageSwitcher = false;
+                        }
+
+                        acc[lang] = {
+                            showOnLanguageSwitcher,
+                            ...bundle
+                        };
+                    }
+
+                    return acc;
+                }, {});
+
+                try {
+                    extendedMetaResponse = await axios.get(metaExtensionsPath);
+                } catch (error) {
+                    extendedMetaResponse = { data: undefined };
+                }
+
+                const mergedMeta: SupportedLanguagesMeta = merge(
+                    defaultMeta,
+                    cloneDeep(extendedMetaResponse?.data)
+                );
+
+                // Filter out bundles with enabled: false, treat missing enabled as enabled (backward compatible)
+                if (mergedMeta && typeof mergedMeta === "object") {
+                    Object.keys(mergedMeta).forEach((lang: string) => {
+                        const bundle: LocaleMeta = mergedMeta[lang];
+
+                        if (bundle && typeof bundle === "object" && "enabled" in bundle && bundle.enabled === false) {
+                            delete mergedMeta[lang];
+                        }
+                    });
+                }
+
+                await I18n.init(
                     {
-                        ...Config.getI18nConfig(response?.data)?.initOptions,
-                        debug: window[ "AppUtils" ].getConfig().debug
+                        ...Config.getI18nConfig(mergedMeta)?.initOptions,
+                        debug: window["AppUtils"].getConfig().debug
                     },
                     Config.getI18nConfig()?.overrideOptions,
                     Config.getI18nConfig()?.langAutoDetectEnabled,
                     Config.getI18nConfig()?.xhrBackendPluginEnabled
-                ).then(() => {
-                    // Set the supported languages in redux store.
-                    store.dispatch(setSupportedI18nLanguages(response?.data));
+                );
 
-                    const isSupported: boolean = isLanguageSupported(
-                        I18n.instance.language,
-                        null,
-                        response?.data
-                    );
+                store.dispatch(setSupportedI18nLanguages(mergedMeta));
+                store.dispatch(setSupportedLocaleExtensions(extendedMetaResponse?.data));
 
-                    if (!isSupported) {
-                        I18n.instance
-                            .changeLanguage(
-                                I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE
-                            )
-                            .catch((error: any) => {
-                                throw new LanguageChangeException(
-                                    I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE,
-                                    error
-                                );
-                            });
+                const isSupported: boolean = isLanguageSupported(I18n.instance.language, null, mergedMeta);
+
+                if (!isSupported) {
+                    try {
+                        await I18n.instance.changeLanguage(I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE);
+                    } catch (error) {
+                        throw new LanguageChangeException(I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE, error);
                     }
-                });
-            })
-            .catch((error: any) => {
+                }
+            } catch (error) {
                 throw new I18nInstanceInitException(error);
-            });
-    }, [ state.isAuthenticated ]);
+            }
+        })();
+    }, [ isAuthenticated ]);
 
     useEffect(() => {
-        if (!state.isAuthenticated) {
+        if (!isAuthenticated) {
             return;
         }
 
         filterRoutes(() => setRoutesFiltered(true), isUserTenantless, isFirstLevelOrg);
-    }, [ filterRoutes, state.isAuthenticated, isFirstLevelOrg, isUserTenantless ]);
+    }, [ filterRoutes, isAuthenticated, isFirstLevelOrg, isUserTenantless ]);
 
     return (
         <SecureApp
@@ -377,7 +429,11 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
         >
             <I18nextProvider i18n={ I18n.instance }>
                 <SubscriptionProvider tierName={ tenantTier?.tierName ?? TenantTier.FREE }>
-                    { renderApp && routesFiltered ? <App /> : <PreLoader /> }
+                    { renderApp && routesFiltered ? (<App
+                        onAgentManagementEnableStatusChange={ (status: boolean) => {
+                            setIsAgentManagementEnabledForOrg(status);
+                        } }
+                    />) : <PreLoader /> }
                 </SubscriptionProvider>
             </I18nextProvider>
         </SecureApp>

@@ -19,9 +19,8 @@
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { Node } from "@xyflow/react";
 import React, { FunctionComponent, ReactElement } from "react";
-import Done from "./done/done";
 import Start from "./start/start";
-import { StaticStepTypes } from "../../../models/steps";
+import { StaticStepTypes, Step } from "../../../models/steps";
 
 /**
  * Props interface of {@link CommonStaticStepFactory}
@@ -31,6 +30,14 @@ export interface CommonStaticStepFactoryPropsInterface extends Node, Identifiabl
      * The resource properties.
      */
     type: StaticStepTypes;
+    /**
+     * The flow id of the resource.
+     */
+    resourceId: string;
+    /**
+     * The resource properties.
+     */
+    resource: Step;
 }
 
 /**
@@ -46,10 +53,6 @@ export const CommonStaticStepFactory: FunctionComponent<CommonStaticStepFactoryP
 }: CommonStaticStepFactoryPropsInterface): ReactElement => {
     if (type === StaticStepTypes.Start) {
         return <Start data-componentid={ componentId } { ...rest } />;
-    }
-
-    if (type === StaticStepTypes.UserOnboard) {
-        return <Done data-componentid={ componentId } { ...rest } />;
     }
 
     return null;

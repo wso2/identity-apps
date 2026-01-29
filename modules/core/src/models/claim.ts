@@ -34,6 +34,7 @@ export interface Claim {
     regEx: string;
     required: boolean;
     supportedByDefault: boolean;
+    managedInUserStore?: boolean;
     uniquenessScope?: UniquenessScope;
     inputFormat?: InputFormat
     sharedProfileValueResolvingMethod?: SharedProfileValueResolvingMethod;
@@ -127,6 +128,7 @@ export interface ClaimsGetParams {
     attributes?: string;
     "exclude-identity-claims"?: boolean;
     "exclude-hidden-claims"?: boolean;
+    profile?: string;
 }
 
 /**
@@ -203,6 +205,8 @@ export enum ClaimDataType {
     DECIMAL = "decimal",
     BOOLEAN = "boolean",
     DATE_TIME = "date_time",
+    DATE = "date",
+    EPOCH = "epoch",
     COMPLEX = "complex",
     OPTIONS = "options",
     TEXT = "text"

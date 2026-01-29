@@ -1,5 +1,17 @@
 # @wso2is/admin.template-core.v1
 
+## 1.5.160
+
+### Patch Changes
+
+- [#9359](https://github.com/wso2/identity-apps/pull/9359) [`deb7ccdbcf4af90dd2c3c11c824b9bf999b01927`](https://github.com/wso2/identity-apps/commit/deb7ccdbcf4af90dd2c3c11c824b9bf999b01927) Thanks [@JayanaGunaweera01](https://github.com/JayanaGunaweera01)! - Add markdown rendering support for dynamic form helperText
+
+## 1.5.159
+
+### Patch Changes
+
+- [#8518](https://github.com/wso2/identity-apps/pull/8518) [`542afdfe17cf91bef172e141de787436f9f59d7e`](https://github.com/wso2/identity-apps/commit/542afdfe17cf91bef172e141de787436f9f59d7e) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Introduce improved `SelectFieldAdapter` component
+
 ## 1.5.158
 
 ### Patch Changes

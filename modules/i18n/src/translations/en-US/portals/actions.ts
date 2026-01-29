@@ -61,6 +61,24 @@ export const actions: actionsNS = {
         }
     },
     fields: {
+        allowedHeaders: {
+            hint: "Request headers in the relevant flow to be shared with the external service.",
+            label: "Allowed Headers",
+            placeholder: "Header Name",
+            tooltip: "Add Header",
+            validations: {
+                invalid: "Please enter a valid header name."
+            }
+        },
+        allowedParameters: {
+            hint: "Request parameters in the relevant flow to be shared with the external service.",
+            label: "Allowed Parameters",
+            placeholder: "Parameter Name",
+            tooltip: "Add Parameter",
+            validations: {
+                invalid: "Please enter a valid parameter name."
+            }
+        },
         authentication: {
             info: {
                 message: "If you are changing the authentication, be aware that the authentication" +
@@ -362,6 +380,13 @@ export const actions: actionsNS = {
             },
             heading: "Pre Issue Access Token"
         },
+        preIssueIdToken: {
+            description: {
+                expanded: "Use this action to update claims of the ID token.",
+                shortened: "This action is executed before issuing the ID token to an application."
+            },
+            heading: "Pre Issue ID Token"
+        },
         preRegistration: {
             description: {
                 expanded: "This action is executed before registering a user." +
@@ -384,5 +409,40 @@ export const actions: actionsNS = {
             },
             heading: "Pre Update Profile"
         }
+    },
+    versioning: {
+        notifications: {
+            updateVersion: {
+                genericError: {
+                    description: "Failed to update the action version.",
+                    message: "Something went wrong"
+                },
+                success: {
+                    description: "Successfully updated the action version.",
+                    message: "Update successful"
+                }
+            }
+        },
+        outdated: {
+            warning: {
+                confirmationModal: {
+                    assertionHint: "Please confirm your action",
+                    content: "This action is irreversible and will result in a permanent update to the action functionality.",
+                    header: "Have you done the relevant changes?",
+                    message: "Proceeding without making the necessary changes will cause the external service behavior to break."
+                },
+                details: {
+                    preRequisite: "Before updating, please ensure that you have read the <1>documentation</1> for any breaking changes.",
+                    title: "You are currently using <1>version {{currentVersion}}</1> of this action which will be deprecated soon. Please update to the latest <3>version {{latestVersion}}</3> to continue receiving support and updates."
+                },
+                hideDetailsButton: "Hide Details",
+                message: "A new <1>version {{latestVersion}}</1> of this action is available now. Please update to the latest version.",
+                title: "Update Required.",
+                updateButton: "Update",
+                viewDetailsButton: "View Details"
+            }
+        },
+        outdatedLabel: "Outdated",
+        versionLabel: "Version {{version}}"
     }
 };

@@ -135,6 +135,7 @@ export interface BasicUserDetailsInterface {
     newPassword?: string;
     confirmPassword?: string;
     passwordOption?: string;
+    mobile?: string;
 }
 
 /**
@@ -344,6 +345,20 @@ export interface PayloadInterface {
             value: string;
           }[];
         };
+      }[];
+      schemas: string[];
+}
+
+/**
+ * Interface for the SCIM2 Roles V3 API payload.
+ */
+export interface PayloadRolesV3Interface {
+    Operations: {
+        op: string;
+        value: {
+            display: string;
+            value: string;
+        }[];
       }[];
       schemas: string[];
 }

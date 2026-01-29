@@ -28,7 +28,7 @@ import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/featur
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { RemoteUserStoreManagerType } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
-import { UserStoreDropdownItem, UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
+import { UserStoreDropdownItem, UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, {
     ChangeEvent,
@@ -75,6 +75,8 @@ const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> =
 
     const organizationName: string = store.getState().auth.tenantDomain;
     const productName: string = useSelector((state: AppState) => state.config.ui.productName);
+    const systemReservedUserStores: string[] = useSelector(
+        (state: AppState) => state?.config?.ui?.systemReservedUserStores);
 
     const useOrgConfig: UseOrganizationConfigType = useOrganizationConfigV2;
 
@@ -115,7 +117,10 @@ const ConsoleAdministrators: FunctionComponent<ConsoleAdministratorsInterface> =
         if (userStoresList && !isUserStoreListFetchRequestLoading) {
             userStoresList?.forEach((store: UserStoreListItem, index: number) => {
                 // Skip the remote user store in administrators listing as it is not supporting user listing.
-                if (store?.typeName === RemoteUserStoreManagerType.RemoteUserStoreManager) {
+                if (
+                    store?.typeName === RemoteUserStoreManagerType.RemoteUserStoreManager ||
+                    systemReservedUserStores?.includes(store?.name)
+                ) {
                     return;
                 }
 

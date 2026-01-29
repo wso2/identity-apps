@@ -26,9 +26,9 @@ import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@ws
 import { addAlert } from "@wso2is/core/store";
 import { AutocompleteFieldAdapter, FinalForm, FinalFormField, FormRenderProps } from "@wso2is/form";
 import { Heading, Hint, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
-import { AxiosError } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, ReactNode, useMemo } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
@@ -91,10 +91,17 @@ const AddExistingUserWizard: FunctionComponent<AddExistingUserWizardPropsInterfa
 
     const { assignAdministratorRoles } = useBulkAssignAdministratorRoles();
 
-    const { prospectiveAdministrators } = useProspectiveAdministrators(
+    // State for current input value in Autocomplete
+    const [ usernameInputValue, setUsernameInputValue ] = useState<string>("");
+
+    // Use the hook with filter based on input value
+    const {
+        prospectiveAdministrators,
+        isAdministratorsListFetchRequestLoading
+    } = useProspectiveAdministrators(
+        UserManagementConstants.ADD_EXISTING_USER_WIZARD_RETRIEVAL_COUNT,
         null,
-        null,
-        null,
+        usernameInputValue ? `userName co ${usernameInputValue}` : "",
         null,
         selectedUserStore,
         UserManagementConstants.GROUPS_ATTRIBUTE,
@@ -106,13 +113,11 @@ const AddExistingUserWizard: FunctionComponent<AddExistingUserWizardPropsInterfa
             return [];
         }
 
-        return prospectiveAdministrators?.Resources?.map((user: UserBasicInterface) => {
-            return {
-                key: user.id,
-                label: getUserNameWithoutDomain(user?.userName),
-                user
-            };
-        });
+        return prospectiveAdministrators?.Resources?.map((user: UserBasicInterface) => ({
+            key: user.id,
+            label: getUserNameWithoutDomain(user?.userName),
+            user
+        }));
     }, [ prospectiveAdministrators ]);
 
     const rolesAutocompleteOptions: AddExistingUserWizardFormValuesInterface["roles"] = useMemo(() => {
@@ -148,12 +153,23 @@ const AddExistingUserWizard: FunctionComponent<AddExistingUserWizardPropsInterfa
                     });
                 }
             },
-            () => {
-                dispatch(addAlert({
-                    description: t("extensions:manage.users.wizard.addAdmin.internal.updateRole.success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("extensions:manage.users.wizard.addAdmin.internal.updateRole.success.message")
-                }));
+            (responses?: AxiosResponse[]) => {
+                if (responses?.[0].status === 202) {
+                    dispatch(addAlert({
+                        description: t("extensions:manage.users.wizard.addAdmin.internal.updateRole." +
+                            "pendingApproval.description"),
+                        level: AlertLevels.WARNING,
+                        message: t("extensions:manage.users.wizard.addAdmin.internal.updateRole." +
+                            "pendingApproval.message")
+                    }));
+                } else {
+                    dispatch(addAlert({
+                        description: t("extensions:manage.users.wizard.addAdmin." +
+                            "internal.updateRole.success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("extensions:manage.users.wizard.addAdmin.internal.updateRole.success.message")
+                    }));
+                }
                 onSuccess();
                 onClose(null, null);
             }
@@ -227,6 +243,13 @@ const AddExistingUserWizard: FunctionComponent<AddExistingUserWizardPropsInterfa
                                     placeholder="Select a user"
                                     component={ AutocompleteFieldAdapter }
                                     options={ usernameAutocompleteOptions }
+                                    filterOptions={ (x: any) => x } // disables client-side filtering
+                                    loading={ isAdministratorsListFetchRequestLoading }
+                                    openOnFocus
+                                    inputValue={ usernameInputValue }
+                                    onInputChange={ (_event: any, value: string) => {
+                                        setUsernameInputValue(value);
+                                    } }
                                 />
                                 <FinalFormField
                                     fullWidth

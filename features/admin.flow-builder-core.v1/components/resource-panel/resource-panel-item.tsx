@@ -24,6 +24,7 @@ import IconButton from "@oxygen-ui/react/IconButton";
 import Stack from "@oxygen-ui/react/Stack";
 import Typography from "@oxygen-ui/react/Typography";
 import { PlusIcon } from "@oxygen-ui/react-icons";
+import loadStaticResource from "@wso2is/admin.core.v1/utils/load-static-resource";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, HTMLAttributes, ReactElement } from "react";
@@ -49,6 +50,10 @@ export interface ResourcePanelItemProps
      * @param resource - Added resource.
      */
     onAdd?: (resource: Resource) => void;
+    /**
+     * Flag to disable the panel item.
+     */
+    disabled?: boolean;
 }
 
 /**
@@ -63,6 +68,7 @@ const ResourcePanelItem: FunctionComponent<ResourcePanelItemProps> = ({
     resource,
     type = "static",
     onAdd,
+    disabled = false,
     ...rest
 }: ResourcePanelItemProps): ReactElement => (
     <>
@@ -78,7 +84,7 @@ const ResourcePanelItem: FunctionComponent<ResourcePanelItemProps> = ({
                         <Box display="flex" justifyContent="space-between" alignItems="center" gap={ 1 }>
                             <Stack direction="row" spacing={ 1 }>
                                 <Avatar
-                                    src={ resource?.display?.image }
+                                    src={ loadStaticResource(resource?.display?.image) }
                                     variant="square"
                                     className="flow-builder-element-panel-item-avatar"
                                 />
@@ -93,6 +99,7 @@ const ResourcePanelItem: FunctionComponent<ResourcePanelItemProps> = ({
                                 <IconButton
                                     className="flow-builder-element-panel-item-add-button"
                                     onClick={ () => onAdd(resource) }
+                                    disabled={ disabled }
                                 >
                                     <PlusIcon size={ 14 } />
                                 </IconButton>

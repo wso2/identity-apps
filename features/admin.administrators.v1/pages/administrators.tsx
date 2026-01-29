@@ -37,9 +37,10 @@ import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/featur
 import { getAgentConnections } from "@wso2is/admin.remote-userstores.v1/api/remote-user-stores";
 import { AgentConnectionInterface } from "@wso2is/admin.remote-userstores.v1/models/remote-user-stores";
 import { getRoleById, searchRoleList } from "@wso2is/admin.roles.v2/api/roles";
-import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants";
+import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
+import { useGetRoleByIdV3 } from "@wso2is/admin.roles.v2/hooks/use-get-role-by-id-v3";
 import { RolesV2Interface, SearchRoleInterface } from "@wso2is/admin.roles.v2/models/roles";
-import { useServerConfigs } from "@wso2is/admin.server-configurations.v1";
+import { useServerConfigs } from "@wso2is/admin.server-configurations.v1/api/server-config";
 import { TenantInfo } from "@wso2is/admin.tenants.v1/models/tenant";
 import { getAssociationType } from "@wso2is/admin.tenants.v1/utils/tenants";
 import { useInvitedUsersList, useUsersList } from "@wso2is/admin.users.v1/api";
@@ -58,7 +59,7 @@ import {
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils";
 import {
     CONSUMER_USERSTORE
-} from "@wso2is/admin.userstores.v1/constants";
+} from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { IdentityAppsError } from "@wso2is/core/errors";
@@ -80,7 +81,15 @@ import {
 import { AxiosResponse } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useMemo, useState } from "react";
+import React, {
+    FunctionComponent,
+    ReactElement,
+    SyntheticEvent,
+    useCallback,
+    useEffect,
+    useMemo,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
@@ -214,6 +223,34 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
         startIndex: 0,
         totalResults: 0
     });
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
+    );
+
+    const { data: roleDataV3, error: roleErrorV3, mutate: mutateRoleV3 } =
+        useGetRoleByIdV3(userRolesV3FeatureEnabled ? adminRoleId : null);
+
+    // Create a function that uses the appropriate method based on the API version
+    const getRoleByIdFunction: (roleId: string) => Promise<AxiosResponse> = useCallback(
+        (roleId: string): Promise<AxiosResponse> => {
+            if (userRolesV3FeatureEnabled) {
+                return new Promise((resolve: (value: AxiosResponse) => void, reject: (reason?: any) => void) => {
+                    if (roleDataV3) {
+                        resolve({ data: roleDataV3 } as AxiosResponse);
+                    } else if (roleErrorV3) {
+                        reject(roleErrorV3);
+                    } else {
+                        mutateRoleV3().then((data: any) => {
+                            resolve({ data } as AxiosResponse);
+                        }).catch(reject);
+                    }
+                });
+            } else {
+                return getRoleById(roleId);
+            }
+        },
+        [ userRolesV3FeatureEnabled, roleDataV3, roleErrorV3, mutateRoleV3 ]
+    );
 
     const organizationName: string = store.getState().auth.tenantDomain;
 
@@ -930,7 +967,7 @@ const CollaboratorsPage: FunctionComponent<CollaboratorsPageInterface> = (
             totalResults: 0
         });
 
-        getRoleById(adminRoleId).then((response: AxiosResponse) => {
+        getRoleByIdFunction(adminRoleId).then((response: AxiosResponse) => {
             const adminList: UserRoleInterface[] = response?.data?.users;
 
             adminList.forEach((user: UserRoleInterface) => {

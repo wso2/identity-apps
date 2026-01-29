@@ -21,7 +21,7 @@ import Card from "@oxygen-ui/react/Card";
 import List from "@oxygen-ui/react/List";
 import ListItem from "@oxygen-ui/react/ListItem";
 import Typography from "@oxygen-ui/react/Typography";
-import { ReactComponent as CrossIcon } from "@wso2is/admin.core.v1/assets/icons/cross-icon.svg";
+import { XMarkIcon } from "@oxygen-ui/react-icons";
 import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
 import { IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, useEffect, useState } from "react";
@@ -196,8 +196,8 @@ const ApprovalStep: FunctionComponent<ApprovalStepProps> = (
                     className={ "close-button" }
                     disabled={ isReadOnly || isOneStepLeft }
                 >
-                    <CrossIcon
-                        className="delete-button-icon"
+                    <XMarkIcon
+                        size="small"
                         data-componentid={ `${componentId}-delete-icon-${step.stepNumber}` }
                     />
                 </Fab>

@@ -13,7 +13,7 @@
                 },
                 "display": {
                     "label": "Next",
-                    "image": "https://www.svgrepo.com/show/305382/arrowhead-right-outline.svg",
+                    "image": "assets/images/icons/arrowhead-right-outline.svg",
                     "defaultVariant": "PRIMARY"
                 }
             }
@@ -23,23 +23,10 @@
         "resourceType": "ELEMENT",
         "category": "ONBOARDING",
         "display": {
-            "label": "Onboarding",
+            "label": "Actions",
             "image": ""
         },
         "types": [
-            {
-                "action": {
-                    "type": "EXECUTOR",
-                    "executor": {
-                        "name": "PasswordOnboardExecutor"
-                    }
-                },
-                "display": {
-                    "label": "Onboard Password",
-                    "image": "https://www.svgrepo.com/show/526627/password.svg",
-                    "defaultVariant": "PRIMARY"
-                }
-            },
             {
                 "action": {
                     "type": "EXECUTOR",
@@ -49,7 +36,7 @@
                 },
                 "display": {
                     "label": "Verify Email OTP Code",
-                    "image": "https://www.svgrepo.com/show/479622/email-18.svg",
+                    "image": "assets/images/icons/email.svg",
                     "defaultVariant": "PRIMARY"
                 }
             },
@@ -62,7 +49,7 @@
                 },
                 "display": {
                     "label": "Verify SMS OTP Code",
-                    "image": "https://www.svgrepo.com/show/325390/message-text.svg",
+                    "image": "assets/images/icons/message-text.svg",
                     "defaultVariant": "PRIMARY"
                 }
             }

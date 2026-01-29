@@ -55,7 +55,8 @@ export enum StepCategories {
 export enum StepTypes {
     View = "VIEW",
     Rule = "RULE",
-    Redirection = "REDIRECTION"
+    Execution = "EXECUTION",
+    End = "END",
 }
 
 export enum StaticStepTypes {
@@ -63,7 +64,19 @@ export enum StaticStepTypes {
     Start = "START",
 }
 
-export enum RedirectionTypes {
+export enum ExecutionTypes {
     GoogleFederation = "GoogleExecutor",
-    PasskeyEnrollment = "FIDO2Executor"
+    AppleFederation = "AppleExecutor",
+    FacebookFederation = "FacebookExecutor",
+    MicrosoftFederation = "Office365Executor",
+    GithubFederation = "GithubExecutor",
+    PasskeyEnrollment = "FIDO2Executor",
+    ConfirmationCode = "ConfirmationCodeValidationExecutor",
+    MagicLinkExecutor = "MagicLinkExecutor"
+}
+
+export enum ExecutionStepViewTypes {
+    Default = "Execution",
+    MagicLinkView = "Magic Link View",
+    PasskeyView = "Passkey View"
 }

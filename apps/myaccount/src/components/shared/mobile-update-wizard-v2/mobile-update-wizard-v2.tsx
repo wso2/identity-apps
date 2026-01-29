@@ -46,21 +46,35 @@ import { resendSMSOTPCode, validateSMSOTPCode } from "../../../api/verify-mobile
 import { ProfilePatchOperationValue } from "../../../models/profile";
 import { setActiveForm } from "../../../store/actions/global";
 
+/**
+ * Props for the mobile update wizard component.
+ */
 interface MobileUpdateWizardV2PropsInterface extends IdentifiableComponentInterface {
-    initialValue: string;
+    /**
+     * The initial value of the mobile number input field. This is optional as it is not required for
+     * Mobile OTP verification process.
+     */
+    initialValue?: string;
     isOpen: boolean;
     onClose: (isRevalidate?: boolean) => void;
     onCancel: (isRevalidate?: boolean) => void;
+    isMobileRequired: boolean;
     initialStep?: number;
     isMultiValued?: boolean;
 }
 
+/**
+ * Mobile update wizard component. A reusable component used when updating mobile numbers and OTP verification.
+ * Mobile number update - initiate the component with `initialStep = 0`.
+ * OTP verification - initiate the component with `initialStep = 1`.
+ */
 const MobileUpdateWizardV2: FunctionComponent<MobileUpdateWizardV2PropsInterface> = (
     {
-        initialValue,
+        initialValue = "",
         isOpen,
         onClose,
         onCancel,
+        isMobileRequired,
         initialStep = 0,
         isMultiValued = false,
         ["data-componentid"]: testId = "component-id"
@@ -200,7 +214,7 @@ const MobileUpdateWizardV2: FunctionComponent<MobileUpdateWizardV2PropsInterface
             content: (
                 <MobileInputStepContent
                     initialValue={ initialValue }
-                    isRequired={ true }
+                    isRequired={ isMobileRequired }
                     fieldLabel="mobile"
                     onUpdate={ handleMobileNumberUpdate }
                     triggerUpdate={ triggerUpdateMobile }

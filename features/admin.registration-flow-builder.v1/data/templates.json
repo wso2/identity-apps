@@ -8,7 +8,7 @@
         "display": {
             "label": "Generate with AI",
             "description": "Describe your registration flow and generate with AI.",
-            "image": "https://www.svgrepo.com/show/521818/robot.svg",
+            "image": "assets/images/icons/robot.svg",
             "showOnResourcePanel": false
         },
         "config": {}
@@ -22,7 +22,7 @@
         "display": {
             "label": "Blank",
             "description": "Start a new flow from scratch",
-            "image": "https://www.svgrepo.com/show/533698/refresh-ccw-alt-3.svg",
+            "image": "assets/images/icons/refresh-ccw.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -66,7 +66,7 @@
                                                 "text": "Continue"
                                             },
                                             "action": {
-                                                "next": "USER_ONBOARD",
+                                                "next": "END",
                                                 "type": "NEXT"
                                             }
                                         }
@@ -76,17 +76,49 @@
                         }
                     },
                     {
-                        "id": "USER_ONBOARD",
-                        "type": "USER_ONBOARD",
+                        "id": "END",
+                        "type": "END",
                         "size": {
-                            "width": 56,
-                            "height": 56
+                            "width": 280,
+                            "height": 220
                         },
                         "position": {
-                            "x": 1200,
-                            "y": 408
+                            "x": 790,
+                            "y": 330
                         },
-                        "data": {}
+                        "config": {
+                            "isAccountLockOnCreationEnabled": "false",
+                            "isAutoLoginEnabled": "false",
+                            "isEmailVerificationEnabled": "true",
+                            "isFlowCompletionNotificationEnabled": "false"
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "UserProvisioningExecutor"
+                                }
+                            },
+                            "components": [
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "id": "typography_u2oz",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Registration Successful!"
+                                    }
+                                },
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">You can now sign in with your new account.</span></p>"
+                                    },
+                                    "id": "display_hgvm"
+                                }
+                            ]
+                        }
                     }
                 ]
             }
@@ -101,11 +133,20 @@
         "display": {
             "label": "Basic Details",
             "description": "Basic registration experience with minimal data collection",
-            "image": "https://www.svgrepo.com/show/390092/security-protection-password.svg",
+            "image": "assets/images/icons/password.svg",
             "showOnResourcePanel": true
         },
         "config": {
             "data": {
+                "__generationMeta__": {
+                        "defaultPropertySelectorId": "{{NEXT_STEP_ID}}",
+                        "replacers": [
+                            {
+                                "key": "NEXT_STEP_ID",
+                                "type": "ID"
+                            }
+                        ]
+                },
                 "steps": [
                     {
                         "id": "{{ID}}",
@@ -126,7 +167,7 @@
                                     "type": "TYPOGRAPHY",
                                     "variant": "H3",
                                     "config": {
-                                        "text": "Register Account"
+                                        "text": "Sign Up"
                                     }
                                 },
                                 {
@@ -167,30 +208,219 @@
                                             "id": "{{ID}}",
                                             "category": "FIELD",
                                             "type": "INPUT",
-                                            "variant": "TEXT",
+                                            "variant": "PASSWORD",
                                             "config": {
-                                                "type": "text",
+                                                "identifier": "password",
+                                                "type": "password",
                                                 "hint": "",
-                                                "label": "First Name",
-                                                "required": false,
-                                                "placeholder": "Enter your first name",
-                                                "identifier": "http://wso2.org/claims/givenname"
+                                                "label": "Password",
+                                                "required": true,
+                                                "placeholder": "Enter your password"
                                             }
                                         },
+                                        {
+                                            "category": "DISPLAY",
+                                            "config": {
+                                                "text": "<p class=\"rich-text-paragraph\"><br></p><p class=\"rich-text-paragraph\"><span class=\"rich-text-pre-wrap\">When you click Sign Up, you are agreeing to our </span><a href=\"{{branding.termsOfUseUrl}}\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"rich-text-link\"><span class=\"rich-text-pre-wrap\">Terms of Service</span></a><span class=\"rich-text-pre-wrap\"> and </span><a href=\"{{branding.privacyPolicyUrl}}\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"rich-text-link\"><span class=\"rich-text-pre-wrap\">Privacy Policy</span></a></p>"
+                                            },
+                                            "id": "{{ID}}",
+                                            "type": "RICH_TEXT"
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Sign Up"
+                                            },
+                                            "action": {
+                                                "type": "EXECUTOR",
+                                                "executor": {
+                                                    "name": "PasswordProvisioningExecutor"
+                                                },
+                                                "next": "{{NEXT_STEP_ID}}"
+                                            }
+                                        },
+                                        {
+                                            "category": "DISPLAY",
+                                            "config": {
+                                                "text": "<p class=\"rich-text-paragraph\"><br></p><p class=\"rich-text-paragraph\"><span class=\"rich-text-pre-wrap\">Already have an account? </span><a href=\"{{application.callbackOrAccessUrl}}\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"rich-text-link\"><span class=\"rich-text-pre-wrap\">Sign in</span></a></p>"
+                                            },
+                                            "id": "{{ID}}",
+                                            "type": "RICH_TEXT"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "{{NEXT_STEP_ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 453
+                        },
+                        "position": {
+                            "x": 735,
+                            "y": 301
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "OTP Verification"
+                                    }
+                                },
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "components": [
                                         {
                                             "id": "{{ID}}",
                                             "category": "FIELD",
                                             "type": "INPUT",
-                                            "variant": "TEXT",
+                                            "variant": "OTP",
                                             "config": {
                                                 "type": "text",
                                                 "hint": "",
-                                                "label": "Last Name",
+                                                "label": "Enter the code sent to your email",
                                                 "required": false,
-                                                "placeholder": "Enter your last name",
-                                                "identifier": "http://wso2.org/claims/lastname"
+                                                "placeholder": "",
+                                                "identifier": "otp"
                                             }
                                         },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "BUTTON",
+                                            "variant": "PRIMARY",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Continue"
+                                            },
+                                            "action": {
+                                                "type": "EXECUTOR",
+                                                "executor": {
+                                                    "name": "EmailOTPExecutor"
+                                                },
+                                                "next": "END"
+                                            }
+                                        },
+                                        {
+                                            "id": "{{ID}}",
+                                            "category": "ACTION",
+                                            "type": "RESEND",
+                                            "config": {
+                                                "type": "submit",
+                                                "text": "Resend OTP"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "END",
+                        "type": "END",
+                        "size": {
+                            "width": 280,
+                            "height": 220
+                        },
+                        "position": {
+                            "x": 1200,
+                            "y": 408
+                        },
+                        "config": {
+                            "isAccountLockOnCreationEnabled": "false",
+                            "isAutoLoginEnabled": "false",
+                            "isEmailVerificationEnabled": "true",
+                            "isFlowCompletionNotificationEnabled": "false"
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "UserProvisioningExecutor"
+                                }
+                            },
+                            "components": [
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "id": "typography_u2oz",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Registration Successful!"
+                                    }
+                                },
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">You can now sign in with your new account.</span></p>"
+                                    },
+                                    "id": "display_hgvm"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    {
+        "resourceType": "TEMPLATE",
+        "category": "STARTER",
+        "type": "DEFAULT",
+        "version": "0.1.0",
+        "deprecated": false,
+        "display": {
+            "label": "Default Self Registration",
+            "description": "Self-registration flow that collects basic profile information",
+            "image": "assets/images/icons/password.svg",
+            "showOnResourcePanel": false
+        },
+        "config": {
+            "data": {
+                "steps": [
+                    {
+                        "id": "{{ID}}",
+                        "type": "VIEW",
+                        "size": {
+                            "width": 350,
+                            "height": 291
+                        },
+                        "position": {
+                            "x": 300,
+                            "y": 200
+                        },
+                        "data": {
+                            "components": [
+                                {
+                                    "id": "{{ID}}",
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Sign Up"
+                                    }
+                                },
+                                {
+                                    "category": "BLOCK",
+                                    "type": "FORM",
+                                    "config": {},
+                                    "id": "{{ID}}",
+                                    "components": [
                                         {
                                             "id": "{{ID}}",
                                             "category": "FIELD",
@@ -206,21 +436,37 @@
                                             }
                                         },
                                         {
+                                            "category": "DISPLAY",
+                                            "config": {
+                                                "text": "<p class=\"rich-text-paragraph\"><br></p><p class=\"rich-text-paragraph\"><span class=\"rich-text-pre-wrap\">When you click Sign Up, you are agreeing to our </span><a href=\"{{branding.termsOfUseUrl}}\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"rich-text-link\"><span class=\"rich-text-pre-wrap\">Terms of Service</span></a><span class=\"rich-text-pre-wrap\"> and </span><a href=\"{{branding.privacyPolicyUrl}}\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"rich-text-link\"><span class=\"rich-text-pre-wrap\">Privacy Policy</span></a></p>"
+                                            },
+                                            "id": "{{ID}}",
+                                            "type": "RICH_TEXT"
+                                        },
+                                        {
                                             "id": "{{ID}}",
                                             "category": "ACTION",
                                             "type": "BUTTON",
                                             "variant": "PRIMARY",
                                             "config": {
                                                 "type": "submit",
-                                                "text": "Continue"
+                                                "text": "Sign Up"
                                             },
                                             "action": {
                                                 "type": "EXECUTOR",
                                                 "executor": {
-                                                    "name": "PasswordOnboardExecutor"
+                                                    "name": "PasswordProvisioningExecutor"
                                                 },
-                                                "next": "USER_ONBOARD"
+                                                "next": "END"
                                             }
+                                        },
+                                        {
+                                            "category": "DISPLAY",
+                                            "config": {
+                                                "text": "<p class=\"rich-text-paragraph\"><br></p><p class=\"rich-text-paragraph\"><span class=\"rich-text-pre-wrap\">Already have an account? </span><a href=\"{{application.callbackOrAccessUrl}}\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"rich-text-link\"><span class=\"rich-text-pre-wrap\">Sign in</span></a></p>"
+                                            },
+                                            "id": "{{ID}}",
+                                            "type": "RICH_TEXT"
                                         }
                                     ]
                                 }
@@ -228,17 +474,49 @@
                         }
                     },
                     {
-                        "id": "USER_ONBOARD",
-                        "type": "USER_ONBOARD",
+                        "id": "END",
+                        "type": "END",
                         "size": {
-                            "width": 56,
-                            "height": 56
+                            "width": 280,
+                            "height": 220
                         },
                         "position": {
                             "x": 1200,
                             "y": 408
                         },
-                        "data": {}
+                        "config": {
+                            "isAccountLockOnCreationEnabled": "false",
+                            "isAutoLoginEnabled": "false",
+                            "isEmailVerificationEnabled": "true",
+                            "isFlowCompletionNotificationEnabled": "false"
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "UserProvisioningExecutor"
+                                }
+                            },
+                            "components": [
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "id": "typography_u2oz",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Registration Successful!"
+                                    }
+                                },
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">You can now sign in with your new account.</span></p>"
+                                    },
+                                    "id": "display_hgvm"
+                                }
+                            ]
+                        }
                     }
                 ]
             }
@@ -253,16 +531,16 @@
         "display": {
             "label": "Basic + Google",
             "description": "Basic registration experience with Google as an addition",
-            "image": "https://www.svgrepo.com/show/461597/google.svg",
+            "image": "assets/images/icons/google-generic.svg",
             "showOnResourcePanel": true
         },
         "config": {
             "data": {
                 "__generationMeta__": {
-                    "defaultPropertySelectorId": "{{GOOGLE_REDIRECTION_STEP_ID}}",
+                    "defaultPropertySelectorId": "{{GOOGLE_EXECUTION_STEP_ID}}",
                     "replacers": [
                         {
-                            "key": "GOOGLE_REDIRECTION_STEP_ID",
+                            "key": "GOOGLE_EXECUTION_STEP_ID",
                             "type": "ID"
                         }
                     ]
@@ -336,9 +614,9 @@
                                             "action": {
                                                 "type": "EXECUTOR",
                                                 "executor": {
-                                                    "name": "PasswordOnboardExecutor"
+                                                    "name": "PasswordProvisioningExecutor"
                                                 },
-                                                "next": "USER_ONBOARD"
+                                                "next": "END"
                                             }
                                         }
                                     ]
@@ -350,19 +628,20 @@
                                     "variant": "SOCIAL",
                                     "config": {
                                         "type": "button",
-                                        "text": "Continue with Google"
+                                        "text": "Continue with Google",
+                                        "image": "assets/images/icons/google.svg"
                                     },
                                     "action": {
                                         "type": "NEXT",
-                                        "next": "{{GOOGLE_REDIRECTION_STEP_ID}}"
+                                        "next": "{{GOOGLE_EXECUTION_STEP_ID}}"
                                     }
                                 }
                             ]
                         }
                     },
                     {
-                        "id": "{{GOOGLE_REDIRECTION_STEP_ID}}",
-                        "type": "REDIRECTION",
+                        "id": "{{GOOGLE_EXECUTION_STEP_ID}}",
+                        "type": "EXECUTION",
                         "size": {
                             "width": 350,
                             "height": 291
@@ -380,22 +659,54 @@
                                         "idpName": "{{IDP_NAME}}"
                                     }
                                 },
-                                "next": "USER_ONBOARD"
+                                "next": "END"
                             }
                         }
                     },
                     {
-                        "id": "USER_ONBOARD",
-                        "type": "USER_ONBOARD",
+                        "id": "END",
+                        "type": "END",
                         "size": {
-                            "width": 56,
-                            "height": 56
+                            "width": 280,
+                            "height": 220
                         },
                         "position": {
                             "x": 900,
                             "y": 408
                         },
-                        "data": {}
+                        "config": {
+                            "isAccountLockOnCreationEnabled": "false",
+                            "isAutoLoginEnabled": "false",
+                            "isEmailVerificationEnabled": "true",
+                            "isFlowCompletionNotificationEnabled": "false"
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "UserProvisioningExecutor"
+                                }
+                            },
+                            "components": [
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "id": "typography_u2oz",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "Registration Successful!"
+                                    }
+                                },
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">You can now sign in with your new account.</span></p>"
+                                    },
+                                    "id": "display_hgvm"
+                                }
+                            ]
+                        }
                     }
                 ]
             }
@@ -410,7 +721,7 @@
         "display": {
             "label": "Basic + Passkey",
             "description": "Basic registration experience with passkey enrollment",
-            "image": "https://www.svgrepo.com/show/340307/fingerprint-recognition.svg",
+            "image": "assets/images/icons/fingerprint.svg",
             "showOnResourcePanel": true
         },
         "config": {
@@ -453,20 +764,6 @@
                                     "config": {},
                                     "id": "{{ID}}",
                                     "components": [
-                                        {
-                                            "id": "{{ID}}",
-                                            "category": "FIELD",
-                                            "type": "INPUT",
-                                            "variant": "TEXT",
-                                            "config": {
-                                                "type": "text",
-                                                "hint": "",
-                                                "label": "Username",
-                                                "required": true,
-                                                "placeholder": "Enter your username",
-                                                "identifier": "http://wso2.org/claims/username"
-                                            }
-                                        },
                                         {
                                             "id": "{{ID}}",
                                             "category": "FIELD",
@@ -530,7 +827,7 @@
                     },
                     {
                         "id": "{{PASSKEY_ENROLLMENT_STEP_ID}}",
-                        "type": "REDIRECTION",
+                        "type": "EXECUTION",
                         "size": {
                             "width": 350,
                             "height": 291
@@ -545,22 +842,54 @@
                                 "executor": {
                                     "name": "FIDO2Executor"
                                 },
-                                "next": "USER_ONBOARD"
+                                "next": "END"
                             }
                         }
                     },
                     {
-                        "id": "USER_ONBOARD",
-                        "type": "USER_ONBOARD",
+                        "id": "END",
+                        "type": "END",
                         "size": {
-                            "width": 56,
-                            "height": 56
+                            "width": 280,
+                            "height": 220
                         },
                         "position": {
-                            "x": 900,
-                            "y": 408
+                            "x": 880,
+                            "y": 800
                         },
-                        "data": {}
+                        "config": {
+                            "isAccountLockOnCreationEnabled": "false",
+                            "isAutoLoginEnabled": "false",
+                            "isEmailVerificationEnabled": "true",
+                            "isFlowCompletionNotificationEnabled": "false"
+                        },
+                        "data": {
+                            "action": {
+                                "type": "EXECUTOR",
+                                "executor": {
+                                    "name": "UserProvisioningExecutor"
+                                }
+                            },
+                            "components": [
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "TYPOGRAPHY",
+                                    "id": "typography_u2oz",
+                                    "variant": "H3",
+                                    "config": {
+                                        "text": "You're almost there!"
+                                    }
+                                },
+                                {
+                                    "category": "DISPLAY",
+                                    "type": "RICH_TEXT",
+                                    "config": {
+                                        "text": "<p class=\"rich-text-paragraph rich-text-align-center\"><span class=\"rich-text-pre-wrap\">Check your inbox for instructions to activate your account.</span></p>"
+                                    },
+                                    "id": "display_hgvm"
+                                }
+                            ]
+                        }
                     }
                 ]
             }

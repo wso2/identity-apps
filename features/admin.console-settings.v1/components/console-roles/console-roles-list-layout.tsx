@@ -82,6 +82,12 @@ const ConsoleRolesListLayout: FunctionComponent<ConsoleRolesListLayoutPropsInter
 
     const { t } = useTranslation();
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const userRolesV3FeatureConfig: FeatureAccessConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3
+    );
+    const userRolesV3FeatureEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.features?.userRolesV3?.enabled
+    );
 
     const consoleSettingsFeatureConfig : FeatureAccessConfigInterface =
         useSelector((state: AppState) => state.config.ui.features.consoleSettings);
@@ -206,7 +212,13 @@ const ConsoleRolesListLayout: FunctionComponent<ConsoleRolesListLayoutPropsInter
                 !isSubOrganization() &&
                 isConsoleRolesEditable &&
                 (
-                    <Show when={ featureConfig?.userRoles?.scopes?.create }>
+                    <Show
+                        when={
+                            userRolesV3FeatureEnabled
+                                ? userRolesV3FeatureConfig?.scopes?.create
+                                : featureConfig?.userRoles?.scopes?.create
+                        }
+                    >
                         <PrimaryButton
                             data-componentid={ `${componentId}-add-button` }
                             onClick={ () => onRoleCreate() }

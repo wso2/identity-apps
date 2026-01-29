@@ -37,6 +37,7 @@ import {
     setIsFirstLevelOrganization,
     setOrganization,
     setOrganizationType,
+    setUserOrganizationHandle,
     setUserOrganizationId
 } from "@wso2is/admin.core.v1/store/actions/organization";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
@@ -56,6 +57,7 @@ import axios, { AxiosResponse } from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
+import { ApplicationManagementUtils } from "../../admin.applications.v1/utils/application-management-utils";
 import { getProfileInformation } from "../store/actions";
 import { AuthenticateUtils } from "../utils/authenticate-utils";
 
@@ -323,6 +325,7 @@ const useSignIn = (): UseSignInInterface => {
 
         dispatch(setOrganizationType(orgType));
         window["AppUtils"].updateOrganizationType(orgType);
+        dispatch(setUserOrganizationHandle(orgHandle));
         dispatch(setUserOrganizationId(userOrganizationId));
 
         if (window["AppUtils"].getConfig().organizationName || isFirstLevelOrg) {
@@ -557,6 +560,8 @@ const useSignIn = (): UseSignInInterface => {
                 true
             )
         );
+
+        await ApplicationManagementUtils.getOIDCApplicationMeta();
 
         if (isFirstLevelOrg) {
             await dispatch(getServerConfigurations());

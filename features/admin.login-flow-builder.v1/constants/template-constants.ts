@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,3 +25,11 @@ export const FIDO_AUTHENTICATOR_ID: string = "RklET0F1dGhlbnRpY2F0b3I";
 export const PUSH_AUTH_FIRST_FACTOR_SEQUENCE: string = "PushAuthPasswordlessLoginSequence";
 
 export const PUSH_AUTH_SECOND_FACTOR_SEQUENCE: string = "PushAuthSecondFactorLoginSequence";
+
+export const EMAIL_OTP_SECOND_FACTOR_SEQUENCE: string = "EmailOTPSecondFactorLoginSequence";
+
+export const SMS_OTP_SECOND_FACTOR_SEQUENCE: string = "SMSOTPSecondFactorLoginSequence";
+
+export const EMAIL_OTP_PASSWORDLESS_SEQUENCE: string = "EmailOTPPasswordlessLoginSequence";
+
+export const SMS_OTP_PASSWORDLESS_SEQUENCE: string = "SmsOtpPasswordlessLoginSequence";

@@ -29,9 +29,12 @@ import CheckboxAdapter from "./adapters/input/checkbox-adapter";
 import DefaultInputAdapter from "./adapters/input/default-input-adapter";
 import OTPInputAdapter from "./adapters/input/otp-input-adapter";
 import PhoneNumberInputAdapter from "./adapters/input/phone-number-input-adapter";
+import ResendButtonAdapter from "./adapters/resend-button-adapter";
 import RichTextAdapter from "./adapters/rich-text-adapter";
 import TypographyAdapter from "./adapters/typography-adapter";
 import { BlockTypes, Element, ElementTypes, InputVariants } from "../../../models/elements";
+import { EventTypes } from "../../../models/extension";
+import PluginRegistry from "../../../plugins/plugin-registry";
 
 /**
  * Props interface of {@link CommonElementFactory}
@@ -57,6 +60,16 @@ export const CommonElementFactory: FunctionComponent<CommonElementFactoryPropsIn
     stepId,
     resource
 }: CommonElementFactoryPropsInterface & Node): ReactElement => {
+
+    const overrideElements: ReactElement[] = [];
+
+    if (!PluginRegistry.getInstance().executeSync(EventTypes.ON_NODE_ELEMENT_RENDER, stepId, resource,
+        overrideElements)) {
+        if (overrideElements.length > 0) {
+            return <>{ overrideElements }</>;
+        }
+    }
+
     if (resource.type === BlockTypes.Form) {
         return <FormAdapter stepId={ stepId } resource={ resource } />;
     } else if (resource.type === ElementTypes.Input) {
@@ -87,6 +100,8 @@ export const CommonElementFactory: FunctionComponent<CommonElementFactoryPropsIn
         return <ImageAdapter stepId={ stepId } resource={ resource } />;
     } else if (resource.type === ElementTypes.Captcha) {
         return <CaptchaAdapter stepId={ stepId } resource={ resource } />;
+    } else if (resource.type === ElementTypes.Resend) {
+        return <ResendButtonAdapter stepId={ stepId } resource={ resource } />;
     }
 
     return null;

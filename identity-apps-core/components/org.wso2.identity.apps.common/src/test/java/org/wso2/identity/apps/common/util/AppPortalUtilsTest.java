@@ -48,7 +48,6 @@ import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.CONSOLE_APP;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.MYACCOUNT_APP;
-import static org.wso2.identity.apps.common.util.AppPortalConstants.USER_SESSION_IMPERSONATION;
 
 /**
  * Unit test class for AppPortalUtils.
@@ -102,8 +101,6 @@ public class AppPortalUtilsTest {
         // Mock IdentityUtil
         mockedIdentityUtil.when(() -> IdentityUtil.getServerURL(anyString(), anyBoolean(), anyBoolean()))
                 .thenReturn(dummyURL);
-        mockedIdentityUtil.when(() -> IdentityUtil.getProperty(USER_SESSION_IMPERSONATION))
-                .thenReturn("true");
         mockedApplicationMgtUtil.when(() -> ApplicationMgtUtil.replaceUrlOriginWithPlaceholders(anyString()))
                 .thenReturn(dummyURL);
         mockedApplicationMgtUtil.when(() -> ApplicationMgtUtil

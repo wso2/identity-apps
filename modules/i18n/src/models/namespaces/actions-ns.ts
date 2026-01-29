@@ -145,6 +145,24 @@ export interface actionsNS {
                 notHttps: string;
             };
         };
+        allowedHeaders: {
+            hint: string;
+            label: string;
+            placeholder: string;
+            tooltip: string;
+            validations: {
+                invalid: string;
+            };
+        };
+        allowedParameters: {
+            hint: string;
+            label: string;
+            placeholder: string;
+            tooltip: string;
+            validations: {
+                invalid: string;
+            };
+        };
         name: {
             hint: string;
             label: string;
@@ -338,6 +356,41 @@ export interface actionsNS {
             };
         };
     };
+    versioning: {
+        notifications: {
+            updateVersion: {
+                genericError: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+        };
+        outdated: {
+            warning: {
+                message: string;
+                hideDetailsButton: string;
+                details: {
+                    title: string;
+                    preRequisite: string;
+                };
+                title: string;
+                viewDetailsButton: string;
+                updateButton: string;
+                confirmationModal: {
+                    header: string;
+                    message: string;
+                    content: string;
+                    assertionHint: string;
+                };
+            };
+        };
+        outdatedLabel: string;
+        versionLabel: string;
+    };
     status: {
         active: string;
         configured: string;
@@ -346,6 +399,13 @@ export interface actionsNS {
     };
     types: {
         preIssueAccessToken: {
+            description: {
+                expanded: string;
+                shortened: string;
+            };
+            heading: string;
+        };
+        preIssueIdToken: {
             description: {
                 expanded: string;
                 shortened: string;

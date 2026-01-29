@@ -73,6 +73,7 @@ export interface usersNS {
             header: string;
             message: string;
             content: string;
+            legacyContent: string;
         };
         unassignGroup: {
             assertionHint: string;
@@ -235,6 +236,7 @@ export interface usersNS {
         validation: {
             formatError: string;
             dateFormatError: string;
+            duplicateError: string;
             mobileFormatError: string;
             futureDateError: string;
         };
@@ -248,6 +250,10 @@ export interface usersNS {
     notifications: {
         addUser: {
             error: {
+                message: string;
+                description: string;
+            };
+            badRequestError: {
                 message: string;
                 description: string;
             };
@@ -404,6 +410,10 @@ export interface usersNS {
                 description: string;
             };
             genericError: {
+                message: string;
+                description: string;
+            };
+            pendingApproval: {
                 message: string;
                 description: string;
             };

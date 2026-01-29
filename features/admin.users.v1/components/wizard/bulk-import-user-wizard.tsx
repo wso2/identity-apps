@@ -50,7 +50,7 @@ import {
     PRIMARY_USERSTORE,
     USERSTORE_REGEX_PROPERTIES,
     UserStoreManagementConstants
-} from "@wso2is/admin.userstores.v1/constants";
+} from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
@@ -225,6 +225,9 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         state.config.ui.features.bulkUserImport.fileImportTimeout);
     const userLimit: number = useSelector((state: AppState) =>
         state.config.ui.features.bulkUserImport.userLimit);
+    const systemReservedUserStores: string[] = useSelector((state: AppState) =>
+        state?.config?.ui?.systemReservedUserStores);
+
     const csvFileProcessingStrategy: CSVFileStrategy = useMemo( () => {
         return new CSVFileStrategy(
             undefined,  // Mimetype.
@@ -234,6 +237,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
     }, [ userLimit ]);
 
     const optionsArray: string[] = [];
+    const excludedAttributes: string = "members,roles,meta";
 
     const {
         data: groupList,
@@ -243,7 +247,7 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
         null,
         null,
         selectedUserStore,
-        "members"
+        excludedAttributes
     );
 
     const {
@@ -299,7 +303,12 @@ export const BulkImportUserWizard: FunctionComponent<BulkImportUserInterface> = 
                 const isReadOnly: boolean = isUserStoreReadOnly(item.name);
                 const isEnabled: boolean = item.enabled;
 
-                if (isEnabled && !isReadOnly && isBulkImportSupportedUserStore(item)) {
+                if (
+                    isEnabled &&
+                    !isReadOnly &&
+                    isBulkImportSupportedUserStore(item) &&
+                    !systemReservedUserStores?.includes(item?.name)
+                ) {
                     userStoreArray.push({
                         key: index,
                         text: item.name,

@@ -26,6 +26,12 @@ export interface policyAdministrationNS {
     editPolicy: {
         backBtn: string;
         disabledBtnTooltip: string;
+        fields: {
+            policyOrder: {
+                hint: string;
+                label: string;
+            }
+        }
     };
     createPolicy: {
         title: string;
@@ -68,6 +74,7 @@ export interface policyAdministrationNS {
     popup: {
         activate: string,
         deactivate: string,
+        policyOrder: string
     }
     alerts: {
         deleteSuccess: {

@@ -20,6 +20,7 @@ import {
     ArrowRightToBracketPencilIcon,
     BuildingIcon,
     CircleStarIcon,
+    BuildingPenIcon,
     DocumentCheckIcon,
     EnvelopeGearIcon,
     EnvelopeIcon,
@@ -27,6 +28,7 @@ import {
     GearIcon,
     LightbulbOnIcon,
     LinearNodesIcon,
+    LogsDocumentIcon,
     LinkIcon,
     NodesIcon,
     ProfileFlowIcon,
@@ -42,7 +44,9 @@ import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
 import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
-import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1";
+import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import { LegacyModeInterface, RouteInterface } from "@wso2is/core/models";
 import compact from "lodash-es/compact";
 import keyBy from "lodash-es/keyBy";
@@ -190,6 +194,34 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
+            category: "console:develop.features.sidePanel.categories.application",
+            children: [
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.verifiable-credentials.v1/pages/vc-template-edit")),
+                    exact: true,
+                    id: "editVCTemplate",
+                    name: "Edit Verifiable Credential",
+                    path: AppConstants.getPaths().get("VC_TEMPLATE_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() =>
+                import("@wso2is/admin.verifiable-credentials.v1/pages/verifiable-credentials")),
+            exact: true,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.VERIFIABLE_CREDENTIALS,
+            icon: {
+                icon: getSidePanelIcons().verifiableCredentials
+            },
+            id: "verifiableCredentials",
+            name: "Verifiable Credentials",
+            order: 3,
+            path: AppConstants.getPaths().get("VC_TEMPLATES"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
             component: lazy(() =>
                 import("@wso2is/admin.home.v1/pages/home-page")),
             exact: false,
@@ -204,8 +236,29 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
-            children: [],
-            component: lazy(() => import("@wso2is/admin.flows.v1/pages/flows")),
+            children: [
+                {
+                    component: lazy(() => import(
+                        "@wso2is/admin.password-recovery-flow-builder.v1/pages/password-recovery-flow-builder-page")),
+                    exact: true,
+                    id: "passwordRecoveryFlowBuilder",
+                    name: "Password Recovery Flow Builder",
+                    path: AppConstants.getPaths().get("PASSWORD_RECOVERY_FLOW_BUILDER"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import(
+                        "@wso2is/admin.ask-password-flow-builder.v1/pages/ask-password-flow-builder-page")),
+                    exact: true,
+                    id: "askPasswordFlowBuilder",
+                    name: "Ask Password Flow Builder",
+                    path: AppConstants.getPaths().get("INVITE_USER_PASSWORD_SETUP_FLOW_BUILDER"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("@wso2is/admin.flows.v1/pages/flows-page")),
             exact: false,
             featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.FLOWS,
             icon: {
@@ -666,7 +719,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 //     path: AppConstants.getPaths().get("TRAITS_EDIT"),
                 //     protected: true,
                 //     showOnSidePanel: false
-                // },            
+                // },
             ],
             component: lazy(() => import("@wso2is/admin.claims.v1/pages/claim-dialects")),
             exact: true,
@@ -963,16 +1016,13 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 },
                 {
                     component: lazy(() =>
-                        import(
-                            // eslint-disable-next-line max-len
-                            "@wso2is/admin.server-configurations.v1/pages/registration-flow-builder/registration-flow-builder-page"
-                        )
+                        import("@wso2is/admin.registration-flow-builder.v1/pages/registration-flow-builder-page")
                     ),
                     exact: true,
                     icon: {
                         icon: getSidePanelIcons().childIcon
                     },
-                    id: "registrationFlowBuilder",
+                    id: "flows",
                     path: AppConstants.getPaths().get("REGISTRATION_FLOW_BUILDER"),
                     protected: true,
                     showOnSidePanel: false
@@ -1284,20 +1334,21 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         },
         {
             category: "extensions:manage.sidePanel.categories.userManagement",
-            component: lazy(() => import("@wso2is/admin.workflow-approvals.v1/pages/approvals")),
+            component: lazy(() => import("../pages/approvals")),
             exact: true,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.APPROVALS,
             icon: {
                 icon: <DocumentCheckIcon fill="black" className="icon" />
             },
             id: "approvals",
-            name: "console:manage.features.sidePanel.approvals",
+            name: "common:approvals",
             order: 26,
             path: AppConstants.getPaths().get("APPROVALS"),
             protected: true,
             showOnSidePanel: true
         },
         {
-            category: "extensions:manage.sidePanel.categories.approvalWorkflows",
+            category: "extensions:manage.sidePanel.categories.workflows",
             children: [
                 {
                     component: lazy(() =>
@@ -1333,15 +1384,49 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             ],
             component: lazy(() => import("@wso2is/admin.approval-workflows.v1/pages/approval-workflows")),
             exact: true,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.APPROVAL_WORKFLOWS,
             icon: {
                 icon: <DocumentCheckIcon fill="black" className="icon" />
             },
-            id: "workflows",
+            id: "approvalWorkflows",
             name: "console:manage.features.sidePanel.approvalWorkflows",
             order: 8,
             path: AppConstants.getPaths().get("APPROVAL_WORKFLOWS"),
             protected: true,
             showOnSidePanel: true
+        },
+        {
+            category: "extensions:manage.sidePanel.categories.workflows",
+            component: lazy(() =>
+                import("@wso2is/admin.workflow-requests.v1").then((module: any) => ({
+                    default: module.WorkflowRequestsPage
+                }))
+            ),
+            exact: true,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.WORKFLOW_INSTANCES,
+            icon: {
+                icon: <LogsDocumentIcon fill="black" className="icon" />
+            },
+            id: "workflowInstances",
+            name: "pages:workflowRequestsPage.title",
+            order: 9,
+            path: AppConstants.getPaths().get("WORKFLOW_REQUESTS"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            category: "extensions:manage.sidePanel.categories.workflows",
+            component: lazy(() =>
+                import("@wso2is/admin.workflow-requests.v1").then((module: any) => ({
+                    default: module.WorkflowRequestDetailsPage
+                }))
+            ),
+            exact: true,
+            id: "workflowInstanceDetails",
+            name: "workflowRequests:details.header",
+            path: `${AppConstants.getPaths().get("WORKFLOW_REQUESTS")}/:id`,
+            protected: true,
+            showOnSidePanel: false
         },
         {
             category: "console:manage.features.sidePanel.categories.legacy",
@@ -1522,6 +1607,17 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                         import("@wso2is/admin.actions.v1/pages/action-configuration-page")
                     ),
                     exact: true,
+                    id: "pre-issue-id-token",
+                    name: "Pre Issue ID Token",
+                    path: AppConstants.getPaths().get("PRE_ISSUE_ID_TOKEN_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
+                        import("@wso2is/admin.actions.v1/pages/action-configuration-page")
+                    ),
+                    exact: true,
                     id: "pre-update-password",
                     name: "Pre Update Password",
                     path: AppConstants.getPaths().get("PRE_UPDATE_PASSWORD_EDIT"),
@@ -1571,6 +1667,18 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     path: AppConstants.getPaths().get("WEBHOOK_EDIT"),
                     protected: true,
                     showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import("@wso2is/admin.webhooks.v1/pages/webhook-settings-page")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "webhookSettings",
+                    name: "Webhook Settings",
+                    path: AppConstants.getPaths().get("WEBHOOK_SETTINGS"),
+                    protected: true,
+                    showOnSidePanel: false
                 }
             ],
             component: lazy(() =>
@@ -1587,7 +1695,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             path: AppConstants.getPaths().get("WEBHOOKS"),
             protected: true,
             showOnSidePanel: true
-        }, 
+        },
         {
             category: "customerData",
             component: lazy(() =>
@@ -1600,13 +1708,13 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             id: "profiles",
             name: "Profiles",
             order: 32,
-            path: AppConstants.getPaths().get("PROFILES"), 
+            path: AppConstants.getPaths().get("PROFILES"),
             protected: true,
             showOnSidePanel: true,
             // children: [
             //     {
             //         component: lazy(() =>
-            //             import("@wso2is/admin.cds.v1/pages/profile-unification-rules") 
+            //             import("@wso2is/admin.cds.v1/pages/profile-unification-rules")
             //         ),
             //         exact: true,
             //         icon: {
@@ -1619,7 +1727,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             //         showOnSidePanel: false
             //     }
             // ]
-        },   
+        },
         {
             category: "customerData",
             component: lazy(() =>
@@ -1632,7 +1740,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             id: "profileschema",
             name: "Profile Schema",
             order: 33,
-            path: AppConstants.getPaths().get("PROFILE_SCHEMA"), 
+            path: AppConstants.getPaths().get("PROFILE_SCHEMA"),
             protected: true,
             showOnSidePanel: true,
             children: [
@@ -1674,13 +1782,13 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             id: "unification",
             name: "Unification Rules",
             order: 34,
-            path: AppConstants.getPaths().get("UNIFICATION_RULES"), 
+            path: AppConstants.getPaths().get("UNIFICATION_RULES"),
             protected: true,
             showOnSidePanel: true,
             children: [
                 {
                     component: lazy(() =>
-                        import("@wso2is/admin.cds.v1/pages/edit-profile-unification-rules") 
+                        import("@wso2is/admin.cds.v1/pages/edit-profile-unification-rules")
                     ),
                     exact: true,
                     icon: {
@@ -1688,12 +1796,12 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     },
                     id: "traitEdit",
                     name: "Edit Unification Rule",
-                    path: AppConstants.getPaths().get("UNIFICATION_RULE_EDIT"), 
+                    path: AppConstants.getPaths().get("UNIFICATION_RULE_EDIT"),
                     protected: true,
                     showOnSidePanel: false
                 }
             ]
-        },        
+        },
         // the following routes are not onboarded to the side panel
         {
             category: "console:manage.features.sidePanel.categories.configurations",
@@ -1829,6 +1937,18 @@ export const getFullScreenViewRoutes = (): RouteInterface[] => {
  */
 export const getDefaultLayoutRoutes = (): RouteInterface[] => {
     return [
+        {
+            component: lazy(() => import("@wso2is/admin.tenants.v1/pages/edit-self-organization-page")),
+            exact: true,
+            icon: {
+                icon: <BuildingPenIcon />
+            },
+            id: "organizations",
+            order: 0,
+            path: AppConstants.getPaths().get("EDIT_SELF_ORGANIZATION"),
+            protected: true,
+            showOnSidePanel: true
+        },
         {
             children: [
                 {

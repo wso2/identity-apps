@@ -1,5 +1,23 @@
 # @wso2is/unit-testing
 
+## 0.7.1
+
+### Patch Changes
+
+- [#9278](https://github.com/wso2/identity-apps/pull/9278) [`52c5fdd916c73a0d7388203345ecde708ed37e4a`](https://github.com/wso2/identity-apps/commit/52c5fdd916c73a0d7388203345ecde708ed37e4a) Thanks [@sadilchamishka](https://github.com/sadilchamishka)! - Update Approval API to v2
+
+## 0.7.0
+
+### Minor Changes
+
+- [#8588](https://github.com/wso2/identity-apps/pull/8588) [`8294cbfd28e252ebb145a153d0e74106515a28b8`](https://github.com/wso2/identity-apps/commit/8294cbfd28e252ebb145a153d0e74106515a28b8) Thanks [@brionmario](https://github.com/brionmario)! - Extension model for i18n in Console & My Account
+
+## 0.6.5
+
+### Patch Changes
+
+- [#8506](https://github.com/wso2/identity-apps/pull/8506) [`cf84a990e2bcdb6ac7a47d64fc2271abdc3dec88`](https://github.com/wso2/identity-apps/commit/cf84a990e2bcdb6ac7a47d64fc2271abdc3dec88) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Fix unit test failure and add check for org handle autogeneration
+
 ## 0.6.4
 
 ### Patch Changes

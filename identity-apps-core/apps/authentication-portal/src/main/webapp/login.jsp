@@ -31,6 +31,7 @@
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.AUTHENTICATION_MECHANISM_NOT_CONFIGURED" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.ENABLE_AUTHENTICATION_WITH_REST_API" %>
 <%@ page import="static org.wso2.carbon.identity.application.authentication.endpoint.util.Constants.ERROR_WHILE_BUILDING_THE_ACCOUNT_RECOVERY_ENDPOINT_URL" %>
+<%@ page import="static org.wso2.carbon.identity.application.authentication.framework.util.FrameworkConstants.JSAttributes.JS_IDENTIFIER_FIRST_USER_INPUT" %>
 <%@ page import="org.wso2.carbon.identity.captcha.util.CaptchaUtil" %>
 <%@ page import="org.wso2.carbon.CarbonConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
@@ -49,6 +50,7 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.client.model.AuthenticationRequestWrapper" %>
+<%@ page import="javax.servlet.http.HttpServletRequest" %>
 <%@ taglib prefix="layout" uri="org.wso2.identity.apps.taglibs.layout.controller" %>
 
 <%@ include file="includes/localize.jsp" %>
@@ -57,7 +59,7 @@
 <jsp:directive.include file="includes/init-url.jsp"/>
 
 <%-- Include registration portal URL resolver --%>
-<jsp:directive.include file="util/registration-portal-url-resolver.jsp"/>
+<jsp:directive.include file="util/dynamic-portal-url-resolver.jsp"/>
 
 <%
     // Add the login screen to the list to retrieve text branding customizations.
@@ -108,6 +110,7 @@
         idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
     }
 
+    String forwardedQueryString = (String) request.getAttribute(JAVAX_SERVLET_FORWARD_QUERY_STRING);
     String appName = Encode.forUriComponent(request.getParameter("sp"));
     String userType = request.getParameter("utype");
     String consoleURL = application.getInitParameter("ConsoleURL");
@@ -289,7 +292,7 @@
         }
     }
 
-    if (isLoginHintAvailable(inputType)) {
+    if (isLoginHintAvailable(inputType, request)) {
         if (request.getParameter(Constants.LOGIN_HINT) != null) {
             username = request.getParameter(Constants.LOGIN_HINT);
             usernameIdentifier = request.getParameter(Constants.LOGIN_HINT);
@@ -347,7 +350,7 @@
             selfSignUpOverrideURL = selfSignUpOverrideURL.concat("?ui_locales=" + localeString);
         }
     }
-    passwordRecoveryOverrideURL = getRecoveryPortalUrl(passwordRecoveryOverrideURL, recoveryPortalOverrideURL, localeString);
+    passwordRecoveryOverrideURL = getRecoveryPortalUrl(passwordRecoveryOverrideURL, recoveryPortalOverrideURL, localeString, forwardedQueryString);
 %>
 
 <%
@@ -500,7 +503,7 @@
                 <h3 class="ui header">
                     <%  if (Boolean.parseBoolean(promptAccountLinking)) { %>
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "account.linking") %>
-                    <% } else if (isIdentifierFirstLogin(inputType) || isLoginHintAvailable(inputType)) { %>
+                    <% } else if (isIdentifierFirstLogin(inputType) || isLoginHintAvailable(inputType, request)) { %>
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "welcome") %>
                     <% } else { %>
                         <%= i18n(resourceBundle, customText, "login.heading") %>
@@ -513,11 +516,15 @@
                     </p>
                 <% } %>
 
-                <% if (isIdentifierFirstLogin(inputType) || isLoginHintAvailable(inputType)) {
+                <% if (isIdentifierFirstLogin(inputType) || isLoginHintAvailable(inputType, request)) {
 
                     // Remove userstore domain from the username.
                     String[] usernameSplitItems = usernameIdentifier.split("/");
                     String sanitizeUserName = usernameSplitItems[usernameSplitItems.length - 1];
+                    String identifierFirstUserInput = request.getParameter(JS_IDENTIFIER_FIRST_USER_INPUT);
+                    if (StringUtils.isBlank(identifierFirstUserInput) || identifierFirstUserInput == "null") {
+                        identifierFirstUserInput = sanitizeUserName;
+                    }
                 %>
                 <div class="identifier-container">
                     <img
@@ -529,8 +536,8 @@
                             class="ellipsis"
                             data-position="top left"
                             data-variation="inverted"
-                            data-content="<%=Encode.forHtmlAttribute(sanitizeUserName)%>">
-                        <%=Encode.forHtmlContent(sanitizeUserName)%>
+                            data-content="<%=Encode.forHtmlAttribute(identifierFirstUserInput)%>">
+                        <%=Encode.forHtmlContent(identifierFirstUserInput)%>
                     </span>
                 </div>
                 <% } %>
@@ -865,7 +872,7 @@
                                 <button class="ui blue labeled icon button fluid"
                                     onclick="handleNoDomain(this,
                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
-                                        'IWAAuthenticator')"
+                                        '<%=IWA_AUTHENTICATOR%>')"
                                     id="icon-<%=iconId%>"
                                     title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> IWA">
                                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> <strong>IWA</strong>
@@ -1063,8 +1070,6 @@
                                         continue;
                                     }
 
-                                    if (localAuthenticator.startsWith(CUSTOM_LOCAL_AUTHENTICATOR_PREFIX)) {
-
                                         String customLocalAuthenticatorImageURL = "libs/themes/default/assets/images/authenticators/custom-authenticator.svg";
                                         String customLocalAuthenticatorDisplayName = localAuthenticator;
                                         Map<String, String> authenticatorConfigMap = new HashMap<>();
@@ -1075,13 +1080,17 @@
                                             // Exception is ignored and the default values will be used as a fallback.
                                         }
 
-                                        if (MapUtils.isNotEmpty(authenticatorConfigMap) && authenticatorConfigMap.containsKey("definedBy")
-                                            && authenticatorConfigMap.get("definedBy").equals("USER")) {
+                                        if (MapUtils.isNotEmpty(authenticatorConfigMap)) {
+
+                                          if (authenticatorConfigMap.get("displayName") != null) {
+                                            customLocalAuthenticatorDisplayName = authenticatorConfigMap.get("displayName");
+                                          }
+
+                                          if (authenticatorConfigMap.containsKey("definedBy") && authenticatorConfigMap.get("definedBy").equals("USER")) {
 
                                             if (authenticatorConfigMap.containsKey("image")) {
                                                 customLocalAuthenticatorImageURL = authenticatorConfigMap.get("image");
                                             }
-                                            customLocalAuthenticatorDisplayName = authenticatorConfigMap.get("displayName");
                             %>
                                 <div class="social-login blurring social-dimmer">
                                     <div class="field">
@@ -1110,8 +1119,7 @@
                             <br>
                             <%
                                             continue;
-                                        }
-                                    }
+                                        } else {
                             %>
                                 <div class="social-login blurring social-dimmer">
                                     <div class="field">
@@ -1131,13 +1139,15 @@
                                                 role="presentation">
                                             <span>
                                                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%>
-                                                <%=localAuthenticator%>
+                                                <%=Encode.forHtmlAttribute(customLocalAuthenticatorDisplayName)%>
                                             </span>
                                             </button>
                                     </div>
                             </div>
                             <br>
                             <%
+                                   }
+                                  }
                                 }
                                     }
                                 }
@@ -1548,6 +1558,10 @@
 
         private boolean isLoginHintAvailable(String inputType) {
             return "login_hint".equalsIgnoreCase(inputType);
+        }
+
+        private boolean isLoginHintAvailable(String inputType, HttpServletRequest request) {
+            return "login_hint".equalsIgnoreCase(inputType) || request.getParameter("login_hint") != null;
         }
     %>
 </body>

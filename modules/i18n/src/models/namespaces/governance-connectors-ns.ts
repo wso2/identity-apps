@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,6 +19,11 @@
 import { NotificationItem } from "../common";
 
 export interface governanceConnectorsNS {
+    dangerZone: {
+        actionTitle: string;
+        heading: string;
+        subHeading: string;
+    };
     notifications: {
         getConnectorCategories: {
             error: {
@@ -54,6 +59,16 @@ export interface governanceConnectorsNS {
                 description: string;
             };
             genericError: {
+                message: string;
+                description: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        };
+        revertConnector: {
+            error: {
                 message: string;
                 description: string;
             };
@@ -323,6 +338,7 @@ export interface governanceConnectorsNS {
                     };
                 };
                 siftConnector: {
+                    title: string;
                     properties: {
                         name: string;
                         description: string;
@@ -331,9 +347,60 @@ export interface governanceConnectorsNS {
                             placeholder: string;
                         };
                     };
+                    eventPublishing: {
+                        title: string;
+                        subtitle: string;
+                        eventProperties: {
+                            title: string;
+                            subtitle: string;
+                            piiPublishingWarning: string;
+                            publishDeviceMetadata: {
+                                label: string;
+                                description: string;
+                                warning: string;
+                            };
+                            publishUserInfo: {
+                                label: string;
+                                description: string;
+                                warning: string;
+                            };
+                            events: {
+                                logins: {
+                                    label: string;
+                                    hint: string;
+                                };
+                                logouts: {
+                                    label: string;
+                                    hint: string;
+                                };
+                                registrations: {
+                                    label: string;
+                                    hint: string;
+                                };
+                                credentialUpdates: {
+                                    label: string;
+                                    hint: string;
+                                };
+                                userProfileUpdates: {
+                                    label: string;
+                                    hint: string;
+                                };
+                                userVerifications: {
+                                    label: string;
+                                    hint: string;
+                                };
+                            };
+                        };
+                        eventDiagnostics: {
+                            title: string;
+                            logRequestPayload: {
+                                label: string;
+                                description: string;
+                            };
+                        };
+                    };
                     notifications: {
-                        configurationUpdate: {
-                            success: NotificationItem;
+                        eventPropertiesUpdate: {
                             error: NotificationItem;
                         };
                     };
@@ -378,6 +445,16 @@ export interface governanceConnectorsNS {
                         configurationUpdate: {
                             success: NotificationItem;
                             error: NotificationItem;
+                        };
+                        revertConfiguration: {
+                            success: {
+                                description: string;
+                                message: string;
+                            };
+                            error: {
+                                description: string;
+                                message: string;
+                            };
                         };
                     };
                 };

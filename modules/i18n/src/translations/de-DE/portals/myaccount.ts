@@ -503,6 +503,13 @@ export const myAccount: MyAccountNS = {
                 },
                 "tooltip": "Anwendungen"
             },
+            "dropdown": {
+                "footer": {
+                    "cookiePolicy": "Cookies",
+                    "privacyPolicy": "Datenschutz",
+                    "termsOfService": "Bedingungen"
+                }
+            },
             "organizationLabel": "Dieses Konto wird verwaltet von"
         },
         "linkedAccounts": {
@@ -1192,6 +1199,9 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 "generic": {
+                    "dropdown": {
+                        "placeholder": "Wählen Sie Ihren {{fieldname}} aus"
+                    },
                     "inputs": {
                         "placeholder": "Geben Sie Ihren {{fieldName}} ein",
                         "readonly": {
@@ -1199,9 +1209,13 @@ export const myAccount: MyAccountNS = {
                             "popup": "Wenden Sie sich an den Administrator, um Ihr {{fieldName}} zu aktualisieren"
                         },
                         "validations": {
+                            "duplicate": "{{fieldName}} darf keine doppelten Werte haben",
                             "empty": "{{fieldName}} ist ein Pflichtfeld",
                             "invalidFormat": "Das Format des eingegebenen {{fieldName}} ist falsch"
                         }
+                    },
+                    "radioGroup": {
+                        "optionNone": "Keiner"
                     }
                 },
                 "mobileChangeForm": {

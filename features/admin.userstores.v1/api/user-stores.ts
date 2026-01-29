@@ -31,7 +31,7 @@ import {
     QueryParams,
     TestConnection,
     UserStorePostData
-} from "../models";
+} from "../models/user-stores";
 
 /**
  * Initialize an axios Http client.

@@ -135,9 +135,12 @@ export const organizations: organizationsNS = {
                 }
             },
             orgHandle: {
+                errors: {
+                    generationFailed: "Unable to generate an available organization handle."
+                },
                 label: "Organization Handle",
-                placeholder: "Organization handle (E.g., myorg.com)",
-                tooltip: "A human-readable unique identifier used as a URL handle to access the new organization.",
+                placeholder: "Enter organization handle",
+                tooltip: "A human-readable unique identifier used for organization discovery in your B2B applications. Leave this field blank to use the organization ID as the handle.\nPlease note that the organization handle cannot be edited after organization creation.",
                 validation: {
                     duplicate: "The entered organization handle already exists.",
                     empty: "The organization handle is required.",

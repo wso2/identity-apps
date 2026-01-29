@@ -24,3 +24,36 @@
         max-width: var(--wso2is-admin-form-max-width);
     }
 }
+
+.alert-nutral {
+    background-color: var(--oxygen-palette-grey-100);
+}
+
+.box-container {
+    background-color: #f9fafb;
+    border-radius: 8px;
+    padding: 30px;
+
+    .box-field {
+        margin-top: 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}
+
+.secondary-button {
+    margin-top: 10px;
+}
+
+.ssl-configs-component {
+    .box-container {
+        background-color: #f9fafb;
+        border-radius: 8px;
+        padding: 20px;
+    }
+
+    .clear-button {
+        margin-right: 10px;
+        margin-top: 5px;
+    }
+}

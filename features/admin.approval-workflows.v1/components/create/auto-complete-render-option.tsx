@@ -20,6 +20,7 @@ import Checkbox from "@oxygen-ui/react/Checkbox";
 import Chip from "@oxygen-ui/react/Chip";
 import Grid from "@oxygen-ui/react/Grid";
 import ListItemText from "@oxygen-ui/react/ListItemText";
+import { RoleAudienceTypes } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, {
     FunctionComponent,
@@ -45,6 +46,10 @@ interface AutoCompleteRenderOption extends IdentifiableComponentInterface {
      */
     audience?: string;
     /**
+     * The audience display (e.g., application name for application audience roles).
+     */
+    audienceDisplay?: string;
+    /**
      * The ternary title of the option. (This will display in the middle of the option)
      */
     ternaryTitle?: string;
@@ -52,6 +57,10 @@ interface AutoCompleteRenderOption extends IdentifiableComponentInterface {
      * The ternary subtitle of the option. (This will display in the middle of the option)
      */
     ternarySubTitle?: string;
+    /**
+     * Is the option disabled.
+     */
+    disabled?: boolean;
     /**
      * The props passed to the option.
      */
@@ -69,17 +78,19 @@ const AutoCompleteRenderOption: FunctionComponent<AutoCompleteRenderOption> = (
         ternaryTitle,
         ternarySubTitle,
         audience,
+        audienceDisplay,
+        disabled,
         renderOptionProps
     } = props;
 
     return (
-        <li { ...renderOptionProps }>
+        <li { ...renderOptionProps } style={ disabled ? { cursor: "not-allowed", opacity: 0.5 } : {} }>
             <Grid container justifyContent="space-between" alignItems="center" xs={ 12 }>
                 <Grid container alignItems="center" xs={ 8 }>
                     <Grid>
                         {
                             typeof selected === "boolean" && (
-                                <Checkbox checked={ selected } />
+                                <Checkbox checked={ selected } disabled={ disabled } />
                             )
                         }
                     </Grid>
@@ -100,7 +111,11 @@ const AutoCompleteRenderOption: FunctionComponent<AutoCompleteRenderOption> = (
                     {
                         audience ? (
                             <Chip
-                                label={ audience }
+                                label={
+                                    audience?.toUpperCase() === RoleAudienceTypes.APPLICATION && audienceDisplay
+                                        ? `${audience} | ${audienceDisplay}`
+                                        : audience
+                                }
                             />
                         ) : null
                     }

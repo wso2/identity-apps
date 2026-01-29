@@ -134,6 +134,7 @@ interface AccessTokenConfigurationInterface {
 interface RefreshTokenConfigurationInterface {
     expiryInSeconds?: number;
     renewRefreshToken?: boolean;
+    extendRenewedRefreshTokenExpiryTime?: boolean;
 }
 
 /**
@@ -517,7 +518,8 @@ export interface OIDCEndpointsInterface {
 export enum SupportedAccessTokenBindingTypes {
     NONE = "None",
     CERTIFICATE = "certificate",
-    DPOP = "DPoP"
+    DPOP = "DPoP",
+    SSO_SESSION = "sso-session"
 }
 
 /**

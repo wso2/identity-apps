@@ -22,9 +22,9 @@ import Autocomplete, {
 } from "@oxygen-ui/react/Autocomplete";
 import Grid from "@oxygen-ui/react/Grid";
 import TextField from "@oxygen-ui/react/TextField";
-import { getRolesList } from "@wso2is/admin.roles.v2/api";
+import { getRolesList } from "@wso2is/admin.roles.v2/api/roles";
 import useGetRolesList from "@wso2is/admin.roles.v2/api/use-get-roles-list";
-import { RoleConstants } from "@wso2is/admin.roles.v2/constants";
+import { RoleConstants } from "@wso2is/admin.roles.v2/constants/role-constants";
 import { AlertLevels, IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import debounce, { DebouncedFunc } from "lodash-es/debounce";
@@ -56,7 +56,7 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
         onRolesChange,
         initialValues,
         showValidationError,
-        ["data-componentid"]: testId
+        ["data-componentid"]: componentId
         = "workflow-model-approval-step-roles"
     } = props;
 
@@ -69,6 +69,7 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
     const [ isRoleSearchLoading, setRoleSearchLoading ] = useState<boolean>(false);
     const [ selectedRoles, setSelectedRoles ] = useState<RolesInterface[]>([]);
     const [ validationError, setValidationError ] = useState<boolean>(false);
+    const [ hasInitialized, setHasInitialized ] = useState<boolean>(false);
 
     const filterQuery: string = (() => {
         if (roleSearchValue) {
@@ -100,7 +101,7 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
         } else {
             setRoles([]);
         }
-
+        setRoleSearchLoading(false);
     }, [ rolesList ]);
 
     /**
@@ -171,47 +172,52 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
 
     /**
      * Pre-selects roles based on initial form values once roles are loaded.
+     * Only runs on first initialization to prevent resetting manual selections.
      */
     useEffect(() => {
-        if (!initialValues || !allRoles.length) return;
+        if (!initialValues || !allRoles.length || hasInitialized) return;
 
         const stepRoles: string[] = initialValues?.roles;
 
-        const matchedRoles: RolesInterface[] = allRoles.filter((role: RolesInterface) =>
-            stepRoles.includes(role.id)
-        );
+        if (stepRoles?.length > 0) {
+            const matchedRoles: RolesInterface[] = allRoles.filter((role: RolesInterface) =>
+                stepRoles.includes(role.id)
+            );
 
-        setSelectedRoles(matchedRoles);
+            setSelectedRoles(matchedRoles);
+        }
+
+        setHasInitialized(true);
     }, [ initialValues, allRoles ]);
 
     return (
         <>
-            { roles && !isReadOnly && (
+            { roles && (
                 <Grid
                     container
-                    spacing={ 1 }
-                    alignItems="center"
+                    spacing={ 2 }
+                    alignItems="flex-start"
                     className="full-width"
-                    data-componentid={ `${testId}-role-grid` }
+                    data-componentid={ `${componentId}-role-grid` }
                 >
                     { !activeRoleType && (
-                        <>
-                            <Grid
-                                md={ 2 }
-                                data-componentid={ `${testId}-field-role-type-label` }
-                            >
-                                <label>{ t("approvalWorkflows:forms.configurations.template.roles.label") }</label>
-                            </Grid>
-                        </>
+                        <Grid
+                            xs={ 12 }
+                            sm={ 2 }
+                            md={ 2 }
+                            data-componentid={ `${componentId}-field-role-type-label` }
+                        >
+                            <label>{ t("approvalWorkflows:forms.configurations.template.roles.label") }</label>
+                        </Grid>
                     ) }
                     <Grid
                         xs={ 12 }
-                        sm={ 8 }
-                        md={ 10 }
-                        data-componentid={ `${testId}-field-role-autocomplete-container` }
+                        sm={ 10 }
+                        md={ activeRoleType ? 12 : 10 }
+                        data-componentid={ `${componentId}-field-role-autocomplete-container` }
                     >
                         <Autocomplete
-                            data-componentid={ `${testId}-field-role-autocomplete` }
+                            data-componentid={ `${componentId}-field-role-autocomplete` }
                             multiple
                             disableCloseOnSelect
                             loading={ isRolesListLoading || isRoleSearchLoading }
@@ -219,36 +225,21 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
                             value={ selectedRoles }
                             disabled={ isReadOnly }
                             getOptionLabel={ (role: RolesInterface) => role.displayName }
+                            slotProps={ {
+                                popper: {
+                                    placement: "bottom-start"
+                                }
+                            } }
                             renderInput={ (params: AutocompleteRenderInputParams) => (
                                 <TextField
                                     { ...params }
                                     placeholder={ "Type role/s to search and assign" }
                                     error={ validationError }
-                                    data-componentid={ `${testId}-field-role-search` }
+                                    data-componentid={ `${componentId}-field-role-search` }
                                 />
                             ) }
                             onChange={ (event: SyntheticEvent, roles: RolesInterface[]) => {
-                                setSelectedRoles((prevRoles: RolesInterface[]) => {
-                                    const updatedRoles: RolesInterface[] = [ ...prevRoles ];
-
-                                    roles.forEach((role: RolesInterface) => {
-                                        if (!updatedRoles.some((r: RolesInterface) => (r.id === role.id))) {
-                                            updatedRoles.push(role);
-                                        }
-                                    });
-                                    prevRoles.forEach((role: RolesInterface) => {
-                                        if (!roles.some((r: RolesInterface) => (r.id === role.id))) {
-                                            const indexToRemove: number =
-                                            updatedRoles.findIndex((r: RolesInterface) => (r.id === role.id));
-
-                                            if (indexToRemove !== -1) {
-                                                updatedRoles.splice(indexToRemove, 1);
-                                            }
-                                        }
-                                    });
-
-                                    return updatedRoles;
-                                });
+                                setSelectedRoles(roles);
                             } }
                             filterOptions={ (roles: RolesInterface[]) => roles }
                             onInputChange={ (_event: SyntheticEvent, searchTerm: string) => {
@@ -264,12 +255,12 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
                                         { ...getTagProps({ index }) }
                                         key={ index }
                                         primaryText={ option.displayName }
-                                        audience={ option.audience.type }
+                                        audience={ option.audience?.type ?? undefined }
                                         option={ option }
                                         activeOption={ activeOption }
                                         setActiveOption={ setActiveOption }
                                         variant="filled"
-                                        data-componentid={ `${testId}-chip-selected-role-${option.id}` }
+                                        data-componentid={ `${componentId}-chip-selected-role-${option.id}` }
                                     />
                                 ))
                             }
@@ -281,9 +272,10 @@ const StepRolesList: FunctionComponent<StepRolesPropsInterface> = (
                                 <AutoCompleteRenderOption
                                     selected={ selected }
                                     displayName={ option.displayName }
-                                    audience={ option.audience.type }
+                                    audience={ option.audience?.type ?? undefined }
+                                    audienceDisplay={ option.audience?.display ?? undefined }
                                     renderOptionProps={ props }
-                                    data-componentid={ `${testId}-option-role-${option.id}` }
+                                    data-componentid={ `${componentId}-option-role-${option.id}` }
                                 />
                             ) }
                         />

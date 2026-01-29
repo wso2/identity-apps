@@ -89,6 +89,13 @@
         }
     }
 
+    if (stat == null || statusMessage == null) {
+        if (statusTitle != null && statusDescription != null) {
+            stat = statusTitle;
+            statusMessage = statusDescription;
+        }
+    }
+
     // Set the error message to the fallback error message, if current error message is none or for non-english locales
     if ((stat == null || statusMessage == null) || isErrorFallbackLocale) {
         stat = AuthenticationEndpointUtil.i18n(resourceBundle, "authentication.error");

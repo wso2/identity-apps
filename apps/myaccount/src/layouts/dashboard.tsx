@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2022-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2022-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -51,9 +51,9 @@ import {
     LinkButton,
     useMediaContext
 } from "@wso2is/react-components";
+import dayjs from "dayjs";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
-import moment from "moment";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { System } from "react-notification-system";
@@ -66,8 +66,8 @@ import { Header, ProtectedRoute } from "../components";
 import { SystemNotificationAlert } from "../components/shared/system-notification-alert";
 import { getDashboardLayoutRoutes, getEmptyPlaceholderIllustrations } from "../configs";
 import { AppConstants, UIConstants } from "../constants";
-import { history } from "../helpers";
-import { Application, ConfigReducerStateInterface } from "../models";
+import { history, isApprovalsTabEnabled } from "../helpers";
+import { Application, AuthStateInterface, ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";
 import { toggleApplicationsPageVisibility } from "../store/actions";
 import { AppUtils, CommonUtils as MyAccountCommonUtils, filterRoutes } from "../utils";
@@ -98,21 +98,23 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
     const dispatch: Dispatch = useDispatch();
 
     const { isMobileViewport } = useMediaContext();
-
     const { setPreferences, leftNavbarCollapsed } = useUserPreferences();
+
+    // Track mobile navbar state separately from desktop preference
+    const [ mobileNavbarOpen, setMobileNavbarOpen ] = useState(false);
+    const [ previousViewportWasMobile, setPreviousViewportWasMobile ] = useState(isMobileViewport);
 
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const isApplicationsPageVisible: boolean = useSelector((state: AppState) => state.global.isApplicationsPageVisible);
 
-    const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(
-        getDashboardLayoutRoutes()[ 0 ]
-    );
+    const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface | null>(null);
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>();
     const [ showAnnouncement, setShowAnnouncement ] = useState<boolean>(true);
-    const [ dashboardLayoutRoutes, setDashboardLayoutRoutes ] = useState<RouteInterface[]>(getDashboardLayoutRoutes());
+    const [ dashboardLayoutRoutes, setDashboardLayoutRoutes ] = useState<RouteInterface[]>([]);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
+    const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
 
     useEffect(() => {
         const localeCookie: string = CookieStorageUtils.getItem("ui_lang");
@@ -128,7 +130,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
      * @param language - Selected language.
      */
     const handleLanguageSwitch = (language: string): void => {
-        moment.locale(language ?? "en");
+        dayjs.locale(language ?? "en");
         I18n.instance.changeLanguage(language).catch((error: string | Record<string, unknown>) => {
             throw new LanguageChangeException(language, error);
         });
@@ -194,7 +196,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
      * Listen for base name changes and updated the layout routes.
      */
     useEffect(() => {
-        if (isApplicationsPageVisible === undefined || !config) {
+        if (isApplicationsPageVisible === undefined || !config || allowedScopes === undefined) {
             return;
         }
 
@@ -210,17 +212,22 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
                     // During an impersonation, only the application list page should be visible.
                     return false;
                 }
-            } else {
-                if (route.path === AppConstants.getPaths().get("APPLICATIONS") && !isApplicationsPageVisible) {
-                    return false;
-                }
+            } else if (route.path === AppConstants.getPaths().get("APPLICATIONS") && !isApplicationsPageVisible) {
+                return false;
+            } else if (route.path === AppConstants.getPaths().get("APPROVALS")
+                && !isApprovalsTabEnabled(profileDetails?.profileInfo?.userName)) {
+                return false;
             }
 
             return route;
         });
 
         setDashboardLayoutRoutes(filterRoutes(routes, config.ui?.features));
-    }, [ AppConstants.getTenantQualifiedAppBasename(), config, isApplicationsPageVisible, allowedScopes ]);
+    }, [ AppConstants.getTenantQualifiedAppBasename(),
+        config,
+        isApplicationsPageVisible,
+        allowedScopes,
+        profileDetails?.profileInfo?.userName ]);
 
     /**
      * On location change, update the selected route.
@@ -260,6 +267,25 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
         );
     }, [ config ]);
 
+    /**
+     * Handle viewport transitions to manage navbar state appropriately
+     * for mobile vs desktop contexts.
+     */
+    useEffect(() => {
+        // Transition: Desktop → Mobile
+        if (!previousViewportWasMobile && isMobileViewport) {
+            // Collapse navbar when entering mobile view for better UX
+            // Do NOT update leftNavbarCollapsed preference (keep desktop preference intact)
+            setMobileNavbarOpen(false);
+        }
+
+        // Transition: Mobile → Desktop
+        // No action needed - will automatically use leftNavbarCollapsed preference
+
+        // Update previous state for next transition detection
+        setPreviousViewportWasMobile(isMobileViewport);
+    }, [ isMobileViewport, previousViewportWasMobile ]);
+
     const handleAnnouncementDismiss = () => {
         setShowAnnouncement(false);
     };
@@ -268,7 +294,13 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
      * Callback for side panel hamburger click.
      */
     const handleSidePanelToggleClick = (): void => {
-        setPreferences({ leftNavbarCollapsed: !leftNavbarCollapsed });
+        if (isMobileViewport) {
+            // In mobile: toggle local state only (don't update stored preference)
+            setMobileNavbarOpen(!mobileNavbarOpen);
+        } else {
+            // In desktop: toggle and save preference
+            setPreferences({ leftNavbarCollapsed: !leftNavbarCollapsed });
+        }
     };
 
     return (
@@ -318,7 +350,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
                             }
                         ] }
                         fill={ "solid" }
-                        open={ isMobileViewport ? false : !leftNavbarCollapsed }
+                        open={ isMobileViewport ? mobileNavbarOpen : !leftNavbarCollapsed }
                         collapsible={ false }
                     />
                 ) }

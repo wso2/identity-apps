@@ -94,7 +94,11 @@ const ResourcePropertyPanel: FunctionComponent<ResourcePropertyPanelPropsInterfa
                 onClose={ () => {} }
                 elevation={ 5 }
                 PaperProps={ {
-                    className: classNames("flow-builder-element-property-panel", { open }, className),
+                    className: classNames(
+                        "flow-builder-right-panel base",
+                        open ? "flow-builder-right-panel open" : "flow-builder-right-panel close",
+                        className
+                    ),
                     style: { position: "absolute" }
                 } }
                 BackdropProps={ { style: { position: "absolute" } } }
@@ -111,50 +115,50 @@ const ResourcePropertyPanel: FunctionComponent<ResourcePropertyPanelPropsInterfa
                     }
                 } }
                 hideBackdrop={ true }
-                className={ classNames("flow-builder-element-property-panel", { open }) }
+                className={ classNames(open ? "flow-builder-right-panel open" : "flow-builder-right-panel close") }
                 variant="permanent"
             >
                 <Box
                     display="flex"
                     justifyContent="space-between"
                     alignItems="center"
-                    className="flow-builder-element-property-panel-header"
+                    className="flow-builder-right-panel header"
                 >
                     { resourcePropertiesPanelHeading }
                     <IconButton onClick={ () => setIsOpenResourcePropertiesPanel(false) }>
                         <ChevronsRight height={ 16 } width={ 16 } />
                     </IconButton>
                 </Box>
-                <div
-                    className={ classNames("flow-builder-element-property-panel-content", {
-                        "full-height": true
-                    }) }
-                >
+                <div className="flow-builder-right-panel content full-height">
                     <ResourceProperties />
                 </div>
-                <Box
-                    display="flex"
-                    justifyContent="flex-end"
-                    alignItems="right"
-                    className="flow-builder-element-property-panel-footer"
-                >
-                    <Button
-                        variant="outlined"
-                        onClick={ () => {
-                            if (lastInteractedResource.resourceType === ResourceTypes.Step) {
-                                deleteElements({ nodes: [ { id: lastInteractedResource.id } ] });
-                            } else {
-                                onComponentDelete(lastInteractedStepId, lastInteractedResource);
-                            }
-
-                            setIsOpenResourcePropertiesPanel(false);
-                        } }
-                        className="flow-builder-element-property-panel-footer-secondary-action icon-button"
-                        color="error"
+                { lastInteractedResource?.deletable || lastInteractedResource?.deletable === undefined && (
+                    <Box
+                        display="flex"
+                        justifyContent="flex-end"
+                        alignItems="right"
+                        className="flow-builder-right-panel footer"
                     >
-                        <TrashIcon size={ 14 } />
-                    </Button>
-                </Box>
+                        { lastInteractedResource?.deletable || lastInteractedResource?.deletable === undefined && (
+                            <Button
+                                variant="outlined"
+                                onClick={ () => {
+                                    if (lastInteractedResource.resourceType === ResourceTypes.Step) {
+                                        deleteElements({ nodes: [ { id: lastInteractedResource.id } ] });
+                                    } else {
+                                        onComponentDelete(lastInteractedStepId, lastInteractedResource);
+                                    }
+
+                                    setIsOpenResourcePropertiesPanel(false);
+                                } }
+                                className="flow-builder-right-panel footer-secondary-action icon-button"
+                                color="error"
+                            >
+                                <TrashIcon size={ 14 } />
+                            </Button>
+                        ) }
+                    </Box>
+                ) }
             </Drawer>
         </Box>
     );

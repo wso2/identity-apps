@@ -45,6 +45,9 @@ export interface ConsoleNS {
                             empty: string;
                         };
                     };
+                    filterRecursiveToggle: {
+                        label: string;
+                    };
                 };
             };
             hints: {
@@ -237,6 +240,19 @@ export interface ConsoleNS {
                     description: string;
                     heading: string;
                 };
+                adminNotice: {
+                    title: string;
+                    description: string;
+                    moreDetails: string;
+                    instructions: {
+                        0: string;
+                        1: string;
+                        2: string;
+                        3: string;
+                        4: string;
+                        5: string;
+                    }
+                };
                 integrateApps: {
                     actions: {
                         create: string;
@@ -268,6 +284,13 @@ export interface ConsoleNS {
                         collaborators: string;
                         customers: string;
                         groups: string;
+                    };
+                    description: string;
+                    heading: string;
+                };
+                customizeFlows: {
+                    actions: {
+                        setup: string;
                     };
                     description: string;
                     heading: string;
@@ -582,6 +605,26 @@ export interface ConsoleNS {
                                     required: string;
                                 };
                             };
+                            allowedResendAttemptCount: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                    invalid: string;
+                                    range: string;
+                                };
+                            };
+                            resendBlockDuration: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                validations: {
+                                    required: string;
+                                    invalid: string;
+                                    range: string;
+                                };
+                            };
                             useAlphanumericChars: {
                                 hint: string;
                                 label: string;
@@ -631,6 +674,17 @@ export interface ConsoleNS {
                                 hint: string;
                                 label: string;
                                 placeholder: string;
+                                validations: {
+                                    required: string;
+                                    invalid: string;
+                                    range: string;
+                                };
+                            };
+                            resendBlockDuration: {
+                                hint: string;
+                                label: string;
+                                placeholder: string;
+                                unit: string;
                                 validations: {
                                     required: string;
                                     invalid: string;
@@ -3482,20 +3536,12 @@ export interface ConsoleNS {
                     emptyApprovalList: {
                         action: string;
                         title: string;
-                        subtitles: {
-                            0: string;
-                            1: string;
-                            2: string;
-                        };
+                        subtitle: string;
                     };
                     emptyApprovalFilter: {
                         action: string;
                         title: string;
-                        subtitles: {
-                            0: string;
-                            1: string;
-                            2: string;
-                        };
+                        subtitle: string;
                     };
                     emptySearchResults: {
                         action: string;
@@ -6413,31 +6459,95 @@ export interface ConsoleNS {
                             };
                             verifyHostname: {
                                 label: string;
+                                hint: string;
                             };
                             basicAuthConfig: {
                                 title: string;
+                                info: {
+                                    message: string;
+                                    title: {
+                                        noneAuthType: string;
+                                        otherAuthType: string;
+                                    };
+                                };
+                                types: {
+                                    none: {
+                                        name: string;
+                                    },
+                                    basic: {
+                                        name: string;
+                                    }
+                                },
+                                authenticationType: {
+                                    label: string;
+                                    placeholder: string;
+                                    hint: {
+                                        create: string;
+                                        update: string;
+                                    };
+                                },
+                                buttons: {
+                                    changeAuthentication: string;
+                                }
                                 serverUsername: {
                                     label: string;
                                     placeholder: string;
+                                    error: {
+                                        required: string;
+                                    }
                                 };
                                 serverPassword: {
                                     label: string;
                                     placeholder: string;
+                                    error: {
+                                        required: string;
+                                    }
                                 };
                             };
                             sslConfig: {
                                 title: string;
+                                info: {
+                                    sslConfigured: {
+                                        message: string;
+                                        title: string;
+                                    };
+                                    notConfigured: {
+                                        message: string;
+                                        title: string;
+                                    };
+                                };
+                                buttons: {
+                                    addSslConfig: string;
+                                    changeSslConfig: string;
+                                    clearSslConfig: string;
+                                };
                                 keystorePath: {
                                     label: string;
+                                    placeholder: string;
+                                    error: {
+                                        required: string;
+                                    }
                                 };
                                 keystorePassword: {
                                     label: string;
+                                    placeholder: string;
+                                    error: {
+                                        required: string;
+                                    }
                                 };
                                 truststorePath: {
                                     label: string;
+                                    placeholder: string;
+                                    error: {
+                                        required: string;
+                                    }
                                 };
                                 truststorePassword: {
                                     label: string;
+                                    placeholder: string;
+                                    error: {
+                                        required: string;
+                                    }
                                 };
                             };
                         };
@@ -6761,10 +6871,12 @@ export interface ConsoleNS {
                         subTitle: string;
                         askPassword: {
                             emailVerificationDisabled: string;
+                            mobileNumberAlreadyExists: string;
                             emailInvalid: string;
                             alphanumericUsernameEnabled: string;
                             inviteViaEmail: string;
                             inviteOffline: string;
+                            inviteViaSMS: string;
                         };
                         steps: {
                             basicDetails: string;
@@ -8022,47 +8134,11 @@ export interface ConsoleNS {
                     placeholder: string;
                 };
                 notifications: {
-                    fetchApprovalWorkflows: {
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    deleteApprovalWorkflow: {
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
-                        };
-                    };
                     delay: {
                         message: string;
                         description: string;
                     };
-                    updateApprovalWorkflow: {
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
-                        };
-                    };
                     testConnection: {
-                        genericError: {
-                            message: string;
-                            description: string;
-                        };
-                        success: {
-                            message: string;
-                            description: string;
-                        };
-                    };
-                    addApprovalWorkflow: {
                         genericError: {
                             message: string;
                             description: string;
@@ -8268,7 +8344,6 @@ export interface ConsoleNS {
             };
             oidcScopesEdit: {
                 title: string;
-                subTitle: string;
                 backButton: string;
             };
             rolesEdit: {

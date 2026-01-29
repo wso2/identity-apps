@@ -26,15 +26,17 @@ import { UserStoreUtils } from "@wso2is/admin.extensions.v1/utils/user-store-uti
 import { PatchRoleDataInterface } from "@wso2is/admin.roles.v2/models/roles";
 import {
     ServerConfigurationsInterface,
-    getGovernanceConnectors,
-    getServerConfigs
-} from "@wso2is/admin.server-configurations.v1/api";
-import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants";
+    getGovernanceConnectors
+} from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
+import { getServerConfigs } from "@wso2is/admin.server-configurations.v1/api/server-config";
+import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
     RealmConfigInterface
-} from "@wso2is/admin.server-configurations.v1/models";
+} from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import { getUserDetails, updateUserInfo } from "@wso2is/admin.users.v1/api/users";
 import { UserManagementConstants } from "@wso2is/admin.users.v1/constants/user-management-constants";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils/user-management-utils";
@@ -428,9 +430,9 @@ const AdministratorEditPage = (): ReactElement => {
                                                 }
                                             >
                                                 It seems like the selected email is not registered on Gravatar.
-                                                Sign up for a Gravatar account by visiting
-                                                <a href="https://www.gravatar.com"> Gravatar Official Website</a>
-                                                or use one of the following.
+                                                Sign up for a Gravatar account by visiting&nbsp;
+                                                <a href="https://www.gravatar.com">Gravatar Official Website</a>
+                                                &nbsp;or use one of the following.
                                             </Trans>
                                         ),
                                         header: t("console:common.modals.editAvatarModal.content.gravatar.errors" +

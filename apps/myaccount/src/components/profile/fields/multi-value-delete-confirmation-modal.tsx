@@ -33,7 +33,7 @@ const MultiValueDeleteConfirmationModal: FunctionComponent<MultiValueDeleteConfi
     selectedAttributeInfo,
     onClose,
     onConfirm,
-    ["data-componentid"]: componentId = "component-id"
+    ["data-componentid"]: componentId = "delete-confirmation-modal"
 }: MultiValueDeleteConfirmationModalPropsInterface): ReactElement => {
     const { t } = useTranslation();
 

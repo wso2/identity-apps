@@ -1,5 +1,47 @@
 # @wso2is/admin.webhooks.v1
 
+## 1.1.2
+
+### Patch Changes
+
+- [#9376](https://github.com/wso2/identity-apps/pull/9376) [`9fd8a2a1521d31ef8fa3c06708a3f200a0ec2d66`](https://github.com/wso2/identity-apps/commit/9fd8a2a1521d31ef8fa3c06708a3f200a0ec2d66) Thanks [@JayanaGunaweera01](https://github.com/JayanaGunaweera01)! - Fix Action bar is momentarily visible during the Webhooks page suspense state
+
+## 1.1.1
+
+### Patch Changes
+
+- [#8724](https://github.com/wso2/identity-apps/pull/8724) [`9a2ecffbc2d6e85713073357d3e05b4162c269a9`](https://github.com/wso2/identity-apps/commit/9a2ecffbc2d6e85713073357d3e05b4162c269a9) Thanks [@Sachin-Mamoru](https://github.com/Sachin-Mamoru)! - Disable session and token event configs in ui
+
+## 1.1.0
+
+### Minor Changes
+
+- [#8683](https://github.com/wso2/identity-apps/pull/8683) [`832e4249a19ac9b0e09d8b864c84c8dc39d8b6f3`](https://github.com/wso2/identity-apps/commit/832e4249a19ac9b0e09d8b864c84c8dc39d8b6f3) Thanks [@Shenali-SJ](https://github.com/Shenali-SJ)! - Onboard Webhook Settings UI
+
+### Patch Changes
+
+- Updated dependencies [[`832e4249a19ac9b0e09d8b864c84c8dc39d8b6f3`](https://github.com/wso2/identity-apps/commit/832e4249a19ac9b0e09d8b864c84c8dc39d8b6f3)]:
+  - @wso2is/i18n@2.27.0
+  - @wso2is/admin.core.v1@2.48.1
+
+## 1.0.5
+
+### Patch Changes
+
+- [#8622](https://github.com/wso2/identity-apps/pull/8622) [`ba0150266a14126ec608086da6f54a6245f056b2`](https://github.com/wso2/identity-apps/commit/ba0150266a14126ec608086da6f54a6245f056b2) Thanks [@malithie](https://github.com/malithie)! - Fix doc link issue in edit page heading
+
+* [#8621](https://github.com/wso2/identity-apps/pull/8621) [`8b7759446e0515ebfedce5b51aede89d6a323b9f`](https://github.com/wso2/identity-apps/commit/8b7759446e0515ebfedce5b51aede89d6a323b9f) Thanks [@malithie](https://github.com/malithie)! - Fix delete section view of webhooks in websubhub mode.
+
+## 1.0.4
+
+### Patch Changes
+
+- [#8580](https://github.com/wso2/identity-apps/pull/8580) [`99556bdcad5cac0105ecbfd893d8087497fd4033`](https://github.com/wso2/identity-apps/commit/99556bdcad5cac0105ecbfd893d8087497fd4033) Thanks [@malithie](https://github.com/malithie)! - Improve webhook management ui to support http publisher.
+
+- Updated dependencies [[`32f809bf44aa79cd7c87144466915fc9c6438ca5`](https://github.com/wso2/identity-apps/commit/32f809bf44aa79cd7c87144466915fc9c6438ca5), [`79d24deec910ce3f4628decedd65c2f3bcddddfe`](https://github.com/wso2/identity-apps/commit/79d24deec910ce3f4628decedd65c2f3bcddddfe)]:
+  - @wso2is/i18n@2.25.1
+  - @wso2is/admin.core.v1@2.46.25
+
 ## 1.0.3
 
 ### Patch Changes

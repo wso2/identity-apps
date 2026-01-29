@@ -16,19 +16,18 @@
  * under the License.
  */
 
-import Chip from "@oxygen-ui/react/Chip";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { AppState } from "@wso2is/admin.core.v1/store";
-import { FeatureStatusLabel } from "@wso2is/admin.feature-gate.v1/models/feature-status";
+import {
+    PasswordRecoveryFormConstants
+} from "@wso2is/admin.server-configurations.v1/constants/password-recovery-constants";
 import {
     EmailRecoveryOption,
     PasswordRecoveryConfigurationFormPropsInterface,
-    PasswordRecoveryFormConstants,
     PasswordRecoveryFormErrorValidationsInterface,
     PasswordRecoveryFormUpdatableConfigsInterface,
     PasswordRecoveryFormValuesInterface
-} from "@wso2is/admin.server-configurations.v1";
+} from "@wso2is/admin.server-configurations.v1/models/password-recovery";
 import { CommonUtils } from "@wso2is/core/utils";
 import { Field, Form } from "@wso2is/form";
 import { RadioChild } from "@wso2is/forms";
@@ -37,7 +36,6 @@ import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { Divider, Icon } from "semantic-ui-react";
 import { GovernanceConnectorConstants } from "../../constants/governance-connector-constants";
 import { ServerConfigurationsConstants } from "../../constants/server-configurations-constants";
@@ -88,9 +86,6 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
             value: EmailRecoveryOption.EMAIL_OTP
         }
     ];
-
-    const showSmsOtpPwdRecoveryFeatureStatusChip: boolean =
-        useSelector((state: AppState) => state?.config?.ui?.showSmsOtpPwdRecoveryFeatureStatusChip);
 
     /**
      * Flattens and resolved form initial values and field metadata.
@@ -474,12 +469,6 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                 <Heading as="h5">
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.recoveryOptionSubHeadingSMS") as ReactNode }
-                    {
-                        showSmsOtpPwdRecoveryFeatureStatusChip &&
-                        (<Chip
-                            label={ t(FeatureStatusLabel.BETA) }
-                            className="oxygen-menu-item-chip oxygen-chip-beta" />)
-                    }
                 </Heading>
                 {
                     <Message info>
@@ -564,12 +553,6 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                 <Heading as="h4">
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.otpConfigHeading") as ReactNode }
-                    {
-                        showSmsOtpPwdRecoveryFeatureStatusChip &&
-                        (<Chip
-                            label={ t(FeatureStatusLabel.BETA) }
-                            className="oxygen-menu-item-chip oxygen-chip-beta" />)
-                    }
                 </Heading>
                 <Field.Checkbox
                     ariaLabel="passwordRecoveryOtpUseUppercase"
@@ -670,12 +653,6 @@ export const PasswordRecoveryConfigurationForm: FunctionComponent<PasswordRecove
                 <Heading as="h4">
                     { t("extensions:manage.serverConfigurations.accountRecovery." +
                             "passwordRecovery.failedAttemptConfigHeading") as ReactNode }
-                    {
-                        showSmsOtpPwdRecoveryFeatureStatusChip &&
-                        (<Chip
-                            label={ t(FeatureStatusLabel.BETA) }
-                            className="oxygen-menu-item-chip oxygen-chip-beta" />)
-                    }
                 </Heading>
                 <Field.Input
                     ariaLabel="maxFailedAttemptCount"

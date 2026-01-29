@@ -26,6 +26,7 @@ export interface webhooksNS {
             subHeading: string;
             buttons: {
                 add: string;
+                settings: string;
             };
             columns: {
                 webhook: string;
@@ -45,6 +46,18 @@ export interface webhooksNS {
             heading: string;
             subHeading: string;
         };
+        settings: {
+            heading: string;
+            subHeading: string;
+            backButton: string;
+            organizationPolicy: {
+                heading: string;
+                radioOptions: {
+                    currentOrgOnly: string;
+                    currentOrgAndImmediateChild: string;
+                };
+            };
+        }
     };
 
     goBackToWebhooks: string;
@@ -170,6 +183,17 @@ export interface webhooksNS {
                 description: string;
             };
         };
+        updateWebhookSettings: {
+            error: {
+                message: string;
+                description: string;
+                genericDescription: string;
+            };
+            success: {
+                message: string;
+                description: string;
+            };
+        }
         updateWebhookStatus: {
             success: {
                 message: string;

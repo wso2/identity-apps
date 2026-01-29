@@ -33,16 +33,20 @@ class FeatureFlagConstants {
     public static readonly FEATURE_FLAG_KEY_MAP: { [key: string]: string } = {
         ACTIONS: "actions",
         ACTIONS_TYPES_PRE_ISSUE_ACCESS_TOKEN: "actions.types.list.preIssueAccessToken",
+        ACTIONS_TYPES_PRE_ISSUE_ID_TOKEN: "actions.types.list.preIssueIdToken",
         ACTIONS_TYPES_PRE_REGISTRATION: "actions.types.list.preRegistration",
         ACTIONS_TYPES_PRE_UPDATE_PASSWORD: "actions.types.list.preUpdatePassword",
         ACTIONS_TYPES_PRE_UPDATE_PROFILE: "actions.types.list.preUpdateProfile",
         AGENTS: "agents",
         AI_APPLICATION_LOGIN_FLOW_BANNER: "ai.application.loginFlow.banner",
         AI_BRANDING_BANNER: "ai.branding.banner",
+        AI_FLOWS_TYPES_REGISTRATION: "ai.flows.types.list.registration",
         APPLICATIONS: "application",
         APPLICATION_BRANDING_TEXT: "branding.stylesAndText.application.text",
         APPLICATION_EDIT_BRANDING_LINK: "applications.edit.general.branding",
         APPLICATION_TEMPLATES: "applications.templates",
+        APPROVALS: "approvals",
+        APPROVAL_WORKFLOWS: "approvalWorkflows",
         ATTRIBUTE_DIALECTS: "attributeDialects",
         BRANDING: "branding",
         BRANDING_STYLES_AND_TEXT_TITLE: "branding.stylesAndText.application.title",
@@ -65,7 +69,9 @@ class FeatureFlagConstants {
         SMS_TEMPLATES: "smsTemplates",
         USER_ROLES: "userRoles",
         USER_STORES: "userStores",
-        WEBHOOKS: "webhooks"
+        VERIFIABLE_CREDENTIALS: "verifiableCredentials",
+        WEBHOOKS: "webhooks",
+        WORKFLOW_INSTANCES: "workflowInstances"
     };
 }
 

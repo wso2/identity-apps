@@ -36,13 +36,3 @@ export const getInputIconClass = (fieldName) => {
 
     return iconMapping[fieldName] || null;
 };
-
-export const getConnectionLogo = (connectionName) => {
-    const logoMapping = {
-        Default: "libs/themes/default/assets/images/identity-providers/google-idp-illustration.svg",
-        Facebook: "libs/themes/default/assets/images/identity-providers/facebook-idp-illustration.svg",
-        Google: "libs/themes/default/assets/images/identity-providers/google-idp-illustration.svg"
-    };
-
-    return logoMapping[connectionName] || logoMapping.Default;
-};

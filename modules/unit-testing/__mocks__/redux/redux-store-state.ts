@@ -562,6 +562,30 @@ const ReduxStoreStateMock: any = {
                     extensions: "ta-IN/portals/extensions.json"
                 }
             }
+        },
+        supportedLocaleExtensions: {
+            "pt-PT": {
+                "enabled": true
+            },
+            "fr-FR": {
+                "enabled": true
+            },
+            "ar-SA": {
+                "enabled": true,
+                "code": "ar-SA",
+                "flag": "sa",
+                "name": "Arabic (Saudi Arabia)",
+                "namespaces": [
+                    "common",
+                    "myAccount",
+                    "extensions"
+                ],
+                "paths": {
+                    "common": "extensions/i18n/ar-SA/portals/common.json",
+                    "myAccount": "extensions/i18n/ar-SA/portals/myAccount.json",
+                    "extensions": "extensions/i18n/ar-SA/portals/extensions.json"
+                }
+            }
         }
     },
     governanceConnector: {

@@ -1,5 +1,25 @@
 # @wso2is/admin.authentication.v1
 
+## 2.25.208
+
+### Patch Changes
+
+- [#9561](https://github.com/wso2/identity-apps/pull/9561) [`990145c9e05c34eaea4f2ae774f8a91cd0246f8c`](https://github.com/wso2/identity-apps/commit/990145c9e05c34eaea4f2ae774f8a91cd0246f8c) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Construct well-known endpoint to execute in tenant perspective path
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.129
+  - @wso2is/admin.users.v1@2.36.96
+
+## 2.25.207
+
+### Patch Changes
+
+- [#8206](https://github.com/wso2/identity-apps/pull/8206) [`ba917ba62a07de5898c251fc385558ddb562122a`](https://github.com/wso2/identity-apps/commit/ba917ba62a07de5898c251fc385558ddb562122a) Thanks [@HasiniSama](https://github.com/HasiniSama)! - Switch to the org handle in places where org id is used as tenant domain
+
+- Updated dependencies [[`ba917ba62a07de5898c251fc385558ddb562122a`](https://github.com/wso2/identity-apps/commit/ba917ba62a07de5898c251fc385558ddb562122a), [`1cf2a69f382401824625df187fecbcac9a32d28a`](https://github.com/wso2/identity-apps/commit/1cf2a69f382401824625df187fecbcac9a32d28a)]:
+  - @wso2is/admin.core.v1@2.47.1
+  - @wso2is/i18n@2.26.1
+
 ## 2.25.206
 
 ### Patch Changes

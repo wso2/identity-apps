@@ -21,7 +21,7 @@ import Card from "@oxygen-ui/react/Card";
 import Grid from "@oxygen-ui/react/Grid";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { DropdownChild, FinalForm, FinalFormField, SelectFieldAdapter } from "@wso2is/form";
+import { DropdownChild, FinalForm, FinalFormField, __DEPRECATED__SelectFieldAdapter } from "@wso2is/form";
 import { FormRenderProps } from "@wso2is/form/src";
 import { SupportedLanguagesMeta } from "@wso2is/i18n";
 import { Hint } from "@wso2is/react-components";
@@ -149,7 +149,7 @@ const SMSCustomizationHeader: FunctionComponent<SMSCustomizationHeaderProps> = (
                         type={ "dropdown" }
                         label={ t("smsTemplates:form.inputs.template.label") }
                         placeholder={ t("smsTemplates:form.inputs.template.placeholder") }
-                        component={ SelectFieldAdapter }
+                        component={ __DEPRECATED__SelectFieldAdapter }
                         options={ smsTemplateListOptions }
                         onChange={ onTemplateSelected }
                         value={ selectedSmsTemplateId }
@@ -173,7 +173,7 @@ const SMSCustomizationHeader: FunctionComponent<SMSCustomizationHeaderProps> = (
                         placeholder={ t("smsTemplates:form.inputs.locale.placeholder") }
                         value={ selectedLocale }
                         defaultValue={ selectedLocale }
-                        component={ SelectFieldAdapter }
+                        component={ __DEPRECATED__SelectFieldAdapter }
                         options={ localeList }
                         onChange={ onLocaleChanged }
                     />

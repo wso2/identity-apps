@@ -18,6 +18,9 @@
 import { approvalWorkflowsNS } from "../../../models";
 
 export const approvalWorkflows: approvalWorkflowsNS = {
+    advancedSearch: {
+        placeholder: "Search by approval workflow name"
+    },
     confirmation: {
         confirm: "Confirm",
         content:
@@ -67,19 +70,23 @@ export const approvalWorkflows: approvalWorkflowsNS = {
             },
             emptyList: {
                 action: "New Approval Workflow",
-                subtitles:
-                "There are currently no approval workflows available. " +
-                "You can add a new approval workflow easily by following the " +
-                "steps in the approval workflow creation wizard.",
+                subtitles: {
+                    0: "There are currently no approval workflows available.",
+                    1: "You can add a new approval workflow easily by following the steps in the approval workflow creation wizard."
+                },
                 title: "Add a new approval workflow"
             },
             emptyListReadOnly: {
-                subtitles: "There are currently no approval workflows available.",
+                subtitles: {
+                    0: "There are currently no approval workflows available."
+                },
                 title: "No approval workflows"
             },
             emptySearch: {
                 action: "Clear search query",
-                subtitles: "We couldn't find any results for {{searchQuery}}. " + "Please try a different search term.",
+                subtitles: {
+                    0: "We couldn't find any results for {{searchQuery}}. Please try a different search term."
+                },
                 title: "No results found"
             }
         },
@@ -92,7 +99,7 @@ export const approvalWorkflows: approvalWorkflowsNS = {
             title: "SQL Query Types",
             update: "Update"
         }
-    } ,
+    },
     forms: {
         configurations: {
             template: {
@@ -149,9 +156,17 @@ export const approvalWorkflows: approvalWorkflowsNS = {
         },
         operations: {
             dropDown: {
+                disabledHint: "A workflow already exists for this operation",
                 label: "Operations",
+                nullValidationErrorMessage: "Please select at least one operation",
                 placeholder: "Type operation/s to search and assign"
             }
+        }
+    },
+    list: {
+        columns: {
+            actions: "Actions",
+            name: "Name"
         }
     },
     notifications: {
@@ -201,6 +216,10 @@ export const approvalWorkflows: approvalWorkflowsNS = {
             genericError: {
                 description: "There was an error while removing workflow operations.",
                 message: "Something went wrong!"
+            },
+            noAssociationsSelectedError: {
+                description: "At least one workflow operation must be selected.",
+                message: "No workflow operations selected"
             },
             success: {
                 description: "Workflow operation has been deleted successfully!",

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -30,6 +30,7 @@ import Checkbox from "@oxygen-ui/react/Checkbox";
 import Paper from "@oxygen-ui/react/Paper";
 import Typography from "@oxygen-ui/react/Typography";
 import { ChevronDownIcon } from "@oxygen-ui/react-icons";
+import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -37,8 +38,13 @@ import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/ho
 import { CreateRolePermissionInterface } from "@wso2is/admin.roles.v2/models/roles";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import cloneDeep from "lodash-es/cloneDeep";
+import flatMap from "lodash-es/flatMap";
+import fromPairs from "lodash-es/fromPairs";
 import get from "lodash-es/get";
 import isEmpty from "lodash-es/isEmpty";
+import mapValues from "lodash-es/mapValues";
+import omit from "lodash-es/omit";
+import values from "lodash-es/values";
 import React, {
     ChangeEvent,
     FunctionComponent,
@@ -106,7 +112,7 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
         defaultExpandedIfPermissionsAreSelected,
         initialValues,
         onPermissionsChange,
-        "data-componentid": componentId
+        "data-componentid": componentId = "create-console-role-wizard-basic-info-form"
     } = props;
 
     const { t } = useTranslation();
@@ -154,6 +160,26 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
         }
     }, [ initialValues ]);
 
+    // Flatten the feature config to easily access sub features.
+    const flattenedFeatureConfig: FeatureConfigInterface = useMemo(() => {
+        const topLevelFeatures: Record<string, Omit<FeatureAccessConfigInterface, "subFeatures">> = mapValues(
+            featureConfig,
+            (feature: FeatureAccessConfigInterface) => omit(feature, [ "subFeatures" ])
+        );
+
+        const subLevelFeatures: Record<string, Omit<FeatureAccessConfigInterface, "subFeatures">> = fromPairs(
+            flatMap(values(featureConfig), (feature: FeatureAccessConfigInterface) => {
+                return Object.entries(feature.subFeatures || {});
+            })
+        );
+
+        return {
+            ...topLevelFeatures,
+            ...subLevelFeatures
+        } as FeatureConfigInterface;
+
+    }, [ featureConfig ]);
+
     const filteredTenantAPIResourceCollections: APIResourceCollectionResponseInterface = useMemo(() => {
 
         if (!tenantAPIResourceCollections) {
@@ -172,14 +198,14 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
                     (item: APIResourceCollectionInterface) =>
                         !filteringAPIResourceCollectionNames.includes(item?.name) &&
                         (
-                            featureConfig?.[item?.name]?.enabled
-                            || featureConfig?.[UIConstants.CONSOLE_FEATURE_MAP[item?.name]]?.enabled
+                            flattenedFeatureConfig?.[item?.name]?.enabled
+                            || flattenedFeatureConfig?.[UIConstants.CONSOLE_FEATURE_MAP[item?.name]]?.enabled
                         )
 
                 );
 
         return clonedTenantAPIResourceCollections;
-    }, [ tenantAPIResourceCollections ]);
+    }, [ tenantAPIResourceCollections, flattenedFeatureConfig ]);
 
     const filteredOrganizationAPIResourceCollections: APIResourceCollectionResponseInterface = useMemo(() => {
 
@@ -599,13 +625,6 @@ const CreateConsoleRoleWizardPermissionsForm: FunctionComponent<CreateConsoleRol
             </div>
         </div>
     );
-};
-
-/**
- * Default props for the component.
- */
-CreateConsoleRoleWizardPermissionsForm.defaultProps = {
-    "data-componentid": "create-console-role-wizard-basic-info-form"
 };
 
 export default CreateConsoleRoleWizardPermissionsForm;

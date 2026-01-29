@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -32,9 +32,119 @@ export interface CommonNS {
     applications: string;
     approvalStatus: string;
     approve: string;
+    approved: string;
+    rejected: string;
+    approvals: string;
+    approvalsPage: {
+        list: {
+            columns: {
+                actions: string;
+                name: string;
+            };
+        };
+        title: string;
+        notifications: {
+            fetchApprovalDetails: {
+                error: {
+                    message: string;
+                    description: string;
+                };
+                genericError: {
+                    message: string;
+                    description: string;
+                };
+            };
+            fetchPendingApprovals: {
+                error: {
+                    message: string;
+                    description: string;
+                };
+                genericError: {
+                    message: string;
+                    description: string;
+                };
+            };
+            updatePendingApprovals: {
+                error: {
+                    message: string;
+                    description: string;
+                };
+                genericError: {
+                    message: string;
+                    description: string;
+                };
+                success: {
+                    message: string;
+                    description: string;
+                };
+            };
+            statusUpdate: {
+                approved: {
+                    message: string;
+                    description: string;
+                };
+                rejected: {
+                    message: string;
+                    description: string;
+                };
+                claimed: {
+                    message: string;
+                    description: string;
+                };
+                released: {
+                    message: string;
+                    description: string;
+                };
+            };
+        };
+        operationTypes: {
+            addRole: string;
+            addUser: string;
+            all: string;
+            deleteRole: string;
+            deleteUser: string;
+            selfRegisterUser: string;
+            updateRolesOfUser: string;
+        }
+        placeholders: {
+                emptyApprovalList: {
+                    action: string;
+                    title: string;
+                    subtitle: string;
+                };
+                emptyApprovalFilter: {
+                    action: string;
+                    title: string;
+                    subtitle: string
+                };
+                emptySearchResults: {
+                    action: string;
+                    title: string;
+                    subtitles: {
+                        0: string;
+                        1: string;
+                        2: string;
+                    };
+                };
+                searchApprovals: string;
+            };
+        subTitle: string;
+        modals: {
+            header: string;
+            subHeader: string;
+            description: string;
+        };
+        propertyMessages: {
+            assignedUsersDeleted: string;
+            roleDeleted: string;
+            selfRegistration: string;
+            unassignedUsersDeleted: string;
+        };
+    }
     apps: string;
     assignee: string;
     assignees: string;
+    assignYourself: string;
     authenticator: string;
     authentication: string;
     authenticator_plural: string;
@@ -49,7 +159,6 @@ export interface CommonNS {
         description: string;
         primaryActionText: string;
     }
-    claim: string;
     clear: string;
     clientId: string;
     close: string;
@@ -59,6 +168,7 @@ export interface CommonNS {
     confirm: string;
     contains: string;
     continue: string;
+    copied: string;
     copyToClipboard: string;
     createdOn: string;
     create: string;
@@ -86,6 +196,7 @@ export interface CommonNS {
     finish: string;
     goBackHome: string;
     goFullScreen: string;
+    greaterThanOrEqual: string;
     help: string;
     hide: string;
     hidePassword: string;
@@ -99,6 +210,7 @@ export interface CommonNS {
     lastSeen: string;
     lastUpdatedOn: string;
     learnMore: string;
+    lessThanOrEqual: string;
     lightMode: string;
     loading: string;
     loginTime: string;
@@ -114,10 +226,14 @@ export interface CommonNS {
     name: string;
     new: string;
     next: string;
+    none: string;
     organizationName: string;
     operatingSystem: string;
     operations: string;
+    operationType: string;
     overview: string;
+    parameter: string;
+    pending: string;
     personalInfo: string;
     pin: string;
     pinned: string;
@@ -127,16 +243,17 @@ export interface CommonNS {
     priority: string;
     privacy: string;
     properties: string;
+    publish: string;
     ready: string;
     regenerate: string;
     register: string;
     removeAll: string;
     reject: string;
-    release: string;
     remove: string;
     reserved: string;
     resetFilters: string;
     retry: string;
+    revert: string;
     revoke: string;
     revokeAll: string;
     required: string;
@@ -147,6 +264,8 @@ export interface CommonNS {
     search: string;
     searching: string;
     security: string;
+    selectAll: string;
+    selectNone: string;
     settings: string;
     setup: string;
     show: string;
@@ -165,12 +284,14 @@ export interface CommonNS {
     terminateAll: string;
     terminateSession: string;
     type: string;
+    unassign: string;
     unpin: string;
     unpinned: string;
     update: string;
     user: string;
     verify: string;
     view: string;
+    viewDetails: string;
     weakPassword: string;
     good: string;
     strong: string;
@@ -194,5 +315,6 @@ export interface CommonNS {
     asyncOperationErrorMessage: {
         description: string;
         message: string;
-    }
+    },
+    saveDraft: string;
 }

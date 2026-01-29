@@ -17,9 +17,29 @@
  */
 
 /**
+ * Keys used in feature dictionary.
+ */
+export enum GovernanceConnectorFeatureDictionaryKeys {
+    HIDE_INVITED_USER_REGISTRATION_TOGGLE = "hideInvitedUserRegistrationToggle",
+    HIDE_FRAUD_DETECTION_EVENT_PUBLISHING_CONFIGURATION = "hideFraudDetectionEventPublishingConfiguration"
+}
+
+/**
  * Class containing governance connector constants.
  */
 export class GovernanceConnectorConstants {
+
+    /**
+     * Feature dictionary for governance connectors.
+     * Key: Feature dictionary key.
+     * Value: Corresponding config key in deployment config.
+     */
+    public static readonly featureDictionary: Record<string, string> = {
+        [GovernanceConnectorFeatureDictionaryKeys.HIDE_INVITED_USER_REGISTRATION_TOGGLE]:
+            "governanceConnectors.invitedUserRegistration.enableDisableControl",
+        [GovernanceConnectorFeatureDictionaryKeys.HIDE_FRAUD_DETECTION_EVENT_PUBLISHING_CONFIGURATION]:
+            "governanceConnectors.fraudDetection.eventPublishingConfigurations"
+    };
 
     /**
      * Ask Password Form element constraints.
@@ -29,11 +49,19 @@ export class GovernanceConnectorConstants {
         EXPIRY_TIME_MAX_VALUE: number;
         EXPIRY_TIME_MIN_LENGTH: number;
         EXPIRY_TIME_MIN_VALUE: number;
+        OTP_CODE_LENGTH_MAX_LENGTH: number;
+        OTP_CODE_LENGTH_MAX_VALUE: number;
+        OTP_CODE_LENGTH_MIN_LENGTH: number;
+        OTP_CODE_LENGTH_MIN_VALUE: number;
     } = {
             EXPIRY_TIME_MAX_LENGTH: 5,
             EXPIRY_TIME_MAX_VALUE: 10080,
             EXPIRY_TIME_MIN_LENGTH: 1,
-            EXPIRY_TIME_MIN_VALUE: -1
+            EXPIRY_TIME_MIN_VALUE: -1,
+            OTP_CODE_LENGTH_MAX_LENGTH: 2,
+            OTP_CODE_LENGTH_MAX_VALUE: 10,
+            OTP_CODE_LENGTH_MIN_LENGTH: 1,
+            OTP_CODE_LENGTH_MIN_VALUE: 4
         };
 
     /**

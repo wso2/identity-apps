@@ -16,22 +16,28 @@
  * under the License.
  */
 
+import updateFlowConfig from "@wso2is/admin.flow-builder-core.v1/api/update-flow-config";
+import useAuthenticationFlowBuilderCore from
+    "@wso2is/admin.flow-builder-core.v1/hooks/use-authentication-flow-builder-core-context";
 import AuthenticationFlowBuilderCoreProvider
     from "@wso2is/admin.flow-builder-core.v1/providers/authentication-flow-builder-core-provider";
+import { FlowTypes } from "@wso2is/admin.flows.v1/models/flows";
+import { PreviewScreenType } from "@wso2is/common.branding.v1/models/branding-preferences";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useReactFlow } from "@xyflow/react";
-import React, { FC, PropsWithChildren, ReactElement, useState } from "react";
+import isEmpty from "lodash-es/isEmpty";
+import React, { FC, PropsWithChildren, ReactElement, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import configureRegistrationFlow from "../api/configure-registration-flow";
-import updateNewRegistrationPortalFeatureStatus from "../api/update-new-registration-portal-feature-status";
-import useNewRegistrationPortalFeatureStatus from "../api/use-new-registration-portal-feature-status";
+import useGetSupportedProfileAttributes from "../api/use-get-supported-profile-attributes";
 import ResourceProperties from "../components/resource-property-panel/resource-properties";
 import ElementFactory from "../components/resources/elements/element-factory";
+import RegistrationFlowConstants from "../constants/registration-flow-constants";
 import RegistrationFlowBuilderContext from "../context/registration-flow-builder-context";
 import { Attribute } from "../models/attributes";
-import RegistrationFlowConstants from "../constants/registration-flow-constants";
 import transformFlow from "../utils/transform-flow";
 
 /**
@@ -47,11 +53,31 @@ export type RegistrationFlowBuilderProviderProps = PropsWithChildren<unknown>;
  */
 const RegistrationFlowBuilderProvider: FC<RegistrationFlowBuilderProviderProps> = ({
     children
-}: PropsWithChildren<RegistrationFlowBuilderProviderProps>): ReactElement => (
-    <AuthenticationFlowBuilderCoreProvider ElementFactory={ ElementFactory } ResourceProperties={ ResourceProperties }>
-        <FlowContextWrapper>{ children }</FlowContextWrapper>
-    </AuthenticationFlowBuilderCoreProvider>
-);
+}: PropsWithChildren<RegistrationFlowBuilderProviderProps>): ReactElement => {
+
+    const screensList: PreviewScreenType[] = useMemo(() => ([
+        PreviewScreenType.SIGN_UP,
+        PreviewScreenType.COMMON,
+        PreviewScreenType.EMAIL_LINK_EXPIRY,
+        PreviewScreenType.EMAIL_OTP,
+        PreviewScreenType.SMS_OTP
+    ]), []);
+
+    return (
+        <AuthenticationFlowBuilderCoreProvider
+            ElementFactory={ ElementFactory }
+            ResourceProperties={ ResourceProperties }
+            flowType={ FlowTypes.REGISTRATION }
+            screenTypes={ screensList }
+            validationConfig={ {
+                isOTPValidationEnabled: true,
+                isPasswordExecutorValidationEnabled: true
+            } }
+        >
+            <FlowContextWrapper>{ children }</FlowContextWrapper>
+        </AuthenticationFlowBuilderCoreProvider>
+    );
+};
 
 /**
  * This component wraps the flow context and provides necessary functions and state.
@@ -63,58 +89,65 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
     children
 }: PropsWithChildren<RegistrationFlowBuilderProviderProps>): ReactElement => {
     const dispatch: Dispatch = useDispatch();
+    const { t } = useTranslation();
 
     const { toObject } = useReactFlow();
-    const {
-        data: isNewRegistrationPortalEnabled,
-        mutate: mutateNewRegistrationPortalEnabledRequest
-    } = useNewRegistrationPortalFeatureStatus();
+    const { data: supportedAttributes } = useGetSupportedProfileAttributes();
+    const { flowCompletionConfigs } = useAuthenticationFlowBuilderCore();
 
     const [ selectedAttributes, setSelectedAttributes ] = useState<{ [key: string]: Attribute[] }>({});
     const [ isPublishing, setIsPublishing ] = useState<boolean>(false);
 
-    const handlePublish = async (): Promise<void> => {
+    const handlePublish = async (): Promise<boolean> => {
         setIsPublishing(true);
 
         const flow: any = toObject();
 
-        if (!isNewRegistrationPortalEnabled) {
+        if (!isEmpty(flowCompletionConfigs)) {
             try {
-                await updateNewRegistrationPortalFeatureStatus(true);
-            } catch(error) {
+                await updateFlowConfig({
+                    flowCompletionConfigs,
+                    flowType: FlowTypes.REGISTRATION
+                });
+            } catch (error) {
                 dispatch(
                     addAlert({
-                        description: "Failed to enable the new registration flow experience.",
+                        description: t("flows:core.notifications.updateFlowConfig.genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: "Flow Update Failure"
+                        message: t("flows:core.notifications.updateFlowConfig.genericError.message")
                     })
                 );
             }
-
-            mutateNewRegistrationPortalEnabledRequest();
         }
 
         try {
-            const registrationFlow = transformFlow(flow) as any;
+            const registrationFlow: any = transformFlow(flow) as any;
+
             registrationFlow.flowType = RegistrationFlowConstants.REGISTRATION_FLOW_TYPE;
 
             await configureRegistrationFlow(registrationFlow);
 
             dispatch(
                 addAlert({
-                    description: "Registration flow updated successfully.",
+                    description: t("flows:registrationFlow.notifications.updateRegistrationFlow.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Flow Updated Successfully"
+                    message: t("flows:registrationFlow.notifications.updateRegistrationFlow.success.message")
                 })
             );
+
+            return true;
         } catch (error) {
             dispatch(
                 addAlert({
-                    description: "Failed to update the registration flow.",
+                    description: t(
+                        "flows:registrationFlow.notifications.updateRegistrationFlow.genericError.description"
+                    ),
                     level: AlertLevels.ERROR,
-                    message: "Flow Update Failure"
+                    message: t("flows:registrationFlow.notifications.updateRegistrationFlow.genericError.message")
                 })
             );
+
+            return false;
         } finally {
             setIsPublishing(false);
         }
@@ -123,11 +156,11 @@ const FlowContextWrapper: FC<RegistrationFlowBuilderProviderProps> = ({
     return (
         <RegistrationFlowBuilderContext.Provider
             value={ {
-                isNewRegistrationPortalEnabled,
                 isPublishing,
                 onPublish: handlePublish,
                 selectedAttributes,
-                setSelectedAttributes
+                setSelectedAttributes,
+                supportedAttributes
             } }
         >
             { children }

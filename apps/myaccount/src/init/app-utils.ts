@@ -113,13 +113,9 @@ export const AppUtils: AppUtilsInterface = (function() {
          */
         constructRedirectURLs: function(url: string) {
             const proxyContextPath: string = this.getProxyContextPath();
-            let basePath: string = `${_config.clientOrigin}${
+            const basePath: string = `${_config.clientOrigin}${
                 proxyContextPath ? `/${proxyContextPath}` : ""
-            }${this.getTenantPath(true)}`;
-
-            if (basePath.includes(this.getSuperTenant())) {
-                basePath = _config.clientOrigin;
-            }
+            }${this.getTenantPath(!_config.tenantContext?.requireSuperTenantInAppUrls)}`;
 
             return `${basePath}${(_config.appBaseName
                 ? "/" + _config.appBaseName
@@ -341,7 +337,7 @@ export const AppUtils: AppUtilsInterface = (function() {
          * @returns the server base URL with the tenant name appended.
          */
         getServerOriginWithTenant: function(enforceOrgPath: boolean = true) {
-            let tenantPath: string = this.getTenantPath(true);
+            let tenantPath: string = this.getTenantPath(!_config.tenantContext?.requireSuperTenantInUrls);
 
             /**
              * If the tenant path is empty, and the organization name is present, then append the `carbon.super` path.
@@ -538,7 +534,7 @@ export const AppUtils: AppUtilsInterface = (function() {
          * @returns Resolved URLs.
          */
         resolveURLs: function() {
-            const tenantPath: string = this.getTenantPath(false, true);
+            const tenantPath: string = this.getTenantPath(_config.tenantContext?.requireSuperTenantInUrls, true);
 
             return {
                 authorizeEndpointURL: _config.idpConfigs

@@ -20,6 +20,7 @@ import { getUserNameWithoutDomain } from "@wso2is/core/helpers";
 import { ProfileSchemaInterface } from "@wso2is/core/models";
 import { AppConstants } from "../constants";
 import { UserManagementConstants } from "../constants/user-management-constants";
+import { UserstoreConstants } from "../extensions/userstores/userstore-constants";
 import { AuthStateInterface } from "../models";
 
 /**
@@ -148,4 +149,18 @@ const isDisplayNameEnabled = (profileSchema: ProfileSchemaInterface[], displayNa
     return profileSchema
         .some((schemaItem: ProfileSchemaInterface) =>
             schemaItem.name === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY.get("DISPLAY_NAME"));
+};
+
+/**
+ * Checks if the approvals tab should be enabled for the user.
+ *
+ * @param domainQualifiedUsername - Domain qualified username of the user.
+ * @returns If the approvals tab is enabled or not.
+ */
+export const isApprovalsTabEnabled = (domainQualifiedUsername: string): boolean => {
+    if (resolveUserstore(domainQualifiedUsername) === UserstoreConstants.ASGARDEO_USERSTORE) {
+        return false;
+    }
+
+    return true;
 };

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -23,6 +23,15 @@ import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import {
+    useGetGovernanceConnectorById
+} from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
+import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
+import {
+    UpdateGovernanceConnectorConfigPropertyInterface
+} from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -45,11 +54,6 @@ import {
     Divider
 } from "semantic-ui-react";
 import { ConnectorPropertyInterface } from "../../admin.connections.v1";
-import {
-    ServerConfigurationsConstants,
-    UpdateGovernanceConnectorConfigPropertyInterface,
-    useGetGovernanceConnectorById
-} from "../../admin.server-configurations.v1";
 import addOrganizationDiscoveryConfig from "../api/add-organization-discovery-config";
 import deleteOrganizationDiscoveryConfig from "../api/delete-organization-discovery-config";
 import updateOrganizationDiscoveryConfig from "../api/update-organization-discovery-config";
@@ -119,7 +123,11 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
     } = useGetGovernanceConnectorById(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID,
         ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID);
 
-    const { isOrganizationDiscoveryEnabled, isEmailDomainBasedSelfRegistrationEnabled } = organizationDiscoveryConfig;
+    const {
+        isOrganizationDiscoveryEnabled,
+        isEmailDomainBasedSelfRegistrationEnabled,
+        defaultParam
+    } = organizationDiscoveryConfig;
     const [ isSelfRegEnabled, setIsSelfRegEnabled ] = useState<boolean>(false);
 
     useEffect(() => {
@@ -145,6 +153,13 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
             key: OrganizationDiscoveryConfigConstants.EMAIL_DOMAIN_DISCOVERY_SELF_REG_PROPERTY_KEY,
             value: value.toString()
         });
+
+        if (defaultParam != null) {
+            updateData.properties.push({
+                key: OrganizationDiscoveryConfigConstants.DEFAULT_DISCOVERY_PARAM,
+                value: defaultParam
+            });
+        }
 
         updateOrganizationDiscoveryConfig(updateData)
             .then(() => {
@@ -268,6 +283,12 @@ const OrganizationDiscoveryDomainsPage: FunctionComponent<OrganizationDiscoveryD
             updateData.properties.push({
                 key: OrganizationDiscoveryConfigConstants.EMAIL_DOMAIN_DISCOVERY_SELF_REG_PROPERTY_KEY,
                 value: "false"
+            });
+        }
+        if (defaultParam != null) {
+            updateData.properties.push({
+                key: OrganizationDiscoveryConfigConstants.DEFAULT_DISCOVERY_PARAM,
+                value: defaultParam
             });
         }
 

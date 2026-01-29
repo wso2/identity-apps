@@ -90,7 +90,8 @@ export const EditAdditionalPropertiesLocalClaims:
         const filteredClaimProperties: Property[] = useMemo(() => {
             if (claim?.properties) {
                 const properties: Property[] = claim.properties.filter((property: Property) => {
-                    return property.key !== ClaimManagementConstants.SYSTEM_CLAIM_PROPERTY_NAME;
+                    return property.key !== ClaimManagementConstants.SYSTEM_CLAIM_PROPERTY_NAME
+                        && property.key !== ClaimManagementConstants.AGENT_CLAIM_PROPERTY_NAME;
                 });
 
                 return properties;
@@ -100,7 +101,7 @@ export const EditAdditionalPropertiesLocalClaims:
         }, [ claim ]);
 
         return (
-            <EmphasizedSegment>
+            <EmphasizedSegment padded="very">
                 <Grid>
                     <Grid.Row columns={ 1 }>
                         <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>

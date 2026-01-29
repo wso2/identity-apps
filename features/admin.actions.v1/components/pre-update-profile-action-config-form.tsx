@@ -45,6 +45,7 @@ import updateAction from "../api/update-action";
 import useGetActionById from "../api/use-get-action-by-id";
 import useGetActionsByType from "../api/use-get-actions-by-type";
 import { ActionsConstants } from "../constants/actions-constants";
+import { ActionVersionInfo } from "../hooks/use-action-versioning";
 import {
     ActionConfigFormPropertyInterface,
     AuthenticationPropertiesInterface,
@@ -54,9 +55,9 @@ import {
     PreUpdateProfileActionInterface,
     PreUpdateProfileActionUpdateInterface
 } from "../models/actions";
-import "./pre-update-profile-action-config-form.scss";
 import { useHandleError, useHandleSuccess } from "../util/alert-util";
 import { validateActionCommonFields } from "../util/form-field-util";
+import "./pre-update-profile-action-config-form.scss";
 
 /**
  * Prop types for the action configuration form component.
@@ -82,6 +83,10 @@ interface PreUpdateProfileActionConfigFormInterface extends IdentifiableComponen
      * Specifies action creation state.
      */
     isCreateFormState: boolean;
+    /**
+     * Action version information.
+     */
+    versionInfo: ActionVersionInfo;
 }
 
 const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileActionConfigFormInterface> = ({
@@ -122,6 +127,10 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
     const {
         data: RuleExpressionsMetaData
     } = useGetRulesMeta(actionTypeApiPath, showRuleComponent);
+
+    // TODO: Temporary flag to show/hide the allowedHeaders and allowedParameters section.
+    const showHeadersAndParams: boolean = isFeatureEnabled(
+        actionsFeatureConfig, ActionsConstants.FEATURE_DICTIONARY.get("PRE_UPDATE_PASSWORD_HEADERS_AND_PARAMS"));
 
     /**
      * This sets the the current Action Authentication Type.
@@ -302,7 +311,9 @@ const PreUpdateProfileActionConfigForm: FunctionComponent<PreUpdateProfileAction
                     onAuthenticationTypeChange={ (updatedValue: AuthenticationType, change: boolean) => {
                         setAuthenticationType(updatedValue);
                         setIsAuthenticationUpdateFormState(change);
-                    } } />
+                    } }
+                    showHeadersAndParams={ showHeadersAndParams }
+                />
                 <Divider className="divider-container" />
                 <Typography variant="h6" className="heading-container" >
                     { t("actions:fields.userAttributes.heading") }

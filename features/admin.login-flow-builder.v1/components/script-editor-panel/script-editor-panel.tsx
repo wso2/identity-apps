@@ -61,7 +61,13 @@ import "./script-editor-panel.scss";
 /**
  * Proptypes for the Script editor panel component.
  */
-export type ScriptEditorPanelPropsInterface = IdentifiableComponentInterface & HTMLAttributes<HTMLDivElement>;
+export interface ScriptEditorPanelPropsInterface extends IdentifiableComponentInterface,
+    HTMLAttributes<HTMLDivElement> {
+    /**
+     * Make the editor read only.
+     */
+    readOnly?: boolean;
+}
 
 const MonacoEditor: LazyExoticComponent<any> = lazy(() =>
     import("@monaco-editor/react" /* webpackChunkName: "MDMonacoEditor" */)
@@ -115,7 +121,7 @@ const MinimizeIcon = ({ width = 16, height = 16 }: { width: number; height: numb
  * @returns Script editor panel component.
  */
 const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterface>): ReactElement => {
-    const { className, "data-componentid": componentId } = props;
+    const { className, readOnly, "data-componentid": componentId } = props;
 
     const { t } = useTranslation();
 
@@ -243,7 +249,8 @@ const ScriptEditorPanel = (props: PropsWithChildren<ScriptEditorPanelPropsInterf
             theme={ editorTheme }
             value={ getAdaptiveScript() }
             options={ {
-                automaticLayout: true
+                automaticLayout: true,
+                readOnly: readOnly
             } }
             onChange={ handleScriptChange }
             onMount={ handleEditorOnMount }

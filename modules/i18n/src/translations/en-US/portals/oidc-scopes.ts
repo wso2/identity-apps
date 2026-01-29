@@ -18,12 +18,10 @@
 import { oidcScopesNS } from "../../../models";
 
 export const oidcScopes: oidcScopesNS = {
-    back: "Go back to OpenID Connect Attrbute Mappings",
-    viewAttributes: "View Attributes",
-    manageAttributes: "Manage Attributes",
     addAttributes: {
         description: "Select which user attributes you want to associate with the scope {{name}}."
     },
+    back: "Go back to OpenID Connect Attrbute Mappings",
     buttons: {
         addScope: "New OIDC Scope"
     },
@@ -110,6 +108,7 @@ export const oidcScopes: oidcScopesNS = {
         },
         searchPlaceholder: "Search by scope"
     },
+    manageAttributes: "Manage Attributes",
     notifications: {
         addOIDCClaim: {
             error: {
@@ -250,6 +249,9 @@ export const oidcScopes: oidcScopesNS = {
             title: "No results found"
         }
     },
+    updateScope: "Update Scope",
+    viewAttributes: "View Attributes",
+    viewScope: "View Scope",
     wizards: {
         addScopeWizard: {
             buttons: {

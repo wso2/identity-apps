@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -25,13 +25,16 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Form, FormPropsInterface } from "@wso2is/form";
-import { EmphasizedSegment, PageLayout } from "@wso2is/react-components";
+import { DangerZone, DangerZoneGroup, EmphasizedSegment, PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, MutableRefObject, ReactElement, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { Divider, Grid, Placeholder, Ref } from "semantic-ui-react";
-import { updateWSFederationConfigurations, useWSFederationConfig } from "../api/wsfed-configuration";
+import { revertWSFederationConfigurations,
+    updateWSFederationConfigurations,
+    useWSFederationConfig
+} from "../api/wsfed-configuration";
 import {
     WSFederationConfigAPIResponseInterface,
     WSFederationConfigFormValuesInterface
@@ -141,6 +144,36 @@ export const WSFederationConfigurationPage: FunctionComponent<WSFederationConfig
     };
 
     /**
+     * Displays the success banner when WSFederation configurations are reverted.
+     */
+    const handleRevertSuccess = () => {
+        dispatch(
+            addAlert({
+                description: t("wsFederationConfig:notifications." +
+                "revertConfiguration.success.description"),
+                level: AlertLevels.SUCCESS,
+                message: t("wsFederationConfig:notifications." +
+                "revertConfiguration.success.message")
+            })
+        );
+    };
+
+    /**
+     * Displays the error banner when unable to revert WSFederation configurations.
+     */
+    const handleRevertError = () => {
+        dispatch(
+            addAlert({
+                description: t("wsFederationConfig:notifications." +
+                "revertConfiguration.error.description"),
+                level: AlertLevels.ERROR,
+                message: t("wsFederationConfig:notifications." +
+                "revertConfiguration.error.message")
+            })
+        );
+    };
+
+    /**
      * Handle WSFederation form submit.
      */
     const handleSubmit = (value: boolean) => {
@@ -152,6 +185,19 @@ export const WSFederationConfigurationPage: FunctionComponent<WSFederationConfig
             handleUpdateSuccess();
         }).catch(() => {
             handleUpdateError();
+        }).finally(() => {
+            mutateWSFederationConfig();
+        });
+    };
+
+    /**
+     * Handle WSFederation configuration revert.
+     */
+    const onConfigRevert = (): void => {
+        revertWSFederationConfigurations().then(() => {
+            handleRevertSuccess();
+        }).catch(() => {
+            handleRevertError();
         }).finally(() => {
             mutateWSFederationConfig();
         });
@@ -255,6 +301,19 @@ export const WSFederationConfigurationPage: FunctionComponent<WSFederationConfig
                                     )
                                 }
                             </EmphasizedSegment>
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row columns={ 1 } className="mt-6">
+                        <Grid.Column width={ 16 }>
+                            <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
+                                <DangerZone
+                                    actionTitle= { t("governanceConnectors:dangerZone.actionTitle") }
+                                    header= { t("governanceConnectors:dangerZone.heading") }
+                                    subheader= { t("governanceConnectors:dangerZone.subHeading") }
+                                    onActionClick={ () => onConfigRevert() }
+                                    data-testid={ `${ componentId }-danger-zone` }
+                                />
+                            </DangerZoneGroup>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>

@@ -26,8 +26,9 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import camelCase from "lodash-es/camelCase";
-import { getConnectorCategories } from "../api";
-import { ServerConfigurationsConstants } from "../constants";
+import { getConnectorCategories } from "../api/governance-connectors";
+import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
+import { FraudAnalyticEventMetadataInterface } from "../models/fraud-detection";
 import {
     ConnectorOverrideConfig,
     ConnectorPropertyInterface,
@@ -35,8 +36,8 @@ import {
     GovernanceConnectorForOrgsInterface,
     GovernanceConnectorInterface,
     GovernanceConnectorsInterface
-} from "../models";
-import { SetGovernanceConnectorCategory } from "../store/actions";
+} from "../models/governance-connectors";
+import { SetGovernanceConnectorCategory } from "../store/actions/governance-connector";
 
 /**
  * Utility class for governance connectors.
@@ -332,14 +333,14 @@ export class GovernanceConnectorUtils {
                     {
                         description: "Allow users to set their own passwords during admin-initiated onboarding " +
                                     "and configure related settings",
-                        header: "Invite User to Set Password",
+                        header: "Invited User Registration",
                         id: ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID,
                         route: AppConstants.getPaths().get("GOVERNANCE_CONNECTOR_EDIT")
                             .replace(":categoryId", ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
                             .replace(
                                 ":connectorId",
                                 ServerConfigurationsConstants.ASK_PASSWORD_CONNECTOR_ID),
-                        testId: "invite-user-to-set-password-card"
+                        testId: "invited-user-to-set-password-card"
                     }
                 ],
                 displayOrder: 1,
@@ -587,5 +588,58 @@ export class GovernanceConnectorUtils {
             .filter((connector: GovernanceConnectorForOrgsInterface)=>connector.id===governanceConnectorId)[0]
             .properties;
 
+    }
+
+    /**
+     * Resolve event property mappings.
+     *
+     * @returns Event property mappings.
+     */
+    public static resolveEventPropertyMappings(): Record<string, FraudAnalyticEventMetadataInterface> {
+
+        return {
+            "Event.Notification_Based_Verification": {
+                description: "governanceConnectors:connectorCategories.loginAttemptsSecurity" +
+                        ".connectors.siftConnector.eventPublishing.eventProperties.events.userVerifications.hint",
+                displayName: "governanceConnectors:connectorCategories.loginAttemptsSecurity" +
+                        ".connectors.siftConnector.eventPublishing.eventProperties.events.userVerifications.label",
+                displayOrder: 6
+            },
+            "Event.User_Credential_Update": {
+                description: "governanceConnectors:connectorCategories.loginAttemptsSecurity" +
+                        ".connectors.siftConnector.eventPublishing.eventProperties.events.credentialUpdates.hint",
+                displayName: "governanceConnectors:connectorCategories.loginAttemptsSecurity" +
+                        ".connectors.siftConnector.eventPublishing.eventProperties.events.credentialUpdates.label",
+                displayOrder: 4
+            },
+            "Event.User_Login": {
+                description: "governanceConnectors:connectorCategories.loginAttemptsSecurity" +
+                        ".connectors.siftConnector.eventPublishing.eventProperties.events.logins.hint",
+                displayName: "governanceConnectors:connectorCategories.loginAttemptsSecurity" +
+                        ".connectors.siftConnector.eventPublishing.eventProperties.events.logins.label",
+                displayOrder: 2
+            },
+            "Event.User_Logout": {
+                description: "governanceConnectors:connectorCategories.loginAttemptsSecurity" +
+                        ".connectors.siftConnector.eventPublishing.eventProperties.events.logouts.hint",
+                displayName: "governanceConnectors:connectorCategories.loginAttemptsSecurity" +
+                        ".connectors.siftConnector.eventPublishing.eventProperties.events.logouts.label",
+                displayOrder: 3
+            },
+            "Event.User_Profile_Update": {
+                description: "governanceConnectors:connectorCategories.loginAttemptsSecurity" +
+                        ".connectors.siftConnector.eventPublishing.eventProperties.events.userProfileUpdates.hint",
+                displayName: "governanceConnectors:connectorCategories.loginAttemptsSecurity" +
+                        ".connectors.siftConnector.eventPublishing.eventProperties.events.userProfileUpdates.label",
+                displayOrder: 5
+            },
+            "Event.User_Registration": {
+                description: "governanceConnectors:connectorCategories.loginAttemptsSecurity" +
+                        ".connectors.siftConnector.eventPublishing.eventProperties.events.registrations.hint",
+                displayName: "governanceConnectors:connectorCategories.loginAttemptsSecurity" +
+                        ".connectors.siftConnector.eventPublishing.eventProperties.events.registrations.label",
+                displayOrder: 1
+            }
+        };
     }
 }

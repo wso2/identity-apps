@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -19,6 +19,7 @@
 /* eslint-disable @typescript-eslint/typedef */
 import { DocPanelUICardInterface } from "@wso2is/admin.core.v1/models/help-panel";
 import { store } from "@wso2is/admin.core.v1/store";
+import { PatternConstants } from "@wso2is/core/constants";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
@@ -426,6 +427,46 @@ export class ApplicationManagementUtils {
         }
 
         return url;
+    };
+
+    /**
+     * Remove regexp wrapper only if the inner parts are valid HTTP(S) URLs.
+     * If any part is not a valid URL, return the original string unchanged.
+     *
+     * @param url - Callback URLs.
+     * @returns Prepared callback URL.
+     */
+    public static normalizeCallbackUrlsFromRegExp = (raw: string): string => {
+
+        const wrapperWithParantheses: RegExp =  /^regexp=\((.*)\)$/;
+        const wrapperWithoutParantheses: RegExp =  /^regexp=(.*)$/;
+        const matchWithParantheses: RegExpMatchArray | null = raw.match(wrapperWithParantheses);
+        const matchWithoutParantheses: RegExpMatchArray | null = raw.match(wrapperWithoutParantheses);
+
+        if (!matchWithParantheses && !matchWithoutParantheses) return raw;
+
+        const inner: string = matchWithParantheses ? matchWithParantheses[1] : matchWithoutParantheses[1];
+        const parts: string[] = inner.split("|").map(part => part.trim()).filter(Boolean);
+
+        const isHttpUrl = (urlString: string): boolean => {
+            try {
+                const url = new URL(urlString);
+
+                return url.protocol === "http:" || url.protocol === "https:";
+            } catch {
+                return false;
+            }
+        };
+
+        const isMobileDeepLink = (urlString: string): boolean =>
+            PatternConstants.MOBILE_DEEP_LINK_URL_REGEX_PATTERN.test(urlString);
+
+        const isValidPart = (urlString: string): boolean =>
+            isHttpUrl(urlString) || isMobileDeepLink(urlString);
+
+        const allValid = parts.length > 0 && parts.every(isValidPart);
+
+        return allValid ? parts.join(",") : raw;
     };
 
     /**

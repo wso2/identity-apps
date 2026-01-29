@@ -21,5 +21,6 @@ export * from "./group-fields";
 export * from "./syntactic-sugars";
 export * from "./meta-file-picker";
 
-export { DynamicField, KeyValue } from "./dynamic-field";
+export { DynamicField } from "./dynamic-field";
+export type { KeyValue } from "./dynamic-field";
 

@@ -38,7 +38,7 @@ export const users: usersNS = {
             options: {
                 disabled: "Disabled",
                 locked: "Locked",
-                pendingInitialPasswordSetup: "Pending initial password setup",
+                pendingInitialPasswordSetup: "Pending initial account setup",
                 pendingPasswordReset: "Pending password reset",
                 pendingPrimaryEmailVerification: "Pending email verification",
                 pendingPrimaryMobileVerification: "Pending mobile verification"
@@ -78,8 +78,11 @@ export const users: usersNS = {
         addMultipleUser: {
             assertionHint: "Please confirm your action.",
             content: "Invite User to Set Password should be enabled to add multiple users. " +
-                "Please enable email invitations for user password setup from <1>Login & Registration settings</1>.",
+                "Please enable user password setup invitations from the " +
+                "<1>Invited User Registration Flow Builder</1>.",
             header: "Before you proceed",
+            legacyContent: "Invite User to Set Password should be enabled to add multiple users. " +
+                "Please enable email invitations for user password setup from <1>Login & Registration settings</1>.",
             message: "Invite users option is disabled"
         },
         terminateAllSessions: {
@@ -138,6 +141,7 @@ export const users: usersNS = {
         validation: {
             dateFormatError: "The format of the {{field}} entered is incorrect. Valid format is " +
                 "YYYY-MM-DD.",
+            duplicateError: "{{field}} can not have duplicate values.",
             formatError: "The format of the {{field}} entered is incorrect.",
             futureDateError: "The date you entered for the {{field}} field is invalid.",
             mobileFormatError: "The format of the {{field}} entered is incorrect.  Valid format is " +
@@ -166,8 +170,12 @@ export const users: usersNS = {
     },
     notifications: {
         addUser: {
-            error: {
+            badRequestError: {
                 description: "{{description}}",
+                message: "Error adding the new user"
+            },
+            error: {
+                description: "An error occurred while adding the user.",
                 message: "Error adding the new user"
             },
             genericError: {
@@ -327,6 +335,10 @@ export const users: usersNS = {
             genericError: {
                 description: "Couldn't revoke the admin privileges.",
                 message: "Something went wrong"
+            },
+            pendingApproval: {
+                description: "The admin privileges revoke is accepted and pending approval.",
+                message: "Admin privileges revoke pending approval"
             },
             success: {
                 description: "Successfully revoked the admin privileges.",

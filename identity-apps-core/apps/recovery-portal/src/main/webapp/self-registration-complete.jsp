@@ -78,6 +78,7 @@
     String tenantAwareUsername = Encode.forHtml(MultitenantUtils.getTenantAwareUsername(UserCoreUtil.removeDomainFromName(username)));
     boolean isEmailNotificationEnabled = false;
     String callback = (String) request.getAttribute("callback");
+    boolean isPendingApproval = false;
     String confirm = (String) request.getAttribute("confirm");
     String confirmLiteReg = (String) request.getAttribute("confirmLiteReg");
     String resendUsername = request.getParameter("username");
@@ -214,6 +215,10 @@
     }
 
     String userId = (String) request.getAttribute("userId");
+
+    if (request.getAttribute("pendingApproval") != null) {
+        isPendingApproval = Boolean.parseBoolean((String) request.getAttribute("pendingApproval"));
+    }
 %>
 
 <% if (isDetailedResponseEnabled && StringUtils.isNotBlank(userId)) { %>
@@ -295,7 +300,9 @@
             <layout:component componentName="MainSection" >
                 <div class="ui green segment mt-3 attached">
                         <h3 class="ui header text-center slogan-message mt-4 mb-6" data-testid="self-register-complete-page-header">
-                            <% if (StringUtils.isNotBlank(confirm)) { %>
+                            <% if (isPendingApproval) { %>
+                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "registration.submitted")%>
+                            <% } else if (StringUtils.isNotBlank(confirm)) { %>
                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "account.verified.successfully")%>
                             <% } else if (accountLockOnCreationEnabled) { %>
                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "you.are.almost.there")%>
@@ -307,9 +314,11 @@
                         <p class="portal-tagline-description">
                             <%
                             String url = "";
-                            if (StringUtils.isNotBlank(confirm)) { %>
+                            if (isPendingApproval) { %>
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "pending.account.approval")%>
+                            <% } else if (StringUtils.isNotBlank(confirm)) { %>
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "your.account.with.username")%>
-                                <b><%=resendUsername%></b>
+                                <b><%=Encode.forHtml(resendUsername)%></b>
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "has.been.verified.successfully")%>
                             <%
                                 if (!StringUtils.isBlank(sp) && sp.equals("My Account")) {
@@ -338,7 +347,11 @@
                             %>
                                 <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "check.your.inbox.at")%>
                                 <b><span id="maskedEmail"></span></b> <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "for.instructions.to.activate.your.account")%>
-                                <script>maskEmail('<%= emailValue %>');</script>
+                                <script>
+                                    <% if (StringUtils.isNotBlank(emailValue)) { %>
+                                        maskEmail('<%= Encode.forJavaScript(emailValue) %>');
+                                    <% } %>                                
+                                </script>
                                 </br></br>
                         <%
                             if (showBackButton && StringUtils.isNotBlank(applicationAccessURLWithoutEncoding)) {

@@ -18,9 +18,11 @@
 
 import { Grid, Typography } from "@mui/material";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Button, CopyInputField, EmphasizedSegment, Message, PrimaryButton } from "@wso2is/react-components";
+import { Button, CopyInputField, EmphasizedSegment, Message } from "@wso2is/react-components";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { Divider } from "semantic-ui-react";
+import { AgentSecretShowModal } from "./agent-secret-show-modal";
 
 interface AgentCredentialsProps extends IdentifiableComponentInterface {
     agentId: string;
@@ -30,37 +32,46 @@ export default function AgentCredentials({
     agentId,
     ["data-componentid"]: componentId = "agent-credentials"
 }: AgentCredentialsProps) {
-    const regenerateAgentScret = () => {
-        /** TODO Impl. */
-    };
+    const { t } = useTranslation();
+
+    const [ isAgentCredentialWizardOpen, setIsAgentCredentialWizardOpen ] = React.useState<boolean>(false);
 
     return (
         <EmphasizedSegment padded="very" style={ { border: "none", padding: "21px" } }>
-            <Typography variant="h4">Credentials</Typography>
+            <Typography variant="h4">{ t("agents:edit.credentials.title") }</Typography>
             <Typography variant="body1" className="mt-1 mb-3" style={ { color: "#9c9c9c" } }>
-                Authentication details for this agent to securely access applications and API resources.
+                { t("agents:edit.credentials.subtitle") }
             </Typography>
             <Grid container>
                 <Grid xs={ 8 }>
                     <Typography variant="body1" style={ { marginBottom: "2%" } }>Agent ID</Typography>
                     <CopyInputField value={ agentId } />
                     <Divider />
-                    <Typography variant="body1">Agent secret</Typography>
+                    <Typography variant="body1">Agent Secret</Typography>
                     <Message info>
                         If you’ve lost or forgotten the agent secret, you can regenerate it, but be aware that any
                         scripts or applications using the current agent secret will need to be updated.
                     </Message>
                     <Button
                         color="red"
-                        onClick={ regenerateAgentScret }
+                        onClick={ () => {
+                            setIsAgentCredentialWizardOpen(true);
+                        } }
                         data-componentid={ `${componentId}-agent-secret-regenerate-button` }
                     >
                         Regenerate
                     </Button>
                 </Grid>
             </Grid>
-
-            <PrimaryButton className="mt-5">Update</PrimaryButton>
+            <AgentSecretShowModal
+                agentId={ agentId }
+                isOpen={ isAgentCredentialWizardOpen }
+                onClose={ () => {
+                    setIsAgentCredentialWizardOpen(false);
+                } }
+                title="Regenerate Agent Secret"
+                isForSecretRegeneration
+            />
         </EmphasizedSegment>
     );
 }

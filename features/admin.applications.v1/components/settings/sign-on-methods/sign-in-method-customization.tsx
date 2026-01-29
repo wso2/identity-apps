@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
 import { getMultiFactorAuthenticatorDetails } from "@wso2is/admin.connections.v1/api/authenticators";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -25,6 +26,10 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
+import {
+    ENFORCE_SCRIPT_UPDATE_PERMISSION_FEATURE_ID,
+    SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID
+} from "@wso2is/admin.login-flow-builder.v1/constants/editor-constants";
 import useAuthenticationFlow from "@wso2is/admin.login-flow-builder.v1/hooks/use-authentication-flow";
 import useAILoginFlow from "@wso2is/admin.login-flow.ai.v1/hooks/use-ai-login-flow";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
@@ -32,7 +37,12 @@ import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface
 } from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
-import { AlertLevels, IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
+import {
+    AlertLevels,
+    IdentifiableComponentInterface,
+    SBACInterface
+} from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
     Code,
@@ -55,7 +65,7 @@ import { Divider, Icon  } from "semantic-ui-react";
 import { ScriptBasedFlow } from "./script-based-flow/script-based-flow";
 import { StepBasedFlow } from "./step-based-flow/step-based-flow";
 import DefaultFlowConfigurationSequenceTemplate from "./templates/default-sequence.json";
-import { updateAuthenticationSequence } from "../../../api/application";
+import { updateAdaptiveScript, updateAuthenticationSequence } from "../../../api/application";
 import {
     AdaptiveAuthTemplateInterface,
     AuthenticationSequenceInterface,
@@ -154,7 +164,7 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
 
     const dispatch: Dispatch = useDispatch();
 
-    const { isSystemApplication } = useAuthenticationFlow();
+    const { isConditionalAuthenticationEnabled, isSystemApplication } = useAuthenticationFlow();
 
     const { setAiGeneratedLoginFlow } = useAILoginFlow();
 
@@ -176,6 +186,17 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
         useState<ConnectionsJITUPConflictWithMFAReturnValue | undefined>(undefined);
     const [ smsValidationResult, setSmsValidationResult ] =
         useState<FederatedConflictWithSMSOTPReturnValueInterface>(null);
+
+    const applicationsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
+        return state.config?.ui?.features?.applications;
+    });
+    const sharedAppAdaptiveAuthEnabled: boolean = isFeatureEnabled(applicationsFeatureConfig,
+        SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID);
+    const isScriptUpdatePermissionEnforced: boolean = isFeatureEnabled(applicationsFeatureConfig,
+        ENFORCE_SCRIPT_UPDATE_PERMISSION_FEATURE_ID);
+    const hasScriptUpdatePermission: boolean = useRequiredScopes(
+        applicationsFeatureConfig?.subFeatures?.applicationAuthenticationScript?.scopes?.update);
+    const isScriptUpdateReadOnly: boolean = isScriptUpdatePermissionEnforced && !hasScriptUpdatePermission;
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -306,6 +327,12 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
      */
     const handleSequenceUpdate = (sequence: AuthenticationSequenceInterface, forceReset?: boolean): void => {
 
+        if (isScriptUpdatePermissionEnforced) {
+            handleSequenceUpdateWithScriptAPI(sequence, forceReset);
+
+            return;
+        }
+
         let requestBody: any;
 
         if (forceReset) {
@@ -344,55 +371,141 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                 onUpdate(appId);
             })
             .catch((error: AxiosError) => {
-
-                const DISALLOWED_PROGRAMMING_CONSTRUCTS: string = "APP-60001";
-
-                if (error.response && error.response.data?.code === DISALLOWED_PROGRAMMING_CONSTRUCTS) {
-                    dispatch(addAlert({
-                        description: (
-                            <p>
-                                <Trans
-                                    i18nKey={
-                                        "applications:notifications" +
-                                        ".conditionalScriptLoopingError.description"
-                                    }>
-                                    Looping constructs such as <Code>for</Code>, <Code>while</Code> and,
-                                    <Code>forEach</Code> are not allowed in the conditional authentication
-                                    script.
-                                </Trans>
-                            </p>
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t("applications:notifications" +
-                            ".conditionalScriptLoopingError.message")
-                    }));
-
-                    return;
-                }
-
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: t("applications:notifications.updateAuthenticationFlow" +
-                            ".error.message")
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: t("applications:notifications.updateAuthenticationFlow" +
-                        ".genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("applications:notifications.updateAuthenticationFlow" +
-                        ".genericError.message")
-                }));
+                handleUpdateAuthenticationFlowError(error);
             })
             .finally(() => {
                 setIsLoading(false);
                 setAiGeneratedLoginFlow(undefined);
             });
+    };
+
+    const handleSequenceUpdateWithScriptAPI = (
+        sequence: AuthenticationSequenceInterface,
+        forceReset?: boolean
+    ): void => {
+        let requestBody: any;
+
+        if (forceReset) {
+            requestBody = {
+                authenticationSequence: {
+                    ...DefaultFlowConfigurationSequenceTemplate,
+                    script: undefined
+                }
+            };
+        } else {
+            requestBody = {
+                authenticationSequence: {
+                    ...sequence,
+                    script: undefined
+                }
+            };
+        }
+
+        // If the updating application is a system application,
+        // we need to send the application name in the PATCH request.
+        if (isSystemApplication) {
+            requestBody.name = applicationName;
+        }
+
+        if (forceReset) {
+            // If the flow is reverting, the script should be cleared first before updating the authentication sequence.
+            updateAdaptiveScript(appId, "", !isScriptUpdateReadOnly)
+                .then(() => {
+                    updateAuthenticationSequence(appId, requestBody)
+                        .then(() => {
+                            dispatch(addAlert({
+                                description: t("applications:notifications.updateAuthenticationFlow" +
+                                                ".success.description"),
+                                level: AlertLevels.SUCCESS,
+                                message: t("applications:notifications.updateAuthenticationFlow" +
+                                            ".success.message")
+                            }));
+
+                            onUpdate(appId);
+                        }).catch((error: AxiosError) => {
+                            handleUpdateAuthenticationFlowError(error);
+                        });
+                }).catch((error: AxiosError) => {
+                    handleUpdateAuthenticationFlowError(error);
+                }).finally(() => {
+                    setIsLoading(false);
+                    setAiGeneratedLoginFlow(undefined);
+                });
+
+            return;
+        }
+
+        updateAuthenticationSequence(appId, requestBody)
+            .then(() => {
+                const shouldUpdateScript: boolean = !isScriptUpdateReadOnly
+                    && (isConditionalAuthenticationEnabled || adaptiveScript === "");
+
+                updateAdaptiveScript(appId, adaptiveScript, shouldUpdateScript)
+                    .then(() => {
+                        dispatch(addAlert({
+                            description: t("applications:notifications.updateAuthenticationFlow" +
+                                                ".success.description"),
+                            level: AlertLevels.SUCCESS,
+                            message: t("applications:notifications.updateAuthenticationFlow" +
+                                            ".success.message")
+                        }));
+
+                        onUpdate(appId);
+                    }).catch((error: AxiosError) => {
+                        handleUpdateAuthenticationFlowError(error);
+                    });
+            }).catch((error: AxiosError) => {
+                handleUpdateAuthenticationFlowError(error);
+            }).finally(() => {
+                setIsLoading(false);
+                setAiGeneratedLoginFlow(undefined);
+            });
+    };
+
+    const handleUpdateAuthenticationFlowError = (error: AxiosError): void => {
+        const DISALLOWED_PROGRAMMING_CONSTRUCTS: string = "APP-60001";
+
+        if (error.response && error.response.data?.code === DISALLOWED_PROGRAMMING_CONSTRUCTS) {
+            dispatch(addAlert({
+                description: (
+                    <p>
+                        <Trans
+                            i18nKey={
+                                "applications:notifications" +
+                                        ".conditionalScriptLoopingError.description"
+                            }>
+                                    Looping constructs such as <Code>for</Code>, <Code>while</Code> and,
+                            <Code>forEach</Code> are not allowed in the conditional authentication
+                                    script.
+                        </Trans>
+                    </p>
+                ),
+                level: AlertLevels.ERROR,
+                message: t("applications:notifications" +
+                            ".conditionalScriptLoopingError.message")
+            }));
+
+            return;
+        }
+
+        if (error.response && error.response.data && error.response.data.description) {
+            dispatch(addAlert({
+                description: error.response.data.description,
+                level: AlertLevels.ERROR,
+                message: t("applications:notifications.updateAuthenticationFlow" +
+                            ".error.message")
+            }));
+
+            return;
+        }
+
+        dispatch(addAlert({
+            description: t("applications:notifications.updateAuthenticationFlow" +
+                        ".genericError.description"),
+            level: AlertLevels.ERROR,
+            message: t("applications:notifications.updateAuthenticationFlow" +
+                        ".genericError.message")
+        }));
     };
 
     /**
@@ -409,10 +522,10 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
      */
     const handleUpdateClick = (): void => {
         if (AdaptiveScriptUtils.isEmptyScript(adaptiveScript)) {
-            if (!isAdaptiveAuthenticationAvailable || (orgType === OrganizationType.SUBORGANIZATION)) {
+            if (!isAdaptiveAuthenticationAvailable ||
+                (orgType === OrganizationType.SUBORGANIZATION && !sharedAppAdaptiveAuthEnabled)) {
                 setAdaptiveScript("");
             } else {
-                setAdaptiveScript(AdaptiveScriptUtils.generateScript(steps + 1).join("\n"));
                 setIsDefaultScript(true);
             }
         }
@@ -746,7 +859,9 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
                     }
                 </Heading>
                 {
-                    !readOnly && (
+                    !readOnly &&
+                    (!isScriptUpdateReadOnly || AdaptiveScriptUtils.isEmptyScript(authenticationSequence?.script))
+                    && (
                         <div className="display-inline-block floated right">
                             <LinkButton
                                 className="pr-0"
@@ -807,14 +922,15 @@ export const SignInMethodCustomization: FunctionComponent<SignInMethodCustomizat
             }
             <Divider className="x2"/>
             {
-                (isAdaptiveAuthenticationAvailable && orgType !== OrganizationType.SUBORGANIZATION)
+                (isAdaptiveAuthenticationAvailable &&
+                    !(orgType === OrganizationType.SUBORGANIZATION && !sharedAppAdaptiveAuthEnabled))
                 && (
                     <ScriptBasedFlow
                         authenticationSequence={ sequence }
                         isLoading={ isLoading }
                         onTemplateSelect={ handleLoadingDataFromTemplate }
                         onScriptChange={ handleAdaptiveScriptChange }
-                        readOnly={ readOnly }
+                        readOnly={ readOnly || isScriptUpdateReadOnly }
                         authenticationSteps={ steps }
                         isDefaultScript={ isDefaultScript }
                         onAdaptiveScriptReset={ () => setIsDefaultScript(true) }

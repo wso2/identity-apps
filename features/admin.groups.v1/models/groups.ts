@@ -92,7 +92,7 @@ export interface PatchGroupAddOpInterface {
     op: string;
     value?: {
         groups: { value: string }[]
-    }
+    } | { value: string }[]
 }
 
 /**

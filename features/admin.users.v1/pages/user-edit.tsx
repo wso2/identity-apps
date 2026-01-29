@@ -27,12 +27,14 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { getIdPIcons } from "@wso2is/admin.identity-providers.v1/configs/ui";
-import { useGovernanceConnectors } from "@wso2is/admin.server-configurations.v1/api";
-import { ServerConfigurationsConstants } from "@wso2is/admin.server-configurations.v1/constants";
+import { useGovernanceConnectors } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
+import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface
-} from "@wso2is/admin.server-configurations.v1/models";
+} from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import {
     getUserNameWithoutDomain,
@@ -175,9 +177,13 @@ const UserEditPage = (): ReactElement => {
 
         if (originalUserOnboardingConnectorData) {
             originalUserOnboardingConnectorData.map((connector: GovernanceConnectorInterface) => {
-                if (connector.id === ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID) {
+                if (connector.id === ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID
+                    || connector.id === ServerConfigurationsConstants.USER_EMAIL_VERIFICATION_CONNECTOR_ID) {
                     connector.properties.map((property: ConnectorPropertyInterface) => {
-                        if (property.name === ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION) {
+                        if (property.name === ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION
+                            || property.name === ServerConfigurationsConstants.ASK_PASSWORD_EMAIL_OTP
+                            || property.name === ServerConfigurationsConstants.ASK_PASSWORD_SMS_OTP
+                            || property.name === ServerConfigurationsConstants.EMAIL_VERIFICATION_OTP) {
                             properties.push(property);
                         }
                     });
@@ -539,11 +545,9 @@ const UserEditPage = (): ReactElement => {
                                                     }
                                                 >
                                                     It seems like the selected email is not registered on Gravatar.
-                                                    Sign up for a Gravatar account by visiting
-                                                    <a href="https://www.gravatar.com">
-                                                        Gravatar Official Website
-                                                    </a>
-                                                    or use one of the following.
+                                                    Sign up for a Gravatar account by visiting&nbsp;
+                                                    <a href="https://www.gravatar.com">Gravatar Official Website</a>
+                                                    &nbsp;or use one of the following.
                                                 </Trans>
                                             ),
                                             header: t("console:common.modals.editAvatarModal.content." +

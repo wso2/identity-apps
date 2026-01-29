@@ -23,11 +23,12 @@ import {
     FilePickerAdapter,
     FinalFormField,
     FormApi,
-    SelectFieldAdapter,
-    TextFieldAdapter
+    TextFieldAdapter,
+    __DEPRECATED__SelectFieldAdapter
 } from "@wso2is/form";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
+import ReactMarkdown from "react-markdown";
 import { Icon } from "semantic-ui-react";
 import {
     DynamicDropdownFieldInterface,
@@ -54,6 +55,35 @@ export interface FormDynamicFieldPropsInterface extends IdentifiableComponentInt
      */
     readOnly?: boolean;
 }
+
+/**
+ * Renders helper text with markdown support.
+ *
+ * @param text - Text with markdown syntax
+ * @returns Rendered markdown
+ */
+const renderHelperText = (text: string): ReactElement => {
+    return (
+        <ReactMarkdown
+            components={ {
+                code: ({ children }: { children: React.ReactNode }): ReactElement => (
+                    <code>{ children }</code>
+                ),
+                em: ({ children }: { children: React.ReactNode }): ReactElement => (
+                    <em>{ children }</em>
+                ),
+                p: ({ children }: { children: React.ReactNode }): ReactElement => (
+                    <span>{ children }</span>
+                ),
+                strong: ({ children }: { children: React.ReactNode }): ReactElement => (
+                    <strong>{ children }</strong>
+                )
+            } }
+        >
+            { text }
+        </ReactMarkdown>
+    );
+};
 
 /**
  * Component responsible for generating the field based on the provided field configs.
@@ -90,7 +120,7 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                         hint={
                             field?.helperText ? (
                                 <Hint compact>
-                                    { field?.helperText }
+                                    { renderHelperText(field?.helperText) }
                                 </Hint>
                             ) : null
                         }
@@ -115,7 +145,7 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                         helperText={
                             field?.helperText ? (
                                 <Hint compact>
-                                    { field?.helperText }
+                                    { renderHelperText(field?.helperText) }
                                 </Hint>
                             ) : null
                         }
@@ -142,7 +172,7 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                         helperText={
                             field?.helperText ? (
                                 <Hint compact>
-                                    { field?.helperText }
+                                    { renderHelperText(field?.helperText) }
                                 </Hint>
                             ) : null
                         }
@@ -166,14 +196,14 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                             displayEmpty={ true }
                             label={ field?.label }
                             placeholder={ field?.placeholder }
-                            component={ SelectFieldAdapter }
+                            component={ __DEPRECATED__SelectFieldAdapter }
                             readOnly={ readOnly || field?.readOnly }
                             required={ field?.required }
                             options={ (field as DynamicDropdownFieldInterface)?.options }
                             helperText={
                                 field?.helperText ? (
                                     <Hint compact>
-                                        { field?.helperText }
+                                        { renderHelperText(field?.helperText) }
                                     </Hint>
                                 ) : null
                             }
@@ -206,7 +236,7 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                         helperText={
                             field?.helperText ? (
                                 <Hint compact>
-                                    { field?.helperText }
+                                    { renderHelperText(field?.helperText) }
                                 </Hint>
                             ) : null
                         }
@@ -232,7 +262,7 @@ export const FormDynamicField: FunctionComponent<PropsWithChildren<
                         helperText={
                             field?.helperText ? (
                                 <Hint compact>
-                                    { field?.helperText }
+                                    { renderHelperText(field?.helperText) }
                                 </Hint>
                             ) : null
                         }

@@ -16,6 +16,11 @@
  * under the License.
  */
 
+import Accordion from "@oxygen-ui/react/Accordion";
+import AccordionDetails from "@oxygen-ui/react/AccordionDetails";
+import AccordionSummary from "@oxygen-ui/react/AccordionSummary";
+import Link from "@oxygen-ui/react/Link/Link";
+import Typography from "@oxygen-ui/react/Typography";
 import { GearIcon } from "@oxygen-ui/react-icons";
 import { FeatureAccessConfigInterface, FeatureStatus, Show, useCheckFeatureStatus } from "@wso2is/access-control";
 import {
@@ -35,24 +40,24 @@ import {
 } from "@wso2is/admin.applications.v1/models/application";
 import { ApplicationManagementUtils } from "@wso2is/admin.applications.v1/utils/application-management-utils";
 import getTryItClientId from "@wso2is/admin.applications.v1/utils/get-try-it-client-id";
+import { Config } from "@wso2is/admin.core.v1/configs/app";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config"; // No specific rule found
 import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state"; // No specific rule found
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
-import
-AdminDataSeparationNotice
-    from "@wso2is/admin.extensions.v1/configs/components/admin-data-separation-notice/admin-data-separation-notice";
+import AdminNotice from "@wso2is/admin.extensions.v1/configs/components/admin-notice/admin-notice";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
+import useOrganizations from "@wso2is/admin.organizations.v1/hooks/use-organizations";
 import { resolveUserDisplayName } from "@wso2is/core/helpers";
 import { IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import { GenericIcon, Heading, Popup, Text } from "@wso2is/react-components";
 import axios from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Card, Grid, Placeholder } from "semantic-ui-react";
 import { CardExpandedNavigationButton } from "./card-expanded-navigation-button";
@@ -106,23 +111,30 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
     const showFeatureAnnouncementBanner: boolean = !homeFeatureConfig?.disabledFeatures?.includes(
         HomeConstants.FEATURE_DICTIONARY.FEATURE_ANNOUNCEMENT
     );
-    const isAdminDataSeparationNoticeEnabled: boolean = useSelector((state: AppState) => {
-        return state?.config?.ui?.isAdminDataSeparationNoticeEnabled;
+    const isAdminNoticeEnabled: boolean = useSelector((state: AppState) => {
+        return state?.config?.ui?.adminNotice?.enabled;
     });
+    const plannedRollOutDate: string = useSelector((state: AppState) => {
+        return state?.config?.ui?.adminNotice?.plannedRollOutDate;
+    });
+    const [ adminNoticeEnabled, setAdminNoticeEnabled ] = useState<boolean>(isAdminNoticeEnabled);
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateListItemInterface>(null);
     const [ isPlaygroundExist, setisPlaygroundExist ] = useState(undefined);
     const [ showWizardLogin, setShowWizardLogin ] = useState<boolean>(false);
     const [ inboundProtocolConfig, setInboundProtocolConfig ] = useState<any>(undefined);
-    const [ isAdminDataSeparationBannerEnabled, setIsAdminDataSeparationBannerEnabled ] = useState<boolean>(true);
+    const [ accordionExpanded, setAccordionExpanded ] = useState<boolean>(false);
 
     const [
         isTryItApplicationSearchRequestLoading,
         setIsTryItApplicationSearchRequestLoading
     ] = useState<boolean>(false);
 
-    const { organizationType } = useGetCurrentOrganizationType();
+    const {
+        organizationType,
+        isSubOrganization
+    } = useGetCurrentOrganizationType();
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
@@ -139,6 +151,11 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
         `name eq ${ TryItApplicationConstants.DISPLAY_NAME }`,
         saasFeatureStatus !== FeatureStatus.DISABLED
     );
+
+    const subOrgFlowCardEnabled: boolean = isSubOrganization() &&
+        !featureConfig?.flows?.disabledFeatures.includes("flows.homePage.tile");
+
+    const { updateOrganizationSwitchRequestLoadingState } = useOrganizations();
 
     useEffect(() => {
         checkTryItApplicationExistence();
@@ -161,6 +178,10 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
         // Tracked here https://github.com/wso2-enterprise/asgardeo-product/issues/7742#issuecomment-939960128.
         eventPublisher.publish("console-click-getting-started-menu-item");
     }, [ profileInfo?.id ]);
+
+    useEffect(() => {
+        updateOrganizationSwitchRequestLoadingState(false);
+    }, []);
 
     const handleTryLoginClick = () => {
         if(isPlaygroundExist){
@@ -241,9 +262,9 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
             stretched
             mobile={ 16 }
             tablet={ 16 }
-            computer={ 8 }
-            largeScreen={ 8 }
-            widescreen={ 8 }
+            computer={ subOrgFlowCardEnabled ? 5 : 8 }
+            largeScreen={ subOrgFlowCardEnabled ? 5 : 8 }
+            widescreen={ subOrgFlowCardEnabled ? 5 : 8 }
         >
             <Card
                 fluid
@@ -291,9 +312,9 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
             stretched
             mobile={ 16 }
             tablet={ 16 }
-            computer={ 8 }
-            largeScreen={ 8 }
-            widescreen={ 8 }
+            computer={ subOrgFlowCardEnabled ? 5 : 8 }
+            largeScreen={ subOrgFlowCardEnabled ? 5 : 8 }
+            widescreen={ subOrgFlowCardEnabled ? 5 : 8 }
         >
             <Card
                 fluid
@@ -494,6 +515,55 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
         </Grid.Row>
     );
 
+    const renderSubOrgFlowsCard = (): ReactElement => (
+        <Grid.Column
+            stretched
+            mobile={ 16 }
+            tablet={ 16 }
+            computer={ 5 }
+            largeScreen={ 5 }
+            widescreen={ 5 }
+        >
+            <Card
+                fluid
+                className="basic-card no-hover getting-started-card social-connections-card"
+            >
+                <Card.Content extra className="description-container">
+                    <div className="card-heading mb-1">
+                        <Heading as="h2">
+                            { t("console:common.quickStart.sections.customizeFlows.heading") }
+                        </Heading>
+                    </div>
+                    <Text muted>
+                        { t("console:common.quickStart.sections.customizeFlows.description") }
+                    </Text>
+                </Card.Content>
+                <Card.Content style={ { borderTop: "none" } } className="illustration-container">
+                    <GenericIcon
+                        style={ {
+                            height: "170px",
+                            width: "207.17px"
+                        } }
+                        transparent
+                        className="social-connections-animated-illustration mb-5"
+                        icon={ getGettingStartedCardIllustrations().flowComposer }
+                    />
+                </Card.Content>
+                <Card.Content extra className="action-container">
+                    <CardExpandedNavigationButton
+                        data-testid="develop-getting-started-page-cutomize-flows"
+                        data-componentid="develop-getting-started-page-cutomize-flows"
+                        onClick={ () => history.push(AppConstants.getPaths().get("FLOWS")) }
+                        text={ t("console:common.quickStart.sections.customizeFlows.actions.setup") }
+                        icon="angle right"
+                        iconPlacement="right"
+                        className="primary-action-button"
+                    />
+                </Card.Content>
+            </Card>
+        </Grid.Column>
+    );
+
     return (
         <div className="advance-user-view-cards-wrapper">
             <div className="greeting">
@@ -525,14 +595,104 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                 </Heading>
             </div>
 
-            { isAdminDataSeparationNoticeEnabled && isAdminDataSeparationBannerEnabled &&
-                organizationType !== OrganizationType.SUBORGANIZATION && (
-                <AdminDataSeparationNotice setDisplayBanner={ setIsAdminDataSeparationBannerEnabled } />
+            { isAdminNoticeEnabled && adminNoticeEnabled && (
+                <AdminNotice
+                    title={ (
+                        <Trans i18nKey={ "console:common.quickStart.sections.adminNotice.title" }>
+                            Upcoming Enhancements to Organizations
+                        </Trans>
+                    ) }
+                    description={ (
+                        <>
+                            <Trans
+                                i18nKey={ "console:common.quickStart.sections.adminNotice.description" }
+                                tOptions={ { date: plannedRollOutDate } }
+                            >
+                                Effective <b>{ plannedRollOutDate }</b>, organizations will inherit settings across
+                                multiple key areas from their parent organizations.
+                            </Trans>
+                            <Accordion
+                                expanded={ accordionExpanded }
+                                onChange={ () => setAccordionExpanded(!accordionExpanded) }
+                                elevation={ 0 }
+                                square
+                                sx={ {
+                                    "&:before": { display: "none" },
+                                    backgroundColor: "transparent",
+                                    mt: 0.5
+                                } }
+                            >
+                                <AccordionSummary
+                                    sx={ {
+                                        "& .MuiAccordionSummary-content": {
+                                            margin: 0,
+                                            marginTop: 1
+                                        },
+                                        "&.Mui-expanded": {
+                                            minHeight: "unset"
+                                        },
+                                        minHeight: "unset",
+                                        padding: 0
+                                    } }
+                                >
+                                    <Typography variant="body1" color="primary">
+                                        { accordionExpanded ? "> Hide affected features" : "> View affected features" }
+                                    </Typography>
+                                </AccordionSummary>
+
+                                <AccordionDetails
+                                    sx={ {
+                                        pb: 0,
+                                        pl: 2,
+                                        pt: 0
+                                    } }>
+                                    <ul
+                                        style={ {
+                                            margin: 0,
+                                            paddingLeft: "1rem"
+                                        } }>
+                                        <li>Login & Registration settings</li>
+                                        <li>Custom User Attributes</li>
+                                        <li>OIDC Scopes</li>
+                                        <li>Flows</li>
+                                        <li>Connections</li>
+                                        <li>Attribute Update Verification Settings</li>
+                                    </ul>
+                                </AccordionDetails>
+                            </Accordion>
+                        </>
+                    ) }
+                    // If it's necessary to add instructions, uncomment this and use as necessary.
+                    // instructions={ [
+                    //     <Trans
+                    //         components={ { 1: <b /> } }
+                    //         i18nKey={ "console:common.quickStart.sections.adminNotice.instructions.0" }
+                    //         key="admin-notice-instruction-0"
+                    //     >
+                    //         <b>Login & Registration settings</b>
+                    //     </Trans>
+                    // ] }
+                    instructions={ [] }
+                    moreDetails={ (
+                        <Trans i18nKey={ "console:common.quickStart.sections.adminNotice.moreDetails" } >
+                            See
+                            <Link
+                                href={ Config?.getDeploymentConfig()?.docSiteURL
+                                    + "/guides/organization-management/inheritance-in-organizations" }
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                documentation
+                            </Link> for more details on the behavioral changes.
+                        </Trans>
+                    ) }
+                    setDisplayBanner={ setAdminNoticeEnabled }
+                />
             ) }
 
             <br />
 
-            { showFeatureAnnouncementBanner && (
+            { showFeatureAnnouncementBanner && !isSubOrganization() && (
                 <Show featureId={ FeatureGateConstants.SAAS_FEATURES_IDENTIFIER }>
                     <Show
                         when={ loginAndRegistrationFeatureConfig?.scopes?.update }
@@ -576,21 +736,29 @@ const AdvanceUserView: FunctionComponent<AdvanceUserViewInterface> = (
                         stretched
                         mobile={ 16 }
                         tablet={ 16 }
-                        computer={ 10 }
-                        largeScreen={ 10 }
-                        widescreen={ 10 }
+                        computer={ subOrgFlowCardEnabled ? 16 : 10 }
+                        largeScreen={ subOrgFlowCardEnabled ? 16 : 10 }
+                        widescreen={ subOrgFlowCardEnabled ? 16 : 10 }
                     >
                         <Grid stackable>
-                            <Grid.Row columns={ 2 }>
+                            <Grid.Row columns={ subOrgFlowCardEnabled ? 3 : 2 }>
                                 <Show when={ featureConfig?.users?.scopes?.read }>
                                     { renderManageUsersCard() }
                                 </Show>
                                 <Show when={ featureConfig?.identityProviders?.scopes?.read }>
                                     { renderConnectionsCard() }
                                 </Show>
+                                {
+                                    subOrgFlowCardEnabled && (
+                                        <Show when={ featureConfig?.flows?.scopes?.read }>
+                                            { renderSubOrgFlowsCard() }
+                                        </Show>
+                                    )
+                                }
                             </Grid.Row>
                             {
-                                !featureConfig?.flows?.disabledFeatures.includes("flows.homePage.tile") && (
+                                !featureConfig?.flows?.disabledFeatures.includes("flows.homePage.tile") &&
+                                    !isSubOrganization() && (
                                     <Show when={ featureConfig?.flows?.scopes?.read }>
                                         { renderFlowsCard() }
                                     </Show>

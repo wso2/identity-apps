@@ -208,11 +208,6 @@ export class ServerConfigurationsConstants {
     public static readonly SELF_SIGN_UP_NOTIFICATIONS_INTERNALLY_MANAGED: string =
         "SelfRegistration.Notification.InternallyManage";
 
-    /**
-     * This will be used to enable the dynamic portal for self registration flow customization.
-     */
-    public static readonly SELF_REGISTRATION_FLOW_BUILDER_ENABLED: string = "SelfRegistration.EnableDynamicPortal";
-
     public static readonly ACCOUNT_CONFIRMATION: string = "SelfRegistration.SendConfirmationOnCreation";
     public static readonly RE_CAPTCHA: string = "SelfRegistration.ReCaptcha";
     public static readonly VERIFICATION_CODE_EXPIRY_TIME: string = "SelfRegistration.VerificationCode.ExpiryTime";
@@ -278,6 +273,7 @@ export class ServerConfigurationsConstants {
     public static readonly ORGANIZATION_SELF_SERVICE: string = "organization-self-service";
     public static readonly SELF_SIGNUP: string = "self-sign-up";
     public static readonly SSO_LOGIN_RECAPTCHA: string = "sso.login.recaptcha";
+    public static readonly EMAIL_VERIFICATION: string = "user-email-verification";
 
     /**
 	 * Login policies - account locking API Keyword constants.
@@ -359,8 +355,14 @@ export class ServerConfigurationsConstants {
     public static readonly CONFIGS_UPDATE_REQUEST_INVALID_STATUS_CODE_ERROR: string = "Received an invalid status " +
 		"code while updating the configurations.";
 
+    public static readonly CONFIGS_REVERT_REQUEST_INVALID_STATUS_CODE_ERROR: string = "Received an invalid status " +
+        "code while reverting the configurations to default.";
+
     public static readonly CONFIGS_UPDATE_REQUEST_ERROR: string = "An error occurred while updating the " +
 		"configurations.";
+
+    public static readonly CONFIGS_REVERT_REQUEST_ERROR: string = "An error occurred while reverting the " +
+        "configurations to default.";
 
     public static readonly ADMIN_ADVISORY_BANNER_CONFIGS_UPDATE_REQUEST_ERROR: string = "An error occurred " +
         "while updating the admin advisory banner configurations.";
@@ -425,6 +427,7 @@ export class ServerConfigurationsConstants {
     public static readonly NOTIFICATION_SETTINGS_CATEGORY_ID: string = "notification-settings";
     public static readonly NOTIFICATION_SETTINGS_CONNECTOR_ID: string = "internal-notification-settings";
     public static readonly ACCOUNT_MANAGEMENT_CUSTOM_CATEGORY_ID: string = "account-management";
+    public static readonly USER_ONBOARDING_CONNECTOR_CATEGORY_ID: string = "user-onboarding";
 
     /**
 	 * Multi Attribute Login Constants.
@@ -443,6 +446,16 @@ export class ServerConfigurationsConstants {
     public static readonly ORGANIZATION_SELF_SERVICE_ENABLE: string = "Organization.SelfService.Enable";
     public static readonly ASK_PASSWORD_CONNECTOR_ID: string = "dXNlci1lbWFpbC12ZXJpZmljYXRpb24";
     public static readonly ASK_PASSWORD_ENABLE: string = "EmailVerification.Enable";
+    public static readonly ASK_PASSWORD_EMAIL_OTP: string = "EmailVerification.AskPassword.EmailOTP";
+    public static readonly ASK_PASSWORD_SMS_OTP: string = "EmailVerification.AskPassword.SMSOTP";
+    public static readonly ASK_PASSWORD_OTP_EXPIRY_TIME: string = "EmailVerification.AskPassword.ExpiryTime";
+    public static readonly ASK_PASSWORD_ACCOUNT_ACTIVATION: string = "EmailVerification.AskPassword.AccountActivation";
+    public static readonly ASK_PASSWORD_LOCK_ON_CREATION: string = "EmailVerification.LockOnCreation";
+    public static readonly ASK_PASSWORD_OTP_USE_UPPERCASE: string = "EmailVerification.OTP.UseUppercaseCharactersInOTP";
+    public static readonly ASK_PASSWORD_OTP_USE_LOWERCASE: string = "EmailVerification.OTP.UseLowercaseCharactersInOTP";
+    public static readonly ASK_PASSWORD_OTP_USE_NUMERIC: string = "EmailVerification.OTP.UseNumbersInOTP";
+    public static readonly ASK_PASSWORD_OTP_LENGTH: string = "EmailVerification.OTP.OTPLength";
+    public static readonly EMAIL_VERIFICATION_OTP: string = "EmailVerification.OTP";
 
     /**
      * Account Management Catergory Constants.

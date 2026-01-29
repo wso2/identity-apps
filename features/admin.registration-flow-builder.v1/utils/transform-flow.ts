@@ -74,7 +74,7 @@ const processNavigation = (resource: Element, resourceId: string, navigations: R
 const transformFlow = (flowState: any) => {
     const { nodes: flowNodes, edges: flowEdges } = cloneDeep(flowState);
 
-    const payload = {
+    const payload: any = {
         steps: []
     };
 
@@ -88,7 +88,7 @@ const transformFlow = (flowState: any) => {
         ] = edge.target;
     });
 
-    const filteredFlowNodes = flowNodes.filter((node: Node) => node.data.displayOnly !== true);
+    const filteredFlowNodes: any = flowNodes.filter((node: Node) => node.data.displayOnly !== true);
 
     filteredFlowNodes.forEach((node: any) => {
         const { data, id, position, measured, type } = node;
@@ -110,7 +110,7 @@ const transformFlow = (flowState: any) => {
         };
 
         /* eslint-disable sort-keys */
-        const step = {
+        const step: Partial<Step> = {
             id,
             type,
             size: measured || {
@@ -140,6 +140,9 @@ const transformFlow = (flowState: any) => {
     const userOnboardStep: Step = payload.steps.find((step: Step) => step.type === StaticStepTypes.UserOnboard);
 
     if (userOnboardStep) {
+        // Remove data property from the user onboard step to avoid sending it to the backend.
+        userOnboardStep.data = {};
+
         payload.steps = payload.steps.filter((step: Step) => step.type !== StaticStepTypes.UserOnboard);
         payload.steps.push(userOnboardStep);
     }

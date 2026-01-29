@@ -513,6 +513,13 @@ export const myAccount: MyAccountNS = {
                 },
                 tooltip: "Apps"
             },
+            dropdown: {
+                footer: {
+                    cookiePolicy: "Cookies",
+                    privacyPolicy: "Privacidade",
+                    termsOfService: "Termos"
+                }
+            },
             organizationLabel: "Esta conta é gerenciada por"
         },
         linkedAccounts: {
@@ -1224,6 +1231,9 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 generic: {
+                    dropdown: {
+                        placeholder: "Selecione o seu {{fieldName}}"
+                    },
                     inputs: {
                         placeholder: "Insira o seu {{fieldName}}",
                         readonly: {
@@ -1231,9 +1241,13 @@ export const myAccount: MyAccountNS = {
                             popup: "Contate o administrador para atualizar seu {{fieldName}}"
                         },
                         validations: {
+                            duplicate: "{{fieldName}} não pode ter valores duplicados",
                             empty: "{{fieldName}} é um campo obrigatório",
                             invalidFormat: "The {{fieldName}} não está no formato correto"
                         }
+                    },
+                    radioGroup: {
+                        optionNone: "Nenhum"
                     }
                 },
                 mobileChangeForm: {

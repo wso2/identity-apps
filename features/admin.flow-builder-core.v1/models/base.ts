@@ -44,6 +44,10 @@ export interface StrictBase<T = any> {
      */
     deprecated: boolean;
     /**
+     * Is the component or the primitive  deletable.
+     */
+    deletable: boolean;
+    /**
      * Display properties of the component or the primitive.
      */
     display: BaseDisplay;
@@ -97,6 +101,10 @@ export interface BaseDisplay {
      * Should the component be shown on the resource panel.
      */
     showOnResourcePanel: boolean;
+    /**
+     * Display name of the component or the primitive.
+     */
+    displayname?: string;
 }
 
 /**

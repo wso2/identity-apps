@@ -19,3 +19,7 @@
 export const LEGACY_EDITOR_FEATURE_ID: string = "applications.loginFlow.legacyEditor";
 
 export const VISUAL_EDITOR_FEATURE_ID: string = "applications.loginFlow.visualEditor";
+
+export const SHARED_APP_ADAPTIVE_AUTH_FEATURE_ID: string = "applications.sharedApp.adaptiveAuth";
+
+export const ENFORCE_SCRIPT_UPDATE_PERMISSION_FEATURE_ID: string = "applications.enforceScriptUpdatePermission";

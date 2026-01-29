@@ -37,7 +37,7 @@ import FeatureFlagLabel from "@wso2is/admin.feature-gate.v1/components/feature-f
 import FeatureFlagConstants from "@wso2is/admin.feature-gate.v1/constants/feature-flag-constants";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
-import { UserStoreDropdownItem, UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
+import { UserStoreDropdownItem, UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import {
     AlertLevels,
     FeatureFlagsInterface,
@@ -467,23 +467,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     };
 
     /**
-     * Application Description validation.
-     *
-     * @param description - Application Description.
-     * @returns Description validation.
-     */
-    const validateDescription = (description: string): string | void => {
-
-        const isValid: boolean = description && !!description.match(
-            ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS.APP_DESCRIPTION_PATTERN
-        );
-
-        if (!isValid) {
-            return "Please enter a valid input.";
-        }
-    };
-
-    /**
      * Access URL may have placeholders like `${UserTenantHint}`, or `${organizationIdHint}`.
      * This function validates the Access URL after removing those placeholders.
      *
@@ -625,7 +608,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                         }
                                         value={ description }
                                         readOnly={ readOnly }
-                                        validation ={ (value: string) => validateDescription(value.toString().trim()) }
                                         maxLength={ 300 }
                                         minLength={ 3 }
                                         data-testid={ `${ testId }-application-description-textarea` }
@@ -963,7 +945,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                             onClick={ () => {
                                                 history.push({
                                                     pathname: AppConstants.getPaths().get("BRANDING"),
-                                                    state: appId
+                                                    search: `?appId=${encodeURIComponent(appId ?? "")}`
                                                 });
                                             } }
                                         >

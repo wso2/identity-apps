@@ -28,6 +28,12 @@
             overflow: hidden;
             white-space: nowrap;
         }
+
+        .policy-order-text {
+            color: var(--oxygen-palette-text-secondary);
+            font-weight: bold;
+            margin-top: 2px;
+        }
     }
 }
 

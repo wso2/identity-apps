@@ -1,5 +1,30 @@
 # @wso2is/admin.alternative-login-identifier.v1
 
+## 1.5.207
+
+### Patch Changes
+
+- [#9327](https://github.com/wso2/identity-apps/pull/9327) [`840275cc3311ec4dd4aadc7bc1eb3d4e6cc6ca7b`](https://github.com/wso2/identity-apps/commit/840275cc3311ec4dd4aadc7bc1eb3d4e6cc6ca7b) Thanks [@mmafrar](https://github.com/mmafrar)! - fix: Remove index files in `@wso2is/admin.server-configurations.v1` package
+
+- Updated dependencies [[`840275cc3311ec4dd4aadc7bc1eb3d4e6cc6ca7b`](https://github.com/wso2/identity-apps/commit/840275cc3311ec4dd4aadc7bc1eb3d4e6cc6ca7b), [`b8313765f91801be5caeaf8e94b8f88e4d7fe27b`](https://github.com/wso2/identity-apps/commit/b8313765f91801be5caeaf8e94b8f88e4d7fe27b)]:
+  - @wso2is/admin.server-configurations.v1@2.35.104
+  - @wso2is/admin.validation.v1@2.27.147
+  - @wso2is/admin.claims.v1@2.29.13
+  - @wso2is/admin.users.v1@2.36.57
+  - @wso2is/admin.core.v1@2.49.90
+  - @wso2is/admin.applications.v1@2.38.5
+
+## 1.5.206
+
+### Patch Changes
+
+- [#8953](https://github.com/wso2/identity-apps/pull/8953) [`f08eeb830c706e9441982d4896be2154ef6ed3bb`](https://github.com/wso2/identity-apps/commit/f08eeb830c706e9441982d4896be2154ef6ed3bb) Thanks [@Yasasr1](https://github.com/Yasasr1)! - Provide revert UI to custom alternate login identifier page.
+
+- Updated dependencies [[`022fc3d4dcfa52537df082053bf3cbb2e8751214`](https://github.com/wso2/identity-apps/commit/022fc3d4dcfa52537df082053bf3cbb2e8751214)]:
+  - @wso2is/admin.applications.v1@2.37.5
+  - @wso2is/admin.core.v1@2.49.37
+  - @wso2is/admin.server-configurations.v1@2.35.50
+
 ## 1.5.205
 
 ### Patch Changes

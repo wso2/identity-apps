@@ -62,6 +62,7 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
         [ "data-componentid"]: componentId
     } = props;
 
+    const excludedAttributes: string = "members,roles,meta";
     const { t } = useTranslation();
 
     const {
@@ -71,7 +72,7 @@ export const InviteParentOrgUser: FunctionComponent<InviteParentOrgUserPropsInte
         null,
         null,
         userstoresConfig?.primaryUserstoreName,
-        "members",
+        excludedAttributes,
         true
     );
 

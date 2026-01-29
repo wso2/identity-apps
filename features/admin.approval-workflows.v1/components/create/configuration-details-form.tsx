@@ -16,8 +16,10 @@
  * under the License.
  */
 
+
 import Box from "@oxygen-ui/react/Box";
-import { CircleCheckFilledIcon, PlusIcon } from "@oxygen-ui/react-icons";
+import Fab from "@oxygen-ui/react/Fab";
+import { CheckIcon, PlusIcon } from "@oxygen-ui/react-icons";
 import { UserBasicInterface } from "@wso2is/admin.core.v1/models/users";
 import { IdentifiableComponentInterface, RolesInterface } from "@wso2is/core/models";
 import { Hint } from "@wso2is/react-components";
@@ -273,29 +275,39 @@ const ConfigurationsForm: ForwardRefExoticComponent<RefAttributes<Configurations
                                         data-componentid={ `${componentId}-approval-step-${index}` }
                                     />
 
-                                    <div className="arrow-plus-wrapper">
-                                        { index === steps.length - 1 ? (
-                                            <>
-                                                <div className="arrow-plus-wrapper">
-                                                    <div className="arrow-container">
-                                                        <div className="arrow-line">
-                                                            <StraightArrow length={ 100 } />
+                                    { !isReadOnly && (
+                                        <div className="arrow-plus-wrapper">
+                                            { index === steps.length - 1 ? (
+                                                <>
+                                                    <div className="arrow-plus-wrapper">
+                                                        <div className="arrow-container">
+                                                            <div className="arrow-line">
+                                                                <StraightArrow length={ 100 } />
+                                                            </div>
+                                                            <div
+                                                                className="plus-icon"
+                                                                onClick={ addNewStep }
+                                                                data-componentid={ `${componentId}-add-step-button` }>
+                                                                <PlusIcon />
+                                                            </div>
                                                         </div>
-                                                        <div className="plus-icon" onClick={ addNewStep }>
-                                                            <PlusIcon />
-                                                        </div>
+                                                        <Fab
+                                                            aria-label="done"
+                                                            className="done"
+                                                            variant="circular"
+                                                            data-componentid={ `${componentId}-done-node` }
+                                                        >
+                                                            <CheckIcon/>
+                                                        </Fab>
                                                     </div>
-                                                    <div>
-                                                        <CircleCheckFilledIcon className="icon-configured" />
-                                                    </div>
+                                                </>
+                                            ) : (
+                                                <div className="arrow-line">
+                                                    <StraightArrow length={ 100 } />
                                                 </div>
-                                            </>
-                                        ) : (
-                                            <div className="arrow-line">
-                                                <StraightArrow length={ 100 } />
-                                            </div>
-                                        ) }
-                                    </div>
+                                            ) }
+                                        </div>
+                                    ) }
                                 </>
                             )) }
                         </div>

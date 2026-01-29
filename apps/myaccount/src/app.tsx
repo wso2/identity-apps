@@ -19,6 +19,7 @@ import { useAuthContext } from "@asgardeo/auth-react";
 import { useColorScheme } from "@mui/material";
 import { Mode } from "@mui/system/cssVars/useCurrentColorScheme";
 import { ThemeProviderContext } from "@wso2is/common.branding.v1/contexts/theme-provider-context";
+import { CommonConstants } from "@wso2is/core/constants";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
 import { RouteInterface, StorageIdentityAppsSettingsInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
 import { LocalStorageUtils } from "@wso2is/core/utils";
@@ -31,8 +32,8 @@ import {
     SessionManagementProvider,
     SessionTimeoutModalTypes
 } from "@wso2is/react-components";
+import dayjs from "dayjs";
 import isEmpty from "lodash-es/isEmpty";
-import * as moment from "moment";
 import React, { ReactElement, Suspense, useContext, useEffect, useState } from "react";
 import { Trans } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -86,10 +87,10 @@ export const App = (): ReactElement => {
     }, []);
 
     /**
-     * Set the locale for moment library
+     * Set the locale for dayjs library
      */
     useEffect(() => {
-        moment.locale(I18n.instance.language);
+        dayjs.locale(I18n.instance.language);
     }, [ I18n.instance.language ]);
 
     /**
@@ -202,7 +203,32 @@ export const App = (): ReactElement => {
                 if (response === false) {
                     history.push(AppConstants.getAppLogoutPath());
                 } else {
-                    window.history.replaceState(null, null, window.location.pathname);
+                    // List of query parameters and hash fragments to remove from the URL when the silent
+                    // sign-in is successful. e.g. session timeout related query params.
+                    const paramsToRemove: string[] = [ CommonConstants.SESSION_TIMEOUT_WARNING_URL_SEARCH_PARAM_KEY ];
+                    const hashesToRemove: string[] = [];
+
+                    const url: URL = new URL(window.location.href);
+
+                    paramsToRemove.forEach((param: string) => {
+                        url.searchParams.delete(param);
+                    });
+
+                    let hash: string = url.hash;
+
+                    if (hash && hash.startsWith("#")) {
+                        const hashParams: URLSearchParams = new URLSearchParams(hash.substring(1));
+
+                        hashesToRemove.forEach((param: string) => {
+                            hashParams.delete(param);
+                        });
+
+                        hash = hashParams.toString() ? `#${hashParams.toString()}` : "";
+                    }
+
+                    const moderatedUrl: string = `${url.pathname}${url.search}${hash}`;
+
+                    window.history.replaceState(window.history.state, null, moderatedUrl);
                 }
             })
             .catch(() => {

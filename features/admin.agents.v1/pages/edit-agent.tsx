@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Typography from "@oxygen-ui/react/Typography";
 import { FeatureAccessConfigInterface } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -35,10 +36,10 @@ import AgentRoles from "../components/edit/agent-roles";
 import { AGENT_FEATURE_DICTIONARY } from "../constants/agents";
 import useGetAgent from "../hooks/use-get-agent";
 
-interface EditAgentPageProps extends IdentifiableComponentInterface {}
+type EditAgentPageProps = IdentifiableComponentInterface;
 
 export default function EditAgent({
-    [ "data-componentid" ]: componentId
+    [ "data-componentid" ]: componentId = "edit-agent"
 }: EditAgentPageProps) {
 
     const agentId: string = useMemo(() => {
@@ -100,7 +101,7 @@ export default function EditAgent({
 
     useEffect(() => {
         const fetchOwnerDisplayName = async () => {
-            const [ agentOwnerUserId ] = agentInfo["urn:scim:wso2:agent:schema"]?.agentOwner?.split("@") || [];
+            const [ agentOwnerUserId ] = agentInfo["urn:scim:wso2:agent:schema"]?.Owner?.split("@") || [];
 
             if (!agentOwnerUserId) {
                 setAgentOwnerDisplayName("");
@@ -108,12 +109,16 @@ export default function EditAgent({
                 return;
             }
 
-            const userInfo: any = await getUserDetails(agentOwnerUserId, null);
+            try {
+                const userInfo: any = await getUserDetails(agentOwnerUserId, "userName");
 
-            setAgentOwnerDisplayName(userInfo?.userName);
+                setAgentOwnerDisplayName(userInfo?.userName);
+            } catch (_err) {
+                // Safely ignore the error
+            }
         };
 
-        if (agentInfo?.["urn:scim:wso2:agent:schema"]?.agentOwner) {
+        if (!agentOwnerDisplayName && agentInfo?.["urn:scim:wso2:agent:schema"]?.Owner) {
             fetchOwnerDisplayName();
         }
     }, [ agentInfo ]);
@@ -125,9 +130,15 @@ export default function EditAgent({
     return (
         <TabPageLayout
             pageTitle="Edit agent"
-            title={ agentInfo?.["urn:scim:wso2:agent:schema"]?.agentDisplayName }
+            title={ agentInfo?.["urn:scim:wso2:agent:schema"]?.DisplayName ?? agentInfo?.id }
             description={ (<>
-                Created by <strong>{ agentOwnerDisplayName }</strong>
+                <Typography variant="body1">{
+                    agentInfo?.["urn:scim:wso2:agent:schema"]?.DisplayName && agentInfo?.id
+                }</Typography>
+                { agentOwnerDisplayName && (
+                    <Typography variant="body1">Created by <strong>{ agentOwnerDisplayName }</strong></Typography>
+                ) }
+
             </>) }
             isLoading={ isAgentInfoLoading }
             backButton={ {
@@ -137,18 +148,15 @@ export default function EditAgent({
             } }
             image={ (
                 <AnimatedAvatar
-                    name={ agentInfo?.["urn:scim:wso2:agent:schema"]?.agentDisplayName }
+                    name={ agentInfo?.["urn:scim:wso2:agent:schema"]?.DisplayName ?? "Agent" }
                     size="tiny"
                     floated="left"
                 />
             ) }
+            bottomMargin={ false }
+            data-componentid={ componentId + "-page-layout" }
         >
-
-            <ResourceTab
-                panes={ renderedTabPanes }
-            >
-
-            </ResourceTab>
+            <ResourceTab panes={ renderedTabPanes } data-componentid={ componentId + "-tab-pane" }/>
         </TabPageLayout>
 
     );

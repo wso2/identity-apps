@@ -17,6 +17,7 @@
 --%>
 
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.client.model.AuthenticationRequestWrapper" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.wso2.carbon.identity.challenge.questions.ui.IdentityManagementAdminClient" %>
 <%@ page import="org.wso2.carbon.identity.challenge.questions.recovery.model.ChallengeQuestion" %>
@@ -35,7 +36,8 @@
 <% request.setAttribute("pageName","add-security-questions"); %>
 
 <%
-    String urlData = request.getParameter("data");
+    AuthenticationRequestWrapper authRequest = (AuthenticationRequestWrapper) request;
+    String urlData = authRequest.getAuthParameter("challengeQuestions");
     // Extract the challenge questions from the request and add them into an array
     String[] questionSets = null;
     if (urlData != null) {
@@ -54,7 +56,7 @@
         String questionBody = questionProperties[2];
         tempChallengeQuestion.setQuestionSetId(questionSetId);
         tempChallengeQuestion.setQuestionId(questionId);
-        tempChallengeQuestion.setQuestion(questionBody);
+        tempChallengeQuestion.setQuestion(Encode.forHtmlContent(questionBody));
         // Add the challenge question to the Hash-map
         List<ChallengeQuestion> challengeQuestionList = challengeQuestionMap.get(questionSetId);
         if (challengeQuestionList == null) {

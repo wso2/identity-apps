@@ -30,6 +30,9 @@
 
 <script src="libs/jquery_3.6.0/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
+    const isParamPrioritized = <%= isLocalizationParamPrioritized %>;
+    const userLocaleFromLocalize = "<%= Encode.forJavaScript(userLocale.toString()) %>";
+
     $(document).ready(function(){
         const languageDropdown = $("#language-selector-dropdown");
         const languageSelectionInput = $("#language-selector-input");
@@ -39,26 +42,16 @@
         languageDropdown.dropdown('hide');
         $("> input.search", languageDropdown).attr("role", "presentation");
 
-        // Set current lang value coming from cookie
-        const urlParams = new URLSearchParams(window.location.search);
-        const localeFromCookie = getCookie("ui_lang");
-        var localeFromUrlParams = null;
-        if (urlParams.has('ui_locales')) {
-            localeFromUrlParams ="<%= Encode.forHtmlAttribute(request.getParameter("ui_locales")) %>";
-        }
-        const browserLocale = "<%= userLocale %>"
-        const computedLocale = computeLocale(localeFromCookie, localeFromUrlParams, browserLocale);
+        languageSelectionInput.val(userLocaleFromLocalize);
+        setUILocaleCookie(userLocaleFromLocalize);
 
-        languageSelectionInput.val(computedLocale);
-        setUILocaleCookie(computedLocale);
-
-        const dataOption = $( "div[data-value='" + computedLocale + "']" );
+        const dataOption = $( "div[data-value='" + userLocaleFromLocalize + "']" );
         dataOption.addClass("active selected")
 
         selectedLanguageText.removeClass("default");
         selectedLanguageText.html(dataOption.html());
 
-        document.documentElement.lang = computedLocale;
+        document.documentElement.lang = userLocaleFromLocalize;
     });
 
 
@@ -113,19 +106,13 @@
         const language = langSwitchForm.value;
         setUILocaleCookie(language);
 
-        window.location.reload();
-    }
+        if (isParamPrioritized === true) {
+            const url = new URL(window.location.href);
+            url.searchParams.set("ui_locales", language);
 
-    function computeLocale(localeFromCookie, localeFromUrlParams, browserLocale) {
-        if (localeFromCookie) {
-            return localeFromCookie;
-        } else if (localeFromUrlParams) {
-            const firstLangFromUrlParams = localeFromUrlParams.split(" ")[0];
-            return firstLangFromUrlParams;
-        } else if (browserLocale) {
-            return browserLocale;
+            location.replace(url.toString())
         } else {
-            return "en_US";
+            window.location.reload();
         }
     }
 </script>

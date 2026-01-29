@@ -77,8 +77,8 @@ import {
     useConfirmationModalAlert
 } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
+import dayjs from "dayjs";
 import isEmpty from "lodash-es/isEmpty";
-import moment from "moment";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -2239,6 +2239,13 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                 }
             }
             if (accountLockedReason === AccountLockedReason.PENDING_ASK_PASSWORD) {
+                if (isAskPasswordEmailOTPEnabled()) {
+                    return RecoveryScenario.ASK_PASSWORD_VIA_EMAIL_OTP;
+                }
+                if (isAskPasswordSMSOTPEnabled()) {
+                    return RecoveryScenario.ASK_PASSWORD_VIA_SMS_OTP;
+                }
+
                 return RecoveryScenario.ASK_PASSWORD;
             }
         }
@@ -2364,6 +2371,34 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
         return property?.value === "true";
     };
 
+    /**
+     * Checks if ask password via Email OTP is enabled.
+     *
+     * @returns true if enabled, false otherwise
+     */
+    const isAskPasswordEmailOTPEnabled = (): boolean => {
+        const property: ConnectorPropertyInterface | undefined = connectorProperties?.find(
+            (property: ConnectorPropertyInterface) =>
+                property.name === ServerConfigurationsConstants.ASK_PASSWORD_EMAIL_OTP
+        );
+
+        return property?.value === "true";
+    };
+
+    /**
+     * Checks if ask password via SMS OTP is enabled.
+     *
+     * @returns true if enabled, false otherwise
+     */
+    const isAskPasswordSMSOTPEnabled = (): boolean => {
+        const property: ConnectorPropertyInterface | undefined = connectorProperties?.find(
+            (property: ConnectorPropertyInterface) =>
+                property.name === ServerConfigurationsConstants.ASK_PASSWORD_SMS_OTP
+        );
+
+        return property?.value === "true";
+    };
+
     if (isReadOnlyUserStoresLoading || isEmpty(profileInfo)) {
         return (
             <ContentLoader />
@@ -2396,6 +2431,7 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                             && !isReadOnlyUserStore
                             && (!isEmpty(tenantAdmin) || tenantAdmin !== null)
                             && !user[ SCIMConfigs.scim.systemSchema ]?.userSourceId
+                            && isUserManagedByParentOrg
                             && editUserDisclaimerMessage
                         }
                         <FinalForm
@@ -2470,7 +2506,7 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                                                         component={ TextFieldAdapter }
                                                         label={ t("user:profile.fields.createdDate") }
                                                         initialValue={ createdDate
-                                                            ? moment(createdDate).format("YYYY-MM-DD")
+                                                            ? dayjs(createdDate).format("YYYY-MM-DD")
                                                             : ""
                                                         }
                                                         ariaLabel="createdDate"
@@ -2492,7 +2528,7 @@ export const UserProfileUpdated: FunctionComponent<UserProfilePropsInterface> = 
                                                         component={ TextFieldAdapter }
                                                         label={ t("user:profile.fields.modifiedDate") }
                                                         initialValue={ modifiedDate
-                                                            ? moment(modifiedDate).format("YYYY-MM-DD")
+                                                            ? dayjs(modifiedDate).format("YYYY-MM-DD")
                                                             : ""
                                                         }
                                                         ariaLabel="modifiedDate"

@@ -41,8 +41,10 @@ import VisualFlow, { VisualFlowPropsInterface } from "./visual-flow";
 import VisualFlowConstants from "../../constants/visual-flow-constants";
 import useAuthenticationFlowBuilderCore from "../../hooks/use-authentication-flow-builder-core-context";
 import useComponentDelete from "../../hooks/use-component-delete";
-import useDeleteRedirectionResource from "../../hooks/use-delete-redirection-resource";
+import useConfirmPasswordField from "../../hooks/use-confirm-password-field";
+import useDeleteExecutionResource from "../../hooks/use-delete-execution-resource";
 import useGenerateStepElement from "../../hooks/use-generate-step-element";
+import useStaticContentField from "../../hooks/use-static-content-field";
 import { Element } from "../../models/elements";
 import { EventTypes } from "../../models/extension";
 import { Resource, ResourceTypes } from "../../models/resources";
@@ -50,9 +52,12 @@ import { Step } from "../../models/steps";
 import { Template, TemplateTypes } from "../../models/templates";
 import { Widget } from "../../models/widget";
 import PluginRegistry from "../../plugins/plugin-registry";
+import autoAssignConnections from "../../utils/auto-assign-connections";
 import generateResourceId from "../../utils/generate-resource-id";
 import ResourcePanel from "../resource-panel/resource-panel";
 import ElementPropertiesPanel from "../resource-property-panel/resource-property-panel";
+import ValidationPanel from "../validation-panel/validation-panel";
+import VersionHistoryPanel from "../version-history-panel/version-history-panel";
 
 /**
  * Props interface of {@link DecoratedVisualFlow}
@@ -104,7 +109,13 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
 }: DecoratedVisualFlowPropsInterface): ReactElement => {
 
     // Event handlers for ON_NODE_DELETE event.
-    useDeleteRedirectionResource();
+    useDeleteExecutionResource();
+
+    // Event handlers for ON_PROPERTY_PANEL_OPEN event.
+    useConfirmPasswordField();
+
+    // Event handlers for static content in execution steps.
+    useStaticContentField();
 
     const { screenToFlowPosition, updateNodeData } = useReactFlow();
     const { generateStepElement } = useGenerateStepElement();
@@ -114,7 +125,10 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     const {
         isResourcePanelOpen,
         isResourcePropertiesPanelOpen,
-        onResourceDropOnCanvas
+        isVersionHistoryPanelOpen,
+        onResourceDropOnCanvas,
+        isFlowMetadataLoading,
+        metadata
     } = useAuthenticationFlowBuilderCore();
 
     useEffect(() => {
@@ -124,7 +138,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     }, [ aiGeneratedFlow ]);
 
     const addCanvasNode = (event: any, sourceData: any, _targetData: any): void => {
-        const { dragged: sourceResource } = sourceData;
+        const sourceResource: any = cloneDeep(sourceData.dragged);
         const { clientX, clientY } = event?.nativeEvent;
 
         const position: XYPosition = screenToFlowPosition({
@@ -159,6 +173,9 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
                 nodes,
                 edges
             );
+
+            // Auto-assign connections for execution steps.
+            autoAssignConnections([ ...newNodes, defaultPropertySelector as Node ], metadata.executorConnections);
 
             setNodes(() => newNodes);
             setEdges(() => newEdges);
@@ -303,7 +320,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     const onNodesDelete: OnNodesDelete<Node> = useCallback(
         async (deleted: Node[]) => {
             // Execute plugins for ON_NODE_DELETE event.
-            await PluginRegistry.getInstance().execute(EventTypes.ON_NODE_DELETE, deleted);
+            await PluginRegistry.getInstance().executeAsync(EventTypes.ON_NODE_DELETE, deleted);
 
             setEdges(
                 deleted?.reduce((acc: Edge[], node: Node) => {
@@ -314,11 +331,20 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
                     const remainingEdges: Edge[] = acc.filter((edge: Edge) => !connectedEdges.includes(edge));
 
                     const createdEdges: Edge[] = incomers.flatMap(({ id: source }: { id: string }) =>
-                        outgoers.map(({ id: target }: { id: string }) => ({
-                            id: `${source}->${target}`,
-                            source,
-                            target
-                        }))
+                        outgoers.map(({ id: target }: { id: string }) => {
+                            // Find the edge from incomer to the node being deleted
+                            const edge: Edge = connectedEdges.find(
+                                (e: Edge) => e.source === source && e.target === node.id
+                            );
+
+                            return {
+                                id: `${edge.source}->${target}`,
+                                source,
+                                sourceHandle: edge?.sourceHandle,
+                                target,
+                                type: edge?.type
+                            };
+                        })
                     );
 
                     return [ ...remainingEdges, ...createdEdges ];
@@ -336,7 +362,7 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
     const onEdgesDelete: (deleted: Edge[]) => void = useCallback(
         async (deleted: Edge[]) => {
             // Execute plugins for ON_EDGE_DELETE event.
-            await PluginRegistry.getInstance().execute(EventTypes.ON_EDGE_DELETE, deleted);
+            await PluginRegistry.getInstance().executeAsync(EventTypes.ON_EDGE_DELETE, deleted);
         },
         []
     );
@@ -347,6 +373,13 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
             return;
         }
 
+        resource = cloneDeep(resource);
+
+        /**
+         * Execute plugins for ON_TEMPLATE_LOAD event.
+         */
+        PluginRegistry.getInstance().executeSync(EventTypes.ON_TEMPLATE_LOAD, resource);
+
         // Users need to add a prompt first when they select the AI template.
         // TODO: Handle this better.
         if (resource.type === TemplateTypes.GeneratedWithAI) {
@@ -356,6 +389,9 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
         }
 
         const [ newNodes, newEdges, defaultPropertySelector, defaultPropertySectorStepId ] = onTemplateLoad(resource);
+
+        // Auto-assign connections for execution steps.
+        autoAssignConnections(newNodes, metadata.executorConnections);
 
         // TODO: Figure-out a better way to handle this debounce.
         // Tracker: https://github.com/xyflow/xyflow/issues/2405
@@ -394,25 +430,29 @@ const DecoratedVisualFlow: FunctionComponent<DecoratedVisualFlowPropsInterface> 
                     resources={ resources }
                     open={ isResourcePanelOpen }
                     onAdd={ handleOnAdd }
+                    disabled={ isFlowMetadataLoading }
                 >
                     <ElementPropertiesPanel
                         open={ isResourcePropertiesPanelOpen }
                         onComponentDelete={ deleteComponent }
                     >
-                        <VisualFlow
-                            resources={ resources }
-                            initialNodes={ initialNodes }
-                            initialEdges={ initialEdges }
-                            nodes={ nodes }
-                            onNodesChange={ onNodesChange }
-                            edges={ edges }
-                            onEdgesChange={ onEdgesChange }
-                            onConnect={ onConnect }
-                            onNodesDelete={ onNodesDelete }
-                            onEdgesDelete={ onEdgesDelete }
-                            { ...rest }
-                        />
+                        <VersionHistoryPanel open={ isVersionHistoryPanelOpen }>
+                            <VisualFlow
+                                resources={ resources }
+                                initialNodes={ initialNodes }
+                                initialEdges={ initialEdges }
+                                nodes={ nodes }
+                                onNodesChange={ onNodesChange }
+                                edges={ edges }
+                                onEdgesChange={ onEdgesChange }
+                                onConnect={ onConnect }
+                                onNodesDelete={ onNodesDelete }
+                                onEdgesDelete={ onEdgesDelete }
+                                { ...rest }
+                            />
+                        </VersionHistoryPanel>
                     </ElementPropertiesPanel>
+                    <ValidationPanel />
                 </ResourcePanel>
             </DragDropProvider>
         </div>

@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { ServerConfigurationsConstants } from "../constants";
-import { ServerConfigurationsResourceEndpointsInterface } from "../models";
+import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
+import { ServerConfigurationsResourceEndpointsInterface } from "../models/endpoints";
 
 /**
  * Get the resource endpoints for the server configurations feature.
@@ -43,6 +43,7 @@ export const getServerConfigurationsResourceEndpoints = (
         captchaForSSOLogin: `${ serverHost }/api/server/v1/identity-governance/${
             ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
         }/connectors/${ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID}`,
+        fraudDetectionConfigurations: `${ serverHost }/api/server/v1/configs/fraud-detection`,
         governanceConnectorCategories: `${ serverHost }/api/server/v1/identity-governance`,
         impersonationConfigurations: `${ serverHost }/api/server/v1/configs/impersonation`,
         loginPolicies: `${ serverHost }/api/server/v1/identity-governance/${

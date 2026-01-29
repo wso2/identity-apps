@@ -51,13 +51,26 @@ const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHan
      */
     const handleFieldValidation = () => {
         let isValid = false;
+        let errors = [];
 
         if (otpLength <= 6) {
-            isValid = validate({ identifier, required }, otpValues.join(""));
+            const {
+                erros: otpValueErrors,
+                isValid: isValidOtp
+            } = validate({ identifier, required }, otpValues.join(""));
+
+            isValid = isValidOtp;
+            errors = otpValueErrors;
         } else {
-            isValid = validate({ identifier, required }, otpValues);
+            const {
+                erros: otpValueErrors,
+                isValid: isValidOtp
+            } = validate({ identifier, required }, otpValues);
+
+            isValid = isValidOtp;
+            errors = otpValueErrors;
         }
-        fieldErrorHandler(identifier, isValid ? null : fieldErrors);
+        fieldErrorHandler(identifier, isValid ? null : errors);
     };
 
     /**
@@ -67,7 +80,7 @@ const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHan
      * @param {string} value - The new input value for that OTP box.
      */
     const handleInputChange = (index, value) => {
-        const cleaned = value.replace(/[^0-9]/g, "").slice(0, 1);
+        const cleaned = value.replace(/[^a-zA-Z0-9]/g, "").slice(0, 1);
         const newOtpValues = [ ...otpValues ];
 
         newOtpValues[index] = cleaned;
@@ -102,7 +115,7 @@ const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHan
     const handlePaste = (event) => {
         const pastedData = event.clipboardData.getData("Text");
 
-        if (pastedData.length === otpLength && /^[0-9]+$/.test(pastedData)) {
+        if (pastedData.length === otpLength && /^[a-zA-Z0-9]+$/.test(pastedData)) {
             setOtpValues(pastedData.split(""));
         }
     };
@@ -135,6 +148,7 @@ const OTPFieldAdapter = ({ component, formState, formStateHandler, fieldErrorHan
                                         value={ value }
                                         onChange={ (e) => handleInputChange(i, e.target.value) }
                                         onKeyUp={ (e) => movetoNext(e, i) }
+                                        onBlur={ () => handleFieldValidation() }
                                         placeholder="·"
                                         maxLength="1"
                                         style={ {

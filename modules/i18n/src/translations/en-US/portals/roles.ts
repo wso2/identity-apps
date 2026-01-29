@@ -25,6 +25,18 @@ import { rolesNS } from "../../../models";
 
 export const roles: rolesNS = {
     addRoleWizard: {
+        agents: {
+            assignAgentModal: {
+                heading: "Assign Agents",
+                hint: "Select agents to assign them to the role",
+                list: {
+                    listHeader: "Name",
+                    searchPlaceholder: "Search agents"
+                },
+                search: "Search agents by name or ID",
+                subHeading: "Assign new agents to the role."
+            }
+        },
         back: "Go back",
         buttons: {
             finish: "Finish",
@@ -130,7 +142,8 @@ export const roles: rolesNS = {
                 collapseAll: "Collapse All",
                 expandAll: "Expand All",
                 update: "Update"
-            }
+            },
+            limitedPermission: "You don't have sufficient permissions to assign permissions to this role."
         },
         subHeading: "Create a new {{type}} in the system.",
         summary: {
@@ -184,6 +197,73 @@ export const roles: rolesNS = {
         placeholder: "Search by role name"
     },
     edit: {
+        agents: {
+            actions: {
+                assign: {
+                    placeholder: "Type username/s to search and assign agents"
+                },
+                remove: {
+                    label: "Removing agents",
+                    placeholder: "Restore agents"
+                },
+                search: {
+                    placeholder: "Search agents"
+                }
+            },
+            heading: "Assigned Agents",
+            list: {
+                emptyPlaceholder: {
+                    action: "Assign Agent",
+                    subtitles: "There are no agents assigned to the {{type}} at the moment.",
+                    title: "No Agents Assigned"
+                },
+                organization: "Managed By",
+                user: "Agent"
+            },
+            notifications: {
+                error: {
+                    description: "{{description}}",
+                    message: "Error occurred while updating the agents assigned to the role."
+                },
+                fetchError: {
+                    description: "We were unable to fetch the agents assigned to the role.",
+                    message: "Something went wrong"
+                },
+                genericError: {
+                    description: "We were unable to update the agents assigned to the role.",
+                    message: "Something went wrong"
+                },
+                pendingApproval: {
+                    description: "The agent assignment update was accepted and is pending approval.",
+                    message: "Agent assignment accepted for approval"
+                },
+                success: {
+                    description: "The agents assigned to the role have been successfully updated.",
+                    message: "Role updated successfully"
+                }
+            },
+            placeholders: {
+                beginSearch: "To begin, search agents by typing the name or ID. You may have to type the complete name or ID.",
+                emptyPlaceholder: {
+                    action: "Assign Agents",
+                    subtitles: {
+                        0: "There are no agents assigned to this role at the moment."
+                    },
+                    title: "No agents assigned to the role."
+                },
+                emptySearchResult: "We couldn't find any results. Please try with the complete name or ID.",
+                error: "An error occurred while fetching agents.",
+                errorPlaceholder: {
+                    action: "Refresh",
+                    subtitles: {
+                        0: "An error occurred while fetching agents assigned to this role.",
+                        1: "Please try again."
+                    },
+                    title: "Something went wrong"
+                }
+            },
+            subHeading: "Add or remove the agents assigned to this role. Note that this will affect performing certain tasks."
+        },
         basics: {
             buttons: {
                 update: "Update"
@@ -282,6 +362,7 @@ export const roles: rolesNS = {
         },
         permissions: {
             heading: "Assigned Permissions",
+            limitedPermission: "You don't have sufficient permissions to edit this role's permissions.",
             readOnlySubHeading: "View the assigned permissions of the role.",
             removedPermissions: "Removed Permissions",
             subHeading: "Manage assigned permissions in the role."

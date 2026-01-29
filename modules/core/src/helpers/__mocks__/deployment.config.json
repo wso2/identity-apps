@@ -511,7 +511,7 @@
                     ]
                 }
             },
-            "eventPublishing": {
+            "events": {
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
@@ -522,7 +522,7 @@
                         "internal_event_config_update"
                     ],
                     "feature": [
-                        "console:eventPublishing"
+                        "console:events"
                     ],
                     "read": [
                         "internal_event_config_view"
@@ -895,9 +895,17 @@
                 }
             },
             "remoteLogging": {
-                "disabledFeatures": [],
+                "disabledFeatures": [
+                    "hide.config.secrets"
+                ],
                 "enabled": true,
-                "scopes": {}
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [],
+                    "read": [],
+                    "update": []
+                }
             },
             "residentOutboundProvisioning": {
                 "disabledFeatures": [],
@@ -1300,29 +1308,28 @@
             "productVersion": ""
         },
         "routes": {
-            "organizationEnabledRoutes": [
-                "apiResources",
-                "applications",
-                "attributeDialects",
-                "branding",
-                "consoleSettings",
-                "emailTemplates",
-                "gettingStarted",
-                "governanceConnectors",
-                "groups",
-                "identityProviders",
-                "organizations",
-                "roles",
-                "smsTemplates",
-                "userRoles",
-                "userStores",
-                "users"
-            ]
+            "organizationEnabledRoutes": {
+                "apiResources": "v0.0.0",
+                "applications": "v0.0.0",
+                "attributeDialects": "v0.0.0",
+                "attributeUpdateVerificationSettings": "v1.0.0",
+                "branding": "v0.0.0",
+                "consoleSettings": "v0.0.0",
+                "emailTemplates": "v0.0.0",
+                "gettingStarted": "v0.0.0",
+                "governanceConnectors": "v0.0.0",
+                "groups": "v0.0.0",
+                "identityProviders": "v0.0.0",
+                "organizations": "v0.0.0",
+                "roles": "v0.0.0",
+                "smsTemplates": "v0.0.0",
+                "userRoles": "v0.0.0",
+                "userStores": "v0.0.0",
+                "users": "v0.0.0"
+            }
         },
         "selfAppIdentifier": "Console",
         "showAppSwitchButton": true,
-        "showPasswordOfEmailProvider": true,
-        "showSmsOtpPwdRecoveryFeatureStatusChip": false,
         "showStatusLabelForNewAuthzRuntimeFeatures": false,
         "systemAppsIdentifiers": [
             "Console",

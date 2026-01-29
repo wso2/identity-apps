@@ -18,8 +18,8 @@
 import { deleteADialect } from "@wso2is/admin.claims.v1/api/claims";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { Config } from "@wso2is/admin.core.v1/configs/app";
-import { getUserStoreList } from "@wso2is/admin.userstores.v1/api";
-import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models";
+import { getUserStoreList } from "@wso2is/admin.userstores.v1/api/user-stores";
+import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { Claim, ClaimDialect, ExternalClaim } from "@wso2is/core/models";
 import { I18n } from "@wso2is/i18n";
 import { AxiosResponse } from "axios";
@@ -98,6 +98,10 @@ export const attributeConfig: AttributeConfig = {
             return excludingSet.has(dialectID);
         },
         showAddExternalAttributeButton: (_dialectID: string): boolean => {
+            if (_dialectID === ClaimManagementConstants.ATTRIBUTE_DIALECT_IDS.get("SCIM2_FOR_AGENTS")) {
+                return false;
+            }
+
             return true;
         }
     },
@@ -303,7 +307,6 @@ export const attributeConfig: AttributeConfig = {
     showCustomAttributeMapping: true,
     showCustomDialectInSCIM: true,
     systemClaims: [
-        "http://wso2.org/claims/externalid",
         "http://wso2.org/claims/userid",
         "http://wso2.org/claims/created",
         "http://wso2.org/claims/modified",

@@ -192,6 +192,12 @@ export const identityProviderConfig: IdentityProviderConfig = {
         saml2WebSSOUserIdLocationEnabled: true
     },
     jitProvisioningSettings: {
+        accountLinkingAttributesSection: {
+            show: true
+        },
+        attributeSyncMethodField: {
+            show: true
+        },
         enableAssociateLocalUserField: {
             show: true
         },
@@ -200,6 +206,9 @@ export const identityProviderConfig: IdentityProviderConfig = {
         },
         menuItemName: "Just-in-Time Provisioning",
         provisioningSchemeField: {
+            show: true
+        },
+        skipJITForNoRuleMatchField: {
             show: true
         },
         userstoreDomainField: {

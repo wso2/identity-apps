@@ -21,8 +21,8 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { userstoresConfig } from "@wso2is/admin.extensions.v1/configs/userstores";
 import { useGroupList } from "@wso2is/admin.groups.v1/api/groups";
 import { GroupsInterface, GroupsMemberInterface } from "@wso2is/admin.groups.v1/models/groups";
-import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "@wso2is/admin.roles.v2/constants";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "@wso2is/admin.roles.v2/constants/role-constants";
+import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import {
     AlertInterface,
     AlertLevels,
@@ -98,6 +98,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
     const domain: string = user?.userName?.split("/")?.length > 1
         ? user.userName.split("/")[0]
         : userstoresConfig.primaryUserstoreName;
+    const excludedAttributes: string = "members,roles,meta";
 
     const {
         data: originalGroupsList,
@@ -108,7 +109,8 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         null,
         null,
         searchQuery,
-        domain
+        domain,
+        excludedAttributes
     );
 
     const groupsList: GroupsInterface[] = useMemo(() => {

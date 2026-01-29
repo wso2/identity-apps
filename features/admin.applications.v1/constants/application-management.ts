@@ -25,6 +25,14 @@ import { IdentityAppsError } from "@wso2is/core/errors";
 import { ApplicationTemplateCategories, ApplicationTemplateLoadingStrategies } from "../models/application";
 
 /**
+ * Keys used in the application feature dictionary.
+ */
+export enum ApplicationFeatureDictionaryKeys {
+    ApplicationEditEnforceAuthorizedAPIUpdatePermission = "APPLICATION_EDIT_ENFORCE_AUTHORIZED_API_UPDATE_PERMISSION",
+    ApplicationEditEnforceClientSecretPermission = "APPLICATION_EDIT_ENFORCE_CLIENT_SECRET_PERMISSION"
+}
+
+/**
  * Class containing application management constants.
  */
 export class ApplicationManagementConstants {
@@ -46,7 +54,8 @@ export class ApplicationManagementConstants {
      */
     public static readonly APP_VERSION_1: string = "v1.0.0";
     public static readonly APP_VERSION_2: string = "v2.0.0";
-    public static readonly LATEST_VERSION: string = ApplicationManagementConstants.APP_VERSION_2;
+    public static readonly APP_VERSION_3: string = "v3.0.0";
+    public static readonly LATEST_VERSION: string = ApplicationManagementConstants.APP_VERSION_3;
 
     /**
      * Private constructor to avoid object instantiation from outside
@@ -88,7 +97,14 @@ export class ApplicationManagementConstants {
         .set("APPLICATION_OUTDATED_APP_BANNER", "applications.outdatedAppBanner")
         .set("APPLICATION_EDIT_ACCESS_CONFIG_BACK_CHANNEL_LOGOUT",
             "applications.edit.accessConfiguration.backChannelLogout")
-        .set("APPLICATION_SHARED_ACCESS_STATUS", "applications.sharedAccess.status");
+        .set("APPLICATION_EDIT_ACCESS_CONFIG_FRONT_CHANNEL_LOGOUT",
+            "applications.edit.accessConfiguration.frontChannelLogout")
+        .set("APPLICATION_SHARED_ACCESS_STATUS", "applications.sharedAccess.status")
+        .set("APPLICATION_ROLE_SHARING", "applications.sharedAccess.roleSharing")
+        .set(ApplicationFeatureDictionaryKeys.ApplicationEditEnforceAuthorizedAPIUpdatePermission,
+            "applications.enforceAuthorizedAPIUpdatePermission")
+        .set(ApplicationFeatureDictionaryKeys.ApplicationEditEnforceClientSecretPermission,
+            "applications.enforceClientSecretPermission");
 
     /**
      * Key for the URL search param for application state.
@@ -336,6 +352,8 @@ export class ApplicationManagementConstants {
     public static readonly APPLICATION_STATUS_UPDATE_ERROR: string = "Error occurred while updating the " +
         "status of the application. ";
 
+    public static readonly INVALID_TENANT_URL_FORMAT: string = "Invalid tenant URL format";
+
     public static readonly SECOND_FACTOR_AUTHENTICATORS_DROPPABLE_ID: string = "second-factor-authenticators";
     public static readonly EXTERNAL_AUTHENTICATORS_DROPPABLE_ID: string = "external-authenticators";
     public static readonly SOCIAL_LOGIN_HEADER: string = "Social Login";
@@ -437,7 +455,6 @@ export class ApplicationManagementConstants {
         ACCESS_URL_ALLOWED_PLACEHOLDERS: string[],
         ACCESS_URL_MAX_LENGTH: number,
         ACCESS_URL_MIN_LENGTH: number,
-        APP_DESCRIPTION_PATTERN: RegExp,
         APP_NAME_MAX_LENGTH: number,
         APP_NAME_PATTERN: RegExp
     } = {
@@ -447,7 +464,6 @@ export class ApplicationManagementConstants {
             ],
             ACCESS_URL_MAX_LENGTH: 1024,
             ACCESS_URL_MIN_LENGTH: 3,
-            APP_DESCRIPTION_PATTERN: new RegExp("^[a-zA-Z0-9.+=!$#()@&%*~_-]+(?: [a-zA-Z0-9.+=!$#()@&%*~_-]+)*$", "gm"),
             APP_NAME_MAX_LENGTH: 50,
             APP_NAME_PATTERN: new RegExp("^[a-zA-Z0-9._-]+(?: [a-zA-Z0-9._-]+)*$")
         };

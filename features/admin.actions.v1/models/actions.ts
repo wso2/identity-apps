@@ -37,7 +37,8 @@ export enum ActionType {
     PRE_ISSUE_ACCESS_TOKEN = "PRE_ISSUE_ACCESS_TOKEN",
     PRE_UPDATE_PASSWORD = "PRE_UPDATE_PASSWORD",
     PRE_UPDATE_PROFILE = "PRE_UPDATE_PROFILE",
-    PRE_REGISTRATION = "PRE_REGISTRATION"
+    PRE_REGISTRATION = "PRE_REGISTRATION",
+    PRE_ISSUE_ID_TOKEN = "PRE_ISSUE_ID_TOKEN"
 }
 
 /**
@@ -123,6 +124,14 @@ interface EndpointInterface {
      * Authentication configurations of the Action.
      */
     authentication: AuthenticationInterface;
+    /**
+     * Allowed request headers to be shared with the endpoint.
+     */
+    allowedHeaders?: string[];
+    /**
+     * Allowed request parameters to be shared with the endpoint.
+     */
+    allowedParameters?: string[];
 }
 
 /**
@@ -214,6 +223,10 @@ export interface ActionBaseResponseInterface {
      * Status of the Action.
      */
     status: ActionStatus;
+    /**
+     * Version of the Action.
+     */
+    version?: string;
 }
 
 /**
@@ -284,6 +297,14 @@ export interface EndpointResponseInterface {
      */
     uri: string;
     /**
+     * Headers that needs to be shared with the endpoint.
+     */
+    allowedHeaders?: string[];
+    /**
+     * Parameters that needs to be shared with the endpoint.
+     */
+    allowedParameters?: string[];
+    /**
      * Authentication configurations of the Action.
      */
     authentication: {
@@ -314,6 +335,10 @@ export interface ActionUpdateInterface {
      * Rule configuration of the Action.
      */
     rule?: RuleWithoutIdInterface | RuleExecuteCollectionWithoutIdInterface | Record<string, never>;
+    /**
+     * Version of the Action.
+     */
+    version?: string;
 }
 
 /**
@@ -397,6 +422,10 @@ export interface ActionTypesCountInterface {
      * Count of the configured actions of type PRE_REGISTRATION.
      */
     preRegistration?: number;
+    /**
+     * Count of the configured actions of type PRE_ISSUE_ID_TOKEN.
+     */
+    preIssueIdToken?: number;
 }
 
 /**
@@ -446,6 +475,14 @@ export interface EndpointConfigFormPropertyInterface {
      * Value property of apiKey authentication.
      */
     valueAuthProperty?: string;
+    /**
+     * Allowed request headers to be shared with the endpoint.
+     */
+    allowedHeaders?: string[];
+    /**
+     * Allowed request parameters to be shared with the endpoint.
+     */
+    allowedParameters?: string[];
 }
 
 /**
@@ -480,6 +517,10 @@ export interface PreUpdateProfileActionConfigFormPropertyInterface extends Actio
  *  Action Type card info Interface.
  */
 export interface ActionTypeCardInterface {
+    /**
+     * Type of the Action.
+     */
+    type: ActionType,
     /**
      * Description of the Action type.
      */

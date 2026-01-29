@@ -79,10 +79,12 @@
         authenticationFailed = "true";
 
         if (request.getParameter(Constants.AUTH_FAILURE_MSG) != null) {
-            errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
+            String error = request.getParameter(Constants.AUTH_FAILURE_MSG);
 
-            if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
+            if (error.equalsIgnoreCase("authentication.fail.message")) {
                 errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, "error.retry.code.invalid");
+            } else if (!error.equalsIgnoreCase(AuthenticationEndpointUtil.i18n(resourceBundle, error))) {
+                errorMessage = AuthenticationEndpointUtil.i18n(resourceBundle, error);
             }
         }
     }
@@ -368,6 +370,31 @@
                 otpField.attr("type", "text");
                 document.getElementById("password-eye").classList.add("slash");
             }
+        }
+
+        $(document).ready(handleWaitBeforeResendOTP);
+
+        function handleWaitBeforeResendOTP() {
+            const WAIT_TIME_SECONDS = 60;
+            const resendButton = document.getElementById("resend");
+            if (!resendButton) return;
+
+            resendButton.classList.add("disabled");
+
+            const resendButtonText = resendButton.innerText;
+            resendButton.innerHTML = Math.floor(WAIT_TIME_SECONDS / 60).toString().padStart(2, '0') + " : " + (WAIT_TIME_SECONDS % 60).toString().padStart(2, '0');
+
+            const countdown = new Countdown(
+                Countdown.seconds(WAIT_TIME_SECONDS),
+                () => {
+                    resendButton.innerHTML = resendButtonText;
+                    resendButton.classList.remove("disabled");
+                },
+                (time) => {
+                    resendButton.innerHTML = time.minutes.toString().padStart(2, '0') + " : " + time.seconds.toString().padStart(2, '0');
+                },
+                "EMAIL_OTP_TIMER"
+            ).start();
         }
     </script>
 </body>

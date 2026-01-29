@@ -70,16 +70,16 @@ export const tenants: TenantsNS = {
                     }
                 },
                 domain: {
-                    helperText: "Enter a unique domain name for your organization. The domain name should be in the format of <1>abc.com</1>. The valid characters are lowercase letters, numbers, '.', '-', and '_'.",
-                    label: "Domain",
-                    placeholder: "Enter a Domain name",
+                    helperText: "Enter a unique organization handle (domain) for your organization. Valid characters include lowercase letters, numbers, '.', '-', and '_'.",
+                    label: "Organization Handle (Domain)",
+                    placeholder: "Enter organization handle (domain)",
                     validations: {
-                        domainInvalidCharPattern: "The domain contains one or more illegal characters.",
-                        domainInvalidPattern: "The domain doesn't match the valid pattern.",
-                        domainMandatoryExtension: "The domain should have a dot extension. E.g,: abc.com",
-                        domainStartingWithDot: "The domain name cannot start with a dot.",
-                        domainUnavailable: "A domain with the same name already exists.",
-                        required: "A domain name is required."
+                        domainInvalidCharPattern: "The organization handle (domain) contains one or more illegal characters.",
+                        domainInvalidPattern: "The organization handle (domain) doesn't match the valid pattern.",
+                        domainMandatoryExtension: "The organization handle (domain) should have a dot extension. E.g.: abc.com",
+                        domainStartingWithDot: "The organization handle (domain) cannot start with a dot.",
+                        domainUnavailable: "An organization with the same handle (domain) already exists.",
+                        required: "The organization handle (domain) is required."
                     }
                 },
                 email: {
@@ -117,12 +117,11 @@ export const tenants: TenantsNS = {
                     }
                 },
                 organizationName: {
-                    helperText: "Enter a unique name for your organization. Valid characters include letters (a–z, A–Z), numbers, spaces, periods (.), hyphens (-), and underscores (_).",
+                    helperText: "Enter a unique name for your organization. Valid characters include letters (a–z, A–Z), numbers, spaces, periods (.), hyphens (-), and underscores (_). <bold>Keep this field blank to use the organization handle (domain) as the organization name.</bold>",
                     label: "Organization Name",
                     placeholder: "Enter organization name",
                     validations: {
-                        invalidCharPattern: "The organization name contains one or more illegal characters.",
-                        required: "An organization name is required."
+                        invalidCharPattern: "The organization name contains one or more illegal characters."
                     }
                 },
                 password: {
@@ -193,7 +192,57 @@ export const tenants: TenantsNS = {
             hint: "If you try to login to <1>{{domain}}</1> organization's Console using the same browser, you will have to logout from this active session first.",
             label: "Console URL"
         },
-        subtitle: "Crated on {{date}}"
+        subtitle: "Created on {{date}}"
+    },
+    editSelfOrganization: {
+        actions: {
+            save: {
+                label: "Save"
+            }
+        },
+        form: {
+            fields: {
+                created: {
+                    label: "Created"
+                },
+                lastModified: {
+                    label: "Last Modified"
+                },
+                organizationHandle: {
+                    hint: "Copy the organization handle to clipboard",
+                    label: "Organization Handle"
+                },
+                organizationId: {
+                    hint: "Copy the organization ID to clipboard",
+                    label: "Organization ID"
+                },
+                organizationName: {
+                    label: "Organization Name",
+                    placeholder: "Enter organization name",
+                    validations: {
+                        required: "Organization name is required"
+                    }
+                }
+            }
+        },
+        notifications: {
+            updateOrganization: {
+                error: {
+                    description: "An error occurred while updating the organization",
+                    message: "Update Failed"
+                },
+                success: {
+                    description: "Organization updated successfully",
+                    message: "Update Successful"
+                }
+            }
+        },
+        readOnly: {
+            subtitle: "Browse organization information",
+            title: "Organization Details"
+        },
+        subtitle: "Manage organization details",
+        title: "Edit Organization"
     },
     editTenant: {
         actions: {
@@ -355,8 +404,14 @@ export const tenants: TenantsNS = {
     },
     tenantDropdown: {
         options: {
+            edit: {
+                label: "Edit Organization"
+            },
             manage: {
                 label: "Manage Root Organizations"
+            },
+            view: {
+                label: "View Organization"
             }
         }
     },

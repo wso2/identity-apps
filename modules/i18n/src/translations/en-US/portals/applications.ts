@@ -598,13 +598,107 @@ export const applications: ApplicationsNS = {
                 tabName: "Provisioning"
             },
             sharedAccess: {
-                subTitle: "Select the following options to share the application with the organizations.",
+                title: "Sharing Policy",
+                sharedRoles: "Shared Roles",
+                sharingSettings: "Sharing settings for",
+                individualRoleSharingLabel: "Individually Shared Roles",
+                individualRoleSharingHint: "These roles are shared only with the selected organization. " +
+                    "You can individually add or remove roles from organizations in this mode.",
+                commonRoleSharingLabel: "Commonly Shared Roles",
+                commonRoleSharingHint: "This set of roles will be shared with all existing and future organizations that " +
+                    "the application is shared with.",
+                doNotShareApplication: "Do not share the application with any organization.",
+                shareAllApplication: "Share the application with all organizations.",
+                shareSelectedApplication: "Share the application with selected organizations.",
+                allRolesSharingMessage: "All roles of the application will be shared with the organization.",
+                allRolesAndOrgsSharingMessage: "All roles of the application will be shared with all the organizations.",
+                allRolesAndOrgsNotSharingMessage: "No roles will be shared with any organization.",
+                doNotShareRolesWithAllOrgs: "Do not share roles with all organizations.",
+                manageRoleSharing: "Manage role sharing",
+                viewRoleSharing: "View shared roles",
+                noSharedOrgs: "This application is not shared with any organizations.",
+                noRolesAvailableForOrg: "No roles available for the selected organization.",
+                searchAvailableRolesPlaceholder: "Search available roles",
+                orgNotSelectedForRoleSharing: "To share roles, please select the organization from the left panel.",
+                rolesSharedPartially: "Roles are selectively shared with this organization.",
+                shareRoleSubsetWithSelectedOrgs: "Share a subset of roles with selected organizations",
+                shareRoleSubsetWithAllOrgs: "Share only a subset of roles with all organizations",
+                subTitle: "Select how the application and roles will be shared with organizations.",
+                shareAllRoles: "Share All Roles",
+                shareSelectedRoles: "Share Selected Roles",
+                doNotShareRoles: "Do Not Share Roles",
                 tabName: "Shared Access",
+                selectAnOrganizationToViewRoles: "Select an organization to view the shared roles.",
+                selectAnOrganizationToMangage: "Select an organization to manage",
+                toManageOrganizationSelectLeftPanel: "To manage the organization, please select it from the left panel.",
+                shareTypeSwitchModal: {
+                    header: "Switch sharing mode to selective sharing?",
+                    message: "This action is irreversible and change your application sharing settings.",
+                    description: "You're about to switch to selective sharing. Please select one of the 2 options to proceed.",
+                    preserveStateLabel1: "Preserve current state",
+                    preserveStateLabel2: "Keep all existing shared organizations, roles and configurations of the application.",
+                    resetToDefaultLabel1: "Reset to default",
+                    resetToDefaultLabel2: "Clear all sharing settings and start with a clean state."
+                },
+                showShareAllWarningModal: {
+                    header: "Are you sure?",
+                    message: "This action is irreversible and will change roles in all organizations.",
+                    description: "This action may share new roles or unshare the existing roles from all the organizations.",
+                    assertionHint: "Please confirm your action."
+                },
                 sharedAccessStatusOptions: {
                     all: "All",
                     success: "Success",
                     failed: "Failed",
                     partiallyCompleted: "Partially Completed"
+                },
+                notifications: {
+                    unshare: {
+                        success: {
+                            description: "Application unshared with the organization(s) successfully",
+                            message: "Application unshared!"
+                        },
+                        error: {
+                            description: "Application unsharing failed. Please try again",
+                            message: "Application unsharing failed!"
+                        }
+                    },
+                    share: {
+                        success: {
+                            description: "Application shared with the organization(s) successfully",
+                            message: "Application shared!"
+                        },
+                        error: {
+                            description: "Application sharing failed. Please try again",
+                            message: "Application sharing failed!"
+                        }
+                    },
+                    noOrganizationsSelected: {
+                        description: "Please select at least one organization to share this application.",
+                        message: "No organizations selected!"
+                    },
+                    fetchApplicationOrgTree: {
+                        genericError: {
+                            description: "Error occurred while fetching the shared organizations.",
+                            message: "Fetching shared organizations failed!"
+                        }
+                    },
+                    fetchApplicationRoles: {
+                        genericError: {
+                            description: "Error occurred while fetching the shared roles of the application.",
+                            message: "Fetching roles failed!"
+                        }
+                    },
+                    fetchOrganizations: {
+                        genericError: {
+                            description: "Error occurred while fetching the organizations.",
+                            message: "Fetching organizations failed!"
+                        }
+                    },
+                    noRolesSelected: {
+                        description: "Please select at least one role to share with all the organizations.",
+                        message: "No roles selected!"
+                    }
                 }
             },
             shareApplication: {
@@ -698,7 +792,13 @@ export const applications: ApplicationsNS = {
                                 accordion: {
                                     title: {
                                         description: "Add conditions to your login flow.",
-                                        heading: "Conditional Authentication"
+                                        heading: {
+                                            readOnly: "Conditional Authentication (Read only)",
+                                            readWrite: "Conditional Authentication"
+                                        },
+                                        tooltip: {
+                                            readOnly: "You do not have permission to edit the script."
+                                        }
                                     }
                                 },
                                 conditionalAuthTour: {
@@ -976,7 +1076,14 @@ export const applications: ApplicationsNS = {
                                 totp: {
                                     description: "Enable additional authentication layer with Time "
                                         + "based OTP.",
-                                    heading: "Add TOTP as a second factor"
+                                    heading: "Add TOTP as a second factor",
+                                    info: {
+                                        totpWithIdentifierFirstEnabled: "TOTP authenticator with Identifier First handler is configured.",
+                                        totpWithIdentifierFirstEnabledMessage: "Configuring TOTP authenticator " +
+                                        "with Identifier First handler is not recommended as <2>TOTP progressive enrollment</2> is " +
+                                        "enabled by default. You can disable TOTP progressive enrollment through " +
+                                        " <4> Conditional Authentication</4> script."
+                                    }
                                 },
                                 usernameless: {
                                     description: "Enable users to log in using a passkey, FIDO security key or "
@@ -1024,6 +1131,31 @@ export const applications: ApplicationsNS = {
                                         + "sent to their mobile.",
                                     heading: "Add SMS OTP login"
                                 }
+                            },
+                            validation: {
+                                smsOTPRequiresMobileField: {
+                                    message: "SMS OTP requires at least one mobile number field to be present in the flow."
+                                },
+                                emailOTPRequiresEmailField: {
+                                    message: "Email OTP requires at least one email field to be present in the flow."
+                                },
+                                passwordRecoveryRequiresFactors: {
+                                    message: "Password recovery requires at least one of the following " +
+                                        "factors to be present in the flow: Email OTP, SMS OTP, " +
+                                        "or Magic Link."
+                                },
+                                passwordExecutorRequired: {
+                                    message: "Forms with a Password field requires a 'Provision Password' Action to be configured for the button."
+                                },
+                                otpStepButtonsOutsideForm: {
+                                    message: "Steps that include an OTP form component can have action buttons only within the OTP form component itself."
+                                },
+                                otpStepSingleActionButton: {
+                                    message: "Forms with an OTP step can have only one action button other than the Resend button."
+                                },
+                                otpStepMultipleForms: {
+                                    message: "Multiple forms with OTP steps are not allowed."
+                                }
                             }
                         }
                     },
@@ -1063,6 +1195,7 @@ export const applications: ApplicationsNS = {
                 tabName: "Login Flow"
             },
             apiAuthorization: {
+                limitedAccessMessage: "You don't have permission to assign all the API Resources. Some API Resources are disabled.",
                 m2mPolicyMessage: "All the authorized scopes of an API resource are available for an M2M application despite the authorization policy specified for the resource."
             },
             roles: {
@@ -1087,11 +1220,12 @@ export const applications: ApplicationsNS = {
                     fields: {
                         validateLocalAccount: {
                             label: "Use linked local account attributes",
-                            hint: "If a linked local account exists, its attributes will be used. If no linked account is found,attributes of the federated user account will be used instead."
+                            hint: "If a linked local account exists, its attributes will be used. If no linked account is found, attributes of the federated user account will be used instead."
                         },
                         mandateLocalAccount: {
                             label: "Require linked local account",
-                            hint: "Authentication will fail if no linked local account is found during token exchange."
+                            hint: "Authentication will fail if no linked local account is found during token exchange.",
+                            unifiedHint: "Authentication will fail if no linked local account is found during login and token exchange."
                         }
                     }
                 },
@@ -1837,6 +1971,15 @@ export const applications: ApplicationsNS = {
                                     instruction: "Irrespective of the <1>scopes</1> requested, all the <3>Requested Attributes</3> will "
                                         + "be included in the JWT Access Token."
                                 }
+                            },
+                            version300: {
+                                linkedLocalAccountAttributeHandling: {
+                                    instruction: "When you enable the use of linked local account attributes " +
+                                        "instead of federated attributes and mandate that a linked local account " +
+                                        "must exist, this configuration previously applied only to the <1>token " +
+                                        "exchange</1> flow. With this update, the same restriction now also " +
+                                        "applies to <3>login</3> scenarios."
+                                }
                             }
                         }
                     }
@@ -1854,15 +1997,17 @@ export const applications: ApplicationsNS = {
                             }
                         },
                         front: {
+                            hint: "{{productName}} triggers the browser to load this client URL when the user logs out.",
                             label: "Front channel logout URL",
-                            placeholder: "Enter the Front Channel Logout URL",
+                            placeholder: "https://myapp.io/logout",
                             validations: {
                                 empty: "Please fill the Front Channel Logout URL",
                                 invalid: "Please add valid URL"
                             }
                         }
                     },
-                    heading: "PKCE"
+                    heading: "Logout URLs",
+                    headingSingular: "Logout URL"
                 },
                 pkce: {
                     description: "The default method used by {{productName}} to generate the challenge " +
@@ -1949,6 +2094,11 @@ export const applications: ApplicationsNS = {
                 },
                 refreshToken: {
                     fields: {
+                        extendRenewedRefreshTokenExpiryTime: {
+                            hint: "Select to ensure renewed refresh tokens retain the remaining validity period from " +
+                                "the original token instead of receiving a fresh expiry time.",
+                            label: "Extend expiry time of renewed refresh tokens"
+                        },
                         expiry: {
                             hint: "Specify the validity period of the <1>refresh_token</1> in seconds.",
                             label: "Refresh token expiry time",
@@ -1994,9 +2144,7 @@ export const applications: ApplicationsNS = {
                     heading: "Subject Token"
                 },
                 requestObjectSignature: {
-                    description: "{{productName}} supports receiving an OIDC authentication request as " +
-                        "a request object that is passed in a single, self-contained <1>request</1> " +
-                        "parameter. Enable signature validation to accept only signed request objects " +
+                    description: "Select to enable signature validation to accept only signed <1>request objects</1> " +
                         "in the authorization request.",
                     fields: {
                         signatureValidation: {
@@ -2688,6 +2836,7 @@ export const applications: ApplicationsNS = {
         enabledFeatures: {
             tags: {
                 premium: {
+                    info: "Unlock conditional authentication scripting with our Enterprise plan. <1>Contact sales</1> to upgrade.",
                     warning: "This is a premium feature and will soon be disabled for the free subscription plan. Upgrade your subscription for uninterrupted access to this feature."
                 }
             }

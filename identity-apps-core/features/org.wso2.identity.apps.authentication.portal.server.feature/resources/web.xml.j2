@@ -42,6 +42,12 @@
         <param-name>ServiceProviderApp-/oauth2_consent.do</param-name>
         <param-value>http://localhost:8080/authenticationendpoint/oauth2_consent.do</param-value>
     </context-param-->
+    {% if localization.prioritize_param is defined %}
+        <context-param>
+            <param-name>isLocalizationParamPrioritized</param-name>
+            <param-value>{{ localization.prioritize_param }}</param-value>
+        </context-param>
+    {% endif %}
     {% if downtime_banner.enabled is defined %}
         <context-param>
             <param-name>isDowntimeBannerEnabled</param-name>
@@ -119,6 +125,24 @@
     {% endif %}
 
     <!-- *************** End of Account Recovery Endpoint Context URL Configuration ********************** -->
+
+    <!-- *************** Authenticator Validation Configuration ********************** -->
+
+    {% if authenticationendpoint.authenticator_validation.enabled is defined %}
+        <context-param>
+            <param-name>AuthenticatorValidationEnabled</param-name>
+            <param-value>{{ authenticationendpoint.authenticator_validation.enabled }}</param-value>
+        </context-param>
+    {% endif %}
+    {% if authenticationendpoint.authenticator_validation.default_authenticators is defined %}
+        <context-param>
+            <param-name>DefaultAuthenticators</param-name>
+            <param-value>{{ authenticationendpoint.authenticator_validation.default_authenticators }}</param-value>
+        </context-param>
+    {% endif %}
+
+    <!-- *************** End of Authenticator Validation Configuration ********************** -->
+
     <!-- *************** Identity Server Endpoint URL Configuration ********************** -->
     {% if authenticationendpoint.identity_server_endpoint_url is defined %}
     <context-param>
@@ -364,10 +388,10 @@
         {"name": "duo_error.do", "jsp": "/duoError.jsp", "url": "/duo_error.do"},
         {"name": "magic_link_notification.do", "jsp": "/magic_link_notification.jsp", "url": "/magic_link_notification.do"},
         {"name": "org_name.do", "jsp": "/org_name.jsp", "url": "/org_name.do"},
+        {"name": "org_handle.do", "jsp": "/org_handle.jsp", "url": "/org_handle.do"},
         {"name": "org_discovery.do", "jsp": "/org_discovery.jsp", "url": "/org_discovery.do"},
         {"name": "select_org.do", "jsp": "/select_org.jsp", "url": "/select_org.do"},
-        {"name": "register.do", "jsp": "/self-registration.jsp", "url": "/register.do"},
-        {"name": "registration_error.do", "jsp": "/errors/registration_error.jsp", "url": "/registration_error.do"}
+        {"name": "verify.do", "jsp": "/sms_otp_verify.jsp", "url": "/verify.do"}
     ] %}
     {% for servlet_item in default_servlets %}
         {% set key_name = servlet_item['name'] %}

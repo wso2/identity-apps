@@ -29,6 +29,7 @@ import EmptyValueField from "./empty-value-field";
 import { SCIMConfigs as SCIMExtensionConfigs } from "../../../extensions/configs/scim";
 import { TextFieldFormPropsInterface } from "../../../models/profile-ui";
 import { EditSection } from "../../shared/edit-section";
+import "./field-form.scss";
 
 const TextFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
     fieldSchema: schema,
@@ -55,7 +56,7 @@ const TextFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
      * Resolves the current schema value to the form value.
      * @returns schema form value
      */
-    const resolveProfileInfoSchemaValue = (schema: ProfileSchemaInterface): string => {
+    const resolveProfileInfoSchemaValue = (schema: ProfileSchemaInterface): string | number => {
         /**
          * Remove the user-store-name prefix from the userName
          * Match case applies only for secondary user-store.
@@ -64,12 +65,38 @@ const TextFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
          * USER-STORE/userNameString to userNameString
          */
         if (schema.name === usernameClaim) {
-            return getUserNameWithoutDomain(initialValue);
+            return getUserNameWithoutDomain(String(initialValue));
+        }
+
+        /**
+         * Type check to avoid rendering issues.
+         */
+        if (typeof initialValue === "object") {
+            return "";
         }
 
         return initialValue;
     };
 
+    /**
+     * Checks whether the initial value is empty.
+     * If the initial value is a number, then it is not empty.
+     * Else the initial value is validated via isEmpty function from lodash.
+     */
+    const isInitialValueEmpty = (): boolean => {
+        if (Number.isSafeInteger(initialValue)) {
+            return false;
+        }
+
+        return isEmpty(initialValue);
+    };
+
+    /**
+     * Validates the field value and updates the validation object.
+     *
+     * @param value - Field value.
+     * @param validation - Field validation object to be updated with error messages.
+     */
     const validateField = (value: string, validation: Validation): void => {
         if (onValidate) {
             onValidate(value, validation);
@@ -144,7 +171,9 @@ const TextFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
             <EditSection data-testid={ "profile-schema-editing-section" }>
                 <Grid>
                     <Grid.Row columns={ 2 }>
-                        <Grid.Column width={ 4 }>{ fieldLabel }</Grid.Column>
+                        <Grid.Column className="field-label" width={ 4 }>
+                            <span className={ isRequired ? "required" : "" }>{ fieldLabel }</span>
+                        </Grid.Column>
                         <Grid.Column width={ 12 }>
                             <Forms onSubmit={ onFormSubmit }>
                                 <Grid verticalAlign="middle" textAlign="right">
@@ -167,7 +196,7 @@ const TextFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
                                                 requiredErrorMessage={ t(
                                                     "myAccount:components.profile.forms.generic.inputs." +
                                                         "validations.empty",
-                                                    { fieldLabel }
+                                                    { fieldName: fieldLabel }
                                                 ) }
                                                 type="text"
                                                 validation={ validateField }
@@ -221,16 +250,19 @@ const TextFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
         <Grid padded={ true }>
             <Grid.Row columns={ 3 }>
                 <Grid.Column mobile={ 6 } computer={ 4 } className="first-column">
-                    <List.Content className="vertical-align-center">{ fieldLabel }</List.Content>
+                    <List.Content className="vertical-align-center field-label">
+                        <span className={ isRequired ? "required" : "" }>{ fieldLabel }</span>
+                    </List.Content>
                 </Grid.Column>
                 <Grid.Column mobile={ 8 } computer={ 10 }>
                     <List.Content>
                         <List.Description className="with-max-length">
-                            { isEmpty(initialValue) ? (
+                            { isInitialValueEmpty() ? (
                                 <EmptyValueField
                                     schema={ schema }
                                     fieldLabel={ fieldLabel }
                                     placeholderText={ placeholderText }
+                                    onEditClicked={ onEditClicked }
                                 />
                             ) : (
                                 resolveProfileInfoSchemaValue(schema)

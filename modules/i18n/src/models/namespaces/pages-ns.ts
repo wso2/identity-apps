@@ -101,7 +101,6 @@ export interface pagesNS {
     };
     oidcScopesEdit: {
         title: string;
-        subTitle: string;
         backButton: string;
     };
     roles: {
@@ -128,6 +127,10 @@ export interface pagesNS {
         backButton: string;
     };
     invite: {
+        title: string;
+        subTitle: string;
+    };
+    workflowRequestsPage: {
         title: string;
         subTitle: string;
     };

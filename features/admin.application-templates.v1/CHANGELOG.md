@@ -1,5 +1,42 @@
 # @wso2is/admin.application-templates.v1
 
+## 1.5.9
+
+### Patch Changes
+
+- [#9502](https://github.com/wso2/identity-apps/pull/9502) [`731936a0f5c346fc612bebd3a1578f42746a3e8b`](https://github.com/wso2/identity-apps/commit/731936a0f5c346fc612bebd3a1578f42746a3e8b) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - Update label in sub organization application templates
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.49.114
+
+## 1.5.8
+
+### Patch Changes
+
+- [#9455](https://github.com/wso2/identity-apps/pull/9455) [`6dadf0f543699b1b6b841610cccdbb0a6c2dbcce`](https://github.com/wso2/identity-apps/commit/6dadf0f543699b1b6b841610cccdbb0a6c2dbcce) Thanks [@ShanChathusanda93](https://github.com/ShanChathusanda93)! - enable-app-creation-ui-in-sub-orgs
+
+- Updated dependencies [[`6dadf0f543699b1b6b841610cccdbb0a6c2dbcce`](https://github.com/wso2/identity-apps/commit/6dadf0f543699b1b6b841610cccdbb0a6c2dbcce)]:
+  - @wso2is/admin.applications.v1@2.38.10
+  - @wso2is/admin.core.v1@2.49.105
+
+## 1.5.7
+
+### Patch Changes
+
+- [#8570](https://github.com/wso2/identity-apps/pull/8570) [`1cd2c4ed34098ce360ea05a33af1b0d4ebf22af0`](https://github.com/wso2/identity-apps/commit/1cd2c4ed34098ce360ea05a33af1b0d4ebf22af0) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Update the template markdown serverOrigin
+
+- Updated dependencies [[`86a1c84f5ad6986d1398cd8f0d03918d1e73d766`](https://github.com/wso2/identity-apps/commit/86a1c84f5ad6986d1398cd8f0d03918d1e73d766)]:
+  - @wso2is/admin.core.v1@2.46.41
+
+## 1.5.6
+
+### Patch Changes
+
+- [#8544](https://github.com/wso2/identity-apps/pull/8544) [`411a23ec32efb3957d59ec1cc3fad8500a7a1a95`](https://github.com/wso2/identity-apps/commit/411a23ec32efb3957d59ec1cc3fad8500a7a1a95) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Update Application Markdown guide to include docSiteURL in application templates quick start guide
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.46.11
+
 ## 1.5.5
 
 ### Patch Changes

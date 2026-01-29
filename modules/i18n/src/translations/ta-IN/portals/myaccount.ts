@@ -517,6 +517,13 @@ export const myAccount: MyAccountNS = {
                 },
                 tooltip: "Apps"
             },
+            dropdown: {
+                footer: {
+                    cookiePolicy: "குக்கீக் கொள்கை",
+                    privacyPolicy: "தனியுரிமை",
+                    termsOfService: "சேவை விதிமுறைகள்"
+                }
+            },
             organizationLabel: "இந்தக் கணக்கு நிர்வகிக்கப்படுகிறது"
         },
         linkedAccounts: {
@@ -1239,6 +1246,9 @@ export const myAccount: MyAccountNS = {
                     }
                 },
                 generic: {
+                    dropdown: {
+                        placeholder: "உங்கள் {{fieldName}} ஐத் தேர்ந்தெடுக்கவும்"
+                    },
                     inputs: {
                         placeholder: "{{fieldName}} ஐ உள்ளிடவும்",
                         readonly: {
@@ -1246,9 +1256,13 @@ export const myAccount: MyAccountNS = {
                             popup: "உங்கள் புதுப்பிக்க நிர்வாகியைத் தொடர்பு கொள்ளுங்கள் {{fieldName}}"
                         },
                         validations: {
+                            duplicate: "{{fieldName}} இல் நகல் மதிப்புகள் இருக்க முடியாது",
                             empty: "{{fieldName}} ஒரு கட்டாயா களமாகும்",
                             invalidFormat: "{{fieldName}} சரியான வடிவத்தில் இல்லை"
                         }
+                    },
+                    radioGroup: {
+                        optionNone: "இல்லை"
                     }
                 },
                 mobileChangeForm: {

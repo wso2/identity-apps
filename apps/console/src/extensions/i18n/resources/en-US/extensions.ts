@@ -330,7 +330,7 @@ export const extensions: Extensions = {
                                         alreadyExistsError: "Identifier already exists in the organization. Please choose a different one.",
                                         errorOccurred: "An error occurred while validating the identifier.",
                                         invalid: "Identifier cannot contain spaces",
-                                        hint: "We recommend using a URI as the identifier, but you do not need to make the URI publicly available since {{ productName }} will not access your API. {{ productName }} will use this identifier value as the audience(aud) claim in the issued JWT tokens. <1>This field should be unique; once created, it is not editable.</1>",
+                                        hint: "We recommend using a URI as the identifier, but it does not need to be publicly accessible since {{productName}} will only use it as the audience (aud) claim in the issued JWT tokens and will not attempt to access your API. <1>This field should be unique. Once created, it is not editable.</1>",
                                         label: "Identifier",
                                         placeholder: "https://api.bookmyhotel.com"
                                     },
@@ -975,7 +975,7 @@ export const extensions: Extensions = {
                                 placeholder: "https://myapp.com/{{locale}}/privacy-policy"
                             },
                             recoveryPortalURL: {
-                                hint: "Link to your organization's recovery portal URL. This URL will only be used in orchestrated flows. You can use placeholders like <1>{{lang}}</1>, <3>{{country}}</3>, or <5>{{locale}}</5> to customize the URL for different regions or languages.",
+                                hint: "Link to your organization's recovery portal URL. You can use placeholders like <1>{{lang}}</1>, <3>{{country}}</3>, or <5>{{locale}}</5> to customize the URL for different regions or languages. Note: This overrides the URL of the recovery flow you create using the flow builder in Flows.",
                                 label: "Recovery Portal",
                                 placeholder: "https://myapp.com/account-recovery"
                             },
@@ -1559,6 +1559,7 @@ export const extensions: Extensions = {
             pageHeader: {
                 application: "Application",
                 applicationBrandingtitle: "Application Branding",
+                preSelectedApplicationBrandingtitle: "Application Branding - {{ appName }}",
                 applicationBrandingDescription: "Customize consumer-facing user interfaces of applications.",
                 applicationListWarning: "Select an application from the list above to customize the branding preferences.",
                 defaultBrandingAppliedMessage: "Organization branding has been applied to this application because no app-specific branding is set.",
@@ -2590,6 +2591,16 @@ export const extensions: Extensions = {
     manage: {
         accountLogin: {
             notifications: {
+                revert: {
+                    error: {
+                        description: "An error occurred while reverting the username validation configuration.",
+                        message: "Revert error"
+                    },
+                    success: {
+                        description: "Successfully reverted username validation configuration.",
+                        message: "Revert successful"
+                    }
+                },
                 success: {
                     description: "Successfully updated username validation configuration.",
                     message: "Update successful"
@@ -2810,11 +2821,14 @@ export const extensions: Extensions = {
                     inputLabel: {
                         alphanumericUsername: "Username",
                         alphanumericUsernamePlaceholder: "Enter the username",
+                        email: "Email",
                         emailUsername: "Username (Email)"
                     },
-                    inviteUserTooltip:
-                        "An email with a confirmation link will be sent to the " +
-                        "provided email address for the user to set their own password.",
+                    inviteUserTooltip: {
+                        emailLinkInviteTooltip: "An email with a confirmation link will be sent to the provided email address for the user to set their own password.",
+                        emailOTPInviteTooltip: "An email invitation with an OTP will be sent to the provided email address for the user to set their own password.",
+                        smsOTPInviteTooltip: "An SMS notification with an OTP will be sent to the provided phone number for the user to set their own password."
+                    },
                     inviteUserOfflineTooltip: "You can copy the invitation link or the invitation" +
                         " during the final step to share with the user.",
                     inviteLink: {
@@ -2859,6 +2873,7 @@ export const extensions: Extensions = {
                         password: "Password",
                         passwordWarningMessage: "Make sure to copy the password or the invitation before" +
                             " you proceed. You won't see them again!",
+                        passwordWarningMessageWithWorkFlow: "Make sure to copy the password or the invitation before you proceed. You won't see them again! Share this invitation only after the user creation workflow has been approved. The user will not be able to access the account beforehand.",
                         username: "Username"
                     },
                     validation: {
@@ -3368,6 +3383,7 @@ export const extensions: Extensions = {
                             }
                         },
                         smsProviderWarning: "Ensure that an <1>SMS Provider</1> is configured for the SMS feature to work properly.",
+                        smsProviderWarningSubOrg: "Ensure that an SMS Provider is configured from the parent organization before enabling the SMS based recovery.",
                         recoveryOptionHeading: "Select Recovery Option"
                     },
                     heading: "Enable self-service username recovery for users on the login page."
@@ -3703,14 +3719,89 @@ export const extensions: Extensions = {
                         "<3>user</3> account in the organization."
                 },
                 inviteUserToSetPassword: {
+                    heading: "Invited User Registration",
+                    connectorDescription: "Configure how users are invited to set their passwords during user onboarding and account creation.",
+                    form: {
+                        fields: {
+                            enableInviteUserToSetPassword: {
+                                label: "Enable invite user to set password",
+                                hint: "When enabled, users will receive an invitation to set their password via email or SMS."
+                            },
+                            enableEmailBasedAskPassword: {
+                                label: "Enable email invitations",
+                                hint: "When enabled, users will receive an email invitation with instructions to set their password."
+                            },
+                            enableSMSBasedAskPassword: {
+                                label: "Enable SMS invitations",
+                                hint: "When enabled, users will receive an SMS invitation with an OTP to set their password."
+                            },
+                            emailAskPasswordOptions: {
+                                header: "Choose invitation method",
+                                emailLink: {
+                                    label: "Email with password setup link"
+                                },
+                                emailOtp: {
+                                    label: "Email with OTP code"
+                                },
+                                smsOtp: {
+                                    label: "SMS with OTP code"
+                                }
+                            },
+                            enableAccountActivationEmail: {
+                                label: "Send account activation notification",
+                                hint: "When enabled, users will receive a confirmation email after their account is successfully activated."
+                            },
+                            enableAccountLockOnCreation: {
+                                label: "Lock account until password is set",
+                                hint: "When enabled, the user account will be locked upon creation."
+                            },
+                            expiryTime: {
+                                label: "Invitation link/OTP expiry time",
+                                placeholder: "Enter expiry time in minutes",
+                                hint: "Set the time span that the password setup invitation link / OTP would be valid, in minutes.",
+                                hintSub: "(For infinite validity period, set -1. Setting 0 will cause immediate expiry of the invitation)",
+                                validations: {
+                                    invalid: "Recovery link/OTP expiry time should be an integer.",
+                                    empty: "Recovery link/OTP expiry time cannot be empty.",
+                                    range:
+                                        "Recovery link/OTP expiry time should be between 1 minute & 10080 minutes " +
+                                        "(7 days).",
+                                    maxLengthReached:
+                                        "Recovery link/OTP expiry time should be a number with 5 or less " + "digits."
+                                }
+                            },
+                            askPasswordOtpUseUppercase: {
+                                label: "Include uppercase letters in OTP",
+                                hint: "When enabled, the generated OTP codes will include uppercase letters (A-Z)."
+                            },
+                            askPasswordOtpUseLowercase: {
+                                label: "Include lowercase letters in OTP",
+                                hint: "When enabled, the generated OTP codes will include lowercase letters (a-z)."
+                            },
+                            askPasswordOtpUseNumeric: {
+                                label: "Include numbers in OTP",
+                                hint: "When enabled, the generated OTP codes will include numeric digits (0-9)."
+                            },
+                            askPasswordOtpLength: {
+                                label: "OTP code length",
+                                hint: "Set the number of characters in the generated OTP codes.",
+                                validations: {
+                                    empty: "OTP code length cannot be empty.",
+                                    invalid: "OTP code length should be an integer.",
+                                    range: "OTP code length should be between 4 and 10."
+                                }
+                            }
+                        }
+                    },
+                    otpConfigHeading: "OTP Code Configuration",
                     notification: {
                         error: {
-                            description: "Failed to update the configuration for the Invite User to Set Password connector.",
-                            message: "Error updating configuration"
+                            description: "An error occurred while updating the invite user to set password configuration. Please try again.",
+                            message: "Configuration update failed"
                         },
                         success: {
-                            description: "Successfully updated the configuration for the Invite User to Set Password connector.",
-                            message: "Update successful"
+                            description: "The invite user to set password configuration has been successfully updated.",
+                            message: "Configuration updated successfully"
                         }
                     }
                 },
@@ -3852,6 +3943,10 @@ export const extensions: Extensions = {
                                 description: "An error occurred while adding the administrator.",
                                 message: "Error Adding Administrator"
                             },
+                            pendingApproval: {
+                                description: "The administrator role update is accepted and is pending approval.",
+                                message: "Administrator Role Pending Approval"
+                            },
                             success: {
                                 description: "Successfully added administrator.",
                                 message: "Administrator Added"
@@ -3921,7 +4016,8 @@ export const extensions: Extensions = {
                 attributeManagement: "Attribute Management",
                 AccountManagement: "Account Management",
                 userManagement: "Identity Management",
-                approvalWorkflows: "Approval Workflows",
+                workflows: "Workflows",
+
                 organizationSettings: "Organization Settings"
             }
         }

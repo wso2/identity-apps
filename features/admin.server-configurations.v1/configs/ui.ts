@@ -30,6 +30,7 @@ import {
     VerticleFilterBarsIcon
 } from "@oxygen-ui/react-icons";
 import UsernameValidationIcon from "@wso2is/admin.extensions.v1/assets/images/icons/username-validation-icon.svg";
+import { FunctionComponent, SVGProps } from "react";
 import {
     default as LockRecoverIcon
 } from "../../themes/default/assets/images/icons/lock-recover-icon.svg";
@@ -93,7 +94,8 @@ import {
 import {
     default as JWTKeyIcon
 } from "../../themes/default/assets/images/illustrations/jwt-key-icon.svg";
-import { ServerConfigurationsConstants } from "../constants";
+import { ReactComponent as SiftLogo } from "../../themes/wso2is/assets/images/connectors/sift.svg";
+import { ServerConfigurationsConstants } from "../constants/server-configurations-constants";
 
 interface GetGovernanceConnectorIllustrationsInterface {
     [key: string]: string;
@@ -155,5 +157,16 @@ export const getConnectorCategoryIcon = (): ConnectorCategoryIconsInterface => {
         [ServerConfigurationsConstants.LOGIN_SECURITY_SETTINGS_CATEGORY_ID]: ShieldUserPencilIcon,
         [ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID]: RobotIcon,
         "default": GearIcon
+    };
+};
+
+/**
+ * Get Sift connector icon.
+ */
+export const getSiftConnectorIcon = (): {
+    sift: FunctionComponent<SVGProps<SVGSVGElement>>;
+} => {
+    return {
+        sift: SiftLogo
     };
 };

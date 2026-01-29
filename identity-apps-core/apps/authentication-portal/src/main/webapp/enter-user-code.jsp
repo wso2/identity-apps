@@ -32,7 +32,16 @@
 <%
     String errorCode = StringUtils.EMPTY;
     if (request.getParameter("error") != null) {
-        errorCode = request.getParameter("error");
+        errorCode = AuthenticationEndpointUtil.i18n(resourceBundle,"error.retry");
+        String error = request.getParameter("error");
+        if (!error.equalsIgnoreCase(AuthenticationEndpointUtil.i18n(resourceBundle, error))) {
+            errorCode = AuthenticationEndpointUtil.i18n(resourceBundle, error);
+        }
+    }
+
+    String deviceEndpoint = "../oauth2/device";
+    if (StringUtils.isNotBlank(identityServerEndpointContextParam)) {
+        deviceEndpoint = identityServerEndpointContextParam + "/oauth2/device";
     }
 %>
 
@@ -76,7 +85,7 @@
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, errorCode)%>
                     </div>
                 <% } %>
-                    <form class="ui large form" action="../oauth2/device" method="post" id="loginForm">
+                    <form class="ui large form" action="<%=deviceEndpoint%>" method="post" id="loginForm">
                         <div class="field">
                             <div class="ui fluid left icon input">
                                 <input

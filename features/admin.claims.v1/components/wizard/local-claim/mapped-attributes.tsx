@@ -64,6 +64,8 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
     } = props;
 
     const hiddenUserStores: string[] = useSelector((state: AppState) => state.config.ui.hiddenUserStores ?? []);
+    const systemReservedUserStores: string[] =
+        useSelector((state: AppState) => state.config.ui.systemReservedUserStores ?? []);
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName ?? userstoresConfig.primaryUserstoreName);
 
@@ -89,7 +91,11 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
 
         if (!isUserStoreListFetchRequestLoading && userStoresList?.length > 0) {
             userStoresList.forEach((store: UserStoreListItem) => {
-                if (store.enabled && !hiddenUserStores.includes(store.name)) {
+                if (
+                    store.enabled &&
+                    !hiddenUserStores.includes(store.name) &&
+                    !systemReservedUserStores?.includes(store.name)
+                ) {
                     userstore.push(store);
                 }
             });

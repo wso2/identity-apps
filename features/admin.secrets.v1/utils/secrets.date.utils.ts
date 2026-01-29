@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2021, WSO2 LLC. (https://www.wso2.com). All Rights Reserved.
+ * Copyright (c) 2021-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,26 +16,35 @@
  * under the License.
  */
 
-import moment from "moment";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import utc from "dayjs/plugin/utc";
+
+dayjs.extend(relativeTime);
+dayjs.extend(utc);
 
 /**
- * https://momentjs.com/docs/#/durations/humanize/
- * @param dateString {string}
- * @return {string} i.e., "A day ago"
+ * @see https://day.js.org/docs/en/durations/humanize
+ *
+ * @param dateString - The date string to humanize.
+ * @returns A human-readable relative time string, or "N/A" if input is invalid.
  */
 export const humanizeDateString = (dateString: string): string => {
     if (!dateString) return "N/A";
-    return moment(dateString)
+
+    return dayjs(dateString)
         .utc(true)
         .fromNow();
 };
 
 /**
- * https://momentjs.com/docs/#/displaying/format/
- * @param dateString {string}
- * @return {string}  ͌ "Sunday, February 14th 2010"
+ * @see https://day.js.org/docs/en/durations/format
+ *
+ * @param dateString - The date string to format.
+ * @returns A formatted date string, or "N/A" if input is invalid.
  */
 export const formatDateString = (dateString: string): string => {
     if (!dateString) return "N/A";
-    return moment(dateString).format("dddd, MMMM Do YYYY");
+
+    return dayjs(dateString).format("dddd, MMMM Do YYYY");
 };

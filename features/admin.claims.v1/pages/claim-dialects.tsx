@@ -21,14 +21,17 @@ import { getDialects } from "@wso2is/admin.claims.v1/api";
 import { getSidePanelIcons, getTechnologyLogos } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { FeatureConfigInterface, RouteConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
+import useGetSelfAuthenticatedOrganization
+    from "@wso2is/admin.organizations.v1/api/use-get-self-authenticated-organization";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels, ClaimDialect, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { RouteUtils as CommonRouteUtils } from "@wso2is/core/utils";
 import {
     AnimatedAvatar,
     DocumentationLink,
@@ -80,18 +83,20 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
         featureConfig?.attributeVerification?.scopes?.read
     );
 
-    const isAgentsFeatureEnabled: boolean = featureConfig?.agents?.enabled;
-
     const { filterUserStores, userStoresList, mutateUserStoreList } = useUserStores();
+
+    const isVcFeatureEnabled: boolean = useSelector((state: AppState) => {
+        return state.config.ui.features.verifiableCredentials?.enabled;
+    });
 
     const { isSubOrganization } = useGetCurrentOrganizationType();
     const [ addEditClaim, setAddEditClaim ] = useState(false);
     const [ isLoading, setIsLoading ] = useState(true);
     const [ oidcAttributeMappings, setOidcAttributeMappings ] = useState<ClaimDialect[]>([]);
     const [ scimAttributeMappings, setScimAttributeMappings ] = useState<ClaimDialect[]>([]);
+    const [ vcAttributeMappings, setVcAttributeMappings ] = useState<ClaimDialect[]>([]);
     const [ axschemaAttributeMappings, setAxschemaAttributeMappings ] = useState<ClaimDialect[]>([]);
     const [ eidasAttributeMappings, setEidasAttributeMappings ] = useState<ClaimDialect[]>([]);
-    const [ agentSchemaAttributeMappings, setAgentSchemaAttributeMappings ] = useState<ClaimDialect[]>([]);
     const [ otherAttributeMappings, setOtherAttributeMappings ] = useState<ClaimDialect[]>([]);
     const cdmEnabled = true; // TODO: Replace with config value later
 
@@ -109,6 +114,22 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
 
     const isAttributeDialectReadOnly: boolean = !hasAttributeDialectsUpdatePermissions
         || (isSubOrganization() && configuredUserStoreCount < 1);
+
+    const routesConfig: RouteConfigInterface = useSelector(
+        (state: AppState) => state.config.ui.routes
+    );
+
+    const isAuthenticated: boolean = useSelector((state: AppState) => state?.auth?.isAuthenticated);
+
+    const { data: organization, isLoading: isOrgLoading } = useGetSelfAuthenticatedOrganization(isAuthenticated);
+
+    const enabledOrganizationRoutes: string[] = CommonRouteUtils.getOrganizationEnabledRoutes(
+        routesConfig?.organizationEnabledRoutes ?? {},
+        organization?.version
+    );
+
+    const isAttributeUpdateVerificationUIEnabled: boolean =
+    enabledOrganizationRoutes.includes("attributeUpdateVerificationSettings");
 
     /**
      * Fetches all the dialects.
@@ -147,6 +168,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
 
                 const oidc: ClaimDialect[] = [];
                 const scim: ClaimDialect[] = [];
+                const vc: ClaimDialect[] = [];
                 const axschema: ClaimDialect[] = [];
                 const eidas: ClaimDialect[] = [];
                 const agent: ClaimDialect[] = [];
@@ -161,6 +183,8 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                     } else if (Object.values(ClaimManagementConstants.SCIM_TABS).map(
                         (tab: { name: string; uri: string }) => tab.uri).includes(attributeMapping.dialectURI)) {
                         scim.push(attributeMapping);
+                    } else if (ClaimManagementConstants.VC_MAPPING.includes(attributeMapping.dialectURI)) {
+                        vc.push(attributeMapping);
                     } else if (ClaimManagementConstants.AXSCHEMA_MAPPING === attributeMapping.dialectURI) {
                         axschema.push(attributeMapping);
                     } else if (Object.values(ClaimManagementConstants.EIDAS_TABS).map(
@@ -179,10 +203,12 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
 
                 setOidcAttributeMappings(oidc);
                 setScimAttributeMappings(scim);
+                if (isVcFeatureEnabled) {
+                    setVcAttributeMappings(vc);
+                }
                 setAxschemaAttributeMappings(axschema);
                 // TODO: Remove eiDAS temporally. Need to update it to version 2 and re-enable it.
                 setEidasAttributeMappings(null);
-                setAgentSchemaAttributeMappings(agent);
                 setOtherAttributeMappings(others);
             })
             .catch((error: IdentityAppsApiException) => {
@@ -351,9 +377,10 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                 </List.Item>
                                             </List>
                                         </EmphasizedSegment>
-                                        { !isSubOrganization() &&
-                                        featureConfig?.attributeVerification?.enabled &&
-                                        hasAttributeVerificationReadPermissions && (
+                                        { ((isSubOrganization() && !isOrgLoading &&
+                                        isAttributeUpdateVerificationUIEnabled) ||
+                                        (!isSubOrganization() && featureConfig?.attributeVerification?.enabled &&
+                                        hasAttributeVerificationReadPermissions)) && (
                                             <EmphasizedSegment
                                                 onClick={ () => {
                                                     history.push(AppConstants.getPaths()
@@ -431,512 +458,512 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                     }
                     <Divider hidden />
                     <Divider hidden />
-                    { !isSubOrganization() && (
-                        <>
-                            <Divider />
-                            <Divider hidden />
-                            <Grid>
-                                <Grid.Row columns={ 2 }>
-                                    <Grid.Column
-                                        width={ 12 }
-                                        verticalAlign="middle"
-                                    >
-                                        { isLoading ? (
-                                            renderHeaderPlaceholder()
-                                        ) : (
-                                            <Header as="h4">
-                                                { t(
-                                                    "claims:dialects." +
-                                                    "sections.manageAttributeMappings.heading"
-                                                ) }
-                                            </Header>
+                    <Divider />
+                    <Divider hidden />
+                    <Grid>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column
+                                width={ 12 }
+                                verticalAlign="middle"
+                            >
+                                { isLoading ? (
+                                    renderHeaderPlaceholder()
+                                ) : (
+                                    <Header as="h4">
+                                        { t(
+                                            "claims:dialects." +
+                                            "sections.manageAttributeMappings.heading"
                                         ) }
-                                    </Grid.Column>
-                                    <Grid.Column
-                                        width={ 4 }
-                                        verticalAlign="middle"
-                                        textAlign="right"
+                                    </Header>
+                                ) }
+                            </Grid.Column>
+                            <Grid.Column
+                                width={ 4 }
+                                verticalAlign="middle"
+                                textAlign="right"
+                            >
+                                { attributeConfig.addAttributeMapping && (
+                                    <Show
+                                        when={ featureConfig?.attributeDialects?.scopes?.create }
                                     >
-                                        { attributeConfig.addAttributeMapping && (
-                                            <Show
-                                                when={ featureConfig?.attributeDialects?.scopes?.create }
-                                            >
-                                                <PrimaryButton
-                                                    disabled={ isLoading }
-                                                    loading={ isLoading }
-                                                    onClick={ () => {
-                                                        setAddEditClaim(true);
-                                                    } }
-                                                    data-testid={ `${ testId }-list-layout-add-button` }
-                                                >
-                                                    <Icon name="add" />
-                                                    {
-                                                        t("claims:dialects." +
-                                                        "pageLayout.list.primaryAction")
-                                                    }
-                                                </PrimaryButton>
-                                            </Show>
-                                        ) }
-                                    </Grid.Column>
-                                </Grid.Row>
-                            </Grid>
-                            <Divider hidden />
-                            { isLoading ? (
-                                renderSegmentPlaceholder()
-                            ) : ( oidcAttributeMappings?.length > 0 && (
-                                <EmphasizedSegment
-                                    className="clickable"
-                                    data-testid={ `${ testId }-oidc-dialect-container` }
-                                >
-                                    <List>
-                                        <List.Item
+                                        <PrimaryButton
+                                            disabled={ isLoading }
+                                            loading={ isLoading }
                                             onClick={ () => {
-                                                history.push(
-                                                    AppConstants.getPaths()
-                                                        .get("ATTRIBUTE_MAPPINGS")
-                                                        .replace(":type", ClaimManagementConstants.OIDC)
-                                                        .replace(
-                                                            ":customAttributeMappingID",
-                                                            ""
-                                                        )
-                                                );
+                                                setAddEditClaim(true);
                                             } }
+                                            data-testid={ `${ testId }-list-layout-add-button` }
                                         >
-                                            <Grid>
-                                                <Grid.Row columns={ 2 }>
-                                                    <Grid.Column width={ 12 }>
-                                                        <GenericIcon
-                                                            transparent
-                                                            verticalAlign="middle"
-                                                            rounded
-                                                            icon={ getTechnologyLogos().oidc }
-                                                            spaced="right"
-                                                            size="mini"
-                                                            floated="left"
-                                                        />
-                                                        <List.Header>
-                                                            { t(
-                                                                "claims:" +
-                                                                "dialects.sections." +
-                                                                "manageAttributeMappings.oidc.heading"
-                                                            ) }
-                                                        </List.Header>
-                                                        <List.Description
-                                                            data-testid={ `${ testId }-local-dialect` }
-                                                        >
-                                                            { t(
-                                                                "claims:attributeMappings." +
-                                                                "oidc.description"
-                                                            ) }
-                                                        </List.Description>
-                                                    </Grid.Column>
-                                                    <Grid.Column
-                                                        width={ 4 }
-                                                        verticalAlign="middle"
-                                                        textAlign="right"
-                                                    >
-                                                        <Popup
-                                                            content={
-                                                                hasAttributeDialectsUpdatePermissions
-                                                                    ? t("common:edit")
-                                                                    : t("common:view")
-                                                            }
-                                                            trigger={
-                                                                hasAttributeDialectsUpdatePermissions
-                                                                    ? <Icon color="grey" name="pencil" />
-                                                                    : <Icon color="grey" name="eye" />
-                                                            }
-                                                            inverted
-                                                        />
-                                                    </Grid.Column>
-                                                </Grid.Row>
-                                            </Grid>
-                                        </List.Item>
-                                    </List>
-                                </EmphasizedSegment>
-                            )) }
-                            { isLoading ? ( renderSegmentPlaceholder()
-                            ) : ( scimAttributeMappings?.length > 0 && (
-                                <EmphasizedSegment
+                                            <Icon name="add" />
+                                            {
+                                                t("claims:dialects." +
+                                                "pageLayout.list.primaryAction")
+                                            }
+                                        </PrimaryButton>
+                                    </Show>
+                                ) }
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                    <Divider hidden />
+                    { isLoading ? (
+                        renderSegmentPlaceholder()
+                    ) : ( oidcAttributeMappings?.length > 0 && (
+                        <EmphasizedSegment
+                            className="clickable"
+                            data-testid={ `${ testId }-oidc-dialect-container` }
+                        >
+                            <List>
+                                <List.Item
                                     onClick={ () => {
                                         history.push(
                                             AppConstants.getPaths()
                                                 .get("ATTRIBUTE_MAPPINGS")
-                                                .replace(":type", ClaimManagementConstants.SCIM)
+                                                .replace(":type", ClaimManagementConstants.OIDC)
                                                 .replace(
                                                     ":customAttributeMappingID",
                                                     ""
                                                 )
                                         );
                                     } }
-                                    className="clickable"
-                                    data-testid={ `${ testId }-scim-dialect-container` }
                                 >
-                                    <List>
-                                        <List.Item>
-                                            <Grid>
-                                                <Grid.Row columns={ 2 }>
-                                                    <Grid.Column width={ 12 }>
-                                                        <GenericIcon
-                                                            verticalAlign="middle"
-                                                            rounded
-                                                            icon={ getTechnologyLogos().scim }
-                                                            spaced="right"
-                                                            size="mini"
-                                                            floated="left"
-                                                        />
-                                                        <List.Header>
-                                                            { t(
-                                                                "claims:" +
-                                                                "dialects.sections." +
-                                                                "manageAttributeMappings.scim.heading"
-                                                            ) }
-                                                        </List.Header>
-                                                        <List.Description
-                                                            data-testid={ `${ testId }-local-dialect` }
-                                                        >
-                                                            { t(
-                                                                "claims:attributeMappings" +
-                                                        ".scim.description"
-                                                            ) }
-                                                        </List.Description>
-                                                    </Grid.Column>
-                                                    <Grid.Column
-                                                        width={ 4 }
-                                                        verticalAlign="middle"
-                                                        textAlign="right"
-                                                    >
-                                                        <Popup
-                                                            content={ (hasAttributeDialectsUpdatePermissions &&
-                                                                attributeConfig.isSCIMEditable)
-                                                                ? t("common:edit")
-                                                                : t("common:view") }
-                                                            trigger={ (hasAttributeDialectsUpdatePermissions &&
-                                                                attributeConfig.isSCIMEditable)
-                                                                ? <Icon color="grey" name="pencil" />
-                                                                : <Icon color="grey" name="eye" />
-                                                            }
-                                                            inverted
-                                                        />
-                                                    </Grid.Column>
-                                                </Grid.Row>
-                                            </Grid>
-                                        </List.Item>
-                                    </List>
-                                </EmphasizedSegment>
-                            )) }
-                            { isLoading ? ( renderSegmentPlaceholder()
-                            ) : ( axschemaAttributeMappings?.length > 0 && (
-                                <EmphasizedSegment
-                                    className="clickable"
-                                    data-testid={ `${ testId }-axschema-dialect-container` }
-                                >
-                                    <List>
-                                        <List.Item
-                                            onClick={ () => {
-                                                history.push(
-                                                    AppConstants.getPaths()
-                                                        .get("ATTRIBUTE_MAPPINGS")
-                                                        .replace(":type", ClaimManagementConstants.AXSCHEMA)
-                                                        .replace(
-                                                            ":customAttributeMappingID",
-                                                            ""
-                                                        )
-                                                );
-                                            } }
-                                        >
-                                            <Grid>
-                                                <Grid.Row columns={ 2 }>
-                                                    <Grid.Column width={ 12 }>
-                                                        <GenericIcon
-                                                            verticalAlign="middle"
-                                                            rounded
-                                                            icon={ getTechnologyLogos().axschema }
-                                                            spaced="right"
-                                                            size="mini"
-                                                            floated="left"
-                                                        />
-                                                        <List.Header>
-                                                            { t(
-                                                                "claims:attributeMappings." +
-                                                                "axschema.heading"
-                                                            ) }
-                                                        </List.Header>
-                                                        <List.Description
-                                                            data-testid={ `${ testId }-local-dialect` }
-                                                        >
-                                                            { t(
-                                                                "claims:attributeMappings." +
-                                                                "axschema.description"
-                                                            ) }
-                                                        </List.Description>
-                                                    </Grid.Column>
-                                                    <Grid.Column
-                                                        width={ 4 }
-                                                        verticalAlign="middle"
-                                                        textAlign="right"
-                                                    >
-                                                        <Popup
-                                                            content={
-                                                                hasAttributeDialectsUpdatePermissions
-                                                                    ? t("common:edit")
-                                                                    : t("common:view")
-                                                            }
-                                                            trigger={
-                                                                hasAttributeDialectsUpdatePermissions
-                                                                    ? <Icon color="grey" name="pencil" />
-                                                                    : <Icon color="grey" name="eye" />
-                                                            }
-                                                            inverted
-                                                        />
-                                                    </Grid.Column>
-                                                </Grid.Row>
-                                            </Grid>
-                                        </List.Item>
-                                    </List>
-                                </EmphasizedSegment>
-                            )) }
-                            { isLoading ? (
-                                renderSegmentPlaceholder()
-                            ) : ( eidasAttributeMappings?.length > 0 && (
-                                <EmphasizedSegment
-                                    className="clickable"
-                                    data-testid={ `${ testId }-eidas-dialect-container` }
-                                >
-                                    <List>
-                                        <List.Item
-                                            onClick={ () => {
-                                                history.push(
-                                                    AppConstants.getPaths()
-                                                        .get("ATTRIBUTE_MAPPINGS")
-                                                        .replace(":type", ClaimManagementConstants.EIDAS)
-                                                        .replace(
-                                                            ":customAttributeMappingID",
-                                                            ""
-                                                        )
-                                                );
-                                            } }
-                                        >
-                                            <Grid>
-                                                <Grid.Row columns={ 2 }>
-                                                    <Grid.Column width={ 12 }>
-                                                        <GenericIcon
-                                                            transparent
-                                                            verticalAlign="middle"
-                                                            rounded
-                                                            icon={ getTechnologyLogos().eidas }
-                                                            spaced="right"
-                                                            size="mini"
-                                                            floated="left"
-                                                        />
-                                                        <List.Header>
-                                                            { t(
-                                                                "claims:attributeMappings." +
-                                                                "eidas.heading"
-                                                            ) }
-                                                        </List.Header>
-                                                        <List.Description
-                                                            data-testid={ `${ testId }-local-dialect` }
-                                                        >
-                                                            { t(
-                                                                "claims:attributeMappings." +
-                                                                "eidas.description"
-                                                            ) }
-                                                        </List.Description>
-                                                    </Grid.Column>
-                                                    <Grid.Column
-                                                        width={ 4 }
-                                                        verticalAlign="middle"
-                                                        textAlign="right"
-                                                    >
-                                                        <Popup
-                                                            content={
-                                                                hasAttributeDialectsUpdatePermissions
-                                                                    ? t("common:edit")
-                                                                    : t("common:view")
-                                                            }
-                                                            trigger={
-                                                                hasAttributeDialectsUpdatePermissions
-                                                                    ? <Icon color="grey" name="pencil" />
-                                                                    : <Icon color="grey" name="eye" />
-                                                            }
-                                                            inverted
-                                                        />
-                                                    </Grid.Column>
-                                                </Grid.Row>
-                                            </Grid>
-                                        </List.Item>
-                                    </List>
-                                </EmphasizedSegment>
-                            )) }
-                            { isLoading ? (
-                                renderSegmentPlaceholder()
-                            ) : ( isAgentsFeatureEnabled && agentSchemaAttributeMappings?.length > 0 && (
-                                <EmphasizedSegment
-                                    className="clickable"
-                                    data-testid={ `${ testId }-oidc-dialect-container` }
-                                >
-                                    <List>
-                                        <List.Item
-                                            onClick={ () => {
-                                                history.push(
-                                                    AppConstants.getPaths()
-                                                        .get("ATTRIBUTE_MAPPINGS")
-                                                        .replace(":type", ClaimManagementConstants.AGENT)
-                                                        .replace(
-                                                            ":customAttributeMappingID",
-                                                            ""
-                                                        )
-                                                );
-                                            } }
-                                        >
-                                            <Grid>
-                                                <Grid.Row columns={ 2 }>
-                                                    <Grid.Column width={ 12 }>
-                                                        <GenericIcon
-                                                            transparent
-                                                            verticalAlign="middle"
-                                                            rounded
-                                                            icon={ getTechnologyLogos().scim }
-                                                            spaced="right"
-                                                            size="mini"
-                                                            floated="left"
-                                                        />
-                                                        <List.Header>
-                                                            { t(
-                                                                "claims:" +
-                                                                "dialects.sections." +
-                                                                "manageAttributeMappings.agent.heading"
-                                                            ) }
-                                                        </List.Header>
-                                                        <List.Description
-                                                            data-testid={ `${ testId }-agent-dialect` }
-                                                        >
-                                                            { t(
-                                                                "claims:attributeMappings." +
-                                                                "agent.description"
-                                                            ) }
-                                                        </List.Description>
-                                                    </Grid.Column>
-                                                    <Grid.Column
-                                                        width={ 4 }
-                                                        verticalAlign="middle"
-                                                        textAlign="right"
-                                                    >
-                                                        <Popup
-                                                            content={
-                                                                hasAttributeDialectsUpdatePermissions
-                                                                    ? t("common:edit")
-                                                                    : t("common:view")
-                                                            }
-                                                            trigger={
-                                                                hasAttributeDialectsUpdatePermissions
-                                                                    ? <Icon color="grey" name="pencil" />
-                                                                    : <Icon color="grey" name="eye" />
-                                                            }
-                                                            inverted
-                                                        />
-                                                    </Grid.Column>
-                                                </Grid.Row>
-                                            </Grid>
-                                        </List.Item>
-                                    </List>
-                                </EmphasizedSegment>
-                            )) }
-
-
-                            { attributeConfig.showCustomAttributeMapping && (
-                                isLoading ? (
-                                    renderSegmentPlaceholder()
-                                ) : (
-                                    otherAttributeMappings?.length > 0 && otherAttributeMappings.map(
-                                        (customAttributeMapping: ClaimDialect) => (
-                                            <EmphasizedSegment
-                                                key={ customAttributeMapping.dialectURI }
-                                                onClick={ () => {
-                                                    history.push(
-                                                        AppConstants.getPaths()
-                                                            .get("ATTRIBUTE_MAPPINGS")
-                                                            .replace(":type", ClaimManagementConstants.OTHERS)
-                                                            .replace(
-                                                                ":customAttributeMappingID",
-                                                                customAttributeMapping.id
-                                                            )
-                                                    );
-                                                } }
-                                                className="clickable"
-                                                data-testid={ `${ testId }-other-dialect-container` }
+                                    <Grid>
+                                        <Grid.Row columns={ 2 }>
+                                            <Grid.Column width={ 12 }>
+                                                <GenericIcon
+                                                    transparent
+                                                    verticalAlign="middle"
+                                                    rounded
+                                                    icon={ getTechnologyLogos().oidc }
+                                                    spaced="right"
+                                                    size="mini"
+                                                    floated="left"
+                                                />
+                                                <List.Header>
+                                                    { t(
+                                                        "claims:" +
+                                                        "dialects.sections." +
+                                                        "manageAttributeMappings.oidc.heading"
+                                                    ) }
+                                                </List.Header>
+                                                <List.Description
+                                                    data-testid={ `${ testId }-local-dialect` }
+                                                >
+                                                    { t(
+                                                        "claims:attributeMappings." +
+                                                        "oidc.description"
+                                                    ) }
+                                                </List.Description>
+                                            </Grid.Column>
+                                            <Grid.Column
+                                                width={ 4 }
+                                                verticalAlign="middle"
+                                                textAlign="right"
                                             >
-                                                <List>
-                                                    <List.Item>
-                                                        <Grid>
-                                                            <Grid.Row columns={ 2 }>
-                                                                <Grid.Column width={ 12 }>
-                                                                    <Image
-                                                                        floated="left"
-                                                                        verticalAlign="middle"
-                                                                        rounded
-                                                                        centered
-                                                                        size="mini"
-                                                                    >
-                                                                        <AnimatedAvatar />
-                                                                        <span className="claims-letter">
-                                                                            {
-                                                                                customAttributeMapping.dialectURI
-                                                                                    .charAt(0)
-                                                                                    .toUpperCase()
-                                                                            }
-                                                                        </span>
-                                                                    </Image>
-                                                                    <List.Header>
-                                                                        { customAttributeMapping.dialectURI }
-                                                                    </List.Header>
-                                                                    <List.Description
-                                                                        data-testid={ `${ testId }-local-dialect` }
-                                                                    >
-                                                                        { t(
-                                                                            "claims:" +
-                                                                            "attributeMappings." +
-                                                                            "custom.description"
-                                                                        ) }
-                                                                    </List.Description>
-                                                                </Grid.Column>
-                                                                <Grid.Column
-                                                                    width={ 4 }
-                                                                    verticalAlign="middle"
-                                                                    textAlign="right"
-                                                                >
-                                                                    <Popup
-                                                                        content={ hasAttributeDialectsUpdatePermissions
-                                                                            ? t("common:edit")
-                                                                            : t("common:view")
-                                                                        }
-                                                                        trigger={ (
-                                                                            <Icon
-                                                                                color="grey"
-                                                                                name={
-                                                                                    // Added as this cannot be avoided.
-                                                                                    // eslint-disable-next-line max-len
-                                                                                    hasAttributeDialectsUpdatePermissions
-                                                                                        ? "pencil"
-                                                                                        : "eye"
-                                                                                }
-                                                                            />
-                                                                        ) }
-                                                                        inverted
-                                                                    />
-                                                                </Grid.Column>
-                                                            </Grid.Row>
-                                                        </Grid>
-                                                    </List.Item>
-                                                </List>
-                                            </EmphasizedSegment>
+                                                <Popup
+                                                    content={
+                                                        hasAttributeDialectsUpdatePermissions
+                                                        && !isSubOrganization()
+                                                            ? t("common:edit")
+                                                            : t("common:view")
+                                                    }
+                                                    trigger={
+                                                        hasAttributeDialectsUpdatePermissions
+                                                        && !isSubOrganization()
+                                                            ? <Icon color="grey" name="pencil" />
+                                                            : <Icon color="grey" name="eye" />
+                                                    }
+                                                    inverted
+                                                />
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    </Grid>
+                                </List.Item>
+                            </List>
+                        </EmphasizedSegment>
+                    )) }
+                    { isLoading ? ( renderSegmentPlaceholder()
+                    ) : ( scimAttributeMappings?.length > 0 && (
+                        <EmphasizedSegment
+                            onClick={ () => {
+                                history.push(
+                                    AppConstants.getPaths()
+                                        .get("ATTRIBUTE_MAPPINGS")
+                                        .replace(":type", ClaimManagementConstants.SCIM)
+                                        .replace(
+                                            ":customAttributeMappingID",
+                                            ""
                                         )
-                                    )
-                                ))
-                            }
-                        </>
-                    ) }
+                                );
+                            } }
+                            className="clickable"
+                            data-testid={ `${ testId }-scim-dialect-container` }
+                        >
+                            <List>
+                                <List.Item>
+                                    <Grid>
+                                        <Grid.Row columns={ 2 }>
+                                            <Grid.Column width={ 12 }>
+                                                <GenericIcon
+                                                    verticalAlign="middle"
+                                                    rounded
+                                                    icon={ getTechnologyLogos().scim }
+                                                    spaced="right"
+                                                    size="mini"
+                                                    floated="left"
+                                                />
+                                                <List.Header>
+                                                    { t(
+                                                        "claims:" +
+                                                        "dialects.sections." +
+                                                        "manageAttributeMappings.scim.heading"
+                                                    ) }
+                                                </List.Header>
+                                                <List.Description
+                                                    data-testid={ `${ testId }-local-dialect` }
+                                                >
+                                                    { t(
+                                                        "claims:attributeMappings" +
+                                                ".scim.description"
+                                                    ) }
+                                                </List.Description>
+                                            </Grid.Column>
+                                            <Grid.Column
+                                                width={ 4 }
+                                                verticalAlign="middle"
+                                                textAlign="right"
+                                            >
+                                                <Popup
+                                                    content={ (hasAttributeDialectsUpdatePermissions &&
+                                                        attributeConfig.isSCIMEditable)
+                                                        && !isSubOrganization()
+                                                        ? t("common:edit")
+                                                        : t("common:view") }
+                                                    trigger={ (hasAttributeDialectsUpdatePermissions &&
+                                                        attributeConfig.isSCIMEditable)
+                                                        && !isSubOrganization()
+                                                        ? <Icon color="grey" name="pencil" />
+                                                        : <Icon color="grey" name="eye" />
+                                                    }
+                                                    inverted
+                                                />
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    </Grid>
+                                </List.Item>
+                            </List>
+                        </EmphasizedSegment>
+                    )) }
+                    { isLoading ? ( renderSegmentPlaceholder()
+                    ) : ( vcAttributeMappings?.length > 0 && (
+                        <EmphasizedSegment
+                            onClick={ () => {
+                                history.push(
+                                    AppConstants.getPaths()
+                                        .get("ATTRIBUTE_MAPPINGS")
+                                        .replace(":type", ClaimManagementConstants.VC)
+                                        .replace(
+                                            ":customAttributeMappingID",
+                                            ""
+                                        )
+                                );
+                            } }
+                            className="clickable"
+                            data-testid={ `${ testId }-vc-dialect-container` }
+                        >
+                            <List>
+                                <List.Item>
+                                    <Grid>
+                                        <Grid.Row columns={ 2 }>
+                                            <Grid.Column width={ 12 }>
+                                                <GenericIcon
+                                                    verticalAlign="middle"
+                                                    rounded
+                                                    icon={ getTechnologyLogos().vc }
+                                                    spaced="right"
+                                                    size="mini"
+                                                    floated="left"
+                                                />
+                                                <List.Header>
+                                                    { t(
+                                                        "claims:" +
+                                                        "attributeMappings." +
+                                                        "vc.heading"
+                                                    ) }
+                                                </List.Header>
+                                                <List.Description
+                                                    data-testid={ `${ testId }-vc-dialect-description` }
+                                                >
+                                                    { t(
+                                                        "claims:attributeMappings" +
+                                                ".vc.description"
+                                                    ) }
+                                                </List.Description>
+                                            </Grid.Column>
+                                            <Grid.Column
+                                                width={ 4 }
+                                                verticalAlign="middle"
+                                                textAlign="right"
+                                            >
+                                                <Popup
+                                                    content={ (hasAttributeDialectsUpdatePermissions)
+                                                        && !isSubOrganization()
+                                                        ? t("common:edit")
+                                                        : t("common:view") }
+                                                    trigger={ (hasAttributeDialectsUpdatePermissions)
+                                                        && !isSubOrganization()
+                                                        ? <Icon color="grey" name="pencil" />
+                                                        : <Icon color="grey" name="eye" />
+                                                    }
+                                                    inverted
+                                                />
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    </Grid>
+                                </List.Item>
+                            </List>
+                        </EmphasizedSegment>
+                    )) }
+                    { isLoading ? ( renderSegmentPlaceholder()
+                    ) : ( axschemaAttributeMappings?.length > 0 && (
+                        <EmphasizedSegment
+                            className="clickable"
+                            data-testid={ `${ testId }-axschema-dialect-container` }
+                        >
+                            <List>
+                                <List.Item
+                                    onClick={ () => {
+                                        history.push(
+                                            AppConstants.getPaths()
+                                                .get("ATTRIBUTE_MAPPINGS")
+                                                .replace(":type", ClaimManagementConstants.AXSCHEMA)
+                                                .replace(
+                                                    ":customAttributeMappingID",
+                                                    ""
+                                                )
+                                        );
+                                    } }
+                                >
+                                    <Grid>
+                                        <Grid.Row columns={ 2 }>
+                                            <Grid.Column width={ 12 }>
+                                                <GenericIcon
+                                                    verticalAlign="middle"
+                                                    rounded
+                                                    icon={ getTechnologyLogos().axschema }
+                                                    spaced="right"
+                                                    size="mini"
+                                                    floated="left"
+                                                />
+                                                <List.Header>
+                                                    { t(
+                                                        "claims:attributeMappings." +
+                                                        "axschema.heading"
+                                                    ) }
+                                                </List.Header>
+                                                <List.Description
+                                                    data-testid={ `${ testId }-local-dialect` }
+                                                >
+                                                    { t(
+                                                        "claims:attributeMappings." +
+                                                        "axschema.description"
+                                                    ) }
+                                                </List.Description>
+                                            </Grid.Column>
+                                            <Grid.Column
+                                                width={ 4 }
+                                                verticalAlign="middle"
+                                                textAlign="right"
+                                            >
+                                                <Popup
+                                                    content={
+                                                        hasAttributeDialectsUpdatePermissions
+                                                        && !isSubOrganization()
+                                                            ? t("common:edit")
+                                                            : t("common:view")
+                                                    }
+                                                    trigger={
+                                                        hasAttributeDialectsUpdatePermissions
+                                                        && !isSubOrganization()
+                                                            ? <Icon color="grey" name="pencil" />
+                                                            : <Icon color="grey" name="eye" />
+                                                    }
+                                                    inverted
+                                                />
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    </Grid>
+                                </List.Item>
+                            </List>
+                        </EmphasizedSegment>
+                    )) }
+                    { isLoading ? (
+                        renderSegmentPlaceholder()
+                    ) : ( eidasAttributeMappings?.length > 0 && (
+                        <EmphasizedSegment
+                            className="clickable"
+                            data-testid={ `${ testId }-eidas-dialect-container` }
+                        >
+                            <List>
+                                <List.Item
+                                    onClick={ () => {
+                                        history.push(
+                                            AppConstants.getPaths()
+                                                .get("ATTRIBUTE_MAPPINGS")
+                                                .replace(":type", ClaimManagementConstants.EIDAS)
+                                                .replace(
+                                                    ":customAttributeMappingID",
+                                                    ""
+                                                )
+                                        );
+                                    } }
+                                >
+                                    <Grid>
+                                        <Grid.Row columns={ 2 }>
+                                            <Grid.Column width={ 12 }>
+                                                <GenericIcon
+                                                    transparent
+                                                    verticalAlign="middle"
+                                                    rounded
+                                                    icon={ getTechnologyLogos().eidas }
+                                                    spaced="right"
+                                                    size="mini"
+                                                    floated="left"
+                                                />
+                                                <List.Header>
+                                                    { t(
+                                                        "claims:attributeMappings." +
+                                                        "eidas.heading"
+                                                    ) }
+                                                </List.Header>
+                                                <List.Description
+                                                    data-testid={ `${ testId }-local-dialect` }
+                                                >
+                                                    { t(
+                                                        "claims:attributeMappings." +
+                                                        "eidas.description"
+                                                    ) }
+                                                </List.Description>
+                                            </Grid.Column>
+                                            <Grid.Column
+                                                width={ 4 }
+                                                verticalAlign="middle"
+                                                textAlign="right"
+                                            >
+                                                <Popup
+                                                    content={
+                                                        hasAttributeDialectsUpdatePermissions
+                                                        && !isSubOrganization()
+                                                            ? t("common:edit")
+                                                            : t("common:view")
+                                                    }
+                                                    trigger={
+                                                        hasAttributeDialectsUpdatePermissions
+                                                        && !isSubOrganization()
+                                                            ? <Icon color="grey" name="pencil" />
+                                                            : <Icon color="grey" name="eye" />
+                                                    }
+                                                    inverted
+                                                />
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    </Grid>
+                                </List.Item>
+                            </List>
+                        </EmphasizedSegment>
+                    )) }
+                    { attributeConfig.showCustomAttributeMapping && (
+                        isLoading ? (
+                            renderSegmentPlaceholder()
+                        ) : (
+                            otherAttributeMappings?.length > 0 && otherAttributeMappings.map(
+                                (customAttributeMapping: ClaimDialect) => (
+                                    <EmphasizedSegment
+                                        key={ customAttributeMapping.dialectURI }
+                                        onClick={ () => {
+                                            history.push(
+                                                AppConstants.getPaths()
+                                                    .get("ATTRIBUTE_MAPPINGS")
+                                                    .replace(":type", ClaimManagementConstants.OTHERS)
+                                                    .replace(
+                                                        ":customAttributeMappingID",
+                                                        customAttributeMapping.id
+                                                    )
+                                            );
+                                        } }
+                                        className="clickable"
+                                        data-testid={ `${ testId }-other-dialect-container` }
+                                    >
+                                        <List>
+                                            <List.Item>
+                                                <Grid>
+                                                    <Grid.Row columns={ 2 }>
+                                                        <Grid.Column width={ 12 }>
+                                                            <Image
+                                                                floated="left"
+                                                                verticalAlign="middle"
+                                                                rounded
+                                                                centered
+                                                                size="mini"
+                                                            >
+                                                                <AnimatedAvatar />
+                                                                <span className="claims-letter">
+                                                                    {
+                                                                        customAttributeMapping.dialectURI
+                                                                            .charAt(0)
+                                                                            .toUpperCase()
+                                                                    }
+                                                                </span>
+                                                            </Image>
+                                                            <List.Header>
+                                                                { customAttributeMapping.dialectURI }
+                                                            </List.Header>
+                                                            <List.Description
+                                                                data-testid={ `${ testId }-local-dialect` }
+                                                            >
+                                                                { t(
+                                                                    "claims:" +
+                                                                    "attributeMappings." +
+                                                                    "custom.description"
+                                                                ) }
+                                                            </List.Description>
+                                                        </Grid.Column>
+                                                        <Grid.Column
+                                                            width={ 4 }
+                                                            verticalAlign="middle"
+                                                            textAlign="right"
+                                                        >
+                                                            <Popup
+                                                                content={ hasAttributeDialectsUpdatePermissions
+                                                                    && !isSubOrganization()
+                                                                    ? t("common:edit")
+                                                                    : t("common:view")
+                                                                }
+                                                                trigger={ (
+                                                                    <Icon
+                                                                        color="grey"
+                                                                        name={
+                                                                            // Added as this cannot be avoided.
+                                                                            // eslint-disable-next-line max-len
+                                                                            hasAttributeDialectsUpdatePermissions
+                                                                            && !isSubOrganization()
+                                                                                ? "pencil"
+                                                                                : "eye"
+                                                                        }
+                                                                    />
+                                                                ) }
+                                                                inverted
+                                                            />
+                                                        </Grid.Column>
+                                                    </Grid.Row>
+                                                </Grid>
+                                            </List.Item>
+                                        </List>
+                                    </EmphasizedSegment>
+                                )
+                            )
+                        ))
+                    }
                 </GridLayout>
             </PageLayout>
         </>

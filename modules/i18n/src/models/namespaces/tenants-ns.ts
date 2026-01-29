@@ -138,7 +138,6 @@ export interface TenantsNS {
                     placeholder: string;
                     validations: {
                         invalidCharPattern: string;
-                        required: string;
                     };
                 };
                 username: {
@@ -188,6 +187,56 @@ export interface TenantsNS {
             hint: string;
         };
         subtitle: string;
+    };
+    editSelfOrganization: {
+        actions: {
+            save: {
+                label: string;
+            };
+        };
+        form: {
+            fields: {
+                created: {
+                    label: string;
+                };
+                lastModified: {
+                    label: string;
+                };
+                organizationHandle: {
+                    hint: string;
+                    label: string;
+                };
+                organizationId: {
+                    hint: string;
+                    label: string;
+                };
+                organizationName: {
+                    label: string;
+                    placeholder: string;
+                    validations: {
+                        required: string;
+                    };
+                };
+            };
+        };
+        notifications: {
+            updateOrganization: {
+                error: {
+                    description: string;
+                    message: string;
+                };
+                success: {
+                    description: string;
+                    message: string;
+                };
+            };
+        };
+        readOnly: {
+            subtitle: string;
+            title: string;
+        }
+        subtitle: string;
+        title: string;
     };
     editTenant: {
         actions: {
@@ -349,7 +398,13 @@ export interface TenantsNS {
     };
     tenantDropdown: {
         options: {
+            edit: {
+                label: string;
+            };
             manage: {
+                label: string;
+            };
+            view: {
                 label: string;
             };
         };

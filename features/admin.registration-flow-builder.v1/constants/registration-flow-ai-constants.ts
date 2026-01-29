@@ -25,9 +25,9 @@ export const useGetFacts = (): string[] => {
     const productName: string = useSelector((state: AppState) => state?.config?.ui?.productName);
 
     return [
-        t("ai:aiRegistrationFlow.screens.loading.facts.0", { productName }),
-        t("ai:aiRegistrationFlow.screens.loading.facts.1", { productName }),
-        t("ai:aiRegistrationFlow.screens.loading.facts.2", { productName })
+        t("ai:aiFlow.screens.loading.facts.0", { productName }),
+        t("ai:aiFlow.screens.loading.facts.1", { productName }),
+        t("ai:aiFlow.screens.loading.facts.2", { productName })
     ];
 };
 
@@ -35,24 +35,18 @@ export const useGetStatusLabels = (): Record<string, string> => {
     const { t } = useTranslation();
 
     return {
-        generating_registration_flow: t("ai:aiRegistrationFlow.states.5"),
-        generation_of_registration_flow_complete: t("ai:aiRegistrationFlow.states.6"),
-        generation_of_registration_step_complete: t("ai:aiRegistrationFlow.states.10"),
-        optimization_and_validation_complete: t("ai:aiRegistrationFlow.states.2"),
-        optimizing_and_validating_user_query: t("ai:aiRegistrationFlow.states.1"),
-        retrieval_of_examples_complete: t("ai:aiRegistrationFlow.states.4"),
-        retrieving_examples: t("ai:aiRegistrationFlow.states.3")
+        completed: t("ai:aiFlow.states.3"),
+        fetchingSamples: t("ai:aiFlow.states.1"),
+        generatingFlow: t("ai:aiFlow.states.2"),
+        optimizingQuery: t("ai:aiFlow.states.0")
     };
 };
 
 export const statusProgressMap: Record<string, number> = {
-    generating_registration_flow: 75,
-    generation_of_registration_flow_complete: 100,
-    generation_of_registration_step_complete: 80,
-    optimization_and_validation_complete: 40,
-    optimizing_and_validating_user_query: 20,
-    retrieval_of_examples_complete: 70,
-    retrieving_examples: 60
+    completed: 100,
+    fetchingSamples: 50,
+    generatingFlow: 75,
+    optimizingQuery: 0
 };
 
 export const INITIAL_PROGRESS: number = 5;

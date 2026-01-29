@@ -16,10 +16,13 @@
  * under the License.
  */
 
+import { ClaimInputFormat } from "@wso2is/core/models";
 import { Validation } from "@wso2is/forms";
-import moment from "moment";
+import dayjs, { Dayjs } from "dayjs";
+import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
+import DatePickerFieldForm from "./date-picker-field-form";
 import TextFieldForm from "./text-field-form";
 import { TextFieldFormPropsInterface } from "../../../models/profile-ui";
 
@@ -40,6 +43,75 @@ const DOBFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
 }: TextFieldFormPropsInterface): ReactElement => {
     const { t } = useTranslation();
 
+    const placeholderText: string = `${t("myAccount:components.profile.forms.generic.inputs.placeholder",
+        { fieldName: fieldLabel.toLocaleLowerCase() })} in the format YYYY-MM-DD`;
+
+    // If the input type is a date picker, and the initial value is a valid date, render the date picker field form.
+    if (schema.inputFormat?.inputType === ClaimInputFormat.DATE_PICKER) {
+        // Strictly parse the initial value to avoid invalid date formats.
+        const formattedInitialValue: Dayjs = dayjs(initialValue as string, "YYYY-MM-DD", true);
+
+        if (isEmpty(initialValue) || formattedInitialValue.isValid()) {
+            /**
+             * Validates the field value.
+             * - If the field is required, it should not be empty.
+             * - The value should match the regex pattern defined in the schema.
+             * - The date should not be a future date.
+             *
+             * @param value - Field value to be validated.
+             */
+            const validateField = (value: string): string | undefined => {
+                if (isEmpty(value) && isRequired) {
+                    return t("myAccount:components.profile.forms.generic.inputs.validations.empty",
+                        { fieldName: fieldLabel });
+                }
+
+                if (isEmpty(value)) {
+                    return undefined;
+                }
+
+                if (!RegExp(schema.regEx).test(value)) {
+                    return t(
+                        "myAccount:components.profile.forms.dateChangeForm.inputs.date.validations.invalidFormat", {
+                            fieldName: fieldLabel
+                        });
+                }
+
+                if (dayjs().isBefore(value)) {
+                    return t(
+                        "myAccount:components.profile.forms.dateChangeForm.inputs.date.validations.futureDateError", {
+                            field: fieldLabel
+                        });
+                }
+            };
+
+            return (
+                <DatePickerFieldForm
+                    fieldSchema={ schema }
+                    initialValue={ initialValue as string }
+                    fieldLabel={ fieldLabel }
+                    isActive={ isActive }
+                    isEditable={ isEditable }
+                    onEditClicked={ onEditClicked }
+                    onEditCancelClicked={ onEditCancelClicked }
+                    isRequired={ isRequired }
+                    setIsProfileUpdating={ setIsProfileUpdating }
+                    isLoading={ isLoading }
+                    isUpdating={ isUpdating }
+                    data-componentid={ componentId }
+                    handleSubmit={ handleSubmit }
+                    onValidate={ validateField }
+                />
+            );
+        }
+    }
+
+    /**
+     * Validates the field value against the schema.
+     *
+     * @param value - Field value to be validated.
+     * @param validation - Field validation object to be updated with error messages.
+     */
     const validateField = (value: string, validation: Validation): void => {
         if (!RegExp(schema.regEx).test(value)) {
             validation.isValid = false;
@@ -52,21 +124,21 @@ const DOBFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
             return;
         }
 
-        if (!moment(value, "YYYY-MM-DD", true).isValid()) {
+        if (!dayjs(value, "YYYY-MM-DD", true).isValid()) {
             validation.isValid = false;
             validation.errorMessages.push(
                 t("myAccount:components.profile.forms.dateChangeForm.inputs.date.validations.invalidFormat", {
-                    field: fieldLabel
+                    fieldName: fieldLabel
                 })
             );
 
             return;
         }
 
-        if (moment().isBefore(value)) {
+        if (dayjs().isBefore(value)) {
             validation.isValid = false;
             validation.errorMessages.push(
-                t("myAccount:components.profile.forms.dateChangeForm.inputs.date.validations." + "futureDateError", {
+                t("myAccount:components.profile.forms.dateChangeForm.inputs.date.validations.futureDateError", {
                     field: fieldLabel
                 })
             );
@@ -74,9 +146,6 @@ const DOBFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
             return;
         }
     };
-
-    const placeholderText: string = `${t("myAccount:components.profile.forms.generic.inputs.placeholder",
-        { fieldName: fieldLabel.toLocaleLowerCase() })} in the format YYYY-MM-DD`;
 
     return (
         <TextFieldForm

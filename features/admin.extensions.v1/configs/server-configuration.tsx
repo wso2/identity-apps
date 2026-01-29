@@ -19,16 +19,16 @@
 /* eslint-disable sort-keys */
 
 import {
+    ServerConfigurationsConstants
+} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
+import {
     ConnectorPropertyInterface,
     GovernanceConnectorInterface,
-    GovernanceConnectorUtils,
     UpdateGovernanceConnectorConfigInterface,
     UpdateGovernanceConnectorConfigPropertyInterface,
     UpdateMultipleGovernanceConnectorsInterface
-} from "@wso2is/admin.server-configurations.v1";
-import {
-    ServerConfigurationsConstants
-} from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
+} from "@wso2is/admin.server-configurations.v1/models/governance-connectors";
+import { GovernanceConnectorUtils } from "@wso2is/admin.server-configurations.v1/utils/governance-connector-utils";
 import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import React, { ReactElement, ReactNode } from "react";
 import { TFunction } from "react-i18next";
@@ -78,6 +78,8 @@ const serverConfigurationConfig: ServerConfigurationConfig = {
             ServerConfigurationsConstants.ORGANIZATION_SELF_SERVICE_ENABLE,
         [ServerConfigurationsConstants.SELF_SIGNUP]:
             ServerConfigurationsConstants.SELF_REGISTRATION_ENABLE,
+        [ServerConfigurationsConstants.EMAIL_VERIFICATION]:
+            ServerConfigurationsConstants.EMAIL_VERIFICATION_ENABLED,
         [ServerConfigurationsConstants.SSO_LOGIN_RECAPTCHA]:
             ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE
     },

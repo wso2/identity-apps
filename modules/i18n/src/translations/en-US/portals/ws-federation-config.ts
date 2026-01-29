@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -36,6 +36,16 @@ export const wsFederationConfig: WsFederationConfigNS = {
             error: {
                 description: "Error occurred while fetching WS-Federation configurations.",
                 message: "Error occurred"
+            }
+        },
+        revertConfiguration: {
+            error: {
+                description: "Error occurred while reverting WS-Federation configurations.",
+                message: "Error occurred"
+            },
+            success: {
+                description: "Successfully reverted the WS-Federation configurations.",
+                message: "Revert successful"
             }
         },
         updateConfiguration: {

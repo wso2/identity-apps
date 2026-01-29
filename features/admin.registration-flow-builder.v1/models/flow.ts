@@ -25,5 +25,13 @@ export interface RegistrationFlow {
     /**
      * Steps of the registration flow.
      */
-    steps: step[];
+    steps: Step[];
 }
+
+/**
+ * Enum for static step types in the registration flow.
+ */
+export enum RegistrationStaticStepTypes {
+    EMAIL_CONFIRMATION = "EmailConfirmation",
+    USER_ACCOUNT_UNLOCK = "UserAccountUnlock",
+};

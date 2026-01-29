@@ -49,6 +49,9 @@ export const console: ConsoleNS = {
                         validations: {
                             empty: "Filter value is a required field."
                         }
+                    },
+                    filterRecursiveToggle: {
+                        label: "Search in nested levels"
                     }
                 }
             },
@@ -289,6 +292,19 @@ export const console: ConsoleNS = {
                     "Let your users log in to your applications with an Identity Provider of " + "their choice",
                     heading: "Add social login"
                 },
+                adminNotice: {
+                    title: "Upcoming Enhancements to Organizations",
+                    description: "Effective <1>{{date}}</1>, organizations will inherit settings across multiple key areas from their parent organizations. During this window, updates to configurations made by admins may not be reflected immediately.",
+                    moreDetails: "<p>See <1>documentation</1> for more details on the behavioral changes.</p>",
+                    instructions: {
+                        0: "<1>Login & Registration settings</1>",
+                        1: "<1>Custom User Attributes</1>",
+                        2: "<1>OIDC Scopes</1>",
+                        3: "<1>Flows</1>",
+                        4: "<1>Connections</1>",
+                        5: "<1>Attribute Update Verification Settings</1>"
+                    }
+                },
                 integrateApps: {
                     actions: {
                         create: "Register Application",
@@ -329,6 +345,14 @@ export const console: ConsoleNS = {
                     "Create user accounts for users and invite administrators to your organization. " +
                     "Allow your users to securely self-manage their profiles.",
                     heading: "Manage users and groups"
+                },
+                customizeFlows: {
+                    actions: {
+                        setup: "Set up user flows"
+                    },
+                    description:
+                        "Visually design and customize user flows with our no-code flow composer",
+                    heading: "Customize user flows"
                 },
                 asgardeoTryIt: {
                     errorMessages: {
@@ -659,6 +683,27 @@ export const console: ConsoleNS = {
                                     required: "Email OTP length is a required field."
                                 }
                             },
+                            allowedResendAttemptCount: {
+                                hint: "The number of allowed OTP resend attempts.",
+                                label: "Allowed OTP resend attempt count",
+                                placeholder: "Enter allowed resend attempt count.",
+                                validations: {
+                                    required: "Allowed OTP resend attempt count is a required field.",
+                                    invalid: "Allowed OTP resend attempt count should be an integer.",
+                                    range: "Allowed OTP resend attempt count should be between 0 & 100."
+                                }
+                            },
+                            resendBlockDuration: {
+                                hint: "The duration for which the user will be blocked from requesting a new OTP " +
+                                    "after reaching the maximum allowed resend attempts.",
+                                label: "OTP resend block duration",
+                                placeholder: "Enter OTP resend block duration.",
+                                validations: {
+                                    required: "OTP resend block duration is a required field.",
+                                    invalid: "OTP resend block duration should be an integer.",
+                                    range: "OTP resend block duration should be between 0 & 10000 minutes."
+                                }
+                            },
                             useAlphanumericChars: {
                                 hint: "Please check this checkbox to enable alphanumeric characters. Otherwise numeric characters will be used.",
                                 label: "Use alphanumeric characters for OTP",
@@ -713,6 +758,17 @@ export const console: ConsoleNS = {
                                     required: "Allowed OTP resend attempt count is a required field.",
                                     invalid: "Allowed OTP resend attempt count should be an integer.",
                                     range: "Allowed OTP resend attempt count should be between 0 & 100."
+                                }
+                            },
+                            resendBlockDuration: {
+                                hint: "The time duration to block OTP resend requests after reaching the max allowed resend attempts",
+                                label: "Resend OTP block time",
+                                placeholder: "Enter resend block time in minutes.",
+                                unit: "minutes",
+                                validations: {
+                                    required: "Resend OTP block time is a required field.",
+                                    invalid: "Resend OTP block time should be an integer.",
+                                    range: "Resend OTP block time should be between 1 minute & 1440 minutes (1 day)."
                                 }
                             }
                         },
@@ -2729,20 +2785,12 @@ export const console: ConsoleNS = {
                 placeholders: {
                     emptyApprovalFilter: {
                         action: "View all",
-                        subtitles: {
-                            0: "There are currently no approvals in {{status}} state.",
-                            1: "Please check if you have any tasks in {{status}} state to",
-                            2: "view them here."
-                        },
+                        subtitle: "There are currently no approvals in {{status}} state.",
                         title: "No results found"
                     },
                     emptyApprovalList: {
                         action: "",
-                        subtitles: {
-                            0: "There are currently no approvals to review.",
-                            1: "Please check if you have added a workflow to control the operations in the system.",
-                            2: ""
-                        },
+                        subtitle: "There are currently no approvals to review.",
                         title: "No Approvals"
                     },
                     emptySearchResults: {
@@ -2959,7 +3007,7 @@ export const console: ConsoleNS = {
                         heading: "OpenID Connect"
                     },
                     scim: {
-                        description: "The SCIM2 protocol representation for user "
+                        description: "The SCIM2 protocol representation for "
                             + "attributes that will be used in the SCIM2 API.",
                         heading: "SCIM 2.0"
                     }
@@ -6394,32 +6442,97 @@ export const console: ConsoleNS = {
                                 }
                             },
                             verifyHostname: {
-                                label: "Verify the hostname"
+                                label: "Verify the hostname",
+                                hint: "Enable verifying the remote server's hostname against its SSL certificate."
                             },
                             basicAuthConfig: {
-                                title: "Basic Authentication Configuration",
+                                title: "Authentication Configuration",
+                                info: {
+                                    message: "If you are changing the authentication, be aware that the authentication" +
+                                    " secrets of the remote server need to be updated.",
+                                    title: {
+                                        noneAuthType: "No authentication is configured.",
+                                        otherAuthType: "<strong>{{ authType }}</strong> authentication scheme is configured."
+                                    }
+                                },
+                                types: {
+                                    none: {
+                                        name: "None"
+                                    },
+                                    basic: {
+                                        name: "Basic"
+                                    }
+                                },
+                                authenticationType: {
+                                    hint: {
+                                        create: "Once added, this secret will not be displayed. You will only be able to update them.",
+                                        update: "Once updated, this secret will not be displayed. You will only be able to update them."
+                                    },
+                                    label: "Authentication Scheme",
+                                    placeholder: "Select Authentication Scheme"
+                                },
+                                buttons: {
+                                    changeAuthentication: "Change Authentication"
+                                },
                                 serverUsername: {
                                     label: "Remote server username",
-                                    placeholder: "username"
+                                    placeholder: "username",
+                                    error: {
+                                        required: "Remote server username is required"
+                                    }
                                 },
                                 serverPassword: {
                                     label: "Remote server password",
-                                    placeholder: "*****"
+                                    placeholder: "*****",
+                                    error: {
+                                        required: "Remote server password is required"
+                                    }
                                 }
                             },
                             sslConfig: {
                                 title: "SSL Configuration",
+                                info: {
+                                    sslConfigured: {
+                                        message: "The connections will be secured using SSL",
+                                        title: "SSL Already Configured"
+                                    },
+                                    notConfigured: {
+                                        message: "SSL is not currently configured. Please set it up to secure your connections.",
+                                        title: "SSL Not Configured"
+                                    }
+                                },
+                                buttons: {
+                                    addSslConfig: "Add SSL Configuration",
+                                    changeSslConfig: "Update SSL Configuration",
+                                    clearSslConfig: "Remove SSL Configuration"
+                                },
                                 keystorePath: {
-                                    label: "Keystore location"
+                                    label: "Keystore location",
+                                    placeholder: "Path to the keystore file",
+                                    error: {
+                                        required: "Keystore location is required"
+                                    }
                                 },
                                 keystorePassword: {
-                                    label: "Keystore password"
+                                    label: "Keystore password",
+                                    placeholder: "*****",
+                                    error: {
+                                        required: "Keystore password is required"
+                                    }
                                 },
                                 truststorePath: {
-                                    label: "Truststore location"
+                                    label: "Truststore location",
+                                    placeholder: "Path to the truststore file",
+                                    error: {
+                                        required: "Truststore location is required"
+                                    }
                                 },
                                 truststorePassword: {
-                                    label: "Truststore password"
+                                    label: "Truststore password",
+                                    placeholder: "*****",
+                                    error: {
+                                        required: "Truststore password is required"
+                                    }
                                 }
                             }
                         }
@@ -6750,8 +6863,10 @@ export const console: ConsoleNS = {
                                 "alphanumeric username feature.",
                             emailInvalid: "To invite users to set the password, please enter a valid email address.",
                             emailVerificationDisabled: "To invite users to set the password, enable email invitations for user password setup from <1>Login & Registration settings</1>.",
+                            mobileNumberAlreadyExists: "Mobile number is required for SMS OTP, please enable mobile number attribute from <1>Attributes</1>.",
                             inviteOffline: "Invite offline",
-                            inviteViaEmail: "Invite via email"
+                            inviteViaEmail: "Invite via email",
+                            inviteViaSMS: "Invite via SMS"
                         },
                         buttons: {
                             next: "Next",
@@ -8312,16 +8427,6 @@ export const console: ConsoleNS = {
                     }
                 },
                 notifications: {
-                    addApprovalWorkflow: {
-                        genericError: {
-                            description: "There was an error while creating the approval workflow.",
-                            message: "Something went wrong!"
-                        },
-                        success: {
-                            description: "The approval workflow has been added successfully!",
-                            message: "approval workflow added successfully!"
-                        }
-                    },
                     apiLimitReachedError: {
                         error: {
                             description: "You have reached the maximum number of approval workflows allowed.",
@@ -8332,22 +8437,6 @@ export const console: ConsoleNS = {
                         description: "It may take a while for the approval workflow list to be updated. "
                             + "Refresh in a few seconds to get the updated approval workflow list.",
                         message: "Updating approval workflow list takes time"
-                    },
-                    deleteApprovalWorkflow: {
-                        genericError: {
-                            description: "There was an error while deleting the approval workflow.",
-                            message: "Something went wrong!"
-                        },
-                        success: {
-                            description: "The approval workflow has been deleted successfully!",
-                            message: "Approval workflow deleted successfully!"
-                        }
-                    },
-                    fetchApprovalWorkflows: {
-                        genericError: {
-                            description: "An error occurred while fetching approval workflows.",
-                            message: "Something went wrong"
-                        }
                     },
                     testConnection: {
                         genericError: {
@@ -8362,16 +8451,6 @@ export const console: ConsoleNS = {
                     updateDelay: {
                         description: "It might take some time for the updated properties to appear.",
                         message: "Updating properties takes time"
-                    },
-                    updateApprovalWorkflow: {
-                        genericError: {
-                            description: "An error occurred while updating the approval workflow.",
-                            message: "Something went wrong"
-                        },
-                        success: {
-                            description: "This approval workflow has been updated successfully!",
-                            message: "approval workflow updated successfully!"
-                        }
                     }
                 },
                 pageLayout: {
@@ -8525,7 +8604,6 @@ export const console: ConsoleNS = {
             },
             oidcScopesEdit: {
                 backButton: "Go back to Scopes",
-                subTitle: "Add or remove OIDC attributes of the scope",
                 title: "Edit scope: {{ name }}"
             },
             organizations: {

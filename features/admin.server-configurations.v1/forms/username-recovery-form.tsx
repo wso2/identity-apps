@@ -19,6 +19,8 @@
 import Alert from "@oxygen-ui/react/Alert";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { useGetCurrentOrganizationType } from
+    "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import {
     UsernameRecoveryFormConstants
 } from "@wso2is/admin.server-configurations.v1/constants/username-recovery-constants";
@@ -62,6 +64,7 @@ export const UsernameRecoveryConfigurationForm: FunctionComponent<UsernameRecove
 
     const [ initialConnectorValues, setInitialConnectorValues ]
         = useState<UsernameRecoveryFormValuesInterface>(undefined);
+    const { isSubOrganization } = useGetCurrentOrganizationType();
 
     /**
      * Flattens and resolved form initial values and field metadata.
@@ -147,23 +150,28 @@ export const UsernameRecoveryConfigurationForm: FunctionComponent<UsernameRecove
                 />
                 {
                     <Alert severity="info">
-                        <Trans
-                            i18nKey={
-                                "extensions:manage.serverConfigurations.accountRecovery." +
-                                "usernameRecovery.form.smsProviderWarning"
-                            }>
-                          Ensure that an
-                            <Link
-                                external={ false }
-                                onClick={ () => {
-                                    history.push(
-                                        AppConstants.getPaths().get("SMS_PROVIDER")
-                                    );
-                                } }
-                            >SMS Provider
-                            </Link>
-                                &nbsp;is configured for the SMS feature to work properly.
-                        </Trans>
+                        { isSubOrganization() ? (
+                            t("extensions:manage.serverConfigurations.accountRecovery." +
+                                    "usernameRecovery.form.smsProviderWarningSubOrg")
+                        ) : (
+                            <Trans
+                                i18nKey={
+                                    "extensions:manage.serverConfigurations.accountRecovery." +
+                                    "usernameRecovery.form.smsProviderWarning"
+                                }>
+                              Ensure that an
+                                <Link
+                                    external={ false }
+                                    onClick={ () => {
+                                        history.push(
+                                            AppConstants.getPaths().get("SMS_PROVIDER")
+                                        );
+                                    } }
+                                >SMS Provider
+                                </Link>
+                                    &nbsp;is configured for the SMS feature to work properly.
+                            </Trans>
+                        ) }
                     </Alert>
                 }
                 <Field.Checkbox

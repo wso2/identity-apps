@@ -82,6 +82,9 @@ export interface smsProvidersNS {
         };
         custom: {
             subHeading: string;
+            authentication: {
+                updateRequired: string;
+            };
             providerName: {
                 label: string;
                 placeholder: string;

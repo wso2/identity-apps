@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -35,8 +35,117 @@ export const common: CommonNS = {
     applicationName: "செயலியின் பெயர்",
     applications: "செயலிகள்",
     approvalStatus: "அனுமதி நிலை",
+    approvals: "அனுமதிகள்",
+    approvalsPage: {
+        list: {
+            columns: {
+                actions: "செயல்கள்",
+                name: "பெயர்"
+            }
+        },
+        modals: {
+            description: "உங்கள் அங்கீகாரத்தைத் தேவைப்படும் செயல்பாட்டு பணிகளைப் பரிசீலிக்கவும்",
+            header: "அனுமதிகள்",
+            subHeader: "உங்கள் அங்கீகாரத்தைத் தேவைப்படும் செயல்பாட்டு பணிகளைப் பரிசீலிக்கவும்"
+        },
+        notifications: {
+            fetchApprovalDetails: {
+                error: {
+                    description: "{{description}}",
+                    message: "அனுமதி விவரங்களைப் பெறுவதில் பிழை"
+                },
+                genericError: {
+                    description: "அனுமதி விவரங்களைப் பெற முடியவில்லை.",
+                    message: "ஏதோ தவறு நடந்துவிட்டது"
+                }
+            },
+            fetchPendingApprovals: {
+                error: {
+                    description: "{{description}}",
+                    message: "பொறுத்து அனுமதிகளைப் பெறுவதில் பிழை"
+                },
+                genericError: {
+                    description: "பொறுத்து அனுமதிகளைப் பெற முடியவில்லை.",
+                    message: "ஏதோ தவறு நடந்துவிட்டது"
+                }
+            },
+            statusUpdate: {
+                approved: {
+                    description: "அனுமதி கோரிக்கை அனுமதிக்கப்பட்டது.",
+                    message: "அனுமதி கோரிக்கை அனுமதிக்கப்பட்டது"
+                },
+                claimed: {
+                    description: "அனுமதி கோரிக்கை கோரப்பட்டது.",
+                    message: "அனுமதி கோரிக்கை கோரப்பட்டது"
+                },
+                rejected: {
+                    description: "அனுமதி கோரிக்கை நிராகரிக்கப்பட்டது.",
+                    message: "அனுமதி கோரிக்கை நிராகரிக்கப்பட்டது"
+                },
+                released: {
+                    description: "அனுமதி கோரிக்கை வெளியிடப்பட்டது.",
+                    message: "அனுமதி கோரிக்கை வெளியிடப்பட்டது"
+                }
+            },
+            updatePendingApprovals: {
+                error: {
+                    description: "{{description}}",
+                    message: "அனுமதியைப் புதுப்பிப்பதில் பிழை"
+                },
+                genericError: {
+                    description: "பொறுத்து அனுமதியைப் புதுப்பிக்க முடியவில்லை.",
+                    message: "ஏதோ தவறு நடந்துவிட்டது"
+                },
+                success: {
+                    description: "அனுமதியை வெற்றிகரமாக புதுப்பிக்கப்பட்டது.",
+                    message: "புதுப்பிப்பு வெற்றிகரமாக"
+                }
+            }
+        },
+        operationTypes: {
+            addRole: "பாத்திரத்தைச் சேர்க்கவும்",
+            addUser: "பயனரைச் சேர்க்கவும்",
+            all: "அனைத்து செயல்பாடுகள்",
+            deleteRole: "பாத்திரத்தை நீக்கவும்",
+            deleteUser: "பயனரை நீக்கவும்",
+            selfRegisterUser: "சுய பதிவு பயனர்",
+            updateRolesOfUser: "பாத்திரப் பயனர்களை புதுப்பிக்கவும்"
+        },
+        placeholders: {
+            emptyApprovalFilter: {
+                action: "அனைத்தையும் காண்க",
+                subtitle: "{{status}} நிலைமையில் எந்த அனுமதிகளும் இல்லை.",
+                title: "முடிவுகள் எதுவும் கிடைக்கவில்லை"
+            },
+            emptyApprovalList: {
+                action: "",
+                subtitle: "தற்போது மதிப்பீடு செய்ய எந்த அனுமதிகளும் இல்லை.",
+                title: "அனுமதிகள் இல்லை"
+            },
+            emptySearchResults: {
+                action: "அனைத்தையும் காண்க",
+                subtitles: {
+                    0: "நீங்கள் தேடிய வேலைப்பதிவு கிடைக்கவில்லை.",
+                    1: "தயவுசெய்து அந்த பெயருடன் உங்களிடம் ஒரு வேலைப்பதிவு உள்ளதா என்பதை சரிபார்க்கவும்",
+                    2: "அமைப்பில்."
+                },
+                title: "அனுமதிகள் இல்லை"
+            },
+            searchApprovals: "வேலைப்பதிவு பெயரால் தேடு"
+        },
+        propertyMessages: {
+            assignedUsersDeleted: "ஒதுக்கப்பட்ட பயனர்/கள் நீக்கப்பட்டுள்ளன.",
+            roleDeleted: "இந்த பங்கு நீக்கப்பட்டுள்ளது.",
+            selfRegistration: "சுய பதிவு",
+            unassignedUsersDeleted: "ஒதுக்கப்படாத பயனர்/கள் நீக்கப்பட்டுள்ளன."
+        },
+        subTitle: "உங்கள் அங்கீகாரத்தைத் தேவைப்படும் செயல்பாட்டு பணிகளைப் பரிசீலிக்கவும்",
+        title: "அனுமதிகள்"
+    },
     approve: "அனுமதி",
+    approved: "அனுமதிக்கப்பட்டது",
     apps: "செயலிகள்",
+    assignYourself: "உங்களை ஒதுக்கவும்",
     assignee: "ஒதுக்கப்பட்டவர்",
     assignees: "அளிக்கப்பட்டவர்கள்",
     asyncOperationErrorMessage: {
@@ -58,7 +167,6 @@ export const common: CommonNS = {
         heading: "ஏதோ தவறு நடந்துவிட்டது",
         primaryActionText: "பயன்பாட்டை மீண்டும் ஏற்றவும்"
     },
-    claim: "கோர்",
     clear: "அழிக்கவும்",
     clientId: "வாடிக்கையாளர் அடையாளம்",
     close: "நெருக்கமான",
@@ -68,6 +176,7 @@ export const common: CommonNS = {
     confirm: "உறுதிப்படுத்தவும்",
     contains: "கொண்டுள்ளது",
     continue: "தொடர்",
+    copied: "நகலெடுக்கப்பட்டது!",
     copyToClipboard: "கிளிப்போர்டுக்கு நகலெடு",
     create: "உருவாக்கு",
     createdOn: "உருவாக்கப்பட்ட தினம்",
@@ -101,6 +210,7 @@ export const common: CommonNS = {
     goBackHome: "முகப்புக்கு செல்",
     goFullScreen: "முழுத்திரைக்குச் செல்லுங்கள்",
     good: "சிறந்தது",
+    greaterThanOrEqual: "சமம் அல்லது அதற்கு மேல்",
     help: "உதவி",
     hide: "மறை",
     hidePassword: "கடவுச்சொல்லை மறை",
@@ -114,6 +224,7 @@ export const common: CommonNS = {
     lastSeen: "இறுதி நுழைவு",
     lastUpdatedOn: "கடைசியாக புதுப்பிக்கப்பட்ட தேதி",
     learnMore: "மேலும் அறிக",
+    lessThanOrEqual: "சமம் அல்லது அதற்கு குறைவு",
     lightMode: "ஒளி தீம்",
     loading: "ஏற்றுகிறது",
     loginTime: "நுழைந்த நேரம்",
@@ -136,11 +247,15 @@ export const common: CommonNS = {
     new: "புதிய",
     next: "அடுத்தது",
     noResultsFound: "முடிவுகள் எதுவும் இல்லை",
+    none: "இல்லை",
     okay: "சரி",
     operatingSystem: "இயங்கு தளம்",
+    operationType: "செயலாக்க வகை",
     operations: "செயற்பாடுகள்",
     organizationName: "{{orgName}} நிறுவனம்",
     overview: "கண்ணோட்டம்",
+    parameter: "பரிமாணம்",
+    pending: "நிலுவையில்",
     personalInfo: "பயனர் விபரம்",
     pin: "பொருத்து",
     pinned: "பொருத்தப்பட்டுள்ளது",
@@ -152,25 +267,30 @@ export const common: CommonNS = {
     priority: "முன்னுரிமை",
     privacy: "தனியுரிமை",
     properties: "உடைமைகள்",
+    publish: "வெளியிடு",
     ready: "தயார்",
     regenerate: "மீளுருவாக்கம்",
     register: "பதிவு செய்",
-    reject: " ிராகரி",
-    release: "விடுவி",
+    reject: "மறுக்கவும்",
+    rejected: "மறுக்கப்பட்டது",
     remove: "நீக்கு",
     removeAll: "அனைத்து நீக்க",
     required: "இது தேவை",
     reserved: "ஒதுக்கப்பட்டவை",
     resetFilters: "வடிகட்டல்களை மீட்டடமை",
     retry: "மீண்டும் முயற்சி செய்",
+    revert: "மீண்டும் அமைக்க",
     revoke: "நீக்கு",
     revokeAll: "அனைத்தையும் நீக்கு",
     samples: "மாதிரிகள்",
     save: "சேமி",
+    saveDraft: "மூலத்தைச் சேமி",
     sdks: "SDKகள்",
     search: "தேடு",
     searching: "தேடி",
     security: "பாதுகாப்பு",
+    selectAll: "அனைத்தையும் தேர்ந்தெடுக்கவும்",
+    selectNone: "எதுவுமில்லை என்பதைத் தேர்ந்தெடுக்கவும்",
     services: "சேவைகள்",
     settings: "அமைப்புகள்",
     setup: "அமைவு",
@@ -191,6 +311,7 @@ export const common: CommonNS = {
     terminateSession: "அமர்வை முடி",
     tooShort: "மிகவும் குறுகிய",
     type: "வகை",
+    unassign: "அகற்று",
     unpin: "அகற்று",
     unpinned: "அகற்றப்பட்டது",
     update: "புதுப்பி",
@@ -198,6 +319,7 @@ export const common: CommonNS = {
     verified: "சரிபார்க்கப்பட்டது",
     verify: "உறுதி செய்",
     view: "காண்க",
+    viewDetails: "விவரங்களைப் பார்",
     weak: "பலவீனமான",
     weakPassword: "கடவுச்சொல் வலிமை குறைந்தபட்சம் நன்றாக இருக்க வேண்டும்."
 };

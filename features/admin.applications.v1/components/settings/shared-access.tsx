@@ -32,6 +32,7 @@ import { Dispatch } from "redux";
 import { ApplicationManagementConstants } from "../../constants/application-management";
 import { ApplicationInterface } from "../../models/application";
 import { ApplicationShareForm } from "../forms/share-application-form";
+import { ApplicationShareFormUpdated } from "../forms/share-application-form-updated";
 import { OperationStatusBanner } from "../shared-access-status-banner";
 
 /**
@@ -75,6 +76,9 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
     const isApplicationShareOperationStatusEnabled: boolean = isFeatureEnabled(
         applicationFeatureConfig,
         ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_SHARED_ACCESS_STATUS"));
+    const isRoleSharingEnabled: boolean = isFeatureEnabled(
+        applicationFeatureConfig,
+        ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_ROLE_SHARING"));
     const asyncOperationStatusPollingInterval: number = useSelector((state: AppState) =>
         state?.config?.ui?.asyncOperationStatusPollingInterval);
 
@@ -123,14 +127,28 @@ export const SharedAccess: FunctionComponent<SharedAccessPropsInterface> = (
                 sharingOperationSummary={ sharingOperationSummary }/>
 
             <EmphasizedSegment className="advanced-configuration-section" padded="very">
-                <ApplicationShareForm
-                    application={ application }
-                    onApplicationSharingCompleted={ () => onUpdate(application?.id) }
-                    readOnly={ readOnly }
-                    onOperationStarted={ handleChildStartedOperation }
-                    operationStatus={ status }
-                    isSharingInProgress={ sharingState === OperationStatus.IN_PROGRESS }
-                />
+                {
+                    isRoleSharingEnabled
+                        ? (
+                            <ApplicationShareFormUpdated
+                                application={ application }
+                                onApplicationSharingCompleted={ () => onUpdate(application?.id) }
+                                readOnly={ readOnly }
+                                onOperationStarted={ handleChildStartedOperation }
+                                operationStatus={ status }
+                                isSharingInProgress={ sharingState === OperationStatus.IN_PROGRESS }
+                            />
+                        ) : (
+                            <ApplicationShareForm
+                                application={ application }
+                                onApplicationSharingCompleted={ () => onUpdate(application?.id) }
+                                readOnly={ readOnly }
+                                onOperationStarted={ handleChildStartedOperation }
+                                operationStatus={ status }
+                                isSharingInProgress={ sharingState === OperationStatus.IN_PROGRESS }
+                            />
+                        )
+                }
             </EmphasizedSegment>
         </>
     );

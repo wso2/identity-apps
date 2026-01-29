@@ -26,7 +26,7 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { attributeConfig } from "@wso2is/admin.extensions.v1";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { getProfileSchemas } from "@wso2is/admin.users.v1/api";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -246,7 +246,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     const primaryUserStoreDomainName: string = useSelector((state: AppState) =>
         state?.config?.ui?.primaryUserStoreDomainName);
     const systemReservedUserStores: string[] = useSelector((state: AppState) =>
-        state.config.ui.systemReservedUserStores);
+        state?.config?.ui?.systemReservedUserStores);
 
     const [ submitExternalClaim, setSubmitExternalClaim ] = useTrigger();
 
@@ -280,7 +280,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
         const userStoresNotSet: string[] = [];
 
         userStores
-            ?.filter((userStore: UserStoreListItem) => !systemReservedUserStores.includes(userStore.name))
+            ?.filter((userStore: UserStoreListItem) => !systemReservedUserStores?.includes(userStore.name))
             ?.forEach((userStore: UserStoreListItem) => {
                 claim?.attributeMapping?.find((attribute: AttributeMapping) => {
                     return attribute.userstore.toLowerCase() === userStore.name.toLowerCase();
@@ -650,10 +650,14 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                             ? t("claims:list.placeholders.emptyList.title.local")
                             : isDialect(list)
                                 ? t("claims:list.placeholders.emptyList.title.dialect")
-                                : t(
-                                    "claims:list.placeholders.emptyList.title.external",
-                                    { type: resolveType(attributeType, true) }
-                                )
+                                : isSubOrganization()
+                                    ? t("claims:list.placeholders.emptyList.title.readOnlyDialect",
+                                        { type: resolveType(attributeType, true) }
+                                    )
+                                    : t(
+                                        "claims:list.placeholders.emptyList.title.external",
+                                        { type: resolveType(attributeType, true) }
+                                    )
                     }
                     subtitle={ [
 
@@ -994,7 +998,8 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: ClaimManagementConstants.EMPTY_STRING
+                title: ClaimManagementConstants.EMPTY_STRING,
+                width: 2
             }
         ];
     };

@@ -26,6 +26,9 @@ import {
     getWorkflowAssociationsResourceEndpoints,
     getWorkflowsResourceEndpoints
 } from "@wso2is/admin.approval-workflows.v1/configs/endpoints";
+import {
+    getAskPasswordFlowBuilderResourceEndpoints
+} from "@wso2is/admin.ask-password-flow-builder.v1/configs/endpoints";
 import { getBrandingResourceEndpoints } from "@wso2is/admin.branding.v1/configs/endpoints";
 import { getCertificatesResourceEndpoints } from "@wso2is/admin.certificates.v1";
 import { getClaimResourceEndpoints } from "@wso2is/admin.claims.v1/configs/endpoints";
@@ -34,6 +37,8 @@ import { getConnectionResourceEndpoints } from "@wso2is/admin.connections.v1";
 import { getEmailTemplatesResourceEndpoints } from "@wso2is/admin.email-templates.v1";
 import { getExtendedFeatureResourceEndpoints } from "@wso2is/admin.extensions.v1/configs/endpoints";
 import { getFeatureGateResourceEndpoints } from "@wso2is/admin.feature-gate.v1/configs/endpoints";
+import { getFlowBuilderCoreResourceEndpoints } from "@wso2is/admin.flow-builder-core.v1/config/endpoints";
+import { getFlowsResourceEndpoints } from "@wso2is/admin.flows.v1/configs/endpoints";
 import { getGroupsResourceEndpoints } from "@wso2is/admin.groups.v1/configs/endpoints";
 import { getIDVPResourceEndpoints } from "@wso2is/admin.identity-verification-providers.v1/configs/endpoints";
 import { getRemoteLoggingEndpoints } from "@wso2is/admin.logs.v1/configs/endpoints";
@@ -41,6 +46,9 @@ import { getScopesResourceEndpoints } from "@wso2is/admin.oidc-scopes.v1";
 import { getInsightsResourceEndpoints } from "@wso2is/admin.org-insights.v1/config/org-insights";
 import { getOrganizationsResourceEndpoints } from "@wso2is/admin.organizations.v1/configs";
 import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils";
+import {
+    getPasswordRecoveryFlowBuilderResourceEndpoints
+} from "@wso2is/admin.password-recovery-flow-builder.v1/config/endpoints";
 import { getPolicyAdministrationResourceEndpoints } from "@wso2is/admin.policy-administration.v1/configs/endpoints";
 import {
     getPushProviderResourceEndpoints, getPushProviderTemplateEndpoints
@@ -52,17 +60,25 @@ import { getRemoteFetchConfigResourceEndpoints } from "@wso2is/admin.remote-repo
 import { getRolesResourceEndpoints } from "@wso2is/admin.roles.v2/configs/endpoints";
 import { getRulesEndpoints } from "@wso2is/admin.rules.v1/configs/endpoints";
 import { getSecretsManagementEndpoints } from "@wso2is/admin.secrets.v1/configs/endpoints";
-import { getServerConfigurationsResourceEndpoints } from "@wso2is/admin.server-configurations.v1";
+import { getServerConfigurationsResourceEndpoints } from "@wso2is/admin.server-configurations.v1/configs/endpoints";
 import { getSmsTemplateResourceEndpoints } from "@wso2is/admin.sms-templates.v1/configs/endpoints";
 import { getExtensionTemplatesEndpoints } from "@wso2is/admin.template-core.v1/configs/endpoints";
 import { getTenantResourceEndpoints } from "@wso2is/admin.tenants.v1/configs/endpoints";
 import { getUsersResourceEndpoints } from "@wso2is/admin.users.v1/configs/endpoints";
 import { getUserstoreResourceEndpoints } from "@wso2is/admin.userstores.v1/configs/endpoints";
-import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants";
+import { PRIMARY_USERSTORE } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import { getValidationServiceEndpoints } from "@wso2is/admin.validation.v1/configs";
+import { getVCTemplateEndpoints } from "@wso2is/admin.verifiable-credentials.v1/configs/endpoints";
 import { getWebhooksResourceEndpoints } from "@wso2is/admin.webhooks.v1/configs/endpoints";
-import { getApprovalsResourceEndpoints } from "@wso2is/admin.workflow-approvals.v1";
-import { I18nModuleInitOptions, I18nModuleOptionsInterface, MetaI18N, generateBackendPaths } from "@wso2is/i18n";
+import { getApprovalsResourceEndpoints } from "@wso2is/common.workflow-approvals.v1";
+import {
+    I18nModuleConstants,
+    I18nModuleInitOptions,
+    I18nModuleOptionsInterface,
+    SupportedLanguagesMeta,
+    generateBackendPaths
+} from "@wso2is/i18n";
+import { getWorkflowRequestsResourceEndpoints } from "../../admin.workflow-requests.v1/types/workflow-requests";
 import { AppConstants } from "../constants/app-constants";
 import { I18nConstants } from "../constants/i18n-constants";
 import { UIConstants } from "../constants/ui-constants";
@@ -193,7 +209,7 @@ export class Config {
      * @param metaFile - Meta File.
      * @returns I18n init options.
      */
-    public static generateModuleInitOptions(metaFile: MetaI18N): I18nModuleInitOptions {
+    public static generateModuleInitOptions(metaFile: SupportedLanguagesMeta): I18nModuleInitOptions {
         return {
             backend: {
                 loadPath: (language: string[], namespace: string[]) => generateBackendPaths(
@@ -204,6 +220,7 @@ export class Config {
                         langAutoDetectEnabled: I18nConstants.LANG_AUTO_DETECT_ENABLED,
                         namespaceDirectories: I18nConstants.BUNDLE_NAMESPACE_DIRECTORIES,
                         overrideOptions: I18nConstants.INIT_OPTIONS_OVERRIDE,
+                        resourceExtensionsPath: "/extensions/i18n",
                         resourcePath: "/resources/i18n",
                         xhrBackendPluginEnabled: I18nConstants.XHR_BACKEND_PLUGIN_ENABLED
                     },
@@ -265,10 +282,13 @@ export class Config {
                 I18nConstants.REMOTE_USER_STORES_NAMESPACE,
                 I18nConstants.RULES_NAMESPACE,
                 I18nConstants.PUSH_PROVIDERS_NAMESPACE,
-                I18nConstants.EMAIL_PROVIDERS_NAMESPACE,
+                I18nConstants.EXTERNAL_API_AUTHENTICATION_NAMESPACE,
                 I18nConstants.WEBHOOKS_NAMESPACE,
                 I18nConstants.APPROVAL_WORKFLOWS_NAMESPACE,
-                I18nConstants.AGENTS_NAMESPACE
+                I18nConstants.AGENTS_NAMESPACE,
+                I18nConstants.FLOWS_NAMESPACE,
+                I18nConstants.COMMON_USERS_NAMESPACE,
+                I18nConstants.VERIFIABLE_CREDENTIALS_NAMESPACE
             ],
             preload: []
         };
@@ -280,13 +300,14 @@ export class Config {
      * @param metaFile - Meta file.
      * @returns i18n config object.
      */
-    public static getI18nConfig(metaFile?: MetaI18N): I18nModuleOptionsInterface {
+    public static getI18nConfig(metaFile?: SupportedLanguagesMeta): I18nModuleOptionsInterface {
         return {
             initOptions: this.generateModuleInitOptions(metaFile),
             langAutoDetectEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.i18nConfigs?.langAutoDetectEnabled
                 ?? I18nConstants.LANG_AUTO_DETECT_ENABLED,
             namespaceDirectories: I18nConstants.BUNDLE_NAMESPACE_DIRECTORIES,
             overrideOptions: I18nConstants.INIT_OPTIONS_OVERRIDE,
+            resourceExtensionsPath: "/extensions/i18n",
             resourcePath: "/resources/i18n",
             xhrBackendPluginEnabled: I18nConstants.XHR_BACKEND_PLUGIN_ENABLED
         };
@@ -334,9 +355,15 @@ export class Config {
             ...getRemoteLoggingEndpoints(this.resolveServerHost()),
             ...getWorkflowsResourceEndpoints(this.resolveServerHost()),
             ...getWorkflowAssociationsResourceEndpoints(this.resolveServerHost()),
+            ...getWorkflowRequestsResourceEndpoints(this.resolveServerHost()),
             ...getRegistrationFlowBuilderResourceEndpoints(this.resolveServerHost()),
+            ...getPasswordRecoveryFlowBuilderResourceEndpoints(this.resolveServerHost()),
+            ...getAskPasswordFlowBuilderResourceEndpoints(this.resolveServerHost()),
+            ...getFlowsResourceEndpoints(this.resolveServerHost()),
             ...getWebhooksResourceEndpoints(this.resolveServerHost()),
             ...getAgentsResourceEndpoints(this.resolveServerHost()),
+            ...getFlowBuilderCoreResourceEndpoints(this.resolveServerHost()),
+            ...getVCTemplateEndpoints(this.resolveServerHost()),
             CORSOrigins: `${ this.resolveServerHostFromConfig() }/api/server/v1/cors/origins`,
             asyncStatus: `${ this.resolveServerHost(false, true) }/api/server/v1/async-operations`,
             // TODO: Remove this endpoint and use ID token to get the details
@@ -347,12 +374,28 @@ export class Config {
     }
 
     /**
+     * Get a list of languages that can be translated in the UI.
+     * @remarks Currently, the Console only supports English.
+     * Tracker: https://github.com/wso2/product-is/issues/24778
+     *
+     * @returns List of translatable UI languages.
+     */
+    public static getAppSupportedLocales(): string[] {
+        return [ I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE ];
+    }
+
+    /**
      * Get UI config.
      *
      * @returns UI config object.
      */
     public static getUIConfig(): UIConfigInterface {
         return {
+            actions: window[ "AppUtils" ]?.getConfig()?.ui?.actions,
+            adminNotice: {
+                enabled: window[ "AppUtils" ]?.getConfig()?.ui?.adminNotice?.enabled,
+                plannedRollOutDate: window[ "AppUtils" ]?.getConfig()?.ui?.adminNotice?.plannedRollOutDate
+            },
             administratorRoleDisplayName: window[ "AppUtils" ]?.getConfig()?.ui?.administratorRoleDisplayName ??
                 UIConstants.ADMINISTRATOR_ROLE_DISPLAY_NAME,
             announcements: window[ "AppUtils" ]?.getConfig()?.ui?.announcements,
@@ -375,6 +418,7 @@ export class Config {
             cookiePolicyUrl: window[ "AppUtils" ]?.getConfig()?.ui?.cookiePolicyUrl,
             customContent: window[ "AppUtils" ]?.getConfig()?.ui?.customContent ??
                 UIConstants.DEFAULT_CUSTOM_CONTENT_CONFIGS,
+            disableEmailTemplateForFreeTier: window[ "AppUtils" ]?.getConfig()?.ui?.disableEmailTemplateForFreeTier,
             emailTemplates: {
                 defaultLogoUrl: window[ "AppUtils" ]?.getConfig()?.ui?.emailTemplates?.defaultLogoUrl,
                 defaultWhiteLogoUrl: window[ "AppUtils" ]?.getConfig()?.ui?.emailTemplates?.defaultWhiteLogoUrl
@@ -382,8 +426,13 @@ export class Config {
             enableCustomEmailTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.enableCustomEmailTemplates,
             enableEmailDomain: window[ "AppUtils" ]?.getConfig()?.ui?.enableEmailDomain ?? false,
             enableIdentityClaims: window[ "AppUtils" ]?.getConfig()?.ui?.enableIdentityClaims ?? true,
+            enableLegacySessionBoundTokenBehaviour:
+                window[ "AppUtils" ]?.getConfig()?.ui?.enableLegacySessionBoundTokenBehaviour ?? true,
             enableOldUIForEmailProvider: window[ "AppUtils" ]?.getConfig()?.ui?.enableOldUIForEmailProvider,
             features: window[ "AppUtils" ]?.getConfig()?.ui?.features,
+            flowExecution: {
+                enableLegacyFlows: window[ "AppUtils" ]?.getConfig()?.ui?.flowExecution?.enableLegacyFlows ?? true
+            },
             googleOneTapEnabledTenants: window["AppUtils"]?.getConfig()?.ui?.googleOneTapEnabledTenants,
             governanceConnectors: window["AppUtils"]?.getConfig()?.ui?.governanceConnectors,
             gravatarConfig: window[ "AppUtils" ]?.getConfig()?.ui?.gravatarConfig,
@@ -393,8 +442,6 @@ export class Config {
             hiddenUserStores: window[ "AppUtils" ]?.getConfig()?.ui?.hiddenUserStores,
             i18nConfigs: window[ "AppUtils" ]?.getConfig()?.ui?.i18nConfigs,
             identityProviderTemplates: window[ "AppUtils" ]?.getConfig()?.ui?.identityProviderTemplates,
-            isAdminDataSeparationNoticeEnabled:
-                window[ "AppUtils" ]?.getConfig()?.ui?.isAdminDataSeparationNoticeEnabled,
             isClaimUniquenessValidationEnabled:
                 window[ "AppUtils" ]?.getConfig()?.ui?.isClaimUniquenessValidationEnabled ?? false,
             isClientSecretHashEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isClientSecretHashEnabled,
@@ -418,6 +465,7 @@ export class Config {
             isSignatureValidationCertificateAliasEnabled:
                 window[ "AppUtils" ]?.getConfig()?.ui?.isSignatureValidationCertificateAliasEnabled,
             isTrustedAppConsentRequired: window[ "AppUtils" ]?.getConfig()?.ui?.isTrustedAppConsentRequired ?? false,
+            isWSFedProtocolTemplateEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isWSFedProtocolTemplateEnabled,
             isXacmlConnectorEnabled: window[ "AppUtils" ]?.getConfig()?.ui?.isXacmlConnectorEnabled,
             legacyMode: window[ "AppUtils" ]?.getConfig()?.ui?.legacyMode,
             listAllAttributeDialects: window[ "AppUtils" ]?.getConfig()?.ui?.listAllAttributeDialects,
@@ -426,6 +474,7 @@ export class Config {
             primaryUserStoreDomainName: window[ "AppUtils" ]?.getConfig()?.ui?.primaryUserStoreDomainName?.toUpperCase()
                 ?? PRIMARY_USERSTORE,
             privacyPolicyConfigs: window[ "AppUtils" ]?.getConfig()?.ui?.privacyPolicyConfigs,
+            privacyPolicyUrl: window[ "AppUtils" ]?.getConfig()?.ui?.privacyPolicyUrl,
             productName: window[ "AppUtils" ]?.getConfig()?.ui?.productName,
             productVersionConfig: window[ "AppUtils" ]?.getConfig()?.ui?.productVersionConfig,
             routes: window[ "AppUtils" ]?.getConfig()?.ui?.routes ?? {
@@ -433,17 +482,16 @@ export class Config {
             },
             selfAppIdentifier: window[ "AppUtils" ]?.getConfig()?.ui?.selfAppIdentifier,
             showAppSwitchButton: window[ "AppUtils" ]?.getConfig()?.ui?.showAppSwitchButton,
-            showPasswordOfEmailProvider: window[ "AppUtils" ]?.getConfig()?.ui?.showPasswordOfEmailProvider,
-            showSmsOtpPwdRecoveryFeatureStatusChip:
-                window[ "AppUtils" ]?.getConfig()?.ui?.showSmsOtpPwdRecoveryFeatureStatusChip,
             showStatusLabelForNewAuthzRuntimeFeatures:
                 window[ "AppUtils" ]?.getConfig()?.ui?.showStatusLabelForNewAuthzRuntimeFeatures,
             systemAppsIdentifiers: window[ "AppUtils" ]?.getConfig()?.ui?.systemAppsIdentifiers,
             systemReservedUserStores: window[ "AppUtils" ]?.getConfig()?.ui?.systemReservedUserStores,
+            termsOfUseUrl: window[ "AppUtils" ]?.getConfig()?.ui?.termsOfUseURL,
             theme: window[ "AppUtils" ]?.getConfig()?.ui?.theme,
             useRoleClaimAsGroupClaim: window[ "AppUtils" ]?.getConfig()?.ui?.useRoleClaimAsGroupClaim,
             userSchemaURI: window[ "AppUtils" ]?.getConfig()?.ui?.customUserSchemaURI
-                ?? ClaimManagementConstants.DEFAULT_SCIM2_CUSTOM_USER_SCHEMA_URI
+                ?? ClaimManagementConstants.DEFAULT_SCIM2_CUSTOM_USER_SCHEMA_URI,
+            userSurveyBanner: window[ "AppUtils" ]?.getConfig()?.ui?.userSurveyBanner
         };
     }
 }
