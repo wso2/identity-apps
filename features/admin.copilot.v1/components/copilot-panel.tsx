@@ -62,7 +62,7 @@ const CopilotPanel: React.FunctionComponent<CopilotPanelProps> = (
 ): ReactElement => {
     const {
         className,
-        width = 400,
+        width = 600,
         ["data-componentid"]: componentId = "copilot-panel"
     } = props;
 
@@ -174,7 +174,7 @@ const CopilotPanel: React.FunctionComponent<CopilotPanelProps> = (
                 style: {
                     margin: 0,
                     padding: 0,
-                    width: isExpanded ? "100vw" : width
+                    width: isExpanded ? "100%" : width
                 }
 
             } }
@@ -195,10 +195,10 @@ const CopilotPanel: React.FunctionComponent<CopilotPanelProps> = (
                         </Box>
                         <Box className="copilot-title-container">
                             <Typography variant="h6" className="copilot-title">
-                                    Copilot
+                                Copilot
                             </Typography>
                             <Typography variant="caption" className="copilot-preview-label">
-                                    Preview
+                                Preview
                             </Typography>
                         </Box>
                     </Box>
