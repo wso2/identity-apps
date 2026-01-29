@@ -418,7 +418,8 @@ export const extensions: Extensions = {
                         title: "API Authorization",
                         resourceText: {
                             apiResource: "API resource",
-                            genericResource: "resource"
+                            genericResource: "resource",
+                            vcResource: "Verifiable Credential"
                         },
                         sections: {
                             apiSubscriptions: {

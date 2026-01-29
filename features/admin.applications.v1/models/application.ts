@@ -848,6 +848,7 @@ export enum ApplicationTemplateIdTypes {
     M2M_APPLICATION = "m2m-application",
     CUSTOM_APPLICATION = "custom-application",
     MCP_CLIENT_APPLICATION = "mcp-client-application",
+    DIGITAL_WALLET_APPLICATION = "digital-wallet-application",
     REACT_APPLICATION = "react-application",
     NEXT_JS_APPLICATION = "nextjs-application"
 }

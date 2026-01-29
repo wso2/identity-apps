@@ -230,6 +230,7 @@ export const applicationConfig: ApplicationConfig = {
                     || application?.templateId === OIDCWebAppTemplate?.id
                     || application?.templateId === SinglePageAppTemplate?.id
                     || application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
+                    || application?.templateId === ApplicationTemplateIdTypes.DIGITAL_WALLET_APPLICATION
                 )
                 && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
             ) {
@@ -244,9 +245,14 @@ export const applicationConfig: ApplicationConfig = {
                             ? I18n.instance.t(
                                 "extensions:develop.applications.edit.sections.resourceAuthorization.title"
                             )
-                            : I18n.instance.t(
-                                "extensions:develop.applications.edit.sections.apiAuthorization.title"
-                            ),
+                            : (application?.originalTemplateId
+                                === ApplicationTemplateIdTypes.DIGITAL_WALLET_APPLICATION)
+                                ? I18n.instance.t(
+                                    "extensions:develop.applications.edit.sections.resourceAuthorization.title"
+                                )
+                                : I18n.instance.t(
+                                    "extensions:develop.applications.edit.sections.apiAuthorization.title"
+                                ),
                         render: () => (
                             <ResourceTab.Pane controlledSegmentation>
                                 <APIAuthorization
@@ -269,7 +275,8 @@ export const applicationConfig: ApplicationConfig = {
                     || application?.templateId === MobileAppTemplate?.id
                     || application?.templateId === OIDCWebAppTemplate?.id
                     || application?.templateId === SinglePageAppTemplate?.id
-                    || application?.templateId === SamlWebAppTemplate?.id)
+                    || application?.templateId === SamlWebAppTemplate?.id
+                    || application?.templateId === ApplicationTemplateIdTypes.DIGITAL_WALLET_APPLICATION)
                 )
                 && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
             ) {
@@ -459,6 +466,10 @@ export const applicationConfig: ApplicationConfig = {
                 ApplicationManagementConstants.JWT_BEARER,
                 ApplicationManagementConstants.IWA_NTLM
             ],
+        [ "digital-wallet-application" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT
+        ],
         [ "m2m-application" ]: [
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
         ],

@@ -50,6 +50,10 @@ interface ScopeFormInterface extends
      */
     appId: string;
     /**
+     * Original Template ID.
+     */
+    originalTemplateId?: string;
+    /**
      * Currently selected API resource.
      */
     subscribedAPIResource: AuthorizedAPIListItemInterface;
@@ -83,6 +87,7 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
 
     const {
         appId,
+        originalTemplateId,
         subscribedAPIResource,
         isScopesAvailableForUpdate,
         bulkChangeAllAuthorizedScopes,
@@ -93,6 +98,8 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
 
     const { t } = useTranslation();
     const dispatch: Dispatch = useDispatch();
+
+    const isDigitalWallet: boolean = originalTemplateId === "digital-wallet-application";
 
     const [ isLoading, setIsLoading ] = useState<boolean>(false);
     const [ isUpdateButtonDisabled, setIsUpdateButtonDisabled ] = useState<boolean>(true);
@@ -366,6 +373,10 @@ export const ScopeForm: FunctionComponent<ScopeFormInterface> = (
         setRemovedScopesIdentifiers([]);
         setIsUpdateButtonDisabled(true);
     };
+
+    if (isDigitalWallet) {
+        return null;
+    }
 
     return (
         <EmphasizedSegment padded="very">
