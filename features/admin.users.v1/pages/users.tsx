@@ -786,6 +786,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 showPagination={ true }
                 totalPages={ resolveTotalPages() }
                 totalListSize={ totalUsers }
+                activePage={ resolveActivePage() }
                 showTotalListSize={ !isTotalUserCountFeatureDisabled }
                 paginationOptions={ {
                     disableNextButton: !isNextPageAvailable,
@@ -1051,6 +1052,14 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const handleAccountStatusChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps): void => {
         setInvitationStatusOption(data.value as string);
         setIsInvitationStatusOptionChanged(true);
+    };
+
+    const resolveActivePage = (): number => {
+        /**
+         * Calculate the current active page based on listOffset and listItemLimit.
+         * This ensures pagination component displays the correct page number.
+         */
+        return Math.floor((listOffset - 1) / listItemLimit) + 1;
     };
 
     const resolveTotalPages = (): number => {
