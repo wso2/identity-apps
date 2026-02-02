@@ -1142,6 +1142,9 @@ export interface ApplicationsNS {
             sections: {
                 applicationNativeAuthentication: {
                     heading: string;
+                    alerts: {
+                        apiAuthCompatibilityWarning: string;
+                    };
                     fields: {
                         enableAPIBasedAuthentication: {
                             hint: string;

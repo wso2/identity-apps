@@ -1367,6 +1367,9 @@ export const applications: ApplicationsNS = {
             sections: {
                 applicationNativeAuthentication: {
                     heading: "App-Native Authentication",
+                    alerts: {
+                        apiAuthCompatibilityWarning: "Please note that some authenticators configured in the authentication flow do not support API based authentication."
+                    },
                     fields: {
                         enableAPIBasedAuthentication: {
                             hint: "Select to authorize application to perform browserless, in-app authentication via app-native authentication API.",

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -27,7 +27,11 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
 import { updateApplicationConfigurations } from "../../api/application";
-import { AdvancedConfigurationsInterface, ApplicationTemplateListItemInterface } from "../../models/application";
+import {
+    AdvancedConfigurationsInterface,
+    ApplicationTemplateListItemInterface,
+    AuthenticationSequenceInterface
+} from "../../models/application";
 import { AdvancedConfigurationsForm } from "../forms/advanced-configurations-form";
 
 /**
@@ -42,6 +46,10 @@ interface AdvancedSettingsPropsInterface extends SBACInterface<FeatureConfigInte
      * Current advanced configurations.
      */
     advancedConfigurations: AdvancedConfigurationsInterface;
+    /**
+     * Currently configured authentication sequence for the application.
+     */
+    authenticationSequence: AuthenticationSequenceInterface;
     /**
      * Callback to update the application details.
      */
@@ -70,6 +78,7 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
     const {
         appId,
         advancedConfigurations,
+        authenticationSequence,
         featureConfig,
         onUpdate,
         readOnly,
@@ -140,6 +149,7 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
     return (
         <EmphasizedSegment className="advanced-configuration-section" padded="very">
             <AdvancedConfigurationsForm
+                authenticationSequence={ authenticationSequence }
                 config={ advancedConfigurations }
                 onSubmit={ handleAdvancedConfigFormSubmit }
                 readOnly={
