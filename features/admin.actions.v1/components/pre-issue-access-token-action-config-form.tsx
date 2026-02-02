@@ -293,6 +293,7 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
                         isHasRule={ isHasRule }
                         setIsHasRule={ setIsHasRule }
                         data-componentid={ `${ _componentId }-rule` }
+                        version={ actionData?.version || versionInfo?.latestVersion }
                     />
                 ) }
             </>
