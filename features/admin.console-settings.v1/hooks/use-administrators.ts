@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { UserBasicInterface, UserListInterface, UserRoleInterface } from "@wso2is/admin.core.v1/models/users";
+import { UserBasicInterface, UserListInterface } from "@wso2is/admin.core.v1/models/users";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { SCIMConfigs } from "@wso2is/admin.extensions.v1/configs/scim";
 import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
@@ -24,16 +24,17 @@ import { useUsersList } from "@wso2is/admin.users.v1/api/users";
 import { useGetParentOrgUserInvites }
     from "@wso2is/admin.users.v1/components/guests/api/use-get-parent-org-user-invites";
 import { InvitationsInterface } from "@wso2is/admin.users.v1/components/guests/models/invite";
-import { UserAccountTypes } from "@wso2is/admin.users.v1/constants/user-management-constants";
+import { UserAccountTypes, UserManagementConstants } from "@wso2is/admin.users.v1/constants/user-management-constants";
 import { UserManagementUtils } from "@wso2is/admin.users.v1/utils/user-management-utils";
-import { MultiValueAttributeInterface, RolesInterface } from "@wso2is/core/models";
+import { MultiValueAttributeInterface } from "@wso2is/core/models";
 import { AxiosError } from "axios";
 import cloneDeep from "lodash-es/cloneDeep";
 import isEmpty from "lodash-es/isEmpty";
 import { useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import useConsoleRoles from "./use-console-roles";
-
+import { useGroupList } from "../../admin.groups.v1/api/groups";
+import { GroupListInterface, GroupsInterface } from "../../admin.groups.v1/models/groups";
 /**
  * Props interface of {@link UseAdministrators}
  */
@@ -118,6 +119,17 @@ const useAdministrators = (
         shouldFetch
     );
 
+     const {
+        data:originalGroupList
+        } = useGroupList(
+            null,
+            null,
+            null,
+            domain,
+            UserManagementConstants.MEMBERS_ATTRIBUTE,
+            true
+        );
+
     const {
         data: invitedAdministrators,
         mutate: mutateInvitedAdministratorsListFetchRequest
@@ -131,7 +143,7 @@ const useAdministrators = (
      * @param usersList - User list from the API.
      * @returns Processed list of users.
      */
-    const transformUserList = (usersList: UserListInterface): UserListInterface => {
+    const transformUserList = (usersList: UserListInterface, groupList: GroupListInterface): UserListInterface => {
         if (!usersList) {
             return;
         }
@@ -139,15 +151,22 @@ const useAdministrators = (
         const clonedUserList: UserListInterface = cloneDeep(usersList);
         const processedUserList: UserBasicInterface[] = [];
 
+        const consoleRoleIds = new Set(consoleRoles?.Resources?.map(r => r.id) || []);
+        /*
+        * Get all groups which have any of the administrator role
+        */
+        const adminGroups: GroupsInterface[] =
+            groupList?.Resources?.filter(group =>
+                group?.roles?.some(role => consoleRoleIds.has(role.value))
+            ) || [];
         /**
          * Checks whether administrator role is present in the user.
          */
-        const isAdminUser = (user: UserBasicInterface): boolean => {
-            return user?.roles?.some((userRole: UserRoleInterface) => {
-                return consoleRoles?.Resources?.some((consoleRole: RolesInterface) => {
-                    return consoleRole.id === userRole.value;
-                });
-            });
+        const isAdminUser = (user: UserBasicInterface, adminGroups: GroupsInterface[]): boolean => {
+            const userRoleIds = new Set(user?.roles?.map(role => role.value) || []);
+            const userGroupIds = new Set(user?.groups?.map(group => group.value) || []);
+            const adminGroupIds = new Set(adminGroups?.map(adminGroup => adminGroup.id) || []);
+            return [...userRoleIds].some(id => consoleRoleIds.has(id)) || [...userGroupIds].some(id => adminGroupIds.has(id));
         };
 
         const isOwner = (user: UserBasicInterface): boolean => {
@@ -156,7 +175,7 @@ const useAdministrators = (
 
         clonedUserList.Resources = clonedUserList?.Resources?.map((resource: UserBasicInterface) => {
             // Filter out users belong to groups named "Administrator"
-            if (!isAdminUser(resource)) {
+            if (!isAdminUser(resource, adminGroups)) {
                 return null;
             }
 
@@ -238,7 +257,7 @@ const useAdministrators = (
             return {};
         }
 
-        return transformUserList(originalAdminUserList);
+        return transformUserList(originalAdminUserList, originalGroupList);
     }, [ originalAdminUserList, consoleRoles ]);
 
     return {
