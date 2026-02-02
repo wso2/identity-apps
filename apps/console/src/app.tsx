@@ -79,6 +79,8 @@ import { getBaseRoutes } from "./configs/routes";
 import DecoratedApp from "./decorated-app";
 import "./app.scss";
 
+import { useOnboardingStatus } from "@wso2is/admin.onboarding.v1/hooks/use-onboarding-status";
+
 const Base = ({
     onAgentManagementEnableStatusChange
 }: AppComponentProps) => {
@@ -154,6 +156,7 @@ const Base = ({
 export const App = ({
     onAgentManagementEnableStatusChange
 }: AppComponentProps): ReactElement => {
+
     const featureGateConfigUpdated : FeatureGateInterface = { ...featureGateConfig };
 
     const dispatch: Dispatch<any> = useDispatch();
@@ -182,6 +185,26 @@ export const App = ({
         data: allFeatures,
         error: featureGateAPIException
     } = useGetAllFeatures();
+
+    const { shouldShowOnboarding, isLoading: isOnboardingStatusLoading } = useOnboardingStatus();
+
+    /**
+     * Redirect to onboarding page if user should see onboarding.
+     */
+    useEffect(() => {
+        if (isOnboardingStatusLoading) {
+            return;
+        }
+
+        if (shouldShowOnboarding) {
+            const onboardingPath: string = AppConstants.getPaths().get("ONBOARDING");
+
+            // Only redirect if not already on the onboarding page
+            if (window.location.pathname !== onboardingPath) {
+                history.push(onboardingPath);
+            }
+        }
+    }, [ shouldShowOnboarding, isOnboardingStatusLoading ]);
 
     /**
      * Set the deployment configs in redux state.
