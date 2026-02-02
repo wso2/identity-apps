@@ -101,19 +101,6 @@ export const Footer: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => (
 }));
 
 /**
- * Skip button styled as text.
- */
-export const SkipButton: typeof Button = styled(Button)(({ theme }: { theme: Theme }) => ({
-    "&:hover": {
-        backgroundColor: "transparent",
-        textDecoration: "underline"
-    },
-    color: theme.palette.primary.main,
-    fontWeight: 400,
-    textTransform: "none"
-}));
-
-/**
  * Primary action button with rounded corners.
  */
 export const PrimaryButton: typeof Button = styled(Button)(({ theme }: { theme: Theme }) => ({

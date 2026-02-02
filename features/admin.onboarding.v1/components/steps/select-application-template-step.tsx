@@ -109,6 +109,8 @@ const SelectApplicationTemplateStep: FunctionComponent<SelectApplicationTemplate
         ? FRAMEWORK_OPTIONS
         : FRAMEWORK_OPTIONS.slice(0, DEFAULT_FRAMEWORK_COUNT);
 
+        console.log("APPLICATION_TYPE_OPTIONS", APPLICATION_TYPE_OPTIONS);
+
     const visibleAppTypes: readonly ApplicationTypeOption[] = showMoreAppTypes
         ? APPLICATION_TYPE_OPTIONS
         : APPLICATION_TYPE_OPTIONS.slice(0, DEFAULT_APP_TYPE_COUNT);
@@ -134,16 +136,6 @@ const SelectApplicationTemplateStep: FunctionComponent<SelectApplicationTemplate
         [ onTemplateSelect ]
     );
 
-    const renderFrameworkLogo = (framework: FrameworkOption): ReactElement | null => {
-        if (!framework.logo) {
-            return null;
-        }
-
-        const Logo: FunctionComponent = framework.logo;
-
-        return <Logo />;
-    };
-
     return (
         <TwoColumnLayout data-componentid={ componentId }>
             <LeftColumn>
@@ -163,7 +155,7 @@ const SelectApplicationTemplateStep: FunctionComponent<SelectApplicationTemplate
                             <SelectableCard
                                 key={ framework.id }
                                 data-componentid={ `${componentId}-framework-${framework.id}` }
-                                icon={ renderFrameworkLogo(framework) }
+                                icon={ framework.logo ? <framework.logo /> : null }
                                 isSelected={
                                     selectedFramework === framework.id
                                     && selectedTemplateId === framework.templateId
@@ -221,7 +213,7 @@ const SelectApplicationTemplateStep: FunctionComponent<SelectApplicationTemplate
                     </SectionLabel>
 
                     <AppTypeGrid>
-                        { visibleAppTypes.map((appType: ApplicationTypeOption) => (
+                        { visibleAppTypes?.map((appType: ApplicationTypeOption) => (
                             <SelectableCard
                                 key={ appType.id }
                                 data-componentid={ `${componentId}-apptype-${appType.id}` }

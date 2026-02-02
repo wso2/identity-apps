@@ -19,23 +19,24 @@
 import Box from "@oxygen-ui/react/Box";
 import TextField from "@oxygen-ui/react/TextField";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useCallback, useEffect, useMemo } from "react";
+import React, { FunctionComponent, ReactElement, useCallback, useEffect, useRef } from "react";
 import { OnboardingComponentIds } from "../../constants";
 import { useNameValidation } from "../../hooks/use-onboarding-validation";
-import { generateRandomNames } from "../../utils/random-name-generator";
 import Hint from "../shared/hint";
 import { LeftColumn, TwoColumnLayout } from "../shared/onboarding-styles";
 import SelectableChip from "../shared/selectable-chip";
 import StepHeader from "../shared/step-header";
 
-const RANDOM_NAME_COUNT: number = 5;
-
 /**
  * Props interface for NameApplicationStep component.
  */
 interface NameApplicationStepProps extends IdentifiableComponentInterface {
+    /** Current application name */
     applicationName: string;
+    /** Callback when application name changes */
     onApplicationNameChange: (name: string) => void;
+    /** Random name suggestions - passed from parent to persist across navigation */
+    randomNames: string[];
 }
 
 /**
@@ -47,13 +48,21 @@ const NameApplicationStep: FunctionComponent<NameApplicationStepProps> = (
     const {
         applicationName,
         onApplicationNameChange,
+        randomNames,
         ["data-componentid"]: componentId = OnboardingComponentIds.NAME_APP_STEP
     } = props;
 
     const { validateName, getValidationError } = useNameValidation();
+    const inputRef: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
 
-    // Generate random names once on mount
-    const randomNames: string[] = useMemo(() => generateRandomNames(RANDOM_NAME_COUNT), []);
+    // Auto-focus input field when step loads
+    useEffect(() => {
+        const timer: ReturnType<typeof setTimeout> = setTimeout(() => {
+            inputRef.current?.focus();
+        }, 100);
+
+        return () => clearTimeout(timer);
+    }, []);
 
     // Set first random name as default if no name is set
     useEffect(() => {
@@ -81,16 +90,17 @@ const NameApplicationStep: FunctionComponent<NameApplicationStepProps> = (
                     title="Name your application"
                 />
 
-                <Box sx={ { display: "flex", flexDirection: "column", gap: 3, maxWidth: 400 } }>
+                <Box sx={ { display: "flex", flexDirection: "column", gap: 3, maxWidth: 600 } }>
                     <TextField
+                        data-componentid={ `${componentId}-input` }
+                        error={ hasError }
                         fullWidth
+                        helperText={ hasError ? validationError : undefined }
+                        inputRef={ inputRef }
                         label="Application name"
+                        onChange={ handleNameChange }
                         placeholder="My Application"
                         value={ applicationName }
-                        onChange={ handleNameChange }
-                        helperText={ hasError ?? validationError }
-                        error={ hasError }
-                        data-componentid={ `${componentId}-input` }
                     />
 
                     <Hint message="In a hurry? Pick a random name">

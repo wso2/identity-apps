@@ -18,28 +18,47 @@
 
 /**
  * Default redirect URLs by framework/template.
+ * Framework-specific paths are auto-filled with industry standard defaults.
+ * Generic types require user input (empty arrays).
  */
 export const DefaultRedirectUrls: Record<string, string[]> = {
     angular: [ "http://localhost:4200" ],
     express: [ "http://localhost:3000/callback" ],
-    "mobile-application": [ "wso2sample://oauth2" ],
     next: [ "http://localhost:3000" ],
-    "oidc-web-application": [ "http://localhost:3000/callback" ],
-    react: [ "http://localhost:3000" ],
-    "single-page-application": [ "http://localhost:3000" ]
+    react: [ "http://localhost:5173" ],
+    "mcp-client-application": [],
+    "mobile-application": [],
+    "oidc-web-application": [],
+    "single-page-application": []
 };
 
 /**
  * Get default redirect URL(s) for a given framework or template.
+ * Returns empty array for generic types that don't have defaults.
  * @param frameworkOrTemplate - Framework ID or template ID
- * @returns Array of default redirect URLs
+ * @returns Array of default redirect URLs (may be empty for generic types)
  */
 export const getDefaultRedirectUrl = (frameworkOrTemplate?: string): string[] => {
     if (!frameworkOrTemplate) {
-        return [ "http://localhost:3000" ];
+        return [];
     }
 
-    return DefaultRedirectUrls[frameworkOrTemplate] || [ "http://localhost:3000" ];
+    return DefaultRedirectUrls[frameworkOrTemplate] ?? [];
+};
+
+/**
+ * Check if a framework/template has auto-fill defaults.
+ * @param frameworkOrTemplate - Framework ID or template ID
+ * @returns True if auto-fill defaults are available
+ */
+export const hasAutoFillDefaults = (frameworkOrTemplate?: string): boolean => {
+    if (!frameworkOrTemplate) {
+        return false;
+    }
+
+    const defaults: string[] = DefaultRedirectUrls[frameworkOrTemplate];
+
+    return defaults && defaults.length > 0;
 };
 
 /**
@@ -69,4 +88,28 @@ export const LOCALHOST_PATTERNS: RegExp[] = [
  */
 export const isLocalhostUrl = (url: string): boolean => {
     return LOCALHOST_PATTERNS.some((pattern: RegExp) => pattern.test(url));
+};
+
+/**
+ * Get all known default URLs across all frameworks/templates.
+ * Used to check if user has modified the URL from a default.
+ * @returns Set of all default URLs
+ */
+export const getAllDefaultUrls = (): Set<string> => {
+    const allDefaults: Set<string> = new Set();
+
+    Object.values(DefaultRedirectUrls).forEach((urls: string[]) => {
+        urls.forEach((url: string) => allDefaults.add(url));
+    });
+
+    return allDefaults;
+};
+
+/**
+ * Check if a URL is one of the known default URLs.
+ * @param url - URL to check
+ * @returns True if the URL is a known default
+ */
+export const isKnownDefaultUrl = (url: string): boolean => {
+    return getAllDefaultUrls().has(url);
 };
