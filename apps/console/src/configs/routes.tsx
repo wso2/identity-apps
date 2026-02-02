@@ -1811,6 +1811,16 @@ export const getAppViewRoutes = (): RouteInterface[] => {
 export const getFullScreenViewRoutes = (): RouteInterface[] => {
     const routes: RouteInterface[] = [
         {
+            component: lazy(() => import("@wso2is/admin.onboarding.v1/pages/onboarding-page")),
+            exact: true,
+            icon: null,
+            id: "onboarding",
+            name: "Onboarding",
+            path: AppConstants.getPaths().get("ONBOARDING"),
+            protected: true,
+            showOnSidePanel: false
+        },
+        {
             component: null,
             icon: null,
             id: "404",
