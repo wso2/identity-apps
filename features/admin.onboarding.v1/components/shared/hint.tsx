@@ -18,8 +18,10 @@
 
 import { Theme, styled } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
+import Collapse from "@oxygen-ui/react/Collapse";
 import Typography from "@oxygen-ui/react/Typography";
-import React, { FunctionComponent, ReactElement, ReactNode } from "react";
+import { ChevronDownIcon } from "@oxygen-ui/react-icons";
+import React, { FunctionComponent, ReactElement, ReactNode, useState } from "react";
 import { ReactComponent as Lightbulb } from "../../assets/icons/lightbulb.svg";
 
 /**
@@ -27,14 +29,25 @@ import { ReactComponent as Lightbulb } from "../../assets/icons/lightbulb.svg";
  */
 interface HintProps {
     /**
-     * Hint message text.
+     * Hint message text. Optional when using children for custom content.
      */
-    message: string;
+    message?: string;
     /**
-     * Optional content to render below the hint message.
-     * Use this for chips, buttons, or any interactive elements.
+     * Optional content to render. Can be used instead of or in addition to message.
+     * Use this for chips, buttons, lists, or any custom hint content.
      */
     children?: ReactNode;
+    /**
+     * When true, children are hidden by default and can be expanded by clicking the message.
+     * @default false
+     */
+    collapsible?: boolean;
+    /**
+     * Whether the collapsible section is expanded by default.
+     * Only applies when collapsible is true.
+     * @default false
+     */
+    defaultExpanded?: boolean;
 }
 
 /**
@@ -48,7 +61,7 @@ const HintContainer: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => (
 }));
 
 /**
- * Row containing icon and message.
+ * Row containing icon and message - static version.
  */
 const HintRow: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     alignItems: "center",
@@ -57,10 +70,32 @@ const HintRow: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
 }));
 
 /**
+ * Row containing icon and message - clickable version for collapsible mode.
+ */
+const ClickableHintRow: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    "&:hover .hint-message": {
+        textDecoration: "underline"
+    },
+    alignItems: "center",
+    cursor: "pointer",
+    display: "inline-flex",
+    gap: theme.spacing(1)
+}));
+
+/**
  * Hint message text styling.
  */
 const HintMessage: typeof Typography = styled(Typography)(({ theme }: { theme: Theme }) => ({
     color: theme.palette.text.secondary,
+    fontSize: "0.8125rem",
+    lineHeight: 1.5
+}));
+
+/**
+ * Clickable hint message - uses primary color.
+ */
+const ClickableHintMessage: typeof Typography = styled(Typography)(({ theme }: { theme: Theme }) => ({
+    color: theme.palette.primary.main,
     fontSize: "0.8125rem",
     lineHeight: 1.5
 }));
@@ -78,18 +113,76 @@ export const HintContent: typeof Box = styled(Box)(({ theme }: { theme: Theme })
 /**
  * Hint component displaying an informational message with a lightbulb icon.
  * Supports composition pattern - pass any content as children.
+ * Can be used with just message, just children, or both.
+ *
+ * When `collapsible` is true, the children are hidden by default and
+ * can be expanded by clicking the message (shows as a link with chevron).
  */
 const Hint: FunctionComponent<HintProps> = ({
     children,
-    message
-}: HintProps): ReactElement => (
-    <HintContainer>
-        <HintRow>
-            <Lightbulb fill="#FBBB00" height={ 18 } width={ 18 } />
-            <HintMessage variant="body2">{ message }</HintMessage>
-        </HintRow>
-        { children && <HintContent>{ children }</HintContent> }
-    </HintContainer>
-);
+    message,
+    collapsible = false,
+    defaultExpanded = false
+}: HintProps): ReactElement => {
+    const [ expanded, setExpanded ] = useState<boolean>(defaultExpanded);
+
+    const handleToggle = (): void => {
+        setExpanded(!expanded);
+    };
+
+    const handleKeyDown = (event: React.KeyboardEvent): void => {
+        if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            setExpanded(!expanded);
+        }
+    };
+
+    // Collapsible mode - clickable header with expandable children
+    if (collapsible) {
+        return (
+            <HintContainer>
+                <ClickableHintRow
+                    onClick={ handleToggle }
+                    onKeyDown={ handleKeyDown }
+                    role="button"
+                    tabIndex={ 0 }
+                    aria-expanded={ expanded }
+                >
+                    <Lightbulb fill="#FBBB00" height={ 18 } width={ 18 } />
+                    { message && (
+                        <ClickableHintMessage className="hint-message" variant="body2">
+                            { message }
+                        </ClickableHintMessage>
+                    ) }
+                    <Box
+                        component="span"
+                        sx={ {
+                            alignItems: "center",
+                            display: "inline-flex",
+                            transform: expanded ? "rotate(180deg)" : "rotate(0deg)",
+                            transition: "transform 0.2s ease-in-out"
+                        } }
+                    >
+                        <ChevronDownIcon size={ 14 } fill="#ff7300" />
+                    </Box>
+                </ClickableHintRow>
+                <Collapse in={ expanded }>
+                    { children && <HintContent>{ children }</HintContent> }
+                </Collapse>
+            </HintContainer>
+        );
+    }
+
+    // Static mode - always visible
+    return (
+        <HintContainer>
+            <HintRow>
+                <Lightbulb fill="#FBBB00" height={ 18 } width={ 18 } />
+                { message && <HintMessage variant="body2">{ message }</HintMessage> }
+            </HintRow>
+            { children && <HintContent>{ children }</HintContent> }
+        </HintContainer>
+    );
+};
 
 export default Hint;

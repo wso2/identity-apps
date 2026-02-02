@@ -40,3 +40,8 @@ export const OnboardingComponentIds = {
  * Default user name when not available.
  */
 export const DEFAULT_USER_NAME = "User";
+
+/**
+ * Number of random name suggestions to generate for application naming.
+ */
+export const RANDOM_NAME_COUNT = 7;

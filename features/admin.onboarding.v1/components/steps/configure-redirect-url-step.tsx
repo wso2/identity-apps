@@ -18,24 +18,23 @@
 
 import { Theme, styled } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
-import Button from "@oxygen-ui/react/Button";
-import IconButton from "@oxygen-ui/react/IconButton";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
-import { PlusIcon, TrashIcon } from "@oxygen-ui/react-icons";
+import { PatternConstants } from "@wso2is/core/constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { URLUtils } from "@wso2is/core/utils";
 import React, {
     FunctionComponent,
     ReactElement,
     useCallback,
     useEffect,
-    useMemo
+    useMemo,
+    useRef
 } from "react";
 import {
     OnboardingComponentIds,
-    RedirectUrlConstraints,
     getDefaultRedirectUrl,
-    isLocalhostUrl
+    isKnownDefaultUrl
 } from "../../constants";
 import Hint from "../shared/hint";
 import { LeftColumn, TwoColumnLayout } from "../shared/onboarding-styles";
@@ -45,7 +44,7 @@ import StepHeader from "../shared/step-header";
  * Props interface for ConfigureRedirectUrlStep component.
  */
 interface ConfigureRedirectUrlStepProps extends IdentifiableComponentInterface {
-    /** Current redirect URLs */
+    /** Current redirect URLs (array for API compatibility, but only first is used) */
     redirectUrls: string[];
     /** Template ID for determining defaults */
     templateId?: string;
@@ -56,53 +55,74 @@ interface ConfigureRedirectUrlStepProps extends IdentifiableComponentInterface {
 }
 
 /**
- * Container for URL input and delete button.
+ * Container for URL input.
  */
-const UrlInputRow = styled(Box)(({ theme }: { theme: Theme }) => ({
-    alignItems: "flex-start",
-    display: "flex",
-    gap: theme.spacing(1)
-}));
-
-/**
- * Container for all URL inputs.
- */
-const UrlInputsContainer = styled(Box)(({ theme }: { theme: Theme }) => ({
+const UrlInputContainer: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     display: "flex",
     flexDirection: "column",
     gap: theme.spacing(2),
-    maxWidth: 500
+    maxWidth: 600
 }));
 
 /**
  * Helper text for the input.
  */
-const HelperText = styled(Typography)(({ theme }: { theme: Theme }) => ({
+const HelperText: typeof Typography = styled(Typography)(({ theme }: { theme: Theme }) => ({
     color: theme.palette.text.secondary,
     fontSize: "0.8125rem",
     marginTop: theme.spacing(0.5)
 }));
 
 /**
- * Validate a URL string.
+ * Check if URL is localhost (for development hints).
  */
-const validateUrl = (url: string): string | null => {
+const isLocalhostUrl = (url: string): boolean => {
+    return URLUtils.isLoopBackCall(url);
+};
+
+/**
+ * Validate a URL string based on template type.
+ * @param url - URL to validate
+ * @param isMobile - Whether this is for a mobile application
+ * @returns Error message or null if valid
+ */
+const validateUrl = (url: string, isMobile: boolean = false): string | null => {
     if (!url.trim()) {
-        return "URL is required";
+        return isMobile ? "Redirect URI is required" : "Redirect URL is required";
     }
 
-    if (!RedirectUrlConstraints.PATTERN.test(url)) {
-        return "Enter a valid URL (http:// or https://)";
+    if (isMobile) {
+        // Mobile apps accept custom schemes (myapp://) or https://
+        if (!PatternConstants.MOBILE_DEEP_LINK_URL_REGEX_PATTERN.test(url)) {
+            return "Enter a valid redirect URI (e.g., com.yourapp://callback or https://...)";
+        }
+    } else {
+        // Web apps require http:// or https://
+        if (!URLUtils.isHttpsOrHttpUrl(url)) {
+            return "Enter a valid URL starting with http:// or https://";
+        }
+
+        // Additional sanity check for XSS prevention
+        if (!URLUtils.isURLValid(url, true)) {
+            return "Enter a valid URL";
+        }
     }
 
     return null;
 };
 
 /**
+ * Check if the template is for a mobile application.
+ */
+const isMobileTemplate = (templateId?: string): boolean => {
+    return templateId === "mobile-application";
+};
+
+/**
  * Get step title based on template/framework.
  */
 const getStepTitle = (templateId?: string): string => {
-    if (templateId === "mobile-application") {
+    if (isMobileTemplate(templateId)) {
         return "Configure Redirect URI";
     }
 
@@ -111,17 +131,40 @@ const getStepTitle = (templateId?: string): string => {
 
 /**
  * Get step subtitle based on template/framework.
+ * Redirect URIs are a security whitelist - only registered URLs can receive
+ * the authorization response after user authentication.
  */
 const getStepSubtitle = (templateId?: string): string => {
-    if (templateId === "mobile-application") {
-        return "Enter the redirect URI for your mobile application.";
+    if (isMobileTemplate(templateId)) {
+        return "Authorize where your app can receive users after login. " +
+            "Enter the custom URI scheme configured in your mobile app.";
     }
 
-    return "This is where users will be redirected after authentication.";
+    return "Authorize where your app can receive users after login. " +
+        "This is typically the URL in your browser when running your app locally.";
+};
+
+/**
+ * Get input label based on template type.
+ */
+const getInputLabel = (templateId?: string): string => {
+    return isMobileTemplate(templateId) ? "Authorized Redirect URI" : "Authorized Redirect URL";
+};
+
+/**
+ * Get placeholder text based on template type.
+ */
+const getPlaceholder = (templateId?: string): string => {
+    if (isMobileTemplate(templateId)) {
+        return "com.yourcompany.app://oauth2redirect";
+    }
+
+    return "https://your-app.com/callback";
 };
 
 /**
  * Configure redirect URL step component for onboarding.
+ * Simplified to accept only one URL for a streamlined onboarding experience.
  */
 const ConfigureRedirectUrlStep: FunctionComponent<ConfigureRedirectUrlStepProps> = (
     props: ConfigureRedirectUrlStepProps
@@ -134,47 +177,49 @@ const ConfigureRedirectUrlStep: FunctionComponent<ConfigureRedirectUrlStepProps>
         ["data-componentid"]: componentId = OnboardingComponentIds.CONFIGURE_REDIRECT_URL_STEP
     } = props;
 
-    // Set default URL on mount if no URLs are set
+    const isMobile: boolean = useMemo(() => isMobileTemplate(templateId), [ templateId ]);
+    const inputRef: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
+
+    // Get the current URL value (first in array, or empty string)
+    const currentUrl: string = redirectUrls[0] || "";
+
+    // Auto-focus input field when step loads
     useEffect(() => {
-        if (redirectUrls.length === 0) {
+        const timer: ReturnType<typeof setTimeout> = setTimeout(() => {
+            inputRef.current?.focus();
+        }, 100);
+
+        return () => clearTimeout(timer);
+    }, []);
+
+    // Set default URL when framework/template changes
+    // Updates if: no URL, empty URL, or URL is a known default (user hasn't edited)
+    useEffect(() => {
+        const hasNoUrl: boolean = !currentUrl;
+        const hasEmptyUrl: boolean = !currentUrl.trim();
+        const hasKnownDefault: boolean = currentUrl && isKnownDefaultUrl(currentUrl);
+
+        if (hasNoUrl || hasEmptyUrl || hasKnownDefault) {
             const defaultUrls: string[] = getDefaultRedirectUrl(framework || templateId);
 
-            onRedirectUrlsChange(defaultUrls);
+            if (defaultUrls.length > 0) {
+                onRedirectUrlsChange([ defaultUrls[0] ]);
+            } else {
+                // For generic types without defaults, start with empty input
+                onRedirectUrlsChange([ "" ]);
+            }
         }
     }, [ framework, templateId ]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    const handleUrlChange = useCallback((index: number, value: string): void => {
-        const newUrls: string[] = [ ...redirectUrls ];
-
-        newUrls[index] = value;
-        onRedirectUrlsChange(newUrls);
-    }, [ redirectUrls, onRedirectUrlsChange ]);
-
-    const handleAddUrl = useCallback((): void => {
-        if (redirectUrls.length < RedirectUrlConstraints.MAX_URLS) {
-            onRedirectUrlsChange([ ...redirectUrls, "" ]);
-        }
-    }, [ redirectUrls, onRedirectUrlsChange ]);
-
-    const handleRemoveUrl = useCallback((index: number): void => {
-        const newUrls: string[] = redirectUrls.filter((_: string, i: number) => i !== index);
-
-        onRedirectUrlsChange(newUrls.length > 0 ? newUrls : [ "" ]);
-    }, [ redirectUrls, onRedirectUrlsChange ]);
-
-    const canAddMore: boolean = redirectUrls.length < RedirectUrlConstraints.MAX_URLS;
-    const canRemove: boolean = redirectUrls.length > 1;
-
-    const defaultUrls: string[] = useMemo(
-        () => getDefaultRedirectUrl(framework || templateId),
-        [ framework, templateId ]
+    const handleUrlChange: (event: React.ChangeEvent<HTMLInputElement>) => void = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>): void => {
+            onRedirectUrlsChange([ event.target.value ]);
+        },
+        [ onRedirectUrlsChange ]
     );
 
-    const isUsingDefault: boolean = useMemo(() => {
-        if (redirectUrls.length !== defaultUrls.length) return false;
-
-        return redirectUrls.every((url: string, index: number) => url === defaultUrls[index]);
-    }, [ redirectUrls, defaultUrls ]);
+    const validationError: string | null = currentUrl ? validateUrl(currentUrl, isMobile) : null;
+    const isLocalhost: boolean = currentUrl ? isLocalhostUrl(currentUrl) : false;
 
     return (
         <TwoColumnLayout data-componentid={ componentId }>
@@ -185,66 +230,70 @@ const ConfigureRedirectUrlStep: FunctionComponent<ConfigureRedirectUrlStepProps>
                     title={ getStepTitle(templateId) }
                 />
 
-                <UrlInputsContainer>
-                    { redirectUrls.map((url: string, index: number) => {
-                        const error: string | null = url ? validateUrl(url) : null;
-                        const isLocalhost: boolean = isLocalhostUrl(url);
+                <UrlInputContainer>
+                    <Box>
+                        <TextField
+                            error={ !!validationError }
+                            fullWidth
+                            helperText={ validationError }
+                            inputRef={ inputRef }
+                            label={ getInputLabel(templateId) }
+                            onChange={ handleUrlChange }
+                            placeholder={ getPlaceholder(templateId) }
+                            value={ currentUrl }
+                            data-componentid={ `${componentId}-input` }
+                        />
+                        { isLocalhost && !validationError && (
+                            <HelperText>
+                                Localhost { isMobile ? "URIs are" : "URLs are" } fine for development
+                            </HelperText>
+                        ) }
+                    </Box>
 
-                        return (
-                            <UrlInputRow key={ index }>
-                                <Box sx={ { flex: 1 } }>
-                                    <TextField
-                                        error={ !!error }
-                                        fullWidth
-                                        helperText={ error }
-                                        label={ redirectUrls.length > 1
-                                            ? `Redirect URL ${index + 1}`
-                                            : "Redirect URL"
-                                        }
-                                        onChange={ (e: React.ChangeEvent<HTMLInputElement>) =>
-                                            handleUrlChange(index, e.target.value)
-                                        }
-                                        placeholder="https://your-app.com/callback"
-                                        value={ url }
-                                        data-componentid={ `${componentId}-input-${index}` }
-                                    />
-                                    { isLocalhost && !error && (
-                                        <HelperText>
-                                            Localhost URLs are fine for development
-                                        </HelperText>
-                                    ) }
-                                </Box>
-                                { canRemove && (
-                                    <IconButton
-                                        color="error"
-                                        onClick={ () => handleRemoveUrl(index) }
-                                        size="small"
-                                        sx={ { mt: 1 } }
-                                        data-componentid={ `${componentId}-remove-${index}` }
-                                    >
-                                        <TrashIcon />
-                                    </IconButton>
-                                ) }
-                            </UrlInputRow>
-                        );
-                    }) }
-
-                    { canAddMore && (
-                        <Button
-                            onClick={ handleAddUrl }
-                            size="small"
-                            startIcon={ <PlusIcon /> }
-                            variant="text"
-                            data-componentid={ `${componentId}-add-button` }
-                        >
-                            Add another URL
-                        </Button>
+                    { /* Conditional hints based on template type - web or mobile */ }
+                    { !isMobile && (
+                        <Hint collapsible message="Not sure where to find this?">
+                            <Box
+                                component="ol"
+                                sx={ {
+                                    color: "text.secondary",
+                                    fontSize: "0.8125rem",
+                                    lineHeight: 1.6,
+                                    m: 0,
+                                    pl: 2.5
+                                } }
+                            >
+                                <li>Start your app locally</li>
+                                <li>Copy the URL from your browser's address bar</li>
+                                <li>Paste it here</li>
+                            </Box>
+                        </Hint>
                     ) }
-
-                    { !isUsingDefault && (
-                        <Hint message={ `Default for ${framework || "your selection"}: ${defaultUrls[0]}` } />
+                    { isMobile && (
+                        <Hint collapsible message="Not sure where to find this?">
+                            <Box
+                                component="ol"
+                                sx={ {
+                                    color: "text.secondary",
+                                    fontSize: "0.8125rem",
+                                    lineHeight: 1.6,
+                                    m: 0,
+                                    pl: 2.5
+                                } }
+                            >
+                                <li>
+                                    Check your mobile app's authentication setup
+                                    <Box component="ul" sx={ { m: 0, mt: 0.5, pl: 2 } }>
+                                        <li>Android: AndroidManifest.xml</li>
+                                        <li>iOS: Info.plist</li>
+                                    </Box>
+                                </li>
+                                <li>Copy the redirect URI configured there</li>
+                                <li>Paste it here</li>
+                            </Box>
+                        </Hint>
                     ) }
-                </UrlInputsContainer>
+                </UrlInputContainer>
             </LeftColumn>
         </TwoColumnLayout>
     );

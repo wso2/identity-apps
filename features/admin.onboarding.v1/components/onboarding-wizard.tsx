@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import Button from "@oxygen-ui/react/Button";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement, useCallback, useMemo, useState } from "react";
@@ -26,8 +27,7 @@ import {
     ContentCard,
     Footer,
     PrimaryButton,
-    SecondaryButton,
-    SkipButton
+    SecondaryButton
 } from "./shared/onboarding-styles";
 import ConfigureRedirectUrlStep from "./steps/configure-redirect-url-step";
 import DesignLoginStep from "./steps/design-login-step";
@@ -37,8 +37,14 @@ import SignInOptionsStep from "./steps/sign-in-options-step";
 import SuccessStep from "./steps/success-step";
 import WelcomeStep from "./steps/welcome-step";
 import { createOnboardingApplication } from "../api/create-onboarding-application";
-import { DEFAULT_BRANDING_CONFIG, DEFAULT_SIGN_IN_OPTIONS, OnboardingComponentIds } from "../constants";
+import {
+    DEFAULT_BRANDING_CONFIG,
+    DEFAULT_SIGN_IN_OPTIONS,
+    OnboardingComponentIds,
+    RANDOM_NAME_COUNT
+} from "../constants";
 import { useOnboardingData, useStepValidation } from "../hooks/use-onboarding-validation";
+import { generateRandomNames } from "../utils/random-name-generator";
 import {
     CreatedApplicationResult,
     OnboardingChoice,
@@ -53,7 +59,6 @@ import {
  */
 const getNextStep = (currentStep: OnboardingStep, data: OnboardingData): OnboardingStep => {
     const isM2M: boolean = data.templateId === "m2m-application";
-    const isMCPClient: boolean = data.templateId === "mcp-client-application";
     const isTourFlow: boolean = data.choice === OnboardingChoice.TOUR;
 
     switch (currentStep) {
@@ -69,8 +74,9 @@ const getNextStep = (currentStep: OnboardingStep, data: OnboardingData): Onboard
             return OnboardingStep.SELECT_APPLICATION_TEMPLATE;
 
         case OnboardingStep.SELECT_APPLICATION_TEMPLATE:
-            // M2M and MCP client apps skip to success (no redirect URL or sign-in options needed)
-            if (isM2M || isMCPClient) {
+            // Only M2M apps skip to success (no redirect URL or sign-in options needed)
+            // MCP apps need redirect URLs because they support authorization_code grant
+            if (isM2M) {
                 return OnboardingStep.SUCCESS;
             }
 
@@ -99,13 +105,12 @@ const getNextStep = (currentStep: OnboardingStep, data: OnboardingData): Onboard
  */
 const getPreviousStep = (currentStep: OnboardingStep, data: OnboardingData): OnboardingStep => {
     const isM2M: boolean = data.templateId === "m2m-application";
-    const isMCPClient: boolean = data.templateId === "mcp-client-application";
     const isTourFlow: boolean = data.choice === OnboardingChoice.TOUR;
 
     switch (currentStep) {
         case OnboardingStep.SUCCESS:
-            // M2M and MCP client go back to template selection
-            if (isM2M || isMCPClient) {
+            // Only M2M goes back to template selection (it skipped the intermediate steps)
+            if (isM2M) {
                 return OnboardingStep.SELECT_APPLICATION_TEMPLATE;
             }
 
@@ -141,16 +146,15 @@ const getPreviousStep = (currentStep: OnboardingStep, data: OnboardingData): Onb
 
 /**
  * Get button text based on current step.
- * Shows "Create Application" when the next action will create the app (M2M, MCP client).
+ * Shows "Create Application" for M2M apps (they skip to success from template selection).
  */
 const getNextButtonText = (currentStep: OnboardingStep, data: OnboardingData): string => {
     const isM2M: boolean = data.templateId === "m2m-application";
-    const isMCPClient: boolean = data.templateId === "mcp-client-application";
 
     switch (currentStep) {
         case OnboardingStep.SELECT_APPLICATION_TEMPLATE:
-            // M2M and MCP client apps are created directly from this step
-            if (isM2M || isMCPClient) {
+            // Only M2M apps are created directly from this step (they skip other steps)
+            if (isM2M) {
                 return "Create Application";
             }
 
@@ -196,6 +200,9 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardProps & IdentifiableCo
     });
     const [ isCreatingApp, setIsCreatingApp ] = useState<boolean>(false);
 
+    // Generate random names once when wizard mounts - persists across step navigation
+    const [ randomNames ] = useState<string[]>(() => generateRandomNames(RANDOM_NAME_COUNT));
+
     const {
         setCreatedApplication,
         updateApplicationName,
@@ -210,11 +217,6 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardProps & IdentifiableCo
 
     const isM2M: boolean = useMemo(
         () => onboardingData.templateId === "m2m-application",
-        [ onboardingData.templateId ]
-    );
-
-    const isMCPClient: boolean = useMemo(
-        () => onboardingData.templateId === "mcp-client-application",
         [ onboardingData.templateId ]
     );
 
@@ -264,15 +266,15 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardProps & IdentifiableCo
         } else if (
             // Create app when clicking Finish from Design Login
             currentStep === OnboardingStep.DESIGN_LOGIN ||
-            // Or when clicking Create Application from M2M or MCP client template selection
-            (currentStep === OnboardingStep.SELECT_APPLICATION_TEMPLATE && (isM2M || isMCPClient))
+            // Or when clicking Create Application from M2M template selection (M2M skips other steps)
+            (currentStep === OnboardingStep.SELECT_APPLICATION_TEMPLATE && isM2M)
         ) {
             // Create the application before navigating to success
             await createApplication();
         } else {
             setCurrentStep(nextStep);
         }
-    }, [ currentStep, onboardingData, isM2M, isMCPClient, createApplication, onComplete ]);
+    }, [ currentStep, onboardingData, isM2M, createApplication, onComplete ]);
 
     const handleBack = useCallback((): void => {
         const previousStep: OnboardingStep = getPreviousStep(currentStep, onboardingData);
@@ -313,6 +315,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardProps & IdentifiableCo
                     applicationName={ onboardingData.applicationName || "" }
                     data-componentid={ `${componentId}-name-application` }
                     onApplicationNameChange={ updateApplicationName }
+                    randomNames={ randomNames }
                 />
             ) }
 
@@ -369,13 +372,13 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardProps & IdentifiableCo
 
             { !isSuccessStep && (
                 <Footer>
-                    <SkipButton
+                    <Button
                         data-componentid={ `${componentId}-skip-button` }
                         onClick={ handleSkip }
                         variant="text"
                     >
                         Skip and go to Console
-                    </SkipButton>
+                    </Button>
                     <ActionButtons>
                         { !isFirstStep && (
                             <SecondaryButton

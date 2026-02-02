@@ -55,6 +55,10 @@ interface ApplicationPayload {
     templateId?: string;
     description?: string;
     advancedConfigurations?: any;
+    associatedRoles?: {
+        allowedAudience: string;
+        roles: any[];
+    };
     inboundProtocolConfiguration?: {
         oidc?: OIDCConfig;
     };
@@ -104,12 +108,38 @@ const FRAMEWORK_TO_TEMPLATE: Record<string, string> = {
 };
 
 /**
+ * Template UUID mapping.
+ * The API expects the UUID as templateId for proper template association.
+ * These come from the template JSON files' "id" field.
+ *
+ * Reference: features/admin.core.v1/constants/shared/application-management.ts
+ */
+const TEMPLATE_UUID_MAP: Record<string, string> = {
+    "angular-application": "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7",
+    "m2m-application": "m2m-application",
+    "mcp-client-application": "mcp-client-application",
+    "mobile-application": "mobile-application",
+    "nextjs-application": "b9c5e11e-fc78-484b-9bec-015d247561b8",
+    "oidc-web-application": "b9c5e11e-fc78-484b-9bec-015d247561b8",
+    "react-application": "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7",
+    "single-page-application": "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7"
+};
+
+/**
  * MCP Client application grant types.
  * Based on applicationConfig.getAllowedGrantTypes() for mcp-client-application.
  */
 const MCP_CLIENT_GRANT_TYPES: string[] = [
     "authorization_code",
     "refresh_token",
+    "client_credentials"
+];
+
+/**
+ * M2M application grant types.
+ * M2M apps use client_credentials grant only.
+ */
+const M2M_GRANT_TYPES: string[] = [
     "client_credentials"
 ];
 
@@ -128,12 +158,36 @@ const buildMCPClientPayload = (name: string): ApplicationPayload => ({
     },
     inboundProtocolConfiguration: {
         oidc: {
+            allowedOrigins: [],
+            callbackURLs: [],
             grantTypes: MCP_CLIENT_GRANT_TYPES,
             publicClient: false
         }
     },
     name,
     templateId: "mcp-client-application"
+});
+
+/**
+ * Build M2M application payload dynamically.
+ * M2M template has "application": null, so it must be built dynamically.
+ *
+ * @param name - Application name
+ * @returns Application payload for M2M
+ */
+const buildM2MPayload = (name: string): ApplicationPayload => ({
+    associatedRoles: {
+        allowedAudience: "APPLICATION",
+        roles: []
+    },
+    inboundProtocolConfiguration: {
+        oidc: {
+            grantTypes: M2M_GRANT_TYPES,
+            publicClient: false
+        }
+    },
+    name,
+    templateId: "m2m-application"
 });
 
 /**
@@ -202,32 +256,45 @@ const buildApplicationPayload = (data: OnboardingData): ApplicationPayload => {
     const { template, resolvedTemplateId, isMCPClient } = getTemplate(templateId, framework);
     const isM2M: boolean = resolvedTemplateId === "m2m-application";
 
-    // MCP client is built dynamically (no JSON template)
+    let payload: ApplicationPayload;
+
+    // Build base payload based on template type
     if (isMCPClient) {
-        return buildMCPClientPayload(applicationName || "My Application");
+        // MCP client is built dynamically (no JSON template)
+        payload = buildMCPClientPayload(applicationName || "My Application");
+    } else if (isM2M) {
+        // M2M is built dynamically (template has application: null)
+        // M2M doesn't need redirect URLs or auth sequence, so return early
+        return buildM2MPayload(applicationName || "My Application");
+    } else {
+        if (!template?.application) {
+            throw new Error(`Template data not found for: ${templateId || framework}`);
+        }
+        // Deep clone to avoid mutations
+        payload = JSON.parse(JSON.stringify(template.application));
+        // Override with user-provided values
+        payload.name = applicationName || "My Application";
+        // Use UUID for templateId (API expects UUID, not string name)
+        payload.templateId = TEMPLATE_UUID_MAP[resolvedTemplateId] || resolvedTemplateId;
     }
 
-    if (!template?.application) {
-        throw new Error(`Template data not found for: ${templateId || framework}`);
-    }
-
-    // Deep clone to avoid mutations
-    const payload: ApplicationPayload = JSON.parse(JSON.stringify(template.application));
-
-    // Override with user-provided values
-    payload.name = applicationName || "My Application";
-    // Use framework-specific template ID (e.g., "react-application") for proper Console loading
-    payload.templateId = resolvedTemplateId;
-
-    // Update callback URLs and allowed origins if provided (not for M2M)
-    if (!isM2M && redirectUrls && redirectUrls.length > 0 && payload.inboundProtocolConfiguration?.oidc) {
+    // Update callback URLs and allowed origins if provided (applies to MCP and other apps)
+    if (redirectUrls && redirectUrls.length > 0 && payload.inboundProtocolConfiguration?.oidc) {
         payload.inboundProtocolConfiguration.oidc.callbackURLs = redirectUrls;
         payload.inboundProtocolConfiguration.oidc.allowedOrigins = extractOrigins(redirectUrls);
     }
 
-    // Override authentication sequence if sign-in options are configured (not for M2M)
-    if (!isM2M && signInOptions) {
+    // Override authentication sequence if sign-in options are configured
+    if (signInOptions) {
         payload.authenticationSequence = buildAuthSequence(signInOptions);
+    }
+
+    // Add associatedRoles if not present (required by API, same as Console wizard)
+    if (!payload.associatedRoles) {
+        payload.associatedRoles = {
+            allowedAudience: "APPLICATION",
+            roles: []
+        };
     }
 
     return payload;
@@ -268,22 +335,24 @@ export const createOnboardingApplication = async (
 
 /**
  * Check if the template requires redirect URLs.
- * M2M and MCP client apps don't need redirect URLs.
+ * Only M2M apps don't need redirect URLs (client_credentials only).
+ * MCP apps need redirect URLs because they support authorization_code grant.
  *
  * @param templateId - Template ID
  * @returns True if redirect URLs are required
  */
 export const requiresRedirectUrls = (templateId?: string): boolean => {
-    return templateId !== "m2m-application" && templateId !== "mcp-client-application";
+    return templateId !== "m2m-application";
 };
 
 /**
  * Check if the template supports sign-in options configuration.
- * M2M and MCP client apps don't need sign-in configuration.
+ * Only M2M apps don't need sign-in configuration (no user interaction).
+ * MCP apps support sign-in options because they support authorization_code grant.
  *
  * @param templateId - Template ID
  * @returns True if sign-in options are supported
  */
 export const supportsSignInOptions = (templateId?: string): boolean => {
-    return templateId !== "m2m-application" && templateId !== "mcp-client-application";
+    return templateId !== "m2m-application";
 };
