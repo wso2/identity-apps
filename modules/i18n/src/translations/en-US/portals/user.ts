@@ -94,6 +94,83 @@ export const user: userNS = {
                 part2: "in the format YYYY-MM-DD"
             }
         },
+        sections: {
+            sharedAccess: {
+                doNotShareUser: "Do not share user with any organizations",
+                notifications: {
+                    fetchOrganizations: {
+                        genericError: {
+                            description: "An error occurred while fetching organizations.",
+                            message: "Error occurred while fetching organizations"
+                        }
+                    },
+                    fetchUserRoles: {
+                        genericError: {
+                            description: "An error occurred while fetching user roles.",
+                            message: "Error occurred while fetching user roles"
+                        }
+                    },
+                    noOrganizationsSelected: {
+                        description: "Please select at least one organization to share the user with.",
+                        message: "No organizations selected"
+                    },
+                    share: {
+                        error: {
+                            description: "An error occurred while sharing user. {{error}}",
+                            message: "Error occurred while sharing user"
+                        },
+                        success: {
+                            description: "User shared successfully.",
+                            message: "User shared successfully"
+                        }
+                    },
+                    unshare: {
+                        error: {
+                            description: "An error occurred while unsharing user. {{error}}",
+                            message: "Error occurred while unsharing user"
+                        },
+                        success: {
+                            description: "User unshared successfully.",
+                            message: "User unshared successfully"
+                        }
+                    }
+                },
+                shareAllRoles: "Share all roles",
+                shareAllUser: "Share user with all organizations",
+                shareRoleSubsetWithAllOrgs: "Share selected roles with all organizations",
+                shareSelectedUser: "Share user with selected organizations",
+                allRolesAndOrgsSharingMessage: "All roles will be shared with all existing and future organizations.",
+                shareTypeSwitchModal: {
+                    description: "Choose how you want to proceed:",
+                    header: "Switch to selective sharing",
+                    message: "You are about to switch from sharing with all organizations to selective sharing.",
+                    preserveStateLabel1: "Preserve current sharing",
+                    preserveStateLabel2: "Keep user shared with existing organizations and switch to selective mode.",
+                    resetToDefaultLabel1: "Reset to default",
+                    resetToDefaultLabel2: "Unshare user from all organizations and start fresh with selective sharing."
+                },
+                showShareAllWarningModal: {
+                    assertionHint: "Please confirm your action.",
+                    description: "This will share the selected roles with ALL existing and future organizations. This action will affect all current and future organizations in your system.",
+                    header: "Share with all organizations",
+                    message: "You are about to share user roles with all organizations."
+                },
+                subTitle: "Configure how this user should be shared across organizations",
+                title: "Shared Access"
+            },
+            shareUser: {
+                addAsyncSharingNotification: {
+                    description: "User sharing process has started. You will be notified once the process is complete.",
+                    message: "User sharing in progress"
+                },
+                getSharedOrganizations: {
+                    genericError: {
+                        description: "An error occurred while fetching shared organizations.",
+                        message: "Error occurred while fetching shared organizations"
+                    }
+                }
+            }
+        },
         userActionZoneGroup: {
             impersonateUserZone: {
                 actionTitle: "Impersonate User",
