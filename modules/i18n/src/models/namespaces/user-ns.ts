@@ -88,6 +88,83 @@ export interface userNS {
                 part2: string;
             };
         };
+        sections: {
+            sharedAccess: {
+                doNotShareUser: string;
+                notifications: {
+                    fetchOrganizations: {
+                        genericError: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    fetchUserRoles: {
+                        genericError: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    noOrganizationsSelected: {
+                        description: string;
+                        message: string;
+                    };
+                    share: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                    unshare: {
+                        error: {
+                            description: string;
+                            message: string;
+                        };
+                        success: {
+                            description: string;
+                            message: string;
+                        };
+                    };
+                };
+                shareAllRoles: string;
+                shareAllUser: string;
+                shareRoleSubsetWithAllOrgs: string;
+                shareSelectedUser: string;
+                allRolesAndOrgsSharingMessage: string;
+                shareTypeSwitchModal: {
+                    description: string;
+                    header: string;
+                    message: string;
+                    preserveStateLabel1: string;
+                    preserveStateLabel2: string;
+                    resetToDefaultLabel1: string;
+                    resetToDefaultLabel2: string;
+                };
+                showShareAllWarningModal: {
+                    assertionHint: string;
+                    description: string;
+                    header: string;
+                    message: string;
+                };
+                subTitle: string;
+                title: string;
+            };
+            shareUser: {
+                addAsyncSharingNotification: {
+                    description: string;
+                    message: string;
+                };
+                getSharedOrganizations: {
+                    genericError: {
+                        description: string;
+                        message: string;
+                    };
+                };
+            };
+        };
         userActionZoneGroup: {
             impersonateUserZone: {
                 actionTitle: string;
