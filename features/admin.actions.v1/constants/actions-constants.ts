@@ -88,6 +88,11 @@ export class ActionsConstants {
                     "applicationInitiatedRegistration",
                     "adminInitiatedRegistration"
                 ]
+            },
+            [ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH]: {
+                "v1": [
+                    "urn:ietf:params:oauth:grant-type:token-exchange"
+                ]
             }
         };
 
