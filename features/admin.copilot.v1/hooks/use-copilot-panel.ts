@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import { useAuthContext } from "@asgardeo/auth-react";
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import {
     addCopilotMessage,
     clearCopilotChatWithApi,
+    fetchCopilotHistory,
     sendCopilotMessage,
     setCopilotContentType,
     setCopilotPanelLoading,
@@ -87,17 +87,20 @@ export interface UseCopilotPanelInterface {
      * Function to set the loading state.
      */
     setLoading: (isLoading: boolean) => void;
+    /**
+     * Function to load chat history.
+     */
+    loadHistory: () => void;
 }
 
 /**
  * Hook to manage the copilot panel state and actions.
+ * Authentication is handled automatically by AsgardeoSPAClient in the API layer.
  *
  * @returns The copilot panel state and actions.
  */
 const useCopilotPanel = (): UseCopilotPanelInterface => {
     const dispatch: Dispatch = useDispatch();
-    const { getAccessToken } = useAuthContext();
-
     // Use a generic selector that works with any app state structure
     const copilotState: CopilotPanelState = useSelector((state: any) => state.copilot);
 
@@ -113,31 +116,25 @@ const useCopilotPanel = (): UseCopilotPanelInterface => {
         dispatch(toggleCopilotPanel());
     }, [ dispatch ]);
 
-    const sendMessage: (message: string) => Promise<void> = useCallback(async (message: string) => {
-        try {
-            // TODO: get access token from the context
-            const accessToken: string = await getAccessToken();
-
-            dispatch(sendCopilotMessage(message, accessToken) as any);
-        } catch (error) {
-            dispatch(sendCopilotMessage(message) as any);
-        }
-    }, [ dispatch, getAccessToken ]);
+    /**
+     * Send a message to the copilot.
+     * Token handling is done automatically by AsgardeoSPAClient.
+     */
+    const sendMessage: (message: string) => void = useCallback((message: string) => {
+        dispatch(sendCopilotMessage(message) as any);
+    }, [dispatch]);
 
     const addMessage: (message: CopilotMessage) => void = useCallback((message: CopilotMessage) => {
         dispatch(addCopilotMessage(message));
     }, [ dispatch ]);
 
-    const clearChat: () => Promise<void> = useCallback(async () => {
-        try {
-            // TODO: get access token from the context
-            const accessToken: string = await getAccessToken();
-
-            dispatch(clearCopilotChatWithApi(accessToken) as any);
-        } catch (error) {
-            dispatch(clearCopilotChatWithApi() as any);
-        }
-    }, [ dispatch, getAccessToken ]);
+    /**
+     * Clear the chat history.
+     * Token handling is done automatically by AsgardeoSPAClient.
+     */
+    const clearChat: () => void = useCallback(() => {
+        dispatch(clearCopilotChatWithApi() as any);
+    }, [dispatch]);
 
     const setContentType: (contentType: CopilotContentType) => void = useCallback((contentType: CopilotContentType) => {
         dispatch(setCopilotContentType(contentType));
@@ -145,11 +142,16 @@ const useCopilotPanel = (): UseCopilotPanelInterface => {
 
     const setLoading: (isLoading: boolean) => void = useCallback((isLoading: boolean) => {
         dispatch(setCopilotPanelLoading(isLoading));
-    }, [ dispatch ]);
+    }, [dispatch]);
+
+    const loadHistory: () => void = useCallback(() => {
+        dispatch(fetchCopilotHistory() as any);
+    }, [dispatch]);
 
     return {
         addMessage,
         clearChat,
+        loadHistory,
         contentType: copilotState?.contentType || CopilotContentType.CHAT,
         hidePanel,
         isLoading: copilotState?.isLoading || false,

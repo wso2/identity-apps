@@ -51,6 +51,8 @@ export const copilotReducer: Reducer<CopilotPanelState> = (
             return {
                 ...state,
                 isVisible: action.payload
+                // Note: Keep isLoading state when panel is hidden/shown
+                // This ensures "thinking" indicator persists when panel is reopened
             };
         case CopilotActionTypes.TOGGLE_COPILOT_PANEL:
             return {
@@ -85,6 +87,11 @@ export const copilotReducer: Reducer<CopilotPanelState> = (
             return {
                 ...state,
                 contentType: action.payload
+            };
+        case CopilotActionTypes.SET_COPILOT_CHAT_HISTORY:
+            return {
+                ...state,
+                messages: action.payload
             };
         default:
             return state;

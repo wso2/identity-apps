@@ -17,19 +17,28 @@
  */
 
 import { Dispatch } from "redux";
-import { copilotApiService } from "../../api";
+import {
+    CopilotStreamChunk,
+    clearCopilotChatApi,
+    getCopilotChatHistory,
+    sendCopilotStreamingMessage
+} from "../../api/copilot-api";
 import {
     AddCopilotMessageActionInterface,
     ClearCopilotChatActionInterface,
     CopilotActionTypes,
     CopilotContentType,
     CopilotMessage,
+    SetCopilotChatHistoryActionInterface,
     SetCopilotContentTypeActionInterface,
     SetCopilotPanelLoadingActionInterface,
     SetCopilotPanelVisibilityActionInterface,
     ToggleCopilotPanelActionInterface,
     UpdateCopilotMessageActionInterface
 } from "../types/copilot-action-types";
+
+// AbortController to cancel ongoing requests
+let currentRequestController: AbortController | null = null;
 
 /**
  * Redux action to set the copilot panel visibility.
@@ -95,19 +104,26 @@ export const clearCopilotChat = (): ClearCopilotChatActionInterface => ({
 
 /**
  * Redux thunk action to clear the copilot chat with API call.
+ * Uses AsgardeoSPAClient for automatic token handling.
  *
- * @param accessToken - The access token for authentication.
  * @returns A thunk function.
  */
-export const clearCopilotChatWithApi = (accessToken?: string | null) => {
+export const clearCopilotChatWithApi = () => {
     return async (dispatch: Dispatch) => {
+        // Cancel any ongoing request
+        if (currentRequestController) {
+            currentRequestController.abort();
+            currentRequestController = null;
+        }
+
+        // Reset loading state
+        dispatch(setCopilotPanelLoading(false));
+
+        // Clear the chat
         dispatch(clearCopilotChat());
 
         try {
-            if (accessToken) {
-                copilotApiService.setAccessToken(accessToken);
-            }
-            await copilotApiService.clearChat();
+            await clearCopilotChatApi();
         } catch (error: any) {
             if (!error.message?.includes("Failed to fetch") && !error.message?.includes("Network error")) {
                 const errorMessage: CopilotMessage = {
@@ -119,6 +135,87 @@ export const clearCopilotChatWithApi = (accessToken?: string | null) => {
                 };
 
                 dispatch(addCopilotMessage(errorMessage));
+            }
+        }
+    };
+};
+
+/**
+ * Redux action to set the copilot chat history.
+ *
+ * @param messages - The history messages.
+ * @returns An action of type `SET_COPILOT_CHAT_HISTORY`.
+ */
+export const setCopilotChatHistory = (messages: CopilotMessage[]): SetCopilotChatHistoryActionInterface => ({
+    payload: messages,
+    type: CopilotActionTypes.SET_COPILOT_CHAT_HISTORY
+});
+
+/**
+ * Redux thunk action to fetch the chat history.
+ * Uses AsgardeoSPAClient for automatic token handling.
+ *
+ * @returns A thunk function.
+ */
+export const fetchCopilotHistory = () => {
+    return async (dispatch: Dispatch, getState: any) => {
+        try {
+            console.log("[fetchCopilotHistory] Dispatching loading state...");
+            
+            // Check if there are already messages (don't overwrite existing conversation)
+            const currentState = getState();
+            const currentMessages = currentState?.copilot?.messages || [];
+            
+            if (currentMessages.length > 0) {
+                console.log("[fetchCopilotHistory] Messages already exist, skipping history load");
+                return;
+            }
+            
+            dispatch(setCopilotPanelLoading(true));
+
+            console.log("[fetchCopilotHistory] Calling API...");
+            const response = await getCopilotChatHistory();
+
+            console.log("[fetchCopilotHistory] Response received:", response);
+
+            if (response.history && Array.isArray(response.history)) {
+                const messages: CopilotMessage[] = [];
+
+                response.history.forEach((record: any, index: number) => {
+                    // Add user message
+                    messages.push({
+                        content: record.question,
+                        id: `hist-user-${index}-${Date.now()}`,
+                        sender: "user",
+                        timestamp: Date.now() - (response.history.length - index) * 60000,
+                        type: "text"
+                    });
+
+                    // Add AI message
+                    messages.push({
+                        content: record.answer,
+                        id: `hist-ai-${index}-${Date.now()}`,
+                        sender: "copilot",
+                        timestamp: Date.now() - (response.history.length - index) * 60000 + 1000,
+                        type: "text"
+                    });
+                });
+
+                // Only set history if we still don't have messages (avoid race condition)
+                const finalState = getState();
+                const finalMessages = finalState?.copilot?.messages || [];
+                
+                if (finalMessages.length === 0) {
+                    dispatch(setCopilotChatHistory(messages));
+                }
+            }
+        } catch (error: any) {
+            console.error("[fetchCopilotHistory] Error:", error);
+            // Silently fail for history fetch errors
+        } finally {
+            // Only set loading to false if there's no active request
+            if (!currentRequestController) {
+                dispatch(setCopilotPanelLoading(false));
             }
         }
     };
@@ -137,13 +234,22 @@ export const setCopilotContentType = (contentType: CopilotContentType): SetCopil
 
 /**
  * Redux thunk action to send a user message and get AI response.
+ * Uses AsgardeoSPAClient for automatic token handling.
  *
  * @param userMessage - The user's message.
- * @param accessToken - The access token for authentication.
  * @returns A thunk function.
  */
-export const sendCopilotMessage = (userMessage: string, accessToken?: string | null) => {
+export const sendCopilotMessage = (userMessage: string) => {
     return async (dispatch: Dispatch) => {
+        // Cancel any existing request before starting a new one
+        if (currentRequestController) {
+            currentRequestController.abort();
+        }
+
+        // Create new AbortController for this request
+        currentRequestController = new AbortController();
+        const signal: AbortSignal = currentRequestController.signal;
+
         // Add user message
         const userMsg: CopilotMessage = {
             content: userMessage,
@@ -161,33 +267,46 @@ export const sendCopilotMessage = (userMessage: string, accessToken?: string | n
             let isFirstChunk: boolean = true;
             let assistantMessageId: string;
 
-            if (accessToken) {
-                copilotApiService.setAccessToken(accessToken);
+            console.log("[sendCopilotMessage] Sending message via streaming API");
+
+            const response: any = await sendCopilotStreamingMessage(
+                userMessage,
+                (chunk: CopilotStreamChunk) => {
+                    // Check if request was aborted
+                    if (signal.aborted) {
+                        return;
+                    }
+
+                    if (isFirstChunk) {
+                        assistantMessageId = `ai-${Date.now()}`;
+                        const aiResponse: CopilotMessage = {
+                            content: "",
+                            id: assistantMessageId,
+                            sender: "copilot",
+                            timestamp: Date.now(),
+                            type: "text"
+                        };
+
+                        dispatch(addCopilotMessage(aiResponse));
+                        dispatch(setCopilotPanelLoading(false));
+                        dispatch(setCopilotPanelLoading(false));
+                        isFirstChunk = false;
+                    }
+
+                    if (chunk.content) {
+                        accumulatedContent += chunk.content;
+                        dispatch(updateCopilotMessage({
+                            content: accumulatedContent,
+                            id: assistantMessageId
+                        }));
+                    }
+                }
+            );
+
+            // Check if request was aborted before adding final message
+            if (signal.aborted) {
+                return;
             }
-            const response: any = await copilotApiService.sendMessage(userMessage, (chunk: any) => {
-                if (isFirstChunk) {
-                    assistantMessageId = `ai-${Date.now()}`;
-                    const aiResponse: CopilotMessage = {
-                        content: "",
-                        id: assistantMessageId,
-                        sender: "copilot",
-                        timestamp: Date.now(),
-                        type: "text"
-                    };
-
-                    dispatch(addCopilotMessage(aiResponse));
-                    dispatch(setCopilotPanelLoading(false));
-                    isFirstChunk = false;
-                }
-
-                if (chunk.content) {
-                    accumulatedContent += chunk.content;
-                    dispatch(updateCopilotMessage({
-                        content: accumulatedContent,
-                        id: assistantMessageId
-                    }));
-                }
-            });
 
             if (isFirstChunk) {
                 const aiResponse: CopilotMessage = {
@@ -208,7 +327,20 @@ export const sendCopilotMessage = (userMessage: string, accessToken?: string | n
                 }
             }
             dispatch(setCopilotPanelLoading(false));
+
+            // Clear the controller reference when done
+            currentRequestController = null;
         } catch (error: any) {
+            console.error("[sendCopilotMessage] Error details:", error);
+
+            // Don't show error if request was aborted intentionally
+            if (error.name === "AbortError" || signal.aborted) {
+                console.log("[sendCopilotMessage] Request was cancelled");
+                dispatch(setCopilotPanelLoading(false));
+                currentRequestController = null;
+                return;
+            }
+
             let errorContent: string = "Sorry, I encountered an error while processing your request. Please try again.";
 
             if (error.message?.includes("Authentication required")) {
@@ -228,6 +360,7 @@ export const sendCopilotMessage = (userMessage: string, accessToken?: string | n
             };
 
             dispatch(addCopilotMessage(errorMessage));
+            currentRequestController = null;
         } finally {
             dispatch(setCopilotPanelLoading(false));
         }
