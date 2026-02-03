@@ -25,7 +25,6 @@ import Radio from "@oxygen-ui/react/Radio";
 import RadioGroup from "@oxygen-ui/react/RadioGroup";
 import Switch from "@oxygen-ui/react/Switch";
 import Typography from "@oxygen-ui/react/Typography";
-import { RoleSharingModes } from "@wso2is/admin.console-settings.v1/models/shared-access";
 import useGlobalVariables from "@wso2is/admin.core.v1/hooks/use-global-variables";
 import { OperationStatus } from "@wso2is/admin.core.v1/models/common";
 import { AppState } from "@wso2is/admin.core.v1/store";
@@ -91,6 +90,12 @@ import {
     UserSharingPolicy
 } from "../models/user";
 import "./share-user-form.scss";
+
+enum RoleSharingModes {
+                    ALL = "all",
+                    SELECTED = "selected",
+                    NONE = "none"
+                }
 
 export interface UserShareFormPropsInterface
     extends IdentifiableComponentInterface {
@@ -334,10 +339,10 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         if (userShareDataFetchRequestError?.response?.data?.description) {
             dispatch(addAlert({
                 description: userShareDataFetchRequestError?.response?.data?.description
-                    ?? t("users:edit.sections.shareUser.getSharedOrganizations.genericError.description"),
+                    ?? t("user:editUser.sections.shareUser.getSharedOrganizations.genericError.description"),
                 level: AlertLevels.ERROR,
                 message: userShareDataFetchRequestError?.response?.data?.message
-                    ?? t("users:edit.sections.shareUser.getSharedOrganizations.genericError.message")
+                    ?? t("user:editUser.sections.shareUser.getSharedOrganizations.genericError.message")
             }));
 
             return;
@@ -345,10 +350,10 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
 
         dispatch(
             addAlert({
-                description: t("users:edit.sections.shareUser" +
+                description: t("user:editUser.sections.shareUser" +
                         ".getSharedOrganizations.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: t("users:edit.sections.shareUser" +
+                message: t("user:editUser.sections.shareUser" +
                         ".getSharedOrganizations.genericError.message")
             })
         );
@@ -358,10 +363,10 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         if (userRolesFetchRequestError) {
             dispatch(
                 addAlert({
-                    description: t("users:edit.sections.sharedAccess.notifications" +
+                    description: t("user:editUser.sections.sharedAccess.notifications" +
                         ".fetchUserRoles.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("users:edit.sections.sharedAccess.notifications" +
+                    message: t("user:editUser.sections.sharedAccess.notifications" +
                         ".fetchUserRoles.genericError.message")
                 })
             );
@@ -372,10 +377,10 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         if (organizationsFetchRequestError) {
             dispatch(
                 addAlert({
-                    description: t("users:edit.sections.sharedAccess.notifications" +
+                    description: t("user:editUser.sections.sharedAccess.notifications" +
                         ".fetchOrganizations.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("users:edit.sections.sharedAccess.notifications" +
+                    message: t("user:editUser.sections.sharedAccess.notifications" +
                         ".fetchOrganizations.genericError.message")
                 })
             );
@@ -416,10 +421,10 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
     const handleUserSharing = (): void => {
         if (shareType === ShareType.SHARE_SELECTED && selectedOrgIds?.length === 0) {
             dispatch(addAlert({
-                description: t("users:edit.sections.sharedAccess.notifications." +
+                description: t("user:editUser.sections.sharedAccess.notifications." +
                         "noOrganizationsSelected.description"),
                 level: AlertLevels.ERROR,
-                message: t("users:edit.sections.sharedAccess.notifications." +
+                message: t("user:editUser.sections.sharedAccess.notifications." +
                         "noOrganizationsSelected.message")
             }));
 
@@ -478,20 +483,20 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         try {
             await unShareUserWithAllOrganizations(data);
             dispatch(addAlert({
-                description: t("users:edit.sections.sharedAccess.notifications.unshare.success.description"),
+                description: t("user:editUser.sections.sharedAccess.notifications.unshare.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("users:edit.sections.sharedAccess.notifications.unshare.success.message")
+                message: t("user:editUser.sections.sharedAccess.notifications.unshare.success.message")
             }));
             resetStates(false);
 
             return true;
         } catch (error) {
             dispatch(addAlert({
-                description: t("users:edit.sections.sharedAccess.notifications.unshare.error.description", {
+                description: t("user:editUser.sections.sharedAccess.notifications.unshare.error.description", {
                     error: (error as Error).message
                 }),
                 level: AlertLevels.ERROR,
-                message: t("users:edit.sections.sharedAccess.notifications.unshare.error.message")
+                message: t("user:editUser.sections.sharedAccess.notifications.unshare.error.message")
             }));
 
             return false;
@@ -517,19 +522,19 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
             resetStates();
 
             dispatch(addAlert({
-                description: t("users:edit.sections.sharedAccess.notifications.share.success.description"),
+                description: t("user:editUser.sections.sharedAccess.notifications.share.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("users:edit.sections.sharedAccess.notifications.share.success.message")
+                message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
             }));
 
             return true;
         } catch (error) {
             dispatch(addAlert({
-                description: t("users:edit.sections.sharedAccess.notifications.share." +
+                description: t("user:editUser.sections.sharedAccess.notifications.share." +
                     "error.description",
                 { error: error.message }),
                 level: AlertLevels.ERROR,
-                message: t("users:edit.sections.sharedAccess.notifications.share.error.message")
+                message: t("user:editUser.sections.sharedAccess.notifications.share.error.message")
             }));
 
             return false;
@@ -582,11 +587,11 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                         orgSharingSuccess = false;
 
                         dispatch(addAlert({
-                            description: t("users:edit.sections.sharedAccess.notifications.share." +
+                            description: t("user:editUser.sections.sharedAccess.notifications.share." +
                                 "error.description",
                             { error: error.message }),
                             level: AlertLevels.ERROR,
-                            message: t("users:edit.sections.sharedAccess.notifications.share.error.message")
+                            message: t("user:editUser.sections.sharedAccess.notifications.share.error.message")
                         }));
                     })
             );
@@ -614,11 +619,11 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                         orgSharingSuccess = false;
 
                         dispatch(addAlert({
-                            description: t("users:edit.sections.sharedAccess.notifications.unshare." +
+                            description: t("user:editUser.sections.sharedAccess.notifications.unshare." +
                                 "error.description",
                             { error: error.message }),
                             level: AlertLevels.ERROR,
-                            message: t("users:edit.sections.sharedAccess.notifications.unshare." +
+                            message: t("user:editUser.sections.sharedAccess.notifications.unshare." +
                                 "error.message")
                         }));
                     })
@@ -669,11 +674,11 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                 orgSharingSuccess = false;
 
                 dispatch(addAlert({
-                    description: t("users:edit.sections.sharedAccess.notifications.share." +
+                    description: t("user:editUser.sections.sharedAccess.notifications.share." +
                         "error.description",
                     { error: error.message }),
                     level: AlertLevels.ERROR,
-                    message: t("users:edit.sections.sharedAccess.notifications.share.error.message")
+                    message: t("user:editUser.sections.sharedAccess.notifications.share.error.message")
                 }));
             }
         }
@@ -743,21 +748,21 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
             editUserRolesOfExistingOrganizations(data)
                 .then(() => {
                     dispatch(addAlert({
-                        description: t("users:edit.sections.sharedAccess.notifications.share." +
+                        description: t("user:editUser.sections.sharedAccess.notifications.share." +
                             "success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("users:edit.sections.sharedAccess.notifications.share.success.message")
+                        message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
                     }));
 
                     resetStates();
                 })
                 .catch((error: Error) => {
                     dispatch(addAlert({
-                        description: t("users:edit.sections.sharedAccess.notifications.share." +
+                        description: t("user:editUser.sections.sharedAccess.notifications.share." +
                             "error.description",
                         { error: error.message }),
                         level: AlertLevels.ERROR,
-                        message: t("users:edit.sections.sharedAccess.notifications.share.error.message")
+                        message: t("user:editUser.sections.sharedAccess.notifications.share.error.message")
                     }));
                 })
                 .finally(() => {
@@ -767,10 +772,10 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
             // If there are no further operations to perform, just show a success notification
             // and reset the state.
             dispatch(addAlert({
-                description: t("users:edit.sections.sharedAccess.notifications.share." +
+                description: t("user:editUser.sections.sharedAccess.notifications.share." +
                     "success.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("users:edit.sections.sharedAccess.notifications.share.success.message")
+                message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
             }));
 
             resetStates();
@@ -814,11 +819,11 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                         orgSharingSuccess = false;
 
                         dispatch(addAlert({
-                            description: t("users:edit.sections.sharedAccess.notifications.share." +
+                            description: t("user:editUser.sections.sharedAccess.notifications.share." +
                                 "error.description",
                             { error: error.message }),
                             level: AlertLevels.ERROR,
-                            message: t("users:edit.sections.sharedAccess.notifications.share.error.message")
+                            message: t("user:editUser.sections.sharedAccess.notifications.share.error.message")
                         }));
                     })
             );
@@ -843,11 +848,11 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                     orgSharingSuccess = false;
 
                     dispatch(addAlert({
-                        description: t("users:edit.sections.sharedAccess.notifications.unshare." +
+                        description: t("user:editUser.sections.sharedAccess.notifications.unshare." +
                             "error.description",
                         { error: error.message }),
                         level: AlertLevels.ERROR,
-                        message: t("users:edit.sections.sharedAccess.notifications.unshare.error.message")
+                        message: t("user:editUser.sections.sharedAccess.notifications.unshare.error.message")
                     }));
                 });
         }
@@ -884,11 +889,11 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                 orgSharingSuccess = false;
 
                 dispatch(addAlert({
-                    description: t("users:edit.sections.sharedAccess.notifications.share." +
+                    description: t("user:editUser.sections.sharedAccess.notifications.share." +
                         "error.description",
                     { error: error.message }),
                     level: AlertLevels.ERROR,
-                    message: t("users:edit.sections.sharedAccess.notifications.share.error.message")
+                    message: t("user:editUser.sections.sharedAccess.notifications.share.error.message")
                 }));
             }
         }
@@ -896,9 +901,9 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         // If org sharing was successful, show success notification
         if (orgSharingSuccess) {
             dispatch(addAlert({
-                description: t("users:edit.sections.sharedAccess.notifications.share.success.description"),
+                description: t("user:editUser.sections.sharedAccess.notifications.share.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("users:edit.sections.sharedAccess.notifications.share.success.message")
+                message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
             }));
 
             resetStates();
@@ -944,11 +949,11 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
             })
             .catch((error: Error) => {
                 dispatch(addAlert({
-                    description: t("users:edit.sections.sharedAccess.notifications.share." +
+                    description: t("user:editUser.sections.sharedAccess.notifications.share." +
                         "error.description",
                     { error: error.message }),
                     level: AlertLevels.ERROR,
-                    message: t("users:edit.sections.sharedAccess.notifications.share.error.message")
+                    message: t("user:editUser.sections.sharedAccess.notifications.share.error.message")
                 }));
             })
             .finally(() => {
@@ -1018,21 +1023,21 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
             editUserRolesOfExistingOrganizations(data)
                 .then(() => {
                     dispatch(addAlert({
-                        description: t("users:edit.sections.sharedAccess.notifications.share." +
+                        description: t("user:editUser.sections.sharedAccess.notifications.share." +
                             "success.description"),
                         level: AlertLevels.SUCCESS,
-                        message: t("users:edit.sections.sharedAccess.notifications.share.success.message")
+                        message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
                     }));
 
                     resetStates();
                 })
                 .catch((error: Error) => {
                     dispatch(addAlert({
-                        description: t("users:edit.sections.sharedAccess.notifications.share." +
+                        description: t("user:editUser.sections.sharedAccess.notifications.share." +
                             "error.description",
                         { error: error.message }),
                         level: AlertLevels.ERROR,
-                        message: t("users:edit.sections.sharedAccess.notifications.share.error.message")
+                        message: t("user:editUser.sections.sharedAccess.notifications.share.error.message")
                     }));
                 })
                 .finally(() => {
@@ -1042,10 +1047,10 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
             // If there are no further operations to perform, just show a success notification
             // and reset the state.
             dispatch(addAlert({
-                description: t("users:edit.sections.sharedAccess.notifications.share." +
+                description: t("user:editUser.sections.sharedAccess.notifications.share." +
                     "success.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("users:edit.sections.sharedAccess.notifications.share.success.message")
+                message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
             }));
 
             resetStates();
@@ -1058,10 +1063,10 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
             onOperationStarted?.();
             dispatch(
                 addAlert({
-                    description: t("users:edit.sections.shareUser.addAsyncSharingNotification"
+                    description: t("user:editUser.sections.shareUser.addAsyncSharingNotification"
                         + ".description"),
                     level: AlertLevels.INFO,
-                    message: t("users:edit.sections.shareUser.addAsyncSharingNotification.message")
+                    message: t("user:editUser.sections.shareUser.addAsyncSharingNotification.message")
                 })
             );
         }
@@ -1212,13 +1217,13 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                     closeOnDimmerClick={ false }
                 >
                     <ConfirmationModal.Header>
-                        { t("users:edit.sections.sharedAccess.shareTypeSwitchModal.header") }
+                        { t("user:editUser.sections.sharedAccess.shareTypeSwitchModal.header") }
                     </ConfirmationModal.Header>
                     <ConfirmationModal.Message attached negative>
-                        { t("users:edit.sections.sharedAccess.shareTypeSwitchModal.message") }
+                        { t("user:editUser.sections.sharedAccess.shareTypeSwitchModal.message") }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content>
-                        { t("users:edit.sections.sharedAccess.shareTypeSwitchModal.description") }
+                        { t("user:editUser.sections.sharedAccess.shareTypeSwitchModal.description") }
                         <RadioGroup
                             value={ shareTypeSwitchApproach }
                             onChange={ (event: ChangeEvent<HTMLInputElement>) => {
@@ -1231,9 +1236,9 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                                 value={ ShareTypeSwitchApproach.WITHOUT_UNSHARE }
                                 label={ (
                                     <Typography variant="body1">
-                                        <b>{ t("users:edit.sections.sharedAccess." +
+                                        <b>{ t("user:editUser.sections.sharedAccess." +
                                                 "shareTypeSwitchModal.preserveStateLabel1") }: </b>
-                                        { t("users:edit.sections.sharedAccess." +
+                                        { t("user:editUser.sections.sharedAccess." +
                                                 "shareTypeSwitchModal.preserveStateLabel2") }
                                     </Typography>
                                 ) }
@@ -1246,9 +1251,9 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                                 value={ ShareTypeSwitchApproach.WITH_UNSHARE }
                                 label={ (
                                     <Typography variant="body1">
-                                        <b>{ t("users:edit.sections.sharedAccess." +
+                                        <b>{ t("user:editUser.sections.sharedAccess." +
                                                 "shareTypeSwitchModal.resetToDefaultLabel1") }: </b>
-                                        { t("users:edit.sections.sharedAccess." +
+                                        { t("user:editUser.sections.sharedAccess." +
                                                 "shareTypeSwitchModal.resetToDefaultLabel2") }
                                     </Typography>
                                 ) }
@@ -1286,18 +1291,18 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                         setShowShareAllWarningModal(false);
                     } }
                     assertionHint={
-                        t("users:edit.sections.sharedAccess.showShareAllWarningModal.assertionHint") }
+                        t("user:editUser.sections.sharedAccess.showShareAllWarningModal.assertionHint") }
                     assertionType="checkbox"
                     closeOnDimmerClick={ false }
                 >
                     <ConfirmationModal.Header>
-                        { t("users:edit.sections.sharedAccess.showShareAllWarningModal.header") }
+                        { t("user:editUser.sections.sharedAccess.showShareAllWarningModal.header") }
                     </ConfirmationModal.Header>
                     <ConfirmationModal.Message attached warning>
-                        { t("users:edit.sections.sharedAccess.showShareAllWarningModal.message") }
+                        { t("user:editUser.sections.sharedAccess.showShareAllWarningModal.message") }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content>
-                        { t("users:edit.sections.sharedAccess.showShareAllWarningModal.description") }
+                        { t("user:editUser.sections.sharedAccess.showShareAllWarningModal.description") }
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
             </>
@@ -1318,10 +1323,10 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
             >
                 <Grid xl={ 8 } xs={ 12 }>
                     <Heading as="h4">
-                        { t("users:edit.sections.sharedAccess.title") }
+                        { t("user:editUser.sections.sharedAccess.title") }
                     </Heading>
                     <Heading ellipsis as="h6">
-                        { t("users:edit.sections.sharedAccess.subTitle") }
+                        { t("user:editUser.sections.sharedAccess.subTitle") }
                     </Heading>
                     <FormControl fullWidth>
                         <RadioGroup
@@ -1346,7 +1351,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                                 value={ ShareType.UNSHARE }
                                 label={ (
                                     <>
-                                        { t("users:edit.sections.sharedAccess.doNotShareUser") }
+                                        { t("user:editUser.sections.sharedAccess.doNotShareUser") }
                                         <Hint inline popup>
                                             { t(
                                                 "organizations:unshareUserInfo"
@@ -1360,7 +1365,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                             />
                             <FormControlLabel
                                 value={ ShareType.SHARE_ALL }
-                                label={ t("users:edit.sections.sharedAccess.shareAllUser") }
+                                label={ t("user:editUser.sections.sharedAccess.shareAllUser") }
                                 control={ <Radio /> }
                                 disabled={ readOnly }
                                 data-componentid={ `${ componentId }-share-with-all-orgs-checkbox` }
@@ -1393,7 +1398,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                                                             `${ componentId }-share-selected-roles-all-orgs-toggle` }
                                                     />
                                                 ) }
-                                                label={ t("users:edit.sections.sharedAccess." +
+                                                label={ t("user:editUser.sections.sharedAccess." +
                                                     "shareRoleSubsetWithAllOrgs") }
                                             />
                                             <Divider hidden className="mb-0 mt-2" />
@@ -1401,7 +1406,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                                                 roleShareTypeAll === RoleShareType.SHARE_WITH_ALL
                                                     ? (
                                                         <Alert severity="info">
-                                                            { t("users:edit.sections.sharedAccess." +
+                                                            { t("user:editUser.sections.sharedAccess." +
                                                                 "allRolesAndOrgsSharingMessage") }
                                                         </Alert>
                                                     ) : (
@@ -1417,10 +1422,10 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                                                                 marginTop={ 2 }
                                                                 marginBottom={ 1 }
                                                             >
-                                                                { t("users:edit.sections.sharedAccess." +
+                                                                { t("user:editUser.sections.sharedAccess." +
                                                                     "individualRoleSharingLabel") }
                                                                 <Hint inline popup>
-                                                                    { t("users:edit.sections.sharedAccess." +
+                                                                    { t("user:editUser.sections.sharedAccess." +
                                                                         "individualRoleSharingHint") }
                                                                 </Hint>
                                                             </Typography>
@@ -1466,10 +1471,10 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                                 value={ ShareType.SHARE_SELECTED }
                                 label={
                                     isOrganizationsAvailable
-                                        ? t("users:edit.sections.sharedAccess.shareSelectedUser")
+                                        ? t("user:editUser.sections.sharedAccess.shareSelectedUser")
                                         : (
                                             <>
-                                                { t("users:edit.sections.sharedAccess." +
+                                                { t("user:editUser.sections.sharedAccess." +
                                                     "shareSelectedUser") }
                                                 <Hint inline popup>
                                                     { t("organizations:placeholders.emptyList.subtitles.0") }
@@ -1511,9 +1516,9 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                                                 >
                                                     {
                                                         roleShareTypeSelected === RoleShareType.SHARE_WITH_ALL
-                                                            ? t("users:edit.sections.sharedAccess." +
+                                                            ? t("user:editUser.sections.sharedAccess." +
                                                                 "shareSelectedRoles")
-                                                            : t("users:edit.sections.sharedAccess.shareAllRoles")
+                                                            : t("user:editUser.sections.sharedAccess.shareAllRoles")
                                                     }
                                                 </Button>
                                                 <SelectiveOrgShareWithSelectiveRoles
