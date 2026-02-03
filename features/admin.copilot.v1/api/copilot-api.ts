@@ -16,7 +16,16 @@
  * under the License.
  */
 
+import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
+import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+
+/**
+ * Get an axios instance with automatic token handling.
+ */
+const httpClient: HttpClientInstance =
+    AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Safely parse JSON string, returning empty object if parsing fails.
@@ -76,253 +85,374 @@ export interface CopilotApiError {
 }
 
 /**
- * Copilot API service class.
+ * Interface for history response.
  */
-export class CopilotApiService {
-    private static instance: CopilotApiService;
-    private baseUrl: string;
-    private accessToken: string | null = null;
-    private abortController: AbortController | null = null;
+export interface CopilotHistoryResponse {
+    history: {
+        question: string;
+        answer: string;
+    }[];
+    summary: string;
+}
 
-    private constructor() {
-        // TODO: Get the base URL from config
-        // Example: this.baseUrl = 'https://<host>:<port>/t/<tenant>/api/server/v1/copilot'
-        this.baseUrl = "";
+/**
+ * Interface for history response.
+ */
+export interface CopilotHistoryResponse {
+    history: {
+        question: string;
+        answer: string;
+    }[];
+    summary: string;
+}
+
+// Local development URL (copilot runs on port 8443, separate from identity server on 9443)
+const COPILOT_BASE_URL: string = "http://localhost:8443/t/carbon.super/api/server/v1/copilot";
+
+// Production URL
+// const COPILOT_BASE_URL: string = `${store.getState().config.deployment.serverHost}/t/${
+//     store.getState().config.deployment.tenant
+// }/api/server/v1/copilot`;
+
+/**
+ * Send a chat message to the copilot.
+ * Uses AsgardeoSPAClient.httpRequest for automatic token handling.
+ *
+ * @param question - The user's question.
+ * @param onStream - Optional callback for streaming responses.
+ * @returns The chat response.
+ */
+export const sendCopilotChatMessage = async (
+    question: string,
+    onStream?: StreamingCallback
+): Promise<CopilotChatResponse> => {
+    if (!question.trim()) {
+        throw new Error("Question cannot be empty");
     }
 
-    /**
-     * Get singleton instance of CopilotApiService.
-     */
-    public static getInstance(): CopilotApiService {
-        if (!CopilotApiService.instance) {
-            CopilotApiService.instance = new CopilotApiService();
-        }
+    const requestId: string = crypto.randomUUID();
+    const correlationId: string = `corr-${Date.now()}`;
 
-        return CopilotApiService.instance;
-    }
-
-    /**
-     * Set access token for API requests.
-     */
-    public setAccessToken(accessToken: string | null): void {
-        this.accessToken = accessToken;
-    }
-
-    /**
-     * Get current access token.
-     */
-    private getAccessToken(): string | null {
-        return this.accessToken;
-    }
-
-    /**
-     * Generate request headers.
-     */
-    private generateHeaders(): Record<string, string> {
-        const accessToken: string | null = this.getAccessToken();
-        const requestId: string = crypto.randomUUID();
-        const correlationId: string = `corr-${Date.now()}`;
-
-        const headers: Record<string, string> = {
+    const requestConfig: AxiosRequestConfig = {
+        data: {
+            question: question.trim()
+        },
+        headers: {
+            "Accept": "application/json",
             "Content-Type": "application/json",
             "correlation-id": correlationId,
             "x-request-id": requestId
-        };
+        },
+        method: HttpMethods.POST,
+        url: `${COPILOT_BASE_URL}/chat`
+    };
 
-        if (accessToken) {
-            headers["Authorization"] = `Bearer ${accessToken}`;
+    console.log("[CopilotAPI] Sending message via httpClient...");
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                throw new Error(`HTTP ${response.status}: Failed to send message`);
+            }
+
+            // Process the response data (may be streaming format as text)
+            return processStreamingResponse(response.data, onStream);
+        })
+        .catch((error: AxiosError) => {
+            console.error("[CopilotAPI] Error sending message:", error);
+            const errorData: any = error?.response?.data || {};
+
+            throw new Error(
+                errorData.detail || errorData.message || error.message || "Failed to send message"
+            );
+        });
+};
+
+/**
+ * Process streaming response data.
+ * The axios httpClient receives the complete response, which we parse line-by-line
+ * to extract streaming chunks and invoke the callback.
+ *
+ * @param data - The response data (string or object).
+ * @param onStream - Optional callback for streaming chunks.
+ * @returns The assembled chat response.
+ */
+const processStreamingResponse = (data: any, onStream?: StreamingCallback): CopilotChatResponse => {
+    let fullAnswer: string = "";
+
+    // If data is already a parsed object with an answer, use it directly
+    if (typeof data === "object" && data !== null) {
+        if (data.answer) {
+            return {
+                answer: data.answer,
+                conversationId: data.conversationId,
+                messageId: data.messageId
+            };
         }
-
-        return headers;
     }
 
+    // If data is a string, parse line-by-line for streaming chunks
+    if (typeof data === "string") {
+        const lines: string[] = data.split("\n");
 
+        for (const line of lines) {
+            const trimmedLine: string = line.trim();
 
-    /**
-     * Send a chat message to the copilot.
-     */
-    public async sendMessage(question: string, onStream?: StreamingCallback): Promise<CopilotChatResponse> {
-        if (!question.trim()) {
-            throw new Error("Question cannot be empty");
+            if (!trimmedLine) continue;
+
+            const parsed: CopilotStreamChunk = safeParse(trimmedLine) as CopilotStreamChunk;
+
+            if (parsed && parsed.type === "STREAM" && parsed.content) {
+                fullAnswer += parsed.content;
+                if (onStream) {
+                    onStream(parsed);
+                }
+            } else if (parsed && parsed.type === "STREAM_END") {
+                break;
+            }
         }
+    }
 
-        const accessToken: string | null = this.getAccessToken();
+    return {
+        answer: fullAnswer || (typeof data === "string" ? data : ""),
+        conversationId: undefined,
+        messageId: undefined
+    };
+};
 
-        if (!accessToken) {
-            throw new Error("Authentication required. Please log in to continue.");
-        }
+/**
+ * Send a chat message with TRUE real-time streaming using fetch API.
+ * This bypasses the httpClient Web Worker limitation to enable real-time streaming.
+ *
+ * @param question - The user's question.
+ * @param onStream - Callback for streaming responses (invoked in real-time).
+ * @returns The chat response.
+ */
+export const sendCopilotStreamingMessage = async (
+    question: string,
+    onStream: StreamingCallback
+): Promise<CopilotChatResponse> => {
+    if (!question.trim()) {
+        throw new Error("Question cannot be empty");
+    }
 
-        // Create new abort controller for this request
-        this.abortController = new AbortController();
+    const requestId: string = crypto.randomUUID();
+    const correlationId: string = `corr-${Date.now()}`;
 
-        const payload: CopilotChatRequest = {
-            question: question.trim()
+    console.log("[CopilotAPI] Starting real-time streaming with fetch API...");
+
+    // Use httpClient to get authenticated request config, then extract token
+    let accessToken: string;
+
+    try {
+        // Make a lightweight request to get the auth token via interceptor
+        // httpClient will add the Authorization header automatically
+        const testConfig: AxiosRequestConfig = {
+            headers: {},
+            method: HttpMethods.GET,
+            url: `${COPILOT_BASE_URL}/health` // Use any lightweight endpoint
         };
 
-        const headers: Record<string, string> = this.generateHeaders();
+        // Create a promise to capture the config after auth interceptor runs
+        const capturedToken = await new Promise<string>((resolve, reject) => {
+            // Intercept the httpClient request to capture auth header
+            const originalRequest = httpClient;
 
-        try {
-            const response: Response = await fetch(`${this.baseUrl}/chat`, {
-                body: JSON.stringify(payload),
-                headers,
-                method: HttpMethods.POST,
-                signal: this.abortController.signal
-            });
+            httpClient(testConfig)
+                .then((response: AxiosResponse) => {
+                    // Token should be in the config that was sent
+                    const authHeader = response.config?.headers?.['Authorization'] as string;
+                    if (authHeader && authHeader.startsWith('Bearer ')) {
+                        resolve(authHeader.substring(7));
+                    } else {
+                        reject(new Error("No authorization header found"));
+                    }
+                })
+                .catch((error: any) => {
+                    // Even on error, try to get token from request config
+                    const authHeader = error.config?.headers?.['Authorization'] as string;
+                    if (authHeader && authHeader.startsWith('Bearer ')) {
+                        resolve(authHeader.substring(7));
+                    } else {
+                        reject(new Error("Failed to retrieve access token"));
+                    }
+                });
+        });
 
-            if (!response.ok) {
-                const errorText: string = await response.text();
-                const errorData: any = safeParse(errorText);
+        accessToken = capturedToken;
+        console.log("[CopilotAPI] Successfully retrieved access token");
 
-                throw new Error(errorData.detail || errorData.message ||
-                    `HTTP ${response.status}: Failed to send message`);
+    } catch (error) {
+        console.error("[CopilotAPI] Failed to get access token:", error);
+        console.log("[CopilotAPI] Falling back to httpClient (non-streaming mode)");
+        return sendCopilotChatMessage(question, onStream);
+    }
+
+    // Use fetch API for real streaming
+    const response = await fetch(`${COPILOT_BASE_URL}/chat`, {
+        body: JSON.stringify({
+            question: question.trim()
+        }),
+        headers: {
+            "Accept": "text/event-stream",
+            "Authorization": `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+            "correlation-id": correlationId,
+            "x-request-id": requestId
+        },
+        method: "POST"
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: Failed to send message`);
+    }
+
+    if (!response.body) {
+        throw new Error("Response body is null");
+    }
+
+    // Process streaming response
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let fullAnswer = "";
+    let buffer = "";
+
+    try {
+        while (true) {
+            const { done, value } = await reader.read();
+
+            if (done) {
+                console.log("[CopilotAPI] Stream complete");
+                break;
             }
 
-            const contentType: string = response.headers.get("content-type") || "";
+            // Decode chunk and add to buffer
+            buffer += decoder.decode(value, { stream: true });
 
-            if (contentType.includes("text/event-stream") || contentType.includes("text/plain")) {
-                return this.handleStreamingResponse(response, onStream);
+            // Process complete lines in buffer
+            const lines = buffer.split("\n");
+            buffer = lines.pop() || ""; // Keep incomplete line in buffer
+
+            for (const line of lines) {
+                const trimmedLine = line.trim();
+                if (!trimmedLine) continue;
+
+                try {
+                    const parsed = JSON.parse(trimmedLine) as CopilotStreamChunk;
+
+                    if (parsed.type === "STREAM" && parsed.content) {
+                        fullAnswer += parsed.content;
+                        onStream(parsed); // Call immediately as chunks arrive!
+                    } else if (parsed.type === "STREAM_END") {
+                        console.log("[CopilotAPI] Received STREAM_END");
+                        return {
+                            answer: fullAnswer,
+                            conversationId: undefined,
+                            messageId: undefined
+                        };
+                    } else if (parsed.type === "ERROR") {
+                        throw new Error(parsed.content || "Unknown error");
+                    }
+                } catch (parseError) {
+                    console.warn("[CopilotAPI] Failed to parse line:", trimmedLine);
+                }
+            }
+        }
+    } finally {
+        reader.releaseLock();
+    }
+
+    return {
+        answer: fullAnswer,
+        conversationId: undefined,
+        messageId: undefined
+    };
+};
+
+/**
+ * Clear the chat conversation.
+ * Uses AsgardeoSPAClient.httpRequest for automatic token handling.
+ *
+ * @returns The clear response.
+ */
+export const clearCopilotChatApi = async (): Promise<CopilotClearResponse> => {
+    const requestId: string = crypto.randomUUID();
+    const correlationId: string = `corr-${Date.now()}`;
+
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "correlation-id": correlationId,
+            "x-request-id": requestId
+        },
+        method: HttpMethods.POST,
+        url: `${COPILOT_BASE_URL}/clear`
+    };
+
+    console.log("[CopilotAPI] Clearing chat...");
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                throw new Error(`HTTP ${response.status}: Failed to clear chat`);
             }
 
-            const responseText: string = await response.text();
-            const result: CopilotChatResponse = safeParse(responseText) as CopilotChatResponse;
+            const result: CopilotClearResponse = response.data;
 
             if (!result || typeof result !== "object") {
                 throw new Error("Invalid JSON response from server");
             }
 
             return result;
-        } catch (error: any) {
-            if (error.name === "AbortError") {
-                throw new Error("Request was cancelled");
-            }
-            throw error;
-        }
-    }
+        })
+        .catch((error: AxiosError) => {
+            console.error("[CopilotAPI] Error clearing chat:", error);
+            const errorData: any = error?.response?.data || {};
 
-    /**
-     * Handle streaming response from the server.
-     */
-    private async handleStreamingResponse(
-        response: Response,
-        onStream?: StreamingCallback
-    ): Promise<CopilotChatResponse> {
-        const reader: ReadableStreamDefaultReader<Uint8Array> | undefined = response.body?.getReader();
-
-        if (!reader) {
-            throw new Error("Response body is not readable");
-        }
-
-        const decoder: TextDecoder = new TextDecoder();
-        let fullAnswer: string = "";
-        let buffer: string = "";
-
-        try {
-            let done: boolean = false;
-
-            while (!done) {
-                const result: ReadableStreamReadResult<Uint8Array> = await reader.read();
-
-                done = result.done;
-                if (done) break;
-
-                // Decode the chunk and add to buffer
-                const chunk: string = decoder.decode(result.value, { stream: true });
-
-                buffer += chunk;
-
-                // Process complete lines
-                const lines: string[] = buffer.split("\n");
-
-                buffer = lines.pop() || ""; // Keep incomplete line in buffer
-
-                for (const line of lines) {
-                    const trimmedLine: string = line.trim();
-
-                    if (!trimmedLine) continue;
-
-                    const parsed: CopilotStreamChunk = safeParse(trimmedLine) as CopilotStreamChunk;
-
-                    if (parsed && parsed.type === "STREAM" && parsed.content) {
-                        fullAnswer += parsed.content;
-                        if (onStream) {
-                            onStream(parsed);
-                        }
-                    }
-                }
-            }
-
-            if (buffer.trim()) {
-                const parsed: CopilotStreamChunk = safeParse(buffer.trim()) as CopilotStreamChunk;
-
-                if (parsed && parsed.type === "STREAM" && parsed.content) {
-                    fullAnswer += parsed.content;
-                    if (onStream) {
-                        onStream(parsed);
-                    }
-                }
-            }
-
-            return {
-                answer: fullAnswer,
-                conversationId: undefined,
-                messageId: undefined
-            };
-        } finally {
-            reader.releaseLock();
-        }
-    }
-
-    /**
-     * Clear the chat conversation.
-     */
-    public async clearChat(): Promise<CopilotClearResponse> {
-        const accessToken: string | null = this.getAccessToken();
-
-        if (!accessToken) {
-            throw new Error("Authentication required. Please log in to continue.");
-        }
-
-        const headers: Record<string, string> = this.generateHeaders();
-
-        const response: Response = await fetch(`${this.baseUrl}/clear`, {
-            headers,
-            method: HttpMethods.POST
+            throw new Error(
+                errorData.detail || errorData.message || error.message || "Failed to clear chat"
+            );
         });
+};
 
-        if (!response.ok) {
-            const errorText: string = await response.text();
-            const errorData: any = safeParse(errorText);
+/**
+ * Get the chat history for the user.
+ * Uses AsgardeoSPAClient.httpRequest for automatic token handling.
+ *
+ * @returns The chat history.
+ */
+export const getCopilotChatHistory = async (): Promise<CopilotHistoryResponse> => {
+    const requestId: string = crypto.randomUUID();
+    const correlationId: string = `corr-${Date.now()}`;
 
-            throw new Error(errorData.detail || errorData.message || `HTTP ${response.status}: Failed to clear chat`);
-        }
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "correlation-id": correlationId,
+            "x-request-id": requestId
+        },
+        method: HttpMethods.GET,
+        url: `${COPILOT_BASE_URL}/history`
+    };
 
-        const responseText: string = await response.text();
-        const result: CopilotClearResponse = safeParse(responseText) as CopilotClearResponse;
+    console.log("[CopilotAPI] Fetching chat history...");
 
-        if (!result || typeof result !== "object") {
-            throw new Error("Invalid JSON response from server");
-        }
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                throw new Error(`HTTP ${response.status}: Failed to fetch history`);
+            }
 
-        return result;
-    }
+            return response.data;
+        })
+        .catch((error: AxiosError) => {
+            console.error("[CopilotAPI] Error fetching history:", error);
+            const errorData: any = error?.response?.data || {};
 
-    /**
-     * Abort the current request.
-     */
-    public abortCurrentRequest(): void {
-        if (this.abortController) {
-            this.abortController.abort();
-            this.abortController = null;
-        }
-    }
-
-    /**
-     * Check if there's an active request.
-     */
-    public hasActiveRequest(): boolean {
-        return this.abortController !== null;
-    }
-}
-
-// Export singleton instance
-export const copilotApiService: CopilotApiService = CopilotApiService.getInstance();
+            throw new Error(
+                errorData.detail || errorData.message || error.message || "Failed to fetch history"
+            );
+        });
+};

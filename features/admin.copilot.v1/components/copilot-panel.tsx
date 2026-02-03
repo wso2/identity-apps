@@ -27,7 +27,7 @@ import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { ReactElement, useCallback, useState } from "react";
+import React, { ReactElement, useCallback, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import AISparkleIcon from "./ai-sparkle-icon";
 import ClearChatConfirmationModal from "./clear-chat-confirmation-modal";
@@ -75,9 +75,20 @@ const CopilotPanel: React.FunctionComponent<CopilotPanelProps> = (
         isVisible,
         contentType,
         messages,
+        isLoading,
         hidePanel,
-        clearChat
+        clearChat,
+        loadHistory
     } = useCopilotPanel();
+
+    /**
+     * Load chat history when panel becomes visible.
+     */
+    useEffect(() => {
+        if (isVisible) {
+            loadHistory();
+        }
+    }, [isVisible, loadHistory]);
 
     /**
      * Handle panel close.

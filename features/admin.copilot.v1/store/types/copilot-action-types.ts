@@ -47,7 +47,11 @@ export enum CopilotActionTypes {
     /**
      * Action type to set copilot panel content type.
      */
-    SET_COPILOT_CONTENT_TYPE = "SET_COPILOT_CONTENT_TYPE"
+    SET_COPILOT_CONTENT_TYPE = "SET_COPILOT_CONTENT_TYPE",
+    /**
+     * Action type to set copilot chat history.
+     */
+    SET_COPILOT_CHAT_HISTORY = "SET_COPILOT_CHAT_HISTORY"
 }
 
 /**
@@ -138,6 +142,14 @@ export interface SetCopilotContentTypeActionInterface {
 }
 
 /**
+ * Set copilot chat history action interface.
+ */
+export interface SetCopilotChatHistoryActionInterface {
+    payload: CopilotMessage[];
+    type: CopilotActionTypes.SET_COPILOT_CHAT_HISTORY;
+}
+
+/**
  * Export action interfaces.
  */
 export type CopilotActions = SetCopilotPanelVisibilityActionInterface
@@ -146,4 +158,5 @@ export type CopilotActions = SetCopilotPanelVisibilityActionInterface
     | AddCopilotMessageActionInterface
     | UpdateCopilotMessageActionInterface
     | ClearCopilotChatActionInterface
-    | SetCopilotContentTypeActionInterface;
+    | SetCopilotContentTypeActionInterface
+    | SetCopilotChatHistoryActionInterface;

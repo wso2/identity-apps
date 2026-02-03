@@ -16,15 +16,19 @@
  * under the License.
  */
 
-// Export API service and types
+// Export API functions
 export {
-    CopilotApiService,
-    copilotApiService
+    clearCopilotChatApi,
+    sendCopilotChatMessage,
+    sendCopilotStreamingMessage
 } from "./copilot-api";
 
+// Export types
 export type {
+    CopilotApiError,
     CopilotChatRequest,
     CopilotChatResponse,
     CopilotClearResponse,
-    CopilotApiError
+    CopilotStreamChunk,
+    StreamingCallback
 } from "./copilot-api";
