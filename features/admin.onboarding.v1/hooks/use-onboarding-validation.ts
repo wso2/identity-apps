@@ -88,22 +88,26 @@ const isValidUrl = (url: string): boolean => {
 
 /**
  * Validate sign-in options configuration.
+ * Simplified validation for the Identifier First approach:
+ * - Must have at least one identifier
+ * - Must have at least one login method
  */
 const isValidSignInOptions = (options?: SignInOptionsConfig): boolean => {
     if (!options) return false;
 
-    const { identifiers, credentials, socialLogins } = options;
+    const { identifiers, loginMethods } = options;
+
+    // Must have at least one identifier
     const hasIdentifier: boolean = identifiers.username || identifiers.email || identifiers.mobile;
-    const hasCredential: boolean = credentials.password || credentials.passkey;
-    const hasSocial: boolean = socialLogins.google;
 
-    // Must have at least one way to sign in
-    if (!hasIdentifier && !hasSocial) return false;
+    if (!hasIdentifier) return false;
 
-    // Username alone requires a credential
-    if (identifiers.username && !identifiers.email && !identifiers.mobile && !hasCredential) {
-        return false;
-    }
+    // Must have at least one login method
+    const hasLoginMethod: boolean = loginMethods.password || loginMethods.passkey ||
+        loginMethods.magicLink || loginMethods.emailOtp || loginMethods.totp ||
+        loginMethods.pushNotification;
+
+    if (!hasLoginMethod) return false;
 
     return true;
 };

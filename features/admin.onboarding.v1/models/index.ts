@@ -149,6 +149,7 @@ export interface SelectableCardProps extends IdentifiableComponentInterface {
 
 /**
  * Sign-in identifier options configuration.
+ * Identifiers determine how users are recognized (username, email, or mobile).
  */
 export interface SignInIdentifiersConfig {
     username: boolean;
@@ -157,27 +158,31 @@ export interface SignInIdentifiersConfig {
 }
 
 /**
- * Sign-in credential options configuration.
+ * Login methods configuration.
+ * All authentication methods presented to users in Step 2 of the Identifier First flow.
+ * Users can select any combination - these are presented as alternatives (OR logic).
  */
-export interface SignInCredentialsConfig {
+export interface SignInLoginMethodsConfig {
     password: boolean;
     passkey: boolean;
-}
-
-/**
- * Social login options configuration.
- */
-export interface SocialLoginsConfig {
-    google: boolean;
+    magicLink: boolean;
+    emailOtp: boolean;
+    totp: boolean;
+    pushNotification: boolean;
 }
 
 /**
  * Complete sign-in options configuration.
+ * Uses the Identifier First approach:
+ * - Step 1: IdentifierExecutor collects identifier (based on identifiers config)
+ * - Step 2: All enabled login methods as alternatives
+ *
+ * Note: Social logins are intentionally excluded from onboarding.
+ * Users can add social logins from the Console later.
  */
 export interface SignInOptionsConfig {
     identifiers: SignInIdentifiersConfig;
-    credentials: SignInCredentialsConfig;
-    socialLogins: SocialLoginsConfig;
+    loginMethods: SignInLoginMethodsConfig;
 }
 
 /**
@@ -187,16 +192,18 @@ export interface SignInOptionDefinition {
     id: string;
     label: string;
     description?: string;
-    category: "identifier" | "credential" | "social";
+    category: "identifier" | "login-method";
     icon?: FunctionComponent<SVGProps<SVGSVGElement>>;
     authenticatorConfig: {
         idp: string;
         authenticator: string;
     };
-    /** Whether this option requires a credential (e.g., username alone needs password) */
-    requiresCredential?: boolean;
-    /** Whether this option is a credential itself */
-    isCredential?: boolean;
+    /** Whether this option requires an identifier to be selected */
+    requiresIdentifier?: boolean;
+    /** Whether this option can be used as a first factor */
+    canBeFirstFactor?: boolean;
+    /** Whether this option can be used as a second factor (MFA) */
+    canBeSecondFactor?: boolean;
 }
 
 // ============================================================================

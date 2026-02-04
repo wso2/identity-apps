@@ -17,6 +17,8 @@
  */
 
 import Button from "@oxygen-ui/react/Button";
+import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-management-utils";
+import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement, useCallback, useMemo, useState } from "react";
@@ -37,6 +39,7 @@ import SignInOptionsStep from "./steps/sign-in-options-step";
 import SuccessStep from "./steps/success-step";
 import WelcomeStep from "./steps/welcome-step";
 import { createOnboardingApplication } from "../api/create-onboarding-application";
+import { updateMultiAttributeLoginConfig } from "../api/multi-attribute-login";
 import {
     DEFAULT_BRANDING_CONFIG,
     DEFAULT_SIGN_IN_OPTIONS,
@@ -215,6 +218,14 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardProps & IdentifiableCo
 
     const isNextDisabled: boolean = useStepValidation(currentStep, onboardingData);
 
+    // Get validation config to determine if alphanumeric username is enabled
+    // (alphanumeric = Identity Server, email-as-username = Asgardeo)
+    const { data: validationData } = useValidationConfigData();
+    const isAlphanumericUsername: boolean = useMemo(
+        () => getUsernameConfiguration(validationData)?.enableValidator === "true",
+        [ validationData ]
+    );
+
     const isM2M: boolean = useMemo(
         () => onboardingData.templateId === "m2m-application",
         [ onboardingData.templateId ]
@@ -229,6 +240,22 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardProps & IdentifiableCo
         try {
             // Create the application
             const result: CreatedApplicationResult = await createOnboardingApplication(onboardingData);
+
+            // Update multi-attribute login config if email or mobile is selected as identifier
+            if (onboardingData.signInOptions?.identifiers) {
+                const { email, mobile } = onboardingData.signInOptions.identifiers;
+
+                if (email || mobile) {
+                    try {
+                        await updateMultiAttributeLoginConfig(
+                            onboardingData.signInOptions.identifiers,
+                            isAlphanumericUsername
+                        );
+                    } catch (_multiAttrError) {
+                        // Silently handle - app was created successfully, multi-attribute config is secondary
+                    }
+                }
+            }
 
             // Store the created application data
             setCreatedApplication(result);
@@ -256,7 +283,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardProps & IdentifiableCo
         } finally {
             setIsCreatingApp(false);
         }
-    }, [ onboardingData, setCreatedApplication, dispatch ]);
+    }, [ onboardingData, setCreatedApplication, dispatch, isAlphanumericUsername ]);
 
     const handleNext = useCallback(async (): Promise<void> => {
         const nextStep: OnboardingStep = getNextStep(currentStep, onboardingData);

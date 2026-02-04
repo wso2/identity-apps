@@ -23,11 +23,10 @@ import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useCallback, useMemo } from "react";
 import {
-    CREDENTIAL_OPTIONS,
     DEFAULT_SIGN_IN_OPTIONS,
     IDENTIFIER_OPTIONS,
-    OnboardingComponentIds,
-    SOCIAL_LOGIN_OPTIONS
+    LOGIN_METHOD_OPTIONS,
+    OnboardingComponentIds
 } from "../../constants";
 import {
     OnboardingBrandingConfig,
@@ -73,13 +72,27 @@ const SectionTitle = styled(Typography)(({ theme }: { theme: Theme }) => ({
 }));
 
 /**
- * Container for all options.
+ * Scrollable container for all options.
  */
 const OptionsContainer = styled(Box)(({ theme }: { theme: Theme }) => ({
     display: "flex",
+    flex: 1,
     flexDirection: "column",
     gap: theme.spacing(3),
-    maxWidth: 400
+    maxWidth: 400,
+    overflowY: "auto",
+    paddingRight: theme.spacing(1),
+    // Custom scrollbar styling
+    "&::-webkit-scrollbar": {
+        width: 6
+    },
+    "&::-webkit-scrollbar-thumb": {
+        backgroundColor: theme.palette.grey[300],
+        borderRadius: 3
+    },
+    "&::-webkit-scrollbar-track": {
+        backgroundColor: "transparent"
+    }
 }));
 
 /**
@@ -96,23 +109,26 @@ const PreviewColumn = styled(RightColumn)(({ theme }: { theme: Theme }) => ({
 
 /**
  * Validate sign-in options configuration.
+ * Simplified validation for the Identifier First approach.
  */
 const validateSignInOptions = (options: SignInOptionsConfig): SignInOptionsValidation => {
     const errors: string[] = [];
-    const { identifiers, credentials, socialLogins } = options;
+    const { identifiers, loginMethods } = options;
 
+    // Must have at least one identifier
     const hasIdentifier: boolean = identifiers.username || identifiers.email || identifiers.mobile;
-    const hasCredential: boolean = credentials.password || credentials.passkey;
-    const hasSocial: boolean = socialLogins.google;
 
-    // Must have at least one way to sign in
-    if (!hasIdentifier && !hasSocial) {
-        errors.push("Select at least one identifier or social login option");
+    if (!hasIdentifier) {
+        errors.push("Select at least one identifier (Username, Email, or Mobile)");
     }
 
-    // Username alone requires a credential
-    if (identifiers.username && !identifiers.email && !identifiers.mobile && !hasCredential) {
-        errors.push("Username requires a credential (Password or Passkey)");
+    // Must have at least one login method
+    const hasLoginMethod: boolean = loginMethods.password || loginMethods.passkey ||
+        loginMethods.magicLink || loginMethods.emailOtp || loginMethods.totp ||
+        loginMethods.pushNotification;
+
+    if (!hasLoginMethod) {
+        errors.push("Select at least one login method");
     }
 
     return {
@@ -145,21 +161,11 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepProps> = (
         });
     }, [ signInOptions, onSignInOptionsChange ]);
 
-    const handleCredentialToggle = useCallback((id: string, enabled: boolean): void => {
+    const handleLoginMethodToggle = useCallback((id: string, enabled: boolean): void => {
         onSignInOptionsChange({
             ...signInOptions,
-            credentials: {
-                ...signInOptions.credentials,
-                [id]: enabled
-            }
-        });
-    }, [ signInOptions, onSignInOptionsChange ]);
-
-    const handleSocialToggle = useCallback((id: string, enabled: boolean): void => {
-        onSignInOptionsChange({
-            ...signInOptions,
-            socialLogins: {
-                ...signInOptions.socialLogins,
+            loginMethods: {
+                ...signInOptions.loginMethods,
                 [id]: enabled
             }
         });
@@ -169,17 +175,6 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepProps> = (
         () => validateSignInOptions(signInOptions),
         [ signInOptions ]
     );
-
-    // Check if username requires credential warning should show
-    const showUsernameWarning: boolean = useMemo(() => {
-        const { identifiers, credentials } = signInOptions;
-
-        return identifiers.username &&
-               !identifiers.email &&
-               !identifiers.mobile &&
-               !credentials.password &&
-               !credentials.passkey;
-    }, [ signInOptions ]);
 
     return (
         <TwoColumnLayout data-componentid={ componentId }>
@@ -211,54 +206,28 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepProps> = (
                         )) }
                     </OptionSection>
 
-                    { /* Credential Options */ }
+                    { /* Login Method Options */ }
                     <OptionSection>
-                        <SectionTitle>Credentials</SectionTitle>
-                        { CREDENTIAL_OPTIONS.map((option) => (
+                        <SectionTitle>Login Methods</SectionTitle>
+                        { LOGIN_METHOD_OPTIONS.map((option) => (
                             <SignInOptionToggle
                                 isEnabled={
-                                    signInOptions.credentials[
-                                        option.id as keyof typeof signInOptions.credentials
+                                    signInOptions.loginMethods[
+                                        option.id as keyof typeof signInOptions.loginMethods
                                     ]
                                 }
                                 key={ option.id }
                                 onToggle={ (enabled: boolean) =>
-                                    handleCredentialToggle(option.id, enabled)
+                                    handleLoginMethodToggle(option.id, enabled)
                                 }
                                 option={ option }
-                                data-componentid={ `${componentId}-credential-${option.id}` }
-                            />
-                        )) }
-                    </OptionSection>
-
-                    { /* Social Login Options */ }
-                    <OptionSection>
-                        <SectionTitle>Social Login</SectionTitle>
-                        { SOCIAL_LOGIN_OPTIONS.map((option) => (
-                            <SignInOptionToggle
-                                isEnabled={
-                                    signInOptions.socialLogins[
-                                        option.id as keyof typeof signInOptions.socialLogins
-                                    ]
-                                }
-                                key={ option.id }
-                                onToggle={ (enabled: boolean) =>
-                                    handleSocialToggle(option.id, enabled)
-                                }
-                                option={ option }
-                                data-componentid={ `${componentId}-social-${option.id}` }
+                                data-componentid={ `${componentId}-login-method-${option.id}` }
                             />
                         )) }
                     </OptionSection>
 
                     { /* Validation Warning */ }
-                    { showUsernameWarning && (
-                        <Alert severity="warning">
-                            Username alone requires a credential. Enable Password or Passkey.
-                        </Alert>
-                    ) }
-
-                    { !validation.isValid && !showUsernameWarning && validation.errors.length > 0 && (
+                    { !validation.isValid && validation.errors.length > 0 && (
                         <Alert severity="error">
                             { validation.errors[0] }
                         </Alert>

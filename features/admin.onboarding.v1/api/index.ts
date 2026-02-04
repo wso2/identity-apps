@@ -18,4 +18,5 @@
 
 export * from "./auth-sequence-builder";
 export * from "./create-onboarding-application";
+export * from "./multi-attribute-login";
 export * from "./update-onboarding-branding";

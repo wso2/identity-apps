@@ -70,12 +70,15 @@ export const TwoColumnLayout: typeof Box = styled(Box)(({ theme }: { theme: Them
 
 /**
  * Left column for main content.
+ * Has overflow hidden to allow child components to scroll independently.
  */
 export const LeftColumn: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     display: "flex",
     flex: 1,
     flexDirection: "column",
-    gap: theme.spacing(3)
+    gap: theme.spacing(3),
+    minHeight: 0,
+    overflow: "hidden"
 }));
 
 /**

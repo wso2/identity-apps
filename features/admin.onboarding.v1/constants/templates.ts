@@ -78,7 +78,7 @@ export const FRAMEWORK_OPTIONS: readonly FrameworkOption[] = [
         displayName: "Express",
         id: "express",
         logo: ExpressLogo,
-        templateId: "oidc-web-application"
+        templateId: "expressjs-application"
     },
     {
         displayName: "Next.js",
