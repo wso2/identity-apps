@@ -122,51 +122,6 @@ const PrimaryButtonStyled = styled(Button)<{ customcolor: string }>(({ customcol
     }
 }));
 
-/**
- * Social login button.
- */
-const SocialButton = styled(Button)(({ theme }: { theme: Theme }) => ({
-    backgroundColor: theme.palette.background.paper,
-    border: `1px solid ${theme.palette.divider}`,
-    color: theme.palette.text.primary,
-    fontWeight: 500,
-    padding: "10px 16px",
-    textTransform: "none",
-    "&:hover": {
-        backgroundColor: theme.palette.action.hover
-    }
-}));
-
-/**
- * Passkey option link.
- */
-const PasskeyLink = styled(Typography)<{ customcolor: string }>(({ customcolor }) => ({
-    color: customcolor,
-    cursor: "pointer",
-    fontSize: "0.875rem",
-    marginTop: 8,
-    textAlign: "center",
-    "&:hover": {
-        textDecoration: "underline"
-    }
-}));
-
-/**
- * Divider with text.
- */
-const DividerWithText = styled(Box)(({ theme }: { theme: Theme }) => ({
-    alignItems: "center",
-    display: "flex",
-    margin: theme.spacing(2, 0),
-    "& hr": {
-        flex: 1
-    },
-    "& span": {
-        color: theme.palette.text.secondary,
-        fontSize: "0.8125rem",
-        padding: theme.spacing(0, 2)
-    }
-}));
 
 /**
  * Get the identifier field label based on selected options.
@@ -190,9 +145,15 @@ const getIdentifierLabel = (signInOptions: SignInOptionsConfig): string => {
  * Default sign-in options for preview.
  */
 const DEFAULT_PREVIEW_OPTIONS: SignInOptionsConfig = {
-    credentials: { passkey: false, password: true },
     identifiers: { email: true, mobile: false, username: true },
-    socialLogins: { google: false }
+    loginMethods: {
+        emailOtp: false,
+        magicLink: false,
+        passkey: false,
+        password: true,
+        pushNotification: false,
+        totp: false
+    }
 };
 
 /**
@@ -203,8 +164,30 @@ const DEFAULT_BRANDING: OnboardingBrandingConfig = {
 };
 
 /**
+ * Get a summary of selected login methods.
+ */
+const getLoginMethodsSummary = (loginMethods: SignInOptionsConfig["loginMethods"]): string[] => {
+    const methods: string[] = [];
+
+    if (loginMethods.password) methods.push("Password");
+    if (loginMethods.passkey) methods.push("Passkey");
+    if (loginMethods.magicLink) methods.push("Magic Link");
+    if (loginMethods.emailOtp) methods.push("Email OTP");
+    if (loginMethods.totp) methods.push("TOTP");
+    if (loginMethods.pushNotification) methods.push("Push Notification");
+
+    return methods;
+};
+
+/**
  * Login box preview component.
- * Displays a simplified preview of the login experience based on sign-in options and branding.
+ * Displays a preview of the login experience based on selected options.
+ *
+ * **Password selected (Traditional Login):**
+ * - Shows identifier field + password field + "Sign In" button
+ *
+ * **Password NOT selected (Identifier First flow):**
+ * - Shows identifier field + "Continue" button + login methods summary
  */
 const LoginBoxPreview: FunctionComponent<LoginBoxPreviewProps> = memo((
     props: LoginBoxPreviewProps
@@ -217,18 +200,40 @@ const LoginBoxPreview: FunctionComponent<LoginBoxPreviewProps> = memo((
     } = props;
 
     const { primaryColor, logoUrl } = brandingConfig;
-    const { identifiers, credentials, socialLogins } = signInOptions;
+    const { identifiers, loginMethods } = signInOptions;
 
     const hasIdentifier: boolean = identifiers.username || identifiers.email || identifiers.mobile;
-    const hasPassword: boolean = credentials.password;
-    const hasPasskey: boolean = credentials.passkey;
-    const hasGoogle: boolean = socialLogins.google;
-    const hasSocialOrPasskey: boolean = hasGoogle || hasPasskey;
+    const hasPassword: boolean = loginMethods.password;
+    const hasAnyLoginMethod: boolean = loginMethods.password || loginMethods.passkey ||
+        loginMethods.magicLink || loginMethods.emailOtp || loginMethods.totp ||
+        loginMethods.pushNotification;
+
+    // Get non-password login methods for summary (shown as additional options when password is selected)
+    const hasOtherMethods: boolean = loginMethods.passkey || loginMethods.magicLink ||
+        loginMethods.emailOtp || loginMethods.totp || loginMethods.pushNotification;
 
     const identifierLabel: string = useMemo(
         () => getIdentifierLabel(signInOptions),
         [ signInOptions ]
     );
+
+    const loginMethodsList: string[] = useMemo(
+        () => getLoginMethodsSummary(loginMethods),
+        [ loginMethods ]
+    );
+
+    // Get non-password methods for the summary when password is selected
+    const otherMethodsList: string[] = useMemo(() => {
+        const methods: string[] = [];
+
+        if (loginMethods.passkey) methods.push("Passkey");
+        if (loginMethods.magicLink) methods.push("Magic Link");
+        if (loginMethods.emailOtp) methods.push("Email OTP");
+        if (loginMethods.totp) methods.push("TOTP");
+        if (loginMethods.pushNotification) methods.push("Push Notification");
+
+        return methods;
+    }, [ loginMethods ]);
 
     return (
         <PreviewWrapper data-componentid={ componentId }>
@@ -250,6 +255,7 @@ const LoginBoxPreview: FunctionComponent<LoginBoxPreviewProps> = memo((
                 <Title>Sign In</Title>
 
                 <FormContainer>
+                    { /* Identifier field */ }
                     { hasIdentifier && (
                         <PreviewTextField
                             disabled
@@ -261,7 +267,8 @@ const LoginBoxPreview: FunctionComponent<LoginBoxPreviewProps> = memo((
                         />
                     ) }
 
-                    { hasPassword && (
+                    { /* Password field - only shown when password is selected */ }
+                    { hasIdentifier && hasPassword && (
                         <PreviewTextField
                             disabled
                             fullWidth
@@ -273,49 +280,81 @@ const LoginBoxPreview: FunctionComponent<LoginBoxPreviewProps> = memo((
                         />
                     ) }
 
-                    { (hasIdentifier || hasPassword) && (
+                    { /* Primary action button */ }
+                    { hasIdentifier && hasAnyLoginMethod && (
                         <PrimaryButtonStyled
                             customcolor={ primaryColor }
                             disabled
                             fullWidth
                             variant="contained"
                         >
-                            Sign In
+                            { hasPassword ? "Sign In" : "Continue" }
                         </PrimaryButtonStyled>
                     ) }
 
-                    { hasPasskey && !hasGoogle && (
-                        <PasskeyLink customcolor={ primaryColor }>
-                            Sign in with Passkey
-                        </PasskeyLink>
+                    { /* Additional methods summary when password is selected */ }
+                    { hasPassword && hasOtherMethods && hasIdentifier && (
+                        <>
+                            <Divider sx={ { my: 1 } } />
+                            <Typography
+                                color="text.secondary"
+                                sx={ { fontSize: "0.75rem", textAlign: "center" } }
+                            >
+                                Additional sign-in options:
+                            </Typography>
+                            <Typography
+                                color="text.primary"
+                                sx={ { fontSize: "0.8125rem", fontWeight: 500, textAlign: "center" } }
+                            >
+                                { otherMethodsList.join(" • ") }
+                            </Typography>
+                        </>
                     ) }
 
-                    { hasSocialOrPasskey && (hasIdentifier || hasPassword) && (
-                        <DividerWithText>
-                            <Divider />
-                            <span>or</span>
-                            <Divider />
-                        </DividerWithText>
+                    { /* Login methods summary for Identifier First flow (no password) */ }
+                    { !hasPassword && hasAnyLoginMethod && hasIdentifier && (
+                        <>
+                            <Divider sx={ { my: 1 } } />
+                            <Typography
+                                color="text.secondary"
+                                sx={ { fontSize: "0.75rem", textAlign: "center" } }
+                            >
+                                After identification, users can sign in with:
+                            </Typography>
+                            <Typography
+                                color="text.primary"
+                                sx={ { fontSize: "0.8125rem", fontWeight: 500, textAlign: "center" } }
+                            >
+                                { loginMethodsList.join(" • ") }
+                            </Typography>
+                        </>
                     ) }
 
-                    { hasGoogle && (
-                        <SocialButton disabled fullWidth startIcon={ <GoogleIcon /> }>
-                            Continue with Google
-                        </SocialButton>
-                    ) }
-
-                    { hasPasskey && hasGoogle && (
-                        <SocialButton disabled fullWidth startIcon={ <PasskeyIcon /> }>
-                            Sign in with Passkey
-                        </SocialButton>
-                    ) }
-
-                    { !hasIdentifier && !hasPassword && !hasSocialOrPasskey && (
+                    { /* Empty state */ }
+                    { !hasIdentifier && !hasAnyLoginMethod && (
                         <Typography
                             color="text.secondary"
                             sx={ { fontStyle: "italic", textAlign: "center" } }
                         >
                             Select sign-in options to preview
+                        </Typography>
+                    ) }
+
+                    { hasIdentifier && !hasAnyLoginMethod && (
+                        <Typography
+                            color="error"
+                            sx={ { fontSize: "0.75rem", mt: 1, textAlign: "center" } }
+                        >
+                            Select at least one login method
+                        </Typography>
+                    ) }
+
+                    { !hasIdentifier && hasAnyLoginMethod && (
+                        <Typography
+                            color="error"
+                            sx={ { fontSize: "0.75rem", textAlign: "center" } }
+                        >
+                            Select at least one identifier
                         </Typography>
                     ) }
                 </FormContainer>
@@ -325,38 +364,5 @@ const LoginBoxPreview: FunctionComponent<LoginBoxPreviewProps> = memo((
 });
 
 LoginBoxPreview.displayName = "LoginBoxPreview";
-
-/**
- * Simple Google icon component.
- */
-const GoogleIcon: FunctionComponent = (): ReactElement => (
-    <svg height="18" viewBox="0 0 24 24" width="18">
-        <path
-            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-            fill="#4285F4"
-        />
-        <path
-            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-            fill="#34A853"
-        />
-        <path
-            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-            fill="#FBBC05"
-        />
-        <path
-            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-            fill="#EA4335"
-        />
-    </svg>
-);
-
-/**
- * Simple Passkey icon component.
- */
-const PasskeyIcon: FunctionComponent = (): ReactElement => (
-    <svg fill="currentColor" height="18" viewBox="0 0 24 24" width="18">
-        <path d="M12 1C8.14 1 5 4.14 5 8c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h1v1c0 .55.45 1 1 1h2c.55 0 1-.45 1-1v-1h1c.55 0 1-.45 1-1v-3.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm0 10c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3z" />
-    </svg>
-);
 
 export default LoginBoxPreview;

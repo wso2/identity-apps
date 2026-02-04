@@ -79,11 +79,12 @@ interface ApplicationTemplate {
 
 /**
  * Template registry mapping template IDs to their base JSON templates.
- * Framework-specific templates (react-application, angular-application, nextjs-application)
+ * Framework-specific templates (react-application, angular-application, nextjs-application, expressjs-application)
  * use base templates but set their own templateId for proper Console metadata loading.
  */
 const TEMPLATE_REGISTRY: Record<string, ApplicationTemplate> = {
     "angular-application": SPATemplate as ApplicationTemplate,
+    "expressjs-application": OIDCWebAppTemplate as ApplicationTemplate,
     "m2m-application": M2MTemplate as ApplicationTemplate,
     "mobile-application": MobileTemplate as ApplicationTemplate,
     "nextjs-application": OIDCWebAppTemplate as ApplicationTemplate,
@@ -98,30 +99,25 @@ const TEMPLATE_REGISTRY: Record<string, ApplicationTemplate> = {
  * - React: "react-application" (framework-specific, uses SPA base)
  * - Angular: "angular-application" (framework-specific, uses SPA base)
  * - Next.js: "nextjs-application" (framework-specific, uses OIDC web base)
- * - Express: "oidc-web-application" (traditional web app)
+ * - Express: "expressjs-application" (framework-specific, uses OIDC web base)
  */
 const FRAMEWORK_TO_TEMPLATE: Record<string, string> = {
     angular: "angular-application",
-    express: "oidc-web-application",
+    express: "expressjs-application",
     next: "nextjs-application",
     react: "react-application"
 };
 
 /**
- * Template UUID mapping.
- * The API expects the UUID as templateId for proper template association.
- * These come from the template JSON files' "id" field.
+ * Template UUID mapping for generic templates.
+ * Only generic templates (not framework-specific) need UUID mapping.
+ * Framework-specific templates like "react-application", "angular-application"
+ * should use their string IDs directly.
  *
  * Reference: features/admin.core.v1/constants/shared/application-management.ts
  */
 const TEMPLATE_UUID_MAP: Record<string, string> = {
-    "angular-application": "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7",
-    "m2m-application": "m2m-application",
-    "mcp-client-application": "mcp-client-application",
-    "mobile-application": "mobile-application",
-    "nextjs-application": "b9c5e11e-fc78-484b-9bec-015d247561b8",
     "oidc-web-application": "b9c5e11e-fc78-484b-9bec-015d247561b8",
-    "react-application": "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7",
     "single-page-application": "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7"
 };
 
@@ -274,7 +270,7 @@ const buildApplicationPayload = (data: OnboardingData): ApplicationPayload => {
         payload = JSON.parse(JSON.stringify(template.application));
         // Override with user-provided values
         payload.name = applicationName || "My Application";
-        // Use UUID for templateId (API expects UUID, not string name)
+        // Use framework-specific string for framework templates, UUID for generic templates
         payload.templateId = TEMPLATE_UUID_MAP[resolvedTemplateId] || resolvedTemplateId;
     }
 
