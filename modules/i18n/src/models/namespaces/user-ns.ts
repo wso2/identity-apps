@@ -133,6 +133,11 @@ export interface userNS {
                 shareAllUser: string;
                 shareRoleSubsetWithAllOrgs: string;
                 shareSelectedUser: string;
+                commonRoleSharingLabel: string;
+                commonRoleSharingHint: string;
+                individualRoleSharingLabel: string;
+                individualRoleSharingHint: string;
+                searchAvailableRolesPlaceholder: string;
                 allRolesAndOrgsSharingMessage: string;
                 shareTypeSwitchModal: {
                     description: string;
