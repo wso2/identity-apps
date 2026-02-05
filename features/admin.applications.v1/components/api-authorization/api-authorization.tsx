@@ -93,9 +93,13 @@ export const APIAuthorization: FunctionComponent<APIAuthorizationResourcesProps>
     const dispatch: Dispatch = useDispatch();
     const { getLink } = useDocumentation();
 
-    const resourceText: string = originalTemplateId === "mcp-client-application"
+    const isDigitalWallet: boolean = originalTemplateId === "digital-wallet-application";
+    const isMCPClient: boolean = originalTemplateId === "mcp-client-application";
+    const resourceText: string = isMCPClient
         ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.genericResource")
-        : t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.apiResource");
+        : isDigitalWallet
+            ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.vcResource")
+            : t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.apiResource");
 
     const [ isSubAPIResourcesSectionLoading, setSubAPIResourcesSectionLoading ] = useState<boolean>(false);
     const [ isShownError, setIsShownError ] = useState<boolean>(false);
