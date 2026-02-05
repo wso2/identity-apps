@@ -26,7 +26,7 @@ import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/ho
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { ReactComponent as PushIcon } from "../../themes/default/assets/images/icons/push-provider-icon.svg";
 import { ReactComponent as SMSIcon } from "../../themes/default/assets/images/icons/sms-icon.svg";
@@ -97,7 +97,7 @@ export const EmailAndSMSPage: FunctionComponent<EmailAndSMSPageInterface> = (
                       <Grid xs={ 12 } md={ 6 } lg={ 4 }>
                           <SettingsSection
                               data-componentid={ "email-provider-card" }
-                              description={ 
+                              description={
                                   isSuperOrganization() ? (
                                       t("extensions:develop.emailProviders.note")
                                   ) : (
