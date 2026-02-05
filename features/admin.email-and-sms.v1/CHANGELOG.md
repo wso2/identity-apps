@@ -1,5 +1,15 @@
 # @wso2is/admin.email-and-sms.v1
 
+## 2.25.206
+
+### Patch Changes
+
+- [#9579](https://github.com/wso2/identity-apps/pull/9579) [`b463a2e8339a6c237911e164d6faf174a5501d83`](https://github.com/wso2/identity-apps/commit/b463a2e8339a6c237911e164d6faf174a5501d83) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Update notification provider descriptions.
+
+- Updated dependencies [[`b463a2e8339a6c237911e164d6faf174a5501d83`](https://github.com/wso2/identity-apps/commit/b463a2e8339a6c237911e164d6faf174a5501d83), [`c7571540bdbbb68fd650e9c356823ad3d7f9dade`](https://github.com/wso2/identity-apps/commit/c7571540bdbbb68fd650e9c356823ad3d7f9dade)]:
+  - @wso2is/i18n@2.32.1
+  - @wso2is/admin.core.v1@2.50.2
+
 ## 2.25.205
 
 ### Patch Changes

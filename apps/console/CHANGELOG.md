@@ -1,5 +1,37 @@
 # @wso2is/console
 
+## 2.89.0
+
+### Minor Changes
+
+- [#9556](https://github.com/wso2/identity-apps/pull/9556) [`c7571540bdbbb68fd650e9c356823ad3d7f9dade`](https://github.com/wso2/identity-apps/commit/c7571540bdbbb68fd650e9c356823ad3d7f9dade) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add digital wallet application template
+
+### Patch Changes
+
+- [#9581](https://github.com/wso2/identity-apps/pull/9581) [`b12c67f61552efde75264e64ee3aaad2df845ef2`](https://github.com/wso2/identity-apps/commit/b12c67f61552efde75264e64ee3aaad2df845ef2) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Change digital wallet application template name to vc client application
+
+* [#9579](https://github.com/wso2/identity-apps/pull/9579) [`b463a2e8339a6c237911e164d6faf174a5501d83`](https://github.com/wso2/identity-apps/commit/b463a2e8339a6c237911e164d6faf174a5501d83) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Update notification provider descriptions.
+
+* Updated dependencies [[`b12c67f61552efde75264e64ee3aaad2df845ef2`](https://github.com/wso2/identity-apps/commit/b12c67f61552efde75264e64ee3aaad2df845ef2), [`b463a2e8339a6c237911e164d6faf174a5501d83`](https://github.com/wso2/identity-apps/commit/b463a2e8339a6c237911e164d6faf174a5501d83), [`c7571540bdbbb68fd650e9c356823ad3d7f9dade`](https://github.com/wso2/identity-apps/commit/c7571540bdbbb68fd650e9c356823ad3d7f9dade)]:
+  - @wso2is/admin.application-templates.v1@1.5.10
+  - @wso2is/admin.applications.v1@2.40.12
+  - @wso2is/admin.extensions.v1@2.40.19
+  - @wso2is/admin.email-and-sms.v1@2.25.206
+  - @wso2is/i18n@2.32.1
+  - @wso2is/admin.api-resources.v2@2.26.6
+  - @wso2is/admin.agents.v1@1.0.142
+  - @wso2is/admin.branding.v1@2.32.83
+  - @wso2is/admin.core.v1@2.50.2
+  - @wso2is/admin.roles.v2@2.27.297
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.127
+  - @wso2is/admin.email-management.v1@2.25.291
+  - @wso2is/admin.flows.v1@1.0.96
+  - @wso2is/admin.home.v1@1.7.106
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.127
+  - @wso2is/admin.server-configurations.v1@2.36.2
+  - @wso2is/admin.users.v1@2.36.102
+  - @wso2is/admin.registration-flow-builder.v1@0.10.87
+
 ## 2.88.1
 
 ### Patch Changes

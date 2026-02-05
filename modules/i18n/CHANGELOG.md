@@ -1,5 +1,13 @@
 # @wso2is/i18n
 
+## 2.32.1
+
+### Patch Changes
+
+- [#9579](https://github.com/wso2/identity-apps/pull/9579) [`b463a2e8339a6c237911e164d6faf174a5501d83`](https://github.com/wso2/identity-apps/commit/b463a2e8339a6c237911e164d6faf174a5501d83) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Update notification provider descriptions.
+
+* [#9556](https://github.com/wso2/identity-apps/pull/9556) [`c7571540bdbbb68fd650e9c356823ad3d7f9dade`](https://github.com/wso2/identity-apps/commit/c7571540bdbbb68fd650e9c356823ad3d7f9dade) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add digital wallet application template
+
 ## 2.32.0
 
 ### Minor Changes
