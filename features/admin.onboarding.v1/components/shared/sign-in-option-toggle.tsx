@@ -18,6 +18,7 @@
 
 import { Theme, styled } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
+import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import Switch from "@oxygen-ui/react/Switch";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import Typography from "@oxygen-ui/react/Typography";
@@ -43,50 +44,68 @@ export interface SignInOptionToggleProps extends IdentifiableComponentInterface 
 }
 
 /**
- * Container for the toggle item.
+ * Styled FormControlLabel for full width toggle with subtle hover.
  */
-const ToggleContainer = styled(Box)(({ theme }: { theme: Theme }) => ({
-    alignItems: "center",
+const StyledFormControlLabel = styled(FormControlLabel)(({ theme }: { theme: Theme }) => ({
+    alignItems: "flex-start",
     backgroundColor: theme.palette.background.paper,
     borderRadius: theme.shape.borderRadius,
     display: "flex",
     justifyContent: "space-between",
+    margin: 0,
     padding: theme.spacing(1.5, 2),
-    transition: "background-color 0.2s ease-in-out",
+    transition: "background-color 150ms ease-out",
+    width: "100%",
     "&:hover": {
-        backgroundColor: theme.palette.action.hover
+        backgroundColor: "rgba(0, 0, 0, 0.03)"
+    },
+    "& .MuiFormControlLabel-label": {
+        flex: 1
     }
 }));
 
 /**
- * Container for label and description.
+ * Props interface for OptionLabelContent component.
  */
-const LabelContainer = styled(Box)({
-    display: "flex",
-    flexDirection: "column",
-    gap: 2
-});
+interface OptionLabelContentProps {
+    /** Label text */
+    label: string;
+    /** Optional description text */
+    description?: string;
+}
 
 /**
- * Option label text.
+ * Custom label content with title and optional description.
  */
-const OptionLabel = styled(Typography)(({ theme }: { theme: Theme }) => ({
-    color: theme.palette.text.primary,
-    fontSize: "0.9375rem",
-    fontWeight: 500
-}));
-
-/**
- * Option description text.
- */
-const OptionDescription = styled(Typography)(({ theme }: { theme: Theme }) => ({
-    color: theme.palette.text.secondary,
-    fontSize: "0.8125rem"
-}));
+const OptionLabelContent: FunctionComponent<OptionLabelContentProps> = ({
+    label,
+    description
+}: OptionLabelContentProps): ReactElement => (
+    <Box>
+        <Typography
+            sx={ {
+                color: "text.primary",
+                fontSize: "0.9375rem",
+                fontWeight: 500
+            } }
+        >
+            { label }
+        </Typography>
+        { description && (
+            <Typography
+                sx={ {
+                    color: "text.secondary",
+                    fontSize: "0.8125rem"
+                } }
+            >
+                { description }
+            </Typography>
+        ) }
+    </Box>
+);
 
 /**
  * Sign-in option toggle component.
- * Displays a sign-in option with a toggle switch.
  */
 const SignInOptionToggle: FunctionComponent<SignInOptionToggleProps> = memo((
     props: SignInOptionToggleProps
@@ -105,20 +124,25 @@ const SignInOptionToggle: FunctionComponent<SignInOptionToggleProps> = memo((
     };
 
     const toggleContent: ReactElement = (
-        <ToggleContainer data-componentid={ `${componentId}-${option.id}` }>
-            <LabelContainer>
-                <OptionLabel>{ option.label }</OptionLabel>
-                { option.description && (
-                    <OptionDescription>{ option.description }</OptionDescription>
-                ) }
-            </LabelContainer>
-            <Switch
-                checked={ isEnabled }
-                disabled={ disabled }
-                onChange={ handleChange }
-                data-componentid={ `${componentId}-${option.id}-switch` }
-            />
-        </ToggleContainer>
+        <StyledFormControlLabel
+            control={
+                <Switch
+                    checked={ isEnabled }
+                    disabled={ disabled }
+                    onChange={ handleChange }
+                    data-componentid={ `${componentId}-${option.id}-switch` }
+                />
+            }
+            data-componentid={ `${componentId}-${option.id}` }
+            disabled={ disabled }
+            label={
+                <OptionLabelContent
+                    description={ option.description }
+                    label={ option.label }
+                />
+            }
+            labelPlacement="start"
+        />
     );
 
     if (disabled && disabledReason) {

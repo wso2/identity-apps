@@ -141,7 +141,6 @@ const M2M_GRANT_TYPES: string[] = [
 
 /**
  * Build MCP client application payload dynamically.
- * MCP client has no JSON template - it's created with specific grant types.
  *
  * @param name - Application name
  * @returns Application payload for MCP client

@@ -24,7 +24,7 @@ import { SignInOptionDefinition, SignInOptionsConfig } from "../models";
  */
 export const DEFAULT_SIGN_IN_OPTIONS: SignInOptionsConfig = {
     identifiers: {
-        email: true,
+        email: false,
         mobile: false,
         username: true
     },

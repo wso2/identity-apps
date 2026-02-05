@@ -183,11 +183,6 @@ const getLoginMethodsSummary = (loginMethods: SignInOptionsConfig["loginMethods"
  * Login box preview component.
  * Displays a preview of the login experience based on selected options.
  *
- * **Password selected (Traditional Login):**
- * - Shows identifier field + password field + "Sign In" button
- *
- * **Password NOT selected (Identifier First flow):**
- * - Shows identifier field + "Continue" button + login methods summary
  */
 const LoginBoxPreview: FunctionComponent<LoginBoxPreviewProps> = memo((
     props: LoginBoxPreviewProps

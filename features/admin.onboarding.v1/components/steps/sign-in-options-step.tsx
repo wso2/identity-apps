@@ -72,7 +72,18 @@ const SectionTitle = styled(Typography)(({ theme }: { theme: Theme }) => ({
 }));
 
 /**
- * Scrollable container for all options.
+ * Fixed section for identifiers.
+ */
+const FixedSection = styled(Box)(({ theme }: { theme: Theme }) => ({
+    display: "flex",
+    flexDirection: "column",
+    gap: theme.spacing(1.5),
+    marginBottom: theme.spacing(2),
+    maxWidth: 400
+}));
+
+/**
+ * Scrollable container for login methods.
  */
 const OptionsContainer = styled(Box)(({ theme }: { theme: Theme }) => ({
     display: "flex",
@@ -176,6 +187,12 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepProps> = (
         [ signInOptions ]
     );
 
+    // Show info note when email or mobile identifier is selected
+    const showIdentifierNote: boolean = useMemo(
+        () => signInOptions.identifiers.email || signInOptions.identifiers.mobile,
+        [ signInOptions.identifiers.email, signInOptions.identifiers.mobile ]
+    );
+
     return (
         <TwoColumnLayout data-componentid={ componentId }>
             <LeftColumn>
@@ -185,8 +202,8 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepProps> = (
                     title="How do you want users to sign in?"
                 />
 
-                <OptionsContainer>
-                    { /* Identifier Options */ }
+                { /* Identifiers section - fixed at top */ }
+                <FixedSection>
                     <OptionSection>
                         <SectionTitle>Identifiers</SectionTitle>
                         { IDENTIFIER_OPTIONS.map((option) => (
@@ -206,9 +223,21 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepProps> = (
                         )) }
                     </OptionSection>
 
-                    { /* Login Method Options */ }
+                    { /* Informational note - shown when email or mobile is selected */ }
+                    { showIdentifierNote && (
+                        <Alert
+                            severity="info"
+                            data-componentid={ `${componentId}-identifier-note` }
+                        >
+                            This identifier setting applies across all applications in your organization.
+                        </Alert>
+                    ) }
+                </FixedSection>
+                <SectionTitle>Login Methods</SectionTitle>
+
+                { /* Login Methods */ }
+                <OptionsContainer>
                     <OptionSection>
-                        <SectionTitle>Login Methods</SectionTitle>
                         { LOGIN_METHOD_OPTIONS.map((option) => (
                             <SignInOptionToggle
                                 isEnabled={
@@ -225,14 +254,14 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepProps> = (
                             />
                         )) }
                     </OptionSection>
-
-                    { /* Validation Warning */ }
-                    { !validation.isValid && validation.errors.length > 0 && (
-                        <Alert severity="error">
-                            { validation.errors[0] }
-                        </Alert>
-                    ) }
                 </OptionsContainer>
+
+                { /* Validation Warning */ }
+                { !validation.isValid && validation.errors.length > 0 && (
+                    <Alert severity="error">
+                        { validation.errors[0] }
+                    </Alert>
+                ) }
             </LeftColumn>
 
             <PreviewColumn>
