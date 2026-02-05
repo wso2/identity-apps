@@ -37,7 +37,7 @@ const onwarn = (warning, warn) => {
 module.exports = [
     {
         cache: false,
-        external: ["react", "react-dom", /^@wso2is\//],
+        external: [ "react", "react-dom", /^@wso2is\// ],
         input: [
             "./public-api.ts"
         ],
@@ -68,7 +68,7 @@ module.exports = [
     {
         cache: false,
         input: "dist/esm/types/public-api.d.ts",
-        output: [{ file: "dist/esm/index.d.ts", format: "esm" }],
-        plugins: [dts.default()]
+        output: [ { file: "dist/esm/index.d.ts", format: "esm" } ],
+        plugins: [ dts.default() ]
     }
 ];

@@ -48,7 +48,7 @@ export interface ApprovalTaskSummary {
      * State of the Approval task
      */
     status: ApprovalStatus.READY | ApprovalStatus.RESERVED |
-    ApprovalStatus.APPROVED | ApprovalStatus.REJECTED;
+        ApprovalStatus.APPROVED | ApprovalStatus.REJECTED;
     /**
      * Priority of the Approval task
      */
@@ -99,7 +99,7 @@ export interface ApprovalTaskDetails {
      * Status of the Approval task
      */
     taskStatus?: ApprovalStatus.READY | ApprovalStatus.RESERVED |
-    ApprovalStatus.BLOCKED | ApprovalStatus.APPROVED | ApprovalStatus.REJECTED;
+        ApprovalStatus.BLOCKED | ApprovalStatus.APPROVED | ApprovalStatus.REJECTED;
     /**
      * The time that the operation for approval initiated
      */
@@ -164,7 +164,7 @@ export interface ApprovalTaskListItemInterface {
      * Status of the Approval Task
      */
     approvalStatus: ApprovalStatus.READY | ApprovalStatus.RESERVED |
-    ApprovalStatus.BLOCKED | ApprovalStatus.APPROVED | ApprovalStatus.REJECTED;
+        ApprovalStatus.BLOCKED | ApprovalStatus.APPROVED | ApprovalStatus.REJECTED;
     /**
      * Priority of the Approval task
      */
