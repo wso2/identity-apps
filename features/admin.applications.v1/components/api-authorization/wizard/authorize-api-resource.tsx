@@ -99,12 +99,12 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
     const dispatch: Dispatch = useDispatch();
     const { getLink } = useDocumentation();
 
-    const isDigitalWallet: boolean = originalTemplateId === "digital-wallet-application";
+    const isVCClient: boolean = originalTemplateId === "vc-client-application";
     const isMCPClient: boolean = originalTemplateId === "mcp-client-application";
 
     const resourceText: string = isMCPClient
         ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.genericResource")
-        : isDigitalWallet
+        : isVCClient
             ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.vcResource")
             : t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.apiResource");
 
@@ -408,10 +408,10 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
      */
     const handleFormSubmit = () => {
         setIsSubmitting(true);
-        // For Digital Wallet apps, automatically include all scopes from the selected API resource
+        // For VC Client apps, automatically include all scopes from the selected API resource
         let processedAuthorizedScopes: string[];
 
-        if (isDigitalWallet && currentAPIResourceScopeListData) {
+        if (isVCClient && currentAPIResourceScopeListData) {
             processedAuthorizedScopes = currentAPIResourceScopeListData.map(
                 (scope: APIResourcePermissionInterface) => scope.name
             );
@@ -528,8 +528,8 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                         </div>) }
                                     options={ allAPIResourcesDropdownOptions
                                         ?.filter((item: DropdownItemProps) => {
-                                            // For Digital Wallet apps, show ONLY VC type resources
-                                            if (isDigitalWallet) {
+                                            // For VC Client apps, show ONLY VC type resources
+                                            if (isVCClient) {
                                                 return item?.type === APIResourceCategories.VC;
                                             }
                                             // For MCP client apps, show MCP type resources along with others
@@ -586,7 +586,7 @@ export const AuthorizeAPIResource: FunctionComponent<AuthorizeAPIResourcePropsIn
                                 ) }
                             </Grid.Row>
                             {
-                                !isDigitalWallet && (
+                                !isVCClient && (
                                     <Grid.Row>
                                         <Autocomplete
                                             disablePortal

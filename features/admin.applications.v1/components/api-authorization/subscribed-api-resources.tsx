@@ -148,11 +148,11 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
 
     const { t } = useTranslation();
 
-    const isDigitalWallet: boolean = originalTemplateId === "digital-wallet-application";
+    const isVCClient: boolean = originalTemplateId === "vc-client-application";
     const isMCPClient: boolean = originalTemplateId === "mcp-client-application";
     const resourceText: string = isMCPClient
         ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.genericResource")
-        : isDigitalWallet
+        : isVCClient
             ? t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.vcResource")
             : t("extensions:develop.applications.edit.sections.apiAuthorization.resourceText.apiResource");
 
@@ -499,7 +499,7 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
                                                 resourceText:  isMCPClient
                                                     ? t("extensions:develop.applications.edit.sections.apiAuthorization"
                                                         + ".resourceText.genericResource")
-                                                    : isDigitalWallet
+                                                    : isVCClient
                                                         ? t("extensions:develop.applications.edit.sections" +
                                                             ".apiAuthorization.resourceText.vcResource")
                                                         : t("extensions:develop.applications.edit.sections" +
@@ -528,7 +528,7 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
                                                                     data-componentid={
                                                                         `${componentId}-title`
                                                                     }
-                                                                    active={ !isDigitalWallet &&
+                                                                    active={ !isVCClient &&
                                                                         activeSubscribedAPIResource
                                                                         === subscribedAPIResource.id }
                                                                     accordionIndex={ subscribedAPIResource.id }
@@ -539,13 +539,13 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
                                                                         resolveSubscribedAPIResourcesListHeader(
                                                                             subscribedAPIResource)
                                                                     ) }
-                                                                    hideChevron={ isDigitalWallet }
+                                                                    hideChevron={ isVCClient }
                                                                     actions={
                                                                         createAccordionAction(subscribedAPIResource)
                                                                     }
                                                                 />
                                                                 <SegmentedAccordion.Content
-                                                                    active={ !isDigitalWallet &&
+                                                                    active={ !isVCClient &&
                                                                         activeSubscribedAPIResource
                                                                         === subscribedAPIResource.id }
                                                                     data-componentid={

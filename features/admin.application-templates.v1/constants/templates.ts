@@ -78,5 +78,5 @@ export class ApplicationTemplateConstants {
         "custom-application"
     ];
 
-    public static readonly DIGITAL_WALLET_APPLICATION: string = "digital-wallet-application";
+    public static readonly VC_CLIENT_APPLICATION: string = "vc-client-application";
 }
