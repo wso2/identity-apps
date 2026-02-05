@@ -50,7 +50,7 @@ export const pushProviders: pushProvidersNS = {
                 "Once deleted, users will not receive any push notifications."
         }
     },
-    description: "Configure the push provider settings according to your push provider.",
+    description: "Configure the push provider credentials to enable sending push notifications.",
     goBack: "Go back to Notification Providers",
     heading: "Push Provider",
     modals: {
