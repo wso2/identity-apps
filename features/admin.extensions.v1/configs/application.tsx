@@ -466,10 +466,6 @@ export const applicationConfig: ApplicationConfig = {
                 ApplicationManagementConstants.JWT_BEARER,
                 ApplicationManagementConstants.IWA_NTLM
             ],
-        [ "vc-client-application" ]: [
-            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
-            ApplicationManagementConstants.REFRESH_TOKEN_GRANT
-        ],
         [ "m2m-application" ]: [
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
         ],
@@ -505,6 +501,10 @@ export const applicationConfig: ApplicationConfig = {
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
             ApplicationManagementConstants.PASSWORD,
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
+        ],
+        [ "vc-client-application" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT
         ]
     }),
     hiddenGrantTypes: [ ApplicationManagementConstants.ACCOUNT_SWITCH_GRANT ],
