@@ -164,13 +164,13 @@ const RolesShareWithAll: FunctionComponent<RolesShareWithAllPropsInterface> = (
     return (
         <>
             <Typography variant="body1" marginBottom={ 1 }>
-                { t("users:edit.sections.sharedAccess." +
+                { t("user:editUser.sections.sharedAccess." +
                     "commonRoleSharingLabel") }
+                <Hint inline popup className="ml-1">
+                    { t("user:editUser.sections.sharedAccess." +
+                        "commonRoleSharingHint") }
+                </Hint>
             </Typography>
-            <Hint popup className="mb-2">
-                { t("users:edit.sections.sharedAccess." +
-                    "commonRoleSharingHint") }
-            </Hint>
             <Autocomplete
                 fullWidth
                 multiple
@@ -179,7 +179,7 @@ const RolesShareWithAll: FunctionComponent<RolesShareWithAllPropsInterface> = (
                 className="role-select-autocomplete"
                 data-componentid={ `${componentId}-autocomplete` }
                 loading={ isUserRolesFetchRequestLoading || isSearching }
-                placeholder={ t("users:edit.sections.sharedAccess.modes.shareWithSelectedPlaceholder") }
+                placeholder={ t("user:editUser.sections.sharedAccess.modes.shareWithSelectedPlaceholder") }
                 options={ userRolesList ?? [] }
                 value={ selectedRoles }
                 onChange={ (
@@ -202,7 +202,7 @@ const RolesShareWithAll: FunctionComponent<RolesShareWithAllPropsInterface> = (
                     <TextField
                         { ...params }
                         size="small"
-                        placeholder={ t("users:edit.sections.sharedAccess.searchAvailableRolesPlaceholder") }
+                        placeholder={ t("user:editUser.sections.sharedAccess.searchAvailableRolesPlaceholder") }
                         data-componentid={ `${componentId}-role-search-input` }
                         onChange={ (event: ChangeEvent<HTMLInputElement>) => {
                             const value: string = event.target.value.trim();
