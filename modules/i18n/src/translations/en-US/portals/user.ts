@@ -95,8 +95,25 @@ export const user: userNS = {
             }
         },
         sections: {
+            shareUser: {
+                addAsyncSharingNotification: {
+                    description: "User sharing process has started. You will be notified once the process is complete.",
+                    message: "User sharing in progress"
+                },
+                getSharedOrganizations: {
+                    genericError: {
+                        description: "An error occurred while fetching shared organizations.",
+                        message: "Error occurred while fetching shared organizations"
+                    }
+                }
+            },
             sharedAccess: {
+                allRolesAndOrgsSharingMessage: "All roles will be shared with all existing and future organizations.",
+                commonRoleSharingHint: "This set of roles will be shared with all existing and future organizations that the user is shared with.",
+                commonRoleSharingLabel: "Commonly Shared Roles",
                 doNotShareUser: "Do not share user with any organizations",
+                individualRoleSharingHint: "Configure role sharing for specific organizations individually.",
+                individualRoleSharingLabel: "Individually shared roles",
                 notifications: {
                     fetchOrganizations: {
                         genericError: {
@@ -135,11 +152,11 @@ export const user: userNS = {
                         }
                     }
                 },
+                searchAvailableRolesPlaceholder: "Search available roles",
                 shareAllRoles: "Share all roles",
                 shareAllUser: "Share user with all organizations",
-                shareRoleSubsetWithAllOrgs: "Share selected roles with all organizations",
+                shareRoleSubsetWithAllOrgs: "Share only a subset of roles with all organizations",
                 shareSelectedUser: "Share user with selected organizations",
-                allRolesAndOrgsSharingMessage: "All roles will be shared with all existing and future organizations.",
                 shareTypeSwitchModal: {
                     description: "Choose how you want to proceed:",
                     header: "Switch to selective sharing",
@@ -157,18 +174,6 @@ export const user: userNS = {
                 },
                 subTitle: "Configure how this user should be shared across organizations",
                 title: "Shared Access"
-            },
-            shareUser: {
-                addAsyncSharingNotification: {
-                    description: "User sharing process has started. You will be notified once the process is complete.",
-                    message: "User sharing in progress"
-                },
-                getSharedOrganizations: {
-                    genericError: {
-                        description: "An error occurred while fetching shared organizations.",
-                        message: "Error occurred while fetching shared organizations"
-                    }
-                }
             }
         },
         userActionZoneGroup: {

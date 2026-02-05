@@ -501,7 +501,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
 
             return false;
         } finally {
-            onUserSharingCompleted();
+            // onUserSharingCompleted();
         }
     };
 
@@ -539,7 +539,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
 
             return false;
         } finally {
-            onUserSharingCompleted();
+            // onUserSharingCompleted();
         }
     };
 
@@ -685,7 +685,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
 
         // If the org sharing was not successful, do not proceed with role patch operations
         if (!orgSharingSuccess) {
-            onUserSharingCompleted();
+            // onUserSharingCompleted();
 
             return;
         }
@@ -766,7 +766,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                     }));
                 })
                 .finally(() => {
-                    onUserSharingCompleted();
+                    // onUserSharingCompleted();
                 });
         } else {
             // If there are no further operations to perform, just show a success notification
@@ -910,7 +910,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         }
 
         // Fire the user sharing completed callback
-        onUserSharingCompleted();
+        // onUserSharingCompleted();
     };
 
     const shareSelectedRolesWithAllOrgs = (): void => {
@@ -957,7 +957,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                 }));
             })
             .finally(() => {
-                onUserSharingCompleted();
+                // onUserSharingCompleted();
             });
     };
 
@@ -1041,7 +1041,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                     }));
                 })
                 .finally(() => {
-                    onUserSharingCompleted();
+                    // onUserSharingCompleted();
                 });
         } else {
             // If there are no further operations to perform, just show a success notification
@@ -1054,7 +1054,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
             }));
 
             resetStates();
-            onUserSharingCompleted();
+            // onUserSharingCompleted();
         }
     };
 
@@ -1349,16 +1349,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                         >
                             <FormControlLabel
                                 value={ ShareType.UNSHARE }
-                                label={ (
-                                    <>
-                                        { t("user:editUser.sections.sharedAccess.doNotShareUser") }
-                                        <Hint inline popup>
-                                            { t(
-                                                "organizations:unshareUserInfo"
-                                            ) }
-                                        </Hint>
-                                    </>
-                                ) }
+                                label={ t("user:editUser.sections.sharedAccess.doNotShareUser") }
                                 control={ <Radio /> }
                                 disabled={ readOnly }
                                 data-componentid={ `${ componentId }-unshare-with-all-orgs-checkbox` }
