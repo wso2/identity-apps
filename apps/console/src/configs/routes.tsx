@@ -189,7 +189,6 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
-            category: "console:develop.features.sidePanel.categories.application",
             children: [
                 {
                     component: lazy(() =>
@@ -211,7 +210,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             },
             id: "verifiableCredentials",
             name: "Verifiable Credentials",
-            order: 3,
+            order: 7,
             path: AppConstants.getPaths().get("VC_TEMPLATES"),
             protected: true,
             showOnSidePanel: true

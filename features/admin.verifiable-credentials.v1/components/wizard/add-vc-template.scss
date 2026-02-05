@@ -16,31 +16,29 @@
  * under the License.
  */
 
-.form-label {
-    display: block;
-    margin-bottom: 8px;
+.vc-wizard-attributes-section {
+    margin-top: 1rem;
 
-    .required-indicator {
-        color: #db2828;
-        margin-left: 4px;
+    .form-label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 0.92857143em;
+        font-weight: 500;
+        color: rgba(0, 0, 0, 0.87);
     }
 }
 
-.vc-claims-dropdown {
+.vc-wizard-claims-dropdown {
     margin-top: 0 !important;
     padding-top: 0 !important;
 }
 
-.vc-claims-dropdown-input {
+.vc-wizard-claims-dropdown-input {
     input {
         border: none !important;
         width: auto !important;
     }
     .MuiInputBase-root {
         margin-top: 0 !important;
-    }
-
-    .MuiFormLabel-root {
-        font-size: .92857143em !important;
     }
 }

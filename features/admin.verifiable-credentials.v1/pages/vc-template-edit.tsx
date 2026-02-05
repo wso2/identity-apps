@@ -334,20 +334,25 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
                                                 <Grid>
                                                     <Grid.Row columns={ 1 }>
                                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                                            <label className="form-label">
+                                                                { t("verifiableCredentials:editPage.form.displayName." +
+                                                                    "label") }
+                                                                <span className="required-indicator">*</span>
+                                                            </label>
                                                             <FinalFormField
                                                                 key="displayName"
                                                                 width={ 16 }
                                                                 FormControlProps={ {
-                                                                    margin: "dense"
+                                                                    margin: "none"
                                                                 } }
                                                                 ariaLabel="displayName"
-                                                                required={ true }
+                                                                required={ false }
                                                                 data-componentid={ `${componentId}-display-name-input` }
                                                                 name="displayName"
                                                                 type="text"
-                                                                label={ t("verifiableCredentials:editPage.form.displayName.label") } // eslint-disable-line max-len
                                                                 placeholder={
-                                                                    t("verifiableCredentials:editPage.form.displayName.placeholder") // eslint-disable-line max-len
+                                                                    t("verifiableCredentials:editPage.form." +
+                                                                        "displayName.placeholder")
                                                                 }
                                                                 component={ TextFieldAdapter }
                                                                 maxLength={ 255 }
@@ -358,7 +363,9 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
                                                     <Grid.Row columns={ 1 }>
                                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                                             <label className="form-label">
-                                                                { t("verifiableCredentials:editPage.form.identifier.label") /* eslint-disable-line max-len */ }
+                                                                { t("verifiableCredentials:editPage.form.identifier." +
+                                                                    "label") }
+                                                                <span className="required-indicator">*</span>
                                                             </label>
                                                             <CopyInputField
                                                                 value={ vcTemplate?.identifier || "" }
@@ -370,24 +377,30 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
                                                     </Grid.Row>
                                                     <Grid.Row columns={ 1 }>
                                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                                            <label className="form-label">
+                                                                { t("verifiableCredentials:editPage.form.expiresIn." +
+                                                                    "label") }
+                                                                <span className="required-indicator">*</span>
+                                                            </label>
                                                             <FinalFormField
                                                                 key="expiresIn"
                                                                 width={ 16 }
                                                                 FormControlProps={ {
-                                                                    margin: "dense"
+                                                                    margin: "none"
                                                                 } }
                                                                 ariaLabel="expiresIn"
-                                                                required={ true }
+                                                                required={ false }
                                                                 data-componentid={ `${componentId}-expires-in-input` }
                                                                 name="expiresIn"
                                                                 type="number"
-                                                                label={ t("verifiableCredentials:editPage.form.expiresIn.label") } // eslint-disable-line max-len
                                                                 placeholder={
-                                                                    t("verifiableCredentials:editPage.form.expiresIn.placeholder") // eslint-disable-line max-len
+                                                                    t("verifiableCredentials:editPage.form.expiresIn." +
+                                                                        "placeholder")
                                                                 }
                                                                 helperText={
                                                                     (<Hint className="hint" compact>
-                                                                        { t("verifiableCredentials:editPage.form.expiresIn.hint") /* eslint-disable-line max-len */ }
+                                                                        { t("verifiableCredentials:editPage.form." +
+                                                                            "expiresIn.hint") }
                                                                     </Hint>)
                                                                 }
                                                                 component={ TextFieldAdapter }
@@ -396,6 +409,10 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
                                                     </Grid.Row>
                                                     <Grid.Row columns={ 1 }>
                                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                                            <label className="form-label">
+                                                                { t("verifiableCredentials:editPage.form.claims." +
+                                                                    "label") }
+                                                            </label>
                                                             <Autocomplete
                                                                 className="vc-claims-dropdown"
                                                                 size="small"
@@ -415,9 +432,8 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
                                                                     <TextField
                                                                         { ...params }
                                                                         className="vc-claims-dropdown-input"
-                                                                        label={ t("verifiableCredentials:editPage.form.claims.label") } // eslint-disable-line max-len
                                                                         placeholder={
-                                                                            t("verifiableCredentials:editPage.form.claims.placeholder") // eslint-disable-line max-len
+                                                                            t("verifiableCredentials:editPage.form.claims.placeholder")
                                                                         }
                                                                     />
                                                                 ) }
@@ -469,6 +485,18 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
                                                     </Grid.Row>
                                                     <Grid.Row columns={ 1 }>
                                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                                            <label className="form-label">
+                                                                { t("verifiableCredentials:editPage.form.offer.label") }
+                                                            </label>
+                                                            <VCTemplateOffer
+                                                                template={ vcTemplate }
+                                                                onUpdate={ () => mutateVCTemplate() }
+                                                                data-componentid={ `${componentId}-offer` }
+                                                            />
+                                                        </Grid.Column>
+                                                    </Grid.Row>
+                                                    <Grid.Row columns={ 1 }>
+                                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                                             <PrimaryButton
                                                                 type="submit"
                                                                 aria-label="update"
@@ -491,26 +519,14 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
                                     sectionHeader={ t("verifiableCredentials:editPage.dangerZone.header") }
                                 >
                                     <DangerZone
-                                        actionTitle={ t("verifiableCredentials:editPage.dangerZone.delete.actionTitle") } // eslint-disable-line max-len
+                                        actionTitle={ t("verifiableCredentials:editPage.dangerZone.delete." +
+                                            "actionTitle") }
                                         header={ t("verifiableCredentials:editPage.dangerZone.delete.header") }
                                         subheader={ t("verifiableCredentials:editPage.dangerZone.delete.subheader") }
                                         onActionClick={ () => setShowDeleteConfirmation(true) }
                                         data-componentid={ `${componentId}-danger-zone` }
                                     />
                                 </DangerZoneGroup>
-                            </ResourceTab.Pane>
-                        )
-                    },
-                    {
-                        componentId: "offer",
-                        menuItem: t("verifiableCredentials:editPage.tabs.offer"),
-                        render: () => (
-                            <ResourceTab.Pane controlledSegmentation>
-                                <VCTemplateOffer
-                                    template={ vcTemplate }
-                                    onUpdate={ () => mutateVCTemplate() }
-                                    data-componentid={ `${componentId}-offer` }
-                                />
                             </ResourceTab.Pane>
                         )
                     }

@@ -84,6 +84,11 @@ export const verifiableCredentials: VerifiableCredentialsNS = {
                 placeholder: "Enter a display name",
                 hint: "A human-readable name for the credential template."
             },
+            attributes: {
+                label: "User Attributes",
+                placeholder: "Search and select user attributes",
+                hint: "Select the user attributes to include in the verifiable credential."
+            },
             submitButton: "Create"
         }
     },
@@ -108,9 +113,12 @@ export const verifiableCredentials: VerifiableCredentialsNS = {
                 hint: "Enter the validity period in seconds."
             },
             claims: {
-                label: "Attributes",
-                placeholder: "Search and select attributes",
+                label: "User Attributes",
+                placeholder: "Search and select user attributes",
                 hint: "Select the user attributes to include in the verifiable credential."
+            },
+            offer: {
+                label: "Offer"
             }
         },
         dangerZone: {

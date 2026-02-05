@@ -21,8 +21,7 @@ import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
-    CopyInputField,
-    EmphasizedSegment
+    CopyInputField
 } from "@wso2is/react-components";
 import { AxiosError } from "axios";
 import React, { FunctionComponent, ReactElement, useState } from "react";
@@ -116,7 +115,7 @@ export const VCTemplateOffer: FunctionComponent<VCTemplateOfferPropsInterface> =
     };
 
     return (
-        <EmphasizedSegment padded="very">
+        <>
             <Grid>
 
                 <Grid.Row>
@@ -202,6 +201,6 @@ export const VCTemplateOffer: FunctionComponent<VCTemplateOfferPropsInterface> =
                     </ConfirmationModal>
                 )
             }
-        </EmphasizedSegment>
+        </>
     );
 };
