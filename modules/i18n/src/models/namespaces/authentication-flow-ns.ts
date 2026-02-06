@@ -27,11 +27,13 @@ export interface AuthenticationFlowNS {
         message: string;
     };
     options: {
+        apiAuthenticatorNotSupported: string;
         controls: {
             remove: string;
         };
         displayName: string;
         divider: string;
+        warningTitle: string;
     };
     modes: {
         legacy: {
@@ -199,6 +201,14 @@ export interface AuthenticationFlowNS {
         secondaryActionButtonText: string;
         title: string;
         warningMessage: string;
+    };
+    updateConfirmationModal: {
+        errorMessage: string;
+        errorTitle: string;
+        primaryActionButtonText: string;
+        secondaryActionButtonText: string;
+        warningMessage: string;
+        warningTitle: string;
     };
     steps: {
         controls: {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020-2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2020-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -50,9 +50,11 @@ import { Divider, Grid } from "semantic-ui-react";
 import { ApplicationManagementConstants } from "../../constants/application-management";
 import SAMLWebApplicationTemplate from
     "../../data/application-templates/templates/saml-web-application/saml-web-application.json";
+import { useApiAuthCompatibility } from "../../hooks/use-api-auth-compatibility";
 import {
     AdvancedConfigurationsInterface,
-    ApplicationTemplateListItemInterface
+    ApplicationTemplateListItemInterface,
+    AuthenticationSequenceInterface
 } from "../../models/application";
 import "./advanced-configurations-form.scss";
 
@@ -60,7 +62,18 @@ import "./advanced-configurations-form.scss";
  *  Advanced Configurations for the Application.
  */
 interface AdvancedConfigurationsFormPropsInterface extends TestableComponentInterface, IdentifiableComponentInterface {
+
+    /**
+     * Currently configured authentication sequence for the application.
+     */
+    authenticationSequence: AuthenticationSequenceInterface;
+    /**
+     * Current advanced configuration values.
+     */
     config: AdvancedConfigurationsInterface;
+    /**
+     * Callback for form submission.
+     */
     onSubmit: (values: any) => void;
     /**
      * Make the form read only.
@@ -93,6 +106,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
 ): ReactElement => {
 
     const {
+        authenticationSequence,
         config,
         onSubmit,
         readOnly,
@@ -112,12 +126,16 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
         ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_NATIVE_AUTHENTICATION"));
     const isTrustedAppsFeatureEnabled: boolean = isFeatureEnabled(featureConfig?.applications,
         ApplicationManagementConstants.FEATURE_DICTIONARY.get("TRUSTED_APPS"));
-
     const formRef: MutableRefObject<FormPropsInterface> = useRef<FormPropsInterface>(null);
 
     const [ isEnableAPIBasedAuthentication, setIsEnableAPIBasedAuthentication ] = useState<boolean>(
         config?.enableAPIBasedAuthentication
     );
+
+    const {
+        hasNonApiAuthenticators,
+        isAPIBasedAuthCompatibilityLoading
+    } = useApiAuthCompatibility(authenticationSequence, isEnableAPIBasedAuthentication);
     const [ isEnableClientAttestation, setIsEnableClientAttestation ] = useState<boolean>(
         config?.attestationMetaData?.enableClientAttestation
     );
@@ -462,6 +480,23 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                                         />
                                     </Grid.Column>
                                 </Grid.Row>
+                                {
+                                    hasNonApiAuthenticators &&
+                                    !isAPIBasedAuthCompatibilityLoading &&
+                                    isEnableAPIBasedAuthentication && (
+                                        <Grid.Row>
+                                            <Alert
+                                                severity="warning"
+                                                className="mb-3"
+                                                data-componentid={ `${ componentId }-api-auth-compatibility-warning` }
+                                            >
+                                                { t("applications:forms.advancedConfig.sections" +
+                                                    ".applicationNativeAuthentication.alerts" +
+                                                    ".apiAuthCompatibilityWarning") }
+                                            </Alert>
+                                        </Grid.Row>
+                                    )
+                                }
                             </Grid>
                         )
                     }

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -51,7 +51,8 @@ import React, {
     SyntheticEvent,
     useEffect,
     useMemo,
-    useRef
+    useRef,
+    useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import { Handle, Node, Position } from "reactflow";
@@ -194,9 +195,13 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
 
     const { t } = useTranslation();
 
-    const { updateVisualEditorFlowNodeMeta } = useAuthenticationFlow();
+    const { applicationMetaData, updateVisualEditorFlowNodeMeta } = useAuthenticationFlow();
+    const isAPIBasedAuthEnabled: boolean =
+        applicationMetaData?.advancedConfigurations?.enableAPIBasedAuthentication ?? false;
 
     const ref: MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
+
+    const [ dismissedWarnings, setDismissedWarnings ] = useState<Set<string>>(new Set());
 
     const authenticators: GenericAuthenticatorInterface[] = Object.values(
         classifiedAuthenticators
@@ -206,8 +211,7 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
      * No need to show Basic Auth, Identifier first, Backup Code authenticator .etc, as a Sign In option button.
      */
     const getAuthenticatorsToNotShowAsOptions: string[] = useMemo(
-        () => [ LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BACKUP_CODE_AUTHENTICATOR_NAME ],
-        []
+        () => [ LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BACKUP_CODE_AUTHENTICATOR_NAME ], []
     );
 
     /**
@@ -304,35 +308,60 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
             return null;
         }
 
+        const valid: boolean = !isAPIBasedAuthEnabled ||
+            authenticator.defaultAuthenticator.tags?.includes("APIAuth");
+
+        const signInButton: ReactElement = (
+            <Button
+                startIcon={ <img className="oxygen-sign-in-option-image" src={ authenticator.image } /> }
+                variant="contained"
+                className="oxygen-sign-in-option"
+                type="button"
+                fullWidth
+            >
+                {
+                    authenticator.displayName.startsWith("Sign In With")
+                        ? authenticator.displayName
+                        : t("authenticationFlow:options.displayName",
+                            { displayName: authenticator.displayName })
+                }
+            </Button>
+        );
+
         return (
-            <div className="oxygen-sign-in-option with-cancel-button">
+            <div
+                className={ `oxygen-sign-in-option with-cancel-button${ !valid ? " invalid" : ""}` }
+            >
                 <Tooltip title={ t("authenticationFlow:options.controls.remove") }>
                     <IconButton
                         size="small"
                         onClick={ (e: MouseEvent<HTMLButtonElement>) => {
+                            setDismissedWarnings((prev: Set<string>) => {
+                                const newSet: Set<string> = new Set(prev);
+
+                                newSet.delete(authenticator.name);
+
+                                return newSet;
+                            });
                             onSignInOptionRemove(e, {
                                 stepIndex,
                                 toRemove: authenticator?.defaultAuthenticator?.name
                             });
                         } }
                         className="remove-button"
+                        sx={ !valid
+                            ? { border: "1px solid var(--oxygen-palette-warning-light) !important" }
+                            : {}
+                        }
                     >
                         <CrossIcon />
                     </IconButton>
                 </Tooltip>
-                <Button
-                    startIcon={ <img className="oxygen-sign-in-option-image" src={ authenticator.image } /> }
-                    variant="contained"
-                    className="oxygen-sign-in-option"
-                    type="button"
-                    fullWidth
-                >
-                    {
-                        authenticator.displayName.startsWith("Sign In With")
-                            ? authenticator.displayName
-                            : t("authenticationFlow:options.displayName", { displayName: authenticator.displayName })
-                    }
-                </Button>
+                { !valid && !dismissedWarnings.has(authenticator.name) ? (
+                    <span>{ signInButton }</span>
+                ) : (
+                    signInButton
+                ) }
             </div>
         );
     };
@@ -536,10 +565,35 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
         return [ shouldShowSubjectIdentifierCheck, shouldShowBackupCodesEnableCheck, isBackupCodesEnabled ];
     }, [ authenticationSequence ]);
 
+    /**
+     * Check if there are any active (non-dismissed) warnings for unsupported authenticators.
+     * Only relevant when API-based authentication is enabled.
+     */
+    const hasActiveWarnings: boolean = useMemo(() => {
+        // No warnings if API-based auth is not enabled
+        if (!isAPIBasedAuthEnabled) {
+            return false;
+        }
+
+        return authenticationSequence?.steps?.[stepIndex]?.options?.some((option: AuthenticatorInterface) => {
+            const authenticator: GenericAuthenticatorInterface = authenticators?.find(
+                (item: GenericAuthenticatorInterface) =>
+                    item.defaultAuthenticator.name === option.authenticator || item.idp === option.idp
+            );
+
+            if (!authenticator) return false;
+
+            const isUnsupported: boolean = !authenticator.defaultAuthenticator.tags?.includes("APIAuth");
+
+            return isUnsupported && !dismissedWarnings.has(authenticator.name);
+        }) ?? false;
+    }, [ authenticationSequence, stepIndex, authenticators, dismissedWarnings, isAPIBasedAuthEnabled ]);
+
     return (
         <div
             ref={ ref }
             className="sign-in-box-node"
+            style={ hasActiveWarnings ? { zIndex: 1000 } : undefined }
             data-componentid={ `${componentId}-step-${stepIndex}` }
         >
             <div className="step-id">
