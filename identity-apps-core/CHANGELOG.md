@@ -1,5 +1,11 @@
 # @wso2is/identity-apps-core
 
+## 3.3.35
+
+### Patch Changes
+
+- [#9582](https://github.com/wso2/identity-apps/pull/9582) [`233fa5ab52c4248de32a0a6344fd53803fcdcb6a`](https://github.com/wso2/identity-apps/commit/233fa5ab52c4248de32a0a6344fd53803fcdcb6a) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Add HTML attribute encoding for query parameters
+
 ## 3.3.34
 
 ### Patch Changes
