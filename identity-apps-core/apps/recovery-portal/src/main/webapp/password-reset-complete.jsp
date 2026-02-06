@@ -143,8 +143,8 @@
     String applicationAccessURLWithoutEncoding = null;
     if (StringUtils.isNotBlank(applicationName)) {
         try {
-            applicationAccessURLWithoutEncoding = applicationDataRetrieval.getApplicationAccessURL(tenantDomain,
-                    applicationName);
+            applicationAccessURLWithoutEncoding = StringUtils.trim(applicationDataRetrieval.getApplicationAccessURL(tenantDomain,
+                    applicationName));
             applicationAccessURLWithoutEncoding = IdentityManagementEndpointUtil.replaceUserTenantHintPlaceholder(
                     applicationAccessURLWithoutEncoding, userTenantDomain);
             applicationAccessURLWithoutEncoding = IdentityManagementEndpointUtil.getOrganizationIdHintReplacedURL(
@@ -266,9 +266,11 @@
         && callback.contains(MY_ACCOUNT_APP_NAME.toLowerCase().replaceAll("\\s+", "")))) {
 
         if (StringUtils.isBlank(applicationAccessURLWithoutEncoding)) {
-            applicationAccessURLWithoutEncoding = IdentityManagementEndpointUtil.getUserPortalUrl(
+            applicationAccessURLWithoutEncoding = StringUtils.trim(IdentityManagementEndpointUtil.getUserPortalUrl(
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL),
-                tenantDomain);
+                tenantDomain
+            )
+                );
         }
 	}
 
@@ -278,9 +280,9 @@
 <%!
     private boolean isUserPortalUrl(String callback, String tenantDomain, ServletContext application) {
 
-        String userPortalUrl = IdentityManagementEndpointUtil.getUserPortalUrl(
+        String userPortalUrl = StringUtils.trim(IdentityManagementEndpointUtil.getUserPortalUrl(
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL),
-                tenantDomain);
+                tenantDomain));
         return StringUtils.equals(callback, userPortalUrl);
     }
 
