@@ -107,6 +107,14 @@ export const verifiableCredentials: VerifiableCredentialsNS = {
             identifier: {
                 label: "Identifier"
             },
+            format: {
+                label: "Credential Format",
+                placeholder: "Select a credential format",
+                options: {
+                    vcSdJwt: "vc+sd-jwt",
+                    jwtVcJson: "jwt_vc_json"
+                }
+            },
             expiresIn: {
                 label: "Validity Period",
                 placeholder: "Enter validity period in seconds",

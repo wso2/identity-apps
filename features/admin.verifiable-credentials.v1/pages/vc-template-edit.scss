@@ -16,15 +16,6 @@
  * under the License.
  */
 
-.form-label {
-    display: block;
-    margin-bottom: 8px;
-
-    .required-indicator {
-        color: #db2828;
-        margin-left: 4px;
-    }
-}
 
 .vc-claims-dropdown {
     margin-top: 0 !important;
@@ -38,9 +29,5 @@
     }
     .MuiInputBase-root {
         margin-top: 0 !important;
-    }
-
-    .MuiFormLabel-root {
-        font-size: .92857143em !important;
     }
 }

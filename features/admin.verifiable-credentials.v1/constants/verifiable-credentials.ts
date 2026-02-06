@@ -35,7 +35,7 @@ export class VerifiableCredentialsConstants {
      */
     public static readonly CREDENTIAL_FORMATS: Record<string, string> = {
         JWT_VC_JSON: "jwt_vc_json",
-        LDP_VC: "ldp_vc"
+        VC_SD_JWT: "vc+sd-jwt"
     };
 
     /**

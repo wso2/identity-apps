@@ -163,11 +163,53 @@ export default function AddVCTemplateWizard({
      * @returns Error message if invalid, undefined if valid.
      */
     const validateIdentifier = (value: string): string | undefined => {
-        if (value && value.match(/\s/) !== null) {
+        if (!value) {
+            return t("common:required");
+        }
+
+        if (value.match(/\s/) !== null) {
             return t("verifiableCredentials:wizard.form.identifier.validation");
         }
 
         return undefined;
+    };
+
+    /**
+     * Validates the display name field.
+     *
+     * @param value - Display name value.
+     * @returns Error message if invalid, undefined if valid.
+     */
+    const validateDisplayName = (value: string): string | undefined => {
+        if (!value) {
+            return t("common:required");
+        }
+
+        return undefined;
+    };
+
+    /**
+     * Validates the form fields.
+     *
+     * @param values - Form values to validate.
+     * @returns A partial object containing validation errors.
+     */
+    const validateForm = (values: VCTemplateFormValues): Partial<VCTemplateFormValues> => {
+        const errors: Partial<VCTemplateFormValues> = {};
+
+        const identifierError: string | undefined = validateIdentifier(values?.identifier);
+
+        if (identifierError) {
+            errors.identifier = identifierError;
+        }
+
+        const displayNameError: string | undefined = validateDisplayName(values?.displayName);
+
+        if (displayNameError) {
+            errors.displayName = displayNameError;
+        }
+
+        return errors;
     };
 
     /**
@@ -176,7 +218,7 @@ export default function AddVCTemplateWizard({
      * @param values - Form values.
      */
     const handleFormSubmit = (values: VCTemplateFormValues): void => {
-        if (!values?.identifier) {
+        if (!values?.identifier || !values?.displayName) {
             return;
         }
 
@@ -190,7 +232,7 @@ export default function AddVCTemplateWizard({
 
         const templateData: VCTemplateCreationModel = {
             claims: selectedClaims.map((claim: ExternalClaim) => claim.claimURI),
-            displayName: values.displayName || values.identifier,
+            displayName: values.displayName,
             expiresIn: 31536000,
             format: "jwt_vc_json",
             identifier: values.identifier
@@ -243,6 +285,7 @@ export default function AddVCTemplateWizard({
             <Modal.Content>
                 <FinalForm
                     onSubmit={ handleFormSubmit }
+                    validate={ validateForm }
                     render={ ({ handleSubmit }: FormRenderProps) => {
                         return (
                             <form id="addVCTemplateForm" onSubmit={ handleSubmit }>
@@ -251,19 +294,28 @@ export default function AddVCTemplateWizard({
                                     label={ t("verifiableCredentials:wizard.form.identifier.label") }
                                     placeholder={ t("verifiableCredentials:wizard.form.identifier.placeholder") }
                                     required={ true }
-                                    autoComplete="new-password"
+                                    helperText={
+                                        (<Hint className="hint" compact>
+                                            { t("verifiableCredentials:wizard.form.identifier.hint") }
+                                        </Hint>)
+                                    }
                                     component={ TextFieldAdapter }
-                                    helperText={ t("verifiableCredentials:wizard.form.identifier.hint") }
+                                    maxLength={ 100 }
+                                    minLength={ 0 }
                                 />
                                 <FinalFormField
-                                    label={ t("verifiableCredentials:wizard.form.displayName.label") }
                                     name="displayName"
+                                    label={ t("verifiableCredentials:wizard.form.displayName.label") }
                                     placeholder={ t("verifiableCredentials:wizard.form.displayName.placeholder") }
                                     required={ true }
-                                    className="mt-3"
-                                    autoComplete="new-password"
+                                    helperText={
+                                        (<Hint className="hint" compact>
+                                            { t("verifiableCredentials:wizard.form.displayName.hint") }
+                                        </Hint>)
+                                    }
                                     component={ TextFieldAdapter }
-                                    helperText={ t("verifiableCredentials:wizard.form.displayName.hint") }
+                                    maxLength={ 100 }
+                                    minLength={ 0 }
                                 />
                                 <div className="vc-wizard-attributes-section">
                                     <label className="form-label">

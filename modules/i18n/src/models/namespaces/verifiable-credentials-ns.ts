@@ -98,6 +98,14 @@ export interface VerifiableCredentialsNS {
             identifier: {
                 label: string;
             };
+            format: {
+                label: string;
+                placeholder: string;
+                options: {
+                    vcSdJwt: string;
+                    jwtVcJson: string;
+                };
+            };
             expiresIn: {
                 label: string;
                 placeholder: string;
