@@ -25,7 +25,6 @@ import { FeatureStatus, useCheckFeatureStatus } from "@wso2is/access-control";
 import { getProfileInformation } from "@wso2is/admin.authentication.v1/store";
 import Header from "@wso2is/admin.core.v1/components/header";
 import { ProtectedRoute } from "@wso2is/admin.core.v1/components/protected-route";
-import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
@@ -34,6 +33,7 @@ import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reduce
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
 import { CommonUtils as ConsoleCommonUtils } from "@wso2is/admin.core.v1/utils/common-utils";
+import { createBrokenPageFallback, createRouteErrorHandler } from "@wso2is/admin.core.v1/utils/error-boundary-utils";
 import { RouteUtils } from "@wso2is/admin.core.v1/utils/route-utils";
 import { applicationConfig } from "@wso2is/admin.extensions.v1";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
@@ -57,10 +57,8 @@ import { RouteUtils as CommonRouteUtils, CommonUtils } from "@wso2is/core/utils"
 import {
     Alert,
     ContentLoader,
-    EmptyPlaceholder,
     ErrorBoundary,
-    GenericIcon,
-    LinkButton
+    GenericIcon
 } from "@wso2is/react-components";
 import isEmpty from "lodash-es/isEmpty";
 import kebabCase from "lodash-es/kebabCase";
@@ -199,6 +197,11 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
         setPreferences({ leftNavbarCollapsed: !leftNavbarCollapsed });
     };
 
+    const handleRouteChunkError: ((_error: Error, _errorInfo: React.ErrorInfo) => void) =
+        createRouteErrorHandler(config.deployment.appHomePath);
+
+    const brokenPageFallback: ReactNode = createBrokenPageFallback(t);
+
     /**
      * Conditionally renders a route. If a route has defined a Redirect to
      * URL, it will be directed to the specified one. If the route is stated
@@ -221,11 +224,22 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
         ) : (
             <Route
                 path={ route.path }
-                render={ (renderProps: RouteComponentProps): ReactNode =>
-                    route.component ? (
-                        <route.component { ...renderProps } />
-                    ) : null
-                }
+                render={ (renderProps: RouteComponentProps): ReactNode => {
+                    if (!route.component) {
+                        return null;
+                    }
+
+                    return (
+                        <ErrorBoundary
+                            key={ renderProps.location.pathname }
+                            onChunkLoadError={ AppUtils.onChunkLoadError }
+                            handleError={ handleRouteChunkError }
+                            fallback={ brokenPageFallback }
+                        >
+                            <route.component { ...renderProps } />
+                        </ErrorBoundary>
+                    );
+                } }
                 key={ key }
                 exact={ route.exact }
             />
@@ -468,37 +482,8 @@ const DashboardLayout: FunctionComponent<RouteComponentProps> = (
             >
                 <ErrorBoundary
                     onChunkLoadError={ AppUtils.onChunkLoadError }
-                    handleError={ (_error: Error, _errorInfo: React.ErrorInfo) => {
-                        sessionStorage.setItem("auth_callback_url_console", config.deployment.appHomePath);
-                    } }
-                    fallback={
-                        (<EmptyPlaceholder
-                            action={
-                                (<LinkButton
-                                    onClick={ () => CommonUtils.refreshPage() }
-                                >
-                                    { t(
-                                        "console:common.placeholders.brokenPage.action"
-                                    ) }
-                                </LinkButton>)
-                            }
-                            image={
-                                getEmptyPlaceholderIllustrations().brokenPage
-                            }
-                            imageSize="tiny"
-                            subtitle={ [
-                                t(
-                                    "console:common.placeholders.brokenPage.subtitles.0"
-                                ),
-                                t(
-                                    "console:common.placeholders.brokenPage.subtitles.1"
-                                )
-                            ] }
-                            title={ t(
-                                "console:common.placeholders.brokenPage.title"
-                            ) }
-                        />)
-                    }
+                    handleError={ handleRouteChunkError }
+                    fallback={ brokenPageFallback }
                 >
                     <Suspense fallback={ <ContentLoader dimmer={ false } /> }>
                         {
