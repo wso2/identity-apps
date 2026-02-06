@@ -230,6 +230,7 @@ export const applicationConfig: ApplicationConfig = {
                     || application?.templateId === OIDCWebAppTemplate?.id
                     || application?.templateId === SinglePageAppTemplate?.id
                     || application?.templateId === ApplicationManagementConstants.M2M_APP_TEMPLATE_ID
+                    || application?.templateId === ApplicationTemplateIdTypes.VC_CLIENT_APPLICATION
                 )
                 && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
             ) {
@@ -244,9 +245,14 @@ export const applicationConfig: ApplicationConfig = {
                             ? I18n.instance.t(
                                 "extensions:develop.applications.edit.sections.resourceAuthorization.title"
                             )
-                            : I18n.instance.t(
-                                "extensions:develop.applications.edit.sections.apiAuthorization.title"
-                            ),
+                            : (application?.originalTemplateId
+                                === ApplicationTemplateIdTypes.VC_CLIENT_APPLICATION)
+                                ? I18n.instance.t(
+                                    "extensions:develop.applications.edit.sections.resourceAuthorization.title"
+                                )
+                                : I18n.instance.t(
+                                    "extensions:develop.applications.edit.sections.apiAuthorization.title"
+                                ),
                         render: () => (
                             <ResourceTab.Pane controlledSegmentation>
                                 <APIAuthorization
@@ -269,7 +275,8 @@ export const applicationConfig: ApplicationConfig = {
                     || application?.templateId === MobileAppTemplate?.id
                     || application?.templateId === OIDCWebAppTemplate?.id
                     || application?.templateId === SinglePageAppTemplate?.id
-                    || application?.templateId === SamlWebAppTemplate?.id)
+                    || application?.templateId === SamlWebAppTemplate?.id
+                    || application?.templateId === ApplicationTemplateIdTypes.VC_CLIENT_APPLICATION)
                 )
                 && application.name !== ApplicationManagementConstants.MY_ACCOUNT_APP_NAME
             ) {
@@ -494,6 +501,10 @@ export const applicationConfig: ApplicationConfig = {
             ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
             ApplicationManagementConstants.PASSWORD,
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
+        ],
+        [ "vc-client-application" ]: [
+            ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+            ApplicationManagementConstants.REFRESH_TOKEN_GRANT
         ]
     }),
     hiddenGrantTypes: [ ApplicationManagementConstants.ACCOUNT_SWITCH_GRANT ],
