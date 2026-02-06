@@ -250,7 +250,7 @@ export class RouteUtils {
      * @returns
      */
     public static filterOrganizationEnabledRoutes(routes: RouteInterface[]): RouteInterface[] {
-        return routes.filter((route: RouteInterface) => AppConstants.ORGANIZATION_ENABLED_ROUTES.includes(route.id));
+        return routes.filter((route: RouteInterface) => route.id in AppConstants.ORGANIZATION_ENABLED_ROUTES);
     }
 
     public static filterOutOrganizationOnlyRoutes(routes: RouteInterface[]): RouteInterface[] {
@@ -274,6 +274,13 @@ export class RouteUtils {
             id: "userAttributesAndStores",
             name: "User Attributes & Stores",
             order: 2
+        };
+
+        const workflows: Omit<RouteInterface, "showOnSidePanel"> = {
+            icon: UserFlowIcon,
+            id: "workflows",
+            name: "Workflows",
+            order: 3
         };
 
         const resourceServers: Omit<RouteInterface, "showOnSidePanel"> = {
@@ -309,11 +316,6 @@ export class RouteUtils {
         const manage: NavCategory = {
             id: "manage",
             order: 2
-        };
-
-        const workflows: NavCategory = {
-            id: "workflows",
-            order: 3
         };
 
         const organizations: NavCategory = {
@@ -404,8 +406,17 @@ export class RouteUtils {
             },
             {
                 category: workflows,
-                id: "workflows",
+                id: "approvalWorkflows",
+                order: 8,
+                parent: workflows,
                 selected: history.location.pathname.includes("/workflows")
+            },
+            {
+                category: workflows,
+                id: "workflowInstances",
+                order: 9,
+                parent: workflows,
+                selected: history.location.pathname.includes("/workflow-requests")
             },
             {
                 category: manage,
@@ -492,7 +503,7 @@ export class RouteUtils {
             {
                 category: preferences,
                 id: "flows",
-                selected: history.location.pathname.includes("flows")
+                selected: history.location.pathname.includes("/flows")
             },
             {
                 category: preferences,
@@ -563,7 +574,7 @@ export class RouteUtils {
             },
             {
                 category: extensions,
-                id: "eventPublishing",
+                id: "events",
                 order: 2
             }
         ];
