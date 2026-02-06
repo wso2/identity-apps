@@ -17,16 +17,56 @@
  */
 
 import { Theme, styled } from "@mui/material/styles";
-import Avatar from "@oxygen-ui/react/Avatar";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
-import Divider from "@oxygen-ui/react/Divider";
+import Paper from "@oxygen-ui/react/Paper";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
+import { getConnectionIcons } from "@wso2is/admin.connections.v1/configs/ui";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, memo, useMemo } from "react";
 import { OnboardingComponentIds } from "../../constants";
 import { OnboardingBrandingConfig, SignInOptionsConfig } from "../../models";
+
+/**
+ * Auth method display configuration interface.
+ */
+interface AuthMethodDisplayConfig {
+    /** Icon - can be string path or React component */
+    icon: any;
+    /** Display label */
+    label: string;
+}
+
+/**
+ * Get auth method display configuration with proper icons.
+ */
+const getAuthMethodConfig = (): Record<string, AuthMethodDisplayConfig> => ({
+    emailOtp: {
+        icon: getConnectionIcons().emailOTP,
+        label: "Email OTP"
+    },
+    magicLink: {
+        icon: getConnectionIcons().magicLink,
+        label: "Magic Link"
+    },
+    passkey: {
+        icon: getConnectionIcons().fido,
+        label: "Passkey"
+    },
+    password: {
+        icon: getConnectionIcons().basic,
+        label: "Password"
+    },
+    pushNotification: {
+        icon: getConnectionIcons().push,
+        label: "Push Notification"
+    },
+    totp: {
+        icon: getConnectionIcons().totp,
+        label: "Authenticator App"
+    }
+});
 
 /**
  * Props interface for LoginBoxPreview component.
@@ -51,56 +91,76 @@ const PreviewWrapper = styled(Box)({
 });
 
 /**
- * Main preview container styled as a login card.
+ * Main preview container for the two-step flow.
  */
-const PreviewContainer = styled(Box)<{ scale: number }>(({ theme, scale }) => ({
-    backgroundColor: theme.palette.background.paper,
-    borderRadius: theme.shape.borderRadius * 2,
-    boxShadow: theme.shadows[3],
-    maxWidth: 360,
-    padding: theme.spacing(4),
+const PreviewContainer = styled(Box)<{ scale: number }>(({ scale }) => ({
+    display: "flex",
+    flexDirection: "column",
+    maxWidth: 320,
     transform: `scale(${scale})`,
     transformOrigin: "top center",
     width: "100%"
 }));
 
 /**
- * Logo container.
+ * Step container with relative positioning for label.
  */
-const LogoContainer = styled(Box)(({ theme }: { theme: Theme }) => ({
-    alignItems: "center",
-    display: "flex",
-    justifyContent: "center",
-    marginBottom: theme.spacing(3)
-}));
+const StepContainer = styled(Box)({
+    position: "relative"
+});
 
 /**
- * Title text.
+ * Step label badge.
  */
-const Title = styled(Typography)(({ theme }: { theme: Theme }) => ({
-    color: theme.palette.text.primary,
-    fontSize: "1.25rem",
+const StepLabel = styled(Typography)(({ theme }: { theme: Theme }) => ({
+    backgroundColor: theme.palette.grey[200],
+    borderRadius: theme.shape.borderRadius,
+    color: theme.palette.text.secondary,
+    fontSize: "0.625rem",
     fontWeight: 600,
-    marginBottom: theme.spacing(3),
-    textAlign: "center"
+    left: theme.spacing(1.5),
+    padding: theme.spacing(0.25, 0.75),
+    position: "absolute",
+    top: -8,
+    zIndex: 1
 }));
 
 /**
- * Form container.
+ * Step box (card) styling.
  */
-const FormContainer = styled(Box)(({ theme }: { theme: Theme }) => ({
+const StepBox = styled(Paper)(({ theme }: { theme: Theme }) => ({
+    borderRadius: theme.shape.borderRadius * 1.5,
     display: "flex",
     flexDirection: "column",
-    gap: theme.spacing(2)
+    gap: theme.spacing(1.5),
+    padding: theme.spacing(2.5, 2)
 }));
 
 /**
- * Styled text field to look like a disabled preview.
+ * Connector between steps.
+ */
+const StepConnector = styled(Box)(({ theme }: { theme: Theme }) => ({
+    alignItems: "center",
+    display: "flex",
+    height: 24,
+    justifyContent: "center",
+    "& .connector-line": {
+        backgroundColor: theme.palette.divider,
+        height: "100%",
+        width: 2
+    }
+}));
+
+/**
+ * Styled text field for preview.
  */
 const PreviewTextField = styled(TextField)(({ theme }: { theme: Theme }) => ({
     "& .MuiInputBase-root": {
-        backgroundColor: theme.palette.action.hover,
+        fontSize: "0.75rem",
         pointerEvents: "none"
+    },
+    "& .MuiInputLabel-root": {
+        fontSize: "0.75rem"
     },
     "& .MuiOutlinedInput-notchedOutline": {
         borderColor: theme.palette.divider
@@ -113,15 +173,39 @@ const PreviewTextField = styled(TextField)(({ theme }: { theme: Theme }) => ({
 const PrimaryButtonStyled = styled(Button)<{ customcolor: string }>(({ customcolor }) => ({
     backgroundColor: customcolor,
     color: "#ffffff",
+    fontSize: "0.75rem",
     fontWeight: 500,
-    padding: "10px 16px",
+    padding: "8px 16px",
     textTransform: "none",
-    "&:hover": {
-        backgroundColor: customcolor,
-        opacity: 0.9
+    pointerEvents: "none"
+}));
+
+/**
+ * Sign-in option button.
+ */
+const SignInOptionButton = styled(Button)(({ theme }: { theme: Theme }) => ({
+    backgroundColor: theme.palette.background.paper,
+    border: `1px solid ${theme.palette.divider}`,
+    borderRadius: theme.shape.borderRadius,
+    color: theme.palette.text.primary,
+    fontSize: "0.6875rem",
+    justifyContent: "flex-start",
+    padding: theme.spacing(0.75, 1.5),
+    textTransform: "none",
+    pointerEvents: "none",
+    "& .MuiButton-startIcon": {
+        marginRight: theme.spacing(1)
     }
 }));
 
+/**
+ * Icon container for sign-in option buttons.
+ */
+const IconImage = styled("img")({
+    height: 16,
+    objectFit: "contain",
+    width: 16
+});
 
 /**
  * Get the identifier field label based on selected options.
@@ -164,25 +248,8 @@ const DEFAULT_BRANDING: OnboardingBrandingConfig = {
 };
 
 /**
- * Get a summary of selected login methods.
- */
-const getLoginMethodsSummary = (loginMethods: SignInOptionsConfig["loginMethods"]): string[] => {
-    const methods: string[] = [];
-
-    if (loginMethods.password) methods.push("Password");
-    if (loginMethods.passkey) methods.push("Passkey");
-    if (loginMethods.magicLink) methods.push("Magic Link");
-    if (loginMethods.emailOtp) methods.push("Email OTP");
-    if (loginMethods.totp) methods.push("TOTP");
-    if (loginMethods.pushNotification) methods.push("Push Notification");
-
-    return methods;
-};
-
-/**
  * Login box preview component.
- * Displays a preview of the login experience based on selected options.
- *
+ * Displays a two-step preview of the Identifier First login flow.
  */
 const LoginBoxPreview: FunctionComponent<LoginBoxPreviewProps> = memo((
     props: LoginBoxPreviewProps
@@ -194,7 +261,7 @@ const LoginBoxPreview: FunctionComponent<LoginBoxPreviewProps> = memo((
         ["data-componentid"]: componentId = OnboardingComponentIds.LOGIN_BOX_PREVIEW
     } = props;
 
-    const { primaryColor, logoUrl } = brandingConfig;
+    const { primaryColor } = brandingConfig;
     const { identifiers, loginMethods } = signInOptions;
 
     const hasIdentifier: boolean = identifiers.username || identifiers.email || identifiers.mobile;
@@ -203,8 +270,8 @@ const LoginBoxPreview: FunctionComponent<LoginBoxPreviewProps> = memo((
         loginMethods.magicLink || loginMethods.emailOtp || loginMethods.totp ||
         loginMethods.pushNotification;
 
-    // Get non-password login methods for summary (shown as additional options when password is selected)
-    const hasOtherMethods: boolean = loginMethods.passkey || loginMethods.magicLink ||
+    // Non-password methods go to Step 2 as alternatives
+    const hasNonPasswordMethods: boolean = loginMethods.passkey || loginMethods.magicLink ||
         loginMethods.emailOtp || loginMethods.totp || loginMethods.pushNotification;
 
     const identifierLabel: string = useMemo(
@@ -212,147 +279,146 @@ const LoginBoxPreview: FunctionComponent<LoginBoxPreviewProps> = memo((
         [ signInOptions ]
     );
 
-    const loginMethodsList: string[] = useMemo(
-        () => getLoginMethodsSummary(loginMethods),
-        [ loginMethods ]
+    // Get auth method config for icons
+    const authMethodConfig: Record<string, AuthMethodDisplayConfig> = useMemo(
+        () => getAuthMethodConfig(),
+        []
     );
 
-    // Get non-password methods for the summary when password is selected
-    const otherMethodsList: string[] = useMemo(() => {
-        const methods: string[] = [];
-
-        if (loginMethods.passkey) methods.push("Passkey");
-        if (loginMethods.magicLink) methods.push("Magic Link");
-        if (loginMethods.emailOtp) methods.push("Email OTP");
-        if (loginMethods.totp) methods.push("TOTP");
-        if (loginMethods.pushNotification) methods.push("Push Notification");
-
-        return methods;
+    /**
+     * Get selected login methods.
+     */
+    const selectedMethods: string[] = useMemo(() => {
+        return Object.entries(loginMethods)
+            .filter(([ , enabled ]: [string, boolean]) => enabled)
+            .map(([ key ]: [string, boolean]) => key);
     }, [ loginMethods ]);
+
+    /**
+     * Render icon for a method - handles both string paths and React components.
+     */
+    const renderIcon = (icon: any): ReactElement | null => {
+        if (!icon) return null;
+
+        // If it's a string (image path), use img tag
+        if (typeof icon === "string") {
+            return <IconImage src={ icon } alt="" />;
+        }
+
+        // If it's a React component (SVG), render it
+        if (typeof icon === "function" || typeof icon === "object") {
+            const IconComponent = icon;
+
+            return (
+                <Box sx={ { display: "flex", height: 16, width: 16 } }>
+                    <IconComponent style={ { height: "100%", width: "100%" } } />
+                </Box>
+            );
+        }
+
+        return null;
+    };
 
     return (
         <PreviewWrapper data-componentid={ componentId }>
             <PreviewContainer scale={ scale }>
-                { logoUrl && (
-                    <LogoContainer>
-                        <Avatar
-                            alt="Logo"
-                            src={ logoUrl }
-                            sx={ {
-                                backgroundColor: primaryColor,
-                                height: 56,
-                                width: 56
-                            } }
-                        />
-                    </LogoContainer>
+                { /* Empty state */ }
+                { !hasIdentifier && !hasAnyLoginMethod && (
+                    <Typography
+                        color="text.secondary"
+                        sx={ { fontStyle: "italic", textAlign: "center" } }
+                    >
+                        Select sign-in options to preview
+                    </Typography>
                 ) }
 
-                <Title>Sign In</Title>
+                { /* Error states */ }
+                { hasIdentifier && !hasAnyLoginMethod && (
+                    <Typography
+                        color="error"
+                        sx={ { fontSize: "0.75rem", textAlign: "center" } }
+                    >
+                        Select at least one login method
+                    </Typography>
+                ) }
 
-                <FormContainer>
-                    { /* Identifier field */ }
-                    { hasIdentifier && (
-                        <PreviewTextField
-                            disabled
-                            fullWidth
-                            label={ identifierLabel }
-                            placeholder={ `Enter your ${identifierLabel.toLowerCase()}` }
-                            size="small"
-                            variant="outlined"
-                        />
-                    ) }
+                { !hasIdentifier && hasAnyLoginMethod && (
+                    <Typography
+                        color="error"
+                        sx={ { fontSize: "0.75rem", textAlign: "center" } }
+                    >
+                        Select at least one identifier
+                    </Typography>
+                ) }
 
-                    { /* Password field - only shown when password is selected */ }
-                    { hasIdentifier && hasPassword && (
-                        <PreviewTextField
-                            disabled
-                            fullWidth
-                            label="Password"
-                            placeholder="Enter your password"
-                            size="small"
-                            type="password"
-                            variant="outlined"
-                        />
-                    ) }
+                { /* Login flow preview */ }
+                { hasIdentifier && hasAnyLoginMethod && (
+                    <>
+                        { /* Step 1: Identifier + Password (if selected) */ }
+                        <StepContainer>
+                            { hasNonPasswordMethods && <StepLabel>Step 1</StepLabel> }
+                            <StepBox variant="outlined">
+                                <PreviewTextField
+                                    fullWidth
+                                    label={ identifierLabel }
+                                    size="small"
+                                    variant="outlined"
+                                />
+                                { hasPassword && (
+                                    <PreviewTextField
+                                        fullWidth
+                                        label="Password"
+                                        size="small"
+                                        type="password"
+                                        variant="outlined"
+                                    />
+                                ) }
+                                <PrimaryButtonStyled
+                                    customcolor={ primaryColor }
+                                    fullWidth
+                                    variant="contained"
+                                    sx={ { marginTop: 2 } }
+                                >
+                                    { hasPassword ? "Sign In" : "Continue" }
+                                </PrimaryButtonStyled>
+                            </StepBox>
+                        </StepContainer>
 
-                    { /* Primary action button */ }
-                    { hasIdentifier && hasAnyLoginMethod && (
-                        <PrimaryButtonStyled
-                            customcolor={ primaryColor }
-                            disabled
-                            fullWidth
-                            variant="contained"
-                        >
-                            { hasPassword ? "Sign In" : "Continue" }
-                        </PrimaryButtonStyled>
-                    ) }
+                        { /* Connector + Step 2: Only shown if non-password methods selected */ }
+                        { hasNonPasswordMethods && (
+                            <>
+                                <StepConnector>
+                                    <div className="connector-line" />
+                                </StepConnector>
 
-                    { /* Additional methods summary when password is selected */ }
-                    { hasPassword && hasOtherMethods && hasIdentifier && (
-                        <>
-                            <Divider sx={ { my: 1 } } />
-                            <Typography
-                                color="text.secondary"
-                                sx={ { fontSize: "0.75rem", textAlign: "center" } }
-                            >
-                                Additional sign-in options:
-                            </Typography>
-                            <Typography
-                                color="text.primary"
-                                sx={ { fontSize: "0.8125rem", fontWeight: 500, textAlign: "center" } }
-                            >
-                                { otherMethodsList.join(" • ") }
-                            </Typography>
-                        </>
-                    ) }
+                                <StepContainer>
+                                    <StepLabel>Step 2</StepLabel>
+                                    <StepBox variant="outlined">
+                                        { selectedMethods
+                                            .filter((methodKey: string) => methodKey !== "password")
+                                            .map((methodKey: string) => {
+                                                const config: AuthMethodDisplayConfig =
+                                                    authMethodConfig[methodKey];
 
-                    { /* Login methods summary for Identifier First flow (no password) */ }
-                    { !hasPassword && hasAnyLoginMethod && hasIdentifier && (
-                        <>
-                            <Divider sx={ { my: 1 } } />
-                            <Typography
-                                color="text.secondary"
-                                sx={ { fontSize: "0.75rem", textAlign: "center" } }
-                            >
-                                After identification, users can sign in with:
-                            </Typography>
-                            <Typography
-                                color="text.primary"
-                                sx={ { fontSize: "0.8125rem", fontWeight: 500, textAlign: "center" } }
-                            >
-                                { loginMethodsList.join(" • ") }
-                            </Typography>
-                        </>
-                    ) }
+                                                if (!config) return null;
 
-                    { /* Empty state */ }
-                    { !hasIdentifier && !hasAnyLoginMethod && (
-                        <Typography
-                            color="text.secondary"
-                            sx={ { fontStyle: "italic", textAlign: "center" } }
-                        >
-                            Select sign-in options to preview
-                        </Typography>
-                    ) }
-
-                    { hasIdentifier && !hasAnyLoginMethod && (
-                        <Typography
-                            color="error"
-                            sx={ { fontSize: "0.75rem", mt: 1, textAlign: "center" } }
-                        >
-                            Select at least one login method
-                        </Typography>
-                    ) }
-
-                    { !hasIdentifier && hasAnyLoginMethod && (
-                        <Typography
-                            color="error"
-                            sx={ { fontSize: "0.75rem", textAlign: "center" } }
-                        >
-                            Select at least one identifier
-                        </Typography>
-                    ) }
-                </FormContainer>
+                                                return (
+                                                    <SignInOptionButton
+                                                        fullWidth
+                                                        key={ methodKey }
+                                                        startIcon={ renderIcon(config.icon) }
+                                                        variant="outlined"
+                                                    >
+                                                        { config.label }
+                                                    </SignInOptionButton>
+                                                );
+                                            }) }
+                                    </StepBox>
+                                </StepContainer>
+                            </>
+                        ) }
+                    </>
+                ) }
             </PreviewContainer>
         </PreviewWrapper>
     );
