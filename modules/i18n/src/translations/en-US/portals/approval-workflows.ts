@@ -278,21 +278,23 @@ export const approvalWorkflows: approvalWorkflowsNS = {
             back: "Go back to approval workflows",
             description: "Follow the steps to create a new approval workflow.",
             ruleConditions: {
-                configureRuleButton: "Configure Rule",
                 configured: "Configured",
                 modal: {
                     subtitle: "This rule will be evaluated before sending to the approval",
                     title: "{{operation}}"
                 },
-                noRuleConfigured: {
-                    message: "The approval workflow will be triggered for all <0>{{operation}}</0> operations without any conditions.",
-                    title: "No rule is configured."
-                },
-                notConfigured: "Not Configured",
                 table: {
-                    actions: "",
                     operation: "Operation",
                     rules: "Rules"
+                },
+                engagement: {
+                    always: "Always",
+                    column: "Engagement",
+                    configured: "Conditional"
+                },
+                confirmClear: {
+                    message: "Are you sure you want to remove the configured rules for \"{{operation}}\"? This action cannot be undone.",
+                    title: "Remove Rule Configuration"
                 }
             },
             stepper: {
@@ -301,15 +303,11 @@ export const approvalWorkflows: approvalWorkflowsNS = {
                     title: "General Details"
                 },
                 step2: {
-                    description: "Select the operations that would trigger this approval workflow",
+                    description: "Select the operations that would trigger this approval workflow and configure rule conditions.",
                     hint: "This approval workflow will be triggered when any of the selected operations are initiated.",
                     title:  "Workflow Operation Details"
                 },
                 step3: {
-                    description: "Configure the rules conditions that will trigger an approval workflow for above selected operation",
-                    title:  "Rule Conditions"
-                },
-                step4: {
                     description: "Configure the approval steps of the workflow. Approval by any selected user or role member will complete each step.",
                     hint: "You can add multiple approval steps to the workflow. Each step can have different approvers. Approval by any selected user or role member will complete each step.",
                     title:  "Approval Step Details"

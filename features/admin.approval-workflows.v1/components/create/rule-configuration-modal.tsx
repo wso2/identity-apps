@@ -16,9 +16,6 @@
  * under the License.
  */
 
-import Alert from "@oxygen-ui/react/Alert";
-import AlertTitle from "@oxygen-ui/react/AlertTitle";
-import Button from "@oxygen-ui/react/Button";
 import useGetRulesMeta from "@wso2is/admin.rules.v1/api/use-get-rules-meta";
 import Rules from "@wso2is/admin.rules.v1/components/rules";
 import { useRulesContext } from "@wso2is/admin.rules.v1/hooks/use-rules-context";
@@ -26,9 +23,9 @@ import { ConditionExpressionMetaInterface } from "@wso2is/admin.rules.v1/models/
 import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { RulesProvider } from "@wso2is/admin.rules.v1/providers/rules-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Code, ContentLoader, Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
-import { Trans, useTranslation } from "react-i18next";
+import { ContentLoader, Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { Modal } from "semantic-ui-react";
 import { FLOW_TYPE, OPERATION_FIELD_MAPPING } from "../../constants/approval-workflow-constants";
 import { DropdownPropsInterface } from "../../models/ui";
@@ -60,8 +57,6 @@ interface RuleConfigurationModalPropsInterface extends IdentifiableComponentInte
  * Props interface for RuleConfigurationModalContent component.
  */
 interface RuleConfigurationModalContentPropsInterface {
-    operationName: string;
-    hasInitialRule: boolean;
     onSave: (rule: RuleWithoutIdInterface) => void;
     onClose: () => void;
     componentId: string;
@@ -69,45 +64,20 @@ interface RuleConfigurationModalContentPropsInterface {
 
 /**
  * Inner component that accesses RulesContext.
+ * Directly shows the rule editor without an intermediate "no rule configured" step.
+ * RulesProvider auto-creates a new rule when initialData is not provided.
  */
 const RuleConfigurationModalContent: FunctionComponent<RuleConfigurationModalContentPropsInterface> = (
     props: RuleConfigurationModalContentPropsInterface
 ): ReactElement => {
     const {
-        operationName,
-        hasInitialRule,
         onSave,
         onClose,
         componentId
     } = props;
 
     const { t } = useTranslation();
-    const { addNewRule, ruleInstance } = useRulesContext();
-
-    const [ isHasRule, setIsHasRule ] = useState<boolean>(hasInitialRule);
-    const [ wasRuleDeleted, setWasRuleDeleted ] = useState<boolean>(false);
-
-    /**
-     * Watch for ruleInstance changes to detect when rule is deleted.
-     */
-    useEffect(() => {
-        if (!ruleInstance) {
-            // If there was a rule before (either initial or user added one), it was deleted
-            if (isHasRule) {
-                setWasRuleDeleted(true);
-            }
-            setIsHasRule(false);
-        }
-    }, [ ruleInstance ]);
-
-    /**
-     * Add a new rule when user clicks configure button.
-     */
-    useEffect(() => {
-        if (isHasRule && !ruleInstance) {
-            addNewRule();
-        }
-    }, [ isHasRule ]);
+    const { ruleInstance } = useRulesContext();
 
     /**
      * Handles saving the configured rule.
@@ -116,7 +86,6 @@ const RuleConfigurationModalContent: FunctionComponent<RuleConfigurationModalCon
         if (ruleInstance) {
             onSave(ruleInstance as RuleWithoutIdInterface);
         } else {
-            // Save with null/empty rule if no rule configured
             onSave(null);
         }
     };
@@ -124,41 +93,10 @@ const RuleConfigurationModalContent: FunctionComponent<RuleConfigurationModalCon
     return (
         <>
             <Modal.Content scrolling className="rule-configuration-modal-content">
-                { isHasRule ? (
-                    <Rules
-                        data-componentid={ `${componentId}-rules` }
-                        disableLastRuleDelete={ false }
-                    />
-                ) : (
-                    <Alert
-                        className="no-rule-alert"
-                        icon={ false }
-                        data-componentid={ `${componentId}-no-rule-info-box` }
-                    >
-                        <AlertTitle
-                            className="alert-title"
-                            data-componentid={ `${componentId}-rule-info-box-title` }
-                        >
-                            { t("approvalWorkflows:pageLayout.create.ruleConditions.noRuleConfigured.title") }
-                        </AlertTitle>
-                        <Trans
-                            i18nKey="approvalWorkflows:pageLayout.create.ruleConditions.noRuleConfigured.message"
-                            values={ { operation: operationName } }
-                            components={ [ <Code key="operation">{ operationName }</Code> ] }
-                        />
-                        <div className="configure-rule-button-container">
-                            <Button
-                                onClick={ () => setIsHasRule(true) }
-                                variant="outlined"
-                                size="small"
-                                className="secondary-button"
-                                data-componentid={ `${componentId}-configure-rule-button` }
-                            >
-                                { t("approvalWorkflows:pageLayout.create.ruleConditions.configureRuleButton") }
-                            </Button>
-                        </div>
-                    </Alert>
-                ) }
+                <Rules
+                    data-componentid={ `${componentId}-rules` }
+                    disableLastRuleDelete={ false }
+                />
             </Modal.Content>
             <Modal.Actions>
                 <LinkButton
@@ -167,14 +105,12 @@ const RuleConfigurationModalContent: FunctionComponent<RuleConfigurationModalCon
                 >
                     { t("common:cancel") }
                 </LinkButton>
-                { (isHasRule || wasRuleDeleted) && (
-                    <PrimaryButton
-                        onClick={ handleSave }
-                        data-componentid={ `${componentId}-finish-button` }
-                    >
-                        { t("common:finish") }
-                    </PrimaryButton>
-                ) }
+                <PrimaryButton
+                    onClick={ handleSave }
+                    data-componentid={ `${componentId}-finish-button` }
+                >
+                    { t("common:finish") }
+                </PrimaryButton>
             </Modal.Actions>
         </>
     );
@@ -248,8 +184,6 @@ const RuleConfigurationModal: FunctionComponent<RuleConfigurationModalPropsInter
                     hidden={ {} }
                 >
                     <RuleConfigurationModalContent
-                        operationName={ operation.text }
-                        hasInitialRule={ !!(initialRule?.rules?.length > 0) }
                         onSave={ onSave }
                         onClose={ onClose }
                         componentId={ componentId }
