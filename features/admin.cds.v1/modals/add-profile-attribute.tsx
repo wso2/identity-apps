@@ -7,13 +7,13 @@ import {
 } from "@wso2is/react-components";
 import { TrashIcon } from "@oxygen-ui/react-icons";
 import { DynamicField, KeyValue } from "@wso2is/forms";
-import { Trait } from "../../api/traits";
+import { ProfileAttribute } from "../models/profile-attributes";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
 import { LinkButton } from "@wso2is/react-components/src/components/button/link-button";
-import { CDM_BASE_URL } from "../../models/constants";
+import { CDM_BASE_URL } from "../models/constants";
 import { url } from "inspector";
 
 interface AddTraitModalProps {
@@ -27,8 +27,7 @@ const VALUE_TYPE_OPTIONS = [
     { key: "integer", text: "Integer", value: "integer" },
     { key: "decimal", text: "Decimal", value: "decimal" },
     { key: "boolean", text: "Boolean", value: "boolean" },
-    { key: "complex", text: "Complex", value: "complex" },
-    { key: "options", text: "Options", value: "options" }
+    { key: "object", text: "Object", value: "complex" },
 ];
 
 export const AddTraitModal: FunctionComponent<AddTraitModalProps> = ({
@@ -38,7 +37,7 @@ export const AddTraitModal: FunctionComponent<AddTraitModalProps> = ({
 }) => {
     const dispatch = useDispatch();
 
-    const [trait, setTrait] = useState<Partial<Trait>>({
+    const [attribute, setAttribute] = useState<Partial<ProfileAttribute>>({
         attribute_name: "",
         value_type: "string",
         merge_strategy: "latest",
@@ -54,14 +53,14 @@ export const AddTraitModal: FunctionComponent<AddTraitModalProps> = ({
     const [canonicalValues, setCanonicalValues] = useState<KeyValue[]>([]);
 
     useEffect(() => {
-        if (trait.attribute_name && trait.value_type === "complex") {
+        if (attribute.attribute_name && attribute.value_type === "complex") {
             const prefix = trait.attribute_name + ".";
             axios
                 .get(`${CDM_BASE_URL}/profile-schema/traits?filter=attribute_name+co+traits.${prefix}`)
                 .then((res) => {
                     const data = res.data ?? [];
                     setSubAttributeOptions(
-                        data.map((attr: Trait) => ({
+                        data.map((attr: ProfileAttribute) => ({
                             key: attr.attribute_id,
                             text: attr.attribute_name.replace(/^traits\./, ""),
                             value: attr.attribute_name
@@ -72,17 +71,17 @@ export const AddTraitModal: FunctionComponent<AddTraitModalProps> = ({
         } else {
             setSubAttributeOptions([]);
         }
-    }, [trait.attribute_name, trait.value_type]);
+    }, [attribute.attribute_name, attribute.value_type]);
 
     useEffect(() => {
-        if (!trait.attribute_name?.trim()) {
+        if (!attribute.attribute_name?.trim()) {
             setIsValidName(null);
             return;
         }
 
         const timeoutId = setTimeout(() => {
             setIsCheckingName(true);
-            axios.get(`${CDM_BASE_URL}/profile-schema/traits?filter=attribute_name+eq+traits.${trait.attribute_name}`)
+            axios.get(`${CDM_BASE_URL}/profile-schema/traits?filter=attribute_name+eq+traits.${attribute.attribute_name}`)
                 .then(res => {
                     setIsValidName(res.data.length === 0);
                 })
@@ -91,7 +90,7 @@ export const AddTraitModal: FunctionComponent<AddTraitModalProps> = ({
         }, 400);
 
         return () => clearTimeout(timeoutId);
-    }, [trait.attribute_name]);
+    }, [attribute.attribute_name]);
 
     const handleSubmit = () => {
         const canonical_values = dataType === "options"
@@ -101,7 +100,7 @@ export const AddTraitModal: FunctionComponent<AddTraitModalProps> = ({
         const url = `${CDM_BASE_URL}/profile-schema/traits`;
         axios.post(url, [{
             ...trait,
-            attribute_name: `traits.${trait.attribute_name?.trim()}`,
+            attribute_name: `traits.${attribute.attribute_name?.trim()}`,
             value_type: dataType === "options" ? "string" : trait.value_type,
             sub_attributes: subAttributes,
             canonical_values
@@ -139,7 +138,7 @@ export const AddTraitModal: FunctionComponent<AddTraitModalProps> = ({
                     <Form.Input
                         label="Name"
                         value={trait.attribute_name}
-                        onChange={(e) => setTrait({ ...trait, attribute_name: e.target.value.trim() })}
+                        onChange={(e) => setAttribute({ ...attribute, attribute_name: e.target.value.trim() })}
                         error={isValidName === false}
                         required
                         placeholder="e.g. preferred_category"
@@ -161,9 +160,9 @@ export const AddTraitModal: FunctionComponent<AddTraitModalProps> = ({
                             const selected = data.value as string;
                             setDataType(selected);
                             if (selected === "complex") {
-                                setTrait({ ...trait, value_type: "complex" });
+                                setAttribute({ ...attribute, value_type: "complex" });
                             } else {
-                                setTrait({ ...trait, value_type: selected === "options" ? "string" : selected });
+                                setAttribute({ ...attribute, value_type: selected === "options" ? "string" : selected });
                             }
                             if (selected !== "complex") setSubAttributes([]);
                         }}
