@@ -30,7 +30,7 @@ import { Code, ContentLoader, Heading, LinkButton, PrimaryButton } from "@wso2is
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Modal } from "semantic-ui-react";
-import { OPERATION_FIELD_MAPPING } from "../../constants/approval-workflow-constants";
+import { FLOW_TYPE, OPERATION_FIELD_MAPPING } from "../../constants/approval-workflow-constants";
 import { DropdownPropsInterface } from "../../models/ui";
 import "./rule-configuration-modal.scss";
 
@@ -196,11 +196,11 @@ const RuleConfigurationModal: FunctionComponent<RuleConfigurationModalPropsInter
 
     const { t } = useTranslation();
 
-    // Fetch rules metadata for workflow rules flow
+    // Fetch rules metadata for approvalWorkflow flow
     const {
         data: rulesMetaData,
         isLoading: isRulesMetaLoading
-    } = useGetRulesMeta("workflowRules", true);
+    } = useGetRulesMeta(FLOW_TYPE, true);
 
     /**
      * Filter condition expressions metadata based on operation type.

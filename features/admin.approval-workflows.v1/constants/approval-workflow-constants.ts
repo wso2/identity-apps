@@ -55,6 +55,11 @@ export const ENTITY_TYPES: any = {
 export type EntityType = (typeof ENTITY_TYPES)[keyof typeof ENTITY_TYPES];
 
 /**
+ * Flow type
+ */
+export const FLOW_TYPE: string = "approvalWorkflow";
+
+/**
  * Workflow engine type
  */
 export const WORKFLOW_ENGINE: string = "WorkflowEngine";
@@ -66,24 +71,24 @@ export const WORKFLOW_ENGINE: string = "WorkflowEngine";
 export const OPERATION_FIELD_MAPPING: Record<string, string[]> = {
     ADD_USER: [
         "user.domain",
-        "requester.domain",
-        "requester.groups",
-        "requester.roles"
+        "initiator.domain",
+        "initiator.groups",
+        "initiator.roles"
     ],
     DELETE_USER: [
         "user.domain",
         "user.groups",
         "user.roles",
-        "requester.domain",
-        "requester.groups",
-        "requester.roles"
+        "initiator.domain",
+        "initiator.groups",
+        "initiator.roles"
     ],
     ADD_ROLE: [
         "role.audience",
         "role.permissions",
-        "requester.domain",
-        "requester.groups",
-        "requester.roles"
+        "initiator.domain",
+        "initiator.groups",
+        "initiator.roles"
     ],
     UPDATE_ROLES_OF_USERS: [
         "role.name",
@@ -93,9 +98,9 @@ export const OPERATION_FIELD_MAPPING: Record<string, string[]> = {
         "user.domain",
         "user.groups",
         "user.roles",
-        "requester.domain",
-        "requester.groups",
-        "requester.roles"
+        "initiator.domain",
+        "initiator.groups",
+        "initiator.roles"
     ],
     SELF_REGISTER_USER: [
         "user.domain"
