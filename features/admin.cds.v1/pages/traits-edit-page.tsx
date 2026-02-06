@@ -25,7 +25,7 @@ import { AlertLevels } from "@wso2is/core/models";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { TrashIcon } from "@oxygen-ui/react-icons";
-import { Trait } from "../api/traits";
+import { Trait } from "../api/profileShema";
 import { CDM_BASE_URL } from "../models/constants";
 
 interface RouteParams {

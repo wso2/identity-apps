@@ -11,7 +11,7 @@ import {
 } from "@wso2is/react-components";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { getTraits, Trait } from "../api/traits";
+import { getTraits, Trait } from "../api/profileShema";
 import { TraitsList } from "../components/traits-list";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";

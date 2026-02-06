@@ -1,12 +1,3 @@
-import axios from "axios";
-import { CDM_BASE_URL } from "../models/constants";
-
-export const getTraits = async (): Promise<Trait[]> => {
-    const url = `${CDM_BASE_URL}/profile-schema/traits`;
-    const response = await axios.get(url);
-    return response.data;
-};
-
 export interface SubAttribute {
     attribute_id: string;
     attribute_name: string;
@@ -16,7 +7,8 @@ export interface CanonicalValue {
     value: string;
     label?: string;
 }
-export interface Trait {
+
+export interface ProfileAttribute {
     attribute_id: string;
     attribute_name: string;
     description?: string;

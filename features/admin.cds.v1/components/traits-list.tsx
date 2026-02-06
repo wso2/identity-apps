@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { DataTable, AppAvatar, AnimatedAvatar, ConfirmationModal } from "@wso2is/react-components";
 import { TableActionsInterface, TableColumnInterface } from "@wso2is/react-components";
 import { SemanticICONS } from "semantic-ui-react";
-import { Trait } from "../api/traits";
+import { Trait } from "../api/profileShema";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { addAlert } from "@wso2is/core/store";

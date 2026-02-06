@@ -13,7 +13,7 @@ import { AdvancedSearchWithMultipleFilters, FilterAttributeOption } from "@wso2i
 import { Dropdown, DropdownItemProps, DropdownProps, PaginationProps } from "semantic-ui-react";
 import axios from "axios";
 import ProfilesList from "../components/profile-list";
-import { ProfileModel, ApplicationDataItem } from "../models/profile";
+import { ProfileModel } from "../models/profiles";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
 import { CDM_BASE_URL } from "../models/constants";
 
@@ -69,7 +69,7 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
         return items.slice(offset, offset + limit);
     };
 
-    const normalizeApplicationData = (rawAppData: Record<string, any>): ApplicationDataItem[] => {
+    const normalizeApplicationData = (rawAppData: Record<string, any>): Record<string, Record<string, unknown>>[] => {
         return Object.entries(rawAppData || {}).map(([ id, attributes ]) => ({
             application_id: id,
             attributes

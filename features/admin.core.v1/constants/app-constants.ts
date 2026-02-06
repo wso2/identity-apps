@@ -397,8 +397,8 @@ export class AppConstants {
                 "ATTRIBUTE_MAPPINGS",
                 `${AppConstants.getAdminViewBasePath()}/attribute-mappings/:type/:customAttributeMappingID?`
             ],
-            [ "TRAITS", `${ AppConstants.getAdminViewBasePath() }/traits` ],
-            [ "TRAITS_EDIT", `${ AppConstants.getAdminViewBasePath() }/traits/:id` ],
+            [ "PROFILE_ATTRIBUTE", `${ AppConstants.getAdminViewBasePath() }/profile-attribute` ],
+            [ "PROFILE_ATTRIBUTE_EDIT", `${ AppConstants.getAdminViewBasePath() }/profile-attribute/:id` ],
             [ "CREATE_TENANT", `${AppConstants.getAppBasePath()}/create-tenant` ],
             [ "ORGANIZATIONS", `${AppConstants.getAdminViewBasePath()}/organizations` ],
             [ "ORGANIZATION_UPDATE", `${AppConstants.getAdminViewBasePath()}/organizations/:id` ],
