@@ -72,10 +72,6 @@ interface VCTemplateEditFormValues {
 
 const FORM_ID: string = "vc-template-edit-form";
 
-/**
- * Base64 encoded value of http://wso2.org/vc/claim
- */
-const VC_CLAIM_DIALECT_ID: string = "aHR0cDovL3dzbzIub3JnL3ZjL2NsYWlt";
 const DEFAULT_VC_FORMAT: string = VerifiableCredentialsConstants.CREDENTIAL_FORMATS.VC_SD_JWT;
 
 /**
@@ -203,7 +199,7 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
     const fetchExternalClaims = (): void => {
         setIsClaimsLoading(true);
 
-        getAllExternalClaims(VC_CLAIM_DIALECT_ID, null)
+        getAllExternalClaims(VerifiableCredentialsConstants.VC_CLAIM_DIALECT_ID, null)
             .then((response: ExternalClaim[]) => {
                 setExternalClaims(response);
             })
@@ -583,34 +579,37 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
                                                             </div>
                                                         </Grid.Column>
                                                     </Grid.Row>
-                                                    <Grid.Row columns={ 1 }>
-                                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                                            <label className="form-label">
-                                                                { t("verifiableCredentials:editPage.form.offer.label") }
-                                                            </label>
-                                                            <VCTemplateOffer
-                                                                template={ vcTemplate }
-                                                                onUpdate={ () => mutateVCTemplate() }
-                                                                data-componentid={ `${componentId}-offer` }
-                                                            />
-                                                        </Grid.Column>
-                                                    </Grid.Row>
-                                                    <Grid.Row columns={ 1 }>
-                                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                                            <PrimaryButton
-                                                                type="submit"
-                                                                aria-label="update"
-                                                                size="small"
-                                                                disabled={ isSubmitting }
-                                                                loading={ isSubmitting }
-                                                                data-componentid={ `${componentId}-update-button` }
-                                                            >
-                                                                { t("common:update") }
-                                                            </PrimaryButton>
-                                                        </Grid.Column>
-                                                    </Grid.Row>
                                                 </Grid>
                                             </form>
+                                            <Grid className="vc-template-edit-form-grid">
+                                                <Grid.Row columns={ 1 }>
+                                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                                        <label className="form-label">
+                                                            { t("verifiableCredentials:editPage.form.offer.label") }
+                                                        </label>
+                                                        <VCTemplateOffer
+                                                            template={ vcTemplate }
+                                                            onUpdate={ () => mutateVCTemplate() }
+                                                            data-componentid={ `${componentId}-offer` }
+                                                        />
+                                                    </Grid.Column>
+                                                </Grid.Row>
+                                                <Grid.Row columns={ 1 }>
+                                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                                        <PrimaryButton
+                                                            type="submit"
+                                                            form={ FORM_ID }
+                                                            aria-label="update"
+                                                            size="small"
+                                                            disabled={ isSubmitting }
+                                                            loading={ isSubmitting }
+                                                            data-componentid={ `${componentId}-update-button` }
+                                                        >
+                                                            { t("common:update") }
+                                                        </PrimaryButton>
+                                                    </Grid.Column>
+                                                </Grid.Row>
+                                            </Grid>
                                         </EmphasizedSegment>
                                     ) }
                                 />

@@ -140,6 +140,7 @@ export const VCTemplateOffer: FunctionComponent<VCTemplateOfferPropsInterface> =
                                                     <Button
                                                         color="red"
                                                         className="fluid"
+                                                        type="button"
                                                         loading={ isGenerating }
                                                         disabled={ isGenerating || readOnly }
                                                         onClick={ () => setShowRegenerateConfirmation(true) }
@@ -160,6 +161,7 @@ export const VCTemplateOffer: FunctionComponent<VCTemplateOfferPropsInterface> =
                                         </Message>
                                         <Button
                                             primary
+                                            type="button"
                                             loading={ isGenerating }
                                             disabled={ isGenerating || readOnly }
                                             onClick={ handleGenerateOffer }

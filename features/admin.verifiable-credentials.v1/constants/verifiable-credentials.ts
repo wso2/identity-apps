@@ -39,6 +39,11 @@ export class VerifiableCredentialsConstants {
     };
 
     /**
+     * Base64 encoded value of http://wso2.org/vc/claim
+     */
+    public static readonly VC_CLAIM_DIALECT_ID: string = "aHR0cDovL3dzbzIub3JnL3ZjL2NsYWlt";
+
+    /**
      * Default expiration time (1 year in seconds).
      */
     public static readonly DEFAULT_EXPIRES_IN: number = 31536000;

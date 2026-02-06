@@ -33,6 +33,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Modal } from "semantic-ui-react";
 import { addVCTemplate } from "../../api/verifiable-credentials";
+import { VerifiableCredentialsConstants } from "../../constants/verifiable-credentials";
 import { VCTemplate, VCTemplateCreationModel } from "../../models/verifiable-credentials";
 import { ClaimAttributeOption } from "../claim-attribute-option";
 import "./add-vc-template.scss";
@@ -58,11 +59,6 @@ interface VCTemplateFormValues {
     identifier: string;
     displayName: string;
 }
-
-/**
- * Base64 encoded value of http://wso2.org/vc/claim
- */
-const VC_CLAIM_DIALECT_ID: string = "aHR0cDovL3dzbzIub3JnL3ZjL2NsYWlt";
 
 /**
  * Add Verifiable Credential Template Wizard component.
@@ -140,7 +136,7 @@ export default function AddVCTemplateWizard({
     const fetchExternalClaims = (): void => {
         setIsClaimsLoading(true);
 
-        getAllExternalClaims(VC_CLAIM_DIALECT_ID, null)
+        getAllExternalClaims(VerifiableCredentialsConstants.VC_CLAIM_DIALECT_ID, null)
             .then((response: ExternalClaim[]) => {
                 setExternalClaims(response);
             })
