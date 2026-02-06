@@ -280,7 +280,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                 )
             },
             {
-                menuItem: "Sharing",
+                menuItem: t("users:editUser.tab.menuItems.4"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <ShareUserForm
