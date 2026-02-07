@@ -91,29 +91,38 @@ const DesignLoginStep: FunctionComponent<DesignLoginStepProps> = (
         });
     }, [ brandingConfig, onBrandingConfigChange ]);
 
+    const handleLogoSuggestionsChange: (logos: string[]) => void = useCallback((logos: string[]): void => {
+        onBrandingConfigChange({
+            ...brandingConfig,
+            logoSuggestions: logos
+        });
+    }, [ brandingConfig, onBrandingConfigChange ]);
+
     return (
         <TwoColumnLayout data-componentid={ componentId }>
             <LeftColumn>
                 <StepHeader
                     data-componentid={ `${componentId}-header` }
-                    subtitle="Personalize the look and feel of your login page."
                     title="Design your login"
                 />
 
                 <DesignOptionsContainer>
-                    <ColorPicker
-                        color={ brandingConfig.primaryColor }
-                        label="Primary Color"
-                        onChange={ handleColorChange }
-                        data-componentid={ `${componentId}-color-picker` }
-                    />
-
                     <LogoSelector
-                        label="Logo"
+                        data-componentid={ `${componentId}-logo-selector` }
+                        label="Choose an application logo"
+                        logoSuggestions={ brandingConfig.logoSuggestions }
                         onLogoSelect={ handleLogoSelect }
+                        onLogoSuggestionsChange={ handleLogoSuggestionsChange }
                         primaryColor={ brandingConfig.primaryColor }
                         selectedLogoUrl={ brandingConfig.logoUrl }
-                        data-componentid={ `${componentId}-logo-selector` }
+                    />
+
+                    <ColorPicker
+                        color={ brandingConfig.primaryColor }
+                        data-componentid={ `${componentId}-color-picker` }
+                        label="Choose a brand color"
+                        onChange={ handleColorChange }
+                        showHint
                     />
                 </DesignOptionsContainer>
             </LeftColumn>

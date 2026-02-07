@@ -217,6 +217,7 @@ export interface OnboardingBrandingConfig {
     primaryColor: string;
     logoUrl?: string;
     logoAltText?: string;
+    logoSuggestions?: string[];
 }
 
 // ============================================================================

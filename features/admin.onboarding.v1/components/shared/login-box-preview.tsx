@@ -17,6 +17,7 @@
  */
 
 import { Theme, styled } from "@mui/material/styles";
+import Avatar from "@oxygen-ui/react/Avatar";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Paper from "@oxygen-ui/react/Paper";
@@ -170,14 +171,13 @@ const PreviewTextField = styled(TextField)(({ theme }: { theme: Theme }) => ({
 /**
  * Primary button styled with custom color.
  */
-const PrimaryButtonStyled = styled(Button)<{ customcolor: string }>(({ customcolor }) => ({
-    backgroundColor: customcolor,
+const PrimaryButtonStyled = styled(Button)<{ customcolor?: string }>(({ customcolor }) => ({
     color: "#ffffff",
     fontSize: "0.75rem",
     fontWeight: 500,
     padding: "8px 16px",
-    textTransform: "none",
-    pointerEvents: "none"
+    pointerEvents: "none",
+    textTransform: "none"
 }));
 
 /**
@@ -358,6 +358,27 @@ const LoginBoxPreview: FunctionComponent<LoginBoxPreviewProps> = memo((
                         <StepContainer>
                             { hasNonPasswordMethods && <StepLabel>Step 1</StepLabel> }
                             <StepBox variant="outlined">
+                                { /* Logo display when selected */ }
+                                { brandingConfig.logoUrl && (
+                                    <Box sx={ { display: "flex", justifyContent: "center", mb: 1 } }>
+                                        <Avatar
+                                            src={ brandingConfig.logoUrl }
+                                            sx={ {
+                                                backgroundColor: primaryColor,
+                                                height: 56,
+                                                width: 56,
+                                                padding: "3px"
+                                            } }
+                                        />
+                                    </Box>
+                                ) }
+                                { /* Sign in title */ }
+                                <Typography
+                                    sx={ { mb: 1, textAlign: "center" } }
+                                    variant="h6"
+                                >
+                                    Sign in
+                                </Typography>
                                 <PreviewTextField
                                     fullWidth
                                     label={ identifierLabel }
@@ -374,10 +395,8 @@ const LoginBoxPreview: FunctionComponent<LoginBoxPreviewProps> = memo((
                                     />
                                 ) }
                                 <PrimaryButtonStyled
-                                    customcolor={ primaryColor }
                                     fullWidth
-                                    variant="contained"
-                                    sx={ { marginTop: 2 } }
+                                    sx={ { marginTop: 2, backgroundColor: primaryColor } }
                                 >
                                     { hasPassword ? "Sign In" : "Continue" }
                                 </PrimaryButtonStyled>
