@@ -111,7 +111,7 @@ export const verifiableCredentials: VerifiableCredentialsNS = {
                 label: "Credential Format",
                 placeholder: "Select a credential format",
                 options: {
-                    vcSdJwt: "vc+sd-jwt",
+                    vcSdJwt: "dc+sd-jwt",
                     jwtVcJson: "jwt_vc_json"
                 }
             },
