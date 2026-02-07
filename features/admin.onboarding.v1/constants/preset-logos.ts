@@ -80,13 +80,13 @@ export const getAnimalNameFromUrl = (url: string): string => {
  */
 export const PRESET_COLORS: string[] = [
     "#ff7300", // Orange (Asgardeo)
-    "#2196F3", // Blue
-    "#4CAF50", // Green
-    "#9C27B0", // Purple
-    "#F44336", // Red
-    "#00BCD4", // Cyan
-    "#FF5722", // Deep Orange
-    "#607D8B"  // Blue Grey
+    "#b71c1c", // Dark Red
+    "#e65100", // Deep Orange
+    "#43a047", // Green
+    "#7b1fa2", // Purple
+    "#c0ca33", // Lime
+    "#558b2f", // Dark Green
+    "#ff8f00"  // Amber
 ];
 
 /**

@@ -18,17 +18,13 @@
 
 import { Theme, styled } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
-import Button from "@oxygen-ui/react/Button";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
+import { PlusIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, memo, useCallback } from "react";
-import {
-    OnboardingComponentIds,
-    PRESET_COLORS,
-    generateRandomColor,
-    isValidHexColor
-} from "../../constants";
+import React, { FunctionComponent, ReactElement, memo, useCallback, useRef, useState } from "react";
+import { OnboardingComponentIds, PRESET_COLORS, isValidHexColor } from "../../constants";
+import Hint from "./hint";
 
 /**
  * Props interface for ColorPicker component.
@@ -36,174 +32,213 @@ import {
 export interface ColorPickerProps extends IdentifiableComponentInterface {
     /** Current color value (hex) */
     color: string;
-    /** Callback when color changes */
-    onChange: (color: string) => void;
     /** Label for the color picker */
     label?: string;
+    /** Callback when color changes */
+    onChange: (color: string) => void;
+    /** Whether to show the hint text */
+    showHint?: boolean;
 }
 
 /**
  * Container for the color picker.
  */
-const ColorPickerContainer = styled(Box)(({ theme }: { theme: Theme }) => ({
+const ColorPickerContainer: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     display: "flex",
     flexDirection: "column",
-    gap: theme.spacing(2)
+    gap: theme.spacing(1.5)
 }));
 
 /**
- * Row container for color input and preview.
+ * Container for color swatches and input.
  */
-const ColorInputRow = styled(Box)(({ theme }: { theme: Theme }) => ({
+const SwatchesRow: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     alignItems: "center",
     display: "flex",
-    gap: theme.spacing(2)
-}));
-
-/**
- * Color preview swatch.
- */
-const ColorPreview = styled(Box)<{ bgcolor: string }>(({ theme, bgcolor }) => ({
-    backgroundColor: bgcolor,
-    border: `1px solid ${theme.palette.divider}`,
-    borderRadius: theme.shape.borderRadius,
-    cursor: "pointer",
-    flexShrink: 0,
-    height: 40,
-    position: "relative",
-    width: 40,
-    "& input": {
-        border: "none",
-        cursor: "pointer",
-        height: "100%",
-        left: 0,
-        opacity: 0,
-        position: "absolute",
-        top: 0,
-        width: "100%"
-    }
-}));
-
-/**
- * Container for preset colors.
- */
-const PresetColorsContainer = styled(Box)(({ theme }: { theme: Theme }) => ({
-    display: "flex",
     flexWrap: "wrap",
-    gap: theme.spacing(1)
+    gap: theme.spacing(1),
+    marginBottom: theme.spacing(2)
 }));
 
 /**
- * Preset color swatch.
+ * Color swatch button.
  */
-const PresetColorSwatch = styled(Box)<{ bgcolor: string; isSelected: boolean }>(
-    ({ theme, bgcolor, isSelected }) => ({
+const ColorSwatch: any = styled(Box)<{ bgcolor: string; isSelected: boolean }>(
+    ({ theme, bgcolor, isSelected }: { theme: Theme; bgcolor: string; isSelected: boolean }) => ({
+        "&:hover": {
+            transform: "scale(1.07)"
+        },
         backgroundColor: bgcolor,
         border: isSelected
-            ? `2px solid ${theme.palette.primary.main}`
-            : `1px solid ${theme.palette.divider}`,
-        borderRadius: theme.shape.borderRadius / 2,
+            ? `2px solid ${theme.palette.common.black}`
+            : "2px solid transparent",
+        borderRadius: theme.shape.borderRadius,
         cursor: "pointer",
-        height: 28,
-        transition: "transform 0.15s ease-in-out, border 0.15s ease-in-out",
-        width: 28,
-        "&:hover": {
-            transform: "scale(1.1)"
-        }
+        height: 40,
+        transition: "all 0.15s ease-in-out",
+        width: 40
     })
 );
 
 /**
+ * Custom color preview button that opens native picker.
+ */
+const CustomColorButton: any = styled(Box)<{ bgcolor: string; hasColor: boolean; isSelected: boolean }>(
+    ({ theme, bgcolor, hasColor, isSelected }:
+        { theme: Theme; bgcolor: string; hasColor: boolean; isSelected: boolean }) => ({
+        "& svg": {
+            color: hasColor ? "#ffffff" : theme.palette.text.secondary,
+            filter: hasColor ? "drop-shadow(0 0 1px rgba(0,0,0,0.5))" : "none"
+        },
+        "&:hover": {
+            transform: "scale(1.1)"
+        },
+        alignItems: "center",
+        backgroundColor: bgcolor,
+        border: isSelected
+            ? `2px solid ${theme.palette.common.black}`
+            : `2px solid ${theme.palette.divider}`,
+        borderRadius: theme.shape.borderRadius,
+        cursor: "pointer",
+        display: "flex",
+        height: 40,
+        justifyContent: "center",
+        position: "relative",
+        transition: "all 0.15s ease-in-out",
+        width: 40
+    })
+);
+
+/**
+ * Hex color input.
+ */
+const HexColorInput: any = styled("input")({
+    height: 0,
+    opacity: 0,
+    position: "absolute",
+    width: 0
+});
+
+/**
  * Label for the section.
  */
-const SectionLabel = styled(Typography)(({ theme }: { theme: Theme }) => ({
+const SectionLabel: typeof Typography = styled(Typography)(({ theme }: { theme: Theme }) => ({
     color: theme.palette.text.secondary,
-    fontSize: "0.8125rem",
-    marginBottom: theme.spacing(0.5)
+    fontSize: "0.8125rem"
 }));
 
 /**
- * Color picker component with hex input, native picker, preset colors, and random generator.
+ * Color picker component with grid swatches and custom color input.
  */
 const ColorPicker: FunctionComponent<ColorPickerProps> = memo((
     props: ColorPickerProps
 ): ReactElement => {
     const {
         color,
+        label = "Choose a brand color",
         onChange,
-        label = "Primary Color",
+        showHint = false,
         ["data-componentid"]: componentId = OnboardingComponentIds.COLOR_PICKER
     } = props;
 
-    const handleTextChange = useCallback((event: React.ChangeEvent<HTMLInputElement>): void => {
-        const value: string = event.target.value;
+    const colorInputRef: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
+    const [ customColor, setCustomColor ] = useState<string>(color);
 
-        // Allow typing without validation, validate on blur
-        onChange(value.startsWith("#") ? value : `#${value}`);
-    }, [ onChange ]);
-
-    const handleNativeColorChange = useCallback((event: React.ChangeEvent<HTMLInputElement>): void => {
-        onChange(event.target.value);
-    }, [ onChange ]);
-
-    const handlePresetSelect = useCallback((presetColor: string): void => {
+    const handleSwatchClick: (presetColor: string) => void = useCallback((presetColor: string): void => {
         onChange(presetColor);
+        setCustomColor(presetColor);
     }, [ onChange ]);
 
-    const handleRandomize = useCallback((): void => {
-        onChange(generateRandomColor());
-    }, [ onChange ]);
+    const handleAddColorClick: () => void = useCallback((): void => {
+        colorInputRef.current?.click();
+    }, []);
 
-    const isValid: boolean = isValidHexColor(color);
+    const handleNativeColorChange: (event: React.ChangeEvent<HTMLInputElement>) => void = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>): void => {
+            const value: string = event.target.value;
+
+            onChange(value);
+            setCustomColor(value);
+        }, [ onChange ]
+    );
+
+    const handleCustomColorChange: (event: React.ChangeEvent<HTMLInputElement>) => void = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>): void => {
+            const value: string = event.target.value;
+            const formattedValue: string = value.startsWith("#") ? value : `#${value}`;
+
+            setCustomColor(formattedValue);
+
+            // Auto-apply if valid hex color
+            if (isValidHexColor(formattedValue)) {
+                onChange(formattedValue);
+            }
+        }, [ onChange ]
+    );
+
+    const isCustomColorValid: boolean = isValidHexColor(customColor);
+
+    // Check if current color is a custom color (not in presets)
+    const isCustomColor: boolean = !PRESET_COLORS.some(
+        (preset: string) => preset.toLowerCase() === color.toLowerCase()
+    );
 
     return (
         <ColorPickerContainer data-componentid={ componentId }>
-            <Box>
-                <SectionLabel>{ label }</SectionLabel>
-                <ColorInputRow>
-                    <ColorPreview bgcolor={ isValid ? color : "#ffffff" }>
-                        <input
-                            type="color"
-                            value={ isValid ? color : "#ffffff" }
-                            onChange={ handleNativeColorChange }
-                            data-componentid={ `${componentId}-native-input` }
-                        />
-                    </ColorPreview>
-                    <TextField
-                        error={ !isValid && color.length > 0 }
-                        helperText={ !isValid && color.length > 0 ? "Invalid hex color" : undefined }
-                        onChange={ handleTextChange }
-                        placeholder="#ff7300"
-                        size="small"
-                        sx={ { width: 120 } }
-                        value={ color }
-                        data-componentid={ `${componentId}-text-input` }
+            <SectionLabel>{ label }</SectionLabel>
+            <SwatchesRow>
+                { PRESET_COLORS.map((presetColor: string) => (
+                    <ColorSwatch
+                        bgcolor={ presetColor }
+                        data-componentid={ `${componentId}-preset-${presetColor.replace("#", "")}` }
+                        isSelected={ color.toLowerCase() === presetColor.toLowerCase() }
+                        key={ presetColor }
+                        onClick={ () => handleSwatchClick(presetColor) }
                     />
-                    <Button
-                        onClick={ handleRandomize }
-                        size="small"
-                        variant="outlined"
-                        data-componentid={ `${componentId}-random-button` }
-                    >
-                        Random
-                    </Button>
-                </ColorInputRow>
-            </Box>
+                )) }
+                <CustomColorButton
+                    bgcolor={ isCustomColorValid ? customColor : color }
+                    data-componentid={ `${componentId}-custom-color` }
+                    hasColor={ isCustomColor || isCustomColorValid }
+                    isSelected={ isCustomColor }
+                    onClick={ handleAddColorClick }
+                >
+                    <PlusIcon size={ 16 } />
+                    <HexColorInput
+                        data-componentid={ `${componentId}-native-picker` }
+                        onChange={ handleNativeColorChange }
+                        ref={ colorInputRef }
+                        type="color"
+                        value={ customColor }
+                    />
+                </CustomColorButton>
+                <TextField
+                    data-componentid={ `${componentId}-custom-input` }
+                    error={ customColor.length > 0 && !isCustomColorValid }
+                    FormHelperTextProps={ {
+                        sx: {
+                            bottom: -18,
+                            left: 0,
+                            margin: 0,
+                            position: "absolute"
+                        }
+                    } }
+                    helperText={
+                        customColor.length > 0 && !isCustomColorValid
+                            ? "Invalid hex color"
+                            : undefined
+                    }
+                    onChange={ handleCustomColorChange }
+                    placeholder="#000000"
+                    size="small"
+                    sx={ { position: "relative", width: 120 } }
+                    value={ customColor }
+                />
+            </SwatchesRow>
 
-            <Box>
-                <SectionLabel>Quick picks</SectionLabel>
-                <PresetColorsContainer>
-                    { PRESET_COLORS.map((presetColor: string) => (
-                        <PresetColorSwatch
-                            bgcolor={ presetColor }
-                            isSelected={ color.toLowerCase() === presetColor.toLowerCase() }
-                            key={ presetColor }
-                            onClick={ () => handlePresetSelect(presetColor) }
-                            data-componentid={ `${componentId}-preset-${presetColor.replace("#", "")}` }
-                        />
-                    )) }
-                </PresetColorsContainer>
-            </Box>
+            { showHint && (
+                <Hint message="You can find advanced branding options later in the Console." />
+            ) }
         </ColorPickerContainer>
     );
 });

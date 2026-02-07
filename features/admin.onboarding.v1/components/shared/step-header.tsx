@@ -27,13 +27,13 @@ import React, { FunctionComponent, ReactElement } from "react";
  */
 export interface StepHeaderProps extends IdentifiableComponentInterface {
     /**
-     * Main heading text.
-     */
-    title: string;
-    /**
      * Optional subtitle/description text.
      */
     subtitle?: string;
+    /**
+     * Main heading text.
+     */
+    title: string;
 }
 
 /**
@@ -63,7 +63,7 @@ const Subtitle: typeof Typography = styled(Typography)(({ theme }: { theme: Them
 }));
 
 /**
- * Reusable header component for onboarding wizard steps.
+ * Header component for onboarding wizard steps.
  * Displays a title and optional subtitle.
  */
 const StepHeader: FunctionComponent<StepHeaderProps> = (props: StepHeaderProps): ReactElement => {
