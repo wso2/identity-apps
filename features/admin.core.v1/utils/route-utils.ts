@@ -312,27 +312,32 @@ export class RouteUtils {
 
         const organizations: NavCategory = {
             id: "organizations",
-            order: 3
+            order: 4
+        };
+
+        const verifiableCredentials: NavCategory = {
+            id: "verifiableCredentials",
+            order: 2
         };
 
         const preferences: NavCategory = {
             id: "preferences",
-            order: 4
+            order: 5
         };
 
         const extensions: NavCategory = {
             id: "extensions",
-            order: 5
+            order: 6
         };
 
         const monitoring: NavCategory = {
             id: "monitoring",
-            order: 6
+            order: 7
         };
 
         const settings: NavCategory = {
             id: "settings",
-            order: 7
+            order: 8
         };
 
         const loginAndRegPathsToCheck: string[] = [
@@ -392,15 +397,14 @@ export class RouteUtils {
                 selected: history.location.pathname.includes("/mcp-servers")
             },
             {
-                category: build,
-                id: "verifiableCredentials",
-                order: 3,
-                selected: history.location.pathname.includes("/verifiable-credentials")
-            },
-            {
                 category: organizations,
                 id: "organizations",
                 selected: history.location.pathname.includes("/organizations")
+            },
+            {
+                category: verifiableCredentials,
+                id: "verifiableCredentials",
+                selected: history.location.pathname.includes("/verifiable-credentials")
             },
             {
                 category: workflows,
