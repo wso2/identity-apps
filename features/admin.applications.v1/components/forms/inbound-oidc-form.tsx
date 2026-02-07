@@ -1457,7 +1457,15 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     revokeTokensWhenIDPSessionTerminated: values.get("RevokeAccessToken")?.length > 0,
                     type: isMcpClientApplication ? JWT : values.get("type"),
                     userAccessTokenExpiryInSeconds: Number(values.get("userAccessTokenExpiryInSeconds")),
-                    validateTokenBinding: isDPoPSelected || values.get("ValidateTokenBinding")?.length > 0
+                    validateTokenBinding: isDPoPSelected || values.get("ValidateTokenBinding")?.length > 0,
+                    /*
+                    * Preserve `enableJwtScopeAsArray` if set via the API.
+                    * UI support is intentionally omitted to discourage non-compliant array usage.
+                    * For more info refer: https://github.com/wso2/product-is/issues/26575
+                    */
+                    ...(initialValues?.accessToken?.enableJwtScopeAsArray !== undefined && {
+                        enableJwtScopeAsArray: initialValues.accessToken.enableJwtScopeAsArray
+                    })
                 },
                 grantTypes: values.get("grant"),
                 idToken: {
@@ -1684,7 +1692,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 revokeTokensWhenIDPSessionTerminated: getRevokeStateForSPA(values),
                 type: values.get("type"),
                 userAccessTokenExpiryInSeconds: Number(values.get("userAccessTokenExpiryInSeconds")),
-                validateTokenBinding: isDPoPSelected || values.get("ValidateTokenBinding")?.length > 0
+                validateTokenBinding: isDPoPSelected || values.get("ValidateTokenBinding")?.length > 0,
+                ...(initialValues?.accessToken?.enableJwtScopeAsArray !== undefined && {
+                    enableJwtScopeAsArray: initialValues.accessToken.enableJwtScopeAsArray
+                })
             },
             grantTypes: values.get("grant"),
             idToken: {
