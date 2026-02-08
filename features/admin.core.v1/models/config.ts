@@ -510,6 +510,10 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     enableCustomEmailTemplates: boolean;
     /**
+     * Enable/Disable provisioning connection v2 feature
+     */
+    enableProvisioningConnectionV2?: boolean;
+    /**
      * Enable signature validation certificate alias.
      */
     isSignatureValidationCertificateAliasEnabled?: boolean;
