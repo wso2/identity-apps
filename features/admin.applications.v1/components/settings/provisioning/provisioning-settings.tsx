@@ -17,6 +17,7 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { IdentifiableComponentInterface, SBACInterface } from "@wso2is/core/models";
 import { EmphasizedSegment } from "@wso2is/react-components";
@@ -70,9 +71,12 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
         [ "data-componentid" ]: componentId
     } = props;
 
+    const { UIConfig } = useUIConfig();
+
     const shouldShowOutboundProvisioningConfigurations: boolean = useMemo(() => {
-        return application?.provisioningConfigurations?.outboundProvisioningIdps?.length > 0;
-    }, [ application ]);
+        return UIConfig?.enableProvisioningConnectionV2 ||
+            application?.provisioningConfigurations?.outboundProvisioningIdps?.length > 0;
+    }, [ UIConfig?.enableProvisioningConnectionV2, application ]);
 
     const hasApplicationUpdatePermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.update);
 

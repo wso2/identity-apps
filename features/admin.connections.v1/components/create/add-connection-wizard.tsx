@@ -135,20 +135,6 @@ export const CreateConnectionWizard: FC<CreateConnectionWizardPropsInterface> = 
      * Track wizard steps from wizard component.
      */
     useEffect(() => {
-        setConnectionMetaDetails(wizStep + 1);
-    }, [ wizStep ]);
-
-    /**
-     * Track wizard steps from wizard component.
-     */
-    useEffect(() => {
-        setCurrentWizardStep(wizStep + 1);
-    }, [ wizStep ]);
-
-    /**
-    * Track wizard steps from wizard component.
-    */
-    useEffect(() => {
         setCurrentWizardStep(wizStep + 1);
     }, [ wizStep ]);
 

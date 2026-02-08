@@ -141,6 +141,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 
     const { t } = useTranslation();
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const isOutboundProvisioningConnection: boolean = templateType ===
+        CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OUTBOUND_PROVISIONING_CONNECTION;
 
     /**
      * Check whether IDP name is already exist or not.
@@ -242,6 +244,10 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      */
     const shouldShowCertificates = (): boolean => {
 
+        if (isOutboundProvisioningConnection) {
+            return false;
+        }
+
         let showCertificate: boolean = true;
 
         if ((certificateOptionsForTemplate !== undefined
@@ -327,6 +333,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                                 .CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER ||
                             templateType === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.GOOGLE)
                             && !isIDPOrganizationSSO() && !isIDPIproov()
+                            && !isOutboundProvisioningConnection
                             && (
                                 <Field.Input
                                     ariaLabel="idpIssuerName"
@@ -367,6 +374,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             templateType === CommonAuthenticatorConstants
                                 .CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER)
                             && !isIDPOrganizationSSO() && !isIDPIproov()
+                            && ! isOutboundProvisioningConnection
                             && (
                                 <Field.Input
                                     ariaLabel="alias"
@@ -416,7 +424,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             "generalDetails.description.hint") }
                         readOnly={ isReadOnly }
                     />
-                    { !hideIdPLogoEditField && (
+                    { !hideIdPLogoEditField && !isOutboundProvisioningConnection && (
                         <Field.Input
                             name="image"
                             ariaLabel="image"

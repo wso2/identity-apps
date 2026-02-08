@@ -89,6 +89,11 @@ export const useGetConnectionTemplates = <Data = ConnectionTemplateInterface[], 
                 .CONNECTION_TEMPLATE_IDS.TRUSTED_TOKEN_ISSUER);
         }
 
+        if (!UIConfig?.enableProvisioningConnectionV2) {
+            hiddenConnectionTemplateIds.push(CommonAuthenticatorConstants
+                .CONNECTION_TEMPLATE_IDS.OUTBOUND_PROVISIONING_CONNECTION);
+        }
+
         const fetchedConnectionTemplates: ConnectionTemplateInterface[] = data as ConnectionTemplateInterface[];
 
         // Filter out the hidden connection templates.
