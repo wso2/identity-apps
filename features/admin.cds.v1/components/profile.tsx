@@ -21,7 +21,6 @@ import { addAlert } from "@wso2is/core/store";
 import {
     AnimatedAvatar,
     ConfirmationModal,
-    ContentLoader,
     DangerZone,
     DangerZoneGroup,
     EmphasizedSegment,
@@ -59,7 +58,12 @@ type Props =
 
 const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElement => {
 
-    const { match, history, ["data-testid"]: testId = "cdm-profile-details", ["data-componentid"]: componentId } = props;
+    const {
+        match,
+        history,
+        [ "data-testid" ]: testId = "cdm-profile-details",
+        [ "data-componentid" ]: componentId = "cdm-profile-details"
+    } = props;
 
     const dispatch: Dispatch<any> = useDispatch();
     const profileId: string = match?.params?.id;
@@ -73,7 +77,10 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
 
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
 
-    const handleAlerts = (alert: AlertInterface): void => dispatch(addAlert(alert));
+    // ✅ Fix TS2322 by forcing void return.
+    const handleAlerts = (alert: AlertInterface): void => {
+        dispatch(addAlert(alert));
+    };
 
     const fetchProfile = async (): Promise<void> => {
         setIsLoading(true);
@@ -83,11 +90,6 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
 
             if (!data) {
                 setProfile(null);
-                handleAlerts({
-                    description: "Profile not found.",
-                    level: AlertLevels.ERROR,
-                    message: "Error"
-                });
                 return;
             }
 
@@ -103,19 +105,21 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
         if (profileId) {
             fetchProfile();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ profileId ]);
 
-    const userId = useMemo(() => {
+    const userId: string | null = useMemo(() => {
         const direct = (profile as any)?.user_id;
         if (direct) {
             return String(direct);
         }
+
         const fromIdentity = profile?.identity_attributes?.["user_id"];
         return fromIdentity ? String(fromIdentity) : null;
     }, [ profile ]);
 
-    /** Hide Danger Zone if userId exists */
-    const showDangerZone = useMemo(() => {
+    /** ✅ Hide Danger Zone if userId exists */
+    const showDangerZone: boolean = useMemo(() => {
         return Boolean(profile) && !userId;
     }, [ profile, userId ]);
 
@@ -125,14 +129,15 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
     };
 
     const renderField = (label: string, value?: string | null): ReactElement | null => {
-        if (!value) {
+        // ✅ If not available keep it null => don't render.
+        if (value === null || value === undefined || String(value).trim().length === 0) {
             return null;
         }
 
         return (
             <Form.Field>
                 <label>{ label }</label>
-                <Form.Input readOnly value={ value } />
+                <Form.Input readOnly value={ String(value) } />
             </Form.Field>
         );
     };
@@ -166,6 +171,33 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
         );
     };
 
+    const renderDataTab = (): ReactElement | null => {
+        if (!profile) {
+            return null;
+        }
+
+        return (
+            <EmphasizedSegment padded="very">
+                <div className="form-container with-max-width">
+                    <pre
+                        data-testid={ `${testId}-profile-json` }
+                        style={ {
+                            margin: 0,
+                            padding: "1rem",
+                            borderRadius: 8,
+                            overflow: "auto",
+                            maxHeight: 520,
+                            fontSize: 12
+                        } }
+                    >
+                        { JSON.stringify(profile ?? {}, null, 2) }
+                    </pre>
+                </div>
+            </EmphasizedSegment>
+        );
+    };
+    
+
     const renderGeneralTab = (): ReactElement | null => {
         if (!profile) {
             return null;
@@ -177,9 +209,13 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                     <Form>
                         { renderField("Profile ID", profile.profile_id) }
                         { renderField("User ID", userId) }
+
+                        <Divider />
+
                         { renderField("Created", profile.meta?.created_at ?? null) }
                         { renderField("Updated", profile.meta?.updated_at ?? null) }
                         { renderField("Location", profile.meta?.location ?? null) }
+
                         { renderMergedTable() }
                     </Form>
                 </EmphasizedSegment>
@@ -190,7 +226,10 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                             actionTitle="Delete profile"
                             header="Delete this profile"
                             subheader="This profile is not linked to a user ID and can be deleted."
-                            onActionClick={ () => setShowDeleteConfirmationModal(true) }
+                            onActionClick={ (): void => {
+                                setAlert(null);
+                                setShowDeleteConfirmationModal(true);
+                            } }
                             isButtonDisabled={ isDeleting }
                         />
                     </DangerZoneGroup>
@@ -200,29 +239,52 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
     };
 
     const panes: ResourceTabPaneInterface[] = [
-        { componentId: "general", menuItem: "General", render: renderGeneralTab }
+        { componentId: "general", menuItem: "General", render: renderGeneralTab },
+        { componentId: "data", menuItem: "Data", render: renderDataTab }
     ];
 
-    const handleDelete = async (): Promise<void> => {
+    // ✅ WSO2-style delete handler (then/catch/finally) + modal alerts.
+    const handleProfileDelete = (): void => {
         if (userId) {
+            setAlert({
+                description: "Profiles linked to a user ID cannot be deleted.",
+                level: AlertLevels.WARNING,
+                message: "Not allowed"
+            });
             return;
         }
 
         setIsDeleting(true);
 
-        try {
-            await deleteUserProfile(profileId);
+        deleteUserProfile(profileId)
+            .then(() => {
+                handleAlerts({
+                    description: "Profile deleted successfully.",
+                    level: AlertLevels.SUCCESS,
+                    message: "Success"
+                });
 
-            handleAlerts({
-                description: "Profile deleted.",
-                level: AlertLevels.SUCCESS,
-                message: "Success"
+                history.push(AppConstants.getPaths().get("PROFILES"));
+            })
+            .catch((error: any) => {
+                if (error?.response?.data?.description) {
+                    setAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: "Error"
+                    });
+                    return;
+                }
+
+                setAlert({
+                    description: "Failed to delete profile.",
+                    level: AlertLevels.ERROR,
+                    message: "Error"
+                });
+            })
+            .finally(() => {
+                setIsDeleting(false);
             });
-
-            history.push(AppConstants.getPaths().get("PROFILES"));
-        } finally {
-            setIsDeleting(false);
-        }
     };
 
     return (
@@ -252,26 +314,46 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                 onTabChange={ handleTabChange }
             />
 
+            {/* ✅ Only mount the modal when danger zone is relevant */}
             { showDangerZone && (
                 <ConfirmationModal
+                    data-componentid={ `${componentId}-confirmation-modal` }
+                    onClose={ (): void => {
+                        setShowDeleteConfirmationModal(false);
+                        setAlert(null);
+                    } }
+                    type="negative"
                     open={ showDeleteConfirmationModal }
-                    onClose={ () => setShowDeleteConfirmationModal(false) }
+                    assertionHint="I confirm that I want to delete this profile."
+                    assertionType="checkbox"
                     primaryAction="Confirm"
                     secondaryAction="Cancel"
-                    assertionType="checkbox"
-                    assertionHint="I confirm delete"
-                    onPrimaryActionClick={ handleDelete }
+                    onSecondaryActionClick={ (): void => {
+                        setShowDeleteConfirmationModal(false);
+                        setAlert(null);
+                    } }
+                    onPrimaryActionClick={ handleProfileDelete }   // ✅ fixed: was handleDelete
+                    closeOnDimmerClick={ false }
                 >
-                    <ConfirmationModal.Header>Delete profile</ConfirmationModal.Header>
-                    <ConfirmationModal.Message attached negative>
+                    <ConfirmationModal.Header data-componentid={ `${componentId}-confirmation-modal-header` }>
+                        Delete profile
+                    </ConfirmationModal.Header>
+                    <ConfirmationModal.Message
+                        data-componentid={ `${componentId}-confirmation-modal-message` }
+                        attached
+                        negative
+                    >
                         This action cannot be undone.
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content>
-                        { alert && alertComponent }
-                        <strong>Profile ID:</strong> { profile?.profile_id }
+                        <div className="modal-alert-wrapper">{ alert && alertComponent }</div>
+
+                        <div style={ { display: "grid", gap: 8 } }>
+                            <div><strong>Profile ID:</strong> { profile?.profile_id }</div>
+                        </div>
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
-            )}
+            ) }
         </TabPageLayout>
     );
 };
