@@ -24,7 +24,8 @@ import {
     ProfileSchemaFullResponse,
     ProfileSchemaScope,
     ProfileSchemaScopeResponse
-} from "../models/profile-schema";
+} from "../models/profile-attributes";
+import { FilterAttributeOption } from "@wso2is/admin.core.v1/components/advanced-search-with-multipe-filters";
 
 /**
  * GET /profile-schema
@@ -56,18 +57,26 @@ export const fetchProfileSchemaByScope = async (
     // Shape: { "<appId>": [ {..}, ... ] }
     if (scope === "application_data" && data && typeof data === "object") {
         const map = data as ApplicationDataSchemaMapResponse;
-
+    
         const flattened: ProfileSchemaAttribute[] = [];
-
+    
         Object.entries(map).forEach(([ appId, attrs ]) => {
             (attrs ?? []).forEach((attr) => {
+                const original = attr.attribute_name ?? "";
+                const field =
+                    original.startsWith("application_data.")
+                        ? original.replace("application_data.", "")
+                        : original;
+    
                 flattened.push({
                     ...attr,
-                    application_identifier: attr.application_identifier ?? appId
+                    application_identifier: attr.application_identifier ?? appId,
+    
+                    attribute_name: `application_data.${appId}.${field}`
                 });
             });
         });
-
+    
         return flattened;
     }
 
@@ -83,20 +92,34 @@ export const fetchProfileSchemaByScope = async (
 export const toAttributeDropdownOptions = (
     scope: string,
     attributes: ProfileSchemaAttribute[]
-): Array<{ scope: string; label: string; value: string; key: string }> => {
+): FilterAttributeOption[] => {
+
     return (attributes ?? []).map((attr) => {
         const name = attr.attribute_name ?? "";
-        const label = name.includes(".") ? name.split(".").slice(-1)[0] : name;
 
-        // add appId hint for application_data labels (optional)
-        const finalLabel = scope === "application_data" && attr.application_identifier
-            ? `${label} (app: ${attr.application_identifier})`
-            : label;
+        if (scope === "application_data") {
+            // expected name: application_data.<appId>.<field...>
+            const parts = name.split(".");
+            const appId = parts[1] ?? "";
+
+            // field only (device_model OR nested.field)
+            const field = parts.slice(2).join(".") || "";
+
+            return {
+                scope,
+                applicationId: appId,
+                label: field ? `${field} (app: ${appId})` : `(unknown field) (app: ${appId})`,
+                value: field,                               // ✅ IMPORTANT: field only
+                key: `${appId}:${field}`                    // ✅ stable key
+            };
+        }
+
+        const label = name.includes(".") ? name.split(".").slice(-1)[0] : name;
 
         return {
             scope,
-            label: finalLabel,
-            value: name,
+            label,
+            value: name,                                   // keep full for identity/traits
             key: name
         };
     });

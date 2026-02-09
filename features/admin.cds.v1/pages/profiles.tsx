@@ -27,15 +27,20 @@ import { PageLayout, ListLayout, EmptyPlaceholder } from "@wso2is/react-componen
 import { useDispatch } from "react-redux";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { AdvancedSearchWithMultipleFilters, FilterAttributeOption } from
-    "@wso2is/admin.core.v1/components/advanced-search-with-multipe-filters";
+import {
+    AdvancedSearchWithMultipleFilters,
+    FilterAttributeOption
+} from "@wso2is/admin.core.v1/components/advanced-search-with-multipe-filters";
 import { DropdownProps, PaginationProps } from "semantic-ui-react";
-import axios from "axios";
 import ProfilesList from "../components/profile-list";
 import { ProfileModel, ProfilesListResponse } from "../models/profiles";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
-import { CDM_BASE_URL } from "../models/constants";
 import { fetchProfiles } from "../api/profiles";
+import { ProfileSchemaGroupedScope, ProfileSchemaScope } from "../models/profile-attributes";
+import {
+    fetchProfileSchemaByScope,
+    toAttributeDropdownOptions
+} from "../api/profile-attributes";
 
 const DEFAULT_PAGE_SIZE = 10;
 
@@ -43,6 +48,12 @@ const DEFAULT_LIST_FIELDS: string[] = [
     "identity_attributes.username",
     "identity_attributes.givenname",
     "identity_attributes.lastname"
+];
+
+const SCOPES: ProfileSchemaGroupedScope[] = [
+    "identity_attributes",
+    "traits",
+    "application_data"
 ];
 
 const ProfilesPage: FunctionComponent = (): ReactElement => {
@@ -66,9 +77,33 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
 
     const [ returnedCount, setReturnedCount ] = useState<number>(0);
 
+    // ✅ Advanced search dropdown options (scoped)
+    const [ filterAttributeOptions, setFilterAttributeOptions ] = useState<FilterAttributeOption[]>([]);
+
     const handleAlerts = (alert: AlertInterface) => {
         dispatch(addAlert(alert));
     };
+
+    // ✅ Fetch schema attributes ONCE (per scope)
+    useEffect(() => {
+        const fetchSchemaAttributes = async () => {
+            try {
+                const optionsByScope = await Promise.all(
+                    SCOPES.map(async (scope) => {
+                        const attrs = await fetchProfileSchemaByScope(scope);
+                        return toAttributeDropdownOptions(scope, attrs) as FilterAttributeOption[];
+                    })
+                );
+
+                setFilterAttributeOptions(optionsByScope.flat());
+            } catch (err) {
+                // eslint-disable-next-line no-console
+                console.error("Failed to fetch profile schema attributes", err);
+            }
+        };
+
+        fetchSchemaAttributes();
+    }, []);
 
     const fetchProfilesPage = async (cursor: string | null, page: number): Promise<void> => {
         setIsLoading(true);
@@ -140,6 +175,18 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
         setPageSize(data.value as number);
     };
 
+    const loadAttributesForScope = async (scope: string): Promise<FilterAttributeOption[]> => {
+        if (scope !== "identity_attributes" && scope !== "traits" && scope !== "application_data") {
+            return [];
+        }
+    
+        const attrs = await fetchProfileSchemaByScope(scope as any);
+    
+        // IMPORTANT: make sure this helper does NOT override `scope`
+        // It should use the `scope` param you pass in.
+        return toAttributeDropdownOptions(scope, attrs) as FilterAttributeOption[];
+    };
+
     const handlePaginationChange = (_: any, data: PaginationProps) => {
         const targetPage = data.activePage as number;
 
@@ -171,38 +218,6 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
     const virtualTotalPages = useMemo(() => {
         return activePage + (hasNext ? 1 : 0);
     }, [ activePage, hasNext ]);
-
-    const [ filterAttributeOptions, setFilterAttributeOptions ] = useState<FilterAttributeOption[]>([]);
-
-    useEffect(() => {
-        const fetchSchemaAttributes = async () => {
-            try {
-                const url = `${ CDM_BASE_URL }/profile-schema`;
-                const res = await axios.get(url);
-
-                const attributes = res.data || [];
-
-                const options = attributes.map((attr: any) => {
-                    const parts = attr.attribute_name?.split(".");
-                    const scope = parts?.length > 1 ? parts[0] : "default";
-
-                    return {
-                        scope,
-                        label: attr.attribute_name,
-                        value: attr.attribute_name,
-                        key: attr.attribute_name
-                    };
-                });
-
-                setFilterAttributeOptions(options);
-            } catch (schemaErr) {
-                // eslint-disable-next-line no-console
-                console.error("Failed to fetch profile schema attributes", schemaErr);
-            }
-        };
-
-        fetchSchemaAttributes();
-    }, []);
 
     return (
         <PageLayout
@@ -239,14 +254,15 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
                     }}
                     advancedSearch={
                         <AdvancedSearchWithMultipleFilters
-                            onFilter={ handleRuleSearch }
-                            filterAttributeOptions={ filterAttributeOptions }
-                            placeholder="Search profiles"
-                            defaultSearchAttribute="profile_id"
-                            defaultSearchOperator="co"
-                            triggerClearQuery={ triggerClearQuery }
-                            scopes={ [ "identity_attributes", "traits" , "application_data"] }
-                        />
+                        onFilter={ handleRuleSearch }
+                        onFetchAttributesByScope={ loadAttributesForScope }
+                        placeholder="Search profiles"
+                        defaultSearchAttribute="profile_id"
+                        defaultSearchOperator="co"
+                        triggerClearQuery={ triggerClearQuery }
+                        scopes={ [ "identity_attributes", "traits", "application_data" ] }
+                    />
+                    
                     }
                 >
                     <ProfilesList
