@@ -24,6 +24,8 @@ export class SessionManagementConstants {
 
     public static readonly IDLE_SESSION_TIMEOUT_PATH: string = "/idleSessionTimeoutPeriod";
     public static readonly REMEMBER_ME_PERIOD_PATH: string = "/rememberMePeriod";
+    public static readonly ENABLE_MAXIMUM_SESSION_TIMEOUT_PATH: string = "/enableMaximumSessionTimeoutPeriod";
+    public static readonly MAXIMUM_SESSION_TIMEOUT_PATH: string = "/maximumSessionTimeoutPeriod";
     public static readonly REPLACE_OPERATION: string = "REPLACE";
     public static readonly REMOVE_OPERATION: string = "REMOVE";
 

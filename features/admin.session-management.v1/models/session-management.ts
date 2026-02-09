@@ -23,6 +23,8 @@
 export interface SessionManagementConfigFormValuesInterface {
     idleSessionTimeout?: number;
     rememberMePeriod?: number;
+    enableMaximumSessionTimeout?: boolean;
+    maximumSessionTimeout?: number;
 }
 
 /**
@@ -31,6 +33,7 @@ export interface SessionManagementConfigFormValuesInterface {
 export interface SessionManagementConfigFormErrorValidationsInterface {
     idleSessionTimeout?: string;
     rememberMePeriod?: string;
+    maximumSessionTimeout?: string;
 }
 
 /**
@@ -39,6 +42,8 @@ export interface SessionManagementConfigFormErrorValidationsInterface {
 export interface SessionManagementConfigAPIResponseInterface {
     idleSessionTimeoutPeriod?: string;
     rememberMePeriod?: string;
+    enableMaximumSessionTimeoutPeriod?: string;
+    maximumSessionTimeoutPeriod?: string;
 }
 
 /**

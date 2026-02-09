@@ -95,7 +95,12 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
         if (originalSessionManagementConfig.idleSessionTimeoutPeriod
             && originalSessionManagementConfig.rememberMePeriod) {
             setSessionManagementConfig({
+                enableMaximumSessionTimeout:
+                    originalSessionManagementConfig.enableMaximumSessionTimeoutPeriod === "true",
                 idleSessionTimeout: parseInt(originalSessionManagementConfig.idleSessionTimeoutPeriod),
+                maximumSessionTimeout: originalSessionManagementConfig.maximumSessionTimeoutPeriod
+                    ? parseInt(originalSessionManagementConfig.maximumSessionTimeoutPeriod)
+                    : undefined,
                 rememberMePeriod: parseInt(originalSessionManagementConfig.rememberMePeriod)
             });
         }
@@ -181,6 +186,7 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
     ): SessionManagementConfigFormErrorValidationsInterface => {
         const error: SessionManagementConfigFormErrorValidationsInterface = {
             idleSessionTimeout: undefined,
+            maximumSessionTimeout: undefined,
             rememberMePeriod: undefined
         };
 
@@ -198,6 +204,13 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
             );
         }
 
+        if (values?.enableMaximumSessionTimeout && values?.maximumSessionTimeout
+            && (!FormValidation.isInteger(values.maximumSessionTimeout as number)
+            || values.maximumSessionTimeout as number < 0)) {
+            error.maximumSessionTimeout = t(
+                "sessionManagement:form.validation.maximumSessionTimeout"
+            );
+        }
 
         return error;
     };
@@ -217,6 +230,16 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                 "operation": SessionManagementConstants.REPLACE_OPERATION,
                 "path": SessionManagementConstants.REMEMBER_ME_PERIOD_PATH,
                 "value": values.rememberMePeriod.toString()
+            },
+            {
+                "operation": SessionManagementConstants.REPLACE_OPERATION,
+                "path": SessionManagementConstants.ENABLE_MAXIMUM_SESSION_TIMEOUT_PATH,
+                "value": values.enableMaximumSessionTimeout ? "true" : "false"
+            },
+            {
+                "operation": SessionManagementConstants.REPLACE_OPERATION,
+                "path": SessionManagementConstants.MAXIMUM_SESSION_TIMEOUT_PATH,
+                "value": values.maximumSessionTimeout?.toString() || "0"
             }
         ];
 
@@ -243,6 +266,14 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
             {
                 "operation": SessionManagementConstants.REMOVE_OPERATION,
                 "path": SessionManagementConstants.REMEMBER_ME_PERIOD_PATH
+            },
+            {
+                "operation": SessionManagementConstants.REMOVE_OPERATION,
+                "path": SessionManagementConstants.ENABLE_MAXIMUM_SESSION_TIMEOUT_PATH
+            },
+            {
+                "operation": SessionManagementConstants.REMOVE_OPERATION,
+                "path": SessionManagementConstants.MAXIMUM_SESSION_TIMEOUT_PATH
             }
         ];
 
@@ -377,6 +408,59 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                                                         .SESSION_MANAGEMENT_CONFIG_FIELD_MIN_LENGTH }
                                                     width="100%"
                                                     data-componentid={ `${ componentId }-remember-me-period` }
+                                                    labelPosition="right"
+                                                >
+                                                    <input />
+                                                    <Label>{ t("common:minutes") }</Label>
+                                                </Field.Input>
+                                                <Divider hidden />
+                                                <Field.Checkbox
+                                                    ariaLabel="Enable Maximum Session Timeout"
+                                                    name="enableMaximumSessionTimeout"
+                                                    label={ t("sessionManagement:form." +
+                                                "enableMaximumSessionTimeout.label") }
+                                                    hint={ t("sessionManagement:form." +
+                                                "enableMaximumSessionTimeout.hint") }
+                                                    value={ sessionManagementConfig?.enableMaximumSessionTimeout
+                                                        ? [ "enableMaximumSessionTimeout" ] : [] }
+                                                    readOnly={ isSubOrganization() || !hasConnectorUpdatePermission }
+                                                    listen={ (values: SessionManagementConfigFormValuesInterface) => {
+                                                        setSessionManagementConfig({
+                                                            ...sessionManagementConfig,
+                                                            enableMaximumSessionTimeout:
+                                                                values.enableMaximumSessionTimeout
+                                                        });
+                                                    } }
+                                                    width={ 16 }
+                                                    data-componentid={
+                                                        `${ componentId }-enable-maximum-session-timeout`
+                                                    }
+                                                />
+                                                <Field.Input
+                                                    min={ SessionManagementConstants
+                                                        .SESSION_MANAGEMENT_CONFIG_FIELD_MIN_LENGTH }
+                                                    ariaLabel="Maximum Session Timeout Period Field"
+                                                    inputType="number"
+                                                    name="maximumSessionTimeout"
+                                                    label={ t("sessionManagement:form." +
+                                                "maximumSessionTimeout.label") }
+                                                    placeholder={ t("sessionManagement:form." +
+                                                "maximumSessionTimeout.placeholder") }
+                                                    hint={ t("sessionManagement:form." +
+                                                "maximumSessionTimeout.hint") }
+                                                    required={ sessionManagementConfig?.enableMaximumSessionTimeout }
+                                                    value={ sessionManagementConfig?.maximumSessionTimeout }
+                                                    readOnly={ isSubOrganization()
+                                                        || !hasConnectorUpdatePermission
+                                                        || !sessionManagementConfig?.enableMaximumSessionTimeout }
+                                                    disabled={ !sessionManagementConfig?.enableMaximumSessionTimeout }
+                                                    maxLength={ null }
+                                                    minLength={ SessionManagementConstants
+                                                        .SESSION_MANAGEMENT_CONFIG_FIELD_MIN_LENGTH }
+                                                    width="100%"
+                                                    data-componentid={
+                                                        `${ componentId }-maximum-session-timeout`
+                                                    }
                                                     labelPosition="right"
                                                 >
                                                     <input />

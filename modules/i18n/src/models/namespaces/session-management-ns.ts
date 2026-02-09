@@ -29,9 +29,19 @@ export interface SessionManagementNS {
             label: string;
             placeholder: string;
         };
+        enableMaximumSessionTimeout: {
+            hint: string;
+            label: string;
+        };
+        maximumSessionTimeout: {
+            hint: string;
+            label: string;
+            placeholder: string;
+        };
         validation: {
             rememberMePeriod: string;
             idleSessionTimeout: string;
+            maximumSessionTimeout: string;
         };
     };
     notifications: {
