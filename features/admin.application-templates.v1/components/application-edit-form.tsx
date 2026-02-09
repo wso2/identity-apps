@@ -29,6 +29,7 @@ import {
     SupportedAuthProtocolTypes,
     WSTrustConfigurationInterface
 } from "@wso2is/admin.applications.v1/models/application-inbound";
+import { EmphasizedSegment } from "@wso2is/react-components";
 import { TemplateDynamicForm } from "@wso2is/admin.template-core.v1/components/template-dynamic-form";
 import { DynamicFieldInterface } from "@wso2is/admin.template-core.v1/models/dynamic-fields";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -278,18 +279,23 @@ export const ApplicationEditForm: FunctionComponent<ApplicationEditFormPropsInte
     };
 
     return (
-        <TemplateDynamicForm
-            customValidations={ customValidations }
-            customInitializers={ customInitializers }
-            customSubmissionHandlers={ customSubmissionHandlers }
-            form={ tab?.form }
-            initialFormValues={ initialValues as unknown as Record<string, unknown> }
-            templatePayload={ templateData?.payload as unknown as Record<string, unknown> }
-            buttonText={ t("common:update") }
-            onFormSubmit={ handleFormSubmission }
-            isLoading={ isLoading || isTemplateDataFetchRequestLoading }
-            readOnly={ readOnly }
-            data-componentid={ componentId }
-        />
+        <EmphasizedSegment
+            data-componentid={`${componentId}-form`}
+            padded="very"
+        >
+            <TemplateDynamicForm
+                customValidations={ customValidations }
+                customInitializers={ customInitializers }
+                customSubmissionHandlers={ customSubmissionHandlers }
+                form={ tab?.form }
+                initialFormValues={ initialValues as unknown as Record<string, unknown> }
+                templatePayload={ templateData?.payload as unknown as Record<string, unknown> }
+                buttonText={ t("common:update") }
+                onFormSubmit={ handleFormSubmission }
+                isLoading={ isLoading || isTemplateDataFetchRequestLoading }
+                readOnly={ readOnly }
+                data-componentid={ componentId }
+            />
+        </EmphasizedSegment>
     );
 };

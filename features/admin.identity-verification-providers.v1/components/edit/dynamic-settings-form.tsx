@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { EmphasizedSegment } from "@wso2is/react-components";
 import { TemplateDynamicForm } from "@wso2is/admin.template-core.v1/components/template-dynamic-form";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
@@ -95,7 +96,10 @@ const DynamicSettingsForm: FunctionComponent<DynamicSettingsFormPropsInterface> 
     };
 
     return (
-        <>
+        <EmphasizedSegment
+            data-componentid={`${componentId}-form`}
+            padded="very"
+        >
             <TemplateDynamicForm
                 customValidations={ customValidations }
                 customInitializers={ customInitializers }
@@ -109,7 +113,7 @@ const DynamicSettingsForm: FunctionComponent<DynamicSettingsFormPropsInterface> 
                 data-componentid={ componentId }
             />
             { resolveDangerZone() }
-        </>
+        </EmphasizedSegment>
     );
 };
 
