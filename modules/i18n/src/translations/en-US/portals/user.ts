@@ -109,7 +109,7 @@ export const user: userNS = {
             },
             sharedAccess: {
                 allRolesAndOrgsSharingMessage: "All roles will be shared with all existing and future organizations.",
-                commonRoleSharingHint: "This set of roles will be shared with all existing and future organizations that the user is shared with.",
+                commonRoleSharingHint: "This set of roles will be shared and assigned to the user in all existing and future organizations.",
                 commonRoleSharingLabel: "Commonly Shared Roles",
                 doNotShareUser: "Do not share user with any organizations",
                 individualRoleSharingHint: "Configure role sharing for specific organizations individually.",
@@ -155,7 +155,7 @@ export const user: userNS = {
                 searchAvailableRolesPlaceholder: "Search available roles",
                 shareAllRoles: "Share all roles",
                 shareAllUser: "Share user with all organizations",
-                shareRoleSubsetWithAllOrgs: "Share only a subset of roles with all organizations",
+                shareRoleSubsetWithAllOrgs: "Share and assign only a subset of roles to the user in all organizations",
                 shareSelectedUser: "Share user with selected organizations",
                 shareTypeSwitchModal: {
                     description: "Choose how you want to proceed:",
