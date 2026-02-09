@@ -59,7 +59,6 @@ export const getUsersList = (
 ): Promise<UserListInterface> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -106,7 +105,6 @@ export const useUsersList = (
 ): RequestResultInterface<UserListInterface, RequestErrorInterface> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -149,7 +147,6 @@ export const addUser = (data: UserDetailsInterface): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
         data,
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
@@ -201,7 +198,6 @@ export const addBulkUsers = (data: SCIMBulkEndpointInterface): Promise<any> => {
 export const deleteUser = (userId: string): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/scim+json"
         },
         method: HttpMethods.DELETE,
@@ -258,7 +254,6 @@ export const useUserDetails = <Data = ProfileInfoInterface, Error = RequestError
 
     const requestConfig: RequestConfigInterface = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -288,7 +283,6 @@ export const useUserDetails = <Data = ProfileInfoInterface, Error = RequestError
 export const getUserDetails = (id: string, attributes: string): Promise<ProfileInfoInterface> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -321,7 +315,6 @@ export const updateUserInfo = (userId: string, data: PatchRoleDataInterface): Pr
     const requestConfig: RequestConfigInterface = {
         data,
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
@@ -354,7 +347,6 @@ export const getUserSessions = (userId: string): Promise<AxiosResponse<UserSessi
 
     const requestConfig: RequestConfigInterface = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -398,7 +390,6 @@ export const terminateUserSession = (userId: string, sessionId: string): Promise
 
     const requestConfig: RequestConfigInterface = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
@@ -441,7 +432,6 @@ export const terminateAllUserSessions = (userId: string): Promise<AxiosResponse>
 
     const requestConfig: RequestConfigInterface = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
@@ -534,7 +524,6 @@ export const shareUserWithAllOrganizations = (data: any): Promise<any> => {
             }
         },
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
@@ -570,7 +559,6 @@ export const unShareUserWithAllOrganizations = (data: any): Promise<any> => {
             }
         },
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
@@ -607,7 +595,6 @@ export const shareUserWithSelectedOrganizationsAndRoles = (data: any): Promise<a
             }
         },
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
@@ -644,7 +631,6 @@ export const unshareUserWithSelectedOrganizations = (data: any): Promise<any> =>
             }
         },
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
@@ -681,7 +667,6 @@ export const editUserRolesOfExistingOrganizations = (data: any): Promise<any> =>
             }
         },
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
