@@ -132,6 +132,7 @@ export interface userNS {
                 shareAllRoles: string;
                 shareAllUser: string;
                 shareRoleSubsetWithAllOrgs: string;
+                shareSelectedRoles: string;
                 shareSelectedUser: string;
                 commonRoleSharingLabel: string;
                 commonRoleSharingHint: string;
