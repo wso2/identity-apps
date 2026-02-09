@@ -267,6 +267,14 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
             return;
         }
 
+        // If there are no organizations in the response and no sharing mode,
+        // it means the user is not shared with any organization.
+        if (isEmpty(userShareData.organizations) && !userShareData.sharingMode) {
+            setShareType(ShareType.UNSHARE);
+
+            return;
+        }
+
         // If there is no sharing mode, it selective organization sharing is done.
         if (!userShareData.sharingMode) {
             setShareType(ShareType.SHARE_SELECTED);

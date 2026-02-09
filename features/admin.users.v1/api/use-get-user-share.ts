@@ -22,64 +22,7 @@ import useRequest, {
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { HttpMethods } from "@wso2is/core/models";
-
-/**
- * Interface for the user shared organizations response.
- */
-export interface UserSharedOrganizationsResponse {
-    /**
-     * Pagination links.
-     */
-    links?: Array<{
-        href: string;
-        rel: string;
-    }>;
-    /**
-     * Sharing mode configuration.
-     */
-    sharingMode?: {
-        policy: string;
-        roleAssignment?: {
-            mode: string;
-            roles?: Array<{
-                displayName: string;
-                audience: {
-                    display: string;
-                    type: string;
-                };
-            }>;
-        };
-    };
-    /**
-     * List of organizations where the user has shared access.
-     */
-    organizations?: Array<{
-        orgId: string;
-        orgName: string;
-        sharedUserId: string;
-        sharedType: string;
-        sharingMode?: {
-            policy: string;
-            roleAssignment?: {
-                mode: string;
-                roles?: Array<{
-                    displayName: string;
-                    audience: {
-                        display: string;
-                        type: string;
-                    };
-                }>;
-            };
-        };
-        roles?: Array<{
-            displayName: string;
-            audience: {
-                display: string;
-                type: string;
-            };
-        }>;
-    }>;
-}
+import { UserSharedOrganizationsResponse } from "../models/endpoints";
 
 /**
  * Hook to get user shared organizations.

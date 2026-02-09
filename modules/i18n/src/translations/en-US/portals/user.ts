@@ -156,6 +156,7 @@ export const user: userNS = {
                 shareAllRoles: "Share all roles",
                 shareAllUser: "Share user with all organizations",
                 shareRoleSubsetWithAllOrgs: "Share and assign only a subset of roles to the user in all organizations",
+                shareSelectedRoles: "Share selected roles",
                 shareSelectedUser: "Share user with selected organizations",
                 shareTypeSwitchModal: {
                     description: "Choose how you want to proceed:",
