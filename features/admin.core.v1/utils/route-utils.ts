@@ -21,7 +21,8 @@ import {
     PaletteIcon,
     ProfileFlowIcon,
     SquareUserIcon,
-    UserAsteriskIcon
+    UserAsteriskIcon,
+    UserFlowIcon
 } from "@oxygen-ui/react-icons";
 import { FeatureStatus } from "@wso2is/access-control";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";

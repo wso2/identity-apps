@@ -102,7 +102,6 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
 
     const defaultFilterConditionOptions = [
         { text: t("common:startsWith"), value: "sw" },
-        { text: t("common:endsWith"), value: "ew" },
         { text: t("common:contains"), value: "co" },
         { text: t("common:equals"), value: "eq" }
     ];

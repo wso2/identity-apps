@@ -1699,7 +1699,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
         {
             category: "customerData",
             component: lazy(() =>
-                import("@wso2is/admin.cds.v1/pages/profile")
+                import("@wso2is/admin.cds.v1/pages/profiles")
             ),
             exact: true,
             icon: {

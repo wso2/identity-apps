@@ -1,31 +1,60 @@
+/**
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 import axios from "axios";
-import {CDM_BASE_URL} from "../models/constants";
+import { CDM_BASE_URL } from "../models/constants";
+import { ProfilesListResponse } from "../models/profiles";
 
+export interface FetchProfilesParams {
+    filter?: string;
+    page_size?: number;
+    cursor?: string | null;
+    attributes?: string[];   // backend expects "attributes"
+}
 
-export const fetchProfiles = async (query = "") => {
-    const url = query
-        ? `${CDM_BASE_URL}/profiles?${query}`
-        : `${CDM_BASE_URL}`;
+export const fetchProfiles = async (
+    params: FetchProfilesParams = {}
+): Promise<ProfilesListResponse> => {
 
-    const res = await axios.get(url);
+    const res = await axios.get(`${CDM_BASE_URL}/profiles`, {
+        params: {
+            ...(params.filter ? { filter: params.filter } : {}),
+            ...(params.page_size ? { page_size: params.page_size } : {}),
+            ...(params.cursor ? { cursor: params.cursor } : {}),
+            ...(params.attributes?.length
+                ? { attributes: params.attributes.join(",") }
+                : {})
+        }
+    });
+
     return res.data;
 };
 
-export const fetchUserDetails = async (permaId) => {
+export const fetchUserDetails = async (profileId: string) => {
     try {
-        const response = await axios.get(`${CDM_BASE_URL}/profiles/${permaId}`);
+        const response = await axios.get(`${CDM_BASE_URL}/profiles/${profileId}`);
         return response.data;
     } catch (error) {
-        console.error(`Error fetching user details for ${permaId}:`, error);
+        console.error(`Error fetching user details for ${profileId}:`, error);
         return null;
     }
 };
 
-export const deleteUserProfile = async (permaId) => {
-
-    try {
-    const response = await axios.delete(`${CDM_BASE_URL}/profiles/${permaId}`);
-    } catch (error) {
-        throw new Error("Failed to delete user profile");
-    }
+export const deleteUserProfile = async (profileId: string): Promise<void> => {
+    await axios.delete(`${CDM_BASE_URL}/profiles/${profileId}`);
 };
