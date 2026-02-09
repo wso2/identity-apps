@@ -119,7 +119,7 @@ export const toAttributeDropdownOptions = (
         return {
             scope,
             label,
-            value: name,                                   // keep full for identity/traits
+            value: name,                       
             key: name
         };
     });

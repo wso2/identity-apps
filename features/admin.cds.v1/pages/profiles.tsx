@@ -41,6 +41,7 @@ import {
     fetchProfileSchemaByScope,
     toAttributeDropdownOptions
 } from "../api/profile-attributes";
+import { LinkButton } from "@wso2is/react-components";
 
 const DEFAULT_PAGE_SIZE = 10;
 
@@ -79,7 +80,6 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
 
     // ✅ Advanced search dropdown options (scoped)
     const [ filterAttributeOptions, setFilterAttributeOptions ] = useState<FilterAttributeOption[]>([]);
-
     const handleAlerts = (alert: AlertInterface) => {
         dispatch(addAlert(alert));
     };
@@ -187,6 +187,42 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
         return toAttributeDropdownOptions(scope, attrs) as FilterAttributeOption[];
     };
 
+    const showPlaceholders = (): ReactElement | null => {
+        // When search returns empty.
+        if (searchQuery && !isLoading && profileList.length === 0) {
+            return (
+                <EmptyPlaceholder
+                    action={ (
+                        <LinkButton onClick={ handleSearchQueryClear }>
+                            Clear search
+                        </LinkButton>
+                    ) }
+                    image={ getEmptyPlaceholderIllustrations().emptySearch }
+                    imageSize="tiny"
+                    title="No matching profiles"
+                    subtitle={ [
+                        "We couldn’t find any profiles matching your search.",
+                        "Try changing filters or clearing the search."
+                    ] }
+                />
+            );
+        }
+    
+        // When list is empty (no profiles at all).
+        if (!searchQuery && !isLoading && profileList.length === 0) {
+            return (
+                <EmptyPlaceholder
+                    image={ getEmptyPlaceholderIllustrations().newList }
+                    imageSize="tiny"
+                    title="No customer profiles found"
+                    subtitle={ [] }
+                />
+            );
+        }
+    
+        return null;
+    };
+
     const handlePaginationChange = (_: any, data: PaginationProps) => {
         const targetPage = data.activePage as number;
 
@@ -265,13 +301,15 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
                     
                     }
                 >
-                    <ProfilesList
-                        profiles={ profileList }
-                        isLoading={ isLoading }
-                        onRefresh={ () => fetchProfilesPage(currentCursor, activePage) }
-                        onSearchQueryClear={ handleSearchQueryClear }
-                        searchQuery={ searchQuery }
-                    />
+                    { showPlaceholders() ?? (
+                        <ProfilesList
+                            profiles={ profileList }
+                            isLoading={ isLoading }
+                            onRefresh={ () => fetchProfilesPage(currentCursor, activePage) }
+                            onSearchQueryClear={ handleSearchQueryClear }
+                            searchQuery={ searchQuery }
+                        />
+                    ) }
                 </ListLayout>
             )}
         </PageLayout>

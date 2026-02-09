@@ -60,6 +60,7 @@ export interface ProfileSchemaAttribute {
     value_type?: ValueType; // optional because sub_attributes refs may omit it
     merge_strategy?: MergeStrategy;
     mutability: Mutability;
+    multi_valued: boolean;
 
     // application_data only
     application_identifier?: string;
