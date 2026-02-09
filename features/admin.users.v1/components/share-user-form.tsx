@@ -1449,7 +1449,7 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                                                                     "displayName"
                                                                 ) }
                                                                 clearAdvancedRoleSharing={ clearAdvancedRoleSharing }
-                                                                disableOrgSelection={ true }
+                                                                disableOrgSelection={ false }
                                                             />
                                                         </div>
                                                     )
