@@ -111,7 +111,7 @@ export const Footer: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => (
     borderTop: `1px solid ${theme.palette.divider}`,
     display: "flex",
     justifyContent: "space-between",
-    marginTop: theme.spacing(4),
+    marginTop: "auto",
     paddingTop: theme.spacing(3)
 }));
 

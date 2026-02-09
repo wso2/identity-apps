@@ -16,10 +16,6 @@
  * under the License.
  */
 
-export * from "./component-ids";
-export * from "./default-redirect-urls";
-export * from "./integration-guides";
-export * from "./preset-logos";
-export * from "./sign-in-options";
-export * from "./templates";
-export * from "./validation";
+export { buildOnboardingGuideData } from "./build-guide-data";
+export { resolveGuideContent } from "./guide-content-resolver";
+export * from "./password-generator";

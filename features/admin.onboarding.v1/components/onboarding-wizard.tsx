@@ -242,19 +242,15 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardProps & IdentifiableCo
             // Create the application
             const result: CreatedApplicationResult = await createOnboardingApplication(onboardingData);
 
-            // Update multi-attribute login config if email or mobile is selected as identifier
-            if (onboardingData.signInOptions?.identifiers) {
-                const { email, mobile } = onboardingData.signInOptions.identifiers;
 
-                if (email || mobile) {
-                    try {
-                        await updateMultiAttributeLoginConfig(
-                            onboardingData.signInOptions.identifiers,
-                            isAlphanumericUsername
-                        );
-                    } catch (_multiAttrError) {
-                        // Silently handle - app was created successfully, multi-attribute config is secondary
-                    }
+            if (onboardingData.signInOptions?.identifiers && !isM2M) {
+                try {
+                    await updateMultiAttributeLoginConfig(
+                        onboardingData.signInOptions.identifiers,
+                        isAlphanumericUsername
+                    );
+                } catch (_multiAttrError) {
+                    // Silently handle - app was created successfully, multi-attribute config is secondary
                 }
             }
 
@@ -267,10 +263,8 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardProps & IdentifiableCo
                 }
             }
 
-            // Store the created application data
             setCreatedApplication(result);
 
-            // Show success message
             dispatch(addAlert({
                 description: `Application "${onboardingData.applicationName}" has been created successfully.`,
                 level: AlertLevels.SUCCESS,
@@ -293,7 +287,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardProps & IdentifiableCo
         } finally {
             setIsCreatingApp(false);
         }
-    }, [ onboardingData, setCreatedApplication, dispatch, isAlphanumericUsername ]);
+    }, [ onboardingData, setCreatedApplication, dispatch, isAlphanumericUsername, isM2M ]);
 
     const handleNext = useCallback(async (): Promise<void> => {
         const nextStep: OnboardingStep = getNextStep(currentStep, onboardingData);
@@ -322,16 +316,6 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardProps & IdentifiableCo
     const handleSkip = useCallback((): void => {
         onSkip();
     }, [ onSkip ]);
-
-    const handleAIIntegration = useCallback((): void => {
-        // TODO: Implement AI integration flow
-        onComplete(onboardingData);
-    }, [ onboardingData, onComplete ]);
-
-    const handleManualIntegration = useCallback((): void => {
-        // TODO: Navigate to documentation/guide
-        onComplete(onboardingData);
-    }, [ onboardingData, onComplete ]);
 
     const isFirstStep: boolean = currentStep === OnboardingStep.WELCOME;
     const isSuccessStep: boolean = currentStep === OnboardingStep.SUCCESS;
@@ -379,6 +363,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardProps & IdentifiableCo
                 <SignInOptionsStep
                     brandingConfig={ onboardingData.brandingConfig }
                     data-componentid={ `${componentId}-sign-in-options` }
+                    isAlphanumericUsername={ isAlphanumericUsername }
                     onSignInOptionsChange={ updateSignInOptions }
                     signInOptions={ onboardingData.signInOptions }
                 />
@@ -388,6 +373,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardProps & IdentifiableCo
                 <DesignLoginStep
                     brandingConfig={ onboardingData.brandingConfig }
                     data-componentid={ `${componentId}-design-login` }
+                    isAlphanumericUsername={ isAlphanumericUsername }
                     onBrandingConfigChange={ updateBrandingConfig }
                     signInOptions={ onboardingData.signInOptions }
                 />
@@ -400,15 +386,14 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardProps & IdentifiableCo
                     data-componentid={ `${componentId}-success` }
                     framework={ onboardingData.framework }
                     isM2M={ isM2M }
-                    onAIIntegrationClick={ handleAIIntegration }
-                    onManualIntegrationClick={ handleManualIntegration }
+                    redirectUrls={ onboardingData.redirectUrls }
                     signInOptions={ onboardingData.signInOptions }
                     templateId={ onboardingData.templateId }
                 />
             ) }
 
-            { !isSuccessStep && (
-                <Footer>
+            <Footer>
+                { !isSuccessStep && (
                     <Button
                         data-componentid={ `${componentId}-skip-button` }
                         onClick={ handleSkip }
@@ -416,28 +401,28 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardProps & IdentifiableCo
                     >
                         Skip and go to Console
                     </Button>
-                    <ActionButtons>
-                        { !isFirstStep && (
-                            <SecondaryButton
-                                data-componentid={ `${componentId}-back-button` }
-                                onClick={ handleBack }
-                                variant="outlined"
-                            >
-                                Back
-                            </SecondaryButton>
-                        ) }
-                        <PrimaryButton
-                            color="primary"
-                            data-componentid={ `${componentId}-next-button` }
-                            disabled={ isNextDisabled || isCreatingApp }
-                            onClick={ handleNext }
-                            variant="contained"
+                ) }
+                <ActionButtons sx={ isSuccessStep ? { ml: "auto" } : undefined }>
+                    { !isFirstStep && !isSuccessStep && (
+                        <SecondaryButton
+                            data-componentid={ `${componentId}-back-button` }
+                            onClick={ handleBack }
+                            variant="outlined"
                         >
-                            { isCreatingApp ? "Creating..." : nextButtonText }
-                        </PrimaryButton>
-                    </ActionButtons>
-                </Footer>
-            ) }
+                            Back
+                        </SecondaryButton>
+                    ) }
+                    <PrimaryButton
+                        color="primary"
+                        data-componentid={ `${componentId}-next-button` }
+                        disabled={ isNextDisabled || isCreatingApp }
+                        onClick={ handleNext }
+                        variant="contained"
+                    >
+                        { isCreatingApp ? "Creating..." : nextButtonText }
+                    </PrimaryButton>
+                </ActionButtons>
+            </Footer>
         </ContentCard>
     );
 };
