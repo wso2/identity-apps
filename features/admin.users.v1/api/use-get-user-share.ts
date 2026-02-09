@@ -21,7 +21,6 @@ import useRequest, {
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
-import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
 import { HttpMethods } from "@wso2is/core/models";
 
 /**
@@ -106,7 +105,6 @@ const useGetUserShare = (
     after?: string,
     ...additionalAttributes: string[]
 ): RequestResultInterface<UserSharedOrganizationsResponse, RequestErrorInterface> => {
-    const { resourceEndpoints } = useResourceEndpoints();
 
     // Combine all attributes into a single comma-separated string
     const allAttributes: string = attributes
@@ -140,7 +138,8 @@ const useGetUserShare = (
     }
 
     const queryString: string = params.toString();
-    const url: string = `${resourceEndpoints.users}/${userId}/share${queryString ? `?${queryString}` : ""}`;
+    const url: string =
+        `http://localhost:3000/t/carbon.super/api/server/v2/users/${userId}/share${queryString ? `?${queryString}` : ""}`;
 
     const requestConfig: RequestConfigInterface = {
         headers: {
