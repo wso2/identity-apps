@@ -310,10 +310,15 @@ export const createOnboardingApplication = async (
     // Call the existing createApplication API
     const response: any = await createApplication(payload as any);
 
+    // Extract application ID from Location header (same pattern as Console wizards)
+    // The API returns the created app URL in Location header, e.g., /api/server/v1/applications/{uuid}
+    const location: string = response.headers?.location || "";
+    const applicationId: string = location.substring(location.lastIndexOf("/") + 1);
+
     // Extract relevant data from response
     const result: CreatedApplicationResult = {
-        applicationId: response.data?.id || response.id,
-        clientId: response.data?.inboundProtocols?.[0]?.self?.split("/").pop() ||
+        applicationId,
+        clientId: response.data?.inboundProtocolConfiguration?.oidc?.clientId ||
                   response.inboundProtocolConfiguration?.oidc?.clientId ||
                   "",
         name: data.applicationName || "My Application"

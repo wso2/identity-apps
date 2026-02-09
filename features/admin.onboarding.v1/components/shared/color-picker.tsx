@@ -25,6 +25,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, memo, useCallback, useRef, useState } from "react";
 import { OnboardingComponentIds, PRESET_COLORS, isValidHexColor } from "../../constants";
 import Hint from "./hint";
+import { SectionLabel } from "./onboarding-styles";
 
 /**
  * Props interface for ColorPicker component.
@@ -118,14 +119,6 @@ const HexColorInput: any = styled("input")({
     position: "absolute",
     width: 0
 });
-
-/**
- * Label for the section.
- */
-const SectionLabel: typeof Typography = styled(Typography)(({ theme }: { theme: Theme }) => ({
-    color: theme.palette.text.secondary,
-    fontSize: "0.8125rem"
-}));
 
 /**
  * Color picker component with grid swatches and custom color input.

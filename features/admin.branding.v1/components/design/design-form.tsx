@@ -65,6 +65,7 @@ import { BrandingModes, BrandingPreferencesConstants } from "../../constants/bra
 import useBrandingPreference from "../../hooks/use-branding-preference";
 import { BrandingPreferenceMeta } from "../../meta/branding-preference-meta";
 import { PredefinedLayouts } from "../../meta/layouts";
+import { resolveBrandingLogoUrl } from "../../utils/resolve-branding-logo";
 
 /**
  * Interface for Branding Preference Design Form props.
@@ -435,7 +436,7 @@ export const DesignForm: FunctionComponent<DesignFormPropsInterface> = forwardRe
                             size="tiny"
                             icon={
                                 !isEmpty(theme[theme.activeTheme].images.logo.imgURL)
-                                    ? theme[theme.activeTheme].images.logo.imgURL
+                                    ? resolveBrandingLogoUrl(theme[theme.activeTheme].images.logo.imgURL)
                                     : Object.prototype.hasOwnProperty.call(
                                         BrandingPreferenceMeta.getBrandingPreferenceInternalFallbacks(themeName).theme,
                                         theme.activeTheme

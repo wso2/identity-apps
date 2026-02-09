@@ -20,8 +20,10 @@ import { BrandingPreferenceInterface } from "@wso2is/common.branding.v1/models";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, {
     FunctionComponent,
-    ReactElement
+    ReactElement,
+    useMemo
 } from "react";
+import { resolveBrandingLogoUrl } from "../../utils/resolve-branding-logo";
 
 /**
  * Proptypes for the product header component of login screen skeleton.
@@ -48,12 +50,20 @@ export const ProductHeader: FunctionComponent<ProductHeaderInterface> = (
         brandingPreference
     } = props;
 
+    const logoUrl: string = brandingPreference.theme[ brandingPreference.theme.activeTheme ].images.logo.imgURL;
+
+    /**
+     * Resolve the logo URL to a displayable image source.
+     * Handles avatar URLs from onboarding wizard by returning bundled images.
+     */
+    const resolvedLogoUrl: string = useMemo(() => {
+        return resolveBrandingLogoUrl(logoUrl);
+    }, [ logoUrl ]);
+
     return (
         <div className="theme-icon inline auto transparent product-logo portal-logo" data-componentid={ componentId }>
             <img
-                src={
-                    brandingPreference.theme[ brandingPreference.theme.activeTheme ].images.logo.imgURL
-                }
+                src={ resolvedLogoUrl }
                 id="product-logo"
                 alt={
                     brandingPreference.theme[ brandingPreference.theme.activeTheme ].images.logo.altText

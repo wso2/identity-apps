@@ -53,7 +53,7 @@ const StyledFormControlLabel = styled(FormControlLabel)(({ theme }: { theme: The
     display: "flex",
     justifyContent: "space-between",
     margin: 0,
-    padding: theme.spacing(1.5, 2),
+    padding: theme.spacing(0.7, 2),
     transition: "background-color 150ms ease-out",
     width: "100%",
     "&:hover": {
@@ -127,6 +127,7 @@ const SignInOptionToggle: FunctionComponent<SignInOptionToggleProps> = memo((
         <StyledFormControlLabel
             control={
                 <Switch
+                size="small"
                     checked={ isEnabled }
                     disabled={ disabled }
                     onChange={ handleChange }

@@ -59,7 +59,8 @@ const Title: typeof Typography = styled(Typography)(({ theme }: { theme: Theme }
  * Subtitle styling.
  */
 const Subtitle: typeof Typography = styled(Typography)(({ theme }: { theme: Theme }) => ({
-    color: theme.palette.text.secondary
+    color: theme.palette.text.secondary,
+    fontSize: "15px"
 }));
 
 /**
@@ -75,7 +76,7 @@ const StepHeader: FunctionComponent<StepHeaderProps> = (props: StepHeaderProps):
 
     return (
         <StepHeaderContainer data-componentid={ componentId }>
-            <Title variant="h3">
+            <Title variant="h2">
                 { title }
             </Title>
             { subtitle && (

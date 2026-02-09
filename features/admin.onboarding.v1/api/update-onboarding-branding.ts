@@ -17,13 +17,24 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
+import { BrandingPreferencesConstants } from "@wso2is/admin.branding.v1/constants/branding-preferences-constants";
+import { BrandingPreferenceUtils } from "@wso2is/admin.branding.v1/utils/branding-preference-utils";
 import { I18nConstants } from "@wso2is/admin.core.v1/constants/i18n-constants";
 import { store } from "@wso2is/admin.core.v1/store";
 import {
-    BrandingPreferenceTypes
+    BrandingPreferenceInterface,
+    BrandingPreferenceThemeInterface,
+    BrandingPreferenceTypes,
+    PredefinedThemes
 } from "@wso2is/common.branding.v1/models";
 import { HttpMethods } from "@wso2is/core/models";
+import merge from "lodash-es/merge";
 import { OnboardingBrandingConfig } from "../models";
+
+/**
+ * Default theme name used to load theme variables.
+ */
+const DEFAULT_THEME: string = "default";
 
 /**
  * Get an axios instance.
@@ -34,56 +45,52 @@ const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
 
 /**
  * Get default branding preference structure.
+ * Uses the same DEFAULT_PREFERENCE as Console's branding feature.
  *
- * @returns Default branding preference
+ * @returns Complete default branding preference
  */
-const getDefaultBrandingPreference = (): any => ({
-    theme: {
-        LIGHT: {
-            colors: {
-                primary: {
-                    main: "#ff7300"
-                }
-            },
-            images: {
-                logo: {
-                    altText: "Logo",
-                    imgURL: ""
-                }
-            }
-        },
-        activeTheme: "LIGHT"
-    }
-});
+const getDefaultBrandingPreference = (): BrandingPreferenceInterface => {
+    // Use the complete default structure from the branding constants
+    // structuredClone creates a deep copy to avoid mutating the original
+    return structuredClone(BrandingPreferencesConstants.DEFAULT_PREFERENCE);
+};
 
 /**
- * Merge onboarding branding config with existing preference.
+ * Merge onboarding branding config with default/existing preference.
+ * Uses lodash merge for deep merging (same pattern as Console).
+ * Incorporates predefined theme values from theme-variables.json for proper defaults.
  *
  * @param brandingConfig - Onboarding branding configuration
+ * @param predefinedTheme - Predefined theme preferences loaded from theme-variables.json
  * @param existingPreference - Existing branding preference (optional)
- * @returns Merged branding preference
+ * @returns Complete merged branding preference
  */
 const mergeBrandingPreference = (
     brandingConfig: OnboardingBrandingConfig,
-    existingPreference?: any
-): any => {
-    const base: any = existingPreference || getDefaultBrandingPreference();
+    predefinedTheme: BrandingPreferenceThemeInterface,
+    existingPreference?: BrandingPreferenceInterface
+): BrandingPreferenceInterface => {
+    const base: BrandingPreferenceInterface = existingPreference || getDefaultBrandingPreference();
 
-    return {
-        ...base,
+    // Deep merge: base structure + predefined theme values + user's customizations
+    return merge({}, base, {
+        configs: {
+            isBrandingEnabled: true  // Enable branding since user customized it
+        },
         theme: {
-            ...base.theme,
-            LIGHT: {
-                ...base.theme?.LIGHT,
+            // Merge predefined theme (has proper border radius values from theme-variables.json)
+            ...predefinedTheme,
+            // Override with user's customizations for LIGHT theme
+            [PredefinedThemes.LIGHT]: {
+                ...predefinedTheme[PredefinedThemes.LIGHT],
                 colors: {
-                    ...base.theme?.LIGHT?.colors,
+                    ...predefinedTheme[PredefinedThemes.LIGHT]?.colors,
                     primary: {
-                        ...base.theme?.LIGHT?.colors?.primary,
                         main: brandingConfig.primaryColor
                     }
                 },
                 images: {
-                    ...base.theme?.LIGHT?.images,
+                    ...predefinedTheme[PredefinedThemes.LIGHT]?.images,
                     logo: {
                         altText: brandingConfig.logoAltText || "Logo",
                         imgURL: brandingConfig.logoUrl || ""
@@ -91,25 +98,30 @@ const mergeBrandingPreference = (
                 }
             }
         }
-    };
+    });
 };
 
 /**
- * Update branding preferences from onboarding configuration.
+ * Update application branding preferences from onboarding configuration.
  *
+ * @param applicationId - The application ID to apply branding to
  * @param brandingConfig - Onboarding branding configuration
- * @param tenantDomain - Tenant domain
  * @returns Promise that resolves when branding is updated
  */
-export const updateOnboardingBranding = async (
-    brandingConfig: OnboardingBrandingConfig,
-    tenantDomain: string
+export const updateApplicationBranding = async (
+    applicationId: string,
+    brandingConfig: OnboardingBrandingConfig
 ): Promise<void> => {
     const locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE;
-    let existingPreference: any;
+    let existingPreference: BrandingPreferenceInterface | undefined;
     let isBrandingAlreadyConfigured: boolean = false;
 
-    // Try to get existing branding preference
+    // Load predefined theme preferences from theme-variables.json
+    // This provides proper default values for border radius, colors, etc.
+    const predefinedTheme: BrandingPreferenceThemeInterface =
+        await BrandingPreferenceUtils.getPredefinedThemePreferences(DEFAULT_THEME);
+
+    // Try to get existing branding preference for this application
     try {
         const requestConfig: any = {
             headers: {
@@ -119,8 +131,8 @@ export const updateOnboardingBranding = async (
             method: HttpMethods.GET,
             params: {
                 locale,
-                name: tenantDomain,
-                type: BrandingPreferenceTypes.ORG
+                name: applicationId,
+                type: BrandingPreferenceTypes.APP
             },
             url: store.getState().config.endpoints.brandingPreference
         };
@@ -136,19 +148,20 @@ export const updateOnboardingBranding = async (
         isBrandingAlreadyConfigured = false;
     }
 
-    // Merge with existing preference
-    const mergedPreference: any = mergeBrandingPreference(
+    // Merge with existing preference and predefined theme values
+    const mergedPreference: BrandingPreferenceInterface = mergeBrandingPreference(
         brandingConfig,
+        predefinedTheme,
         existingPreference
     );
 
-    // Update or create branding preference
+    // Update or create application branding preference
     const updateConfig: any = {
         data: {
             locale,
-            name: tenantDomain,
+            name: applicationId,
             preference: mergedPreference,
-            type: BrandingPreferenceTypes.ORG
+            type: BrandingPreferenceTypes.APP
         },
         headers: {
             "Accept": "application/json",

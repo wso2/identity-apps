@@ -17,7 +17,6 @@
  */
 
 import { Theme, styled } from "@mui/material/styles";
-import Avatar from "@oxygen-ui/react/Avatar";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
 import Paper from "@oxygen-ui/react/Paper";
@@ -27,6 +26,7 @@ import { getConnectionIcons } from "@wso2is/admin.connections.v1/configs/ui";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, memo, useMemo } from "react";
 import { OnboardingComponentIds } from "../../constants";
+import { getAnimalNameFromUrl, getAvatarDisplayImage } from "../../constants/preset-logos";
 import { OnboardingBrandingConfig, SignInOptionsConfig } from "../../models";
 
 /**
@@ -361,13 +361,16 @@ const LoginBoxPreview: FunctionComponent<LoginBoxPreviewProps> = memo((
                                 { /* Logo display when selected */ }
                                 { brandingConfig.logoUrl && (
                                     <Box sx={ { display: "flex", justifyContent: "center", mb: 1 } }>
-                                        <Avatar
-                                            src={ brandingConfig.logoUrl }
+                                        <Box
+                                            component="img"
+                                            src={ getAvatarDisplayImage(
+                                                getAnimalNameFromUrl(brandingConfig.logoUrl)
+                                            ) }
+                                            alt="Application logo"
                                             sx={ {
-                                                backgroundColor: primaryColor,
                                                 height: 56,
-                                                width: 56,
-                                                padding: "3px"
+                                                objectFit: "cover",
+                                                width: 56
                                             } }
                                         />
                                     </Box>

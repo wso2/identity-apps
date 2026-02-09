@@ -74,8 +74,8 @@ const IconContainer: any = styled(Box, {
     shouldForwardProp: (prop: string) => prop !== "variant"
 })<IconContainerProps>(({ theme, variant = "default" }: IconContainerProps & { theme: Theme }) => ({
     "& svg": {
-        height: 24,
-        width: 24
+        height: 28,
+        width: 28
     },
     alignItems: "center",
     display: "flex",
@@ -114,10 +114,9 @@ const CardTitle: any = styled(Typography, {
     color: theme.palette.text.primary,
     lineHeight: 1.4,
     ...(cardVariant === "compact" ? {
-        fontSize: "0.875rem",
+        fontSize: "0.9375rem",
         fontWeight: 500
     } : {
-        fontSize: "0.9375rem",
         fontWeight: 600
     })
 }));
@@ -127,7 +126,7 @@ const CardTitle: any = styled(Typography, {
  */
 const CardDescription: any = styled(Typography)(({ theme }: { theme: Theme }) => ({
     color: theme.palette.text.secondary,
-    fontSize: "0.8125rem",
+    fontSize: "0.9375rem",
     lineHeight: 1.5
 }));
 

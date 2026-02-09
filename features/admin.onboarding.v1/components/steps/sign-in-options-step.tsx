@@ -18,6 +18,8 @@
 
 import { Theme, styled } from "@mui/material/styles";
 import Alert from "@oxygen-ui/react/Alert";
+import IconButton from "@oxygen-ui/react/IconButton";
+import { XMarkIcon } from "@oxygen-ui/react-icons";
 import Box from "@oxygen-ui/react/Box";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -34,7 +36,7 @@ import {
     SignInOptionsValidation
 } from "../../models";
 import LoginBoxPreview from "../shared/login-box-preview";
-import { LeftColumn, RightColumn, TwoColumnLayout } from "../shared/onboarding-styles";
+import { LeftColumn, RightColumn, SectionLabel, TwoColumnLayout } from "../shared/onboarding-styles";
 import SignInOptionToggle from "../shared/sign-in-option-toggle";
 import StepHeader from "../shared/step-header";
 
@@ -60,18 +62,6 @@ const OptionSection = styled(Box)(({ theme }: { theme: Theme }) => ({
 }));
 
 /**
- * Section title.
- */
-const SectionTitle = styled(Typography)(({ theme }: { theme: Theme }) => ({
-    color: theme.palette.text.secondary,
-    fontSize: "0.75rem",
-    fontWeight: 600,
-    letterSpacing: "0.5px",
-    marginBottom: theme.spacing(0.5),
-    textTransform: "uppercase"
-}));
-
-/**
  * Fixed section for identifiers.
  */
 const FixedSection = styled(Box)(({ theme }: { theme: Theme }) => ({
@@ -79,7 +69,7 @@ const FixedSection = styled(Box)(({ theme }: { theme: Theme }) => ({
     flexDirection: "column",
     gap: theme.spacing(1.5),
     marginBottom: theme.spacing(2),
-    maxWidth: 400
+    // maxWidth: 500
 }));
 
 /**
@@ -90,7 +80,7 @@ const OptionsContainer = styled(Box)(({ theme }: { theme: Theme }) => ({
     flex: 1,
     flexDirection: "column",
     gap: theme.spacing(3),
-    maxWidth: 400,
+    // maxWidth: 500,
     overflowY: "auto",
     paddingRight: theme.spacing(1),
     // Custom scrollbar styling
@@ -187,10 +177,12 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepProps> = (
         [ signInOptions ]
     );
 
+    const [ open, setOpen ] = React.useState(true);
+
     // Show info note when email or mobile identifier is selected
     const showIdentifierNote: boolean = useMemo(
-        () => signInOptions.identifiers.email || signInOptions.identifiers.mobile,
-        [ signInOptions.identifiers.email, signInOptions.identifiers.mobile ]
+        () => signInOptions.identifiers.email || signInOptions.identifiers.mobile || signInOptions.identifiers.username,
+        [ signInOptions.identifiers.email, signInOptions.identifiers.mobile, signInOptions.identifiers.username ]
     );
 
     return (
@@ -198,14 +190,14 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepProps> = (
             <LeftColumn>
                 <StepHeader
                     data-componentid={ `${componentId}-header` }
-                    subtitle="Choose how your users will identify themselves and verify their identity."
+                    subtitle="Choose how your application's users will identify themselves and verify their identity."
                     title="How do you want users to sign in?"
                 />
 
                 { /* Identifiers section - fixed at top */ }
                 <FixedSection>
                     <OptionSection>
-                        <SectionTitle>Identifiers</SectionTitle>
+                        <SectionLabel>Identifiers</SectionLabel>
                         { IDENTIFIER_OPTIONS.map((option) => (
                             <SignInOptionToggle
                                 isEnabled={
@@ -226,14 +218,29 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepProps> = (
                     { /* Informational note - shown when email or mobile is selected */ }
                     { showIdentifierNote && (
                         <Alert
+                            hidden={ !open }
                             severity="info"
+                            action={
+                                (<IconButton
+                                    aria-label="close"
+                                    color="inherit"
+                                    size="small"
+                                    onClick={() => {
+                                        setOpen(false);
+                                    }}
+                                >
+                                    <XMarkIcon />
+                                </IconButton>)
+                            }
                             data-componentid={ `${componentId}-identifier-note` }
                         >
                             This identifier setting applies across all applications in your organization.
                         </Alert>
                     ) }
                 </FixedSection>
-                <SectionTitle>Login Methods</SectionTitle>
+                <SectionLabel>
+                    Login Methods
+                </SectionLabel>
 
                 { /* Login Methods */ }
                 <OptionsContainer>
