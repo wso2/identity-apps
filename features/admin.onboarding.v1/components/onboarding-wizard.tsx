@@ -40,6 +40,7 @@ import SuccessStep from "./steps/success-step";
 import WelcomeStep from "./steps/welcome-step";
 import { createOnboardingApplication } from "../api/create-onboarding-application";
 import { updateMultiAttributeLoginConfig } from "../api/multi-attribute-login";
+import { isBrandingCustomized, updateApplicationBranding } from "../api/update-onboarding-branding";
 import {
     DEFAULT_BRANDING_CONFIG,
     DEFAULT_SIGN_IN_OPTIONS,
@@ -254,6 +255,15 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardProps & IdentifiableCo
                     } catch (_multiAttrError) {
                         // Silently handle - app was created successfully, multi-attribute config is secondary
                     }
+                }
+            }
+
+            // Update application branding if customized (logo or color changed from defaults)
+            if (onboardingData.brandingConfig && isBrandingCustomized(onboardingData.brandingConfig)) {
+                try {
+                    await updateApplicationBranding(result.applicationId, onboardingData.brandingConfig);
+                } catch (_brandingError) {
+                    // Silently handle - app was created successfully, branding is secondary
                 }
             }
 

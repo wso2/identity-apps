@@ -19,6 +19,7 @@
 import { Theme, styled } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
 import Button from "@oxygen-ui/react/Button";
+import Typography from "@oxygen-ui/react/Typography";
 
 /**
  * Vertical divider in header.
@@ -90,6 +91,17 @@ export const RightColumn: typeof Box = styled(Box)(() => ({
     flex: 1,
     justifyContent: "center"
 }));
+
+/**
+ * Section label
+ */
+export const SectionLabel = styled(Typography)(({ theme }) => ({
+    color: theme.palette.text.secondary,
+    fontSize: "0.97rem",
+    fontWeight: 500,
+    marginBottom: theme.spacing(2)
+}));
+
 
 /**
  * Footer with navigation buttons.

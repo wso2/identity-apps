@@ -91,29 +91,19 @@ const DesignLoginStep: FunctionComponent<DesignLoginStepProps> = (
         });
     }, [ brandingConfig, onBrandingConfigChange ]);
 
-    const handleLogoSuggestionsChange: (logos: string[]) => void = useCallback((logos: string[]): void => {
-        onBrandingConfigChange({
-            ...brandingConfig,
-            logoSuggestions: logos
-        });
-    }, [ brandingConfig, onBrandingConfigChange ]);
-
     return (
         <TwoColumnLayout data-componentid={ componentId }>
             <LeftColumn>
                 <StepHeader
                     data-componentid={ `${componentId}-header` }
-                    title="Design your login"
+                    title="Design your application's login"
                 />
 
                 <DesignOptionsContainer>
                     <LogoSelector
                         data-componentid={ `${componentId}-logo-selector` }
-                        label="Choose an application logo"
-                        logoSuggestions={ brandingConfig.logoSuggestions }
+                        label="Choose a logo"
                         onLogoSelect={ handleLogoSelect }
-                        onLogoSuggestionsChange={ handleLogoSuggestionsChange }
-                        primaryColor={ brandingConfig.primaryColor }
                         selectedLogoUrl={ brandingConfig.logoUrl }
                     />
 

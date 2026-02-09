@@ -17,15 +17,18 @@
  */
 
 import { Theme, styled } from "@mui/material/styles";
-import Avatar from "@oxygen-ui/react/Avatar";
 import Box from "@oxygen-ui/react/Box";
-import Link from "@oxygen-ui/react/Link";
 import Tooltip from "@oxygen-ui/react/Tooltip";
-import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, memo, useCallback, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, ReactElement, memo, useCallback, useEffect, useRef } from "react";
 import { OnboardingComponentIds } from "../../constants";
-import { generateLogoSuggestions, getAnimalNameFromUrl } from "../../constants/preset-logos";
+import {
+    AVATAR_NAMES,
+    getAnimalNameFromUrl,
+    getAvatarDisplayImage,
+    getAvatarLogoUrl
+} from "../../constants/preset-logos";
+import { SectionLabel } from "./onboarding-styles";
 
 /**
  * Props interface for LogoSelector component.
@@ -37,14 +40,6 @@ export interface LogoSelectorProps extends IdentifiableComponentInterface {
     onLogoSelect: (logoUrl: string | undefined) => void;
     /** Label for the selector */
     label?: string;
-    /** Logo suggestions from parent */
-    logoSuggestions?: string[];
-    /** Callback when logo suggestions change */
-    onLogoSuggestionsChange?: (logos: string[]) => void;
-    /** Number of logo suggestions to show */
-    suggestionCount?: number;
-    /** Primary color to use for selection styling */
-    primaryColor?: string;
 }
 
 /**
@@ -57,15 +52,6 @@ const LogoSelectorContainer: typeof Box = styled(Box)(({ theme }: { theme: Theme
 }));
 
 /**
- * Header container with label and shuffle link.
- */
-const HeaderContainer: typeof Box = styled(Box)({
-    alignItems: "center",
-    display: "flex",
-    justifyContent: "space-between"
-});
-
-/**
  * Grid container for logo options.
  */
 const LogoGrid: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
@@ -76,15 +62,8 @@ const LogoGrid: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
 }));
 
 /**
- * Section label.
- */
-const SectionLabel: typeof Typography = styled(Typography)(({ theme }: { theme: Theme }) => ({
-    color: theme.palette.text.secondary,
-    fontSize: "0.8125rem"
-}));
-
-/**
- * Logo selector component using Google's animal profile images.
+ * Logo selector component using local animal avatar images.
+ * Displays all available avatars for user selection.
  */
 const LogoSelector: FunctionComponent<LogoSelectorProps> = memo((
     props: LogoSelectorProps
@@ -92,38 +71,19 @@ const LogoSelector: FunctionComponent<LogoSelectorProps> = memo((
     const {
         selectedLogoUrl,
         onLogoSelect,
-        label = "Choose an application logo",
-        logoSuggestions,
-        onLogoSuggestionsChange,
-        suggestionCount = 8,
-        primaryColor = "#ff7300",
+        label = "Choose a logo",
         ["data-componentid"]: componentId = OnboardingComponentIds.LOGO_SELECTOR
     } = props;
 
-    // Use parent-provided logos or generate new ones
-    const getInitialLogos = (): string[] => {
-        // If parent provides logos, use them
-        if (logoSuggestions && logoSuggestions.length > 0) {
-            return logoSuggestions;
-        }
+    // Generate all logo URLs from avatar names
+    const logos: string[] = AVATAR_NAMES.map(getAvatarLogoUrl);
 
-        // Otherwise generate new logos
-        return generateLogoSuggestions(suggestionCount);
-    };
-
-    // Use ref to track if we've initialized (for internal state only)
+    // Track initialization to select first logo by default
     const initializedRef: React.MutableRefObject<boolean> = useRef<boolean>(false);
-    const [ logos, setLogos ] = useState<string[]>(getInitialLogos);
 
-    // Notify parent of initial logos if they don't have them yet
     useEffect(() => {
         if (!initializedRef.current) {
             initializedRef.current = true;
-
-            // If parent doesn't have logos yet, send them the initial set
-            if (onLogoSuggestionsChange && (!logoSuggestions || logoSuggestions.length === 0)) {
-                onLogoSuggestionsChange(logos);
-            }
 
             // Select first logo by default if none selected
             if (logos.length > 0 && !selectedLogoUrl) {
@@ -134,82 +94,56 @@ const LogoSelector: FunctionComponent<LogoSelectorProps> = memo((
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // Sync with parent-provided logos when they change
-    useEffect(() => {
-        if (logoSuggestions && logoSuggestions.length > 0) {
-            setLogos(logoSuggestions);
-        }
-    }, [ logoSuggestions ]);
-
-    const handleShuffle: () => void = useCallback((): void => {
-        const newLogos: string[] = generateLogoSuggestions(suggestionCount);
-
-        setLogos(newLogos);
-        onLogoSelect(newLogos[0]);
-
-        // Notify parent so they can persist the new logos
-        if (onLogoSuggestionsChange) {
-            onLogoSuggestionsChange(newLogos);
-        }
-    }, [ suggestionCount, onLogoSelect, onLogoSuggestionsChange ]);
-
     const handleLogoSelect: (logoUrl: string) => void = useCallback((logoUrl: string): void => {
         onLogoSelect(logoUrl);
     }, [ onLogoSelect ]);
 
     return (
         <LogoSelectorContainer data-componentid={ componentId }>
-            <HeaderContainer>
-                <SectionLabel>{ label }</SectionLabel>
-                <Link
-                    component="button"
-                    data-componentid={ `${componentId}-shuffle` }
-                    onClick={ handleShuffle }
-                    sx={ {
-                        "&:hover": {
-                            textDecoration: "underline"
-                        },
-                        color: primaryColor,
-                        cursor: "pointer",
-                        fontSize: "0.875rem",
-                        textDecoration: "none"
-                    } }
-                >
-                    Shuffle
-                </Link>
-            </HeaderContainer>
+            <SectionLabel>{ label }</SectionLabel>
             <LogoGrid>
                 { logos.map((logoUrl: string) => {
                     const isSelected: boolean = selectedLogoUrl === logoUrl;
                     const animalName: string = getAnimalNameFromUrl(logoUrl);
+                    const displayImageSrc: string = getAvatarDisplayImage(animalName);
 
                     return (
                         <Tooltip key={ logoUrl } title={ animalName }>
-                            <Avatar
-                                alt={ animalName }
+                            <Box
                                 data-componentid={ `${componentId}-${animalName.toLowerCase()}` }
                                 onClick={ () => handleLogoSelect(logoUrl) }
-                                src={ logoUrl }
-                                sx={ {
+                                sx={ (theme: Theme) => ({
                                     "&:hover": {
-                                        filter: "none",
-                                        opacity: 1,
+                                        borderColor: theme.palette.primary.main,
                                         transform: "scale(1.05)"
                                     },
-                                    backgroundColor: isSelected
-                                        ? primaryColor
-                                        : (theme: Theme) => theme.palette.grey[300],
+                                    alignItems: "center",
+                                    backgroundColor: theme.palette.background.paper,
                                     border: isSelected
-                                        ? `3px solid ${primaryColor}`
-                                        : "3px solid transparent",
+                                        ? `2px solid ${theme.palette.primary.main}`
+                                        : `2px solid ${theme.palette.divider}`,
+                                    borderRadius: "50%",
                                     cursor: "pointer",
-                                    filter: isSelected ? "none" : "grayscale(30%)",
-                                    height: 45,
-                                    opacity: isSelected ? 1 : 0.7,
-                                    transition: "all 0.2s ease-in-out",
-                                    width: 45
-                                } }
-                            />
+                                    display: "flex",
+                                    height: 50,
+                                    justifyContent: "center",
+                                    overflow: "hidden",
+                                    padding: "6px",
+                                    transition: "all 0.15s ease-in-out",
+                                    width: 50
+                                }) }
+                            >
+                                <Box
+                                    alt={ animalName }
+                                    component="img"
+                                    src={ displayImageSrc }
+                                    sx={ {
+                                        height: "100%",
+                                        objectFit: "contain",
+                                        width: "100%"
+                                    } }
+                                />
+                            </Box>
                         </Tooltip>
                     );
                 }) }

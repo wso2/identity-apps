@@ -28,7 +28,7 @@ import {
     FRAMEWORK_OPTIONS,
     OnboardingComponentIds
 } from "../../constants";
-import { LeftColumn, TwoColumnLayout } from "../shared/onboarding-styles";
+import { LeftColumn, SectionLabel, TwoColumnLayout } from "../shared/onboarding-styles";
 import SelectableCard from "../shared/selectable-card";
 import StepHeader from "../shared/step-header";
 import { ApplicationTypeOption, FrameworkOption } from "../../models";
@@ -51,30 +51,6 @@ const AppTypeGrid = styled(Box)(({ theme }) => ({
     display: "grid",
     gridTemplateColumns: "repeat(4, 1fr)",
     gap: theme.spacing(2)
-}));
-
-/**
- * OR divider with lines on both sides
- */
-const OrDivider = styled(Box)(({ theme }) => ({
-    display: "flex",
-    alignItems: "center",
-    gap: theme.spacing(2),
-    margin: theme.spacing(3, 0),
-    "& hr": {
-        flex: 1,
-        borderColor: theme.palette.divider
-    }
-}));
-
-/**
- * Section label
- */
-const SectionLabel = styled(Typography)(({ theme }) => ({
-    color: theme.palette.text.secondary,
-    fontSize: "0.8125rem",
-    fontWeight: 500,
-    marginBottom: theme.spacing(2)
 }));
 
 /**
@@ -191,20 +167,20 @@ const SelectApplicationTemplateStep: FunctionComponent<SelectApplicationTemplate
                 </Box>
 
                 { /* OR Divider */ }
-                <OrDivider>
-                    <Divider />
+                {/* <OrDivider> */}
+                    <Divider textAlign="left" sx={{ my: 4}}>
                     <Typography
                         variant="body2"
                         sx={ {
                             color: "text.secondary",
-                            fontSize: "0.8125rem",
+                            fontSize: "1rem",
                             fontWeight: 500
                         } }
                     >
-                        OR
+                        or
                     </Typography>
-                    <Divider />
-                </OrDivider>
+                    </Divider>
+                {/* </OrDivider> */}
 
                 { /* Application Type Selection Section */ }
                 <Box>

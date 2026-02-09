@@ -16,57 +16,75 @@
  * under the License.
  */
 
+import AlpacaAvatar from "../../themes/default/assets/images/avatars/alpaca.png";
+import ArmadilloAvatar from "../../themes/default/assets/images/avatars/armadillo.png";
+import BadgerAvatar from "../../themes/default/assets/images/avatars/badger.png";
+import ButterflyAvatar from "../../themes/default/assets/images/avatars/butterfly.png";
+import CheetahAvatar from "../../themes/default/assets/images/avatars/cheetah.png";
+import CowAvatar from "../../themes/default/assets/images/avatars/cow.png";
+import CrocodileAvatar from "../../themes/default/assets/images/avatars/crocodile.png";
 import { OnboardingBrandingConfig } from "../models";
 
 /**
- * Available animals for logo generation.
- * Uses Google's publicly available profile animal images.
- * Reference: https://github.com/asgardeo/thunder/blob/main/frontend/apps/thunder-develop/src/features/applications/utils/generateAppLogoSuggestion.ts
+ * Available avatar names for logo suggestions.
  */
-export const ANIMALS: string[] = [
-    "alligator", "anteater", "armadillo", "axolotl", "badger", "bat", "beaver",
-    "buffalo", "camel", "chinchilla", "chupacabra", "coyote", "crow", "dingo",
-    "dolphin", "dragon", "duck", "elephant", "ferret", "fox", "giraffe", "gopher",
-    "iguana", "kangaroo", "kiwi", "koala", "lemur", "leopard", "llama", "manatee",
-    "narwhal", "otter", "panda", "penguin", "platypus", "quokka", "raccoon",
-    "sheep", "squirrel", "tiger", "turtle", "walrus", "wolf", "wombat"
+export const AVATAR_NAMES: string[] = [
+    "alpaca",
+    "armadillo",
+    "badger",
+    "butterfly",
+    "cheetah",
+    "cow",
+    "crocodile"
 ];
 
 /**
- * Google's profile image URL base.
+ * Mapping of avatar names to imported image assets for display in Console.
  */
-export const GOOGLE_PROFILE_IMAGE_URL: string = "https://ssl.gstatic.com/docs/common/profile";
-
-/**
- * Generate animal logo URL from Google's CDN.
- *
- * @param animal - Animal name
- * @returns Full URL to the animal logo image
- */
-export const getAnimalLogoUrl = (animal: string): string => {
-    return `${GOOGLE_PROFILE_IMAGE_URL}/${animal}_lg.png`;
+export const AVATAR_IMAGES: Record<string, string> = {
+    alpaca: AlpacaAvatar,
+    armadillo: ArmadilloAvatar,
+    badger: BadgerAvatar,
+    butterfly: ButterflyAvatar,
+    cheetah: CheetahAvatar,
+    cow: CowAvatar,
+    crocodile: CrocodileAvatar
 };
 
 /**
- * Generate random logo suggestions.
- *
- * @param count - Number of suggestions to generate (default: 8)
- * @returns Array of logo URLs
+ * Base path for avatar images.
+ * This is the runtime path used by the branding API for JSP portals.
  */
-export const generateLogoSuggestions = (count: number = 8): string[] => {
-    const shuffled: string[] = [ ...ANIMALS ].sort(() => Math.random() - 0.5);
+export const AVATAR_BASE_PATH: string = "/libs/themes/default/assets/images/avatars";
 
-    return shuffled.slice(0, count).map(getAnimalLogoUrl);
+/**
+ * Generate avatar logo URL for the branding API (runtime path).
+ *
+ * @param avatar - Avatar name
+ * @returns Runtime path to the avatar image (for branding API)
+ */
+export const getAvatarLogoUrl = (avatar: string): string => {
+    return `${AVATAR_BASE_PATH}/${avatar}.png`;
 };
 
 /**
- * Extract animal name from logo URL.
+ * Get the display image source for an avatar (webpack bundled).
+ *
+ * @param avatarName - Avatar name (lowercase)
+ * @returns Bundled image source for display in Console
+ */
+export const getAvatarDisplayImage = (avatarName: string): string => {
+    return AVATAR_IMAGES[avatarName.toLowerCase()] || "";
+};
+
+/**
+ * Extract avatar name from logo URL.
  *
  * @param url - Logo URL
- * @returns Capitalized animal name or empty string if not found
+ * @returns Capitalized avatar name or empty string if not found
  */
 export const getAnimalNameFromUrl = (url: string): string => {
-    const match: RegExpMatchArray | null = url.match(/\/([a-z]+)_lg\.png$/);
+    const match: RegExpMatchArray | null = url.match(/\/([a-z]+)\.png$/);
 
     if (match) {
         return match[1].charAt(0).toUpperCase() + match[1].slice(1);
@@ -79,14 +97,14 @@ export const getAnimalNameFromUrl = (url: string): string => {
  * Preset color options for quick selection.
  */
 export const PRESET_COLORS: string[] = [
-    "#ff7300", // Orange (Asgardeo)
-    "#b71c1c", // Dark Red
-    "#e65100", // Deep Orange
-    "#43a047", // Green
-    "#7b1fa2", // Purple
-    "#c0ca33", // Lime
-    "#558b2f", // Dark Green
-    "#ff8f00"  // Amber
+    "#ff7300", // Orange (Asgardeo default)
+    "#3b82f6", // Blue
+    "#6366f1", // Indigo
+    "#14b8a6", // Teal
+    "#10b981", // Emerald
+    "#f59e0b", // Amber
+    "#ef4444", // Red
+    "#64748b"  // Slate
 ];
 
 /**
