@@ -75,6 +75,11 @@ export interface VerifiableCredentialsNS {
                 placeholder: string;
                 hint: string;
             };
+            attributes: {
+                label: string;
+                placeholder: string;
+                hint: string;
+            };
             submitButton: string;
         };
     };
@@ -93,6 +98,14 @@ export interface VerifiableCredentialsNS {
             identifier: {
                 label: string;
             };
+            format: {
+                label: string;
+                placeholder: string;
+                options: {
+                    vcSdJwt: string;
+                    jwtVcJson: string;
+                };
+            };
             expiresIn: {
                 label: string;
                 placeholder: string;
@@ -103,6 +116,9 @@ export interface VerifiableCredentialsNS {
                 placeholder: string;
                 hint: string;
             };
+            offer: {
+                label: string;
+            }
         };
         dangerZone: {
             header: string;

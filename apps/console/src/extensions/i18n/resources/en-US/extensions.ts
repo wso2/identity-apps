@@ -4017,6 +4017,7 @@ export const extensions: Extensions = {
                 attributeManagement: "Attribute Management",
                 AccountManagement: "Account Management",
                 userManagement: "Identity Management",
+                verifiableCredentials: "Verifiable Credentials",
                 workflows: "Workflows",
 
                 organizationSettings: "Organization Settings"
