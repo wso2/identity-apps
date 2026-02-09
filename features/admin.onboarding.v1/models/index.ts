@@ -224,6 +224,15 @@ export interface OnboardingBrandingConfig {
 // ============================================================================
 
 /**
+ * Test user credentials for testing the application.
+ */
+export interface TestUserCredentials {
+    username: string;
+    password: string;
+    email?: string;
+}
+
+/**
  * Result after application creation.
  */
 export interface CreatedApplicationResult {
@@ -231,6 +240,7 @@ export interface CreatedApplicationResult {
     clientId: string;
     clientSecret?: string;
     name: string;
+    testUserCredentials?: TestUserCredentials;
 }
 
 // ============================================================================

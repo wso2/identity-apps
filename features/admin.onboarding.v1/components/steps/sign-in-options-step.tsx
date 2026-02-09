@@ -32,6 +32,7 @@ import {
 } from "../../constants";
 import {
     OnboardingBrandingConfig,
+    SignInOptionDefinition,
     SignInOptionsConfig,
     SignInOptionsValidation
 } from "../../models";
@@ -50,6 +51,8 @@ interface SignInOptionsStepProps extends IdentifiableComponentInterface {
     onSignInOptionsChange: (options: SignInOptionsConfig) => void;
     /** Branding configuration for preview */
     brandingConfig?: OnboardingBrandingConfig;
+    /** Whether alphanumeric username is enabled */
+    isAlphanumericUsername?: boolean;
 }
 
 /**
@@ -111,13 +114,22 @@ const PreviewColumn = styled(RightColumn)(({ theme }: { theme: Theme }) => ({
 /**
  * Validate sign-in options configuration.
  * Simplified validation for the Identifier First approach.
+ *
+ * @param options - Sign-in options configuration
+ * @param isAlphanumericUsername - Whether alphanumeric username is enabled.
+ *        When false, email is always an implicit identifier.
  */
-const validateSignInOptions = (options: SignInOptionsConfig): SignInOptionsValidation => {
+const validateSignInOptions = (
+    options: SignInOptionsConfig,
+    isAlphanumericUsername: boolean
+): SignInOptionsValidation => {
     const errors: string[] = [];
     const { identifiers, loginMethods } = options;
 
-    // Must have at least one identifier
-    const hasIdentifier: boolean = identifiers.username || identifiers.email || identifiers.mobile;
+    // When alphanumeric username is disabled, email IS the username so
+    // an identifier is always implicitly present.
+    const hasIdentifier: boolean = !isAlphanumericUsername ||
+        identifiers.username || identifiers.email || identifiers.mobile;
 
     if (!hasIdentifier) {
         errors.push("Select at least one identifier (Username, Email, or Mobile)");
@@ -149,6 +161,7 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepProps> = (
         signInOptions = DEFAULT_SIGN_IN_OPTIONS,
         onSignInOptionsChange,
         brandingConfig,
+        isAlphanumericUsername = true,
         ["data-componentid"]: componentId = OnboardingComponentIds.SIGN_IN_OPTIONS_STEP
     } = props;
 
@@ -173,16 +186,54 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepProps> = (
     }, [ signInOptions, onSignInOptionsChange ]);
 
     const validation: SignInOptionsValidation = useMemo(
-        () => validateSignInOptions(signInOptions),
-        [ signInOptions ]
+        () => validateSignInOptions(signInOptions, isAlphanumericUsername),
+        [ signInOptions, isAlphanumericUsername ]
     );
 
     const [ open, setOpen ] = React.useState(true);
 
-    // Show info note when email or mobile identifier is selected
+    // When alphanumeric username is disabled, hide email and username toggles — only mobile
+    // can be added as an alternative identifier. Email is always the implicit identifier.
+    const visibleIdentifierOptions: SignInOptionDefinition[] = useMemo(() => {
+        if (!isAlphanumericUsername) {
+            return IDENTIFIER_OPTIONS.filter(
+                (option: SignInOptionDefinition) => option.id === "mobile"
+            );
+        }
+
+        return IDENTIFIER_OPTIONS;
+    }, [ isAlphanumericUsername ]);
+
+    // Compute effective sign-in options for the preview.
+    // When alphanumeric username is disabled, email IS the username, so always show it in the preview.
+    const previewSignInOptions: SignInOptionsConfig = useMemo(() => {
+        if (!isAlphanumericUsername) {
+            return {
+                ...signInOptions,
+                identifiers: {
+                    ...signInOptions.identifiers,
+                    email: true,
+                    username: false
+                }
+            };
+        }
+
+        return signInOptions;
+    }, [ signInOptions, isAlphanumericUsername ]);
+
+    // Show org-level info note when any identifier toggle is selected (IS only).
     const showIdentifierNote: boolean = useMemo(
-        () => signInOptions.identifiers.email || signInOptions.identifiers.mobile || signInOptions.identifiers.username,
-        [ signInOptions.identifiers.email, signInOptions.identifiers.mobile, signInOptions.identifiers.username ]
+        () => isAlphanumericUsername && (
+            signInOptions.identifiers.email
+            || signInOptions.identifiers.mobile
+            || signInOptions.identifiers.username
+        ),
+        [
+            isAlphanumericUsername,
+            signInOptions.identifiers.email,
+            signInOptions.identifiers.mobile,
+            signInOptions.identifiers.username
+        ]
     );
 
     return (
@@ -198,7 +249,16 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepProps> = (
                 <FixedSection>
                     <OptionSection>
                         <SectionLabel>Identifiers</SectionLabel>
-                        { IDENTIFIER_OPTIONS.map((option) => (
+                        { /* When alphanumeric username is disabled, email IS the username — show a note instead of toggles */ }
+                        { !isAlphanumericUsername && (
+                            <Alert
+                                severity="info"
+                                data-componentid={ `${componentId}-email-identifier-note` }
+                            >
+                                Email is the default sign-in identifier for your organization.
+                            </Alert>
+                        ) }
+                        { visibleIdentifierOptions.map((option: SignInOptionDefinition) => (
                             <SignInOptionToggle
                                 isEnabled={
                                     signInOptions.identifiers[
@@ -215,7 +275,7 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepProps> = (
                         )) }
                     </OptionSection>
 
-                    { /* Informational note - shown when email or mobile is selected */ }
+                    { /* Org-level info note — shown on IS when identifier toggles are visible */ }
                     { showIdentifierNote && (
                         <Alert
                             hidden={ !open }
@@ -274,7 +334,7 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepProps> = (
             <PreviewColumn>
                 <LoginBoxPreview
                     brandingConfig={ brandingConfig }
-                    signInOptions={ signInOptions }
+                    signInOptions={ previewSignInOptions }
                     data-componentid={ `${componentId}-preview` }
                 />
             </PreviewColumn>
