@@ -38,6 +38,7 @@ export * from "./roles-ns";
 export * from "./application-roles-ns";
 export * from "./server-configs-ns";
 export * from "./saml2-config-ns";
+export * from "./oauth2-config-ns";
 export * from "./session-management-ns";
 export * from "./ws-federation-config-ns";
 export * from "./insights-ns";

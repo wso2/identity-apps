@@ -40,6 +40,7 @@ export * from "./roles";
 export * from "./application-roles";
 export * from "./server-configs";
 export * from "./saml2-config";
+export * from "./oauth2-config";
 export * from "./session-management";
 export * from "./ws-federation-config";
 export * from "./insights";

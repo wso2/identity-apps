@@ -205,6 +205,10 @@ const GovernanceConnectorCategoriesGrid: FunctionComponent<GovernanceConnectorCa
                 return (
                     <ShareNodesIcon className="icon" />
                 );
+            case ServerConfigurationsConstants.OAUTH2_CONNECTOR_ID:
+                return (
+                    <GearIcon className="icon" />
+                );
             case ServerConfigurationsConstants.EMAIL_DOMAIN_DISCOVERY:
                 return (
                     <EnvelopeMagnifyingGlassIcon className="icon" />

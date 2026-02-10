@@ -404,6 +404,13 @@ export class GovernanceConnectorUtils {
                         testId: "saml2-web-sso-card"
                     },
                     {
+                        description: I18n.instance.t("oauth2Config:description"),
+                        header: I18n.instance.t("oauth2Config:title"),
+                        id: ServerConfigurationsConstants.OAUTH2_CONNECTOR_ID,
+                        route: AppConstants.getPaths().get("OAUTH2_CONFIGURATION"),
+                        testId: "oauth2-config-card"
+                    },
+                    {
                         description: "Manage settings for WS-Federation based single sign-on.",
                         header: I18n.instance.t("wsFederationConfig:title"),
                         id: ServerConfigurationsConstants.WS_FEDERATION_CONNECTOR_ID,

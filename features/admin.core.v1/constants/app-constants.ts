@@ -454,7 +454,9 @@ export class AppConstants {
             [ "AGENTS", `${AppConstants.getAdminViewBasePath()}/agents` ],
             [ "AGENT_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/agents/:id` ],
             [ "VC_TEMPLATES", `${AppConstants.getAdminViewBasePath()}/verifiable-credentials` ],
-            [ "VC_TEMPLATE_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/verifiable-credentials/:id` ]
+            [ "VC_TEMPLATE_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/verifiable-credentials/:id` ],
+            [ "OAUTH2_CONFIGURATION",
+                `${AppConstants.getAdminViewBasePath()}/login-and-registration/oauth2-configuration` ]
         ]);
 
         return paths;

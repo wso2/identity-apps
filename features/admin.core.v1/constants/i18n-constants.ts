@@ -173,6 +173,11 @@ export class I18nConstants {
     public static readonly SAML2_CONFIG_NAMESPACE: string = I18nModuleConstants.SAML2_CONFIG_NAMESPACE;
 
     /**
+     * OAuth2 Configuration namespace.
+     */
+    public static readonly OAUTH2_CONFIG_NAMESPACE: string = I18nModuleConstants.OAUTH2_CONFIG_NAMESPACE;
+
+    /**
      * Session management namespace.
      */
     public static readonly SESSION_MANAGEMENT_NAMESPACE: string = I18nModuleConstants.SESSION_MANAGEMENT_NAMESPACE;
@@ -362,6 +367,7 @@ export class I18nConstants {
         [ I18nConstants.APPLICATION_ROLES_NAMESPACE, "portals" ],
         [ I18nConstants.SERVER_CONFIGS_NAMESPACE, "portals" ],
         [ I18nConstants.SAML2_CONFIG_NAMESPACE, "portals" ],
+        [ I18nConstants.OAUTH2_CONFIG_NAMESPACE, "portals" ],
         [ I18nConstants.SESSION_MANAGEMENT_NAMESPACE, "portals" ],
         [ I18nConstants.WS_FEDERATION_CONFIG_NAMESPACE, "portals" ],
         [ I18nConstants.INSIGHTS_NAMESPACE, "portals" ],

@@ -289,6 +289,16 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 },
                 {
                     component: lazy(() =>
+                        import("@wso2is/admin.oauth2-configuration.v1/pages/oauth2-configuration")),
+                    exact: true,
+                    id: "oauth2Configuration",
+                    name: "oauth2Config:title",
+                    path: AppConstants.getPaths().get("OAUTH2_CONFIGURATION"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() =>
                         import("@wso2is/admin.wsfed-configuration.v1/pages/wsfed-configuration")),
                     exact: true,
                     id: "wsFedConfiguration",

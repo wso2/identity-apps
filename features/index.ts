@@ -49,6 +49,7 @@ export * from "./admin.remote-repository-configuration.v1/public-api";
 export * from "./admin.remote-userstores.v1/public-api";
 export * from "./admin.roles.v2/public-api";
 export * from "./admin.saml2-configuration.v1/public-api";
+export * from "./admin.oauth2-configuration.v1/public-api";
 export * from "./admin.secrets.v1/public-api";
 export * from "./admin.session-management.v1/public-api";
 export * from "./admin.sms-providers.v1/public-api";

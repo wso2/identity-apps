@@ -186,6 +186,10 @@ export interface FeatureConfigInterface {
      */
     loginAndRegistration?: FeatureAccessConfigInterface;
     /**
+     * OAuth2 configuration feature.
+     */
+    oauth2Configuration?: FeatureAccessConfigInterface;
+    /**
      * OIDC Scope management feature.
      */
     oidcScopes?: FeatureAccessConfigInterface;

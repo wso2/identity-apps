@@ -414,6 +414,7 @@ export class ServerConfigurationsConstants {
 	 * Custom connector IDs.
 	 */
     public static readonly SAML2_SSO_CONNECTOR_ID: string = "saml2-sso";
+    public static readonly OAUTH2_CONNECTOR_ID: string = "oauth2-config";
     public static readonly SESSION_MANAGEMENT_CONNECTOR_ID: string = "session-management";
     public static readonly WS_FEDERATION_CONNECTOR_ID: string = "ws-fed";
 

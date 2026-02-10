@@ -37,6 +37,7 @@ export interface ServerConfigurationsResourceEndpointsInterface {
     passwordPolicy: string;
     remoteLogging: string;
     saml2Configurations: string;
+    oauth2Configurations: string;
     selfSignUp: string;
     serverConfigurations: string;
     serverSupportedSchemas: string;

@@ -177,6 +177,11 @@ export class I18nModuleConstants {
     public static readonly SAML2_CONFIG_NAMESPACE: string = "saml2Config";
 
     /**
+     * OAuth2 Configuration namespace.
+     */
+    public static readonly OAUTH2_CONFIG_NAMESPACE: string = "oauth2Config";
+
+    /**
      * Session management namespace.
      */
     public static readonly SESSION_MANAGEMENT_NAMESPACE: string = "sessionManagement";
