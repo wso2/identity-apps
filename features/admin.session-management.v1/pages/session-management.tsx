@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -91,7 +91,6 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
             return;
         }
 
-        // Validate if the email provider config exists.
         if (originalSessionManagementConfig.idleSessionTimeoutPeriod
             && originalSessionManagementConfig.rememberMePeriod) {
             setSessionManagementConfig({
@@ -239,7 +238,7 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
             {
                 "operation": SessionManagementConstants.REPLACE_OPERATION,
                 "path": SessionManagementConstants.MAXIMUM_SESSION_TIMEOUT_PATH,
-                "value": values.maximumSessionTimeout?.toString() || "0"
+                "value": values.maximumSessionTimeout?.toString()
             }
         ];
 
@@ -413,22 +412,24 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                                                     <input />
                                                     <Label>{ t("common:minutes") }</Label>
                                                 </Field.Input>
-                                                <Divider hidden />
+                                                <Divider />
                                                 <Field.Checkbox
                                                     ariaLabel="Enable Maximum Session Timeout"
                                                     name="enableMaximumSessionTimeout"
-                                                    label={ t("sessionManagement:form." +
-                                                "enableMaximumSessionTimeout.label") }
-                                                    hint={ t("sessionManagement:form." +
-                                                "enableMaximumSessionTimeout.hint") }
-                                                    value={ sessionManagementConfig?.enableMaximumSessionTimeout
-                                                        ? [ "enableMaximumSessionTimeout" ] : [] }
+                                                    label={
+                                                        t("sessionManagement:form.enableMaximumSessionTimeout.label")
+                                                    }
+                                                    hint={
+                                                        t("sessionManagement:form.enableMaximumSessionTimeout.hint")
+                                                    }
+                                                    initialValue={
+                                                        sessionManagementConfig?.enableMaximumSessionTimeout
+                                                    }
                                                     readOnly={ isSubOrganization() || !hasConnectorUpdatePermission }
-                                                    listen={ (values: SessionManagementConfigFormValuesInterface) => {
+                                                    listen={ (value: boolean) => {
                                                         setSessionManagementConfig({
                                                             ...sessionManagementConfig,
-                                                            enableMaximumSessionTimeout:
-                                                                values.enableMaximumSessionTimeout
+                                                            enableMaximumSessionTimeout: value
                                                         });
                                                     } }
                                                     width={ 16 }
@@ -442,12 +443,11 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                                                     ariaLabel="Maximum Session Timeout Period Field"
                                                     inputType="number"
                                                     name="maximumSessionTimeout"
-                                                    label={ t("sessionManagement:form." +
-                                                "maximumSessionTimeout.label") }
-                                                    placeholder={ t("sessionManagement:form." +
-                                                "maximumSessionTimeout.placeholder") }
-                                                    hint={ t("sessionManagement:form." +
-                                                "maximumSessionTimeout.hint") }
+                                                    label={ t("sessionManagement:form.maximumSessionTimeout.label") }
+                                                    placeholder={
+                                                        t("sessionManagement:form.maximumSessionTimeout.placeholder")
+                                                    }
+                                                    hint={ t("sessionManagement:form.maximumSessionTimeout.hint") }
                                                     required={ sessionManagementConfig?.enableMaximumSessionTimeout }
                                                     value={ sessionManagementConfig?.maximumSessionTimeout }
                                                     readOnly={ isSubOrganization()

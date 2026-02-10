@@ -38,11 +38,11 @@ export const sessionManagement: SessionManagementNS = {
             placeholder: "Enter the remember me period in minutes"
         },
         enableMaximumSessionTimeout: {
-            hint: "When enabled, all user sessions will have a maximum lifetime limit. Users will be required to re-authenticate after this time, regardless of their activity.",
+            hint: "Enable a maximum session lifetime for the user sessions.",
             label: "Enable Maximum Session Timeout"
         },
         maximumSessionTimeout: {
-            hint: "The maximum duration a user session can remain active. After this time period, users must log in again regardless of idle or remember me settings.",
+            hint: "The user will be required to re-authenticate after the configured time, regardless of activity.",
             label: "Maximum Session Timeout",
             placeholder: "Enter the maximum session timeout in minutes"
         },
