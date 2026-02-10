@@ -121,3 +121,31 @@ export const deletePushProvider = async (name: string): Promise<AxiosResponse> =
             );
         });
 };
+
+export const updateDefaultPushProviderConfig = async (pushProvider: string | null): Promise<HttpResponse | undefined> => {
+
+    const requestConfig: RequestConfigInterface = {
+        data: {
+            defaultPushProvider: pushProvider
+        },
+        headers: {
+            "Accept": AcceptHeaderValues.APP_JSON,
+            "Content-Type": ContentTypeHeaderValues.APP_JSON
+        },
+        method: HttpMethods.PUT,
+        url: store.getState().config.endpoints.pushNotificationConfigs
+    };
+
+    return httpClient(requestConfig)
+        .then((response: HttpResponse) => response)
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                error.message,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config
+            );
+        });
+};
