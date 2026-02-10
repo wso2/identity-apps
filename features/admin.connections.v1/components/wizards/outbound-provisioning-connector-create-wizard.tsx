@@ -40,7 +40,6 @@ import {
 } from "../../api/connections";
 import useGetOutboundProvisioningConnectors from "../../api/use-get-outbound-provisioning-connectors";
 import { getOutboundProvisioningConnectorWizardIcons } from "../../configs/ui";
-import { CommonAuthenticatorConstants } from "../../constants/common-authenticator-constants";
 import {
     ConnectionInterface,
     OutboundProvisioningConnectorInterface,
@@ -52,7 +51,7 @@ import {
     handleGetOutboundProvisioningConnectorMetadataError,
     handleUpdateOutboundProvisioningConnectorError
 } from "../../utils/connection-utils";
-import { getOutboundProvisioningConnectorsMetaData } from "../meta/connectors";
+import { getFilteredConnectorMetadataList } from "../../utils/provisioning-utils";
 
 /**
  * Interface for the outbound provisioning create wizard props.
@@ -132,31 +131,12 @@ export const OutboundProvisioningConnectorCreateWizard:
          * a list of outbound provisioning connectors metadata.
          */
         const outboundProvisioningConnectorsMetadataList: OutboundProvisioningConnectorMetaDataInterface[] = useMemo(
-            () => {
-                if (isLoadingOutboundProvisioningConnectorsList || !outboundProvisioningConnectorsList) {
-                    return [];
-                }
+            () => getFilteredConnectorMetadataList(
+                outboundProvisioningConnectorsList ?? [],
+                isLoadingOutboundProvisioningConnectorsList as boolean
+            ),
 
-                const filteredConnectorList: OutboundProvisioningConnectorListItemInterface[]
-                    = outboundProvisioningConnectorsList.filter(
-                        (connector: OutboundProvisioningConnectorListItemInterface) =>
-                            connector.connectorId !== CommonAuthenticatorConstants
-                                .DEPRECATED_SCIM1_PROVISIONING_CONNECTOR_ID
-                    );
-
-                return filteredConnectorList.map((connector: OutboundProvisioningConnectorListItemInterface) => {
-                    const metadata: OutboundProvisioningConnectorMetaDataInterface
-                        = getOutboundProvisioningConnectorsMetaData()
-                            .find((meta: OutboundProvisioningConnectorMetaDataInterface) =>
-                                meta.connectorId === connector.connectorId
-                            );
-
-                    return {
-                        ...connector,
-                        ...metadata
-                    };
-                });
-            }, [ outboundProvisioningConnectorsList, isLoadingOutboundProvisioningConnectorsList ]
+            [ outboundProvisioningConnectorsList, isLoadingOutboundProvisioningConnectorsList ]
         );
 
         /**

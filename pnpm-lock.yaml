@@ -5113,7 +5113,7 @@ importers:
         specifier: ^2.4.41
         version: link:../../modules/dynamic-forms
       '@wso2is/form':
-        specifier: ^2.7.1
+        specifier: workspace:^
         version: link:../../modules/form
       '@wso2is/forms':
         specifier: ^2.3.24
