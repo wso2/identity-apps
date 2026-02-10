@@ -477,9 +477,6 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                                                                 `${ componentId }-update-button`
                                                             }
                                                             loading={ isSubmitting }
-                                                            onClick={ () => {
-                                                                formRef?.current?.triggerSubmit();
-                                                            } }
                                                             ariaLabel="Session management form update button"
                                                             label={ t("common:update") }
                                                         />
