@@ -131,7 +131,13 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
                     key: property.key,
                     value: String(!!fieldValue)
                 });
-            } else if (fieldValue !== undefined && fieldValue !== "") {
+            } else if (fieldValue !== undefined) {
+                // Skip confidential properties with empty values.
+                // Backend doesn't return confidential values, so if they're still empty,
+                // it means the user didn't modify them and we shouldn't send them.
+                if (property.isConfidential && !fieldValue) {
+                    return;
+                }
                 properties.push({
                     key: property.key,
                     value: String(fieldValue)
@@ -160,6 +166,7 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
                     <>
                         <form id={ FORM_ID } onSubmit={ handleSubmit } data-componentid={ componentId }>
                             <ConnectorConfigFormFields
+                                isEditMode={ mode !== AuthenticatorSettingsFormModes.CREATE }
                                 metadata={ metadata }
                                 initialValues={ initialValues }
                                 fieldNamePrefix=""

@@ -304,8 +304,7 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
                 const fieldName: string = `connector_${property.key}`;
                 const fieldValue: any = values[fieldName];
 
-                // Include property if it has a value or if it's a mandatory field
-                if (fieldValue !== undefined && fieldValue !== EMPTY_STRING) {
+                if (fieldValue !== undefined) {
                     properties.push({
                         key: property.key,
                         value: fieldValue
@@ -594,7 +593,7 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
                 <Heading as="h5">Configure { connectorMetaData.displayName || connectorMetaData.name }</Heading>
                 <ConnectorConfigFormFields
                     metadata={ connectorMetaData }
-                    fieldNamePrefix="connector_"
+                    fieldNamePrefix=""
                     data-componentid={ `${ componentId }-connector-config` }
                 />
             </WizardPage>

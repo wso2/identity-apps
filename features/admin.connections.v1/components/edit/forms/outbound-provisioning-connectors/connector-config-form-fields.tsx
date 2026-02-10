@@ -16,18 +16,27 @@
  * under the License.
  */
 
+import Alert from "@oxygen-ui/react/Alert";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import {
     CheckboxFieldAdapter,
     FinalFormField,
+    FormSpy,
     RadioGroupFieldAdapter,
     TextFieldAdapter,
     __DEPRECATED__SelectFieldAdapter
 } from "@wso2is/form";
 import { Hint } from "@wso2is/react-components";
+import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash-es/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
+import {
+    OutboundProvisioningAuthenticationMode,
+    SCIM2_AUTH_PROPERTIES,
+    SCIM2_URL_PROPERTIES
+} from "../../../../constants/outbound-provisioning-constants";
 import {
     CommonPluggableComponentMetaPropertyInterface,
     CommonPluggableComponentPropertyInterface,
@@ -56,6 +65,11 @@ interface ConnectorConfigFormFieldsProps extends IdentifiableComponentInterface 
      * Whether the fields should be read-only.
      */
     readOnly?: boolean;
+    /**
+     * Whether we're in edit mode (updating existing connector).
+     * Used to show helper text on confidential fields.
+     */
+    isEditMode?: boolean;
 }
 
 /**
@@ -73,19 +87,65 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
         initialValues,
         fieldNamePrefix = "",
         readOnly = false,
+        isEditMode = false,
         ["data-componentid"]: componentId = "connector-config-form-fields"
     } = props;
+
+    const { t } = useTranslation();
 
     // Track dynamic values for properties that need to listen to changes (e.g., checkboxes with sub-properties)
     const [ dynamicValues, setDynamicValues ] = useState<OutboundProvisioningConnectorInterface>(
         initialValues ?? { properties: [] }
     );
 
+    // Track current authentication mode for conditional rendering
+    const [ currentAuthMode, setCurrentAuthMode ] = useState<string | undefined>(() => {
+        // Initialize auth mode from initial values
+        const authModeProp: CommonPluggableComponentPropertyInterface | undefined = initialValues?.properties?.find(
+            (prop: CommonPluggableComponentPropertyInterface) =>
+                prop.key === SCIM2_AUTH_PROPERTIES.AUTHENTICATION_MODE
+        );
+
+        // If no value exists, check metadata for default value
+        if (authModeProp?.value) {
+            return authModeProp.value as string;
+        }
+
+        // Fall back to metadata default value if available
+        const authModeMetadata: CommonPluggableComponentMetaPropertyInterface | undefined = metadata?.properties?.find(
+            (prop: CommonPluggableComponentMetaPropertyInterface) =>
+                prop.key === SCIM2_AUTH_PROPERTIES.AUTHENTICATION_MODE
+        );
+
+        return authModeMetadata?.defaultValue as string | undefined;
+    });
+
+    // Track HTTP (non-secure) URLs for showing warnings
+    const [ httpUrlWarnings, setHttpUrlWarnings ] = useState<Record<string, boolean>>({});
+
     useEffect(() => {
         if (initialValues) {
             setDynamicValues(initialValues);
+            // Update auth mode when initial values change
+            const authModeProp: CommonPluggableComponentPropertyInterface | undefined = initialValues?.properties?.find(
+                (prop: CommonPluggableComponentPropertyInterface) =>
+                    prop.key === SCIM2_AUTH_PROPERTIES.AUTHENTICATION_MODE
+            );
+
+            // If no value exists, check metadata for default value
+            if (authModeProp?.value) {
+                setCurrentAuthMode(authModeProp.value as string);
+            } else {
+                const authModeMetadata: CommonPluggableComponentMetaPropertyInterface | undefined =
+                    metadata?.properties?.find(
+                        (prop: CommonPluggableComponentMetaPropertyInterface) =>
+                            prop.key === SCIM2_AUTH_PROPERTIES.AUTHENTICATION_MODE
+                    );
+
+                setCurrentAuthMode(authModeMetadata?.defaultValue as string | undefined);
+            }
         }
-    }, [ initialValues ]);
+    }, [ initialValues, metadata ]);
 
     /**
      * Get the value of a property from dynamicValues.
@@ -100,6 +160,87 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
         );
 
         return property?.value as string | undefined;
+    };
+
+    /**
+     * Determine if a field should be visible based on current authentication mode.
+     * This implements the authentication mode visibility logic for SCIM2 connector.
+     */
+    const isFieldVisibleForAuthMode = (propertyKey: string | undefined): boolean => {
+        if (!propertyKey) {
+            return true;
+        }
+
+        // Always show the authentication mode dropdown itself
+        if (propertyKey === SCIM2_AUTH_PROPERTIES.AUTHENTICATION_MODE) {
+            return true;
+        }
+
+        // Non-auth fields are always visible
+        if (!Object.values(SCIM2_AUTH_PROPERTIES).includes(propertyKey)) {
+            return true;
+        }
+
+        // Authentication-specific fields visibility based on selected mode
+        switch (currentAuthMode) {
+            case OutboundProvisioningAuthenticationMode.BASIC:
+                return propertyKey === SCIM2_AUTH_PROPERTIES.USERNAME
+                    || propertyKey === SCIM2_AUTH_PROPERTIES.PASSWORD;
+
+            case OutboundProvisioningAuthenticationMode.BEARER:
+                return propertyKey === SCIM2_AUTH_PROPERTIES.ACCESS_TOKEN;
+
+            case OutboundProvisioningAuthenticationMode.API_KEY:
+                return propertyKey === SCIM2_AUTH_PROPERTIES.API_KEY_HEADER
+                    || propertyKey === SCIM2_AUTH_PROPERTIES.API_KEY_VALUE;
+
+            case OutboundProvisioningAuthenticationMode.NONE:
+                // Hide all auth credential fields when mode is NONE
+                return false;
+
+            default:
+                // If no auth mode is set, hide auth credential fields as a safety fallback
+                return false;
+        }
+    };
+
+    /**
+     * Check if a property is a URL field that needs validation.
+     */
+    const isUrlField = (propertyKey: string | undefined): boolean => {
+        return !!propertyKey && Object.values(SCIM2_URL_PROPERTIES).includes(propertyKey);
+    };
+
+    /**
+     * Validate a field value based on property metadata.
+     */
+    const validateField = (
+        value: string,
+        propertyMetadata: CommonPluggableComponentMetaPropertyInterface
+    ): string | undefined => {
+        // Skip validation if no value and not mandatory
+        if (!value && !propertyMetadata.isMandatory) {
+            return undefined;
+        }
+
+        // Required field validation
+        if (propertyMetadata.isMandatory && !value) {
+            return t("common:required");
+        }
+
+        // URL validation for endpoint fields
+        if (isUrlField(propertyMetadata.key) && value) {
+            if (!FormValidation.url(value)) {
+                return "Please enter a valid URL";
+            }
+        }
+
+        // Max length validation
+        if (propertyMetadata.maxLength && value && value.length > propertyMetadata.maxLength) {
+            return t("common:maxValidation", { max: propertyMetadata.maxLength });
+        }
+
+        return undefined;
     };
 
     /**
@@ -182,6 +323,12 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
             if (isEmpty(metaProperty?.displayName)) {
                 return;
             }
+
+            // Skip fields that should be hidden based on current authentication mode
+            if (!isFieldVisibleForAuthMode(metaProperty.key)) {
+                return;
+            }
+
             let field: ReactElement;
 
             // Handle different property types
@@ -345,6 +492,12 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
 
             // Confidential → Password input
             if (fieldType === FieldType.PASSWORD) {
+                const helperTextContent: string = isEditMode
+                    ? propertyMetadata.description
+                        ? `${propertyMetadata.description} Note: Leave empty to keep existing value.`
+                        : "Leave empty to keep the existing value."
+                    : propertyMetadata.description || "";
+
                 return (
                     <FinalFormField
                         key={ propertyMetadata.key }
@@ -365,10 +518,11 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
                         readOnly={ isReadOnly }
                         required={ propertyMetadata.isMandatory }
                         maxLength={ propertyMetadata.maxLength ?? 1000 }
+                        validation={ (value: string) => validateField(value, propertyMetadata) }
                         helperText={
-                            propertyMetadata.description ? (
+                            helperTextContent ? (
                                 <Hint compact>
-                                    { propertyMetadata.description }
+                                    { helperTextContent }
                                 </Hint>
                             ) : null
                         }
@@ -397,6 +551,7 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
                     readOnly={ isReadOnly }
                     required={ propertyMetadata.isMandatory }
                     maxLength={ propertyMetadata.maxLength ?? 1000 }
+                    validation={ (value: string) => validateField(value, propertyMetadata) }
                     helperText={
                         propertyMetadata.description ? (
                             <Hint compact>
@@ -408,10 +563,30 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
             );
         };
 
+        /**
+         * Render HTTP warning alert for URL fields if they use HTTP instead of HTTPS.
+         */
+        const renderHttpWarningAlert = (): ReactElement | null => {
+            if (!isUrlField(propertyMetadata.key) || !httpUrlWarnings[propertyMetadata.key]) {
+                return null;
+            }
+
+            return (
+                <Alert
+                    severity="warning"
+                    className="http-endpoint-alert"
+                    data-componentid={ `${ componentId }-${ propertyMetadata.key }-http-alert` }
+                >
+                    The URL is not secure (HTTP). Use HTTPS for a secure connection.
+                </Alert>
+            );
+        };
+
         return (
             <Grid.Row columns={ 1 } key={ propertyMetadata.key }>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                     { renderFieldContent() }
+                    { renderHttpWarningAlert() }
                 </Grid.Column>
             </Grid.Row>
         );
@@ -420,6 +595,76 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
     return (
         <Grid padded className="connector-config-form-fields">
             { getSortedPropertyFields(metadata?.properties ?? []) }
+            <FormSpy
+                subscription={ { values: true } }
+                onChange={ ({ values }: { values: Record<string, any> }) => {
+                    const authModeFieldName: string = `${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.AUTHENTICATION_MODE}`;
+                    const newAuthMode: string = values[authModeFieldName];
+
+                    // Update current auth mode state if it changed
+                    if (newAuthMode && newAuthMode !== currentAuthMode) {
+                        setCurrentAuthMode(newAuthMode);
+                    }
+
+                    // Clear irrelevant authentication properties based on selected mode
+                    // This ensures old values are sent as empty strings when switching auth modes
+                    switch (newAuthMode) {
+                        case OutboundProvisioningAuthenticationMode.BASIC:
+                            // Clear non-BASIC auth properties
+                            values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.ACCESS_TOKEN}`] = "";
+                            values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.API_KEY_HEADER}`] = "";
+                            values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.API_KEY_VALUE}`] = "";
+
+                            break;
+
+                        case OutboundProvisioningAuthenticationMode.BEARER:
+                            // Clear non-BEARER auth properties
+                            values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.USERNAME}`] = "";
+                            values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.PASSWORD}`] = "";
+                            values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.API_KEY_HEADER}`] = "";
+                            values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.API_KEY_VALUE}`] = "";
+
+                            break;
+
+                        case OutboundProvisioningAuthenticationMode.API_KEY:
+                            // Clear non-API_KEY auth properties
+                            values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.USERNAME}`] = "";
+                            values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.PASSWORD}`] = "";
+                            values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.ACCESS_TOKEN}`] = "";
+
+                            break;
+
+                        case OutboundProvisioningAuthenticationMode.NONE:
+                            // Clear all auth credential properties
+                            values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.USERNAME}`] = "";
+                            values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.PASSWORD}`] = "";
+                            values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.ACCESS_TOKEN}`] = "";
+                            values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.API_KEY_HEADER}`] = "";
+                            values[`${fieldNamePrefix}${SCIM2_AUTH_PROPERTIES.API_KEY_VALUE}`] = "";
+
+                            break;
+
+                        default:
+                            break;
+                    }
+
+                    // Check URL fields for HTTP vs HTTPS
+                    const newHttpWarnings: Record<string, boolean> = {};
+
+                    Object.values(SCIM2_URL_PROPERTIES).forEach((urlPropertyKey: string) => {
+                        const urlFieldName: string = `${fieldNamePrefix}${urlPropertyKey}`;
+                        const urlValue: string = values[urlFieldName];
+
+                        if (urlValue && typeof urlValue === "string" && urlValue.startsWith("http://")) {
+                            newHttpWarnings[urlPropertyKey] = true;
+                        } else {
+                            newHttpWarnings[urlPropertyKey] = false;
+                        }
+                    });
+
+                    setHttpUrlWarnings(newHttpWarnings);
+                } }
+            />
         </Grid>
     );
 };
