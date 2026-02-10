@@ -28,12 +28,13 @@ import OIDCWebAppTemplate
 import SPATemplate
     from "@wso2is/admin.extensions.v1/application-templates/templates/single-page-application/single-page-application.json";
 import { buildAuthSequence } from "./auth-sequence-builder";
-import { CreatedApplicationResult, OnboardingData } from "../models";
+import { CreatedApplicationResultInterface, OnboardingDataInterface } from "../models";
+import { extractOrigins } from "../utils/url-utils";
 
 /**
  * OIDC configuration for application creation.
  */
-interface OIDCConfig {
+interface OIDCConfigInterface {
     grantTypes: string[];
     callbackURLs?: string[];
     allowedOrigins?: string[];
@@ -50,7 +51,7 @@ interface OIDCConfig {
 /**
  * Application payload for creation.
  */
-interface ApplicationPayload {
+interface ApplicationPayloadInterface {
     name: string;
     templateId?: string;
     description?: string;
@@ -60,7 +61,7 @@ interface ApplicationPayload {
         roles: any[];
     };
     inboundProtocolConfiguration?: {
-        oidc?: OIDCConfig;
+        oidc?: OIDCConfigInterface;
     };
     authenticationSequence?: ReturnType<typeof buildAuthSequence>;
     claimConfiguration?: any;
@@ -70,11 +71,11 @@ interface ApplicationPayload {
 /**
  * Template structure from JSON files.
  */
-interface ApplicationTemplate {
+interface ApplicationTemplateInterface {
     id: string;
     templateId: string;
     name: string;
-    application: ApplicationPayload;
+    application: ApplicationPayloadInterface;
 }
 
 /**
@@ -82,24 +83,20 @@ interface ApplicationTemplate {
  * Framework-specific templates (react-application, angular-application, nextjs-application, expressjs-application)
  * use base templates but set their own templateId for proper Console metadata loading.
  */
-const TEMPLATE_REGISTRY: Record<string, ApplicationTemplate> = {
-    "angular-application": SPATemplate as ApplicationTemplate,
-    "expressjs-application": OIDCWebAppTemplate as ApplicationTemplate,
-    "m2m-application": M2MTemplate as ApplicationTemplate,
-    "mobile-application": MobileTemplate as ApplicationTemplate,
-    "nextjs-application": OIDCWebAppTemplate as ApplicationTemplate,
-    "oidc-web-application": OIDCWebAppTemplate as ApplicationTemplate,
-    "react-application": SPATemplate as ApplicationTemplate,
-    "single-page-application": SPATemplate as ApplicationTemplate
+const TEMPLATE_REGISTRY: Record<string, ApplicationTemplateInterface> = {
+    "angular-application": SPATemplate as ApplicationTemplateInterface,
+    "expressjs-application": OIDCWebAppTemplate as ApplicationTemplateInterface,
+    "m2m-application": M2MTemplate as ApplicationTemplateInterface,
+    "mobile-application": MobileTemplate as ApplicationTemplateInterface,
+    "nextjs-application": OIDCWebAppTemplate as ApplicationTemplateInterface,
+    "oidc-web-application": OIDCWebAppTemplate as ApplicationTemplateInterface,
+    "react-application": SPATemplate as ApplicationTemplateInterface,
+    "single-page-application": SPATemplate as ApplicationTemplateInterface
 };
 
 /**
  * Map framework to template ID.
  * Must match FRAMEWORK_OPTIONS in constants/templates.ts.
- * - React: "react-application" (framework-specific, uses SPA base)
- * - Angular: "angular-application" (framework-specific, uses SPA base)
- * - Next.js: "nextjs-application" (framework-specific, uses OIDC web base)
- * - Express: "expressjs-application" (framework-specific, uses OIDC web base)
  */
 const FRAMEWORK_TO_TEMPLATE: Record<string, string> = {
     angular: "angular-application",
@@ -123,7 +120,6 @@ const TEMPLATE_UUID_MAP: Record<string, string> = {
 
 /**
  * MCP Client application grant types.
- * Based on applicationConfig.getAllowedGrantTypes() for mcp-client-application.
  */
 const MCP_CLIENT_GRANT_TYPES: string[] = [
     "authorization_code",
@@ -133,7 +129,6 @@ const MCP_CLIENT_GRANT_TYPES: string[] = [
 
 /**
  * M2M application grant types.
- * M2M apps use client_credentials grant only.
  */
 const M2M_GRANT_TYPES: string[] = [
     "client_credentials"
@@ -145,7 +140,7 @@ const M2M_GRANT_TYPES: string[] = [
  * @param name - Application name
  * @returns Application payload for MCP client
  */
-const buildMCPClientPayload = (name: string): ApplicationPayload => ({
+const buildMCPClientPayload = (name: string): ApplicationPayloadInterface => ({
     advancedConfigurations: {
         discoverableByEndUsers: false,
         skipLoginConsent: true,
@@ -170,7 +165,7 @@ const buildMCPClientPayload = (name: string): ApplicationPayload => ({
  * @param name - Application name
  * @returns Application payload for M2M
  */
-const buildM2MPayload = (name: string): ApplicationPayload => ({
+const buildM2MPayload = (name: string): ApplicationPayloadInterface => ({
     associatedRoles: {
         allowedAudience: "APPLICATION",
         roles: []
@@ -186,28 +181,6 @@ const buildM2MPayload = (name: string): ApplicationPayload => ({
 });
 
 /**
- * Extract origins from redirect URLs.
- *
- * @param urls - Array of redirect URLs
- * @returns Array of origin URLs
- */
-const extractOrigins = (urls: string[]): string[] => {
-    const origins: Set<string> = new Set();
-
-    urls.forEach((url: string) => {
-        try {
-            const urlObj: URL = new URL(url);
-
-            origins.add(urlObj.origin);
-        } catch {
-            // Invalid URL, skip
-        }
-    });
-
-    return Array.from(origins);
-};
-
-/**
  * Get template based on template ID and framework.
  * Uses the appropriate base template for each framework/type,
  * but sets the framework-specific templateId for proper metadata loading.
@@ -219,21 +192,18 @@ const extractOrigins = (urls: string[]): string[] => {
 const getTemplate = (
     templateId?: string,
     framework?: string
-): { template: ApplicationTemplate | null; resolvedTemplateId: string; isMCPClient: boolean } => {
+): { template: ApplicationTemplateInterface | null; resolvedTemplateId: string; isMCPClient: boolean } => {
     let resolvedTemplateId: string = templateId || "single-page-application";
 
-    // MCP client is handled separately (no base template)
     if (templateId === "mcp-client-application") {
         return { isMCPClient: true, resolvedTemplateId, template: null };
     }
 
-    // For frameworks, use framework-specific template ID
     if (framework && FRAMEWORK_TO_TEMPLATE[framework]) {
         resolvedTemplateId = FRAMEWORK_TO_TEMPLATE[framework];
     }
 
-    // Get the template from registry (registry already maps framework-specific IDs to base templates)
-    const template: ApplicationTemplate = TEMPLATE_REGISTRY[resolvedTemplateId] ||
+    const template: ApplicationTemplateInterface = TEMPLATE_REGISTRY[resolvedTemplateId] ||
                                          TEMPLATE_REGISTRY["single-page-application"];
 
     return { isMCPClient: false, resolvedTemplateId, template };
@@ -245,46 +215,39 @@ const getTemplate = (
  * @param data - Onboarding data
  * @returns Application payload for API
  */
-const buildApplicationPayload = (data: OnboardingData): ApplicationPayload => {
+const buildApplicationPayload = (data: OnboardingDataInterface): ApplicationPayloadInterface => {
     const { applicationName, templateId, framework, redirectUrls, signInOptions } = data;
 
     const { template, resolvedTemplateId, isMCPClient } = getTemplate(templateId, framework);
     const isM2M: boolean = resolvedTemplateId === "m2m-application";
 
-    let payload: ApplicationPayload;
+    let payload: ApplicationPayloadInterface;
 
-    // Build base payload based on template type
     if (isMCPClient) {
-        // MCP client is built dynamically (no JSON template)
         payload = buildMCPClientPayload(applicationName || "My Application");
     } else if (isM2M) {
-        // M2M is built dynamically (template has application: null)
-        // M2M doesn't need redirect URLs or auth sequence, so return early
+        // M2M doesn't need redirect URLs or auth sequence, return early
         return buildM2MPayload(applicationName || "My Application");
     } else {
         if (!template?.application) {
             throw new Error(`Template data not found for: ${templateId || framework}`);
         }
-        // Deep clone to avoid mutations
         payload = JSON.parse(JSON.stringify(template.application));
-        // Override with user-provided values
         payload.name = applicationName || "My Application";
         // Use framework-specific string for framework templates, UUID for generic templates
         payload.templateId = TEMPLATE_UUID_MAP[resolvedTemplateId] || resolvedTemplateId;
     }
 
-    // Update callback URLs and allowed origins if provided (applies to MCP and other apps)
     if (redirectUrls && redirectUrls.length > 0 && payload.inboundProtocolConfiguration?.oidc) {
         payload.inboundProtocolConfiguration.oidc.callbackURLs = redirectUrls;
         payload.inboundProtocolConfiguration.oidc.allowedOrigins = extractOrigins(redirectUrls);
     }
 
-    // Override authentication sequence if sign-in options are configured
     if (signInOptions) {
         payload.authenticationSequence = buildAuthSequence(signInOptions);
     }
 
-    // Add associatedRoles if not present (required by API, same as Console wizard)
+    // Required by API
     if (!payload.associatedRoles) {
         payload.associatedRoles = {
             allowedAudience: "APPLICATION",
@@ -302,21 +265,16 @@ const buildApplicationPayload = (data: OnboardingData): ApplicationPayload => {
  * @returns Created application result
  */
 export const createOnboardingApplication = async (
-    data: OnboardingData
-): Promise<CreatedApplicationResult> => {
-    // Build payload using local template JSON
-    const payload: ApplicationPayload = buildApplicationPayload(data);
-
-    // Call the existing createApplication API
+    data: OnboardingDataInterface
+): Promise<CreatedApplicationResultInterface> => {
+    const payload: ApplicationPayloadInterface = buildApplicationPayload(data);
     const response: any = await createApplication(payload as any);
 
-    // Extract application ID from Location header (same pattern as Console wizards)
-    // The API returns the created app URL in Location header, e.g., /api/server/v1/applications/{uuid}
+    // Application ID is in the Location header: /api/server/v1/applications/{uuid}
     const location: string = response.headers?.location || "";
     const applicationId: string = location.substring(location.lastIndexOf("/") + 1);
 
-    // Extract relevant data from response
-    const result: CreatedApplicationResult = {
+    const result: CreatedApplicationResultInterface = {
         applicationId,
         clientId: response.data?.inboundProtocolConfiguration?.oidc?.clientId ||
                   response.inboundProtocolConfiguration?.oidc?.clientId ||
@@ -324,7 +282,6 @@ export const createOnboardingApplication = async (
         name: data.applicationName || "My Application"
     };
 
-    // For M2M and MCP client apps, include the client secret
     if (data.templateId === "m2m-application" || data.templateId === "mcp-client-application") {
         result.clientSecret = response.data?.inboundProtocolConfiguration?.oidc?.clientSecret ||
                               response.inboundProtocolConfiguration?.oidc?.clientSecret;
@@ -335,8 +292,6 @@ export const createOnboardingApplication = async (
 
 /**
  * Check if the template requires redirect URLs.
- * Only M2M apps don't need redirect URLs (client_credentials only).
- * MCP apps need redirect URLs because they support authorization_code grant.
  *
  * @param templateId - Template ID
  * @returns True if redirect URLs are required
@@ -347,8 +302,6 @@ export const requiresRedirectUrls = (templateId?: string): boolean => {
 
 /**
  * Check if the template supports sign-in options configuration.
- * Only M2M apps don't need sign-in configuration (no user interaction).
- * MCP apps support sign-in options because they support authorization_code grant.
  *
  * @param templateId - Template ID
  * @returns True if sign-in options are supported

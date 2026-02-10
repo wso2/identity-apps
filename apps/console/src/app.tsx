@@ -207,9 +207,17 @@ export const App = ({
 
         if (shouldShowOnboarding) {
             const onboardingPath: string = AppConstants.getPaths().get("ONBOARDING");
+            const currentPath: string = window.location.pathname;
 
-            // Only redirect if not already on the onboarding page
-            if (window.location.pathname !== onboardingPath) {
+            // Don't redirect from critical auth/error routes
+            const excludedPaths: string[] = [
+                AppConstants.getPaths().get("UNAUTHORIZED"),
+                AppConstants.getPaths().get("CREATE_TENANT"),
+                AppConstants.getPaths().get("STORING_DATA_DISABLED"),
+                AppConstants.getAppLogoutPath()
+            ];
+
+            if (currentPath !== onboardingPath && !excludedPaths.includes(currentPath)) {
                 history.push(onboardingPath);
             }
         }

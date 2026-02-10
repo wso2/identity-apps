@@ -27,7 +27,7 @@ import { ReactComponent as Lightbulb } from "../../assets/icons/lightbulb.svg";
 /**
  * Props interface for Hint component.
  */
-interface HintProps {
+interface HintPropsInterface {
     /**
      * Hint message text. Optional when using children for custom content.
      */
@@ -118,12 +118,12 @@ export const HintContent: typeof Box = styled(Box)(({ theme }: { theme: Theme })
  * When `collapsible` is true, the children are hidden by default and
  * can be expanded by clicking the message (shows as a link with chevron).
  */
-const Hint: FunctionComponent<HintProps> = ({
+const Hint: FunctionComponent<HintPropsInterface> = ({
     children,
     message,
     collapsible = false,
     defaultExpanded = false
-}: HintProps): ReactElement => {
+}: HintPropsInterface): ReactElement => {
     const [ expanded, setExpanded ] = useState<boolean>(defaultExpanded);
 
     const handleToggle = (): void => {

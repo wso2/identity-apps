@@ -23,7 +23,7 @@ import ButterflyAvatar from "../../themes/default/assets/images/avatars/butterfl
 import CheetahAvatar from "../../themes/default/assets/images/avatars/cheetah.png";
 import CowAvatar from "../../themes/default/assets/images/avatars/cow.png";
 import CrocodileAvatar from "../../themes/default/assets/images/avatars/crocodile.png";
-import { OnboardingBrandingConfig } from "../models";
+import { OnboardingBrandingConfigInterface } from "../models";
 
 /**
  * Available avatar names for logo suggestions.
@@ -97,7 +97,7 @@ export const getAnimalNameFromUrl = (url: string): string => {
  * Preset color options for quick selection.
  */
 export const PRESET_COLORS: string[] = [
-    "#ff7300", // Orange (Asgardeo default)
+    "#ff7300", // Orange (default)
     "#3b82f6", // Blue
     "#6366f1", // Indigo
     "#14b8a6", // Teal
@@ -110,7 +110,7 @@ export const PRESET_COLORS: string[] = [
 /**
  * Default branding configuration.
  */
-export const DEFAULT_BRANDING_CONFIG: OnboardingBrandingConfig = {
+export const DEFAULT_BRANDING_CONFIG: OnboardingBrandingConfigInterface = {
     logoAltText: "Logo",
     logoUrl: undefined,
     primaryColor: "#ff7300"

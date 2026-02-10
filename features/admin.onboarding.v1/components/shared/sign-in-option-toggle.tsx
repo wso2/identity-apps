@@ -25,14 +25,14 @@ import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, memo } from "react";
 import { OnboardingComponentIds } from "../../constants";
-import { SignInOptionDefinition } from "../../models";
+import { SignInOptionDefinitionInterface } from "../../models";
 
 /**
  * Props interface for SignInOptionToggle component.
  */
-export interface SignInOptionToggleProps extends IdentifiableComponentInterface {
+export interface SignInOptionTogglePropsInterface extends IdentifiableComponentInterface {
     /** Sign-in option definition */
-    option: SignInOptionDefinition;
+    option: SignInOptionDefinitionInterface;
     /** Whether the option is enabled */
     isEnabled: boolean;
     /** Callback when the toggle is changed */
@@ -107,8 +107,8 @@ const OptionLabelContent: FunctionComponent<OptionLabelContentProps> = ({
 /**
  * Sign-in option toggle component.
  */
-const SignInOptionToggle: FunctionComponent<SignInOptionToggleProps> = memo((
-    props: SignInOptionToggleProps
+const SignInOptionToggle: FunctionComponent<SignInOptionTogglePropsInterface> = memo((
+    props: SignInOptionTogglePropsInterface
 ): ReactElement => {
     const {
         option,

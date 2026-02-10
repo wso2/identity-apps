@@ -30,20 +30,20 @@ import StepHeader from "../shared/step-header";
 /**
  * Props interface for NameApplicationStep component.
  */
-interface NameApplicationStepProps extends IdentifiableComponentInterface {
+interface NameApplicationStepPropsInterface extends IdentifiableComponentInterface {
     /** Current application name */
     applicationName: string;
     /** Callback when application name changes */
     onApplicationNameChange: (name: string) => void;
-    /** Random name suggestions - passed from parent to persist across navigation */
+    /** Random name suggestions */
     randomNames: string[];
 }
 
 /**
  * Name application step component for onboarding.
  */
-const NameApplicationStep: FunctionComponent<NameApplicationStepProps> = (
-    props: NameApplicationStepProps
+const NameApplicationStep: FunctionComponent<NameApplicationStepPropsInterface> = (
+    props: NameApplicationStepPropsInterface
 ): ReactElement => {
     const {
         applicationName,
@@ -86,7 +86,7 @@ const NameApplicationStep: FunctionComponent<NameApplicationStepProps> = (
             <LeftColumn>
                 <StepHeader
                     data-componentid={ `${componentId}-header` }
-                    subtitle="This is used only inside Asgardeo. You can rename it any time."
+                    subtitle="This is used only inside the console. You can rename it any time."
                     title="Name your application"
                 />
 

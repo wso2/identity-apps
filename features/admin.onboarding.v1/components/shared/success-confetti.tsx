@@ -24,7 +24,7 @@ import React, { FunctionComponent, ReactElement, useMemo } from "react";
 /**
  * Props interface for SuccessConfetti component.
  */
-export interface SuccessConfettiProps extends IdentifiableComponentInterface {
+export interface SuccessConfettiPropsInterface extends IdentifiableComponentInterface {
     /** Number of particles to generate */
     particleCount?: number;
     /** Primary color for particles */
@@ -106,8 +106,8 @@ const particleVariants: Variants = {
 /**
  * Confetti animation component for success states.
  */
-const SuccessConfetti: FunctionComponent<SuccessConfettiProps> = (
-    props: SuccessConfettiProps
+const SuccessConfetti: FunctionComponent<SuccessConfettiPropsInterface> = (
+    props: SuccessConfettiPropsInterface
 ): ReactElement => {
     const {
         particleCount = 18,

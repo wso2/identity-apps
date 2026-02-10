@@ -29,7 +29,7 @@ import {
 } from "@wso2is/common.branding.v1/models";
 import { HttpMethods } from "@wso2is/core/models";
 import merge from "lodash-es/merge";
-import { OnboardingBrandingConfig } from "../models";
+import { OnboardingBrandingConfigInterface } from "../models";
 
 /**
  * Default theme name used to load theme variables.
@@ -66,7 +66,7 @@ const getDefaultBrandingPreference = (): BrandingPreferenceInterface => {
  * @returns Complete merged branding preference
  */
 const mergeBrandingPreference = (
-    brandingConfig: OnboardingBrandingConfig,
+    brandingConfig: OnboardingBrandingConfigInterface,
     predefinedTheme: BrandingPreferenceThemeInterface,
     existingPreference?: BrandingPreferenceInterface
 ): BrandingPreferenceInterface => {
@@ -110,7 +110,7 @@ const mergeBrandingPreference = (
  */
 export const updateApplicationBranding = async (
     applicationId: string,
-    brandingConfig: OnboardingBrandingConfig
+    brandingConfig: OnboardingBrandingConfigInterface
 ): Promise<void> => {
     const locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE;
     let existingPreference: BrandingPreferenceInterface | undefined;
@@ -180,7 +180,7 @@ export const updateApplicationBranding = async (
  * @param brandingConfig - Branding configuration to check
  * @returns True if branding has been customized
  */
-export const isBrandingCustomized = (brandingConfig: OnboardingBrandingConfig): boolean => {
+export const isBrandingCustomized = (brandingConfig: OnboardingBrandingConfigInterface): boolean => {
     const defaultColor: string = "#ff7300";
 
     // Check if color is different from default

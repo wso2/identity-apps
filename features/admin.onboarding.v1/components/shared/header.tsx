@@ -16,36 +16,21 @@
  * under the License.
  */
 
-import AppBar from "@oxygen-ui/react/AppBar";
 import { Theme, styled } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
-import Typography from "@oxygen-ui/react/Typography";
-import {AppConstants} from "@wso2is/admin.core.v1/constants/app-constants";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { StringUtils } from "@wso2is/core/utils";
 import React from "react";
-import Toolbar from "@oxygen-ui/react/Toolbar";
 import Image from "@oxygen-ui/react/Image";
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { useSelector } from "react-redux";
 import OxygenHeader from "@oxygen-ui/react/Header";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 
-/**
- * Header bar with logo and breadcrumb.
- */
-const StyledHeader: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
-    alignItems: "center",
-    display: "flex",
-    gap: theme.spacing(2),
-    padding: theme.spacing(1.5, 4)
-}));
-
 export const Header = () => {
-            const config: ConfigReducerStateInterface = useSelector(
-        (state: AppState) => state.config
-    );
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     return (
         <OxygenHeader
@@ -53,34 +38,32 @@ export const Header = () => {
             brand={ {
                 logo: {
                     desktop: (
-                         <Image
-                src={ resolveAppLogoFilePath(
-                    window["AppUtils"].getConfig().ui.appLogo?.defaultLogoPath ??
-                        window["AppUtils"].getConfig().ui.appLogoPath,
-                    `${window["AppUtils"].getConfig().clientOrigin}/` +
-                        `${
-                            StringUtils.removeSlashesFromPath(window["AppUtils"].getConfig().appBase) !== ""
-                                ? StringUtils.removeSlashesFromPath(window["AppUtils"].getConfig().appBase) + "/"
-                                : ""
-                        }libs/themes/` +
-                        config.ui.theme.name
-                ) }
-                alt="logo"
-            />
-                    ),
-
+                        <Image
+                            src={resolveAppLogoFilePath(
+                                window["AppUtils"].getConfig().ui.appLogo?.defaultLogoPath ??
+                                    window["AppUtils"].getConfig().ui.appLogoPath,
+                                `${window["AppUtils"].getConfig().clientOrigin}/` +
+                                    `${
+                                        StringUtils.removeSlashesFromPath(window["AppUtils"].getConfig().appBase) !== ""
+                                            ? StringUtils.removeSlashesFromPath(
+                                                window["AppUtils"].getConfig().appBase
+                                            ) + "/"
+                                            : ""
+                                    }libs/themes/` +
+                                    config.ui.theme.name
+                            )}
+                            alt="logo"
+                        />
+                    )
                 },
                 onClick: () => {
                     history.push(AppConstants.getPaths().get("DASHBOARD"));
                 },
-                title: "Quickstart"
+                title: "Onboarding"
             } }
-  
             position="fixed"
-
-
         />
-);
+    );
 };
 
 export default Header;

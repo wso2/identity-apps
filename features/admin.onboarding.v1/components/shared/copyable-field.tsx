@@ -27,7 +27,7 @@ import React, { FunctionComponent, ReactElement, useCallback, useState } from "r
 /**
  * Props for the CopyableField component.
  */
-export interface CopyableFieldProps extends IdentifiableComponentInterface {
+export interface CopyableFieldPropsInterface extends IdentifiableComponentInterface {
     /** Field label */
     label: string;
     /** Field value */
@@ -40,8 +40,8 @@ export interface CopyableFieldProps extends IdentifiableComponentInterface {
  * Read-only text field with copy-to-clipboard button and optional secret masking.
  * Oxygen UI equivalent of the Console's CopyInputField component.
  */
-const CopyableField: FunctionComponent<CopyableFieldProps> = (
-    props: CopyableFieldProps
+const CopyableField: FunctionComponent<CopyableFieldPropsInterface> = (
+    props: CopyableFieldPropsInterface
 ): ReactElement => {
     const {
         label,

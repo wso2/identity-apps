@@ -19,8 +19,20 @@
 import { Theme, alpha, styled } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
 import Typography from "@oxygen-ui/react/Typography";
-import React, { FunctionComponent, ReactElement, memo } from "react";
-import { SelectableCardProps } from "../../models";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import React, { FunctionComponent, ReactElement, ReactNode, memo } from "react";
+
+/**
+ * Props for selectable card component.
+ */
+export interface SelectableCardPropsInterface extends IdentifiableComponentInterface {
+    isSelected: boolean;
+    onClick: () => void;
+    icon: ReactNode;
+    title: string;
+    description?: string;
+    variant?: "default" | "compact";
+}
 
 type CardVariant = "default" | "compact";
 
@@ -136,15 +148,14 @@ const CardDescription: any = styled(Typography)(({ theme }: { theme: Theme }) =>
  * - "default": Full card with icon, title, and optional description
  * - "compact": Smaller card with icon and title only (for framework selection grid)
  */
-const SelectableCard: FunctionComponent<SelectableCardProps> = memo((
-    props: SelectableCardProps
+const SelectableCard: FunctionComponent<SelectableCardPropsInterface> = memo((
+    props: SelectableCardPropsInterface
 ): ReactElement => {
     const {
         description,
         icon,
         isSelected,
         onClick,
-        testId,
         title,
         variant = "default",
         ["data-componentid"]: componentId = "selectable-card"
@@ -153,7 +164,6 @@ const SelectableCard: FunctionComponent<SelectableCardProps> = memo((
     return (
         <StyledCard
             data-componentid={ componentId }
-            data-testid={ testId }
             isSelected={ isSelected }
             onClick={ onClick }
             variant={ variant }

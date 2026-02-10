@@ -30,8 +30,8 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import CodeBlock from "./code-block";
 import {
-    FrameworkIntegrationGuide,
-    IntegrationConfig,
+    FrameworkIntegrationGuideInterface,
+    IntegrationConfigInterface,
     generateAIPrompt,
     replaceCodePlaceholders
 } from "../../constants/integration-guides";
@@ -39,11 +39,11 @@ import {
 /**
  * Props interface for IntegrationAccordion component.
  */
-export interface IntegrationAccordionProps extends IdentifiableComponentInterface {
+export interface IntegrationAccordionPropsInterface extends IdentifiableComponentInterface {
     /** Integration guide for the framework (used for AI prompt and hardcoded fallback) */
-    guide?: FrameworkIntegrationGuide;
+    guide?: FrameworkIntegrationGuideInterface;
     /** Configuration values */
-    config: IntegrationConfig;
+    config: IntegrationConfigInterface;
     /** API-fetched guide markdown content (replaces manual steps when available) */
     guideContent?: string;
     /** Data object for guide markdown variable substitution */
@@ -223,8 +223,8 @@ const TestUserContainer = styled(Box)(({ theme }: { theme: Theme }) => ({
  * Integration accordion component.
  * Provides expandable sections for AI prompt and manual integration guides.
  */
-const IntegrationAccordion: FunctionComponent<IntegrationAccordionProps> = (
-    props: IntegrationAccordionProps
+const IntegrationAccordion: FunctionComponent<IntegrationAccordionPropsInterface> = (
+    props: IntegrationAccordionPropsInterface
 ): ReactElement => {
     const {
         guide,

@@ -21,7 +21,7 @@ import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-mana
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import React, { FunctionComponent, ReactElement, useCallback, useMemo, useState } from "react";
+import React, { FunctionComponent, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import {
@@ -47,21 +47,29 @@ import {
     OnboardingComponentIds,
     RANDOM_NAME_COUNT
 } from "../constants";
-import { useOnboardingData, useStepValidation } from "../hooks/use-onboarding-validation";
+import { useOnboardingDataInterface, useStepValidation } from "../hooks/use-onboarding-validation";
 import { generateRandomNames } from "../utils/random-name-generator";
 import {
-    CreatedApplicationResult,
+    CreatedApplicationResultInterface,
     OnboardingChoice,
-    OnboardingData,
-    OnboardingStep,
-    OnboardingWizardProps
+    OnboardingDataInterface,
+    OnboardingStep
 } from "../models";
+
+/**
+ * Props for the onboarding wizard component.
+ */
+export interface OnboardingWizardPropsInterface extends IdentifiableComponentInterface {
+    initialData?: OnboardingDataInterface;
+    onComplete: (data: OnboardingDataInterface) => void;
+    onSkip: () => void;
+}
 
 /**
  * Get the next step based on current step and data.
  * Implements conditional navigation logic.
  */
-const getNextStep = (currentStep: OnboardingStep, data: OnboardingData): OnboardingStep => {
+const getNextStep = (currentStep: OnboardingStep, data: OnboardingDataInterface): OnboardingStep => {
     const isM2M: boolean = data.templateId === "m2m-application";
     const isTourFlow: boolean = data.choice === OnboardingChoice.TOUR;
 
@@ -107,7 +115,7 @@ const getNextStep = (currentStep: OnboardingStep, data: OnboardingData): Onboard
  * Get the previous step based on current step and data.
  * Implements conditional navigation logic.
  */
-const getPreviousStep = (currentStep: OnboardingStep, data: OnboardingData): OnboardingStep => {
+const getPreviousStep = (currentStep: OnboardingStep, data: OnboardingDataInterface): OnboardingStep => {
     const isM2M: boolean = data.templateId === "m2m-application";
     const isTourFlow: boolean = data.choice === OnboardingChoice.TOUR;
 
@@ -152,7 +160,7 @@ const getPreviousStep = (currentStep: OnboardingStep, data: OnboardingData): Onb
  * Get button text based on current step.
  * Shows "Create Application" for M2M apps (they skip to success from template selection).
  */
-const getNextButtonText = (currentStep: OnboardingStep, data: OnboardingData): string => {
+const getNextButtonText = (currentStep: OnboardingStep, data: OnboardingDataInterface): string => {
     const isM2M: boolean = data.templateId === "m2m-application";
 
     switch (currentStep) {
@@ -180,8 +188,8 @@ const getNextButtonText = (currentStep: OnboardingStep, data: OnboardingData): s
  * Manages step logic, navigation, and renders step content.
  * Layout (header, container) is owned by the parent page.
  */
-const OnboardingWizard: FunctionComponent<OnboardingWizardProps & IdentifiableComponentInterface> = (
-    props: OnboardingWizardProps & IdentifiableComponentInterface
+const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
+    props: OnboardingWizardPropsInterface
 ): ReactElement => {
     const {
         initialData,
@@ -195,8 +203,29 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardProps & IdentifiableCo
         state?.auth?.tenantDomain || state?.config?.deployment?.tenant || "carbon.super"
     );
 
-    const [ currentStep, setCurrentStep ] = useState<OnboardingStep>(OnboardingStep.WELCOME);
-    const [ onboardingData, setOnboardingData ] = useState<OnboardingData>({
+    // Restore wizard step from sessionStorage if available (survives page reloads within the same tab)
+    const WIZARD_STEP_STORAGE_KEY: string = "onboarding_wizard_step";
+
+    const [ currentStep, setCurrentStep ] = useState<OnboardingStep>(() => {
+        const savedStep: string | null = sessionStorage.getItem(WIZARD_STEP_STORAGE_KEY);
+
+        if (savedStep !== null) {
+            const parsed: number = parseInt(savedStep, 10);
+
+            if (!isNaN(parsed) && Object.values(OnboardingStep).includes(parsed)) {
+                return parsed as OnboardingStep;
+            }
+        }
+
+        return OnboardingStep.WELCOME;
+    });
+
+    // Persist current step to sessionStorage so the wizard can resume after unexpected reloads
+    useEffect(() => {
+        sessionStorage.setItem(WIZARD_STEP_STORAGE_KEY, String(currentStep));
+    }, [ currentStep ]);
+
+    const [ onboardingData, setOnboardingDataInterface ] = useState<OnboardingDataInterface>({
         brandingConfig: DEFAULT_BRANDING_CONFIG,
         choice: OnboardingChoice.SETUP,
         signInOptions: DEFAULT_SIGN_IN_OPTIONS,
@@ -215,12 +244,12 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardProps & IdentifiableCo
         updateRedirectUrls,
         updateSignInOptions,
         updateTemplateSelection
-    } = useOnboardingData(onboardingData, setOnboardingData);
+    } = useOnboardingDataInterface(onboardingData, setOnboardingDataInterface);
 
     const isNextDisabled: boolean = useStepValidation(currentStep, onboardingData);
 
     // Get validation config to determine if alphanumeric username is enabled
-    // (alphanumeric = Identity Server, email-as-username = Asgardeo)
+    // (alphanumeric username vs email-as-username)
     const { data: validationData } = useValidationConfigData();
     const isAlphanumericUsername: boolean = useMemo(
         () => getUsernameConfiguration(validationData)?.enableValidator === "true",
@@ -240,7 +269,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardProps & IdentifiableCo
 
         try {
             // Create the application
-            const result: CreatedApplicationResult = await createOnboardingApplication(onboardingData);
+            const result: CreatedApplicationResultInterface = await createOnboardingApplication(onboardingData);
 
 
             if (onboardingData.signInOptions?.identifiers && !isM2M) {
@@ -293,6 +322,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardProps & IdentifiableCo
         const nextStep: OnboardingStep = getNextStep(currentStep, onboardingData);
 
         if (currentStep === OnboardingStep.SUCCESS) {
+            sessionStorage.removeItem(WIZARD_STEP_STORAGE_KEY);
             onComplete(onboardingData);
         } else if (
             // Create app when clicking Finish from Design Login
@@ -314,6 +344,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardProps & IdentifiableCo
     }, [ currentStep, onboardingData ]);
 
     const handleSkip = useCallback((): void => {
+        sessionStorage.removeItem(WIZARD_STEP_STORAGE_KEY);
         onSkip();
     }, [ onSkip ]);
 

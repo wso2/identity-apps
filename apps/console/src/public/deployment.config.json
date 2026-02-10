@@ -1268,6 +1268,23 @@
                     ]
                 }
             },
+            "onboardingWizard": {
+                "disabledFeatures": [],
+                "enabled": false,
+                "scopes": {
+                    "create": [],
+                    "delete": [],
+                    "feature": [
+                        "console:loginAndRegistration"
+                    ],
+                    "read": [
+                        "internal_governance_view"
+                    ],
+                    "update": [
+                        "internal_governance_update"
+                    ]
+                }
+            },
             "organizationDiscovery": {
                 "disabledFeatures": [],
                 "enabled": true,

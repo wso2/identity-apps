@@ -27,12 +27,12 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, memo, useMemo } from "react";
 import { OnboardingComponentIds } from "../../constants";
 import { getAnimalNameFromUrl, getAvatarDisplayImage } from "../../constants/preset-logos";
-import { OnboardingBrandingConfig, SignInOptionsConfig } from "../../models";
+import { OnboardingBrandingConfigInterface, SignInOptionsConfigInterface } from "../../models";
 
 /**
  * Auth method display configuration interface.
  */
-interface AuthMethodDisplayConfig {
+interface AuthMethodDisplayConfigInterface {
     /** Icon - can be string path or React component */
     icon: any;
     /** Display label */
@@ -42,7 +42,7 @@ interface AuthMethodDisplayConfig {
 /**
  * Get auth method display configuration with proper icons.
  */
-const getAuthMethodConfig = (): Record<string, AuthMethodDisplayConfig> => ({
+const getAuthMethodConfig = (): Record<string, AuthMethodDisplayConfigInterface> => ({
     emailOtp: {
         icon: getConnectionIcons().emailOTP,
         label: "Email OTP"
@@ -72,11 +72,11 @@ const getAuthMethodConfig = (): Record<string, AuthMethodDisplayConfig> => ({
 /**
  * Props interface for LoginBoxPreview component.
  */
-export interface LoginBoxPreviewProps extends IdentifiableComponentInterface {
+export interface LoginBoxPreviewPropsInterface extends IdentifiableComponentInterface {
     /** Sign-in options configuration */
-    signInOptions?: SignInOptionsConfig;
+    signInOptions?: SignInOptionsConfigInterface;
     /** Branding configuration */
-    brandingConfig?: OnboardingBrandingConfig;
+    brandingConfig?: OnboardingBrandingConfigInterface;
     /** Scale factor for the preview */
     scale?: number;
 }
@@ -210,7 +210,7 @@ const IconImage = styled("img")({
 /**
  * Get the identifier field label based on selected options.
  */
-const getIdentifierLabel = (signInOptions: SignInOptionsConfig): string => {
+const getIdentifierLabel = (signInOptions: SignInOptionsConfigInterface): string => {
     const { identifiers } = signInOptions;
     const labels: string[] = [];
 
@@ -228,7 +228,7 @@ const getIdentifierLabel = (signInOptions: SignInOptionsConfig): string => {
 /**
  * Default sign-in options for preview.
  */
-const DEFAULT_PREVIEW_OPTIONS: SignInOptionsConfig = {
+const DEFAULT_PREVIEW_OPTIONS: SignInOptionsConfigInterface = {
     identifiers: { email: true, mobile: false, username: true },
     loginMethods: {
         emailOtp: false,
@@ -243,7 +243,7 @@ const DEFAULT_PREVIEW_OPTIONS: SignInOptionsConfig = {
 /**
  * Default branding config for preview.
  */
-const DEFAULT_BRANDING: OnboardingBrandingConfig = {
+const DEFAULT_BRANDING: OnboardingBrandingConfigInterface = {
     primaryColor: "#ff7300"
 };
 
@@ -251,8 +251,8 @@ const DEFAULT_BRANDING: OnboardingBrandingConfig = {
  * Login box preview component.
  * Displays a two-step preview of the Identifier First login flow.
  */
-const LoginBoxPreview: FunctionComponent<LoginBoxPreviewProps> = memo((
-    props: LoginBoxPreviewProps
+const LoginBoxPreview: FunctionComponent<LoginBoxPreviewPropsInterface> = memo((
+    props: LoginBoxPreviewPropsInterface
 ): ReactElement => {
     const {
         signInOptions = DEFAULT_PREVIEW_OPTIONS,
@@ -280,7 +280,7 @@ const LoginBoxPreview: FunctionComponent<LoginBoxPreviewProps> = memo((
     );
 
     // Get auth method config for icons
-    const authMethodConfig: Record<string, AuthMethodDisplayConfig> = useMemo(
+    const authMethodConfig: Record<string, AuthMethodDisplayConfigInterface> = useMemo(
         () => getAuthMethodConfig(),
         []
     );
@@ -419,7 +419,7 @@ const LoginBoxPreview: FunctionComponent<LoginBoxPreviewProps> = memo((
                                         { selectedMethods
                                             .filter((methodKey: string) => methodKey !== "password")
                                             .map((methodKey: string) => {
-                                                const config: AuthMethodDisplayConfig =
+                                                const config: AuthMethodDisplayConfigInterface =
                                                     authMethodConfig[methodKey];
 
                                                 if (!config) return null;

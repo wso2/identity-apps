@@ -16,13 +16,13 @@
  * under the License.
  */
 
-import { SignInOptionDefinition, SignInOptionsConfig } from "../models";
+import { SignInOptionDefinitionInterface, SignInOptionsConfigInterface } from "../models";
 
 /**
  * Default sign-in options configuration.
  * Username + Email identifiers with Password as the default login method.
  */
-export const DEFAULT_SIGN_IN_OPTIONS: SignInOptionsConfig = {
+export const DEFAULT_SIGN_IN_OPTIONS: SignInOptionsConfigInterface = {
     identifiers: {
         email: false,
         mobile: false,
@@ -42,7 +42,7 @@ export const DEFAULT_SIGN_IN_OPTIONS: SignInOptionsConfig = {
  * Sign-in option definitions for identifier options.
  * Identifiers determine how users are recognized.
  */
-export const IDENTIFIER_OPTIONS: SignInOptionDefinition[] = [
+export const IDENTIFIER_OPTIONS: SignInOptionDefinitionInterface[] = [
     {
         authenticatorConfig: {
             authenticator: "BasicAuthenticator",
@@ -89,7 +89,7 @@ export const IDENTIFIER_OPTIONS: SignInOptionDefinition[] = [
  * In the Identifier First approach, all these methods are presented
  * in Step 2 as alternatives (user can choose any one to authenticate).
  */
-export const LOGIN_METHOD_OPTIONS: SignInOptionDefinition[] = [
+export const LOGIN_METHOD_OPTIONS: SignInOptionDefinitionInterface[] = [
     {
         authenticatorConfig: {
             authenticator: "BasicAuthenticator",
@@ -173,7 +173,7 @@ export const LOGIN_METHOD_OPTIONS: SignInOptionDefinition[] = [
 /**
  * All sign-in options combined.
  */
-export const ALL_SIGN_IN_OPTIONS: SignInOptionDefinition[] = [
+export const ALL_SIGN_IN_OPTIONS: SignInOptionDefinitionInterface[] = [
     ...IDENTIFIER_OPTIONS,
     ...LOGIN_METHOD_OPTIONS
 ];

@@ -16,12 +16,12 @@
  * under the License.
  */
 
-import { SignInOptionsConfig } from "../models";
+import { SignInOptionsConfigInterface } from "../models";
 
 /**
  * Authenticator configuration for authentication sequence.
  */
-export interface AuthenticatorConfig {
+export interface AuthenticatorConfigInterface {
     idp: string;
     authenticator: string;
 }
@@ -29,17 +29,17 @@ export interface AuthenticatorConfig {
 /**
  * Authentication step configuration.
  */
-export interface AuthenticationStep {
+export interface AuthenticationStepInterface {
     id: number;
-    options: AuthenticatorConfig[];
+    options: AuthenticatorConfigInterface[];
 }
 
 /**
  * Authentication sequence configuration.
  */
-export interface AuthenticationSequence {
+export interface AuthenticationSequenceInterface {
     type: "DEFAULT" | "USER_DEFINED";
-    steps: AuthenticationStep[];
+    steps: AuthenticationStepInterface[];
     subjectStepId?: number;
     attributeStepId?: number;
 }
@@ -60,14 +60,11 @@ export interface AuthenticationSequence {
  * @param options - Sign-in options configuration
  * @returns Authentication sequence configuration
  */
-export const buildAuthSequence = (options: SignInOptionsConfig): AuthenticationSequence => {
+export const buildAuthSequence = (options: SignInOptionsConfigInterface): AuthenticationSequenceInterface => {
     const { loginMethods } = options;
 
-    // ========== Build Step 2 Options (non-password methods) ==========
-    // Note: BasicAuthenticator goes in Step 1 when password is selected
-    const step2Options: AuthenticatorConfig[] = [];
+    const step2Options: AuthenticatorConfigInterface[] = [];
 
-    // Passkey/FIDO authentication
     if (loginMethods.passkey) {
         step2Options.push({
             authenticator: "FIDOAuthenticator",
@@ -75,7 +72,6 @@ export const buildAuthSequence = (options: SignInOptionsConfig): AuthenticationS
         });
     }
 
-    // Magic Link authentication
     if (loginMethods.magicLink) {
         step2Options.push({
             authenticator: "MagicLinkAuthenticator",
@@ -83,7 +79,6 @@ export const buildAuthSequence = (options: SignInOptionsConfig): AuthenticationS
         });
     }
 
-    // Email OTP
     if (loginMethods.emailOtp) {
         step2Options.push({
             authenticator: "email-otp-authenticator",
@@ -91,7 +86,6 @@ export const buildAuthSequence = (options: SignInOptionsConfig): AuthenticationS
         });
     }
 
-    // TOTP (Time-based One-Time Password)
     if (loginMethods.totp) {
         step2Options.push({
             authenticator: "totp",
@@ -99,7 +93,6 @@ export const buildAuthSequence = (options: SignInOptionsConfig): AuthenticationS
         });
     }
 
-    // Push Notification
     if (loginMethods.pushNotification) {
         step2Options.push({
             authenticator: "push-notification-authenticator",
@@ -107,15 +100,11 @@ export const buildAuthSequence = (options: SignInOptionsConfig): AuthenticationS
         });
     }
 
-    // ========== Conditional Step 1 Logic ==========
-    // If password is selected: BasicAuthenticator in Step 1 (traditional login)
-    // If password is NOT selected: IdentifierExecutor in Step 1 (Identifier First flow)
-
     const step1Authenticator: string = loginMethods.password
         ? "BasicAuthenticator"
         : "IdentifierExecutor";
 
-    const steps: AuthenticationStep[] = [
+    const steps: AuthenticationStepInterface[] = [
         {
             id: 1,
             options: [
@@ -127,7 +116,6 @@ export const buildAuthSequence = (options: SignInOptionsConfig): AuthenticationS
         }
     ];
 
-    // ========== Add Step 2 if there are additional options ==========
     if (step2Options.length > 0) {
         steps.push({
             id: 2,
@@ -148,7 +136,7 @@ export const buildAuthSequence = (options: SignInOptionsConfig): AuthenticationS
  *
  * @returns Default authentication sequence
  */
-export const getDefaultAuthSequence = (): AuthenticationSequence => {
+export const getDefaultAuthSequence = (): AuthenticationSequenceInterface => {
     return {
         attributeStepId: 1,
         steps: [
@@ -173,7 +161,7 @@ export const getDefaultAuthSequence = (): AuthenticationSequence => {
  * @param sequence - Authentication sequence to check
  * @returns True if using default configuration
  */
-export const isDefaultAuthSequence = (sequence: AuthenticationSequence): boolean => {
+export const isDefaultAuthSequence = (sequence: AuthenticationSequenceInterface): boolean => {
     if (sequence.type === "DEFAULT") {
         return true;
     }
@@ -182,13 +170,13 @@ export const isDefaultAuthSequence = (sequence: AuthenticationSequence): boolean
         return false;
     }
 
-    const step: AuthenticationStep = sequence.steps[0];
+    const step: AuthenticationStepInterface = sequence.steps[0];
 
     if (step.options.length !== 1) {
         return false;
     }
 
-    const option: AuthenticatorConfig = step.options[0];
+    const option: AuthenticatorConfigInterface = step.options[0];
 
     return option.idp === "LOCAL" && option.authenticator === "BasicAuthenticator";
 };
@@ -203,12 +191,12 @@ export const isDefaultAuthSequence = (sequence: AuthenticationSequence): boolean
  * @param sequence - Authentication sequence to check
  * @returns True if sequence has multiple login method options
  */
-export const hasMultipleLoginMethods = (sequence: AuthenticationSequence): boolean => {
+export const hasMultipleLoginMethods = (sequence: AuthenticationSequenceInterface): boolean => {
     if (sequence.steps.length < 2) {
         return false;
     }
 
-    const step2: AuthenticationStep | undefined = sequence.steps[1];
+    const step2: AuthenticationStepInterface | undefined = sequence.steps[1];
 
     return step2 ? step2.options.length > 1 : false;
 };

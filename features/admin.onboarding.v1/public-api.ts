@@ -19,28 +19,5 @@
 // Pages
 export { default as OnboardingPage } from "./pages/onboarding-page";
 
-// Shared Components
-export { default as ColorPicker } from "./components/shared/color-picker";
-export { default as LoginBoxPreview } from "./components/shared/login-box-preview";
-export { default as LogoSelector } from "./components/shared/logo-selector";
-export { default as SelectableCard } from "./components/shared/selectable-card";
-export { default as SignInOptionToggle } from "./components/shared/sign-in-option-toggle";
-
-// Step Components
-export { default as ConfigureRedirectUrlStep } from "./components/steps/configure-redirect-url-step";
-export { default as DesignLoginStep } from "./components/steps/design-login-step";
-export { default as SignInOptionsStep } from "./components/steps/sign-in-options-step";
-export { default as SuccessStep } from "./components/steps/success-step";
-
-// API
-export * from "./api";
-
-// Constants
-export * from "./constants";
-
 // Hooks
 export { useOnboardingStatus } from "./hooks/use-onboarding-status";
-export * from "./hooks/use-onboarding-validation";
-
-// Models
-export * from "./models";

@@ -31,12 +31,12 @@ import {
 } from "../shared/onboarding-styles";
 import SelectableCard from "../shared/selectable-card";
 import StepHeader from "../shared/step-header";
-import StepIndicator, { StepConfig } from "../shared/step-indicator";
+import StepIndicator, { StepConfigInterface } from "../shared/step-indicator";
 
 /**
  * Steps for the "Add login to app" flow.
  */
-const ADD_LOGIN_STEPS: StepConfig[] = [
+const ADD_LOGIN_STEPS: StepConfigInterface[] = [
     { key: "name", label: "Name your app" },
     { key: "type", label: "Select app type" },
     { key: "configure", label: "Configure login" },
@@ -47,7 +47,7 @@ const ADD_LOGIN_STEPS: StepConfig[] = [
 /**
  * Steps for the "Preview experience" flow.
  */
-const PREVIEW_STEPS: StepConfig[] = [
+const PREVIEW_STEPS: StepConfigInterface[] = [
     { key: "configure", label: "Configure login" },
     { key: "style", label: "Style login" },
     { key: "preview", label: "Preview" }
@@ -56,7 +56,7 @@ const PREVIEW_STEPS: StepConfig[] = [
 /**
  * Props interface for WelcomeStep component.
  */
-interface WelcomeStepProps extends IdentifiableComponentInterface {
+interface WelcomeStepPropsInterface extends IdentifiableComponentInterface {
     /**
      * Currently selected choice.
      */
@@ -71,7 +71,7 @@ interface WelcomeStepProps extends IdentifiableComponentInterface {
  * Welcome step component for onboarding.
  * First step where user chooses between setting up their app or previewing.
  */
-const WelcomeStep: FunctionComponent<WelcomeStepProps> = (props: WelcomeStepProps): ReactElement => {
+const WelcomeStep: FunctionComponent<WelcomeStepPropsInterface> = (props: WelcomeStepPropsInterface): ReactElement => {
     const {
         onChoiceSelect,
         selectedChoice,
@@ -87,7 +87,7 @@ const WelcomeStep: FunctionComponent<WelcomeStepProps> = (props: WelcomeStepProp
     );
 
     // Determine which steps to show based on selection
-    const currentSteps: StepConfig[] = useMemo(() => {
+    const currentSteps: StepConfigInterface[] = useMemo(() => {
         if (selectedChoice === OnboardingChoice.TOUR) {
             return PREVIEW_STEPS;
         }
@@ -110,16 +110,14 @@ const WelcomeStep: FunctionComponent<WelcomeStepProps> = (props: WelcomeStepProp
                         icon={ <Rocket fill="#ff7300" /> }
                         isSelected={ selectedChoice === OnboardingChoice.SETUP }
                         onClick={ () => handleChoiceSelect(OnboardingChoice.SETUP) }
-                        testId={ `${componentId}-add-login-option` }
                         title="Add login to your app"
                     />
                     <SelectableCard
                         data-componentid={ `${componentId}-preview-option` }
-                        description="Try login with Asgardeo's built-in sample app without any setup"
+                        description="Try login with a built-in sample app without any setup"
                         icon={ <Preview fill="#ff7300" /> }
                         isSelected={ selectedChoice === OnboardingChoice.TOUR }
                         onClick={ () => handleChoiceSelect(OnboardingChoice.TOUR) }
-                        testId={ `${componentId}-preview-option` }
                         title="Preview the login experience"
                     />
                 </CardsRow>
