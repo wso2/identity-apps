@@ -87,15 +87,15 @@ const VisualEditorNotificationPanel: FunctionComponent<VisualEditorNotificationP
             <Box
                 key={ notification.id }
                 sx={ {
+                    "&:hover": {
+                        backgroundColor: isWarning ? "#FFF0D9" : "#FBE5E5"
+                    },
                     alignItems: "flex-start",
                     backgroundColor: isWarning ? "#FFF4E5" : "#FDEDED",
                     display: "flex",
                     gap: 1.5,
                     marginBottom: 0.7,
-                    padding: "12px 16px",
-                    "&:hover": {
-                        backgroundColor: isWarning ? "#FFF0D9" : "#FBE5E5"
-                    }
+                    padding: "12px 16px"
                 } }
                 data-componentid={ `${componentId}-notification-item-${notification.id}` }
             >
@@ -109,9 +109,9 @@ const VisualEditorNotificationPanel: FunctionComponent<VisualEditorNotificationP
                                     backgroundColor: "rgba(0,0,0,0.08)",
                                     borderRadius: "4px",
                                     display: "inline-block",
+                                    marginLeft: "8px",
                                     mt: 1,
-                                    padding: "2px 8px",
-                                    marginLeft: "8px"
+                                    padding: "2px 8px"
                                 } }
                             >
                             Step { notification.stepNumber }
