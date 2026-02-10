@@ -34,11 +34,11 @@ import {
     getIntegrationGuide,
     getTemplateDocsUrl
 } from "../../constants";
-import { IntegrationConfig } from "../../constants/integration-guides";
+import { IntegrationConfigInterface } from "../../constants/integration-guides";
 import {
-    CreatedApplicationResult,
-    OnboardingBrandingConfig,
-    SignInOptionsConfig
+    CreatedApplicationResultInterface,
+    OnboardingBrandingConfigInterface,
+    SignInOptionsConfigInterface
 } from "../../models";
 import useGetTemplateGuide from "../../hooks/use-get-template-guide";
 import { buildOnboardingGuideData } from "../../utils/build-guide-data";
@@ -53,17 +53,17 @@ import SuccessConfetti from "../shared/success-confetti";
 /**
  * Props interface for SuccessStep component.
  */
-interface SuccessStepProps extends IdentifiableComponentInterface {
+interface SuccessStepPropsInterface extends IdentifiableComponentInterface {
     /** Created application result */
-    createdApplication?: CreatedApplicationResult;
+    createdApplication?: CreatedApplicationResultInterface;
     /** Template ID */
     templateId?: string;
     /** Framework display name */
     framework?: string;
     /** Sign-in options for preview */
-    signInOptions?: SignInOptionsConfig;
+    signInOptions?: SignInOptionsConfigInterface;
     /** Branding configuration for preview */
-    brandingConfig?: OnboardingBrandingConfig;
+    brandingConfig?: OnboardingBrandingConfigInterface;
     /** Whether this is an M2M application */
     isM2M?: boolean;
     /** Redirect URLs configured for the application */
@@ -161,8 +161,8 @@ const PreviewColumn = styled(RightColumn)(({ theme }: { theme: Theme }) => ({
  * Success step component for onboarding.
  * Shows success message and integration options after application creation.
  */
-const SuccessStep: FunctionComponent<SuccessStepProps> = (
-    props: SuccessStepProps
+const SuccessStep: FunctionComponent<SuccessStepPropsInterface> = (
+    props: SuccessStepPropsInterface
 ): ReactElement => {
     const {
         createdApplication,
@@ -263,7 +263,7 @@ const SuccessStep: FunctionComponent<SuccessStepProps> = (
     // Build integration config for AI prompt and hardcoded fallback.
     // Prefer inbound config (from GET /inbound-protocols/oidc) over creation response,
     // since the creation response may not include OIDC details in all environments.
-    const integrationConfig: IntegrationConfig = useMemo(() => ({
+    const integrationConfig: IntegrationConfigInterface = useMemo(() => ({
         appName: createdApplication?.name || "My Application",
         baseUrl: customServerHost,
         clientId: inboundOidcConfig?.clientId || createdApplication?.clientId || "",

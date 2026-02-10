@@ -29,7 +29,7 @@ import React, { FunctionComponent, ReactElement, useCallback, useState } from "r
 /**
  * Props interface for CodeBlock component.
  */
-export interface CodeBlockProps extends IdentifiableComponentInterface {
+export interface CodeBlockPropsInterface extends IdentifiableComponentInterface {
     /** Code content to display */
     code: string;
     /** Optional label for the code block */
@@ -135,7 +135,7 @@ const CopyButton = styled(IconButton)(() => ({
 /**
  * Code block component with syntax display and copy functionality.
  */
-const CodeBlock: FunctionComponent<CodeBlockProps> = (props: CodeBlockProps): ReactElement => {
+const CodeBlock: FunctionComponent<CodeBlockPropsInterface> = (props: CodeBlockPropsInterface): ReactElement => {
     const {
         code,
         label,

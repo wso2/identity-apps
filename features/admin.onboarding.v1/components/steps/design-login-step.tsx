@@ -21,7 +21,7 @@ import Box from "@oxygen-ui/react/Box";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useCallback, useMemo } from "react";
 import { DEFAULT_BRANDING_CONFIG, OnboardingComponentIds } from "../../constants";
-import { OnboardingBrandingConfig, SignInOptionsConfig } from "../../models";
+import { OnboardingBrandingConfigInterface, SignInOptionsConfigInterface } from "../../models";
 import ColorPicker from "../shared/color-picker";
 import LoginBoxPreview from "../shared/login-box-preview";
 import LogoSelector from "../shared/logo-selector";
@@ -31,15 +31,15 @@ import StepHeader from "../shared/step-header";
 /**
  * Props interface for DesignLoginStep component.
  */
-interface DesignLoginStepProps extends IdentifiableComponentInterface {
+interface DesignLoginStepPropsInterface extends IdentifiableComponentInterface {
     /** Current branding configuration */
-    brandingConfig?: OnboardingBrandingConfig;
+    brandingConfig?: OnboardingBrandingConfigInterface;
     /** Whether alphanumeric username is enabled */
     isAlphanumericUsername?: boolean;
     /** Callback when branding configuration changes */
-    onBrandingConfigChange: (config: OnboardingBrandingConfig) => void;
+    onBrandingConfigChange: (config: OnboardingBrandingConfigInterface) => void;
     /** Sign-in options for preview */
-    signInOptions?: SignInOptionsConfig;
+    signInOptions?: SignInOptionsConfigInterface;
 }
 
 /**
@@ -68,8 +68,8 @@ const PreviewColumn = styled(RightColumn)(({ theme }: { theme: Theme }) => ({
  * Design login step component for onboarding.
  * Allows users to customize the appearance of their login page.
  */
-const DesignLoginStep: FunctionComponent<DesignLoginStepProps> = (
-    props: DesignLoginStepProps
+const DesignLoginStep: FunctionComponent<DesignLoginStepPropsInterface> = (
+    props: DesignLoginStepPropsInterface
 ): ReactElement => {
     const {
         brandingConfig = DEFAULT_BRANDING_CONFIG,
@@ -79,7 +79,7 @@ const DesignLoginStep: FunctionComponent<DesignLoginStepProps> = (
         ["data-componentid"]: componentId = OnboardingComponentIds.DESIGN_LOGIN_STEP
     } = props;
 
-    const previewSignInOptions: SignInOptionsConfig | undefined = useMemo(() => {
+    const previewSignInOptions: SignInOptionsConfigInterface | undefined = useMemo(() => {
         if (!signInOptions) {
             return signInOptions;
         }

@@ -31,7 +31,7 @@ import {
 import { LeftColumn, SectionLabel, TwoColumnLayout } from "../shared/onboarding-styles";
 import SelectableCard from "../shared/selectable-card";
 import StepHeader from "../shared/step-header";
-import { ApplicationTypeOption, FrameworkOption } from "../../models";
+import { ApplicationTypeOptionInterface, FrameworkOptionInterface } from "../../models";
 
 /**
  * Framework selection container - horizontal scrollable row
@@ -56,7 +56,7 @@ const AppTypeGrid = styled(Box)(({ theme }) => ({
 /**
  * Props interface for SelectApplicationTemplateStep component.
  */
-interface SelectApplicationTemplateStepProps extends IdentifiableComponentInterface {
+interface SelectApplicationTemplateStepPropsInterface extends IdentifiableComponentInterface {
     selectedTemplateId?: string;
     selectedFramework?: string;
     onTemplateSelect: (templateId: string, framework?: string) => void;
@@ -65,8 +65,8 @@ interface SelectApplicationTemplateStepProps extends IdentifiableComponentInterf
 /**
  * Select application template step component for onboarding.
  */
-const SelectApplicationTemplateStep: FunctionComponent<SelectApplicationTemplateStepProps> = (
-    props: SelectApplicationTemplateStepProps
+const SelectApplicationTemplateStep: FunctionComponent<SelectApplicationTemplateStepPropsInterface> = (
+    props: SelectApplicationTemplateStepPropsInterface
 ): ReactElement => {
     const {
         selectedTemplateId,
@@ -81,32 +81,30 @@ const SelectApplicationTemplateStep: FunctionComponent<SelectApplicationTemplate
     const DEFAULT_FRAMEWORK_COUNT: number = 5;
     const DEFAULT_APP_TYPE_COUNT: number = 3;
 
-    const visibleFrameworks: readonly FrameworkOption[] = showMoreFrameworks
+    const visibleFrameworks: readonly FrameworkOptionInterface[] = showMoreFrameworks
         ? FRAMEWORK_OPTIONS
         : FRAMEWORK_OPTIONS.slice(0, DEFAULT_FRAMEWORK_COUNT);
 
-        console.log("APPLICATION_TYPE_OPTIONS", APPLICATION_TYPE_OPTIONS);
-
-    const visibleAppTypes: readonly ApplicationTypeOption[] = showMoreAppTypes
+    const visibleAppTypes: readonly ApplicationTypeOptionInterface[] = showMoreAppTypes
         ? APPLICATION_TYPE_OPTIONS
         : APPLICATION_TYPE_OPTIONS.slice(0, DEFAULT_APP_TYPE_COUNT);
 
     useEffect(() => {
         if (!selectedTemplateId && !selectedFramework && FRAMEWORK_OPTIONS.length > 0) {
-            const defaultFramework: FrameworkOption = FRAMEWORK_OPTIONS[0];
+            const defaultFramework: FrameworkOptionInterface = FRAMEWORK_OPTIONS[0];
             onTemplateSelect(defaultFramework.templateId || "", defaultFramework.id);
         }
     }, [ selectedTemplateId, selectedFramework, onTemplateSelect ]);
 
     const handleFrameworkSelect = useCallback(
-        (framework: FrameworkOption): void => {
+        (framework: FrameworkOptionInterface): void => {
             onTemplateSelect(framework.templateId || "", framework.id);
         },
         [ onTemplateSelect ]
     );
 
     const handleAppTypeSelect = useCallback(
-        (appType: ApplicationTypeOption): void => {
+        (appType: ApplicationTypeOptionInterface): void => {
             onTemplateSelect(appType.templateId, undefined);
         },
         [ onTemplateSelect ]
@@ -127,7 +125,7 @@ const SelectApplicationTemplateStep: FunctionComponent<SelectApplicationTemplate
                     </SectionLabel>
 
                     <FrameworkGrid>
-                        { visibleFrameworks.map((framework: FrameworkOption) => (
+                        { visibleFrameworks.map((framework: FrameworkOptionInterface) => (
                             <SelectableCard
                                 key={ framework.id }
                                 data-componentid={ `${componentId}-framework-${framework.id}` }
@@ -137,7 +135,6 @@ const SelectApplicationTemplateStep: FunctionComponent<SelectApplicationTemplate
                                     && selectedTemplateId === framework.templateId
                                 }
                                 onClick={ () => handleFrameworkSelect(framework) }
-                                testId={ `${componentId}-framework-${framework.id}` }
                                 title={ framework.displayName }
                                 variant="compact"
                             />
@@ -166,9 +163,7 @@ const SelectApplicationTemplateStep: FunctionComponent<SelectApplicationTemplate
                     </FrameworkGrid>
                 </Box>
 
-                { /* OR Divider */ }
-                {/* <OrDivider> */}
-                    <Divider textAlign="left" sx={{ my: 4}}>
+                <Divider textAlign="left" sx={ { my: 4 } }>
                     <Typography
                         variant="body2"
                         sx={ {
@@ -179,8 +174,7 @@ const SelectApplicationTemplateStep: FunctionComponent<SelectApplicationTemplate
                     >
                         or
                     </Typography>
-                    </Divider>
-                {/* </OrDivider> */}
+                </Divider>
 
                 { /* Application Type Selection Section */ }
                 <Box>
@@ -189,7 +183,7 @@ const SelectApplicationTemplateStep: FunctionComponent<SelectApplicationTemplate
                     </SectionLabel>
 
                     <AppTypeGrid>
-                        { visibleAppTypes?.map((appType: ApplicationTypeOption) => (
+                        { visibleAppTypes?.map((appType: ApplicationTypeOptionInterface) => (
                             <SelectableCard
                                 key={ appType.id }
                                 data-componentid={ `${componentId}-apptype-${appType.id}` }
@@ -200,7 +194,6 @@ const SelectApplicationTemplateStep: FunctionComponent<SelectApplicationTemplate
                                     && selectedTemplateId === appType.templateId
                                 }
                                 onClick={ () => handleAppTypeSelect(appType) }
-                                testId={ `${componentId}-apptype-${appType.id}` }
                                 title={ appType.displayName }
                                 variant="default"
                             />

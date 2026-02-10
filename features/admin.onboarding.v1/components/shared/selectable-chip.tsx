@@ -23,7 +23,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 /**
  * Props interface for SelectableChip component.
  */
-interface SelectableChipProps {
+interface SelectableChipPropsInterface {
     /**
      * Chip label text.
      */
@@ -64,11 +64,11 @@ const StyledChip: typeof Chip = styled(Chip)(({ theme }: { theme: Theme }) => ({
 /**
  * A selectable chip component with visual feedback for selected state.
  */
-const SelectableChip: FunctionComponent<SelectableChipProps> = ({
+const SelectableChip: FunctionComponent<SelectableChipPropsInterface> = ({
     isSelected = false,
     label,
     onClick
-}: SelectableChipProps): ReactElement => (
+}: SelectableChipPropsInterface): ReactElement => (
     <StyledChip
         label={ label }
         onClick={ onClick }

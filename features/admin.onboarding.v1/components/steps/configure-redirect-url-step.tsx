@@ -43,7 +43,7 @@ import StepHeader from "../shared/step-header";
 /**
  * Props interface for ConfigureRedirectUrlStep component.
  */
-interface ConfigureRedirectUrlStepProps extends IdentifiableComponentInterface {
+interface ConfigureRedirectUrlStepPropsInterface extends IdentifiableComponentInterface {
     /** Current redirect URLs (array for API compatibility, but only first is used) */
     redirectUrls: string[];
     /** Template ID for determining defaults */
@@ -166,8 +166,8 @@ const getPlaceholder = (templateId?: string): string => {
  * Configure redirect URL step component for onboarding.
  * Simplified to accept only one URL for a streamlined onboarding experience.
  */
-const ConfigureRedirectUrlStep: FunctionComponent<ConfigureRedirectUrlStepProps> = (
-    props: ConfigureRedirectUrlStepProps
+const ConfigureRedirectUrlStep: FunctionComponent<ConfigureRedirectUrlStepPropsInterface> = (
+    props: ConfigureRedirectUrlStepPropsInterface
 ): ReactElement => {
     const {
         redirectUrls,

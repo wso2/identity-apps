@@ -33,7 +33,7 @@ import { SectionLabel } from "./onboarding-styles";
 /**
  * Props interface for LogoSelector component.
  */
-export interface LogoSelectorProps extends IdentifiableComponentInterface {
+export interface LogoSelectorPropsInterface extends IdentifiableComponentInterface {
     /** Currently selected logo URL */
     selectedLogoUrl?: string;
     /** Callback when a logo is selected */
@@ -65,8 +65,8 @@ const LogoGrid: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
  * Logo selector component using local animal avatar images.
  * Displays all available avatars for user selection.
  */
-const LogoSelector: FunctionComponent<LogoSelectorProps> = memo((
-    props: LogoSelectorProps
+const LogoSelector: FunctionComponent<LogoSelectorPropsInterface> = memo((
+    props: LogoSelectorPropsInterface
 ): ReactElement => {
     const {
         selectedLogoUrl,

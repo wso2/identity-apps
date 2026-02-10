@@ -25,7 +25,7 @@ import React, { FunctionComponent, ReactElement, memo } from "react";
 /**
  * Step configuration interface.
  */
-export interface StepConfig {
+export interface StepConfigInterface {
     /**
      * Unique key for the step.
      */
@@ -39,11 +39,11 @@ export interface StepConfig {
 /**
  * Props interface for StepIndicator component.
  */
-export interface StepIndicatorProps extends IdentifiableComponentInterface {
+export interface StepIndicatorPropsInterface extends IdentifiableComponentInterface {
     /**
      * Array of step configurations.
      */
-    steps: StepConfig[];
+    steps: StepConfigInterface[];
 }
 
 /**
@@ -117,8 +117,8 @@ const EmptySpacer = styled(Box)({});
  * Step indicator component showing progress through steps.
  * Displays on the right side of the welcome card.
  */
-const StepIndicator: FunctionComponent<StepIndicatorProps> = memo((
-    props: StepIndicatorProps
+const StepIndicator: FunctionComponent<StepIndicatorPropsInterface> = memo((
+    props: StepIndicatorPropsInterface
 ): ReactElement => {
     const {
         steps,
@@ -131,7 +131,7 @@ const StepIndicator: FunctionComponent<StepIndicatorProps> = memo((
                 What you&apos;ll do
             </StepIndicatorHeader>
             <StepsList>
-                { steps.map((step: StepConfig, index: number) => (
+                { steps.map((step: StepConfigInterface, index: number) => (
                     <React.Fragment key={ step.key }>
                         { /* Dot */ }
                         <StepDot />

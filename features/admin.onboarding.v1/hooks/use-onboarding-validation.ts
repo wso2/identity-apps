@@ -19,12 +19,13 @@
 import { useCallback, useMemo } from "react";
 import { AppNameConstraints, RedirectUrlConstraints } from "../constants";
 import {
-    CreatedApplicationResult,
-    OnboardingBrandingConfig,
-    OnboardingData,
+    CreatedApplicationResultInterface,
+    OnboardingBrandingConfigInterface,
+    OnboardingDataInterface,
     OnboardingStep,
-    SignInOptionsConfig
+    SignInOptionsConfigInterface
 } from "../models";
+import { extractOrigins } from "../utils/url-utils";
 
 /**
  * Validates an application name against the constraints.
@@ -92,7 +93,7 @@ const isValidUrl = (url: string): boolean => {
  * - Must have at least one identifier
  * - Must have at least one login method
  */
-const isValidSignInOptions = (options?: SignInOptionsConfig): boolean => {
+const isValidSignInOptions = (options?: SignInOptionsConfigInterface): boolean => {
     if (!options) return false;
 
     const { identifiers, loginMethods } = options;
@@ -115,7 +116,7 @@ const isValidSignInOptions = (options?: SignInOptionsConfig): boolean => {
 /**
  * Custom hook for onboarding step validation.
  */
-export const useStepValidation = (currentStep: OnboardingStep, data: OnboardingData) => {
+export const useStepValidation = (currentStep: OnboardingStep, data: OnboardingDataInterface) => {
     return useMemo(() => {
         switch (currentStep) {
             case OnboardingStep.WELCOME:
@@ -141,32 +142,13 @@ export const useStepValidation = (currentStep: OnboardingStep, data: OnboardingD
 };
 
 /**
- * Extract origins from redirect URLs.
- */
-const extractOrigins = (urls: string[]): string[] => {
-    const origins: Set<string> = new Set();
-
-    urls.forEach((url: string) => {
-        try {
-            const urlObj: URL = new URL(url);
-
-            origins.add(urlObj.origin);
-        } catch {
-            // Invalid URL, skip
-        }
-    });
-
-    return Array.from(origins);
-};
-
-/**
  * Custom hook for managing onboarding data updates.
  */
-export const useOnboardingData = (
-    initialData: OnboardingData,
-    setData: (data: OnboardingData) => void
+export const useOnboardingDataInterface = (
+    initialData: OnboardingDataInterface,
+    setData: (data: OnboardingDataInterface) => void
 ) => {
-    const updateChoice = useCallback((choice: OnboardingData["choice"]) => {
+    const updateChoice = useCallback((choice: OnboardingDataInterface["choice"]) => {
         setData({ ...initialData, choice });
     }, [ initialData, setData ]);
 
@@ -178,7 +160,7 @@ export const useOnboardingData = (
         setData({ ...initialData, isRandomName });
     }, [ initialData, setData ]);
 
-    const updateApplicationType = useCallback((applicationType: OnboardingData["applicationType"]) => {
+    const updateApplicationType = useCallback((applicationType: OnboardingDataInterface["applicationType"]) => {
         setData({ ...initialData, applicationType });
     }, [ initialData, setData ]);
 
@@ -194,15 +176,15 @@ export const useOnboardingData = (
         });
     }, [ initialData, setData ]);
 
-    const updateSignInOptions = useCallback((options: SignInOptionsConfig) => {
+    const updateSignInOptions = useCallback((options: SignInOptionsConfigInterface) => {
         setData({ ...initialData, signInOptions: options });
     }, [ initialData, setData ]);
 
-    const updateBrandingConfig = useCallback((config: OnboardingBrandingConfig) => {
+    const updateBrandingConfig = useCallback((config: OnboardingBrandingConfigInterface) => {
         setData({ ...initialData, brandingConfig: config });
     }, [ initialData, setData ]);
 
-    const setCreatedApplication = useCallback((result: CreatedApplicationResult) => {
+    const setCreatedApplication = useCallback((result: CreatedApplicationResultInterface) => {
         setData({ ...initialData, createdApplication: result });
     }, [ initialData, setData ]);
 

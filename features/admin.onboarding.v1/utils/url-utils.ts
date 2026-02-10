@@ -16,6 +16,24 @@
  * under the License.
  */
 
-export { buildOnboardingGuideData } from "./build-guide-data";
-export { resolveGuideContent } from "./guide-content-resolver";
-export * from "./password-generator";
+/**
+ * Extract origins from redirect URLs.
+ *
+ * @param urls - Array of redirect URLs
+ * @returns Array of unique origin URLs
+ */
+export const extractOrigins = (urls: string[]): string[] => {
+    const origins: Set<string> = new Set();
+
+    urls.forEach((url: string) => {
+        try {
+            const urlObj: URL = new URL(url);
+
+            origins.add(urlObj.origin);
+        } catch {
+            // Invalid URL, skip
+        }
+    });
+
+    return Array.from(origins);
+};

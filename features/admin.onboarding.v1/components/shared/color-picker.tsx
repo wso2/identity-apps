@@ -30,7 +30,7 @@ import { SectionLabel } from "./onboarding-styles";
 /**
  * Props interface for ColorPicker component.
  */
-export interface ColorPickerProps extends IdentifiableComponentInterface {
+export interface ColorPickerPropsInterface extends IdentifiableComponentInterface {
     /** Current color value (hex) */
     color: string;
     /** Label for the color picker */
@@ -123,8 +123,8 @@ const HexColorInput: any = styled("input")({
 /**
  * Color picker component with grid swatches and custom color input.
  */
-const ColorPicker: FunctionComponent<ColorPickerProps> = memo((
-    props: ColorPickerProps
+const ColorPicker: FunctionComponent<ColorPickerPropsInterface> = memo((
+    props: ColorPickerPropsInterface
 ): ReactElement => {
     const {
         color,

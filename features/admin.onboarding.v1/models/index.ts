@@ -16,8 +16,7 @@
  * under the License.
  */
 
-import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { FunctionComponent, ReactNode, SVGProps } from "react";
+import { FunctionComponent, SVGProps } from "react";
 
 // ============================================================================
 // Enums
@@ -60,29 +59,24 @@ export enum ApplicationType {
 /**
  * Data collected during onboarding flow.
  */
-export interface OnboardingData {
+export interface OnboardingDataInterface {
     choice?: OnboardingChoice;
     applicationName?: string;
     isRandomName?: boolean;
     applicationType?: ApplicationType;
     templateId?: string;
     framework?: string;
-    /** Redirect URLs for the application */
     redirectUrls?: string[];
-    /** Allowed origins for CORS */
     allowedOrigins?: string[];
-    /** Sign-in options configuration */
-    signInOptions?: SignInOptionsConfig;
-    /** Branding configuration */
-    brandingConfig?: OnboardingBrandingConfig;
-    /** Created application result */
-    createdApplication?: CreatedApplicationResult;
+    signInOptions?: SignInOptionsConfigInterface;
+    brandingConfig?: OnboardingBrandingConfigInterface;
+    createdApplication?: CreatedApplicationResultInterface;
 }
 
 /**
  * Framework/technology option for template selection.
  */
-export interface FrameworkOption {
+export interface FrameworkOptionInterface {
     id: string;
     displayName: string;
     logo?: FunctionComponent<SVGProps<SVGSVGElement>>;
@@ -92,55 +86,12 @@ export interface FrameworkOption {
 /**
  * Application type option for template selection.
  */
-export interface ApplicationTypeOption {
+export interface ApplicationTypeOptionInterface {
     id: string;
     displayName: string;
     description: string;
     templateId: string;
     icon?: FunctionComponent<SVGProps<SVGSVGElement>>;
-}
-
-/**
- * Choice option configuration for welcome step.
- */
-export interface ChoiceOption {
-    choice: OnboardingChoice;
-    icon: string;
-    titleKey: string;
-    descriptionKey: string;
-}
-
-// ============================================================================
-// Component Props Interfaces
-// ============================================================================
-
-/**
- * Base props for step components.
- */
-export interface BaseStepProps extends IdentifiableComponentInterface {
-    className?: string;
-}
-
-/**
- * Props for the onboarding wizard component.
- */
-export interface OnboardingWizardProps {
-    initialData?: OnboardingData;
-    onComplete: (data: OnboardingData) => void;
-    onSkip: () => void;
-}
-
-/**
- * Props for selectable card component.
- */
-export interface SelectableCardProps extends IdentifiableComponentInterface {
-    isSelected: boolean;
-    onClick: () => void;
-    icon: ReactNode;
-    title: string;
-    description?: string;
-    testId?: string;
-    variant?: "default" | "compact";
 }
 
 // ============================================================================
@@ -151,7 +102,7 @@ export interface SelectableCardProps extends IdentifiableComponentInterface {
  * Sign-in identifier options configuration.
  * Identifiers determine how users are recognized (username, email, or mobile).
  */
-export interface SignInIdentifiersConfig {
+export interface SignInIdentifiersConfigInterface {
     username: boolean;
     email: boolean;
     mobile: boolean;
@@ -162,7 +113,7 @@ export interface SignInIdentifiersConfig {
  * All authentication methods presented to users in Step 2 of the Identifier First flow.
  * Users can select any combination - these are presented as alternatives (OR logic).
  */
-export interface SignInLoginMethodsConfig {
+export interface SignInLoginMethodsConfigInterface {
     password: boolean;
     passkey: boolean;
     magicLink: boolean;
@@ -173,22 +124,16 @@ export interface SignInLoginMethodsConfig {
 
 /**
  * Complete sign-in options configuration.
- * Uses the Identifier First approach:
- * - Step 1: IdentifierExecutor collects identifier (based on identifiers config)
- * - Step 2: All enabled login methods as alternatives
- *
- * Note: Social logins are intentionally excluded from onboarding.
- * Users can add social logins from the Console later.
  */
-export interface SignInOptionsConfig {
-    identifiers: SignInIdentifiersConfig;
-    loginMethods: SignInLoginMethodsConfig;
+export interface SignInOptionsConfigInterface {
+    identifiers: SignInIdentifiersConfigInterface;
+    loginMethods: SignInLoginMethodsConfigInterface;
 }
 
 /**
  * Sign-in option definition for UI rendering.
  */
-export interface SignInOptionDefinition {
+export interface SignInOptionDefinitionInterface {
     id: string;
     label: string;
     description?: string;
@@ -198,11 +143,8 @@ export interface SignInOptionDefinition {
         idp: string;
         authenticator: string;
     };
-    /** Whether this option requires an identifier to be selected */
     requiresIdentifier?: boolean;
-    /** Whether this option can be used as a first factor */
     canBeFirstFactor?: boolean;
-    /** Whether this option can be used as a second factor (MFA) */
     canBeSecondFactor?: boolean;
 }
 
@@ -213,7 +155,7 @@ export interface SignInOptionDefinition {
 /**
  * Branding configuration for onboarding.
  */
-export interface OnboardingBrandingConfig {
+export interface OnboardingBrandingConfigInterface {
     primaryColor: string;
     logoUrl?: string;
     logoAltText?: string;
@@ -226,7 +168,7 @@ export interface OnboardingBrandingConfig {
 /**
  * Test user credentials for testing the application.
  */
-export interface TestUserCredentials {
+export interface TestUserCredentialsInterface {
     username: string;
     password: string;
     email?: string;
@@ -235,12 +177,12 @@ export interface TestUserCredentials {
 /**
  * Result after application creation.
  */
-export interface CreatedApplicationResult {
+export interface CreatedApplicationResultInterface {
     applicationId: string;
     clientId: string;
     clientSecret?: string;
     name: string;
-    testUserCredentials?: TestUserCredentials;
+    testUserCredentials?: TestUserCredentialsInterface;
 }
 
 // ============================================================================
@@ -250,15 +192,7 @@ export interface CreatedApplicationResult {
 /**
  * Validation result for sign-in options.
  */
-export interface SignInOptionsValidation {
+export interface SignInOptionsValidationInterface {
     isValid: boolean;
     errors: string[];
-}
-
-/**
- * Redirect URL validation result.
- */
-export interface RedirectUrlValidation {
-    isValid: boolean;
-    error?: string;
 }

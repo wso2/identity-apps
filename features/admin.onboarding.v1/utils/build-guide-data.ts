@@ -21,14 +21,14 @@ import {
 } from "@wso2is/admin.applications.v1/models/application";
 import { OIDCDataInterface } from "@wso2is/admin.applications.v1/models/application-inbound";
 import set from "lodash-es/set";
-import { CreatedApplicationResult } from "../models";
+import { CreatedApplicationResultInterface } from "../models";
 
 /**
  * Parameters for building the onboarding guide data object.
  */
-export interface BuildGuideDataParams {
+export interface BuildGuideDataParamsInterface {
     /** Created application result from the wizard */
-    createdApplication?: CreatedApplicationResult;
+    createdApplication?: CreatedApplicationResultInterface;
     /** OIDC inbound protocol config (from useGetApplicationInboundConfigs) */
     inboundProtocolConfig?: OIDCDataInterface;
     /** OIDC endpoint metadata (from Redux state.application.oidcConfigurations) */
@@ -61,14 +61,11 @@ export interface BuildGuideDataParams {
  * @param params - Data sources from the onboarding context
  * @returns Data object compatible with MarkdownGuide's lodash.get() substitution
  */
-export const buildOnboardingGuideData = (params: BuildGuideDataParams): Record<string, unknown> => {
+export const buildOnboardingGuideData = (params: BuildGuideDataParamsInterface): Record<string, unknown> => {
     const data: Record<string, unknown> = {};
 
-    // general.name - application name
     set(data, "general.name", params.createdApplication?.name || "");
 
-    // protocol.oidc.* - OIDC protocol configuration
-    // Prefer inbound config API response (authoritative), fall back to creation response data
     if (params.inboundProtocolConfig) {
         set(data, "protocol.oidc", params.inboundProtocolConfig);
     } else {
@@ -79,12 +76,10 @@ export const buildOnboardingGuideData = (params: BuildGuideDataParams): Record<s
         });
     }
 
-    // metadata.oidc.* - OIDC server endpoint metadata (authorize, token, etc.)
     if (params.oidcConfigurations) {
         set(data, "metadata.oidc", params.oidcConfigurations);
     }
 
-    // Top-level properties used by guide templates
     data.serverOrigin = params.customServerHost || params.serverOrigin || "";
     data.tenantDomain = params.tenantDomain || "";
     data.clientOrigin = params.clientOrigin || "";
@@ -92,7 +87,6 @@ export const buildOnboardingGuideData = (params: BuildGuideDataParams): Record<s
     data.accountAppURL = params.accountAppURL || "";
     data.docSiteURL = params.docSiteURL || "";
 
-    // moderatedData.scopes - default scope lists (same as ApplicationMarkdownGuide)
     set(data, "moderatedData.scopes", {
         commaSeperatedList: "'openid', 'profile'",
         spaceSeperatedList: "openid profile"

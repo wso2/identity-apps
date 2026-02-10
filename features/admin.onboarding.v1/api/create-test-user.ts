@@ -18,15 +18,15 @@
 
 import { addUser } from "@wso2is/admin.users.v1/api/users";
 import { UserDetailsInterface } from "@wso2is/admin.users.v1/models/user";
-import { TestUserCredentials } from "../models";
+import { TestUserCredentialsInterface } from "../models";
 import { generateSecurePassword } from "../utils/password-generator";
 
 /**
  * Test user creation result.
  */
-export interface TestUserCreationResult {
+export interface TestUserCreationResultInterface {
     success: boolean;
-    credentials?: TestUserCredentials;
+    credentials?: TestUserCredentialsInterface;
     error?: string;
 }
 
@@ -38,7 +38,7 @@ export interface TestUserCreationResult {
  * @param email - Email address for the test user (typically the admin's email)
  * @returns Promise resolving to the creation result with credentials
  */
-export const createTestUser = async (email: string): Promise<TestUserCreationResult> => {
+export const createTestUser = async (email: string): Promise<TestUserCreationResultInterface> => {
     const username: string = "testUser";
     const password: string = generateSecurePassword(14);
 

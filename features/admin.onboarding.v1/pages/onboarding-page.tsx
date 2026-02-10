@@ -18,29 +18,24 @@
 
 import { Theme } from "@mui/material/styles";
 import { styled } from "@mui/material/styles";
-import Typography from "@oxygen-ui/react/Typography";
 import Box from "@oxygen-ui/react/Box";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useCallback, useMemo } from "react";
+import React, { FunctionComponent, ReactElement, useCallback, useEffect, useMemo } from "react";
 import { RouteComponentProps } from "react-router";
 import OnboardingWizard from "../components/onboarding-wizard";
 import Header from "../components/shared/header";
 import { ContentArea } from "../components/shared/onboarding-styles";
 import { OnboardingComponentIds } from "../constants";
 import { useOnboardingStatus } from "../hooks/use-onboarding-status";
-import { ApplicationType, OnboardingChoice, OnboardingData } from "../models";
+import { ApplicationType, OnboardingChoice, OnboardingDataInterface } from "../models";
 
 /**
  * Props interface for OnboardingPage component.
  */
 type OnboardingPageProps = IdentifiableComponentInterface & RouteComponentProps;
 
-/**
- * Onboarding page component.
- * Owns the page layout (header, container) and delegates step logic to OnboardingWizard.
- */
 /**
  * Map of URL param values to ApplicationType enum.
  */
@@ -70,9 +65,9 @@ const OnboardingPage: FunctionComponent<OnboardingPageProps> = (props: Onboardin
      * Parse URL params to get initial onboarding data.
      * Supported params: apptype, choice, appname
      */
-    const initialData: OnboardingData = useMemo(() => {
+    const initialData: OnboardingDataInterface = useMemo(() => {
         const params: URLSearchParams = new URLSearchParams(location.search);
-        const data: OnboardingData = {};
+        const data: OnboardingDataInterface = {};
 
         const appType: string | null = params.get("apptype");
 
@@ -106,26 +101,36 @@ const OnboardingPage: FunctionComponent<OnboardingPageProps> = (props: Onboardin
         height: "100vh"
     }));
 
-    const { markOnboardingComplete } = useOnboardingStatus();
+    const {
+        shouldShowOnboarding,
+        isLoading,
+        markOnboardingComplete
+    } = useOnboardingStatus();
+
+    // Route guard: redirect to home if user shouldn't see onboarding
+    useEffect(() => {
+        if (!isLoading && !shouldShowOnboarding) {
+            history.push(AppConstants.getAppHomePath());
+        }
+    }, [ isLoading, shouldShowOnboarding ]);
 
     const handleComplete = useCallback(
-        async (data: OnboardingData): Promise<void> => {
-            // eslint-disable-next-line no-console
-            console.log("Onboarding completed with data:", data);
-
-            await markOnboardingComplete();
+        (_data: OnboardingDataInterface): void => {
+            markOnboardingComplete();
             history.push(AppConstants.getAppHomePath());
         },
         [markOnboardingComplete]
     );
 
-    const handleSkip = useCallback(async (): Promise<void> => {
-        // eslint-disable-next-line no-console
-        console.log("Onboarding skipped");
-
-        await markOnboardingComplete();
+    const handleSkip = useCallback((): void => {
+        markOnboardingComplete();
         history.push(AppConstants.getAppHomePath());
     }, [markOnboardingComplete]);
+
+    // Don't render until we know if user should see onboarding
+    if (isLoading || !shouldShowOnboarding) {
+        return null;
+    }
 
     return (
         <StyledOnboardingPage data-componentid={componentId}>

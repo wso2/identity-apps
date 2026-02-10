@@ -21,7 +21,7 @@ import {
     ServerConfigurationsConstants
 } from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
 import { MULTI_ATTRIBUTE_CLAIMS } from "../constants/sign-in-options";
-import { SignInIdentifiersConfig } from "../models";
+import { SignInIdentifiersConfigInterface } from "../models";
 
 /**
  * Update multi-attribute login configuration based on selected identifiers.
@@ -32,7 +32,7 @@ import { SignInIdentifiersConfig } from "../models";
  * @returns Promise that resolves when the configuration is updated
  */
 export const updateMultiAttributeLoginConfig = async (
-    identifiers: SignInIdentifiersConfig,
+    identifiers: SignInIdentifiersConfigInterface,
     isAlphanumericUsername: boolean = true
 ): Promise<void> => {
     // Build the allowed attributes list

@@ -22,15 +22,6 @@ import Button from "@oxygen-ui/react/Button";
 import Typography from "@oxygen-ui/react/Typography";
 
 /**
- * Vertical divider in header.
- */
-export const HeaderDivider: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
-    backgroundColor: theme.palette.divider,
-    height: 20,
-    width: 1
-}));
-
-/**
  * Content area that centers the main card.
  */
 export const ContentArea: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
@@ -151,78 +142,6 @@ export const ActionButtons: typeof Box = styled(Box)(({ theme }: { theme: Theme 
     display: "flex",
     gap: theme.spacing(2)
 }));
-
-/**
- * Selectable option card.
- */
-export const SelectableOptionCard = styled(Box, {
-    shouldForwardProp: (prop: string) => prop !== "isSelected"
-})<{ isSelected?: boolean }>(({ theme, isSelected }: { isSelected?: boolean; theme: Theme }) => ({
-    "&:hover": {
-        borderColor: theme.palette.primary.main,
-        boxShadow: theme.shadows[2]
-    },
-    backgroundColor: isSelected
-        ? theme.palette.primary.light + "10"
-        : theme.palette.background.paper,
-    border: `2px solid ${isSelected ? theme.palette.primary.main : theme.palette.divider}`,
-    borderRadius: theme.shape.borderRadius,
-    cursor: "pointer",
-    display: "flex",
-    flex: 1,
-    flexDirection: "column",
-    gap: theme.spacing(1.5),
-    maxWidth: 300,
-    minWidth: 200,
-    padding: theme.spacing(2.5),
-    transition: "all 0.15s ease-in-out"
-}));
-
-/**
- * Icon container with background.
- */
-export const IconWrapper: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
-    alignItems: "center",
-    backgroundColor: theme.palette.grey[100],
-    borderRadius: theme.shape.borderRadius,
-    display: "flex",
-    height: 40,
-    justifyContent: "center",
-    width: 40
-}));
-
-
-/**
- * Individual step item in indicator.
- */
-export const StepIndicatorItem = styled(Box, {
-    shouldForwardProp: (prop: string) => prop !== "isActive" && prop !== "isCompleted"
-})<{ isActive?: boolean; isCompleted?: boolean }>(
-    ({ isActive, isCompleted, theme }: { isActive?: boolean; isCompleted?: boolean; theme: Theme }) => ({
-        alignItems: "center",
-        display: "flex",
-        gap: theme.spacing(1.5),
-        opacity: isActive || isCompleted ? 1 : 0.5,
-        padding: theme.spacing(1, 0)
-    })
-);
-
-/**
- * Step dot indicator.
- */
-export const StepDot = styled(Box, {
-    shouldForwardProp: (prop: string) => prop !== "isActive" && prop !== "isCompleted"
-})<{ isActive?: boolean; isCompleted?: boolean }>(
-    ({ isActive, isCompleted, theme }: { isActive?: boolean; isCompleted?: boolean; theme: Theme }) => ({
-        backgroundColor: isActive || isCompleted
-            ? theme.palette.primary.main
-            : theme.palette.grey[300],
-        borderRadius: "50%",
-        flexShrink: 0,
-        height: 8,
-        width: 8
-    })
-);
 
 /**
  * Cards container for horizontal layout.

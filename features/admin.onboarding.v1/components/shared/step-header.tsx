@@ -25,7 +25,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 /**
  * Props interface for StepHeader component.
  */
-export interface StepHeaderProps extends IdentifiableComponentInterface {
+export interface StepHeaderPropsInterface extends IdentifiableComponentInterface {
     /**
      * Optional subtitle/description text.
      */
@@ -67,7 +67,7 @@ const Subtitle: typeof Typography = styled(Typography)(({ theme }: { theme: Them
  * Header component for onboarding wizard steps.
  * Displays a title and optional subtitle.
  */
-const StepHeader: FunctionComponent<StepHeaderProps> = (props: StepHeaderProps): ReactElement => {
+const StepHeader: FunctionComponent<StepHeaderPropsInterface> = (props: StepHeaderPropsInterface): ReactElement => {
     const {
         subtitle,
         title,

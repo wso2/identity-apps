@@ -26,7 +26,7 @@ import { ReactComponent as NextjsLogo } from "../assets/icons/nextjs.svg";
 import { ReactComponent as ReactLogo } from "../assets/icons/react.svg";
 import { ReactComponent as ServerLogo } from "../assets/icons/server.svg";
 import { ReactComponent as WebLogo } from "../assets/icons/web.svg";
-import { ApplicationType, ApplicationTypeOption, FrameworkOption } from "../models";
+import { ApplicationType, ApplicationTypeOptionInterface, FrameworkOptionInterface } from "../models";
 
 /**
  * High-level application type configurations (browser, mobile, machine).
@@ -55,13 +55,8 @@ export const APPLICATION_TYPES: readonly {
 
 /**
  * Framework options with logos for template selection.
- * Template IDs must match the extensions API templates.
- * - React: "react-application" (uses SPA base template)
- * - Angular: "angular-application" (uses SPA base template)
- * - Next.js: "nextjs-application" (uses OIDC web base template)
- * - Express: "oidc-web-application" (traditional web app)
  */
-export const FRAMEWORK_OPTIONS: readonly FrameworkOption[] = [
+export const FRAMEWORK_OPTIONS: readonly FrameworkOptionInterface[] = [
     {
         displayName: "React",
         id: "react",
@@ -91,7 +86,7 @@ export const FRAMEWORK_OPTIONS: readonly FrameworkOption[] = [
 /**
  * Application type options for template selection.
  */
-export const APPLICATION_TYPE_OPTIONS: readonly ApplicationTypeOption[] = [
+export const APPLICATION_TYPE_OPTIONS: readonly ApplicationTypeOptionInterface[] = [
     {
         description: "For AI agents and tools accessing APIs without user sign-in.",
         displayName: "AI / MCP Client",
