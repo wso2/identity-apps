@@ -181,6 +181,7 @@ export const common: CommonNS = {
     "createdOn": "に作成されました",
     "dangerZone": "危険区域",
     "darkMode": "ダークモード",
+    "default": "デフォルト",
     "delete": "消去",
     "deprecated": "この構成は非推奨であり、今後のリリースで削除される予定です。",
     "description": "説明",

@@ -174,6 +174,7 @@ export interface CommonNS {
     create: string;
     dangerZone: string;
     darkMode: string;
+    default: string;
     delete: string;
     deprecated: string;
     description: string;

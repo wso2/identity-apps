@@ -182,6 +182,7 @@ export const common: CommonNS = {
     createdOn: "உருவாக்கப்பட்ட தினம்",
     dangerZone: "ஆபத்து மண்டலம்",
     darkMode: "இருண்ட தீம்",
+    default: "இயல்புநிலை",
     delete: "அழி",
     deprecated: "இந்த கட்டமைப்பு பழமையானது மற்றும் எதிர்கால வெளியீட்டில் நீக்கப்படும்.",
     description: "விபரம்",

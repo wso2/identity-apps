@@ -181,6 +181,7 @@ export const common: CommonNS = {
     createdOn: "නිර්මාණය කරන ලද්දේ",
     dangerZone: "අන්තරා කලාපය",
     darkMode: "අඳුරු තේමාව",
+    default: "පෙරනිමි",
     delete: "මකන්න",
     deprecated: "මෙම වින්‍යාසය අහෝසි කර ඇති අතර අනාගත නිකුතුවකින් ඉවත් කෙරෙනු ඇත.",
     description: "විස්තරය",
