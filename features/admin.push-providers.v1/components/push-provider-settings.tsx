@@ -18,11 +18,15 @@
 
 import cloneDeep from "lodash-es/cloneDeep";
 import { TemplateDynamicForm } from "@wso2is/admin.template-core.v1/components/template-dynamic-form";
-import { DynamicFilePickerFieldInterface, DynamicFormInterface,
-    DynamicInputFieldTypes }from "@wso2is/admin.template-core.v1/models/dynamic-fields";
+import {
+    DynamicFilePickerFieldInterface, DynamicFormInterface,
+    DynamicInputFieldTypes
+} from "@wso2is/admin.template-core.v1/models/dynamic-fields";
+import { EmphasizedSegment, Hint } from "@wso2is/react-components";
+import { Checkbox, CheckboxProps, Divider } from "semantic-ui-react";
 import { ExtensionTemplateCommonInterface } from "@wso2is/admin.template-core.v1/models/templates";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { PushProviderAddAPIInterface, PushProviderPropertiesInterface, PushProviderUpdateAPIInterface } from "../models/push-providers";
 import { PushProviderTemplateInterface, PushProviderTemplateMetadataInterface } from "../models/templates";
@@ -53,6 +57,11 @@ interface PushProviderSettingsPropsInterface extends IdentifiableComponentInterf
     pushProviderTemplateMetadata: PushProviderTemplateMetadataInterface;
 
     /**
+     * Default push provider name
+     */
+    defaultPushProvider: string | null;
+
+    /**
      * Flag to determine if the data is still loading
      */
     isLoading?: boolean;
@@ -71,6 +80,11 @@ interface PushProviderSettingsPropsInterface extends IdentifiableComponentInterf
      * Callback to create the push provider
      */
     handleCreate: (data: PushProviderAddAPIInterface, callback?: () => void) => void;
+
+    /**
+     * Callback to update the default push provider
+     */
+    handleDefaultUpdate: (providerName: string | null) => void;
 }
 
 export const PushProviderSettings: FunctionComponent<PushProviderSettingsPropsInterface> = (
@@ -79,10 +93,12 @@ export const PushProviderSettings: FunctionComponent<PushProviderSettingsPropsIn
         pushProviderTemplateInfo,
         pushProviderTemplateData,
         pushProviderTemplateMetadata,
+        defaultPushProvider,
         isLoading,
         handleDelete,
         handleCreate,
         handleUpdate,
+        handleDefaultUpdate,
         ["data-componentid"]: componentId = "push-provider-settings"
     }: PushProviderSettingsPropsInterface
 ): ReactElement => {
@@ -128,6 +144,21 @@ export const PushProviderSettings: FunctionComponent<PushProviderSettingsPropsIn
         return formMetadata;
     }, [ pushProviderTemplateMetadata ]);
 
+    const [isDefaultProvider, setIsDefaultProvider] = useState<boolean>( false );
+
+    if (defaultPushProvider && pushProvider?.provider === defaultPushProvider && !isDefaultProvider) {
+        setIsDefaultProvider(true);
+    } else if (defaultPushProvider && pushProvider?.provider !== defaultPushProvider && isDefaultProvider) {
+        setIsDefaultProvider(false);
+    } else if (!defaultPushProvider && isDefaultProvider) {
+        setIsDefaultProvider(false);
+    }
+
+    const handleToggleChange = (event: React.FormEvent<HTMLInputElement>, data: CheckboxProps): void => {
+        setIsDefaultProvider(data.checked);
+        handleDefaultUpdate(data.checked ? pushProvider?.provider : null);
+    };
+
     const handleFormSubmission = (
         values: Record<string, unknown>,
         callback: () => void
@@ -153,7 +184,7 @@ export const PushProviderSettings: FunctionComponent<PushProviderSettingsPropsIn
             handleUpdate(payload, callback);
         } else {
             const payload: PushProviderAddAPIInterface = {
-                name: pushProviderTemplateData.payload.name,
+                name: "PushPublisher",//pushProviderTemplateData.payload.name,
                 properties: providerProperties,
                 provider: pushProviderTemplateData.payload.provider
             };
@@ -162,17 +193,34 @@ export const PushProviderSettings: FunctionComponent<PushProviderSettingsPropsIn
     };
 
     return (
-        <TemplateDynamicForm
-            key = { pushProviderTemplateInfo?.id }
-            form={ renderFormMetadata }
-            initialFormValues={ initialFormValues as unknown as Record<string, unknown> }
-            templatePayload={ pushProviderTemplateData?.payload as unknown as Record<string, unknown> }
-            buttonText={ t("common:update") }
-            onFormSubmit={ handleFormSubmission }
-            isLoading={ isLoading }
-            readOnly={ false }
-            data-componentid= { `${componentId}-form` }
-        />
+        <EmphasizedSegment
+            data-componentid={`${componentId}-form`}
+            padded="very"
+        >
+            <Checkbox
+                label={ t("pushProviders:pushProviderSettings.defaultSender") }
+                checked={isDefaultProvider}
+                onChange={handleToggleChange}
+                toggle
+                disabled={pushProvider == null} // Disable the toggle if push provider is not configured
+                data-componentid={`${componentId}-default-push-provider`}
+            />
+            <Hint data-componentid={`${componentId}-default-push-provider-description`}>
+                { t("pushProviders:pushProviderSettings.defaultSenderDescription") }
+            </Hint>
+            <Divider hidden />
+            <TemplateDynamicForm
+                key = { pushProviderTemplateInfo?.id }
+                form={ renderFormMetadata }
+                initialFormValues={ initialFormValues as unknown as Record<string, unknown> }
+                templatePayload={ pushProviderTemplateData?.payload as unknown as Record<string, unknown> }
+                buttonText={ t("common:update") }
+                onFormSubmit={ handleFormSubmission }
+                isLoading={ isLoading }
+                readOnly={ false }
+                data-componentid= { `${componentId}-form` }
+            />
+        </EmphasizedSegment>
     );
 
 };
