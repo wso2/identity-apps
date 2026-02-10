@@ -21,6 +21,7 @@ import { ApplicationTemplateConstants } from "@wso2is/admin.application-template
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import {
@@ -68,7 +69,7 @@ import {
 } from "../models/connection";
 import { Icon } from "semantic-ui-react";
 import {
-    PrimaryButton,
+    PrimaryButton, SecondaryButton
 } from "@wso2is/react-components";
 import { ConnectionTemplateManagementUtils } from "../utils/connection-template-utils";
 import { ConnectionsManagementUtils, handleGetConnectionsMetaDataError } from "../utils/connection-utils";
@@ -94,6 +95,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
 
     const { t } = useTranslation();
     const { UIConfig } = useUIConfig();
+    const { resourceEndpoints } = useResourceEndpoints();
     const setConnectionTemplates: (templates: Record<string, any>[]) => void = useSetConnectionTemplates();
 
     const idpDescElement: React.MutableRefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
@@ -121,6 +123,7 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
     const [ isConnectorMetaDataFetchRequestLoading, setConnectorMetaDataFetchRequestLoading ] = useState<boolean>(
         undefined
     );
+    const [ isTestingConnection, setIsTestingConnection ] = useState<boolean>(false);
 
     const isReadOnly: boolean = !useRequiredScopes(featureConfig?.identityProviders?.scopes?.update);
     const hasApplicationTemplateViewPermissions: boolean = useRequiredScopes(applicationsFeatureConfig?.scopes?.read);
@@ -686,6 +689,71 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
         );
     };
 
+    /**
+     * Handles the test connection button click event.
+     * Starts a debug session and redirects to the test page with the debug data.
+     */
+    const handleTestConnection = async (): Promise<void> => {
+        if (!connector?.id) {
+            return;
+        }
+
+        setIsTestingConnection(true);
+
+        try {
+            const axios = (await import("axios")).default;
+            const payload = {
+                resourceId: connector.id,
+                resourceType: "IDP",
+                properties: {}
+            };
+
+            const response = await axios.post(
+                resourceEndpoints.debug,
+                payload,
+                { withCredentials: true }
+            );
+
+            const debugId = response.data?.result?.debugId;
+            const authorizationUrl = response.data?.result?.authorizationUrl;
+
+            if (debugId && authorizationUrl) {
+                // Navigate to test page with debug session data
+                const pathParts = location.pathname.split("/");
+                const tenantIndex = pathParts.indexOf("t");
+                const tenantDomain = tenantIndex !== -1 ? pathParts[tenantIndex + 1] : "carbon.super";
+                
+                history.push({
+                    pathname: `/t/${tenantDomain}/console/connections/${connector.id}/test`,
+                    state: {
+                        debugId,
+                        authorizationUrl
+                    }
+                });
+            } else {
+                // Handle case where debug session data is incomplete
+                dispatch(
+                    addAlert({
+                        description: t("authenticationProvider:notifications.testConnection.error.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("authenticationProvider:notifications.testConnection.error.message")
+                    })
+                );
+            }
+        } catch (error: any) {
+            dispatch(
+                addAlert({
+                    description: error?.response?.data?.message || error?.message || 
+                        t("authenticationProvider:notifications.testConnection.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("authenticationProvider:notifications.testConnection.genericError.message")
+                })
+            );
+        } finally {
+            setIsTestingConnection(false);
+        }
+    };
+
     return (
         <ExtensionTemplatesProvider
             shouldFetch={ hasApplicationTemplateViewPermissions }
@@ -701,23 +769,17 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
                 } }
                 title={ resolveConnectorName(connector) }
                 action={ ConnectionsManagementUtils.isConnectorIdentityProvider(connector) ? (
-                    <PrimaryButton
+                    <SecondaryButton
                         data-testid="idp-test-connection-button"
                         data-componentid="primary-button"
                         className="ui primary button"
-                        onClick={() => {
-                            // Get tenant domain from location.pathname
-                            const pathParts = location.pathname.split("/");
-                            const tenantIndex = pathParts.indexOf("t");
-                            const tenantDomain = tenantIndex !== -1 ? pathParts[tenantIndex + 1] : "carbon.super";
-                            const idpId = connector?.id;
-                            if (!idpId) return;
-                            history.push(`/t/${tenantDomain}/console/connections/${idpId}/test`);
-                        }}
+                        onClick={ handleTestConnection }
+                        loading={ isTestingConnection }
+                        disabled={ isTestingConnection }
                     >
                         <Icon name="flask" />
                         Test Connection
-                    </PrimaryButton>
+                    </SecondaryButton>
                 ) : null }
                 contentTopMargin={ true }
                 description={ resolveConnectorDescription(connector) }

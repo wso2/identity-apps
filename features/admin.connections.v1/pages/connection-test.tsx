@@ -22,24 +22,15 @@
 
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import {
-    PageLayout,
     PrimaryButton,
     TabPageLayout,
-    AppAvatar,
-    AnimatedAvatar
+    ContentLoader
 } from "@wso2is/react-components";
-import React, { useState, useRef, Fragment, useEffect } from "react";
-import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
+import React, { useState, useRef, useEffect } from "react";
 import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
-
 import { useTranslation } from "react-i18next";
 import { RouteComponentProps } from "react-router-dom";
-import { Header, Icon, List, Segment, Tab } from "semantic-ui-react";
-import { ConnectionsManagementUtils } from "@wso2is/admin.connections.v1/utils/connection-utils";
-import { AuthenticatorMeta } from "../meta/authenticator-meta";
-import { getConnectionDetails } from "../api/connections";
-import { EmptyPlaceholder } from "@wso2is/react-components";
-import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { Header, Icon, Segment, Tab, Placeholder } from "semantic-ui-react";
 
 
 /**
@@ -47,13 +38,8 @@ import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/
  */
 interface RouteParams {
     tenantDomain?: string;
-    idpId?: string;
+    id?: string;
 }
-
-/**
- * Enum for test status.
- */
-type TestStatus = "idle" | "pending" | "success" | "error";
 
 /**
  * Connection Test page component.
@@ -62,22 +48,19 @@ type TestStatus = "idle" | "pending" | "success" | "error";
  * @returns React element.
  */
 const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) => {
-    const { tenantDomain = "", idpId = "" } = props.match.params || {};
+    const { id: idpId = "" } = props.match.params || {};
+    const { location } = props;
 
     const { t } = useTranslation();
     const { resourceEndpoints } = useResourceEndpoints();
 
-
-    const [ connectionStatus, setConnectionStatus ] = useState<TestStatus>("idle");
-    const [ authStatus, setAuthStatus ] = useState<TestStatus>("idle");
-    const [ claimsStatus, setClaimsStatus ] = useState<TestStatus>("idle");
     const [ debugId, setDebugId ] = useState<string | null>(null);
     const [ result, setResult ] = useState<any>(null);
     const [ error, setError ] = useState<string | null>(null);
     const [ loading, setLoading ] = useState(false);
     const [ hasError, setHasError ] = useState(false);
     const [ activeTab, setActiveTab ] = useState(0);
-    const [ showResults, setShowResults ] = useState(false);
+    const [ autoRunTriggered, setAutoRunTriggered ] = useState(false);
 
     const popupInterval = useRef<any>(null);
     const fetchTimer = useRef<any>(null);
@@ -103,6 +86,42 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
         return () => clearTimers();
     }, []);
 
+    /**
+     * Auto-run test if debugId and authUrl are provided via location state.
+     */
+    useEffect(() => {
+        const state = location?.state as any;
+        
+        if (state?.debugId && state?.authorizationUrl && !autoRunTriggered) {
+            setAutoRunTriggered(true);
+            setDebugId(state.debugId);
+            
+            // Open the authorization URL
+            const authPopup = window.open(state.authorizationUrl, "_blank");
+            
+            // Monitor the popup
+            popupInterval.current = setInterval(() => {
+                try {
+                    if (authPopup && authPopup.closed) {
+                        clearTimers();
+                        // Fetch results after popup closes
+                        fetchTimer.current = setTimeout(() => {
+                            fetchResult(state.debugId);
+                        }, 1000);
+                    }
+                } catch (e) {
+                    // ignore
+                }
+            }, 500);
+
+            // Set a timeout to fetch results after 30 seconds
+            fetchTimer.current = setTimeout(() => {
+                clearTimers();
+                fetchResult(state.debugId);
+            }, 30000);
+        }
+    }, [location, autoRunTriggered]);
+
 
     /**
      * Fetches the test results from the backend.
@@ -125,7 +144,6 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
             );
             setResult(response.data);
 
-            setShowResults(true);
             // eslint-disable-next-line no-console
             console.log("[ConnectionTest] Successfully fetched results:", response.data);
         } catch (err: any) {
@@ -147,12 +165,17 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
      * Executes POST request to test connection.
      */
     const handleRunTests = async (): Promise<void> => {
-        setConnectionStatus("pending");
-        setAuthStatus("pending");
-        setClaimsStatus("pending");
         setError(null);
         setResult(null);
-        setShowResults(false);
+        setHasError(false);
+
+        // eslint-disable-next-line no-console
+        console.log("[ConnectionTest] Starting rerun test for idpId:", idpId);
+
+        if (!idpId) {
+            setError("Connection ID is missing. Cannot run test.");
+            return;
+        }
 
         try {
             const axios = (await import("axios")).default;
@@ -162,16 +185,20 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                 properties: {}
             };
 
+            // eslint-disable-next-line no-console
+            console.log("[ConnectionTest] Posting debug request with payload:", payload);
+
             const response = await axios.post(
                 resourceEndpoints.debug,
                 payload,
                 { withCredentials: true }
             );
 
-
             const newDebugId = response.data.result.debugId;
             const authorizationUrl = response.data.result.authorizationUrl;
-            const status = response.data.result.status;
+
+            // eslint-disable-next-line no-console
+            console.log("[ConnectionTest] Debug session created:", { newDebugId, authorizationUrl });
 
             setDebugId(newDebugId);
 
@@ -208,30 +235,18 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                     fetchResult(newDebugId);
                 }, 2000);
             }
-
-
-            // Update status based on response
-            if (status === "SUCCESS") {
-                setConnectionStatus("success");
-            } else {
-                setConnectionStatus("error");
-            }
         } catch (error: any) {
+            // eslint-disable-next-line no-console
+            console.error("[ConnectionTest] Error running test:", error);
             clearTimers();
-            setConnectionStatus("error");
-            setAuthStatus("error");
-            setClaimsStatus("error");
             setError(error?.response?.data?.message || error?.message || "Failed to run test.");
         }
     };
 
-    // Update test statuses based on result metadata
+    // Update error status based on result metadata
     useEffect(() => {
         if (result && result.metadata) {
             const metadata = result.metadata;
-            setConnectionStatus(metadata.connectionStatus === "success" ? "success" : metadata.connectionStatus === "pending" ? "pending" : "error");
-            setAuthStatus(metadata.authenticationStatus === "success" ? "success" : metadata.authenticationStatus === "pending" ? "pending" : "error");
-            setClaimsStatus(metadata.claimMappingStatus === "success" ? "success" : metadata.claimMappingStatus === "pending" ? "pending" : "error");
             
             // Check if any step explicitly failed (not pending or success)
             const hasStepError = (
@@ -254,135 +269,17 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
      * Handles the back button click event.
      */
     const handleBackButtonClick = (): void => {
+        // Extract tenant domain from current path
+        const pathParts = location.pathname.split("/");
+        const tenantIndex = pathParts.indexOf("t");
+        const tenantDomain = tenantIndex !== -1 ? pathParts[tenantIndex + 1] : "carbon.super";
+        
         // Navigate to the specific connection page
         history.push(`/t/${tenantDomain}/console/connections/${idpId}`);
     };
 
-    /**
-     * Handles the "Back to Test" button when viewing results.
-     */
-    const handleBackToTest = (): void => {
-        setShowResults(false);
-        setResult(null);
-        setError(null);
-        setDebugId(null);
-        setConnectionStatus("idle");
-        setAuthStatus("idle");
-        setClaimsStatus("idle");
-        setHasError(false);
-        setActiveTab(0);
-    };
-
-    /**
-     * Renders the status icon based on the test status.
-     *
-     * @param status - The status of the test.
-     * @returns React element.
-     */
-    const renderStatusIcon = (status: TestStatus) => {
-        switch (status) {
-            case "pending":
-                // Use spinner for "pending" (running) state
-                return <Icon name="spinner" loading color="blue" data-testid="test-status-pending" />;
-            case "success":
-                return <Icon name="check circle" color="green" data-testid="test-status-success" />;
-            case "error":
-                return <Icon name="times circle" color="red" data-testid="test-status-error" />;
-            case "idle":
-            default:
-                // Use clock icon for "idle" state (matching wireframe's "Pending")
-                return <Icon name="clock outline" color="grey" data-testid="test-status-idle" />;
-        }
-    };
-
-
-    // State for connector details
-    const [ connector, setConnector ] = useState(undefined);
-    const [ isConnectorDetailsFetchRequestLoading, setConnectorDetailFetchRequestLoading ] = useState(false);
-    // Get UIConfig and connectionResourcesUrl like in edit page
-    const { UIConfig } = useUIConfig();
-    const connectionResourcesUrl = UIConfig?.connectionResourcesUrl;
-    const idpDescElement = useRef(null);
+    // State for connector details - removed as we no longer display connector info on this page
     const testId = "idp-test-connection";
-
-    // Fetch connector details on mount
-    React.useEffect(() => {
-        if (!idpId) return;
-        setConnectorDetailFetchRequestLoading(true);
-        (async () => {
-            try {
-                const response = await getConnectionDetails(idpId);
-                setConnector(response);
-            } catch (error) {
-                setConnector(undefined);
-            } finally {
-                setConnectorDetailFetchRequestLoading(false);
-            }
-        })();
-    }, [idpId]);
-
-    const resolveConnectorName = (conn) => {
-        if (!conn) {
-            return "Connection Test";
-        }
-
-        if (ConnectionsManagementUtils.isConnectorIdentityProvider(conn)) {
-            return conn.name;
-        }
-
-        const name = conn.friendlyName || conn.displayName || conn.name || "Connection Test";
-
-        return name;
-    };
-
-    const resolveConnectorImage = (conn) => {
-        const isOrganizationSSOIDP: boolean = ConnectionsManagementUtils.isOrganizationSSOConnection(
-            conn?.federatedAuthenticators?.defaultAuthenticatorId
-        );
-
-        if (!conn) {
-            return <AppAvatar hoverable={ false } isLoading={ true } size="tiny" />;
-        }
-
-        if (ConnectionsManagementUtils.isConnectorIdentityProvider(conn) && !isOrganizationSSOIDP) {
-            if (conn.image) {
-                const resolvedPath = ConnectionsManagementUtils.resolveConnectionResourcePath(
-                    connectionResourcesUrl,
-                    conn?.image
-                );
-                return (
-                    <AppAvatar
-                        hoverable={ false }
-                        name={ conn.name }
-                        image={ resolvedPath }
-                        size="tiny"
-                    />
-                );
-            }
-            return <AnimatedAvatar hoverable={ false } name={ conn.name } size="tiny" floated="left" />;
-        }
-        return (
-            <AppAvatar
-                hoverable={ false }
-                name={ conn.name }
-                image={
-                    !isOrganizationSSOIDP
-                        ? AuthenticatorMeta.getAuthenticatorIcon(conn?.id)
-                        : AuthenticatorMeta.getAuthenticatorIcon(
-                            conn?.federatedAuthenticators?.defaultAuthenticatorId
-                        )
-                }
-                size="tiny"
-            />
-        );
-    };
-
-    const resolveConnectorDescription = (conn) => {
-        if (!conn) {
-            return "Test Federated IdP connection";
-        }
-        return `Test the ${conn?.name || "connection"} connection`;
-    };
 
     /**
      * Renders the results tabs when test results are available.
@@ -390,7 +287,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
     const renderResultsTabs = () => {
         const tabPanes = [
             {
-                menuItem: "Token Details",
+                menuItem: "ID Token",
                 render: () => {
                     // Helper to decode JWT
                     const decodeJWT = (token) => {
@@ -417,10 +314,9 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
 
                     return (
                         <Tab.Pane>
-                            <div style={{ maxWidth: 900, margin: '0 auto', padding: 0 }}>
+                            <div>
                                 {decoded ? (
-                                    <div style={{ marginTop: 24 }}>
-                                        <Header as="h4" style={{ marginBottom: 16 }}>ID Token</Header>
+                                    <div>
                                         <div style={{
                                             display: 'block',
                                             background: '#f9fafb',
@@ -468,11 +364,11 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                                         </div>
                                     </div>
                                 ) : (
-                                    <div style={{ marginTop: 16, color: '#888' }}>
+                                    <div style={{ color: '#888' }}>
                                         <em>Unable to decode token or not a valid JWT.</em>
                                     </div>
                                 )}
-                                <Header as="h4" style={{ marginBottom: 8 }}>External Redirect URL</Header>
+                                <Header as="h4" style={{ marginBottom: 8, marginTop: 24 }}>External Redirect URL</Header>
                                 <pre style={{ whiteSpace: "pre-wrap", wordBreak: "break-word", background: '#f8f8f8', borderRadius: 6, padding: 12, fontSize: 14, border: '1px solid #e0e0e0' }}>
                                     {typeof result?.externalRedirectUrl === 'string' ? result.externalRedirectUrl : JSON.stringify(result?.externalRedirectUrl, null, 2)}
                                 </pre>
@@ -500,8 +396,7 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                     return (
                         <Tab.Pane>
                             <div>
-                                <Header as="h4">Claims Mapping Table</Header>
-                                <div style={{ overflowX: 'auto', marginTop: 16 }}>
+                                <div style={{ overflowX: 'auto' }}>
                                     <table style={{ width: '100%', borderCollapse: 'collapse', background: '#f9fafb', borderRadius: 8, overflow: 'hidden' }}>
                                         <thead>
                                             <tr style={{ background: '#f4f6fa', borderBottom: '1px solid #e0e0e0' }}>
@@ -569,7 +464,6 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
 
                                 {Object.keys(metadata).length > 0 && (
                                     <div>
-                                        <Header as="h5" style={{ marginBottom: 12, marginTop: 16 }}>Steps</Header>
                                         <div style={{ background: '#f9fafb', borderRadius: 6, padding: 12, marginBottom: 16, border: '1px solid #e0e0e0' }}>
                                             {[
                                                 { key: 'connectionStatus', label: 'Connection Creation' },
@@ -622,115 +516,68 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
 
     return (
         <TabPageLayout
-            isLoading={isConnectorDetailsFetchRequestLoading || loading}
-            pageTitle={showResults ? "Test Results" : "Test Connection"}
-            title={showResults ? "Test Results" : "Test " + resolveConnectorName(connector)}
-            description={showResults ? "Results for the connection test session." : resolveConnectorDescription(connector)}
-            image={!showResults ? resolveConnectorImage(connector) : undefined}
+            isLoading={loading}
+            pageTitle="Test Results"
+            title="Test Results"
+            description="Results for the connection test session."
             backButton={{
                 "data-testid": `${testId}-back-button`,
-                onClick: showResults ? handleBackToTest : handleBackButtonClick,
-                text: showResults ? "Back to Test" : t("console:develop.pages.idpTest.backButton", "Go back to Connection")
+                onClick: handleBackButtonClick,
+                text: t("console:develop.pages.idpTest.backButton", "Go back to Connection")
             }}
             action={
-                showResults ? (
-                    <PrimaryButton
-                        onClick={handleRunTests}
-                        loading={loading}
-                        disabled={loading}
-                        data-testid="idp-test-result-rerun-button"
-                    >
-                        <Icon name="redo" />
-                        Rerun Test
-                    </PrimaryButton>
-                ) : null
+                <PrimaryButton
+                    onClick={handleRunTests}
+                    loading={loading}
+                    disabled={loading}
+                    data-testid="idp-test-result-rerun-button"
+                >
+                    <Icon name="redo" />
+                    Rerun Test
+                </PrimaryButton>
             }
             titleTextAlign="left"
             contentTopMargin={true}
             bottomMargin={false}
             data-testid={`${testId}-page-layout`}
         >
-            { !showResults && (
-                <>
-                    <div style={{ marginTop: "2rem" }}>
-                        <PrimaryButton
-                            data-testid="idp-run-tests-button"
-                            onClick={ handleRunTests }
-                            loading={ connectionStatus === "pending" || authStatus === "pending" || claimsStatus === "pending" }
-                        >
-                            <Icon name="play" />
-                            Run Tests
-                        </PrimaryButton>
+            {/* Test Status Banner */}
+            {result && !error && (
+                <Segment
+                    basic
+                    className="bordered emphasized"
+                    style={{ 
+                        marginTop: "2rem",
+                        padding: "16px 20px",
+                        background: hasError ? '#fff5f5' : '#f0fff4',
+                        borderLeft: hasError ? '4px solid #db2828' : '4px solid #21ba45'
+                    }}
+                    data-testid="test-status-banner"
+                >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <Icon 
+                            name={hasError ? 'times circle' : 'check circle'} 
+                            size="large"
+                            style={{ 
+                                color: hasError ? '#db2828' : '#21ba45',
+                                margin: 0 
+                            }}
+                        />
+                        <div>
+                            <Header as="h3" style={{ margin: '0 0 2px 0', color: hasError ? '#db2828' : '#21ba45' }}>
+                                {hasError ? 'Test Failed' : 'Test Passed'}
+                            </Header>
+                            <p style={{ margin: 0, color: '#666', fontSize: 14 }}>
+                                {hasError 
+                                    ? 'Some steps failed during the connection test. Check the Logs tab for details.' 
+                                    : 'All connection test steps completed successfully.'}
+                            </p>
+                        </div>
                     </div>
-                    <EmptyPlaceholder
-                        image={ getEmptyPlaceholderIllustrations().newList }
-                        imageSize="tiny"
-                        subtitle={ [
-                            t("console:develop.pages.idpTest.runTestPlaceholder",
-                                "Click on the 'Run Tests' button to start testing the connection.")
-                        ] }
-                        data-componentid={ `${ testId }-placeholder` }
-                        data-testid={ `${ testId }-placeholder` }
-                    />
-                </>
-            ) }
+                </Segment>
+            )}
 
-
-            {showResults && (
-                <>
-                    {/* Test Status Section */}
-                    <Segment
-                        basic
-                        padded="very"
-                        className="bordered emphasized"
-                        style={{ marginTop: "2rem" }}
-                        data-componentid="emphasized-segment"
-                        data-testid="emphasized-segment"
-                    >
-                        <Header as="h3" data-testid="test-status-header">
-                            {t("console:develop.pages.idpTest.statusHeader", "Test Status")}
-                        </Header>
-                        {hasError && (
-                            <div style={{ background: '#fff5f5', borderLeft: '4px solid #db2828', padding: 12, marginBottom: 16, borderRadius: 4 }}>
-                                <p style={{ color: '#db2828', fontWeight: 500, margin: 0 }}>⚠️ Errors Detected</p>
-                                <p style={{ color: '#666', fontSize: 13, margin: '4px 0 0 0' }}>Check the details below about the failed steps.</p>
-                            </div>
-                        )}
-                        <List divided relaxed verticalAlign="middle" data-testid="test-status-list">
-                            <List.Item>
-                                <List.Content floated="right">
-                                    {renderStatusIcon(connectionStatus)}
-                                </List.Content>
-                                <List.Content>
-                                    <List.Header>
-                                        {t("console:develop.pages.idpTest.connectionCreation", "Connection Creation")}
-                                    </List.Header>
-                                </List.Content>
-                            </List.Item>
-                            <List.Item>
-                                <List.Content floated="right">
-                                    {renderStatusIcon(authStatus)}
-                                </List.Content>
-                                <List.Content>
-                                    <List.Header>
-                                        {t("console:develop.pages.idpTest.authentication", "Authentication")}
-                                    </List.Header>
-                                </List.Content>
-                            </List.Item>
-                            <List.Item>
-                                <List.Content floated="right">
-                                    {renderStatusIcon(claimsStatus)}
-                                </List.Content>
-                                <List.Content>
-                                    <List.Header>
-                                        {t("console:develop.pages.idpTest.claimsMapping", "Claims Mapping")}
-                                    </List.Header>
-                                </List.Content>
-                            </List.Item>
-                        </List>
-                    </Segment>
-
-                    {/* Results Section */}
+            {/* Results Section */}
                     {error && (
                         <Segment
                             basic
@@ -760,24 +607,34 @@ const ConnectionTestPage: React.FC<RouteComponentProps<RouteParams>> = (props) =
                         </Segment>
                     )}
 
-                    {!error && !result && debugId && !loading && (
+                    {!error && !result && (debugId || loading) && (
                         <Segment
                             basic
                             padded="very"
                             className="bordered emphasized"
                             style={{ marginTop: "2rem" }}
-                            data-testid="idp-test-result-empty"
+                            data-testid="idp-test-result-loading"
                         >
-                            No results available.
-                            <div style={{ marginTop: 12 }}>
-                                <PrimaryButton onClick={() => fetchResult(debugId)} data-testid="idp-test-result-refresh">
-                                    Refresh
-                                </PrimaryButton>
+                            <div style={{ marginBottom: 16 }}>
+                                <Icon name="spinner" loading color="blue" />
+                                <span style={{ marginLeft: 8, color: '#666' }}>
+                                    {loading ? 'Loading test results...' : 'Waiting for authentication to complete...'}
+                                </span>
                             </div>
+                            
+                            {/* Skeleton Loader */}
+                            <Placeholder fluid>
+                                <Placeholder.Header>
+                                    <Placeholder.Line />
+                                </Placeholder.Header>
+                                <Placeholder.Paragraph>
+                                    <Placeholder.Line />
+                                    <Placeholder.Line />
+                                    <Placeholder.Line />
+                                </Placeholder.Paragraph>
+                            </Placeholder>
                         </Segment>
                     )}
-                </>
-            )}
         </TabPageLayout>
     );
 };

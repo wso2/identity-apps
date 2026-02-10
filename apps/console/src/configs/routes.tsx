@@ -593,10 +593,9 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     icon: {
                         icon: getSidePanelIcons().childIcon
                     },
-                    id: "identityProvidersTest",
-                    name: "Identity Providers Test",
-                    // Direct path, since AppConstants does not have a test path
-                    path: "/t/:tenantDomain/console/connections/:idpId/test",
+                    id: "identityProviderTest",
+                    name: "Identity Provider Test",
+                    path: AppConstants.getPaths().get("IDP_TEST"),
                     protected: true,
                     showOnSidePanel: false
                 },
