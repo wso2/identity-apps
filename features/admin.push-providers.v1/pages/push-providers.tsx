@@ -177,9 +177,6 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
     }
 
     const handlePushProviderDelete = (): void => {
-        if (pushProvider.provider === pushNotificationConfigs?.defaultPushProvider) {
-            handleDefaultPushProviderConfigUpdate(null);
-        }
         deletePushProvider(pushProvider.name)
             .then(() => {
                 dispatch(addAlert({
@@ -187,6 +184,9 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
                     level: AlertLevels.SUCCESS,
                     message: t("pushProviders:alerts.delete.success.message")
                 }));
+                if (pushProvider.provider === pushNotificationConfigs?.defaultPushProvider) {
+                    handleDefaultPushProviderConfigUpdate(null);
+                }
             })
             .catch((error: IdentityAppsApiException) => {
                 dispatch(addAlert({
