@@ -58,7 +58,6 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
     const { [ "data-componentid" ]: componentId } = props;
 
     const pageContextRef: MutableRefObject<any> = useRef(null);
-    const formRef: MutableRefObject<FormPropsInterface> = useRef<FormPropsInterface>(null);
 
     const featureConfig : FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const hasConnectorUpdatePermission: boolean = useRequiredScopes(featureConfig.governanceConnectors.scopes?.update);
@@ -357,7 +356,6 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
                                                 onSubmit={ handleSubmit }
                                                 initialValues={ sessionManagementConfig }
                                                 enableReinitialize={ true }
-                                                ref={ formRef }
                                                 noValidate={ true }
                                                 validate={ validateForm }
                                             >
