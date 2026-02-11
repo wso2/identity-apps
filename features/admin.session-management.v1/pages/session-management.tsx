@@ -90,18 +90,13 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
             return;
         }
 
-        if (originalSessionManagementConfig.idleSessionTimeoutPeriod
-            && originalSessionManagementConfig.rememberMePeriod) {
-            setSessionManagementConfig({
-                enableMaximumSessionTimeout:
-                    originalSessionManagementConfig.enableMaximumSessionTimeoutPeriod === "true",
-                idleSessionTimeout: parseInt(originalSessionManagementConfig.idleSessionTimeoutPeriod),
-                maximumSessionTimeout: originalSessionManagementConfig.maximumSessionTimeoutPeriod
-                    ? parseInt(originalSessionManagementConfig.maximumSessionTimeoutPeriod)
-                    : undefined,
-                rememberMePeriod: parseInt(originalSessionManagementConfig.rememberMePeriod)
-            });
-        }
+        setSessionManagementConfig({
+            enableMaximumSessionTimeout:
+                originalSessionManagementConfig.enableMaximumSessionTimeoutPeriod === "true",
+            idleSessionTimeout: parseInt(originalSessionManagementConfig.idleSessionTimeoutPeriod),
+            maximumSessionTimeout: parseInt(originalSessionManagementConfig.maximumSessionTimeoutPeriod),
+            rememberMePeriod: parseInt(originalSessionManagementConfig.rememberMePeriod)
+        });
     }, [ originalSessionManagementConfig ]);
 
     /**
@@ -202,9 +197,8 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
             );
         }
 
-        if (values?.enableMaximumSessionTimeout && values?.maximumSessionTimeout
-            && (!FormValidation.isInteger(values.maximumSessionTimeout as number)
-            || values.maximumSessionTimeout as number < 0)) {
+        if (values?.maximumSessionTimeout && (!FormValidation.isInteger(values.maximumSessionTimeout as number)
+            || values.maximumSessionTimeout as number <= 0)) {
             error.maximumSessionTimeout = t(
                 "sessionManagement:form.validation.maximumSessionTimeout"
             );
