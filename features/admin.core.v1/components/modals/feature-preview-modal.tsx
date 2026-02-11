@@ -151,6 +151,21 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
             },
             name: "Self-Registration Orchestration",
             value: "SelfRegistration.EnableDynamicPortal"
+        },
+        {
+            action: "Try Customer Data Service",
+            description: "This feature helps building a complete and unified view of each customer across applications, enabling better personalization",
+            enabled: registrationFlowConfig?.isEnabled,
+            id: "customer-data-service",
+            image: NewSelfRegistrationImage,
+            message: {
+                content: "Once Customer data service is enabled, Asgardeo will starts publishing user and attribute data." +
+                "And Customer data service uses it as source of truth to build user profile along with application data " + 
+                "and user traits and builds unified customer profiles.",
+                type: "warning" as const
+            },
+            name: "Self-Registration Orchestration",
+            value: "SelfRegistration.EnableDynamicPortal"
         }
     ].filter(Boolean)), [
         registrationFlowConfig
@@ -177,6 +192,8 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
     const handlePageRedirection = (actionId: string) => {
         switch (actionId) {
             case "self-registration-orchestration":
+                return history.push(AppConstants.getPaths().get("REGISTRATION_FLOW_BUILDER"));
+            case "customer-data-service":
                 return history.push(AppConstants.getPaths().get("REGISTRATION_FLOW_BUILDER"));
             default:
                 return;

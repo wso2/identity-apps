@@ -51,6 +51,7 @@ class FeatureFlagConstants {
         BRANDING: "branding",
         BRANDING_STYLES_AND_TEXT_TITLE: "branding.stylesAndText.application.title",
         CUSTOM_PAGE_EDITOR_FEATURE_ID: "console.branding.design.layout.custom",
+        CDS : "cds",
         FLOWS: "flows",
         FLOWS_TYPES_REGISTRATION: "flows.types.list.registration",
         INSIGHTS: "insights",

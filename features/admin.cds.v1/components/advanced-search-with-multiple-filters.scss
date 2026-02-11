@@ -1,0 +1,8 @@
+/* Add this to your SCSS (e.g., advanced-search-with-multiple-filters.scss)
+   or wherever you keep component styles. This fixes dropdown clipping/scrolling. */
+   .rules-like-filters {
+    .ui.dropdown .menu {
+      z-index: 1200 !important;
+    }
+  }
+  

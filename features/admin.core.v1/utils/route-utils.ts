@@ -19,7 +19,9 @@
 import {
     DatabaseDocumentIcon,
     PaletteIcon,
+    ProfileFlowIcon,
     SquareUserIcon,
+    UserAsteriskIcon,
     UserFlowIcon
 } from "@oxygen-ui/react-icons";
 import { FeatureStatus } from "@wso2is/access-control";
@@ -289,6 +291,13 @@ export class RouteUtils {
             order: 2
         };
 
+        const customerData: Omit<RouteInterface, "showOnSidePanel"> = {
+            icon: UserAsteriskIcon,
+            name: "Customer Data",
+            id: "customerData",
+            order: 8
+        };
+
         const branding: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: PaletteIcon,
             id: "customization",
@@ -511,6 +520,21 @@ export class RouteUtils {
                 category: preferences,
                 id: "loginAndRegistration",
                 selected: loginAndRegPathsToCheck.some((path: string) => history.location.pathname.startsWith(path))
+            },
+            {
+                category: manage,
+                id: "profiles",
+                parent: customerData
+            },
+            {
+                category: manage,
+                id: "profileAttributes",
+                parent: customerData
+            },
+            {
+                category: manage,
+                id: "unificationRules",
+                parent: customerData
             },
             {
                 category: preferences,

@@ -189,6 +189,9 @@ import {
     ReactComponent as MCPServersOutlineIcon
 } from "../../themes/wso2is/assets/images/icons/outline-icons/mcp-servers-outline.svg";
 
+import { ReactComponent as TraitIcon } from "../../themes/default/assets/images/icons/trait.svg";
+import { ReactComponent as ApplicationDataIcon } from "../../themes/default/assets/images/icons/app-data.svg";
+
 /**
  * Typed interface of {@link getTechnologyLogos}
  */
@@ -302,6 +305,8 @@ export type GetSidePanelIconsInterface = {
     insights: FunctionComponent | ReactNode,
     agents: FunctionComponent | ReactNode,
     verifiableCredentials: FunctionComponent | ReactNode,
+    traits: FunctionComponent | ReactNode,
+    appData: FunctionComponent | ReactNode
 };
 
 /**
@@ -358,7 +363,9 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
         sms: SMSIcon,
         userStore: DatabaseIcon,
         users: UserIcon,
-        verifiableCredentials: VerifiableCredentialsOutlineIcon
+        verifiableCredentials: VerifiableCredentialsOutlineIcon,
+        traits: TraitIcon,
+        appData: ApplicationDataIcon,
     };
 };
 
