@@ -529,11 +529,14 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
             await shareUserWithAllOrganizations(data);
             resetStates();
 
-            dispatch(addAlert({
-                description: t("user:editUser.sections.sharedAccess.notifications.share.success.description"),
-                level: AlertLevels.SUCCESS,
-                message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
-            }));
+            // Only show success alert if async notification is not enabled
+            if (!isUserShareOperationStatusEnabled) {
+                dispatch(addAlert({
+                    description: t("user:editUser.sections.sharedAccess.notifications.share.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
+                }));
+            }
 
             return true;
         } catch (error) {
@@ -755,12 +758,15 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         if (data?.Operations?.length > 0) {
             editUserRolesOfExistingOrganizations(data)
                 .then(() => {
-                    dispatch(addAlert({
-                        description: t("user:editUser.sections.sharedAccess.notifications.share." +
-                            "success.description"),
-                        level: AlertLevels.SUCCESS,
-                        message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
-                    }));
+                    // Only show success alert if async notification is not enabled
+                    if (!isUserShareOperationStatusEnabled) {
+                        dispatch(addAlert({
+                            description: t("user:editUser.sections.sharedAccess.notifications.share." +
+                                "success.description"),
+                            level: AlertLevels.SUCCESS,
+                            message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
+                        }));
+                    }
 
                     resetStates();
                 })
@@ -779,12 +785,15 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         } else {
             // If there are no further operations to perform, just show a success notification
             // and reset the state.
-            dispatch(addAlert({
-                description: t("user:editUser.sections.sharedAccess.notifications.share." +
-                    "success.description"),
-                level: AlertLevels.SUCCESS,
-                message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
-            }));
+            // Only show success alert if async notification is not enabled
+            if (!isUserShareOperationStatusEnabled) {
+                dispatch(addAlert({
+                    description: t("user:editUser.sections.sharedAccess.notifications.share." +
+                        "success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
+                }));
+            }
 
             resetStates();
         }
@@ -908,11 +917,14 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
 
         // If org sharing was successful, show success notification
         if (orgSharingSuccess) {
-            dispatch(addAlert({
-                description: t("user:editUser.sections.sharedAccess.notifications.share.success.description"),
-                level: AlertLevels.SUCCESS,
-                message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
-            }));
+            // Only show success alert if async notification is not enabled
+            if (!isUserShareOperationStatusEnabled) {
+                dispatch(addAlert({
+                    description: t("user:editUser.sections.sharedAccess.notifications.share.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
+                }));
+            }
 
             resetStates();
         }
@@ -1030,12 +1042,15 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         if (data?.Operations?.length > 0) {
             editUserRolesOfExistingOrganizations(data)
                 .then(() => {
-                    dispatch(addAlert({
-                        description: t("user:editUser.sections.sharedAccess.notifications.share." +
-                            "success.description"),
-                        level: AlertLevels.SUCCESS,
-                        message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
-                    }));
+                    // Only show success alert if async notification is not enabled
+                    if (!isUserShareOperationStatusEnabled) {
+                        dispatch(addAlert({
+                            description: t("user:editUser.sections.sharedAccess.notifications.share." +
+                                "success.description"),
+                            level: AlertLevels.SUCCESS,
+                            message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
+                        }));
+                    }
 
                     resetStates();
                 })
@@ -1054,12 +1069,15 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
         } else {
             // If there are no further operations to perform, just show a success notification
             // and reset the state.
-            dispatch(addAlert({
-                description: t("user:editUser.sections.sharedAccess.notifications.share." +
-                    "success.description"),
-                level: AlertLevels.SUCCESS,
-                message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
-            }));
+            // Only show success alert if async notification is not enabled
+            if (!isUserShareOperationStatusEnabled) {
+                dispatch(addAlert({
+                    description: t("user:editUser.sections.sharedAccess.notifications.share." +
+                        "success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("user:editUser.sections.sharedAccess.notifications.share.success.message")
+                }));
+            }
 
             resetStates();
             // onUserSharingCompleted();
@@ -1458,6 +1476,10 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                                                                 ) }
                                                                 clearAdvancedRoleSharing={ clearAdvancedRoleSharing }
                                                                 disableOrgSelection={ false }
+                                                                allRolesSharingMessage={
+                                                                    t("user:editUser.sections.sharedAccess.allUserRolesSharingMessage")
+                                                                }
+                                                                shareWithFutureChildOrgsLabel={ t("user:editUser.sections.sharedAccess.shareUserWithFutureChildOrgs") }
                                                             />
                                                         </div>
                                                     )
@@ -1543,6 +1565,8 @@ export const ShareUserForm: FunctionComponent<UserShareFormPropsInterface> = (
                                                         setShouldShareWithFutureChildOrgsMap
                                                     }
                                                     disableOrgSelection={ false }
+                                                    allRolesSharingMessage={ t("user:editUser.sections.sharedAccess.allUserRolesSharingMessage") }
+                                                    shareWithFutureChildOrgsLabel={ t("user:editUser.sections.sharedAccess.shareUserWithFutureChildOrgs") }
                                                 />
                                             </Grid>
                                         </motion.div>

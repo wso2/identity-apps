@@ -140,6 +140,8 @@ export interface userNS {
                 individualRoleSharingHint: string;
                 searchAvailableRolesPlaceholder: string;
                 allRolesAndOrgsSharingMessage: string;
+                allUserRolesSharingMessage: string;
+                shareUserWithFutureChildOrgs: string;
                 shareTypeSwitchModal: {
                     description: string;
                     header: string;

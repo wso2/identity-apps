@@ -109,9 +109,10 @@ export const user: userNS = {
             },
             sharedAccess: {
                 allRolesAndOrgsSharingMessage: "All roles will be shared with all existing and future organizations.",
+                allUserRolesSharingMessage: "All roles of the user in the current organization will be shared and assigned.",
                 commonRoleSharingHint: "This set of roles will be shared and assigned to the user in all existing and future organizations.",
                 commonRoleSharingLabel: "Commonly Shared Roles",
-                doNotShareUser: "Do not share user with any organizations",
+                doNotShareUser: "Do not share user with any organization",
                 individualRoleSharingHint: "Configure role sharing for specific organizations individually.",
                 individualRoleSharingLabel: "Individually shared roles",
                 notifications: {
@@ -167,6 +168,7 @@ export const user: userNS = {
                     resetToDefaultLabel1: "Reset to default",
                     resetToDefaultLabel2: "Unshare user from all organizations and start fresh with selective sharing."
                 },
+                shareUserWithFutureChildOrgs: "Share user and roles with future child organizations",
                 showShareAllWarningModal: {
                     assertionHint: "Please confirm your action.",
                     description: "This will share the selected roles with ALL existing and future organizations. This action will affect all current and future organizations in your system.",
