@@ -223,15 +223,28 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
             return undefined;
         }
 
-        // Required field validation
-        if (propertyMetadata.isMandatory && !value) {
-            return t("common:required");
+        // Required field validation for mandatory fields
+        if (propertyMetadata.isMandatory) {
+            // In edit mode, for confidential fields, masked value is acceptable (preserves existing)
+            // Empty value is NOT acceptable (would clear the mandatory credential)
+            if (isEditMode && propertyMetadata.isConfidential) {
+                // Allow masked value (preserves existing value) or new value
+                // Reject empty/null/undefined (would clear mandatory field)
+                if (!value || value.trim() === "") {
+                    return t("common:required");
+                }
+            } else {
+                // For non-confidential fields or create mode, standard required validation
+                if (!value) {
+                    return t("common:required");
+                }
+            }
         }
 
         // URL validation for endpoint fields
         if (isUrlField(propertyMetadata.key) && value) {
             if (!FormValidation.url(value)) {
-                return "Please enter a valid URL";
+                return t("idp:forms.outboundProvisioningConnector.validations.invalidURL");
             }
         }
 
@@ -492,11 +505,20 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
 
             // Confidential → Password input
             if (fieldType === FieldType.PASSWORD) {
+                const confidentialHelperText: string = t(
+                    "idp:forms.outboundProvisioningConnector.fields.confidential.helperText"
+                );
                 const helperTextContent: string = isEditMode
                     ? propertyMetadata.description
-                        ? `${propertyMetadata.description} Note: Leave empty to keep existing value.`
-                        : "Leave empty to keep the existing value."
+                        ? `${propertyMetadata.description} Note: ${confidentialHelperText}`
+                        : confidentialHelperText
                     : propertyMetadata.description || "";
+
+                const placeholder: string = propertyMetadata.defaultValue
+                    ? t("idp:forms.outboundProvisioningConnector.fields.placeholder.default",
+                        { defaultValue: propertyMetadata.defaultValue })
+                    : t("idp:forms.outboundProvisioningConnector.fields.placeholder.enter",
+                        { displayName: propertyMetadata.displayName });
 
                 return (
                     <FinalFormField
@@ -510,9 +532,7 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
                         name={ fieldName }
                         type="password"
                         label={ propertyMetadata.displayName }
-                        placeholder={ propertyMetadata.defaultValue
-                            ? `Default: ${ propertyMetadata.defaultValue }`
-                            : `Enter ${ propertyMetadata.displayName }` }
+                        placeholder={ placeholder }
                         component={ TextFieldAdapter }
                         initialValue={ existingValue || propertyMetadata.defaultValue }
                         readOnly={ isReadOnly }
@@ -531,6 +551,12 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
             }
 
             // Default → Text input
+            const placeholder: string = propertyMetadata.defaultValue
+                ? t("idp:forms.outboundProvisioningConnector.fields.placeholder.default",
+                    { defaultValue: propertyMetadata.defaultValue })
+                : t("idp:forms.outboundProvisioningConnector.fields.placeholder.enter",
+                    { displayName: propertyMetadata.displayName });
+
             return (
                 <FinalFormField
                     key={ propertyMetadata.key }
@@ -543,9 +569,7 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
                     name={ fieldName }
                     type="text"
                     label={ propertyMetadata.displayName }
-                    placeholder={ propertyMetadata.defaultValue
-                        ? `Default: ${ propertyMetadata.defaultValue }`
-                        : `Enter ${ propertyMetadata.displayName }` }
+                    placeholder={ placeholder }
                     component={ TextFieldAdapter }
                     initialValue={ existingValue || propertyMetadata.defaultValue }
                     readOnly={ isReadOnly }
@@ -577,7 +601,7 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
                     className="http-endpoint-alert"
                     data-componentid={ `${ componentId }-${ propertyMetadata.key }-http-alert` }
                 >
-                    The URL is not secure (HTTP). Use HTTPS for a secure connection.
+                    { t("idp:forms.outboundProvisioningConnector.warnings.insecureURL") }
                 </Alert>
             );
         };

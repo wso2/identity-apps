@@ -230,6 +230,23 @@ export interface IdpNS {
                 1: string;
             };
         };
+        outboundProvisioningConnector: {
+            fields: {
+                confidential: {
+                    helperText: string;
+                },
+                placeholder: {
+                    default: string;
+                    enter: string;
+                }
+            },
+            validations: {
+                invalidURL: string;
+            },
+            warnings: {
+                insecureURL: string;
+            }
+        },
         common: {
             requiredErrorMessage: string;
             invalidURLErrorMessage: string;

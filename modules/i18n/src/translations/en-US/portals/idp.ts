@@ -302,6 +302,23 @@ export const idp: IdpNS = {
                 1: "Disabled"
             }
         },
+        outboundProvisioningConnector: {
+            fields: {
+                confidential: {
+                    helperText: "Enter a new value to update, or leave unchanged to keep the existing value."
+                },
+                placeholder: {
+                    default: "Default: {{defaultValue}}",
+                    enter: "Enter {{displayName}}"
+                }
+            },
+            validations: {
+                invalidURL: "Please enter a valid URL"
+            },
+            warnings: {
+                insecureURL: "The URL is not secure (HTTP). Use HTTPS for a secure connection."
+            }
+        },
         outboundProvisioningRoles: {
             heading: "OutBound Provisioning Roles",
             hint: "Select and add as connection outbound provisioning roles",

@@ -114,40 +114,55 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
     }, [ triggerSubmit ]);
 
     /**
+     * Process a property and its sub-properties recursively to add them to the properties array.
+     */
+    const processProperty = (
+        property: CommonPluggableComponentMetaPropertyInterface,
+        values: Record<string, any>,
+        properties: { key: string; value: string }[]
+    ): void => {
+        if (!property.key) {
+            return;
+        }
+
+        const fieldValue: any = values[property.key];
+
+        if (property.type?.toUpperCase() === "BOOLEAN") {
+            // Checkbox values come as boolean
+            properties.push({
+                key: property.key,
+                value: String(!!fieldValue)
+            });
+        } else if (fieldValue !== undefined && fieldValue !== null) {
+            // Send all values including masked confidential values.
+            // Backend's preserveConfidentialProperties will handle masked values correctly.
+            properties.push({
+                key: property.key,
+                value: String(fieldValue)
+            });
+        } else if (property.defaultValue) {
+            properties.push({
+                key: property.key,
+                value: property.defaultValue
+            });
+        }
+
+        // Process sub-properties recursively
+        if (property.subProperties && property.subProperties.length > 0) {
+            property.subProperties.forEach((subProperty: CommonPluggableComponentMetaPropertyInterface) => {
+                processProperty(subProperty, values, properties);
+            });
+        }
+    };
+
+    /**
      * Transform flat form values into the OutboundProvisioningConnectorInterface format.
      */
     const handleSubmit = (values: Record<string, any>): void => {
         const properties: { key: string; value: string }[] = [];
 
         metadata?.properties?.forEach((property: CommonPluggableComponentMetaPropertyInterface) => {
-            if (!property.key) {
-                return;
-            }
-            const fieldValue: any = values[property.key];
-
-            if (property.type?.toUpperCase() === "BOOLEAN") {
-                // Checkbox values come as boolean
-                properties.push({
-                    key: property.key,
-                    value: String(!!fieldValue)
-                });
-            } else if (fieldValue !== undefined) {
-                // Skip confidential properties with empty values.
-                // Backend doesn't return confidential values, so if they're still empty,
-                // it means the user didn't modify them and we shouldn't send them.
-                if (property.isConfidential && !fieldValue) {
-                    return;
-                }
-                properties.push({
-                    key: property.key,
-                    value: String(fieldValue)
-                });
-            } else if (property.defaultValue) {
-                properties.push({
-                    key: property.key,
-                    value: property.defaultValue
-                });
-            }
+            processProperty(property, values, properties);
         });
 
         onSubmit({
