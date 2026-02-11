@@ -1,5 +1,30 @@
 # @wso2is/console
 
+## 2.89.1
+
+### Patch Changes
+
+- [#9578](https://github.com/wso2/identity-apps/pull/9578) [`c67bea3eb2709848056bd9e32801605649783ae1`](https://github.com/wso2/identity-apps/commit/c67bea3eb2709848056bd9e32801605649783ae1) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Add support for enableJwtScopeAsArray in access token configuration in application API
+
+* [#9583](https://github.com/wso2/identity-apps/pull/9583) [`ae891252fdf29b6b33770daf657032eb9ff5cc8e`](https://github.com/wso2/identity-apps/commit/ae891252fdf29b6b33770daf657032eb9ff5cc8e) Thanks [@shashimalcse](https://github.com/shashimalcse)! - change the side panel order of the VC and improve VC creation wizard
+
+* Updated dependencies [[`c67bea3eb2709848056bd9e32801605649783ae1`](https://github.com/wso2/identity-apps/commit/c67bea3eb2709848056bd9e32801605649783ae1), [`ae891252fdf29b6b33770daf657032eb9ff5cc8e`](https://github.com/wso2/identity-apps/commit/ae891252fdf29b6b33770daf657032eb9ff5cc8e)]:
+  - @wso2is/admin.applications.v1@2.40.13
+  - @wso2is/admin.verifiable-credentials.v1@1.0.1
+  - @wso2is/admin.core.v1@2.50.3
+  - @wso2is/i18n@2.32.2
+  - @wso2is/admin.agents.v1@1.0.143
+  - @wso2is/admin.branding.v1@2.32.84
+  - @wso2is/admin.roles.v2@2.27.298
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.128
+  - @wso2is/admin.email-management.v1@2.25.292
+  - @wso2is/admin.flows.v1@1.0.97
+  - @wso2is/admin.home.v1@1.7.107
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.128
+  - @wso2is/admin.server-configurations.v1@2.36.3
+  - @wso2is/admin.users.v1@2.36.103
+  - @wso2is/admin.registration-flow-builder.v1@0.10.88
+
 ## 2.89.0
 
 ### Minor Changes
