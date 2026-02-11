@@ -17,6 +17,8 @@
  */
 
 import Button from "@oxygen-ui/react/Button";
+import useGetApplicationTemplate
+    from "@wso2is/admin.application-templates.v1/api/use-get-application-template";
 import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-management-utils";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -261,6 +263,11 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
         [ onboardingData.templateId ]
     );
 
+    const { data: apiTemplate } = useGetApplicationTemplate(
+        onboardingData.templateId,
+        !!onboardingData.templateId
+    );
+
     /**
      * Create the application.
      */
@@ -269,8 +276,8 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
 
         try {
             // Create the application
-            const result: CreatedApplicationResultInterface = await createOnboardingApplication(onboardingData);
-
+            const result: CreatedApplicationResultInterface =
+                await createOnboardingApplication(onboardingData, apiTemplate?.payload);
 
             if (onboardingData.signInOptions?.identifiers && !isM2M) {
                 try {
@@ -316,7 +323,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
         } finally {
             setIsCreatingApp(false);
         }
-    }, [ onboardingData, setCreatedApplication, dispatch, isAlphanumericUsername, isM2M ]);
+    }, [ onboardingData, apiTemplate, setCreatedApplication, dispatch, isAlphanumericUsername, isM2M ]);
 
     const handleNext: () => Promise<void> = useCallback(async (): Promise<void> => {
         const nextStep: OnboardingStep = getNextStep(currentStep, onboardingData);

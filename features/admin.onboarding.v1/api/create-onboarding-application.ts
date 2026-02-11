@@ -17,8 +17,7 @@
  */
 
 import { createApplication } from "@wso2is/admin.applications.v1/api/application";
-import M2MTemplate
-    from "@wso2is/admin.extensions.v1/application-templates/templates/m2m-application/m2m-application.json";
+import { MainApplicationInterface } from "@wso2is/admin.applications.v1/models/application";
 import MobileTemplate
     from "@wso2is/admin.extensions.v1/application-templates/templates/mobile-application/mobile-application.json";
 import OIDCWebAppTemplate
@@ -77,39 +76,16 @@ interface ApplicationTemplateInterface {
 }
 
 /**
- * Template registry mapping template IDs to their base JSON templates.
- * Framework-specific templates (react-application, angular-application, nextjs-application, expressjs-application)
- * use base templates but set their own templateId for proper Console metadata loading.
+ * Local template registry for templates excluded from the extension API.
  */
 const TEMPLATE_REGISTRY: Record<string, ApplicationTemplateInterface> = {
-    "angular-application": SPATemplate as ApplicationTemplateInterface,
-    "expressjs-application": OIDCWebAppTemplate as ApplicationTemplateInterface,
-    "m2m-application": M2MTemplate as ApplicationTemplateInterface,
     "mobile-application": MobileTemplate as ApplicationTemplateInterface,
-    "nextjs-application": OIDCWebAppTemplate as ApplicationTemplateInterface,
     "oidc-web-application": OIDCWebAppTemplate as ApplicationTemplateInterface,
-    "react-application": SPATemplate as ApplicationTemplateInterface,
     "single-page-application": SPATemplate as ApplicationTemplateInterface
 };
 
 /**
- * Map framework to template ID.
- * Must match FRAMEWORK_OPTIONS in constants/templates.ts.
- */
-const FRAMEWORK_TO_TEMPLATE: Record<string, string> = {
-    angular: "angular-application",
-    express: "expressjs-application",
-    next: "nextjs-application",
-    react: "react-application"
-};
-
-/**
  * Template UUID mapping for generic templates.
- * Only generic templates (not framework-specific) need UUID mapping.
- * Framework-specific templates like "react-application", "angular-application"
- * should use their string IDs directly.
- *
- * Reference: features/admin.core.v1/constants/shared/application-management.ts
  */
 const TEMPLATE_UUID_MAP: Record<string, string> = {
     "oidc-web-application": "b9c5e11e-fc78-484b-9bec-015d247561b8",
@@ -179,60 +155,43 @@ const buildM2MPayload = (name: string): ApplicationPayloadInterface => ({
 });
 
 /**
- * Get template based on template ID and framework.
- * Uses the appropriate base template for each framework/type,
- * but sets the framework-specific templateId for proper metadata loading.
- *
- * @param templateId - Template ID from onboarding data
- * @param framework - Framework name
- * @returns Application template, resolved template ID, and whether it's MCP client
- */
-const getTemplate = (
-    templateId?: string,
-    framework?: string
-): { template: ApplicationTemplateInterface | null; resolvedTemplateId: string; isMCPClient: boolean } => {
-    let resolvedTemplateId: string = templateId || "single-page-application";
-
-    if (templateId === "mcp-client-application") {
-        return { isMCPClient: true, resolvedTemplateId, template: null };
-    }
-
-    if (framework && FRAMEWORK_TO_TEMPLATE[framework]) {
-        resolvedTemplateId = FRAMEWORK_TO_TEMPLATE[framework];
-    }
-
-    const template: ApplicationTemplateInterface = TEMPLATE_REGISTRY[resolvedTemplateId] ||
-                                         TEMPLATE_REGISTRY["single-page-application"];
-
-    return { isMCPClient: false, resolvedTemplateId, template };
-};
-
-/**
- * Build application payload from onboarding data using local template JSON.
+ * Build application payload from onboarding data.
  *
  * @param data - Onboarding data
+ * @param apiTemplatePayload - API-fetched template payload for framework templates
  * @returns Application payload for API
  */
-const buildApplicationPayload = (data: OnboardingDataInterface): ApplicationPayloadInterface => {
-    const { applicationName, templateId, framework, redirectUrls, signInOptions } = data;
-
-    const { template, resolvedTemplateId, isMCPClient } = getTemplate(templateId, framework);
-    const isM2M: boolean = resolvedTemplateId === "m2m-application";
+const buildApplicationPayload = (
+    data: OnboardingDataInterface,
+    apiTemplatePayload?: MainApplicationInterface
+): ApplicationPayloadInterface => {
+    const { applicationName, templateId, redirectUrls, signInOptions } = data;
+    const resolvedTemplateId: string = templateId || "single-page-application";
 
     let payload: ApplicationPayloadInterface;
 
-    if (isMCPClient) {
+    if (resolvedTemplateId === "mcp-client-application") {
         payload = buildMCPClientPayload(applicationName || "My Application");
-    } else if (isM2M) {
+    } else if (resolvedTemplateId === "m2m-application") {
         // M2M doesn't need redirect URLs or auth sequence, return early
         return buildM2MPayload(applicationName || "My Application");
-    } else {
-        if (!template?.application) {
-            throw new Error(`Template data not found for: ${templateId || framework}`);
-        }
-        payload = JSON.parse(JSON.stringify(template.application));
+    } else if (apiTemplatePayload) {
+        payload = JSON.parse(JSON.stringify(apiTemplatePayload));
         payload.name = applicationName || "My Application";
-        // Use framework-specific string for framework templates, UUID for generic templates
+
+        if (!payload.templateId) {
+            payload.templateId = resolvedTemplateId;
+        }
+    } else {
+        const localTemplate: ApplicationTemplateInterface = TEMPLATE_REGISTRY[resolvedTemplateId] ||
+            TEMPLATE_REGISTRY["single-page-application"];
+
+        if (!localTemplate?.application) {
+            throw new Error(`Template data not found for: ${resolvedTemplateId}`);
+        }
+
+        payload = JSON.parse(JSON.stringify(localTemplate.application));
+        payload.name = applicationName || "My Application";
         payload.templateId = TEMPLATE_UUID_MAP[resolvedTemplateId] || resolvedTemplateId;
     }
 
@@ -260,12 +219,14 @@ const buildApplicationPayload = (data: OnboardingDataInterface): ApplicationPayl
  * Create an application from onboarding data.
  *
  * @param data - Onboarding data collected during the wizard
+ * @param apiTemplatePayload - API-fetched template payload for framework templates
  * @returns Created application result
  */
 export const createOnboardingApplication = async (
-    data: OnboardingDataInterface
+    data: OnboardingDataInterface,
+    apiTemplatePayload?: MainApplicationInterface
 ): Promise<CreatedApplicationResultInterface> => {
-    const payload: ApplicationPayloadInterface = buildApplicationPayload(data);
+    const payload: ApplicationPayloadInterface = buildApplicationPayload(data, apiTemplatePayload);
     const response: any = await createApplication(payload as any);
 
     // Application ID is in the Location header: /api/server/v1/applications/{uuid}
