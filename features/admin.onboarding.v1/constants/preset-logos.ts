@@ -117,16 +117,25 @@ export const DEFAULT_BRANDING_CONFIG: OnboardingBrandingConfigInterface = {
 };
 
 /**
+ * Interface for branding validation constraints.
+ */
+interface BrandingConstraintsInterface {
+    /** Valid hex color pattern */
+    COLOR_PATTERN: RegExp;
+    /** Default primary color */
+    DEFAULT_PRIMARY_COLOR: string;
+    /** Logo URL must be valid URL or relative path */
+    LOGO_URL_PATTERN: RegExp;
+}
+
+/**
  * Branding validation constraints.
  */
-export const BrandingConstraints = {
-    /** Valid hex color pattern */
+export const BrandingConstraints: BrandingConstraintsInterface = {
     COLOR_PATTERN: /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/,
-    /** Default primary color */
     DEFAULT_PRIMARY_COLOR: "#ff7300",
-    /** Logo URL must be valid URL or relative path */
     LOGO_URL_PATTERN: /^(https?:\/\/|\/)/
-} as const;
+};
 
 /**
  * Generate a random hex color.

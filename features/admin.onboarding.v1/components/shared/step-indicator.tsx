@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { alpha, styled } from "@mui/material/styles";
+import { Theme, alpha, styled } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -49,69 +49,69 @@ export interface StepIndicatorPropsInterface extends IdentifiableComponentInterf
 /**
  * Container for the step indicator
  */
-const StepIndicatorContainer = styled(Box)(({ theme }) => ({
+const StepIndicatorContainer: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     backgroundColor: alpha(theme.palette.primary.main, 0.08),
     borderRadius: theme.shape.borderRadius * 2,
-    padding: theme.spacing(6),
-    minWidth: 250
+    minWidth: 250,
+    padding: theme.spacing(6)
 }));
 
 /**
  * Header text
  */
-const StepIndicatorHeader = styled(Typography)(({ theme }) => ({
+const StepIndicatorHeader: typeof Typography = styled(Typography)(({ theme }: { theme: Theme }) => ({
+    color: theme.palette.text.primary,
     fontSize: "0.875rem",
     fontWeight: 500,
-    color: theme.palette.text.primary,
     marginBottom: theme.spacing(3)
-}));    
+}));
 
 /**
  * Steps list container - uses CSS grid for alignment
  */
-const StepsList = styled(Box)(({ theme }) => ({
+const StepsList: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    alignItems: "start",
     display: "grid",
-    gridTemplateColumns: "12px 1fr",
     gap: theme.spacing(0, 2),
-    alignItems: "start"
+    gridTemplateColumns: "12px 1fr"
 }));
 
 /**
  * Orange dot indicator
  */
-const StepDot = styled(Box)(({ theme }) => ({
-    width: 12,
-    height: 12,
-    borderRadius: "50%",
+const StepDot: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     backgroundColor: theme.palette.primary.main,
+    borderRadius: "50%",
     flexShrink: 0,
+    height: 12,
+    margin: "8px 0 8px 0",
     marginTop: 2,
-    margin: "8px 0 8px 0"
+    width: 12
 }));
 
 /**
  * Dashed connector line between dots - centered in the grid column
  */
-const DashedConnector = styled(Box)(({ theme }) => ({
-    height: 24,
+const DashedConnector: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     borderLeft: `1px solid ${theme.palette.grey[300]}`,
+    height: 24,
     justifySelf: "center"
 }));
 
 /**
  * Step label text
  */
-const StepLabel = styled(Typography)(({ theme }) => ({
+const StepLabel: typeof Typography = styled(Typography)(({ theme }: { theme: Theme }) => ({
+    color: theme.palette.text.primary,
     fontSize: "0.875rem",
     fontWeight: 500,
-    color: theme.palette.text.primary,
     lineHeight: 1.4
 }));
 
 /**
  * Empty spacer for grid alignment when connector is shown
  */
-const EmptySpacer = styled(Box)({});
+const EmptySpacer: typeof Box = styled(Box)({});
 
 /**
  * Step indicator component showing progress through steps.
@@ -133,9 +133,7 @@ const StepIndicator: FunctionComponent<StepIndicatorPropsInterface> = memo((
             <StepsList>
                 { steps.map((step: StepConfigInterface, index: number) => (
                     <React.Fragment key={ step.key }>
-                        { /* Dot */ }
                         <StepDot />
-                        { /* Label */ }
                         <StepLabel data-componentid={ `${componentId}-step-${step.key}` }>
                             { step.label }
                         </StepLabel>

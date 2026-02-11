@@ -19,7 +19,7 @@
 /**
  * Component IDs for data-componentid attributes.
  */
-export const OnboardingComponentIds = {
+export const OnboardingComponentIds: Record<string, string> = {
     COLOR_PICKER: "color-picker",
     CONFIGURE_REDIRECT_URL_STEP: "configure-redirect-url-step",
     DESIGN_LOGIN_STEP: "design-login-step",
@@ -33,14 +33,14 @@ export const OnboardingComponentIds = {
     SUCCESS_STEP: "success-step",
     WELCOME_STEP: "welcome-step",
     WIZARD: "onboarding-wizard"
-} as const;
+};
 
 /**
  * Default user name when not available.
  */
-export const DEFAULT_USER_NAME = "User";
+export const DEFAULT_USER_NAME: string = "User";
 
 /**
  * Number of random name suggestions to generate for application naming.
  */
-export const RANDOM_NAME_COUNT = 7;
+export const RANDOM_NAME_COUNT: number = 7;

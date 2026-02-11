@@ -60,23 +60,24 @@ const CONFETTI_COLORS: string[] = [
 /**
  * Generate random particles with varied properties.
  */
-const generateParticles = (count: number, primaryColor?: string): Particle[] => {
-    const colors: string[] = primaryColor
-        ? [ primaryColor, ...CONFETTI_COLORS.slice(1) ]
-        : CONFETTI_COLORS;
+const generateParticles: (count: number, primaryColor?: string) => Particle[] =
+    (count: number, primaryColor?: string): Particle[] => {
+        const colors: string[] = primaryColor
+            ? [ primaryColor, ...CONFETTI_COLORS.slice(1) ]
+            : CONFETTI_COLORS;
 
-    return Array.from({ length: count }, (_: unknown, i: number) => ({
-        color: colors[Math.floor(Math.random() * colors.length)],
-        delay: Math.random() * 0.2,
-        id: i,
-        rotation: Math.random() * 360,
-        scale: 0.5 + Math.random() * 0.5,
-        shape: Math.random() > 0.5 ? "circle" : "square",
-        // Spread particles in a circular pattern
-        x: (Math.random() - 0.5) * 200,
-        y: (Math.random() - 0.5) * 150 - 50 // Bias upward
-    }));
-};
+        return Array.from({ length: count }, (_: unknown, i: number) => ({
+            color: colors[Math.floor(Math.random() * colors.length)],
+            delay: Math.random() * 0.2,
+            id: i,
+            rotation: Math.random() * 360,
+            scale: 0.5 + Math.random() * 0.5,
+            shape: Math.random() > 0.5 ? "circle" : "square",
+            // Spread particles in a circular pattern
+            x: (Math.random() - 0.5) * 200,
+            y: (Math.random() - 0.5) * 150 - 50 // Bias upward
+        }));
+    };
 
 /**
  * Animation variants for particles.

@@ -56,7 +56,7 @@ type PackageManager = "npm" | "yarn" | "pnpm";
 /**
  * Container for the code block.
  */
-const CodeBlockContainer = styled(Box)(({ theme }: { theme: Theme }) => ({
+const CodeBlockContainer: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     backgroundColor: "#1e1e1e",
     borderRadius: theme.shape.borderRadius,
     overflow: "hidden",
@@ -66,7 +66,7 @@ const CodeBlockContainer = styled(Box)(({ theme }: { theme: Theme }) => ({
 /**
  * Header with optional tabs and copy button.
  */
-const CodeBlockHeader = styled(Box)(() => ({
+const CodeBlockHeader: typeof Box = styled(Box)(() => ({
     alignItems: "center",
     backgroundColor: "#2d2d2d",
     borderBottom: "1px solid #3d3d3d",
@@ -79,17 +79,17 @@ const CodeBlockHeader = styled(Box)(() => ({
 /**
  * Styled tabs for package managers.
  */
-const PackageManagerTabs = styled(Tabs)(() => ({
+const PackageManagerTabs: React.FC<React.ComponentProps<typeof Tabs>> = styled(Tabs)(() => ({
     "& .MuiTab-root": {
+        "&.Mui-selected": {
+            color: "#ffffff"
+        },
         color: "#9ca3af",
         fontSize: "0.75rem",
         minHeight: 40,
         minWidth: "auto",
         padding: "8px 12px",
-        textTransform: "none",
-        "&.Mui-selected": {
-            color: "#ffffff"
-        }
+        textTransform: "none"
     },
     "& .MuiTabs-indicator": {
         backgroundColor: "#ff7300"
@@ -100,7 +100,7 @@ const PackageManagerTabs = styled(Tabs)(() => ({
 /**
  * Label for simple code blocks without tabs.
  */
-const CodeBlockLabel = styled(Box)(() => ({
+const CodeBlockLabel: typeof Box = styled(Box)(() => ({
     color: "#9ca3af",
     fontSize: "0.75rem",
     padding: "0 12px"
@@ -109,12 +109,11 @@ const CodeBlockLabel = styled(Box)(() => ({
 /**
  * Code content area.
  */
-const CodeContent = styled(Box)<{ maxHeight?: number | string }>(({ maxHeight }) => ({
+const CodeContent: typeof Box = styled(Box)(() => ({
     color: "#e4e4e7",
     fontFamily: "'Fira Code', 'Monaco', 'Consolas', monospace",
     fontSize: "0.8125rem",
     lineHeight: 1.6,
-    maxHeight: maxHeight || "auto",
     overflow: "auto",
     padding: "12px 16px",
     whiteSpace: "pre-wrap",
@@ -124,7 +123,7 @@ const CodeContent = styled(Box)<{ maxHeight?: number | string }>(({ maxHeight })
 /**
  * Copy button styling.
  */
-const CopyButton = styled(IconButton)(() => ({
+const CopyButton: typeof IconButton = styled(IconButton)(() => ({
     "&:hover": {
         backgroundColor: "rgba(255, 255, 255, 0.1)"
     },
@@ -151,7 +150,7 @@ const CodeBlock: FunctionComponent<CodeBlockPropsInterface> = (props: CodeBlockP
     const [ packageManager, setPackageManager ] = useState<PackageManager>("npm");
     const [ copied, setCopied ] = useState<boolean>(false);
 
-    const getDisplayCode = useCallback((): string => {
+    const getDisplayCode: () => string = useCallback((): string => {
         if (showPackageManagerTabs) {
             switch (packageManager) {
                 case "npm":
@@ -168,15 +167,16 @@ const CodeBlock: FunctionComponent<CodeBlockPropsInterface> = (props: CodeBlockP
         return code;
     }, [ showPackageManagerTabs, packageManager, npmCommand, yarnCommand, pnpmCommand, code ]);
 
-    const handleCopy = useCallback(async (): Promise<void> => {
+    const handleCopy: () => Promise<void> = useCallback(async (): Promise<void> => {
         await navigator.clipboard.writeText(getDisplayCode());
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
     }, [ getDisplayCode ]);
 
-    const handlePackageManagerChange = (_event: React.SyntheticEvent, newValue: PackageManager): void => {
-        setPackageManager(newValue);
-    };
+    const handlePackageManagerChange: (_event: React.SyntheticEvent, newValue: PackageManager) => void =
+        (_event: React.SyntheticEvent, newValue: PackageManager): void => {
+            setPackageManager(newValue);
+        };
 
     return (
         <CodeBlockContainer data-componentid={ componentId }>
@@ -206,7 +206,7 @@ const CodeBlock: FunctionComponent<CodeBlockPropsInterface> = (props: CodeBlockP
                     </Tooltip>
                 ) }
             </CodeBlockHeader>
-            <CodeContent maxHeight={ maxHeight } data-componentid={ `${componentId}-content` }>
+            <CodeContent sx={ { maxHeight: maxHeight || "auto" } } data-componentid={ `${componentId}-content` }>
                 { getDisplayCode() }
             </CodeContent>
         </CodeBlockContainer>

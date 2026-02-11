@@ -53,7 +53,7 @@ const CopyableField: FunctionComponent<CopyableFieldPropsInterface> = (
     const [ copied, setCopied ] = useState<boolean>(false);
     const [ showSecret, setShowSecret ] = useState<boolean>(false);
 
-    const handleCopy = useCallback(async (): Promise<void> => {
+    const handleCopy: () => Promise<void> = useCallback(async (): Promise<void> => {
         await navigator.clipboard.writeText(value);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);

@@ -45,7 +45,7 @@ interface DesignLoginStepPropsInterface extends IdentifiableComponentInterface {
 /**
  * Container for design options.
  */
-const DesignOptionsContainer = styled(Box)(({ theme }: { theme: Theme }) => ({
+const DesignOptionsContainer: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     display: "flex",
     flexDirection: "column",
     gap: theme.spacing(4),
@@ -55,7 +55,7 @@ const DesignOptionsContainer = styled(Box)(({ theme }: { theme: Theme }) => ({
 /**
  * Preview column styling.
  */
-const PreviewColumn = styled(RightColumn)(({ theme }: { theme: Theme }) => ({
+const PreviewColumn: typeof Box = styled(RightColumn)(({ theme }: { theme: Theme }) => ({
     alignItems: "center",
     backgroundColor: theme.palette.grey[50],
     borderRadius: theme.shape.borderRadius * 2,
@@ -98,14 +98,14 @@ const DesignLoginStep: FunctionComponent<DesignLoginStepPropsInterface> = (
         return signInOptions;
     }, [ signInOptions, isAlphanumericUsername ]);
 
-    const handleColorChange = useCallback((color: string): void => {
+    const handleColorChange: (color: string) => void = useCallback((color: string): void => {
         onBrandingConfigChange({
             ...brandingConfig,
             primaryColor: color
         });
     }, [ brandingConfig, onBrandingConfigChange ]);
 
-    const handleLogoSelect = useCallback((logoUrl: string | undefined): void => {
+    const handleLogoSelect: (logoUrl: string | undefined) => void = useCallback((logoUrl: string | undefined): void => {
         onBrandingConfigChange({
             ...brandingConfig,
             logoAltText: logoUrl ? "Logo" : undefined,

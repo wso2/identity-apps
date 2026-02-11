@@ -76,7 +76,7 @@ const HelperText: typeof Typography = styled(Typography)(({ theme }: { theme: Th
 /**
  * Check if URL is localhost (for development hints).
  */
-const isLocalhostUrl = (url: string): boolean => {
+const isLocalhostUrl: (url: string) => boolean = (url: string): boolean => {
     return URLUtils.isLoopBackCall(url);
 };
 
@@ -86,7 +86,9 @@ const isLocalhostUrl = (url: string): boolean => {
  * @param isMobile - Whether this is for a mobile application
  * @returns Error message or null if valid
  */
-const validateUrl = (url: string, isMobile: boolean = false): string | null => {
+const validateUrl: (url: string, isMobile?: boolean) => string | null = (
+    url: string, isMobile: boolean = false
+): string | null => {
     if (!url.trim()) {
         return isMobile ? "Redirect URI is required" : "Redirect URL is required";
     }
@@ -118,14 +120,14 @@ const validateUrl = (url: string, isMobile: boolean = false): string | null => {
 /**
  * Check if the template is for a mobile application.
  */
-const isMobileTemplate = (templateId?: string): boolean => {
+const isMobileTemplate: (templateId?: string) => boolean = (templateId?: string): boolean => {
     return templateId === "mobile-application";
 };
 
 /**
  * Get step title based on template/framework.
  */
-const getStepTitle = (templateId?: string): string => {
+const getStepTitle: (templateId?: string) => string = (templateId?: string): string => {
     if (isMobileTemplate(templateId)) {
         return "Configure Redirect URI";
     }
@@ -138,7 +140,7 @@ const getStepTitle = (templateId?: string): string => {
  * Redirect URIs are a security whitelist - only registered URLs can receive
  * the authorization response after user authentication.
  */
-const getStepSubtitle = (templateId?: string): string => {
+const getStepSubtitle: (templateId?: string) => string = (templateId?: string): string => {
     if (isMobileTemplate(templateId)) {
         return "Authorize where your app can receive users after login. " +
             "Enter the custom URI scheme configured in your mobile app.";
@@ -151,14 +153,14 @@ const getStepSubtitle = (templateId?: string): string => {
 /**
  * Get input label based on template type.
  */
-const getInputLabel = (templateId?: string): string => {
+const getInputLabel: (templateId?: string) => string = (templateId?: string): string => {
     return isMobileTemplate(templateId) ? "Authorized Redirect URI" : "Authorized Redirect URL";
 };
 
 /**
  * Get placeholder text based on template type.
  */
-const getPlaceholder = (templateId?: string): string => {
+const getPlaceholder: (templateId?: string) => string = (templateId?: string): string => {
     if (isMobileTemplate(templateId)) {
         return "com.yourcompany.app://oauth2redirect";
     }
@@ -268,7 +270,7 @@ const ConfigureRedirectUrlStep: FunctionComponent<ConfigureRedirectUrlStepPropsI
                                 } }
                             >
                                 <li>Start your app locally</li>
-                                <li>Copy the URL from your browser's address bar</li>
+                                <li>Copy the URL from your browser&apos;s address bar</li>
                                 <li>Paste it here</li>
                             </Box>
                         </Hint>
@@ -286,7 +288,7 @@ const ConfigureRedirectUrlStep: FunctionComponent<ConfigureRedirectUrlStepPropsI
                                 } }
                             >
                                 <li>
-                                    Check your mobile app's authentication setup
+                                    Check your mobile app&apos;s authentication setup
                                     <Box component="ul" sx={ { m: 0, mt: 0.5, pl: 2 } }>
                                         <li>Android: AndroidManifest.xml</li>
                                         <li>iOS: Info.plist</li>

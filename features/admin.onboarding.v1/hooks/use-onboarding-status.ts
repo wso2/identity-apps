@@ -18,10 +18,11 @@
 
 import { ApplicationListInterface } from "@wso2is/admin.applications.v1/models/application";
 import useRequest, { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { FeatureAccessConfigInterface, HttpMethods } from "@wso2is/core/models";
-import { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { hashForStorageKey } from "../utils/url-utils";
 
@@ -69,7 +70,7 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
     const [ isLoading, setIsLoading ] = useState<boolean>(true);
 
     // Track whether we've already evaluated to prevent re-evaluation
-    const hasEvaluated = useRef<boolean>(false);
+    const hasEvaluated: React.MutableRefObject<boolean> = useRef<boolean>(false);
 
     // Redux selectors — all return stable primitive values
     const uuid: string = useSelector((state: AppState) => state.profile.profileInfo.id);
@@ -78,10 +79,12 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
     const organizationType: string = useSelector(
         (state: AppState) => state?.organization?.organizationType
     );
-    const onboardingFeatureConfig: OnboardingFeatureConfig = useSelector(
-        (state: AppState) =>
-            (state?.config?.ui?.features as Record<string, OnboardingFeatureConfig>)?.onboarding
+    const featureConfig: FeatureConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features
     );
+    const onboardingFeatureConfig: OnboardingFeatureConfig =
+        featureConfig?.onboarding as OnboardingFeatureConfig;
+
     const meEndpoint: string = useSelector(
         (state: AppState) => state.config?.endpoints?.me
     );
@@ -274,7 +277,7 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
         isStatusCached, shouldFetchApps, isAppListLoading, appListData
     ]);
 
-    const markOnboardingComplete = useCallback((): void => {
+    const markOnboardingComplete: () => void = useCallback((): void => {
         const resolvedUserId: string = username || uuid;
 
         if (resolvedUserId) {

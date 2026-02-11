@@ -39,13 +39,13 @@ interface HintPropsInterface {
     children?: ReactNode;
     /**
      * When true, children are hidden by default and can be expanded by clicking the message.
-     * @default false
+     * @defaultValue false
      */
     collapsible?: boolean;
     /**
      * Whether the collapsible section is expanded by default.
      * Only applies when collapsible is true.
-     * @default false
+     * @defaultValue false
      */
     defaultExpanded?: boolean;
 }

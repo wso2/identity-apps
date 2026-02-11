@@ -42,32 +42,33 @@ interface AuthMethodDisplayConfigInterface {
 /**
  * Get auth method display configuration with proper icons.
  */
-const getAuthMethodConfig = (): Record<string, AuthMethodDisplayConfigInterface> => ({
-    emailOtp: {
-        icon: getConnectionIcons().emailOTP,
-        label: "Email OTP"
-    },
-    magicLink: {
-        icon: getConnectionIcons().magicLink,
-        label: "Magic Link"
-    },
-    passkey: {
-        icon: getConnectionIcons().fido,
-        label: "Passkey"
-    },
-    password: {
-        icon: getConnectionIcons().basic,
-        label: "Password"
-    },
-    pushNotification: {
-        icon: getConnectionIcons().push,
-        label: "Push Notification"
-    },
-    totp: {
-        icon: getConnectionIcons().totp,
-        label: "Authenticator App"
-    }
-});
+const getAuthMethodConfig: () => Record<string, AuthMethodDisplayConfigInterface> =
+    (): Record<string, AuthMethodDisplayConfigInterface> => ({
+        emailOtp: {
+            icon: getConnectionIcons().emailOTP,
+            label: "Email OTP"
+        },
+        magicLink: {
+            icon: getConnectionIcons().magicLink,
+            label: "Magic Link"
+        },
+        passkey: {
+            icon: getConnectionIcons().fido,
+            label: "Passkey"
+        },
+        password: {
+            icon: getConnectionIcons().basic,
+            label: "Password"
+        },
+        pushNotification: {
+            icon: getConnectionIcons().push,
+            label: "Push Notification"
+        },
+        totp: {
+            icon: getConnectionIcons().totp,
+            label: "Authenticator App"
+        }
+    });
 
 /**
  * Props interface for LoginBoxPreview component.
@@ -84,7 +85,7 @@ export interface LoginBoxPreviewPropsInterface extends IdentifiableComponentInte
 /**
  * Outer container for centering and scaling.
  */
-const PreviewWrapper = styled(Box)({
+const PreviewWrapper: typeof Box = styled(Box)({
     alignItems: "flex-start",
     display: "flex",
     justifyContent: "center",
@@ -94,11 +95,10 @@ const PreviewWrapper = styled(Box)({
 /**
  * Main preview container for the two-step flow.
  */
-const PreviewContainer = styled(Box)<{ scale: number }>(({ scale }) => ({
+const PreviewContainer: typeof Box = styled(Box)(() => ({
     display: "flex",
     flexDirection: "column",
     maxWidth: 320,
-    transform: `scale(${scale})`,
     transformOrigin: "top center",
     width: "100%"
 }));
@@ -106,14 +106,14 @@ const PreviewContainer = styled(Box)<{ scale: number }>(({ scale }) => ({
 /**
  * Step container with relative positioning for label.
  */
-const StepContainer = styled(Box)({
+const StepContainer: typeof Box = styled(Box)({
     position: "relative"
 });
 
 /**
  * Step label badge.
  */
-const StepLabel = styled(Typography)(({ theme }: { theme: Theme }) => ({
+const StepLabel: typeof Typography = styled(Typography)(({ theme }: { theme: Theme }) => ({
     backgroundColor: theme.palette.grey[200],
     borderRadius: theme.shape.borderRadius,
     color: theme.palette.text.secondary,
@@ -129,7 +129,7 @@ const StepLabel = styled(Typography)(({ theme }: { theme: Theme }) => ({
 /**
  * Step box (card) styling.
  */
-const StepBox = styled(Paper)(({ theme }: { theme: Theme }) => ({
+const StepBox: typeof Paper = styled(Paper)(({ theme }: { theme: Theme }) => ({
     borderRadius: theme.shape.borderRadius * 1.5,
     display: "flex",
     flexDirection: "column",
@@ -140,22 +140,22 @@ const StepBox = styled(Paper)(({ theme }: { theme: Theme }) => ({
 /**
  * Connector between steps.
  */
-const StepConnector = styled(Box)(({ theme }: { theme: Theme }) => ({
-    alignItems: "center",
-    display: "flex",
-    height: 24,
-    justifyContent: "center",
+const StepConnector: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     "& .connector-line": {
         backgroundColor: theme.palette.divider,
         height: "100%",
         width: 2
-    }
+    },
+    alignItems: "center",
+    display: "flex",
+    height: 24,
+    justifyContent: "center"
 }));
 
 /**
  * Styled text field for preview.
  */
-const PreviewTextField = styled(TextField)(({ theme }: { theme: Theme }) => ({
+const PreviewTextField: typeof TextField = styled(TextField)(({ theme }: { theme: Theme }) => ({
     "& .MuiInputBase-root": {
         fontSize: "0.75rem",
         pointerEvents: "none"
@@ -171,7 +171,7 @@ const PreviewTextField = styled(TextField)(({ theme }: { theme: Theme }) => ({
 /**
  * Primary button styled with custom color.
  */
-const PrimaryButtonStyled = styled(Button)<{ customcolor?: string }>(({ customcolor }) => ({
+const PrimaryButtonStyled: typeof Button = styled(Button)(() => ({
     color: "#ffffff",
     fontSize: "0.75rem",
     fontWeight: 500,
@@ -183,7 +183,10 @@ const PrimaryButtonStyled = styled(Button)<{ customcolor?: string }>(({ customco
 /**
  * Sign-in option button.
  */
-const SignInOptionButton = styled(Button)(({ theme }: { theme: Theme }) => ({
+const SignInOptionButton: typeof Button = styled(Button)(({ theme }: { theme: Theme }) => ({
+    "& .MuiButton-startIcon": {
+        marginRight: theme.spacing(1)
+    },
     backgroundColor: theme.palette.background.paper,
     border: `1px solid ${theme.palette.divider}`,
     borderRadius: theme.shape.borderRadius,
@@ -191,17 +194,14 @@ const SignInOptionButton = styled(Button)(({ theme }: { theme: Theme }) => ({
     fontSize: "0.6875rem",
     justifyContent: "flex-start",
     padding: theme.spacing(0.75, 1.5),
-    textTransform: "none",
     pointerEvents: "none",
-    "& .MuiButton-startIcon": {
-        marginRight: theme.spacing(1)
-    }
+    textTransform: "none"
 }));
 
 /**
  * Icon container for sign-in option buttons.
  */
-const IconImage = styled("img")({
+const IconImage: React.ComponentType<React.ImgHTMLAttributes<HTMLImageElement>> = styled("img")({
     height: 16,
     objectFit: "contain",
     width: 16
@@ -210,20 +210,21 @@ const IconImage = styled("img")({
 /**
  * Get the identifier field label based on selected options.
  */
-const getIdentifierLabel = (signInOptions: SignInOptionsConfigInterface): string => {
-    const { identifiers } = signInOptions;
-    const labels: string[] = [];
+const getIdentifierLabel: (signInOptions: SignInOptionsConfigInterface) => string =
+    (signInOptions: SignInOptionsConfigInterface): string => {
+        const { identifiers } = signInOptions;
+        const labels: string[] = [];
 
-    if (identifiers.username) labels.push("Username");
-    if (identifiers.email) labels.push("Email");
-    if (identifiers.mobile) labels.push("Mobile");
+        if (identifiers.username) labels.push("Username");
+        if (identifiers.email) labels.push("Email");
+        if (identifiers.mobile) labels.push("Mobile");
 
-    if (labels.length === 0) return "Email";
-    if (labels.length === 1) return labels[0];
-    if (labels.length === 2) return labels.join(" or ");
+        if (labels.length === 0) return "Email";
+        if (labels.length === 1) return labels[0];
+        if (labels.length === 2) return labels.join(" or ");
 
-    return `${labels.slice(0, -1).join(", ")} or ${labels[labels.length - 1]}`;
-};
+        return `${labels.slice(0, -1).join(", ")} or ${labels[labels.length - 1]}`;
+    };
 
 /**
  * Default sign-in options for preview.
@@ -297,7 +298,7 @@ const LoginBoxPreview: FunctionComponent<LoginBoxPreviewPropsInterface> = memo((
     /**
      * Render icon for a method - handles both string paths and React components.
      */
-    const renderIcon = (icon: any): ReactElement | null => {
+    const renderIcon: (icon: any) => ReactElement | null = (icon: any): ReactElement | null => {
         if (!icon) return null;
 
         // If it's a string (image path), use img tag
@@ -307,7 +308,7 @@ const LoginBoxPreview: FunctionComponent<LoginBoxPreviewPropsInterface> = memo((
 
         // If it's a React component (SVG), render it
         if (typeof icon === "function" || typeof icon === "object") {
-            const IconComponent = icon;
+            const IconComponent: any = icon;
 
             return (
                 <Box sx={ { display: "flex", height: 16, width: 16 } }>
@@ -321,7 +322,7 @@ const LoginBoxPreview: FunctionComponent<LoginBoxPreviewPropsInterface> = memo((
 
     return (
         <PreviewWrapper data-componentid={ componentId }>
-            <PreviewContainer scale={ scale }>
+            <PreviewContainer sx={ { transform: `scale(${scale})` } }>
                 { /* Empty state */ }
                 { !hasIdentifier && !hasAnyLoginMethod && (
                     <Typography
@@ -399,7 +400,7 @@ const LoginBoxPreview: FunctionComponent<LoginBoxPreviewPropsInterface> = memo((
                                 ) }
                                 <PrimaryButtonStyled
                                     fullWidth
-                                    sx={ { marginTop: 2, backgroundColor: primaryColor } }
+                                    sx={ { backgroundColor: primaryColor, marginTop: 2 } }
                                 >
                                     { hasPassword ? "Sign In" : "Continue" }
                                 </PrimaryButtonStyled>

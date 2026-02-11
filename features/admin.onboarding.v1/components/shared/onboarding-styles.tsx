@@ -44,8 +44,8 @@ export const ContentCard: typeof Box = styled(Box)(({ theme }: { theme: Theme })
     flex: 1,
     flexDirection: "column",
     maxHeight: "calc(100vh - 100px)",
-    minHeight: "85vh",
     maxWidth: 1400,
+    minHeight: "85vh",
     padding: theme.spacing(6, 8),
     width: "100%"
 }));
@@ -86,7 +86,7 @@ export const RightColumn: typeof Box = styled(Box)(() => ({
 /**
  * Section label
  */
-export const SectionLabel = styled(Typography)(({ theme }) => ({
+export const SectionLabel: typeof Typography = styled(Typography)(({ theme }: { theme: Theme }) => ({
     color: theme.palette.text.secondary,
     fontSize: "0.97rem",
     fontWeight: 500,

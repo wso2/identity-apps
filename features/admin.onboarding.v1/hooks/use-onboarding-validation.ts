@@ -50,11 +50,11 @@ const isValidAppName = (name: string): boolean => {
  * Uses the same validation pattern as the Console application creation flow.
  */
 export const useNameValidation = () => {
-    const validateName = useCallback((name: string): boolean => {
+    const validateName: (name: string) => boolean = useCallback((name: string): boolean => {
         return isValidAppName(name);
     }, []);
 
-    const getValidationError = useCallback((name: string): string | null => {
+    const getValidationError: (name: string) => string | null = useCallback((name: string): string | null => {
         if (!name) return null;
 
         const trimmedName: string = name.trim();
@@ -149,27 +149,30 @@ export const useOnboardingDataInterface = (
     initialData: OnboardingDataInterface,
     setData: (data: OnboardingDataInterface) => void
 ) => {
-    const updateChoice = useCallback((choice: OnboardingDataInterface["choice"]) => {
-        setData({ ...initialData, choice });
-    }, [ initialData, setData ]);
+    const updateChoice: (choice: OnboardingDataInterface["choice"]) => void = useCallback(
+        (choice: OnboardingDataInterface["choice"]) => {
+            setData({ ...initialData, choice });
+        }, [ initialData, setData ]);
 
-    const updateApplicationName = useCallback((applicationName: string) => {
+    const updateApplicationName: (name: string) => void = useCallback((applicationName: string) => {
         setData({ ...initialData, applicationName });
     }, [ initialData, setData ]);
 
-    const updateIsRandomName = useCallback((isRandomName: boolean) => {
+    const updateIsRandomName: (isRandom: boolean) => void = useCallback((isRandomName: boolean) => {
         setData({ ...initialData, isRandomName });
     }, [ initialData, setData ]);
 
-    const updateApplicationType = useCallback((applicationType: OnboardingDataInterface["applicationType"]) => {
-        setData({ ...initialData, applicationType });
-    }, [ initialData, setData ]);
+    const updateApplicationType: (type: OnboardingDataInterface["applicationType"]) => void = useCallback(
+        (applicationType: OnboardingDataInterface["applicationType"]) => {
+            setData({ ...initialData, applicationType });
+        }, [ initialData, setData ]);
 
-    const updateTemplateSelection = useCallback((templateId: string, framework?: string) => {
-        setData({ ...initialData, framework, templateId });
-    }, [ initialData, setData ]);
+    const updateTemplateSelection: (id: string, fw?: string) => void = useCallback(
+        (templateId: string, framework?: string) => {
+            setData({ ...initialData, framework, templateId });
+        }, [ initialData, setData ]);
 
-    const updateRedirectUrls = useCallback((urls: string[]) => {
+    const updateRedirectUrls: (urls: string[]) => void = useCallback((urls: string[]) => {
         setData({
             ...initialData,
             allowedOrigins: extractOrigins(urls),
@@ -177,17 +180,20 @@ export const useOnboardingDataInterface = (
         });
     }, [ initialData, setData ]);
 
-    const updateSignInOptions = useCallback((options: SignInOptionsConfigInterface) => {
-        setData({ ...initialData, signInOptions: options });
-    }, [ initialData, setData ]);
+    const updateSignInOptions: (opts: SignInOptionsConfigInterface) => void = useCallback(
+        (options: SignInOptionsConfigInterface) => {
+            setData({ ...initialData, signInOptions: options });
+        }, [ initialData, setData ]);
 
-    const updateBrandingConfig = useCallback((config: OnboardingBrandingConfigInterface) => {
-        setData({ ...initialData, brandingConfig: config });
-    }, [ initialData, setData ]);
+    const updateBrandingConfig: (cfg: OnboardingBrandingConfigInterface) => void = useCallback(
+        (config: OnboardingBrandingConfigInterface) => {
+            setData({ ...initialData, brandingConfig: config });
+        }, [ initialData, setData ]);
 
-    const setCreatedApplication = useCallback((result: CreatedApplicationResultInterface) => {
-        setData({ ...initialData, createdApplication: result });
-    }, [ initialData, setData ]);
+    const setCreatedApplication: (result: CreatedApplicationResultInterface) => void = useCallback(
+        (result: CreatedApplicationResultInterface) => {
+            setData({ ...initialData, createdApplication: result });
+        }, [ initialData, setData ]);
 
     return {
         setCreatedApplication,

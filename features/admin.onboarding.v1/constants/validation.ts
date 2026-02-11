@@ -20,9 +20,18 @@
  * Application name validation constraints.
  * Consistent with ApplicationManagementConstants.FORM_FIELD_CONSTRAINTS from admin.applications.v1.
  */
-export const AppNameConstraints = {
+/**
+ * Interface for application name validation constraints.
+ */
+interface AppNameConstraintsInterface {
+    MAX_LENGTH: number;
+    MIN_LENGTH: number;
+    /** Pattern: alphanumeric, dots, underscores, hyphens, with single spaces allowed between words */
+    PATTERN: RegExp;
+}
+
+export const AppNameConstraints: AppNameConstraintsInterface = {
     MAX_LENGTH: 50,
     MIN_LENGTH: 3,
-    /** Pattern: alphanumeric, dots, underscores, hyphens, with single spaces allowed between words */
     PATTERN: /^[a-zA-Z0-9._-]+(?: [a-zA-Z0-9._-]+)*$/
-} as const;
+};

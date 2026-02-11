@@ -19,13 +19,12 @@
 import { Theme, styled } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
 import TextField from "@oxygen-ui/react/TextField";
-import Typography from "@oxygen-ui/react/Typography";
 import { PlusIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, memo, useCallback, useRef, useState } from "react";
-import { OnboardingComponentIds, PRESET_COLORS, isValidHexColor } from "../../constants";
 import Hint from "./hint";
 import { SectionLabel } from "./onboarding-styles";
+import { OnboardingComponentIds, PRESET_COLORS, isValidHexColor } from "../../constants";
 
 /**
  * Props interface for ColorPicker component.

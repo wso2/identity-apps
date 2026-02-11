@@ -21,6 +21,7 @@ import Box from "@oxygen-ui/react/Box";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, memo, useCallback, useEffect, useRef } from "react";
+import { SectionLabel } from "./onboarding-styles";
 import { OnboardingComponentIds } from "../../constants";
 import {
     AVATAR_NAMES,
@@ -28,7 +29,6 @@ import {
     getAvatarDisplayImage,
     getAvatarLogoUrl
 } from "../../constants/preset-logos";
-import { SectionLabel } from "./onboarding-styles";
 
 /**
  * Props interface for LogoSelector component.

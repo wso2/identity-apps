@@ -16,18 +16,16 @@
  * under the License.
  */
 
-import { Theme, styled } from "@mui/material/styles";
-import Box from "@oxygen-ui/react/Box";
+import OxygenHeader from "@oxygen-ui/react/Header";
+import Image from "@oxygen-ui/react/Image";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { ConfigReducerStateInterface } from "@wso2is/admin.core.v1/models/reducer-state";
 import { AppState } from "@wso2is/admin.core.v1/store";
+import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { StringUtils } from "@wso2is/core/utils";
 import React from "react";
-import Image from "@oxygen-ui/react/Image";
-import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
 import { useSelector } from "react-redux";
-import OxygenHeader from "@oxygen-ui/react/Header";
-import { history } from "@wso2is/admin.core.v1/helpers/history";
 
 export const Header = () => {
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
@@ -39,7 +37,7 @@ export const Header = () => {
                 logo: {
                     desktop: (
                         <Image
-                            src={resolveAppLogoFilePath(
+                            src={ resolveAppLogoFilePath(
                                 window["AppUtils"].getConfig().ui.appLogo?.defaultLogoPath ??
                                     window["AppUtils"].getConfig().ui.appLogoPath,
                                 `${window["AppUtils"].getConfig().clientOrigin}/` +
@@ -51,7 +49,7 @@ export const Header = () => {
                                             : ""
                                     }libs/themes/` +
                                     config.ui.theme.name
-                            )}
+                            ) }
                             alt="logo"
                         />
                     )
