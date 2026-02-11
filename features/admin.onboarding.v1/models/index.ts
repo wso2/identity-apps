@@ -79,7 +79,7 @@ export interface OnboardingDataInterface {
 export interface FrameworkOptionInterface {
     id: string;
     displayName: string;
-    logo?: FunctionComponent<SVGProps<SVGSVGElement>>;
+    logo?: FunctionComponent<SVGProps<SVGSVGElement>> | string;
     templateId?: string;
 }
 
