@@ -65,6 +65,8 @@ export const hasAutoFillDefaults = (frameworkOrTemplate?: string): boolean => {
  * Redirect URL validation constraints.
  */
 export const RedirectUrlConstraints = {
+    /** Maximum length of a single redirect URL */
+    MAX_LENGTH: 2048,
     /** Maximum number of redirect URLs allowed */
     MAX_URLS: 10,
     /** Minimum URL length */

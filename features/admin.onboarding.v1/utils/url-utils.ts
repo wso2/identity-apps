@@ -17,6 +17,25 @@
  */
 
 /**
+ * Synchronous one-way hash for obfuscating user IDs in storage keys.
+ * Uses DJB2 algorithm — not cryptographic, but sufficient to prevent
+ * plain-text user IDs from appearing in localStorage/sessionStorage keys.
+ *
+ * @param value - String to hash
+ * @returns Base-36 encoded hash string
+ */
+export const hashForStorageKey = (value: string): string => {
+    let hash: number = 5381;
+
+    for (let i: number = 0; i < value.length; i++) {
+        hash = ((hash << 5) + hash) + value.charCodeAt(i);
+        hash |= 0;
+    }
+
+    return Math.abs(hash).toString(36);
+};
+
+/**
  * Extract origins from redirect URLs.
  *
  * @param urls - Array of redirect URLs

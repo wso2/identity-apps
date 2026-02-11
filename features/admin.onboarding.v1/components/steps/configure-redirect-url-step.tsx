@@ -91,6 +91,10 @@ const validateUrl = (url: string, isMobile: boolean = false): string | null => {
         return isMobile ? "Redirect URI is required" : "Redirect URL is required";
     }
 
+    if (url.length > 2048) {
+        return "URL is too long";
+    }
+
     if (isMobile) {
         // Mobile apps accept custom schemes (myapp://) or https://
         if (!PatternConstants.MOBILE_DEEP_LINK_URL_REGEX_PATTERN.test(url)) {

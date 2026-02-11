@@ -83,6 +83,7 @@ export const useNameValidation = () => {
  */
 const isValidUrl = (url: string): boolean => {
     if (!url.trim()) return false;
+    if (url.length > RedirectUrlConstraints.MAX_LENGTH) return false;
 
     return RedirectUrlConstraints.PATTERN.test(url);
 };
