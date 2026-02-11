@@ -27,19 +27,6 @@ import { useSelector } from "react-redux";
 import { hashForStorageKey } from "../utils/url-utils";
 
 /**
- * Extended feature config that includes onboarding-specific properties
- * from deployment.config.json that aren't in the base FeatureAccessConfigInterface.
- */
-interface OnboardingFeatureConfig extends FeatureAccessConfigInterface {
-    /**
-     * ISO 8601 date string. Users created before this date are considered
-     * pre-existing and will NOT see the onboarding wizard.
-     * If not set, all users without a localStorage completion flag see the wizard.
-     */
-    activationDateTime?: string;
-}
-
-/**
  * Return type for the useOnboardingStatus hook.
  */
 interface UseOnboardingStatusReturn {
@@ -82,12 +69,8 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
     const featureConfig: FeatureConfigInterface = useSelector(
         (state: AppState) => state?.config?.ui?.features
     );
-    const onboardingFeatureConfig: OnboardingFeatureConfig =
-        featureConfig?.onboarding as OnboardingFeatureConfig;
+    const onboardingFeatureConfig: FeatureAccessConfigInterface = featureConfig?.onboarding;
 
-    const meEndpoint: string = useSelector(
-        (state: AppState) => state.config?.endpoints?.me
-    );
     const applicationsEndpoint: string = useSelector(
         (state: AppState) => state.config?.endpoints?.applications
     );
@@ -98,27 +81,6 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
     const hashedUserId: string = userId ? hashForStorageKey(userId) : "";
     const isStatusCached: boolean = !!hashedUserId &&
         sessionStorage.getItem(`${SESSION_CACHE_KEY}_${hashedUserId}`) === "hide";
-
-    // Fetch meta.created via a dedicated SWR call — only when activationDateTime is configured
-    // and no session cache exists. When config is null, useRequest/SWR skips the fetch entirely.
-    const activationDateConfigured: boolean = !!onboardingFeatureConfig?.activationDateTime;
-
-    const metaRequestConfig: RequestConfigInterface | null =
-        !isStatusCached && activationDateConfigured && meEndpoint && uuid
-            ? {
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/scim+json"
-                },
-                method: HttpMethods.GET,
-                url: `${meEndpoint}?attributes=meta.created`
-            }
-            : null;
-
-    const { data: metaData, isLoading: isMetaLoading } = useRequest<Record<string, any>>(metaRequestConfig);
-
-    // Extract meta.created from the SWR response body
-    const profileCreatedDate: string | undefined = metaData?.meta?.created;
 
     // Fetch application count — only when sync checks would pass and no session cache.
     // Uses limit=1 and excludeSystemPortals=true to minimize payload;
@@ -161,11 +123,6 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
 
         // Only evaluate once to prevent state churn from causing wizard resets
         if (hasEvaluated.current) {
-            return;
-        }
-
-        // Wait for meta.created fetch to complete (only if activation check is needed)
-        if (activationDateConfigured && isMetaLoading) {
             return;
         }
 
@@ -214,24 +171,7 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
             return;
         }
 
-        // Check 4: If activationDateTime is configured, only show to users created after it.
-        // This prevents existing users from seeing the wizard when the feature is first deployed.
-        const activationDate: string | undefined = onboardingFeatureConfig?.activationDateTime;
-
-        if (activationDate && profileCreatedDate) {
-            const userCreated: Date = new Date(profileCreatedDate);
-            const activation: Date = new Date(activationDate);
-
-            if (!isNaN(userCreated.getTime()) && !isNaN(activation.getTime()) && userCreated < activation) {
-                sessionStorage.setItem(`${SESSION_CACHE_KEY}_${hashedId}`, "hide");
-                setShouldShowOnboarding(false);
-                setIsLoading(false);
-
-                return;
-            }
-        }
-
-        // Check 5: If the organization already has user-created applications, skip wizard.
+        // Check 4: If the organization already has user-created applications, skip wizard.
         // Handles the case where a new admin joins an already-configured org.
         if (appListData && appListData.totalResults > 0) {
             sessionStorage.setItem(`${SESSION_CACHE_KEY}_${hashedId}`, "hide");
@@ -241,7 +181,7 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
             return;
         }
 
-        // Check 6: Check localStorage for completion/skip status.
+        // Check 5: Check localStorage for completion/skip status.
         if (!resolvedUserId) {
             setShouldShowOnboarding(false);
             setIsLoading(false);
@@ -272,8 +212,7 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
         setIsLoading(false);
     }, [
         uuid, username, isPrivilegedUser, organizationType,
-        onboardingFeatureConfig, activationDateConfigured,
-        isMetaLoading, profileCreatedDate,
+        onboardingFeatureConfig,
         isStatusCached, shouldFetchApps, isAppListLoading, appListData
     ]);
 
