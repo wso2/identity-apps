@@ -19,6 +19,9 @@
 import Button from "@oxygen-ui/react/Button";
 import useGetApplicationTemplate
     from "@wso2is/admin.application-templates.v1/api/use-get-application-template";
+import { ApplicationTemplateInterface } from "@wso2is/admin.application-templates.v1/models/templates";
+import useGetExtensionTemplates from "@wso2is/admin.template-core.v1/api/use-get-extension-templates";
+import { ExtensionTemplateListInterface, ResourceTypes } from "@wso2is/admin.template-core.v1/models/templates";
 import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-management-utils";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -271,10 +274,34 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
         [ onboardingData.templateId ]
     );
 
+    const { data: templateListing } = useGetExtensionTemplates(ResourceTypes.APPLICATIONS);
+
     const { data: apiTemplate } = useGetApplicationTemplate(
         onboardingData.templateId,
         !!onboardingData.templateId && currentStep > OnboardingStep.SELECT_APPLICATION_TEMPLATE
     );
+
+    // Merge listing data (which includes version) with individual template data.
+    const mergedTemplate: ApplicationTemplateInterface = useMemo(() => {
+        if (!apiTemplate || !templateListing) {
+            return apiTemplate;
+        }
+
+        const listingEntry: ExtensionTemplateListInterface = templateListing.find(
+            (item: ExtensionTemplateListInterface) => item.id === onboardingData.templateId
+        );
+
+        if (!listingEntry) {
+            return apiTemplate;
+        }
+
+        const { self: _self, customAttributes: _customAttributes, ...rest } = listingEntry;
+
+        return {
+            ...rest,
+            ...apiTemplate
+        };
+    }, [ apiTemplate, templateListing, onboardingData.templateId ]);
 
     /**
      * Create the application.
@@ -285,7 +312,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
         try {
             // Create the application
             const result: CreatedApplicationResultInterface =
-                await createOnboardingApplication(onboardingData, apiTemplate?.payload);
+                await createOnboardingApplication(onboardingData, mergedTemplate);
 
             if (onboardingData.signInOptions?.identifiers && !isM2M) {
                 try {
@@ -331,7 +358,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
         } finally {
             setIsCreatingApp(false);
         }
-    }, [ onboardingData, apiTemplate, setCreatedApplication, dispatch, isAlphanumericUsername, isM2M ]);
+    }, [ onboardingData, mergedTemplate, setCreatedApplication, dispatch, isAlphanumericUsername, isM2M ]);
 
     const handleNext: () => Promise<void> = useCallback(async (): Promise<void> => {
         const nextStep: OnboardingStep = getNextStep(currentStep, onboardingData);

@@ -16,8 +16,11 @@
  * under the License.
  */
 
+import {
+    ApplicationTemplateInterface as APIApplicationTemplateInterface
+} from "@wso2is/admin.application-templates.v1/models/templates";
 import { createApplication } from "@wso2is/admin.applications.v1/api/application";
-import { MainApplicationInterface } from "@wso2is/admin.applications.v1/models/application";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import MobileTemplate
     from "@wso2is/admin.extensions.v1/application-templates/templates/mobile-application/mobile-application.json";
 import OIDCWebAppTemplate
@@ -158,12 +161,12 @@ const buildM2MPayload = (name: string): ApplicationPayloadInterface => ({
  * Build application payload from onboarding data.
  *
  * @param data - Onboarding data
- * @param apiTemplatePayload - API-fetched template payload for framework templates
+ * @param apiTemplate - API-fetched template for framework templates
  * @returns Application payload for API
  */
 const buildApplicationPayload = (
     data: OnboardingDataInterface,
-    apiTemplatePayload?: MainApplicationInterface
+    apiTemplate?: APIApplicationTemplateInterface
 ): ApplicationPayloadInterface => {
     const { applicationName, templateId, redirectUrls, signInOptions } = data;
     const resolvedTemplateId: string = templateId || "single-page-application";
@@ -173,14 +176,23 @@ const buildApplicationPayload = (
     if (resolvedTemplateId === "mcp-client-application") {
         payload = buildMCPClientPayload(applicationName || "My Application");
     } else if (resolvedTemplateId === "m2m-application") {
-        // M2M doesn't need redirect URLs or auth sequence, return early
         return buildM2MPayload(applicationName || "My Application");
-    } else if (apiTemplatePayload) {
-        payload = JSON.parse(JSON.stringify(apiTemplatePayload));
+    } else if (apiTemplate?.payload) {
+        payload = JSON.parse(JSON.stringify(apiTemplate.payload));
         payload.name = applicationName || "My Application";
 
         if (!payload.templateId) {
             payload.templateId = resolvedTemplateId;
+        }
+
+        if (!payload.templateVersion && apiTemplate.version) {
+            payload.templateVersion = apiTemplate.version;
+        }
+
+        if (payload.imageUrl && typeof payload.imageUrl === "string") {
+            payload.imageUrl = payload.imageUrl
+                .replace("${clientOrigin}", AppConstants.getClientOrigin())
+                .replace("${appBaseNameWithoutTenant}", AppConstants.getAppBasename());
         }
     } else {
         const localTemplate: ApplicationTemplateInterface = TEMPLATE_REGISTRY[resolvedTemplateId] ||
@@ -219,14 +231,14 @@ const buildApplicationPayload = (
  * Create an application from onboarding data.
  *
  * @param data - Onboarding data collected during the wizard
- * @param apiTemplatePayload - API-fetched template payload for framework templates
+ * @param apiTemplate - API-fetched template for framework templates
  * @returns Created application result
  */
 export const createOnboardingApplication = async (
     data: OnboardingDataInterface,
-    apiTemplatePayload?: MainApplicationInterface
+    apiTemplate?: APIApplicationTemplateInterface
 ): Promise<CreatedApplicationResultInterface> => {
-    const payload: ApplicationPayloadInterface = buildApplicationPayload(data, apiTemplatePayload);
+    const payload: ApplicationPayloadInterface = buildApplicationPayload(data, apiTemplate);
     const response: any = await createApplication(payload as any);
 
     // Application ID is in the Location header: /api/server/v1/applications/{uuid}
