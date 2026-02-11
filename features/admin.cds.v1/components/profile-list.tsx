@@ -224,7 +224,7 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
                 data={ profiles }
                 actions={ actions }
                 onRowClick={ (_: SyntheticEvent, profile: ProfileModel) => {
-                    history.push(AppConstants.getPaths().get("PROFILE_VIEW")?.replace(":id", profile.profile_id));
+                    history.push(AppConstants.getPaths().get("PROFILE")?.replace(":id", profile.profile_id));
                 } }
                 showHeader
                 showActions

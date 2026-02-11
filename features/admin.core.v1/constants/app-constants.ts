@@ -374,7 +374,7 @@ export class AppConstants {
             [ "UNIFICATION_RULES", `${AppConstants.getMainViewBasePath()}/unification-rules` ],
             [ "UNIFICATION_RULE", `${AppConstants.getMainViewBasePath()}/unification-rules/:id` ],
             ["PROFILE_ATTRIBUTES", `${AppConstants.getMainViewBasePath()}/profile-attributes`],
-            ["PROFILE_ATTRIBUTE", `${AppConstants.getMainViewBasePath()}/profile-attributes/:id`],
+            ["PROFILE_ATTRIBUTE", `${AppConstants.getMainViewBasePath()}/profile-attributes/:scope/:id`],
             [ "USERS", `${AppConstants.getAdminViewBasePath()}/users` ],
             [ "USER_EDIT", `${AppConstants.getAdminViewBasePath()}/users/:id` ],
             [ "USERSTORES", `${AppConstants.getAdminViewBasePath()}/user-stores` ],
@@ -397,8 +397,6 @@ export class AppConstants {
                 "ATTRIBUTE_MAPPINGS",
                 `${AppConstants.getAdminViewBasePath()}/attribute-mappings/:type/:customAttributeMappingID?`
             ],
-            [ "PROFILE_ATTRIBUTE", `${ AppConstants.getAdminViewBasePath() }/profile-attribute` ],
-            [ "PROFILE_ATTRIBUTE_EDIT", `${ AppConstants.getAdminViewBasePath() }/profile-attribute/:id` ],
             [ "CREATE_TENANT", `${AppConstants.getAppBasePath()}/create-tenant` ],
             [ "ORGANIZATIONS", `${AppConstants.getAdminViewBasePath()}/organizations` ],
             [ "ORGANIZATION_UPDATE", `${AppConstants.getAdminViewBasePath()}/organizations/:id` ],

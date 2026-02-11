@@ -512,18 +512,18 @@ export class RouteUtils {
                 selected: loginAndRegPathsToCheck.some((path: string) => history.location.pathname.startsWith(path))
             },
             {
-                category: customerData,
+                category: manage,
                 id: "profiles",
                 parent: customerData
             },
             {
-                category: customerData,
-                id: "unification",
+                category: manage,
+                id: "profileAttributes",
                 parent: customerData
             },
             {
-                category: customerData,
-                id: "profileschema",
+                category: manage,
+                id: "unificationRules",
                 parent: customerData
             },
             {

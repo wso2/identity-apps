@@ -83,40 +83,16 @@ export const ProfileSchemaListing: FunctionComponent<ProfileSchemaListingProps> 
 
     const actions: TableActionsInterface[] = useMemo(() => ([
         {
-            icon: (): SemanticICONS => "pencil alternate",
-            onClick: (e: SyntheticEvent, row: ProfileSchemaListingRow): void => {
-                e?.stopPropagation?.();
-
-                if (!row.editable || !row.attribute_id) {
-                    return;
-                }
-
-                // You can route by scope. For now: traits edit only (like your existing flow).
-                if (row.scope === "traits") {
-                    history.push(AppConstants.getPaths().get("PROFILE_ATTRIBUTE").replace(":id", row.attribute_id));
-                }
-
-                // Add these when pages exist:
-                // if (row.scope === "identity_attributes") ...
-                // if (row.scope === "application_data") ...
-            },
-            popupText: (row: ProfileSchemaListingRow): string => row.editable ? "Edit" : "Not editable",
-            renderer: "semantic-icon"
-        },
-        {
             icon: (): SemanticICONS => "trash alternate",
             onClick: (e: SyntheticEvent, row: ProfileSchemaListingRow): void => {
                 e?.stopPropagation?.();
 
-                if (!row.deletable || !row.attribute_id) {
-                    return;
-                }
-
                 setDeleting(row);
                 setShowDeleteModal(true);
             },
-            popupText: (row: ProfileSchemaListingRow): string => row.deletable ? "Delete" : "Cannot delete",
-            renderer: "semantic-icon"
+            popupText: (): string => "Delete",
+            renderer: "semantic-icon",
+            hidden: (row: ProfileSchemaListingRow): boolean => !row.deletable || !row.attribute_id
         }
     ]), []);
 
@@ -128,11 +104,9 @@ export const ProfileSchemaListing: FunctionComponent<ProfileSchemaListingProps> 
         }
 
         if (row.scope === "application_data") {
-            // adjust if your backend uses different path
             return `${CDM_BASE_URL}/profile-schema/application_data/${row.attribute_id}`;
         }
 
-        // identity/core: should not be deletable
         return null;
     };
 
@@ -171,6 +145,28 @@ export const ProfileSchemaListing: FunctionComponent<ProfileSchemaListingProps> 
         }
     };
 
+    const handleRowClick = (_: SyntheticEvent, row: ProfileSchemaListingRow): void => {
+        if (!row.attribute_id) return;
+
+        // If editable, go to edit page
+        if (row.editable) {
+            history.push(
+                AppConstants.getPaths()
+                    .get("PROFILE_ATTRIBUTE")
+                    .replace(":scope", row.scope)
+                    .replace(":id", row.attribute_id)
+            );
+        }
+        // Otherwise, go to view page (if you have one)
+        // else {
+        //     history.push(
+        //         AppConstants.getPaths()
+        //             .get("PROFILE_VIEW")
+        //             .replace(":id", row.attribute_id)
+        //     );
+        // }
+    };
+
     return (
         <>
             <DataTable<ProfileSchemaListingRow>
@@ -181,9 +177,7 @@ export const ProfileSchemaListing: FunctionComponent<ProfileSchemaListingProps> 
                 showHeader={ true }
                 showActions={ true }
                 transparent={ !isLoading && rows.length === 0 }
-                onRowClick={ (_: SyntheticEvent, attribute: ProfileSchemaAttribute) => {
-                    history.push(AppConstants.getPaths().get("PROFILE_VIEW")?.replace(":id", attribute.attribute_id));
-                } }
+                onRowClick={ handleRowClick }
             />
 
             { deleting && (
