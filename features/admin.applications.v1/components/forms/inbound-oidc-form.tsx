@@ -1702,6 +1702,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 audience: audienceUrls !== "" ? audienceUrls.split(",") : [],
                 expiryInSeconds: Number(values.get("idExpiryInSeconds"))
             },
+            logout: {
+                frontChannelLogoutUrl: isFrontChannelLogoutEnabled
+                    ? values.get("frontChannelLogoutUrl")
+                    : initialValues?.logout?.frontChannelLogoutUrl
+            },
             publicClient: true,
             refreshToken: {
                 expiryInSeconds: values.get("expiryInSeconds")
