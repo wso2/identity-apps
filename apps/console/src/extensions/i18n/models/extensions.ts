@@ -3338,6 +3338,7 @@ export interface Extensions {
                 AccountManagement: string;
                 userManagement: string;
                 workflows: string;
+                customerData: string;
                 organizationSettings: string;
             };
         };

@@ -1,46 +1,46 @@
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useState } from "react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import { DataTable, AppAvatar, AnimatedAvatar, ConfirmationModal } from "@wso2is/react-components";
 import { TableActionsInterface, TableColumnInterface } from "@wso2is/react-components";
 import { SemanticICONS } from "semantic-ui-react";
-import { Trait } from "../api/profileShema";
-import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
-import { history } from "@wso2is/admin.core.v1/helpers/history";
+import Chip from "@oxygen-ui/react/Chip/Chip";
 import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
 import axios from "axios";
-import { error } from "console";
 import { CDM_BASE_URL } from "../models/constants";
+import { ProfileSchemaAttribute } from "../models/profile-attributes";
+import { ProfileSchemaListingRow,  } from "../models/profile-attribute-listing";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
 
-interface TraitsListProps {
-    traits: Trait[];
+interface ProfileSchemaListingProps {
+    rows: ProfileSchemaListingRow[];
     isLoading: boolean;
     onRefresh: () => void;
-    onSearchQueryClear?: () => void;
-    searchQuery?: string;
 }
 
-export const TraitsList: FunctionComponent<TraitsListProps> = ({
-    traits,
+export const ProfileSchemaListing: FunctionComponent<ProfileSchemaListingProps> = ({
+    rows,
     isLoading,
     onRefresh
-}: TraitsListProps): ReactElement => {
+}: ProfileSchemaListingProps): ReactElement => {
+
     const dispatch = useDispatch();
-    const [ deletingTrait, setDeletingTrait ] = useState<Trait>(null);
+
+    const [ deleting, setDeleting ] = useState<ProfileSchemaListingRow | null>(null);
     const [ showDeleteModal, setShowDeleteModal ] = useState(false);
 
     const columns: TableColumnInterface[] = [
         {
             allowToggleVisibility: false,
-            dataIndex: "attribute_name",
-            id: "attribute_name",
-            key: "attribute_name",
-            render: (trait: Trait) => {
-                const displayName = trait.attribute_name.replace(/^traits\./, "");
-                const initial = displayName.split(".").pop();
+            dataIndex: "display_name",
+            id: "attribute",
+            key: "attribute",
+            render: (row: ProfileSchemaListingRow) => {
+                const initial = row.display_name?.charAt(0)?.toUpperCase() || "?";
 
                 return (
-                    <div className="header-with-icon">
+                    <div style={ { display: "flex", alignItems: "center", gap: 10 } }>
                         <AppAvatar
                             image={ (
                                 <AnimatedAvatar
@@ -51,11 +51,25 @@ export const TraitsList: FunctionComponent<TraitsListProps> = ({
                             size="mini"
                             spaced="right"
                         />
-                        { displayName }
+
+                        <div style={ { display: "flex", alignItems: "center", gap: 8 } }>
+                            <span>{ row.display_name }</span>
+                            { row.chip_label && (
+                                <Chip size="small" label={ row.chip_label } variant="outlined" />
+                            ) }
+                        </div>
                     </div>
                 );
             },
-            title: "Name"
+            title: "Attribute"
+        },
+        {
+            allowToggleVisibility: false,
+            dataIndex: "belongs_to",
+            id: "belongs_to",
+            key: "belongs_to",
+            render: (row: ProfileSchemaListingRow) => row.scope === "application_data" ? (row.belongs_to ?? "-") : "-",
+            title: "Belongs to"
         },
         {
             allowToggleVisibility: false,
@@ -67,70 +81,115 @@ export const TraitsList: FunctionComponent<TraitsListProps> = ({
         }
     ];
 
-    const actions: TableActionsInterface[] = [
+    const actions: TableActionsInterface[] = useMemo(() => ([
         {
             icon: (): SemanticICONS => "pencil alternate",
-            onClick: (e: SyntheticEvent, trait: Trait): void => {
-                history.push(AppConstants.getPaths().get("TRAITS_EDIT").replace(":id", trait.attribute_id));
+            onClick: (e: SyntheticEvent, row: ProfileSchemaListingRow): void => {
+                e?.stopPropagation?.();
+
+                if (!row.editable || !row.attribute_id) {
+                    return;
+                }
+
+                // You can route by scope. For now: traits edit only (like your existing flow).
+                if (row.scope === "traits") {
+                    history.push(AppConstants.getPaths().get("PROFILE_ATTRIBUTE").replace(":id", row.attribute_id));
+                }
+
+                // Add these when pages exist:
+                // if (row.scope === "identity_attributes") ...
+                // if (row.scope === "application_data") ...
             },
-            popupText: (): string => "Edit",
+            popupText: (row: ProfileSchemaListingRow): string => row.editable ? "Edit" : "Not editable",
             renderer: "semantic-icon"
         },
         {
             icon: (): SemanticICONS => "trash alternate",
-            onClick: (e: SyntheticEvent, trait: Trait): void => {
-                setDeletingTrait(trait);
+            onClick: (e: SyntheticEvent, row: ProfileSchemaListingRow): void => {
+                e?.stopPropagation?.();
+
+                if (!row.deletable || !row.attribute_id) {
+                    return;
+                }
+
+                setDeleting(row);
                 setShowDeleteModal(true);
             },
-            popupText: (): string => "Delete",
+            popupText: (row: ProfileSchemaListingRow): string => row.deletable ? "Delete" : "Cannot delete",
             renderer: "semantic-icon"
         }
-    ];
+    ]), []);
 
-    const handleDelete = async () => {
+    const resolveDeleteUrl = (row: ProfileSchemaListingRow): string | null => {
+        if (!row.attribute_id) return null;
+
+        if (row.scope === "traits") {
+            return `${CDM_BASE_URL}/profile-schema/traits/${row.attribute_id}`;
+        }
+
+        if (row.scope === "application_data") {
+            // adjust if your backend uses different path
+            return `${CDM_BASE_URL}/profile-schema/application_data/${row.attribute_id}`;
+        }
+
+        // identity/core: should not be deletable
+        return null;
+    };
+
+    const handleDelete = async (): Promise<void> => {
         try {
-                axios
-                    .delete(`${CDM_BASE_URL}/profile-schema/traits/${deletingTrait.attribute_id}`)
-                    .then((res) => {
-                        dispatch(addAlert({
-                            level: AlertLevels.SUCCESS,
-                            message: "Trait deleted",
-                            description: "Trait deleted successfully."
-                        }));
-                        onRefresh();
-                    })
-                    .catch((error) => {
-                        dispatch(addAlert({
-                            level: AlertLevels.ERROR,
-                            message: "Delete failed",
-                            description: error?.message || "Failed to delete the trait."
-                        }));
-                    });
+            if (!deleting) return;
+
+            const url = resolveDeleteUrl(deleting);
+            if (!url) {
+                dispatch(addAlert({
+                    level: AlertLevels.ERROR,
+                    message: "Delete failed",
+                    description: "No delete endpoint for this attribute."
+                }));
+                return;
+            }
+
+            await axios.delete(url);
+
+            dispatch(addAlert({
+                level: AlertLevels.SUCCESS,
+                message: "Deleted",
+                description: "Attribute deleted successfully."
+            }));
+
+            onRefresh();
+        } catch (err: any) {
+            dispatch(addAlert({
+                level: AlertLevels.ERROR,
+                message: "Delete failed",
+                description: err?.message || "Failed to delete the attribute."
+            }));
         } finally {
             setShowDeleteModal(false);
-            setDeletingTrait(null);
+            setDeleting(null);
         }
     };
 
     return (
         <>
-            <DataTable<Trait>
+            <DataTable<ProfileSchemaListingRow>
                 isLoading={ isLoading }
                 columns={ columns }
-                data={ traits }
+                data={ rows }
                 actions={ actions }
-                onRowClick={ (e: SyntheticEvent, trait: Trait): void => {
-                    history.push(AppConstants.getPaths().get("TRAITS_EDIT").replace(":id", trait.attribute_id));
-                } }
                 showHeader={ true }
-                transparent={ !isLoading && traits.length === 0 }
                 showActions={ true }
+                transparent={ !isLoading && rows.length === 0 }
+                onRowClick={ (_: SyntheticEvent, attribute: ProfileSchemaAttribute) => {
+                    history.push(AppConstants.getPaths().get("PROFILE_VIEW")?.replace(":id", attribute.attribute_id));
+                } }
             />
 
-            { deletingTrait && (
+            { deleting && (
                 <ConfirmationModal
                     onClose={ () => {
-                        setDeletingTrait(null);
+                        setDeleting(null);
                         setShowDeleteModal(false);
                     } }
                     type="negative"
@@ -141,19 +200,18 @@ export const TraitsList: FunctionComponent<TraitsListProps> = ({
                     secondaryAction="Cancel"
                     onSecondaryActionClick={ () => {
                         setShowDeleteModal(false);
-                        setDeletingTrait(null);
+                        setDeleting(null);
                     } }
                     onPrimaryActionClick={ handleDelete }
                     closeOnDimmerClick={ false }
                 >
                     <>
-                        <ConfirmationModal.Header>Delete Trait</ConfirmationModal.Header>
+                        <ConfirmationModal.Header>Delete Attribute</ConfirmationModal.Header>
                         <ConfirmationModal.Message attached negative>
                             This action is irreversible!
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
-                            Are you sure you want to delete the trait <b>{ deletingTrait.attribute_name }</b>?<br />
-                            This action will remove this trait from the profile schema and from the profiles that have this trait.
+                            Are you sure you want to delete <b>{ deleting.attribute_name }</b>?
                         </ConfirmationModal.Content>
                     </>
                 </ConfirmationModal>

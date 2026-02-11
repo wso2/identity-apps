@@ -4018,7 +4018,7 @@ export const extensions: Extensions = {
                 AccountManagement: "Account Management",
                 userManagement: "Identity Management",
                 workflows: "Workflows",
-
+                customerData : "Customer Data",
                 organizationSettings: "Organization Settings"
             }
         }

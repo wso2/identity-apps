@@ -25,6 +25,7 @@ import {
     ProfileSchemaScope,
     ProfileSchemaScopeResponse
 } from "../models/profile-attributes";
+import { SchemaListingScope } from "../models/profile-attribute-listing";
 import { FilterAttributeOption } from "@wso2is/admin.core.v1/components/advanced-search-with-multipe-filters";
 
 /**
@@ -43,23 +44,27 @@ export const fetchFullProfileSchema = async (): Promise<ProfileSchemaFullRespons
  * If application_data comes as a map, this function flattens it and injects application_identifier.
  */
 export const fetchProfileSchemaByScope = async (
-    scope: ProfileSchemaScope
-): Promise<ProfileSchemaScopeResponse> => {
-    const res = await axios.get(`${CDM_BASE_URL}/profile-schema/${scope}`);
+    scope: ProfileSchemaScope,
+    filter?: string
+  ): Promise<ProfileSchemaScopeResponse> => {
+  
+    const res = await axios.get(`${CDM_BASE_URL}/profile-schema/${scope}`, {
+      params: filter ? { filter } : undefined
+    });
+  
     const data = res.data;
-
-    // If backend already returns an array => done.
+  
     if (Array.isArray(data)) {
-        return data as ProfileSchemaScopeResponse;
+      return data as ProfileSchemaScopeResponse;
     }
 
     // If backend returns a map for application_data => flatten.
     // Shape: { "<appId>": [ {..}, ... ] }
     if (scope === "application_data" && data && typeof data === "object") {
         const map = data as ApplicationDataSchemaMapResponse;
-    
+
         const flattened: ProfileSchemaAttribute[] = [];
-    
+
         Object.entries(map).forEach(([ appId, attrs ]) => {
             (attrs ?? []).forEach((attr) => {
                 const original = attr.attribute_name ?? "";
@@ -67,22 +72,44 @@ export const fetchProfileSchemaByScope = async (
                     original.startsWith("application_data.")
                         ? original.replace("application_data.", "")
                         : original;
-    
+
                 flattened.push({
                     ...attr,
                     application_identifier: attr.application_identifier ?? appId,
-    
                     attribute_name: `application_data.${appId}.${field}`
                 });
             });
         });
-    
+
         return flattened;
     }
 
     // Unknown shape (fail-safe)
     return [];
 };
+
+/**
+ * GET /profile-schema/{scope}/{id}
+ */
+export const fetchSchemaAttributeById = async (
+    scope: SchemaListingScope,
+    id: string
+  ): Promise<ProfileSchemaAttribute> => {
+    const res = await axios.get(`${CDM_BASE_URL}/profile-schema/${scope}/${id}`);
+    return res.data as ProfileSchemaAttribute;
+  };
+  
+  /**
+   * PATCH /profile-schema/{scope}/{id}
+   * Only send what changed.
+   */
+  export const patchSchemaAttributeById = async (
+    scope: SchemaListingScope,
+    id: string,
+    patch: Partial<ProfileSchemaAttribute>
+  ): Promise<void> => {
+    await axios.patch(`${CDM_BASE_URL}/profile-schema/${scope}/${id}`, patch);
+  };
 
 /**
  * Helper for AdvancedSearch dropdown:

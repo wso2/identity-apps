@@ -1,5 +1,3 @@
-// models/profile-schema.ts
-
 /**
  * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
  *
@@ -23,12 +21,11 @@ export type ProfileSchemaGroupedScope =
     | "traits"
     | "application_data";
 
- export type ProfileSchemaFirstClassField =
+export type ProfileSchemaFirstClassField =
     | "profile_id"
     | "user_id";
 
 export type ProfileSchemaScope = ProfileSchemaGroupedScope | ProfileSchemaFirstClassField;
-
 
 export type Mutability = "immutable" | "readOnly" | "readWrite" | "writeOnce";
 
@@ -56,13 +53,13 @@ export interface ProfileSchemaSubAttributeRef {
 
 export interface ProfileSchemaAttribute {
     attribute_id: string;
-    attribute_name: string; // e.g. identity_attributes.username
-    value_type?: ValueType; // optional because sub_attributes refs may omit it
+    attribute_name: string; // e.g. identity_attributes.username, traits.xyz, application_data.email
+    value_type?: ValueType;
     merge_strategy?: MergeStrategy;
     mutability: Mutability;
     multi_valued: boolean;
 
-    // application_data only
+    // application_data only (BE stores by app id map sometimes)
     application_identifier?: string;
 
     // complex types
@@ -87,15 +84,5 @@ export interface ProfileSchemaFullResponse {
     application_data: Record<string, ProfileSchemaAttribute[]>;
 }
 
-/**
- * Scope endpoint response.
- * Recommended backend shape: always return a flat list for any scope.
- *
- * If backend returns a map for application_data, use the helper in api file to flatten it.
- */
 export type ProfileSchemaScopeResponse = ProfileSchemaAttribute[];
-
-/**
- * Some deployments may return application_data as a map for /profile-schema/application_data.
- */
 export type ApplicationDataSchemaMapResponse = Record<string, ProfileSchemaAttribute[]>;
