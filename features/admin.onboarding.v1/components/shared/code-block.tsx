@@ -169,22 +169,9 @@ const CodeBlock: FunctionComponent<CodeBlockPropsInterface> = (props: CodeBlockP
     }, [ showPackageManagerTabs, packageManager, npmCommand, yarnCommand, pnpmCommand, code ]);
 
     const handleCopy = useCallback(async (): Promise<void> => {
-        try {
-            await navigator.clipboard.writeText(getDisplayCode());
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
-        } catch (error) {
-            // Fallback for older browsers
-            const textArea: HTMLTextAreaElement = document.createElement("textarea");
-
-            textArea.value = getDisplayCode();
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand("copy");
-            document.body.removeChild(textArea);
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
-        }
+        await navigator.clipboard.writeText(getDisplayCode());
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
     }, [ getDisplayCode ]);
 
     const handlePackageManagerChange = (_event: React.SyntheticEvent, newValue: PackageManager): void => {

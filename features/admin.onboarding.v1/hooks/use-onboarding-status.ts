@@ -23,6 +23,7 @@ import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { FeatureAccessConfigInterface, HttpMethods } from "@wso2is/core/models";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import { hashForStorageKey } from "../utils/url-utils";
 
 /**
  * Extended feature config that includes onboarding-specific properties
@@ -91,8 +92,9 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
     // Check session cache — if a previous evaluation already decided "hide",
     // skip all API calls for the rest of this browser session.
     const userId: string = username || uuid;
-    const isStatusCached: boolean = !!userId &&
-        sessionStorage.getItem(`${SESSION_CACHE_KEY}_${userId}`) === "hide";
+    const hashedUserId: string = userId ? hashForStorageKey(userId) : "";
+    const isStatusCached: boolean = !!hashedUserId &&
+        sessionStorage.getItem(`${SESSION_CACHE_KEY}_${hashedUserId}`) === "hide";
 
     // Fetch meta.created via a dedicated SWR call — only when activationDateTime is configured
     // and no session cache exists. When config is null, useRequest/SWR skips the fetch entirely.
@@ -172,6 +174,7 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
         hasEvaluated.current = true;
 
         const resolvedUserId: string = username || uuid;
+        const hashedId: string = resolvedUserId ? hashForStorageKey(resolvedUserId) : "";
 
         // Fast path: session cache says "hide" — skip all checks
         if (isStatusCached) {
@@ -183,7 +186,7 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
 
         // Check 1: Feature flag must be enabled
         if (!onboardingFeatureConfig?.enabled) {
-            sessionStorage.setItem(`${SESSION_CACHE_KEY}_${resolvedUserId}`, "hide");
+            sessionStorage.setItem(`${SESSION_CACHE_KEY}_${hashedId}`, "hide");
             setShouldShowOnboarding(false);
             setIsLoading(false);
 
@@ -192,7 +195,7 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
 
         // Check 2: Exclude privileged/federated users (enterprise IDP)
         if (isPrivilegedUser) {
-            sessionStorage.setItem(`${SESSION_CACHE_KEY}_${resolvedUserId}`, "hide");
+            sessionStorage.setItem(`${SESSION_CACHE_KEY}_${hashedId}`, "hide");
             setShouldShowOnboarding(false);
             setIsLoading(false);
 
@@ -201,7 +204,7 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
 
         // Check 3: Exclude sub-organization users
         if (organizationType === OrganizationType.SUBORGANIZATION) {
-            sessionStorage.setItem(`${SESSION_CACHE_KEY}_${resolvedUserId}`, "hide");
+            sessionStorage.setItem(`${SESSION_CACHE_KEY}_${hashedId}`, "hide");
             setShouldShowOnboarding(false);
             setIsLoading(false);
 
@@ -217,7 +220,7 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
             const activation: Date = new Date(activationDate);
 
             if (!isNaN(userCreated.getTime()) && !isNaN(activation.getTime()) && userCreated < activation) {
-                sessionStorage.setItem(`${SESSION_CACHE_KEY}_${resolvedUserId}`, "hide");
+                sessionStorage.setItem(`${SESSION_CACHE_KEY}_${hashedId}`, "hide");
                 setShouldShowOnboarding(false);
                 setIsLoading(false);
 
@@ -228,7 +231,7 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
         // Check 5: If the organization already has user-created applications, skip wizard.
         // Handles the case where a new admin joins an already-configured org.
         if (appListData && appListData.totalResults > 0) {
-            sessionStorage.setItem(`${SESSION_CACHE_KEY}_${resolvedUserId}`, "hide");
+            sessionStorage.setItem(`${SESSION_CACHE_KEY}_${hashedId}`, "hide");
             setShouldShowOnboarding(false);
             setIsLoading(false);
 
@@ -236,8 +239,6 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
         }
 
         // Check 6: Check localStorage for completion/skip status.
-        // Use `username` first — it equals `idToken.sub` (mapped in getSignInState),
-        // which is what the original hook used as the localStorage key.
         if (!resolvedUserId) {
             setShouldShowOnboarding(false);
             setIsLoading(false);
@@ -245,12 +246,23 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
             return;
         }
 
-        const hasCompletedOnboarding: string | null = localStorage.getItem(
-            `onboarding_completed_${resolvedUserId}`
-        );
+        // Check hashed key first, then fall back to legacy unhashed key for migration
+        const hashedKey: string = `onboarding_completed_${hashedId}`;
+        const legacyKey: string = `onboarding_completed_${resolvedUserId}`;
+        let hasCompletedOnboarding: string | null = localStorage.getItem(hashedKey);
+
+        if (!hasCompletedOnboarding) {
+            hasCompletedOnboarding = localStorage.getItem(legacyKey);
+
+            if (hasCompletedOnboarding) {
+                // Migrate to hashed key and remove legacy key
+                localStorage.setItem(hashedKey, hasCompletedOnboarding);
+                localStorage.removeItem(legacyKey);
+            }
+        }
 
         if (hasCompletedOnboarding) {
-            sessionStorage.setItem(`${SESSION_CACHE_KEY}_${resolvedUserId}`, "hide");
+            sessionStorage.setItem(`${SESSION_CACHE_KEY}_${hashedId}`, "hide");
         }
 
         setShouldShowOnboarding(!hasCompletedOnboarding);
@@ -266,8 +278,10 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
         const resolvedUserId: string = username || uuid;
 
         if (resolvedUserId) {
-            localStorage.setItem(`onboarding_completed_${resolvedUserId}`, "true");
-            sessionStorage.setItem(`${SESSION_CACHE_KEY}_${resolvedUserId}`, "hide");
+            const hashedId: string = hashForStorageKey(resolvedUserId);
+
+            localStorage.setItem(`onboarding_completed_${hashedId}`, "true");
+            sessionStorage.setItem(`${SESSION_CACHE_KEY}_${hashedId}`, "hide");
             setShouldShowOnboarding(false);
         }
     }, [ uuid, username ]);

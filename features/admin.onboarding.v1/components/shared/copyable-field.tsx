@@ -54,18 +54,7 @@ const CopyableField: FunctionComponent<CopyableFieldPropsInterface> = (
     const [ showSecret, setShowSecret ] = useState<boolean>(false);
 
     const handleCopy = useCallback(async (): Promise<void> => {
-        try {
-            await navigator.clipboard.writeText(value);
-        } catch {
-            // Fallback for older browsers
-            const textArea: HTMLTextAreaElement = document.createElement("textarea");
-
-            textArea.value = value;
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand("copy");
-            document.body.removeChild(textArea);
-        }
+        await navigator.clipboard.writeText(value);
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
     }, [ value ]);

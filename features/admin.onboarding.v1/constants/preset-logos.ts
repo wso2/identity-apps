@@ -124,8 +124,8 @@ export const BrandingConstraints = {
     COLOR_PATTERN: /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/,
     /** Default primary color */
     DEFAULT_PRIMARY_COLOR: "#ff7300",
-    /** Logo URL must be valid URL or data URI */
-    LOGO_URL_PATTERN: /^(https?:\/\/|data:image\/|\/)/
+    /** Logo URL must be valid URL or relative path */
+    LOGO_URL_PATTERN: /^(https?:\/\/|\/)/
 } as const;
 
 /**
