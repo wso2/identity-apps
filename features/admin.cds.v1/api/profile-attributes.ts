@@ -26,7 +26,7 @@ import {
     ProfileSchemaScopeResponse
 } from "../models/profile-attributes";
 import { SchemaListingScope } from "../models/profile-attribute-listing";
-import { FilterAttributeOption } from "@wso2is/admin.core.v1/components/advanced-search-with-multipe-filters";
+import { FilterAttributeOption } from "@wso2is/admin.cds.v1/components/advanced-search-with-multipe-filters";
 
 /**
  * GET /profile-schema

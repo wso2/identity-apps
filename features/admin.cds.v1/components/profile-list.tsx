@@ -101,10 +101,10 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
         },
         {
             allowToggleVisibility: true,
-            id: "attached_user",
-            key: "attached_user",
-            title: "Attached User",
-            dataIndex: "attached_user",
+            id: "user",
+            key: "user",
+            title: "User",
+            dataIndex: "user",
             render: (profile: ProfileModel): ReactNode => {
                 const userId = profile.user_id;
                 const username = profile.identity_attributes?.username;
@@ -121,49 +121,31 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
                         />
                     );
                 }
-        
-                // Case 2 + 3: Identified
-                return (
-                    <Header as="h6">
-                        <Header.Content>
-                            { userId }
-        
-                            {/* Only show row2 if username exists */}
-                            { username && (
-                                <Header.Subheader>
-                                    { username }
-                                </Header.Subheader>
-                            ) }
-                        </Header.Content>
-                    </Header>
-                );
             }
         },        
         {
             allowToggleVisibility: true,
-            id: "merged_from",
-            key: "merged_from",
-            title: "Merged From",
-            dataIndex: "merged_from",
+            id: "unified_profiles",
+            key: "unified_profiles",
+            title: "Unified Profiles",
+            dataIndex: "unified_profiles",
             render: (profile: ProfileModel): ReactNode => {
-                const merged = (profile as any).merged_from as
-                    Array<{ profile_id: string }> | undefined;
+                const merged =
+                    (profile as any).merged_from as Array<{ profile_id: string }> | undefined;
         
-                if (!merged || merged.length === 0) {
-                    return null;   // show nothing if empty
+                const hasMerged = Array.isArray(merged) && merged.length > 0;
+        
+                if (!hasMerged) {
+                    return null; 
                 }
         
                 return (
-                    <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
-                        { merged.map((m) => (
-                            <Chip
-                                key={ m.profile_id }
-                                size="small"
-                                variant="outlined"
-                                label={ m.profile_id }   // full profile ID
-                            />
-                        )) }
-                    </div>
+                    <Chip
+                        size="small"
+                        variant="outlined"
+                        label="Unified"
+                        data-testid="unified-profile-chip"
+                    />
                 );
             }
         },

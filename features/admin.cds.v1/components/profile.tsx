@@ -75,9 +75,11 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ isDeleting, setIsDeleting ] = useState<boolean>(false);
 
+    // Profile data viewer modal
+    const [ isProfileDataViewOpen, setIsProfileDataViewOpen ] = useState<boolean>(false);
+
     const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
 
-    // ✅ Fix TS2322 by forcing void return.
     const handleAlerts = (alert: AlertInterface): void => {
         dispatch(addAlert(alert));
     };
@@ -118,7 +120,7 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
         return fromIdentity ? String(fromIdentity) : null;
     }, [ profile ]);
 
-    /** ✅ Hide Danger Zone if userId exists */
+    /** Hide Danger Zone if userId exists */
     const showDangerZone: boolean = useMemo(() => {
         return Boolean(profile) && !userId;
     }, [ profile, userId ]);
@@ -128,8 +130,41 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
         setAlert(null);
     };
 
+    const profileJsonString: string = useMemo(() => {
+        return JSON.stringify(profile ?? {}, null, 2);
+    }, [ profile ]);
+
+    const copyProfileJson = (): void => {
+        navigator.clipboard.writeText(profileJsonString);
+
+        setAlert({
+            description: "Profile data copied to clipboard.",
+            level: AlertLevels.SUCCESS,
+            message: "Copied"
+        });
+    };
+
+    const exportProfileJson = (): void => {
+        const blob: Blob = new Blob([ profileJsonString ], { type: "application/json;charset=utf-8" });
+        const url = window.URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `profile_${profile?.profile_id ?? "data"}.json`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+
+        window.URL.revokeObjectURL(url);
+
+        setAlert({
+            description: "Profile data exported.",
+            level: AlertLevels.SUCCESS,
+            message: "Exported"
+        });
+    };
+
     const renderField = (label: string, value?: string | null): ReactElement | null => {
-        // ✅ If not available keep it null => don't render.
         if (value === null || value === undefined || String(value).trim().length === 0) {
             return null;
         }
@@ -142,61 +177,77 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
         );
     };
 
-    const renderMergedTable = (): ReactElement | null => {
-        const merged = profile?.merged_from ?? [];
-        if (!merged.length) {
-            return null;
-        }
-
-        return (
-            <Form.Field>
-                <label>Merged From</label>
-                <Table compact="very" basic="very" celled>
-                    <Table.Header>
-                        <Table.Row>
-                            <Table.HeaderCell>Profile ID</Table.HeaderCell>
-                            <Table.HeaderCell>Reason</Table.HeaderCell>
-                        </Table.Row>
-                    </Table.Header>
-                    <Table.Body>
-                        { merged.map((m) => (
-                            <Table.Row key={ m.profile_id }>
-                                <Table.Cell>{ m.profile_id }</Table.Cell>
-                                <Table.Cell>{ m.reason ?? "-" }</Table.Cell>
-                            </Table.Row>
-                        )) }
-                    </Table.Body>
-                </Table>
-            </Form.Field>
-        );
-    };
-
-    const renderDataTab = (): ReactElement | null => {
+    const renderProfileDataField = (): ReactElement | null => {
         if (!profile) {
             return null;
         }
 
         return (
-            <EmphasizedSegment padded="very">
-                <div className="form-container with-max-width">
-                    <pre
-                        data-testid={ `${testId}-profile-json` }
-                        style={ {
-                            margin: 0,
-                            padding: "1rem",
-                            borderRadius: 8,
-                            overflow: "auto",
-                            maxHeight: 520,
-                            fontSize: 12
+            <Form.Field>
+                <label>Profile Data</label>
+
+                <div style={ { display: "flex", alignItems: "center", gap: 12 } }>
+                    <a
+                        role="button"
+                        style={ { cursor: "pointer" } }
+                        onClick={ (): void => {
+                            setAlert(null);
+                            setIsProfileDataViewOpen(true);
                         } }
                     >
-                        { JSON.stringify(profile ?? {}, null, 2) }
-                    </pre>
+                        View
+                    </a>
+                    <a
+                        role="button"
+                        style={ { cursor: "pointer" } }
+                        onClick={ copyProfileJson }
+                    >
+                        Copy
+                    </a>
+                    <a
+                        role="button"
+                        style={ { cursor: "pointer" } }
+                        onClick={ exportProfileJson }
+                    >
+                        Export
+                    </a>
                 </div>
-            </EmphasizedSegment>
+            </Form.Field>
         );
     };
-    
+
+    const renderMergedTable = (): ReactElement => {
+        const merged = profile?.merged_from ?? [];
+
+        return (
+            <Form.Field>
+                <label>Merged From</label>
+
+                { !merged.length ? (
+                    <div style={ { opacity: 0.7 } }>
+                        No unified profiles found for this profile.
+                    </div>
+                ) : (
+                    <Table compact="very" basic="very" celled>
+                        <Table.Header>
+                            <Table.Row>
+                                <Table.HeaderCell>Profile ID</Table.HeaderCell>
+                                <Table.HeaderCell>Reason</Table.HeaderCell>
+                            </Table.Row>
+                        </Table.Header>
+                        <Table.Body>
+                            { merged.map((m) => (
+                                <Table.Row key={ m.profile_id }>
+                                    <Table.Cell>{ m.profile_id }</Table.Cell>
+                                    <Table.Cell>{ m.reason ?? "-" }</Table.Cell>
+                                </Table.Row>
+                            )) }
+                        </Table.Body>
+                    </Table>
+                ) }
+            </Form.Field>
+        );
+    };
 
     const renderGeneralTab = (): ReactElement | null => {
         if (!profile) {
@@ -216,7 +267,9 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                         { renderField("Updated", profile.meta?.updated_at ?? null) }
                         { renderField("Location", profile.meta?.location ?? null) }
 
-                        { renderMergedTable() }
+                        <Divider />
+
+                        { renderProfileDataField() }
                     </Form>
                 </EmphasizedSegment>
 
@@ -238,12 +291,25 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
         );
     };
 
+    const renderUnifiedProfilesTab = (): ReactElement | null => {
+        if (!profile) {
+            return null;
+        }
+
+        return (
+            <EmphasizedSegment padded="very">
+                <Form>
+                    { renderMergedTable() }
+                </Form>
+            </EmphasizedSegment>
+        );
+    };
+
     const panes: ResourceTabPaneInterface[] = [
         { componentId: "general", menuItem: "General", render: renderGeneralTab },
-        { componentId: "data", menuItem: "Data", render: renderDataTab }
+        { componentId: "unified-profiles", menuItem: "Unified Profiles", render: renderUnifiedProfilesTab }
     ];
 
-    // ✅ WSO2-style delete handler (then/catch/finally) + modal alerts.
     const handleProfileDelete = (): void => {
         if (userId) {
             setAlert({
@@ -314,7 +380,75 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                 onTabChange={ handleTabChange }
             />
 
-            {/* ✅ Only mount the modal when danger zone is relevant */}
+            {/* Profile Data Viewer Modal */}
+            { profile && (
+                <ConfirmationModal
+                    data-componentid={ `${componentId}-profile-data-viewer-modal` }
+                    open={ isProfileDataViewOpen }
+                    onClose={ (): void => {
+                        setIsProfileDataViewOpen(false);
+                        setAlert(null);
+                    } }
+                    type="info"
+                    primaryAction="Close"
+                    secondaryAction="Export"
+                    onPrimaryActionClick={ (): void => {
+                        setIsProfileDataViewOpen(false);
+                        setAlert(null);
+                    } }
+                    onSecondaryActionClick={ exportProfileJson }
+                    closeOnDimmerClick={ false }
+                >
+                    <ConfirmationModal.Header>
+                        Profile Data
+                    </ConfirmationModal.Header>
+
+                    <ConfirmationModal.Content>
+                        <div className="modal-alert-wrapper">{ alert && alertComponent }</div>
+
+                        <div style={ { display: "flex", justifyContent: "flex-end", gap: 8, marginBottom: 10 } }>
+                            <button
+                                type="button"
+                                className="ui button basic mini"
+                                onClick={ copyProfileJson }
+                            >
+                                Copy
+                            </button>
+
+                            <button
+                                type="button"
+                                className="ui button primary mini"
+                                onClick={ exportProfileJson }
+                            >
+                                Export
+                            </button>
+                        </div>
+
+                        <div
+                            className="form-container with-max-width"
+                            style={ {
+                                borderRadius: 8,
+                                border: "1px solid var(--oxygen-palette-divider, #e0e1e2)"
+                            } }
+                        >
+                            <pre
+                                data-testid={ `${testId}-profile-json-modal` }
+                                style={ {
+                                    margin: 0,
+                                    padding: "1rem",
+                                    overflow: "auto",
+                                    maxHeight: 520,
+                                    fontSize: 12
+                                } }
+                            >
+                                { profileJsonString }
+                            </pre>
+                        </div>
+                    </ConfirmationModal.Content>
+                </ConfirmationModal>
+            ) }
+
+            {/* Delete modal - only mount when danger zone is relevant */}
             { showDangerZone && (
                 <ConfirmationModal
                     data-componentid={ `${componentId}-confirmation-modal` }
@@ -332,7 +466,7 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                         setShowDeleteConfirmationModal(false);
                         setAlert(null);
                     } }
-                    onPrimaryActionClick={ handleProfileDelete }   // ✅ fixed: was handleDelete
+                    onPrimaryActionClick={ handleProfileDelete }
                     closeOnDimmerClick={ false }
                 >
                     <ConfirmationModal.Header data-componentid={ `${componentId}-confirmation-modal-header` }>

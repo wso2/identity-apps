@@ -30,7 +30,7 @@ import { addAlert } from "@wso2is/core/store";
 import {
     AdvancedSearchWithMultipleFilters,
     FilterAttributeOption
-} from "@wso2is/admin.core.v1/components/advanced-search-with-multipe-filters";
+} from "../components/advanced-search-with-multipe-filters";
 import { DropdownProps, PaginationProps } from "semantic-ui-react";
 import ProfilesList from "../components/profile-list";
 import { ProfileModel, ProfilesListResponse } from "../models/profiles";
