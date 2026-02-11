@@ -79,8 +79,7 @@ const SuccessHeader: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => (
     display: "flex",
     flexDirection: "column",
     gap: theme.spacing(1),
-    marginBottom: theme.spacing(3),
-    position: "relative"
+    marginBottom: theme.spacing(3)
 }));
 
 /**
@@ -307,10 +306,10 @@ const SuccessStep: FunctionComponent<SuccessStepPropsInterface> = (
     }, [ isM2M, createdApplication, integrationConfig, tokenEndpoint ]);
 
     return (
-        <TwoColumnLayout data-componentid={ componentId }>
+        <TwoColumnLayout data-componentid={ componentId } sx={ { position: "relative" } }>
+            <SuccessConfetti primaryColor={ brandingConfig?.primaryColor } />
             <ScrollableLeftColumn>
                 <SuccessHeader>
-                    <SuccessConfetti primaryColor={ brandingConfig?.primaryColor } />
                     <TitleContainer>
                         <SuccessIcon />
                         <Title>{ getSuccessTitle() }</Title>

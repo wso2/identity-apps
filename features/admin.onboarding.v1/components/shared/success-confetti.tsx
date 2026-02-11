@@ -43,18 +43,19 @@ interface Particle {
     color: string;
     shape: "circle" | "square";
     delay: number;
+    size: number;
 }
 
 /**
  * Color palette for particles.
  */
 const CONFETTI_COLORS: string[] = [
-    "#ff7300",  // Primary orange
-    "#ff9a4d",  // Light orange
-    "#ffb380",  // Pale orange
-    "#94a3b8",  // Slate gray
-    "#cbd5e1",  // Light slate
-    "#64748b"   // Dark slate
+    "#ff7300",
+    "#ff9a4d",
+    "#ffb380",
+    "#fbbf24",
+    "#34d399",
+    "#60a5fa"
 ];
 
 /**
@@ -68,14 +69,14 @@ const generateParticles: (count: number, primaryColor?: string) => Particle[] =
 
         return Array.from({ length: count }, (_: unknown, i: number) => ({
             color: colors[Math.floor(Math.random() * colors.length)],
-            delay: Math.random() * 0.2,
+            delay: Math.random() * 0.3,
             id: i,
             rotation: Math.random() * 360,
-            scale: 0.5 + Math.random() * 0.5,
+            scale: 0.6 + Math.random() * 0.6,
             shape: Math.random() > 0.5 ? "circle" : "square",
-            // Spread particles in a circular pattern
-            x: (Math.random() - 0.5) * 200,
-            y: (Math.random() - 0.5) * 150 - 50 // Bias upward
+            size: 6 + Math.floor(Math.random() * 7),
+            x: (Math.random() - 0.5) * 500,
+            y: (Math.random() - 0.5) * 250
         }));
     };
 
@@ -89,9 +90,9 @@ const particleVariants: Variants = {
         scale: [ 0, particle.scale, particle.scale, 0 ],
         transition: {
             delay: particle.delay,
-            duration: 1.2,
+            duration: 1.8,
             ease: "easeOut",
-            times: [ 0, 0.2, 0.8, 1 ]
+            times: [ 0, 0.15, 0.7, 1 ]
         },
         x: particle.x,
         y: particle.y
@@ -111,7 +112,7 @@ const SuccessConfetti: FunctionComponent<SuccessConfettiPropsInterface> = (
     props: SuccessConfettiPropsInterface
 ): ReactElement => {
     const {
-        particleCount = 18,
+        particleCount = 30,
         primaryColor,
         ["data-componentid"]: componentId = "success-confetti"
     } = props;
@@ -129,8 +130,7 @@ const SuccessConfetti: FunctionComponent<SuccessConfettiPropsInterface> = (
                 left: "50%",
                 pointerEvents: "none",
                 position: "absolute",
-                top: 24,
-                transform: "translateX(-50%)",
+                top: 20,
                 width: 0,
                 zIndex: 10
             } }
@@ -144,9 +144,9 @@ const SuccessConfetti: FunctionComponent<SuccessConfettiPropsInterface> = (
                     style={ {
                         backgroundColor: particle.color,
                         borderRadius: particle.shape === "circle" ? "50%" : "2px",
-                        height: 8,
+                        height: particle.size,
                         position: "absolute",
-                        width: 8
+                        width: particle.size
                     } }
                     variants={ particleVariants }
                 />
