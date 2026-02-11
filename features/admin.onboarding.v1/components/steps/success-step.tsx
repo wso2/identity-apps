@@ -21,6 +21,8 @@ import Box from "@oxygen-ui/react/Box";
 import Link from "@oxygen-ui/react/Link";
 import Typography from "@oxygen-ui/react/Typography";
 import { ArrowUpRightFromSquareIcon, CheckIcon } from "@oxygen-ui/react-icons";
+import useGetApplicationTemplateMetadata
+    from "@wso2is/admin.application-templates.v1/api/use-get-application-template-metadata";
 import useGetApplicationInboundConfigs
     from "@wso2is/admin.applications.v1/api/use-get-application-inbound-configs";
 import { OIDCApplicationConfigurationInterface } from "@wso2is/admin.applications.v1/models/application";
@@ -35,7 +37,6 @@ import {
     getTemplateDocsUrl
 } from "../../constants";
 import { FrameworkIntegrationGuideInterface, IntegrationConfigInterface } from "../../constants/integration-guides";
-import useGetTemplateGuide from "../../hooks/use-get-template-guide";
 import {
     CreatedApplicationResultInterface,
     OnboardingBrandingConfigInterface,
@@ -203,12 +204,10 @@ const SuccessStep: FunctionComponent<SuccessStepPropsInterface> = (
     );
 
     // Fetch template metadata (guide markdown content).
-    // Uses our own hook that bypasses the shared hook's exclusion list,
-    // so we can fetch guide content for ALL templates (including mobile, SPA, etc.)
     const {
         data: templateMetadata,
         isLoading: isMetadataLoading
-    } = useGetTemplateGuide(
+    } = useGetApplicationTemplateMetadata(
         templateId,
         !isM2M && !!templateId && !!createdApplication
     );
@@ -301,7 +300,7 @@ const SuccessStep: FunctionComponent<SuccessStepPropsInterface> = (
     const tokenEndpoint: string = oidcConfigurations?.tokenEndpoint
         || `${customServerHost}/oauth2/token`;
 
-    // Generate M2M curl command matching the Console's format (Basic Auth with Base64 credentials).
+    // Generate M2M curl command (Basic Auth with Base64 credentials).
     const m2mCurlCommand: string = useMemo(() => {
         if (!isM2M || !createdApplication) {
             return "";
