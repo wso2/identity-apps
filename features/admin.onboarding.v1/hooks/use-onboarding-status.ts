@@ -16,12 +16,12 @@
  * under the License.
  */
 
+import { useApplicationList } from "@wso2is/admin.applications.v1/api/application";
 import { ApplicationListInterface } from "@wso2is/admin.applications.v1/models/application";
-import useRequest, { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
-import { FeatureAccessConfigInterface, HttpMethods } from "@wso2is/core/models";
+import { FeatureAccessConfigInterface } from "@wso2is/core/models";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { hashForStorageKey } from "../utils/url-utils";
@@ -71,10 +71,6 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
     );
     const onboardingFeatureConfig: FeatureAccessConfigInterface = featureConfig?.onboarding;
 
-    const applicationsEndpoint: string = useSelector(
-        (state: AppState) => state.config?.endpoints?.applications
-    );
-
     // Check session cache — if a previous evaluation already decided "hide",
     // skip all API calls for the rest of this browser session.
     const userId: string = username || uuid;
@@ -90,29 +86,12 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
         !!onboardingFeatureConfig?.enabled &&
         !isPrivilegedUser &&
         organizationType !== OrganizationType.SUBORGANIZATION &&
-        !!applicationsEndpoint &&
         !!uuid;
-
-    const appListRequestConfig: RequestConfigInterface | null = shouldFetchApps
-        ? {
-            headers: {
-                "Accept": "application/json",
-                "Content-Type": "application/json"
-            },
-            method: HttpMethods.GET,
-            params: {
-                excludeSystemPortals: true,
-                limit: 1,
-                offset: 0
-            },
-            url: applicationsEndpoint
-        }
-        : null;
 
     const {
         data: appListData,
         isLoading: isAppListLoading
-    } = useRequest<ApplicationListInterface>(appListRequestConfig);
+    } = useApplicationList<ApplicationListInterface>(undefined, 1, 0, undefined, shouldFetchApps, true);
 
     useEffect(() => {
         // Wait until uuid is set — this is the LAST thing set in the sign-in flow,
