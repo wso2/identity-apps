@@ -215,6 +215,14 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
             const parsed: number = parseInt(savedStep, 10);
 
             if (!isNaN(parsed) && Object.values(OnboardingStep).includes(parsed)) {
+                // Don't restore to SUCCESS — it requires createdApplication data
+                // which only exists in component state and isn't persisted.
+                if (parsed === OnboardingStep.SUCCESS) {
+                    sessionStorage.removeItem(WIZARD_STEP_STORAGE_KEY);
+
+                    return OnboardingStep.WELCOME;
+                }
+
                 return parsed as OnboardingStep;
             }
         }
@@ -265,7 +273,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
 
     const { data: apiTemplate } = useGetApplicationTemplate(
         onboardingData.templateId,
-        !!onboardingData.templateId
+        !!onboardingData.templateId && currentStep > OnboardingStep.SELECT_APPLICATION_TEMPLATE
     );
 
     /**

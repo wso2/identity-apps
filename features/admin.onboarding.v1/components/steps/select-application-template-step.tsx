@@ -130,7 +130,13 @@ const SelectApplicationTemplateStep: FunctionComponent<SelectApplicationTemplate
                             <SelectableCard
                                 key={ framework.id }
                                 data-componentid={ `${componentId}-framework-${framework.id}` }
-                                icon={ framework.logo ? <framework.logo /> : null }
+                                icon={
+                                    framework.logo
+                                        ? (typeof framework.logo === "string"
+                                            ? <img alt={ framework.displayName } src={ framework.logo } />
+                                            : <framework.logo />)
+                                        : null
+                                }
                                 isSelected={
                                     selectedFramework === framework.id
                                     && selectedTemplateId === framework.templateId

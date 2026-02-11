@@ -85,7 +85,7 @@ interface IconContainerProps {
 const IconContainer: any = styled(Box, {
     shouldForwardProp: (prop: string) => prop !== "variant"
 })<IconContainerProps>(({ theme, variant = "default" }: IconContainerProps & { theme: Theme }) => ({
-    "& svg": {
+    "& img, & svg": {
         height: 28,
         width: 28
     },

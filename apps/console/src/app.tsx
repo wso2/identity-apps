@@ -43,6 +43,7 @@ import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
 import { featureGateConfig } from "@wso2is/admin.extensions.v1/configs/feature-gate";
 import useGetAllFeatures from "@wso2is/admin.feature-gate.v1/api/use-get-all-features";
+import { useOnboardingStatus } from "@wso2is/admin.onboarding.v1/hooks/use-onboarding-status";
 import { AGENT_USERSTORE_ID } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
@@ -79,8 +80,6 @@ import "dayjs/locale/fr";
 import { getBaseRoutes } from "./configs/routes";
 import DecoratedApp from "./decorated-app";
 import "./app.scss";
-
-import { useOnboardingStatus } from "@wso2is/admin.onboarding.v1/hooks/use-onboarding-status";
 
 const Base = ({
     onAgentManagementEnableStatusChange,

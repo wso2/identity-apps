@@ -18,7 +18,7 @@
 
 import { ReactComponent as MCPLogo }
     from "../../themes/wso2is/assets/images/icons/outline-icons/mcp-servers-outline.svg";
-import { ReactComponent as AngularLogo } from "../assets/icons/angular.svg";
+import AngularLogo from "../assets/icons/angular.png";
 import { ReactComponent as M2MLogo } from "../assets/icons/api.svg";
 import { ReactComponent as ExpressLogo } from "../assets/icons/express.svg";
 import { ReactComponent as MobileLogo } from "../assets/icons/mobile.svg";
