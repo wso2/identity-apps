@@ -50,15 +50,15 @@ const StyledChip: typeof Chip = styled(Chip)(({ theme }: { theme: Theme }) => ({
         borderColor: theme.palette.divider,
         color: theme.palette.text.secondary
     },
+    "&.MuiChip-root": {
+        borderRadius: theme.shape.borderRadius * 3
+    },
     "&:hover": {
         backgroundColor: alpha(theme.palette.primary.main, 0.08)
     },
     cursor: "pointer",
     fontSize: "0.8rem",
-    padding: theme.spacing(2, 1),
-    "&.MuiChip-root": {
-        borderRadius: theme.shape.borderRadius * 3
-    }
+    padding: theme.spacing(2, 1)
 }));
 
 /**

@@ -182,19 +182,19 @@ export const ALL_SIGN_IN_OPTIONS: SignInOptionDefinitionInterface[] = [
  * Multi-attribute login claim URIs.
  * Used for configuring which attributes can be used as login identifiers.
  */
-export const MULTI_ATTRIBUTE_CLAIMS = {
+export const MULTI_ATTRIBUTE_CLAIMS: Record<string, string> = {
     email: "http://wso2.org/claims/emailaddress",
     mobile: "http://wso2.org/claims/mobile",
     username: "http://wso2.org/claims/username"
-} as const;
+};
 
 /**
  * Validation rules for sign-in options.
  * Simplified for the Identifier First approach.
  */
-export const SignInOptionsValidationRules = {
+export const SignInOptionsValidationRules: Record<string, number> = {
     /** Minimum one identifier required */
     MIN_IDENTIFIERS: 1,
     /** Minimum one login method required */
     MIN_LOGIN_METHODS: 1
-} as const;
+};

@@ -16,16 +16,16 @@
  * under the License.
  */
 
-import useGetApplicationInboundConfigs
-    from "@wso2is/admin.applications.v1/api/use-get-application-inbound-configs";
-import { OIDCApplicationConfigurationInterface } from "@wso2is/admin.applications.v1/models/application";
-import { OIDCDataInterface } from "@wso2is/admin.applications.v1/models/application-inbound";
-import { AppState } from "@wso2is/admin.core.v1/store";
 import { Theme, styled } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
 import Link from "@oxygen-ui/react/Link";
 import Typography from "@oxygen-ui/react/Typography";
 import { ArrowUpRightFromSquareIcon, CheckIcon } from "@oxygen-ui/react-icons";
+import useGetApplicationInboundConfigs
+    from "@wso2is/admin.applications.v1/api/use-get-application-inbound-configs";
+import { OIDCApplicationConfigurationInterface } from "@wso2is/admin.applications.v1/models/application";
+import { OIDCDataInterface } from "@wso2is/admin.applications.v1/models/application-inbound";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 import { useSelector } from "react-redux";
@@ -34,13 +34,13 @@ import {
     getIntegrationGuide,
     getTemplateDocsUrl
 } from "../../constants";
-import { IntegrationConfigInterface } from "../../constants/integration-guides";
+import { FrameworkIntegrationGuideInterface, IntegrationConfigInterface } from "../../constants/integration-guides";
+import useGetTemplateGuide from "../../hooks/use-get-template-guide";
 import {
     CreatedApplicationResultInterface,
     OnboardingBrandingConfigInterface,
     SignInOptionsConfigInterface
 } from "../../models";
-import useGetTemplateGuide from "../../hooks/use-get-template-guide";
 import { buildOnboardingGuideData } from "../../utils/build-guide-data";
 import { resolveGuideContent } from "../../utils/guide-content-resolver";
 import CodeBlock from "../shared/code-block";
@@ -73,7 +73,7 @@ interface SuccessStepPropsInterface extends IdentifiableComponentInterface {
 /**
  * Success header container.
  */
-const SuccessHeader = styled(Box)(({ theme }: { theme: Theme }) => ({
+const SuccessHeader: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     display: "flex",
     flexDirection: "column",
     gap: theme.spacing(1),
@@ -84,7 +84,7 @@ const SuccessHeader = styled(Box)(({ theme }: { theme: Theme }) => ({
 /**
  * Title text with icon.
  */
-const TitleContainer = styled(Box)(({ theme }: { theme: Theme }) => ({
+const TitleContainer: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     alignItems: "center",
     display: "flex",
     gap: theme.spacing(1.5)
@@ -93,7 +93,7 @@ const TitleContainer = styled(Box)(({ theme }: { theme: Theme }) => ({
 /**
  * Success icon styling.
  */
-const SuccessIcon = styled(CheckIcon)(({ theme }: { theme: Theme }) => ({
+const SuccessIcon: typeof CheckIcon = styled(CheckIcon)(({ theme }: { theme: Theme }) => ({
     color: theme.palette.success.main,
     height: 32,
     width: 32
@@ -102,7 +102,7 @@ const SuccessIcon = styled(CheckIcon)(({ theme }: { theme: Theme }) => ({
 /**
  * Title text.
  */
-const Title = styled(Typography)(({ theme }: { theme: Theme }) => ({
+const Title: typeof Typography = styled(Typography)(({ theme }: { theme: Theme }) => ({
     color: theme.palette.text.primary,
     fontSize: "1.5rem",
     fontWeight: 600
@@ -111,7 +111,7 @@ const Title = styled(Typography)(({ theme }: { theme: Theme }) => ({
 /**
  * Subtitle text.
  */
-const Subtitle = styled(Typography)(({ theme }: { theme: Theme }) => ({
+const Subtitle: typeof Typography = styled(Typography)(({ theme }: { theme: Theme }) => ({
     color: theme.palette.text.secondary,
     fontSize: "0.9375rem"
 }));
@@ -119,7 +119,7 @@ const Subtitle = styled(Typography)(({ theme }: { theme: Theme }) => ({
 /**
  * Helper text.
  */
-const HelperText = styled(Typography)(({ theme }: { theme: Theme }) => ({
+const HelperText: typeof Typography = styled(Typography)(({ theme }: { theme: Theme }) => ({
     color: theme.palette.text.secondary,
     fontSize: "0.8125rem",
     fontStyle: "italic"
@@ -148,7 +148,7 @@ const ScrollableLeftColumn: typeof LeftColumn = styled(LeftColumn)(({ theme }: {
 /**
  * Preview column styling.
  */
-const PreviewColumn = styled(RightColumn)(({ theme }: { theme: Theme }) => ({
+const PreviewColumn: typeof Box = styled(RightColumn)(({ theme }: { theme: Theme }) => ({
     alignItems: "center",
     backgroundColor: theme.palette.grey[50],
     borderRadius: theme.shape.borderRadius * 2,
@@ -252,7 +252,7 @@ const SuccessStep: FunctionComponent<SuccessStepPropsInterface> = (
     const isGuideLoading: boolean = isMetadataLoading || isInboundConfigLoading;
 
     // Get integration guide for the template
-    const integrationGuide = useMemo(() => {
+    const integrationGuide: FrameworkIntegrationGuideInterface | undefined = useMemo(() => {
         if (templateId && !isM2M) {
             return getIntegrationGuide(templateId);
         }
@@ -277,11 +277,11 @@ const SuccessStep: FunctionComponent<SuccessStepPropsInterface> = (
     // Resolve the documentation URL for this template type using the deployment's doc site base.
     const docsUrl: string | undefined = getTemplateDocsUrl(templateId, docSiteURL);
 
-    const getSuccessTitle = (): string => {
+    const getSuccessTitle: () => string = (): string => {
         return `Your application ${appName} is ready!`;
     };
 
-    const getSuccessSubtitle = (): string => {
+    const getSuccessSubtitle: () => string = (): string => {
         if (isM2M) {
             return "Use the credentials below to authenticate your service.";
         }

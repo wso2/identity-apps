@@ -70,7 +70,8 @@ export const createTestUser = async (email: string): Promise<TestUserCreationRes
         };
     } catch (error: unknown) {
         // Check if the error is due to user already existing
-        const errorResponse = (error as { response?: { data?: { detail?: string } } })?.response?.data;
+        const errorResponse: { detail?: string } | undefined =
+            (error as { response?: { data?: { detail?: string } } })?.response?.data;
 
         if (errorResponse?.detail?.includes("already exists")) {
             return {

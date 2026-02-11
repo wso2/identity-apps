@@ -18,10 +18,9 @@
 
 import { Theme, styled } from "@mui/material/styles";
 import Alert from "@oxygen-ui/react/Alert";
+import Box from "@oxygen-ui/react/Box";
 import IconButton from "@oxygen-ui/react/IconButton";
 import { XMarkIcon } from "@oxygen-ui/react-icons";
-import Box from "@oxygen-ui/react/Box";
-import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useCallback, useMemo } from "react";
 import {
@@ -58,7 +57,7 @@ interface SignInOptionsStepPropsInterface extends IdentifiableComponentInterface
 /**
  * Section container for grouping options.
  */
-const OptionSection = styled(Box)(({ theme }: { theme: Theme }) => ({
+const OptionSection: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     display: "flex",
     flexDirection: "column",
     gap: theme.spacing(1)
@@ -67,26 +66,18 @@ const OptionSection = styled(Box)(({ theme }: { theme: Theme }) => ({
 /**
  * Fixed section for identifiers.
  */
-const FixedSection = styled(Box)(({ theme }: { theme: Theme }) => ({
+const FixedSection: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     display: "flex",
     flexDirection: "column",
     gap: theme.spacing(1.5),
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(2)
     // maxWidth: 500
 }));
 
 /**
  * Scrollable container for login methods.
  */
-const OptionsContainer = styled(Box)(({ theme }: { theme: Theme }) => ({
-    display: "flex",
-    flex: 1,
-    flexDirection: "column",
-    gap: theme.spacing(3),
-    // maxWidth: 500,
-    overflowY: "auto",
-    paddingRight: theme.spacing(1),
-    // Custom scrollbar styling
+const OptionsContainer: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     "&::-webkit-scrollbar": {
         width: 6
     },
@@ -96,13 +87,19 @@ const OptionsContainer = styled(Box)(({ theme }: { theme: Theme }) => ({
     },
     "&::-webkit-scrollbar-track": {
         backgroundColor: "transparent"
-    }
+    },
+    display: "flex",
+    flex: 1,
+    flexDirection: "column",
+    gap: theme.spacing(3),
+    overflowY: "auto",
+    paddingRight: theme.spacing(1)
 }));
 
 /**
  * Preview column styling.
  */
-const PreviewColumn = styled(RightColumn)(({ theme }: { theme: Theme }) => ({
+const PreviewColumn: typeof Box = styled(RightColumn)(({ theme }: { theme: Theme }) => ({
     alignItems: "center",
     backgroundColor: theme.palette.grey[50],
     borderRadius: theme.shape.borderRadius * 2,
@@ -119,7 +116,10 @@ const PreviewColumn = styled(RightColumn)(({ theme }: { theme: Theme }) => ({
  * @param isAlphanumericUsername - Whether alphanumeric username is enabled.
  *        When false, email is always an implicit identifier.
  */
-const validateSignInOptions = (
+const validateSignInOptions: (
+    options: SignInOptionsConfigInterface,
+    isAlphanumericUsername: boolean
+) => SignInOptionsValidationInterface = (
     options: SignInOptionsConfigInterface,
     isAlphanumericUsername: boolean
 ): SignInOptionsValidationInterface => {
@@ -165,25 +165,29 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepPropsInterface> = (
         ["data-componentid"]: componentId = OnboardingComponentIds.SIGN_IN_OPTIONS_STEP
     } = props;
 
-    const handleIdentifierToggle = useCallback((id: string, enabled: boolean): void => {
-        onSignInOptionsChange({
-            ...signInOptions,
-            identifiers: {
-                ...signInOptions.identifiers,
-                [id]: enabled
-            }
-        });
-    }, [ signInOptions, onSignInOptionsChange ]);
+    const handleIdentifierToggle: (id: string, enabled: boolean) => void = useCallback(
+        (id: string, enabled: boolean): void => {
+            onSignInOptionsChange({
+                ...signInOptions,
+                identifiers: {
+                    ...signInOptions.identifiers,
+                    [id]: enabled
+                }
+            });
+        }, [ signInOptions, onSignInOptionsChange ]
+    );
 
-    const handleLoginMethodToggle = useCallback((id: string, enabled: boolean): void => {
-        onSignInOptionsChange({
-            ...signInOptions,
-            loginMethods: {
-                ...signInOptions.loginMethods,
-                [id]: enabled
-            }
-        });
-    }, [ signInOptions, onSignInOptionsChange ]);
+    const handleLoginMethodToggle: (id: string, enabled: boolean) => void = useCallback(
+        (id: string, enabled: boolean): void => {
+            onSignInOptionsChange({
+                ...signInOptions,
+                loginMethods: {
+                    ...signInOptions.loginMethods,
+                    [id]: enabled
+                }
+            });
+        }, [ signInOptions, onSignInOptionsChange ]
+    );
 
     const validation: SignInOptionsValidationInterface = useMemo(
         () => validateSignInOptions(signInOptions, isAlphanumericUsername),
@@ -249,7 +253,8 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepPropsInterface> = (
                 <FixedSection>
                     <OptionSection>
                         <SectionLabel>Identifiers</SectionLabel>
-                        { /* When alphanumeric username is disabled, email IS the username — show a note instead of toggles */ }
+                        { /* When alphanumeric username is disabled, email IS the username
+                          — show a note instead of toggles */ }
                         { !isAlphanumericUsername && (
                             <Alert
                                 severity="info"
@@ -285,9 +290,9 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepPropsInterface> = (
                                     aria-label="close"
                                     color="inherit"
                                     size="small"
-                                    onClick={() => {
+                                    onClick={ () => {
                                         setOpen(false);
-                                    }}
+                                    } }
                                 >
                                     <XMarkIcon />
                                 </IconButton>)
@@ -305,7 +310,7 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepPropsInterface> = (
                 { /* Login Methods */ }
                 <OptionsContainer>
                     <OptionSection>
-                        { LOGIN_METHOD_OPTIONS.map((option) => (
+                        { LOGIN_METHOD_OPTIONS.map((option: SignInOptionDefinitionInterface) => (
                             <SignInOptionToggle
                                 isEnabled={
                                     signInOptions.loginMethods[

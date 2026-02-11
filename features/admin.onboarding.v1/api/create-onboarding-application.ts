@@ -21,12 +21,10 @@ import M2MTemplate
     from "@wso2is/admin.extensions.v1/application-templates/templates/m2m-application/m2m-application.json";
 import MobileTemplate
     from "@wso2is/admin.extensions.v1/application-templates/templates/mobile-application/mobile-application.json";
-/* eslint-disable-next-line max-len */
 import OIDCWebAppTemplate
     from "@wso2is/admin.extensions.v1/application-templates/templates/oidc-web-application/oidc-web-application.json";
 /* eslint-disable-next-line max-len */
-import SPATemplate
-    from "@wso2is/admin.extensions.v1/application-templates/templates/single-page-application/single-page-application.json";
+import SPATemplate from "@wso2is/admin.extensions.v1/application-templates/templates/single-page-application/single-page-application.json";
 import { buildAuthSequence } from "./auth-sequence-builder";
 import { CreatedApplicationResultInterface, OnboardingDataInterface } from "../models";
 import { extractOrigins } from "../utils/url-utils";

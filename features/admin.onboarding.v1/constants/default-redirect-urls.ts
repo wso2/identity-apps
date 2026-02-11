@@ -24,11 +24,11 @@
 export const DefaultRedirectUrls: Record<string, string[]> = {
     angular: [ "http://localhost:4200" ],
     express: [ "http://localhost:3000/callback" ],
-    next: [ "http://localhost:3000" ],
-    react: [ "http://localhost:5173" ],
     "mcp-client-application": [],
     "mobile-application": [],
+    next: [ "http://localhost:3000" ],
     "oidc-web-application": [],
+    react: [ "http://localhost:5173" ],
     "single-page-application": []
 };
 
@@ -62,18 +62,25 @@ export const hasAutoFillDefaults = (frameworkOrTemplate?: string): boolean => {
 };
 
 /**
- * Redirect URL validation constraints.
+ * Interface for redirect URL validation constraints.
  */
-export const RedirectUrlConstraints = {
+interface RedirectUrlConstraintsInterface {
     /** Maximum length of a single redirect URL */
-    MAX_LENGTH: 2048,
+    MAX_LENGTH: number;
     /** Maximum number of redirect URLs allowed */
-    MAX_URLS: 10,
+    MAX_URLS: number;
     /** Minimum URL length */
-    MIN_LENGTH: 1,
+    MIN_LENGTH: number;
     /** Valid URL pattern (http/https with optional port and path) */
+    PATTERN: RegExp;
+}
+
+export const RedirectUrlConstraints: RedirectUrlConstraintsInterface = {
+    MAX_LENGTH: 2048,
+    MAX_URLS: 10,
+    MIN_LENGTH: 1,
     PATTERN: /^https?:\/\/[^\s/$.?#].[^\s]*$/i
-} as const;
+};
 
 /**
  * Common localhost patterns for development.

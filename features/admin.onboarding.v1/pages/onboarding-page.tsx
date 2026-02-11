@@ -16,13 +16,16 @@
  * under the License.
  */
 
-import { Theme } from "@mui/material/styles";
-import { styled } from "@mui/material/styles";
+import { Theme, styled } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useCallback, useEffect, useMemo } from "react";
+import { useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import OnboardingWizard from "../components/onboarding-wizard";
 import Header from "../components/shared/header";
@@ -107,33 +110,39 @@ const OnboardingPage: FunctionComponent<OnboardingPageProps> = (props: Onboardin
         markOnboardingComplete
     } = useOnboardingStatus();
 
-    // Route guard: redirect to home if user shouldn't see onboarding
+    const featureConfig: FeatureConfigInterface = useSelector(
+        (state: AppState) => state?.config?.ui?.features
+    );
+    const hasRequiredCreateScopes: boolean = useRequiredScopes(
+        featureConfig?.onboarding?.scopes?.create as string[]
+    );
+
+    // Route guard: redirect to home if user shouldn't see onboarding or lacks scopes
     useEffect(() => {
-        if (!isLoading && !shouldShowOnboarding) {
+        if (!isLoading && (!shouldShowOnboarding || !hasRequiredCreateScopes)) {
             history.push(AppConstants.getAppHomePath());
         }
-    }, [ isLoading, shouldShowOnboarding ]);
+    }, [ isLoading, shouldShowOnboarding, hasRequiredCreateScopes ]);
 
-    const handleComplete = useCallback(
+    const handleComplete: (_data: OnboardingDataInterface) => void = useCallback(
         (_data: OnboardingDataInterface): void => {
             markOnboardingComplete();
             history.push(AppConstants.getAppHomePath());
         },
-        [markOnboardingComplete]
+        [ markOnboardingComplete ]
     );
 
-    const handleSkip = useCallback((): void => {
+    const handleSkip: () => void = useCallback((): void => {
         markOnboardingComplete();
         history.push(AppConstants.getAppHomePath());
-    }, [markOnboardingComplete]);
+    }, [ markOnboardingComplete ]);
 
-    // Don't render until we know if user should see onboarding
-    if (isLoading || !shouldShowOnboarding) {
+    if (isLoading || !shouldShowOnboarding || !hasRequiredCreateScopes) {
         return null;
     }
 
     return (
-        <StyledOnboardingPage data-componentid={componentId}>
+        <StyledOnboardingPage data-componentid={ componentId }>
             <Header />
             <ContentArea>
                 <OnboardingWizard

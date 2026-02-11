@@ -64,6 +64,7 @@ export interface IntegrationAccordionPropsInterface extends IdentifiableComponen
 const SparklesIcon: FunctionComponent = (): ReactElement => (
     <svg fill="none" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg">
         <path
+            // eslint-disable-next-line max-len
             d="M12 2L13.09 8.26L18 6L15.27 10.8L22 12L15.27 13.2L18 18L13.09 15.74L12 22L10.91 15.74L6 18L8.73 13.2L2 12L8.73 10.8L6 6L10.91 8.26L12 2Z"
             fill="#ff7300"
         />
@@ -73,6 +74,7 @@ const SparklesIcon: FunctionComponent = (): ReactElement => (
 const CodeIcon: FunctionComponent = (): ReactElement => (
     <svg fill="none" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg">
         <path
+            // eslint-disable-next-line max-len
             d="M8 18L2 12L8 6L9.41 7.41L4.83 12L9.41 16.59L8 18ZM16 18L14.59 16.59L19.17 12L14.59 7.41L16 6L22 12L16 18Z"
             fill="#6b7280"
         />
@@ -82,7 +84,7 @@ const CodeIcon: FunctionComponent = (): ReactElement => (
 /**
  * Styled accordion container.
  */
-const StyledAccordion = styled(Accordion)(({ theme }: { theme: Theme }) => ({
+const StyledAccordion: typeof Accordion = styled(Accordion)(({ theme }: { theme: Theme }) => ({
     "&.Mui-expanded": {
         margin: 0
     },
@@ -100,23 +102,24 @@ const StyledAccordion = styled(Accordion)(({ theme }: { theme: Theme }) => ({
 /**
  * Styled accordion summary.
  */
-const StyledAccordionSummary = styled(AccordionSummary)(({ theme }: { theme: Theme }) => ({
-    "& .MuiAccordionSummary-content": {
-        alignItems: "center",
-        gap: theme.spacing(2),
-        margin: "12px 0"
-    },
-    "&.Mui-expanded": {
-        minHeight: 56
-    },
-    minHeight: 56,
-    padding: theme.spacing(0, 2)
-}));
+const StyledAccordionSummary: React.FC<React.ComponentProps<typeof AccordionSummary>> =
+    styled(AccordionSummary)(({ theme }: { theme: Theme }) => ({
+        "& .MuiAccordionSummary-content": {
+            alignItems: "center",
+            gap: theme.spacing(2),
+            margin: "12px 0"
+        },
+        "&.Mui-expanded": {
+            minHeight: 56
+        },
+        minHeight: 56,
+        padding: theme.spacing(0, 2)
+    }));
 
 /**
  * Icon container with circular background.
  */
-const IconContainer = styled(Box)(({ theme }: { theme: Theme }) => ({
+const IconContainer: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     alignItems: "center",
     backgroundColor: theme.palette.grey[100],
     borderRadius: "50%",
@@ -130,7 +133,7 @@ const IconContainer = styled(Box)(({ theme }: { theme: Theme }) => ({
 /**
  * Recommended badge styling.
  */
-const RecommendedBadge = styled(Chip)(({ theme }: { theme: Theme }) => ({
+const RecommendedBadge: typeof Chip = styled(Chip)(({ theme }: { theme: Theme }) => ({
     backgroundColor: theme.palette.primary.main,
     borderRadius: theme.shape.borderRadius / 2,
     color: theme.palette.primary.contrastText,
@@ -143,7 +146,7 @@ const RecommendedBadge = styled(Chip)(({ theme }: { theme: Theme }) => ({
 /**
  * Accordion title container.
  */
-const TitleContainer = styled(Box)(() => ({
+const TitleContainer: typeof Box = styled(Box)(() => ({
     alignItems: "center",
     display: "flex",
     flex: 1,
@@ -153,7 +156,7 @@ const TitleContainer = styled(Box)(() => ({
 /**
  * Accordion description.
  */
-const Description = styled(Typography)(({ theme }: { theme: Theme }) => ({
+const Description: typeof Typography = styled(Typography)(({ theme }: { theme: Theme }) => ({
     color: theme.palette.text.secondary,
     fontSize: "0.875rem"
 }));
@@ -162,7 +165,7 @@ const Description = styled(Typography)(({ theme }: { theme: Theme }) => ({
  * Styled accordion details.
  * Content flows naturally — the parent ScrollableLeftColumn handles scrolling.
  */
-const StyledAccordionDetails = styled(AccordionDetails)(({ theme }: { theme: Theme }) => ({
+const StyledAccordionDetails: typeof AccordionDetails = styled(AccordionDetails)(({ theme }: { theme: Theme }) => ({
     borderTop: `1px solid ${theme.palette.divider}`,
     display: "flex",
     flexDirection: "column",
@@ -173,7 +176,7 @@ const StyledAccordionDetails = styled(AccordionDetails)(({ theme }: { theme: The
 /**
  * Step container for manual integration.
  */
-const StepContainer = styled(Box)(({ theme }: { theme: Theme }) => ({
+const StepContainer: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     display: "flex",
     flexDirection: "column",
     gap: theme.spacing(1.5)
@@ -182,7 +185,7 @@ const StepContainer = styled(Box)(({ theme }: { theme: Theme }) => ({
 /**
  * Step number badge.
  */
-const StepNumber = styled(Box)(({ theme }: { theme: Theme }) => ({
+const StepNumber: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     alignItems: "center",
     backgroundColor: theme.palette.grey[200],
     borderRadius: "50%",
@@ -199,7 +202,7 @@ const StepNumber = styled(Box)(({ theme }: { theme: Theme }) => ({
 /**
  * Step title.
  */
-const StepTitle = styled(Typography)(({ theme }: { theme: Theme }) => ({
+const StepTitle: typeof Typography = styled(Typography)(({ theme }: { theme: Theme }) => ({
     alignItems: "center",
     color: theme.palette.text.primary,
     display: "flex",
@@ -210,7 +213,7 @@ const StepTitle = styled(Typography)(({ theme }: { theme: Theme }) => ({
 /**
  * Test user credentials container.
  */
-const TestUserContainer = styled(Box)(({ theme }: { theme: Theme }) => ({
+const TestUserContainer: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     alignItems: "flex-start",
     backgroundColor: theme.palette.grey[50],
     borderRadius: theme.shape.borderRadius,
@@ -252,7 +255,7 @@ const IntegrationAccordion: FunctionComponent<IntegrationAccordionPropsInterface
     /**
      * Render test user credentials section (shared between API guide and fallback).
      */
-    const renderTestUserCredentials = (): ReactElement | null => {
+    const renderTestUserCredentials: () => ReactElement | null = (): ReactElement | null => {
         if (!testUserCredentials) {
             return null;
         }

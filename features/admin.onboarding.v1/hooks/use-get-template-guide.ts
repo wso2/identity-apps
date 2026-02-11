@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ApplicationTemplateMetadataInterface } from "@wso2is/admin.application-templates.v1/models/templates";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
@@ -23,7 +24,6 @@ import useRequest, {
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import { ApplicationTemplateMetadataInterface } from "@wso2is/admin.application-templates.v1/models/templates";
 
 /**
  * Fetch application template metadata for onboarding without the exclusion list

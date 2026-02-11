@@ -46,23 +46,24 @@ export interface SignInOptionTogglePropsInterface extends IdentifiableComponentI
 /**
  * Styled FormControlLabel for full width toggle with subtle hover.
  */
-const StyledFormControlLabel = styled(FormControlLabel)(({ theme }: { theme: Theme }) => ({
-    alignItems: "flex-start",
-    backgroundColor: theme.palette.background.paper,
-    borderRadius: theme.shape.borderRadius,
-    display: "flex",
-    justifyContent: "space-between",
-    margin: 0,
-    padding: theme.spacing(0.7, 2),
-    transition: "background-color 150ms ease-out",
-    width: "100%",
-    "&:hover": {
-        backgroundColor: "rgba(0, 0, 0, 0.03)"
-    },
-    "& .MuiFormControlLabel-label": {
-        flex: 1
-    }
-}));
+const StyledFormControlLabel: React.FC<React.ComponentProps<typeof FormControlLabel>> =
+    styled(FormControlLabel)(({ theme }: { theme: Theme }) => ({
+        "& .MuiFormControlLabel-label": {
+            flex: 1
+        },
+        "&:hover": {
+            backgroundColor: "rgba(0, 0, 0, 0.03)"
+        },
+        alignItems: "flex-start",
+        backgroundColor: theme.palette.background.paper,
+        borderRadius: theme.shape.borderRadius,
+        display: "flex",
+        justifyContent: "space-between",
+        margin: 0,
+        padding: theme.spacing(0.7, 2),
+        transition: "background-color 150ms ease-out",
+        width: "100%"
+    }));
 
 /**
  * Props interface for OptionLabelContent component.
@@ -119,28 +120,29 @@ const SignInOptionToggle: FunctionComponent<SignInOptionTogglePropsInterface> = 
         ["data-componentid"]: componentId = OnboardingComponentIds.SIGN_IN_OPTION_TOGGLE
     } = props;
 
-    const handleChange = (_event: React.ChangeEvent<HTMLInputElement>, checked: boolean): void => {
-        onToggle(checked);
-    };
+    const handleChange: (_event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void =
+        (_event: React.ChangeEvent<HTMLInputElement>, checked: boolean): void => {
+            onToggle(checked);
+        };
 
     const toggleContent: ReactElement = (
         <StyledFormControlLabel
             control={
-                <Switch
-                size="small"
+                (<Switch
+                    size="small"
                     checked={ isEnabled }
                     disabled={ disabled }
                     onChange={ handleChange }
                     data-componentid={ `${componentId}-${option.id}-switch` }
-                />
+                />)
             }
             data-componentid={ `${componentId}-${option.id}` }
             disabled={ disabled }
             label={
-                <OptionLabelContent
+                (<OptionLabelContent
                     description={ option.description }
                     label={ option.label }
-                />
+                />)
             }
             labelPlacement="start"
         />

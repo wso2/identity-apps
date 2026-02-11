@@ -48,13 +48,13 @@ import {
     RANDOM_NAME_COUNT
 } from "../constants";
 import { useOnboardingDataInterface, useStepValidation } from "../hooks/use-onboarding-validation";
-import { generateRandomNames } from "../utils/random-name-generator";
 import {
     CreatedApplicationResultInterface,
     OnboardingChoice,
     OnboardingDataInterface,
     OnboardingStep
 } from "../models";
+import { generateRandomNames } from "../utils/random-name-generator";
 
 /**
  * Props for the onboarding wizard component.
@@ -199,7 +199,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
     } = props;
 
     const dispatch: Dispatch = useDispatch();
-    const tenantDomain: string = useSelector((state: any) =>
+    const _tenantDomain: string = useSelector((state: any) =>
         state?.auth?.tenantDomain || state?.config?.deployment?.tenant || "carbon.super"
     );
 
@@ -264,7 +264,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
     /**
      * Create the application.
      */
-    const createApplication = useCallback(async (): Promise<void> => {
+    const createApplication: () => Promise<void> = useCallback(async (): Promise<void> => {
         setIsCreatingApp(true);
 
         try {
@@ -318,7 +318,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
         }
     }, [ onboardingData, setCreatedApplication, dispatch, isAlphanumericUsername, isM2M ]);
 
-    const handleNext = useCallback(async (): Promise<void> => {
+    const handleNext: () => Promise<void> = useCallback(async (): Promise<void> => {
         const nextStep: OnboardingStep = getNextStep(currentStep, onboardingData);
 
         if (currentStep === OnboardingStep.SUCCESS) {
@@ -337,13 +337,13 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
         }
     }, [ currentStep, onboardingData, isM2M, createApplication, onComplete ]);
 
-    const handleBack = useCallback((): void => {
+    const handleBack: () => void = useCallback((): void => {
         const previousStep: OnboardingStep = getPreviousStep(currentStep, onboardingData);
 
         setCurrentStep(previousStep);
     }, [ currentStep, onboardingData ]);
 
-    const handleSkip = useCallback((): void => {
+    const handleSkip: () => void = useCallback((): void => {
         sessionStorage.removeItem(WIZARD_STEP_STORAGE_KEY);
         onSkip();
     }, [ onSkip ]);

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { styled } from "@mui/material/styles";
+import { Theme, styled } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
 import Divider from "@oxygen-ui/react/Divider";
 import Link from "@oxygen-ui/react/Link";
@@ -28,29 +28,29 @@ import {
     FRAMEWORK_OPTIONS,
     OnboardingComponentIds
 } from "../../constants";
+import { ApplicationTypeOptionInterface, FrameworkOptionInterface } from "../../models";
 import { LeftColumn, SectionLabel, TwoColumnLayout } from "../shared/onboarding-styles";
 import SelectableCard from "../shared/selectable-card";
 import StepHeader from "../shared/step-header";
-import { ApplicationTypeOptionInterface, FrameworkOptionInterface } from "../../models";
 
 /**
  * Framework selection container - horizontal scrollable row
  */
-const FrameworkGrid = styled(Box)(({ theme }) => ({
+const FrameworkGrid: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    alignItems: "center",
     display: "flex",
     flexDirection: "row",
-    alignItems: "center",
-    gap: theme.spacing(2),
-    flexWrap: "wrap"
+    flexWrap: "wrap",
+    gap: theme.spacing(2)
 }));
 
 /**
  * Application type grid - 2 columns
  */
-const AppTypeGrid = styled(Box)(({ theme }) => ({
+const AppTypeGrid: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     display: "grid",
-    gridTemplateColumns: "repeat(4, 1fr)",
-    gap: theme.spacing(2)
+    gap: theme.spacing(2),
+    gridTemplateColumns: "repeat(4, 1fr)"
 }));
 
 /**
@@ -92,18 +92,19 @@ const SelectApplicationTemplateStep: FunctionComponent<SelectApplicationTemplate
     useEffect(() => {
         if (!selectedTemplateId && !selectedFramework && FRAMEWORK_OPTIONS.length > 0) {
             const defaultFramework: FrameworkOptionInterface = FRAMEWORK_OPTIONS[0];
+
             onTemplateSelect(defaultFramework.templateId || "", defaultFramework.id);
         }
     }, [ selectedTemplateId, selectedFramework, onTemplateSelect ]);
 
-    const handleFrameworkSelect = useCallback(
+    const handleFrameworkSelect: (framework: FrameworkOptionInterface) => void = useCallback(
         (framework: FrameworkOptionInterface): void => {
             onTemplateSelect(framework.templateId || "", framework.id);
         },
         [ onTemplateSelect ]
     );
 
-    const handleAppTypeSelect = useCallback(
+    const handleAppTypeSelect: (appType: ApplicationTypeOptionInterface) => void = useCallback(
         (appType: ApplicationTypeOptionInterface): void => {
             onTemplateSelect(appType.templateId, undefined);
         },
@@ -145,15 +146,15 @@ const SelectApplicationTemplateStep: FunctionComponent<SelectApplicationTemplate
                                 component="button"
                                 onClick={ () => setShowMoreFrameworks(!showMoreFrameworks) }
                                 sx={ {
+                                    "&:hover": {
+                                        textDecoration: "underline"
+                                    },
                                     color: "primary.main",
                                     cursor: "pointer",
                                     fontSize: "0.875rem",
                                     fontWeight: 500,
                                     textDecoration: "none",
-                                    whiteSpace: "nowrap",
-                                    "&:hover": {
-                                        textDecoration: "underline"
-                                    }
+                                    whiteSpace: "nowrap"
                                 } }
                                 data-componentid={ `${componentId}-show-more-frameworks` }
                             >
@@ -204,15 +205,15 @@ const SelectApplicationTemplateStep: FunctionComponent<SelectApplicationTemplate
                                 component="button"
                                 onClick={ () => setShowMoreAppTypes(!showMoreAppTypes) }
                                 sx={ {
+                                    "&:hover": {
+                                        textDecoration: "underline"
+                                    },
                                     color: "primary.main",
                                     cursor: "pointer",
                                     fontSize: "0.875rem",
                                     fontWeight: 500,
-                                    textDecoration: "none",
                                     justifySelf: "start",
-                                    "&:hover": {
-                                        textDecoration: "underline"
-                                    }
+                                    textDecoration: "none"
                                 } }
                                 data-componentid={ `${componentId}-show-more-apptypes` }
                             >
