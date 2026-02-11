@@ -1,5 +1,26 @@
 # @wso2is/console
 
+## 2.89.2
+
+### Patch Changes
+
+- [#9590](https://github.com/wso2/identity-apps/pull/9590) [`604f1afdbf310cd4b059c00cd770cf99a29721c7`](https://github.com/wso2/identity-apps/commit/604f1afdbf310cd4b059c00cd770cf99a29721c7) Thanks [@piraveena](https://github.com/piraveena)! - Fix OIDC Frontchannel logout update bug in SPA template
+
+- Updated dependencies [[`604f1afdbf310cd4b059c00cd770cf99a29721c7`](https://github.com/wso2/identity-apps/commit/604f1afdbf310cd4b059c00cd770cf99a29721c7)]:
+  - @wso2is/admin.applications.v1@2.40.14
+  - @wso2is/admin.agents.v1@1.0.144
+  - @wso2is/admin.branding.v1@2.32.85
+  - @wso2is/admin.core.v1@2.50.4
+  - @wso2is/admin.roles.v2@2.27.299
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.129
+  - @wso2is/admin.email-management.v1@2.25.293
+  - @wso2is/admin.flows.v1@1.0.98
+  - @wso2is/admin.home.v1@1.7.108
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.129
+  - @wso2is/admin.server-configurations.v1@2.36.4
+  - @wso2is/admin.users.v1@2.36.104
+  - @wso2is/admin.registration-flow-builder.v1@0.10.89
+
 ## 2.89.1
 
 ### Patch Changes
