@@ -241,7 +241,7 @@
         "authorizeEndpointURL": "${serverOrigin}/oauth2/authorize",
         "baseUrls": [],
         "clockTolerance": 300,
-        "enableOIDCSessionManagement": false,
+        "enableOIDCSessionManagement": true,
         "logoutEndpointURL": "${serverOrigin}/oidc/logout",
         "oidcSessionIFrameEndpointURL": "${serverOrigin}/oidc/checksession",
         "periodicTokenRefresh": false,
