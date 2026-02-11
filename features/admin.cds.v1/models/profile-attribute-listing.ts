@@ -74,10 +74,10 @@ export const SCOPE_CONFIG: Record<SchemaListingScope, {
     order: 1,
     supportsSubAttributes: false,
     readOnlyName: true,
-    allowValueTypeEdit: true,
-    allowMergeStrategyEdit: true,
-    allowMutabilityEdit: true,
-    allowMultiValuedEdit: true
+    allowValueTypeEdit: false,
+    allowMergeStrategyEdit: false,
+    allowMutabilityEdit: false,
+    allowMultiValuedEdit: false
   },
   traits: {
     label: "Traits",

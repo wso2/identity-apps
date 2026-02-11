@@ -103,13 +103,45 @@ export const fetchSchemaAttributeById = async (
    * PATCH /profile-schema/{scope}/{id}
    * Only send what changed.
    */
-  export const patchSchemaAttributeById = async (
+  export const updateSchemaAttributeById = async (
     scope: SchemaListingScope,
     id: string,
     patch: Partial<ProfileSchemaAttribute>
   ): Promise<void> => {
     await axios.patch(`${CDM_BASE_URL}/profile-schema/${scope}/${id}`, patch);
   };
+
+/**
+ * DELETE /profile-schema/{scope}/{id}
+ */
+export const deleteSchemaAttributeById = async (
+    scope: SchemaListingScope,
+    id: string
+): Promise<void> => {
+    await axios.delete(`${CDM_BASE_URL}/profile-schema/${scope}/${id}`);
+};
+
+/**
+ * Search for sub-attributes of a complex attribute
+ */
+export const searchSubAttributes = async (
+    scope: SchemaListingScope,
+    attributeName: string
+): Promise<ProfileSchemaAttribute[]> => {
+    const scopePrefix = scope === "traits" ? "traits." : scope === "application_data" ? "application_data." : "";
+    const baseAttrName = attributeName.startsWith(scopePrefix) 
+        ? attributeName.substring(scopePrefix.length) 
+        : attributeName;
+    
+    const searchPrefix = `${scopePrefix}${baseAttrName}.`;
+    const filter = `attribute_name+co+${searchPrefix}`;
+    
+    const res = await axios.get(`${CDM_BASE_URL}/profile-schema/${scope}`, {
+        params: { filter }
+    });
+    
+    return Array.isArray(res.data) ? res.data : [];
+};
 
 /**
  * Helper for AdvancedSearch dropdown:

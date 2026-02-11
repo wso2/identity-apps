@@ -42,13 +42,13 @@ const ProfileSchemaPage: FunctionComponent = (): ReactElement => {
         traits: 3,
     };
 
-    const SCOPE_FIELD = "schema_scope";
+    // const SCOPE_FIELD = "schema_scope";
 
-    const SCOPE_OPTIONS = [
-        { key: 0, text: "Identity Attributes", value: "identity_attributes" },
-        { key: 1, text: "Traits", value: "traits" },
-        { key: 2, text: "Application Data", value: "application_data" }
-    ];
+    // const SCOPE_OPTIONS = [
+    //     { key: 0, text: "Identity Attributes", value: "identity_attributes" },
+    //     { key: 1, text: "Traits", value: "traits" },
+    //     { key: 2, text: "Application Data", value: "application_data" }
+    // ];
 
 
     // ✅ rows instead of traits
@@ -66,7 +66,6 @@ const ProfileSchemaPage: FunctionComponent = (): ReactElement => {
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
     const [ showAddTraitModal, setShowAddTraitModal ] = useState<boolean>(false);
-    const [ selectedScope, setSelectedScope ] = useState<SchemaListingScope>("identity_attributes");
 
     const initialRender = useRef(true);
 
@@ -228,9 +227,14 @@ const withScopePrefix = (scope: SchemaListingScope, value: string): string => {
 
 
 const handleSchemaFilter = async (query: string): Promise<void> => {
+    // Handle empty or cleared query
+    if (!query || query.trim() === "") {
+        fetchSchemaRows();
+        return;
+    }
+
     const parsed = parseBasicFilterQuery(query);
 
-    // If user cleared or query isn't in the expected format, reset.
     if (!parsed) {
         fetchSchemaRows();
         return;
@@ -238,18 +242,30 @@ const handleSchemaFilter = async (query: string): Promise<void> => {
 
     const { attribute, operator, value } = parsed;
 
-    // You said backend expects: attribute_name+op+identity_attributes.email
-    // So we scope the VALUE side.
-    const scopedValue = withScopePrefix(selectedScope, value);
-
     setIsLoading(true);
 
     try {
-        const filter = `${attribute} ${operator} ${scopedValue}`;
+        // Search across all three scopes
+        const scopes: SchemaListingScope[] = ["identity_attributes", "traits", "application_data"];
+        
+        const searchPromises = scopes.map(async (scope) => {
+            const scopedValue = withScopePrefix(scope, value);
+            const filter = `${attribute} ${operator} ${scopedValue}`;
+            
+            try {
+                const attrs = await fetchProfileSchemaByScope(scope as any, filter);
+                return toRowsFromScopeResponse(scope, attrs);
+            } catch (error) {
+                // If a scope fails, return empty array for that scope
+                console.error(`Failed to fetch from scope ${scope}:`, error);
+                return [];
+            }
+        });
 
-        const attrs = await fetchProfileSchemaByScope(selectedScope as any, filter);
+        const results = await Promise.all(searchPromises);
+        const allRows = results.flat(); 
 
-        setRows(toRowsFromScopeResponse(selectedScope, attrs));
+        setRows(allRows);
         setOffset(0);
     } catch (error: any) {
         dispatch(addAlert({
@@ -337,27 +353,7 @@ const handleSchemaFilter = async (query: string): Promise<void> => {
                                     { key: 2, text: "Equals", value: "eq" }
                                 ]}
                                 triggerClearQuery={ triggerClearQuery }
-                            >
-                                { <Form.Group widths="equal">
-                                    <Field
-                                    children={ SCOPE_OPTIONS }
-                                    label="Scope"
-                                    name={ SCOPE_FIELD }
-                                    placeholder="Select scope"
-                                    required={ true }
-                                    requiredErrorMessage="Scope is required"
-                                    type="dropdown"
-                                    value={ selectedScope }
-                                    listen={ (values: Map<string, any>) => {
-                                        const scope = values.get(SCOPE_FIELD) as SchemaListingScope;
-
-                                        if (scope && scope !== selectedScope) {
-                                        setSelectedScope(scope);
-                                        }
-                                    } }
-                                    />
-                                </Form.Group> }
-                            </AdvancedSearchWithBasicFilters>
+                            />
                         ) }
                         isLoading={ isLoading }
                         

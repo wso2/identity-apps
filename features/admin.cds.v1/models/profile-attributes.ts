@@ -41,10 +41,7 @@ export type ValueType =
 
 export type MergeStrategy =
     | "overwrite"
-    | "combine"
-    | "append"
-    | "latest"
-    | "earliest";
+    | "combine";
 
 export interface ProfileSchemaSubAttributeRef {
     attribute_id: string;

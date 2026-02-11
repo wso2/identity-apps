@@ -68,7 +68,7 @@ export const ProfileSchemaListing: FunctionComponent<ProfileSchemaListingProps> 
             dataIndex: "belongs_to",
             id: "belongs_to",
             key: "belongs_to",
-            render: (row: ProfileSchemaListingRow) => row.scope === "application_data" ? (row.belongs_to ?? "-") : "-",
+            render: (row: ProfileSchemaListingRow) => row.scope === "application_data" ? (row.belongs_to ?? null) : null,
             title: "Belongs to"
         },
         {
@@ -157,14 +157,6 @@ export const ProfileSchemaListing: FunctionComponent<ProfileSchemaListingProps> 
                     .replace(":id", row.attribute_id)
             );
         }
-        // Otherwise, go to view page (if you have one)
-        // else {
-        //     history.push(
-        //         AppConstants.getPaths()
-        //             .get("PROFILE_VIEW")
-        //             .replace(":id", row.attribute_id)
-        //     );
-        // }
     };
 
     return (
