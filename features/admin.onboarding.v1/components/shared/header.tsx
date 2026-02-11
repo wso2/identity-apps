@@ -60,6 +60,11 @@ export const Header = () => {
                 title: "Onboarding"
             } }
             position="fixed"
+            sx={ {
+                "& .OxygenHeader-userDropdownMenu": {
+                    display: "none"
+                }
+            } }
         />
     );
 };

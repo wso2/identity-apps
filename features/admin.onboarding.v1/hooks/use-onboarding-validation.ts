@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { PatternConstants } from "@wso2is/core/constants";
 import { useCallback, useMemo } from "react";
 import { AppNameConstraints, RedirectUrlConstraints } from "../constants";
 import {
@@ -80,10 +81,16 @@ export const useNameValidation = () => {
 
 /**
  * Validate a URL string.
+ * Mobile apps accept custom URI schemes (e.g., com.yourapp://callback),
+ * while web apps require http:// or https://.
  */
-const isValidUrl = (url: string): boolean => {
+const isValidUrl = (url: string, isMobile: boolean = false): boolean => {
     if (!url.trim()) return false;
     if (url.length > RedirectUrlConstraints.MAX_LENGTH) return false;
+
+    if (isMobile) {
+        return PatternConstants.MOBILE_DEEP_LINK_URL_REGEX_PATTERN.test(url);
+    }
 
     return RedirectUrlConstraints.PATTERN.test(url);
 };
@@ -126,9 +133,12 @@ export const useStepValidation = (currentStep: OnboardingStep, data: OnboardingD
                 return !data.applicationName || !isValidAppName(data.applicationName);
             case OnboardingStep.SELECT_APPLICATION_TEMPLATE:
                 return !data.templateId;
-            case OnboardingStep.CONFIGURE_REDIRECT_URL:
+            case OnboardingStep.CONFIGURE_REDIRECT_URL: {
+                const isMobile: boolean = data.templateId === "mobile-application";
+
                 return !data.redirectUrls?.length ||
-                       !data.redirectUrls.every((url: string) => isValidUrl(url));
+                       !data.redirectUrls.every((url: string) => isValidUrl(url, isMobile));
+            }
             case OnboardingStep.SIGN_IN_OPTIONS:
                 return !isValidSignInOptions(data.signInOptions);
             case OnboardingStep.DESIGN_LOGIN:

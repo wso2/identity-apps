@@ -209,7 +209,12 @@ const buildApplicationPayload = (
 
     if (redirectUrls && redirectUrls.length > 0 && payload.inboundProtocolConfiguration?.oidc) {
         payload.inboundProtocolConfiguration.oidc.callbackURLs = redirectUrls;
-        payload.inboundProtocolConfiguration.oidc.allowedOrigins = extractOrigins(redirectUrls);
+
+        // Mobile deep links (custom URI schemes) don't have HTTP origins,
+        // so allowedOrigins should be empty for mobile apps.
+        const isMobile: boolean = resolvedTemplateId === "mobile-application";
+
+        payload.inboundProtocolConfiguration.oidc.allowedOrigins = isMobile ? [] : extractOrigins(redirectUrls);
     }
 
     if (signInOptions) {
