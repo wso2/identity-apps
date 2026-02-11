@@ -200,14 +200,18 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                     <a
                         role="button"
                         style={ { cursor: "pointer" } }
-                        onClick={ copyProfileJson }
+                        onClick={ (): void => {
+                            copyProfileJson();
+                        } }
                     >
                         Copy
                     </a>
                     <a
                         role="button"
                         style={ { cursor: "pointer" } }
-                        onClick={ exportProfileJson }
+                        onClick={ (): void => {
+                            exportProfileJson();
+                        } }
                     >
                         Export
                     </a>
@@ -260,11 +264,8 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                     <Form>
                         { renderField("Profile ID", profile.profile_id) }
                         { renderField("User ID", userId) }
-
-                        <Divider />
-
-                        { renderField("Created", profile.meta?.created_at ?? null) }
-                        { renderField("Updated", profile.meta?.updated_at ?? null) }
+                        { renderField("Created Date", profile.meta?.created_at ? profile.meta.created_at.split("T")[0] : null) } 
+                        { renderField("Updated Date", profile.meta?.updated_at ? profile.meta.updated_at.split("T")[0] : null) }
                         { renderField("Location", profile.meta?.location ?? null) }
 
                         <Divider />
