@@ -1247,7 +1247,7 @@
                     ]
                 }
             },
-            "onboardingWizard": {
+            "onboarding": {
                 "disabledFeatures": [],
                 "enabled": false,
                 "scopes": {

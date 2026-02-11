@@ -79,7 +79,7 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
     );
     const onboardingFeatureConfig: OnboardingFeatureConfig = useSelector(
         (state: AppState) =>
-            (state?.config?.ui?.features as Record<string, OnboardingFeatureConfig>)?.onboardingWizard
+            (state?.config?.ui?.features as Record<string, OnboardingFeatureConfig>)?.onboarding
     );
     const meEndpoint: string = useSelector(
         (state: AppState) => state.config?.endpoints?.me
