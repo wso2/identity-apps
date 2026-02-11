@@ -23,6 +23,7 @@ import Typography from "@oxygen-ui/react/Typography";
 import { ArrowUpRightFromSquareIcon, CheckIcon } from "@oxygen-ui/react-icons";
 import useGetApplicationTemplateMetadata
     from "@wso2is/admin.application-templates.v1/api/use-get-application-template-metadata";
+import { ApplicationTemplateConstants } from "@wso2is/admin.application-templates.v1/constants/templates";
 import useGetApplicationInboundConfigs
     from "@wso2is/admin.applications.v1/api/use-get-application-inbound-configs";
 import { OIDCApplicationConfigurationInterface } from "@wso2is/admin.applications.v1/models/application";
@@ -175,12 +176,9 @@ const SuccessStep: FunctionComponent<SuccessStepPropsInterface> = (
         ["data-componentid"]: componentId = OnboardingComponentIds.SUCCESS_STEP
     } = props;
 
-    // Get custom server host from Redux store (same pattern as Console quick starts)
     const customServerHost: string = useSelector((state: AppState) =>
         state.config?.deployment?.customServerHost || ""
     );
-
-    // Redux selectors for guide data object
     const serverOrigin: string = useSelector((state: AppState) =>
         state.config?.deployment?.serverOrigin || ""
     );
@@ -203,17 +201,19 @@ const SuccessStep: FunctionComponent<SuccessStepPropsInterface> = (
         state.config?.deployment?.docSiteURL || ""
     );
 
-    // Fetch template metadata (guide markdown content).
+    // Excluded templates don't have API-served metadata; passing shouldFetch: true
+    // for them leaves isLoading stuck at true and blocks the config section.
+    const hasApiMetadata: boolean = !!templateId &&
+        !ApplicationTemplateConstants.EXCLUDED_APP_TEMPLATES_FOR_EXTENSION_API.includes(templateId);
+
     const {
         data: templateMetadata,
         isLoading: isMetadataLoading
     } = useGetApplicationTemplateMetadata(
         templateId,
-        !isM2M && !!templateId && !!createdApplication
+        !isM2M && hasApiMetadata && !!createdApplication
     );
 
-    // Fetch authoritative OIDC inbound config after app creation.
-    // This gives us the clientId, clientSecret, callbackURLs etc.
     const {
         data: inboundOidcConfig,
         isLoading: isInboundConfigLoading
@@ -223,13 +223,11 @@ const SuccessStep: FunctionComponent<SuccessStepPropsInterface> = (
         !!createdApplication?.applicationId
     );
 
-    // Resolve guide markdown from the template metadata response
     const guideContent: string | undefined = useMemo(
         () => resolveGuideContent(templateMetadata),
         [ templateMetadata ]
     );
 
-    // Build the data object for MarkdownGuide variable substitution
     const guideData: Record<string, unknown> = useMemo(() => buildOnboardingGuideData({
         accountAppURL,
         clientOrigin,
@@ -250,7 +248,6 @@ const SuccessStep: FunctionComponent<SuccessStepPropsInterface> = (
 
     const isGuideLoading: boolean = isMetadataLoading || isInboundConfigLoading;
 
-    // Get integration guide for the template
     const integrationGuide: FrameworkIntegrationGuideInterface | undefined = useMemo(() => {
         if (templateId && !isM2M) {
             return getIntegrationGuide(templateId);
@@ -259,9 +256,6 @@ const SuccessStep: FunctionComponent<SuccessStepPropsInterface> = (
         return undefined;
     }, [ templateId, isM2M ]);
 
-    // Build integration config for AI prompt and hardcoded fallback.
-    // Prefer inbound config (from GET /inbound-protocols/oidc) over creation response,
-    // since the creation response may not include OIDC details in all environments.
     const integrationConfig: IntegrationConfigInterface = useMemo(() => ({
         appName: createdApplication?.name || "My Application",
         baseUrl: customServerHost,
@@ -273,7 +267,6 @@ const SuccessStep: FunctionComponent<SuccessStepPropsInterface> = (
 
     const appName: string = createdApplication?.name || "Your application";
 
-    // Resolve the documentation URL for this template type using the deployment's doc site base.
     const docsUrl: string | undefined = getTemplateDocsUrl(templateId, docSiteURL);
 
     const getSuccessTitle: () => string = (): string => {
@@ -296,11 +289,9 @@ const SuccessStep: FunctionComponent<SuccessStepPropsInterface> = (
         return "Get started by integrating login into your application.";
     };
 
-    // Resolve token endpoint from Redux OIDC metadata or build from base URL.
     const tokenEndpoint: string = oidcConfigurations?.tokenEndpoint
         || `${customServerHost}/oauth2/token`;
 
-    // Generate M2M curl command (Basic Auth with Base64 credentials).
     const m2mCurlCommand: string = useMemo(() => {
         if (!isM2M || !createdApplication) {
             return "";
@@ -332,7 +323,6 @@ const SuccessStep: FunctionComponent<SuccessStepPropsInterface> = (
                     ) }
                 </SuccessHeader>
 
-                { /* M2M Credentials — matches Console Guide tab pattern */ }
                 { isM2M && createdApplication && (
                     <Box sx={ { display: "flex", flexDirection: "column", gap: 2.5, maxWidth: 480 } }>
                         <CopyableField
@@ -378,7 +368,6 @@ const SuccessStep: FunctionComponent<SuccessStepPropsInterface> = (
                     </Box>
                 ) }
 
-                { /* Integration Options for non-M2M */ }
                 { !isM2M && (integrationGuide || guideContent) && (
                     <>
                         <IntegrationAccordion
@@ -409,7 +398,6 @@ const SuccessStep: FunctionComponent<SuccessStepPropsInterface> = (
                     </>
                 ) }
 
-                { /* OIDC configuration for generic app types without guides */ }
                 { !isM2M && !integrationGuide && !guideContent && !isGuideLoading && (
                     <Box sx={ { display: "flex", flexDirection: "column", gap: 2.5, maxWidth: 480 } }>
                         <Typography sx={ { fontWeight: 600 } } variant="subtitle2">
@@ -420,7 +408,7 @@ const SuccessStep: FunctionComponent<SuccessStepPropsInterface> = (
                             label="Client ID"
                             value={ integrationConfig.clientId }
                         />
-                        { integrationConfig.clientSecret && (
+                        { templateId === "oidc-web-application" && integrationConfig.clientSecret && (
                             <CopyableField
                                 data-componentid={ `${componentId}-client-secret` }
                                 label="Client Secret"
@@ -429,15 +417,24 @@ const SuccessStep: FunctionComponent<SuccessStepPropsInterface> = (
                             />
                         ) }
                         <CopyableField
-                            data-componentid={ `${componentId}-base-url` }
-                            label="Base URL"
-                            value={ customServerHost }
-                        />
-                        <CopyableField
                             data-componentid={ `${componentId}-redirect-url` }
-                            label="Redirect URL"
+                            label={ templateId === "mobile-application"
+                                ? "Redirect URI" : "Redirect URL" }
                             value={ integrationConfig.redirectUrl }
                         />
+                        { templateId === "mobile-application" ? (
+                            <CopyableField
+                                data-componentid={ `${componentId}-discovery-url` }
+                                label="Discovery URL"
+                                value={ oidcConfigurations?.wellKnownEndpoint || "" }
+                            />
+                        ) : (
+                            <CopyableField
+                                data-componentid={ `${componentId}-base-url` }
+                                label="Base URL"
+                                value={ customServerHost }
+                            />
+                        ) }
                         <CopyableField
                             data-componentid={ `${componentId}-scope` }
                             label="Scope"
@@ -465,7 +462,6 @@ const SuccessStep: FunctionComponent<SuccessStepPropsInterface> = (
 
             </ScrollableLeftColumn>
 
-            { /* Preview Column - only for non-M2M */ }
             { !isM2M && (
                 <PreviewColumn>
                     <LoginBoxPreview
