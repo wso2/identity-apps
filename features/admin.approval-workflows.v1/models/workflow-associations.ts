@@ -98,4 +98,9 @@ export interface WorkflowAssociationListItemInterface {
      * Whether the association is enabled or not.
      */
     isEnabled: string;
+
+    /**
+     * Rule configuration for the association.
+     */
+    rule?: RuleWithoutIdInterface;
 }

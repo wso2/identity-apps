@@ -2,7 +2,6 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: 6px;
     margin-top: 10px;
     margin-bottom: 15px;
 }
@@ -60,35 +59,14 @@
                 font-weight: 500;
             }
         }
-    }
-}
 
-.operations-table-container {
-    margin-top: 16px;
-    margin-bottom: 24px;
-
-    .ui.table thead th {
-        background-color: #fff !important;
     }
 
-    .operation-name {
-        font-weight: 500;
-    }
-
-    .engagement-toggle {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        gap: 8px;
-
-        .engagement-label {
-            font-size: 13px;
-            color: var(--oxygen-palette-text-secondary);
-
-            &.configured {
-                color: #2e7d32;
-                font-weight: 500;
-            }
+    .operation-rules-actions {
+        button {
+            padding: 4px 12px;
+            min-height: 32px;
+            height: 32px;
         }
     }
 }

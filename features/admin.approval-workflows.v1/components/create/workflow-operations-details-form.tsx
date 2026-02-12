@@ -18,19 +18,18 @@
 
 import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import Button from "@oxygen-ui/react/Button";
-import Dialog from "@oxygen-ui/react/Dialog";
-import DialogActions from "@oxygen-ui/react/DialogActions";
-import DialogContent from "@oxygen-ui/react/DialogContent";
-import DialogContentText from "@oxygen-ui/react/DialogContentText";
-import DialogTitle from "@oxygen-ui/react/DialogTitle";
 import Grid from "@oxygen-ui/react/Grid";
-import Switch from "@oxygen-ui/react/Switch";
 import TextField from "@oxygen-ui/react/TextField";
 import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalForm, FormRenderProps } from "@wso2is/form";
-import { DataTable, Heading, Hint, TableColumnInterface } from "@wso2is/react-components";
+import {
+    DataTable,
+    Heading,
+    Hint,
+    TableColumnInterface
+} from "@wso2is/react-components";
 import React, {
     ForwardRefExoticComponent,
     ForwardedRef,
@@ -156,7 +155,6 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
             const [ selectedOperations, setSelectedOperations ] = useState<DropdownPropsInterface[]>([]);
             const [ editingOperation, setEditingOperation ] = useState<DropdownPropsInterface | null>(null);
             const [ isModalOpen, setIsModalOpen ] = useState<boolean>(false);
-            const [ confirmClearOperation, setConfirmClearOperation ] = useState<DropdownPropsInterface | null>(null);
 
             // Fetch existing workflow associations for all operations.
             // For edit mode with workflowId, fetch only current workflow's associations.
@@ -309,30 +307,6 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
             };
 
             /**
-             * Handles toggle switch change for engagement column.
-             * Toggle ON = open rule modal. Toggle OFF = show confirmation then clear.
-             */
-            const handleEngagementToggle = (operation: DropdownPropsInterface): void => {
-                if (isRuleConfigured(operation.value)) {
-                    // Show confirmation dialog before clearing rules
-                    setConfirmClearOperation(operation);
-                } else {
-                    // Open the rule configuration modal directly
-                    handleOpenRuleModal(operation);
-                }
-            };
-
-            /**
-             * Confirms clearing rules for an operation.
-             */
-            const handleConfirmClearRules = (): void => {
-                if (confirmClearOperation && onRuleUpdate) {
-                    onRuleUpdate(confirmClearOperation.value, null);
-                }
-                setConfirmClearOperation(null);
-            };
-
-            /**
              * Resolves data table columns for the operations table.
              */
             const resolveTableColumns = (): TableColumnInterface[] => [
@@ -341,6 +315,7 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                     dataIndex: "text",
                     id: "operation",
                     key: "operation",
+                    title: "",
                     width: 8,
                     render: (operation: DropdownPropsInterface): ReactNode => (
                         <div
@@ -349,44 +324,39 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                         >
                             { operation.text }
                         </div>
-                    ),
-                    title: t("approvalWorkflows:pageLayout.create.ruleConditions.table.operation")
+                    )
                 },
                 {
                     allowToggleVisibility: false,
-                    dataIndex: "engagement",
-                    id: "engagement",
-                    key: "engagement",
+                    dataIndex: "rules",
+                    id: "rules",
+                    key: "rules",
                     textAlign: "right",
+                    title: "",
                     width: 8,
                     render: (operation: DropdownPropsInterface): ReactNode => {
                         const configured: boolean = isRuleConfigured(operation.value);
 
                         return (
                             <div
-                                className="engagement-toggle"
-                                data-componentid={ `${componentId}-engagement-${operation.value}` }
+                                className="operation-rules-actions"
+                                data-componentid={ `${componentId}-rules-${operation.value}` }
                             >
-                                <span className={ `engagement-label ${configured ? "configured" : ""}` }>
-                                    { configured
-                                        ? t("approvalWorkflows:pageLayout.create.ruleConditions.engagement.configured")
-                                        : t("approvalWorkflows:pageLayout.create.ruleConditions.engagement.always")
-                                    }
-                                </span>
-                                <Switch
-                                    checked={ configured }
-                                    onClick={ (e: React.MouseEvent) => {
-                                        e.preventDefault();
-                                        handleEngagementToggle(operation);
-                                    } }
-                                    disabled={ isReadOnly }
+                                <Button
+                                    variant="outlined"
                                     size="small"
-                                    data-componentid={ `${componentId}-engagement-toggle-${operation.value}` }
-                                />
+                                    disabled={ isReadOnly }
+                                    onClick={ () => handleOpenRuleModal(operation) }
+                                    data-componentid={ `${componentId}-rule-button-${operation.value}` }
+                                >
+                                    { configured
+                                        ? t("approvalWorkflows:pageLayout.create.ruleConditions.editRule")
+                                        : t("approvalWorkflows:pageLayout.create.ruleConditions.addRule")
+                                    }
+                                </Button>
                             </div>
                         );
-                    },
-                    title: t("approvalWorkflows:pageLayout.create.ruleConditions.engagement.column")
+                    }
                 }
             ];
 
@@ -487,9 +457,6 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                                 );
                                             } }
                                         />
-                                        { isEditPage && (<Hint className="hint" compact>
-                                            { t("approvalWorkflows:pageLayout.create.stepper.step2.hint") }
-                                        </Hint>) }
                                     </div>
                                 </Grid>
 
@@ -501,9 +468,14 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                             columns={ resolveTableColumns() }
                                             data={ selectedOperations }
                                             onRowClick={ () => void 0 }
+                                            showHeader={ false }
                                         />
                                     </Grid>
                                 ) }
+
+                                { isEditPage && (<Hint className="hint" compact>
+                                            { t("approvalWorkflows:pageLayout.create.stepper.step2.hint") }
+                                        </Hint>) }
 
                                 { isModalOpen && editingOperation && (
                                     <RuleConfigurationModal
@@ -514,40 +486,6 @@ const WorkflowOperationsDetailsForm: ForwardRefExoticComponent<RefAttributes<Wor
                                         data-componentid={ `${componentId}-rule-config-modal` }
                                     />
                                 ) }
-
-                                <Dialog
-                                    open={ !!confirmClearOperation }
-                                    onClose={ () => setConfirmClearOperation(null) }
-                                    data-componentid={ `${componentId}-confirm-clear-dialog` }
-                                >
-                                    <DialogTitle>
-                                        { t("approvalWorkflows:pageLayout.create.ruleConditions.confirmClear.title") }
-                                    </DialogTitle>
-                                    <DialogContent>
-                                        <DialogContentText>
-                                            { t(
-                                                "approvalWorkflows:pageLayout.create.ruleConditions" +
-                                                ".confirmClear.message",
-                                                { operation: confirmClearOperation?.text }
-                                            ) }
-                                        </DialogContentText>
-                                    </DialogContent>
-                                    <DialogActions>
-                                        <Button
-                                            onClick={ () => setConfirmClearOperation(null) }
-                                            variant="text"
-                                        >
-                                            { t("common:cancel") }
-                                        </Button>
-                                        <Button
-                                            onClick={ handleConfirmClearRules }
-                                            variant="contained"
-                                            color="error"
-                                        >
-                                            { t("common:confirm") }
-                                        </Button>
-                                    </DialogActions>
-                                </Dialog>
                             </form>
                         );
                     } }

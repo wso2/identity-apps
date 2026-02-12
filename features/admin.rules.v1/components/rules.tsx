@@ -53,6 +53,14 @@ export interface RulesPropsInterface extends IdentifiableComponentInterface {
      * Is readonly flag.
      */
     readonly?: boolean;
+
+    /**
+     * Optional callback to intercept rule removal.
+     * If provided, this callback is invoked instead of directly removing the rule.
+     * The consumer is responsible for calling removeRule when ready.
+     * @param ruleId - The ID of the rule to be removed.
+     */
+    onRemoveRule?: (ruleId: string) => void;
 }
 
 /**
@@ -65,7 +73,8 @@ const RuleExecutionComponent: FunctionComponent<RulesPropsInterface> = ({
     ["data-componentid"]: componentId = "rules-render-component",
     disableLastRuleDelete = true,
     disableClearRule = false,
-    readonly = false
+    readonly = false,
+    onRemoveRule
 }: RulesPropsInterface): ReactElement => {
 
     const {
@@ -153,7 +162,10 @@ const RuleExecutionComponent: FunctionComponent<RulesPropsInterface> = ({
                                     right: 14,
                                     top: 14
                                 } }
-                                onClick={ () => removeRule(rule.id) }
+                                onClick={ () => onRemoveRule
+                                    ? onRemoveRule(rule.id)
+                                    : removeRule(rule.id)
+                                }
                                 data-componentid={ `${ componentId }-delete-rule-button` }
                             >
                                 <TrashIcon className="delete-button-icon" />

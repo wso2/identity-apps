@@ -23,8 +23,8 @@ import { ConditionExpressionMetaInterface } from "@wso2is/admin.rules.v1/models/
 import { RuleWithoutIdInterface } from "@wso2is/admin.rules.v1/models/rules";
 import { RulesProvider } from "@wso2is/admin.rules.v1/providers/rules-provider";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { ContentLoader, Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useMemo } from "react";
+import { ConfirmationModal, ContentLoader, Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Modal } from "semantic-ui-react";
 import { FLOW_TYPE, OPERATION_FIELD_MAPPING } from "../../constants/approval-workflow-constants";
@@ -59,6 +59,7 @@ interface RuleConfigurationModalPropsInterface extends IdentifiableComponentInte
 interface RuleConfigurationModalContentPropsInterface {
     onSave: (rule: RuleWithoutIdInterface) => void;
     onClose: () => void;
+    operationName: string;
     componentId: string;
 }
 
@@ -73,11 +74,13 @@ const RuleConfigurationModalContent: FunctionComponent<RuleConfigurationModalCon
     const {
         onSave,
         onClose,
+        operationName,
         componentId
     } = props;
 
     const { t } = useTranslation();
-    const { ruleInstance } = useRulesContext();
+    const { ruleInstance, removeRule } = useRulesContext();
+    const [ pendingDeleteRuleId, setPendingDeleteRuleId ] = useState<string | null>(null);
 
     /**
      * Handles saving the configured rule.
@@ -90,12 +93,32 @@ const RuleConfigurationModalContent: FunctionComponent<RuleConfigurationModalCon
         }
     };
 
+    /**
+     * Intercepts the trash button click to show a confirmation modal.
+     */
+    const handleRemoveRuleRequest = (ruleId: string): void => {
+        setPendingDeleteRuleId(ruleId);
+    };
+
+    /**
+     * Confirms removal of the rule after user accepts the confirmation.
+     * After removing the rule, save the empty state and close the modal.
+     */
+    const handleConfirmRemoveRule = (): void => {
+        if (pendingDeleteRuleId) {
+            removeRule(pendingDeleteRuleId);
+            onSave(null);
+        }
+        setPendingDeleteRuleId(null);
+    };
+
     return (
         <>
             <Modal.Content scrolling className="rule-configuration-modal-content">
                 <Rules
                     data-componentid={ `${componentId}-rules` }
                     disableLastRuleDelete={ false }
+                    onRemoveRule={ handleRemoveRuleRequest }
                 />
             </Modal.Content>
             <Modal.Actions>
@@ -112,6 +135,37 @@ const RuleConfigurationModalContent: FunctionComponent<RuleConfigurationModalCon
                     { t("common:finish") }
                 </PrimaryButton>
             </Modal.Actions>
+            <ConfirmationModal
+                onClose={ () => setPendingDeleteRuleId(null) }
+                type="negative"
+                open={ !!pendingDeleteRuleId }
+                primaryAction={ t("common:confirm") }
+                secondaryAction={ t("common:cancel") }
+                onSecondaryActionClick={ () => setPendingDeleteRuleId(null) }
+                onPrimaryActionClick={ handleConfirmRemoveRule }
+                data-componentid={ `${componentId}-delete-rule-confirmation` }
+                closeOnDimmerClick={ false }
+            >
+                <ConfirmationModal.Header
+                    data-componentid={ `${componentId}-delete-rule-confirmation-header` }
+                >
+                    { t("approvalWorkflows:pageLayout.create.ruleConditions.confirmClear.title") }
+                </ConfirmationModal.Header>
+                <ConfirmationModal.Message
+                    attached
+                    negative
+                    data-componentid={ `${componentId}-delete-rule-confirmation-message` }
+                >
+                    { t("approvalWorkflows:pageLayout.create.ruleConditions.confirmClear.message", {
+                        operation: operationName
+                    }) }
+                </ConfirmationModal.Message>
+                <ConfirmationModal.Content
+                    data-componentid={ `${componentId}-delete-rule-confirmation-content` }
+                >
+                    { t("approvalWorkflows:pageLayout.create.ruleConditions.confirmClear.content") }
+                </ConfirmationModal.Content>
+            </ConfirmationModal>
         </>
     );
 };
@@ -186,6 +240,7 @@ const RuleConfigurationModal: FunctionComponent<RuleConfigurationModalPropsInter
                     <RuleConfigurationModalContent
                         onSave={ onSave }
                         onClose={ onClose }
+                        operationName={ operation.text }
                         componentId={ componentId }
                     />
                 </RulesProvider>

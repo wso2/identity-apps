@@ -168,7 +168,9 @@ export interface approvalWorkflowsNS {
                 }
             },
             ruleConditions: {
+                addRule: string,
                 configured: string,
+                editRule: string,
                 table: {
                     operation: string,
                     rules: string
@@ -183,6 +185,7 @@ export interface approvalWorkflowsNS {
                     configured: string
                 },
                 confirmClear: {
+                    content: string,
                     message: string,
                     title: string
                 }

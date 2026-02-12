@@ -81,3 +81,30 @@ export const deleteWorkflowAssociationById = (id: string): Promise<any> => {
         });
 };
 
+/**
+ * Update a workflow association with a given workflow association ID.
+ *
+ * @param id - Id of the workflow association which needs to be updated.
+ * @param data - The data used to update the workflow association.
+ * @returns A promise that resolves to the updated workflow association.
+ */
+export const updateWorkflowAssociationById = (id: string, data: WorkflowAssociationPayload): Promise<any> => {
+    const requestConfig: RequestConfigInterface = {
+        data,
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: store.getState()?.config?.endpoints?.workflowAssociations + "/" + id
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            return Promise.reject(error?.response?.data);
+        });
+};
+

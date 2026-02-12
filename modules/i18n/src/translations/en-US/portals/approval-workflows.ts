@@ -278,7 +278,9 @@ export const approvalWorkflows: approvalWorkflowsNS = {
             back: "Go back to approval workflows",
             description: "Follow the steps to create a new approval workflow.",
             ruleConditions: {
+                addRule: "Add Rule",
                 configured: "Configured",
+                editRule: "Edit Rule",
                 modal: {
                     subtitle: "This rule will be evaluated before sending to the approval",
                     title: "{{operation}}"
@@ -293,8 +295,10 @@ export const approvalWorkflows: approvalWorkflowsNS = {
                     configured: "Conditional"
                 },
                 confirmClear: {
-                    message: "Are you sure you want to remove the configured rules for \"{{operation}}\"? This action cannot be undone.",
-                    title: "Remove Rule Configuration"
+                    content: "This action is irreversible and will permanently delete the rule.",
+                    message: "If you delete this rule, approval workflow will be always engaged when " +
+                        "{{operation}} is triggered. Please proceed with caution.",
+                    title: "Are you sure?"
                 }
             },
             stepper: {
