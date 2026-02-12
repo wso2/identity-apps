@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { CustomerDataServiceEndpointsInterface } from "../m./endpoints
+import { CustomerDataServiceEndpointsInterface } from "../models/endpoint
 
 /**
  * Get the resource endpoints for Customer Data Service (CDS) related operations.
@@ -28,7 +28,7 @@ export const getCustomerDataServiceEndpoints = (
 ): CustomerDataServiceEndpointsInterface => {
     return {
         profiles: `${ serverOrigin }/cds/api/v1/profiles`,
-        profileSchema: `${ serverOrigin }/cds/api/v1/profile-schema`
+        profileSchema: `${ serverOrigin }/cds/api/v1/profile-schema`,
         unificiationRules: `${ serverOrigin }/cds/api/v1/unification-rules`,
         adminConfig: `${ serverOrigin }/cds/api/v1/config`
     };
