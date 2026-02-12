@@ -45,7 +45,6 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
-import value from "*.json";
 
 interface FilterGroup {
     scope: string;
@@ -197,7 +196,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
     };
 
     const removeFilter = (index: number): void => {
-        setFilterGroups((prev) => prev.filter((_, i) => i !== index));
+        setFilterGroups((prev:FilterGroup[]) => prev.filter((_:FilterGroup, i: number) => i !== index));
     };
 
     const handleFormSubmit = (values: Map<string, FormValue>): void => {
@@ -206,23 +205,23 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
         const groups: string[] = [];
 
         for (let i:number = 0; i < filterGroups.length; i++) {
-            const scope = values.get(`scope-${i}`) as string;
-            const appId = values.get(`app-${i}`) as string;
-            const attribute = values.get(`attribute-${i}`) as string;
-            const condition = values.get(`condition-${i}`) as string;
-            const value = values.get(`value-${i}`) as string;
+            const scope: string = values.get(`scope-${i}`) as string;
+            const appId: string = values.get(`app-${i}`) as string;
+            const attribute: string = values.get(`attribute-${i}`) as string;
+            const condition: string = values.get(`condition-${i}`) as string;
+            const value: string = values.get(`value-${i}`) as string;
 
             if (!scope || !attribute || !condition || !value) continue;
             if (isAppScope(scope) && !appId) continue;
 
-            const field = isAppScope(scope)
+            const field:string = isAppScope(scope)
                 ? `application_data.${appId}.${attribute}`
                 : attribute;
 
             groups.push(`${field} ${condition} ${value}`);
         }
 
-        const query = groups.join(" and ");
+        const query:string = groups.join(" and ");
 
         setExternalSearchQuery(query);
         onFilter(query);
@@ -231,6 +230,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
 
     const handleClickOutside = (event: MouseEvent) => {
         if (formRef.current && !formRef.current.contains(event.target as Node)) {
+            resetAll();
             onClose?.();
         }
     };
@@ -244,14 +244,14 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
     const handleResetFilter = (): void => {
         setIsFiltersReset(true);
 
-        const firstScope = scopes?.[0] ?? "";
+        const firstScope:string = scopes?.[0] ?? "";
 
         setFilterGroups([
             {
-                scope: firstScope,
                 applicationId: "",
                 attribute: "",
                 condition: defaultSearchOperator,
+                scope: firstScope,
                 value: ""
             }
         ]);
@@ -261,19 +261,46 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
         }
     };
 
+    const resetAll = (): void => {
+        setExternalSearchQuery("");
+        setIsFormSubmitted(false);
+
+        setIsFiltersReset(true);
+
+        const firstScope: string = scopes?.[0] ?? "";
+
+        setFilterGroups([{
+            applicationId: "",
+            attribute: "",
+            condition: defaultSearchOperator,
+            scope: firstScope,
+            value: ""
+        }]);
+
+        if (firstScope) {
+            ensureScopeLoaded(firstScope);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+
     const getAppsForRow = (rowScope: string): string[] => {
         if (!isAppScope(rowScope)) return [];
 
-        const opts = optionsByScope[rowScope] ?? [];
-        const ids = opts
-            .filter((o) => o.applicationId)
-            .map((o) => o.applicationId as string);
+        const opts:FilterAttributeOption[] = optionsByScope[rowScope] ?? [];
+        const ids:string[] = opts
+            .filter((o:FilterAttributeOption) => o.applicationId)
+            .map((o:FilterAttributeOption) => o.applicationId as string);
 
         return Array.from(new Set(ids)).sort();
     };
 
     const getAttributesForRow = (row: FilterGroup): FilterAttributeOption[] => {
-        const opts = optionsByScope[row.scope] ?? [];
+        const opts:FilterAttributeOption[] = optionsByScope[row.scope] ?? [];
 
         if (!isAppScope(row.scope)) {
             return opts;
@@ -348,19 +375,19 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                 } }
                                 className="multiple-filters"
                             >
-                                { filterGroups.map((row, index) => {
-                                    const appScope = isAppScope(row.scope);
-                                    const apps = getAppsForRow(row.scope);
-                                    const attrs = getAttributesForRow(row);
-                                    const isLoadingAttrs = !!loadingScope[row.scope];
+                                { filterGroups.map((row:FilterGroup, index:number) => {
+                                    const appScope:boolean = isAppScope(row.scope);
+                                    const apps: string[] = getAppsForRow(row.scope);
+                                    const attrs:FilterAttributeOption[] = getAttributesForRow(row);
+                                    const isLoadingAttrs:boolean = !!loadingScope[row.scope];
 
                                     return (
                                         <React.Fragment key={ index }>
                                             <Card
                                                 sx={ {
                                                     mb: 2,
-                                                    position: "relative",
-                                                    overflow: "visible"
+                                                    overflow: "visible",
+                                                    position: "relative"
                                                 } }
                                             >
                                                 <Box sx={ { mb: 2 } }>
@@ -394,27 +421,28 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                 placeholder="Select scope"
                                                                 required
                                                                 type="dropdown"
-                                                                children={ (scopes || []).map((s) => ({
+                                                                children={ (scopes || []).map((s:string) => ({
                                                                     key: s,
                                                                     text: s,
                                                                     value: s
                                                                 })) }
                                                                 value={ row.scope }
                                                                 listen={ (values: Map<string, FormValue>) => {
-                                                                    const newScope = values.get(`scope-${index}`) as string;
+                                                                    const newScope =
+                                                                        values.get(`scope-${index}`) as string;
 
                                                                     if (!newScope || newScope === row.scope) return;
 
                                                                     ensureScopeLoaded(newScope);
 
-                                                                    setFilterGroups((prev) => {
-                                                                        const updated = [ ...prev ];
+                                                                    setFilterGroups((prev:FilterGroup[]) => {
+                                                                        const updated:FilterGroup[] = [ ...prev ];
 
                                                                         updated[index] = {
                                                                             ...updated[index],
-                                                                            scope: newScope,
                                                                             applicationId: "",
-                                                                            attribute: ""
+                                                                            attribute: "",
+                                                                            scope: newScope
                                                                         };
 
                                                                         return updated;
@@ -430,19 +458,21 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                     placeholder="Select Application"
                                                                     required
                                                                     type="dropdown"
-                                                                    children={ apps.map((id) => ({
+                                                                    children={ apps.map((id:string) => ({
                                                                         key: id,
                                                                         text: id,
                                                                         value: id
                                                                     })) }
                                                                     value={ row.applicationId }
                                                                     listen={ (values: Map<string, FormValue>) => {
-                                                                        const newAppId = values.get(`app-${index}`) as string;
+                                                                        const newAppId =
+                                                                            values.get(`app-${index}`) as string;
 
-                                                                        if (!newAppId || newAppId === row.applicationId) return;
+                                                                        if (!newAppId || newAppId === row.applicationId)
+                                                                            return;
 
-                                                                        setFilterGroups((prev) => {
-                                                                            const updated = [ ...prev ];
+                                                                        setFilterGroups((prev:FilterGroup[]) => {
+                                                                            const updated:FilterGroup[] = [ ...prev ];
 
                                                                             updated[index] = {
                                                                                 ...updated[index],
@@ -464,19 +494,24 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                     isLoadingAttrs
                                                                         ? "Loading attributes..."
                                                                         : (filterAttributePlaceholder
-                                                                            || t("console:common.advancedSearch.form.inputs.filterAttribute.placeholder"))
+                                                                            || t("console:common.advancedSearch." +
+                                                                                "form.inputs." +
+                                                                                "filterAttribute.placeholder"))
                                                                 }
                                                                 required
                                                                 type="dropdown"
-                                                                disabled={ isLoadingAttrs || (appScope && !row.applicationId) }
-                                                                children={ attrs.map((a, idx) => ({
+                                                                disabled={ isLoadingAttrs ||
+                                                                    (appScope && !row.applicationId) }
+                                                                children={ attrs.map((a:FilterAttributeOption,
+                                                                    idx: number) => ({
                                                                     key: a.key ?? a.value ?? idx,
                                                                     text: a.label,
                                                                     value: a.value
                                                                 })) }
                                                                 value={ row.attribute }
                                                                 listen={ (values: Map<string, FormValue>) => {
-                                                                    const newAttr = values.get(`attribute-${index}`) as string;
+                                                                    const newAttr =
+                                                                        values.get(`attribute-${index}`) as string;
 
                                                                     if (!newAttr || newAttr === row.attribute) return;
 
@@ -539,14 +574,18 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                         <Box sx={ { flex: "2 1 360px", minWidth: 320 } }>
                                                             <Field
                                                                 name={ `value-${index}` }
-                                                                label={ t("console:common.advancedSearch.form.inputs.filterValue.label") }
+                                                                label={
+                                                                t("console:common.advancedSearch.form.inputs." +
+                                                                    "filterValue.label") }
                                                                 placeholder={ filterValuePlaceholder
-                                                                    || t("console:common.advancedSearch.form.inputs.filterValue.placeholder") }
+                                                                    || t("console:common.advancedSearch.form." +
+                                                                        "inputs.filterValue.placeholder") }
                                                                 required
                                                                 type="text"
                                                                 value={ row.value }
                                                                 listen={ (values: Map<string, FormValue>) => {
-                                                                    const newValue = values.get(`value-${index}`) as string;
+                                                                    const newValue =
+                                                                        values.get(`value-${index}`) as string;
 
                                                                     if (newValue === row.value) return;
 

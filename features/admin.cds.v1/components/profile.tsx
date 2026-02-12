@@ -100,7 +100,7 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
             return String(description);
         }
 
-        const firstError = error?.response?.data?.errors?.[0]?.description;
+        const firstError:any = error?.response?.data?.errors?.[0]?.description;
 
         if (firstError) {
             return String(firstError);
@@ -134,7 +134,6 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
         if (profileId) {
             fetchProfile();
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ profileId ]);
 
     const userId: string | null = useMemo(() => {
@@ -142,7 +141,7 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
             return String(profile.user_id);
         }
 
-        const fromIdentity = profile?.identity_attributes?.["user_id"];
+        const fromIdentity:any = profile?.identity_attributes?.["user_id"];
 
         return fromIdentity ? String(fromIdentity) : null;
     }, [ profile ]);
@@ -172,7 +171,7 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
 
     const exportProfileJson = (): void => {
         const blob: Blob = new Blob([ profileJsonString ], { type: "application/json;charset=utf-8" });
-        const url = window.URL.createObjectURL(blob);
+        const url:string = window.URL.createObjectURL(blob);
 
         const a = document.createElement("a");
         a.href = url;

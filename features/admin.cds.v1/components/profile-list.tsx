@@ -116,16 +116,7 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
                     );
                 }
 
-                // Linked → only chip (don’t show user_id)
-                return (
-                    <Chip
-                        size="small"
-                        color="success"
-                        variant="outlined"
-                        label={ t("customerDataService:profiles.list.chips.linked") }
-                        data-testid="linked-user-chip"
-                    />
-                );
+                return null;
             },
             title: t("customerDataService:profiles.list.columns.user")
         },
@@ -139,22 +130,15 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
                 const hasMerged:boolean = Array.isArray(merged) && merged.length > 0;
 
                 if (!hasMerged) {
-                    return (
-                        <Chip
-                            size="small"
-                            variant="outlined"
-                            label={ t("customerDataService:profiles.list.chips.notUnified") }
-                            data-testid="not-unified-profile-chip"
-                        />
-                    );
+                    return null;
                 }
 
                 return (
                     <Chip
                         size="small"
                         variant="outlined"
-                        label={ t("customerDataService:profiles.list.chips.unified") }
-                        data-testid="unified-profile-chip"
+                        label={ t("customerDataService:profiles.list.chips.notUnified") }
+                        data-testid="not-unified-profile-chip"
                     />
                 );
             },
