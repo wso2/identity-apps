@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.32.3
+
+### Patch Changes
+
+- [#9577](https://github.com/wso2/identity-apps/pull/9577) [`5e96563efa7eb0807db57487b417a2f820474e36`](https://github.com/wso2/identity-apps/commit/5e96563efa7eb0807db57487b417a2f820474e36) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add visual editor notification system and improve api based login flow configuration
+
 ## 2.32.2
 
 ### Patch Changes
