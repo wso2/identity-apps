@@ -40,7 +40,7 @@ import useGetPushNotificationConfigs from "../api/use-get-push-notification-conf
 import { PushProviderSettings } from "../components/push-provider-settings";
 import PushProvidersGrid from "../components/push-providers-grid";
 import { PushProviderConstants } from "../constants/push-provider-constants";
-import { PushProviderAddAPIInterface, PushProviderAPIResponseInterface, PushProviderUpdateAPIInterface } from "../models/push-providers";
+import { PushProviderAPIInterface, PushProviderAPIResponseInterface } from "../models/push-providers";
 
 type PushProvidersPageInterface = IdentifiableComponentInterface;
 
@@ -66,6 +66,7 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
     const [ isOpenRevertConfigModal, setOpenRevertConfigModal ] = useState<boolean>(false);
     const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
     const [ isInitialized, setIsInitialized ] = useState<boolean>(false);
+    const [ defaultPushProviderTempId, setDefaultPushProviderTempId ] = useState<string>(null);
 
     const {
         data: pushProviderTemplate,
@@ -142,6 +143,20 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
 
     }, [ pushProvidersList, availableTemplates, pushNotificationConfigs ]);
 
+    useEffect(() => {
+        if (pushNotificationConfigs?.defaultPushProvider) {
+            for (const [ templateId, providerName ] of PushProviderConstants.PUSH_PROVIDER_TEMPLATE_NAME_MAPPING.entries()) {
+                if (providerName === pushNotificationConfigs.defaultPushProvider) {
+                    setDefaultPushProviderTempId(templateId);
+                    return;
+                }
+            }
+            setDefaultPushProviderTempId(null);
+        } else {
+            setDefaultPushProviderTempId(null);
+        }
+    }, [ pushNotificationConfigs?.defaultPushProvider ]);
+
     const handleBackButtonClick = () => {
         history.push(`${AppConstants.getPaths().get("NOTIFICATION_CHANNELS")}`);
     };
@@ -207,7 +222,7 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
             });;
     };
 
-    const handlePushProviderUpdate = ( data: PushProviderUpdateAPIInterface, callback: () => void ): void => {
+    const handlePushProviderUpdate = ( data: PushProviderAPIInterface, callback: () => void ): void => {
         updatePushProvider(pushProvider.name, data)
             .then(() => {
                 dispatch(addAlert({
@@ -234,7 +249,7 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
             });
     };
 
-    const handlePushProviderCreate = ( data: PushProviderAddAPIInterface, callback: () => void ): void => {
+    const handlePushProviderCreate = ( data: PushProviderAPIInterface, callback: () => void ): void => {
         createPushProvider(data)
             .then(() => {
                 dispatch(addAlert({
@@ -285,6 +300,7 @@ const PushProvidersPage: FunctionComponent<PushProvidersPageInterface> = (
                         setAvailableTemplates(templates);
                     } }
                     selectedTemplate={ selectedTemplate }
+                    defaultPushProviderId={ defaultPushProviderTempId }
                 />
                 <PushProviderSettings
                     pushProvider={ pushProvider }

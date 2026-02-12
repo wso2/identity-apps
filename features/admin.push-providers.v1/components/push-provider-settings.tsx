@@ -28,7 +28,7 @@ import { ExtensionTemplateCommonInterface } from "@wso2is/admin.template-core.v1
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { PushProviderAddAPIInterface, PushProviderPropertiesInterface, PushProviderUpdateAPIInterface } from "../models/push-providers";
+import { PushProviderAPIInterface, PushProviderPropertiesInterface } from "../models/push-providers";
 import { PushProviderTemplateInterface, PushProviderTemplateMetadataInterface } from "../models/templates";
 
 /**
@@ -39,7 +39,7 @@ interface PushProviderSettingsPropsInterface extends IdentifiableComponentInterf
     /**
      * Push Provider interface
      */
-    pushProvider: PushProviderAddAPIInterface;
+    pushProvider: PushProviderAPIInterface;
 
     /**
      * Push Provider template info
@@ -74,12 +74,12 @@ interface PushProviderSettingsPropsInterface extends IdentifiableComponentInterf
     /**
      * Callback to update the push provider
      */
-    handleUpdate: (data: PushProviderUpdateAPIInterface, callback?: () => void) => void;
+    handleUpdate: (data: PushProviderAPIInterface, callback?: () => void) => void;
 
     /**
      * Callback to create the push provider
      */
-    handleCreate: (data: PushProviderAddAPIInterface, callback?: () => void) => void;
+    handleCreate: (data: PushProviderAPIInterface, callback?: () => void) => void;
 
     /**
      * Callback to update the default push provider
@@ -177,14 +177,13 @@ export const PushProviderSettings: FunctionComponent<PushProviderSettingsPropsIn
 
         
         if (pushProvider) {
-            const payload: PushProviderUpdateAPIInterface = {
+            const payload: PushProviderAPIInterface = {
                 properties: providerProperties,
                 provider: pushProviderTemplateData.payload.provider
             };
             handleUpdate(payload, callback);
         } else {
-            const payload: PushProviderAddAPIInterface = {
-                name: "PushPublisher",//pushProviderTemplateData.payload.name,
+            const payload: PushProviderAPIInterface = {
                 properties: providerProperties,
                 provider: pushProviderTemplateData.payload.provider
             };

@@ -22,13 +22,7 @@ export interface PushProviderAPIResponseInterface {
     properties: PushProviderPropertiesInterface[];
 }
 
-export interface PushProviderAddAPIInterface {
-    name: string;
-    provider: string;
-    properties: PushProviderPropertiesInterface[];
-}
-
-export interface PushProviderUpdateAPIInterface {
+export interface PushProviderAPIInterface {
     provider: string;
     properties: PushProviderPropertiesInterface[];
 }

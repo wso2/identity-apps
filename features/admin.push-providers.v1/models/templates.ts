@@ -17,14 +17,14 @@
  */
 
 import { DynamicFormInterface } from "@wso2is/admin.template-core.v1/models/dynamic-fields";
-import { PushProviderAddAPIInterface } from "./push-providers";
+import { PushProviderAPIInterface } from "./push-providers";
 import { ExtensionTemplateCommonInterface } from "../../admin.template-core.v1/models/templates";
 
 export interface PushProviderTemplateInterface extends ExtensionTemplateCommonInterface {
     /**
      * Create form payload parameters.
      */
-    payload: PushProviderAddAPIInterface;
+    payload: PushProviderAPIInterface;
 }
 
 export interface PushProviderTemplateMetadataInterface {
