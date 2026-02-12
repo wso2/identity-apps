@@ -61,6 +61,18 @@ export interface RulesPropsInterface extends IdentifiableComponentInterface {
      * @param ruleId - The ID of the rule to be removed.
      */
     onRemoveRule?: (ruleId: string) => void;
+
+    /**
+     * Optional custom text for the execute action (e.g., "Execute", "Engage").
+     * If not provided, uses the default translation.
+     */
+    executeText?: string;
+
+    /**
+     * Optional custom text for the if condition.
+     * If not provided, uses the default translation.
+     */
+    ifText?: string;
 }
 
 /**
@@ -74,7 +86,9 @@ const RuleExecutionComponent: FunctionComponent<RulesPropsInterface> = ({
     disableLastRuleDelete = true,
     disableClearRule = false,
     readonly = false,
-    onRemoveRule
+    onRemoveRule,
+    executeText,
+    ifText
 }: RulesPropsInterface): ReactElement => {
 
     const {
@@ -116,7 +130,9 @@ const RuleExecutionComponent: FunctionComponent<RulesPropsInterface> = ({
                     >
                         <Grid container alignItems="center" sx={ { mb: 2 } }>
                             <Grid>
-                                <Typography variant="body2">{ t("rules:texts.execute") }</Typography>
+                                <Typography variant="body2">
+                                    { executeText || t("rules:texts.execute") }
+                                </Typography>
                             </Grid>
                             { ruleExecutionsMeta?.executions ? (
                                 <Grid>
@@ -147,7 +163,9 @@ const RuleExecutionComponent: FunctionComponent<RulesPropsInterface> = ({
                                 </Grid>
                             ) }
                             <Grid>
-                                <Typography variant="body2">{ t("rules:texts.if") }</Typography>
+                                <Typography variant="body2">
+                                    { ifText || t("rules:texts.if") }
+                                </Typography>
                             </Grid>
                         </Grid>
                         <RuleConditions rule={ rule } readonly={ readonly } />

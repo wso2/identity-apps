@@ -119,6 +119,7 @@ const RuleConfigurationModalContent: FunctionComponent<RuleConfigurationModalCon
                     data-componentid={ `${componentId}-rules` }
                     disableLastRuleDelete={ false }
                     onRemoveRule={ handleRemoveRuleRequest }
+                    executeText="Engage"
                 />
             </Modal.Content>
             <Modal.Actions>

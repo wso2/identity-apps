@@ -282,8 +282,8 @@ export const approvalWorkflows: approvalWorkflowsNS = {
                 configured: "Configured",
                 editRule: "Edit Rule",
                 modal: {
-                    subtitle: "This rule will be evaluated before sending to the approval",
-                    title: "{{operation}}"
+                    subtitle: "Define conditions to determine when the approval workflow should be engaged for this operation. If no rule is configured, the workflow will always be engaged.",
+                    title: "Engagement Rule for {{operation}}"
                 },
                 table: {
                     operation: "Operation",
