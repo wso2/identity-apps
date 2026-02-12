@@ -205,7 +205,7 @@ const AdministratorsList: FunctionComponent<AdministratorsListProps> = (
         searchQuery,
         null,
         selectedUserStore,
-        UserManagementConstants.GROUPS_ATTRIBUTE
+        ""
     );
 
     const useOrgConfig: UseOrganizationConfigType = useOrganizationConfigV2;
