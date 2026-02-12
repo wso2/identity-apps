@@ -18,6 +18,7 @@
 
 import { BasicUserInfo, DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
 import { AccessControlProvider, AllFeatureInterface, FeatureGateInterface } from "@wso2is/access-control";
+import { getActionsResourceEndpoints } from "@wso2is/admin.actions.v1/configs/endpoints";
 import  useCDSConfig  from "@wso2is/admin.cds.v1/hooks/use-config";
 import { PreLoader } from "@wso2is/admin.core.v1/components/pre-loader";
 import { ProtectedRoute } from "@wso2is/admin.core.v1/components/protected-route";
@@ -240,9 +241,14 @@ export const App = ({
      * Set the deployment configs in redux state.
      */
     useEffect(() => {
-        dispatch(setServiceResourceEndpoints<ServiceResourceEndpointsInterface>(Config.getServiceResourceEndpoints()));
+        const serviceResourceEndpoints: ServiceResourceEndpointsInterface = {
+            ...Config.getServiceResourceEndpoints(),
+            ...getActionsResourceEndpoints(Config.resolveServerHost())
+        };
+
+        dispatch(setServiceResourceEndpoints<ServiceResourceEndpointsInterface>(serviceResourceEndpoints));
         dispatch(setI18nConfigs<I18nModuleOptionsInterface>(Config.getI18nConfig()));
-        setResourceEndpoints(Config.getServiceResourceEndpoints() as any);
+        setResourceEndpoints(serviceResourceEndpoints as any);
     }, [ AppConstants.getTenantQualifiedAppBasename() ]);
 
     /**
