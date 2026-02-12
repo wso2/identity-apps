@@ -24,7 +24,8 @@ import {
     FinalFormField,
     FormApi,
     TextFieldAdapter,
-    __DEPRECATED__SelectFieldAdapter
+    __DEPRECATED__SelectFieldAdapter,
+    KeyValueMapAdapter
 } from "@wso2is/form";
 import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
@@ -37,7 +38,6 @@ import {
     DynamicInputFieldTypes,
     DynamicKeyValueMapFieldInterface
 } from "../models/dynamic-fields";
-import { KeyValueMapAdapter } from "@wso2is/form/src/components/adapters/key-value-map-field-adapter";
 import "./form-dynamic-field.scss";
 
 /**

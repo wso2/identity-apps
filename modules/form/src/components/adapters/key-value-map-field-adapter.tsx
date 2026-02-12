@@ -51,7 +51,7 @@ export interface KeyValueMapAdapterPropsInterface extends FieldRenderProps<any, 
  * @param props - The component props.
  * @returns The rendered KeyValueMapField component.
  */
-export const KeyValueMapAdapter: FunctionComponent<KeyValueMapAdapterPropsInterface> = (
+const KeyValueMapAdapter: FunctionComponent<KeyValueMapAdapterPropsInterface> = (
     props: KeyValueMapAdapterPropsInterface
 ): ReactElement => {
     const {
@@ -94,3 +94,5 @@ export const KeyValueMapAdapter: FunctionComponent<KeyValueMapAdapterPropsInterf
         </>
     );
 };
+
+export default KeyValueMapAdapter;
