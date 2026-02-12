@@ -139,7 +139,6 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
             setCurrentCursor(cursor);
             setActivePage(page);
         } catch (err) {
-            console.error("Failed to fetch profiles", err);
             setError(err);
         } finally {
             setIsLoading(false);
@@ -160,12 +159,11 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
 
         handleAlerts({
             description: getErrorMessage(error,
-                t("cds:profiles.notifications.fetchProfiles.error.description")
+                t("customerDataService:profiles.notifications.fetchProfiles.error.description")
             ),
             level: AlertLevels.ERROR,
-            message: t("cds:profiles.notifications.fetchProfiles.error.message")
+            message: t("customerDataService:profiles.notifications.fetchProfiles.error.message")
         });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ error ]);
 
     const handleRuleSearch = (query: string): void => {
@@ -199,13 +197,13 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
                 <EmptyPlaceholder
                     action={ (
                         <LinkButton onClick={ handleSearchQueryClear }>
-                            { t("cds:profiles.placeholders.emptySearch.action") }
+                            { t("customerDataService:profiles.placeholders.emptySearch.action") }
                         </LinkButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
-                    title={ t("cds:profiles.placeholders.emptySearch.title") }
-                    subtitle={ t("cds:profiles.placeholders.emptySearch.subtitle") }
+                    title={ t("customerDataService:profiles.placeholders.emptySearch.title") }
+                    subtitle={ t("customerDataService:profiles.placeholders.emptySearch.subtitle") }
                 />
             );
         }
@@ -216,8 +214,8 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
                 <EmptyPlaceholder
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    title={ t("cds:profiles.placeholders.emptyList.title") }
-                    subtitle={ t("cds:profiles.placeholders.emptyList.subtitle") }
+                    title={ t("customerDataService:profiles.placeholders.emptyList.title") }
+                    subtitle={ t("customerDataService:profiles.placeholders.emptyList.subtitle") }
                 />
             );
         }
@@ -258,9 +256,9 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
 
     return (
         <PageLayout
-            title={ t("cds:profiles.page.title") }
-            pageTitle={ t("cds:profiles.page.heading") }
-            description={ t("cds:profiles.page.description") }
+            title={ t("customerDataService:profiles.page.title") }
+            pageTitle={ t("customerDataService:profiles.page.heading") }
+            description={ t("customerDataService:profiles.page.description") }
             data-testid="profiles-page-layout"
         >
             <ListLayout
@@ -284,7 +282,7 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
                     (<AdvancedSearchWithMultipleFilters
                         onFilter={ handleRuleSearch }
                         onFetchAttributesByScope={ loadAttributesForScope }
-                        placeholder={ t("cds:profiles.list.search.placeholder") }
+                        placeholder={ t("customerDataService:profiles.list.search.placeholder") }
                         defaultSearchAttribute="profile_id"
                         defaultSearchOperator="co"
                         triggerClearQuery={ triggerClearQuery }
