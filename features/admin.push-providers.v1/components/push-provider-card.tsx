@@ -92,7 +92,7 @@ const PushProviderCard: FunctionComponent<PushProviderCardPropsInterface> = ({
                 property?.key === PushProviderConstants.FEATURE_STATUS_ATTRIBUTE_KEY
         );
 
-        if (true || featureFlag === "TRUE") {
+        if (featureFlag === "TRUE") {
             return property?.value as PushProviderTemplateFeatureStatus;
         }
 
