@@ -47,6 +47,7 @@ import SignInOptionsStep from "./steps/sign-in-options-step";
 import SuccessStep from "./steps/success-step";
 import WelcomeStep from "./steps/welcome-step";
 import { createOnboardingApplication } from "../api/create-onboarding-application";
+import { createTryItApplication } from "../api/create-try-it-application";
 import { updateMultiAttributeLoginConfig } from "../api/multi-attribute-login";
 import { isBrandingCustomized, updateApplicationBranding } from "../api/update-onboarding-branding";
 import {
@@ -204,8 +205,11 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
     } = props;
 
     const dispatch: Dispatch = useDispatch();
-    const _tenantDomain: string = useSelector((state: any) =>
+    const tenantDomain: string = useSelector((state: any) =>
         state?.auth?.tenantDomain || state?.config?.deployment?.tenant || "carbon.super"
+    );
+    const asgardeoTryItURL: string = useSelector((state: any) =>
+        state?.config?.deployment?.extensions?.asgardeoTryItURL as string || ""
     );
     const profileInfo: ProfileInfoInterface = useSelector((state: any) => state.profile.profileInfo);
     const greeting: string = resolveUserDisplayName(profileInfo) || "";
@@ -305,16 +309,24 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
         };
     }, [ apiTemplate, templateListing, onboardingData.templateId ]);
 
+    const isTourFlow: boolean = onboardingData.choice === OnboardingChoice.TOUR;
+
     /**
      * Create the application.
+     * For the Tour flow, creates/reuses the Try It app.
+     * For the Setup flow, creates a new application from the selected template.
      */
     const createApplication: () => Promise<void> = useCallback(async (): Promise<void> => {
         setIsCreatingApp(true);
 
         try {
-            // Create the application
-            const result: CreatedApplicationResultInterface =
-                await createOnboardingApplication(onboardingData, mergedTemplate);
+            let result: CreatedApplicationResultInterface;
+
+            if (isTourFlow) {
+                result = await createTryItApplication(onboardingData, tenantDomain, asgardeoTryItURL);
+            } else {
+                result = await createOnboardingApplication(onboardingData, mergedTemplate);
+            }
 
             if (onboardingData.signInOptions?.identifiers && !isM2M) {
                 try {
@@ -338,10 +350,14 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
 
             setCreatedApplication(result);
 
+            const alertMessage: string = isTourFlow
+                ? "Try It app is ready for preview."
+                : `Application "${onboardingData.applicationName}" has been created successfully.`;
+
             dispatch(addAlert({
-                description: `Application "${onboardingData.applicationName}" has been created successfully.`,
+                description: alertMessage,
                 level: AlertLevels.SUCCESS,
-                message: "Application Created"
+                message: isTourFlow ? "Preview Ready" : "Application Created"
             }));
 
             // Navigate to success step
@@ -360,7 +376,10 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
         } finally {
             setIsCreatingApp(false);
         }
-    }, [ onboardingData, mergedTemplate, setCreatedApplication, dispatch, isAlphanumericUsername, isM2M ]);
+    }, [
+        onboardingData, mergedTemplate, setCreatedApplication, dispatch,
+        isAlphanumericUsername, isM2M, isTourFlow, tenantDomain, asgardeoTryItURL
+    ]);
 
     const handleNext: () => Promise<void> = useCallback(async (): Promise<void> => {
         const nextStep: OnboardingStep = getNextStep(currentStep, onboardingData);
@@ -462,6 +481,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
                     data-componentid={ `${componentId}-success` }
                     framework={ onboardingData.framework }
                     isM2M={ isM2M }
+                    isTourFlow={ isTourFlow }
                     redirectUrls={ onboardingData.redirectUrls }
                     signInOptions={ onboardingData.signInOptions }
                     templateId={ onboardingData.templateId }
