@@ -184,12 +184,17 @@ export const KeyValueMapField = ({
 
         // Update form value
         if (onChange) {
-            const formValue: Record<string, string> = {};
+            if (updatedPairs.length === 0) {
+                // Set to null when list is empty so required validation works
+                onChange(null);
+            } else {
+                const formValue: Record<string, string> = {};
 
-            updatedPairs.forEach(p => {
-                formValue[p.key] = p.value;
-            });
-            onChange(formValue);
+                updatedPairs.forEach(p => {
+                    formValue[p.key] = p.value;
+                });
+                onChange(formValue);
+            }
         }
     };
 
