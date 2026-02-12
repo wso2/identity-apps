@@ -23,6 +23,7 @@ import InputLabel from "@oxygen-ui/react/InputLabel";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select from "@oxygen-ui/react/Select";
 import TextField from "@oxygen-ui/react/TextField";
+import { useTranslation } from "react-i18next";
 import { PlusIcon } from "@oxygen-ui/react-icons";
 import { DataTable, EmptyPlaceholder, TableActionsInterface, TableColumnInterface } from "@wso2is/react-components";
 import React, { ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
@@ -122,6 +123,8 @@ export const KeyValueMapField = ({
     onChange,
     value
 }: KeyValueMapProps): ReactElement => {
+
+    const { t } = useTranslation();
 
     const [selectedKey, setSelectedKey] = useState<string>("");
     const [inputValue, setInputValue] = useState<string>("");
@@ -335,7 +338,7 @@ export const KeyValueMapField = ({
                             startIcon={<PlusIcon />}
                             fullWidth
                         >
-                            Add
+                            {t("common:add")}
                         </Button>
                     </Grid.Column>
                 </Grid.Row>
