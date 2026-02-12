@@ -82,6 +82,7 @@ export type UseSignInInterface = {
      * @param onTenantResolve - Callback to be triggered when tenant is resolved.
      * @param onSignInSuccessRedirect - Callback to be triggered when sign in is successful.
      * @param onAppReady - Callback to be triggered when the app is ready.
+     * @param resourceEndpoints - The resource endpoints.
      *
      * @returns A promise.
      */
@@ -90,6 +91,7 @@ export type UseSignInInterface = {
         onTenantResolve: (tenantDomain: string) => void,
         onSignInSuccessRedirect: (idToken: DecodedIDTokenPayload) => void,
         onAppReady: () => void,
+        resourceEndpoints?: Record<string, any>
     ) => Promise<void>;
 };
 
@@ -206,6 +208,7 @@ const useSignIn = (): UseSignInInterface => {
      * @param onTenantResolve - Callback to be triggered when tenant is resolved.
      * @param onSignInSuccessRedirect - Callback to be triggered when sign in is successful.
      * @param onAppReady - Callback to be triggered when the app is ready.
+     * @param resourceEndpoints - The resource endpoints.
      *
      * @returns A promise.
      */
@@ -213,13 +216,15 @@ const useSignIn = (): UseSignInInterface => {
         response: BasicUserInfo,
         onTenantResolve: (tenantDomain: string) => void,
         onSignInSuccessRedirect: (idToken: DecodedIDTokenPayload) => void,
-        onAppReady: () => void
+        onAppReady: () => void,
+        resourceEndpoints: Record<string, any> = Config.getServiceResourceEndpoints()
     ): Promise<void> => {
         await _onSignIn(
             response,
             onTenantResolve,
             onSignInSuccessRedirect,
-            onAppReady
+            onAppReady,
+            resourceEndpoints
         );
     };
 
@@ -230,6 +235,7 @@ const useSignIn = (): UseSignInInterface => {
      * @param onTenantResolve - Callback to be triggered when tenant is resolved.
      * @param onSignInSuccessRedirect - Callback to be triggered when sign in is successful.
      * @param onAppReady - Callback to be triggered when the app is ready.
+     * @param resourceEndpoints - The resource endpoints.
      *
      * @returns A promise.
      */
@@ -237,7 +243,8 @@ const useSignIn = (): UseSignInInterface => {
         response: BasicUserInfo,
         onTenantResolve: (tenantDomain: string) => void,
         onSignInSuccessRedirect: (idToken: DecodedIDTokenPayload) => void,
-        onAppReady: () => void
+        onAppReady: () => void,
+        resourceEndpoints: Record<string, any>
     ): Promise<void> => {
         const idToken: DecodedIDTokenPayload = await getDecodedIDToken();
 
@@ -356,10 +363,10 @@ const useSignIn = (): UseSignInInterface => {
                 dispatch(setCurrentOrganization(orgName));
 
                 // This is to make sure the endpoints are generated with the organization path.
-                await dispatch(setServiceResourceEndpoints(Config.getServiceResourceEndpoints()));
+                await dispatch(setServiceResourceEndpoints(resourceEndpoints));
 
                 // Sets the resource endpoints in the context.
-                setResourceEndpoints(Config.getServiceResourceEndpoints() as any);
+                setResourceEndpoints(resourceEndpoints as any);
 
                 try {
                     response = await switchOrganization(orgId);
@@ -374,13 +381,11 @@ const useSignIn = (): UseSignInInterface => {
 
         dispatch(setGetOrganizationLoading(false));
 
-        const endpoints: Record<string, any> = Config.getServiceResourceEndpoints();
-
         // Update the endpoints with tenant path.
-        await dispatch(setServiceResourceEndpoints(endpoints));
+        await dispatch(setServiceResourceEndpoints(resourceEndpoints));
 
         // Sets the resource endpoints in the context.
-        setResourceEndpoints(endpoints);
+        setResourceEndpoints(resourceEndpoints as any);
 
         // When the tenant domain changes, we have to reset the auth callback in session storage.
         // If not, it will hang and the app will be unresponsive with in the tab.
