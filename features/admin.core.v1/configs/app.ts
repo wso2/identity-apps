@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { getActionsResourceEndpoints } from "@wso2is/admin.actions.v1/configs/endpoints";
+
 import { getAdministratorsResourceEndpoints } from "@wso2is/admin.administrators.v1/config/endpoints";
 import { getAgentsResourceEndpoints } from "@wso2is/admin.agents.v1/configs/endpoints";
 import { getAPIResourceEndpoints } from "@wso2is/admin.api-resources.v2/configs/endpoint";
@@ -346,7 +346,7 @@ export class Config {
             ...getInsightsResourceEndpoints(this.resolveServerHostFromConfig()),
             ...getExtensionTemplatesEndpoints(this.resolveServerHost()),
             ...getApplicationTemplatesResourcesEndpoints(this.resolveServerHost()),
-            ...getActionsResourceEndpoints(this.resolveServerHost()),
+            ...getApplicationTemplatesResourcesEndpoints(this.resolveServerHost()),
             ...getRulesEndpoints(this.resolveServerHost()),
             ...getSmsTemplateResourceEndpoints(this.resolveServerHost()),
             ...getPolicyAdministrationResourceEndpoints(this.resolveServerHost()),
@@ -369,7 +369,8 @@ export class Config {
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${ this.getDeploymentConfig()?.serverHost }/scim2/Me`,
             saml2Meta: `${ this.resolveServerHost(false, true) }/identity/metadata/saml2`,
-            wellKnown: `${ this.resolveServerHost(false, true) }/oauth2/token/.well-known/openid-configuration`
+            wellKnown: `${ this.resolveServerHost(false, true) }/oauth2/token/.well-known/openid-configuration`,
+            actions: ""
         };
     }
 
