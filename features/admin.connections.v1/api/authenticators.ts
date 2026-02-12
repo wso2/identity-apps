@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -17,13 +17,13 @@
  */
 
 import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { store } from "@wso2is/admin.core.v1/store";
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
     RequestResultInterface
 } from "@wso2is/admin.core.v1/hooks/use-request";
 import useResourceEndpoints from "@wso2is/admin.core.v1/hooks/use-resource-endpoints";
+import { store } from "@wso2is/admin.core.v1/store";
 import {
     IdVPTemplateTags
 } from "@wso2is/admin.identity-verification-providers.v1/models/identity-verification-providers";
@@ -76,7 +76,7 @@ export const useGetAuthenticators = <Data = AuthenticatorInterface[], Error = Re
         params: {
             filter
         },
-        url: resourceEndpoints.authenticators
+        url: resourceEndpoints?.authenticators
     };
 
     const {
