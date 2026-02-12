@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ApplicationTemplateIdTypes } from "@wso2is/admin.applications.v1/models/application";
 import { ReactComponent as MCPLogo }
     from "../../themes/wso2is/assets/images/icons/outline-icons/mcp-servers-outline.svg";
 import AngularLogo from "../assets/icons/angular.png";
@@ -61,25 +62,25 @@ export const FRAMEWORK_OPTIONS: readonly FrameworkOptionInterface[] = [
         displayName: "React",
         id: "react",
         logo: ReactLogo,
-        templateId: "react-application"
+        templateId: ApplicationTemplateIdTypes.REACT_APPLICATION
     },
     {
         displayName: "Angular",
         id: "angular",
         logo: AngularLogo,
-        templateId: "angular-application"
+        templateId: ApplicationTemplateIdTypes.ANGULAR_APPLICATION
     },
     {
         displayName: "Express",
         id: "express",
         logo: ExpressLogo,
-        templateId: "expressjs-application"
+        templateId: ApplicationTemplateIdTypes.EXPRESSJS_APPLICATION
     },
     {
         displayName: "Next.js",
         id: "next",
         logo: NextjsLogo,
-        templateId: "nextjs-application"
+        templateId: ApplicationTemplateIdTypes.NEXT_JS_APPLICATION
     }
 ];
 
@@ -92,34 +93,34 @@ export const APPLICATION_TYPE_OPTIONS: readonly ApplicationTypeOptionInterface[]
         displayName: "AI / MCP Client",
         icon: MCPLogo,
         id: "mcp-client",
-        templateId: "mcp-client-application"
+        templateId: ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION
     },
     {
         description: "Native or hybrid mobile apps.",
         displayName: "Mobile app",
         icon: MobileLogo,
         id: "mobile-app",
-        templateId: "mobile-application"
+        templateId: ApplicationTemplateIdTypes.MOBILE_APPLICATION
     },
     {
         description: "Apps with both server and client side code.",
         displayName: "Server-side web app",
         icon: ServerLogo,
         id: "server-side-web-app",
-        templateId: "oidc-web-application"
+        templateId: ApplicationTemplateIdTypes.OIDC_WEB_APPLICATION
     },
     {
         description: "Server to server APIs and backend services.",
         displayName: "M2M app",
         icon: M2MLogo,
         id: "m2m-app",
-        templateId: "m2m-application"
+        templateId: ApplicationTemplateIdTypes.M2M_APPLICATION
     },
     {
         description: "Browser based SPAs.",
         displayName: "Single page app",
         icon: WebLogo,
         id: "single-page-app",
-        templateId: "single-page-application"
+        templateId: ApplicationTemplateIdTypes.SPA
     }
 ];

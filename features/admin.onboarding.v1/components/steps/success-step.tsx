@@ -26,7 +26,10 @@ import useGetApplicationTemplateMetadata
 import { ApplicationTemplateConstants } from "@wso2is/admin.application-templates.v1/constants/templates";
 import useGetApplicationInboundConfigs
     from "@wso2is/admin.applications.v1/api/use-get-application-inbound-configs";
-import { OIDCApplicationConfigurationInterface } from "@wso2is/admin.applications.v1/models/application";
+import {
+    ApplicationTemplateIdTypes,
+    OIDCApplicationConfigurationInterface
+} from "@wso2is/admin.applications.v1/models/application";
 import { OIDCDataInterface } from "@wso2is/admin.applications.v1/models/application-inbound";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -407,7 +410,8 @@ const SuccessStep: FunctionComponent<SuccessStepPropsInterface> = (
                             label="Client ID"
                             value={ integrationConfig.clientId }
                         />
-                        { templateId === "oidc-web-application" && integrationConfig.clientSecret && (
+                        { templateId === ApplicationTemplateIdTypes.OIDC_WEB_APPLICATION
+                            && integrationConfig.clientSecret && (
                             <CopyableField
                                 data-componentid={ `${componentId}-client-secret` }
                                 label="Client Secret"
@@ -417,11 +421,11 @@ const SuccessStep: FunctionComponent<SuccessStepPropsInterface> = (
                         ) }
                         <CopyableField
                             data-componentid={ `${componentId}-redirect-url` }
-                            label={ templateId === "mobile-application"
+                            label={ templateId === ApplicationTemplateIdTypes.MOBILE_APPLICATION
                                 ? "Redirect URI" : "Redirect URL" }
                             value={ integrationConfig.redirectUrl }
                         />
-                        { templateId === "mobile-application" ? (
+                        { templateId === ApplicationTemplateIdTypes.MOBILE_APPLICATION ? (
                             <CopyableField
                                 data-componentid={ `${componentId}-discovery-url` }
                                 label="Discovery URL"

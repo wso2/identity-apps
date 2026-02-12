@@ -16,7 +16,14 @@
  * under the License.
  */
 
+import {
+    LocalAuthenticatorConstants
+} from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { SignInOptionsConfigInterface } from "../models";
+
+const AuthNames: typeof LocalAuthenticatorConstants.AUTHENTICATOR_NAMES =
+    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES;
+const LOCAL_IDP: string = LocalAuthenticatorConstants.LOCAL_IDP_IDENTIFIER;
 
 /**
  * Authenticator configuration for authentication sequence.
@@ -45,20 +52,10 @@ export interface AuthenticationSequenceInterface {
 }
 
 /**
- * Build authentication sequence from sign-in options.
+ * Builds an auth sequence from sign-in options.
  *
- * The authentication flow depends on whether password is selected:
- *
- * **Password Selected (Traditional Login):**
- * - Step 1: BasicAuthenticator (identifier + password combined in single step)
- * - Step 2 (optional): Other selected methods as additional options
- *
- * **Password NOT Selected (Identifier First Flow):**
- * - Step 1: IdentifierExecutor (collects identifier only)
- * - Step 2: All selected login methods as alternatives (OR logic)
- *
- * @param options - Sign-in options configuration
- * @returns Authentication sequence configuration
+ * With password: Step 1 = BasicAuthenticator, Step 2 = other methods (optional).
+ * Without password: Step 1 = IdentifierExecutor, Step 2 = selected methods as alternatives.
  */
 export const buildAuthSequence = (options: SignInOptionsConfigInterface): AuthenticationSequenceInterface => {
     const { loginMethods } = options;
@@ -67,42 +64,42 @@ export const buildAuthSequence = (options: SignInOptionsConfigInterface): Authen
 
     if (loginMethods.passkey) {
         step2Options.push({
-            authenticator: "FIDOAuthenticator",
-            idp: "LOCAL"
+            authenticator: AuthNames.FIDO_AUTHENTICATOR_NAME,
+            idp: LOCAL_IDP
         });
     }
 
     if (loginMethods.magicLink) {
         step2Options.push({
-            authenticator: "MagicLinkAuthenticator",
-            idp: "LOCAL"
+            authenticator: AuthNames.MAGIC_LINK_AUTHENTICATOR_NAME,
+            idp: LOCAL_IDP
         });
     }
 
     if (loginMethods.emailOtp) {
         step2Options.push({
-            authenticator: "email-otp-authenticator",
-            idp: "LOCAL"
+            authenticator: AuthNames.EMAIL_OTP_AUTHENTICATOR_NAME,
+            idp: LOCAL_IDP
         });
     }
 
     if (loginMethods.totp) {
         step2Options.push({
-            authenticator: "totp",
-            idp: "LOCAL"
+            authenticator: AuthNames.TOTP_AUTHENTICATOR_NAME,
+            idp: LOCAL_IDP
         });
     }
 
     if (loginMethods.pushNotification) {
         step2Options.push({
-            authenticator: "push-notification-authenticator",
-            idp: "LOCAL"
+            authenticator: AuthNames.PUSH_AUTHENTICATOR_NAME,
+            idp: LOCAL_IDP
         });
     }
 
     const step1Authenticator: string = loginMethods.password
-        ? "BasicAuthenticator"
-        : "IdentifierExecutor";
+        ? AuthNames.BASIC_AUTHENTICATOR_NAME
+        : AuthNames.IDENTIFIER_FIRST_AUTHENTICATOR_NAME;
 
     const steps: AuthenticationStepInterface[] = [
         {
@@ -110,7 +107,7 @@ export const buildAuthSequence = (options: SignInOptionsConfigInterface): Authen
             options: [
                 {
                     authenticator: step1Authenticator,
-                    idp: "LOCAL"
+                    idp: LOCAL_IDP
                 }
             ]
         }
@@ -132,9 +129,7 @@ export const buildAuthSequence = (options: SignInOptionsConfigInterface): Authen
 };
 
 /**
- * Get a default authentication sequence with basic auth.
- *
- * @returns Default authentication sequence
+ * Returns a default auth sequence with BasicAuthenticator only.
  */
 export const getDefaultAuthSequence = (): AuthenticationSequenceInterface => {
     return {
@@ -144,8 +139,8 @@ export const getDefaultAuthSequence = (): AuthenticationSequenceInterface => {
                 id: 1,
                 options: [
                     {
-                        authenticator: "BasicAuthenticator",
-                        idp: "LOCAL"
+                        authenticator: AuthNames.BASIC_AUTHENTICATOR_NAME,
+                        idp: LOCAL_IDP
                     }
                 ]
             }
@@ -156,10 +151,7 @@ export const getDefaultAuthSequence = (): AuthenticationSequenceInterface => {
 };
 
 /**
- * Check if the authentication sequence is using default configuration.
- *
- * @param sequence - Authentication sequence to check
- * @returns True if using default configuration
+ * Returns true if the sequence is a single-step BasicAuthenticator (default) config.
  */
 export const isDefaultAuthSequence = (sequence: AuthenticationSequenceInterface): boolean => {
     if (sequence.type === "DEFAULT") {
@@ -178,18 +170,11 @@ export const isDefaultAuthSequence = (sequence: AuthenticationSequenceInterface)
 
     const option: AuthenticatorConfigInterface = step.options[0];
 
-    return option.idp === "LOCAL" && option.authenticator === "BasicAuthenticator";
+    return option.idp === LOCAL_IDP && option.authenticator === AuthNames.BASIC_AUTHENTICATOR_NAME;
 };
 
 /**
- * Check if the authentication sequence has multiple login methods.
- * In the Identifier First approach, this checks if Step 2 has multiple alternatives.
- *
- * Note: In this simplified flow, multiple login methods in Step 2 are alternatives (OR logic),
- * not traditional MFA (which would require sequential verification).
- *
- * @param sequence - Authentication sequence to check
- * @returns True if sequence has multiple login method options
+ * Checks whether Step 2 has multiple alternatives (OR logic, not sequential MFA).
  */
 export const hasMultipleLoginMethods = (sequence: AuthenticationSequenceInterface): boolean => {
     if (sequence.steps.length < 2) {

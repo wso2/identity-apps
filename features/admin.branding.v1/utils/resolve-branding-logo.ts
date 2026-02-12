@@ -24,10 +24,7 @@ import CheetahAvatar from "../../themes/default/assets/images/avatars/cheetah.pn
 import CowAvatar from "../../themes/default/assets/images/avatars/cow.png";
 import CrocodileAvatar from "../../themes/default/assets/images/avatars/crocodile.png";
 
-/**
- * Avatar path pattern for matching onboarding wizard avatars.
- * Matches paths like: /libs/themes/default/assets/images/avatars/butterfly.png
- */
+// Matches paths like: /libs/themes/default/assets/images/avatars/butterfly.png
 const AVATAR_PATH_PATTERN: RegExp = /^\/libs\/themes\/default\/assets\/images\/avatars\/([a-z]+)\.png$/;
 
 /**
@@ -67,23 +64,15 @@ export const getAvatarNameFromUrl = (url: string): string => {
 };
 
 /**
- * Resolve a branding logo URL to a displayable image source.
- *
- * This function handles:
- * - Avatar URLs from onboarding wizard: Returns bundled image
- * - External URLs (HTTP/HTTPS): Returns as-is
- * - Data URLs: Returns as-is
- * - Empty/undefined: Returns empty string
- *
- * @param logoUrl - Logo URL from branding preferences
- * @returns Displayable image source
+ * Resolves a branding logo URL to a displayable image source.
+ * Avatar paths (from onboarding wizard) are mapped to webpack-bundled images;
+ * external/data URLs are returned as-is.
  */
 export const resolveBrandingLogoUrl = (logoUrl: string | undefined): string => {
     if (!logoUrl) {
         return "";
     }
 
-    // Check if it's an avatar URL from onboarding wizard
     if (isAvatarLogoUrl(logoUrl)) {
         const avatarName: string = getAvatarNameFromUrl(logoUrl);
 
@@ -92,6 +81,5 @@ export const resolveBrandingLogoUrl = (logoUrl: string | undefined): string => {
         }
     }
 
-    // For external URLs (HTTP/HTTPS) or data URLs, return as-is
     return logoUrl;
 };
