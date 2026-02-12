@@ -36,6 +36,7 @@ import "./push-provider-card.scss";
 import { useSelector } from "react-redux";
 import { PushProviderConstants } from "../constants/push-provider-constants";
 import { PushProviderTemplateFeatureStatus } from "../models/templates";
+import Chip from "@oxygen-ui/react/Chip/Chip";
 
 /**
  * Props for the push provider card component.
@@ -53,12 +54,18 @@ export interface PushProviderCardPropsInterface extends IdentifiableComponentInt
     template: ExtensionTemplateListInterface;
 
     selected: boolean
+
+    /**
+     * Is this the default push provider.
+     */
+    isDefault: boolean;
 }
 
 const PushProviderCard: FunctionComponent<PushProviderCardPropsInterface> = ({
     template,
     onClick,
     selected,
+    isDefault,
     ["data-componentid"]: componentId = "push-provider-card"
 }: PushProviderCardPropsInterface): ReactElement => {
 
@@ -85,7 +92,7 @@ const PushProviderCard: FunctionComponent<PushProviderCardPropsInterface> = ({
                 property?.key === PushProviderConstants.FEATURE_STATUS_ATTRIBUTE_KEY
         );
 
-        if (featureFlag === "TRUE") {
+        if (true || featureFlag === "TRUE") {
             return property?.value as PushProviderTemplateFeatureStatus;
         }
 
@@ -136,6 +143,14 @@ const PushProviderCard: FunctionComponent<PushProviderCardPropsInterface> = ({
                 <div className="push-provider-template-name-label">
                     <Typography variant="h6">
                         { template?.name }
+                        {
+                            isDefault && (
+                                <>
+                                    <span>&nbsp;&nbsp;</span>
+                                    <Chip label={t("common:default")}/>
+                                </>
+                            )
+                        }
                     </Typography>
                 </div>
                 {
