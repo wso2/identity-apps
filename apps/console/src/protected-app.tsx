@@ -25,13 +25,14 @@ import {
 } from "@asgardeo/auth-react";
 import useSignIn from "@wso2is/admin.authentication.v1/hooks/use-sign-in";
 import { PreLoader } from "@wso2is/admin.core.v1/components/pre-loader";
+import { getActionsResourceEndpoints } from "@wso2is/admin.actions.v1/configs/endpoints";
 import { Config } from "@wso2is/admin.core.v1/configs/app";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { MultitenantConstants } from "@wso2is/admin.core.v1/constants/multitenant-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { AppComponentProps } from "@wso2is/admin.core.v1/models/common";
-import { DeploymentConfigInterface, UIConfigInterface } from "@wso2is/admin.core.v1/models/config";
+import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState, store } from "@wso2is/admin.core.v1/store";
 import { setFilteredDevelopRoutes, setSanitizedDevelopRoutes } from "@wso2is/admin.core.v1/store/actions/routes";
 import { AppUtils } from "@wso2is/admin.core.v1/utils/app-utils";
@@ -169,11 +170,17 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     response = { ...signInResponse };
                 }
 
+                const serviceResourceEndpoints: ServiceResourceEndpointsInterface = {
+                    ...Config.getServiceResourceEndpoints(),
+                    ...getActionsResourceEndpoints(Config.resolveServerHost())
+                };
+
                 await onSignIn(
                     response,
                     () => null,
                     (idToken: DecodedIDTokenPayload) => loginSuccessRedirect(idToken),
-                    () => setRenderApp(true)
+                    () => setRenderApp(true),
+                    serviceResourceEndpoints
                 );
             } catch(e) {
                 // TODO: Handle error

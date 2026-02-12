@@ -18,7 +18,6 @@
 
 import { ResponseMode, Storage } from "@asgardeo/auth-react";
 import { FeatureAccessConfigInterface } from "@wso2is/access-control";
-import { ActionsResourceEndpointsInterface } from "@wso2is/admin.actions.v1/models/endpoints";
 import { ApplicationsTemplatesEndpointsInterface } from "@wso2is/admin.application-templates.v1/models/endpoints";
 import {
     ApplicationTemplateLoadingStrategies
@@ -746,7 +745,7 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     ExtensionTemplatesEndpointsInterface,
     ApplicationsTemplatesEndpointsInterface,
     SMSTemplateResourceEndpointsInterface,
-    ActionsResourceEndpointsInterface,
+    SMSTemplateResourceEndpointsInterface,
     PolicyAdministrationEndpointsInterface,
     WorkflowsResourceEndpointsInterface,
     WorkflowAssociationsResourceEndpointsInterface,
@@ -755,6 +754,7 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     RemoteLoggingResourceEndpointsInterface,
     FlowBuilderCoreResourceEndpointsInterface {
 
+    actions: string;
     CORSOrigins: string;
     // TODO: Remove this endpoint and use ID token to get the details
     me: string;
