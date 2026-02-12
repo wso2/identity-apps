@@ -22,25 +22,14 @@
 import { Theme as OxygenTheme } from "@oxygen-ui/react";
 import { extendTheme } from "@oxygen-ui/react/theme";
 
-/**
- * Module augmentation for Material UI's theme types.
- * Extends the TypeAction interface to include an optional `border` property,
- * allowing customization of border styles in action-related theme configurations.
- * 
- * @remarks
- * This declaration merges with the existing `@mui/material/styles` module
- * to add type support for a custom `border` property in the theme's action palette.
- */
-declare module "@mui/material/styles" {
-    interface TypeAction {
-        border?: string;
-    }
-}
-
 const Theme: OxygenTheme = extendTheme({
     colorSchemes: {
         dark: {
             palette: {
+                action: {
+                    border: "#E6E6E6",
+                    hover: "#D3D3D3"
+                },
                 customComponents: {
                     Navbar: {
                         collapsibleItemBackground: "#E7E4E2"
@@ -54,12 +43,7 @@ const Theme: OxygenTheme = extendTheme({
                 },
                 primary: {
                     main: "#ff7300"
-                },
-                action: {
-                    border: "#E6E6E6",
-                    hover: "#D3D3D3"
                 }
-
             }
         },
         light: {

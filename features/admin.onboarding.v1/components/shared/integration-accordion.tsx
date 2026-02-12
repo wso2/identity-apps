@@ -29,6 +29,8 @@ import { MarkdownGuide } from "@wso2is/admin.template-core.v1/components/markdow
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import CodeBlock from "./code-block";
+import { ReactComponent as CodeIcon } from "../../assets/icons/code.svg";
+import { ReactComponent as StarsIcon } from "../../assets/icons/stars.svg";
 import {
     FrameworkIntegrationGuideInterface,
     IntegrationConfigInterface,
@@ -57,29 +59,6 @@ export interface IntegrationAccordionPropsInterface extends IdentifiableComponen
         email?: string;
     };
 }
-
-/**
- * Icon components for accordion sections.
- */
-const SparklesIcon: FunctionComponent = (): ReactElement => (
-    <svg fill="none" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg">
-        <path
-            // eslint-disable-next-line max-len
-            d="M12 2L13.09 8.26L18 6L15.27 10.8L22 12L15.27 13.2L18 18L13.09 15.74L12 22L10.91 15.74L6 18L8.73 13.2L2 12L8.73 10.8L6 6L10.91 8.26L12 2Z"
-            fill="#ff7300"
-        />
-    </svg>
-);
-
-const CodeIcon: FunctionComponent = (): ReactElement => (
-    <svg fill="none" height="20" viewBox="0 0 24 24" width="20" xmlns="http://www.w3.org/2000/svg">
-        <path
-            // eslint-disable-next-line max-len
-            d="M8 18L2 12L8 6L9.41 7.41L4.83 12L9.41 16.59L8 18ZM16 18L14.59 16.59L19.17 12L14.59 7.41L16 6L22 12L16 18Z"
-            fill="#6b7280"
-        />
-    </svg>
-);
 
 /**
  * Styled accordion container.
@@ -310,7 +289,7 @@ const IntegrationAccordion: FunctionComponent<IntegrationAccordionPropsInterface
                 >
                     <StyledAccordionSummary expandIcon={ <ChevronDownIcon /> }>
                         <IconContainer>
-                            <SparklesIcon />
+                            <StarsIcon height={ 20 } width={ 20 } />
                         </IconContainer>
                         <Box>
                             <TitleContainer>
@@ -342,7 +321,7 @@ const IntegrationAccordion: FunctionComponent<IntegrationAccordionPropsInterface
             >
                 <StyledAccordionSummary expandIcon={ <ChevronDownIcon /> }>
                     <IconContainer>
-                        <CodeIcon />
+                        <CodeIcon height={ 20 } width={ 20 } />
                     </IconContainer>
                     <Box>
                         <Typography sx={ { fontWeight: 600 } }>
