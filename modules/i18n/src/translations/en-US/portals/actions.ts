@@ -209,7 +209,8 @@ export const actions: actionsNS = {
                         v1: "Executes for JWT token requests from any application for <0>authorization_code</0>, " +
                             "<1>client_credentials</1>, <2>password</2>, and <3>refresh_token</3> grant types.",
                         v2: "Executes for JWT token requests from any application for <0>authorization_code</0>, " +
-                            "<1>client_credentials</1>, <2>password</2>, <3>refresh_token</3>, and <4>token_exchange</4> grant types."
+                            "<1>client_credentials</1>, <2>password</2>, <3>refresh_token</3>, <4>token_exchange</4>, " +
+                            "<5>device_code</5>, <6>organization_switch</6>, <7>jwt_bearer</7>, and <8>saml2_bearer</8> grant types."
                     },
                     preUpdatePassword: "Executes for any user or admin initiated password update/reset flow."
                 },

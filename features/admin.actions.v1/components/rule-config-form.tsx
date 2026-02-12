@@ -109,7 +109,11 @@ const RuleConfigForm: FunctionComponent<RuleConfigFormInterface> = ({
                             <Code key="client_credentials">client_credentials</Code>,
                             <Code key="password">password</Code>,
                             <Code key="refresh_token">refresh_token</Code>,
-                            <Code key="token_exchange">token_exchange</Code>
+                            <Code key="token_exchange">token_exchange</Code>,
+                            <Code key="device_code">device_code</Code>,
+                            <Code key="organization_switch">organization_switch</Code>,
+                            <Code key="jwt_bearer">jwt_bearer</Code>,
+                            <Code key="saml2_bearer">saml2_bearer</Code>
                         ] }
                     />
                     <div>
