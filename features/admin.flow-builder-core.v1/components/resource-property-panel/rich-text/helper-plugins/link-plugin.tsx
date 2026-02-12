@@ -20,6 +20,8 @@ import { $isLinkNode, TOGGLE_LINK_COMMAND } from "@lexical/link";
 import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
 import { mergeRegister } from "@lexical/utils";
 import Button from "@oxygen-ui/react/Button";
+import Checkbox from "@oxygen-ui/react/Checkbox";
+import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
 import IconButton from "@oxygen-ui/react/IconButton";
 import MenuItem from "@oxygen-ui/react/MenuItem";
 import Select from "@oxygen-ui/react/Select";
@@ -162,6 +164,7 @@ const LinkEditor = (): ReactElement => {
     const [ isEditMode, setEditMode ] = useState(false);
     const [ lastSelection, setLastSelection ] = useState<BaseSelection | null>(null);
     const [ selectedUrlType, setSelectedUrlType ] = useState<string>("CUSTOM");
+    const [ openInNewTab, setOpenInNewTab ] = useState<boolean>(true);
 
     const { t } = useTranslation();
 
@@ -178,14 +181,18 @@ const LinkEditor = (): ReactElement => {
 
             if ($isLinkNode(parent)) {
                 const url: string = parent.getURL();
+                const target: string = parent.getTarget();
 
                 setLinkUrl(getPlaceholderUrl(url));
                 setSelectedUrlType(determineUrlType(url));
+                setOpenInNewTab(target === "_blank");
             } else if ($isLinkNode(node)) {
                 const url: string = node.getURL();
+                const target: string = node.getTarget();
 
                 setLinkUrl(getPlaceholderUrl(url));
                 setSelectedUrlType(determineUrlType(url));
+                setOpenInNewTab(target === "_blank");
             } else {
                 setLinkUrl("");
                 setSelectedUrlType("CUSTOM");
@@ -377,8 +384,14 @@ const LinkEditor = (): ReactElement => {
 
                             if ($isLinkNode(linkNode)) {
                                 // Update the link node with safe attributes.
-                                linkNode.setTarget("_blank");
                                 linkNode.setRel("noopener noreferrer");
+
+                                // Set target based on user preference
+                                if (openInNewTab) {
+                                    linkNode.setTarget("_blank");
+                                } else {
+                                    linkNode.setTarget("_self");
+                                }
                             }
                         }
                     } else {
@@ -391,7 +404,7 @@ const LinkEditor = (): ReactElement => {
                 HighPriority
             )
         );
-    }, [ editor, updateLinkEditor, isEditMode ]);
+    }, [ editor, updateLinkEditor, isEditMode, openInNewTab ]);
 
     /**
      * Updates the link editor position.
@@ -464,6 +477,17 @@ const LinkEditor = (): ReactElement => {
                                     setEditMode(false);
                                 }
                             } }
+                        />
+                        <FormControlLabel
+                            control={ (
+                                <Checkbox
+                                    checked={ openInNewTab }
+                                    onChange={ (event: ChangeEvent<HTMLInputElement>) => {
+                                        setOpenInNewTab(event.target.checked);
+                                    } }
+                                />
+                            ) }
+                            label={ t("flows:core.elements.richText.linkEditor.openInNewTab") }
                         />
                         <Button
                             size="small"
