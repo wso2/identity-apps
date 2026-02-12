@@ -27,6 +27,7 @@
         "@wso2is/admin.ask-password-flow-builder.v1": "workspace:^",
         "@wso2is/admin.authentication.v1": "^2.25.208",
         "@wso2is/admin.branding.v1": "^2.32.83",
+        "@wso2is/admin.cds.v1": "^1.0.0",
         "@wso2is/admin.certificates.v1": "^2.25.205",
         "@wso2is/admin.claims.v1": "^2.30.1",
         "@wso2is/admin.connections.v1": "^2.34.12",

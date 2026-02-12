@@ -16,6 +16,13 @@
  * under the License.
  */
 
+import Box from "@oxygen-ui/react/Box";
+import Button from "@oxygen-ui/react/Button";
+import Card from "@oxygen-ui/react/Card";
+import Fab from "@oxygen-ui/react/Fab";
+import Typography from "@oxygen-ui/react/Typography";
+import { MinusIcon, PlusIcon } from "@oxygen-ui/react-icons";
+import { getAdvancedSearchIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { commonConfig } from "@wso2is/admin.extensions.v1/configs/common";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { SearchUtils } from "@wso2is/core/utils";
@@ -38,15 +45,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
-import { getAdvancedSearchIcons } from "@wso2is/admin.core.v1/configs/ui";
-
-import Box from "@oxygen-ui/react/Box";
-import Button from "@oxygen-ui/react/Button";
-import Card from "@oxygen-ui/react/Card";
-import Fab from "@oxygen-ui/react/Fab";
-import Typography from "@oxygen-ui/react/Typography";
-
-import { PlusIcon, MinusIcon } from "@oxygen-ui/react-icons";
+import value from "*.json";
 
 interface FilterGroup {
     scope: string;
@@ -134,10 +133,10 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
 
     const [ filterGroups, setFilterGroups ] = useState<FilterGroup[]>([
         {
-            scope: scopes?.[0] ?? "",
             applicationId: "",
             attribute: "",
             condition: defaultSearchOperator,
+            scope: scopes?.[0] ?? "",
             value: ""
         }
     ]);
@@ -158,7 +157,8 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
         setLoadingScope((p) => ({ ...p, [scope]: true }));
 
         try {
-            const opts = await onFetchAttributesByScope(scope);
+            const opts: FilterAttributeOption[] = await onFetchAttributesByScope(scope);
+
             setOptionsByScope((p) => ({ ...p, [scope]: opts ?? [] }));
         } catch (error) {
             // eslint-disable-next-line no-console
@@ -169,7 +169,8 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
     };
 
     useEffect(() => {
-        const firstScope = scopes?.[0] ?? "";
+        const firstScope:string = scopes?.[0] ?? "";
+
         if (firstScope) {
             ensureScopeLoaded(firstScope);
         }
@@ -177,15 +178,15 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
     }, []);
 
     const addFilter = (): void => {
-        const firstScope = scopes?.[0] ?? "";
+        const firstScope:string = scopes?.[0] ?? "";
 
         setFilterGroups((prev) => ([
             ...prev,
             {
-                scope: firstScope,
                 applicationId: "",
                 attribute: "",
                 condition: defaultSearchOperator,
+                scope: firstScope,
                 value: ""
             }
         ]));
@@ -204,7 +205,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
 
         const groups: string[] = [];
 
-        for (let i = 0; i < filterGroups.length; i++) {
+        for (let i:number = 0; i < filterGroups.length; i++) {
             const scope = values.get(`scope-${i}`) as string;
             const appId = values.get(`app-${i}`) as string;
             const attribute = values.get(`attribute-${i}`) as string;
@@ -236,6 +237,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
 
     useEffect(() => {
         document.addEventListener("mousedown", handleClickOutside);
+
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
@@ -336,7 +338,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                             onChange={ () => setIsFiltersReset(false) }
                             ref={ formRef }
                         >
-                            {/* ✅ max width so it doesn't grow forever */}
+                            { /* ✅ max width so it doesn't grow forever */ }
                             <Box
                                 sx={ {
                                     width: "100%",
@@ -367,10 +369,10 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                     </Typography>
                                                 </Box>
 
-                                                {/* ✅ Responsive layout:
+                                                { /* ✅ Responsive layout:
                                                     - row 1: scope + (app) + attribute
                                                     - row 2: condition + value
-                                                */}
+                                                */ }
                                                 <Box
                                                     sx={ {
                                                         display: "flex",
@@ -378,7 +380,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                         gap: 2
                                                     } }
                                                 >
-                                                    {/* Row 1 */}
+                                                    { /* Row 1 */ }
                                                     <Box
                                                         sx={ {
                                                             display: "flex",
@@ -436,6 +438,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                     value={ row.applicationId }
                                                                     listen={ (values: Map<string, FormValue>) => {
                                                                         const newAppId = values.get(`app-${index}`) as string;
+
                                                                         if (!newAppId || newAppId === row.applicationId) return;
 
                                                                         setFilterGroups((prev) => {
@@ -474,6 +477,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                 value={ row.attribute }
                                                                 listen={ (values: Map<string, FormValue>) => {
                                                                     const newAttr = values.get(`attribute-${index}`) as string;
+
                                                                     if (!newAttr || newAttr === row.attribute) return;
 
                                                                     setFilterGroups((prev) => {
@@ -491,7 +495,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                         </Box>
                                                     </Box>
 
-                                                    {/* Row 2 */}
+                                                    { /* Row 2 */ }
                                                     <Box
                                                         sx={ {
                                                             display: "flex",
@@ -515,6 +519,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                 value={ row.condition }
                                                                 listen={ (values: Map<string, FormValue>) => {
                                                                     const newCondition = values.get(`condition-${index}`) as string;
+
                                                                     if (!newCondition || newCondition === row.condition) return;
 
                                                                     setFilterGroups((prev) => {
@@ -542,6 +547,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                 value={ row.value }
                                                                 listen={ (values: Map<string, FormValue>) => {
                                                                     const newValue = values.get(`value-${index}`) as string;
+
                                                                     if (newValue === row.value) return;
 
                                                                     setFilterGroups((prev) => {
@@ -561,21 +567,21 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                 </Box>
                                                 { index > 0 && (
                                                     <Fab
-                                                    color="error"
-                                                    aria-label="remove"
-                                                    size="small"
-                                                    className="delete-button"
-                                                    sx={ {
-                                                        position: "absolute",
-                                                        right: 14,
-                                                        top: 14
-                                                    } }
-                                                    onClick={ () => removeFilter(index) }
-                                                    data-componentid={ `${testId}-remove-filter-${index}` }
+                                                        color="error"
+                                                        aria-label="remove"
+                                                        size="small"
+                                                        className="delete-button"
+                                                        sx={ {
+                                                            position: "absolute",
+                                                            right: 14,
+                                                            top: 14
+                                                        } }
+                                                        onClick={ () => removeFilter(index) }
+                                                        data-componentid={ `${testId}-remove-filter-${index}` }
 
-                                                >
-                                                    <MinusIcon className="delete-button-icon" />
-                                                </Fab>
+                                                    >
+                                                        <MinusIcon className="delete-button-icon" />
+                                                    </Fab>
                                                 ) }
                                             </Card>
 

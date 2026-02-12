@@ -404,8 +404,8 @@ export class I18nConstants {
         [ I18nConstants.AGENTS_NAMESPACE, "portals" ],
         [ I18nConstants.FLOWS_NAMESPACE, "portals" ],
         [ I18nConstants.COMMON_USERS_NAMESPACE, "portals" ],
-        [ I18nConstants.VERIFIABLE_CREDENTIALS_NAMESPACE, "portals" ]
-        [I18nConstants.CUSTOMER_DATA_SERVICE_NAMESPACE, "portals"]
+        [ I18nConstants.VERIFIABLE_CREDENTIALS_NAMESPACE, "portals" ],
+        [ I18nConstants.CUSTOMER_DATA_SERVICE_NAMESPACE, "portals" ]
     ]);
 
     /**

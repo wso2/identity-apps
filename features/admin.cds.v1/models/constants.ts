@@ -16,10 +16,6 @@
  * under the License.
  */
 
-export const CDM_HOST = "localhost";
-export const CDM_PORT = 8900;
-export const CDM_BASE_URL = `https://${CDM_HOST}:${CDM_PORT}/t/carbon.super/cds/api/v1`;
-
 /**
  * (Optional) keep CDS-specific error codes in one place later.
  */
@@ -28,4 +24,4 @@ export const CDS_ERRORS = {
     FETCH_PROFILE_ERROR: "CDS_PROFILE_FETCH_ERROR",
     DELETE_PROFILE_ERROR: "CDS_PROFILE_DELETE_ERROR",
     INVALID_STATUS_CODE: "CDS_INVALID_STATUS_CODE"
-};
+}

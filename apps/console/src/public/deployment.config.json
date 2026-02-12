@@ -806,7 +806,7 @@
             },
             "customerData": {
                 "disabledFeatures": [],
-                "enabled": false,
+                "enabled": true,
                 "scopes": {
                     "create": [
                         "internal_cds_unification_rule_create",

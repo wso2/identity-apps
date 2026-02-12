@@ -22,8 +22,8 @@ import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 
-import { getCustomerDataServiceEndpoints } from "../utils/cds-endpoints";
-
+import type { FilterAttributeOption } from "../components/advanced-search-with-multipe-filters";
+import type { SchemaListingScope } from "../models/profile-attribute-listing";
 import type {
     ApplicationDataSchemaMapResponse,
     ProfileSchemaAttribute,
@@ -31,9 +31,6 @@ import type {
     ProfileSchemaScope,
     ProfileSchemaScopeResponse
 } from "../models/profile-attributes";
-
-import type { SchemaListingScope } from "../models/profile-attribute-listing";
-import type { FilterAttributeOption } from "@wso2is/admin.cds.v1/components/advanced-search-with-multipe-filters";
 
 /**
  * Initialize an auth-aware Http client.
@@ -49,7 +46,7 @@ export const fetchFullProfileSchema = (): Promise<ProfileSchemaFullResponse> => 
     const requestConfig: RequestConfigInterface = {
         headers: { "Content-Type": "application/json" },
         method: HttpMethods.GET,
-        url: getCDSEndpoints().profileSchema
+        url: store.getState().config.endpoints.cdsProfileSchema
     };
 
     return httpClient(requestConfig)
@@ -71,7 +68,7 @@ export const fetchProfileSchemaByScope = (
         headers: { "Content-Type": "application/json" },
         method: HttpMethods.GET,
         params: filter ? { filter } : undefined,
-        url: `${getCDSEndpoints().profileSchema}/${scope}`
+        url:  `${store.getState().config.endpoints.cdsProfileSchema}/${scope}`
     };
 
     return httpClient(requestConfig)
@@ -120,7 +117,7 @@ export const fetchSchemaAttributeById = (
     const requestConfig: RequestConfigInterface = {
         headers: { "Content-Type": "application/json" },
         method: HttpMethods.GET,
-        url: `${getCDSEndpoints().profileSchema}/${scope}/${id}`
+        url: `${store.getState().config.endpoints.cdsProfileSchema}/${scope}/${id}`
     };
 
     return httpClient(requestConfig)
@@ -141,7 +138,7 @@ export const updateSchemaAttributeById = (
         data: patch,
         headers: { "Content-Type": "application/json" },
         method: HttpMethods.PATCH,
-        url: `${getCDSEndpoints().profileSchema}/${scope}/${id}`
+        url: `${store.getState().config.endpoints.cdsProfileSchema}/${scope}/${id}`
     };
 
     return httpClient(requestConfig)
@@ -159,7 +156,7 @@ export const deleteSchemaAttributeById = (
     const requestConfig: RequestConfigInterface = {
         headers: { "Content-Type": "application/json" },
         method: HttpMethods.DELETE,
-        url: `${getCDSEndpoints().profileSchema}/${scope}/${id}`
+        url: `${store.getState().config.endpoints.cdsProfileSchema}/${scope}/${id}`
     };
 
     return httpClient(requestConfig)
@@ -193,7 +190,7 @@ export const searchSubAttributes = (
         headers: { "Content-Type": "application/json" },
         method: HttpMethods.GET,
         params: { filter },
-        url: `${getCDSEndpoints().profileSchema}/${scope}`
+        url: `${store.getState().config.endpoints.cdsProfileSchema}/${scope}`
     };
 
     return httpClient(requestConfig)

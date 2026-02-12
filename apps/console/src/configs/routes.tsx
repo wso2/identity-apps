@@ -39,6 +39,7 @@ import {
     UserPlusIcon,
     UserDatabaseIcon,
 } from "@oxygen-ui/react-icons";
+import { ReactComponent as ProfilesIcon } from "@wso2is/admin.cds.v1/assets/images/icons/cdsProfiles.svg";
 import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
@@ -1681,7 +1682,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     icon: {
                         icon: getSidePanelIcons().childIcon
                     },
-                    id: "customer-data-profile-view",
+                    id: "profile",
                     name: "Profile View",
                     path: AppConstants.getPaths().get("PROFILE"),
                     protected: true,
@@ -1693,9 +1694,9 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             ),
             exact: true,
             icon: {
-                icon: <ProfileFlowIcon className="icon" fill="black" />
+                icon: <ProfilesIcon className="icon" fill="black" />
             },
-            id: "customerData",
+            id: "profiles",
             name: "Profiles",
             order: 32,
             path: AppConstants.getPaths().get("PROFILES"),

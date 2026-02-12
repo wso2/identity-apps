@@ -16,18 +16,7 @@
  * under the License.
  */
 
-import React, {
-    FunctionComponent,
-    ReactElement,
-    SyntheticEvent,
-    useEffect,
-    useMemo,
-    useState
-} from "react";
-import { RouteComponentProps } from "react-router";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
-
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import {
     AlertInterface,
     AlertLevels,
@@ -35,7 +24,6 @@ import {
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-
 import {
     AnimatedAvatar,
     ConfirmationModal,
@@ -47,18 +35,26 @@ import {
     TabPageLayout,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
-
-import { Divider, Form, TabProps, Table, Image } from "semantic-ui-react";
-
-import { fetchCDSProfileDetails, deleteCDSProfile } from "../api/cds-profiles";
+import React, {
+    FunctionComponent,
+    ReactElement,
+    SyntheticEvent,
+    useEffect,
+    useMemo,
+    useState
+} from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { RouteComponentProps } from "react-router";
+import { Dispatch } from "redux";
+import { Divider, Form, Image, TabProps, Table } from "semantic-ui-react";
+import { deleteCDSProfile, fetchCDSProfileDetails } from "../api/profiles";
 import type { ProfileModel } from "../models/profiles";
-import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 
 /**
  * i18n (keep these keys aligned with your CDS i18n namespace).
  * Replace the path with your actual hook if different.
  */
-import { useTranslation } from "react-i18next";
 
 type Props =
     IdentifiableComponentInterface &
@@ -124,7 +120,8 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
             setProfile(null);
 
             handleAlerts({
-                description: getErrorMessage(error, t("customerDataService:profiles.details.notifications.fetchProfile.error.description")),
+                description: getErrorMessage(error, t("customerDataService:profiles.details.notifications." +
+                    "fetchProfile.error.description")),
                 level: AlertLevels.ERROR,
                 message: t("customerDataService:common.notifications.error")
             });

@@ -16,7 +16,16 @@
  * under the License.
  */
 
+import Chip from "@oxygen-ui/react/Chip/Chip";
+import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
+import { history } from "@wso2is/admin.core.v1/helpers/history";
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import {
+    ConfirmationModal, DataTable, TableActionsInterface, TableColumnInterface, UserAvatar
+} from "@wso2is/react-components";
 import React, {
+    Dispatch,
     FunctionComponent,
     ReactElement,
     ReactNode,
@@ -24,19 +33,12 @@ import React, {
     useMemo,
     useState
 } from "react";
-import { DataTable, ConfirmationModal, UserAvatar } from "@wso2is/react-components";
-import type { TableActionsInterface, TableColumnInterface } from "@wso2is/react-components";
-import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
-import { history } from "@wso2is/admin.core.v1/helpers/history";
-import { useDispatch } from "react-redux";
-import { addAlert } from "@wso2is/core/store";
-import { AlertLevels } from "@wso2is/core/models";
-import { Header, SemanticICONS } from "semantic-ui-react";
-import Chip from "@oxygen-ui/react/Chip/Chip";
-
-import type { ProfileModel } from "../models/profiles";
-import { deleteCDSProfile } from "../api/cds-profiles";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Header, SemanticICONS } from "semantic-ui-react";
+
+import { deleteCDSProfile } from "../api/profiles";
+import type { ProfileModel } from "../models/profiles";
 
 interface ProfilesListProps {
     profiles?: ProfileModel[];
@@ -53,14 +55,14 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
 }: ProfilesListProps): ReactElement => {
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+    const dispatch:Dispatch<any> = useDispatch();
 
     const [ deletingProfile, setDeletingProfile ] = useState<ProfileModel | null>(null);
     const [ showDeleteModal, setShowDeleteModal ] = useState<boolean>(false);
 
     const getDisplayName = (profile: ProfileModel): string => {
-        const given = (profile?.identity_attributes as any)?.givenname;
-        const last = (profile?.identity_attributes as any)?.lastname;
+        const given:any = (profile?.identity_attributes as any)?.givenname;
+        const last:any = (profile?.identity_attributes as any)?.lastname;
 
         return `${given ?? ""} ${last ?? ""}`.trim();
     };
@@ -71,7 +73,6 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
             dataIndex: "profile_id",
             id: "profile_id",
             key: "profile_id",
-            title: t("customerDataService:profiles.list.columns.profile"),
             render: (profile: ProfileModel): ReactNode => (
                 <Header image as="h6" className="header-with-icon">
                     <UserAvatar
@@ -91,16 +92,16 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
                         </Header.Subheader>
                     </Header.Content>
                 </Header>
-            )
+            ),
+            title: t("customerDataService:profiles.list.columns.profile")
         },
         {
             allowToggleVisibility: true,
+            dataIndex: "user",
             id: "user",
             key: "user",
-            title: t("customerDataService:profiles.list.columns.user"),
-            dataIndex: "user",
             render: (profile: ProfileModel): ReactNode => {
-                const userId = profile.user_id;
+                const userId:string = profile.user_id;
 
                 // Anonymous → only chip (don’t show user_id)
                 if (!userId) {
@@ -125,17 +126,17 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
                         data-testid="linked-user-chip"
                     />
                 );
-            }
+            },
+            title: t("customerDataService:profiles.list.columns.user")
         },
         {
             allowToggleVisibility: true,
+            dataIndex: "unified_profiles",
             id: "unified_profiles",
             key: "unified_profiles",
-            title: t("customerDataService:profiles.list.columns.unifiedProfiles"),
-            dataIndex: "unified_profiles",
             render: (profile: ProfileModel): ReactNode => {
-                const merged = profile.merged_from;
-                const hasMerged = Array.isArray(merged) && merged.length > 0;
+                const merged:Array<{ profile_id: string; reason: string }> = profile.merged_from;
+                const hasMerged:boolean = Array.isArray(merged) && merged.length > 0;
 
                 if (!hasMerged) {
                     return (
@@ -156,7 +157,8 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
                         data-testid="unified-profile-chip"
                     />
                 );
-            }
+            },
+            title: t("customerDataService:profiles.list.columns.unifiedProfiles")
         },
         {
             allowToggleVisibility: false,
@@ -170,8 +172,8 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
 
     const actions: TableActionsInterface[] = [
         {
+            hidden: (profile: ProfileModel) => !!profile.user_id,
             icon: (): SemanticICONS => "trash alternate",
-            hidden: (profile: ProfileModel) => !!profile.user_id, // only anonymous
             onClick: (_: SyntheticEvent, profile: ProfileModel): void => {
                 setDeletingProfile(profile);
                 setShowDeleteModal(true);
@@ -188,21 +190,19 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
             await deleteCDSProfile(deletingProfile.profile_id);
 
             dispatch(addAlert({
+                description: t("customerDataService:profiles.list.notifications.delete.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("customerDataService:profiles.list.notifications.delete.success.message"),
-                description: t("customerDataService:profiles.list.notifications.delete.success.description")
+                message: t("customerDataService:profiles.list.notifications.delete.success.message")
             }));
 
             onRefresh();
         } catch (error: any) {
             dispatch(addAlert({
-                level: AlertLevels.ERROR,
-                message: t("customerDataService:profiles.list.notifications.delete.error.message"),
                 description:
                     error?.response?.data?.description
-                    ?? error?.response?.data?.detail
-                    ?? error?.message
-                    ?? t("customerDataService:profiles.list.notifications.delete.error.description")
+                    ?? t("customerDataService:profiles.list.notifications.delete.error.description"),
+                level: AlertLevels.ERROR,
+                message: t("customerDataService:profiles.list.notifications.delete.error.message")
             }));
         } finally {
             setShowDeleteModal(false);

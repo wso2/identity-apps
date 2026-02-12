@@ -16,35 +16,33 @@
  * under the License.
  */
 
+import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { AlertInterface, AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { EmptyPlaceholder, LinkButton, ListLayout, PageLayout } from "@wso2is/react-components";
 import React, {
+    Dispatch,
     FunctionComponent,
     ReactElement,
     useEffect,
     useMemo,
     useState
 } from "react";
-import { PageLayout, ListLayout, EmptyPlaceholder, LinkButton } from "@wso2is/react-components";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { AlertInterface, AlertLevels } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
-
+import { DropdownProps, PaginationProps } from "semantic-ui-react";
+import { fetchProfileSchemaByScope, toAttributeDropdownOptions } from "../api/profile-attributes";
+import { fetchCDSProfiles } from "../api/profiles";
 import {
     AdvancedSearchWithMultipleFilters,
     FilterAttributeOption
 } from "../components/advanced-search-with-multipe-filters";
 
-import { DropdownProps, PaginationProps } from "semantic-ui-react";
 import ProfilesList from "../components/profile-list";
-import { ProfileModel, ProfilesListResponse } from "../models/profiles";
-import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
+import { ProfileSchemaGroupedScope, ProfileSchemaScopeResponse } from "../models/profile-attributes";
+import { ProfileListItem, ProfileModel, ProfilesListResponse } from "../models/profiles";
 
-import { fetchCDSProfiles } from "../api/cds-profiles";
-import { fetchProfileSchemaByScope, toAttributeDropdownOptions } from "../api/profile-attributes";
-import { ProfileSchemaGroupedScope } from "../models/profile-attributes";
-
-import { useTranslation } from "react-i18next";
-
-const DEFAULT_PAGE_SIZE = 10;
+const DEFAULT_PAGE_SIZE:number = 10;
 
 const DEFAULT_LIST_FIELDS: string[] = [
     "identity_attributes.username",
@@ -52,15 +50,15 @@ const DEFAULT_LIST_FIELDS: string[] = [
     "identity_attributes.lastname"
 ];
 
-const SCOPES: ProfileSchemaGroupedScope[] = [
-    "identity_attributes",
-    "traits",
-    "application_data"
-];
+// const SCOPES: ProfileSchemaGroupedScope[] = [
+//     "identity_attributes",
+//     "traits",
+//     "application_data"
+// ];
 
 const ProfilesPage: FunctionComponent = (): ReactElement => {
 
-    const dispatch = useDispatch();
+    const dispatch:Dispatch<any> = useDispatch();
     const { t } = useTranslation();
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
@@ -86,16 +84,14 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
      * VC-style API rejects with AxiosError. Keep parsing here, but messages come from i18n.
      */
     const getErrorMessage = (err: any, fallback: string): string => {
-        const description =
-            err?.response?.data?.description
-            || err?.response?.data?.detail
-            || err?.response?.data?.message;
+        const description: any = err?.response?.data?.message;
 
         if (description) {
             return String(description);
         }
 
-        const firstError = err?.response?.data?.errors?.[0]?.description;
+        const firstError: any = err?.response?.data?.errors?.[0]?.description;
+
         if (firstError) {
             return String(firstError);
         }
@@ -103,23 +99,22 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
         return fallback;
     };
 
-    /**
-     * NOTE: No need to pre-fetch schema "once".
-     * AdvancedSearch asks attributes lazily by scope via `loadAttributesForScope`.
-     * Keeping a warmup fetch is optional; remove if you don’t want extra calls on load.
-     */
-    useEffect(() => {
-        const warmup = async () => {
-            try {
-                await Promise.all(SCOPES.map((scope) => fetchProfileSchemaByScope(scope)));
-            } catch (err) {
-                // eslint-disable-next-line no-console
-                console.error("Failed to warm up schema scopes", err);
-            }
-        };
-
-        warmup();
-    }, []);
+    // /**
+    //  * NOTE: No need to pre-fetch schema "once".
+    //  * AdvancedSearch asks attributes lazily by scope via `loadAttributesForScope`.
+    //  */
+    // useEffect(() => {
+    //     const warmup = async () => {
+    //         try {
+    //             await Promise.all(SCOPES.map((scope:ProfileSchemaGroupedScope) => fetchProfileSchemaByScope(scope)));
+    //         } catch (err) {
+    //             // eslint-disable-next-line no-console
+    //             console.error("Failed to warm up schema scopes", err);
+    //         }
+    //     };
+    //
+    //     warmup();
+    // }, []);
 
 
     const fetchProfilesPage = async (cursor: string | null, page: number): Promise<void> => {
@@ -128,13 +123,13 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
 
         try {
             const res: ProfilesListResponse = await fetchCDSProfiles({
-                filter: searchQuery || undefined,
-                page_size: pageSize,
+                attributes: DEFAULT_LIST_FIELDS,
                 cursor,
-                attributes: DEFAULT_LIST_FIELDS
+                filter: searchQuery || undefined,
+                page_size: pageSize
             });
 
-            const list = res?.profiles ?? [];
+            const list:ProfileListItem[] = res?.profiles ?? [];
 
             setProfileList(list);
 
@@ -144,7 +139,6 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
             setCurrentCursor(cursor);
             setActivePage(page);
         } catch (err) {
-            // eslint-disable-next-line no-console
             console.error("Failed to fetch profiles", err);
             setError(err);
         } finally {
@@ -152,28 +146,24 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
         }
     };
 
-    // Initial load.
     useEffect(() => {
         fetchProfilesPage(null, 1);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // Re-fetch when filter / page size changes.
     useEffect(() => {
         fetchProfilesPage(null, 1);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ searchQuery, pageSize ]);
 
     useEffect(() => {
         if (!error) return;
 
         handleAlerts({
-            level: AlertLevels.ERROR,
-            message: t("cds:profiles.notifications.fetchProfiles.error.message"),
-            description: getErrorMessage(
-                error,
+            description: getErrorMessage(error,
                 t("cds:profiles.notifications.fetchProfiles.error.description")
-            )
+            ),
+            level: AlertLevels.ERROR,
+            message: t("cds:profiles.notifications.fetchProfiles.error.message")
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ error ]);
@@ -197,7 +187,7 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
             return [];
         }
 
-        const attrs = await fetchProfileSchemaByScope(scope as any);
+        const attrs:ProfileSchemaScopeResponse = await fetchProfileSchemaByScope(scope as any);
 
         return toAttributeDropdownOptions(scope, attrs) as FilterAttributeOption[];
     };
@@ -236,7 +226,7 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
     };
 
     const handlePaginationChange = (_: any, data: PaginationProps) => {
-        const targetPage = data.activePage as number;
+        const targetPage:number = data.activePage as number;
 
         if (targetPage === activePage) {
             return;
@@ -245,6 +235,7 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
         if (targetPage > activePage) {
             if (!nextCursor) return;
             fetchProfilesPage(nextCursor, targetPage);
+
             return;
         }
 
@@ -254,14 +245,14 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
         }
     };
 
-    const hasNext = !!nextCursor;
-    const hasPrev = !!previousCursor;
+    const hasNext:boolean = !!nextCursor;
+    const hasPrev:boolean = !!previousCursor;
 
     /**
      * Cursor pagination has no total pages.
      * Keep ListLayout pagination working by exposing a "virtual" totalPages.
      */
-    const virtualTotalPages = useMemo(() => {
+    const virtualTotalPages:number = useMemo(() => {
         return activePage + (hasNext ? 1 : 0);
     }, [ activePage, hasNext ]);
 
@@ -284,13 +275,13 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
                 showPagination={ true }
                 isLoading={ isLoading }
                 data-testid="profiles-list-layout"
-                paginationOptions={{
+                paginationOptions={ {
                     disableNextButton: !hasNext,
                     disablePreviousButton: !hasPrev,
                     showItemsPerPageDropdown: true
-                }}
+                } }
                 advancedSearch={
-                    <AdvancedSearchWithMultipleFilters
+                    (<AdvancedSearchWithMultipleFilters
                         onFilter={ handleRuleSearch }
                         onFetchAttributesByScope={ loadAttributesForScope }
                         placeholder={ t("cds:profiles.list.search.placeholder") }
@@ -298,7 +289,7 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
                         defaultSearchOperator="co"
                         triggerClearQuery={ triggerClearQuery }
                         scopes={ [ "identity_attributes", "traits", "application_data" ] }
-                    />
+                    />)
                 }
             >
                 { showPlaceholders() ?? (

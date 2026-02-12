@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { ReactComponent as ProfilesIcon } from "@wso2is/admin.cds.v1/assets/images/icons/cdsProfiles.svg";
+import { ReactComponent as CustomerDataIcon } from "@wso2is/admin.cds.v1/assets/images/icons/customerData.svg";
 import {
     ServerConfigurationsConstants
 } from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
@@ -189,9 +191,6 @@ import {
     ReactComponent as MCPServersOutlineIcon
 } from "../../themes/wso2is/assets/images/icons/outline-icons/mcp-servers-outline.svg";
 
-import { ReactComponent as TraitIcon } from "../../themes/default/assets/images/icons/trait.svg";
-import { ReactComponent as ApplicationDataIcon } from "../../themes/default/assets/images/icons/app-data.svg";
-
 /**
  * Typed interface of {@link getTechnologyLogos}
  */
@@ -276,6 +275,7 @@ export type GetSidePanelIconsInterface = {
     applications: FunctionComponent | ReactNode,
     approvals: FunctionComponent | ReactNode,
     certificate: FunctionComponent | ReactNode,
+    customerData : FunctionComponent | ReactNode,
     childIcon: FunctionComponent | ReactNode,
     claims: FunctionComponent | ReactNode,
     connections: FunctionComponent | ReactNode,
@@ -291,6 +291,7 @@ export type GetSidePanelIconsInterface = {
     organization: FunctionComponent | ReactNode,
     organizationLegacy: FunctionComponent | ReactNode,
     overview: FunctionComponent | ReactNode,
+    profiles: FunctionComponent | ReactNode,
     push: FunctionComponent | ReactNode,
     remoteFetch: FunctionComponent | ReactNode,
     remoteLogging: FunctionComponent | ReactNode,
@@ -305,8 +306,6 @@ export type GetSidePanelIconsInterface = {
     insights: FunctionComponent | ReactNode,
     agents: FunctionComponent | ReactNode,
     verifiableCredentials: FunctionComponent | ReactNode,
-    traits: FunctionComponent | ReactNode,
-    appData: FunctionComponent | ReactNode
 };
 
 /**
@@ -339,6 +338,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
             [ ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID ]: OtherSettingsOutlineIcon,
             default: PlugIcon
         },
+        customerData: CustomerDataIcon,
         emailTemplates: EmailIcon,
         gears: GearsIcon,
         groups: UserGroupIcon,
@@ -353,6 +353,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
         organizationRoles: OrganizationRolesIcon,
         overview: DashboardIcon,
         policyAdministration: AdminOutlineIcon,
+        profiles: ProfilesIcon,
         push: PushNotificationProviderIcon,
         remoteFetch: CodeForkIcon,
         remoteLogging: RemoteLoggingIcon,
@@ -363,9 +364,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
         sms: SMSIcon,
         userStore: DatabaseIcon,
         users: UserIcon,
-        verifiableCredentials: VerifiableCredentialsOutlineIcon,
-        traits: TraitIcon,
-        appData: ApplicationDataIcon,
+        verifiableCredentials: VerifiableCredentialsOutlineIcon
     };
 };
 

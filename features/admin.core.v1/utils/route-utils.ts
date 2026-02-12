@@ -19,12 +19,11 @@
 import {
     DatabaseDocumentIcon,
     PaletteIcon,
-    ProfileFlowIcon,
     SquareUserIcon,
-    UserAsteriskIcon,
     UserFlowIcon
 } from "@oxygen-ui/react-icons";
 import { FeatureStatus } from "@wso2is/access-control";
+import { ReactComponent as CustomerDataIcon } from "@wso2is/admin.cds.v1/assets/images/icons/customerData.svg";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { NavCategory, NavRouteInterface, RouteInterface } from "@wso2is/core/models";
 import groupBy from "lodash-es/groupBy";
@@ -292,9 +291,9 @@ export class RouteUtils {
         };
 
         const customerData: Omit<RouteInterface, "showOnSidePanel"> = {
-            icon: UserAsteriskIcon,
-            name: "Customer Data",
+            icon: CustomerDataIcon,
             id: "customerData",
+            name: "Customer Data",
             order: 8
         };
 
@@ -514,16 +513,6 @@ export class RouteUtils {
             {
                 category: manage,
                 id: "profiles",
-                parent: customerData
-            },
-            {
-                category: manage,
-                id: "profileAttributes",
-                parent: customerData
-            },
-            {
-                category: manage,
-                id: "unificationRules",
                 parent: customerData
             },
             {

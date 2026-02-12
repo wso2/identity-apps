@@ -22,8 +22,7 @@ import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
 
-import { ProfilesListResponse, ProfileModel } from "../models/profiles";
-import { getCustomerDataServiceEndpoints } from "../utils/cds-endpoints";
+import { ProfileModel, ProfilesListResponse } from "../models/profiles";
 
 /**
  * Initialize an auth-aware Http client (same pattern as VC templates).
@@ -37,13 +36,6 @@ export interface FetchProfilesParams {
     cursor?: string | null;
     attributes?: string[];
 }
-
-const getCDSEndpoints = () => {
-    // ✅ match how console builds other service endpoints
-    const serverOrigin: string = store.getState().config.deployment.serverOrigin;
-
-    return getCustomerDataServiceEndpoints(serverOrigin);
-};
 
 /**
  * GET /profiles (cursor pagination)
@@ -63,7 +55,7 @@ export const fetchCDSProfiles = (
             ...(params.cursor ? { cursor: params.cursor } : {}),
             ...(params.attributes?.length ? { attributes: params.attributes.join(",") } : {})
         },
-        url: getCDSEndpoints().profiles
+        url: store.getState().config.endpoints.cdsProfiles
     };
 
     return httpClient(requestConfig)
@@ -81,7 +73,7 @@ export const fetchCDSProfileDetails = (profileId: string): Promise<ProfileModel>
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${getCDSEndpoints().profiles}/${profileId}`
+        url: `${store.getState().config.endpoints.cdsProfiles}/${profileId}`
     };
 
     return httpClient(requestConfig)
@@ -101,7 +93,7 @@ export const deleteCDSProfile = (profileId: string): Promise<void> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: `${getCDSEndpoints().profiles}/${profileId}`
+        url: `${store.getState().config.endpoints.cdsProfiles}/${profileId}`
     };
 
     return httpClient(requestConfig)
