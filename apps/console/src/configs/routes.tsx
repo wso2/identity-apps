@@ -1695,70 +1695,10 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             icon: {
                 icon: <ProfileFlowIcon className="icon" fill="black" />
             },
-            id: "profiles",
+            id: "customerData",
             name: "Profiles",
             order: 32,
             path: AppConstants.getPaths().get("PROFILES"),
-            protected: true,
-            showOnSidePanel: true
-        },
-        {
-            category: "extensions:manage.sidePanel.categories.customerData",
-            // children: [
-            //     {
-            //         component: lazy(() => import("@wso2is/admin.cds.v1/components/unification-rule")),
-            //         exact: true,
-            //         icon: {
-            //             icon: getSidePanelIcons().childIcon
-            //         },
-            //         id: "customer-data-unification-rule-view",
-            //         name: "Unification Rule View",
-            //         path: AppConstants.getPaths().get("UNIFICATION_RULE"),
-            //         protected: true,
-            //         showOnSidePanel: false
-            //     }
-            // ],
-            component: lazy(() =>
-                import("@wso2is/admin.cds.v1/pages/unification-rules")
-            ),
-            exact: true,
-            icon: {
-                icon: <LinkIcon className="icon" fill="black" /> 
-            },
-            id: "unificationRules",
-            name: "Unification Rules",
-            order: 33,
-            path: AppConstants.getPaths().get("UNIFICATION_RULES"),
-            protected: true,
-            showOnSidePanel: true
-        },
-        {
-            category: "extensions:manage.sidePanel.categories.customerData",
-            children: [
-                {
-                    component: lazy(() => import("@wso2is/admin.cds.v1/components/profile-attribute")),
-                    exact: true,
-                    icon: {
-                        icon: getSidePanelIcons().childIcon
-                    },
-                    id: "customer-data-profile-attribute",
-                    name: "Profile Attribute View",
-                    path: AppConstants.getPaths().get("PROFILE_ATTRIBUTE"),
-                    protected: true,
-                    showOnSidePanel: false
-                }
-            ],
-            component: lazy(() =>
-                import("@wso2is/admin.cds.v1/pages/profile-attributes")
-            ),
-            exact: true,
-            icon: {
-                icon: <CircleStarIcon className="icon" fill="black" /> 
-            },
-            id: "profileAttributes",
-            name: "Profile Attributes",
-            order: 34,
-            path: AppConstants.getPaths().get("PROFILE_ATTRIBUTES"),
             protected: true,
             showOnSidePanel: true
         },

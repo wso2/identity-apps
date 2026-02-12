@@ -16,45 +16,102 @@
  * under the License.
  */
 
-import axios from "axios";
-import { CDM_BASE_URL } from "../models/constants";
-import { ProfilesListResponse } from "../models/profiles";
+import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
+import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
+import { HttpMethods } from "@wso2is/core/models";
+import { AxiosError, AxiosResponse } from "axios";
+
+import { ProfilesListResponse, ProfileModel } from "../models/profiles";
+import { getCustomerDataServiceEndpoints } from "../utils/cds-endpoints";
+
+/**
+ * Initialize an auth-aware Http client (same pattern as VC templates).
+ */
+const httpClient: HttpClientInstance =
+    AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 export interface FetchProfilesParams {
     filter?: string;
     page_size?: number;
     cursor?: string | null;
-    attributes?: string[];   // backend expects "attributes"
+    attributes?: string[];
 }
 
-export const fetchProfiles = async (
+const getCDSEndpoints = () => {
+    // ✅ match how console builds other service endpoints
+    const serverOrigin: string = store.getState().config.deployment.serverOrigin;
+
+    return getCustomerDataServiceEndpoints(serverOrigin);
+};
+
+/**
+ * GET /profiles (cursor pagination)
+ */
+export const fetchCDSProfiles = (
     params: FetchProfilesParams = {}
 ): Promise<ProfilesListResponse> => {
-
-    const res = await axios.get(`${CDM_BASE_URL}/profiles`, {
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
         params: {
             ...(params.filter ? { filter: params.filter } : {}),
             ...(params.page_size ? { page_size: params.page_size } : {}),
             ...(params.cursor ? { cursor: params.cursor } : {}),
-            ...(params.attributes?.length
-                ? { attributes: params.attributes.join(",") }
-                : {})
-        }
-    });
+            ...(params.attributes?.length ? { attributes: params.attributes.join(",") } : {})
+        },
+        url: getCDSEndpoints().profiles
+    };
 
-    return res.data;
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => Promise.resolve(response.data as ProfilesListResponse))
+        .catch((error: AxiosError) => Promise.reject(error));
 };
 
-export const fetchUserDetails = async (profileId: string) => {
-    try {
-        const response = await axios.get(`${CDM_BASE_URL}/profiles/${profileId}`);
-        return response.data;
-    } catch (error) {
-        console.error(`Error fetching user details for ${profileId}:`, error);
-        return null;
-    }
+/**
+ * GET /profiles/{id}
+ */
+export const fetchCDSProfileDetails = (profileId: string): Promise<ProfileModel> => {
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: `${getCDSEndpoints().profiles}/${profileId}`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => Promise.resolve(response.data as ProfileModel))
+        .catch((error: AxiosError) => Promise.reject(error));
 };
 
-export const deleteUserProfile = async (profileId: string): Promise<void> => {
-    await axios.delete(`${CDM_BASE_URL}/profiles/${profileId}`);
+/**
+ * DELETE /profiles/{id}
+ *
+ * Note: API usually returns 204. If yours returns 200, this still resolves.
+ */
+export const deleteCDSProfile = (profileId: string): Promise<void> => {
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.DELETE,
+        url: `${getCDSEndpoints().profiles}/${profileId}`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 204 && response.status !== 200) {
+                // VC-style: reject so caller can handle alerts.
+                return Promise.reject(response);
+            }
+
+            return Promise.resolve();
+        })
+        .catch((error: AxiosError) => Promise.reject(error));
 };

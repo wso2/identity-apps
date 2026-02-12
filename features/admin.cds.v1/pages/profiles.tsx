@@ -23,25 +23,26 @@ import React, {
     useMemo,
     useState
 } from "react";
-import { PageLayout, ListLayout, EmptyPlaceholder } from "@wso2is/react-components";
+import { PageLayout, ListLayout, EmptyPlaceholder, LinkButton } from "@wso2is/react-components";
 import { useDispatch } from "react-redux";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+
 import {
     AdvancedSearchWithMultipleFilters,
     FilterAttributeOption
 } from "../components/advanced-search-with-multipe-filters";
+
 import { DropdownProps, PaginationProps } from "semantic-ui-react";
 import ProfilesList from "../components/profile-list";
 import { ProfileModel, ProfilesListResponse } from "../models/profiles";
 import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/ui";
-import { fetchProfiles } from "../api/profiles";
-import { ProfileSchemaGroupedScope, ProfileSchemaScope } from "../models/profile-attributes";
-import {
-    fetchProfileSchemaByScope,
-    toAttributeDropdownOptions
-} from "../api/profile-attributes";
-import { LinkButton } from "@wso2is/react-components";
+
+import { fetchCDSProfiles } from "../api/cds-profiles";
+import { fetchProfileSchemaByScope, toAttributeDropdownOptions } from "../api/profile-attributes";
+import { ProfileSchemaGroupedScope } from "../models/profile-attributes";
+
+import { useTranslation } from "react-i18next";
 
 const DEFAULT_PAGE_SIZE = 10;
 
@@ -60,6 +61,7 @@ const SCOPES: ProfileSchemaGroupedScope[] = [
 const ProfilesPage: FunctionComponent = (): ReactElement => {
 
     const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
@@ -76,41 +78,56 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
     const [ nextCursor, setNextCursor ] = useState<string | null>(null);
     const [ previousCursor, setPreviousCursor ] = useState<string | null>(null);
 
-    const [ returnedCount, setReturnedCount ] = useState<number>(0);
-
-    // ✅ Advanced search dropdown options (scoped)
-    const [ filterAttributeOptions, setFilterAttributeOptions ] = useState<FilterAttributeOption[]>([]);
     const handleAlerts = (alert: AlertInterface) => {
         dispatch(addAlert(alert));
     };
 
-    // ✅ Fetch schema attributes ONCE (per scope)
-    useEffect(() => {
-        const fetchSchemaAttributes = async () => {
-            try {
-                const optionsByScope = await Promise.all(
-                    SCOPES.map(async (scope) => {
-                        const attrs = await fetchProfileSchemaByScope(scope);
-                        return toAttributeDropdownOptions(scope, attrs) as FilterAttributeOption[];
-                    })
-                );
+    /**
+     * VC-style API rejects with AxiosError. Keep parsing here, but messages come from i18n.
+     */
+    const getErrorMessage = (err: any, fallback: string): string => {
+        const description =
+            err?.response?.data?.description
+            || err?.response?.data?.detail
+            || err?.response?.data?.message;
 
-                setFilterAttributeOptions(optionsByScope.flat());
+        if (description) {
+            return String(description);
+        }
+
+        const firstError = err?.response?.data?.errors?.[0]?.description;
+        if (firstError) {
+            return String(firstError);
+        }
+
+        return fallback;
+    };
+
+    /**
+     * NOTE: No need to pre-fetch schema "once".
+     * AdvancedSearch asks attributes lazily by scope via `loadAttributesForScope`.
+     * Keeping a warmup fetch is optional; remove if you don’t want extra calls on load.
+     */
+    useEffect(() => {
+        const warmup = async () => {
+            try {
+                await Promise.all(SCOPES.map((scope) => fetchProfileSchemaByScope(scope)));
             } catch (err) {
                 // eslint-disable-next-line no-console
-                console.error("Failed to fetch profile schema attributes", err);
+                console.error("Failed to warm up schema scopes", err);
             }
         };
 
-        fetchSchemaAttributes();
+        warmup();
     }, []);
+
 
     const fetchProfilesPage = async (cursor: string | null, page: number): Promise<void> => {
         setIsLoading(true);
         setError(null);
 
         try {
-            const res: ProfilesListResponse = await fetchProfiles({
+            const res: ProfilesListResponse = await fetchCDSProfiles({
                 filter: searchQuery || undefined,
                 page_size: pageSize,
                 cursor,
@@ -121,13 +138,11 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
 
             setProfileList(list);
 
-            setReturnedCount(res?.pagination?.count ?? list.length);
             setNextCursor(res?.pagination?.next_cursor ?? null);
             setPreviousCursor(res?.pagination?.previous_cursor ?? null);
 
             setCurrentCursor(cursor);
             setActivePage(page);
-
         } catch (err) {
             // eslint-disable-next-line no-console
             console.error("Failed to fetch profiles", err);
@@ -149,14 +164,16 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ searchQuery, pageSize ]);
 
-    // Error alert.
     useEffect(() => {
         if (!error) return;
 
         handleAlerts({
             level: AlertLevels.ERROR,
-            message: "Failed to load profiles",
-            description: error?.response?.data?.description ?? "An unexpected error occurred."
+            message: t("cds:profiles.notifications.fetchProfiles.error.message"),
+            description: getErrorMessage(
+                error,
+                t("cds:profiles.notifications.fetchProfiles.error.description")
+            )
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ error ]);
@@ -179,11 +196,9 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
         if (scope !== "identity_attributes" && scope !== "traits" && scope !== "application_data") {
             return [];
         }
-    
+
         const attrs = await fetchProfileSchemaByScope(scope as any);
-    
-        // IMPORTANT: make sure this helper does NOT override `scope`
-        // It should use the `scope` param you pass in.
+
         return toAttributeDropdownOptions(scope, attrs) as FilterAttributeOption[];
     };
 
@@ -194,32 +209,29 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
                 <EmptyPlaceholder
                     action={ (
                         <LinkButton onClick={ handleSearchQueryClear }>
-                            Clear search
+                            { t("cds:profiles.placeholders.emptySearch.action") }
                         </LinkButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
-                    title="No matching profiles"
-                    subtitle={ [
-                        "We couldn’t find any profiles matching your search.",
-                        "Try changing filters or clearing the search."
-                    ] }
+                    title={ t("cds:profiles.placeholders.emptySearch.title") }
+                    subtitle={ t("cds:profiles.placeholders.emptySearch.subtitle") }
                 />
             );
         }
-    
+
         // When list is empty (no profiles at all).
         if (!searchQuery && !isLoading && profileList.length === 0) {
             return (
                 <EmptyPlaceholder
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    title="No customer profiles found"
-                    subtitle={ [] }
+                    title={ t("cds:profiles.placeholders.emptyList.title") }
+                    subtitle={ t("cds:profiles.placeholders.emptyList.subtitle") }
                 />
             );
         }
-    
+
         return null;
     };
 
@@ -230,14 +242,12 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
             return;
         }
 
-        // Going next.
         if (targetPage > activePage) {
             if (!nextCursor) return;
             fetchProfilesPage(nextCursor, targetPage);
             return;
         }
 
-        // Going prev.
         if (targetPage < activePage) {
             if (!previousCursor) return;
             fetchProfilesPage(previousCursor, targetPage);
@@ -257,61 +267,50 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
 
     return (
         <PageLayout
-            title="Customer Profiles"
-            pageTitle="Customer Profiles"
-            description="View and manage unified customer profile data."
+            title={ t("cds:profiles.page.title") }
+            pageTitle={ t("cds:profiles.page.heading") }
+            description={ t("cds:profiles.page.description") }
             data-testid="profiles-page-layout"
         >
-            {profileList.length === 0 && !isLoading ? (
-                <EmptyPlaceholder
-                    image={ getEmptyPlaceholderIllustrations().newList }
-                    imageSize="tiny"
-                    title="No Customer profiles found"
-                    subtitle=""
-                />
-            ) : (
-                <ListLayout
-                    currentListSize={ profileList?.length ?? 0 }
-                    listItemLimit={ pageSize }
-                    onItemsPerPageDropdownChange={ handleItemsPerPageChange }
-                    onPageChange={ handlePaginationChange }
+            <ListLayout
+                currentListSize={ profileList?.length ?? 0 }
+                listItemLimit={ pageSize }
+                onItemsPerPageDropdownChange={ handleItemsPerPageChange }
+                onPageChange={ handlePaginationChange }
 
-                    // Virtual cursor pagination.
-                    totalPages={ virtualTotalPages }
-                    totalListSize={ (activePage - 1) * pageSize + (profileList?.length ?? 0) }
+                totalPages={ virtualTotalPages }
+                totalListSize={ (activePage - 1) * pageSize + (profileList?.length ?? 0) }
 
-                    showPagination={ true }
-                    isLoading={ isLoading }
-                    data-testid="profiles-list-layout"
-                    paginationOptions={{
-                        disableNextButton: !hasNext,
-                        disablePreviousButton: !hasPrev,
-                        showItemsPerPageDropdown: true
-                    }}
-                    advancedSearch={
-                        <AdvancedSearchWithMultipleFilters
+                showPagination={ true }
+                isLoading={ isLoading }
+                data-testid="profiles-list-layout"
+                paginationOptions={{
+                    disableNextButton: !hasNext,
+                    disablePreviousButton: !hasPrev,
+                    showItemsPerPageDropdown: true
+                }}
+                advancedSearch={
+                    <AdvancedSearchWithMultipleFilters
                         onFilter={ handleRuleSearch }
                         onFetchAttributesByScope={ loadAttributesForScope }
-                        placeholder="Search profiles"
+                        placeholder={ t("cds:profiles.list.search.placeholder") }
                         defaultSearchAttribute="profile_id"
                         defaultSearchOperator="co"
                         triggerClearQuery={ triggerClearQuery }
                         scopes={ [ "identity_attributes", "traits", "application_data" ] }
                     />
-                    
-                    }
-                >
-                    { showPlaceholders() ?? (
-                        <ProfilesList
-                            profiles={ profileList }
-                            isLoading={ isLoading }
-                            onRefresh={ () => fetchProfilesPage(currentCursor, activePage) }
-                            onSearchQueryClear={ handleSearchQueryClear }
-                            searchQuery={ searchQuery }
-                        />
-                    ) }
-                </ListLayout>
-            )}
+                }
+            >
+                { showPlaceholders() ?? (
+                    <ProfilesList
+                        profiles={ profileList }
+                        isLoading={ isLoading }
+                        onRefresh={ () => fetchProfilesPage(currentCursor, activePage) }
+                        onSearchQueryClear={ handleSearchQueryClear }
+                        searchQuery={ searchQuery }
+                    />
+                ) }
+            </ListLayout>
         </PageLayout>
     );
 };

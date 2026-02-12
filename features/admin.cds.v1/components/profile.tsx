@@ -1,3 +1,21 @@
+/**
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 import React, {
     FunctionComponent,
     ReactElement,
@@ -32,24 +50,15 @@ import {
 
 import { Divider, Form, TabProps, Table, Image } from "semantic-ui-react";
 
-import { fetchUserDetails, deleteUserProfile } from "../api/profiles";
+import { fetchCDSProfileDetails, deleteCDSProfile } from "../api/cds-profiles";
+import type { ProfileModel } from "../models/profiles";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 
-type MergedFromItem = {
-    profile_id: string;
-    reason?: string;
-};
-
-type CDSProfile = {
-    profile_id: string;
-    meta?: {
-        created_at?: string;
-        updated_at?: string;
-        location?: string;
-    };
-    identity_attributes?: Record<string, unknown>;
-    merged_from?: MergedFromItem[];
-};
+/**
+ * i18n (keep these keys aligned with your CDS i18n namespace).
+ * Replace the path with your actual hook if different.
+ */
+import { useTranslation } from "react-i18next";
 
 type Props =
     IdentifiableComponentInterface &
@@ -61,43 +70,64 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
     const {
         match,
         history,
-        [ "data-testid" ]: testId = "cdm-profile-details",
-        [ "data-componentid" ]: componentId = "cdm-profile-details"
+        [ "data-testid" ]: testId = "cds-profile-details",
+        [ "data-componentid" ]: componentId = "cds-profile-details"
     } = props;
+
+    const { t } = useTranslation();
 
     const dispatch: Dispatch<any> = useDispatch();
     const profileId: string = match?.params?.id;
 
-    const [ profile, setProfile ] = useState<CDSProfile | null>(null);
+    const [ profile, setProfile ] = useState<ProfileModel | null>(null);
     const [ isLoading, setIsLoading ] = useState<boolean>(true);
     const [ activeTabIndex, setActiveTabIndex ] = useState<number>(0);
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ isDeleting, setIsDeleting ] = useState<boolean>(false);
 
-    // Profile data viewer modal
     const [ isProfileDataViewOpen, setIsProfileDataViewOpen ] = useState<boolean>(false);
 
-    const [ alert, setAlert, alertComponent ] = useConfirmationModalAlert();
+    const [ modalAlert, setModalAlert, modalAlertComponent ] = useConfirmationModalAlert();
 
     const handleAlerts = (alert: AlertInterface): void => {
         dispatch(addAlert(alert));
+    };
+
+    const getErrorMessage = (error: any, fallback: string): string => {
+        const description =
+            error?.response?.data?.description
+            || error?.response?.data?.detail
+            || error?.response?.data?.message;
+
+        if (description) {
+            return String(description);
+        }
+
+        const firstError = error?.response?.data?.errors?.[0]?.description;
+
+        if (firstError) {
+            return String(firstError);
+        }
+
+        return fallback;
     };
 
     const fetchProfile = async (): Promise<void> => {
         setIsLoading(true);
 
         try {
-            const data = await fetchUserDetails(profileId);
+            const data: ProfileModel = await fetchCDSProfileDetails(profileId);
 
-            if (!data) {
-                setProfile(null);
-                return;
-            }
-
-            setProfile(data);
-        } catch {
+            setProfile(data ?? null);
+        } catch (error: any) {
             setProfile(null);
+
+            handleAlerts({
+                description: getErrorMessage(error, t("customerDataService:profiles.details.notifications.fetchProfile.error.description")),
+                level: AlertLevels.ERROR,
+                message: t("customerDataService:common.notifications.error")
+            });
         } finally {
             setIsLoading(false);
         }
@@ -111,23 +141,22 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
     }, [ profileId ]);
 
     const userId: string | null = useMemo(() => {
-        const direct = (profile as any)?.user_id;
-        if (direct) {
-            return String(direct);
+        if (profile?.user_id) {
+            return String(profile.user_id);
         }
 
         const fromIdentity = profile?.identity_attributes?.["user_id"];
+
         return fromIdentity ? String(fromIdentity) : null;
     }, [ profile ]);
 
-    /** Hide Danger Zone if userId exists */
     const showDangerZone: boolean = useMemo(() => {
         return Boolean(profile) && !userId;
     }, [ profile, userId ]);
 
     const handleTabChange = (_: SyntheticEvent, data: TabProps): void => {
         setActiveTabIndex(data.activeIndex as number);
-        setAlert(null);
+        setModalAlert(null);
     };
 
     const profileJsonString: string = useMemo(() => {
@@ -137,10 +166,10 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
     const copyProfileJson = (): void => {
         navigator.clipboard.writeText(profileJsonString);
 
-        setAlert({
-            description: "Profile data copied to clipboard.",
+        setModalAlert({
+            description: t("customerDataService:profiles.details.profileData.copy.success.description"),
             level: AlertLevels.SUCCESS,
-            message: "Copied"
+            message: t("customerDataService:profiles.details.profileData.copy.success.message")
         });
     };
 
@@ -157,10 +186,10 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
 
         window.URL.revokeObjectURL(url);
 
-        setAlert({
-            description: "Profile data exported.",
+        setModalAlert({
+            description: t("customerDataService:profiles.details.profileData.export.success.description"),
             level: AlertLevels.SUCCESS,
-            message: "Exported"
+            message: t("customerDataService:profiles.details.profileData.export.success.message")
         });
     };
 
@@ -184,36 +213,24 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
 
         return (
             <Form.Field>
-                <label>Profile Data</label>
+                <label>{ t("customerDataService:profiles.details.form.profileData.label") }</label>
 
                 <div style={ { display: "flex", alignItems: "center", gap: 12 } }>
                     <a
                         role="button"
                         style={ { cursor: "pointer" } }
                         onClick={ (): void => {
-                            setAlert(null);
+                            setModalAlert(null);
                             setIsProfileDataViewOpen(true);
                         } }
                     >
-                        View
+                        { t("customerDataService:profiles.details.profileData.actions.view") }
                     </a>
-                    <a
-                        role="button"
-                        style={ { cursor: "pointer" } }
-                        onClick={ (): void => {
-                            copyProfileJson();
-                        } }
-                    >
-                        Copy
+                    <a role="button" style={ { cursor: "pointer" } } onClick={ copyProfileJson }>
+                        { t("customerDataService:profiles.details.profileData.actions.copy") }
                     </a>
-                    <a
-                        role="button"
-                        style={ { cursor: "pointer" } }
-                        onClick={ (): void => {
-                            exportProfileJson();
-                        } }
-                    >
-                        Export
+                    <a role="button" style={ { cursor: "pointer" } } onClick={ exportProfileJson }>
+                        { t("customerDataService:profiles.details.profileData.actions.export") }
                     </a>
                 </div>
             </Form.Field>
@@ -225,18 +242,22 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
 
         return (
             <Form.Field>
-                <label>Merged From</label>
+                <label>{ t("customerDataService:profiles.details.unifiedProfiles.title") }</label>
 
                 { !merged.length ? (
                     <div style={ { opacity: 0.7 } }>
-                        No unified profiles found for this profile.
+                        { t("customerDataService:profiles.details.unifiedProfiles.empty") }
                     </div>
                 ) : (
                     <Table compact="very" basic="very" celled>
                         <Table.Header>
                             <Table.Row>
-                                <Table.HeaderCell>Profile ID</Table.HeaderCell>
-                                <Table.HeaderCell>Reason</Table.HeaderCell>
+                                <Table.HeaderCell>
+                                    { t("customerDataService:profiles.details.unifiedProfiles.columns.profileId") }
+                                </Table.HeaderCell>
+                                <Table.HeaderCell>
+                                    { t("customerDataService:profiles.details.unifiedProfiles.columns.reason") }
+                                </Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
                         <Table.Body>
@@ -262,11 +283,17 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
             <>
                 <EmphasizedSegment padded="very">
                     <Form>
-                        { renderField("Profile ID", profile.profile_id) }
-                        { renderField("User ID", userId) }
-                        { renderField("Created Date", profile.meta?.created_at ? profile.meta.created_at.split("T")[0] : null) } 
-                        { renderField("Updated Date", profile.meta?.updated_at ? profile.meta.updated_at.split("T")[0] : null) }
-                        { renderField("Location", profile.meta?.location ?? null) }
+                        { renderField(t("customerDataService:profiles.details.form.profileId.label"), profile.profile_id) }
+                        { renderField(t("customerDataService:profiles.details.form.userId.label"), userId) }
+                        { renderField(
+                            t("customerDataService:profiles.details.form.createdDate.label"),
+                            profile.meta?.created_at ? profile.meta.created_at.split("T")[0] : null
+                        ) }
+                        { renderField(
+                            t("customerDataService:profiles.details.form.updatedDate.label"),
+                            profile.meta?.updated_at ? profile.meta.updated_at.split("T")[0] : null
+                        ) }
+                        { renderField(t("customerDataService:profiles.details.form.location.label"), profile.meta?.location ?? null) }
 
                         <Divider />
 
@@ -275,13 +302,13 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                 </EmphasizedSegment>
 
                 { showDangerZone && (
-                    <DangerZoneGroup sectionHeader="Danger Zone">
+                    <DangerZoneGroup sectionHeader={ t("customerDataService:common.dangerZone.header") }>
                         <DangerZone
-                            actionTitle="Delete profile"
-                            header="Delete this profile"
-                            subheader="This profile is not linked to a user ID and can be deleted."
+                            actionTitle={ t("customerDataService:profiles.details.dangerZone.delete.actionTitle") }
+                            header={ t("customerDataService:profiles.details.dangerZone.delete.header") }
+                            subheader={ t("customerDataService:profiles.details.dangerZone.delete.subheader") }
                             onActionClick={ (): void => {
-                                setAlert(null);
+                                setModalAlert(null);
                                 setShowDeleteConfirmationModal(true);
                             } }
                             isButtonDisabled={ isDeleting }
@@ -307,46 +334,38 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
     };
 
     const panes: ResourceTabPaneInterface[] = [
-        { componentId: "general", menuItem: "General", render: renderGeneralTab },
-        { componentId: "unified-profiles", menuItem: "Unified Profiles", render: renderUnifiedProfilesTab }
+        { componentId: "general", menuItem: t("customerDataService:profiles.details.tabs.general"), render: renderGeneralTab },
+        { componentId: "unified-profiles", menuItem: t("customerDataService:profiles.details.tabs.unifiedProfiles"), render: renderUnifiedProfilesTab }
     ];
 
     const handleProfileDelete = (): void => {
         if (userId) {
-            setAlert({
-                description: "Profiles linked to a user ID cannot be deleted.",
+            setModalAlert({
+                description: t("customerDataService:profiles.details.notifications.deleteProfile.notAllowed.description"),
                 level: AlertLevels.WARNING,
-                message: "Not allowed"
+                message: t("customerDataService:common.notifications.notAllowed")
             });
+
             return;
         }
 
         setIsDeleting(true);
 
-        deleteUserProfile(profileId)
+        deleteCDSProfile(profileId)
             .then(() => {
                 handleAlerts({
-                    description: "Profile deleted successfully.",
+                    description: t("customerDataService:profiles.details.notifications.deleteProfile.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: "Success"
+                    message: t("customerDataService:profiles.details.notifications.deleteProfile.success.message")
                 });
 
                 history.push(AppConstants.getPaths().get("PROFILES"));
             })
             .catch((error: any) => {
-                if (error?.response?.data?.description) {
-                    setAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: "Error"
-                    });
-                    return;
-                }
-
-                setAlert({
-                    description: "Failed to delete profile.",
+                setModalAlert({
+                    description: getErrorMessage(error, t("customerDataService:profiles.details.notifications.deleteProfile.error.description")),
                     level: AlertLevels.ERROR,
-                    message: "Error"
+                    message: t("customerDataService:common.notifications.error")
                 });
             })
             .finally(() => {
@@ -365,12 +384,16 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                     </span>
                 </Image>
             ) }
-            title={ profile?.profile_id || "Profile" }
-            pageTitle="Profile"
-            description={ userId ? `Linked User ID: ${ userId }` : "Customer profile" }
+            title={ profile?.profile_id || t("customerDataService:profiles.details.page.fallbackTitle") }
+            pageTitle={ t("customerDataService:profiles.details.page.pageTitle") }
+            description={
+                userId
+                    ? t("customerDataService:profiles.details.page.descriptionLinkedUser", { userId })
+                    : t("customerDataService:profiles.details.page.description")
+            }
             backButton={ {
                 onClick: () => history.push(AppConstants.getPaths().get("PROFILES")),
-                text: "Go back to Profiles"
+                text: t("customerDataService:profiles.details.page.backButton")
             } }
             data-testid={ testId }
             data-componentid={ componentId }
@@ -388,24 +411,24 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                     open={ isProfileDataViewOpen }
                     onClose={ (): void => {
                         setIsProfileDataViewOpen(false);
-                        setAlert(null);
+                        setModalAlert(null);
                     } }
                     type="info"
-                    primaryAction="Close"
-                    secondaryAction="Export"
+                    primaryAction={ t("customerDataService:common.buttons.close") }
+                    secondaryAction={ t("customerDataService:profiles.details.profileData.actions.export") }
                     onPrimaryActionClick={ (): void => {
                         setIsProfileDataViewOpen(false);
-                        setAlert(null);
+                        setModalAlert(null);
                     } }
                     onSecondaryActionClick={ exportProfileJson }
                     closeOnDimmerClick={ false }
                 >
                     <ConfirmationModal.Header>
-                        Profile Data
+                        { t("customerDataService:profiles.details.profileData.modal.title") }
                     </ConfirmationModal.Header>
 
                     <ConfirmationModal.Content>
-                        <div className="modal-alert-wrapper">{ alert && alertComponent }</div>
+                        <div className="modal-alert-wrapper">{ modalAlert && modalAlertComponent }</div>
 
                         <div style={ { display: "flex", justifyContent: "flex-end", gap: 8, marginBottom: 10 } }>
                             <button
@@ -413,7 +436,7 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                                 className="ui button basic mini"
                                 onClick={ copyProfileJson }
                             >
-                                Copy
+                                { t("customerDataService:profiles.details.profileData.actions.copy") }
                             </button>
 
                             <button
@@ -421,7 +444,7 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                                 className="ui button primary mini"
                                 onClick={ exportProfileJson }
                             >
-                                Export
+                                { t("customerDataService:profiles.details.profileData.actions.export") }
                             </button>
                         </div>
 
@@ -455,36 +478,40 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                     data-componentid={ `${componentId}-confirmation-modal` }
                     onClose={ (): void => {
                         setShowDeleteConfirmationModal(false);
-                        setAlert(null);
+                        setModalAlert(null);
                     } }
                     type="negative"
                     open={ showDeleteConfirmationModal }
-                    assertionHint="I confirm that I want to delete this profile."
+                    assertionHint={ t("customerDataService:profiles.details.confirmations.deleteProfile.assertionHint") }
                     assertionType="checkbox"
-                    primaryAction="Confirm"
-                    secondaryAction="Cancel"
+                    primaryAction={ t("customerDataService:common.buttons.confirm") }
+                    secondaryAction={ t("customerDataService:common.buttons.cancel") }
                     onSecondaryActionClick={ (): void => {
                         setShowDeleteConfirmationModal(false);
-                        setAlert(null);
+                        setModalAlert(null);
                     } }
                     onPrimaryActionClick={ handleProfileDelete }
                     closeOnDimmerClick={ false }
                 >
                     <ConfirmationModal.Header data-componentid={ `${componentId}-confirmation-modal-header` }>
-                        Delete profile
+                        { t("customerDataService:profiles.details.confirmations.deleteProfile.header") }
                     </ConfirmationModal.Header>
                     <ConfirmationModal.Message
                         data-componentid={ `${componentId}-confirmation-modal-message` }
                         attached
                         negative
                     >
-                        This action cannot be undone.
+                        { t("customerDataService:profiles.details.confirmations.deleteProfile.message") }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content>
-                        <div className="modal-alert-wrapper">{ alert && alertComponent }</div>
+                        <div className="modal-alert-wrapper">{ modalAlert && modalAlertComponent }</div>
 
                         <div style={ { display: "grid", gap: 8 } }>
-                            <div><strong>Profile ID:</strong> { profile?.profile_id }</div>
+                            <div>
+                                <strong>{ t("customerDataService:profiles.details.confirmations.deleteProfile.profileIdLabel") }</strong>
+                                { " " }
+                                { profile?.profile_id }
+                            </div>
                         </div>
                     </ConfirmationModal.Content>
                 </ConfirmationModal>

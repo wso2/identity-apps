@@ -16,9 +16,20 @@
  * under the License.
  */
 
-   .multiple-filters {
-    .ui.dropdown .menu {
-      z-index: 1200 !important;
-    }
-  }
-  
+import { CustomerDataServiceEndpointsInterface } from "../m./endpoints
+
+/**
+ * Get the resource endpoints for Customer Data Service (CDS) related operations.
+ *
+ * @returns Customer Data Service resource endpoints.
+ */
+export const getCustomerDataServiceEndpoints = (
+    serverOrigin: string
+): CustomerDataServiceEndpointsInterface => {
+    return {
+        profiles: `${ serverOrigin }/cds/api/v1/profiles`,
+        profileSchema: `${ serverOrigin }/cds/api/v1/profile-schema`
+        unificiationRules: `${ serverOrigin }/cds/api/v1/unification-rules`,
+        adminConfig: `${ serverOrigin }/cds/api/v1/config`
+    };
+};

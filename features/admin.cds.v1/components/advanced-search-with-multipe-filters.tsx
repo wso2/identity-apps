@@ -344,7 +344,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                     mx: "auto",
                                     overflow: "visible"
                                 } }
-                                className="rules-like-filters"
+                                className="multiple-filters"
                             >
                                 { filterGroups.map((row, index) => {
                                     const appScope = isAppScope(row.scope);

@@ -25,7 +25,7 @@ import React, {
     useState
 } from "react";
 import { DataTable, ConfirmationModal, UserAvatar } from "@wso2is/react-components";
-import { TableActionsInterface, TableColumnInterface } from "@wso2is/react-components";
+import type { TableActionsInterface, TableColumnInterface } from "@wso2is/react-components";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { useDispatch } from "react-redux";
@@ -33,8 +33,10 @@ import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
 import { Header, SemanticICONS } from "semantic-ui-react";
 import Chip from "@oxygen-ui/react/Chip/Chip";
-import { ProfileModel } from "../models/profiles";
-import { deleteUserProfile } from "../api/profiles";
+
+import type { ProfileModel } from "../models/profiles";
+import { deleteCDSProfile } from "../api/cds-profiles";
+import { useTranslation } from "react-i18next";
 
 interface ProfilesListProps {
     profiles?: ProfileModel[];
@@ -50,25 +52,17 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
     onRefresh
 }: ProfilesListProps): ReactElement => {
 
+    const { t } = useTranslation();
     const dispatch = useDispatch();
 
     const [ deletingProfile, setDeletingProfile ] = useState<ProfileModel | null>(null);
-    const [ showDeleteModal, setShowDeleteModal ] = useState(false);
+    const [ showDeleteModal, setShowDeleteModal ] = useState<boolean>(false);
 
     const getDisplayName = (profile: ProfileModel): string => {
-        const given =
-            profile.identity_attributes?.givenname
-        const last =
-            profile.identity_attributes?.lastname 
+        const given = (profile?.identity_attributes as any)?.givenname;
+        const last = (profile?.identity_attributes as any)?.lastname;
 
-        const full = `${ given ?? "" } ${ last ?? "" }`.trim();
-
-        return full;
-    };
-
-    const shortId = (id?: string): string => {
-        if (!id) return "";
-        return id.length > 8 ? `${ id.slice(0, 8) }…` : id;
+        return `${given ?? ""} ${last ?? ""}`.trim();
     };
 
     const columns: TableColumnInterface[] = useMemo(() => ([
@@ -77,7 +71,7 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
             dataIndex: "profile_id",
             id: "profile_id",
             key: "profile_id",
-            title: "Profile",
+            title: t("customerDataService:profiles.list.columns.profile"),
             render: (profile: ProfileModel): ReactNode => (
                 <Header image as="h6" className="header-with-icon">
                     <UserAvatar
@@ -93,7 +87,7 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
                     <Header.Content>
                         { profile.profile_id }
                         <Header.Subheader>
-                            { getDisplayName(profile) }
+                            { getDisplayName(profile) || "-" }
                         </Header.Subheader>
                     </Header.Content>
                 </Header>
@@ -103,47 +97,62 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
             allowToggleVisibility: true,
             id: "user",
             key: "user",
-            title: "User",
+            title: t("customerDataService:profiles.list.columns.user"),
             dataIndex: "user",
             render: (profile: ProfileModel): ReactNode => {
                 const userId = profile.user_id;
-                const username = profile.identity_attributes?.username;
-        
-                // Case 1: Anonymous → only chip
+
+                // Anonymous → only chip (don’t show user_id)
                 if (!userId) {
                     return (
                         <Chip
                             size="small"
                             color="primary"
                             variant="outlined"
-                            label="Anonymous"
+                            label={ t("customerDataService:profiles.list.chips.anonymous") }
                             data-testid="anonymous-username-chip"
                         />
                     );
                 }
+
+                // Linked → only chip (don’t show user_id)
+                return (
+                    <Chip
+                        size="small"
+                        color="success"
+                        variant="outlined"
+                        label={ t("customerDataService:profiles.list.chips.linked") }
+                        data-testid="linked-user-chip"
+                    />
+                );
             }
-        },        
+        },
         {
             allowToggleVisibility: true,
             id: "unified_profiles",
             key: "unified_profiles",
-            title: "Unified Profiles",
+            title: t("customerDataService:profiles.list.columns.unifiedProfiles"),
             dataIndex: "unified_profiles",
             render: (profile: ProfileModel): ReactNode => {
-                const merged =
-                    (profile as any).merged_from as Array<{ profile_id: string }> | undefined;
-        
+                const merged = profile.merged_from;
                 const hasMerged = Array.isArray(merged) && merged.length > 0;
-        
+
                 if (!hasMerged) {
-                    return null; 
+                    return (
+                        <Chip
+                            size="small"
+                            variant="outlined"
+                            label={ t("customerDataService:profiles.list.chips.notUnified") }
+                            data-testid="not-unified-profile-chip"
+                        />
+                    );
                 }
-        
+
                 return (
                     <Chip
                         size="small"
                         variant="outlined"
-                        label="Unified"
+                        label={ t("customerDataService:profiles.list.chips.unified") }
                         data-testid="unified-profile-chip"
                     />
                 );
@@ -157,7 +166,7 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
             textAlign: "right",
             title: ""
         }
-    ]), []);
+    ]), [ t ]);
 
     const actions: TableActionsInterface[] = [
         {
@@ -167,7 +176,7 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
                 setDeletingProfile(profile);
                 setShowDeleteModal(true);
             },
-            popupText: (): string => "Delete",
+            popupText: (): string => t("customerDataService:common.buttons.delete"),
             renderer: "semantic-icon"
         }
     ];
@@ -176,20 +185,24 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
         if (!deletingProfile) return;
 
         try {
-            await deleteUserProfile(deletingProfile.profile_id);
+            await deleteCDSProfile(deletingProfile.profile_id);
 
             dispatch(addAlert({
                 level: AlertLevels.SUCCESS,
-                message: "Profile deleted",
-                description: "The profile was successfully deleted."
+                message: t("customerDataService:profiles.list.notifications.delete.success.message"),
+                description: t("customerDataService:profiles.list.notifications.delete.success.description")
             }));
 
             onRefresh();
         } catch (error: any) {
             dispatch(addAlert({
                 level: AlertLevels.ERROR,
-                message: "Delete failed",
-                description: error?.response?.data?.description ?? error?.message ?? "Failed to delete the profile."
+                message: t("customerDataService:profiles.list.notifications.delete.error.message"),
+                description:
+                    error?.response?.data?.description
+                    ?? error?.response?.data?.detail
+                    ?? error?.message
+                    ?? t("customerDataService:profiles.list.notifications.delete.error.description")
             }));
         } finally {
             setShowDeleteModal(false);
@@ -221,10 +234,10 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
                     } }
                     type="negative"
                     open={ showDeleteModal }
-                    assertionHint="Please confirm the deletion."
+                    assertionHint={ t("customerDataService:profiles.list.confirmations.delete.assertionHint") }
                     assertionType="checkbox"
-                    primaryAction="Confirm"
-                    secondaryAction="Cancel"
+                    primaryAction={ t("customerDataService:common.buttons.confirm") }
+                    secondaryAction={ t("customerDataService:common.buttons.cancel") }
                     onSecondaryActionClick={ () => {
                         setShowDeleteModal(false);
                         setDeletingProfile(null);
@@ -233,13 +246,16 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
                     closeOnDimmerClick={ false }
                 >
                     <>
-                        <ConfirmationModal.Header>Delete Profile</ConfirmationModal.Header>
+                        <ConfirmationModal.Header>
+                            { t("customerDataService:profiles.list.confirmations.delete.header") }
+                        </ConfirmationModal.Header>
                         <ConfirmationModal.Message attached negative>
-                            This action is irreversible!
+                            { t("customerDataService:profiles.list.confirmations.delete.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
-                            Are you sure you want to delete the profile <b>{ deletingProfile.profile_id }</b>?
-                            This action cannot be undone.
+                            { t("customerDataService:profiles.list.confirmations.delete.content", {
+                                profileId: deletingProfile.profile_id
+                            }) }
                         </ConfirmationModal.Content>
                     </>
                 </ConfirmationModal>

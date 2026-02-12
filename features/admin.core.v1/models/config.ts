@@ -50,6 +50,7 @@ import { TenantResourceEndpointsInterface } from "@wso2is/admin.tenants.v1/model
 import { UsersResourceEndpointsInterface } from "@wso2is/admin.users.v1/models/endpoints";
 import { UserstoreResourceEndpointsInterface } from "@wso2is/admin.userstores.v1/models/endpoints";
 import { ValidationServiceEndpointsInterface } from "@wso2is/admin.validation.v1/models";
+import { CustomerDataServiceEndpointsInterface } from "@wso2is/admin.cds.v1/models";
 import {
     CommonConfigInterface,
     CommonDeploymentConfigInterface,
@@ -301,6 +302,10 @@ export interface FeatureConfigInterface {
      * Workflow feature.
      */
     approvalWorkflows?: FeatureAccessConfigInterface;
+     /**
+     * Customer Data feature.
+     */
+    customerData?: FeatureAccessConfigInterface;
 }
 
 /**
@@ -726,6 +731,7 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     OrganizationResourceEndpointsInterface,
     TenantResourceEndpointsInterface,
     ValidationServiceEndpointsInterface,
+    CustomerDataServiceEndpointsInterface,
     BrandingPreferenceResourceEndpointsInterface,
     ExtensionTemplatesEndpointsInterface,
     ApplicationsTemplatesEndpointsInterface,
