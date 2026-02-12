@@ -58,6 +58,10 @@ const PREVIEW_STEPS: StepConfigInterface[] = [
  */
 interface WelcomeStepPropsInterface extends IdentifiableComponentInterface {
     /**
+     * Display name of the logged-in user for the greeting.
+     */
+    greeting?: string;
+    /**
      * Currently selected choice.
      */
     selectedChoice?: OnboardingChoice;
@@ -73,6 +77,7 @@ interface WelcomeStepPropsInterface extends IdentifiableComponentInterface {
  */
 const WelcomeStep: FunctionComponent<WelcomeStepPropsInterface> = (props: WelcomeStepPropsInterface): ReactElement => {
     const {
+        greeting,
         onChoiceSelect,
         selectedChoice,
         ["data-componentid"]: componentId = OnboardingComponentIds.WELCOME_STEP
@@ -101,7 +106,7 @@ const WelcomeStep: FunctionComponent<WelcomeStepPropsInterface> = (props: Welcom
                 <StepHeader
                     data-componentid={ `${componentId}-header` }
                     subtitle="We can help you get started faster"
-                    title="Hi Matthew, What would you like to do first?"
+                    title={ `Hi${greeting ? ` ${greeting}` : ""}, What would you like to do first?` }
                 />
                 <CardsRow>
                     <SelectableCard
