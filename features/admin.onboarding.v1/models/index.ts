@@ -183,6 +183,7 @@ export interface CreatedApplicationResultInterface {
     clientSecret?: string;
     name: string;
     testUserCredentials?: TestUserCredentialsInterface;
+    tryItUrl?: string;
 }
 
 // ============================================================================

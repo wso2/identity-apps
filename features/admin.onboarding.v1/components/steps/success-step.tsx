@@ -18,6 +18,7 @@
 
 import { Theme, styled } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
+import Button from "@oxygen-ui/react/Button";
 import Link from "@oxygen-ui/react/Link";
 import Typography from "@oxygen-ui/react/Typography";
 import { ArrowUpRightFromSquareIcon, CheckIcon } from "@oxygen-ui/react-icons";
@@ -71,6 +72,8 @@ interface SuccessStepPropsInterface extends IdentifiableComponentInterface {
     brandingConfig?: OnboardingBrandingConfigInterface;
     /** Whether this is an M2M application */
     isM2M?: boolean;
+    /** Whether this is a Tour (preview) flow */
+    isTourFlow?: boolean;
     /** Redirect URLs configured for the application */
     redirectUrls?: string[];
 }
@@ -174,6 +177,7 @@ const SuccessStep: FunctionComponent<SuccessStepPropsInterface> = (
         signInOptions,
         brandingConfig,
         isM2M = false,
+        isTourFlow = false,
         redirectUrls,
         ["data-componentid"]: componentId = OnboardingComponentIds.SUCCESS_STEP
     } = props;
@@ -272,10 +276,18 @@ const SuccessStep: FunctionComponent<SuccessStepPropsInterface> = (
     const docsUrl: string | undefined = getTemplateDocsUrl(templateId, docSiteURL);
 
     const getSuccessTitle: () => string = (): string => {
+        if (isTourFlow) {
+            return "Your login experience is ready to preview!";
+        }
+
         return `Your application ${appName} is ready!`;
     };
 
     const getSuccessSubtitle: () => string = (): string => {
+        if (isTourFlow) {
+            return "We've configured the Try It app with your login settings.";
+        }
+
         if (isM2M) {
             return "Use the credentials below to authenticate your service.";
         }
@@ -318,12 +330,33 @@ const SuccessStep: FunctionComponent<SuccessStepPropsInterface> = (
                         <Title>{ getSuccessTitle() }</Title>
                     </TitleContainer>
                     <Subtitle>{ getSuccessSubtitle() }</Subtitle>
-                    { !isM2M && (
+                    { !isM2M && !isTourFlow && (
                         <HelperText>
                             This is optional. Skip if you&apos;ll configure later.
                         </HelperText>
                     ) }
                 </SuccessHeader>
+
+                { isTourFlow && createdApplication?.tryItUrl && (
+                    <Box sx={ { display: "flex", flexDirection: "column", gap: 2.5, maxWidth: 480 } }>
+                        <Typography sx={ { fontSize: "0.9375rem" } }>
+                            Click the button below to open the Try It app and see your configured
+                            login experience in action.
+                        </Typography>
+                        <Button
+                            color="primary"
+                            data-componentid={ `${componentId}-preview-login-button` }
+                            onClick={ () => window.open(createdApplication.tryItUrl, "_blank",
+                                "noopener,noreferrer") }
+                            size="large"
+                            sx={ { alignSelf: "flex-start", mt: 1 } }
+                            variant="contained"
+                        >
+                            Preview Login
+                            <ArrowUpRightFromSquareIcon size={ 16 } />
+                        </Button>
+                    </Box>
+                ) }
 
                 { isM2M && createdApplication && (
                     <Box sx={ { display: "flex", flexDirection: "column", gap: 2.5, maxWidth: 480 } }>
@@ -370,7 +403,7 @@ const SuccessStep: FunctionComponent<SuccessStepPropsInterface> = (
                     </Box>
                 ) }
 
-                { !isM2M && (integrationGuide || guideContent) && (
+                { !isM2M && !isTourFlow && (integrationGuide || guideContent) && (
                     <>
                         <IntegrationAccordion
                             config={ integrationConfig }
@@ -400,7 +433,7 @@ const SuccessStep: FunctionComponent<SuccessStepPropsInterface> = (
                     </>
                 ) }
 
-                { !isM2M && !integrationGuide && !guideContent && !isGuideLoading && (
+                { !isM2M && !isTourFlow && !integrationGuide && !guideContent && !isGuideLoading && (
                     <Box sx={ { display: "flex", flexDirection: "column", gap: 2.5, maxWidth: 480 } }>
                         <Typography sx={ { fontWeight: 600 } } variant="subtitle2">
                             Application Configuration
