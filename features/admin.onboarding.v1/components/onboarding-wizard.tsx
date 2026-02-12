@@ -25,7 +25,8 @@ import useGetExtensionTemplates from "@wso2is/admin.template-core.v1/api/use-get
 import { ExtensionTemplateListInterface, ResourceTypes } from "@wso2is/admin.template-core.v1/models/templates";
 import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-management-utils";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { resolveUserDisplayName } from "@wso2is/core/helpers";
+import { AlertLevels, IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { SessionStorageUtils } from "@wso2is/core/utils";
 import React, { FunctionComponent, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
@@ -206,6 +207,8 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
     const _tenantDomain: string = useSelector((state: any) =>
         state?.auth?.tenantDomain || state?.config?.deployment?.tenant || "carbon.super"
     );
+    const profileInfo: ProfileInfoInterface = useSelector((state: any) => state.profile.profileInfo);
+    const greeting: string = resolveUserDisplayName(profileInfo) || "";
 
     // Restore wizard step from sessionStorage if available (survives page reloads within the same tab)
     const WIZARD_STEP_STORAGE_KEY: string = "onboarding_wizard_step";
@@ -398,6 +401,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
             { currentStep === OnboardingStep.WELCOME && (
                 <WelcomeStep
                     data-componentid={ `${componentId}-welcome` }
+                    greeting={ greeting }
                     onChoiceSelect={ updateChoice }
                     selectedChoice={ onboardingData.choice }
                 />
