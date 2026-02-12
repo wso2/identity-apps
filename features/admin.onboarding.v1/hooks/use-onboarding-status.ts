@@ -117,7 +117,6 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
 
         // Check 1: Feature flag must be enabled
         if (!onboardingFeatureConfig?.enabled) {
-            SessionStorageUtils.setItemToSessionStorage(`${SESSION_CACHE_KEY}_${hashedId}`, "hide");
             setShouldShowOnboarding(false);
             setIsLoading(false);
 
@@ -126,7 +125,6 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
 
         // Check 2: Exclude privileged/federated users (enterprise IDP)
         if (isPrivilegedUser) {
-            SessionStorageUtils.setItemToSessionStorage(`${SESSION_CACHE_KEY}_${hashedId}`, "hide");
             setShouldShowOnboarding(false);
             setIsLoading(false);
 
@@ -135,7 +133,6 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
 
         // Check 3: Exclude sub-organization users
         if (organizationType === OrganizationType.SUBORGANIZATION) {
-            SessionStorageUtils.setItemToSessionStorage(`${SESSION_CACHE_KEY}_${hashedId}`, "hide");
             setShouldShowOnboarding(false);
             setIsLoading(false);
 
