@@ -25,6 +25,7 @@ import {
 } from "@asgardeo/auth-react";
 import { getActionsResourceEndpoints } from "@wso2is/admin.actions.v1/configs/endpoints";
 import useSignIn from "@wso2is/admin.authentication.v1/hooks/use-sign-in";
+import { getConnectionResourceEndpoints } from "@wso2is/admin.connections.v1/configs/endpoints";
 import { PreLoader } from "@wso2is/admin.core.v1/components/pre-loader";
 import { Config } from "@wso2is/admin.core.v1/configs/app";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
@@ -176,7 +177,8 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
 
                 const serviceResourceEndpoints: ServiceResourceEndpointsInterface = {
                     ...Config.getServiceResourceEndpoints(),
-                    ...getActionsResourceEndpoints(Config.resolveServerHost())
+                    ...getActionsResourceEndpoints(Config.resolveServerHost()),
+                    ...getConnectionResourceEndpoints(Config.resolveServerHost())
                 };
 
                 await onSignIn(

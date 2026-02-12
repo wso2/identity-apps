@@ -6051,9 +6051,6 @@ importers:
       '@wso2is/admin.claims.v1':
         specifier: ^2.30.1
         version: link:../admin.claims.v1
-      '@wso2is/admin.connections.v1':
-        specifier: ^2.34.12
-        version: link:../admin.connections.v1
       '@wso2is/admin.console-settings.v1':
         specifier: ^2.26.6
         version: link:../admin.console-settings.v1

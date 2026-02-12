@@ -29,7 +29,6 @@
         "@wso2is/admin.branding.v1": "^2.32.88",
         "@wso2is/admin.certificates.v1": "^2.25.205",
         "@wso2is/admin.claims.v1": "^2.30.1",
-        "@wso2is/admin.connections.v1": "^2.34.12",
         "@wso2is/admin.console-settings.v1": "^2.26.6",
         "@wso2is/admin.email-and-sms.v1": "^2.25.206",
         "@wso2is/admin.email-management.v1": "^2.25.296",
