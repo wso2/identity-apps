@@ -20,6 +20,7 @@ import { Theme, styled } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
 import TextField from "@oxygen-ui/react/TextField";
 import Typography from "@oxygen-ui/react/Typography";
+import { ApplicationTemplateIdTypes } from "@wso2is/admin.applications.v1/models/application";
 import { PatternConstants } from "@wso2is/core/constants";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
@@ -121,7 +122,7 @@ const validateUrl: (url: string, isMobile?: boolean) => string | null = (
  * Check if the template is for a mobile application.
  */
 const isMobileTemplate: (templateId?: string) => boolean = (templateId?: string): boolean => {
-    return templateId === "mobile-application";
+    return templateId === ApplicationTemplateIdTypes.MOBILE_APPLICATION;
 };
 
 /**

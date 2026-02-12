@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ApplicationTemplateIdTypes } from "@wso2is/admin.applications.v1/models/application";
 import { PatternConstants } from "@wso2is/core/constants";
 import { useCallback, useMemo } from "react";
 import { AppNameConstraints, RedirectUrlConstraints } from "../constants";
@@ -97,9 +98,6 @@ const isValidUrl = (url: string, isMobile: boolean = false): boolean => {
 
 /**
  * Validate sign-in options configuration.
- * Simplified validation for the Identifier First approach:
- * - Must have at least one identifier
- * - Must have at least one login method
  */
 const isValidSignInOptions = (options?: SignInOptionsConfigInterface): boolean => {
     if (!options) return false;
@@ -134,7 +132,7 @@ export const useStepValidation = (currentStep: OnboardingStep, data: OnboardingD
             case OnboardingStep.SELECT_APPLICATION_TEMPLATE:
                 return !data.templateId;
             case OnboardingStep.CONFIGURE_REDIRECT_URL: {
-                const isMobile: boolean = data.templateId === "mobile-application";
+                const isMobile: boolean = data.templateId === ApplicationTemplateIdTypes.MOBILE_APPLICATION;
 
                 return !data.redirectUrls?.length ||
                        !data.redirectUrls.every((url: string) => isValidUrl(url, isMobile));

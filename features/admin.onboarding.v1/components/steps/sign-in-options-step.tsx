@@ -280,7 +280,7 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepPropsInterface> = (
                         )) }
                     </OptionSection>
 
-                    { /* Org-level info note — shown on IS when identifier toggles are visible */ }
+                    { /* Org-level info note — shown when identifier toggles are visible */ }
                     { showIdentifierNote && (
                         <Alert
                             hidden={ !open }

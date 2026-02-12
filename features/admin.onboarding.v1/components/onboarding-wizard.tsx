@@ -20,12 +20,14 @@ import Button from "@oxygen-ui/react/Button";
 import useGetApplicationTemplate
     from "@wso2is/admin.application-templates.v1/api/use-get-application-template";
 import { ApplicationTemplateInterface } from "@wso2is/admin.application-templates.v1/models/templates";
+import { ApplicationTemplateIdTypes } from "@wso2is/admin.applications.v1/models/application";
 import useGetExtensionTemplates from "@wso2is/admin.template-core.v1/api/use-get-extension-templates";
 import { ExtensionTemplateListInterface, ResourceTypes } from "@wso2is/admin.template-core.v1/models/templates";
 import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-management-utils";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { SessionStorageUtils } from "@wso2is/core/utils";
 import React, { FunctionComponent, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
@@ -75,7 +77,7 @@ export interface OnboardingWizardPropsInterface extends IdentifiableComponentInt
  * Implements conditional navigation logic.
  */
 const getNextStep = (currentStep: OnboardingStep, data: OnboardingDataInterface): OnboardingStep => {
-    const isM2M: boolean = data.templateId === "m2m-application";
+    const isM2M: boolean = data.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION;
     const isTourFlow: boolean = data.choice === OnboardingChoice.TOUR;
 
     switch (currentStep) {
@@ -91,8 +93,6 @@ const getNextStep = (currentStep: OnboardingStep, data: OnboardingDataInterface)
             return OnboardingStep.SELECT_APPLICATION_TEMPLATE;
 
         case OnboardingStep.SELECT_APPLICATION_TEMPLATE:
-            // Only M2M apps skip to success (no redirect URL or sign-in options needed)
-            // MCP apps need redirect URLs because they support authorization_code grant
             if (isM2M) {
                 return OnboardingStep.SUCCESS;
             }
@@ -121,7 +121,7 @@ const getNextStep = (currentStep: OnboardingStep, data: OnboardingDataInterface)
  * Implements conditional navigation logic.
  */
 const getPreviousStep = (currentStep: OnboardingStep, data: OnboardingDataInterface): OnboardingStep => {
-    const isM2M: boolean = data.templateId === "m2m-application";
+    const isM2M: boolean = data.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION;
     const isTourFlow: boolean = data.choice === OnboardingChoice.TOUR;
 
     switch (currentStep) {
@@ -163,14 +163,13 @@ const getPreviousStep = (currentStep: OnboardingStep, data: OnboardingDataInterf
 
 /**
  * Get button text based on current step.
- * Shows "Create Application" for M2M apps (they skip to success from template selection).
  */
 const getNextButtonText = (currentStep: OnboardingStep, data: OnboardingDataInterface): string => {
-    const isM2M: boolean = data.templateId === "m2m-application";
+    const isM2M: boolean = data.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION;
 
     switch (currentStep) {
         case OnboardingStep.SELECT_APPLICATION_TEMPLATE:
-            // Only M2M apps are created directly from this step (they skip other steps)
+
             if (isM2M) {
                 return "Create Application";
             }
@@ -212,7 +211,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
     const WIZARD_STEP_STORAGE_KEY: string = "onboarding_wizard_step";
 
     const [ currentStep, setCurrentStep ] = useState<OnboardingStep>(() => {
-        const savedStep: string | null = sessionStorage.getItem(WIZARD_STEP_STORAGE_KEY);
+        const savedStep: string | null = SessionStorageUtils.getItemFromSessionStorage(WIZARD_STEP_STORAGE_KEY);
 
         if (savedStep !== null) {
             const parsed: number = parseInt(savedStep, 10);
@@ -221,7 +220,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
                 // Don't restore to SUCCESS — it requires createdApplication data
                 // which only exists in component state and isn't persisted.
                 if (parsed === OnboardingStep.SUCCESS) {
-                    sessionStorage.removeItem(WIZARD_STEP_STORAGE_KEY);
+                    SessionStorageUtils.clearItemFromSessionStorage(WIZARD_STEP_STORAGE_KEY);
 
                     return OnboardingStep.WELCOME;
                 }
@@ -235,7 +234,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
 
     // Persist current step to sessionStorage so the wizard can resume after unexpected reloads
     useEffect(() => {
-        sessionStorage.setItem(WIZARD_STEP_STORAGE_KEY, String(currentStep));
+        SessionStorageUtils.setItemToSessionStorage(WIZARD_STEP_STORAGE_KEY, String(currentStep));
     }, [ currentStep ]);
 
     const [ onboardingData, setOnboardingDataInterface ] = useState<OnboardingDataInterface>({
@@ -270,7 +269,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
     );
 
     const isM2M: boolean = useMemo(
-        () => onboardingData.templateId === "m2m-application",
+        () => onboardingData.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION,
         [ onboardingData.templateId ]
     );
 
@@ -364,7 +363,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
         const nextStep: OnboardingStep = getNextStep(currentStep, onboardingData);
 
         if (currentStep === OnboardingStep.SUCCESS) {
-            sessionStorage.removeItem(WIZARD_STEP_STORAGE_KEY);
+            SessionStorageUtils.clearItemFromSessionStorage(WIZARD_STEP_STORAGE_KEY);
             onComplete(onboardingData);
         } else if (
             // Create app when clicking Finish from Design Login
@@ -386,7 +385,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
     }, [ currentStep, onboardingData ]);
 
     const handleSkip: () => void = useCallback((): void => {
-        sessionStorage.removeItem(WIZARD_STEP_STORAGE_KEY);
+        SessionStorageUtils.clearItemFromSessionStorage(WIZARD_STEP_STORAGE_KEY);
         onSkip();
     }, [ onSkip ]);
 

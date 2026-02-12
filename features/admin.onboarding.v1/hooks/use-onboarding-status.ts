@@ -22,6 +22,7 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { OrganizationType } from "@wso2is/admin.organizations.v1/constants";
 import { FeatureAccessConfigInterface } from "@wso2is/core/models";
+import { LocalStorageUtils, SessionStorageUtils } from "@wso2is/core/utils";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { hashForStorageKey } from "../utils/url-utils";
@@ -37,29 +38,23 @@ interface UseOnboardingStatusReturn {
 
 /**
  * SessionStorage key prefix for caching the onboarding evaluation result.
- * Caches "hide" decisions so subsequent hook instances and remounts
- * skip all API calls for the rest of the browser session.
  */
 const SESSION_CACHE_KEY: string = "onboarding_status";
 
 /**
- * Hook to manage onboarding status.
+ * Determines whether the onboarding wizard should be shown to the current user.
  *
- * Uses Redux selectors exclusively (no `getDecodedIDToken`) to avoid
- * unstable dependency references that cause the wizard to reset.
- *
- * Gates on `uuid` (state.profile.profileInfo.id) which is set LAST
- * in the sign-in flow, guaranteeing that `organizationType` and
- * `isPrivilegedUser` are already set when the check runs.
+ * Evaluates feature flags, user type, org type, existing apps, and local
+ * completion status — then caches the result in sessionStorage so subsequent
+ * renders skip all checks. Gates on `uuid` which is set last in the sign-in
+ * flow, ensuring all Redux state is settled before evaluation.
  */
 export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
     const [ shouldShowOnboarding, setShouldShowOnboarding ] = useState<boolean>(false);
     const [ isLoading, setIsLoading ] = useState<boolean>(true);
 
-    // Track whether we've already evaluated to prevent re-evaluation
     const hasEvaluated: React.MutableRefObject<boolean> = useRef<boolean>(false);
 
-    // Redux selectors — all return stable primitive values
     const uuid: string = useSelector((state: AppState) => state.profile.profileInfo.id);
     const username: string = useSelector((state: AppState) => state.auth.username);
     const isPrivilegedUser: boolean = useSelector((state: AppState) => state.auth.isPrivilegedUser);
@@ -76,11 +71,9 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
     const userId: string = username || uuid;
     const hashedUserId: string = userId ? hashForStorageKey(userId) : "";
     const isStatusCached: boolean = !!hashedUserId &&
-        sessionStorage.getItem(`${SESSION_CACHE_KEY}_${hashedUserId}`) === "hide";
+        SessionStorageUtils.getItemFromSessionStorage(`${SESSION_CACHE_KEY}_${hashedUserId}`) === "hide";
 
     // Fetch application count — only when sync checks would pass and no session cache.
-    // Uses limit=1 and excludeSystemPortals=true to minimize payload;
-    // we only need totalResults to know if user-created apps exist.
     const shouldFetchApps: boolean =
         !isStatusCached &&
         !!onboardingFeatureConfig?.enabled &&
@@ -105,7 +98,6 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
             return;
         }
 
-        // Wait for application list fetch to complete (only if the check is needed)
         if (shouldFetchApps && isAppListLoading) {
             return;
         }
@@ -125,7 +117,7 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
 
         // Check 1: Feature flag must be enabled
         if (!onboardingFeatureConfig?.enabled) {
-            sessionStorage.setItem(`${SESSION_CACHE_KEY}_${hashedId}`, "hide");
+            SessionStorageUtils.setItemToSessionStorage(`${SESSION_CACHE_KEY}_${hashedId}`, "hide");
             setShouldShowOnboarding(false);
             setIsLoading(false);
 
@@ -134,7 +126,7 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
 
         // Check 2: Exclude privileged/federated users (enterprise IDP)
         if (isPrivilegedUser) {
-            sessionStorage.setItem(`${SESSION_CACHE_KEY}_${hashedId}`, "hide");
+            SessionStorageUtils.setItemToSessionStorage(`${SESSION_CACHE_KEY}_${hashedId}`, "hide");
             setShouldShowOnboarding(false);
             setIsLoading(false);
 
@@ -143,7 +135,7 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
 
         // Check 3: Exclude sub-organization users
         if (organizationType === OrganizationType.SUBORGANIZATION) {
-            sessionStorage.setItem(`${SESSION_CACHE_KEY}_${hashedId}`, "hide");
+            SessionStorageUtils.setItemToSessionStorage(`${SESSION_CACHE_KEY}_${hashedId}`, "hide");
             setShouldShowOnboarding(false);
             setIsLoading(false);
 
@@ -151,9 +143,8 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
         }
 
         // Check 4: If the organization already has user-created applications, skip wizard.
-        // Handles the case where a new admin joins an already-configured org.
         if (appListData && appListData.totalResults > 0) {
-            sessionStorage.setItem(`${SESSION_CACHE_KEY}_${hashedId}`, "hide");
+            SessionStorageUtils.setItemToSessionStorage(`${SESSION_CACHE_KEY}_${hashedId}`, "hide");
             setShouldShowOnboarding(false);
             setIsLoading(false);
 
@@ -171,20 +162,20 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
         // Check hashed key first, then fall back to legacy unhashed key for migration
         const hashedKey: string = `onboarding_completed_${hashedId}`;
         const legacyKey: string = `onboarding_completed_${resolvedUserId}`;
-        let hasCompletedOnboarding: string | null = localStorage.getItem(hashedKey);
+        let hasCompletedOnboarding: string | null = LocalStorageUtils.getValueFromLocalStorage(hashedKey);
 
         if (!hasCompletedOnboarding) {
-            hasCompletedOnboarding = localStorage.getItem(legacyKey);
+            hasCompletedOnboarding = LocalStorageUtils.getValueFromLocalStorage(legacyKey);
 
             if (hasCompletedOnboarding) {
                 // Migrate to hashed key and remove legacy key
-                localStorage.setItem(hashedKey, hasCompletedOnboarding);
-                localStorage.removeItem(legacyKey);
+                LocalStorageUtils.setValueInLocalStorage(hashedKey, hasCompletedOnboarding);
+                LocalStorageUtils.clearItemFromLocalStorage(legacyKey);
             }
         }
 
         if (hasCompletedOnboarding) {
-            sessionStorage.setItem(`${SESSION_CACHE_KEY}_${hashedId}`, "hide");
+            SessionStorageUtils.setItemToSessionStorage(`${SESSION_CACHE_KEY}_${hashedId}`, "hide");
         }
 
         setShouldShowOnboarding(!hasCompletedOnboarding);
@@ -201,8 +192,8 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
         if (resolvedUserId) {
             const hashedId: string = hashForStorageKey(resolvedUserId);
 
-            localStorage.setItem(`onboarding_completed_${hashedId}`, "true");
-            sessionStorage.setItem(`${SESSION_CACHE_KEY}_${hashedId}`, "hide");
+            LocalStorageUtils.setValueInLocalStorage(`onboarding_completed_${hashedId}`, "true");
+            SessionStorageUtils.setItemToSessionStorage(`${SESSION_CACHE_KEY}_${hashedId}`, "hide");
             setShouldShowOnboarding(false);
         }
     }, [ uuid, username ]);

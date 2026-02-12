@@ -93,7 +93,6 @@ export const SectionLabel: typeof Typography = styled(Typography)(({ theme }: { 
     marginBottom: theme.spacing(2)
 }));
 
-
 /**
  * Footer with navigation buttons.
  */

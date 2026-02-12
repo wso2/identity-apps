@@ -16,42 +16,36 @@
  * under the License.
  */
 
+import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
 import { updateGovernanceConnector } from "@wso2is/admin.server-configurations.v1/api/governance-connectors";
 import {
     ServerConfigurationsConstants
 } from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
-import { MULTI_ATTRIBUTE_CLAIMS } from "../constants/sign-in-options";
 import { SignInIdentifiersConfigInterface } from "../models";
 
 /**
- * Update multi-attribute login configuration based on selected identifiers.
- * This is an organization-level setting that enables login with email/mobile in addition to username.
+ * Enables multi-attribute login (email/mobile) at the organization level
+ * based on the identifiers the user selected in the onboarding wizard.
  *
- * @param identifiers - The selected identifier options
- * @param isAlphanumericUsername - Whether alphanumeric username is enabled
- * @returns Promise that resolves when the configuration is updated
+ * @param identifiers - The selected identifier options.
+ * @param isAlphanumericUsername - Whether alphanumeric username is enabled.
+ * @returns Promise that resolves when the configuration is updated.
  */
 export const updateMultiAttributeLoginConfig = async (
     identifiers: SignInIdentifiersConfigInterface,
     isAlphanumericUsername: boolean = true
 ): Promise<void> => {
-    // Build the allowed attributes list
-    // Username is always included as the base identifier
-    const allowedAttributes: string[] = [ MULTI_ATTRIBUTE_CLAIMS.username ];
+    const allowedAttributes: string[] = [ ClaimManagementConstants.USER_NAME_CLAIM_URI ];
 
-    // Only add email if alphanumeric username is enabled
+    // Email as login identifier requires alphanumeric username to be enabled.
     if (identifiers.email && isAlphanumericUsername) {
-        allowedAttributes.push(MULTI_ATTRIBUTE_CLAIMS.email);
+        allowedAttributes.push(ClaimManagementConstants.EMAIL_CLAIM_URI);
     }
 
-    // Mobile can always be added as an alternative identifier
     if (identifiers.mobile) {
-        allowedAttributes.push(MULTI_ATTRIBUTE_CLAIMS.mobile);
+        allowedAttributes.push(ClaimManagementConstants.MOBILE_CLAIM_URI);
     }
 
-    // Multi-attribute login should be enabled when:
-    // - Email is selected AND alphanumeric username is enabled, OR
-    // - Mobile is selected
     const isEnabled: boolean = (identifiers.email && isAlphanumericUsername) || identifiers.mobile;
 
     await updateGovernanceConnector(

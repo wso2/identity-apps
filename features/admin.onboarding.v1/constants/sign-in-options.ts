@@ -16,7 +16,14 @@
  * under the License.
  */
 
+import {
+    LocalAuthenticatorConstants
+} from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
 import { SignInOptionDefinitionInterface, SignInOptionsConfigInterface } from "../models";
+
+const AuthNames: typeof LocalAuthenticatorConstants.AUTHENTICATOR_NAMES =
+    LocalAuthenticatorConstants.AUTHENTICATOR_NAMES;
+const LOCAL_IDP: string = LocalAuthenticatorConstants.LOCAL_IDP_IDENTIFIER;
 
 /**
  * Default sign-in options configuration.
@@ -45,8 +52,8 @@ export const DEFAULT_SIGN_IN_OPTIONS: SignInOptionsConfigInterface = {
 export const IDENTIFIER_OPTIONS: SignInOptionDefinitionInterface[] = [
     {
         authenticatorConfig: {
-            authenticator: "BasicAuthenticator",
-            idp: "LOCAL"
+            authenticator: AuthNames.BASIC_AUTHENTICATOR_NAME,
+            idp: LOCAL_IDP
         },
         canBeFirstFactor: false,
         canBeSecondFactor: false,
@@ -58,8 +65,8 @@ export const IDENTIFIER_OPTIONS: SignInOptionDefinitionInterface[] = [
     },
     {
         authenticatorConfig: {
-            authenticator: "email-otp-authenticator",
-            idp: "LOCAL"
+            authenticator: AuthNames.EMAIL_OTP_AUTHENTICATOR_NAME,
+            idp: LOCAL_IDP
         },
         canBeFirstFactor: true,
         canBeSecondFactor: false,
@@ -71,8 +78,8 @@ export const IDENTIFIER_OPTIONS: SignInOptionDefinitionInterface[] = [
     },
     {
         authenticatorConfig: {
-            authenticator: "sms-otp-authenticator",
-            idp: "LOCAL"
+            authenticator: AuthNames.SMS_OTP_AUTHENTICATOR_NAME,
+            idp: LOCAL_IDP
         },
         canBeFirstFactor: true,
         canBeSecondFactor: false,
@@ -92,8 +99,8 @@ export const IDENTIFIER_OPTIONS: SignInOptionDefinitionInterface[] = [
 export const LOGIN_METHOD_OPTIONS: SignInOptionDefinitionInterface[] = [
     {
         authenticatorConfig: {
-            authenticator: "BasicAuthenticator",
-            idp: "LOCAL"
+            authenticator: AuthNames.BASIC_AUTHENTICATOR_NAME,
+            idp: LOCAL_IDP
         },
         canBeFirstFactor: true,
         canBeSecondFactor: false,
@@ -105,8 +112,8 @@ export const LOGIN_METHOD_OPTIONS: SignInOptionDefinitionInterface[] = [
     },
     {
         authenticatorConfig: {
-            authenticator: "FIDOAuthenticator",
-            idp: "LOCAL"
+            authenticator: AuthNames.FIDO_AUTHENTICATOR_NAME,
+            idp: LOCAL_IDP
         },
         canBeFirstFactor: true,
         canBeSecondFactor: false,
@@ -118,8 +125,8 @@ export const LOGIN_METHOD_OPTIONS: SignInOptionDefinitionInterface[] = [
     },
     {
         authenticatorConfig: {
-            authenticator: "MagicLinkAuthenticator",
-            idp: "LOCAL"
+            authenticator: AuthNames.MAGIC_LINK_AUTHENTICATOR_NAME,
+            idp: LOCAL_IDP
         },
         canBeFirstFactor: true,
         canBeSecondFactor: false,
@@ -131,8 +138,8 @@ export const LOGIN_METHOD_OPTIONS: SignInOptionDefinitionInterface[] = [
     },
     {
         authenticatorConfig: {
-            authenticator: "email-otp-authenticator",
-            idp: "LOCAL"
+            authenticator: AuthNames.EMAIL_OTP_AUTHENTICATOR_NAME,
+            idp: LOCAL_IDP
         },
         canBeFirstFactor: true,
         canBeSecondFactor: true,
@@ -144,8 +151,8 @@ export const LOGIN_METHOD_OPTIONS: SignInOptionDefinitionInterface[] = [
     },
     {
         authenticatorConfig: {
-            authenticator: "totp",
-            idp: "LOCAL"
+            authenticator: AuthNames.TOTP_AUTHENTICATOR_NAME,
+            idp: LOCAL_IDP
         },
         canBeFirstFactor: true,
         canBeSecondFactor: true,
@@ -157,8 +164,8 @@ export const LOGIN_METHOD_OPTIONS: SignInOptionDefinitionInterface[] = [
     },
     {
         authenticatorConfig: {
-            authenticator: "push-notification-authenticator",
-            idp: "LOCAL"
+            authenticator: AuthNames.PUSH_AUTHENTICATOR_NAME,
+            idp: LOCAL_IDP
         },
         canBeFirstFactor: true,
         canBeSecondFactor: true,
@@ -177,16 +184,6 @@ export const ALL_SIGN_IN_OPTIONS: SignInOptionDefinitionInterface[] = [
     ...IDENTIFIER_OPTIONS,
     ...LOGIN_METHOD_OPTIONS
 ];
-
-/**
- * Multi-attribute login claim URIs.
- * Used for configuring which attributes can be used as login identifiers.
- */
-export const MULTI_ATTRIBUTE_CLAIMS: Record<string, string> = {
-    email: "http://wso2.org/claims/emailaddress",
-    mobile: "http://wso2.org/claims/mobile",
-    username: "http://wso2.org/claims/username"
-};
 
 /**
  * Validation rules for sign-in options.

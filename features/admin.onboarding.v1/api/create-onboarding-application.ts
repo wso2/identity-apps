@@ -20,6 +20,7 @@ import {
     ApplicationTemplateInterface as APIApplicationTemplateInterface
 } from "@wso2is/admin.application-templates.v1/models/templates";
 import { createApplication } from "@wso2is/admin.applications.v1/api/application";
+import { ApplicationTemplateIdTypes } from "@wso2is/admin.applications.v1/models/application";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import MobileTemplate
     from "@wso2is/admin.extensions.v1/application-templates/templates/mobile-application/mobile-application.json";
@@ -173,9 +174,9 @@ const buildApplicationPayload = (
 
     let payload: ApplicationPayloadInterface;
 
-    if (resolvedTemplateId === "mcp-client-application") {
+    if (resolvedTemplateId === ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION) {
         payload = buildMCPClientPayload(applicationName || "My Application");
-    } else if (resolvedTemplateId === "m2m-application") {
+    } else if (resolvedTemplateId === ApplicationTemplateIdTypes.M2M_APPLICATION) {
         return buildM2MPayload(applicationName || "My Application");
     } else if (apiTemplate?.payload) {
         payload = JSON.parse(JSON.stringify(apiTemplate.payload));
@@ -212,7 +213,7 @@ const buildApplicationPayload = (
 
         // Mobile deep links (custom URI schemes) don't have HTTP origins,
         // so allowedOrigins should be empty for mobile apps.
-        const isMobile: boolean = resolvedTemplateId === "mobile-application";
+        const isMobile: boolean = resolvedTemplateId === ApplicationTemplateIdTypes.MOBILE_APPLICATION;
 
         payload.inboundProtocolConfiguration.oidc.allowedOrigins = isMobile ? [] : extractOrigins(redirectUrls);
     }
@@ -258,7 +259,8 @@ export const createOnboardingApplication = async (
         name: data.applicationName || "My Application"
     };
 
-    if (data.templateId === "m2m-application" || data.templateId === "mcp-client-application") {
+    if (data.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION
+        || data.templateId === ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION) {
         result.clientSecret = response.data?.inboundProtocolConfiguration?.oidc?.clientSecret ||
                               response.inboundProtocolConfiguration?.oidc?.clientSecret;
     }

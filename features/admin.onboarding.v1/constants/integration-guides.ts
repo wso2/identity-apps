@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { ApplicationTemplateIdTypes } from "@wso2is/admin.applications.v1/models/application";
+
 /**
  * Framework integration guide interface.
  */
@@ -245,10 +247,10 @@ passport.use(new AsgardeoStrategy({
  * or API-fetched guide content instead.
  */
 export const INTEGRATION_GUIDES: Record<string, FrameworkIntegrationGuideInterface> = {
-    "angular-application": ANGULAR_INTEGRATION,
-    "expressjs-application": EXPRESS_INTEGRATION,
-    "nextjs-application": NEXTJS_INTEGRATION,
-    "react-application": REACT_INTEGRATION
+    [ApplicationTemplateIdTypes.ANGULAR_APPLICATION]: ANGULAR_INTEGRATION,
+    [ApplicationTemplateIdTypes.EXPRESSJS_APPLICATION]: EXPRESS_INTEGRATION,
+    [ApplicationTemplateIdTypes.NEXT_JS_APPLICATION]: NEXTJS_INTEGRATION,
+    [ApplicationTemplateIdTypes.REACT_APPLICATION]: REACT_INTEGRATION
 };
 
 /**
@@ -360,15 +362,15 @@ ${docsUrl}`;
  * each resolve to their own documentation site automatically.
  */
 export const TEMPLATE_DOC_PATHS: Record<string, string> = {
-    "angular-application": "/quick-starts/angular/",
-    "expressjs-application": "/quick-starts/expressjs/",
-    "m2m-application": "/guides/applications/register-machine-to-machine-app/",
-    "mcp-client-application": "/guides/applications/register-mcp-client-app/",
-    "mobile-application": "/guides/authentication/oidc/implement-auth-code-with-pkce/",
-    "nextjs-application": "/quick-starts/nextjs/",
-    "oidc-web-application": "/guides/authentication/oidc/implement-auth-code/",
-    "react-application": "/quick-starts/react/",
-    "single-page-application": "/guides/authentication/oidc/implement-auth-code-with-pkce/"
+    [ApplicationTemplateIdTypes.ANGULAR_APPLICATION]: "/quick-starts/angular/",
+    [ApplicationTemplateIdTypes.EXPRESSJS_APPLICATION]: "/quick-starts/expressjs/",
+    [ApplicationTemplateIdTypes.M2M_APPLICATION]: "/guides/applications/register-machine-to-machine-app/",
+    [ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION]: "/guides/applications/register-mcp-client-app/",
+    [ApplicationTemplateIdTypes.MOBILE_APPLICATION]: "/guides/authentication/oidc/implement-auth-code-with-pkce/",
+    [ApplicationTemplateIdTypes.NEXT_JS_APPLICATION]: "/quick-starts/nextjs/",
+    [ApplicationTemplateIdTypes.OIDC_WEB_APPLICATION]: "/guides/authentication/oidc/implement-auth-code/",
+    [ApplicationTemplateIdTypes.REACT_APPLICATION]: "/quick-starts/react/",
+    [ApplicationTemplateIdTypes.SPA]: "/guides/authentication/oidc/implement-auth-code-with-pkce/"
 };
 
 /**
