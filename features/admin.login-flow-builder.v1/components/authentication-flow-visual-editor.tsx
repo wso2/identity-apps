@@ -204,7 +204,7 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
         unsupportedAuthenticators.forEach((authenticator: UnsupportedAuthenticatorInfo) => {
             addNotification({
                 category: NotificationCategory.UNSUPPORTED_AUTHENTICATOR,
-                description: "This authenticator does not support API based authentication.",
+                description: "This authenticator does not support app-native authentication.",
                 relatedEntity: authenticator.name,
                 severity: NotificationSeverity.WARNING,
                 stepNumber: authenticator.stepNumber,

@@ -17,7 +17,10 @@
  */
 
 import { useGetAuthenticators } from "@wso2is/admin.connections.v1/api/authenticators";
-import { AuthenticatorInterface as ConnectionInterface } from "@wso2is/admin.connections.v1/models/authenticators";
+import {
+    AuthenticatorLabels,
+    AuthenticatorInterface as ConnectionInterface
+} from "@wso2is/admin.connections.v1/models/authenticators";
 import { useMemo } from "react";
 import {
     AuthenticationSequenceInterface,
@@ -76,7 +79,7 @@ export const useApiAuthCompatibility = (
                     (a: ConnectionInterface) => a.name === option.idp
                 );
 
-                if (authenticator && !authenticator.tags?.includes("APIAuth")) {
+                if (authenticator && !authenticator.tags?.includes(AuthenticatorLabels.API_AUTHENTICATION)) {
                     unsupported.push({
                         displayName: authenticator.displayName || authenticator.name,
                         name: authenticator.name,

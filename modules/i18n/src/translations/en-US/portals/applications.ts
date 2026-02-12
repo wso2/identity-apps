@@ -1368,7 +1368,7 @@ export const applications: ApplicationsNS = {
                 applicationNativeAuthentication: {
                     heading: "App-Native Authentication",
                     alerts: {
-                        apiAuthCompatibilityWarning: "Please note that some authenticators configured in the authentication flow do not support API based authentication."
+                        apiAuthCompatibilityWarning: "Please note that some authenticators configured in the authentication flow do not support app-native authentication."
                     },
                     fields: {
                         enableAPIBasedAuthentication: {

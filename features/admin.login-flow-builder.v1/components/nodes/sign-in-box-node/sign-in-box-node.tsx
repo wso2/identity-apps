@@ -38,6 +38,7 @@ import {
     FederatedAuthenticatorConstants
 } from "@wso2is/admin.connections.v1/constants/federated-authenticator-constants";
 import { LocalAuthenticatorConstants } from "@wso2is/admin.connections.v1/constants/local-authenticator-constants";
+import { AuthenticatorLabels } from "@wso2is/admin.connections.v1/models/authenticators";
 import { GenericAuthenticatorInterface } from "@wso2is/admin.identity-providers.v1/models/identity-provider";
 import { OrganizationUtils } from "@wso2is/admin.organizations.v1/utils/organization";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
@@ -309,7 +310,7 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
         }
 
         const valid: boolean = !isAPIBasedAuthEnabled ||
-            authenticator.defaultAuthenticator.tags?.includes("APIAuth");
+            authenticator.defaultAuthenticator.tags?.includes(AuthenticatorLabels.API_AUTHENTICATION);
 
         const signInButton: ReactElement = (
             <Button
@@ -583,7 +584,8 @@ export const SignInBoxNode: FunctionComponent<SignInBoxNodePropsInterface> = (
 
             if (!authenticator) return false;
 
-            const isUnsupported: boolean = !authenticator.defaultAuthenticator.tags?.includes("APIAuth");
+            const isUnsupported: boolean = !authenticator
+                .defaultAuthenticator.tags?.includes(AuthenticatorLabels.API_AUTHENTICATION);
 
             return isUnsupported && !dismissedWarnings.has(authenticator.name);
         }) ?? false;

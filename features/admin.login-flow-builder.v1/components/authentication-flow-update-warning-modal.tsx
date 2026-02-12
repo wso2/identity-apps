@@ -146,9 +146,9 @@ const AuthenticationFlowUpdateWarningModal: FunctionComponent<AuthenticationFlow
             onPrimaryActionClick={
                 hasErrors
                     ? (event: MouseEvent<HTMLElement>) => onClose(event, null)
-                    : () => {
+                    : (event: MouseEvent<HTMLElement>) => {
                         onConfirm();
-                        onClose(null, null);
+                        onClose(event, null);
                     }
             }
             onSecondaryActionClick={
