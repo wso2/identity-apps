@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import ResourceEndpointsProvider from "@wso2is/admin.core.v1/providers/resource-enpoints-provider";
 import UserPreferenceProvider from "@wso2is/common.ui.v1/providers/user-preferences-provider";
 import { fireEvent, render, screen } from "@wso2is/unit-testing/utils";
 import React from "react";
@@ -35,7 +36,9 @@ describe("AuthenticationFlowVisualEditor", () => {
     it("renders the AuthenticationFlowVisualEditor component", () => {
         render(
             <UserPreferenceProvider userId="">
-                <AuthenticationFlowVisualEditor { ...defaultProps } />
+                <ResourceEndpointsProvider>
+                    <AuthenticationFlowVisualEditor { ...defaultProps } />
+                </ResourceEndpointsProvider>
             </UserPreferenceProvider>
             , { allowedScopes: fullPermissions });
 
