@@ -88,7 +88,7 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
                     <Header.Content>
                         { profile.profile_id }
                         <Header.Subheader>
-                            { getDisplayName(profile) || "-" }
+                            { getDisplayName(profile) || null}
                         </Header.Subheader>
                     </Header.Content>
                 </Header>
@@ -100,10 +100,11 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
             dataIndex: "user",
             id: "user",
             key: "user",
+            textAlign: "left",
             render: (profile: ProfileModel): ReactNode => {
                 const userId:string = profile.user_id;
 
-                // Anonymous → only chip (don’t show user_id)
+                // Anonymous 
                 if (!userId) {
                     return (
                         <Chip
@@ -137,7 +138,7 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
                     <Chip
                         size="small"
                         variant="outlined"
-                        label={ t("customerDataService:profiles.list.chips.notUnified") }
+                        label={ t("customerDataService:profiles.list.chips.unified") }
                         data-testid="not-unified-profile-chip"
                     />
                 );

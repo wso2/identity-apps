@@ -43,10 +43,11 @@ export const customerDataService: CustomerDataServiceNS = {
         details: {
             confirmations: {
                 deleteProfile: {
-                    assertionHint: "I confirm that I want to delete this profile.",
-                    header: "Delete profile",
-                    message: "This action cannot be undone.",
-                    profileIdLabel: "Profile ID:"
+                    assertionHint: "Please confirm the deletion.",
+                    content: "Are you sure you want to delete the profile <1>{{profileId}}</1>? " +
+                        "This action permanently deletes the profile and the profiles that are merged into.",
+                    header: "Delete Profile",
+                    message: "This action is irreversible!"
                 }
             },
             dangerZone: {
@@ -118,6 +119,12 @@ export const customerDataService: CustomerDataServiceNS = {
                 general: "General",
                 unifiedProfiles: "Unified Profiles"
             },
+            section: {
+                profileData: {
+                    title: "Profile Data",
+                    description: "This section contains the profile's identity attributes, traits and application data. ",
+                }
+            },
             unifiedProfiles: {
                 columns: {
                     profileId: "Profile ID",
@@ -140,7 +147,7 @@ export const customerDataService: CustomerDataServiceNS = {
             confirmations: {
                 delete: {
                     assertionHint: "Please confirm the deletion.",
-                    content: "Are you sure you want to delete the profile {{profileId}}? " +
+                    content: "Are you sure you want to delete the profile <1>{{profileId}}</1>? " +
                         "This action permanently deletes the profile and the profiles that are merged into.",
                     header: "Delete Profile",
                     message: "This action is irreversible!"
@@ -157,7 +164,25 @@ export const customerDataService: CustomerDataServiceNS = {
                         message: "Profile deleted"
                     }
                 }
+            },
+            placeholders: {
+                emptyList: {
+                    title: "No profiles found",
+                    subtitle: "Create a profile to see it listed here."
+                },
+                emptySearch: {
+                    title: "No search results",
+                    subtitle: "Try with different filters to find what you're looking for."
+                }
+            },
+            search : {
+                placeholder: "Search by profile ID "
             }
-        }
+        },
+        page: {
+            description: "Manage customer profiles which has identity, behavioural and application data",
+            pageTitle: "Profiles",
+            title: "Profiles"
+        },
     }
 };

@@ -19,7 +19,6 @@
 import {
     ArrowRightToBracketPencilIcon,
     BuildingIcon,
-    CircleStarIcon,
     BuildingPenIcon,
     DocumentCheckIcon,
     EnvelopeGearIcon,
@@ -29,15 +28,11 @@ import {
     LightbulbOnIcon,
     LinearNodesIcon,
     LogsDocumentIcon,
-    LinkIcon,
     NodesIcon,
-    ProfileFlowIcon,
     ProgressFlowIcon,
     UserCircleDotIcon,
     UserGroupIcon,
     WebhookIcon,
-    UserPlusIcon,
-    UserDatabaseIcon,
 } from "@oxygen-ui/react-icons";
 import { ReactComponent as ProfilesIcon } from "@wso2is/admin.cds.v1/assets/images/icons/cdsProfiles.svg";
 import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";

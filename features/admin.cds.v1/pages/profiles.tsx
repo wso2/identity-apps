@@ -50,12 +50,6 @@ const DEFAULT_LIST_FIELDS: string[] = [
     "identity_attributes.lastname"
 ];
 
-// const SCOPES: ProfileSchemaGroupedScope[] = [
-//     "identity_attributes",
-//     "traits",
-//     "application_data"
-// ];
-
 const ProfilesPage: FunctionComponent = (): ReactElement => {
 
     const dispatch:Dispatch<any> = useDispatch();
@@ -98,24 +92,6 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
 
         return fallback;
     };
-
-    // /**
-    //  * NOTE: No need to pre-fetch schema "once".
-    //  * AdvancedSearch asks attributes lazily by scope via `loadAttributesForScope`.
-    //  */
-    // useEffect(() => {
-    //     const warmup = async () => {
-    //         try {
-    //             await Promise.all(SCOPES.map((scope:ProfileSchemaGroupedScope) => fetchProfileSchemaByScope(scope)));
-    //         } catch (err) {
-    //             // eslint-disable-next-line no-console
-    //             console.error("Failed to warm up schema scopes", err);
-    //         }
-    //     };
-    //
-    //     warmup();
-    // }, []);
-
 
     const fetchProfilesPage = async (cursor: string | null, page: number): Promise<void> => {
         setIsLoading(true);
@@ -256,8 +232,8 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
 
     return (
         <PageLayout
-            title={ t("customerDataService:profiles.page.title") }
-            pageTitle={ t("customerDataService:profiles.page.heading") }
+            title={ t("customerDataService:profiles.page.title") } 
+            pageTitle={ t("customerDataService:profiles.page.pageTitle") }
             description={ t("customerDataService:profiles.page.description") }
             data-testid="profiles-page-layout"
         >

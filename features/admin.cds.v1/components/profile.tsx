@@ -30,15 +30,22 @@ import {
     DangerZone,
     DangerZoneGroup,
     EmphasizedSegment,
+    Heading,
+    Hint,
+    Popup,
     ResourceTab,
     ResourceTabPaneInterface,
     TabPageLayout,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
+import Button from "@oxygen-ui/react/Button";
 import React, {
     FunctionComponent,
     ReactElement,
+    LazyExoticComponent,
+    lazy,
     SyntheticEvent,
+    Suspense,
     useEffect,
     useMemo,
     useState
@@ -50,6 +57,14 @@ import { Dispatch } from "redux";
 import { Divider, Form, Image, TabProps, Table } from "semantic-ui-react";
 import { deleteCDSProfile, fetchCDSProfileDetails } from "../api/profiles";
 import type { ProfileModel } from "../models/profiles";
+import { CopyIcon, DownloadIcon, EyeIcon, XMarkIcon } from "@oxygen-ui/react-icons";
+import CircularProgress from "@oxygen-ui/react/CircularProgress";
+import IconButton from "@oxygen-ui/react/IconButton";
+import Modal from "@mui/material/Modal";
+import Box from "@oxygen-ui/react/Box";
+import Toolbar from "@oxygen-ui/react/Toolbar";
+import Typography from "@oxygen-ui/react/Typography";
+
 
 /**
  * i18n (keep these keys aligned with your CDS i18n namespace).
@@ -130,6 +145,11 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
         }
     };
 
+     // Lazy load Monaco Editor
+     const MonacoEditor: LazyExoticComponent<any> = lazy(() =>
+        import("@monaco-editor/react" /* webpackChunkName: "MDMonacoEditor" */)
+    );
+
     useEffect(() => {
         if (profileId) {
             fetchProfile();
@@ -149,6 +169,25 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
     const showDangerZone: boolean = useMemo(() => {
         return Boolean(profile) && !userId;
     }, [ profile, userId ]);
+
+    const firstName: string = useMemo(() => {
+        const v: any =
+            (profile?.identity_attributes as any)?.givenname
+    
+        return v ? String(v).trim() : "";
+    }, [ profile ]);
+    
+    const lastName: string = useMemo(() => {
+        const v: any =
+            (profile?.identity_attributes as any)?.lastname
+    
+        return v ? String(v).trim() : "";
+    }, [ profile ]);
+    
+    const displayName: string = useMemo(() => {
+        return `${firstName} ${lastName}`.trim();
+    }, [ firstName, lastName ]);
+    
 
     const handleTabChange = (_: SyntheticEvent, data: TabProps): void => {
         setActiveTabIndex(data.activeIndex as number);
@@ -209,25 +248,44 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
 
         return (
             <Form.Field>
-                <label>{ t("customerDataService:profiles.details.form.profileData.label") }</label>
+                <Heading as="h4">
+                    { t("customerDataService:profiles.details.form.profileData.label") }
+                </Heading>
 
-                <div style={ { display: "flex", alignItems: "center", gap: 12 } }>
-                    <a
-                        role="button"
-                        style={ { cursor: "pointer" } }
+                <Hint>
+                    { t("customerDataService:profiles.details.sections.profileData.description") }
+                </Hint>
+                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                    <IconButton
+                        size="small"
                         onClick={ (): void => {
                             setModalAlert(null);
                             setIsProfileDataViewOpen(true);
                         } }
+                        data-componentid={ `${componentId}-profile-data-view-button` }
                     >
-                        { t("customerDataService:profiles.details.profileData.actions.view") }
-                    </a>
-                    <a role="button" style={ { cursor: "pointer" } } onClick={ copyProfileJson }>
-                        { t("customerDataService:profiles.details.profileData.actions.copy") }
-                    </a>
-                    <a role="button" style={ { cursor: "pointer" } } onClick={ exportProfileJson }>
-                        { t("customerDataService:profiles.details.profileData.actions.export") }
-                    </a>
+                        <Popup
+                            trigger={ <EyeIcon /> }
+                            content={ t("customerDataService:profiles.details.profileData.actions.view") }
+                            position="top center"
+                            size="mini"
+                            inverted
+                        />
+                    </IconButton>
+                    
+                    <IconButton
+                        size="small"
+                        onClick={ exportProfileJson }
+                        data-componentid={ `${componentId}-profile-data-export-button` }
+                    >
+                        <Popup
+                            trigger={ <DownloadIcon /> }
+                            content={ t("customerDataService:profiles.details.profileData.actions.export") }
+                            position="top center"
+                            size="mini"
+                            inverted
+                        />
+                    </IconButton>
                 </div>
             </Form.Field>
         );
@@ -238,8 +296,6 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
 
         return (
             <Form.Field>
-                <label>{ t("customerDataService:profiles.details.unifiedProfiles.title") }</label>
-
                 { !merged.length ? (
                     <div style={ { opacity: 0.7 } }>
                         { t("customerDataService:profiles.details.unifiedProfiles.empty") }
@@ -315,8 +371,13 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
         );
     };
 
+    const merged: Array<{ profile_id: string; reason?: string }> = useMemo(() => {
+        return (profile?.merged_from ?? []) as any;
+    }, [ profile ]);
+    
     const renderUnifiedProfilesTab = (): ReactElement | null => {
-        if (!profile) {
+        
+        if (!profile || merged.length === 0) {
             return null;
         }
 
@@ -329,11 +390,31 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
         );
     };
 
-    const panes: ResourceTabPaneInterface[] = [
-        { componentId: "general", menuItem: t("customerDataService:profiles.details.tabs.general"), render: renderGeneralTab },
-        { componentId: "unified-profiles", menuItem: t("customerDataService:profiles.details.tabs.unifiedProfiles"), render: renderUnifiedProfilesTab }
-    ];
-
+    const panes: ResourceTabPaneInterface[] = useMemo(() => {
+        const base: ResourceTabPaneInterface[] = [
+            {
+                componentId: "general",
+                menuItem: t("customerDataService:profiles.details.tabs.general"),
+                render: renderGeneralTab
+            }
+        ];
+    
+        if (merged.length > 0) {
+            base.push({
+                componentId: "unified-profiles",
+                menuItem: t("customerDataService:profiles.details.tabs.unifiedProfiles"),
+                render: renderUnifiedProfilesTab
+            });
+        }
+    
+        return base;
+    }, [ t, merged.length, profile ]);
+    
+    const handleProfileDataViewClose = (): void => {
+        setIsProfileDataViewOpen(false);
+        setModalAlert(null);
+    };
+    
     const handleProfileDelete = (): void => {
         if (userId) {
             setModalAlert({
@@ -382,11 +463,7 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
             ) }
             title={ profile?.profile_id || t("customerDataService:profiles.details.page.fallbackTitle") }
             pageTitle={ t("customerDataService:profiles.details.page.pageTitle") }
-            description={
-                userId
-                    ? t("customerDataService:profiles.details.page.descriptionLinkedUser", { userId })
-                    : t("customerDataService:profiles.details.page.description")
-            }
+            description={ displayName || undefined }
             backButton={ {
                 onClick: () => history.push(AppConstants.getPaths().get("PROFILES")),
                 text: t("customerDataService:profiles.details.page.backButton")
@@ -401,7 +478,7 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
             />
 
             {/* Profile Data Viewer Modal */}
-            { profile && (
+            {/* { profile && (
                 <ConfirmationModal
                     data-componentid={ `${componentId}-profile-data-viewer-modal` }
                     open={ isProfileDataViewOpen }
@@ -466,6 +543,98 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                         </div>
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
+            ) } */}
+            { profile && isProfileDataViewOpen && (
+                <Suspense fallback={ <CircularProgress /> }>
+                    <Modal
+                        aria-labelledby="profile-data-viewer-title"
+                        aria-describedby="profile-data-viewer-description"
+                        open={ isProfileDataViewOpen }
+                        onClose={ handleProfileDataViewClose }
+                    >
+                        <Box 
+                            sx={{
+                                position: 'absolute',
+                                top: '50%',
+                                left: '50%',
+                                transform: 'translate(-50%, -50%)',
+                                width: '90%',
+                                height: '90%',
+                                bgcolor: 'background.paper',
+                                boxShadow: 24,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                borderRadius: 2,
+                                overflow: 'hidden'
+                            }}
+                        >
+                            {/* Toolbar */}
+                            <Box
+                                sx={{
+                                    backgroundColor: '#f5f5f5',
+                                    borderBottom: '1px solid #e0e0e0'
+                                }}
+                                data-componentid={ `${ componentId }-toolbar-container` }
+                            >
+                                <Toolbar variant="dense" sx={{ justifyContent: 'space-between', px: 2 }}>
+                                    <Typography variant="h6">
+                                        { t("customerDataService:profiles.details.profileData.modal.title") }
+                                    </Typography>
+                                    <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                                        <Button
+                                            size="small"
+                                            data-componentid={ `${ componentId }-profile-data-viewer-download-button` }
+                                            onClick={ exportProfileJson }
+                                            startIcon={ <DownloadIcon /> }
+                                            sx={{ textTransform: 'none' }}
+                                        >
+                                            { t("customerDataService:profiles.details.profileData.actions.export") }
+                                        </Button>
+                                        <Button
+                                            size="small"
+                                            data-componentid={ `${ componentId }-profile-data-viewer-copy-button` }
+                                            onClick={ copyProfileJson }
+                                            startIcon={ <CopyIcon /> }
+                                            sx={{ textTransform: 'none' }}
+                                        >
+                                            { t("customerDataService:profiles.details.profileData.actions.copy") }
+                                        </Button>
+                                        <IconButton
+                                            data-componentid={ `${ componentId }-profile-data-viewer-close-button` }
+                                            size="small"
+                                            onClick={ handleProfileDataViewClose }
+                                        >
+                                            <XMarkIcon />
+                                        </IconButton>
+                                    </Box>
+                                </Toolbar>
+                            </Box>
+
+                            {/* Monaco Editor */}
+                            <Box sx={{ flex: 1, overflow: 'hidden' }}>
+                                <MonacoEditor
+                                    loading={ <CircularProgress /> }
+                                    width="100%"
+                                    height="100%"
+                                    language="json"
+                                    theme="vs"
+                                    value={ profileJsonString }
+                                    options={{
+                                        automaticLayout: true,
+                                        readOnly: true,
+                                        minimap: { enabled: false },
+                                        scrollBeyondLastLine: false,
+                                        fontSize: 13,
+                                        lineNumbers: "on",
+                                        renderWhitespace: "selection",
+                                        wordWrap: "on"
+                                    }}
+                                    data-componentid={ `${ componentId }-profile-data-viewer` }
+                                />
+                            </Box>
+                        </Box>
+                    </Modal>
+                </Suspense>
             ) }
 
             {/* Delete modal - only mount when danger zone is relevant */}
@@ -504,7 +673,7 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
 
                         <div style={ { display: "grid", gap: 8 } }>
                             <div>
-                                <strong>{ t("customerDataService:profiles.details.confirmations.deleteProfile.profileIdLabel") }</strong>
+                                <strong>{ t("customerDataService:profiles.details.confirmations.deleteProfile.content") }</strong>
                                 { " " }
                                 { profile?.profile_id }
                             </div>

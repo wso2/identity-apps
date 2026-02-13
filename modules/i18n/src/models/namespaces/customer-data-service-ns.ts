@@ -98,7 +98,6 @@ export interface CustomerDataServiceNS {
          * PROFILE DETAILS PAGE
          */
         details: {
-
             page: {
                 pageTitle: string;
                 fallbackTitle: string;
@@ -143,6 +142,13 @@ export interface CustomerDataServiceNS {
                 };
             };
 
+            section: {
+                profileData: {
+                    title:  string;
+                    description: string;
+                }
+            };
+
             unifiedProfiles: {
                 title: string;
                 empty: string;
@@ -165,7 +171,7 @@ export interface CustomerDataServiceNS {
                     header: string;
                     message: string;
                     assertionHint: string;
-                    profileIdLabel: string;
+                    content: string;
                 };
             };
 
@@ -197,5 +203,10 @@ export interface CustomerDataServiceNS {
                 };
             };
         };
+        page: {
+            description: string;
+            pageTitle: string;
+            title:  string;
+        },
     };
 }
