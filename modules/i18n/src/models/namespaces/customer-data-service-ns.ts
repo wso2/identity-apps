@@ -53,9 +53,7 @@ export interface CustomerDataServiceNS {
 
             chips: {
                 anonymous: string;
-                linked: string;
                 unified: string;
-                notUnified: string;
             };
 
             search?: {
@@ -105,7 +103,6 @@ export interface CustomerDataServiceNS {
                 pageTitle: string;
                 fallbackTitle: string;
                 description: string;
-                descriptionLinkedUser: string;
                 backButton: string;
             };
 

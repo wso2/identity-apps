@@ -368,10 +368,14 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                             { /* ✅ max width so it doesn't grow forever */ }
                             <Box
                                 sx={ {
-                                    width: "100%",
                                     maxWidth: 1100,
                                     mx: "auto",
-                                    overflow: "visible"
+                                    overflow: "visible",
+                                    width: "100%",
+
+                                    "& .ui.dropdown .menu": {
+                                        zIndex: 1200
+                                    }
                                 } }
                                 className="multiple-filters"
                             >
@@ -541,24 +545,31 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                         <Box sx={ { flex: "1 1 220px", minWidth: 220 } }>
                                                             <Field
                                                                 name={ `condition-${index}` }
-                                                                label={ t("console:common.advancedSearch.form.inputs.filterCondition.label") }
+                                                                label={
+                                                                    t("console:common.advancedSearch.form.inputs." +
+                                                                    "filterCondition.label") }
                                                                 placeholder={ filterConditionsPlaceholder
-                                                                    || t("console:common.advancedSearch.form.inputs.filterCondition.placeholder") }
+                                                                    || t("console:common.advancedSearch.form." +
+                                                                        "inputs.filterCondition.placeholder") }
                                                                 required
                                                                 type="dropdown"
-                                                                children={ (filterConditionOptions || defaultFilterConditionOptions).map((o: any, idx) => ({
-                                                                    key: o.key ?? idx,
-                                                                    text: o.text,
-                                                                    value: o.value
-                                                                })) }
+                                                                children={ (filterConditionOptions ||
+                                                                    defaultFilterConditionOptions)
+                                                                    .map((o: any, idx) => ({
+                                                                        key: o.key ?? idx,
+                                                                        text: o.text,
+                                                                        value: o.value
+                                                                    })) }
                                                                 value={ row.condition }
                                                                 listen={ (values: Map<string, FormValue>) => {
-                                                                    const newCondition = values.get(`condition-${index}`) as string;
+                                                                    const newCondition: string =
+                                                                        values.get(`condition-${index}`) as string;
 
-                                                                    if (!newCondition || newCondition === row.condition) return;
+                                                                    if (!newCondition ||
+                                                                        newCondition === row.condition) return;
 
-                                                                    setFilterGroups((prev) => {
-                                                                        const updated = [ ...prev ];
+                                                                    setFilterGroups((prev:FilterGroup[]) => {
+                                                                        const updated: FilterGroup[] = [ ...prev ];
 
                                                                         updated[index] = {
                                                                             ...updated[index],
@@ -575,7 +586,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                             <Field
                                                                 name={ `value-${index}` }
                                                                 label={
-                                                                t("console:common.advancedSearch.form.inputs." +
+                                                                    t("console:common.advancedSearch.form.inputs." +
                                                                     "filterValue.label") }
                                                                 placeholder={ filterValuePlaceholder
                                                                     || t("console:common.advancedSearch.form." +
@@ -584,13 +595,13 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                 type="text"
                                                                 value={ row.value }
                                                                 listen={ (values: Map<string, FormValue>) => {
-                                                                    const newValue =
+                                                                    const newValue : string=
                                                                         values.get(`value-${index}`) as string;
 
                                                                     if (newValue === row.value) return;
 
-                                                                    setFilterGroups((prev) => {
-                                                                        const updated = [ ...prev ];
+                                                                    setFilterGroups((prev:FilterGroup[]) => {
+                                                                        const updated:FilterGroup[] = [ ...prev ];
 
                                                                         updated[index] = {
                                                                             ...updated[index],

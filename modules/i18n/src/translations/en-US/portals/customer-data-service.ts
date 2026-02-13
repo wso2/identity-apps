@@ -16,14 +16,12 @@
  * under the License.
  */
 
-import { CustomerDataServiceNS } from "../../../models/namespaces";
+import { CustomerDataServiceNS } from "../../../models";
 
 /**
  * NOTES: No need to care about the max-len for this file since it's easier to
  * translate the strings to other languages easily with editor translation tools.
  */
-/* eslint-disable max-len */
-/* eslint-disable sort-keys */
 
 export const customerDataService: CustomerDataServiceNS = {
     common: {
@@ -42,123 +40,121 @@ export const customerDataService: CustomerDataServiceNS = {
         }
     },
     profiles: {
-        list: {
-            columns: {
-                profile: "Profile",
-                user: "User",
-                unifiedProfiles: "Unified Profiles"
-            },
-            chips: {
-                anonymous: "Anonymous",
-                linked: "Linked",
-                unified: "Unified",
-                notUnified: "Not unified"
-            },
+        details: {
             confirmations: {
-                delete: {
-                    header: "Delete Profile",
-                    message: "This action is irreversible!",
-                    content: "Are you sure you want to delete the profile {{profileId}}? This action permanently deletes the profile and the profiles that are merged into.",
-                    assertionHint: "Please confirm the deletion."
+                deleteProfile: {
+                    assertionHint: "I confirm that I want to delete this profile.",
+                    header: "Delete profile",
+                    message: "This action cannot be undone.",
+                    profileIdLabel: "Profile ID:"
                 }
+            },
+            dangerZone: {
+                delete: {
+                    actionTitle: "Delete profile",
+                    header: "Delete this profile",
+                    subheader: "This profile is not linked to a user ID and can be deleted."
+                }
+            },
+            form: {
+                createdDate: { label: "Created Date" },
+                location: { label: "Location" },
+                profileData: { label: "Profile Data" },
+                profileId: { label: "Profile ID" },
+                updatedDate: { label: "Updated Date" },
+                userId: { label: "User ID" }
             },
             notifications: {
-                delete: {
-                    success: {
-                        message: "Profile deleted",
-                        description: "The profile was successfully deleted."
-                    },
+                deleteProfile: {
                     error: {
-                        message: "Delete failed",
-                        description: "Failed to delete the profile."
+                        description: "Failed to delete profile.",
+                        message: "Error"
+                    },
+                    notAllowed: {
+                        description: "Profiles linked to a user cannot be deleted.",
+                        message: "Not allowed"
+                    },
+                    success: {
+                        description: "Profile deleted successfully.",
+                        message: "Success"
+                    }
+                },
+                fetchProfile: {
+                    error: {
+                        description: "Failed to load profile details.",
+                        message: "Error"
                     }
                 }
-            }
-        },
-        details: {
+            },
             page: {
-                pageTitle: "Profile",
-                fallbackTitle: "Profile",
+                backButton: "Go back to Profiles",
                 description: "Customer profile",
-                descriptionLinkedUser: "Linked User ID: {{userId}}",
-                backButton: "Go back to Profiles"
+                fallbackTitle: "Profile",
+                pageTitle: "Profile"
+            },
+            profileData: {
+                actions: {
+                    copy: "Copy",
+                    export: "Export",
+                    view: "View"
+                },
+                copy: {
+                    success: {
+                        description: "Profile data copied to clipboard.",
+                        message: "Copied"
+                    }
+                },
+                export: {
+                    success: {
+                        description: "Profile data exported.",
+                        message: "Exported"
+                    }
+                },
+                modal: {
+                    title: "Profile Data"
+                }
             },
             tabs: {
                 general: "General",
                 unifiedProfiles: "Unified Profiles"
             },
-            form: {
-                profileId: { label: "Profile ID" },
-                userId: { label: "User ID" },
-                createdDate: { label: "Created Date" },
-                updatedDate: { label: "Updated Date" },
-                location: { label: "Location" },
-                profileData: { label: "Profile Data" }
-            },
-            profileData: {
-                actions: {
-                    view: "View",
-                    copy: "Copy",
-                    export: "Export"
-                },
-                modal: {
-                    title: "Profile Data"
-                },
-                copy: {
-                    success: {
-                        message: "Copied",
-                        description: "Profile data copied to clipboard."
-                    }
-                },
-                export: {
-                    success: {
-                        message: "Exported",
-                        description: "Profile data exported."
-                    }
-                }
-            },
             unifiedProfiles: {
-                title: "Merged From",
-                empty: "No unified profiles found for this profile.",
                 columns: {
                     profileId: "Profile ID",
-                    reason: "Reason"
-                }
+                    reason: "Unification Trigger"
+                },
+                empty: "No unified profiles found for this profile.",
+                title: "Unified Profiles"
+            }
+        },
+        list: {
+            chips: {
+                anonymous: "Anonymous",
+                unified: "Unified"
             },
-            dangerZone: {
-                delete: {
-                    header: "Delete this profile",
-                    subheader: "This profile is not linked to a user ID and can be deleted.",
-                    actionTitle: "Delete profile"
-                }
+            columns: {
+                profile: "Profile",
+                unifiedProfiles: "Unified Profiles",
+                user: "User"
             },
             confirmations: {
-                deleteProfile: {
-                    header: "Delete profile",
-                    message: "This action cannot be undone.",
-                    assertionHint: "I confirm that I want to delete this profile.",
-                    profileIdLabel: "Profile ID:"
+                delete: {
+                    assertionHint: "Please confirm the deletion.",
+                    content: "Are you sure you want to delete the profile {{profileId}}? " +
+                        "This action permanently deletes the profile and the profiles that are merged into.",
+                    header: "Delete Profile",
+                    message: "This action is irreversible!"
                 }
             },
             notifications: {
-                fetchProfile: {
+                delete: {
                     error: {
-                        message: "Error",
-                        description: "Failed to load profile details."
-                    }
-                },
-                deleteProfile: {
-                    notAllowed: {
-                        message: "Not allowed",
-                        description: "Profiles linked to a user cannot be deleted."
+                        description: "Failed to delete the profile.",
+                        message: "Delete failed"
                     },
                     success: {
-                        message: "Success",
-                        description: "Profile deleted successfully."
-                    },
-                    error: {
-                        message: "Error",
-                        description: "Failed to delete profile."
+                        description: "The profile was successfully deleted.",
+                        message: "Profile deleted"
                     }
                 }
             }

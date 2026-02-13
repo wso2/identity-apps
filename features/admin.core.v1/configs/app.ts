@@ -290,7 +290,7 @@ export class Config {
                 I18nConstants.FLOWS_NAMESPACE,
                 I18nConstants.COMMON_USERS_NAMESPACE,
                 I18nConstants.VERIFIABLE_CREDENTIALS_NAMESPACE,
-                I18nConstants.CUSTOMER_DATA_SERVICE_NAMESPACE,
+                I18nConstants.CUSTOMER_DATA_SERVICE_NAMESPACE
             ],
             preload: []
         };
@@ -366,7 +366,7 @@ export class Config {
             ...getAgentsResourceEndpoints(this.resolveServerHost()),
             ...getFlowBuilderCoreResourceEndpoints(this.resolveServerHost()),
             ...getVCTemplateEndpoints(this.resolveServerHost()),
-            ...getCustomerDataServiceEndpoints(this.resolveServerHost()),
+            ...getCustomerDataServiceEndpoints("https://localhost:8900/t/carbon.super"),
             CORSOrigins: `${ this.resolveServerHostFromConfig() }/api/server/v1/cors/origins`,
             asyncStatus: `${ this.resolveServerHost(false, true) }/api/server/v1/async-operations`,
             // TODO: Remove this endpoint and use ID token to get the details

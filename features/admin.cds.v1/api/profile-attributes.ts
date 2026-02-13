@@ -16,223 +16,120 @@
  * under the License.
  */
 
-import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
-import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
-import { store } from "@wso2is/admin.core.v1/store";
-import { HttpMethods } from "@wso2is/core/models";
-import { AxiosError, AxiosResponse } from "axios";
-
-import type { FilterAttributeOption } from "../components/advanced-search-with-multipe-filters";
-import type { SchemaListingScope } from "../models/profile-attribute-listing";
-import type {
+import axios from "axios";
+import {
     ApplicationDataSchemaMapResponse,
     ProfileSchemaAttribute,
     ProfileSchemaFullResponse,
     ProfileSchemaScope,
     ProfileSchemaScopeResponse
 } from "../models/profile-attributes";
-
-/**
- * Initialize an auth-aware Http client.
- */
-const httpClient: HttpClientInstance =
-    AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
+import { SchemaListingScope } from "../models/profile-attribute-listing";
+import { FilterAttributeOption } from "../components/advanced-search-with-multipe-filters";
 
 /**
  * GET /profile-schema
  * Returns the complete schema (core + meta + identity + traits + application_data map)
  */
-export const fetchFullProfileSchema = (): Promise<ProfileSchemaFullResponse> => {
-    const requestConfig: RequestConfigInterface = {
-        headers: { "Content-Type": "application/json" },
-        method: HttpMethods.GET,
-        url: store.getState().config.endpoints.cdsProfileSchema
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => Promise.resolve(response.data as ProfileSchemaFullResponse))
-        .catch((error: AxiosError) => Promise.reject(error));
+export const fetchFullProfileSchema = async (): Promise<ProfileSchemaFullResponse> => {
+    const res = await axios.get("https://localhost:8900/t/carbob.super/profile-schema"
+)
+    ;
+    return res.data as ProfileSchemaFullResponse;
 };
 
 /**
  * GET /profile-schema/{scope}
+ * Recommended backend response: ProfileSchemaAttribute[] for ALL scopes.
  *
  * If application_data comes as a map, this function flattens it and injects application_identifier.
  */
-export const fetchProfileSchemaByScope = (
+export const fetchProfileSchemaByScope = async (
     scope: ProfileSchemaScope,
     filter?: string
 ): Promise<ProfileSchemaScopeResponse> => {
 
-    const requestConfig: RequestConfigInterface = {
-        headers: { "Content-Type": "application/json" },
-        method: HttpMethods.GET,
-        params: filter ? { filter } : undefined,
-        url:  `${store.getState().config.endpoints.cdsProfileSchema}/${scope}`
-    };
+    const res = await axios.get("https://localhost:8900/t/carbon.super/cds/api/v1/profile-schema/"+scope, {
+        params: filter ? { filter } : undefined
+    });
 
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            const data = response.data;
+    const data = res.data;
 
-            if (Array.isArray(data)) {
-                return Promise.resolve(data as ProfileSchemaScopeResponse);
-            }
+    if (Array.isArray(data)) {
+        return data as ProfileSchemaScopeResponse;
+    }
 
-            // Map shape: { "<appId>": [ {..}, ... ] }
-            if (scope === "application_data" && data && typeof data === "object") {
-                const map = data as ApplicationDataSchemaMapResponse;
-                const flattened: ProfileSchemaAttribute[] = [];
+    // If backend returns a map for application_data => flatten.
+    // Shape: { "<appId>": [ {..}, ... ] }
+    if (scope === "application_data" && data && typeof data === "object") {
+        const map = data as ApplicationDataSchemaMapResponse;
 
-                Object.entries(map).forEach(([ appId, attrs ]) => {
-                    (attrs ?? []).forEach((attr) => {
-                        const original = attr.attribute_name ?? "";
-                        const field = original.startsWith("application_data" + ".")
-                            ? original.replace("application_data.", "")
-                            : original;
+        const flattened: ProfileSchemaAttribute[] = [];
 
-                        flattened.push({
-                            ...attr,
-                            application_identifier: attr.application_identifier ?? appId,
-                            attribute_name: `application_data.${appId}.${field}`
-                        });
-                    });
+        Object.entries(map).forEach(([ appId, attrs ]) => {
+            (attrs ?? []).forEach((attr:ProfileSchemaAttribute) => {
+                const original:string = attr.attribute_name ?? "";
+                const field:any =
+                    original.startsWith("application_data.")
+                        ? original.replace("application_data.", "")
+                        : original;
+
+                flattened.push({
+                    ...attr,
+                    application_identifier: attr.application_identifier ?? appId,
+                    attribute_name: `application_data.${appId}.${field}`
                 });
+            });
+        });
 
-                return Promise.resolve(flattened);
-            }
+        return flattened;
+    }
 
-            return Promise.resolve([]);
-        })
-        .catch((error: AxiosError) => Promise.reject(error));
+    return [];
 };
 
 /**
- * GET /profile-schema/{scope}/{id}
- */
-export const fetchSchemaAttributeById = (
-    scope: SchemaListingScope,
-    id: string
-): Promise<ProfileSchemaAttribute> => {
-    const requestConfig: RequestConfigInterface = {
-        headers: { "Content-Type": "application/json" },
-        method: HttpMethods.GET,
-        url: `${store.getState().config.endpoints.cdsProfileSchema}/${scope}/${id}`
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => Promise.resolve(response.data as ProfileSchemaAttribute))
-        .catch((error: AxiosError) => Promise.reject(error));
-};
-
-/**
- * PATCH /profile-schema/{scope}/{id}
- * Only send what changed.
- */
-export const updateSchemaAttributeById = (
-    scope: SchemaListingScope,
-    id: string,
-    patch: Partial<ProfileSchemaAttribute>
-): Promise<void> => {
-    const requestConfig: RequestConfigInterface = {
-        data: patch,
-        headers: { "Content-Type": "application/json" },
-        method: HttpMethods.PATCH,
-        url: `${store.getState().config.endpoints.cdsProfileSchema}/${scope}/${id}`
-    };
-
-    return httpClient(requestConfig)
-        .then(() => Promise.resolve())
-        .catch((error: AxiosError) => Promise.reject(error));
-};
-
-/**
- * DELETE /profile-schema/{scope}/{id}
- */
-export const deleteSchemaAttributeById = (
-    scope: SchemaListingScope,
-    id: string
-): Promise<void> => {
-    const requestConfig: RequestConfigInterface = {
-        headers: { "Content-Type": "application/json" },
-        method: HttpMethods.DELETE,
-        url: `${store.getState().config.endpoints.cdsProfileSchema}/${scope}/${id}`
-    };
-
-    return httpClient(requestConfig)
-        .then(() => Promise.resolve())
-        .catch((error: AxiosError) => Promise.reject(error));
-};
-
-/**
- * Search for sub-attributes of a complex attribute
- */
-export const searchSubAttributes = (
-    scope: SchemaListingScope,
-    attributeName: string
-): Promise<ProfileSchemaAttribute[]> => {
-
-    const scopePrefix =
-        scope === "traits"
-            ? "traits."
-            : scope === "application_data"
-                ? "application_data."
-                : "";
-
-    const baseAttrName = attributeName.startsWith(scopePrefix)
-        ? attributeName.substring(scopePrefix.length)
-        : attributeName;
-
-    const searchPrefix = `${scopePrefix}${baseAttrName}.`;
-    const filter = `attribute_name+co+${searchPrefix}`;
-
-    const requestConfig: RequestConfigInterface = {
-        headers: { "Content-Type": "application/json" },
-        method: HttpMethods.GET,
-        params: { filter },
-        url: `${store.getState().config.endpoints.cdsProfileSchema}/${scope}`
-    };
-
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            const data = response.data;
-            return Promise.resolve(Array.isArray(data) ? (data as ProfileSchemaAttribute[]) : []);
-        })
-        .catch((error: AxiosError) => Promise.reject(error));
-};
-
-/**
- * Helper for AdvancedSearch dropdown
+ * Helper for AdvancedSearch dropdown:
+ * - label: last segment of attribute_name
+ * - value: full attribute_name without scope
  */
 export const toAttributeDropdownOptions = (
     scope: string,
     attributes: ProfileSchemaAttribute[]
 ): FilterAttributeOption[] => {
 
-    return (attributes ?? []).map((attr) => {
-        const name = attr.attribute_name ?? "";
+    return (attributes ?? []).map((attr: ProfileSchemaAttribute) => {
+        const fullName: string = attr.attribute_name ?? "";
+
+        const stripLeadingScope = (name: string, s: string): string =>
+            name.startsWith(`${s}.`) ? name.slice(s.length + 1) : name;
 
         if (scope === "application_data") {
-            const parts = name.split(".");
-            const appId = parts[1] ?? "";
-            const field = parts.slice(2).join(".") || "";
+            // expected: application_data.<appId>.<field...>  (field can be complex: a.b.c)
+            const parts: string[] = fullName.split(".");
+            const appId: string = parts.length > 1 ? parts[1] : "";
+
+            // field path WITHOUT scope/appId
+            const fieldPath:string = parts.length > 2 ? parts.slice(2).join(".") : "";
 
             return {
-                scope,
                 applicationId: appId,
-                label: field ? `${field} (app: ${appId})` : `(unknown field) (app: ${appId})`,
-                value: field,
-                key: `${appId}:${field}`
+                key: `${appId}:${fieldPath}`,
+                label: fieldPath || "(unknown field)",
+                scope,
+                value: fieldPath
             };
         }
 
-        const label = name.includes(".") ? name.split(".").slice(-1)[0] : name;
+        // For identity_attributes / traits:
+        // keep nested/complex attributes, only remove the leading scope prefix.
+        const displayName:string = stripLeadingScope(fullName, scope);
 
         return {
+            key: fullName,
+            label: displayName || fullName,
             scope,
-            label,
-            value: name,
-            key: name
+            value: displayName || fullName
         };
     });
 };

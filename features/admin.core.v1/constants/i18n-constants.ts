@@ -336,10 +336,11 @@ export class I18nConstants {
     public static readonly VERIFIABLE_CREDENTIALS_NAMESPACE: string =
         I18nModuleConstants.VERIFIABLE_CREDENTIALS_NAMESPACE;
 
-     /**
+    /**
      * Verifiable Credentials namespace.
      */
-    public static readonly CUSTOMER_DATA_SERVICE_NAMESPACE: string = I18nModuleConstants.CUSTOMER_DATA_SERVICE_NAMESPACE;
+    public static readonly CUSTOMER_DATA_SERVICE_NAMESPACE: string =
+        I18nModuleConstants.CUSTOMER_DATA_SERVICE_NAMESPACE;
 
     /**
      * Locations of the I18n namespaces.
