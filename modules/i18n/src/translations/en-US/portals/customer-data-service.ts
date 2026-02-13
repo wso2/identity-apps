@@ -37,6 +37,12 @@ export const customerDataService: CustomerDataServiceNS = {
         notifications: {
             error: "Error",
             notAllowed: "Not allowed"
+            loadAttributes: {
+                error: {
+                    message: "Failed to load attributes.",
+                    description: "An error occurred while loading the attributes."
+                }
+            }
         }
     },
     profiles: {

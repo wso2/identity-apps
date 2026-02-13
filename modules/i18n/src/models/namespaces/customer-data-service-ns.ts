@@ -31,6 +31,12 @@ export interface CustomerDataServiceNS {
         notifications: {
             error: string;
             notAllowed: string;
+            loadAttributes: {
+                error: {
+                    message: string;
+                    description: string;
+                };
+            }
         };
     };
 

@@ -140,7 +140,7 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
                         size="small"
                         variant="outlined"
                         label={ t("customerDataService:profiles.list.chips.unified") }
-                        data-testid="not-unified-profile-chip"
+                        data-testid="unified-profile-chip"
                     />
                 );
             },

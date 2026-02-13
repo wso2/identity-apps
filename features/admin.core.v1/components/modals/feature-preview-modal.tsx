@@ -151,21 +151,6 @@ const FeaturePreviewModal: FunctionComponent<FeaturePreviewModalPropsInterface> 
             },
             name: "Self-Registration Orchestration",
             value: "SelfRegistration.EnableDynamicPortal"
-        },
-        {
-            action: "Try Customer Data Service",
-            description: "This feature helps building a complete and unified view of each customer across applications, enabling better personalization",
-            enabled: registrationFlowConfig?.isEnabled,
-            id: "customer-data-service",
-            image: NewSelfRegistrationImage,
-            message: {
-                content: "Once Customer data service is enabled, Asgardeo will starts publishing user and attribute data." +
-                "And Customer data service uses it as source of truth to build user profile along with application data " + 
-                "and user traits and builds unified customer profiles.",
-                type: "warning" as const
-            },
-            name: "Self-Registration Orchestration",
-            value: "SelfRegistration.EnableDynamicPortal"
         }
     ].filter(Boolean)), [
         registrationFlowConfig
