@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024-2025, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2024-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -37,9 +37,19 @@ export const sessionManagement: SessionManagementNS = {
             label: "Remember Me Period",
             placeholder: "Enter the remember me period in minutes"
         },
+        enableMaximumSessionTimeout: {
+            hint: "Enable a maximum session lifetime for the user sessions.",
+            label: "Enable Maximum Session Timeout"
+        },
+        maximumSessionTimeout: {
+            hint: "The user will be required to re-authenticate after the configured time, regardless of activity.",
+            label: "Maximum Session Timeout",
+            placeholder: "Enter the maximum session timeout in minutes"
+        },
         validation: {
             idleSessionTimeout: "Idle Session Timeout should be a positive integer.",
-            rememberMePeriod: "Remember Me Period should be a positive integer."
+            rememberMePeriod: "Remember Me Period should be a positive integer.",
+            maximumSessionTimeout: "Maximum Session Timeout should be a positive integer."
         }
     },
     notifications: {
