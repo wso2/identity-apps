@@ -35,8 +35,13 @@ export class VerifiableCredentialsConstants {
      */
     public static readonly CREDENTIAL_FORMATS: Record<string, string> = {
         JWT_VC_JSON: "jwt_vc_json",
-        LDP_VC: "ldp_vc"
+        VC_SD_JWT: "dc+sd-jwt"
     };
+
+    /**
+     * Base64 encoded value of http://wso2.org/vc/claim
+     */
+    public static readonly VC_CLAIM_DIALECT_ID: string = "aHR0cDovL3dzbzIub3JnL3ZjL2NsYWlt";
 
     /**
      * Default expiration time (1 year in seconds).

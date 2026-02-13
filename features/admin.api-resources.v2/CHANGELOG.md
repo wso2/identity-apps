@@ -1,5 +1,14 @@
 # @wso2is/admin.api-resources.v2
 
+## 2.26.6
+
+### Patch Changes
+
+- [#9556](https://github.com/wso2/identity-apps/pull/9556) [`c7571540bdbbb68fd650e9c356823ad3d7f9dade`](https://github.com/wso2/identity-apps/commit/c7571540bdbbb68fd650e9c356823ad3d7f9dade) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add digital wallet application template
+
+- Updated dependencies []:
+  - @wso2is/admin.core.v1@2.50.2
+
 ## 2.26.5
 
 ### Patch Changes

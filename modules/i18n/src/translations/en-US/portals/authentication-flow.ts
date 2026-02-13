@@ -36,11 +36,13 @@ export const authenticationFlow: AuthenticationFlowNS = {
         message: "This action is irreversible."
     },
     options: {
+        apiAuthenticatorNotSupported: "Since API based authentication is enabled this authenticator is not supported",
         controls: {
             remove: "Remove"
         },
         displayName: "Sign In With {{displayName}}",
-        divider: "OR"
+        divider: "OR",
+        warningTitle: "Warning"
     },
     modes: {
         legacy: {
@@ -208,6 +210,14 @@ export const authenticationFlow: AuthenticationFlowNS = {
         secondaryActionButtonText: "Cancel",
         title: "Are you sure?",
         warningMessage: "If you revert back to default, you will not be able to recover the progress. Please proceed with caution."
+    },
+    updateConfirmationModal: {
+        errorMessage: "The following issues must be resolved before updating the authentication flow.",
+        errorTitle: "Cannot Update Flow",
+        primaryActionButtonText: "Update Anyway",
+        secondaryActionButtonText: "Cancel",
+        warningMessage: "The authentication flow has the following issues. You can still proceed with the update, but users may experience problems during authentication.",
+        warningTitle: "Update with Warnings?"
     },
     steps: {
         controls: {

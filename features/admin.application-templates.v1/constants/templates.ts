@@ -77,4 +77,6 @@ export class ApplicationTemplateConstants {
         "m2m-application",
         "custom-application"
     ];
+
+    public static readonly VC_CLIENT_APPLICATION: string = "vc-client-application";
 }

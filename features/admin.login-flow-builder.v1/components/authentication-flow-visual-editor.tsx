@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2023-2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2023-2026, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -20,6 +20,10 @@ import Alert from "@oxygen-ui/react/Alert";
 import AlertTitle from "@oxygen-ui/react/AlertTitle";
 import Button from "@oxygen-ui/react/Button";
 import { FeatureAccessConfigInterface, useRequiredScopes } from "@wso2is/access-control";
+import {
+    UnsupportedAuthenticatorInfo,
+    useApiAuthCompatibility
+} from "@wso2is/admin.applications.v1/hooks/use-api-auth-compatibility";
 import {
     AuthenticationSequenceInterface,
     AuthenticationStepInterface,
@@ -67,12 +71,19 @@ import ReactFlow, {
 import { Dispatch } from "redux";
 import AuthenticationFlowOptionAddModal from "./authentication-flow-option-add-modal";
 import AuthenticationFlowRevertDisclaimerModal from "./authentication-flow-revert-disclaimer-modal";
+import AuthenticationFlowUpdateWarningModal from "./authentication-flow-update-warning-modal";
 import StepAdditionEdge from "./edges/step-addition-edge";
 import DoneNode from "./nodes/done-node";
 import SignInBoxNode from "./nodes/sign-in-box-node/sign-in-box-node";
+import VisualEditorNotificationPanel from "./visual-editor-notification-panel";
 import { ENFORCE_SCRIPT_UPDATE_PERMISSION_FEATURE_ID } from "../constants/editor-constants";
 import { FIDO_AUTHENTICATOR_ID } from "../constants/template-constants";
 import useAuthenticationFlow from "../hooks/use-authentication-flow";
+import useVisualEditorNotifications from "../hooks/use-visual-editor-notifications";
+import {
+    NotificationCategory,
+    NotificationSeverity
+} from "../models/visual-editor-notification";
 import "reactflow/dist/style.css";
 import "./authentication-flow-visual-editor.scss";
 
@@ -130,6 +141,7 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
     const dispatch: Dispatch = useDispatch();
 
     const {
+        applicationMetaData,
         authenticators,
         authenticationSequence,
         addSignInStep,
@@ -145,6 +157,8 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
         visualEditorFlowNodeMeta
     } = useAuthenticationFlow();
 
+    const isAPIBasedAuthEnabled: boolean =
+        applicationMetaData?.advancedConfigurations?.enableAPIBasedAuthentication ?? false;
     const applicationsFeatureConfig: FeatureAccessConfigInterface = useSelector((state: AppState) => {
         return state.config?.ui?.features?.applications;
     });
@@ -159,6 +173,13 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
         error: FIDOAuthenticatorDetailsFetchError,
         isLoading: FIDOAuthenticatorDetailsFetchRequestLoading
     } = useMultiFactorAuthenticatorDetails(LocalAuthenticatorConstants.AUTHENTICATOR_IDS.FIDO_AUTHENTICATOR_ID);
+    const { unsupportedAuthenticators } = useApiAuthCompatibility(authenticationSequence, isAPIBasedAuthEnabled);
+    const {
+        addNotification,
+        clearNotificationsByCategory,
+        errors,
+        warnings
+    } = useVisualEditorNotifications();
 
     const { getLink } = useDocumentation();
 
@@ -167,12 +188,30 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
     const [ authenticatorAddStep, setAuthenticatorAddStep ] = useState<number>(0);
     const [ showAuthenticatorAddModal, setShowAuthenticatorAddModal ] = useState<boolean>(false);
     const [ showRevertDisclaimerModal, setShowRevertDisclaimerModal ] = useState<boolean>(false);
+    const [ showUpdateWarningModal, setShowUpdateWarningModal ] = useState<boolean>(false);
     const [ showInfoAlert, setShowInfoAlert ] = useState<boolean>(false);
     const [ InfoAlertContent, setAlertInfoContent ] = useState<ReactElement>(undefined);
     const [ infoAlertType, setInfoAlertType ] = useState<"info" | "warning">("info");
     const [ infoAlertBoxHeight, setInfoAlertBoxHeight ] = useState<number>(0);
     const [ isPasskeyProgressiveEnrollmentEnabled, setIsPasskeyProgressiveEnrollmentEnabled ] =
         useState<boolean>(undefined);
+
+    /**
+     * Sync unsupported authenticators to the notification context.
+     */
+    useEffect(() => {
+        clearNotificationsByCategory(NotificationCategory.UNSUPPORTED_AUTHENTICATOR);
+        unsupportedAuthenticators.forEach((authenticator: UnsupportedAuthenticatorInfo) => {
+            addNotification({
+                category: NotificationCategory.UNSUPPORTED_AUTHENTICATOR,
+                description: "This authenticator does not support app-native authentication.",
+                relatedEntity: authenticator.name,
+                severity: NotificationSeverity.WARNING,
+                stepNumber: authenticator.stepNumber,
+                title: authenticator.displayName
+            });
+        });
+    }, [ unsupportedAuthenticators ]);
 
     const nodeTypes: NodeTypes = useMemo(() => ({ done: DoneNode, loginBox: SignInBoxNode }), []);
     const edgeTypes: EdgeTypes = useMemo(() => ({ stepAdditionEdge: StepAdditionEdge }), []);
@@ -598,16 +637,32 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                 }
                 { /* Revert button will be shown only if the script is empty */ }
                 { (!isScriptUpdateReadOnly || AdaptiveScriptUtils.isEmptyScript(authenticationSequence?.script)) &&
-                    (<Button
-                        className="revert-to-default-button"
-                        color="secondary"
-                        onClick={ () => setShowRevertDisclaimerModal(true) }
-                        data-componentid={ `${componentId}-revert-button` }
-                        style={ { marginTop: `${infoAlertBoxHeight + 15}px` } }
+                    (<div
+                        style={ {
+                            alignItems: "center",
+                            display: "flex",
+                            gap: "10px",
+                            margin: "15px",
+                            marginTop: `${infoAlertBoxHeight + 15}px`,
+                            position: "absolute",
+                            right: 0,
+                            zIndex: 5
+                        } }
                     >
-                        <ArrowRotateLeft />
-                        { t("authenticationFlow:visualEditor.actions.revert.label") }
-                    </Button>)
+                        <VisualEditorNotificationPanel
+                            data-componentid={ `${ componentId }-notification-panel` }
+                        />
+                        <Button
+                            className="revert-to-default-button"
+                            color="secondary"
+                            onClick={ () => setShowRevertDisclaimerModal(true) }
+                            data-componentid={ `${componentId}-revert-button` }
+                            style={ { margin: 0, position: "relative" } }
+                        >
+                            <ArrowRotateLeft />
+                            { t("authenticationFlow:visualEditor.actions.revert.label") }
+                        </Button>
+                    </div>)
                 }
                 <ReactFlow
                     fitView
@@ -625,7 +680,13 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                                 color="primary"
                                 variant="contained"
                                 className="update-button"
-                                onClick={ () => onUpdate(authenticationSequence) }
+                                onClick={ () => {
+                                    if (warnings.length > 0 || errors.length > 0) {
+                                        setShowUpdateWarningModal(true);
+                                    } else {
+                                        onUpdate(authenticationSequence);
+                                    }
+                                } }
                                 disabled={ !isValidAuthenticationFlow }
                                 data-componentid={ `${componentId}-update-button` }
                             >
@@ -650,6 +711,13 @@ const AuthenticationFlowVisualEditor: FunctionComponent<AuthenticationFlowVisual
                     onUpdate(defaultAuthenticationSequence, true);
                     setShowRevertDisclaimerModal(false);
                 } }
+            />
+            <AuthenticationFlowUpdateWarningModal
+                open={ showUpdateWarningModal }
+                onClose={ () => setShowUpdateWarningModal(false) }
+                warnings={ warnings }
+                errors={ errors }
+                onConfirm={ () => onUpdate(authenticationSequence) }
             />
         </>
     );
