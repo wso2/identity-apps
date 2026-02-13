@@ -100,7 +100,7 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
             dataIndex: "user",
             id: "user",
             key: "user",
-            textAlign: "left",
+            textAlign: "center",
             render: (profile: ProfileModel): ReactNode => {
                 const userId:string = profile.user_id;
 
@@ -126,6 +126,7 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
             dataIndex: "unified_profiles",
             id: "unified_profiles",
             key: "unified_profiles",
+            textAlign: "center",
             render: (profile: ProfileModel): ReactNode => {
                 const merged:Array<{ profile_id: string; reason: string }> = profile.merged_from;
                 const hasMerged:boolean = Array.isArray(merged) && merged.length > 0;

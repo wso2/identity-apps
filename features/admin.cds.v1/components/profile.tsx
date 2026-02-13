@@ -669,15 +669,7 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                         { t("customerDataService:profiles.details.confirmations.deleteProfile.message") }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content>
-                        <div className="modal-alert-wrapper">{ modalAlert && modalAlertComponent }</div>
-
-                        <div style={ { display: "grid", gap: 8 } }>
-                            <div>
-                                <strong>{ t("customerDataService:profiles.details.confirmations.deleteProfile.content") }</strong>
-                                { " " }
-                                { profile?.profile_id }
-                            </div>
-                        </div>
+                    { t("customerDataService:profiles.list.confirmations.deleteProfile.content", { profile.profile_id }) }
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
             ) }
