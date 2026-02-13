@@ -21,7 +21,7 @@ import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Wizard2, WizardPage, composeValidators } from "@wso2is/form";
+import { Field, FormSpy, Wizard2, WizardPage, composeValidators } from "@wso2is/form";
 import {
     GenericIcon,
     Heading,
@@ -59,6 +59,7 @@ import {
 } from "../../utils/connection-utils";
 import { getFilteredConnectorMetadataList } from "../../utils/provisioning-utils";
 import { ConnectorConfigFormFields } from "../edit/forms/outbound-provisioning-connectors/connector-config-form-fields";
+import { WizardSummary } from "../wizards/steps/shared-steps/wizard-summary";
 
 /**
  * Interface for the wizard props.
@@ -72,13 +73,14 @@ interface OutboundProvisioningConnectionCreateWizardPropsInterface extends Ident
 }
 
 /**
- * Wizard steps enum. We have two wizard steps where the first step
- * includes general details and connector selection, and the second step
- * includes connector configuration.
+ * Wizard steps enum. We have three wizard steps where the first step
+ * includes general details and connector selection, the second step
+ * includes connector configuration, and the third step shows a summary.
  */
 enum WizardSteps {
     GENERAL_DETAILS = "GeneralDetails",
-    CONNECTOR_DETAILS = "ConnectorDetails"
+    CONNECTOR_DETAILS = "ConnectorDetails",
+    SUMMARY = "Summary"
 }
 
 /**
@@ -180,6 +182,19 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
     }), []);
 
     /**
+     * Handle step changes to properly manage next button state.
+     */
+    useEffect(() => {
+        // When moving to summary page (step 3), enable the next/finish button
+        if (currentWizardStep === wizardSteps.length - 1) {
+            setNextShouldBeDisabled(false);
+        } else if (currentWizardStep === 0) {
+            // When on step 1, start with disabled state (validation will enable it)
+            setNextShouldBeDisabled(true);
+        }
+    }, [ currentWizardStep, wizardSteps.length ]);
+
+    /**
      * Get wizard steps configuration.
      */
     const getWizardSteps: () => WizardStepInterface[] = () => {
@@ -195,6 +210,11 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
                 icon: getConnectionWizardStepIcons().general,
                 name: WizardSteps.CONNECTOR_DETAILS,
                 title: t("authenticationProvider:wizards.addProvisioningConnector.steps.connectorConfiguration.title")
+            },
+            {
+                icon: getConnectionWizardStepIcons().general,
+                name: WizardSteps.SUMMARY,
+                title: t("authenticationProvider:wizards.addProvisioningConnector.steps.summary.title")
             }
         ] as WizardStepInterface[];
     };
@@ -279,6 +299,15 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
         getOutboundProvisioningConnectorMetadata(selectedConnectorId)
             .then((response: OutboundProvisioningConnectorMetaInterface) => {
                 setConnectorMetaData(response);
+
+                // Check if all mandatory fields have default values to determine initial button state
+                const hasMandatoryFieldsWithoutDefaults: boolean = response.properties?.some(
+                    (property: any) => property.isMandatory && !property.defaultValue && !property.isConfidential
+                ) ?? false;
+
+                // If there are mandatory fields without defaults, keep next button disabled
+                // Otherwise, enable it (validation will update this as user interacts)
+                setNextShouldBeDisabled(hasMandatoryFieldsWithoutDefaults);
             })
             .catch((error: AxiosError) => {
                 handleGetOutboundProvisioningConnectorMetadataError(error);
@@ -301,13 +330,13 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
 
         if (connectorMetaData?.properties) {
             connectorMetaData.properties.forEach((property: any) => {
-                const fieldName: string = `connector_${property.key}`;
+                const fieldName: string = property.key;
                 const fieldValue: any = values[fieldName];
 
-                if (fieldValue !== undefined) {
+                if (fieldValue !== undefined && fieldValue !== null && fieldValue !== "") {
                     properties.push({
                         key: property.key,
-                        value: fieldValue
+                        value: String(fieldValue)
                     });
                 } else if (property.defaultValue) {
                     // Include default value for fields without user input
@@ -576,7 +605,7 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
                     const errors: FormErrors = {};
 
                     connectorMetaData?.properties?.forEach((property: any) => {
-                        const fieldName: string = `connector_${property.key}`;
+                        const fieldName: string = property.key;
 
                         if (property.isMandatory && !property.isConfidential) {
                             if (!values[fieldName]) {
@@ -594,8 +623,82 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
                 <ConnectorConfigFormFields
                     metadata={ connectorMetaData }
                     fieldNamePrefix=""
+                    onValidationChange={ (hasErrors: boolean) => {
+                        setNextShouldBeDisabled(hasErrors);
+                    } }
                     data-componentid={ `${ componentId }-connector-config` }
                 />
+            </WizardPage>
+        );
+    };
+
+    /**
+     * Build connection interface from form values for the summary.
+     */
+    const buildConnectionFromFormValues = (values: any): ConnectionInterface => {
+        // Build provisioning properties from form values
+        const properties: any[] = [];
+
+        if (connectorMetaData?.properties) {
+            connectorMetaData.properties.forEach((property: any) => {
+                const fieldName: string = property.key;
+                const fieldValue: any = values[fieldName];
+
+                if (fieldValue !== undefined && fieldValue !== null && fieldValue !== "") {
+                    properties.push({
+                        key: property.key,
+                        value: String(fieldValue)
+                    });
+                } else if (property.defaultValue) {
+                    properties.push({
+                        key: property.key,
+                        value: property.defaultValue
+                    });
+                }
+            });
+        }
+
+        return {
+            description: values.description || "",
+            name: values.name || "",
+            provisioning: {
+                outboundConnectors: {
+                    connectors: [
+                        {
+                            connectorId: selectedConnectorId,
+                            isEnabled: true,
+                            properties: properties
+                        }
+                    ],
+                    defaultConnectorId: selectedConnectorId
+                }
+            }
+        } as ConnectionInterface;
+    };
+
+    /**
+     * Step 3: Summary Page.
+     * Uses the existing WizardSummary component to display configuration summary.
+     */
+    const summaryPage = (): ReactElement => {
+        return (
+            <WizardPage validate={ () => ({}) }>
+                <FormSpy subscription={ { values: true } }>
+                    { ({ values }: { values: any }) => {
+                        const connectionData: ConnectionInterface = buildConnectionFromFormValues(values);
+
+                        return (
+                            <WizardSummary
+                                provisioningConnectorMetadata={ connectorMetaData }
+                                authenticatorMetadata={ undefined }
+                                identityProvider={ connectionData }
+                                triggerSubmit={ false }
+                                onSubmit={ () => {} }
+                                data-testid={ `${componentId}-summary` }
+                            />
+                        );
+                    } }
+                </FormSpy>
             </WizardPage>
         );
     };
@@ -606,7 +709,8 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
     const resolveWizardPages = (): ReactElement[] => {
         return [
             generalDetailsPage(),
-            connectorConfigurationPage()
+            connectorConfigurationPage(),
+            summaryPage()
         ];
     };
 
@@ -704,7 +808,7 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
                                 { /* Check whether its the last step. */ }
                                 { currentWizardStep === wizardSteps.length - 1 && (
                                     <PrimaryButton
-                                        disabled={ nextShouldBeDisabled || isSubmitting }
+                                        disabled={ isSubmitting }
                                         type="submit"
                                         floated="right"
                                         onClick={ () => wizardRef.current.gotoNextPage() }

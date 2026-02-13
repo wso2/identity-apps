@@ -48,3 +48,44 @@ export const SCIM2_URL_PROPERTIES: Record<string, string> = {
     GROUP_ENDPOINT: "scim2-group-ep",
     USER_ENDPOINT: "scim2-user-ep"
 };
+
+/**
+ * Authentication mode dropdown option interface.
+ */
+export interface AuthenticationModeDropdownOption {
+    key: string;
+    text: string;
+    value: string;
+}
+
+/**
+ * SCIM2 authentication mode options with i18n keys.
+ * Maps backend authentication mode values to display labels.
+ */
+export const SCIM2_AUTHENTICATION_MODES: AuthenticationModeDropdownOption[] = [
+    {
+        key: OutboundProvisioningAuthenticationMode.NONE,
+        text: "idp:forms.outboundProvisioningConnector.authentication.modes.none.name",
+        value: OutboundProvisioningAuthenticationMode.NONE
+    },
+    {
+        key: OutboundProvisioningAuthenticationMode.BASIC,
+        text: "idp:forms.outboundProvisioningConnector.authentication.modes.basic.name",
+        value: OutboundProvisioningAuthenticationMode.BASIC
+    },
+    {
+        key: OutboundProvisioningAuthenticationMode.BEARER,
+        text: "idp:forms.outboundProvisioningConnector.authentication.modes.bearer.name",
+        value: OutboundProvisioningAuthenticationMode.BEARER
+    },
+    {
+        key: OutboundProvisioningAuthenticationMode.API_KEY,
+        text: "idp:forms.outboundProvisioningConnector.authentication.modes.apiKey.name",
+        value: OutboundProvisioningAuthenticationMode.API_KEY
+    }
+];
+
+/**
+ * SCIM2 connector name constant for identifying SCIM2 connectors.
+ */
+export const SCIM2_CONNECTOR_NAME: string = "scim2";

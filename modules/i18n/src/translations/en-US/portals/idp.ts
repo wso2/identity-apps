@@ -303,6 +303,39 @@ export const idp: IdpNS = {
             }
         },
         outboundProvisioningConnector: {
+            authentication: {
+                label: "Authentication",
+                modes: {
+                    none: {
+                        name: "None",
+                        description: "No authentication"
+                    },
+                    basic: {
+                        name: "Basic Authentication",
+                        description: "Username and password authentication"
+                    },
+                    bearer: {
+                        name: "Bearer Token",
+                        description: "Token-based authentication"
+                    },
+                    apiKey: {
+                        name: "API Key",
+                        description: "API key header-based authentication"
+                    }
+                },
+                placeholder: "Select authentication mode",
+                info: {
+                    title: {
+                        noneAuthType: "<strong>None</strong> authentication is configured",
+                        otherAuthType: "<strong>{{authType}}</strong> is configured"
+                    },
+                    message: "If you are changing the authentication, be aware that the authentication credentials of the external endpoint need to be updated."
+                },
+                buttons: {
+                    changeAuthentication: "Change Authentication",
+                    cancel: "Cancel"
+                }
+            },
             fields: {
                 confidential: {
                     helperText: "Enter a new value to update, or leave unchanged to keep the existing value."

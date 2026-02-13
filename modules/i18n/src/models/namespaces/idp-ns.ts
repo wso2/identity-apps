@@ -231,6 +231,39 @@ export interface IdpNS {
             };
         };
         outboundProvisioningConnector: {
+            authentication: {
+                label: string;
+                modes: {
+                    none: {
+                        name: string;
+                        description: string;
+                    };
+                    basic: {
+                        name: string;
+                        description: string;
+                    };
+                    bearer: {
+                        name: string;
+                        description: string;
+                    };
+                    apiKey: {
+                        name: string;
+                        description: string;
+                    };
+                };
+                placeholder: string;
+                info: {
+                    title: {
+                        noneAuthType: string;
+                        otherAuthType: string;
+                    };
+                    message: string;
+                };
+                buttons: {
+                    changeAuthentication: string;
+                    cancel: string;
+                };
+            };
             fields: {
                 confidential: {
                     helperText: string;

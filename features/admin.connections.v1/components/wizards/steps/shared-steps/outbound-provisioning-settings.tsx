@@ -19,8 +19,8 @@
 import { LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import { 
-    OutboundProvisioningConnectorFormFactory 
+import {
+    OutboundProvisioningConnectorFormFactory
 } from "../../../../components/edit/forms/factories/outbound-provisioning-connector-form-factory";
 import {
     AuthenticatorSettingsFormModes
@@ -43,6 +43,7 @@ interface OutboundProvisioningSettingsWizardFormPropsInterface extends TestableC
     onSubmit: (values: ConnectionInterface) => void;
     triggerSubmit: boolean;
     defaultConnector?: OutboundProvisioningConnectorListItemInterface;
+    mode?: AuthenticatorSettingsFormModes;
 }
 
 /**
@@ -61,6 +62,7 @@ export const OutboundProvisioningSettings: FunctionComponent<OutboundProvisionin
         isLoading,
         onSubmit,
         triggerSubmit,
+        mode = AuthenticatorSettingsFormModes.EDIT,
         [ "data-testid" ]: testId
     } = props;
 
@@ -84,7 +86,7 @@ export const OutboundProvisioningSettings: FunctionComponent<OutboundProvisionin
         !isLoading
             ? (
                 <OutboundProvisioningConnectorFormFactory
-                    mode={ AuthenticatorSettingsFormModes.EDIT }
+                    mode={ mode }
                     metadata={ metadata }
                     initialValues={ initialValues?.provisioning?.outboundConnectors?.connectors[ 0 ] }
                     onSubmit={ handleSubmit }

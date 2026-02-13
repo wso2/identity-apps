@@ -40,6 +40,7 @@ import {
 } from "../../api/connections";
 import useGetOutboundProvisioningConnectors from "../../api/use-get-outbound-provisioning-connectors";
 import { getOutboundProvisioningConnectorWizardIcons } from "../../configs/ui";
+import { AuthenticatorSettingsFormModes } from "../../models/authenticators";
 import {
     ConnectionInterface,
     OutboundProvisioningConnectorInterface,
@@ -384,6 +385,7 @@ export const OutboundProvisioningConnectorCreateWizard:
                             values, WizardStepsFormTypes.CONNECTOR_DETAILS) }
                         triggerSubmit={ submitConnectorSettings }
                         defaultConnector={ defaultConnector }
+                        mode={ AuthenticatorSettingsFormModes.CREATE }
                         data-testid={ `${ testId }-provisioning-settings` }
                     />
                 ),
