@@ -150,6 +150,7 @@ export interface CustomerDataServiceNS {
             };
 
             unifiedProfiles: {
+                description: string;
                 title: string;
                 empty: string;
                 columns: {

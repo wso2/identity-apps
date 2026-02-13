@@ -160,8 +160,11 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
 
             setOptionsByScope((p) => ({ ...p, [scope]: opts ?? [] }));
         } catch (error) {
-            // eslint-disable-next-line no-console
-            console.error("Failed to load scope:", scope, error);
+            dispatch(addAlert({
+                description: t("console:common.notifications.loadAttributes.error.description"),
+                level: AlertLevels.ERROR,
+                message: t("console:common.notifications.loadAttributes.error.message")
+            }));
         } finally {
             setLoadingScope((p) => ({ ...p, [scope]: false }));
         }
@@ -173,7 +176,6 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
         if (firstScope) {
             ensureScopeLoaded(firstScope);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const addFilter = (): void => {
@@ -281,12 +283,6 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
             ensureScopeLoaded(firstScope);
         }
     };
-
-    useEffect(() => {
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
-
 
     const getAppsForRow = (rowScope: string): string[] => {
         if (!isAppScope(rowScope)) return [];
@@ -617,14 +613,14 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                 </Box>
                                                 { index > 0 && (
                                                     <Fab
-                                                        color="error"
+                                                        color="default"
                                                         aria-label="remove"
                                                         size="small"
                                                         className="delete-button"
                                                         sx={ {
                                                             position: "absolute",
                                                             right: 14,
-                                                            top: 14
+                                                            top: 14,
                                                         } }
                                                         onClick={ () => removeFilter(index) }
                                                         data-componentid={ `${testId}-remove-filter-${index}` }

@@ -16,76 +16,189 @@
  * under the License.
  */
 
-import axios from "axios";
-import {
+import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
+import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
+import { HttpMethods } from "@wso2is/core/models";
+import { AxiosError, AxiosResponse } from "axios";
+
+import type { FilterAttributeOption } from "../components/advanced-search-with-multiple-filters";
+import type { SchemaListingScope } from "../models/profile-attribute-listing";
+import type {
     ApplicationDataSchemaMapResponse,
     ProfileSchemaAttribute,
     ProfileSchemaFullResponse,
     ProfileSchemaScope,
     ProfileSchemaScopeResponse
 } from "../models/profile-attributes";
-import { SchemaListingScope } from "../models/profile-attribute-listing";
-import { FilterAttributeOption } from "../components/advanced-search-with-multipe-filters";
+
+/**
+ * Initialize an auth-aware Http client.
+ */
+const httpClient: HttpClientInstance =
+    AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * GET /profile-schema
  * Returns the complete schema (core + meta + identity + traits + application_data map)
  */
-export const fetchFullProfileSchema = async (): Promise<ProfileSchemaFullResponse> => {
-    const res = await axios.get("https://localhost:8900/t/carbob.super/profile-schema"
-)
-    ;
-    return res.data as ProfileSchemaFullResponse;
+export const fetchFullProfileSchema = (): Promise<ProfileSchemaFullResponse> => {
+    const requestConfig: RequestConfigInterface = {
+        headers: { "Content-Type": "application/json" },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.cdsProfileSchema
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => Promise.resolve(response.data as ProfileSchemaFullResponse))
+        .catch((error: AxiosError) => Promise.reject(error));
 };
 
 /**
  * GET /profile-schema/{scope}
- * Recommended backend response: ProfileSchemaAttribute[] for ALL scopes.
  *
  * If application_data comes as a map, this function flattens it and injects application_identifier.
  */
-export const fetchProfileSchemaByScope = async (
+export const fetchProfileSchemaByScope = (
     scope: ProfileSchemaScope,
     filter?: string
 ): Promise<ProfileSchemaScopeResponse> => {
 
-    const res = await axios.get("https://localhost:8900/t/carbon.super/cds/api/v1/profile-schema/"+scope, {
-        params: filter ? { filter } : undefined
-    });
+    const requestConfig: RequestConfigInterface = {
+        headers: { "Content-Type": "application/json" },
+        method: HttpMethods.GET,
+        params: filter ? { filter } : undefined,
+        url:  `${store.getState().config.endpoints.cdsProfileSchema}/${scope}`
+    };
 
-    const data = res.data;
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            const data = response.data;
 
-    if (Array.isArray(data)) {
-        return data as ProfileSchemaScopeResponse;
-    }
+            if (Array.isArray(data)) {
+                return Promise.resolve(data as ProfileSchemaScopeResponse);
+            }
 
-    // If backend returns a map for application_data => flatten.
-    // Shape: { "<appId>": [ {..}, ... ] }
-    if (scope === "application_data" && data && typeof data === "object") {
-        const map = data as ApplicationDataSchemaMapResponse;
+            // Map shape: { "<appId>": [ {..}, ... ] }
+            if (scope === "application_data" && data && typeof data === "object") {
+                const map = data as ApplicationDataSchemaMapResponse;
+                const flattened: ProfileSchemaAttribute[] = [];
 
-        const flattened: ProfileSchemaAttribute[] = [];
+                Object.entries(map).forEach(([ appId, attrs ]) => {
+                    (attrs ?? []).forEach((attr) => {
+                        const original = attr.attribute_name ?? "";
+                        const field = original.startsWith("application_data" + ".")
+                            ? original.replace("application_data.", "")
+                            : original;
 
-        Object.entries(map).forEach(([ appId, attrs ]) => {
-            (attrs ?? []).forEach((attr:ProfileSchemaAttribute) => {
-                const original:string = attr.attribute_name ?? "";
-                const field:any =
-                    original.startsWith("application_data.")
-                        ? original.replace("application_data.", "")
-                        : original;
-
-                flattened.push({
-                    ...attr,
-                    application_identifier: attr.application_identifier ?? appId,
-                    attribute_name: `application_data.${appId}.${field}`
+                        flattened.push({
+                            ...attr,
+                            application_identifier: attr.application_identifier ?? appId,
+                            attribute_name: `application_data.${appId}.${field}`
+                        });
+                    });
                 });
-            });
-        });
 
-        return flattened;
-    }
+                return Promise.resolve(flattened);
+            }
 
-    return [];
+            return Promise.resolve([]);
+        })
+        .catch((error: AxiosError) => Promise.reject(error));
+};
+
+/**
+ * GET /profile-schema/{scope}/{id}
+ */
+export const fetchSchemaAttributeById = (
+    scope: SchemaListingScope,
+    id: string
+): Promise<ProfileSchemaAttribute> => {
+    const requestConfig: RequestConfigInterface = {
+        headers: { "Content-Type": "application/json" },
+        method: HttpMethods.GET,
+        url: `${store.getState().config.endpoints.cdsProfileSchema}/${scope}/${id}`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => Promise.resolve(response.data as ProfileSchemaAttribute))
+        .catch((error: AxiosError) => Promise.reject(error));
+};
+
+/**
+ * PATCH /profile-schema/{scope}/{id}
+ * Only send what changed.
+ */
+export const updateSchemaAttributeById = (
+    scope: SchemaListingScope,
+    id: string,
+    patch: Partial<ProfileSchemaAttribute>
+): Promise<void> => {
+    const requestConfig: RequestConfigInterface = {
+        data: patch,
+        headers: { "Content-Type": "application/json" },
+        method: HttpMethods.PATCH,
+        url: `${store.getState().config.endpoints.cdsProfileSchema}/${scope}/${id}`
+    };
+
+    return httpClient(requestConfig)
+        .then(() => Promise.resolve())
+        .catch((error: AxiosError) => Promise.reject(error));
+};
+
+/**
+ * DELETE /profile-schema/{scope}/{id}
+ */
+export const deleteSchemaAttributeById = (
+    scope: SchemaListingScope,
+    id: string
+): Promise<void> => {
+    const requestConfig: RequestConfigInterface = {
+        headers: { "Content-Type": "application/json" },
+        method: HttpMethods.DELETE,
+        url: `${store.getState().config.endpoints.cdsProfileSchema}/${scope}/${id}`
+    };
+
+    return httpClient(requestConfig)
+        .then(() => Promise.resolve())
+        .catch((error: AxiosError) => Promise.reject(error));
+};
+
+/**
+ * Search for sub-attributes of a complex attribute
+ */
+export const searchSubAttributes = (
+    scope: SchemaListingScope,
+    attributeName: string
+): Promise<ProfileSchemaAttribute[]> => {
+
+    const scopePrefix =
+        scope === "traits"
+            ? "traits."
+            : scope === "application_data"
+                ? "application_data."
+                : "";
+
+    const baseAttrName = attributeName.startsWith(scopePrefix)
+        ? attributeName.substring(scopePrefix.length)
+        : attributeName;
+
+    const searchPrefix = `${scopePrefix}${baseAttrName}.`;
+    const filter = `attribute_name+co+${searchPrefix}`;
+
+    const requestConfig: RequestConfigInterface = {
+        headers: { "Content-Type": "application/json" },
+        method: HttpMethods.GET,
+        params: { filter },
+        url: `${store.getState().config.endpoints.cdsProfileSchema}/${scope}`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            const data = response.data;
+            return Promise.resolve(Array.isArray(data) ? (data as ProfileSchemaAttribute[]) : []);
+        })
+        .catch((error: AxiosError) => Promise.reject(error));
 };
 
 /**

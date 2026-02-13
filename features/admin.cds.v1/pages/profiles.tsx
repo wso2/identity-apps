@@ -36,7 +36,7 @@ import { fetchCDSProfiles } from "../api/profiles";
 import {
     AdvancedSearchWithMultipleFilters,
     FilterAttributeOption
-} from "../components/advanced-search-with-multipe-filters";
+} from "../components/advanced-search-with-multiple-filterss";
 
 import ProfilesList from "../components/profile-list";
 import { ProfileSchemaGroupedScope, ProfileSchemaScopeResponse } from "../models/profile-attributes";

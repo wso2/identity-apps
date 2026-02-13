@@ -25,7 +25,7 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
-    AnimatedAvatar,
+    UserAvatar,
     ConfirmationModal,
     DangerZone,
     DangerZoneGroup,
@@ -50,11 +50,11 @@ import React, {
     useMemo,
     useState
 } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
-import { Divider, Form, Image, TabProps, Table } from "semantic-ui-react";
+import { Divider, Form, Grid, Image, TabProps, Table } from "semantic-ui-react";
 import { deleteCDSProfile, fetchCDSProfileDetails } from "../api/profiles";
 import type { ProfileModel } from "../models/profiles";
 import { CopyIcon, DownloadIcon, EyeIcon, XMarkIcon } from "@oxygen-ui/react-icons";
@@ -64,6 +64,8 @@ import Modal from "@mui/material/Modal";
 import Box from "@oxygen-ui/react/Box";
 import Toolbar from "@oxygen-ui/react/Toolbar";
 import Typography from "@oxygen-ui/react/Typography";
+import { DynamicField } from "@wso2is/forms";
+import { Property } from "@wso2is/core/models";
 
 
 /**
@@ -173,21 +175,21 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
     const firstName: string = useMemo(() => {
         const v: any =
             (profile?.identity_attributes as any)?.givenname
-    
+
         return v ? String(v).trim() : "";
     }, [ profile ]);
-    
+
     const lastName: string = useMemo(() => {
         const v: any =
             (profile?.identity_attributes as any)?.lastname
-    
+
         return v ? String(v).trim() : "";
     }, [ profile ]);
-    
+
     const displayName: string = useMemo(() => {
         return `${firstName} ${lastName}`.trim();
     }, [ firstName, lastName ]);
-    
+
 
     const handleTabChange = (_: SyntheticEvent, data: TabProps): void => {
         setActiveTabIndex(data.activeIndex as number);
@@ -245,57 +247,46 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
         if (!profile) {
             return null;
         }
-
+    
         return (
-            <Form.Field>
-                <Heading as="h4">
+            <>
+                <Divider hidden />
+                <Heading as="h5">
                     { t("customerDataService:profiles.details.form.profileData.label") }
                 </Heading>
-
-                <Hint>
+                <p>
                     { t("customerDataService:profiles.details.sections.profileData.description") }
-                </Hint>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                    <IconButton
+                </p>
+                <div style={{ display: "flex", gap: "0.75rem", marginTop: "0.5rem" }}>
+                    <Button
                         size="small"
                         onClick={ (): void => {
                             setModalAlert(null);
                             setIsProfileDataViewOpen(true);
                         } }
                         data-componentid={ `${componentId}-profile-data-view-button` }
+                        startIcon={ <EyeIcon /> }
                     >
-                        <Popup
-                            trigger={ <EyeIcon /> }
-                            content={ t("customerDataService:profiles.details.profileData.actions.view") }
-                            position="top center"
-                            size="mini"
-                            inverted
-                        />
-                    </IconButton>
-                    
-                    <IconButton
+                        { t("customerDataService:profiles.details.profileData.actions.view") }
+                    </Button>
+                    <Button
                         size="small"
                         onClick={ exportProfileJson }
                         data-componentid={ `${componentId}-profile-data-export-button` }
+                        startIcon={ <DownloadIcon /> }
                     >
-                        <Popup
-                            trigger={ <DownloadIcon /> }
-                            content={ t("customerDataService:profiles.details.profileData.actions.export") }
-                            position="top center"
-                            size="mini"
-                            inverted
-                        />
-                    </IconButton>
+                        { t("customerDataService:profiles.details.profileData.actions.export") }
+                    </Button>
                 </div>
-            </Form.Field>
+            </>
         );
     };
 
     const renderMergedTable = (): ReactElement => {
         const merged = profile?.merged_from ?? [];
-
+    
         return (
-            <Form.Field>
+            <>
                 { !merged.length ? (
                     <div style={ { opacity: 0.7 } }>
                         { t("customerDataService:profiles.details.unifiedProfiles.empty") }
@@ -322,7 +313,7 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                         </Table.Body>
                     </Table>
                 ) }
-            </Form.Field>
+            </>
         );
     };
 
@@ -335,21 +326,27 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
             <>
                 <EmphasizedSegment padded="very">
                     <Form>
-                        { renderField(t("customerDataService:profiles.details.form.profileId.label"), profile.profile_id) }
-                        { renderField(t("customerDataService:profiles.details.form.userId.label"), userId) }
-                        { renderField(
-                            t("customerDataService:profiles.details.form.createdDate.label"),
-                            profile.meta?.created_at ? profile.meta.created_at.split("T")[0] : null
-                        ) }
-                        { renderField(
-                            t("customerDataService:profiles.details.form.updatedDate.label"),
-                            profile.meta?.updated_at ? profile.meta.updated_at.split("T")[0] : null
-                        ) }
-                        { renderField(t("customerDataService:profiles.details.form.location.label"), profile.meta?.location ?? null) }
+                        <Grid>
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                    { renderField(t("customerDataService:profiles.details.form.profileId.label"), profile.profile_id) }
+                                    { renderField(t("customerDataService:profiles.details.form.userId.label"), userId) }
+                                    { renderField(
+                                        t("customerDataService:profiles.details.form.createdDate.label"),
+                                        profile.meta?.created_at ? profile.meta.created_at.split("T")[0] : null
+                                    ) }
+                                    { renderField(
+                                        t("customerDataService:profiles.details.form.updatedDate.label"),
+                                        profile.meta?.updated_at ? profile.meta.updated_at.split("T")[0] : null
+                                    ) }
+                                    { renderField(t("customerDataService:profiles.details.form.location.label"), profile.meta?.location ?? null) }
 
-                        <Divider />
+                                    <Divider />
 
-                        { renderProfileDataField() }
+                                    { renderProfileDataField() }
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
                     </Form>
                 </EmphasizedSegment>
 
@@ -374,18 +371,56 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
     const merged: Array<{ profile_id: string; reason?: string }> = useMemo(() => {
         return (profile?.merged_from ?? []) as any;
     }, [ profile ]);
-    
+
     const renderUnifiedProfilesTab = (): ReactElement | null => {
-        
         if (!profile || merged.length === 0) {
             return null;
         }
-
+    
         return (
             <EmphasizedSegment padded="very">
-                <Form>
-                    { renderMergedTable() }
-                </Form>
+                <Grid>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
+                            <p style={{ marginBottom: "1rem", color: "rgba(0, 0, 0, 0.6)" }}>
+                                { t("customerDataService:profiles.details.unifiedProfiles.description") }
+                            </p>
+                            { merged.map((m) => (
+                                <EmphasizedSegment key={ m.profile_id } basic style={{ marginBottom: "1rem" }}>
+                                    <Grid>
+                                        <Grid.Row style={{ paddingBottom: "8px" }}>
+                                            <Grid.Column width={ 5 }>
+                                                <strong style={{ fontSize: "13px", color: "#666" }}>
+                                                    { t("customerDataService:profiles.details.unifiedProfiles.columns.profileId") }
+                                                </strong>
+                                            </Grid.Column>
+                                            <Grid.Column width={ 11 }>
+                                                <code style={{ 
+                                                    background: "#f5f5f5", 
+                                                    padding: "4px 8px", 
+                                                    borderRadius: "4px",
+                                                    fontSize: "13px"
+                                                }}>
+                                                    { m.profile_id }
+                                                </code>
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                        <Grid.Row style={{ paddingTop: "8px" }}>
+                                            <Grid.Column width={ 5 }>
+                                                <strong style={{ fontSize: "13px", color: "#666" }}>
+                                                    { t("customerDataService:profiles.details.unifiedProfiles.columns.reason") }
+                                                </strong>
+                                            </Grid.Column>
+                                            <Grid.Column width={ 11 }>
+                                                { m.reason ?? "-" }
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    </Grid>
+                                </EmphasizedSegment>
+                            )) }
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
             </EmphasizedSegment>
         );
     };
@@ -398,7 +433,7 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                 render: renderGeneralTab
             }
         ];
-    
+
         if (merged.length > 0) {
             base.push({
                 componentId: "unified-profiles",
@@ -406,15 +441,15 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                 render: renderUnifiedProfilesTab
             });
         }
-    
+
         return base;
     }, [ t, merged.length, profile ]);
-    
+
     const handleProfileDataViewClose = (): void => {
         setIsProfileDataViewOpen(false);
         setModalAlert(null);
     };
-    
+
     const handleProfileDelete = (): void => {
         if (userId) {
             setModalAlert({
@@ -454,12 +489,13 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
         <TabPageLayout
             isLoading={ isLoading }
             image={ (
-                <Image floated="left" size="tiny" rounded>
-                    <AnimatedAvatar />
-                    <span className="claims-letter">
-                        { profile?.profile_id?.charAt(0)?.toUpperCase() }
-                    </span>
-                </Image>
+                <UserAvatar
+                        data-componentid="profile-item-image"
+                        name={ profile?.profile_id?.charAt(0)?.toUpperCase() }
+                        size="tiny"
+                        spaced="right"
+                        data-suppress=""
+                    />
             ) }
             title={ profile?.profile_id || t("customerDataService:profiles.details.page.fallbackTitle") }
             pageTitle={ t("customerDataService:profiles.details.page.pageTitle") }
@@ -477,73 +513,6 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                 onTabChange={ handleTabChange }
             />
 
-            {/* Profile Data Viewer Modal */}
-            {/* { profile && (
-                <ConfirmationModal
-                    data-componentid={ `${componentId}-profile-data-viewer-modal` }
-                    open={ isProfileDataViewOpen }
-                    onClose={ (): void => {
-                        setIsProfileDataViewOpen(false);
-                        setModalAlert(null);
-                    } }
-                    type="info"
-                    primaryAction={ t("customerDataService:common.buttons.close") }
-                    secondaryAction={ t("customerDataService:profiles.details.profileData.actions.export") }
-                    onPrimaryActionClick={ (): void => {
-                        setIsProfileDataViewOpen(false);
-                        setModalAlert(null);
-                    } }
-                    onSecondaryActionClick={ exportProfileJson }
-                    closeOnDimmerClick={ false }
-                >
-                    <ConfirmationModal.Header>
-                        { t("customerDataService:profiles.details.profileData.modal.title") }
-                    </ConfirmationModal.Header>
-
-                    <ConfirmationModal.Content>
-                        <div className="modal-alert-wrapper">{ modalAlert && modalAlertComponent }</div>
-
-                        <div style={ { display: "flex", justifyContent: "flex-end", gap: 8, marginBottom: 10 } }>
-                            <button
-                                type="button"
-                                className="ui button basic mini"
-                                onClick={ copyProfileJson }
-                            >
-                                { t("customerDataService:profiles.details.profileData.actions.copy") }
-                            </button>
-
-                            <button
-                                type="button"
-                                className="ui button primary mini"
-                                onClick={ exportProfileJson }
-                            >
-                                { t("customerDataService:profiles.details.profileData.actions.export") }
-                            </button>
-                        </div>
-
-                        <div
-                            className="form-container with-max-width"
-                            style={ {
-                                borderRadius: 8,
-                                border: "1px solid var(--oxygen-palette-divider, #e0e1e2)"
-                            } }
-                        >
-                            <pre
-                                data-testid={ `${testId}-profile-json-modal` }
-                                style={ {
-                                    margin: 0,
-                                    padding: "1rem",
-                                    overflow: "auto",
-                                    maxHeight: 520,
-                                    fontSize: 12
-                                } }
-                            >
-                                { profileJsonString }
-                            </pre>
-                        </div>
-                    </ConfirmationModal.Content>
-                </ConfirmationModal>
-            ) } */}
             { profile && isProfileDataViewOpen && (
                 <Suspense fallback={ <CircularProgress /> }>
                     <Modal
@@ -552,7 +521,7 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                         open={ isProfileDataViewOpen }
                         onClose={ handleProfileDataViewClose }
                     >
-                        <Box 
+                        <Box
                             sx={{
                                 position: 'absolute',
                                 top: '50%',
@@ -669,7 +638,11 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                         { t("customerDataService:profiles.details.confirmations.deleteProfile.message") }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content>
-                    { t("customerDataService:profiles.list.confirmations.deleteProfile.content", { profile.profile_id }) }
+                        <Trans
+                            i18nKey="customerDataService:profiles.list.confirmations.deleteProfile.content"
+                            values={{ profileId: profileId }}
+                            components={[null, <strong />]}
+                        />
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
             ) }

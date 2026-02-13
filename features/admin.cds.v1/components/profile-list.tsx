@@ -33,7 +33,7 @@ import React, {
     useMemo,
     useState
 } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Header, SemanticICONS } from "semantic-ui-react";
 
@@ -239,9 +239,11 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
                             { t("customerDataService:profiles.list.confirmations.delete.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
-                            { t("customerDataService:profiles.list.confirmations.delete.content", {
-                                profileId: deletingProfile.profile_id
-                            }) }
+                            <Trans
+                                i18nKey="customerDataService:profiles.details.confirmations.delete.content"
+                                values={{ profileId: deletingProfile.profile_id }}
+                                components={[null, <strong />]}
+                            />
                         </ConfirmationModal.Content>
                     </>
                 </ConfirmationModal>

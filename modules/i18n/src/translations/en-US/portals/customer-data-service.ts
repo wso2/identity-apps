@@ -127,8 +127,9 @@ export const customerDataService: CustomerDataServiceNS = {
             },
             unifiedProfiles: {
                 columns: {
+                    description: "This profile has been unified with the following profiles based on the unification rules configured. The data from all these profiles are consolidated into this profile.",
                     profileId: "Profile ID",
-                    reason: "Unification Trigger"
+                    reason: "Unification Rule involved"
                 },
                 empty: "No unified profiles found for this profile.",
                 title: "Unified Profiles"

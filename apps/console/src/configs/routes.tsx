@@ -32,7 +32,7 @@ import {
     ProgressFlowIcon,
     UserCircleDotIcon,
     UserGroupIcon,
-    WebhookIcon,
+    WebhookIcon
 } from "@oxygen-ui/react-icons";
 import { ReactComponent as ProfilesIcon } from "@wso2is/admin.cds.v1/assets/images/icons/cdsProfiles.svg";
 import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
@@ -691,7 +691,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                     path: AppConstants.getPaths().get("CLAIM_VERIFICATION_SETTINGS"),
                     protected: true,
                     showOnSidePanel: false
-                },
+                }
             ],
             component: lazy(() => import("@wso2is/admin.claims.v1/pages/claim-dialects")),
             exact: true,
