@@ -59,7 +59,6 @@ export const getUsersList = (
 ): Promise<UserListInterface> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -106,7 +105,6 @@ export const useUsersList = (
 ): RequestResultInterface<UserListInterface, RequestErrorInterface> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -149,7 +147,6 @@ export const addUser = (data: UserDetailsInterface): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
         data,
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
@@ -201,7 +198,6 @@ export const addBulkUsers = (data: SCIMBulkEndpointInterface): Promise<any> => {
 export const deleteUser = (userId: string): Promise<any> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/scim+json"
         },
         method: HttpMethods.DELETE,
@@ -258,7 +254,6 @@ export const useUserDetails = <Data = ProfileInfoInterface, Error = RequestError
 
     const requestConfig: RequestConfigInterface = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -288,7 +283,6 @@ export const useUserDetails = <Data = ProfileInfoInterface, Error = RequestError
 export const getUserDetails = (id: string, attributes: string): Promise<ProfileInfoInterface> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -321,7 +315,6 @@ export const updateUserInfo = (userId: string, data: PatchRoleDataInterface): Pr
     const requestConfig: RequestConfigInterface = {
         data,
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
@@ -354,7 +347,6 @@ export const getUserSessions = (userId: string): Promise<AxiosResponse<UserSessi
 
     const requestConfig: RequestConfigInterface = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
@@ -398,7 +390,6 @@ export const terminateUserSession = (userId: string, sessionId: string): Promise
 
     const requestConfig: RequestConfigInterface = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
@@ -441,7 +432,6 @@ export const terminateAllUserSessions = (userId: string): Promise<AxiosResponse>
 
     const requestConfig: RequestConfigInterface = {
         headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
@@ -510,6 +500,186 @@ export const resendCode = (data: ResendCodeRequestData): Promise<void> => {
         .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
                 UserManagementConstants.RESEND_CODE_REQUEST_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Share users with all organizations.
+ *
+ * @param data - The data to share users with all organizations.
+ * @returns A promise containing the response.
+ */
+export const shareUserWithAllOrganizations = (data: any): Promise<any> => {
+    const requestConfig: RequestConfigInterface = {
+        data: {
+            policy: data.policy,
+            roleAssignment: data.roleSharing,
+            userCriteria: {
+                userIds: [ data.userId ]
+            }
+        },
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: "http://localhost:3000/t/carbon.super/api/server/v2/users/share-with-all"
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                UserManagementConstants.USER_SHARING_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Unshare users from all organizations.
+ *
+ * @param data - The data to unshare users from all organizations.
+ * @returns A promise containing the response.
+ */
+export const unShareUserWithAllOrganizations = (data: any): Promise<any> => {
+    const requestConfig: RequestConfigInterface = {
+        data: {
+            userCriteria: {
+                userIds: [ data.userId ]
+            }
+        },
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: "http://localhost:3000/t/carbon.super/api/server/v2/users/unshare-with-all"
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                UserManagementConstants.USER_UNSHARING_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Share users with selected organizations and roles.
+ *
+ * @param data - The data to share users with selected organizations.
+ * @returns A promise containing the response.
+ */
+export const shareUserWithSelectedOrganizationsAndRoles = (data: any): Promise<any> => {
+    const requestConfig: RequestConfigInterface = {
+        data: {
+            organizations: data.organizations,
+            userCriteria: {
+                userIds: [ data.userId ]
+            }
+        },
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: "http://localhost:3000/t/carbon.super/api/server/v2/users/share"
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                UserManagementConstants.USER_SHARING_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Unshare users from selected organizations.
+ *
+ * @param data - The data to unshare users from selected organizations.
+ * @returns A promise containing the response.
+ */
+export const unshareUserWithSelectedOrganizations = (data: any): Promise<any> => {
+    const requestConfig: RequestConfigInterface = {
+        data: {
+            orgIds: data.orgIds,
+            userCriteria: {
+                userIds: [ data.userId ]
+            }
+        },
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: "http://localhost:3000/t/carbon.super/api/server/v2/users/unshare"
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                UserManagementConstants.USER_UNSHARING_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Edit user roles of existing organizations (PATCH operation).
+ *
+ * @param data - The patch data for user role assignments.
+ * @returns A promise containing the response.
+ */
+export const editUserRolesOfExistingOrganizations = (data: any): Promise<any> => {
+    const requestConfig: RequestConfigInterface = {
+        data: {
+            Operations: data.Operations,
+            userCriteria: {
+                userIds: [ data.userId ]
+            }
+        },
+        headers: {
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: "http://localhost:3000/t/carbon.super/api/server/v2/users/share"
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response.data);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                UserManagementConstants.USER_SHARING_ERROR,
                 error.stack,
                 error.code,
                 error.request,

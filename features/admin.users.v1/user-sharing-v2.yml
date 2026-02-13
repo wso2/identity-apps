@@ -1,0 +1,786 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: "User Sharing API Definition (v2)"
+  description: |-
+    This document defines the **User Sharing REST API (v2)** for organizations in **WSO2 Identity Server**.
+    It follows the same pattern as **Application Sharing** and enables organization administrators to:
+    - Share users across child organizations.
+    - Configure per-organization user role assignments.
+    - Manage and revoke shared access.
+    - Retrieve a user's shared organizations and effective roles.
+  contact:
+    name: WSO2
+    url: 'http://wso2.com/products/identity-server/'
+    email: iam-dev@wso2.org
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+servers:
+  - url: 'https://{server-url}/t/{tenant-domain}/api/server/v2'
+    variables:
+      tenant-domain:
+        default: "carbon.super"
+      server-url:
+        default: "localhost:9443"
+
+security:
+  - OAuth2: []
+  - BasicAuth: []
+
+paths:
+  /users/share:
+    post:
+      tags:
+        - User Sharing
+      summary: Share users with specific organizations
+      description: |-
+        Share one or more users with a selected set of organizations, optionally
+        assigning roles to each shared user in each target organization.
+
+        This endpoint is treated as a **processing function**:
+        it triggers a sharing process and responds with `202 Accepted`.
+
+        **Scope required:** `internal_user_share`
+      operationId: shareUsersWithSelected
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserShareSelectedRequestBody"
+            example:
+              userCriteria:
+                userIds:
+                  - "7a1b7d63-8cfc-4dc9-9332-3f84641b72d8"
+                  - "5d2a1c84-9f7a-43cd-b12e-6e52d7f87e16"
+              organizations:
+                - orgId: "b028ca17-8f89-449c-ae27-fa955e66465d"
+                  policy: "SELECTED_ORG_ONLY"
+                  roleAssignment:
+                    mode: "SELECTED"
+                    roles:
+                      - displayName: "Org Admin"
+                        audience:
+                          display: "My Org 1"
+                          type: "organization"
+                - orgId: "a17b28ca-9f89-449c-ae27-fa955e66465f"
+                  policy: "SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN"
+                  # roleAssignment omitted => treated as mode = NONE (no roles)
+      responses:
+        "202":
+          description: User sharing process triggered successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProcessSuccessResponse"
+              example:
+                status: "Processing"
+                details: "User sharing process triggered successfully."
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+    patch:
+      tags:
+        - User Sharing
+      summary: Perform incremental role assignment operations for already shared users
+      description: |-
+        Perform **incremental updates** to the role assignments of already shared users.
+
+        This endpoint supports **SCIM-like PATCH semantics**:
+        - `op: "add"`    → assign additional roles.
+        - `op: "remove"` → remove specific roles.
+
+        > **Note:**  
+        > Only **role assignments** are managed here. Sharing/unsharing organizations
+        > is handled via `/users/share`, `/users/share-with-all`, `/users/unshare`,
+        > and `/users/unshare-with-all`.
+
+        **Scope required:** `internal_user_share`
+      operationId: patchUserSharing
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserSharingPatchRequest"
+            examples:
+              addRolesToOrg:
+                summary: Add roles to a shared user in a specific organization
+                value:
+                  userCriteria:
+                    userIds:
+                      - "7a1b7d63-8cfc-4dc9-9332-3f84641b72d8"
+                  Operations:
+                    - op: "add"
+                      path: "organizations[orgId eq b028ca17-8f89-449c-ae27-fa955e66465d].roles"
+                      value:
+                        - displayName: "Org Viewer"
+                          audience:
+                            display: "My Org 1"
+                            type: "organization"
+                        - displayName: "App Editor"
+                          audience:
+                            display: "My App 1"
+                            type: "application"
+              removeRolesFromOrg:
+                summary: Remove roles from a shared user in a specific organization
+                value:
+                  userCriteria:
+                    userIds:
+                      - "7a1b7d63-8cfc-4dc9-9332-3f84641b72d8"
+                  Operations:
+                    - op: "remove"
+                      path: "organizations[orgId eq b028ca17-8f89-449c-ae27-fa955e66465d].roles"
+                      value:
+                        - displayName: "Org Viewer"
+                          audience:
+                            display: "My Org 1"
+                            type: "organization"
+      responses:
+        "202":
+          description: Role assignment patch operation processed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProcessSuccessResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /users/share-with-all:
+    post:
+      tags:
+        - User Sharing
+      summary: Share users with all organizations
+      description: |-
+        Share one or more users with **all organizations**, or all immediate child organizations,
+        according to the specified policy.
+
+        A common `roleAssignment` can be provided to assign roles in all matching organizations.
+
+        This endpoint is treated as a **processing function** and responds with `202 Accepted`.
+
+        **Scope required:** `internal_user_share`
+      operationId: shareUsersWithAll
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserShareAllRequestBody"
+            example:
+              userCriteria:
+                userIds:
+                  - "7a1b7d63-8cfc-4dc9-9332-3f84641b72d8"
+              policy: "ALL_EXISTING_AND_FUTURE_ORGS"
+              roleAssignment:
+                mode: "SELECTED"
+                roles:
+                  - displayName: "Global Org Viewer"
+                    audience:
+                      display: "My Org 1"
+                      type: "organization"
+      responses:
+        "202":
+          description: Share-all process triggered successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProcessSuccessResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /users/unshare:
+    post:
+      tags:
+        - User Sharing
+      summary: Unshare users from specific organizations
+      description: |-
+        Unshare one or more users from a selected set of organizations.
+
+        > **Note:**  
+        > This only removes the user from the specified organizations. If the user
+        > was shared with a parent org plus its children via a broader policy,
+        > you must explicitly include all relevant organization IDs when unsharing.
+
+        This endpoint is treated as a **processing function** and responds with `202 Accepted`.
+
+        **Scope required:** `internal_user_unshare`
+      operationId: unshareUsersFromSelected
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUnshareSelectedRequestBody"
+            example:
+              userCriteria:
+                userIds:
+                  - "7a1b7d63-8cfc-4dc9-9332-3f84641b72d8"
+              orgIds:
+                - "b028ca17-8f89-449c-ae27-fa955e66465d"
+                - "a17b28ca-9f89-449c-ae27-fa955e66465f"
+      responses:
+        "202":
+          description: Unsharing process triggered successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProcessSuccessResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /users/unshare-with-all:
+    post:
+      tags:
+        - User Sharing
+      summary: Unshare users from all organizations
+      description: |-
+        Completely remove all shared access for one or more users from **all organizations**.
+
+        This endpoint is treated as a **processing function** and responds with `202 Accepted`.
+
+        **Scope required:** `internal_user_unshare`
+      operationId: unshareUsersFromAll
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserUnshareAllRequestBody"
+            example:
+              userCriteria:
+                userIds:
+                  - "7a1b7d63-8cfc-4dc9-9332-3f84641b72d8"
+      responses:
+        "202":
+          description: Unshare-all process triggered successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProcessSuccessResponse"
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /users/{userId}/share:
+    get:
+      tags:
+        - User Accessible Organizations
+      summary: List organizations where the user has shared access
+      description: |-
+        Retrieve the list of organizations where the specified user has shared access,
+        including per-organization effective role assignments.
+
+        This follows the same pattern as **`GET /applications/{applicationId}/share`**.
+
+        **Scope required:** `internal_user_shared_access_view`
+      operationId: getUserSharedOrganizations
+      parameters:
+        - in: path
+          name: userId
+          required: true
+          schema:
+            type: string
+          description: The ID of the user.
+        - in: query
+          name: before
+          required: false
+          schema:
+            type: string
+          example: "Ng=="
+          description: Base64 encoded cursor value for backward pagination.
+        - in: query
+          name: after
+          required: false
+          schema:
+            type: string
+          example: "Ng=="
+          description: Base64 encoded cursor value for forward pagination.
+        - in: query
+          name: filter
+          required: false
+          schema:
+            type: string
+          example: "orgId eq b028ca17-8f89-449c-ae27-fa955e66465d"
+          description: |-
+            Condition to filter the retrieval of records.
+            Supports `sw`, `co`, `ew`, and `eq` operations.
+        - in: query
+          name: limit
+          required: false
+          schema:
+            type: integer
+          example: 10
+          description: |-
+            Maximum number of records to return. If you do not specify this parameter,
+            this will return all shared organizations.
+        - in: query
+          name: recursive
+          required: false
+          schema:
+            type: boolean
+          description: |-
+            Determines whether a recursive search should happen.
+            If set to true, includes shared organizations in all levels of the hierarchy;
+            if set to false, includes only shared organizations in the next level of the hierarchy.
+        - in: query
+          name: attributes
+          required: false
+          schema:
+            type: string
+          example: "roles"
+          description: |-
+            Specifies the required parameters in the response.
+            Supported values: `roles`, `sharingMode`.
+      responses:
+        "200":
+          description: Successful response with the user's shared organizations.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserSharedOrganizationsResponse"
+              example:
+                links:
+                  - href: "/o/api/server/v2/users/7a1b7d63-8cfc-4dc9-9332-3f84641b72d8/share?limit=10&after=MTA="
+                    rel: "next"
+                sharingMode:
+                  policy: "ALL_EXISTING_AND_FUTURE_ORGS"
+                  roleAssignment:
+                    mode: "SELECTED"
+                    roles:
+                      - displayName: "Global Org Viewer"
+                        audience:
+                          display: "My Org 1"
+                          type: "organization"
+                organizations:
+                  - orgId: "b028ca17-8f89-449c-ae27-fa955e66465d"
+                    orgName: "Child Org 1"
+                    sharedUserId: "shared-user-id-1"
+                    sharedType: "SHARED"
+                    sharingMode:
+                      policy: "SELECTED_ORG_ONLY"
+                      roleAssignment:
+                        mode: "SELECTED"
+                        roles:
+                          - displayName: "Org Admin"
+                            audience:
+                              display: "My Org 1"
+                              type: "organization"
+                    roles:
+                      - displayName: "Org Admin"
+                        audience:
+                          display: "My Org 1"
+                          type: "organization"
+                  - orgId: "a17b28ca-9f89-449c-ae27-fa955e66465f"
+                    orgName: "Child Org 2"
+                    sharedUserId: "shared-user-id-2"
+                    sharedType: "SHARED"
+                    sharingMode:
+                      policy: "SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN"
+                      roleAssignment:
+                        mode: "NONE"
+                    roles: []
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+    OAuth2:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: "https://localhost:9443/oauth2/authorize"
+          tokenUrl: "https://localhost:9443/oauth2/token"
+          scopes:
+            internal_user_share: "Share users across organizations."
+            internal_user_unshare: "Unshare users from organizations."
+            internal_user_shared_access_view: "View shared organizations and roles for a user."
+
+  schemas:
+
+    # ===== Core request models =====
+
+    UserCriteria:
+      type: object
+      description: Criteria for selecting users to share/unshare.
+      properties:
+        userIds:
+          type: array
+          description: List of user IDs.
+          items:
+            type: string
+      required:
+        - userIds
+
+    UserShareSelectedRequestBody:
+      type: object
+      description: |-
+        Request body for sharing users with a **selected set of organizations**.
+      required:
+        - userCriteria
+        - organizations
+      properties:
+        userCriteria:
+          $ref: "#/components/schemas/UserCriteria"
+        organizations:
+          type: array
+          description: List of organizations to share users with, along with policies and optional role assignments.
+          items:
+            $ref: "#/components/schemas/UserOrgShareConfig"
+
+    UserOrgShareConfig:
+      type: object
+      description: Per-organization sharing configuration for selected organizations.
+      required:
+        - orgId
+        - policy
+      properties:
+        orgId:
+          type: string
+          description: Organization ID to share the users with.
+        policy:
+          type: string
+          description: |-
+            Sharing scope for this organization.
+
+            Possible values:
+            - `SELECTED_ORG_ONLY`
+            - `SELECTED_ORG_WITH_ALL_EXISTING_CHILDREN_ONLY`
+            - `SELECTED_ORG_WITH_ALL_EXISTING_AND_FUTURE_CHILDREN`
+            - `SELECTED_ORG_WITH_EXISTING_IMMEDIATE_CHILDREN_ONLY`
+            - `SELECTED_ORG_WITH_EXISTING_IMMEDIATE_AND_FUTURE_CHILDREN`
+        roleAssignment:
+          $ref: "#/components/schemas/RoleAssignment"
+          description: |-
+            Optional role assignment configuration for this organization.
+            If omitted, the default behavior is to assign **no roles** (equivalent to `mode = NONE`).
+
+    UserShareAllRequestBody:
+      type: object
+      description: |-
+        Request body for sharing users with **all organizations** controlled by the selected policy.
+      required:
+        - userCriteria
+        - policy
+      properties:
+        userCriteria:
+          $ref: "#/components/schemas/UserCriteria"
+        policy:
+          type: string
+          description: |-
+            Global sharing policy.
+
+            Possible values:
+            - `ALL_EXISTING_ORGS_ONLY`
+            - `ALL_EXISTING_AND_FUTURE_ORGS`
+        roleAssignment:
+          $ref: "#/components/schemas/RoleAssignment"
+          description: |-
+            Optional global role assignment configuration that applies to all organizations
+            covered by this policy. If omitted, default behavior is **no roles**.
+
+    UserUnshareSelectedRequestBody:
+      type: object
+      description: |-
+        Request body for unsharing users from selected organizations.
+      required:
+        - userCriteria
+        - orgIds
+      properties:
+        userCriteria:
+          $ref: "#/components/schemas/UserCriteria"
+        orgIds:
+          type: array
+          description: List of organization IDs from which users should be unshared.
+          items:
+            type: string
+
+    UserUnshareAllRequestBody:
+      type: object
+      description: |-
+        Request body for unsharing users from **all organizations**.
+      required:
+        - userCriteria
+      properties:
+        userCriteria:
+          $ref: "#/components/schemas/UserCriteria"
+
+    # ===== PATCH models =====
+
+    UserSharingPatchRequest:
+      type: object
+      description: |-
+        PATCH request for performing incremental role assignment operations
+        on already shared users.
+      required:
+        - userCriteria
+        - Operations
+      properties:
+        userCriteria:
+          $ref: "#/components/schemas/UserCriteria"
+        Operations:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserSharingPatchOperation"
+
+    UserSharingPatchOperation:
+      type: object
+      description: |-
+        A single PATCH operation (SCIM-like) for user sharing.
+
+        Currently supported:
+        - `op: "add"`    → Add roles.
+        - `op: "remove"` → Remove roles.
+      required:
+        - op
+        - path
+      properties:
+        op:
+          type: string
+          description: "Operation type. Supported values: `add`, `remove`."
+        path:
+          type: string
+          description: |-
+            JSON-like path in the format:
+            - `organizations[orgId eq \"<org-id>\"].roles`
+        value:
+          type: array
+          description: |-
+            List of roles to add/remove under the specified path.
+          items:
+            $ref: "#/components/schemas/RoleShareConfig"
+
+    # ===== Role assignment models =====
+
+    RoleAssignment:
+      type: object
+      description: |-
+        Role assignment configuration for shared users.
+
+        This controls which roles are assigned to the user in the target organization.
+
+        - `NONE`     → Do not assign any roles via user sharing.
+        - `SELECTED` → Assign only the roles listed under `roles`.
+      properties:
+        mode:
+          type: string
+          enum:
+            - NONE
+            - SELECTED
+          default: SELECTED
+          description: |-
+            Mode of role assignment.
+        roles:
+          type: array
+          description: |-
+            List of roles to assign when `mode = SELECTED`.
+            Required when `mode = SELECTED`. Ignored when `mode = NONE`.
+          items:
+            $ref: "#/components/schemas/RoleShareConfig"
+
+    RoleShareConfig:
+      type: object
+      description: |-
+        Role to be assigned to the shared user in the sub-organization.
+      required:
+        - displayName
+        - audience
+      properties:
+        displayName:
+          type: string
+          description: "Human-readable name of the role."
+          example: "Org Admin"
+        audience:
+          type: object
+          required:
+            - display
+            - type
+          properties:
+            display:
+              type: string
+              description: "Display name of the audience (organization or application)."
+              example: "My Org 1"
+            type:
+              type: string
+              description: |-
+                Type of the role audience:
+                - `organization`
+                - `application`
+              example: "organization"
+
+    # ===== Response models =====
+
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+          example: "/o/api/server/v2/users/7a1b7d63-8cfc-4dc9-9332-3f84641b72d8/share?limit=10&after=MTA="
+        rel:
+          type: string
+          example: "next"
+
+    SharingMode:
+      type: object
+      description: |-
+        Represents whether a user is shared using a future-sharing policy. The policy is always a future policy, and the associated role assignments are mapped accordingly.
+      required:
+        - policy
+        - roleAssignment
+      properties:
+        policy:
+          type: string
+          description: |-
+            Effective sharing policy. Values depend on context:
+            - `ALL_EXISTING_AND_FUTURE_ORGS`.
+        roleAssignment:
+          $ref: "#/components/schemas/RoleAssignment"
+
+    UserSharedOrganization:
+      type: object
+      description: |-
+        Represents a single organization where the user has shared access,
+        including effective roles.
+      properties:
+        orgId:
+          type: string
+          description: "ID of the child organization."
+        orgName:
+          type: string
+          description: "Name of the child organization."
+        sharedUserId:
+          type: string
+          description: |-
+            ID of the **shared user object** in the target organization (if applicable).
+        sharedType:
+          type: string
+          description: |-
+            Shared type of the user. Example values: `SHARED`, `INVITED`.
+        sharingMode:
+          $ref: "#/components/schemas/SharingMode"
+        roles:
+          type: array
+          description: |-
+            Effective roles assigned to this user in this organization via user sharing.
+          items:
+            $ref: "#/components/schemas/RoleShareConfig"
+
+    UserSharedOrganizationsResponse:
+      type: object
+      description: |-
+        Response listing organizations where a user has shared access,
+        including sharing modes and role assignments.
+      properties:
+        links:
+          type: array
+          items:
+            $ref: "#/components/schemas/Link"
+        sharingMode:
+          $ref: "#/components/schemas/SharingMode"
+        organizations:
+          type: array
+          items:
+            $ref: "#/components/schemas/UserSharedOrganization"
+
+    ProcessSuccessResponse:
+      type: object
+      description: |-
+        Indicates that a sharing / unsharing / patch process has been triggered.
+      properties:
+        status:
+          type: string
+          example: "Processing"
+        details:
+          type: string
+          example: "User sharing process triggered successfully."
+
+    Error:
+      type: object
+      description: |
+        Error response model with a code, message, description, and trace ID.
+      required:
+        - code
+        - message
+        - traceId
+      properties:
+        code:
+          type: string
+          example: "US-00000"
+        message:
+          type: string
+          example: "Some error message."
+        description:
+          type: string
+          example: "Some error description."
+        traceId:
+          type: string
+          example: "e0fbcfeb-7fc2-4b62-8b82-72d3c5fbcdeb"

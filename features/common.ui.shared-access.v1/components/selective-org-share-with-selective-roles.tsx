@@ -79,7 +79,7 @@ import { DropdownProps } from "semantic-ui-react";
 import { CustomTreeItem } from "./custom-tree-item";
 
 interface SelectiveOrgShareWithSelectiveRolesProps extends IdentifiableComponentInterface {
-    applicationId: string;
+    applicationId?: string;
     applicationRolesList: RolesV2Interface[];
     roleSelections: Record<string, SelectedOrganizationRoleInterface[]>;
     setRoleSelections: ReactDispatch<SetStateAction<Record<string, SelectedOrganizationRoleInterface[]>>>;
@@ -101,6 +101,9 @@ interface SelectiveOrgShareWithSelectiveRolesProps extends IdentifiableComponent
     clearAdvancedRoleSharing?: boolean;
     disableOrgSelection?: boolean;
     enableAdminRole?: boolean;
+    userId?: string;
+    allRolesSharingMessage: string;
+    shareWithFutureChildOrgsLabel: string;
 }
 
 interface TreeViewBaseItemWithRoles extends TreeViewBaseItem {
@@ -132,7 +135,9 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
         setShouldShareWithFutureChildOrgsMap = () => undefined,
         clearAdvancedRoleSharing = false,
         disableOrgSelection = false,
-        enableAdminRole = false
+        enableAdminRole = false,
+        allRolesSharingMessage,
+        shareWithFutureChildOrgsLabel
     } = props;
 
     const organizationId: string = useSelector((state: AppState) => state?.organization?.organization?.id);
@@ -975,7 +980,7 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
                             severity="info"
                             data-componentid={ `${ componentId }-no-roles-alert` }
                         >
-                            { t("applications:edit.sections.sharedAccess.allRolesSharingMessage") }
+                            { allRolesSharingMessage }
                         </Alert>
                     ) : isEmpty(roleSelections[selectedOrgId]) ? (
                         <Alert
@@ -1049,7 +1054,7 @@ const SelectiveOrgShareWithSelectiveRoles = (props: SelectiveOrgShareWithSelecti
                     !disableOrgSelection && (
                         <FormControlLabel
                             control={ <Checkbox defaultChecked /> }
-                            label="Share application and roles with future child organizations"
+                            label={ shareWithFutureChildOrgsLabel }
                             data-componentid={ `${ componentId }-share-with-future-child-checkbox` }
                             checked={ shouldShareWithFutureChildOrgsMap[selectedOrgId] ??
                                 selectedOrganizationSharingPolicy ===

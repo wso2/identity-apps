@@ -819,9 +819,11 @@ export interface ApplicationsNS {
                 shareSelectedApplication: string;
                 allRolesAndOrgsSharingMessage: string;
                 allRolesAndOrgsNotSharingMessage: string;
+                allApplicationRolesSharingMessage: string;
                 selectAnOrganizationToMangage: string;
                 allRolesSharingMessage: string;
                 doNotShareRolesWithAllOrgs: string;
+                shareApplicationWithFutureChildOrgs: string;
                 toManageOrganizationSelectLeftPanel: string;
                 subTitle: string;
                 tabName: string;
