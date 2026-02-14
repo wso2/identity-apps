@@ -36,13 +36,13 @@ export const customerDataService: CustomerDataServiceNS = {
         },
         notifications: {
             error: "Error",
-            notAllowed: "Not allowed",
             loadAttributes: {
                 error: {
-                    message: "Failed to load attributes.",
-                    description: "An error occurred while loading the attributes."
+                    description: "An error occurred while loading the attributes.",
+                    message: "Failed to load attributes."
                 }
-            }
+            },
+            notAllowed: "Not allowed"
         }
     },
     profiles: {
@@ -121,22 +121,22 @@ export const customerDataService: CustomerDataServiceNS = {
                     title: "Profile Data"
                 }
             },
+            section: {
+                profileData: {
+                    description: "This section contains the profile's identity attributes, traits and application data. ",
+                    title: "Profile Data"
+                }
+            },
             tabs: {
                 general: "General",
                 unifiedProfiles: "Unified Profiles"
             },
-            section: {
-                profileData: {
-                    title: "Profile Data",
-                    description: "This section contains the profile's identity attributes, traits and application data. ",
-                }
-            },
-            unifiedProfiles: { 
-                description: "This profile has been unified with the following profiles based on the unification rules configured. The data from all these profiles are consolidated into this profile.",
+            unifiedProfiles: {
                 columns: {
                     profileId: "Profile ID",
                     reason: "Unification Rule involved"
                 },
+                description: "This profile has been unified with the following profiles based on the unification rules configured. The data from all these profiles are consolidated into this profile.",
                 empty: "No unified profiles found for this profile.",
                 title: "Unified Profiles"
             }
@@ -174,12 +174,12 @@ export const customerDataService: CustomerDataServiceNS = {
             },
             placeholders: {
                 emptyList: {
-                    title: "No profiles found",
-                    subtitle: "Create a profile to see it listed here."
+                    subtitle: "Create a profile to see it listed here.",
+                    title: "No profiles found"
                 },
                 emptySearch: {
-                    title: "No search results",
-                    subtitle: "Try with different filters to find what you're looking for."
+                    subtitle: "Try with different filters to find what you're looking for.",
+                    title: "No search results"
                 }
             },
             search : {
@@ -190,6 +190,6 @@ export const customerDataService: CustomerDataServiceNS = {
             description: "Manage customer profiles which has identity, behavioural and application data",
             pageTitle: "Profiles",
             title: "Profiles"
-        },
+        }
     }
 };

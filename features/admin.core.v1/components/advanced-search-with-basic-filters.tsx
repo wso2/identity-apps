@@ -210,26 +210,6 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
 
     const sessionTimedOut: boolean = React.useContext(SessionTimedOutContext);
     const formRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
-    const [ filterGroups, setFilterGroups ] = useState([
-        {
-            attribute: defaultSearchAttribute,
-            condition: defaultSearchOperator,
-            value: ""
-        }
-    ]);
-
-    const addNewFilterGroup = () => {
-        setFilterGroups([
-            ...filterGroups,
-            {
-                attribute: defaultSearchAttribute,
-                condition: defaultSearchOperator,
-                value: ""
-            }
-        ]);
-    };
-    
-    
 
     /**
      * Handles the form submit.
