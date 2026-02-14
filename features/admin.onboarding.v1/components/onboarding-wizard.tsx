@@ -37,7 +37,8 @@ import {
     ContentCard,
     Footer,
     PrimaryButton,
-    SecondaryButton
+    SecondaryButton,
+    StepTransitionWrapper
 } from "./shared/onboarding-styles";
 import ConfigureRedirectUrlStep from "./steps/configure-redirect-url-step";
 import DesignLoginStep from "./steps/design-login-step";
@@ -57,6 +58,7 @@ import {
     RANDOM_NAME_COUNT
 } from "../constants";
 import { useOnboardingDataInterface, useStepValidation } from "../hooks/use-onboarding-validation";
+import { useStepTransition } from "../hooks/use-step-transition";
 import {
     CreatedApplicationResultInterface,
     OnboardingChoice,
@@ -239,6 +241,11 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
         return OnboardingStep.WELCOME;
     });
 
+    const [ direction, setDirection ] = useState<"forward" | "backward">("forward");
+
+    // Manages the visual transition between steps.
+    const { visibleStep, phase, isAnimating } = useStepTransition(currentStep);
+
     // Persist current step to sessionStorage so the wizard can resume after unexpected reloads
     useEffect(() => {
         SessionStorageUtils.setItemToSessionStorage(WIZARD_STEP_STORAGE_KEY, String(currentStep));
@@ -394,8 +401,10 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
             (currentStep === OnboardingStep.SELECT_APPLICATION_TEMPLATE && isM2M)
         ) {
             // Create the application before navigating to success
+            setDirection("forward");
             await createApplication();
         } else {
+            setDirection("forward");
             setCurrentStep(nextStep);
         }
     }, [ currentStep, onboardingData, isM2M, createApplication, onComplete ]);
@@ -403,6 +412,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
     const handleBack: () => void = useCallback((): void => {
         const previousStep: OnboardingStep = getPreviousStep(currentStep, onboardingData);
 
+        setDirection("backward");
         setCurrentStep(previousStep);
     }, [ currentStep, onboardingData ]);
 
@@ -411,82 +421,91 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
         onSkip();
     }, [ onSkip ]);
 
-    const isFirstStep: boolean = currentStep === OnboardingStep.WELCOME;
-    const isSuccessStep: boolean = currentStep === OnboardingStep.SUCCESS;
-    const nextButtonText: string = getNextButtonText(currentStep, onboardingData);
+    const isFirstStep: boolean = visibleStep === OnboardingStep.WELCOME;
+    const isSuccessStep: boolean = visibleStep === OnboardingStep.SUCCESS;
+    const nextButtonText: string = getNextButtonText(visibleStep, onboardingData);
+
+    const transitionOffset: string = direction === "forward" ? "-60px" : "60px";
+    const transitionStyles: Record<string, string | number> = phase === "idle"
+        ? { opacity: 1, transform: "translateX(0)" }
+        : phase === "exiting"
+            ? { opacity: 0, transform: `translateX(${transitionOffset})` }
+            : { opacity: 0, transform: `translateX(${transitionOffset === "-60px" ? "60px" : "-60px"})` };
 
     return (
         <ContentCard data-componentid={ componentId }>
-            { currentStep === OnboardingStep.WELCOME && (
-                <WelcomeStep
-                    data-componentid={ `${componentId}-welcome` }
-                    greeting={ greeting }
-                    onChoiceSelect={ updateChoice }
-                    selectedChoice={ onboardingData.choice }
-                />
-            ) }
+            <StepTransitionWrapper sx={ transitionStyles }>
+                { visibleStep === OnboardingStep.WELCOME && (
+                    <WelcomeStep
+                        data-componentid={ `${componentId}-welcome` }
+                        greeting={ greeting }
+                        onChoiceSelect={ updateChoice }
+                        selectedChoice={ onboardingData.choice }
+                    />
+                ) }
 
-            { currentStep === OnboardingStep.NAME_APPLICATION && (
-                <NameApplicationStep
-                    applicationName={ onboardingData.applicationName || "" }
-                    data-componentid={ `${componentId}-name-application` }
-                    onApplicationNameChange={ updateApplicationName }
-                    randomNames={ randomNames }
-                />
-            ) }
+                { visibleStep === OnboardingStep.NAME_APPLICATION && (
+                    <NameApplicationStep
+                        applicationName={ onboardingData.applicationName || "" }
+                        data-componentid={ `${componentId}-name-application` }
+                        onApplicationNameChange={ updateApplicationName }
+                        randomNames={ randomNames }
+                    />
+                ) }
 
-            { currentStep === OnboardingStep.SELECT_APPLICATION_TEMPLATE && (
-                <SelectApplicationTemplateStep
-                    data-componentid={ `${componentId}-select-application-template` }
-                    onTemplateSelect={ updateTemplateSelection }
-                    selectedFramework={ onboardingData.framework }
-                    selectedTemplateId={ onboardingData.templateId }
-                />
-            ) }
+                { visibleStep === OnboardingStep.SELECT_APPLICATION_TEMPLATE && (
+                    <SelectApplicationTemplateStep
+                        data-componentid={ `${componentId}-select-application-template` }
+                        onTemplateSelect={ updateTemplateSelection }
+                        selectedFramework={ onboardingData.framework }
+                        selectedTemplateId={ onboardingData.templateId }
+                    />
+                ) }
 
-            { currentStep === OnboardingStep.CONFIGURE_REDIRECT_URL && (
-                <ConfigureRedirectUrlStep
-                    data-componentid={ `${componentId}-configure-redirect-url` }
-                    framework={ onboardingData.framework }
-                    onRedirectUrlsChange={ updateRedirectUrls }
-                    redirectUrls={ onboardingData.redirectUrls || [] }
-                    templateId={ onboardingData.templateId }
-                />
-            ) }
+                { visibleStep === OnboardingStep.CONFIGURE_REDIRECT_URL && (
+                    <ConfigureRedirectUrlStep
+                        data-componentid={ `${componentId}-configure-redirect-url` }
+                        framework={ onboardingData.framework }
+                        onRedirectUrlsChange={ updateRedirectUrls }
+                        redirectUrls={ onboardingData.redirectUrls || [] }
+                        templateId={ onboardingData.templateId }
+                    />
+                ) }
 
-            { currentStep === OnboardingStep.SIGN_IN_OPTIONS && (
-                <SignInOptionsStep
-                    brandingConfig={ onboardingData.brandingConfig }
-                    data-componentid={ `${componentId}-sign-in-options` }
-                    isAlphanumericUsername={ isAlphanumericUsername }
-                    onSignInOptionsChange={ updateSignInOptions }
-                    signInOptions={ onboardingData.signInOptions }
-                />
-            ) }
+                { visibleStep === OnboardingStep.SIGN_IN_OPTIONS && (
+                    <SignInOptionsStep
+                        brandingConfig={ onboardingData.brandingConfig }
+                        data-componentid={ `${componentId}-sign-in-options` }
+                        isAlphanumericUsername={ isAlphanumericUsername }
+                        onSignInOptionsChange={ updateSignInOptions }
+                        signInOptions={ onboardingData.signInOptions }
+                    />
+                ) }
 
-            { currentStep === OnboardingStep.DESIGN_LOGIN && (
-                <DesignLoginStep
-                    brandingConfig={ onboardingData.brandingConfig }
-                    data-componentid={ `${componentId}-design-login` }
-                    isAlphanumericUsername={ isAlphanumericUsername }
-                    onBrandingConfigChange={ updateBrandingConfig }
-                    signInOptions={ onboardingData.signInOptions }
-                />
-            ) }
+                { visibleStep === OnboardingStep.DESIGN_LOGIN && (
+                    <DesignLoginStep
+                        brandingConfig={ onboardingData.brandingConfig }
+                        data-componentid={ `${componentId}-design-login` }
+                        isAlphanumericUsername={ isAlphanumericUsername }
+                        onBrandingConfigChange={ updateBrandingConfig }
+                        signInOptions={ onboardingData.signInOptions }
+                    />
+                ) }
 
-            { currentStep === OnboardingStep.SUCCESS && (
-                <SuccessStep
-                    brandingConfig={ onboardingData.brandingConfig }
-                    createdApplication={ onboardingData.createdApplication }
-                    data-componentid={ `${componentId}-success` }
-                    framework={ onboardingData.framework }
-                    isM2M={ isM2M }
-                    isTourFlow={ isTourFlow }
-                    redirectUrls={ onboardingData.redirectUrls }
-                    signInOptions={ onboardingData.signInOptions }
-                    templateId={ onboardingData.templateId }
-                />
-            ) }
+                { visibleStep === OnboardingStep.SUCCESS && (
+                    <SuccessStep
+                        brandingConfig={ onboardingData.brandingConfig }
+                        createdApplication={ onboardingData.createdApplication }
+                        data-componentid={ `${componentId}-success` }
+                        framework={ onboardingData.framework }
+                        isM2M={ isM2M }
+                        isTourFlow={ isTourFlow }
+                        redirectUrls={ onboardingData.redirectUrls }
+                        signInOptions={ onboardingData.signInOptions }
+                        templateId={ onboardingData.templateId }
+                    />
+                ) }
+            </StepTransitionWrapper>
 
             <Footer>
                 { !isSuccessStep && (
@@ -502,6 +521,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
                     { !isFirstStep && !isSuccessStep && (
                         <SecondaryButton
                             data-componentid={ `${componentId}-back-button` }
+                            disabled={ isAnimating }
                             onClick={ handleBack }
                             variant="outlined"
                         >
@@ -511,7 +531,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
                     <PrimaryButton
                         color="primary"
                         data-componentid={ `${componentId}-next-button` }
-                        disabled={ isNextDisabled || isCreatingApp }
+                        disabled={ isNextDisabled || isCreatingApp || isAnimating }
                         onClick={ handleNext }
                         variant="contained"
                     >
