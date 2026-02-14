@@ -261,6 +261,18 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
+    useEffect(() => {
+        if (isFiltersReset) {
+            // Automatically clear the reset flag after a short delay
+            // This ensures the form exits reset mode
+            const timer: NodeJS.Timeout  = setTimeout(() => {
+                setIsFiltersReset(false);
+            }, 50);
+
+            return () => clearTimeout(timer);
+        }
+    }, [ isFiltersReset ] );
+
     const handleResetFilter = (): void => {
         setIsFiltersReset(true);
 
@@ -481,6 +493,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                 })) }
                                                                 value={ row.scope }
                                                                 listen={ (values: Map<string, FormValue>) => {
+                                                                    setIsFiltersReset(false);
                                                                     const newScope: string =
                                                                         values.get(`scope-${index}`) as string;
 
@@ -518,6 +531,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                     })) }
                                                                     value={ row.applicationId }
                                                                     listen={ (values: Map<string, FormValue>) => {
+                                                                        setIsFiltersReset(false);
                                                                         const newAppId: string =
                                                                             values.get(`app-${index}`) as string;
 
@@ -563,6 +577,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                 })) }
                                                                 value={ row.attribute }
                                                                 listen={ (values: Map<string, FormValue>) => {
+                                                                    setIsFiltersReset(false);
                                                                     const newAttr: string =
                                                                         values.get(`attribute-${index}`) as string;
 
@@ -611,6 +626,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                     })) }
                                                                 value={ row.condition }
                                                                 listen={ (values: Map<string, FormValue>) => {
+                                                                    setIsFiltersReset(false);
                                                                     const newCondition: string =
                                                                         values.get(`condition-${index}`) as string;
 
@@ -644,6 +660,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                 type="text"
                                                                 value={ row.value }
                                                                 listen={ (values: Map<string, FormValue>) => {
+                                                                    setIsFiltersReset(false);
                                                                     const newValue: string =
                                                                         values.get(`value-${index}`) as string;
 
