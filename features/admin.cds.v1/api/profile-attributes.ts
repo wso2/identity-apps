@@ -163,10 +163,13 @@ export const searchSubAttributes = async (
     attributeName: string
 ): Promise<ProfileSchemaAttribute[]> => {
 
+    const SCOPE_TRAITS: string = "traits";
+    const SCOPE_APPLICATION_DATA: string = "application_data";
+
     const scopePrefix: string =
-        scope === "traits"
+        scope === SCOPE_TRAITS
             ? "traits."
-            : scope === "application_data"
+            : scope === SCOPE_APPLICATION_DATA
                 ? "application_data."
                 : "";
 

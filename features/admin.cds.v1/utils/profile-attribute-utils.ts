@@ -16,8 +16,7 @@
  * under the License.
  */
 
-import type { FilterAttributeOption } from "../components/advanced-search-with-multiple-filters";
-import type { ProfileSchemaAttribute } from "../models/profile-attributes";
+import type { FilterAttributeOption, ProfileSchemaAttribute } from "../models/profile-attributes";
 
 /**
  * Transform schema attributes to dropdown options for AdvancedSearch component
