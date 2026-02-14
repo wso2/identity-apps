@@ -1,1 +1,18 @@
+<!--
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com/).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
 <svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#1f1f1f"><path d="M583.31-701.39v-51.99h268v51.99h-268Zm0 151.39v-52h268v52h-268Zm0 151.38v-51.99h268v51.99h-268Zm-324.04-71.56q-30.58-30.49-30.58-74.04 0-43.55 30.49-74.12 30.49-30.58 74.04-30.58 43.55 0 74.13 30.48 30.57 30.49 30.57 74.04 0 43.55-30.48 74.13-30.49 30.58-74.04 30.58-43.55 0-74.13-30.49Zm-150.58 255.1v-47.61q0-24.03 12.77-43.44 12.77-19.41 33.31-29.48 41.46-19.47 86.15-30.08 44.7-10.62 92.39-10.62t92.38 10.62q44.69 10.61 86.16 30.08 20.53 10.07 33.3 29.48 12.77 19.41 12.77 43.44v47.61H108.69Zm50.69-58.15v6.15h347.85v-6.15q-32.31-24.16-76.04-37.62-43.73-13.46-97.88-13.46-54.16 0-97.89 13.46-43.73 13.46-76.04 37.62Zm211-234q15.54-15.54 15.54-37.08t-15.54-37.07q-15.53-15.54-37.07-15.54t-37.08 15.54q-15.54 15.53-15.54 37.07t15.54 37.08q15.54 15.54 37.08 15.54t37.07-15.54Zm-37.07-37.08Zm0 277.23Z"/></svg>

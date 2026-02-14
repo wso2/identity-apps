@@ -23,8 +23,7 @@ import Fab from "@oxygen-ui/react/Fab";
 import Typography from "@oxygen-ui/react/Typography";
 import { MinusIcon, PlusIcon } from "@oxygen-ui/react-icons";
 import { getAdvancedSearchIcons } from "@wso2is/admin.core.v1/configs/ui";
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import { SearchUtils } from "@wso2is/core/utils";
 import { DropdownChild, Field, FormValue, Forms } from "@wso2is/forms";
 import {
@@ -34,19 +33,24 @@ import {
     PrimaryButton,
     SessionTimedOutContext
 } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import React, {
     CSSProperties,
-    Dispatch,
     FunctionComponent,
     ReactElement,
     ReactNode,
+    RefObject,
+    useContext,
     useEffect,
+    useMemo,
     useRef,
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
 import { Divider, Form, Grid } from "semantic-ui-react";
+import { SWRResponse } from "swr";
+import { useProfileSchemaDropdownOptions } from "../hooks/use-profile-attributes";
+import { FilterAttributeOption, ProfileSchemaScopeResponse } from "../models/profile-attributes";
 
 interface FilterGroup {
     scope: string;
@@ -56,15 +60,11 @@ interface FilterGroup {
     value: string;
 }
 
-export interface FilterAttributeOption {
-    scope: string;
-    label: string;
-    value: string;
-    key?: string;
-    applicationId?: string;
-}
+type ProfileSchemaDropdownResult = SWRResponse<ProfileSchemaScopeResponse, AxiosError> & {
+    dropdownOptions: FilterAttributeOption[];
+};
 
-export interface AdvancedSearchWithMultipleFilters extends TestableComponentInterface {
+export interface AdvancedSearchWithMultipleFilters extends IdentifiableComponentInterface {
     children?: ReactNode;
     defaultSearchAttribute: string;
     defaultSearchOperator: string;
@@ -74,7 +74,6 @@ export interface AdvancedSearchWithMultipleFilters extends TestableComponentInte
     onClose?: () => void;
     onFilter: (query: string) => void;
     onSubmitError?: () => boolean;
-    onFetchAttributesByScope: (scope: string) => Promise<FilterAttributeOption[]>;
     filterAttributePlaceholder?: string;
     filterConditionOptions?: DropdownChild[];
     filterConditionsPlaceholder?: string;
@@ -108,7 +107,6 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
         onClose,
         onFilter,
         onSubmitError,
-        onFetchAttributesByScope,
         placeholder,
         resetButtonLabel,
         showResetButton,
@@ -117,21 +115,21 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
         triggerClearQuery,
         disableSearchAndFilterOptions,
         scopes,
-        ["data-testid"]: testId
+        "data-componentid" : testId
     } = props;
 
     const { t } = useTranslation();
-    const dispatch:Dispatch<any> = useDispatch();
 
+    const APPLICATION_DATA: string = "application_data";
     const [ isFormSubmitted, setIsFormSubmitted ] = useState<boolean>(false);
     const [ isFiltersReset, setIsFiltersReset ] = useState<boolean>(false);
     const [ externalSearchQuery, setExternalSearchQuery ] = useState<string>("");
 
-    const sessionTimedOut: boolean = React.useContext(SessionTimedOutContext);
-    const formRef: React.RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
+    const sessionTimedOut: boolean = useContext(SessionTimedOutContext);
+    const formRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
-    const [ optionsByScope, setOptionsByScope ] = useState<Record<string, FilterAttributeOption[]>>({});
-    const [ loadingScope, setLoadingScope ] = useState<Record<string, boolean>>({});
+    // Track which scopes need to be loaded
+    const [ activeScopesSet, setActiveScopesSet ] = useState<Set<string>>(new Set());
 
     const [ filterGroups, setFilterGroups ] = useState<FilterGroup[]>([
         {
@@ -143,46 +141,66 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
         }
     ]);
 
+    // Use SWR hooks for each active scope
+    const identityAttrsResult: ProfileSchemaDropdownResult = useProfileSchemaDropdownOptions(
+        activeScopesSet.has("identity_attributes") ? "identity_attributes" : null
+    );
+    const traitsResult: ProfileSchemaDropdownResult = useProfileSchemaDropdownOptions(
+        activeScopesSet.has("traits") ? "traits" : null
+    );
+    const appDataResult: ProfileSchemaDropdownResult = useProfileSchemaDropdownOptions(
+        activeScopesSet.has("application_data") ? "application_data" : null
+    );
+
+    // Combine results into a lookup map
+    const optionsByScope: Record<string, FilterAttributeOption[]> = useMemo(() => {
+        return {
+            application_data: appDataResult.dropdownOptions ?? [],
+            identity_attributes: identityAttrsResult.dropdownOptions ?? [],
+            traits: traitsResult.dropdownOptions ?? []
+        };
+    }, [
+        identityAttrsResult.dropdownOptions,
+        traitsResult.dropdownOptions,
+        appDataResult.dropdownOptions
+    ]);
+
+    const loadingScope: Record<string, boolean> = useMemo(() => {
+        return {
+            application_data: appDataResult.isLoading ?? false,
+            identity_attributes: identityAttrsResult.isLoading ?? false,
+            traits: traitsResult.isLoading ?? false
+        };
+    }, [
+        identityAttrsResult.isLoading,
+        traitsResult.isLoading,
+        appDataResult.isLoading
+    ]);
+
     const defaultFilterConditionOptions: Array<{ text: string; value: string }> = [
         { text: t("common:startsWith"), value: "sw" },
         { text: t("common:contains"), value: "co" },
         { text: t("common:equals"), value: "eq" }
     ];
 
-    const isAppScope = (scope: string) => scope === "application_data";
+    const isAppScope = (scope: string): boolean => scope === APPLICATION_DATA;
 
-    const ensureScopeLoaded = async (scope: string): Promise<void> => {
+    // Activate scope for SWR fetching
+    const activateScope = (scope: string): void => {
         if (!scope) return;
-        if (optionsByScope[scope]?.length) return;
-        if (loadingScope[scope]) return;
-
-        setLoadingScope((p: Record<string, boolean>) => ({ ...p, [scope]: true }));
-
-        try {
-            const opts: FilterAttributeOption[] = await onFetchAttributesByScope(scope);
-
-            setOptionsByScope((p: Record<string, FilterAttributeOption[]>) => ({ ...p, [scope]: opts ?? [] }));
-        } catch (error) {
-            dispatch(addAlert({
-                description: t("customerDataService:common.notifications.loadAttributes.error.description"),
-                level: AlertLevels.ERROR,
-                message: t("customerDataService:common.notifications.loadAttributes.error.message")
-            }));
-        } finally {
-            setLoadingScope((p: Record<string, boolean>) => ({ ...p, [scope]: false }));
-        }
+        setActiveScopesSet((prev: Set<string>) => new Set(prev).add(scope));
     };
 
     useEffect(() => {
-        const firstScope:string = scopes?.[0] ?? "";
+        const firstScope: string = scopes?.[0] ?? "";
 
         if (firstScope) {
-            ensureScopeLoaded(firstScope);
+            activateScope(firstScope);
         }
     }, []);
 
     const addFilter = (): void => {
-        const firstScope:string = scopes?.[0] ?? "";
+        const firstScope: string = scopes?.[0] ?? "";
 
         setFilterGroups((prev: FilterGroup[]) => ([
             ...prev,
@@ -196,12 +214,12 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
         ]));
 
         if (firstScope) {
-            ensureScopeLoaded(firstScope);
+            activateScope(firstScope);
         }
     };
 
     const removeFilter = (index: number): void => {
-        setFilterGroups((prev:FilterGroup[]) => prev.filter((_:FilterGroup, i: number) => i !== index));
+        setFilterGroups((prev: FilterGroup[]) => prev.filter((_: FilterGroup, i: number) => i !== index));
     };
 
     const handleFormSubmit = (values: Map<string, FormValue>): void => {
@@ -209,7 +227,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
 
         const groups: string[] = [];
 
-        for (let i:number = 0; i < filterGroups.length; i++) {
+        for (let i: number = 0; i < filterGroups.length; i++) {
             const scope: string = values.get(`scope-${i}`) as string;
             const appId: string = values.get(`app-${i}`) as string;
             const attribute: string = values.get(`attribute-${i}`) as string;
@@ -219,21 +237,21 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
             if (!scope || !attribute || !condition || !value) continue;
             if (isAppScope(scope) && !appId) continue;
 
-            const field:string = isAppScope(scope)
+            const field: string = isAppScope(scope)
                 ? `application_data.${appId}.${attribute}`
                 : attribute;
 
             groups.push(`${field} ${condition} ${value}`);
         }
 
-        const query:string = groups.join(" and ");
+        const query: string = groups.join(" and ");
 
         setExternalSearchQuery(query);
         onFilter(query);
         setIsFormSubmitted(true);
     };
 
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (event: MouseEvent): void => {
         if (formRef.current && !formRef.current.contains(event.target as Node)) {
             resetAll();
             onClose?.();
@@ -249,7 +267,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
     const handleResetFilter = (): void => {
         setIsFiltersReset(true);
 
-        const firstScope:string = scopes?.[0] ?? "";
+        const firstScope: string = scopes?.[0] ?? "";
 
         setFilterGroups([
             {
@@ -262,7 +280,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
         ]);
 
         if (firstScope) {
-            ensureScopeLoaded(firstScope);
+            activateScope(firstScope);
         }
     };
 
@@ -281,22 +299,21 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
             scope: firstScope,
             value: ""
         } ]);
-
     };
 
     const getAppsForRow = (rowScope: string): string[] => {
         if (!isAppScope(rowScope)) return [];
 
-        const opts:FilterAttributeOption[] = optionsByScope[rowScope] ?? [];
-        const ids:string[] = opts
-            .filter((o:FilterAttributeOption) => o.applicationId)
-            .map((o:FilterAttributeOption) => o.applicationId as string);
+        const opts: FilterAttributeOption[] = optionsByScope[rowScope] ?? [];
+        const ids: string[] = opts
+            .filter((o: FilterAttributeOption) => o.applicationId)
+            .map((o: FilterAttributeOption) => o.applicationId as string);
 
         return Array.from(new Set(ids)).sort();
     };
 
     const getAttributesForRow = (row: FilterGroup): FilterAttributeOption[] => {
-        const opts:FilterAttributeOption[] = optionsByScope[row.scope] ?? [];
+        const opts: FilterAttributeOption[] = optionsByScope[row.scope] ?? [];
 
         if (!isAppScope(row.scope)) {
             return opts;
@@ -361,7 +378,6 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                             onChange={ () => setIsFiltersReset(false) }
                             ref={ formRef }
                         >
-                            { /* ✅ max width so it doesn't grow forever */ }
                             <Box
                                 sx={ {
                                     "& .ui.dropdown .menu": {
@@ -375,11 +391,11 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                 } }
                                 className="multiple-filters"
                             >
-                                { filterGroups.map((row:FilterGroup, index:number) => {
-                                    const appScope:boolean = isAppScope(row.scope);
+                                { filterGroups.map((row: FilterGroup, index: number) => {
+                                    const appScope: boolean = isAppScope(row.scope);
                                     const apps: string[] = getAppsForRow(row.scope);
-                                    const attrs:FilterAttributeOption[] = getAttributesForRow(row);
-                                    const isLoadingAttrs:boolean = !!loadingScope[row.scope];
+                                    const attrs: FilterAttributeOption[] = getAttributesForRow(row);
+                                    const isLoadingAttrs: boolean = !!loadingScope[row.scope];
 
                                     return (
                                         <React.Fragment key={ index }>
@@ -396,10 +412,6 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                     </Typography>
                                                 </Box>
 
-                                                { /* ✅ Responsive layout:
-                                                    - row 1: scope + (app) + attribute
-                                                    - row 2: condition + value
-                                                */ }
                                                 <Box
                                                     sx={ {
                                                         display: "flex",
@@ -421,7 +433,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                 placeholder="Select scope"
                                                                 required
                                                                 type="dropdown"
-                                                                children={ (scopes || []).map((s:string) => ({
+                                                                children={ (scopes || []).map((s: string) => ({
                                                                     key: s,
                                                                     text: s,
                                                                     value: s
@@ -433,10 +445,10 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
 
                                                                     if (!newScope || newScope === row.scope) return;
 
-                                                                    ensureScopeLoaded(newScope);
+                                                                    activateScope(newScope);
 
-                                                                    setFilterGroups((prev:FilterGroup[]) => {
-                                                                        const updated:FilterGroup[] = [ ...prev ];
+                                                                    setFilterGroups((prev: FilterGroup[]) => {
+                                                                        const updated: FilterGroup[] = [ ...prev ];
 
                                                                         updated[index] = {
                                                                             ...updated[index],
@@ -458,7 +470,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                     placeholder="Select Application"
                                                                     required
                                                                     type="dropdown"
-                                                                    children={ apps.map((id:string) => ({
+                                                                    children={ apps.map((id: string) => ({
                                                                         key: id,
                                                                         text: id,
                                                                         value: id
@@ -471,8 +483,8 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                         if (!newAppId || newAppId === row.applicationId)
                                                                             return;
 
-                                                                        setFilterGroups((prev:FilterGroup[]) => {
-                                                                            const updated:FilterGroup[] = [ ...prev ];
+                                                                        setFilterGroups((prev: FilterGroup[]) => {
+                                                                            const updated: FilterGroup[] = [ ...prev ];
 
                                                                             updated[index] = {
                                                                                 ...updated[index],
@@ -502,7 +514,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                 type="dropdown"
                                                                 disabled={ isLoadingAttrs ||
                                                                     (appScope && !row.applicationId) }
-                                                                children={ attrs.map((a:FilterAttributeOption,
+                                                                children={ attrs.map((a: FilterAttributeOption,
                                                                     idx: number) => ({
                                                                     key: a.key ?? a.value ?? idx,
                                                                     text: a.label,
@@ -510,7 +522,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                 })) }
                                                                 value={ row.attribute }
                                                                 listen={ (values: Map<string, FormValue>) => {
-                                                                    const newAttr : string=
+                                                                    const newAttr: string =
                                                                         values.get(`attribute-${index}`) as string;
 
                                                                     if (!newAttr || newAttr === row.attribute) return;
@@ -564,7 +576,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                     if (!newCondition ||
                                                                         newCondition === row.condition) return;
 
-                                                                    setFilterGroups((prev:FilterGroup[]) => {
+                                                                    setFilterGroups((prev: FilterGroup[]) => {
                                                                         const updated: FilterGroup[] = [ ...prev ];
 
                                                                         updated[index] = {
@@ -591,13 +603,13 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                 type="text"
                                                                 value={ row.value }
                                                                 listen={ (values: Map<string, FormValue>) => {
-                                                                    const newValue : string=
+                                                                    const newValue: string =
                                                                         values.get(`value-${index}`) as string;
 
                                                                     if (newValue === row.value) return;
 
-                                                                    setFilterGroups((prev:FilterGroup[]) => {
-                                                                        const updated:FilterGroup[] = [ ...prev ];
+                                                                    setFilterGroups((prev: FilterGroup[]) => {
+                                                                        const updated: FilterGroup[] = [ ...prev ];
 
                                                                         updated[index] = {
                                                                             ...updated[index],
@@ -672,7 +684,6 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
 };
 
 AdvancedSearchWithMultipleFilters.defaultProps = {
-    "data-testid": "advanced-search",
     disableSearchFilterDropdown: false,
     dropdownPosition: "bottom right",
     enableQuerySearch: false,

@@ -20,12 +20,11 @@ import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
-import { AxiosError, AxiosResponse } from "axios";
 
 import { ProfileModel, ProfilesListResponse } from "../models/profiles";
 
 /**
- * Initialize an auth-aware Http client (same pattern as VC templates).
+ * Initialize an auth-aware Http client.
  */
 const httpClient: HttpClientInstance =
     AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
@@ -38,11 +37,9 @@ export interface FetchProfilesParams {
 }
 
 /**
- * GET /profiles (cursor pagination)
+ * Fetcher for GET /profiles (cursor pagination)
  */
-export const fetchCDSProfiles = (
-    params: FetchProfilesParams = {}
-): Promise<ProfilesListResponse> => {
+export const fetchCDSProfiles = async (params: FetchProfilesParams = {}): Promise<ProfilesListResponse> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
@@ -58,15 +55,15 @@ export const fetchCDSProfiles = (
         url: store.getState().config.endpoints.cdsProfiles
     };
 
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => Promise.resolve(response.data as ProfilesListResponse))
-        .catch((error: AxiosError) => Promise.reject(error));
+    const response: Awaited<ReturnType<typeof httpClient>> = await httpClient(requestConfig);
+
+    return response.data as ProfilesListResponse;
 };
 
 /**
- * GET /profiles/`{id}`
+ * Fetcher for GET /profiles/`{id}`
  */
-export const fetchCDSProfileDetails = (profileId: string): Promise<ProfileModel> => {
+export const fetchCDSProfileDetails = async (profileId: string): Promise<ProfileModel> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
@@ -76,17 +73,15 @@ export const fetchCDSProfileDetails = (profileId: string): Promise<ProfileModel>
         url: `${store.getState().config.endpoints.cdsProfiles}/${profileId}`
     };
 
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => Promise.resolve(response.data as ProfileModel))
-        .catch((error: AxiosError) => Promise.reject(error));
+    const response: Awaited<ReturnType<typeof httpClient>> = await httpClient(requestConfig);
+
+    return response.data as ProfileModel;
 };
 
 /**
  * DELETE /profiles/`{id}`
- *
- * Note: API usually returns 204. If yours returns 200, this still resolves.
  */
-export const deleteCDSProfile = (profileId: string): Promise<void> => {
+export const deleteCDSProfile = async (profileId: string): Promise<void> => {
     const requestConfig: RequestConfigInterface = {
         headers: {
             Accept: "application/json",
@@ -96,13 +91,9 @@ export const deleteCDSProfile = (profileId: string): Promise<void> => {
         url: `${store.getState().config.endpoints.cdsProfiles}/${profileId}`
     };
 
-    return httpClient(requestConfig)
-        .then((response: AxiosResponse) => {
-            if (response.status !== 204 && response.status !== 200) {
-                return Promise.reject(response);
-            }
+    const response: Awaited<ReturnType<typeof httpClient>> = await httpClient(requestConfig);
 
-            return Promise.resolve();
-        })
-        .catch((error: AxiosError) => Promise.reject(error));
+    if (response.status !== 204 && response.status !== 200) {
+        throw new Error(`Unexpected status code: ${response.status}`);
+    }
 };

@@ -31,18 +31,12 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { DropdownProps, PaginationProps } from "semantic-ui-react";
-import { fetchProfileSchemaByScope, toAttributeDropdownOptions } from "../api/profile-attributes";
-import { fetchCDSProfiles } from "../api/profiles";
-import {
-    AdvancedSearchWithMultipleFilters,
-    FilterAttributeOption
-} from "../components/advanced-search-with-multiple-filters";
-
+import { AdvancedSearchWithMultipleFilters } from "../components/advanced-search-with-multiple-filters";
 import ProfilesList from "../components/profile-list";
-import { ProfileSchemaScopeResponse } from "../models/profile-attributes";
-import { ProfileListItem, ProfileModel, ProfilesListResponse } from "../models/profiles";
+import { useCDSProfiles } from "../hooks/use-profiles";
+import { ProfileListItem } from "../models/profiles";
 
-const DEFAULT_PAGE_SIZE:number = 10;
+const DEFAULT_PAGE_SIZE: number = 10;
 
 const DEFAULT_LIST_FIELDS: string[] = [
     "identity_attributes.username",
@@ -52,30 +46,35 @@ const DEFAULT_LIST_FIELDS: string[] = [
 
 const ProfilesPage: FunctionComponent = (): ReactElement => {
 
-    const dispatch:Dispatch<any> = useDispatch();
+    const dispatch: Dispatch<any> = useDispatch();
     const { t } = useTranslation();
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
-    const [ isLoading, setIsLoading ] = useState<boolean>(false);
-    const [ profileList, setProfileList ] = useState<ProfileModel[]>([]);
-    const [ error, setError ] = useState<any>(null);
-
-    // Cursor pagination state.
+    // Cursor pagination state
     const [ pageSize, setPageSize ] = useState<number>(DEFAULT_PAGE_SIZE);
     const [ activePage, setActivePage ] = useState<number>(1);
-
     const [ currentCursor, setCurrentCursor ] = useState<string | null>(null);
-    const [ nextCursor, setNextCursor ] = useState<string | null>(null);
-    const [ previousCursor, setPreviousCursor ] = useState<string | null>(null);
 
-    const handleAlerts = (alert: AlertInterface) => {
+    // Fetch profiles with cursor pagination and search query
+    const { data, error, isLoading, mutate } = useCDSProfiles({
+        attributes: DEFAULT_LIST_FIELDS,
+        cursor: currentCursor,
+        filter: searchQuery || undefined,
+        page_size: pageSize
+    });
+
+    const profileList: ProfileListItem[] = data?.profiles ?? [];
+    const nextCursor: string | null = data?.pagination?.next_cursor ?? null;
+    const previousCursor: string | null = data?.pagination?.previous_cursor ?? null;
+
+    const handleAlerts = (alert: AlertInterface): void => {
         dispatch(addAlert(alert));
     };
 
     /**
-     * VC-style API rejects with AxiosError. Keep parsing here, but messages come from i18n.
+     * Extracts a user-friendly error message from the API error response.
      */
     const getErrorMessage = (err: any, fallback: string): string => {
         const description: any = err?.response?.data?.message;
@@ -93,38 +92,7 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
         return fallback;
     };
 
-    const fetchProfilesPage = async (cursor: string | null, page: number): Promise<void> => {
-        setIsLoading(true);
-        setError(null);
-
-        try {
-            const res: ProfilesListResponse = await fetchCDSProfiles({
-                attributes: DEFAULT_LIST_FIELDS,
-                cursor,
-                filter: searchQuery || undefined,
-                page_size: pageSize
-            });
-
-            const list:ProfileListItem[] = res?.profiles ?? [];
-
-            setProfileList(list);
-
-            setNextCursor(res?.pagination?.next_cursor ?? null);
-            setPreviousCursor(res?.pagination?.previous_cursor ?? null);
-
-            setCurrentCursor(cursor);
-            setActivePage(page);
-        } catch (err) {
-            setError(err);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        fetchProfilesPage(null, 1);
-    }, [ searchQuery, pageSize ]);
-
+    // Handle errors
     useEffect(() => {
         if (!error) return;
 
@@ -137,6 +105,12 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
         });
     }, [ error ]);
 
+    // Reset to first page when search query or page size changes
+    useEffect(() => {
+        setCurrentCursor(null);
+        setActivePage(1);
+    }, [ searchQuery, pageSize ]);
+
     const handleRuleSearch = (query: string): void => {
         setSearchQuery(query);
     };
@@ -144,25 +118,16 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
     const handleSearchQueryClear = (): void => {
         setSearchQuery("");
         setTriggerClearQuery(!triggerClearQuery);
-        fetchProfilesPage(null, 1);
+        setCurrentCursor(null);
+        setActivePage(1);
     };
 
-    const handleItemsPerPageChange = (_: any, data: DropdownProps) => {
+    const handleItemsPerPageChange = (_: any, data: DropdownProps): void => {
         setPageSize(data.value as number);
     };
 
-    const loadAttributesForScope = async (scope: string): Promise<FilterAttributeOption[]> => {
-        if (scope !== "identity_attributes" && scope !== "traits" && scope !== "application_data") {
-            return [];
-        }
-
-        const attrs:ProfileSchemaScopeResponse = await fetchProfileSchemaByScope(scope as any);
-
-        return toAttributeDropdownOptions(scope, attrs) as FilterAttributeOption[];
-    };
-
     const showPlaceholders = (): ReactElement | null => {
-        // When search returns empty.
+        // When search returns empty
         if (searchQuery && !isLoading && profileList.length === 0) {
             return (
                 <EmptyPlaceholder
@@ -179,7 +144,7 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
             );
         }
 
-        // When list is empty (no profiles at all).
+        // When list is empty (no profiles at all)
         if (!searchQuery && !isLoading && profileList.length === 0) {
             return (
                 <EmptyPlaceholder
@@ -194,8 +159,8 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
         return null;
     };
 
-    const handlePaginationChange = (_: any, data: PaginationProps) => {
-        const targetPage:number = data.activePage as number;
+    const handlePaginationChange = (_: any, data: PaginationProps): void => {
+        const targetPage: number = data.activePage as number;
 
         if (targetPage === activePage) {
             return;
@@ -203,25 +168,27 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
 
         if (targetPage > activePage) {
             if (!nextCursor) return;
-            fetchProfilesPage(nextCursor, targetPage);
+            setCurrentCursor(nextCursor);
+            setActivePage(targetPage);
 
             return;
         }
 
         if (targetPage < activePage) {
             if (!previousCursor) return;
-            fetchProfilesPage(previousCursor, targetPage);
+            setCurrentCursor(previousCursor);
+            setActivePage(targetPage);
         }
     };
 
-    const hasNext:boolean = !!nextCursor;
-    const hasPrev:boolean = !!previousCursor;
+    const hasNext: boolean = !!nextCursor;
+    const hasPrev: boolean = !!previousCursor;
 
     /**
      * Cursor pagination has no total pages.
      * Keep ListLayout pagination working by exposing a "virtual" totalPages.
      */
-    const virtualTotalPages:number = useMemo(() => {
+    const virtualTotalPages: number = useMemo(() => {
         return activePage + (hasNext ? 1 : 0);
     }, [ activePage, hasNext ]);
 
@@ -237,10 +204,8 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
                 listItemLimit={ pageSize }
                 onItemsPerPageDropdownChange={ handleItemsPerPageChange }
                 onPageChange={ handlePaginationChange }
-
                 totalPages={ virtualTotalPages }
                 totalListSize={ (activePage - 1) * pageSize + (profileList?.length ?? 0) }
-
                 showPagination={ true }
                 isLoading={ isLoading }
                 data-testid="profiles-list-layout"
@@ -252,7 +217,6 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
                 advancedSearch={
                     (<AdvancedSearchWithMultipleFilters
                         onFilter={ handleRuleSearch }
-                        onFetchAttributesByScope={ loadAttributesForScope }
                         placeholder={ t("customerDataService:profiles.list.search.placeholder") }
                         defaultSearchAttribute="profile_id"
                         defaultSearchOperator="co"
@@ -265,7 +229,7 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
                     <ProfilesList
                         profiles={ profileList }
                         isLoading={ isLoading }
-                        onRefresh={ () => fetchProfilesPage(currentCursor, activePage) }
+                        onRefresh={ () => mutate() }
                         onSearchQueryClear={ handleSearchQueryClear }
                         searchQuery={ searchQuery }
                     />

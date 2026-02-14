@@ -81,5 +81,13 @@ export interface ProfileSchemaFullResponse {
     application_data: Record<string, ProfileSchemaAttribute[]>;
 }
 
+export interface FilterAttributeOption {
+    scope: string;
+    label: string;
+    value: string;
+    key?: string;
+    applicationId?: string;
+}
+
 export type ProfileSchemaScopeResponse = ProfileSchemaAttribute[];
 export type ApplicationDataSchemaMapResponse = Record<string, ProfileSchemaAttribute[]>;

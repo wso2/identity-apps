@@ -25,3 +25,32 @@ export const CDS_ERRORS: Record<string, string> = {
     FETCH_PROFILE_ERROR: "CDS_PROFILE_FETCH_ERROR",
     INVALID_STATUS_CODE: "CDS_INVALID_STATUS_CODE"
 };
+
+export const CDS_PROFILE_ATTRIBUTE_SCOPES: Record<string, string>  = {
+    APPLICATION_DATA: "application_data",
+    IDENTITY_ATTRIBUTES: "identity_attributes",
+    TRAITS: "traits"
+};
+
+/**
+ * Default profile list fields to fetch
+ */
+export const DEFAULT_PROFILE_LIST_FIELDS: string[] = [
+    "identity_attributes.username",
+    "identity_attributes.givenname",
+    "identity_attributes.lastname"
+];
+
+/**
+ * Default pagination settings
+ */
+export const DEFAULT_PAGE_SIZE: number = 10;
+
+/**
+ * Profile search operators
+ */
+export const PROFILE_SEARCH_OPERATORS: Record<string, string>= {
+    CONTAINS: "co",
+    EQUALS: "eq",
+    STARTS_WITH: "sw"
+};

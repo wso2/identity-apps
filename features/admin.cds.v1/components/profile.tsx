@@ -60,13 +60,8 @@ import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
 import { Divider, Form, Grid, TabProps } from "semantic-ui-react";
-import { deleteCDSProfile, fetchCDSProfileDetails } from "../api/profiles";
-import type { ProfileModel } from "../models/profiles";
-
-/**
- * i18n (keep these keys aligned with your CDS i18n namespace).
- * Replace the path with your actual hook if different.
- */
+import { deleteCDSProfile } from "../api/profiles";
+import { useCDSProfileDetails } from "../hooks/use-profiles";
 
 type Props =
     IdentifiableComponentInterface &
@@ -87,32 +82,31 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
     const dispatch: Dispatch<any> = useDispatch();
     const profileId: string = match?.params?.id;
 
-    const [ profile, setProfile ] = useState<ProfileModel | null>(null);
-    const [ isLoading, setIsLoading ] = useState<boolean>(true);
-    const [ activeTabIndex, setActiveTabIndex ] = useState<number>(0);
+    // Use SWR hook for fetching profile details
+    const { data: profile, error, isLoading } = useCDSProfileDetails(profileId);
 
+    const [ activeTabIndex, setActiveTabIndex ] = useState<number>(0);
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ isDeleting, setIsDeleting ] = useState<boolean>(false);
-
     const [ isProfileDataViewOpen, setIsProfileDataViewOpen ] = useState<boolean>(false);
 
-    const [ _modalAlert, setModalAlert, modalAlertComponent ]= useConfirmationModalAlert();
+    const [ _modalAlert, setModalAlert, modalAlertComponent ] = useConfirmationModalAlert();
 
     const handleAlerts = (alert: AlertInterface): void => {
         dispatch(addAlert(alert));
     };
 
-    const getErrorMessage = (error: any, fallback: string): string => {
+    const getErrorMessage = (errorObj: any, fallback: string): string => {
         const description: any =
-            error?.response?.data?.description
-            || error?.response?.data?.detail
-            || error?.response?.data?.message;
+            errorObj?.response?.data?.description
+            || errorObj?.response?.data?.detail
+            || errorObj?.response?.data?.message;
 
         if (description) {
             return String(description);
         }
 
-        const firstError:any = error?.response?.data?.errors?.[0]?.description;
+        const firstError: any = errorObj?.response?.data?.errors?.[0]?.description;
 
         if (firstError) {
             return String(firstError);
@@ -121,44 +115,29 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
         return fallback;
     };
 
-    const fetchProfile = async (): Promise<void> => {
-        setIsLoading(true);
-
-        try {
-            const data: ProfileModel = await fetchCDSProfileDetails(profileId);
-
-            setProfile(data ?? null);
-        } catch (error: any) {
-            setProfile(null);
-
-            handleAlerts({
-                description: getErrorMessage(error, t("customerDataService:profiles.details.notifications." +
-                    "fetchProfile.error.description")),
-                level: AlertLevels.ERROR,
-                message: t("customerDataService:common.notifications.error")
-            });
-        } finally {
-            setIsLoading(false);
-        }
-    };
-
     // Lazy load Monaco Editor
     const MonacoEditor: LazyExoticComponent<any> = lazy(() =>
         import("@monaco-editor/react" /* webpackChunkName: "MDMonacoEditor" */)
     );
 
+    // Handle errors from SWR
     useEffect(() => {
-        if (profileId) {
-            fetchProfile();
-        }
-    }, [ profileId ]);
+        if (!error) return;
+
+        handleAlerts({
+            description: getErrorMessage(error, t("customerDataService:profiles.details.notifications." +
+                "fetchProfile.error.description")),
+            level: AlertLevels.ERROR,
+            message: t("customerDataService:common.notifications.error")
+        });
+    }, [ error ]);
 
     const userId: string | null = useMemo(() => {
         if (profile?.user_id) {
             return String(profile.user_id);
         }
 
-        const fromIdentity:any = profile?.identity_attributes?.["user_id"];
+        const fromIdentity: any = profile?.identity_attributes?.["user_id"];
 
         return fromIdentity ? String(fromIdentity) : null;
     }, [ profile ]);
@@ -184,7 +163,6 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
     const displayName: string = useMemo(() => {
         return `${firstName} ${lastName}`.trim();
     }, [ firstName, lastName ]);
-
 
     const handleTabChange = (_: SyntheticEvent, data: TabProps): void => {
         setActiveTabIndex(data.activeIndex as number);
@@ -214,11 +192,10 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
 
             a.href = url;
             a.download = `profile_${profile?.profile_id ?? "data"}.json`;
-            a.style.display = "none"; // Hide the element
+            a.style.display = "none";
             document.body.appendChild(a);
             a.click();
 
-            // Clean up after a short delay to ensure download starts
             setTimeout(() => {
                 document.body.removeChild(a);
                 window.URL.revokeObjectURL(url);
@@ -229,7 +206,7 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                 level: AlertLevels.SUCCESS,
                 message: t("customerDataService:profiles.details.profileData.export.success.message")
             });
-        } catch (error) {
+        } catch (exportError) {
             setModalAlert({
                 description: t("customerDataService:profiles.details.profileData.export.error.description"),
                 level: AlertLevels.ERROR,
@@ -466,9 +443,9 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
 
                 history.push(AppConstants.getPaths().get("PROFILES"));
             })
-            .catch((error: any) => {
+            .catch((deleteError: any) => {
                 setModalAlert({
-                    description: getErrorMessage(error,
+                    description: getErrorMessage(deleteError,
                         t("customerDataService:profiles.details.notifications.deleteProfile.error.description")),
                     level: AlertLevels.ERROR,
                     message: t("customerDataService:common.notifications.error")
@@ -532,7 +509,6 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                                 width: "90%"
                             } }
                         >
-                            { /* Toolbar */ }
                             <Box
                                 sx={ {
                                     backgroundColor: "#f5f5f5",
@@ -574,7 +550,6 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                                 </Toolbar>
                             </Box>
 
-                            { /* Monaco Editor */ }
                             <Box sx={ { flex: 1, overflow: "hidden" } }>
                                 <MonacoEditor
                                     loading={ <CircularProgress /> }
@@ -601,7 +576,6 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                 </Suspense>
             ) }
 
-            { /* Delete modal - only mount when danger zone is relevant */ }
             { showDangerZone && (
                 <ConfirmationModal
                     data-componentid={ `${componentId}-confirmation-modal` }
