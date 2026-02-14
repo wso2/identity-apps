@@ -18,7 +18,6 @@
 
 import Box from "@oxygen-ui/react/Box";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import { Variants, motion } from "framer-motion";
 import React, { FunctionComponent, ReactElement, useMemo } from "react";
 
 /**
@@ -34,7 +33,7 @@ export interface SuccessConfettiPropsInterface extends IdentifiableComponentInte
 /**
  * Particle configuration interface.
  */
-interface Particle {
+interface ParticleInterface {
     id: number;
     x: number;
     y: number;
@@ -59,10 +58,34 @@ const CONFETTI_COLORS: string[] = [
 ];
 
 /**
+ * CSS keyframes for the confetti burst animation.
+ */
+const CONFETTI_KEYFRAMES: string = `
+@keyframes confetti-burst {
+    0% {
+        opacity: 0;
+        transform: translate(0, 0) rotate(0deg) scale(0);
+    }
+    15% {
+        opacity: 1;
+        transform: translate(calc(var(--x) * 0.15), calc(var(--y) * 0.15))
+            rotate(calc(var(--r) * 0.15)) scale(var(--s));
+    }
+    70% {
+        opacity: 1;
+        transform: translate(var(--x), var(--y)) rotate(var(--r)) scale(var(--s));
+    }
+    100% {
+        opacity: 0;
+        transform: translate(var(--x), var(--y)) rotate(var(--r)) scale(0);
+    }
+}`;
+
+/**
  * Generate random particles with varied properties.
  */
-const generateParticles: (count: number, primaryColor?: string) => Particle[] =
-    (count: number, primaryColor?: string): Particle[] => {
+const generateParticles: (count: number, primaryColor?: string) => ParticleInterface[] =
+    (count: number, primaryColor?: string): ParticleInterface[] => {
         const colors: string[] = primaryColor
             ? [ primaryColor, ...CONFETTI_COLORS.slice(1) ]
             : CONFETTI_COLORS;
@@ -81,31 +104,6 @@ const generateParticles: (count: number, primaryColor?: string) => Particle[] =
     };
 
 /**
- * Animation variants for particles.
- */
-const particleVariants: Variants = {
-    animate: (particle: Particle) => ({
-        opacity: [ 0, 1, 1, 0 ],
-        rotate: particle.rotation + (Math.random() > 0.5 ? 180 : -180),
-        scale: [ 0, particle.scale, particle.scale, 0 ],
-        transition: {
-            delay: particle.delay,
-            duration: 1.8,
-            ease: "easeOut",
-            times: [ 0, 0.15, 0.7, 1 ]
-        },
-        x: particle.x,
-        y: particle.y
-    }),
-    initial: {
-        opacity: 0,
-        scale: 0,
-        x: 0,
-        y: 0
-    }
-};
-
-/**
  * Confetti animation component for success states.
  */
 const SuccessConfetti: FunctionComponent<SuccessConfettiPropsInterface> = (
@@ -117,7 +115,7 @@ const SuccessConfetti: FunctionComponent<SuccessConfettiPropsInterface> = (
         ["data-componentid"]: componentId = "success-confetti"
     } = props;
 
-    const particles: Particle[] = useMemo(
+    const particles: ParticleInterface[] = useMemo(
         () => generateParticles(particleCount, primaryColor),
         [ particleCount, primaryColor ]
     );
@@ -135,20 +133,23 @@ const SuccessConfetti: FunctionComponent<SuccessConfettiPropsInterface> = (
                 zIndex: 10
             } }
         >
-            { particles.map((particle: Particle) => (
-                <motion.div
+            <style>{ CONFETTI_KEYFRAMES }</style>
+            { particles.map((particle: ParticleInterface) => (
+                <div
                     key={ particle.id }
-                    animate="animate"
-                    custom={ particle }
-                    initial="initial"
                     style={ {
+                        "--r": `${particle.rotation + (Math.random() > 0.5 ? 180 : -180)}deg`,
+                        "--s": String(particle.scale),
+                        "--x": `${particle.x}px`,
+                        "--y": `${particle.y}px`,
+                        animation: `confetti-burst 1.8s ease-out ${particle.delay}s forwards`,
                         backgroundColor: particle.color,
                         borderRadius: particle.shape === "circle" ? "50%" : "2px",
                         height: particle.size,
+                        opacity: 0,
                         position: "absolute",
                         width: particle.size
-                    } }
-                    variants={ particleVariants }
+                    } as React.CSSProperties }
                 />
             )) }
         </Box>

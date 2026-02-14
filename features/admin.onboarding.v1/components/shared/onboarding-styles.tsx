@@ -46,6 +46,7 @@ export const ContentCard: typeof Box = styled(Box)(({ theme }: { theme: Theme })
     maxHeight: "calc(100vh - 100px)",
     maxWidth: 1400,
     minHeight: "85vh",
+    overflow: "hidden",
     padding: theme.spacing(6, 8),
     width: "100%"
 }));
@@ -149,4 +150,15 @@ export const CardsRow: typeof Box = styled(Box)(({ theme }: { theme: Theme }) =>
     display: "flex",
     flexDirection: "column",
     gap: theme.spacing(2)
+}));
+
+/**
+ * Wrapper that applies slide and fade CSS transitions during step navigation.
+ */
+export const StepTransitionWrapper: typeof Box = styled(Box)(() => ({
+    display: "flex",
+    flex: 1,
+    flexDirection: "column",
+    minHeight: 0,
+    transition: "transform 250ms ease-in-out, opacity 250ms ease-in-out"
 }));
