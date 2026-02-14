@@ -135,10 +135,10 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
 
         handleAlerts({
             description: getErrorMessage(error,
-                t("customerDataService:profiles.notifications.fetchProfiles.error.description")
+                t("customerDataService:profiles.list.notifications.fetchProfiles.error.description")
             ),
             level: AlertLevels.ERROR,
-            message: t("customerDataService:profiles.notifications.fetchProfiles.error.message")
+            message: t("customerDataService:profiles.list.notifications.fetchProfiles.error.message")
         });
     }, [ error ]);
 
@@ -190,8 +190,8 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
                 <EmptyPlaceholder
                     image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
-                    title={ t("customerDataService:profiles.placeholders.emptyList.title") }
-                    subtitle={ t("customerDataService:profiles.placeholders.emptyList.subtitle") }
+                    title={ t("customerDataService:profiles.list.placeholders.emptyList.title") }
+                    subtitle={ t("customerDataService:profiles.list.placeholders.emptyList.subtitle") }
                 />
             );
         }
