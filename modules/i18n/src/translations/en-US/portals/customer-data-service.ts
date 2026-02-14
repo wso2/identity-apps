@@ -60,7 +60,7 @@ export const customerDataService: CustomerDataServiceNS = {
                 delete: {
                     actionTitle: "Delete profile",
                     header: "Delete this profile",
-                    subheader: "This profile is not linked to a user ID and can be deleted."
+                    subheader: "This profile is not linked to a user ID and can be deleted. Deleting a profile is irreversible and will also delete the unified profiles merged into this profile."
                 }
             },
             form: {
@@ -184,8 +184,9 @@ export const customerDataService: CustomerDataServiceNS = {
                     title: "No profiles found"
                 },
                 emptySearch: {
-                    subtitle: "Try with different filters to find what you're looking for.",
-                    title: "No search results"
+                    action: "Clear search query",
+                    subtitle: "We couldn't find any profiles matching your search query. Please try again with different query.",
+                    title: "No results found"
                 }
             },
             search : {

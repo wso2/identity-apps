@@ -72,6 +72,7 @@ export interface CustomerDataServiceNS {
                     subtitle: string;
                 };
                 emptySearch: {
+                    action: string;
                     title: string;
                     subtitle: string;
                 };
