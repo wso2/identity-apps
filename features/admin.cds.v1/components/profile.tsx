@@ -636,7 +636,7 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content>
                         <Trans
-                            i18nKey="customerDataService:profiles.list.confirmations.deleteProfile.content"
+                            i18nKey="customerDataService:profiles.details.confirmations.deleteProfile.content"
                             values={ { profileId: profileId } }
                             components={ [ null, <strong key="0" /> ] }
                         />

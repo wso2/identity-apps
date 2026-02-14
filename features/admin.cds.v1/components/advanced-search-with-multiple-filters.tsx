@@ -156,7 +156,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
         if (optionsByScope[scope]?.length) return;
         if (loadingScope[scope]) return;
 
-        setLoadingScope((p: Record<string, boolean>) => ({ ...p, [scope]: false }));
+        setLoadingScope((p: Record<string, boolean>) => ({ ...p, [scope]: true }));
 
         try {
             const opts: FilterAttributeOption[] = await onFetchAttributesByScope(scope);
@@ -164,9 +164,9 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
             setOptionsByScope((p: Record<string, FilterAttributeOption[]>) => ({ ...p, [scope]: opts ?? [] }));
         } catch (error) {
             dispatch(addAlert({
-                description: t("console:common.notifications.loadAttributes.error.description"),
+                description: t("customerDataService:common.notifications.loadAttributes.error.description"),
                 level: AlertLevels.ERROR,
-                message: t("console:common.notifications.loadAttributes.error.message")
+                message: t("customerDataService:common.notifications.loadAttributes.error.message")
             }));
         } finally {
             setLoadingScope((p: Record<string, boolean>) => ({ ...p, [scope]: false }));
@@ -282,9 +282,6 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
             value: ""
         } ]);
 
-        if (firstScope) {
-            ensureScopeLoaded(firstScope);
-        }
     };
 
     const getAppsForRow = (rowScope: string): string[] => {

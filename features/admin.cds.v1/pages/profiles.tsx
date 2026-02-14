@@ -123,11 +123,6 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
 
     useEffect(() => {
         fetchProfilesPage(null, 1);
-    }, []);
-
-    // Re-fetch when filter / page size changes.
-    useEffect(() => {
-        fetchProfilesPage(null, 1);
     }, [ searchQuery, pageSize ]);
 
     useEffect(() => {
@@ -173,13 +168,13 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
                 <EmptyPlaceholder
                     action={ (
                         <LinkButton onClick={ handleSearchQueryClear }>
-                            { t("customerDataService:profiles.placeholders.emptySearch.action") }
+                            { t("customerDataService:profiles.list.placeholders.emptySearch.action") }
                         </LinkButton>
                     ) }
                     image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
-                    title={ t("customerDataService:profiles.placeholders.emptySearch.title") }
-                    subtitle={ t("customerDataService:profiles.placeholders.emptySearch.subtitle") }
+                    title={ t("customerDataService:profiles.list.placeholders.emptySearch.title") }
+                    subtitle={ t("customerDataService:profiles.list.placeholders.emptySearch.subtitle") }
                 />
             );
         }

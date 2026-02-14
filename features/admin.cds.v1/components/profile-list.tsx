@@ -240,7 +240,7 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
                             <Trans
-                                i18nKey="customerDataService:profiles.details.confirmations.delete.content"
+                                i18nKey="customerDataService:profiles.list.confirmations.delete.content"
                                 values={ { profileId: deletingProfile.profile_id } }
                                 components={ [ null, <strong key="0" />  ] }
                             />
