@@ -88,7 +88,7 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
                     <Header.Content>
                         { profile.profile_id }
                         <Header.Subheader>
-                            { getDisplayName(profile) || null}
+                            { getDisplayName(profile) || null }
                         </Header.Subheader>
                     </Header.Content>
                 </Header>
@@ -100,11 +100,10 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
             dataIndex: "user",
             id: "user",
             key: "user",
-            textAlign: "center",
             render: (profile: ProfileModel): ReactNode => {
                 const userId:string = profile.user_id;
 
-                // Anonymous 
+                // Anonymous
                 if (!userId) {
                     return (
                         <Chip
@@ -119,6 +118,7 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
 
                 return null;
             },
+            textAlign: "center",
             title: t("customerDataService:profiles.list.columns.user")
         },
         {
@@ -126,7 +126,6 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
             dataIndex: "unified_profiles",
             id: "unified_profiles",
             key: "unified_profiles",
-            textAlign: "center",
             render: (profile: ProfileModel): ReactNode => {
                 const merged:Array<{ profile_id: string; reason: string }> = profile.merged_from;
                 const hasMerged:boolean = Array.isArray(merged) && merged.length > 0;
@@ -144,6 +143,7 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
                     />
                 );
             },
+            textAlign: "center",
             title: t("customerDataService:profiles.list.columns.unifiedProfiles")
         },
         {
@@ -241,8 +241,8 @@ const ProfilesList: FunctionComponent<ProfilesListProps> = ({
                         <ConfirmationModal.Content>
                             <Trans
                                 i18nKey="customerDataService:profiles.details.confirmations.delete.content"
-                                values={{ profileId: deletingProfile.profile_id }}
-                                components={[null, <strong />]}
+                                values={ { profileId: deletingProfile.profile_id } }
+                                components={ [ null, <strong key="0" />  ] }
                             />
                         </ConfirmationModal.Content>
                     </>

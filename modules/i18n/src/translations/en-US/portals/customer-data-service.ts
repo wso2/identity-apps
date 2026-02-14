@@ -36,7 +36,7 @@ export const customerDataService: CustomerDataServiceNS = {
         },
         notifications: {
             error: "Error",
-            notAllowed: "Not allowed"
+            notAllowed: "Not allowed",
             loadAttributes: {
                 error: {
                     message: "Failed to load attributes.",
@@ -131,9 +131,9 @@ export const customerDataService: CustomerDataServiceNS = {
                     description: "This section contains the profile's identity attributes, traits and application data. ",
                 }
             },
-            unifiedProfiles: {
+            unifiedProfiles: { 
+                description: "This profile has been unified with the following profiles based on the unification rules configured. The data from all these profiles are consolidated into this profile.",
                 columns: {
-                    description: "This profile has been unified with the following profiles based on the unification rules configured. The data from all these profiles are consolidated into this profile.",
                     profileId: "Profile ID",
                     reason: "Unification Rule involved"
                 },

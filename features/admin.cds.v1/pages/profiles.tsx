@@ -36,10 +36,10 @@ import { fetchCDSProfiles } from "../api/profiles";
 import {
     AdvancedSearchWithMultipleFilters,
     FilterAttributeOption
-} from "../components/advanced-search-with-multiple-filterss";
+} from "../components/advanced-search-with-multiple-filters";
 
 import ProfilesList from "../components/profile-list";
-import { ProfileSchemaGroupedScope, ProfileSchemaScopeResponse } from "../models/profile-attributes";
+import { ProfileSchemaScopeResponse } from "../models/profile-attributes";
 import { ProfileListItem, ProfileModel, ProfilesListResponse } from "../models/profiles";
 
 const DEFAULT_PAGE_SIZE:number = 10;
@@ -232,7 +232,7 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
 
     return (
         <PageLayout
-            title={ t("customerDataService:profiles.page.title") } 
+            title={ t("customerDataService:profiles.page.title") }
             pageTitle={ t("customerDataService:profiles.page.pageTitle") }
             description={ t("customerDataService:profiles.page.description") }
             data-testid="profiles-page-layout"

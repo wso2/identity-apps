@@ -17,11 +17,11 @@
  */
 
 /**
- * (Optional) keep CDS-specific error codes in one place later.
+ * CDS related error constants.
  */
-export const CDS_ERRORS = {
+export const CDS_ERRORS: Record<string, string> = {
+    DELETE_PROFILE_ERROR: "CDS_PROFILE_DELETE_ERROR",
     FETCH_PROFILES_ERROR: "CDS_PROFILES_FETCH_ERROR",
     FETCH_PROFILE_ERROR: "CDS_PROFILE_FETCH_ERROR",
-    DELETE_PROFILE_ERROR: "CDS_PROFILE_DELETE_ERROR",
     INVALID_STATUS_CODE: "CDS_INVALID_STATUS_CODE"
-}
+};

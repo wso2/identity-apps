@@ -55,7 +55,7 @@ export const fetchFullProfileSchema = (): Promise<ProfileSchemaFullResponse> => 
 };
 
 /**
- * GET /profile-schema/{scope}
+ * GET /profile-schema/`{scope}`
  *
  * If application_data comes as a map, this function flattens it and injects application_identifier.
  */
@@ -73,7 +73,7 @@ export const fetchProfileSchemaByScope = (
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
-            const data = response.data;
+            const data: unknown = response.data;
 
             if (Array.isArray(data)) {
                 return Promise.resolve(data as ProfileSchemaScopeResponse);
@@ -81,13 +81,13 @@ export const fetchProfileSchemaByScope = (
 
             // Map shape: { "<appId>": [ {..}, ... ] }
             if (scope === "application_data" && data && typeof data === "object") {
-                const map = data as ApplicationDataSchemaMapResponse;
+                const map: ApplicationDataSchemaMapResponse = data as ApplicationDataSchemaMapResponse;
                 const flattened: ProfileSchemaAttribute[] = [];
 
-                Object.entries(map).forEach(([ appId, attrs ]) => {
-                    (attrs ?? []).forEach((attr) => {
-                        const original = attr.attribute_name ?? "";
-                        const field = original.startsWith("application_data" + ".")
+                Object.entries(map).forEach(([ appId, attrs ]: [string, ProfileSchemaAttribute[]]) => {
+                    (attrs ?? []).forEach((attr: ProfileSchemaAttribute) => {
+                        const original: string = attr.attribute_name ?? "";
+                        const field: string = original.startsWith("application_data" + ".")
                             ? original.replace("application_data.", "")
                             : original;
 
@@ -108,7 +108,7 @@ export const fetchProfileSchemaByScope = (
 };
 
 /**
- * GET /profile-schema/{scope}/{id}
+ * GET /profile-schema/`{scope}`/`{id}`
  */
 export const fetchSchemaAttributeById = (
     scope: SchemaListingScope,
@@ -126,7 +126,7 @@ export const fetchSchemaAttributeById = (
 };
 
 /**
- * PATCH /profile-schema/{scope}/{id}
+ * PATCH /profile-schema/`{scope}`/`{id}`
  * Only send what changed.
  */
 export const updateSchemaAttributeById = (
@@ -147,7 +147,7 @@ export const updateSchemaAttributeById = (
 };
 
 /**
- * DELETE /profile-schema/{scope}/{id}
+ * DELETE /profile-schema/`{scope}`/`{id}`
  */
 export const deleteSchemaAttributeById = (
     scope: SchemaListingScope,
@@ -172,19 +172,19 @@ export const searchSubAttributes = (
     attributeName: string
 ): Promise<ProfileSchemaAttribute[]> => {
 
-    const scopePrefix =
+    const scopePrefix: string =
         scope === "traits"
             ? "traits."
             : scope === "application_data"
                 ? "application_data."
                 : "";
 
-    const baseAttrName = attributeName.startsWith(scopePrefix)
+    const baseAttrName: string = attributeName.startsWith(scopePrefix)
         ? attributeName.substring(scopePrefix.length)
         : attributeName;
 
-    const searchPrefix = `${scopePrefix}${baseAttrName}.`;
-    const filter = `attribute_name+co+${searchPrefix}`;
+    const searchPrefix: string = `${scopePrefix}${baseAttrName}.`;
+    const filter: string = `attribute_name+co+${searchPrefix}`;
 
     const requestConfig: RequestConfigInterface = {
         headers: { "Content-Type": "application/json" },
@@ -195,7 +195,8 @@ export const searchSubAttributes = (
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
-            const data = response.data;
+            const data: any = response.data;
+
             return Promise.resolve(Array.isArray(data) ? (data as ProfileSchemaAttribute[]) : []);
         })
         .catch((error: AxiosError) => Promise.reject(error));
@@ -223,7 +224,7 @@ export const toAttributeDropdownOptions = (
             const appId: string = parts.length > 1 ? parts[1] : "";
 
             // field path WITHOUT scope/appId
-            const fieldPath:string = parts.length > 2 ? parts.slice(2).join(".") : "";
+            const fieldPath: string = parts.length > 2 ? parts.slice(2).join(".") : "";
 
             return {
                 applicationId: appId,
@@ -236,7 +237,7 @@ export const toAttributeDropdownOptions = (
 
         // For identity_attributes / traits:
         // keep nested/complex attributes, only remove the leading scope prefix.
-        const displayName:string = stripLeadingScope(fullName, scope);
+        const displayName: string = stripLeadingScope(fullName, scope);
 
         return {
             key: fullName,

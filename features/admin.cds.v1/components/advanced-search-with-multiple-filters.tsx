@@ -24,7 +24,8 @@ import Typography from "@oxygen-ui/react/Typography";
 import { MinusIcon, PlusIcon } from "@oxygen-ui/react-icons";
 import { getAdvancedSearchIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { commonConfig } from "@wso2is/admin.extensions.v1/configs/common";
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { SearchUtils } from "@wso2is/core/utils";
 import { DropdownChild, Field, FormValue, Forms } from "@wso2is/forms";
 import {
@@ -36,6 +37,7 @@ import {
 } from "@wso2is/react-components";
 import React, {
     CSSProperties,
+    Dispatch,
     FunctionComponent,
     ReactElement,
     ReactNode,
@@ -44,6 +46,7 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import { Divider, Form, Grid } from "semantic-ui-react";
 
 interface FilterGroup {
@@ -119,6 +122,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
     } = props;
 
     const { t } = useTranslation();
+    const dispatch:Dispatch<any> = useDispatch();
 
     const [ isFormSubmitted, setIsFormSubmitted ] = useState<boolean>(false);
     const [ isFiltersReset, setIsFiltersReset ] = useState<boolean>(false);
@@ -140,7 +144,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
         }
     ]);
 
-    const defaultFilterConditionOptions = [
+    const defaultFilterConditionOptions: Array<{ text: string; value: string }> = [
         { text: t("common:startsWith"), value: "sw" },
         { text: t("common:contains"), value: "co" },
         { text: t("common:equals"), value: "eq" }
@@ -157,8 +161,8 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
 
         try {
             const opts: FilterAttributeOption[] = await onFetchAttributesByScope(scope);
-
-            setOptionsByScope((p) => ({ ...p, [scope]: opts ?? [] }));
+            
+            setOptionsByScope((p: Record<string, FilterAttributeOption[]>) => ({ ...p, [scope]: opts ?? [] }));
         } catch (error) {
             dispatch(addAlert({
                 description: t("console:common.notifications.loadAttributes.error.description"),
@@ -166,7 +170,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                 message: t("console:common.notifications.loadAttributes.error.message")
             }));
         } finally {
-            setLoadingScope((p) => ({ ...p, [scope]: false }));
+            setLoadingScope((p: Record<string, boolean>) => ({ ...p, [scope]: false }));
         }
     };
 
@@ -181,7 +185,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
     const addFilter = (): void => {
         const firstScope:string = scopes?.[0] ?? "";
 
-        setFilterGroups((prev) => ([
+        setFilterGroups((prev: FilterGroup[]) => ([
             ...prev,
             {
                 applicationId: "",
@@ -271,13 +275,13 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
 
         const firstScope: string = scopes?.[0] ?? "";
 
-        setFilterGroups([{
+        setFilterGroups([ {
             applicationId: "",
             attribute: "",
             condition: defaultSearchOperator,
             scope: firstScope,
             value: ""
-        }]);
+        } ]);
 
         if (firstScope) {
             ensureScopeLoaded(firstScope);
@@ -303,12 +307,12 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
         }
 
         return row.applicationId
-            ? opts.filter((o) => o.applicationId === row.applicationId)
+            ? opts.filter((o: FilterAttributeOption) => o.applicationId === row.applicationId)
             : [];
     };
 
-    const RenderAddFilterDivider = (
-        <Box sx={ { display: "flex", alignItems: "center", my: 2 } }>
+    const RenderAddFilterDivider: ReactElement = (
+        <Box sx={ { alignItems: "center", display: "flex", my: 2 } }>
             <Divider style={ { flex: 1, margin: 0 } } />
             <Button
                 size="small"
@@ -338,7 +342,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
             hintActionKeys={ t("console:common.advancedSearch.hints.querySearch.actionKeys") }
             hintLabel={ t("console:common.advancedSearch.hints.querySearch.label") }
             onExternalSearchQueryClear={ () => setExternalSearchQuery("") }
-            onSearchQuerySubmit={ (p, q) => onFilter(p ? SearchUtils.buildSearchQuery(q) : q) }
+            onSearchQuerySubmit={ (p: boolean, q: string) => onFilter(p ? SearchUtils.buildSearchQuery(q) : q) }
             placeholder={ placeholder }
             resetSubmittedState={ () => setIsFormSubmitted(false) }
             searchOptionsHeader={ t("console:common.advancedSearch.options.header") }
@@ -364,14 +368,14 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                             { /* ✅ max width so it doesn't grow forever */ }
                             <Box
                                 sx={ {
+                                    "& .ui.dropdown .menu": {
+                                        zIndex: 1200
+                                    },
                                     maxWidth: 1100,
                                     mx: "auto",
                                     overflow: "visible",
-                                    width: "100%",
+                                    width: "100%"
 
-                                    "& .ui.dropdown .menu": {
-                                        zIndex: 1200
-                                    }
                                 } }
                                 className="multiple-filters"
                             >
@@ -411,8 +415,8 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                     <Box
                                                         sx={ {
                                                             display: "flex",
-                                                            gap: 2,
-                                                            flexWrap: "wrap"
+                                                            flexWrap: "wrap",
+                                                            gap: 2
                                                         } }
                                                     >
                                                         <Box sx={ { flex: "1 1 220px", minWidth: 220 } }>
@@ -428,7 +432,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                 })) }
                                                                 value={ row.scope }
                                                                 listen={ (values: Map<string, FormValue>) => {
-                                                                    const newScope =
+                                                                    const newScope: string =
                                                                         values.get(`scope-${index}`) as string;
 
                                                                     if (!newScope || newScope === row.scope) return;
@@ -465,7 +469,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                     })) }
                                                                     value={ row.applicationId }
                                                                     listen={ (values: Map<string, FormValue>) => {
-                                                                        const newAppId =
+                                                                        const newAppId: string =
                                                                             values.get(`app-${index}`) as string;
 
                                                                         if (!newAppId || newAppId === row.applicationId)
@@ -510,13 +514,13 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                 })) }
                                                                 value={ row.attribute }
                                                                 listen={ (values: Map<string, FormValue>) => {
-                                                                    const newAttr =
+                                                                    const newAttr : string=
                                                                         values.get(`attribute-${index}`) as string;
 
                                                                     if (!newAttr || newAttr === row.attribute) return;
 
-                                                                    setFilterGroups((prev) => {
-                                                                        const updated = [ ...prev ];
+                                                                    setFilterGroups((prev: FilterGroup[]) => {
+                                                                        const updated: FilterGroup[] = [ ...prev ];
 
                                                                         updated[index] = {
                                                                             ...updated[index],
@@ -534,8 +538,8 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                     <Box
                                                         sx={ {
                                                             display: "flex",
-                                                            gap: 2,
-                                                            flexWrap: "wrap"
+                                                            flexWrap: "wrap",
+                                                            gap: 2
                                                         } }
                                                     >
                                                         <Box sx={ { flex: "1 1 220px", minWidth: 220 } }>
@@ -551,7 +555,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                 type="dropdown"
                                                                 children={ (filterConditionOptions ||
                                                                     defaultFilterConditionOptions)
-                                                                    .map((o: any, idx) => ({
+                                                                    .map((o: any, idx: number) => ({
                                                                         key: o.key ?? idx,
                                                                         text: o.text,
                                                                         value: o.value
@@ -620,7 +624,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                         sx={ {
                                                             position: "absolute",
                                                             right: 14,
-                                                            top: 14,
+                                                            top: 14
                                                         } }
                                                         onClick={ () => removeFilter(index) }
                                                         data-componentid={ `${testId}-remove-filter-${index}` }

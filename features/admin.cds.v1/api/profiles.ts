@@ -64,7 +64,7 @@ export const fetchCDSProfiles = (
 };
 
 /**
- * GET /profiles/{id}
+ * GET /profiles/`{id}`
  */
 export const fetchCDSProfileDetails = (profileId: string): Promise<ProfileModel> => {
     const requestConfig: RequestConfigInterface = {
@@ -82,7 +82,7 @@ export const fetchCDSProfileDetails = (profileId: string): Promise<ProfileModel>
 };
 
 /**
- * DELETE /profiles/{id}
+ * DELETE /profiles/`{id}`
  *
  * Note: API usually returns 204. If yours returns 200, this still resolves.
  */
