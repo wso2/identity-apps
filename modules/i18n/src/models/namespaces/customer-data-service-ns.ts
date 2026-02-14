@@ -97,6 +97,12 @@ export interface CustomerDataServiceNS {
                         description: string;
                     };
                 };
+                fetchProfiles: {
+                    error: {
+                        description: string;
+                        message: string;
+                    }
+                };
             };
         };
 

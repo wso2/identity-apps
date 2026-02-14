@@ -170,6 +170,12 @@ export const customerDataService: CustomerDataServiceNS = {
                         description: "The profile was successfully deleted.",
                         message: "Profile deleted"
                     }
+                },
+                fetchProfiles: {
+                    error: {
+                        description: "An error occurred while loading the profiles.",
+                        message: "Failed to load profiles."
+                    }
                 }
             },
             placeholders: {
