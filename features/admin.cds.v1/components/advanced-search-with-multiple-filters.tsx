@@ -129,7 +129,9 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
     const formRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
 
     // Track which scopes need to be loaded
-    const [ activeScopesSet, setActiveScopesSet ] = useState<Set<string>>(new Set());
+    const [ activeScopesSet, setActiveScopesSet ] = useState<Set<string>>(() => {
+        return scopes?.[0] ? new Set( [ scopes[0] ] ) : new Set();
+    });
 
     const [ filterGroups, setFilterGroups ] = useState<FilterGroup[]>([
         {
@@ -191,14 +193,6 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
         setActiveScopesSet((prev: Set<string>) => new Set(prev).add(scope));
     };
 
-    useEffect(() => {
-        const firstScope: string = scopes?.[0] ?? "";
-
-        if (firstScope) {
-            activateScope(firstScope);
-        }
-    }, []);
-
     const addFilter = (): void => {
         const firstScope: string = scopes?.[0] ?? "";
 
@@ -239,7 +233,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
 
             const field: string = isAppScope(scope)
                 ? `application_data.${appId}.${attribute}`
-                : attribute;
+                : `${scope}.${attribute}`;
 
             groups.push(`${field} ${condition} ${value}`);
         }
