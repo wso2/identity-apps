@@ -576,7 +576,10 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
                                             <Form.Field>
                                                 <CopyInputField
                                                     className="copy-input spaced"
-                                                    value={ copyScopesValue }
+                                                    value={
+                                                        copyScopesValue
+                                                            ? [ ...new Set(copyScopesValue.split(" ")) ]
+                                                                .sort().join(" ") : "" }
                                                     data-componentid={ `${ componentId }-selected-scope-area` }
                                                 />
                                                 <Hint>
