@@ -23,7 +23,6 @@ import Fab from "@oxygen-ui/react/Fab";
 import Typography from "@oxygen-ui/react/Typography";
 import { MinusIcon, PlusIcon } from "@oxygen-ui/react-icons";
 import { getAdvancedSearchIcons } from "@wso2is/admin.core.v1/configs/ui";
-import { commonConfig } from "@wso2is/admin.extensions.v1/configs/common";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { SearchUtils } from "@wso2is/core/utils";
@@ -157,11 +156,11 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
         if (optionsByScope[scope]?.length) return;
         if (loadingScope[scope]) return;
 
-        setLoadingScope((p) => ({ ...p, [scope]: true }));
+        setLoadingScope((p: Record<string, boolean>) => ({ ...p, [scope]: false }));
 
         try {
             const opts: FilterAttributeOption[] = await onFetchAttributesByScope(scope);
-            
+
             setOptionsByScope((p: Record<string, FilterAttributeOption[]>) => ({ ...p, [scope]: opts ?? [] }));
         } catch (error) {
             dispatch(addAlert({
@@ -679,7 +678,7 @@ AdvancedSearchWithMultipleFilters.defaultProps = {
     "data-testid": "advanced-search",
     disableSearchFilterDropdown: false,
     dropdownPosition: "bottom right",
-    enableQuerySearch: commonConfig?.advancedSearchWithBasicFilters?.enableQuerySearch,
+    enableQuerySearch: false,
     showResetButton: false
 };
 

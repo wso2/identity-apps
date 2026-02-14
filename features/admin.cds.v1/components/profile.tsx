@@ -41,7 +41,8 @@ import {
     ResourceTab,
     ResourceTabPaneInterface,
     TabPageLayout,
-    UserAvatar
+    UserAvatar,
+    useConfirmationModalAlert
 } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
@@ -58,7 +59,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Dispatch } from "redux";
-import { Divider, Form, Grid, TabProps, Table } from "semantic-ui-react";
+import { Divider, Form, Grid, TabProps } from "semantic-ui-react";
 import { deleteCDSProfile, fetchCDSProfileDetails } from "../api/profiles";
 import type { ProfileModel } from "../models/profiles";
 
@@ -95,7 +96,7 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
 
     const [ isProfileDataViewOpen, setIsProfileDataViewOpen ] = useState<boolean>(false);
 
-    const [ _, setModalAlert, _ ] = useConfirmationModalAlert();
+    const [ _modalAlert, setModalAlert, modalAlertComponent ]= useConfirmationModalAlert();
 
     const handleAlerts = (alert: AlertInterface): void => {
         dispatch(addAlert(alert));
@@ -264,7 +265,7 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                 <p>
                     { t("customerDataService:profiles.details.sections.profileData.description") }
                 </p>
-                <div style={{ display: "flex", gap: "0.75rem", marginTop: "0.5rem" }}>
+                <div style={ { display: "flex", gap: "0.75rem", marginTop: "0.5rem" } }>
                     <Button
                         size="small"
                         onClick={ (): void => {
@@ -285,41 +286,6 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                         { t("customerDataService:profiles.details.profileData.actions.export") }
                     </Button>
                 </div>
-            </>
-        );
-    };
-
-    const renderMergedTable = (): ReactElement => {
-        const merged = profile?.merged_from ?? [];
-    
-        return (
-            <>
-                { !merged.length ? (
-                    <div style={ { opacity: 0.7 } }>
-                        { t("customerDataService:profiles.details.unifiedProfiles.empty") }
-                    </div>
-                ) : (
-                    <Table compact="very" basic="very" celled>
-                        <Table.Header>
-                            <Table.Row>
-                                <Table.HeaderCell>
-                                    { t("customerDataService:profiles.details.unifiedProfiles.columns.profileId") }
-                                </Table.HeaderCell>
-                                <Table.HeaderCell>
-                                    { t("customerDataService:profiles.details.unifiedProfiles.columns.reason") }
-                                </Table.HeaderCell>
-                            </Table.Row>
-                        </Table.Header>
-                        <Table.Body>
-                            { merged.map((m) => (
-                                <Table.Row key={ m.profile_id }>
-                                    <Table.Cell>{ m.profile_id }</Table.Cell>
-                                    <Table.Cell>{ m.reason ?? "-" }</Table.Cell>
-                                </Table.Row>
-                            )) }
-                        </Table.Body>
-                    </Table>
-                ) }
             </>
         );
     };
@@ -394,7 +360,7 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                             <p style={ { color: "rgba(0, 0, 0, 0.6)" , marginBottom: "1rem" } }>
                                 { t("customerDataService:profiles.details.unifiedProfiles.description") }
                             </p>
-                            { merged.map((m) => (
+                            { merged.map((m: { profile_id: string; reason?: string }) => (
                                 <EmphasizedSegment key={ m.profile_id } basic style={ { marginBottom: "1rem" } }>
                                     <Grid>
                                         <Grid.Row style={ { paddingBottom: "8px" } }>
@@ -535,6 +501,7 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
             data-testid={ testId }
             data-componentid={ componentId }
         >
+            { modalAlertComponent }
             <ResourceTab
                 panes={ panes }
                 activeIndex={ activeTabIndex }
