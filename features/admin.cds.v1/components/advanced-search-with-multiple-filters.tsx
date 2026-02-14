@@ -125,8 +125,8 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
     const TRAITS: string = "traits";
     const AND_OPERATOR: string = "and";
     const [ isFormSubmitted, setIsFormSubmitted ] = useState<boolean>(false);
-    const [ isFiltersReset, setIsFiltersReset ] = useState<boolean>(false);
     const [ externalSearchQuery, setExternalSearchQuery ] = useState<string>("");
+    const [ formKey, setFormKey ] = useState<number>(0);
 
     const sessionTimedOut: boolean = useContext(SessionTimedOutContext);
     const formRef: RefObject<HTMLDivElement> = useRef<HTMLDivElement>(null);
@@ -249,10 +249,32 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
     };
 
     const handleClickOutside = (event: MouseEvent): void => {
-        if (formRef.current && !formRef.current.contains(event.target as Node)) {
-            resetAll();
-            onClose?.();
+        const target: HTMLElement = event.target as HTMLElement;
+
+        if (formRef.current && formRef.current.contains(target)) {
+            return;
         }
+
+        // Check if click is on a dropdown menu (which renders outside the form)
+        const isDropdownMenu: boolean = target.closest(".ui.dropdown .menu") !== null;
+        const isDropdownItem: boolean = target.closest(".item") !== null;
+
+        if (isDropdownMenu || isDropdownItem) {
+            return;
+        }
+
+        // Check if click is on the search input or search-related elements
+        const isSearchInput: boolean = target.closest(".advanced-search") !== null ||
+                                    target.closest("input[type=\"text\"]") !== null ||
+                                    target.closest(".search") !== null;
+
+        if (isSearchInput) {
+            return;
+        }
+
+        // Reset and close
+        resetAll();
+        onClose?.();
     };
 
     useEffect(() => {
@@ -261,21 +283,11 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
-    useEffect(() => {
-        if (isFiltersReset) {
-            // Automatically clear the reset flag after a short delay
-            // This ensures the form exits reset mode
-            const timer: NodeJS.Timeout  = setTimeout(() => {
-                setIsFiltersReset(false);
-            }, 50);
-
-            return () => clearTimeout(timer);
-        }
-    }, [ isFiltersReset ] );
-
     const handleResetFilter = (): void => {
-        setIsFiltersReset(true);
+        resetAll();
+    };
 
+    const resetAll = (): void => {
         const firstScope: string = scopes?.[0] ?? "";
 
         setFilterGroups([
@@ -288,26 +300,12 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
             }
         ]);
 
-        if (firstScope) {
-            activateScope(firstScope);
-        }
-    };
-
-    const resetAll = (): void => {
         setExternalSearchQuery("");
+        onFilter("");
         setIsFormSubmitted(false);
 
-        setIsFiltersReset(true);
-
-        const firstScope: string = scopes?.[0] ?? "";
-
-        setFilterGroups([ {
-            applicationId: "",
-            attribute: "",
-            condition: defaultSearchOperator,
-            scope: firstScope,
-            value: ""
-        } ]);
+        // Increment key to force form remount
+        setFormKey((prev: number) => prev + 1);
     };
 
     const getAppsForRow = (rowScope: string): string[] => {
@@ -350,7 +348,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
         </Box>
     );
 
-    // First, create a combined list of all attributes from all scopes
+    // Create a combined list of all attributes from all scopes
     const allFilterAttributes: DropdownChild[] = useMemo(() => {
         const combined: FilterAttributeOption[] = [
             ...optionsByScope.identity_attributes,
@@ -364,7 +362,6 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
             value: attr.value
         }));
     }, [ optionsByScope ] );
-
 
     return (
         <AdvancedSearch
@@ -426,9 +423,8 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
                         <Forms
+                            key={ formKey }
                             onSubmit={ handleFormSubmit }
-                            resetState={ isFiltersReset }
-                            onChange={ () => setIsFiltersReset(false) }
                             ref={ formRef }
                         >
                             <Box
@@ -440,7 +436,6 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                     mx: "auto",
                                     overflow: "visible",
                                     width: "100%"
-
                                 } }
                                 className="multiple-filters"
                             >
@@ -493,7 +488,6 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                 })) }
                                                                 value={ row.scope }
                                                                 listen={ (values: Map<string, FormValue>) => {
-                                                                    setIsFiltersReset(false);
                                                                     const newScope: string =
                                                                         values.get(`scope-${index}`) as string;
 
@@ -531,7 +525,6 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                     })) }
                                                                     value={ row.applicationId }
                                                                     listen={ (values: Map<string, FormValue>) => {
-                                                                        setIsFiltersReset(false);
                                                                         const newAppId: string =
                                                                             values.get(`app-${index}`) as string;
 
@@ -577,7 +570,6 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                 })) }
                                                                 value={ row.attribute }
                                                                 listen={ (values: Map<string, FormValue>) => {
-                                                                    setIsFiltersReset(false);
                                                                     const newAttr: string =
                                                                         values.get(`attribute-${index}`) as string;
 
@@ -626,7 +618,6 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                     })) }
                                                                 value={ row.condition }
                                                                 listen={ (values: Map<string, FormValue>) => {
-                                                                    setIsFiltersReset(false);
                                                                     const newCondition: string =
                                                                         values.get(`condition-${index}`) as string;
 
@@ -660,7 +651,6 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                                 type="text"
                                                                 value={ row.value }
                                                                 listen={ (values: Map<string, FormValue>) => {
-                                                                    setIsFiltersReset(false);
                                                                     const newValue: string =
                                                                         values.get(`value-${index}`) as string;
 
@@ -689,8 +679,8 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                         className="delete-button"
                                                         sx={ {
                                                             position: "absolute",
-                                                            right: 14,
-                                                            top: 14
+                                                            right: 8,
+                                                            top: 8
                                                         } }
                                                         onClick={ () => removeFilter(index) }
                                                         data-componentid={ `${testId}-remove-filter-${index}` }
