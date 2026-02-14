@@ -222,6 +222,7 @@ const ProfilesPage: FunctionComponent = (): ReactElement => {
                         defaultSearchOperator="co"
                         triggerClearQuery={ triggerClearQuery }
                         scopes={ [ "identity_attributes", "traits", "application_data" ] }
+                        enableQuerySearch={ true }
                     />)
                 }
             >

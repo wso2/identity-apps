@@ -121,6 +121,9 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
     const { t } = useTranslation();
 
     const APPLICATION_DATA: string = "application_data";
+    const IDENTITY_ATTRIBUTES: string = "identity_attributes";
+    const TRAITS: string = "traits";
+    const AND_OPERATOR: string = "and";
     const [ isFormSubmitted, setIsFormSubmitted ] = useState<boolean>(false);
     const [ isFiltersReset, setIsFiltersReset ] = useState<boolean>(false);
     const [ externalSearchQuery, setExternalSearchQuery ] = useState<string>("");
@@ -130,7 +133,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
 
     // Track which scopes need to be loaded
     const [ activeScopesSet, setActiveScopesSet ] = useState<Set<string>>(() => {
-        return scopes?.[0] ? new Set( [ scopes[0] ] ) : new Set();
+        return scopes ? new Set(scopes) : new Set();
     });
 
     const [ filterGroups, setFilterGroups ] = useState<FilterGroup[]>([
@@ -335,6 +338,22 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
         </Box>
     );
 
+    // First, create a combined list of all attributes from all scopes
+    const allFilterAttributes: DropdownChild[] = useMemo(() => {
+        const combined: FilterAttributeOption[] = [
+            ...optionsByScope.identity_attributes,
+            ...optionsByScope.traits,
+            ...optionsByScope.application_data
+        ];
+
+        return combined.map((attr: FilterAttributeOption) => ({
+            key: attr.key ?? attr.value,
+            text: attr.label,
+            value: attr.value
+        }));
+    }, [ optionsByScope ] );
+
+
     return (
         <AdvancedSearch
             disableSearchAndFilterOptions={ disableSearchAndFilterOptions }
@@ -349,7 +368,34 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
             hintActionKeys={ t("console:common.advancedSearch.hints.querySearch.actionKeys") }
             hintLabel={ t("console:common.advancedSearch.hints.querySearch.label") }
             onExternalSearchQueryClear={ () => setExternalSearchQuery("") }
-            onSearchQuerySubmit={ (p: boolean, q: string) => onFilter(p ? SearchUtils.buildSearchQuery(q) : q) }
+            onSearchQuerySubmit={ (processQuery: boolean, query: string) => {
+                if (!query) {
+                    onFilter("");
+
+                    return;
+                }
+
+                const isFilterQuery: boolean =
+                    query.includes(IDENTITY_ATTRIBUTES) ||
+                    query.includes(TRAITS) ||
+                    query.includes(APPLICATION_DATA) ||
+                    query.includes(AND_OPERATOR);
+
+                if (isFilterQuery) {
+                    const prefix: string = `${defaultSearchAttribute} ${defaultSearchOperator} `;
+                    const cleanQuery: string = query.startsWith(prefix)
+                        ? query.substring(prefix.length)
+                        : query;
+
+                    onFilter(cleanQuery);
+                } else {
+                    if (processQuery) {
+                        onFilter(SearchUtils.buildSearchQuery(query));
+                    } else {
+                        onFilter(`${defaultSearchAttribute} ${defaultSearchOperator} ${query}`);
+                    }
+                }
+            } }
             placeholder={ placeholder }
             resetSubmittedState={ () => setIsFormSubmitted(false) }
             searchOptionsHeader={ t("console:common.advancedSearch.options.header") }
@@ -360,6 +406,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
             dropdownPosition={ dropdownPosition }
             triggerClearQuery={ triggerClearQuery }
             filterConditionOptions={ filterConditionOptions || defaultFilterConditionOptions }
+            filterAttributeOptions={ allFilterAttributes }
             data-testid={ testId }
             data-componentid={ testId }
         >
