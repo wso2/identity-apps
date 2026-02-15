@@ -343,6 +343,7 @@ const IntegrationAccordion: FunctionComponent<IntegrationAccordionPropsInterface
                                 content={ guideContent }
                                 data={ guideData || {} }
                                 isLoading={ isGuideLoading }
+                                computerColumnWidth={ "16" }
                                 data-componentid={ `${componentId}-markdown-guide` }
                             />
                             { renderTestUserCredentials() }
