@@ -662,7 +662,7 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
 
         return (
             <Grid.Row columns={ 1 } key={ propertyMetadata.key }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
                     { renderFieldContent() }
                     { renderHttpWarningAlert() }
                 </Grid.Column>
@@ -783,7 +783,7 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
             <>
                 { authModeProperty && (
                     <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
                             <FinalFormField
                                 key={ authModeProperty.key }
                                 fullWidth

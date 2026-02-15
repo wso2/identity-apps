@@ -2140,12 +2140,14 @@ export interface AuthenticationProviderNS {
             steps: {
                 connectorSelection: {
                     title: string;
+                    subTitle: string;
                     defaultSetup: {
                         title: string;
                         subTitle: string;
                     };
                 };
                 connectorConfiguration: {
+                    configureTitle: string;
                     title: string;
                 };
                 summary: {

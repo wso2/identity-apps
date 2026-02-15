@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Show } from "@wso2is/access-control";
+import { Show, useRequiredScopes } from "@wso2is/access-control";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGroupList } from "@wso2is/admin.groups.v1/api/groups";
@@ -67,6 +67,8 @@ export const OutboundProvisioningGroups: FunctionComponent<OutboundProvisioningG
     const { isSuperOrganization } = useGetCurrentOrganizationType();
     const { t } = useTranslation();
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
+    const hasUpdateScopes: boolean = useRequiredScopes(featureConfig?.identityProviders?.scopes?.update);
 
     const excludedAttributes: string = "members,roles,meta";
 
@@ -174,7 +176,7 @@ export const OutboundProvisioningGroups: FunctionComponent<OutboundProvisioningG
     return (
         <Grid>
             <Grid.Row>
-                <Grid.Column width={ 8 }>
+                <Grid.Column mobile={ 16 } tablet={ 12 } computer={ 8 }>
                     <Heading as="h4">
                         { t("authenticationProvider:forms.outboundProvisioningGroups.heading") }
                     </Heading>
@@ -182,10 +184,10 @@ export const OutboundProvisioningGroups: FunctionComponent<OutboundProvisioningG
             </Grid.Row>
 
             <Grid.Row>
-                <Grid.Column width={ 8 }>
+                <Grid.Column mobile={ 16 } tablet={ 12 } computer={ 8 }>
                     <FinalForm
                         onSubmit={ () => {
-                            // Form submission is handled by the add button
+                            // Form submission is handled by the add button.
                         } }
                         initialValues={ { selectedGroup: "" } }
                         render={ ({ handleSubmit, form, values }: FormRenderProps) => (
@@ -216,7 +218,8 @@ export const OutboundProvisioningGroups: FunctionComponent<OutboundProvisioningG
                                                 }
                                             } }
                                             readOnly={ isReadOnly }
-                                            data-componentid={ `${ componentId }-group-select-dropdown` }
+                                            data-componentid={ `${componentId}-group-select-dropdown` }
+                                            disabled={ !hasUpdateScopes || isReadOnly || isSubmitting }
                                         />
                                     </div>
                                     <Show when={ featureConfig?.identityProviders?.scopes?.update }>
@@ -234,7 +237,8 @@ export const OutboundProvisioningGroups: FunctionComponent<OutboundProvisioningG
                                             } }
                                             icon="add"
                                             type="button"
-                                            disabled={ isReadOnly || !values.selectedGroup }
+                                            disabled={ !hasUpdateScopes || isReadOnly || isSubmitting
+                                                || !values.selectedGroup }
                                             data-componentid={ `${ componentId }-add-button` }
                                             style={ { marginTop: "28px" } }
                                         />
@@ -250,16 +254,15 @@ export const OutboundProvisioningGroups: FunctionComponent<OutboundProvisioningG
                     {
                         selectedGroups && selectedGroups?.map((selectedGroup: string, index: number) => {
                             return (
-                                <Show key={ index } when={ featureConfig?.identityProviders?.scopes?.update }>
-                                    <Label>
-                                        { selectedGroup }
-                                        <Icon
-                                            name="delete"
-                                            onClick={ () => handleGroupRemove(selectedGroup) }
-                                            data-componentid={ `${ componentId }-delete-button-${ index }` }
-                                        />
-                                    </Label>
-                                </Show>
+                                <Label key={ index }>
+                                    { selectedGroup }
+                                    <Icon
+                                        name="delete"
+                                        onClick={ () => handleGroupRemove(selectedGroup) }
+                                        data-componentid={ `${componentId}-delete-button-${index}` }
+                                        disabled={ !hasUpdateScopes || isReadOnly || isSubmitting }
+                                    />
+                                </Label>
                             );
                         })
                     }
@@ -272,7 +275,7 @@ export const OutboundProvisioningGroups: FunctionComponent<OutboundProvisioningG
                             primary
                             size="small"
                             loading={ isSubmitting }
-                            disabled={ isSubmitting }
+                            disabled={ isSubmitting || isReadOnly }
                             onClick={ handleOutboundProvisioningGroupMapping }
                             data-componentid={ `${ componentId }-update-button` }
                         >

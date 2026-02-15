@@ -21,7 +21,7 @@ import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Wizard2, WizardPage, composeValidators } from "@wso2is/form";
+import { FinalFormField, TextFieldAdapter, Wizard2, WizardPage } from "@wso2is/form";
 import {
     GenericIcon,
     Heading,
@@ -40,12 +40,13 @@ import React, { FC, MutableRefObject, ReactElement, useEffect, useMemo, useRef, 
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dispatch } from "redux";
-import { Icon, Grid as SemanticGrid } from "semantic-ui-react";
+import { Grid, Icon, Grid as SemanticGrid } from "semantic-ui-react";
 import { createConnection, getOutboundProvisioningConnectorMetadata } from "../../api/connections";
 import useGetOutboundProvisioningConnectors from "../../api/use-get-outbound-provisioning-connectors";
 import { getConnectionIcons, getConnectionWizardStepIcons } from "../../configs/ui";
 import { CommonAuthenticatorConstants } from "../../constants/common-authenticator-constants";
 import { ConnectionUIConstants } from "../../constants/connection-ui-constants";
+import { SCIM2_AUTH_PROPERTIES } from "../../constants/outbound-provisioning-constants";
 import {
     ConnectionInterface,
     ConnectionTemplateInterface,
@@ -197,9 +198,7 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
             {
                 icon: getConnectionWizardStepIcons().general,
                 name: WizardSteps.GENERAL_DETAILS,
-                title: t("authenticationProvider:wizards.addProvisioningConnector.steps.details.title", {
-                    defaultValue: "General Details"
-                })
+                title: t("authenticationProvider:wizards.addIDP.steps.generalSettings.title")
             },
             {
                 icon: getConnectionWizardStepIcons().general,
@@ -245,7 +244,7 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
      */
     const idpNameValidation: DebouncedFunc<(value: string) => void> = debounce(
         async (value: string) => {
-            let idpExist: boolean = false;
+            let idpExist: boolean;
 
             if (idpNameValidationCache?.current?.value === value) {
                 idpExist = idpNameValidationCache?.current?.state;
@@ -484,17 +483,21 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
                 const errors: FormErrors = {};
 
                 // Validate name field
-                errors.name = composeValidators(required, length(IDP_NAME_LENGTH))(values.name);
-                if (values?.name && isUserInputIdpNameAlreadyTaken) {
+                if (!values.name) {
+                    errors.name = t("common:required");
+                } else if (values.name.length < IDP_NAME_LENGTH.min) {
+                    errors.name = t("common:minValidation", { min: IDP_NAME_LENGTH.min });
+                } else if (values.name.length > IDP_NAME_LENGTH.max) {
+                    errors.name = t("common:maxValidation", { max: IDP_NAME_LENGTH.max });
+                } else if (values?.name && isUserInputIdpNameAlreadyTaken) {
                     errors.name = t("authenticationProvider:forms.generalDetails.name.validations.duplicate");
-                }
-                if (!FormValidation.isValidResourceName(values.name)) {
+                } else if (!FormValidation.isValidResourceName(values.name)) {
                     errors.name = t("authenticationProvider:templates.enterprise.validation.name");
                 }
 
                 // Connector selection is mandatory
                 if (!selectedConnectorId) {
-                    errors["connectorId"] = "This is a required field";
+                    errors["connectorId"] = t("common:required");
                 }
 
                 setNextShouldBeDisabled(ifFieldsHave(errors));
@@ -502,85 +505,112 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
                 return errors;
             } }
         >
-            { /* General Details Section */ }
-            <Field.Input
-                data-testid={ `${componentId}-form-wizard-idp-name` }
-                ariaLabel="name"
-                inputType="resource_name"
-                name="name"
-                placeholder="Enter a name for the connection"
-                label="Connection name"
-                initialValue={ initialValues.name }
-                maxLength={ IDP_NAME_LENGTH.max }
-                minLength={ IDP_NAME_LENGTH.min }
-                required={ true }
-                width={ 15 }
-                format={ (values: any) => values.toString().trimStart() }
-                listen={ idpNameValidation }
-                validation={ (value: string) => {
-                    let errors: string;
+            <Grid padded>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
+                        <FinalFormField
+                            fullWidth
+                            FormControlProps={ {
+                                margin: "dense"
+                            } }
+                            data-testid={ `${componentId}-form-wizard-idp-name` }
+                            aria-label="name"
+                            name="name"
+                            type="text"
+                            label={ t("authenticationProvider:forms.generalDetails.name.label") }
+                            placeholder={ t("authenticationProvider:forms.generalDetails.name.placeholder") }
+                            component={ TextFieldAdapter }
+                            initialValue={ initialValues.name }
+                            maxLength={ IDP_NAME_LENGTH.max }
+                            minLength={ IDP_NAME_LENGTH.min }
+                            required={ true }
+                            listen={ (value: string) => {
+                                if (value) {
+                                    idpNameValidation(value.toString().trimStart());
+                                }
+                            } }
+                            validation={ (value: string) => {
+                                if (!value) {
+                                    return t("common:required");
+                                }
+                                if (value.length < IDP_NAME_LENGTH.min) {
+                                    return t("common:minValidation", { min: IDP_NAME_LENGTH.min });
+                                }
+                                if (value.length > IDP_NAME_LENGTH.max) {
+                                    return t("common:maxValidation", { max: IDP_NAME_LENGTH.max });
+                                }
+                                if (isUserInputIdpNameAlreadyTaken) {
+                                    return t("authenticationProvider:forms.generalDetails.name.validations.duplicate");
+                                }
+                                if (!FormValidation.isValidResourceName(value)) {
+                                    return t("authenticationProvider:templates.enterprise.validation.invalidName", {
+                                        idpName: value
+                                    });
+                                }
 
-                    errors = composeValidators(required, length(IDP_NAME_LENGTH))(value);
-                    if (value && isUserInputIdpNameAlreadyTaken) {
-                        errors = t("authenticationProvider:forms.generalDetails.name.validations.duplicate");
-                    }
-                    if (!FormValidation.isValidResourceName(value)) {
-                        errors = t("authenticationProvider:templates.enterprise.validation.invalidName", {
-                            idpName: value
-                        });
-                    }
+                                if (!isUserInputIdpNameAlreadyTaken && FormValidation.isValidResourceName(value)) {
+                                    setNextShouldBeDisabled(false);
+                                }
 
-                    if (errors === EMPTY_STRING || errors === undefined) {
-                        setNextShouldBeDisabled(false);
-                    }
-
-                    return errors;
-                } }
-            />
-            <Field.Input
-                data-testid={ `${componentId}-form-wizard-idp-description` }
-                ariaLabel="description"
-                inputType="description"
-                name="description"
-                placeholder="Enter a description for the connection"
-                label="Description"
-                initialValue={ initialValues.description }
-                required={ false }
-                width={ 15 }
-                maxLength={ 300 }
-                minLength={ 0 }
-                type="textarea"
-            />
-
-            { /* Connector Selection Section */ }
-            <div className="connector-selection">
-                <Heading as="h5">Select a provisioning connector</Heading>
-                {
-                    outboundProvisioningConnectorsMetadataList.map(
-                        (connector: OutboundProvisioningConnectorMetaDataInterface) => (
-                            <SelectionCard
-                                key={ connector.connectorId }
-                                inline
-                                image={ connector.icon }
-                                size="small"
-                                header={ connector.displayName || connector.name }
-                                description={ connector.description }
-                                selected={ selectedConnectorId === connector.connectorId }
-                                onClick={ () => setSelectedConnectorId(connector.connectorId) }
-                                imageSize="x30"
-                                imageOptions={ {
-                                    relaxed: true,
-                                    square: false,
-                                    width: "auto"
-                                } }
-                                contentTopBorder={ false }
-                                showTooltips={ true }
-                                data-componentid={ `${componentId}-connector-${connector.name}-selection-card` }
-                            />
-                        )
-                    )
-                }
-            </div>
+                                return undefined;
+                            } }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
+                        <FinalFormField
+                            fullWidth
+                            FormControlProps={ {
+                                margin: "dense"
+                            } }
+                            data-testid={ `${componentId}-form-wizard-idp-description` }
+                            aria-label="description"
+                            name="description"
+                            type="text"
+                            label={ t("authenticationProvider:forms.generalDetails.description.label") }
+                            placeholder={ t("authenticationProvider:forms.generalDetails.description.placeholder") }
+                            component={ TextFieldAdapter }
+                            initialValue={ initialValues.description }
+                            required={ false }
+                            maxLength={ 300 }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                        <Heading as="h5">
+                            { t("authenticationProvider:wizards.addProvisioningConnector.steps." +
+                                "connectorSelection.subTitle") }
+                        </Heading>
+                        {
+                            outboundProvisioningConnectorsMetadataList.map(
+                                (connector: OutboundProvisioningConnectorMetaDataInterface) => (
+                                    <SelectionCard
+                                        key={ connector.connectorId }
+                                        inline
+                                        image={ connector.icon }
+                                        size="small"
+                                        header={ connector.displayName || connector.name }
+                                        description={ connector.description }
+                                        selected={ selectedConnectorId === connector.connectorId }
+                                        onClick={ () => setSelectedConnectorId(connector.connectorId) }
+                                        imageSize="x30"
+                                        imageOptions={ {
+                                            relaxed: true,
+                                            square: false,
+                                            width: "auto"
+                                        } }
+                                        contentTopBorder={ false }
+                                        showTooltips={ true }
+                                        data-componentid={ `${componentId}-connector-${connector.name}-selection-card` }
+                                    />
+                                )
+                            )
+                        }
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
         </WizardPage>
     );
 
@@ -592,7 +622,7 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
         if (isConnectorMetadataRequestLoading) {
             return (
                 <WizardPage>
-                    <div>Loading connector configuration...</div>
+                    <div>{ t("common:loading") }</div>
                 </WizardPage>
             );
         }
@@ -600,7 +630,7 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
         if (!connectorMetaData) {
             return (
                 <WizardPage>
-                    <div>No connector metadata available</div>
+                    <div>{ t("common:noDataAvailable") }</div>
                 </WizardPage>
             );
         }
@@ -616,13 +646,13 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
                             property.key,
                             property,
                             connectorMetaData?.name,
-                            values["scim2-authentication-mode"]
+                            values[SCIM2_AUTH_PROPERTIES.AUTHENTICATION_MODE]
                         );
 
                         // Validate all required fields, including confidential ones in create mode
                         if (isRequired) {
                             if (!values[fieldName]) {
-                                errors[fieldName] = "This is a required field";
+                                errors[fieldName] = t("common:required");
                             }
                         }
                     });
@@ -632,7 +662,12 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
                     return errors;
                 } }
             >
-                <Heading as="h5">Configure { connectorMetaData.displayName || connectorMetaData.name }</Heading>
+                <Heading as="h5">
+                    { t("authenticationProvider:wizards.addProvisioningConnector.steps.connectorConfiguration" +
+                        ".configureTitle", {
+                        connectorName: connectorMetaData.displayName || connectorMetaData.name
+                    }) }
+                </Heading>
                 <ConnectorConfigFormFields
                     metadata={ connectorMetaData }
                     fieldNamePrefix=""
@@ -793,24 +828,3 @@ const ifFieldsHave = (errors: FormErrors): boolean => {
     return !Object.keys(errors).every((k: any) => !errors[k]);
 };
 
-const required = (value: any) => {
-    if (!value) {
-        return "This is a required field";
-    }
-
-    return undefined;
-};
-
-const length = (minMax: MinMax) => (value: string) => {
-    if (!value && minMax.min > 0) {
-        return "You cannot leave this blank";
-    }
-    if (value?.length > minMax.max) {
-        return `Cannot exceed more than ${minMax.max} characters.`;
-    }
-    if (value?.length < minMax.min) {
-        return `Should have at least ${minMax.min} characters.`;
-    }
-
-    return undefined;
-};

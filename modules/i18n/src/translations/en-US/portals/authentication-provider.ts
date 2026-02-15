@@ -2228,6 +2228,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
             header: "Fill the basic information about the provisioning connector.",
             steps: {
                 connectorConfiguration: {
+                    configureTitle: "Configure {{connectorName}} Connector",
                     title: "Connector Details"
                 },
                 connectorSelection: {
@@ -2235,6 +2236,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
                         subTitle: "Select the type of the new outbound provisioning connector",
                         title: "Connector Types"
                     },
+                    subTitle: "Select a outbound provisioning connector",
                     title: "Connector selection"
                 },
                 summary: {
