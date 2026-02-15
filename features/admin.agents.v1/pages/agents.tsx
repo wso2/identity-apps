@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { useRequiredScopes } from "@wso2is/access-control";
 import { AdvancedSearchWithBasicFilters } from "@wso2is/admin.core.v1/components/advanced-search-with-basic-filters";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { UIConstants } from "@wso2is/admin.core.v1/constants/ui-constants";
@@ -24,10 +25,9 @@ import { AppState } from "@wso2is/admin.core.v1/store";
 import { AGENT_USERSTORE_ID } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
-import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, FeatureAccessConfigInterface, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { DocumentationLink, EmphasizedSegment, EmptyPlaceholder,
-    ListLayout, PageLayout, PrimaryButton, useDocumentation } from "@wso2is/react-components";
+import { DocumentationLink, ListLayout, PageLayout, PrimaryButton, useDocumentation } from "@wso2is/react-components";
 import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -48,8 +48,6 @@ export default function Agents ({
 
     const dispatch: Dispatch = useDispatch();
 
-    const isSAASDeployment: boolean = useSelector((state: AppState) => state?.config?.ui?.isSAASDeployment);
-
     const [ isAddAgentWizardOpen,setIsAddAgentWizardOpen ] = useState(false);
     const [ isAgentCredentialWizardOpen, setIsAgentCredentialWizardOpen ] = useState(false);
 
@@ -61,16 +59,17 @@ export default function Agents ({
 
     const { getLink } = useDocumentation();
 
-    const {
-        isLoading: isUserStoresListFetchRequestLoading,
-        userStoresList
-    } = useUserStores();
+    const { userStoresList } = useUserStores();
 
     const isAgentManagementEnabledForOrg: boolean = useMemo((): boolean => {
         return userStoresList?.some((userStore: UserStoreListItem) => userStore.id === AGENT_USERSTORE_ID);
     }, [ userStoresList ]);
 
     const { t } = useTranslation();
+
+    const agentFeatureConfig: FeatureAccessConfigInterface =
+        useSelector((state: AppState) => state.config.ui.features.agents);
+    const hasAgentCreatePermissions: boolean = useRequiredScopes(agentFeatureConfig?.scopes.create);
 
     const {
         data: agentList,
@@ -114,30 +113,17 @@ export default function Agents ({
             bottomMargin={ false }
             contentTopMargin={ true }
             pageHeaderMaxWidth={ false }
-            action={ agentList?.Resources?.length > 0 && !isAgentListLoading && (<PrimaryButton
-                onClick={ () => {
-                    setIsAddAgentWizardOpen(true);
-                } }>
-                <Icon name="add" />
-                { t("agents:new.action.title") }
-            </PrimaryButton>) }
+            action={ agentList?.Resources?.length > 0 &&
+                !isAgentListLoading && hasAgentCreatePermissions &&
+                (<PrimaryButton
+                    onClick={ () => {
+                        setIsAddAgentWizardOpen(true);
+                    } }>
+                    <Icon name="add" />
+                    { t("agents:new.action.title") }
+                </PrimaryButton>) }
         >
-            { !isUserStoresListFetchRequestLoading && !isAgentManagementEnabledForOrg ? (
-                <EmphasizedSegment className="agent-feature-unavailable-notice">
-                    <EmptyPlaceholder
-                        action={ null }
-                        image={ null }
-                        imageSize="tiny"
-                        subtitle={ [
-                            t("agents:list.featureUnavailable.subtitle.0"),
-                            isSAASDeployment
-                                ? t("agents:list.featureUnavailable.subtitle.1.saas")
-                                : t("agents:list.featureUnavailable.subtitle.1.onprem")
-                        ] }
-                        title={ t("agents:list.featureUnavailable.title") }
-                    />
-                </EmphasizedSegment>
-            ) :             (<ListLayout
+            <ListLayout
                 advancedSearch={ (
                     <AdvancedSearchWithBasicFilters
                         onFilter={ handleUserFilter }
@@ -242,7 +228,7 @@ export default function Agents ({
                         setIsAddAgentWizardOpen(true);
                     } }
                 />
-            </ListLayout>) }
+            </ListLayout>
 
             <AddAgentWizard
                 isOpen={ isAddAgentWizardOpen }
