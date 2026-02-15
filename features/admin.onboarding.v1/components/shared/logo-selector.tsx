@@ -48,7 +48,8 @@ export interface LogoSelectorPropsInterface extends IdentifiableComponentInterfa
 const LogoSelectorContainer: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     display: "flex",
     flexDirection: "column",
-    gap: theme.spacing(1.5)
+    gap: theme.spacing(1.5),
+    padding: theme.spacing(1)
 }));
 
 /**
@@ -58,7 +59,7 @@ const LogoGrid: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     alignItems: "center",
     display: "flex",
     flexWrap: "wrap",
-    gap: theme.spacing(1.5)
+    gap: theme.spacing(1.5),
 }));
 
 /**

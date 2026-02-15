@@ -57,7 +57,8 @@ const SwatchesRow: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     display: "flex",
     flexWrap: "wrap",
     gap: theme.spacing(1),
-    marginBottom: theme.spacing(2)
+    marginBottom: theme.spacing(2),
+    padding: theme.spacing(1)
 }));
 
 /**
@@ -69,12 +70,14 @@ const ColorSwatch: any = styled(Box)<{ bgcolor: string; isSelected: boolean }>(
             transform: "scale(1.07)"
         },
         backgroundColor: bgcolor,
-        border: isSelected
-            ? `2px solid ${theme.palette.common.black}`
-            : "2px solid transparent",
+        border: "2px solid transparent",
         borderRadius: theme.shape.borderRadius,
+        boxShadow: isSelected
+            ? `0 0 0 2px ${theme.palette.background.paper}, 0 0 0 4px ${theme.palette.primary.main}`
+            : "none",
         cursor: "pointer",
         height: 40,
+        margin: theme.spacing(0.4),
         transition: "all 0.15s ease-in-out",
         width: 40
     })
@@ -95,14 +98,16 @@ const CustomColorButton: any = styled(Box)<{ bgcolor: string; hasColor: boolean;
         },
         alignItems: "center",
         backgroundColor: bgcolor,
-        border: isSelected
-            ? `2px solid ${theme.palette.common.black}`
-            : `2px solid ${theme.palette.divider}`,
+        border: hasColor ? "2px solid transparent" : `2px solid ${theme.palette.divider}`,
         borderRadius: theme.shape.borderRadius,
+        boxShadow: isSelected
+            ? `0 0 0 2px ${theme.palette.background.paper}, 0 0 0 4px ${theme.palette.primary.main}`
+            : "none",
         cursor: "pointer",
         display: "flex",
         height: 40,
         justifyContent: "center",
+        margin: theme.spacing(0.4),
         position: "relative",
         transition: "all 0.15s ease-in-out",
         width: 40
