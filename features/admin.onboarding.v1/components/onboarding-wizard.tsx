@@ -226,8 +226,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
             const parsed: number = parseInt(savedStep, 10);
 
             if (!isNaN(parsed) && Object.values(OnboardingStep).includes(parsed)) {
-                // Don't restore to SUCCESS — it requires createdApplication data
-                // which only exists in component state and isn't persisted.
+                // Don't restore to success step
                 if (parsed === OnboardingStep.SUCCESS) {
                     SessionStorageUtils.clearItemFromSessionStorage(WIZARD_STEP_STORAGE_KEY);
 
@@ -275,12 +274,17 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
     const isNextDisabled: boolean = useStepValidation(currentStep, onboardingData);
 
     // Get validation config to determine if alphanumeric username is enabled
-    // (alphanumeric username vs email-as-username)
-    const { data: validationData } = useValidationConfigData();
-    const isAlphanumericUsername: boolean = useMemo(
-        () => getUsernameConfiguration(validationData)?.enableValidator === "true",
-        [ validationData ]
-    );
+    const { data: validationData, isLoading: isValidationDataLoading } = useValidationConfigData();
+    const isAlphanumericUsername: boolean = useMemo(() => {
+
+        if (!validationData || isValidationDataLoading) {
+            return false;
+        }
+
+        const usernameConfig: any = getUsernameConfiguration(validationData);
+
+        return usernameConfig?.enableValidator === "true";
+    }, [ validationData, isValidationDataLoading ]);
 
     const isM2M: boolean = useMemo(
         () => onboardingData.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION,
@@ -367,10 +371,8 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
                 message: isTourFlow ? "Preview Ready" : "Application Created"
             }));
 
-            // Navigate to success step
             setCurrentStep(OnboardingStep.SUCCESS);
         } catch (error: any) {
-            // Show error message
             const errorMessage: string = error?.response?.data?.description ||
                                         error?.message ||
                                         "Failed to create application. Please try again.";
