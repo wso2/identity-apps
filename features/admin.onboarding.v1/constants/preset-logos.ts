@@ -100,11 +100,10 @@ export const PRESET_COLORS: string[] = [
     "#ff7300", // Orange (default)
     "#3b82f6", // Blue
     "#6366f1", // Indigo
-    "#14b8a6", // Teal
+    "#64748b",  // Slate
     "#10b981", // Emerald
     "#f59e0b", // Amber
-    "#ef4444", // Red
-    "#64748b"  // Slate
+    "#ef4444" // Red
 ];
 
 /**

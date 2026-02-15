@@ -43,9 +43,9 @@ export const ContentCard: typeof Box = styled(Box)(({ theme }: { theme: Theme })
     display: "flex",
     flex: 1,
     flexDirection: "column",
-    maxHeight: "calc(100vh - 100px)",
+    maxHeight: "calc(100vh - 120px)",
     maxWidth: 1400,
-    minHeight: "85vh",
+    minHeight: "calc(100vh - 120px)",
     overflow: "hidden",
     padding: theme.spacing(6, 8),
     width: "100%"
