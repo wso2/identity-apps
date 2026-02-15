@@ -786,6 +786,13 @@
         request.setAttribute(BRANDING_PREFERENCE_CACHE_KEY, e);
     } finally {
 
+        // Strip leading "/" from local theme asset paths. The onboarding wizard saves
+        // logo URLs with absolute paths (e.g., "/libs/themes/default/assets/images/avatars/alpaca.png")
+        // but JSP apps serve theme assets relative to their context path.
+        if (StringUtils.isNotEmpty(logoURL) && logoURL.startsWith("/libs/themes/")) {
+            logoURL = logoURL.substring(1);
+        }
+
         // Set fallbacks.
         if (StringUtils.isEmpty(logoURL)) {
             if (StringUtils.isEmpty(activeThemeName)) {

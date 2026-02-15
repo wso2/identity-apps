@@ -27,6 +27,7 @@ import { useSelector } from "react-redux";
 import { CustomTextPreferenceConstants } from "../../constants/custom-text-preference-constants";
 import useBrandingPreference from "../../hooks/use-branding-preference";
 import { BrandingPreferenceMeta } from "../../meta/branding-preference-meta";
+import { resolveBrandingLogoUrl } from "../../utils/resolve-branding-logo";
 
 /**
  * Prop-types for the login box component of login screen skeleton.
@@ -113,8 +114,9 @@ export const EmailTemplateScreenSkeleton: FunctionComponent<EmailTemplateScreenS
                         },
                         logo: {
                             altText: brandingPreference.theme[brandingPreference.theme.activeTheme].images.logo.altText,
-                            img: brandingPreference.theme[brandingPreference.theme.activeTheme].images.logo.imgURL ??
-                            BrandingPreferenceMeta.getBrandingPreferenceInternalFallbacks(systemTheme).theme[
+                            img: resolveBrandingLogoUrl(
+                                brandingPreference.theme[brandingPreference.theme.activeTheme].images.logo.imgURL
+                            ) || BrandingPreferenceMeta.getBrandingPreferenceInternalFallbacks(systemTheme).theme[
                                 brandingPreference.theme.activeTheme
                             ].images.logo.imgURL
                         },

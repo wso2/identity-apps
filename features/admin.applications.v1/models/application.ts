@@ -850,7 +850,9 @@ export enum ApplicationTemplateIdTypes {
     MCP_CLIENT_APPLICATION = "mcp-client-application",
     VC_CLIENT_APPLICATION = "vc-client-application",
     REACT_APPLICATION = "react-application",
-    NEXT_JS_APPLICATION = "nextjs-application"
+    NEXT_JS_APPLICATION = "nextjs-application",
+    ANGULAR_APPLICATION = "angular-application",
+    EXPRESSJS_APPLICATION = "expressjs-application"
 }
 
 /**

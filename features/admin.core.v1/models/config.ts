@@ -139,6 +139,10 @@ export interface FeatureConfigInterface {
      */
     gettingStarted?: FeatureAccessConfigInterface;
     /**
+     * Onboarding wizard feature.
+     */
+    onboarding?: FeatureAccessConfigInterface;
+    /**
      * SMS providers feature.
      */
     smsProviders?: FeatureAccessConfigInterface;
