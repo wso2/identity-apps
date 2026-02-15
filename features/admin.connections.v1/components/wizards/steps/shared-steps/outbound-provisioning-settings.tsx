@@ -62,7 +62,7 @@ export const OutboundProvisioningSettings: FunctionComponent<OutboundProvisionin
         isLoading,
         onSubmit,
         triggerSubmit,
-        mode = AuthenticatorSettingsFormModes.EDIT,
+        mode = AuthenticatorSettingsFormModes.CREATE,
         [ "data-testid" ]: testId
     } = props;
 

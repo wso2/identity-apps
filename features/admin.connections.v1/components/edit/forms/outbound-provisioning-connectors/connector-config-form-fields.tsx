@@ -51,6 +51,7 @@ import {
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorMetaInterface
 } from "../../../../models/connection";
+import { isFieldRequiredForAuthMode } from "../../../../utils/provisioning-utils";
 
 /**
  * Props for the ConnectorConfigFormFields component.
@@ -233,16 +234,29 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
         value: string,
         propertyMetadata: CommonPluggableComponentMetaPropertyInterface
     ): string | undefined => {
-        // Skip validation if no value and not mandatory.
-        if (!value && !propertyMetadata.isMandatory) {
+        // Determine if field is required based on auth mode (for SCIM2) or metadata
+        const isRequired: boolean = isFieldRequiredForAuthMode(
+            propertyMetadata.key,
+            propertyMetadata,
+            metadata?.name,
+            currentAuthMode
+        );
+
+        // Skip validation if no value and not required.
+        if (!value && !isRequired) {
             return undefined;
         }
 
         // Required field validation for mandatory fields.
-        if (propertyMetadata.isMandatory) {
-            // In edit mode, for confidential fields, masked value is acceptable (preserves existing).
-            // Empty value is NOT acceptable (would clear the mandatory credential).
+        if (isRequired) {
+            // In edit mode, for confidential fields, special handling:
             if (isEditMode && propertyMetadata.isConfidential) {
+                // If we're not in authentication update mode and this is an auth field,
+                // skip validation (field is hidden and not being edited)
+                if (!isAuthenticationUpdateMode && isAuthenticationProperty(propertyMetadata.key)) {
+                    return undefined;
+                }
+
                 // Allow masked value (preserves existing value) or new value.
                 // Reject empty/null/undefined (would clear mandatory field).
                 if (!value || value.trim() === "") {
@@ -250,7 +264,8 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
                 }
             } else {
                 // For non-confidential fields or create mode, standard required validation.
-                if (!value) {
+                // Check for empty, null, undefined, or whitespace-only strings
+                if (!value || (typeof value === "string" && value.trim() === "")) {
                     return t("common:required");
                 }
             }
@@ -428,6 +443,12 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
         const existingValue: string | undefined = getPropertyValue(propertyMetadata.key);
         const isReadOnly: boolean = readOnly || propertyMetadata.readOnly || false;
         const fieldType: FieldType = getFieldType(propertyMetadata);
+        const isRequired: boolean = isFieldRequiredForAuthMode(
+            propertyMetadata.key,
+            propertyMetadata,
+            metadata?.name,
+            currentAuthMode
+        );
 
         // Render field content based on type.
         const renderFieldContent = (): ReactElement => {
@@ -446,7 +467,7 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
                         label={ propertyMetadata.displayName }
                         component={ CheckboxFieldAdapter }
                         disabled={ isReadOnly }
-                        required={ propertyMetadata.isMandatory }
+                        required={ isRequired }
                         initialValue={ existingValue === "true" || propertyMetadata.defaultValue === "true" }
                         hint={
                             propertyMetadata.description ? (
@@ -483,7 +504,7 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
                         component={ RadioGroupFieldAdapter }
                         initialValue={ existingValue || propertyMetadata.defaultValue }
                         readOnly={ isReadOnly }
-                        required={ propertyMetadata.isMandatory }
+                        required={ isRequired }
                         options={ radioOptions }
                         hint={
                             propertyMetadata.description ? (
@@ -523,7 +544,7 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
                         component={ __DEPRECATED__SelectFieldAdapter }
                         initialValue={ existingValue || propertyMetadata.defaultValue }
                         readOnly={ isReadOnly }
-                        required={ propertyMetadata.isMandatory }
+                        required={ isRequired }
                         options={ dropdownOptions }
                         helperText={
                             propertyMetadata.description ? (
@@ -569,7 +590,7 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
                         component={ TextFieldAdapter }
                         initialValue={ existingValue || propertyMetadata.defaultValue }
                         readOnly={ isReadOnly }
-                        required={ propertyMetadata.isMandatory }
+                        required={ isRequired }
                         maxLength={ propertyMetadata.maxLength ?? 1000 }
                         validation={ (value: string) => validateField(value, propertyMetadata) }
                         helperText={
@@ -606,7 +627,7 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
                     component={ TextFieldAdapter }
                     initialValue={ existingValue || propertyMetadata.defaultValue }
                     readOnly={ isReadOnly }
-                    required={ propertyMetadata.isMandatory }
+                    required={ isRequired }
                     maxLength={ propertyMetadata.maxLength ?? 1000 }
                     validation={ (value: string) => validateField(value, propertyMetadata) }
                     helperText={
@@ -688,8 +709,16 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
         return (
             <Grid.Row>
                 <Grid.Column width={ 16 }>
-                    <Alert icon={ false } >
+                    <Alert
+                        icon={ false }
+                        sx={ {
+                            backgroundColor: "var(--oxygen-palette-grey-100)"
+                        } }
+                    >
                         <AlertTitle
+                            sx={ {
+                                fontWeight: 500
+                            } }
                             data-componentid={ `${ componentId }-authentication-info-box-title` }
                         >
                             <Trans
@@ -827,6 +856,11 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
             <>
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
+                        <Divider sx={ { my: 1 } } />
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row>
+                    <Grid.Column width={ 16 }>
                         <Typography variant="h6">
                             { t("idp:forms.outboundProvisioningConnector.authentication.label") }
                         </Typography>
@@ -943,8 +977,38 @@ export const ConnectorConfigFormFields: FunctionComponent<ConnectorConfigFormFie
                                 return;
                             }
 
+                            // In edit mode, when not in authentication update mode, skip validation
+                            // for authentication credential fields (user is not changing auth)
+                            if (isEditMode && !isAuthenticationUpdateMode) {
+                                const isAuthCredentialField: boolean = isAuthenticationProperty(property.key)
+                                    && property.key !== SCIM2_AUTH_PROPERTIES.AUTHENTICATION_MODE;
+
+                                if (isAuthCredentialField) {
+                                    return;
+                                }
+                            }
+
                             const fieldName: string = `${fieldNamePrefix}${property.key}`;
                             const fieldValue: string = values[fieldName];
+                            const isFieldInForm: boolean = Object.hasOwn(values, fieldName);
+
+                            // Only skip validation if field is not in form AND not required.
+                            // This allows hidden optional fields to be skipped, but validates all rendered fields.
+                            if (!isFieldInForm) {
+                                const isRequired: boolean = isFieldRequiredForAuthMode(
+                                    property.key,
+                                    property,
+                                    metadata?.name,
+                                    currentAuthMode
+                                );
+
+                                // Skip validation only for non-required fields that aren't in the form
+                                // Required fields must always be validated (will fail if not in form)
+                                if (!isRequired) {
+                                    return;
+                                }
+                            }
+
                             const validationError: string | undefined = validateField(fieldValue, property);
 
                             if (validationError) {

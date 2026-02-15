@@ -140,6 +140,10 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
         fetchConnectors()
             .then((response: OutboundProvisioningConnectorWithMetaInterface[]) => {
                 setAvailableConnectors(response);
+                // Auto-open accordion if only one connector exists.
+                if (response?.length === 1) {
+                    setAccordionActiveIndexes([ 0 ]);
+                }
             });
     }, [ identityProvider ]);
 
@@ -391,23 +395,8 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                 outboundConnectors.connectors.length > 0 ? (
                     (!isLoading)
                         ? (
-                            <div className="default-provisioning-connector-section">
+                            <div className="default-provisioning-connector-section" style={ { marginTop: "1rem" } }>
                                 <Grid>
-                                    <Grid.Row>
-                                        <Grid.Column>
-                                            <Show when={ featureConfig?.identityProviders?.scopes?.update }>
-                                                <PrimaryButton
-                                                    floated="right"
-                                                    onClick={ () => setShowWizard(true) }
-                                                    data-testid={ `${ testId }-add-connector-button` }
-                                                >
-                                                    <Icon name="add"/>
-                                                    { t("authenticationProvider:" +
-                                                            "buttons.addConnector") }
-                                                </PrimaryButton>
-                                            </Show>
-                                        </Grid.Column>
-                                    </Grid.Row>
                                     <Grid.Row>
                                         <Grid.Column>
                                             {
@@ -468,7 +457,11 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                                 data-testid={ `${ testId }-accordion` }
                                                                 accordionActiveIndexes = { accordionActiveIndexes }
                                                                 accordionIndex = { index }
-                                                                handleAccordionOnClick = { handleAccordionOnClick }
+                                                                handleAccordionOnClick={ handleAccordionOnClick }
+                                                                accordionContentStyle={ {
+                                                                    backgroundColor:
+                                                                        "var(--oxygen-palette-common-white)"
+                                                                } }
                                                             />
                                                         );
                                                     })

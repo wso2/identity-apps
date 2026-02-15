@@ -22,8 +22,6 @@ import { FormValue } from "@wso2is/form";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import { AxiosError } from "axios";
-import cloneDeep from "lodash-es/cloneDeep";
-import merge from "lodash-es/merge";
 import React, { FunctionComponent, ReactElement, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -33,7 +31,6 @@ import {
     OutboundProvisioningConnectors
 } from "./steps/outbound-provisioning-connectors";
 import { OutboundProvisioningSettings } from "./steps/shared-steps/outbound-provisioning-settings";
-import { WizardSummary } from "./steps/shared-steps/wizard-summary";
 import {
     getOutboundProvisioningConnectorMetadata,
     updateOutboundProvisioningConnector
@@ -78,8 +75,7 @@ interface WizardStateInterface {
  */
 enum WizardStepsFormTypes {
     CONNECTOR_SELECTION = "ConnectorSelection",
-    CONNECTOR_DETAILS = "ConnectorDetails",
-    SUMMARY = "summary"
+    CONNECTOR_DETAILS = "ConnectorDetails"
 }
 
 export const OutboundProvisioningConnectorCreateWizard:
@@ -100,7 +96,6 @@ export const OutboundProvisioningConnectorCreateWizard:
 
         const [ submitConnectorSelection, setSubmitConnectorSelection ] = useTrigger();
         const [ submitConnectorSettings, setSubmitConnectorSettings ] = useTrigger();
-        const [ finishSubmit, setFinishSubmit ] = useTrigger();
 
         const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
         const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
@@ -294,12 +289,10 @@ export const OutboundProvisioningConnectorCreateWizard:
 
                     break;
                 case 1:
+                    setIsSubmitting(true);
                     setSubmitConnectorSettings();
 
                     break;
-                case 2:
-                    setIsSubmitting(true);
-                    setFinishSubmit();
             }
         };
 
@@ -314,38 +307,24 @@ export const OutboundProvisioningConnectorCreateWizard:
          * @param WizardStepsFormTypes - Type of the form.
          */
         const handleWizardFormSubmit = (values: any, formType: WizardStepsFormTypes) => {
-            setCurrentWizardStep(currentWizardStep + 1);
-            setWizardState({ ...wizardState, [ formType ]: values });
-        };
-
-        /**
-         * Generates a summary of the wizard.
-         *
-         */
-        const generateWizardSummary = () => {
-            if (!wizardState) {
-                return;
+            if (formType === WizardStepsFormTypes.CONNECTOR_DETAILS) {
+                // For the last step, trigger the final submission
+                setWizardState({ ...wizardState, [ formType ]: values });
+                handleWizardFormFinish();
+            } else {
+                setCurrentWizardStep(currentWizardStep + 1);
+                setWizardState({ ...wizardState, [ formType ]: values });
             }
-
-            const wizardData: WizardStateInterface = { ...wizardState };
-            let summary: WizardStateInterface = {};
-
-            for (const value of Object.values(wizardData)) {
-                summary = {
-                    ...summary,
-                    ...value
-                };
-            }
-
-            return merge(cloneDeep(summary));
         };
 
         /**
      * Handles the final wizard submission.
      */
         const handleWizardFormFinish = (): void => {
-            getOutboundProvisioningConnectorMetadata(wizardState[
-                WizardStepsFormTypes.CONNECTOR_SELECTION ]?.connectorId)
+            const selectedConnectorId: string = wizardState[
+                WizardStepsFormTypes.CONNECTOR_SELECTION ]?.connectorId;
+
+            getOutboundProvisioningConnectorMetadata(selectedConnectorId)
                 .then((response: OutboundProvisioningConnectorMetaInterface) => {
                     setNewConnector(response);
                 })
@@ -392,21 +371,6 @@ export const OutboundProvisioningConnectorCreateWizard:
                 icon: getOutboundProvisioningConnectorWizardIcons().connectorDetails,
                 title: t("authenticationProvider:" +
                 "wizards.addProvisioningConnector.steps.connectorConfiguration.title")
-            },
-            {
-                content: (
-                    <WizardSummary
-                        provisioningConnectorMetadata={ connectorMetaData }
-                        authenticatorMetadata={ undefined }
-                        triggerSubmit={ finishSubmit }
-                        identityProvider={ generateWizardSummary() }
-                        onSubmit={ handleWizardFormFinish }
-                        data-testid={ `${ testId }-summary` }
-                    />
-                ),
-                icon: getOutboundProvisioningConnectorWizardIcons().summary,
-                title: t("authenticationProvider:" +
-                "wizards.addProvisioningConnector.steps.summary.title")
             }
         ];
 
@@ -469,7 +433,7 @@ export const OutboundProvisioningConnectorCreateWizard:
                                 </LinkButton>
                             </Grid.Column>
                             <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                { currentWizardStep < STEPS.length - 1 && (
+                                { currentWizardStep === 0 && (
                                     <PrimaryButton
                                         floated="right"
                                         onClick={ navigateToNext }
@@ -481,12 +445,12 @@ export const OutboundProvisioningConnectorCreateWizard:
                                         <Icon name="arrow right"/>
                                     </PrimaryButton>
                                 ) }
-                                { currentWizardStep === STEPS.length - 1 && (
+                                { currentWizardStep === 1 && (
                                     <PrimaryButton
                                         floated="right"
                                         onClick={ navigateToNext }
                                         loading={ isSubmitting }
-                                        disabled={ isSubmitting }
+                                        disabled={ isSubmitting || isConnectorMetadataRequestLoading }
                                         data-testid={ `${ testId }-modal-finish-button` }
                                     >
                                         { t("authenticationProvider:wizards.buttons.finish") }

@@ -21,7 +21,7 @@ import { FinalForm, FormApi, FormRenderProps } from "@wso2is/form";
 import {
     PrimaryButton
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useRef } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ConnectorConfigFormFields } from "./connector-config-form-fields";
 import { AuthenticatorSettingsFormModes } from "../../../../models/authenticators";
@@ -102,6 +102,9 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
     const { t } = useTranslation();
     const formRef: React.MutableRefObject<FormApi<any> | null> = useRef<FormApi<any>>(null);
 
+    // Track validation state
+    const [ hasValidationErrors, setHasValidationErrors ] = useState<boolean>(false);
+
     // In CREATE mode, fields should always be editable.
     const isFieldReadOnly: boolean = mode === AuthenticatorSettingsFormModes.CREATE ? false : readOnly;
 
@@ -161,36 +164,54 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
 
         const fieldValue: any = values[property.key];
         const isConfidential: boolean = property.isConfidential ?? false;
+        const isFieldInForm: boolean = Object.hasOwn(values, property.key);
 
         // For confidential properties in edit mode, only include if value changed
         if (isEditMode && isConfidential) {
-            if (fieldValue !== undefined && fieldValue !== null
-                && hasConfidentialValueChanged(property.key, fieldValue)) {
+            // Check if the value has changed (including being cleared to empty string)
+            if (hasConfidentialValueChanged(property.key, fieldValue)) {
                 // Value has changed, include it in the request
+                // This includes empty string if user intentionally cleared the field
                 properties.push({
                     key: property.key,
-                    value: String(fieldValue)
+                    value: String(fieldValue ?? "")
                 });
             }
-            // If unchanged, don't include it (backend will preserve existing value)
+            // If unchanged (e.g., still showing masked value), don't include it
+            // Backend will preserve the existing value
         } else if (property.type?.toUpperCase() === "BOOLEAN") {
             // Non-confidential checkbox values - always include
+            const valueToUse: any = fieldValue !== undefined && fieldValue !== null
+                ? fieldValue
+                : getInitialPropertyValue(property.key);
+
             properties.push({
                 key: property.key,
-                value: String(!!fieldValue)
+                value: String(!!valueToUse)
             });
-        } else if (fieldValue !== undefined && fieldValue !== null) {
-            // Non-confidential values - always include
+        } else if (isFieldInForm) {
+            // Field is in form (rendered and possibly edited) - always include its current value
+            // This includes empty strings if the user cleared the field
             properties.push({
                 key: property.key,
-                value: String(fieldValue)
+                value: String(fieldValue ?? "")
             });
-        } else if (property.defaultValue) {
-            // Use default value if no value provided
-            properties.push({
-                key: property.key,
-                value: property.defaultValue
-            });
+        } else {
+            // Field is NOT in form (e.g., hidden auth fields) - use initial value or default
+            const initialValue: string | undefined = getInitialPropertyValue(property.key);
+
+            if (initialValue !== undefined && initialValue !== null) {
+                properties.push({
+                    key: property.key,
+                    value: initialValue
+                });
+            } else if (property.defaultValue) {
+                // Use default value if no value provided and no initial value.
+                properties.push({
+                    key: property.key,
+                    value: property.defaultValue
+                });
+            }
         }
 
         // Process sub-properties recursively
@@ -217,11 +238,23 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
         });
     };
 
+    /**
+     * Convert connector properties to flat form values for FinalForm.
+     */
+    const getFormInitialValues = (): Record<string, any> => {
+        const formValues: Record<string, any> = {};
+
+        initialValues?.properties?.forEach((property: CommonPluggableComponentPropertyInterface) => {
+            formValues[property.key] = property.value;
+        });
+
+        return formValues;
+    };
+
     return (
         <FinalForm
             onSubmit={ handleSubmit }
-            // initialValues={ initialValues }
-            // enableReinitialize={ true }
+            initialValues={ getFormInitialValues() }
             render={ ({ handleSubmit, form }: FormRenderProps) => {
                 formRef.current = form;
 
@@ -234,6 +267,9 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
                                 initialValues={ initialValues }
                                 fieldNamePrefix=""
                                 readOnly={ isFieldReadOnly }
+                                onValidationChange={ (hasErrors: boolean) => {
+                                    setHasValidationErrors(hasErrors);
+                                } }
                                 data-componentid={ `${ componentId }-fields` }
                             />
                         </form>
@@ -242,7 +278,7 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
                                 type="submit"
                                 data-componentid={ `${componentId}-form-update-button` }
                                 loading={ isSubmitting }
-                                disabled={ isSubmitting }
+                                disabled={ isSubmitting || hasValidationErrors }
                                 onClick={ () => {
                                     form.submit();
                                 } }

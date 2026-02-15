@@ -19,6 +19,12 @@
 import { getOutboundProvisioningConnectorsMetaData } from "../components/meta/connectors";
 import { CommonAuthenticatorConstants } from "../constants/common-authenticator-constants";
 import {
+    OutboundProvisioningAuthenticationMode,
+    SCIM2_AUTH_PROPERTIES,
+    SCIM2_CONNECTOR_NAME
+} from "../constants/outbound-provisioning-constants";
+import {
+    CommonPluggableComponentMetaPropertyInterface,
     OutboundProvisioningConnectorListItemInterface,
     OutboundProvisioningConnectorMetaDataInterface
 } from "../models/connection";
@@ -59,4 +65,62 @@ export const getFilteredConnectorMetadataList = (
             ...(metadata ?? {})
         } as OutboundProvisioningConnectorMetaDataInterface;
     });
+};
+
+/**
+ * Determines if a field should be required based on the current authentication mode.
+ * For SCIM2 connectors, this overrides the metadata's isMandatory for authentication credential fields.
+ *
+ * @param propertyKey - The key of the property to check.
+ * @param propertyMetadata - The metadata of the property.
+ * @param connectorName - The name of the connector (e.g., "scim2").
+ * @param currentAuthMode - The currently selected authentication mode.
+ * @returns Whether the field should be required.
+ */
+export const isFieldRequiredForAuthMode = (
+    propertyKey: string | undefined,
+    propertyMetadata: CommonPluggableComponentMetaPropertyInterface,
+    connectorName: string | undefined,
+    currentAuthMode: string | undefined
+): boolean => {
+    // For non-SCIM2 connectors or non-auth properties, use metadata's isMandatory
+    const isScim2: boolean = connectorName?.toLowerCase() === SCIM2_CONNECTOR_NAME;
+
+    if (!isScim2) {
+        return propertyMetadata.isMandatory || false;
+    }
+
+    // Check if this is an authentication property
+    const isAuthProperty: boolean = !!propertyKey && Object.values(SCIM2_AUTH_PROPERTIES).includes(propertyKey);
+
+    if (!isAuthProperty) {
+        return propertyMetadata.isMandatory || false;
+    }
+
+    // Authentication mode field itself uses metadata's isMandatory
+    if (propertyKey === SCIM2_AUTH_PROPERTIES.AUTHENTICATION_MODE) {
+        return propertyMetadata.isMandatory || false;
+    }
+
+    // For authentication credential fields, determine requirement based on selected auth mode
+    switch (currentAuthMode) {
+        case OutboundProvisioningAuthenticationMode.BASIC:
+            return propertyKey === SCIM2_AUTH_PROPERTIES.USERNAME
+                || propertyKey === SCIM2_AUTH_PROPERTIES.PASSWORD;
+
+        case OutboundProvisioningAuthenticationMode.BEARER:
+            return propertyKey === SCIM2_AUTH_PROPERTIES.ACCESS_TOKEN;
+
+        case OutboundProvisioningAuthenticationMode.API_KEY:
+            return propertyKey === SCIM2_AUTH_PROPERTIES.API_KEY_HEADER
+                || propertyKey === SCIM2_AUTH_PROPERTIES.API_KEY_VALUE;
+
+        case OutboundProvisioningAuthenticationMode.NONE:
+            // No auth credentials required when mode is NONE
+            return false;
+
+        default:
+            // Fallback to metadata's isMandatory
+            return propertyMetadata.isMandatory || false;
+    }
 };
