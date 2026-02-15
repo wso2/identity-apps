@@ -1,5 +1,68 @@
 # @wso2is/admin.applications.v1
 
+## 2.41.0
+
+### Minor Changes
+
+- [#9577](https://github.com/wso2/identity-apps/pull/9577) [`5e96563efa7eb0807db57487b417a2f820474e36`](https://github.com/wso2/identity-apps/commit/5e96563efa7eb0807db57487b417a2f820474e36) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add visual editor notification system and improve api based login flow configuration
+
+### Patch Changes
+
+- Updated dependencies [[`5e96563efa7eb0807db57487b417a2f820474e36`](https://github.com/wso2/identity-apps/commit/5e96563efa7eb0807db57487b417a2f820474e36)]:
+  - @wso2is/admin.login-flow-builder.v1@2.29.0
+  - @wso2is/i18n@2.32.3
+  - @wso2is/admin.branding.v1@2.32.86
+  - @wso2is/admin.core.v1@2.50.5
+  - @wso2is/admin.roles.v2@2.27.300
+  - @wso2is/admin.server-configurations.v1@2.36.5
+  - @wso2is/admin.users.v1@2.36.105
+
+## 2.40.14
+
+### Patch Changes
+
+- [#9590](https://github.com/wso2/identity-apps/pull/9590) [`604f1afdbf310cd4b059c00cd770cf99a29721c7`](https://github.com/wso2/identity-apps/commit/604f1afdbf310cd4b059c00cd770cf99a29721c7) Thanks [@piraveena](https://github.com/piraveena)! - Fix OIDC Frontchannel logout update bug in SPA template
+
+- Updated dependencies []:
+  - @wso2is/admin.branding.v1@2.32.85
+  - @wso2is/admin.core.v1@2.50.4
+  - @wso2is/admin.roles.v2@2.27.299
+  - @wso2is/admin.server-configurations.v1@2.36.4
+  - @wso2is/admin.users.v1@2.36.104
+
+## 2.40.13
+
+### Patch Changes
+
+- [#9578](https://github.com/wso2/identity-apps/pull/9578) [`c67bea3eb2709848056bd9e32801605649783ae1`](https://github.com/wso2/identity-apps/commit/c67bea3eb2709848056bd9e32801605649783ae1) Thanks [@AfraHussaindeen](https://github.com/AfraHussaindeen)! - Add support for enableJwtScopeAsArray in access token configuration in application API
+
+- Updated dependencies [[`ae891252fdf29b6b33770daf657032eb9ff5cc8e`](https://github.com/wso2/identity-apps/commit/ae891252fdf29b6b33770daf657032eb9ff5cc8e)]:
+  - @wso2is/admin.core.v1@2.50.3
+  - @wso2is/i18n@2.32.2
+  - @wso2is/admin.branding.v1@2.32.84
+  - @wso2is/admin.roles.v2@2.27.298
+  - @wso2is/admin.server-configurations.v1@2.36.3
+  - @wso2is/admin.users.v1@2.36.103
+
+## 2.40.12
+
+### Patch Changes
+
+- [#9581](https://github.com/wso2/identity-apps/pull/9581) [`b12c67f61552efde75264e64ee3aaad2df845ef2`](https://github.com/wso2/identity-apps/commit/b12c67f61552efde75264e64ee3aaad2df845ef2) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Change digital wallet application template name to vc client application
+
+* [#9556](https://github.com/wso2/identity-apps/pull/9556) [`c7571540bdbbb68fd650e9c356823ad3d7f9dade`](https://github.com/wso2/identity-apps/commit/c7571540bdbbb68fd650e9c356823ad3d7f9dade) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add digital wallet application template
+
+* Updated dependencies [[`b12c67f61552efde75264e64ee3aaad2df845ef2`](https://github.com/wso2/identity-apps/commit/b12c67f61552efde75264e64ee3aaad2df845ef2), [`b463a2e8339a6c237911e164d6faf174a5501d83`](https://github.com/wso2/identity-apps/commit/b463a2e8339a6c237911e164d6faf174a5501d83), [`c7571540bdbbb68fd650e9c356823ad3d7f9dade`](https://github.com/wso2/identity-apps/commit/c7571540bdbbb68fd650e9c356823ad3d7f9dade)]:
+  - @wso2is/admin.application-templates.v1@1.5.10
+  - @wso2is/admin.extensions.v1@2.40.19
+  - @wso2is/i18n@2.32.1
+  - @wso2is/admin.api-resources.v2@2.26.6
+  - @wso2is/admin.branding.v1@2.32.83
+  - @wso2is/admin.core.v1@2.50.2
+  - @wso2is/admin.roles.v2@2.27.297
+  - @wso2is/admin.server-configurations.v1@2.36.2
+  - @wso2is/admin.users.v1@2.36.102
+
 ## 2.40.11
 
 ### Patch Changes

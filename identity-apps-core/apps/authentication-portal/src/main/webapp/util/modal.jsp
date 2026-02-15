@@ -16,6 +16,7 @@
   ~ under the License.
 --%>
 
+<%@ page import="org.owasp.encoder.Encode" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <div class="ui modal tiny notify" id="asg-modal-0">
@@ -40,22 +41,22 @@
     <div class="content text-center">
         <div class="description">
             <div class="ui header" id="asg-modal-0-title">
-                <b>${param.title}</b>
+                <b><%= Encode.forHtml(request.getParameter("title")) %></b>
             </div>
             <p id="asg-modal-0-description">
-                ${param.description}
+                <%= Encode.forHtml(request.getParameter("description")) %>
             </p>
         </div>
     </div>
     <div class="actions">
         <div class="ui secondary deny button" id="asg-modal-0-dismiss-button">
-            ${param.cancel_button_text}
+            <%= Encode.forHtml(request.getParameter("cancel_button_text")) %>
         </div>
-        <c:if test="${not empty param.action_button_text}">
+        <% if (request.getParameter("action_button_text") != null && !request.getParameter("action_button_text").isEmpty()) { %>
             <div class="ui primary button" id="asg-modal-0-action-button">
-                ${param.action_button_text}
+                <%= Encode.forHtml(request.getParameter("action_button_text")) %>
             </div>
-        </c:if>
+        <% } %>
     </div>
 </div>
 

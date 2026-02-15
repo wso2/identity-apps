@@ -27,7 +27,7 @@ import { AppConstants as CommonAppConstants } from "@wso2is/admin.core.v1/consta
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertInterface, AlertLevels, Claim, ExternalClaim, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { FinalForm, FinalFormField, FormRenderProps, TextFieldAdapter } from "@wso2is/form/src";
+import { FinalForm, FinalFormField, FormRenderProps, SelectFieldAdapter, TextFieldAdapter } from "@wso2is/form/src";
 import {
     ConfirmationModal,
     ContentLoader,
@@ -51,6 +51,7 @@ import {
 } from "../api/verifiable-credentials";
 import { ClaimAttributeOption } from "../components/claim-attribute-option";
 import { VCTemplateOffer } from "../components/vc-template-offer";
+import { VerifiableCredentialsConstants } from "../constants/verifiable-credentials";
 import { useGetVCTemplate } from "../hooks/use-get-vc-template";
 import { VCTemplateUpdateModel } from "../models/verifiable-credentials";
 import "./vc-template-edit.scss";
@@ -65,15 +66,13 @@ type VCTemplateEditPageProps = IdentifiableComponentInterface;
  */
 interface VCTemplateEditFormValues {
     displayName: string;
-    expiresIn: number;
+    format: string;
+    expiresIn: number | string;
 }
 
 const FORM_ID: string = "vc-template-edit-form";
 
-/**
- * Base64 encoded value of http://wso2.org/vc/claim
- */
-const VC_CLAIM_DIALECT_ID: string = "aHR0cDovL3dzbzIub3JnL3ZjL2NsYWlt";
+const DEFAULT_VC_FORMAT: string = VerifiableCredentialsConstants.CREDENTIAL_FORMATS.VC_SD_JWT;
 
 /**
  * VC Template Edit page.
@@ -200,7 +199,7 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
     const fetchExternalClaims = (): void => {
         setIsClaimsLoading(true);
 
-        getAllExternalClaims(VC_CLAIM_DIALECT_ID, null)
+        getAllExternalClaims(VerifiableCredentialsConstants.VC_CLAIM_DIALECT_ID, null)
             .then((response: ExternalClaim[]) => {
                 setExternalClaims(response);
             })
@@ -217,6 +216,58 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
     };
 
     /**
+     * Validates the display name field.
+     *
+     * @param value - Display name value.
+     * @returns Error message if invalid, undefined if valid.
+     */
+    const validateDisplayName = (value: string): string | undefined => {
+        if (!value) {
+            return t("common:required");
+        }
+
+        return undefined;
+    };
+
+    /**
+     * Validates the validity period field.
+     *
+     * @param value - Validity period value.
+     * @returns Error message if invalid, undefined if valid.
+     */
+    const validateExpiresIn = (value: number | string): string | undefined => {
+        if (value === undefined || value === null || value === "") {
+            return t("common:required");
+        }
+
+        return undefined;
+    };
+
+    /**
+     * Validates the form fields.
+     *
+     * @param values - Form values to validate.
+     * @returns A partial object containing validation errors.
+     */
+    const validateForm = (values: VCTemplateEditFormValues): Partial<VCTemplateEditFormValues> => {
+        const errors: Partial<VCTemplateEditFormValues> = {};
+
+        const displayNameError: string | undefined = validateDisplayName(values?.displayName);
+
+        if (displayNameError) {
+            errors.displayName = displayNameError;
+        }
+
+        const expiresInError: string | undefined = validateExpiresIn(values?.expiresIn);
+
+        if (expiresInError) {
+            errors.expiresIn = expiresInError;
+        }
+
+        return errors;
+    };
+
+    /**
      * Handle form submission for updating the VC template.
      *
      * @param values - Form values.
@@ -227,7 +278,8 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
         const updateData: VCTemplateUpdateModel = {
             claims: selectedClaims.map((claim: ExternalClaim) => claim.claimURI),
             displayName: values.displayName,
-            expiresIn: values.expiresIn
+            expiresIn: Number(values.expiresIn),
+            format: values.format || DEFAULT_VC_FORMAT
         };
 
         updateVCTemplate(templateId, updateData)
@@ -321,9 +373,11 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
                             <ResourceTab.Pane controlledSegmentation>
                                 <FinalForm
                                     onSubmit={ handleFormSubmit }
+                                    validate={ validateForm }
                                     initialValues={ {
                                         displayName: vcTemplate?.displayName,
-                                        expiresIn: vcTemplate?.expiresIn?.toString()
+                                        expiresIn: vcTemplate?.expiresIn?.toString(),
+                                        format: vcTemplate?.format || DEFAULT_VC_FORMAT
                                     } }
                                     render={ ({ handleSubmit }: FormRenderProps) => (
                                         <EmphasizedSegment padded="very">
@@ -331,23 +385,25 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
                                                 id={ FORM_ID }
                                                 onSubmit={ handleSubmit }
                                             >
-                                                <Grid>
+                                                <Grid className="vc-template-edit-form-grid">
                                                     <Grid.Row columns={ 1 }>
                                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                                             <FinalFormField
                                                                 key="displayName"
+                                                                label={ t("verifiableCredentials:editPage.form" +
+                                                                    ".displayName.label") }
                                                                 width={ 16 }
                                                                 FormControlProps={ {
-                                                                    margin: "dense"
+                                                                    margin: "none"
                                                                 } }
                                                                 ariaLabel="displayName"
                                                                 required={ true }
                                                                 data-componentid={ `${componentId}-display-name-input` }
                                                                 name="displayName"
                                                                 type="text"
-                                                                label={ t("verifiableCredentials:editPage.form.displayName.label") } // eslint-disable-line max-len
                                                                 placeholder={
-                                                                    t("verifiableCredentials:editPage.form.displayName.placeholder") // eslint-disable-line max-len
+                                                                    t("verifiableCredentials:editPage.form." +
+                                                                        "displayName.placeholder")
                                                                 }
                                                                 component={ TextFieldAdapter }
                                                                 maxLength={ 255 }
@@ -358,7 +414,8 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
                                                     <Grid.Row columns={ 1 }>
                                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                                             <label className="form-label">
-                                                                { t("verifiableCredentials:editPage.form.identifier.label") /* eslint-disable-line max-len */ }
+                                                                { t("verifiableCredentials:editPage.form"+
+                                                                    ".identifier.label") }
                                                             </label>
                                                             <CopyInputField
                                                                 value={ vcTemplate?.identifier || "" }
@@ -371,23 +428,69 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
                                                     <Grid.Row columns={ 1 }>
                                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                                             <FinalFormField
-                                                                key="expiresIn"
+                                                                key="format"
+                                                                label={ t("verifiableCredentials:editPage.form" +
+                                                                    ".format.label") }
                                                                 width={ 16 }
                                                                 FormControlProps={ {
-                                                                    margin: "dense"
+                                                                    className: "vc-template-edit-format-control",
+                                                                    margin: "none"
+                                                                } }
+                                                                ariaLabel="format"
+                                                                required={ true }
+                                                                data-componentid={ `${componentId}-format-dropdown` }
+                                                                name="format"
+                                                                margin="none"
+                                                                displayEmpty={ true }
+                                                                placeholder={
+                                                                    t("verifiableCredentials:editPage.form" +
+                                                                        ".format.placeholder")
+                                                                }
+                                                                component={ SelectFieldAdapter }
+                                                                options={ [
+                                                                    {
+                                                                        text: t(
+                                                                            "verifiableCredentials:editPage.form" +
+                                                                            ".format.options.vcSdJwt"
+                                                                        ),
+                                                                        value: VerifiableCredentialsConstants
+                                                                            .CREDENTIAL_FORMATS.VC_SD_JWT
+                                                                    },
+                                                                    {
+                                                                        text: t(
+                                                                            "verifiableCredentials:editPage.form" +
+                                                                            ".format.options.jwtVcJson"
+                                                                        ),
+                                                                        value: VerifiableCredentialsConstants
+                                                                            .CREDENTIAL_FORMATS.JWT_VC_JSON
+                                                                    }
+                                                                ] }
+                                                            />
+                                                        </Grid.Column>
+                                                    </Grid.Row>
+                                                    <Grid.Row columns={ 1 }>
+                                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                                            <FinalFormField
+                                                                key="expiresIn"
+                                                                label={ t("verifiableCredentials:editPage.form." +
+                                                                    "expiresIn.label") }
+                                                                width={ 16 }
+                                                                FormControlProps={ {
+                                                                    margin: "none"
                                                                 } }
                                                                 ariaLabel="expiresIn"
                                                                 required={ true }
                                                                 data-componentid={ `${componentId}-expires-in-input` }
                                                                 name="expiresIn"
                                                                 type="number"
-                                                                label={ t("verifiableCredentials:editPage.form.expiresIn.label") } // eslint-disable-line max-len
                                                                 placeholder={
-                                                                    t("verifiableCredentials:editPage.form.expiresIn.placeholder") // eslint-disable-line max-len
+                                                                    t("verifiableCredentials:editPage.form.expiresIn." +
+                                                                        "placeholder")
                                                                 }
                                                                 helperText={
                                                                     (<Hint className="hint" compact>
-                                                                        { t("verifiableCredentials:editPage.form.expiresIn.hint") /* eslint-disable-line max-len */ }
+                                                                        { t("verifiableCredentials:editPage.form." +
+                                                                            "expiresIn.hint") }
                                                                     </Hint>)
                                                                 }
                                                                 component={ TextFieldAdapter }
@@ -396,93 +499,117 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
                                                     </Grid.Row>
                                                     <Grid.Row columns={ 1 }>
                                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                                            <Autocomplete
-                                                                className="vc-claims-dropdown"
-                                                                size="small"
-                                                                disablePortal
-                                                                multiple
-                                                                disableCloseOnSelect
-                                                                loading={ isClaimsLoading }
-                                                                options={ claimAttributes }
-                                                                value={ selectedClaims }
-                                                                data-componentid={ `${componentId}-claims-dropdown` }
-                                                                getOptionLabel={ (claim: ExternalClaim) =>
-                                                                    claim.localClaimDisplayName || claim.claimURI
-                                                                }
-                                                                renderInput={ (
-                                                                    params: AutocompleteRenderInputParams
-                                                                ) => (
-                                                                    <TextField
-                                                                        { ...params }
-                                                                        className="vc-claims-dropdown-input"
-                                                                        label={ t("verifiableCredentials:editPage.form.claims.label") } // eslint-disable-line max-len
-                                                                        placeholder={
-                                                                            t("verifiableCredentials:editPage.form.claims.placeholder") // eslint-disable-line max-len
-                                                                        }
-                                                                    />
-                                                                ) }
-                                                                onChange={ (
-                                                                    _event: SyntheticEvent,
-                                                                    newValue: ExternalClaim[]
-                                                                ) => {
-                                                                    setSelectedClaims(newValue);
-                                                                } }
-                                                                isOptionEqualToValue={ (
-                                                                    option: ExternalClaim,
-                                                                    value: ExternalClaim
-                                                                ) =>
-                                                                    option.claimURI === value.claimURI
-                                                                }
-                                                                renderTags={ (
-                                                                    value: ExternalClaim[],
-                                                                    getTagProps: AutocompleteRenderGetTagProps
-                                                                ) => value.map((
-                                                                    option: ExternalClaim,
-                                                                    index: number
-                                                                ) => (
-                                                                    <Chip
-                                                                        { ...getTagProps({ index }) }
-                                                                        key={ option.claimURI }
-                                                                        label={
-                                                                            option.localClaimDisplayName
-                                                                            || option.claimURI
-                                                                        }
-                                                                    />
-                                                                )) }
-                                                                renderOption={ (
-                                                                    props: HTMLAttributes<HTMLLIElement>,
-                                                                    option: ExternalClaim,
-                                                                    { selected }: { selected: boolean }
-                                                                ) => (
-                                                                    <ClaimAttributeOption
-                                                                        selected={ selected }
-                                                                        displayName={ option.localClaimDisplayName }
-                                                                        claimURI={ option.claimURI }
-                                                                        renderOptionProps={ props }
-                                                                    />
-                                                                ) }
-                                                            />
-                                                            <Hint>
-                                                                { t("verifiableCredentials:editPage.form.claims.hint") }
-                                                            </Hint>
-                                                        </Grid.Column>
-                                                    </Grid.Row>
-                                                    <Grid.Row columns={ 1 }>
-                                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                                            <PrimaryButton
-                                                                type="submit"
-                                                                aria-label="update"
-                                                                size="small"
-                                                                disabled={ isSubmitting }
-                                                                loading={ isSubmitting }
-                                                                data-componentid={ `${componentId}-update-button` }
-                                                            >
-                                                                { t("common:update") }
-                                                            </PrimaryButton>
+                                                            <div className="vc-template-edit-claims-section">
+                                                                <label className="form-label">
+                                                                    { t("verifiableCredentials:editPage.form.claims." +
+                                                                        "label") }
+                                                                </label>
+                                                                <Autocomplete
+                                                                    className="vc-claims-dropdown"
+                                                                    size="small"
+                                                                    disablePortal
+                                                                    multiple
+                                                                    disableCloseOnSelect
+                                                                    loading={ isClaimsLoading }
+                                                                    options={ claimAttributes }
+                                                                    value={ selectedClaims }
+                                                                    data-componentid={
+                                                                        `${componentId}-claims-dropdown`
+                                                                    }
+                                                                    getOptionLabel={ (claim: ExternalClaim) =>
+                                                                        claim.localClaimDisplayName || claim.claimURI
+                                                                    }
+                                                                    renderInput={ (
+                                                                        params: AutocompleteRenderInputParams
+                                                                    ) => (
+                                                                        <TextField
+                                                                            { ...params }
+                                                                            className="vc-claims-dropdown-input"
+                                                                            placeholder={
+                                                                                t("verifiableCredentials:editPage."+
+                                                                                    "form.claims.placeholder")
+                                                                            }
+                                                                        />
+                                                                    ) }
+                                                                    onChange={ (
+                                                                        _event: SyntheticEvent,
+                                                                        newValue: ExternalClaim[]
+                                                                    ) => {
+                                                                        setSelectedClaims(newValue);
+                                                                    } }
+                                                                    isOptionEqualToValue={ (
+                                                                        option: ExternalClaim,
+                                                                        value: ExternalClaim
+                                                                    ) =>
+                                                                        option.claimURI === value.claimURI
+                                                                    }
+                                                                    renderTags={ (
+                                                                        value: ExternalClaim[],
+                                                                        getTagProps: AutocompleteRenderGetTagProps
+                                                                    ) => value.map((
+                                                                        option: ExternalClaim,
+                                                                        index: number
+                                                                    ) => (
+                                                                        <Chip
+                                                                            { ...getTagProps({ index }) }
+                                                                            key={ option.claimURI }
+                                                                            label={
+                                                                                option.localClaimDisplayName
+                                                                                || option.claimURI
+                                                                            }
+                                                                        />
+                                                                    )) }
+                                                                    renderOption={ (
+                                                                        props: HTMLAttributes<HTMLLIElement>,
+                                                                        option: ExternalClaim,
+                                                                        { selected }: { selected: boolean }
+                                                                    ) => (
+                                                                        <ClaimAttributeOption
+                                                                            selected={ selected }
+                                                                            displayName={ option.localClaimDisplayName }
+                                                                            claimURI={ option.claimURI }
+                                                                            renderOptionProps={ props }
+                                                                        />
+                                                                    ) }
+                                                                />
+                                                                <Hint>
+                                                                    { t("verifiableCredentials:editPage.form.claims." +
+                                                                        "hint") }
+                                                                </Hint>
+                                                            </div>
                                                         </Grid.Column>
                                                     </Grid.Row>
                                                 </Grid>
                                             </form>
+                                            <Grid className="vc-template-edit-form-grid">
+                                                <Grid.Row columns={ 1 }>
+                                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                                        <label className="form-label">
+                                                            { t("verifiableCredentials:editPage.form.offer.label") }
+                                                        </label>
+                                                        <VCTemplateOffer
+                                                            template={ vcTemplate }
+                                                            onUpdate={ () => mutateVCTemplate() }
+                                                            data-componentid={ `${componentId}-offer` }
+                                                        />
+                                                    </Grid.Column>
+                                                </Grid.Row>
+                                                <Grid.Row columns={ 1 }>
+                                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                                        <PrimaryButton
+                                                            type="submit"
+                                                            form={ FORM_ID }
+                                                            aria-label="update"
+                                                            size="small"
+                                                            disabled={ isSubmitting }
+                                                            loading={ isSubmitting }
+                                                            data-componentid={ `${componentId}-update-button` }
+                                                        >
+                                                            { t("common:update") }
+                                                        </PrimaryButton>
+                                                    </Grid.Column>
+                                                </Grid.Row>
+                                            </Grid>
                                         </EmphasizedSegment>
                                     ) }
                                 />
@@ -491,26 +618,14 @@ const VCTemplateEditPage: FunctionComponent<VCTemplateEditPageProps> = ({
                                     sectionHeader={ t("verifiableCredentials:editPage.dangerZone.header") }
                                 >
                                     <DangerZone
-                                        actionTitle={ t("verifiableCredentials:editPage.dangerZone.delete.actionTitle") } // eslint-disable-line max-len
+                                        actionTitle={ t("verifiableCredentials:editPage.dangerZone.delete." +
+                                            "actionTitle") }
                                         header={ t("verifiableCredentials:editPage.dangerZone.delete.header") }
                                         subheader={ t("verifiableCredentials:editPage.dangerZone.delete.subheader") }
                                         onActionClick={ () => setShowDeleteConfirmation(true) }
                                         data-componentid={ `${componentId}-danger-zone` }
                                     />
                                 </DangerZoneGroup>
-                            </ResourceTab.Pane>
-                        )
-                    },
-                    {
-                        componentId: "offer",
-                        menuItem: t("verifiableCredentials:editPage.tabs.offer"),
-                        render: () => (
-                            <ResourceTab.Pane controlledSegmentation>
-                                <VCTemplateOffer
-                                    template={ vcTemplate }
-                                    onUpdate={ () => mutateVCTemplate() }
-                                    data-componentid={ `${componentId}-offer` }
-                                />
                             </ResourceTab.Pane>
                         )
                     }

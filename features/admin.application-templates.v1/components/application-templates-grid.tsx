@@ -94,6 +94,10 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
 
     const eventPublisher: EventPublisher = EventPublisher.getInstance();
 
+    const isVcFeatureEnabled: boolean = useSelector((state: AppState) => {
+        return state.config.ui.features.verifiableCredentials?.enabled;
+    });
+
     /**
      * Fetch the custom inbound protocols.
      */
@@ -188,6 +192,11 @@ const ApplicationTemplateGrid: FunctionComponent<ApplicationTemplateGridPropsInt
         // Remove custom protocol application templates if there are no custom inbound protocols.
         if (!showCustomProtocolApplicationTemplate) {
             removingApplicationTemplateIds.push(ApplicationTemplateConstants.CUSTOM_PROTOCOL_APPLICATION_TEMPLATE_ID);
+        }
+
+        // Remove VC Client template if VC feature is not enabled.
+        if (!isVcFeatureEnabled) {
+            removingApplicationTemplateIds.push(ApplicationTemplateConstants.VC_CLIENT_APPLICATION);
         }
 
         // Remove hidden application templates based on the UI config.

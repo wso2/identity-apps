@@ -35,7 +35,7 @@ export const smsProviders: smsProvidersNS = {
                 "Once deleted, you will not receive SMS."
         }
     },
-    description: "Configure the SMS provider settings according to your SMS provider.",
+    description: "Configure the SMS provider credentials to enable sending SMS notifications.",
     form: {
         custom: {
             authentication: {

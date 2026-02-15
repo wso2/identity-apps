@@ -1,5 +1,31 @@
 # @wso2is/i18n
 
+## 2.32.3
+
+### Patch Changes
+
+- [#9577](https://github.com/wso2/identity-apps/pull/9577) [`5e96563efa7eb0807db57487b417a2f820474e36`](https://github.com/wso2/identity-apps/commit/5e96563efa7eb0807db57487b417a2f820474e36) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Add visual editor notification system and improve api based login flow configuration
+
+## 2.32.2
+
+### Patch Changes
+
+- [#9583](https://github.com/wso2/identity-apps/pull/9583) [`ae891252fdf29b6b33770daf657032eb9ff5cc8e`](https://github.com/wso2/identity-apps/commit/ae891252fdf29b6b33770daf657032eb9ff5cc8e) Thanks [@shashimalcse](https://github.com/shashimalcse)! - change the side panel order of the VC and improve VC creation wizard
+
+## 2.32.1
+
+### Patch Changes
+
+- [#9579](https://github.com/wso2/identity-apps/pull/9579) [`b463a2e8339a6c237911e164d6faf174a5501d83`](https://github.com/wso2/identity-apps/commit/b463a2e8339a6c237911e164d6faf174a5501d83) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Update notification provider descriptions.
+
+* [#9556](https://github.com/wso2/identity-apps/pull/9556) [`c7571540bdbbb68fd650e9c356823ad3d7f9dade`](https://github.com/wso2/identity-apps/commit/c7571540bdbbb68fd650e9c356823ad3d7f9dade) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add digital wallet application template
+
+## 2.32.0
+
+### Minor Changes
+
+- [#9510](https://github.com/wso2/identity-apps/pull/9510) [`91b0b1df1fd63f08e507507e32fdb97f512e15ec`](https://github.com/wso2/identity-apps/commit/91b0b1df1fd63f08e507507e32fdb97f512e15ec) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Improve Sift configuration page
+
 ## 2.31.8
 
 ### Patch Changes

@@ -338,6 +338,7 @@ export interface governanceConnectorsNS {
                     };
                 };
                 siftConnector: {
+                    title: string;
                     properties: {
                         name: string;
                         description: string;
@@ -346,9 +347,60 @@ export interface governanceConnectorsNS {
                             placeholder: string;
                         };
                     };
+                    eventPublishing: {
+                        title: string;
+                        subtitle: string;
+                        eventProperties: {
+                            title: string;
+                            subtitle: string;
+                            piiPublishingWarning: string;
+                            publishDeviceMetadata: {
+                                label: string;
+                                description: string;
+                                warning: string;
+                            };
+                            publishUserInfo: {
+                                label: string;
+                                description: string;
+                                warning: string;
+                            };
+                            events: {
+                                logins: {
+                                    label: string;
+                                    hint: string;
+                                };
+                                logouts: {
+                                    label: string;
+                                    hint: string;
+                                };
+                                registrations: {
+                                    label: string;
+                                    hint: string;
+                                };
+                                credentialUpdates: {
+                                    label: string;
+                                    hint: string;
+                                };
+                                userProfileUpdates: {
+                                    label: string;
+                                    hint: string;
+                                };
+                                userVerifications: {
+                                    label: string;
+                                    hint: string;
+                                };
+                            };
+                        };
+                        eventDiagnostics: {
+                            title: string;
+                            logRequestPayload: {
+                                label: string;
+                                description: string;
+                            };
+                        };
+                    };
                     notifications: {
-                        configurationUpdate: {
-                            success: NotificationItem;
+                        eventPropertiesUpdate: {
                             error: NotificationItem;
                         };
                     };
