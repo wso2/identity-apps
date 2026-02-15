@@ -54,3 +54,18 @@ export interface ProfileListItem {
 }
 
 export type ProfileModel = ProfileListItem;
+
+export interface FilterGroup {
+  scope: string;
+  applicationId: string;
+  attribute: string;
+  condition: string;
+  value: string;
+}
+
+export interface FetchProfilesParams {
+  filter?: string;
+  page_size?: number;
+  cursor?: string | null;
+  attributes?: string[];
+}

@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { ReactComponent as ProfilesIcon } from "@wso2is/admin.cds.v1/assets/images/icons/cdsProfiles.svg";
-import { ReactComponent as CustomerDataIcon } from "@wso2is/admin.cds.v1/assets/images/icons/customerData.svg";
+import { ReactComponent as ProfilesIcon } from "@wso2is/admin.cds.v1/assets/images/icons/cds-profiles.svg";
+import { ReactComponent as CustomerDataIcon } from "@wso2is/admin.cds.v1/assets/images/icons/customer-data.svg";
 import {
     ServerConfigurationsConstants
 } from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";

@@ -50,15 +50,9 @@ import { useTranslation } from "react-i18next";
 import { Divider, Form, Grid } from "semantic-ui-react";
 import { SWRResponse } from "swr";
 import { useProfileSchemaDropdownOptions } from "../hooks/use-profile-attributes";
+import { AND_OPERATOR, APPLICATION_DATA, IDENTITY_ATTRIBUTES, TRAITS } from "../models/constants";
 import { FilterAttributeOption, ProfileSchemaScopeResponse } from "../models/profile-attributes";
-
-interface FilterGroup {
-    scope: string;
-    applicationId: string;
-    attribute: string;
-    condition: string;
-    value: string;
-}
+import type { FilterGroup } from "../models/profiles";
 
 type ProfileSchemaDropdownResult = SWRResponse<ProfileSchemaScopeResponse, AxiosError> & {
     dropdownOptions: FilterAttributeOption[];
@@ -115,15 +109,11 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
         triggerClearQuery,
         disableSearchAndFilterOptions,
         scopes,
-        "data-componentid" : testId
+        "data-componentid" : componentId
     } = props;
 
     const { t } = useTranslation();
 
-    const APPLICATION_DATA: string = "application_data";
-    const IDENTITY_ATTRIBUTES: string = "identity_attributes";
-    const TRAITS: string = "traits";
-    const AND_OPERATOR: string = "and";
     const [ isFormSubmitted, setIsFormSubmitted ] = useState<boolean>(false);
     const [ externalSearchQuery, setExternalSearchQuery ] = useState<string>("");
     const [ formKey, setFormKey ] = useState<number>(0);
@@ -416,8 +406,8 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
             triggerClearQuery={ triggerClearQuery }
             filterConditionOptions={ filterConditionOptions || defaultFilterConditionOptions }
             filterAttributeOptions={ allFilterAttributes }
-            data-testid={ testId }
-            data-componentid={ testId }
+            data-testid={ componentId }
+            data-componentid={ componentId }
         >
             <Grid>
                 <Grid.Row columns={ 1 }>
@@ -683,7 +673,7 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                                             top: 8
                                                         } }
                                                         onClick={ () => removeFilter(index) }
-                                                        data-componentid={ `${testId}-remove-filter-${index}` }
+                                                        data-componentid={ `${componentId}-remove-filter-${index}` }
 
                                                     >
                                                         <MinusIcon className="delete-button-icon" />
@@ -705,8 +695,8 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                 <PrimaryButton
                                     size="small"
                                     type="submit"
-                                    data-testid={ `${testId}-search-button` }
-                                    data-componentid={ `${testId}-search-button` }
+                                    data-testid={ `${componentId}-search-button` }
+                                    data-componentid={ `${componentId}-search-button` }
                                 >
                                     { submitButtonLabel || t("common:search") }
                                 </PrimaryButton>
@@ -715,8 +705,8 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
                                     <LinkButton
                                         size="small"
                                         type="reset"
-                                        data-testid={ `${testId}-reset-button` }
-                                        data-componentid={ `${testId}-reset-button` }
+                                        data-testid={ `${componentId}-reset-button` }
+                                        data-componentid={ `${componentId}-reset-button` }
                                         onClick={ handleResetFilter }
                                     >
                                         { resetButtonLabel || t("common:resetFilters") }

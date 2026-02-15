@@ -54,3 +54,8 @@ export const PROFILE_SEARCH_OPERATORS: Record<string, string>= {
     EQUALS: "eq",
     STARTS_WITH: "sw"
 };
+
+export const APPLICATION_DATA: string = "application_data";
+export const IDENTITY_ATTRIBUTES: string = "identity_attributes";
+export const TRAITS: string = "traits";
+export const AND_OPERATOR: string = "and";
