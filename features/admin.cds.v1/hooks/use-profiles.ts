@@ -19,8 +19,8 @@
 import { AxiosError } from "axios";
 import useSWR, { SWRConfiguration, SWRResponse } from "swr";
 
-import { FetchProfilesParams, fetchCDSProfileDetails, fetchCDSProfiles } from "../api/profiles";
-import { ProfileModel, ProfilesListResponse } from "../models/profiles";
+import { fetchCDSProfileDetails, fetchCDSProfiles } from "../api/profiles";
+import { FetchProfilesParams, ProfileModel, ProfilesListResponse } from "../models/profiles";
 
 /**
  * SWR Hook: GET /profiles

@@ -21,20 +21,13 @@ import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request"
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
 
-import { ProfileModel, ProfilesListResponse } from "../models/profiles";
+import { FetchProfilesParams, ProfileModel, ProfilesListResponse } from "../models/profiles";
 
 /**
  * Initialize an auth-aware Http client.
  */
 const httpClient: HttpClientInstance =
     AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
-
-export interface FetchProfilesParams {
-    filter?: string;
-    page_size?: number;
-    cursor?: string | null;
-    attributes?: string[];
-}
 
 /**
  * Fetcher for GET /profiles (cursor pagination)
@@ -70,6 +63,10 @@ export const fetchCDSProfileDetails = async (profileId: string): Promise<Profile
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
+        params: {
+            application_identifier: "*",
+            includeApplicationData: true
+        },
         url: `${store.getState().config.endpoints.cdsProfiles}/${profileId}`
     };
 

@@ -63,6 +63,11 @@ import { Divider, Form, Grid, TabProps } from "semantic-ui-react";
 import { deleteCDSProfile } from "../api/profiles";
 import { useCDSProfileDetails } from "../hooks/use-profiles";
 
+// Lazy load Monaco Editor at module scope to prevent repeated remounting
+const MonacoEditor: LazyExoticComponent<any> = lazy(() =>
+    import("@monaco-editor/react" /* webpackChunkName: "MDMonacoEditor" */)
+);
+
 type Props =
     IdentifiableComponentInterface &
     TestableComponentInterface &
@@ -114,11 +119,6 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
 
         return fallback;
     };
-
-    // Lazy load Monaco Editor
-    const MonacoEditor: LazyExoticComponent<any> = lazy(() =>
-        import("@monaco-editor/react" /* webpackChunkName: "MDMonacoEditor" */)
-    );
 
     // Handle errors from SWR
     useEffect(() => {
@@ -240,7 +240,7 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                     { t("customerDataService:profiles.details.form.profileData.label") }
                 </Heading>
                 <p>
-                    { t("customerDataService:profiles.details.sections.profileData.description") }
+                    { t("customerDataService:profiles.details.section.profileData.description") }
                 </p>
                 <div style={ { display: "flex", gap: "0.75rem", marginTop: "0.5rem" } }>
                     <Button
@@ -334,16 +334,25 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                 <Grid>
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 12 }>
-                            <p style={ { color: "rgba(0, 0, 0, 0.6)" , marginBottom: "1rem" } }>
+                            <Typography
+                                sx={ {
+                                    color: "text.secondary",
+                                    mb: 2
+                                } }
+                            >
                                 { t("customerDataService:profiles.details.unifiedProfiles.description") }
-                            </p>
+                            </Typography>
                             { merged.map((m: { profile_id: string; reason?: string }) => (
                                 <EmphasizedSegment key={ m.profile_id } basic style={ { marginBottom: "1rem" } }>
                                     <Grid>
                                         <Grid.Row style={ { paddingBottom: "8px" } }>
                                             <Grid.Column width={ 5 }>
-                                                <strong
-                                                    style={ {  color: "#666", fontSize: "13px" } }
+                                                <Typography
+                                                    component="strong"
+                                                    sx={ {
+                                                        color: "text.secondary",
+                                                        fontSize: "13px"
+                                                    } }
                                                 >
                                                     {
                                                         t(
@@ -351,25 +360,31 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                                                             "unifiedProfiles.columns.profileId"
                                                         )
                                                     }
-                                                </strong>
+                                                </Typography>
                                             </Grid.Column>
                                             <Grid.Column width={ 11 }>
-                                                <code
-                                                    style={ {
-                                                        background: "#f5f5f5",
-                                                        borderRadius: "4px",
+                                                <Box
+                                                    component="code"
+                                                    sx={ {
+                                                        backgroundColor: "action.hover",
+                                                        borderRadius: 1,
                                                         fontSize: "13px",
-                                                        padding: "4px 8px"
+                                                        px: 1,
+                                                        py: 0.5
                                                     } }
                                                 >
                                                     { m.profile_id }
-                                                </code>
+                                                </Box>
                                             </Grid.Column>
                                         </Grid.Row>
                                         <Grid.Row style={ { paddingTop: "8px" } }>
                                             <Grid.Column width={ 5 }>
-                                                <strong
-                                                    style={ { color: "#666", fontSize: "13px" } }
+                                                <Typography
+                                                    component="strong"
+                                                    sx={ {
+                                                        color: "text.secondary",
+                                                        fontSize: "13px"
+                                                    } }
                                                 >
                                                     {
                                                         t(
@@ -377,7 +392,7 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                                                             "unifiedProfiles.columns.reason"
                                                         )
                                                     }
-                                                </strong>
+                                                </Typography>
                                             </Grid.Column>
                                             <Grid.Column width={ 11 }>
                                                 { m.reason }
@@ -511,8 +526,9 @@ const ProfileDetailsPage: FunctionComponent<Props> = (props: Props): ReactElemen
                         >
                             <Box
                                 sx={ {
-                                    backgroundColor: "#f5f5f5",
-                                    borderBottom: "1px solid #e0e0e0"
+                                    backgroundColor: "action.hover",
+                                    borderBottom: 1,
+                                    borderColor: "divider"
                                 } }
                                 data-componentid={ `${ componentId }-toolbar-container` }
                             >
