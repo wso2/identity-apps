@@ -19,8 +19,6 @@
 import { Theme, styled } from "@mui/material/styles";
 import Alert from "@oxygen-ui/react/Alert";
 import Box from "@oxygen-ui/react/Box";
-import IconButton from "@oxygen-ui/react/IconButton";
-import { XMarkIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useCallback, useMemo } from "react";
 import {
@@ -71,7 +69,6 @@ const FixedSection: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     flexDirection: "column",
     gap: theme.spacing(1.5),
     marginBottom: theme.spacing(2)
-    // maxWidth: 500
 }));
 
 /**
@@ -114,7 +111,6 @@ const PreviewColumn: typeof Box = styled(RightColumn)(({ theme }: { theme: Theme
  *
  * @param options - Sign-in options configuration
  * @param isAlphanumericUsername - Whether alphanumeric username is enabled.
- *        When false, email is always an implicit identifier.
  */
 const validateSignInOptions: (
     options: SignInOptionsConfigInterface,
@@ -126,8 +122,8 @@ const validateSignInOptions: (
     const errors: string[] = [];
     const { identifiers, loginMethods } = options;
 
-    // When alphanumeric username is disabled, email IS the username so
-    // an identifier is always implicitly present.
+    // When alphanumeric username is disabled, email IS the username (email-as-username mode),
+    // When alphanumeric username is enabled, at least one identifier must be selected.
     const hasIdentifier: boolean = !isAlphanumericUsername ||
         identifiers.username || identifiers.email || identifiers.mobile;
 
@@ -194,10 +190,7 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepPropsInterface> = (
         [ signInOptions, isAlphanumericUsername ]
     );
 
-    const [ open, setOpen ] = React.useState(true);
-
-    // When alphanumeric username is disabled, hide email and username toggles — only mobile
-    // can be added as an alternative identifier. Email is always the implicit identifier.
+    // When alphanumeric username is disabled (email-as-username mode), hide email and username.
     const visibleIdentifierOptions: SignInOptionDefinitionInterface[] = useMemo(() => {
         if (!isAlphanumericUsername) {
             return IDENTIFIER_OPTIONS.filter(
@@ -208,7 +201,6 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepPropsInterface> = (
         return IDENTIFIER_OPTIONS;
     }, [ isAlphanumericUsername ]);
 
-    // Compute effective sign-in options for the preview.
     // When alphanumeric username is disabled, email IS the username, so always show it in the preview.
     const previewSignInOptions: SignInOptionsConfigInterface = useMemo(() => {
         if (!isAlphanumericUsername) {
@@ -225,21 +217,6 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepPropsInterface> = (
         return signInOptions;
     }, [ signInOptions, isAlphanumericUsername ]);
 
-    // Show org-level info note when any identifier toggle is selected (IS only).
-    const showIdentifierNote: boolean = useMemo(
-        () => isAlphanumericUsername && (
-            signInOptions.identifiers.email
-            || signInOptions.identifiers.mobile
-            || signInOptions.identifiers.username
-        ),
-        [
-            isAlphanumericUsername,
-            signInOptions.identifiers.email,
-            signInOptions.identifiers.mobile,
-            signInOptions.identifiers.username
-        ]
-    );
-
     return (
         <TwoColumnLayout data-componentid={ componentId }>
             <LeftColumn>
@@ -248,21 +225,9 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepPropsInterface> = (
                     subtitle="Choose how your application's users will identify themselves and verify their identity."
                     title="How do you want users to sign in?"
                 />
-
-                { /* Identifiers section - fixed at top */ }
                 <FixedSection>
                     <OptionSection>
                         <SectionLabel>Identifiers</SectionLabel>
-                        { /* When alphanumeric username is disabled, email IS the username
-                          — show a note instead of toggles */ }
-                        { !isAlphanumericUsername && (
-                            <Alert
-                                severity="info"
-                                data-componentid={ `${componentId}-email-identifier-note` }
-                            >
-                                Email is the default sign-in identifier for your organization.
-                            </Alert>
-                        ) }
                         { visibleIdentifierOptions.map((option: SignInOptionDefinitionInterface) => (
                             <SignInOptionToggle
                                 isEnabled={
@@ -279,35 +244,10 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepPropsInterface> = (
                             />
                         )) }
                     </OptionSection>
-
-                    { /* Org-level info note — shown when identifier toggles are visible */ }
-                    { showIdentifierNote && (
-                        <Alert
-                            hidden={ !open }
-                            severity="info"
-                            action={
-                                (<IconButton
-                                    aria-label="close"
-                                    color="inherit"
-                                    size="small"
-                                    onClick={ () => {
-                                        setOpen(false);
-                                    } }
-                                >
-                                    <XMarkIcon />
-                                </IconButton>)
-                            }
-                            data-componentid={ `${componentId}-identifier-note` }
-                        >
-                            This identifier setting applies across all applications in your organization.
-                        </Alert>
-                    ) }
                 </FixedSection>
-                <SectionLabel>
+                <SectionLabel sx={ { marginBottom: 0 } }>
                     Login Methods
                 </SectionLabel>
-
-                { /* Login Methods */ }
                 <OptionsContainer>
                     <OptionSection>
                         { LOGIN_METHOD_OPTIONS.map((option: SignInOptionDefinitionInterface) => (
@@ -327,15 +267,12 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepPropsInterface> = (
                         )) }
                     </OptionSection>
                 </OptionsContainer>
-
-                { /* Validation Warning */ }
                 { !validation.isValid && validation.errors.length > 0 && (
                     <Alert severity="error">
                         { validation.errors[0] }
                     </Alert>
                 ) }
             </LeftColumn>
-
             <PreviewColumn>
                 <LoginBoxPreview
                     brandingConfig={ brandingConfig }
