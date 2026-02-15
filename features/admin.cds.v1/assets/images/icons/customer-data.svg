@@ -1,0 +1,20 @@
+<!--
+ * Copyright (c) 2026, WSO2 LLC. (https://www.wso2.com/).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+export class CustomerDataIcon {
+        }
+<svg xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="20px" fill="#1f1f1f"><path d="M221.39-473.46 93.62-601.23l127.77-127.38 127.38 127.38-127.38 127.77ZM376.16-116v-188.92q-56.85-4-111.89-14.23-55.04-10.24-110.27-24.47l15.62-48.99q76.53 20.07 153.69 29.38 77.15 9.31 156.49 9.31 79.35 0 157.2-9.31t154.38-29.38L807-343.62q-55.23 14.23-110.77 24.47-55.54 10.23-112.39 14.23V-116H376.16ZM221.39-547.38l53.46-53.85-53.46-53.46-53.85 53.46 53.85 53.85Zm183.42-147.89q-30.96-30.96-30.96-75.19t30.96-75.19q30.96-30.96 75.19-30.96t75.19 30.96q30.96 30.96 30.96 75.19t-30.96 75.19q-30.96 30.96-75.19 30.96t-75.19-30.96Zm28.61 263.56q-19.27-19.48-19.27-46.58 0-27.09 19.49-46.36 19.48-19.27 46.57-19.27 27.1 0 46.37 19.48 19.27 19.48 19.27 46.58 0 27.09-19.49 46.36-19.48 19.27-46.57 19.27-27.1 0-46.37-19.48Zm84.81-300.52q15.92-15.92 15.92-38.23 0-22.31-15.92-38.23-15.92-15.92-38.23-15.92-22.31 0-38.23 15.92-15.92 15.92-15.92 38.23 0 22.31 15.92 38.23 15.92 15.92 38.23 15.92 22.31 0 38.23-15.92Zm162.62 225.15-55.31-94.15 54.97-94.15h108.8l55.3 94.15-54.97 94.15H680.85Zm28.41-52h49.97l25.46-42.15-24.79-42.15h-49.98l-25.46 42.15 24.8 42.15Zm-487.87-42.15ZM480-770.46Zm254.77 169.23Z"/></svg>

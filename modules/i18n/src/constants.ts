@@ -390,6 +390,11 @@ export class I18nModuleConstants {
     public static readonly VERIFIABLE_CREDENTIALS_NAMESPACE: string = "verifiableCredentials";
 
     /**
+     * Customer Data Service namespace.
+     */
+    public static readonly CUSTOMER_DATA_SERVICE_NAMESPACE: string = "customerDataService";
+
+    /**
      * Constant representing the locale preference key.
      * This key is used to store the user's language preference in cookies or local storage.
      */

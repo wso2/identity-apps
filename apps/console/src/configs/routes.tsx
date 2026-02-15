@@ -34,6 +34,7 @@ import {
     UserGroupIcon,
     WebhookIcon
 } from "@oxygen-ui/react-icons";
+import { ReactComponent as ProfilesIcon } from "@wso2is/admin.cds.v1/assets/images/icons/cds-profiles.svg";
 import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
@@ -1666,7 +1667,36 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             protected: true,
             showOnSidePanel: true
         },
-        // the following routes are not onboarded to the side panel
+        {
+            category: "extensions:manage.sidePanel.categories.customerData",
+            children: [
+                {
+                    component: lazy(() => import("@wso2is/admin.cds.v1/components/profile")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "profile",
+                    name: "Profile View",
+                    path: AppConstants.getPaths().get("PROFILE"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() =>
+                import("@wso2is/admin.cds.v1/pages/profiles")
+            ),
+            exact: true,
+            icon: {
+                icon: <ProfilesIcon className="icon" fill="black" />
+            },
+            id: "profiles",
+            name: "Profiles",
+            order: 32,
+            path: AppConstants.getPaths().get("PROFILES"),
+            protected: true,
+            showOnSidePanel: true
+        },
         {
             category: "console:manage.features.sidePanel.categories.configurations",
             component: lazy(() =>

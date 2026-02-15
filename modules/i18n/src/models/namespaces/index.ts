@@ -76,3 +76,4 @@ export * from "./agents-ns";
 export * from "./flows-ns";
 export * from "./common-users-ns";
 export * from "./verifiable-credentials-ns";
+export * from "./customer-data-service-ns";

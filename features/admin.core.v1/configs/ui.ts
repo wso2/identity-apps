@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { ReactComponent as ProfilesIcon } from "@wso2is/admin.cds.v1/assets/images/icons/cds-profiles.svg";
+import { ReactComponent as CustomerDataIcon } from "@wso2is/admin.cds.v1/assets/images/icons/customer-data.svg";
 import {
     ServerConfigurationsConstants
 } from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
@@ -273,6 +275,7 @@ export type GetSidePanelIconsInterface = {
     applications: FunctionComponent | ReactNode,
     approvals: FunctionComponent | ReactNode,
     certificate: FunctionComponent | ReactNode,
+    customerData : FunctionComponent | ReactNode,
     childIcon: FunctionComponent | ReactNode,
     claims: FunctionComponent | ReactNode,
     connections: FunctionComponent | ReactNode,
@@ -288,6 +291,7 @@ export type GetSidePanelIconsInterface = {
     organization: FunctionComponent | ReactNode,
     organizationLegacy: FunctionComponent | ReactNode,
     overview: FunctionComponent | ReactNode,
+    profiles: FunctionComponent | ReactNode,
     push: FunctionComponent | ReactNode,
     remoteFetch: FunctionComponent | ReactNode,
     remoteLogging: FunctionComponent | ReactNode,
@@ -334,6 +338,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
             [ ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID ]: OtherSettingsOutlineIcon,
             default: PlugIcon
         },
+        customerData: CustomerDataIcon,
         emailTemplates: EmailIcon,
         gears: GearsIcon,
         groups: UserGroupIcon,
@@ -348,6 +353,7 @@ export const getSidePanelIcons = (): GetSidePanelIconsInterface => {
         organizationRoles: OrganizationRolesIcon,
         overview: DashboardIcon,
         policyAdministration: AdminOutlineIcon,
+        profiles: ProfilesIcon,
         push: PushNotificationProviderIcon,
         remoteFetch: CodeForkIcon,
         remoteLogging: RemoteLoggingIcon,
