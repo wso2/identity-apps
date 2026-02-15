@@ -1071,6 +1071,15 @@ export interface AuthenticationProviderNS {
                 content: string;
             };
         };
+        outboundProvisioningGroups: {
+            heading: string;
+            hint: string;
+            placeHolder: string;
+            label: string;
+            popup: {
+                content: string;
+            };
+        };
         certificateSection: {
             certificateEditSwitch: {
                 jwks: string;

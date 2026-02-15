@@ -34,6 +34,7 @@
         "@wso2is/admin.identity-verification-providers.v1": "^2.27.205",
         "@wso2is/admin.organizations.v1": "^2.27.11",
         "@wso2is/admin.roles.v2": "^2.27.273",
+        "@wso2is/admin.groups.v1": "workspace:^",
         "@wso2is/admin.template-core.v1": "^1.5.157",
         "@wso2is/admin.userstores.v1": "^2.27.40",
         "@wso2is/core": "^2.12.6",

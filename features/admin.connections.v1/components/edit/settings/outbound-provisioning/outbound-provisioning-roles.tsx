@@ -45,6 +45,9 @@ interface OutboundProvisioningRolesPropsInterface extends TestableComponentInter
     onUpdate: (id: string) => void;
 }
 
+/**
+ * @deprecated Outbound provisioning now works with groups instead of roles.
+ */
 export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRolesPropsInterface> = (
     props: OutboundProvisioningRolesPropsInterface) => {
 

@@ -38,7 +38,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import { AccordionTitleProps, CheckboxProps, Divider, Grid, Icon, Segment } from "semantic-ui-react";
-import { OutboundProvisioningRoles } from "./outbound-provisioning";
+import { OutboundProvisioningGroups } from "./outbound-provisioning";
 import {
     getOutboundProvisioningConnector,
     getOutboundProvisioningConnectorMetadata,
@@ -568,15 +568,14 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                     />
                 )
             }
-
             {
                 (identityProvider?.roles && !isLoading)
                     ? (
                         <RootOnlyComponent>
-                            <OutboundProvisioningRoles
+                            <OutboundProvisioningGroups
                                 idpRoles={ identityProvider?.roles }
                                 idpId={ identityProvider?.id }
-                                data-testid={ `${ testId }-roles` }
+                                data-componentid={ `${ testId }-groups` }
                                 isReadOnly={ isReadOnly }
                                 onUpdate={ onUpdate }
                             />

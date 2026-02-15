@@ -1093,6 +1093,15 @@ export const authenticationProvider:AuthenticationProviderNS = {
                 content: "Add Role"
             }
         },
+        outboundProvisioningGroups: {
+            heading: "Outbound Provisioning Groups",
+            hint: "Select and add outbound provisioning groups",
+            label: "Group",
+            placeHolder: "Select Group",
+            popup: {
+                content: "Add Group"
+            }
+        },
         roleMapping: {
             heading: "Role Mapping",
             hint: "Map local roles with the Identity Provider roles",
