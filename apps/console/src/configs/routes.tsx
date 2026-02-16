@@ -1687,11 +1687,12 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 import("@wso2is/admin.cds.v1/pages/profiles")
             ),
             exact: true,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CUSTOMER_DATA_SERVICE,
             icon: {
                 icon: <ProfilesIcon className="icon" fill="black" />
             },
-            id: "profiles",
-            name: "Profiles",
+            id: "customerData",
+            name: "Customer Data",
             order: 32,
             path: AppConstants.getPaths().get("PROFILES"),
             protected: true,

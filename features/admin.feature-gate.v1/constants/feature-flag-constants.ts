@@ -50,7 +50,7 @@ class FeatureFlagConstants {
         ATTRIBUTE_DIALECTS: "attributeDialects",
         BRANDING: "branding",
         BRANDING_STYLES_AND_TEXT_TITLE: "branding.stylesAndText.application.title",
-        CUSTOMER_DATA_SERVICE : "cds",
+        CUSTOMER_DATA_SERVICE : "customerData",
         CUSTOM_PAGE_EDITOR_FEATURE_ID: "console.branding.design.layout.custom",
         FLOWS: "flows",
         FLOWS_TYPES_REGISTRATION: "flows.types.list.registration",
