@@ -1,5 +1,11 @@
 # @wso2is/console
 
+## 2.91.1
+
+### Patch Changes
+
+- [#9603](https://github.com/wso2/identity-apps/pull/9603) [`b5e03e4d82a22a053b05ef8161d4758ee4bb144f`](https://github.com/wso2/identity-apps/commit/b5e03e4d82a22a053b05ef8161d4758ee4bb144f) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Onboard cds
+
 ## 2.91.0
 
 ### Minor Changes
