@@ -37,6 +37,12 @@ const SPECIAL: string = "!@#$%";
  * @returns Secure random password
  */
 export const generateSecurePassword = (length: number = 12): string => {
+    const MIN_LENGTH: number = 4;
+
+    if (length < MIN_LENGTH) {
+        throw new RangeError(`Password length must be at least ${MIN_LENGTH} to satisfy complexity requirements.`);
+    }
+
     const allChars: string = UPPERCASE + LOWERCASE + NUMBERS + SPECIAL;
 
     // Start with one character from each required set

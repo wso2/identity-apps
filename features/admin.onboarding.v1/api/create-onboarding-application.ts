@@ -127,6 +127,8 @@ const getTemplateUUID = (templateId: string): string | undefined => {
             return ApplicationManagementConstants.TEMPLATE_IDS.get("oidcWeb");
         case ApplicationTemplateIdTypes.SPA:
             return ApplicationManagementConstants.TEMPLATE_IDS.get("spa");
+        case ApplicationTemplateIdTypes.MOBILE_APPLICATION:
+            return ApplicationManagementConstants.TEMPLATE_IDS.get("mobile");
         default:
             return undefined;
     }

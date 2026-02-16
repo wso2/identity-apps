@@ -22,6 +22,7 @@ import TextField from "@oxygen-ui/react/TextField";
 import Tooltip from "@oxygen-ui/react/Tooltip";
 import { CheckIcon, CopyIcon, EyeIcon, EyeSlashIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
+import { CommonUtils } from "@wso2is/core/utils";
 import React, { FunctionComponent, ReactElement, useCallback, useState } from "react";
 
 /**
@@ -54,9 +55,12 @@ const CopyableField: FunctionComponent<CopyableFieldPropsInterface> = (
     const [ showSecret, setShowSecret ] = useState<boolean>(false);
 
     const handleCopy: () => Promise<void> = useCallback(async (): Promise<void> => {
-        await navigator.clipboard.writeText(value);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+        const success: boolean = await CommonUtils.copyTextToClipboard(value);
+
+        if (success) {
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        }
     }, [ value ]);
 
     return (

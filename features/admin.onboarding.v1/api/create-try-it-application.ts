@@ -101,14 +101,16 @@ export const createTryItApplication = async (
             LoginApplicationTemplate.application
         ) as unknown as MainApplicationInterface;
 
-        appPayload.inboundProtocolConfiguration.oidc.clientId = tryItClientId;
-        appPayload.inboundProtocolConfiguration.oidc.callbackURLs = [ asgardeoTryItURL ];
-        appPayload.inboundProtocolConfiguration.oidc.allowedOrigins = [ asgardeoTryItURL ];
+        if (appPayload.inboundProtocolConfiguration?.oidc) {
+            appPayload.inboundProtocolConfiguration.oidc.clientId = tryItClientId;
+            appPayload.inboundProtocolConfiguration.oidc.callbackURLs = [ asgardeoTryItURL ];
+            appPayload.inboundProtocolConfiguration.oidc.allowedOrigins = [ asgardeoTryItURL ];
+        }
         appPayload.accessUrl = asgardeoTryItURL;
 
         // Apply user's configured sign-in options
         if (data.signInOptions) {
-            (appPayload as any).authenticationSequence = buildAuthSequence(data.signInOptions);
+            appPayload.authenticationSequence = buildAuthSequence(data.signInOptions);
         }
 
         const response: AxiosResponse = await createApplication(appPayload);

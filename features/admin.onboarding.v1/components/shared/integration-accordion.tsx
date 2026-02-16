@@ -291,7 +291,6 @@ const IntegrationAccordion: FunctionComponent<IntegrationAccordionPropsInterface
 
     return (
         <Box data-componentid={ componentId }>
-            { /* AI Prompt Accordion - only shown when hardcoded guide is available */ }
             { guide && aiPrompt && (
                 <StyledAccordion
                     disableGutters
@@ -323,103 +322,98 @@ const IntegrationAccordion: FunctionComponent<IntegrationAccordionPropsInterface
                     </StyledAccordionDetails>
                 </StyledAccordion>
             ) }
-
-            { /* Integration Guide Accordion */ }
-            <StyledAccordion
-                disableGutters
-                expanded={ manualExpanded }
-                onChange={ () => setManualExpanded(!manualExpanded) }
-                data-componentid={ `${componentId}-manual` }
-            >
-                <StyledAccordionSummary expandIcon={ <ChevronDownIcon /> }>
-                    <IconContainer>
-                        <CodeIcon height={ 20 } width={ 20 } />
-                    </IconContainer>
-                    <Box>
-                        <Typography sx={ { fontWeight: 600 } }>
-                            { guideContent ? "Integration Guide" : "Test login manually" }
-                        </Typography>
-                        <Description>
-                            { guideContent
-                                ? "Follow these steps to add authentication to your application."
-                                : "Copy the starter code and try signing in."
-                            }
-                        </Description>
-                    </Box>
-                </StyledAccordionSummary>
-                <StyledAccordionDetails>
-                    { guideContent ? (
-                        <>
-                            { /* API-fetched guide rendered with MarkdownGuide */ }
-                            <MarkdownGuide
-                                content={ guideContent }
-                                data={ guideData || {} }
-                                isLoading={ isGuideLoading }
-                                computerColumnWidth={ "16" }
-                                data-componentid={ `${componentId}-markdown-guide` }
-                            />
-                            { renderTestUserCredentials() }
-                        </>
-                    ) : guide && providerCode ? (
-                        <>
-                            { /* Hardcoded step-by-step fallback for excluded templates */ }
-                            <StepContainer>
-                                <StepTitle>
-                                    <StepNumber>1</StepNumber>
-                                    Install the SDK
-                                </StepTitle>
-                                <CodeBlock
-                                    code={ guide.installCommand }
-                                    npmCommand={ guide.installCommand }
-                                    pnpmCommand={ guide.pnpmCommand }
-                                    showPackageManagerTabs
-                                    yarnCommand={ guide.yarnCommand }
-                                    data-componentid={ `${componentId}-install-code` }
+            { (!!guideContent || (!!guide && !!providerCode)) && (
+                <StyledAccordion
+                    disableGutters
+                    expanded={ manualExpanded }
+                    onChange={ () => setManualExpanded(!manualExpanded) }
+                    data-componentid={ `${componentId}-manual` }
+                >
+                    <StyledAccordionSummary expandIcon={ <ChevronDownIcon /> }>
+                        <IconContainer>
+                            <CodeIcon height={ 20 } width={ 20 } />
+                        </IconContainer>
+                        <Box>
+                            <Typography sx={ { fontWeight: 600 } }>
+                                { guideContent ? "Integration Guide" : "Test login manually" }
+                            </Typography>
+                            <Description>
+                                { guideContent
+                                    ? "Follow these steps to add authentication to your application."
+                                    : "Copy the starter code and try signing in."
+                                }
+                            </Description>
+                        </Box>
+                    </StyledAccordionSummary>
+                    <StyledAccordionDetails>
+                        { guideContent ? (
+                            <>
+                                <MarkdownGuide
+                                    content={ guideContent }
+                                    data={ guideData || {} }
+                                    isLoading={ isGuideLoading }
+                                    computerColumnWidth={ 16 }
+                                    data-componentid={ `${componentId}-markdown-guide` }
                                 />
-                            </StepContainer>
-
-                            <StepContainer>
-                                <StepTitle>
-                                    <StepNumber>2</StepNumber>
-                                    Add provider configuration in { guide.providerFile }
-                                </StepTitle>
-                                <CodeBlock
-                                    code={ providerCode }
-                                    label={ guide.providerFile }
-                                    maxHeight={ 250 }
-                                    data-componentid={ `${componentId}-provider-code` }
-                                />
-                            </StepContainer>
-
-                            { buttonCode && guide.buttonFile && (
+                                { renderTestUserCredentials() }
+                            </>
+                        ) : (
+                            <>
+                                { /* Hardcoded step-by-step fallback for excluded templates */ }
                                 <StepContainer>
                                     <StepTitle>
-                                        <StepNumber>3</StepNumber>
-                                        Add sign-in/sign-out in { guide.buttonFile }
+                                        <StepNumber>1</StepNumber>
+                                        Install the SDK
                                     </StepTitle>
                                     <CodeBlock
-                                        code={ buttonCode }
-                                        label={ guide.buttonFile }
-                                        maxHeight={ 200 }
-                                        data-componentid={ `${componentId}-button-code` }
+                                        code={ guide.installCommand }
+                                        npmCommand={ guide.installCommand }
+                                        pnpmCommand={ guide.pnpmCommand }
+                                        showPackageManagerTabs
+                                        yarnCommand={ guide.yarnCommand }
+                                        data-componentid={ `${componentId}-install-code` }
                                     />
                                 </StepContainer>
-                            ) }
-
-                            <Link
-                                href={ guide.docsUrl }
-                                rel="noopener noreferrer"
-                                sx={ { fontSize: "0.875rem" } }
-                                target="_blank"
-                            >
-                                View the full { guide.displayName } quick start guide
-                            </Link>
-
-                            { renderTestUserCredentials() }
-                        </>
-                    ) : null }
-                </StyledAccordionDetails>
-            </StyledAccordion>
+                                <StepContainer>
+                                    <StepTitle>
+                                        <StepNumber>2</StepNumber>
+                                        Add provider configuration in { guide.providerFile }
+                                    </StepTitle>
+                                    <CodeBlock
+                                        code={ providerCode }
+                                        label={ guide.providerFile }
+                                        maxHeight={ 250 }
+                                        data-componentid={ `${componentId}-provider-code` }
+                                    />
+                                </StepContainer>
+                                { buttonCode && guide.buttonFile && (
+                                    <StepContainer>
+                                        <StepTitle>
+                                            <StepNumber>3</StepNumber>
+                                            Add sign-in/sign-out in { guide.buttonFile }
+                                        </StepTitle>
+                                        <CodeBlock
+                                            code={ buttonCode }
+                                            label={ guide.buttonFile }
+                                            maxHeight={ 200 }
+                                            data-componentid={ `${componentId}-button-code` }
+                                        />
+                                    </StepContainer>
+                                ) }
+                                <Link
+                                    href={ guide.docsUrl }
+                                    rel="noopener noreferrer"
+                                    sx={ { fontSize: "0.875rem" } }
+                                    target="_blank"
+                                >
+                                    View the full { guide.displayName } quick start guide
+                                </Link>
+                                { renderTestUserCredentials() }
+                            </>
+                        ) }
+                    </StyledAccordionDetails>
+                </StyledAccordion>
+            ) }
         </Box>
     );
 };

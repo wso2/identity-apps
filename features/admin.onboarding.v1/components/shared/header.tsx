@@ -55,7 +55,7 @@ export const Header = () => {
                     )
                 },
                 onClick: () => {
-                    history.push(AppConstants.getPaths().get("DASHBOARD"));
+                    history.push(AppConstants.getPaths().get("ONBOARDING"));
                 },
                 title: "Onboarding"
             } }
