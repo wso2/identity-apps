@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2024, WSO2 LLC. (https://www.wso2.com).
+ * Copyright (c) 2025, WSO2 LLC. (https://www.wso2.com).
  *
  * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -87,9 +87,9 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
     } = useApplicationList<ApplicationListInterface>(undefined, 1, 0, undefined, shouldFetchApps, true);
 
     useEffect(() => {
-        // Wait until uuid is set — this is the LAST thing set in the sign-in flow,
-        // so organizationType and isPrivilegedUser are guaranteed to be correct by now.
-        if (!uuid) {
+        // Wait until uuid and featureConfig are set — ensures all required Redux state
+        // (feature config, org type, privileged user status) is settled before evaluation.
+        if (!uuid || !featureConfig) {
             return;
         }
 

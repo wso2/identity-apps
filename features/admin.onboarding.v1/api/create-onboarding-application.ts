@@ -110,22 +110,22 @@ interface ApplicationTemplateInterface {
  * Local template registry for templates excluded from the extension API.
  */
 const TEMPLATE_REGISTRY: Record<string, ApplicationTemplateInterface> = {
-    "mobile-application": MobileTemplate as ApplicationTemplateInterface,
-    "oidc-web-application": OIDCWebAppTemplate as ApplicationTemplateInterface,
-    "single-page-application": SPATemplate as ApplicationTemplateInterface
+    [ApplicationTemplateIdTypes.MOBILE_APPLICATION]: MobileTemplate as ApplicationTemplateInterface,
+    [ApplicationTemplateIdTypes.OIDC_WEB_APPLICATION]: OIDCWebAppTemplate as ApplicationTemplateInterface,
+    [ApplicationTemplateIdTypes.SPA]: SPATemplate as ApplicationTemplateInterface
 };
 
 /**
  * Get template UUID from ApplicationManagementConstants based on template ID.
  *
- * @param templateId - Template identifier (e.g., "oidc-web-application", "single-page-application")
+ * @param templateId - Template identifier from ApplicationTemplateIdTypes enum
  * @returns UUID for the template
  */
 const getTemplateUUID = (templateId: string): string | undefined => {
     switch (templateId) {
-        case "oidc-web-application":
+        case ApplicationTemplateIdTypes.OIDC_WEB_APPLICATION:
             return ApplicationManagementConstants.TEMPLATE_IDS.get("oidcWeb");
-        case "single-page-application":
+        case ApplicationTemplateIdTypes.SPA:
             return ApplicationManagementConstants.TEMPLATE_IDS.get("spa");
         default:
             return undefined;
@@ -136,16 +136,16 @@ const getTemplateUUID = (templateId: string): string | undefined => {
  * MCP Client application grant types.
  */
 const MCP_CLIENT_GRANT_TYPES: string[] = [
-    "authorization_code",
-    "refresh_token",
-    "client_credentials"
+    ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
+    ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
+    ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
 ];
 
 /**
  * M2M application grant types.
  */
 const M2M_GRANT_TYPES: string[] = [
-    "client_credentials"
+    ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
 ];
 
 /**
@@ -169,7 +169,7 @@ const buildMCPClientPayload = (name: string): ApplicationPayloadInterface => ({
         }
     },
     name,
-    templateId: "mcp-client-application"
+    templateId: ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION
 });
 
 /**
@@ -206,7 +206,7 @@ const buildApplicationPayload = (
     apiTemplate?: APIApplicationTemplateInterface
 ): ApplicationPayloadInterface => {
     const { applicationName, templateId, redirectUrls, signInOptions } = data;
-    const resolvedTemplateId: string = templateId || "single-page-application";
+    const resolvedTemplateId: string = templateId || ApplicationTemplateIdTypes.SPA;
 
     let payload: ApplicationPayloadInterface;
 
@@ -233,7 +233,7 @@ const buildApplicationPayload = (
         }
     } else {
         const localTemplate: ApplicationTemplateInterface = TEMPLATE_REGISTRY[resolvedTemplateId] ||
-            TEMPLATE_REGISTRY["single-page-application"];
+            TEMPLATE_REGISTRY[ApplicationTemplateIdTypes.SPA];
 
         if (!localTemplate?.application) {
             throw new Error(`Template data not found for: ${resolvedTemplateId}`);

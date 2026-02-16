@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { ApplicationTemplateIdTypes } from "@wso2is/admin.applications.v1/models/application";
+
 /**
  * Default redirect URLs by framework/template.
  * Framework-specific paths are auto-filled with industry standard defaults.
@@ -24,12 +26,12 @@
 export const DefaultRedirectUrls: Record<string, string[]> = {
     angular: [ "http://localhost:4200" ],
     express: [ "http://localhost:3000/callback" ],
-    "mcp-client-application": [],
-    "mobile-application": [],
+    [ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION]: [],
+    [ApplicationTemplateIdTypes.MOBILE_APPLICATION]: [],
     next: [ "http://localhost:3000" ],
-    "oidc-web-application": [],
+    [ApplicationTemplateIdTypes.OIDC_WEB_APPLICATION]: [],
     react: [ "http://localhost:5173" ],
-    "single-page-application": []
+    [ApplicationTemplateIdTypes.SPA]: []
 };
 
 /**

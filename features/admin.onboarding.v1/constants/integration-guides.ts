@@ -294,7 +294,7 @@ export const generateAIPrompt = (config: IntegrationConfigInterface, framework: 
 
     const sdk: string = guide?.sdk || "@asgardeo/auth-react";
     const installCmd: string = guide?.installCommand || `npm install ${sdk}`;
-    const docsUrl: string = guide?.docsUrl || "https://is.docs.wso2.com/en/next/quick-starts/";
+    const docsUrl: string = guide?.docsUrl || "https://is.docs.wso2.com/en/latest/quick-starts/";
 
     // Include provider setup code with credentials substituted
     let starterCodeSection: string = "";
