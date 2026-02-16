@@ -2438,6 +2438,24 @@
                 {% endfor %}
             {% endif %}
         ],
+        {% if console.ui.loginFlowFirstFactorAuthenticators is defined %}
+        "loginFlowFirstFactorAuthenticators": [
+            {% if console.ui.loginFlowFirstFactorAuthenticators is defined %}
+                {% for value in console.ui.loginFlowFirstFactorAuthenticators %}
+                "{{ value }}"{{ "," if not loop.last }}
+                {% endfor %}
+            {% endif %}
+        ],
+        {% endif %}
+        {% if console.ui.loginFlowSecondFactorAuthenticators is defined %}
+        "loginFlowSecondFactorAuthenticators": [
+            {% if console.ui.loginFlowSecondFactorAuthenticators is defined %}
+                {% for value in console.ui.loginFlowSecondFactorAuthenticators %}
+                "{{ value }}"{{ "," if not loop.last }}
+                {% endfor %}
+            {% endif %}
+        ],
+        {% endif %}
         "hiddenConnectionTemplates": [
             {% if console.ui.hiddenConnectionTemplates is defined %}
                 {% for value in console.ui.hiddenConnectionTemplates %}

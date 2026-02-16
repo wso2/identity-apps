@@ -446,6 +446,16 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      */
     hiddenAuthenticators?: string[];
     /**
+     * Set of first factor authenticators available in application login flow builder.
+     * If not configured, falls back to default first factor authenticators.
+     */
+    loginFlowFirstFactorAuthenticators?: string[];
+    /**
+     * Set of second factor authenticators available in application login flow builder.
+     * If not configured, falls back to default second factor authenticators.
+     */
+    loginFlowSecondFactorAuthenticators?: string[];
+    /**
      * Set of connections to be hidden.
      */
     hiddenConnectionTemplates?: string[];
