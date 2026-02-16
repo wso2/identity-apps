@@ -133,44 +133,11 @@ const getTemplateUUID = (templateId: string): string | undefined => {
 };
 
 /**
- * MCP Client application grant types.
- */
-const MCP_CLIENT_GRANT_TYPES: string[] = [
-    ApplicationManagementConstants.AUTHORIZATION_CODE_GRANT,
-    ApplicationManagementConstants.REFRESH_TOKEN_GRANT,
-    ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
-];
-
-/**
  * M2M application grant types.
  */
 const M2M_GRANT_TYPES: string[] = [
     ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
 ];
-
-/**
- * Build MCP client application payload dynamically.
- *
- * @param name - Application name
- * @returns Application payload for MCP client
- */
-const buildMCPClientPayload = (name: string): ApplicationPayloadInterface => ({
-    advancedConfigurations: {
-        discoverableByEndUsers: false,
-        skipLoginConsent: true,
-        skipLogoutConsent: true
-    },
-    inboundProtocolConfiguration: {
-        oidc: {
-            allowedOrigins: [],
-            callbackURLs: [],
-            grantTypes: MCP_CLIENT_GRANT_TYPES,
-            publicClient: false
-        }
-    },
-    name,
-    templateId: ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION
-});
 
 /**
  * Build M2M application payload dynamically.
@@ -210,9 +177,7 @@ const buildApplicationPayload = (
 
     let payload: ApplicationPayloadInterface;
 
-    if (resolvedTemplateId === ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION) {
-        payload = buildMCPClientPayload(applicationName || DEFAULT_APPLICATION_NAME);
-    } else if (resolvedTemplateId === ApplicationTemplateIdTypes.M2M_APPLICATION) {
+    if (resolvedTemplateId === ApplicationTemplateIdTypes.M2M_APPLICATION) {
         return buildM2MPayload(applicationName || DEFAULT_APPLICATION_NAME);
     } else if (apiTemplate?.payload) {
         payload = JSON.parse(JSON.stringify(apiTemplate.payload));
@@ -303,8 +268,7 @@ export const createOnboardingApplication = async (
             name: data.applicationName || DEFAULT_APPLICATION_NAME
         };
 
-        if (data.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION
-            || data.templateId === ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION) {
+        if (data.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION) {
             result.clientSecret = response.data?.inboundProtocolConfiguration?.oidc?.clientSecret ||
                                   response.inboundProtocolConfiguration?.oidc?.clientSecret;
         }

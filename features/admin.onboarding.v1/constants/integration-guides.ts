@@ -137,12 +137,17 @@ export default function Home() {
 import AsgardeoAuth from "@asgardeo/auth-nextjs";
 
 export const { handlers, auth, signIn, signOut } = AsgardeoAuth({
-    clientId: "{clientId}",
-    clientSecret: "{clientSecret}",
-    baseUrl: "{baseUrl}"
+    clientId: process.env.ASGARDEO_CLIENT_ID!,
+    clientSecret: process.env.ASGARDEO_CLIENT_SECRET!,
+    baseUrl: process.env.ASGARDEO_BASE_URL!
 });
 
-export const { GET, POST } = handlers;`,
+export const { GET, POST } = handlers;
+
+// Create a .env.local file with:
+// ASGARDEO_CLIENT_ID={clientId}
+// ASGARDEO_CLIENT_SECRET={clientSecret}
+// ASGARDEO_BASE_URL={baseUrl}`,
     providerFile: "app/api/auth/[...asgardeo]/route.ts",
     sdk: "@asgardeo/auth-nextjs",
     yarnCommand: "yarn add @asgardeo/auth-nextjs"
@@ -292,8 +297,8 @@ export const generateAIPrompt = (config: IntegrationConfigInterface, framework: 
         ? INTEGRATION_GUIDES[config.templateId]
         : undefined;
 
-    const sdk: string = guide?.sdk || "@asgardeo/auth-react";
-    const installCmd: string = guide?.installCommand || `npm install ${sdk}`;
+    const sdk: string | undefined = guide?.sdk;
+    const installCmd: string | undefined = guide?.installCommand;
     const docsUrl: string = guide?.docsUrl || "https://is.docs.wso2.com/en/latest/quick-starts/";
 
     // Include provider setup code with credentials substituted
@@ -310,39 +315,41 @@ ${providerCode}
 \`\`\``;
     }
 
+    // Build SDK info line only if SDK is available
+    const sdkLine: string = sdk ? `\n- **SDK:** ${sdk}` : "";
+
     return `## Add ${framework} Authentication
 
 ### Application Details
 - **Application Name:** ${config.appName}
 - **Client ID:** ${config.clientId}
 - **Base URL:** ${config.baseUrl}
-- **Redirect URL:** ${config.redirectUrl}
-- **SDK:** ${sdk}
+- **Redirect URL:** ${config.redirectUrl}${sdkLine}
 
 ### Task
-Add authentication (sign-in and sign-out) to my ${framework} application using the official SDK.
+Add authentication (sign-in and sign-out) to my ${framework} application${sdk ? " using the official SDK" : ""}.
 
-### Steps
-1. Install the SDK: \`${installCmd}\`
-2. Configure the auth provider with the credentials above
-3. Add a sign-in button that triggers the login flow
-4. Add a sign-out button for authenticated users
-5. Display the authenticated user's name/email
-6. Protect routes that require authentication
+### Steps${sdk ? `
+1. Install the SDK: \`${installCmd}\`` : ""}
+${sdk ? "2" : "1"}. Configure the auth provider with the credentials above
+${sdk ? "3" : "2"}. Add a sign-in button that triggers the login flow
+${sdk ? "4" : "3"}. Add a sign-out button for authenticated users
+${sdk ? "5" : "4"}. Display the authenticated user's name/email
+${sdk ? "6" : "5"}. Protect routes that require authentication
 ${starterCodeSection}
 
 ### ALWAYS DO
-- Use the **exact** Client ID and Base URL provided above
-- Use \`${sdk}\` — this is the official SDK
+- Use the **exact** Client ID and Base URL provided above${sdk ? `
+- Use \`${sdk}\` — this is the official SDK` : ""}
 - Include \`openid\` and \`profile\` in the scopes
 - Handle the authentication callback at the redirect URL
 - Show a loading state while authentication is in progress
 
 ### NEVER DO
-- Do NOT hardcode credentials — use environment variables for production
-- Do NOT use a different SDK than \`${sdk}\` for ${framework}
+- Do NOT hardcode credentials — use environment variables for production${sdk ? `
+- Do NOT use a different SDK than \`${sdk}\` for ${framework}` : ""}
 - Do NOT skip the sign-out redirect URL configuration
-- Do NOT store tokens in localStorage manually — the SDK handles this
+- Do NOT store tokens in localStorage manually${sdk ? " — the SDK handles this" : ""}
 
 ### Verification Checklist
 - [ ] SDK installed and imported correctly

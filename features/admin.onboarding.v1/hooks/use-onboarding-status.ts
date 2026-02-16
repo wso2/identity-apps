@@ -83,6 +83,7 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
 
     const {
         data: appListData,
+        error: appListError,
         isLoading: isAppListLoading
     } = useApplicationList<ApplicationListInterface>(undefined, 1, 0, undefined, shouldFetchApps, true);
 
@@ -140,7 +141,11 @@ export const useOnboardingStatus = (): UseOnboardingStatusReturn => {
         }
 
         // Check 4: If the organization already has user-created applications, skip wizard.
-        if (appListData && appListData.totalResults > 0) {
+        // If app-list fetch fails, log error and fail open (show wizard) to avoid blocking new users.
+        if (appListError) {
+            // eslint-disable-next-line no-console
+            console.warn("Failed to fetch application list for onboarding check:", appListError);
+        } else if (appListData && appListData.totalResults > 0) {
             SessionStorageUtils.setItemToSessionStorage(`${SESSION_CACHE_KEY}_${hashedId}`, "hide");
             setShouldShowOnboarding(false);
             setIsLoading(false);

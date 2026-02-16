@@ -19,12 +19,13 @@
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
+import IconButton from "@mui/material/IconButton";
 import { Theme, styled } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
 import Chip from "@oxygen-ui/react/Chip";
 import Link from "@oxygen-ui/react/Link";
 import Typography from "@oxygen-ui/react/Typography";
-import { ChevronDownIcon, CircleInfoIcon } from "@oxygen-ui/react-icons";
+import { ChevronDownIcon, CircleInfoIcon, EyeIcon, EyeSlashIcon } from "@oxygen-ui/react-icons";
 import { MarkdownGuide } from "@wso2is/admin.template-core.v1/components/markdown-guide";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, useState } from "react";
@@ -220,6 +221,7 @@ const IntegrationAccordion: FunctionComponent<IntegrationAccordionPropsInterface
 
     const [ aiExpanded, setAiExpanded ] = useState<boolean>(false);
     const [ manualExpanded, setManualExpanded ] = useState<boolean>(false);
+    const [ showPassword, setShowPassword ] = useState<boolean>(false);
 
     const aiPrompt: string | undefined = guide
         ? generateAIPrompt(config, guide.displayName)
@@ -252,9 +254,19 @@ const IntegrationAccordion: FunctionComponent<IntegrationAccordionPropsInterface
                     <Typography color="text.secondary" variant="body2">
                         <strong>Username:</strong> { testUserCredentials.username }
                     </Typography>
-                    <Typography color="text.secondary" variant="body2">
-                        <strong>Password:</strong> { testUserCredentials.password }
-                    </Typography>
+                    <Box sx={ { alignItems: "center", display: "flex", gap: 1 } }>
+                        <Typography color="text.secondary" variant="body2">
+                            <strong>Password:</strong> { showPassword ? testUserCredentials.password : "••••••••" }
+                        </Typography>
+                        <IconButton
+                            aria-label={ showPassword ? "Hide password" : "Show password" }
+                            onClick={ () => setShowPassword(!showPassword) }
+                            size="small"
+                            sx={ { ml: -0.5 } }
+                        >
+                            { showPassword ? <EyeSlashIcon /> : <EyeIcon /> }
+                        </IconButton>
+                    </Box>
                     { testUserCredentials.email && (
                         <Typography
                             color="text.secondary"
