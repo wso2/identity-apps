@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { getActionsResourceEndpoints } from "@wso2is/admin.actions.v1/configs/endpoints";
+
 import { getAdministratorsResourceEndpoints } from "@wso2is/admin.administrators.v1/config/endpoints";
 import { getAgentsResourceEndpoints } from "@wso2is/admin.agents.v1/configs/endpoints";
 import { getAPIResourceEndpoints } from "@wso2is/admin.api-resources.v2/configs/endpoint";
@@ -348,7 +348,7 @@ export class Config {
             ...getInsightsResourceEndpoints(this.resolveServerHostFromConfig()),
             ...getExtensionTemplatesEndpoints(this.resolveServerHost()),
             ...getApplicationTemplatesResourcesEndpoints(this.resolveServerHost()),
-            ...getActionsResourceEndpoints(this.resolveServerHost()),
+            ...getApplicationTemplatesResourcesEndpoints(this.resolveServerHost()),
             ...getRulesEndpoints(this.resolveServerHost()),
             ...getSmsTemplateResourceEndpoints(this.resolveServerHost()),
             ...getPolicyAdministrationResourceEndpoints(this.resolveServerHost()),
@@ -368,6 +368,7 @@ export class Config {
             ...getVCTemplateEndpoints(this.resolveServerHost()),
             ...getCustomerDataServiceEndpoints(this.resolveServerHost()),
             CORSOrigins: `${ this.resolveServerHostFromConfig() }/api/server/v1/cors/origins`,
+            actions: "",
             asyncStatus: `${ this.resolveServerHost(false, true) }/api/server/v1/async-operations`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${ this.getDeploymentConfig()?.serverHost }/scim2/Me`,
