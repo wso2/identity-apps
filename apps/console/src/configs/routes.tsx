@@ -1692,7 +1692,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 icon: <ProfilesIcon className="icon" fill="black" />
             },
             id: "customerData",
-            name: "Customer Data",
+            name: "customerData",
             order: 32,
             path: AppConstants.getPaths().get("PROFILES"),
             protected: true,

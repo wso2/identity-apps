@@ -839,6 +839,12 @@
             "customerData": {
                 "disabledFeatures": [],
                 "enabled": true,
+                "featureFlags": [
+                    {
+                        "feature": "customerData",
+                        "flag": "PREVIEW"
+                    }
+                ],
                 "scopes": {
                     "create": [
                         "internal_cds_profile_create",
