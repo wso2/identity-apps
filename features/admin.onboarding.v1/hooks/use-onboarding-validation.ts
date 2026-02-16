@@ -18,7 +18,7 @@
 
 import { ApplicationTemplateIdTypes } from "@wso2is/admin.applications.v1/models/application";
 import { PatternConstants } from "@wso2is/core/constants";
-import { useCallback, useMemo } from "react";
+import { Dispatch, SetStateAction, useCallback, useMemo } from "react";
 import { AppNameConstraints, RedirectUrlConstraints } from "../constants";
 import {
     CreatedApplicationResultInterface,
@@ -27,6 +27,7 @@ import {
     OnboardingStep,
     SignInOptionsConfigInterface
 } from "../models";
+import { isValidSignInOptions } from "../utils/sign-in-options-validator";
 import { extractOrigins } from "../utils/url-utils";
 
 /**
@@ -97,29 +98,6 @@ const isValidUrl = (url: string, isMobile: boolean = false): boolean => {
 };
 
 /**
- * Validate sign-in options configuration.
- */
-const isValidSignInOptions = (options?: SignInOptionsConfigInterface): boolean => {
-    if (!options) return false;
-
-    const { identifiers, loginMethods } = options;
-
-    // Must have at least one identifier
-    const hasIdentifier: boolean = identifiers.username || identifiers.email || identifiers.mobile;
-
-    if (!hasIdentifier) return false;
-
-    // Must have at least one login method
-    const hasLoginMethod: boolean = loginMethods.password || loginMethods.passkey ||
-        loginMethods.magicLink || loginMethods.emailOtp || loginMethods.totp ||
-        loginMethods.pushNotification;
-
-    if (!hasLoginMethod) return false;
-
-    return true;
-};
-
-/**
  * Custom hook for onboarding step validation.
  */
 export const useStepValidation = (currentStep: OnboardingStep, data: OnboardingDataInterface) => {
@@ -138,7 +116,7 @@ export const useStepValidation = (currentStep: OnboardingStep, data: OnboardingD
                        !data.redirectUrls.every((url: string) => isValidUrl(url, isMobile));
             }
             case OnboardingStep.SIGN_IN_OPTIONS:
-                return !isValidSignInOptions(data.signInOptions);
+                return !isValidSignInOptions(data.signInOptions, false);
             case OnboardingStep.DESIGN_LOGIN:
                 // Design step is always valid (has defaults)
                 return false;
@@ -155,53 +133,53 @@ export const useStepValidation = (currentStep: OnboardingStep, data: OnboardingD
  */
 export const useOnboardingDataInterface = (
     initialData: OnboardingDataInterface,
-    setData: (data: OnboardingDataInterface) => void
+    setData: Dispatch<SetStateAction<OnboardingDataInterface>>
 ) => {
     const updateChoice: (choice: OnboardingDataInterface["choice"]) => void = useCallback(
-        (choice: OnboardingDataInterface["choice"]) => {
-            setData({ ...initialData, choice });
-        }, [ initialData, setData ]);
+        (choice: OnboardingDataInterface["choice"]): void => {
+            setData((prevState: OnboardingDataInterface) => ({ ...prevState, choice }));
+        }, [ setData ]);
 
-    const updateApplicationName: (name: string) => void = useCallback((applicationName: string) => {
-        setData({ ...initialData, applicationName });
-    }, [ initialData, setData ]);
+    const updateApplicationName: (name: string) => void = useCallback((applicationName: string): void => {
+        setData((prevState: OnboardingDataInterface) => ({ ...prevState, applicationName }));
+    }, [ setData ]);
 
-    const updateIsRandomName: (isRandom: boolean) => void = useCallback((isRandomName: boolean) => {
-        setData({ ...initialData, isRandomName });
-    }, [ initialData, setData ]);
+    const updateIsRandomName: (isRandom: boolean) => void = useCallback((isRandomName: boolean): void => {
+        setData((prevState: OnboardingDataInterface) => ({ ...prevState, isRandomName }));
+    }, [ setData ]);
 
     const updateApplicationType: (type: OnboardingDataInterface["applicationType"]) => void = useCallback(
-        (applicationType: OnboardingDataInterface["applicationType"]) => {
-            setData({ ...initialData, applicationType });
-        }, [ initialData, setData ]);
+        (applicationType: OnboardingDataInterface["applicationType"]): void => {
+            setData((prevState: OnboardingDataInterface) => ({ ...prevState, applicationType }));
+        }, [ setData ]);
 
     const updateTemplateSelection: (id: string, fw?: string) => void = useCallback(
-        (templateId: string, framework?: string) => {
-            setData({ ...initialData, framework, templateId });
-        }, [ initialData, setData ]);
+        (templateId: string, framework?: string): void => {
+            setData((prevState: OnboardingDataInterface) => ({ ...prevState, framework, templateId }));
+        }, [ setData ]);
 
-    const updateRedirectUrls: (urls: string[]) => void = useCallback((urls: string[]) => {
-        setData({
-            ...initialData,
+    const updateRedirectUrls: (urls: string[]) => void = useCallback((urls: string[]): void => {
+        setData((prevState: OnboardingDataInterface) => ({
+            ...prevState,
             allowedOrigins: extractOrigins(urls),
             redirectUrls: urls
-        });
-    }, [ initialData, setData ]);
+        }));
+    }, [ setData ]);
 
     const updateSignInOptions: (opts: SignInOptionsConfigInterface) => void = useCallback(
-        (options: SignInOptionsConfigInterface) => {
-            setData({ ...initialData, signInOptions: options });
-        }, [ initialData, setData ]);
+        (options: SignInOptionsConfigInterface): void => {
+            setData((prevState: OnboardingDataInterface) => ({ ...prevState, signInOptions: options }));
+        }, [ setData ]);
 
     const updateBrandingConfig: (cfg: OnboardingBrandingConfigInterface) => void = useCallback(
-        (config: OnboardingBrandingConfigInterface) => {
-            setData({ ...initialData, brandingConfig: config });
-        }, [ initialData, setData ]);
+        (config: OnboardingBrandingConfigInterface): void => {
+            setData((prevState: OnboardingDataInterface) => ({ ...prevState, brandingConfig: config }));
+        }, [ setData ]);
 
     const setCreatedApplication: (result: CreatedApplicationResultInterface) => void = useCallback(
-        (result: CreatedApplicationResultInterface) => {
-            setData({ ...initialData, createdApplication: result });
-        }, [ initialData, setData ]);
+        (result: CreatedApplicationResultInterface): void => {
+            setData((prevState: OnboardingDataInterface) => ({ ...prevState, createdApplication: result }));
+        }, [ setData ]);
 
     return {
         setCreatedApplication,

@@ -30,6 +30,7 @@ import {
 } from "@wso2is/common.branding.v1/models";
 import { HttpMethods } from "@wso2is/core/models";
 import merge from "lodash-es/merge";
+import { BrandingConstraints } from "../constants/preset-logos";
 import { OnboardingBrandingConfigInterface } from "../models";
 
 /**
@@ -148,9 +149,8 @@ export const updateApplicationBranding = async (
 };
 
 export const isBrandingCustomized = (brandingConfig: OnboardingBrandingConfigInterface): boolean => {
-    const defaultColor: string = "#ff7300";
-
-    if (brandingConfig.primaryColor.toLowerCase() !== defaultColor.toLowerCase()) {
+    if (brandingConfig.primaryColor.toLowerCase() !==
+        BrandingConstraints.DEFAULT_PRIMARY_COLOR.toLowerCase()) {
         return true;
     }
 

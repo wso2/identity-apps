@@ -97,6 +97,13 @@ export const createTryItApplication = async (
     const location: string = response.headers?.location || "";
     const applicationId: string = location.substring(location.lastIndexOf("/") + 1);
 
+    if (!applicationId || applicationId.trim() === "") {
+        throw new Error(
+            "Failed to extract application ID from server response. " +
+            "The Location header may be missing or malformed."
+        );
+    }
+
     return {
         applicationId,
         clientId: tryItClientId,

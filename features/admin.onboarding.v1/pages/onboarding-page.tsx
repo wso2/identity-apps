@@ -58,6 +58,17 @@ const CHOICE_MAP: Record<string, OnboardingChoice> = {
     tour: OnboardingChoice.TOUR
 };
 
+/**
+ * Main wizard container with full viewport height.
+ */
+const StyledOnboardingPage: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
+    backgroundColor: (theme as any).customComponents?.Onboarding?.properties?.background
+        ?? theme.palette.grey[50],
+    display: "flex",
+    flexDirection: "column",
+    height: "100vh"
+}));
+
 const OnboardingPage: FunctionComponent<OnboardingPageProps> = (props: OnboardingPageProps): ReactElement => {
     const {
         location,
@@ -92,17 +103,6 @@ const OnboardingPage: FunctionComponent<OnboardingPageProps> = (props: Onboardin
 
         return data;
     }, [ location.search ]);
-
-    /**
-     * Main wizard container with full viewport height.
-     */
-    const StyledOnboardingPage: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
-        backgroundColor: (theme as any).customComponents?.Onboarding?.properties?.background
-            ?? theme.palette.grey[50],
-        display: "flex",
-        flexDirection: "column",
-        height: "100vh"
-    }));
 
     const {
         shouldShowOnboarding,

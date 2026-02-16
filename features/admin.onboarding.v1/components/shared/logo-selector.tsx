@@ -99,6 +99,16 @@ const LogoSelector: FunctionComponent<LogoSelectorPropsInterface> = memo((
         onLogoSelect(logoUrl);
     }, [ onLogoSelect ]);
 
+    const handleKeyDown: (event: React.KeyboardEvent, logoUrl: string) => void = useCallback(
+        (event: React.KeyboardEvent, logoUrl: string): void => {
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                handleLogoSelect(logoUrl);
+            }
+        },
+        [ handleLogoSelect ]
+    );
+
     return (
         <LogoSelectorContainer data-componentid={ componentId }>
             <SectionLabel>{ label }</SectionLabel>
@@ -111,9 +121,18 @@ const LogoSelector: FunctionComponent<LogoSelectorPropsInterface> = memo((
                     return (
                         <Tooltip key={ logoUrl } title={ animalName }>
                             <Box
+                                aria-label={ `Select ${animalName} logo` }
+                                aria-pressed={ isSelected }
                                 data-componentid={ `${componentId}-${animalName.toLowerCase()}` }
                                 onClick={ () => handleLogoSelect(logoUrl) }
+                                onKeyDown={ (event: React.KeyboardEvent) => handleKeyDown(event, logoUrl) }
+                                role="button"
+                                tabIndex={ 0 }
                                 sx={ (theme: Theme) => ({
+                                    "&:focus-visible": {
+                                        outline: `2px solid ${theme.palette.primary.main}`,
+                                        outlineOffset: 2
+                                    },
                                     "&:hover": {
                                         borderColor: theme.palette.primary.main,
                                         transform: "scale(1.05)"

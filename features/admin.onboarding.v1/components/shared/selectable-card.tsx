@@ -20,7 +20,7 @@ import { Theme, alpha, styled } from "@mui/material/styles";
 import Box from "@oxygen-ui/react/Box";
 import Typography from "@oxygen-ui/react/Typography";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, ReactNode, memo } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, memo, useCallback } from "react";
 
 /**
  * Props for selectable card component.
@@ -49,6 +49,10 @@ interface StyledCardProps {
 const StyledCard: any = styled(Box, {
     shouldForwardProp: (prop: string) => prop !== "isSelected" && prop !== "variant"
 })<StyledCardProps>(({ theme, isSelected, variant = "default" }: StyledCardProps & { theme: Theme }) => ({
+    "&:focus-visible": {
+        outline: `2px solid ${theme.palette.primary.main}`,
+        outlineOffset: 2
+    },
     "&:hover": {
         backgroundColor: isSelected
             ? alpha(theme.palette.primary.main, 0.08)
@@ -161,11 +165,26 @@ const SelectableCard: FunctionComponent<SelectableCardPropsInterface> = memo((
         ["data-componentid"]: componentId = "selectable-card"
     } = props;
 
+    const handleKeyDown: (event: React.KeyboardEvent) => void = useCallback(
+        (event: React.KeyboardEvent): void => {
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                onClick();
+            }
+        },
+        [ onClick ]
+    );
+
     return (
         <StyledCard
+            aria-label={ title }
+            aria-pressed={ isSelected }
             data-componentid={ componentId }
             isSelected={ isSelected }
             onClick={ onClick }
+            onKeyDown={ handleKeyDown }
+            role="button"
+            tabIndex={ 0 }
             variant={ variant }
         >
             { icon && (

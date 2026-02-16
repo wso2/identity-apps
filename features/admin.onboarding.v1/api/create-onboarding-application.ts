@@ -20,6 +20,9 @@ import {
     ApplicationTemplateInterface as APIApplicationTemplateInterface
 } from "@wso2is/admin.application-templates.v1/models/templates";
 import { createApplication } from "@wso2is/admin.applications.v1/api/application";
+import {
+    ApplicationManagementConstants
+} from "@wso2is/admin.applications.v1/constants/application-management";
 import { ApplicationTemplateIdTypes } from "@wso2is/admin.applications.v1/models/application";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import MobileTemplate
@@ -89,11 +92,20 @@ const TEMPLATE_REGISTRY: Record<string, ApplicationTemplateInterface> = {
 };
 
 /**
- * Template UUID mapping for generic templates.
+ * Get template UUID from ApplicationManagementConstants based on template ID.
+ *
+ * @param templateId - Template identifier (e.g., "oidc-web-application", "single-page-application")
+ * @returns UUID for the template
  */
-const TEMPLATE_UUID_MAP: Record<string, string> = {
-    "oidc-web-application": "b9c5e11e-fc78-484b-9bec-015d247561b8",
-    "single-page-application": "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7"
+const getTemplateUUID = (templateId: string): string | undefined => {
+    switch (templateId) {
+        case "oidc-web-application":
+            return ApplicationManagementConstants.TEMPLATE_IDS.get("oidcWeb");
+        case "single-page-application":
+            return ApplicationManagementConstants.TEMPLATE_IDS.get("spa");
+        default:
+            return undefined;
+    }
 };
 
 /**
@@ -205,7 +217,7 @@ const buildApplicationPayload = (
 
         payload = JSON.parse(JSON.stringify(localTemplate.application));
         payload.name = applicationName || "My Application";
-        payload.templateId = TEMPLATE_UUID_MAP[resolvedTemplateId] || resolvedTemplateId;
+        payload.templateId = getTemplateUUID(resolvedTemplateId) || resolvedTemplateId;
     }
 
     if (redirectUrls && redirectUrls.length > 0 && payload.inboundProtocolConfiguration?.oidc) {
@@ -250,6 +262,13 @@ export const createOnboardingApplication = async (
     // Application ID is in the Location header: /api/server/v1/applications/{uuid}
     const location: string = response.headers?.location || "";
     const applicationId: string = location.substring(location.lastIndexOf("/") + 1);
+
+    if (!applicationId || applicationId.trim() === "") {
+        throw new Error(
+            "Failed to extract application ID from server response. " +
+            "The Location header may be missing or malformed."
+        );
+    }
 
     const result: CreatedApplicationResultInterface = {
         applicationId,

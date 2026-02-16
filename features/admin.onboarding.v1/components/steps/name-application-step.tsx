@@ -54,6 +54,7 @@ const NameApplicationStep: FunctionComponent<NameApplicationStepPropsInterface> 
 
     const { validateName, getValidationError } = useNameValidation();
     const inputRef: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
+    const hasInitializedName: React.MutableRefObject<boolean> = useRef<boolean>(false);
 
     // Auto-focus input field when step loads
     useEffect(() => {
@@ -64,12 +65,14 @@ const NameApplicationStep: FunctionComponent<NameApplicationStepPropsInterface> 
         return () => clearTimeout(timer);
     }, []);
 
-    // Set first random name as default if no name is set
+    // Set first random name as default if no name is set (only on initial mount)
     useEffect(() => {
-        if (!applicationName && randomNames.length > 0) {
+        if (!hasInitializedName.current && !applicationName && randomNames.length > 0) {
+            hasInitializedName.current = true;
             onApplicationNameChange(randomNames[0]);
         }
-    }, [ applicationName, onApplicationNameChange, randomNames ]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []); // Run only on mount
 
     const handleNameChange: (event: React.ChangeEvent<HTMLInputElement>) => void = useCallback(
         (event: React.ChangeEvent<HTMLInputElement>) => {

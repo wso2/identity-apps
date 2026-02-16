@@ -33,6 +33,7 @@ import {
     SignInOptionsConfigInterface,
     SignInOptionsValidationInterface
 } from "../../models";
+import { validateSignInOptions } from "../../utils/sign-in-options-validator";
 import LoginBoxPreview from "../shared/login-box-preview";
 import { LeftColumn, RightColumn, SectionLabel, TwoColumnLayout } from "../shared/onboarding-styles";
 import SignInOptionToggle from "../shared/sign-in-option-toggle";
@@ -104,47 +105,6 @@ const PreviewColumn: typeof Box = styled(RightColumn)(({ theme }: { theme: Theme
     justifyContent: "center",
     padding: theme.spacing(4)
 }));
-
-/**
- * Validate sign-in options configuration.
- * Simplified validation for the Identifier First approach.
- *
- * @param options - Sign-in options configuration
- * @param isAlphanumericUsername - Whether alphanumeric username is enabled.
- */
-const validateSignInOptions: (
-    options: SignInOptionsConfigInterface,
-    isAlphanumericUsername: boolean
-) => SignInOptionsValidationInterface = (
-    options: SignInOptionsConfigInterface,
-    isAlphanumericUsername: boolean
-): SignInOptionsValidationInterface => {
-    const errors: string[] = [];
-    const { identifiers, loginMethods } = options;
-
-    // When alphanumeric username is disabled, email IS the username (email-as-username mode),
-    // When alphanumeric username is enabled, at least one identifier must be selected.
-    const hasIdentifier: boolean = !isAlphanumericUsername ||
-        identifiers.username || identifiers.email || identifiers.mobile;
-
-    if (!hasIdentifier) {
-        errors.push("Select at least one identifier (Username, Email, or Mobile)");
-    }
-
-    // Must have at least one login method
-    const hasLoginMethod: boolean = loginMethods.password || loginMethods.passkey ||
-        loginMethods.magicLink || loginMethods.emailOtp || loginMethods.totp ||
-        loginMethods.pushNotification;
-
-    if (!hasLoginMethod) {
-        errors.push("Select at least one login method");
-    }
-
-    return {
-        errors,
-        isValid: errors.length === 0
-    };
-};
 
 /**
  * Sign-in options step component for onboarding.
