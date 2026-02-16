@@ -29,78 +29,105 @@ import {
     TableColumnInterface
 } from "@wso2is/react-components";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
-import { UnificationRuleInterface } from "../models/unification-rules";
+import { UnificationRuleModel } from "../models/unification-rules";
+import { useDeleteUnificationRule } from "../hooks/use-unification-rules";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import Chip from "@oxygen-ui/react/Chip/Chip";
-import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addAlert } from "@wso2is/core/store";
 import { AlertLevels } from "@wso2is/core/models";
-import { CDM_BASE_URL } from "../models/constants";
 
-interface ResolutionRulesListProps {
-    rules: UnificationRuleInterface[];
+interface UnificationRulesListProps {
+    rules: UnificationRuleModel[];
     isLoading: boolean;
-    // onEdit: (rule: UnificationRuleInterface) => void;
-    onDelete: (rule: UnificationRuleInterface) => void;
-    onSearchQueryClear ?: () => void;
-                            searchQuery ?: string;
+    onDelete: () => void;
+    onSearchQueryClear?: () => void;
+    searchQuery?: string;
 }
 
-export const UnificationRulesList: FunctionComponent<ResolutionRulesListProps> = ({
+/**
+ * Get property scope from property name
+ */
+const getPropertyScope = (propertyName: string): string => {
+    if (propertyName?.startsWith("identity_attributes.")) return "Identity Attribute";
+    if (propertyName?.startsWith("application_data.")) return "Application Data";
+    if (propertyName?.startsWith("traits.")) return "Trait";
+    return "Default";
+};
+
+/**
+ * Remove scope prefix from property name
+ */
+const getPropertySuffix = (propertyName: string): string => {
+    if (propertyName?.startsWith("identity_attributes.")) {
+        return propertyName.replace("identity_attributes.", "");
+    }
+    if (propertyName?.startsWith("application_data.")) {
+        return propertyName.replace("application_data.", "");
+    }
+    if (propertyName?.startsWith("traits.")) {
+        return propertyName.replace("traits.", "");
+    }
+    return propertyName || "";
+};
+
+export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> = ({
     rules,
     isLoading,
     onDelete,
-}: ResolutionRulesListProps): ReactElement => {
+}: UnificationRulesListProps): ReactElement => {
 
-    const [ deletingRule, setDeletingRule ] = useState<UnificationRuleInterface>(null);
-    const [ showDeleteModal, setShowDeleteModal ] = useState(false);
+    const [deletingRule, setDeletingRule] = useState<UnificationRuleModel | null>(null);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
 
     const dispatch = useDispatch();
+    const { trigger: deleteRule, isMutating: isDeleting } = useDeleteUnificationRule();
 
     const getChipStyles = (scope: string) => {
         switch (scope) {
-            case "identity Attribute":
+            case "Identity Attribute":
                 return {
                     backgroundColor: "#e0f2f1",
                     color: "#00796b",
                     fontWeight: 500,
-                    border : "none"
+                    border: "none"
                 };
             case "Application Data":
                 return {
                     backgroundColor: "#fce4ec",
                     color: "#c2185b",
                     fontWeight: 500,
-                    border : "none"
+                    border: "none"
                 };
             case "Trait":
                 return {
                     backgroundColor: "#dcf0fa",
                     color: "#0082c3",
                     fontWeight: 500,
-                    border : "none"
+                    border: "none"
                 };
             default:
                 return {
                     backgroundColor: "#f5f5f5",
                     color: "#616161",
                     fontWeight: 500,
-                    // borderColor: "#bdbdbd"
+                    border: "none"
                 };
         }
     };
     
     const handleDelete = async () => {
+        if (!deletingRule) return;
+
         try {
-            await axios.delete(`${CDM_BASE_URL}/unification-rules/${deletingRule.rule_id}`);
+            await deleteRule(deletingRule.rule_id);
             dispatch(addAlert({
                 level: AlertLevels.SUCCESS,
                 message: "Deleted",
                 description: "The unification rule was successfully deleted."
             }));
-            onDelete?.(deletingRule);
+            onDelete?.();
         } catch (error) {
             dispatch(addAlert({
                 level: AlertLevels.ERROR,
@@ -109,7 +136,7 @@ export const UnificationRulesList: FunctionComponent<ResolutionRulesListProps> =
             }));
         } finally {
             setShowDeleteModal(false);
-            setDeletingRule(null);90
+            setDeletingRule(null);
         }
     };
 
@@ -119,18 +146,18 @@ export const UnificationRulesList: FunctionComponent<ResolutionRulesListProps> =
             id: "rule_name",
             key: "rule_name",
             title: "Rule",
-            render: (rule: UnificationRuleInterface) => {
+            render: (rule: UnificationRuleModel) => {
                 const displayName = rule.rule_name;
 
                 return (
                     <div className="header-with-icon">
                         <AppAvatar
-                            image={ (
+                            image={(
                                 <AnimatedAvatar
-                                    name={ displayName }
+                                    name={displayName}
                                     size="mini"
                                 />
-                            ) }
+                            )}
                             size="mini"
                             spaced="right"
                         />
@@ -139,35 +166,35 @@ export const UnificationRulesList: FunctionComponent<ResolutionRulesListProps> =
                                 rule.is_active
                                     ? (
                                         <Popup
-                                            trigger={ (
+                                            trigger={(
                                                 <Icon
                                                     className="mr-2 ml-0 vertical-aligned-baseline"
                                                     size="small"
                                                     name="circle"
                                                     color="green"
                                                 />
-                                            ) }
-                                            content={ "Enabled" }
+                                            )}
+                                            content="Enabled"
                                             inverted
                                         />
                                     ) : (
                                         <Popup
-                                            trigger={ (
+                                            trigger={(
                                                 <Icon
                                                     className="mr-2 ml-0 vertical-aligned-baseline"
                                                     size="small"
                                                     name="circle"
                                                     color="orange"
                                                 />
-                                            ) }
-                                            content={ "Disabled" }
+                                            )}
+                                            content="Disabled"
                                             inverted
                                         />
                                     )
                             }
                         </Header.Content>
                         <Header.Content>
-                        { displayName }
+                            {displayName}
                         </Header.Content>
                     </div>
                 );
@@ -178,29 +205,16 @@ export const UnificationRulesList: FunctionComponent<ResolutionRulesListProps> =
             id: "property_name",
             key: "property_name",
             title: "Attribute",
-            render: (rule: UnificationRuleInterface) => {
-                let suffix = rule.property_name || "";
-                let scope: string;
+            render: (rule: UnificationRuleModel) => {
+                const suffix = getPropertySuffix(rule.property_name);
+                const scope = getPropertyScope(rule.property_name);
 
-                if (suffix.startsWith("identity_attributes.")) {
-                    suffix = suffix.replace("identity_attributes.", "");
-                    scope = "Identity Attribute";
-                } else if (suffix.startsWith("application_data.")) {
-                    suffix = suffix.replace("application_data.", "");
-                    scope = "Application Data";
-                } else if (suffix.startsWith("traits.")) {
-                    suffix = suffix.replace("traits.", "");
-                    scope = "Trait";
-                }
-                else {
-                    scope = "Default";
-                }
                 return (
                     <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                        <span>{ suffix }</span>
-                        { scope && (
-                            <Chip size="small" sx={ getChipStyles(scope) } variant="outlined" label={ scope } />
-                        ) }
+                        <span>{suffix}</span>
+                        {scope && (
+                            <Chip size="small" sx={getChipStyles(scope)} variant="outlined" label={scope} />
+                        )}
                     </div>
                 );
             }
@@ -219,71 +233,65 @@ export const UnificationRulesList: FunctionComponent<ResolutionRulesListProps> =
             title: "",
             textAlign: "right"
         }
-    ]
+    ];
     
     const actions: TableActionsInterface[] = [
         {
             icon: (): SemanticICONS => "pencil alternate",
-            onClick: (_: SyntheticEvent, rule: UnificationRuleInterface): void => {
+            onClick: (_: SyntheticEvent, rule: UnificationRuleModel): void => {
                 if (rule.property_name !== "user_id") {
                     history.push(AppConstants.getPaths().get("UNIFICATION_RULE_EDIT").replace(":id", rule.rule_id));
                 }
             },
             popupText: (): string => "Edit",
             renderer: "semantic-icon",
-            hidden: (rule: UnificationRuleInterface) => rule.property_name === "user_id"
+            hidden: (rule: UnificationRuleModel) => rule.property_name === "user_id"
         },
         {
             icon: (): SemanticICONS => "trash alternate",
-            onClick: (_: SyntheticEvent, rule: UnificationRuleInterface): void => {
+            onClick: (_: SyntheticEvent, rule: UnificationRuleModel): void => {
                 setDeletingRule(rule);
                 setShowDeleteModal(true);
             },
             popupText: (): string => "Delete",
             renderer: "semantic-icon",
-            hidden: (rule: UnificationRuleInterface) => rule.property_name === "user_id"
+            hidden: (rule: UnificationRuleModel) => rule.property_name === "user_id"
         }
     ];
 
     return (
         <>
-            <DataTable<UnificationRuleInterface>
-                isLoading={ isLoading }
-                columns={ columns }
-                data={ rules }
-                actions={ actions }
-                showHeader={ true }
-                showActions={ true }
-                onRowClick={ (e: SyntheticEvent, rule: UnificationRuleInterface): void => {
-                    if (rule.property_name === "user_id") {
-                        e.preventDefault();
-                        return;
-                    }
-                    history.push(AppConstants.getPaths().get("UNIFICATION_RULE_EDIT").replace(":id", rule.rule_id));
-                    
-                } }
-            />
+            <DataTable<UnificationRuleModel>
+                isLoading={isLoading}
+                columns={columns}
+                data={rules}
+                actions={actions}
+                showHeader={true}
+                showActions={true}
+                onRowClick={() => {}}
+                />
 
             {deletingRule && (
                 <ConfirmationModal
-                    onClose={ () => {
+                    onClose={() => {
                         setDeletingRule(null);
                         setShowDeleteModal(false);
-                    } }
+                    }}
                     type="negative"
-                    open={ showDeleteModal }
+                    open={showDeleteModal}
                     assertionHint="Please confirm the deletion."
                     assertionType="checkbox"
                     primaryAction="Confirm"
                     secondaryAction="Cancel"
-                    onSecondaryActionClick={ () => {
+                    onSecondaryActionClick={() => {
                         setShowDeleteModal(false);
                         setDeletingRule(null);
-                    } }
-                    onPrimaryActionClick={ () => {
+                    }}
+                    onPrimaryActionClick={() => {
                         handleDelete();
-                    } }
-                    closeOnDimmerClick={ false }
+                    }}
+                    closeOnDimmerClick={false}
+                    loading={isDeleting}
                 >
                     <>
                         <ConfirmationModal.Header>Delete Unification Rule</ConfirmationModal.Header>
@@ -291,8 +299,8 @@ export const UnificationRulesList: FunctionComponent<ResolutionRulesListProps> =
                             Deleting this rule will permanently remove it and it cannot be undone.
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content>
-                            Are you sure you want to delete the rule <b>{ deletingRule.rule_name }</b>?. 
-                            Deleting the rule will remove it from engaging in unification of user profiles. Exisiting unification will not be affected.
+                            Are you sure you want to delete the rule <b>{deletingRule.rule_name}</b>? 
+                            Deleting the rule will remove it from engaging in unification of user profiles. Existing unification will not be affected.
                         </ConfirmationModal.Content>
                     </>
                 </ConfirmationModal>
