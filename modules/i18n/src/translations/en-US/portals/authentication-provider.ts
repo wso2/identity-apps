@@ -2236,7 +2236,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
                         subTitle: "Select the type of the new outbound provisioning connector",
                         title: "Connector Types"
                     },
-                    subTitle: "Select a outbound provisioning connector",
+                    subTitle: "Select an outbound provisioning connector",
                     title: "Connector selection"
                 },
                 summary: {

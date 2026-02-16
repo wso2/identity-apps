@@ -21,7 +21,6 @@ import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { useGroupList } from "@wso2is/admin.groups.v1/api/groups";
 import { GroupsInterface } from "@wso2is/admin.groups.v1/models/groups";
-import { useGetCurrentOrganizationType } from "@wso2is/admin.organizations.v1/hooks/use-get-organization-type";
 import { AlertLevels, IdentifiableComponentInterface, LabelValue } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AutocompleteFieldAdapter, FinalForm, FinalFormField, FormRenderProps } from "@wso2is/form";
@@ -64,7 +63,6 @@ export const OutboundProvisioningGroups: FunctionComponent<OutboundProvisioningG
     const [ inputValue, setInputValue ] = useState<string>("");
 
     const dispatch: Dispatch = useDispatch();
-    const { isSuperOrganization } = useGetCurrentOrganizationType();
     const { t } = useTranslation();
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
@@ -81,7 +79,7 @@ export const OutboundProvisioningGroups: FunctionComponent<OutboundProvisioningG
         searchQuery,
         null,
         excludedAttributes,
-        isSuperOrganization()
+        true
     );
 
     /**
@@ -132,13 +130,9 @@ export const OutboundProvisioningGroups: FunctionComponent<OutboundProvisioningG
     }, [ groupsListFetchRequestError ]);
 
     useEffect(() => {
-        if (!isSuperOrganization()) {
-            return;
-        }
-
         setSelectedGroups(idpRoles.outboundProvisioningRoles === undefined ? [] :
             idpRoles.outboundProvisioningRoles);
-    }, []);
+    }, [ idpRoles ]);
 
     const handleOutboundProvisioningGroupMapping = () => {
         setIsSubmitting(true);

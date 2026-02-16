@@ -68,6 +68,64 @@ export const getFilteredConnectorMetadataList = (
 };
 
 /**
+ * Determines if a field should be visible based on the current authentication mode.
+ * For SCIM2 connectors, authentication credential fields are only visible when their auth mode is selected.
+ *
+ * @param propertyKey - The key of the property to check.
+ * @param connectorName - The name of the connector (e.g., "scim2").
+ * @param currentAuthMode - The currently selected authentication mode.
+ * @returns Whether the field should be visible.
+ */
+export const isFieldVisibleForAuthMode = (
+    propertyKey: string | undefined,
+    connectorName: string | undefined,
+    currentAuthMode: string | undefined
+): boolean => {
+    if (!propertyKey) {
+        return true;
+    }
+
+    // For non-SCIM2 connectors, all fields are visible
+    const isScim2: boolean = connectorName?.toLowerCase() === SCIM2_CONNECTOR_NAME;
+
+    if (!isScim2) {
+        return true;
+    }
+
+    // Always show the authentication mode dropdown itself
+    if (propertyKey === SCIM2_AUTH_PROPERTIES.AUTHENTICATION_MODE) {
+        return true;
+    }
+
+    // Non-auth fields are always visible
+    if (!Object.values(SCIM2_AUTH_PROPERTIES).includes(propertyKey)) {
+        return true;
+    }
+
+    // Authentication-specific credential fields visibility based on selected mode
+    switch (currentAuthMode) {
+        case OutboundProvisioningAuthenticationMode.BASIC:
+            return propertyKey === SCIM2_AUTH_PROPERTIES.USERNAME
+                || propertyKey === SCIM2_AUTH_PROPERTIES.PASSWORD;
+
+        case OutboundProvisioningAuthenticationMode.BEARER:
+            return propertyKey === SCIM2_AUTH_PROPERTIES.ACCESS_TOKEN;
+
+        case OutboundProvisioningAuthenticationMode.API_KEY:
+            return propertyKey === SCIM2_AUTH_PROPERTIES.API_KEY_HEADER
+                || propertyKey === SCIM2_AUTH_PROPERTIES.API_KEY_VALUE;
+
+        case OutboundProvisioningAuthenticationMode.NONE:
+            // Hide all auth credential fields when mode is NONE
+            return false;
+
+        default:
+            // If no auth mode is set, hide auth credential fields as a safety fallback
+            return false;
+    }
+};
+
+/**
  * Determines if a field should be required based on the current authentication mode.
  * For SCIM2 connectors, this overrides the metadata's isMandatory for authentication credential fields.
  *

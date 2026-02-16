@@ -24,6 +24,7 @@ import {
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ConnectorConfigFormFields } from "./connector-config-form-fields";
+import { SCIM2_AUTH_PROPERTIES } from "../../../../constants/outbound-provisioning-constants";
 import { AuthenticatorSettingsFormModes } from "../../../../models/authenticators";
 import {
     CommonPluggableComponentMetaPropertyInterface,
@@ -31,6 +32,7 @@ import {
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorMetaInterface
 } from "../../../../models/connection";
+import { isFieldVisibleForAuthMode } from "../../../../utils/provisioning-utils";
 
 /**
  * Props for the OutboundProvisioningConnectorConfigForm component.
@@ -150,13 +152,20 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
 
     /**
      * Process a property and its sub-properties recursively to add them to the properties array.
-     * For confidential properties, only include them if the user has changed the value.
+     * For confidential properties, only include them if the user has changed the value
+     * AND they're visible for current auth mode.
      * For non-confidential properties, always include them.
+     *
+     * @param property - The property metadata to process.
+     * @param values - The form values.
+     * @param properties - The properties array to populate.
+     * @param currentAuthMode - The current authentication mode (for SCIM2 visibility checks).
      */
     const processProperty = (
         property: CommonPluggableComponentMetaPropertyInterface,
         values: Record<string, any>,
-        properties: { key: string; value: string }[]
+        properties: { key: string; value: string }[],
+        currentAuthMode?: string
     ): void => {
         if (!property.key) {
             return;
@@ -166,12 +175,19 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
         const isConfidential: boolean = property.isConfidential ?? false;
         const isFieldInForm: boolean = Object.hasOwn(values, property.key);
 
+        // Check if this field is visible for the current auth mode (for SCIM2 connectors)
+        const isFieldVisible: boolean = isFieldVisibleForAuthMode(
+            property.key,
+            metadata?.name,
+            currentAuthMode
+        );
+
         // For confidential properties in edit mode, only include if value changed
         if (isEditMode && isConfidential) {
             // Check if the value has changed (including being cleared to empty string)
             if (hasConfidentialValueChanged(property.key, fieldValue)) {
                 // Value has changed, include it in the request
-                // This includes empty string if user intentionally cleared the field
+                // This includes empty string if user intentionally cleared the field (e.g., switching auth modes)
                 properties.push({
                     key: property.key,
                     value: String(fieldValue ?? "")
@@ -190,7 +206,21 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
                 value: String(!!valueToUse)
             });
         } else if (isFieldInForm) {
-            // Field is in form (rendered and possibly edited) - always include its current value
+            // For fields in the form (CREATE mode or non-confidential in EDIT mode)
+
+            // Skip confidential fields that are not visible for current auth mode and have empty values
+            // This prevents sending empty auth credentials that were never filled (e.g., in CREATE mode)
+            if (isConfidential && !isFieldVisible && !fieldValue) {
+                return;
+            }
+
+            // Skip empty, unconfigured, non-mandatory fields.
+            // This prevents sending unnecessary empty values for optional fields that were never set.
+            if (!fieldValue && !getInitialPropertyValue(property.key) && !property.isMandatory) {
+                return;
+            }
+
+            // Field is in form (rendered and possibly edited) - include its current value
             // This includes empty strings if the user cleared the field
             properties.push({
                 key: property.key,
@@ -217,7 +247,7 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
         // Process sub-properties recursively
         if (property.subProperties && property.subProperties.length > 0) {
             property.subProperties.forEach((subProperty: CommonPluggableComponentMetaPropertyInterface) => {
-                processProperty(subProperty, values, properties);
+                processProperty(subProperty, values, properties, currentAuthMode);
             });
         }
     };
@@ -228,8 +258,11 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
     const handleSubmit = (values: Record<string, any>): void => {
         const properties: { key: string; value: string }[] = [];
 
+        // Get current auth mode from form values for SCIM2 visibility checks
+        const currentAuthMode: string | undefined = values[SCIM2_AUTH_PROPERTIES.AUTHENTICATION_MODE];
+
         metadata?.properties?.forEach((property: CommonPluggableComponentMetaPropertyInterface) => {
-            processProperty(property, values, properties);
+            processProperty(property, values, properties, currentAuthMode);
         });
 
         onSubmit({
@@ -259,34 +292,32 @@ export const OutboundProvisioningConnectorConfigForm: FunctionComponent<
                 formRef.current = form;
 
                 return (
-                    <>
-                        <form id={ FORM_ID } onSubmit={ handleSubmit } data-componentid={ componentId }>
-                            <ConnectorConfigFormFields
-                                isEditMode={ mode !== AuthenticatorSettingsFormModes.CREATE }
-                                metadata={ metadata }
-                                initialValues={ initialValues }
-                                fieldNamePrefix=""
-                                readOnly={ isFieldReadOnly }
-                                onValidationChange={ (hasErrors: boolean) => {
-                                    setHasValidationErrors(hasErrors);
-                                } }
-                                data-componentid={ `${ componentId }-fields` }
-                            />
-                        </form>
+                    <form id={ FORM_ID } onSubmit={ handleSubmit } data-componentid={ componentId }>
+                        <ConnectorConfigFormFields
+                            isEditMode={ mode !== AuthenticatorSettingsFormModes.CREATE }
+                            metadata={ metadata }
+                            initialValues={ initialValues }
+                            fieldNamePrefix=""
+                            readOnly={ isFieldReadOnly }
+                            formApi={ form }
+                            onValidationChange={ (hasErrors: boolean) => {
+                                setHasValidationErrors(hasErrors);
+                            } }
+                            data-componentid={ `${ componentId }-fields` }
+                        />
                         { !readOnly && showSubmitButton && (
-                            <PrimaryButton
-                                type="submit"
-                                data-componentid={ `${componentId}-form-update-button` }
-                                loading={ isSubmitting }
-                                disabled={ isSubmitting || hasValidationErrors }
-                                onClick={ () => {
-                                    form.submit();
-                                } }
-                            >
-                                { t("common:update") }
-                            </PrimaryButton>
+                            <div style={ { marginTop: "1rem" } }>
+                                <PrimaryButton
+                                    type="submit"
+                                    data-componentid={ `${componentId}-form-update-button` }
+                                    loading={ isSubmitting }
+                                    disabled={ isSubmitting || hasValidationErrors }
+                                >
+                                    { t("common:update") }
+                                </PrimaryButton>
+                            </div>
                         ) }
-                    </>
+                    </form>
                 );
             } }
         />

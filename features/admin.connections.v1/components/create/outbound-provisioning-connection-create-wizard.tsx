@@ -22,6 +22,7 @@ import { IdentityAppsError } from "@wso2is/core/errors";
 import { AlertLevels, IdentifiableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FinalFormField, TextFieldAdapter, Wizard2, WizardPage } from "@wso2is/form";
+import { KeyValue } from "@wso2is/forms";
 import {
     GenericIcon,
     Heading,
@@ -46,8 +47,8 @@ import useGetOutboundProvisioningConnectors from "../../api/use-get-outbound-pro
 import { getConnectionIcons, getConnectionWizardStepIcons } from "../../configs/ui";
 import { CommonAuthenticatorConstants } from "../../constants/common-authenticator-constants";
 import { ConnectionUIConstants } from "../../constants/connection-ui-constants";
-import { SCIM2_AUTH_PROPERTIES } from "../../constants/outbound-provisioning-constants";
 import {
+    CommonPluggableComponentMetaPropertyInterface,
     ConnectionInterface,
     ConnectionTemplateInterface,
     IdpNameValidationCache,
@@ -58,7 +59,7 @@ import {
     ConnectionsManagementUtils,
     handleGetOutboundProvisioningConnectorMetadataError
 } from "../../utils/connection-utils";
-import { getFilteredConnectorMetadataList, isFieldRequiredForAuthMode } from "../../utils/provisioning-utils";
+import { getFilteredConnectorMetadataList } from "../../utils/provisioning-utils";
 import { ConnectorConfigFormFields } from "../edit/forms/outbound-provisioning-connectors/connector-config-form-fields";
 
 /**
@@ -291,7 +292,8 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
 
                 // Check if all mandatory fields have default values to determine initial button state
                 const hasMandatoryFieldsWithoutDefaults: boolean = response.properties?.some(
-                    (property: any) => property.isMandatory && !property.defaultValue && !property.isConfidential
+                    (property: CommonPluggableComponentMetaPropertyInterface) =>
+                        property?.isMandatory && !property?.defaultValue && !property?.isConfidential
                 ) ?? false;
 
                 // If there are mandatory fields without defaults, keep next button disabled
@@ -311,21 +313,21 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
      * Handles the final wizard submission.
      * Follows the same pattern as EnterpriseConnectionCreateWizard.
      */
-    const handleFormSubmit = (values: any): void => {
+    const handleFormSubmit = (values: Record<string, string>): void => {
 
         if (selectedConnectorId === null) return;
-        // Build provisioning properties from form values
-        const properties: any[] = [];
+        // Build provisioning properties from form values.
+        const properties: KeyValue[] = [];
 
         /**
          * Process a property and its sub-properties recursively.
          */
-        const processProperty = (property: any): void => {
+        const processProperty = (property: CommonPluggableComponentMetaPropertyInterface): void => {
             if (!property.key) {
                 return;
             }
 
-            const fieldValue: any = values[property.key];
+            const fieldValue: string = values[property.key];
 
             if (fieldValue !== undefined && fieldValue !== null && fieldValue !== "") {
                 properties.push({
@@ -339,21 +341,21 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
                 });
             }
 
-            // Process sub-properties recursively
+            // Process sub-properties recursively.
             if (property.subProperties && property.subProperties.length > 0) {
-                property.subProperties.forEach((subProperty: any) => {
+                property.subProperties.forEach((subProperty: CommonPluggableComponentMetaPropertyInterface) => {
                     processProperty(subProperty);
                 });
             }
         };
 
         if (connectorMetaData?.properties) {
-            connectorMetaData.properties.forEach((property: any) => {
+            connectorMetaData.properties.forEach((property: CommonPluggableComponentMetaPropertyInterface) => {
                 processProperty(property);
             });
         }
 
-        // Build connection payload
+        // Build connection payload.
         const connection: ConnectionInterface = {
             alias: EMPTY_STRING,
             certificate: {
@@ -479,7 +481,7 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
      */
     const generalDetailsPage = (): ReactElement => (
         <WizardPage
-            validate={ (values: any) => {
+            validate={ (values: Record<string, string>) => {
                 const errors: FormErrors = {};
 
                 // Validate name field
@@ -513,7 +515,7 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
                             FormControlProps={ {
                                 margin: "dense"
                             } }
-                            data-testid={ `${componentId}-form-wizard-idp-name` }
+                            data-componentid={ `${componentId}-form-wizard-idp-name` }
                             aria-label="name"
                             name="name"
                             type="text"
@@ -564,7 +566,7 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
                             FormControlProps={ {
                                 margin: "dense"
                             } }
-                            data-testid={ `${componentId}-form-wizard-idp-description` }
+                            data-componentid={ `${componentId}-form-wizard-idp-description` }
                             aria-label="description"
                             name="description"
                             type="text"
@@ -636,32 +638,7 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
         }
 
         return (
-            <WizardPage
-                validate={ (values: any) => {
-                    const errors: FormErrors = {};
-
-                    connectorMetaData?.properties?.forEach((property: any) => {
-                        const fieldName: string = property.key;
-                        const isRequired: boolean = isFieldRequiredForAuthMode(
-                            property.key,
-                            property,
-                            connectorMetaData?.name,
-                            values[SCIM2_AUTH_PROPERTIES.AUTHENTICATION_MODE]
-                        );
-
-                        // Validate all required fields, including confidential ones in create mode
-                        if (isRequired) {
-                            if (!values[fieldName]) {
-                                errors[fieldName] = t("common:required");
-                            }
-                        }
-                    });
-
-                    setNextShouldBeDisabled(ifFieldsHave(errors));
-
-                    return errors;
-                } }
-            >
+            <WizardPage>
                 <Heading as="h5">
                     { t("authenticationProvider:wizards.addProvisioningConnector.steps.connectorConfiguration" +
                         ".configureTitle", {
@@ -763,7 +740,7 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
                                 <LinkButton
                                     floated="left"
                                     onClick={ onWizardClose }
-                                    data-testid="add-connection-modal-cancel-button"
+                                    data-componentid="add-connection-modal-cancel-button"
                                 >
                                     { t("common:cancel") }
                                 </LinkButton>
@@ -775,7 +752,7 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
                                         disabled={ nextShouldBeDisabled }
                                         floated="right"
                                         onClick={ () => wizardRef.current.gotoNextPage() }
-                                        data-testid="add-connection-modal-next-button"
+                                        data-componentid="add-connection-modal-next-button"
                                     >
                                         { t("authenticationProvider:wizards.buttons.next") }
                                         <Icon name="arrow right" />
@@ -784,11 +761,11 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
                                 { /* Check whether its the last step. */ }
                                 { currentWizardStep === wizardSteps.length - 1 && (
                                     <PrimaryButton
-                                        disabled={ isSubmitting }
+                                        disabled={ isSubmitting || nextShouldBeDisabled }
                                         type="submit"
                                         floated="right"
                                         onClick={ () => wizardRef.current.gotoNextPage() }
-                                        data-testid="add-connection-modal-finish-button"
+                                        data-componentid="add-connection-modal-finish-button"
                                         loading={ isSubmitting }
                                     >
                                         { t("authenticationProvider:wizards.buttons.finish") }
@@ -799,7 +776,7 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
                                         type="submit"
                                         floated="right"
                                         onClick={ () => wizardRef.current.gotoPreviousPage() }
-                                        data-testid="add-connection-modal-previous-button"
+                                        data-componentid="add-connection-modal-previous-button"
                                     >
                                         <Icon name="arrow left" />
                                         { t("authenticationProvider:wizards.buttons.previous") }

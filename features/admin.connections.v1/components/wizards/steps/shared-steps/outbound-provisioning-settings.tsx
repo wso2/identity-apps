@@ -48,12 +48,9 @@ interface OutboundProvisioningSettingsWizardFormPropsInterface extends TestableC
 
 /**
  * Outbound provisioning settings wizard form component.
- *
- * @param {OutboundProvisioningSettingsWizardFormPropsInterface} props - Props injected to the component.
- * @return {ReactElement}
  */
 export const OutboundProvisioningSettings: FunctionComponent<OutboundProvisioningSettingsWizardFormPropsInterface> = (
-    props
+    props: OutboundProvisioningSettingsWizardFormPropsInterface
 ): ReactElement => {
 
     const {
