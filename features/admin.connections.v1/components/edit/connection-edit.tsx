@@ -17,6 +17,7 @@
  */
 
 import { useRequiredScopes } from "@wso2is/access-control";
+import useUIConfig from "@wso2is/admin.core.v1/hooks/use-ui-configs";
 import { FeatureConfigInterface } from "@wso2is/admin.core.v1/models/config";
 import { AppState } from "@wso2is/admin.core.v1/store";
 import { identityProviderConfig } from "@wso2is/admin.extensions.v1";
@@ -144,6 +145,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     } = props;
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const { UIConfig } = useUIConfig();
 
     const [ tabPaneExtensions, setTabPaneExtensions ] = useState<ResourceTabPaneInterface[]>(undefined);
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number | string>(0);
@@ -159,6 +161,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     const [ isExpertMode, setIsExpertMode ] = useState<boolean>(false);
     const [ isCustomAuthenticator, setIsCustomAuthenticator ] = useState<boolean>(false);
     const [ isCustomLocalAuthenticator, setIsCustomLocalAuthenticator ] = useState<boolean>(false);
+    const [ isOutboundProvisioningConnection, setIsOutboundProvisioningConnection ] = useState<boolean>(false);
 
     const hasApplicationReadPermissions: boolean = useRequiredScopes(featureConfig?.applications?.scopes?.read);
 
@@ -371,6 +374,9 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.INTERNAL_CUSTOM_AUTHENTICATOR ||
                 type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TWO_FACTOR_CUSTOM_AUTHENTICATOR
         );
+        setIsOutboundProvisioningConnection(
+            type === CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OUTBOUND_PROVISIONING_CONNECTION
+        );
     }, [ type ]);
 
     useEffect(() => {
@@ -488,7 +494,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
 
         if (
             shouldShowTab(type, ConnectionTabTypes.OUTBOUND_PROVISIONING) &&
-            identityProviderConfig.editIdentityProvider.showOutboundProvisioning &&
+            shouldShowOutboundProvisioningTab() &&
             !isOrganizationEnterpriseAuthenticator &&
             !isCustomAuthenticator
         ) {
@@ -529,6 +535,25 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
     };
 
     /**
+     * Evaluate whether to show outbound provisioning tab.
+     * When `enableProvisioningConnectionV2` is enabled, always show the tab for outbound provisioning connections.
+     * For other connections, show only if they already have outbound connectors configured.
+     * If the new config is not enabled, fallback to the old behavior.
+     * @returns Should show outbound provisioning tab or not.
+     */
+    const shouldShowOutboundProvisioningTab = (): boolean => {
+        if (UIConfig?.enableProvisioningConnectionV2) {
+            if (isOutboundProvisioningConnection) {
+                return true;
+            }
+
+            return (identityProvider?.provisioning?.outboundConnectors?.connectors?.length ?? 0) > 0;
+        }
+
+        return identityProviderConfig.editIdentityProvider.showOutboundProvisioning;
+    };
+
+    /**
      * Evaluate internally whether to show/hide a tab.
      *
      * @param templateType - IDP Type.
@@ -551,6 +576,7 @@ export const EditConnection: FunctionComponent<EditConnectionPropsInterface> = (
             !isEnterpriseConnection &&
             !isExpertMode &&
             !isCustomAuthenticator &&
+            !isOutboundProvisioningConnection &&
             !tabPaneExtensions)
     ) {
         return <Loader />;

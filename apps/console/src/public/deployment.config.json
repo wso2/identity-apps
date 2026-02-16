@@ -334,6 +334,7 @@
         "enableIdentityClaims": true,
         "enableLegacySessionBoundTokenBehaviour": false,
         "enableOldUIForEmailProvider": false,
+        "enableProvisioningConnectionV2": true,
         "features": {
             "accountLogin": {
                 "disabledFeatures": [],

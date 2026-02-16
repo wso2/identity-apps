@@ -56,6 +56,7 @@ export class CommonAuthenticatorConstants {
         MICROSOFT: string;
         OIDC: string;
         ORGANIZATION_ENTERPRISE_IDP: string;
+        OUTBOUND_PROVISIONING_CONNECTION: string;
         SAML: string;
         SIGNICAT: string;
         SWE: string;
@@ -77,6 +78,7 @@ export class CommonAuthenticatorConstants {
             MICROSOFT: "microsoft-idp",
             OIDC: "enterprise-oidc-idp",
             ORGANIZATION_ENTERPRISE_IDP: "organization-enterprise-idp",
+            OUTBOUND_PROVISIONING_CONNECTION: "outbound-provisioning-connection",
             SAML: "enterprise-saml-idp",
             SIGNICAT: "signicat",
             SWE: "swe-idp",

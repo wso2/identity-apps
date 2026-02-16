@@ -336,7 +336,9 @@ const ConnectionEditPage: FunctionComponent<ConnectionEditPagePropsInterface> = 
             identityProviderTemplate?.id ===
                 CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.INTERNAL_CUSTOM_AUTHENTICATOR ||
             identityProviderTemplate?.id ===
-                CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TWO_FACTOR_CUSTOM_AUTHENTICATOR
+            CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.TWO_FACTOR_CUSTOM_AUTHENTICATOR ||
+            identityProviderTemplate?.id ===
+            CommonAuthenticatorConstants.CONNECTION_TEMPLATE_IDS.OUTBOUND_PROVISIONING_CONNECTION
         ) {
             return;
         }
