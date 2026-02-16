@@ -1457,6 +1457,10 @@ export interface ApplicationsNS {
                 };
                 grant: {
                     children: {
+                        ciba: {
+                            hint: string;
+                            label: string;
+                        },
                         client_credential: {
                             hint: string;
                             label: string;
@@ -1497,6 +1501,30 @@ export interface ApplicationsNS {
                             }
                         }
                     }
+                },
+                ciba: {
+                    cibaAuthReqExpiryTime: {
+                        hint: string;
+                        label: string;
+                        placeholder: string;
+                        validations: {
+                            empty: string;
+                        };
+                    };
+                    cibaNotificationChannels: {
+                        hint: string;
+                        label: string;
+                        options: {
+                            email: string;
+                            sms: string;
+                        };
+                    };
+                    cibaDefaultNotificationChannel: {
+                        hint: string;
+                        label: string;
+                        placeholder: string;
+                    };
+                    heading: string;
                 }
             };
             mobileApp: {

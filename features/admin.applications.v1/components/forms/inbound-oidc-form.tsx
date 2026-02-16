@@ -345,6 +345,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const requestObjectEncryptionMethod: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const subjectToken: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
     const applicationSubjectTokenExpiryInSeconds: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const cibaAuthReqExpiryTime: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const cibaNotificationChannels: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
+    const cibaDefaultNotificationChannel: MutableRefObject<HTMLElement> = useRef<HTMLElement>();
 
     const [ isSPAApplication, setSPAApplication ] = useState<boolean>(false);
     const [ isOIDCWebApplication, setOIDCWebApplication ] = useState<boolean>(false);
@@ -363,6 +366,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ isAppShared, setIsAppShared ] = useState<boolean>(false);
     const [ sharedOrganizationsList, setSharedOrganizationsList ] = useState<Array<OrganizationInterface>>(undefined);
     const [ enableHybridFlowResponseTypeField , setEnableHybridFlowResponseTypeField ] = useState<boolean>(undefined);
+    const [ showCibaFields, setShowCibaFields ] = useState<boolean>(false);
 
     const [ triggerCertSubmit, setTriggerCertSubmit ] = useTrigger();
 
@@ -700,6 +704,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             && isFeatureEnabled(applicationFeatureConfig, "applications.hybridFlow")
         ) {
             setHybridFlowEnableConfig(true);
+        }
+    }, [ selectedGrantTypes, isGrantChanged ]);
+
+    useEffect(() => {
+        setShowCibaFields(false);
+        if (selectedGrantTypes?.includes(ApplicationManagementConstants.CIBA_GRANT)) {
+            setShowCibaFields(true);
         }
     }, [ selectedGrantTypes, isGrantChanged ]);
 
@@ -1130,6 +1141,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             );
         }
 
+        if (value === ApplicationManagementConstants.CIBA_GRANT) {
+            return t("applications:forms.inboundOIDC.fields.grant.children.ciba.label");
+        }
+
         return label;
     };
 
@@ -1555,6 +1570,30 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     hybridFlow: {
                         enable: false,
                         responseType: null
+                    }
+                };
+            }
+
+            if (showCibaFields) {
+                inboundConfigFormValues = {
+                    ...inboundConfigFormValues,
+                    cibaAuthenticationRequest: {
+                        cibaAuthReqExpiryTime: values.get("cibaAuthReqExpiryTime")
+                            ? parseInt(values.get("cibaAuthReqExpiryTime"), 10)
+                            : undefined,
+                        cibaDefaultNotificationChannel:
+                            values.get("cibaDefaultNotificationChannel") as string || undefined,
+                        cibaNotificationChannels:
+                            values.get("cibaNotificationChannels") as unknown as string[] || []
+                    }
+                };
+            } else {
+                inboundConfigFormValues = {
+                    ...inboundConfigFormValues,
+                    cibaAuthenticationRequest: {
+                        cibaAuthReqExpiryTime: undefined,
+                        cibaDefaultNotificationChannel: undefined,
+                        cibaNotificationChannels: []
                     }
                 };
             }
@@ -2081,6 +2120,124 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             </Hint>
                         </Grid.Column>
                     </Grid.Row>
+                )
+            }
+
+            {
+                showCibaFields && (
+                    <>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Divider />
+                                <Divider hidden />
+                            </Grid.Column>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
+                                <Heading as="h4">
+                                    { t("applications:forms.inboundOIDC.fields.ciba.heading") }
+                                </Heading>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Field
+                                    ref={ cibaAuthReqExpiryTime }
+                                    name="cibaAuthReqExpiryTime"
+                                    label={
+                                        t("applications:forms.inboundOIDC.fields." +
+                                            "ciba.cibaAuthReqExpiryTime.label")
+                                    }
+                                    required={ true }
+                                    requiredErrorMessage={
+                                        t("applications:forms.inboundOIDC.fields." +
+                                            "ciba.cibaAuthReqExpiryTime.validations.empty")
+                                    }
+                                    type="number"
+                                    placeholder={
+                                        t("applications:forms.inboundOIDC.fields." +
+                                            "ciba.cibaAuthReqExpiryTime.placeholder")
+                                    }
+                                    value={
+                                        initialValues?.cibaAuthenticationRequest?.cibaAuthReqExpiryTime
+                                    }
+                                    readOnly={ readOnly }
+                                    min={ 1 }
+                                    data-componentid={ `${ testId }-ciba-expiry-input` }
+                                />
+                                <Hint>
+                                    { t("applications:forms.inboundOIDC.fields." +
+                                        "ciba.cibaAuthReqExpiryTime.hint") }
+                                </Hint>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Field
+                                    ref={ cibaNotificationChannels }
+                                    name="cibaNotificationChannels"
+                                    label={
+                                        t("applications:forms.inboundOIDC.fields." +
+                                            "ciba.cibaNotificationChannels.label")
+                                    }
+                                    type="checkbox"
+                                    required={ false }
+                                    value={
+                                        initialValues?.cibaAuthenticationRequest?.cibaNotificationChannels
+                                            ?? []
+                                    }
+                                    readOnly={ readOnly }
+                                    data-componentid={ `${ testId }-ciba-notification-channels` }
+                                    children={ [
+                                        {
+                                            label: t("applications:forms.inboundOIDC.fields." +
+                                                "ciba.cibaNotificationChannels.options.email"),
+                                            value: "email"
+                                        },
+                                        {
+                                            label: t("applications:forms.inboundOIDC.fields." +
+                                                "ciba.cibaNotificationChannels.options.sms"),
+                                            value: "sms"
+                                        }
+                                    ] }
+                                />
+                                <Hint>
+                                    { t("applications:forms.inboundOIDC.fields." +
+                                        "ciba.cibaNotificationChannels.hint") }
+                                </Hint>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Field
+                                    ref={ cibaDefaultNotificationChannel }
+                                    name="cibaDefaultNotificationChannel"
+                                    label={
+                                        t("applications:forms.inboundOIDC.fields." +
+                                            "ciba.cibaDefaultNotificationChannel.label")
+                                    }
+                                    type="dropdown"
+                                    required={ false }
+                                    default={
+                                        initialValues?.cibaAuthenticationRequest?.cibaDefaultNotificationChannel
+                                            ?? null
+                                    }
+                                    placeholder={
+                                        t("applications:forms.inboundOIDC.fields." +
+                                            "ciba.cibaDefaultNotificationChannel.placeholder")
+                                    }
+                                    readOnly={ readOnly }
+                                    data-componentid={ `${ testId }-ciba-default-notification-channel` }
+                                    children={ [
+                                        { text: "Email", key: "email", value: "email" },
+                                        { text: "SMS", key: "sms", value: "sms" }
+                                    ] }
+                                />
+                                <Hint>
+                                    { t("applications:forms.inboundOIDC.fields." +
+                                        "ciba.cibaDefaultNotificationChannel.hint") }
+                                </Hint>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </>
                 )
             }
             {

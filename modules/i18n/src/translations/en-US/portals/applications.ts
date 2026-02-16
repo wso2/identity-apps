@@ -1452,6 +1452,7 @@ export const applications: ApplicationsNS = {
                                 }
                             }
                         },
+
                         apple: {
                             heading: "Apple",
                             fields: {
@@ -1711,6 +1712,10 @@ export const applications: ApplicationsNS = {
                 },
                 grant: {
                     children: {
+                        ciba: {
+                            label: "Client Initiated Backchannel Authentication",
+                            hint: "Allow clients to initiate authentication flow without user interaction on the consumption device."
+                        },
                         client_credential: {
                             hint: "This grant type does not support the 'openid' scope.",
                             label: "(openid scope not allowed)"
@@ -1754,6 +1759,30 @@ export const applications: ApplicationsNS = {
                             }
                         }
                     }
+                },
+                ciba: {
+                    cibaAuthReqExpiryTime: {
+                        hint: "Specify the expiry time for the CIBA authentication request in seconds.",
+                        label: "CIBA Authentication Request Expiry Time",
+                        placeholder: "Enter expiry time",
+                        validations: {
+                            empty: "This is a required field."
+                        }
+                    },
+                    cibaNotificationChannels: {
+                        hint: "Select the notification channels allowed for CIBA authentication requests.",
+                        label: "Notification Channels",
+                        options: {
+                            email: "Email",
+                            sms: "SMS"
+                        }
+                    },
+                    cibaDefaultNotificationChannel: {
+                        hint: "Specify the default notification channel to use for CIBA authentication requests.",
+                        label: "Default Notification Channel",
+                        placeholder: "Select default channel"
+                    },
+                    heading: "Client Initiated Backchannel Authentication"
                 }
             },
             messages: {
