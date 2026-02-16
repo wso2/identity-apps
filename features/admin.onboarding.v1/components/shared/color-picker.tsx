@@ -24,7 +24,7 @@ import { IdentifiableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement, memo, useCallback, useEffect, useRef, useState } from "react";
 import Hint from "./hint";
 import { SectionLabel } from "./onboarding-styles";
-import { BrandingConstraints, OnboardingComponentIds, PRESET_COLORS, isValidHexColor } from "../../constants";
+import { OnboardingComponentIds, PRESET_COLORS, isValidHexColor } from "../../constants";
 
 /**
  * Props interface for ColorPicker component.
@@ -189,9 +189,9 @@ const ColorPicker: FunctionComponent<ColorPickerPropsInterface> = memo((
 
     // Sanitize color value for native input to prevent console warnings
     // Native <input type="color"> requires valid #RRGGBB format
-    const sanitizedColor: string = isCustomColorValid
+    const sanitizedColor: string = isValidHexColor(customColor)
         ? customColor
-        : BrandingConstraints.DEFAULT_PRIMARY_COLOR;
+        : color;
 
     return (
         <ColorPickerContainer data-componentid={ componentId }>

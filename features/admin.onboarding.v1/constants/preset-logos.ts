@@ -94,10 +94,15 @@ export const getAnimalNameFromUrl = (url: string): string => {
 };
 
 /**
+ * Default primary color used across branding configuration.
+ */
+export const DEFAULT_PRIMARY_COLOR: string = "#ff7300";
+
+/**
  * Preset color options for quick selection.
  */
 export const PRESET_COLORS: string[] = [
-    "#ff7300", // Orange (default)
+    DEFAULT_PRIMARY_COLOR, // Orange (default)
     "#3b82f6", // Blue
     "#6366f1", // Indigo
     "#64748b",  // Slate
@@ -112,7 +117,7 @@ export const PRESET_COLORS: string[] = [
 export const DEFAULT_BRANDING_CONFIG: OnboardingBrandingConfigInterface = {
     logoAltText: "Logo",
     logoUrl: undefined,
-    primaryColor: "#ff7300"
+    primaryColor: DEFAULT_PRIMARY_COLOR
 };
 
 /**
@@ -132,7 +137,7 @@ interface BrandingConstraintsInterface {
  */
 export const BrandingConstraints: BrandingConstraintsInterface = {
     COLOR_PATTERN: /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/,
-    DEFAULT_PRIMARY_COLOR: "#ff7300",
+    DEFAULT_PRIMARY_COLOR,
     LOGO_URL_PATTERN: /^(https?:\/\/|\/)/
 };
 

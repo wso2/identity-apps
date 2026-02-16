@@ -211,7 +211,7 @@ const buildApplicationPayload = (
     let payload: ApplicationPayloadInterface;
 
     if (resolvedTemplateId === ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION) {
-        return buildMCPClientPayload(applicationName || DEFAULT_APPLICATION_NAME);
+        payload = buildMCPClientPayload(applicationName || DEFAULT_APPLICATION_NAME);
     } else if (resolvedTemplateId === ApplicationTemplateIdTypes.M2M_APPLICATION) {
         return buildM2MPayload(applicationName || DEFAULT_APPLICATION_NAME);
     } else if (apiTemplate?.payload) {

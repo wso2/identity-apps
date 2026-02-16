@@ -416,9 +416,10 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
 
             setCreatedApplication(result);
 
+            const appName: string = onboardingData.applicationName || "your application";
             const alertMessage: string = isTourFlow
                 ? "Try It app is ready for preview."
-                : `Application "${onboardingData.applicationName}" has been created successfully.`;
+                : `Application "${appName}" has been created successfully.`;
 
             dispatch(addAlert({
                 description: alertMessage,
