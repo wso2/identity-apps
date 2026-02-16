@@ -99,6 +99,15 @@ export const updateApplicationBranding = async (
     applicationId: string,
     brandingConfig: OnboardingBrandingConfigInterface
 ): Promise<void> => {
+    // Input validation
+    if (!applicationId || applicationId.trim() === "") {
+        throw new Error("Application ID is required");
+    }
+
+    if (!brandingConfig?.primaryColor) {
+        throw new Error("Branding config must include primaryColor");
+    }
+
     const locale: string = I18nConstants.DEFAULT_FALLBACK_LANGUAGE;
     let existingPreference: BrandingPreferenceInterface | undefined;
     let isBrandingAlreadyConfigured: boolean = false;
@@ -127,9 +136,14 @@ export const updateApplicationBranding = async (
             existingPreference = response.data.preference;
             isBrandingAlreadyConfigured = true;
         }
-    } catch {
-        // No existing branding, will create new
-        isBrandingAlreadyConfigured = false;
+    } catch (error: any) {
+        // Only suppress 404 - no existing branding, will create new
+        if (error.response?.status === 404) {
+            isBrandingAlreadyConfigured = false;
+        } else {
+            // Re-throw non-404 errors (network failures, auth errors, server errors)
+            throw error;
+        }
     }
 
     // Merge with existing preference and predefined theme values

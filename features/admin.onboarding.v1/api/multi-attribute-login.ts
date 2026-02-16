@@ -21,6 +21,7 @@ import { updateGovernanceConnector } from "@wso2is/admin.server-configurations.v
 import {
     ServerConfigurationsConstants
 } from "@wso2is/admin.server-configurations.v1/constants/server-configurations-constants";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { SignInIdentifiersConfigInterface } from "../models";
 
 /**
@@ -35,34 +36,45 @@ export const updateMultiAttributeLoginConfig = async (
     identifiers: SignInIdentifiersConfigInterface,
     isAlphanumericUsername: boolean = true
 ): Promise<void> => {
-    const allowedAttributes: string[] = [ ClaimManagementConstants.USER_NAME_CLAIM_URI ];
+    try {
+        const allowedAttributes: string[] = [ ClaimManagementConstants.USER_NAME_CLAIM_URI ];
 
-    // Email as login identifier requires alphanumeric username to be enabled.
-    if (identifiers.email && isAlphanumericUsername) {
-        allowedAttributes.push(ClaimManagementConstants.EMAIL_CLAIM_URI);
+        // Email as login identifier requires alphanumeric username to be enabled.
+        if (identifiers.email && isAlphanumericUsername) {
+            allowedAttributes.push(ClaimManagementConstants.EMAIL_CLAIM_URI);
+        }
+
+        if (identifiers.mobile) {
+            allowedAttributes.push(ClaimManagementConstants.MOBILE_CLAIM_URI);
+        }
+
+        const isEnabled: boolean = (identifiers.email && isAlphanumericUsername) || identifiers.mobile;
+
+        await updateGovernanceConnector(
+            {
+                operation: "UPDATE",
+                properties: [
+                    {
+                        name: "account.multiattributelogin.handler.enable",
+                        value: String(isEnabled)
+                    },
+                    {
+                        name: "account.multiattributelogin.handler.allowedattributes",
+                        value: allowedAttributes.join(",")
+                    }
+                ]
+            },
+            ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CATEGORY_ID,
+            ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID
+        );
+    } catch (error) {
+        throw new IdentityAppsApiException(
+            "Failed to update multi-attribute login configuration",
+            error,
+            error?.response?.status,
+            error?.request,
+            error?.response,
+            error?.config
+        );
     }
-
-    if (identifiers.mobile) {
-        allowedAttributes.push(ClaimManagementConstants.MOBILE_CLAIM_URI);
-    }
-
-    const isEnabled: boolean = (identifiers.email && isAlphanumericUsername) || identifiers.mobile;
-
-    await updateGovernanceConnector(
-        {
-            operation: "UPDATE",
-            properties: [
-                {
-                    name: "account.multiattributelogin.handler.enable",
-                    value: String(isEnabled)
-                },
-                {
-                    name: "account.multiattributelogin.handler.allowedattributes",
-                    value: allowedAttributes.join(",")
-                }
-            ]
-        },
-        ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CATEGORY_ID,
-        ServerConfigurationsConstants.MULTI_ATTRIBUTE_LOGIN_CONNECTOR_ID
-    );
 };

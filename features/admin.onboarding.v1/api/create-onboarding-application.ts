@@ -31,6 +31,7 @@ import OIDCWebAppTemplate
     from "@wso2is/admin.extensions.v1/application-templates/templates/oidc-web-application/oidc-web-application.json";
 /* eslint-disable-next-line max-len */
 import SPATemplate from "@wso2is/admin.extensions.v1/application-templates/templates/single-page-application/single-page-application.json";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { buildAuthSequence } from "./auth-sequence-builder";
 import { CreatedApplicationResultInterface, OnboardingDataInterface } from "../models";
 import { extractOrigins } from "../utils/url-utils";
@@ -256,35 +257,46 @@ export const createOnboardingApplication = async (
     data: OnboardingDataInterface,
     apiTemplate?: APIApplicationTemplateInterface
 ): Promise<CreatedApplicationResultInterface> => {
-    const payload: ApplicationPayloadInterface = buildApplicationPayload(data, apiTemplate);
-    const response: any = await createApplication(payload as any);
+    try {
+        const payload: ApplicationPayloadInterface = buildApplicationPayload(data, apiTemplate);
+        const response: any = await createApplication(payload as any);
 
-    // Application ID is in the Location header: /api/server/v1/applications/{uuid}
-    const location: string = response.headers?.location || "";
-    const applicationId: string = location.substring(location.lastIndexOf("/") + 1);
+        // Application ID is in the Location header: /api/server/v1/applications/{uuid}
+        const location: string = response.headers?.location || "";
+        const applicationId: string = location.substring(location.lastIndexOf("/") + 1);
 
-    if (!applicationId || applicationId.trim() === "") {
-        throw new Error(
-            "Failed to extract application ID from server response. " +
-            "The Location header may be missing or malformed."
+        if (!applicationId || applicationId.trim() === "") {
+            throw new Error(
+                "Failed to extract application ID from server response. " +
+                "The Location header may be missing or malformed."
+            );
+        }
+
+        const result: CreatedApplicationResultInterface = {
+            applicationId,
+            clientId: response.data?.inboundProtocolConfiguration?.oidc?.clientId ||
+                      response.inboundProtocolConfiguration?.oidc?.clientId ||
+                      "",
+            name: data.applicationName || "My Application"
+        };
+
+        if (data.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION
+            || data.templateId === ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION) {
+            result.clientSecret = response.data?.inboundProtocolConfiguration?.oidc?.clientSecret ||
+                                  response.inboundProtocolConfiguration?.oidc?.clientSecret;
+        }
+
+        return result;
+    } catch (error) {
+        throw new IdentityAppsApiException(
+            "Failed to create onboarding application",
+            error,
+            error?.response?.status,
+            error?.request,
+            error?.response,
+            error?.config
         );
     }
-
-    const result: CreatedApplicationResultInterface = {
-        applicationId,
-        clientId: response.data?.inboundProtocolConfiguration?.oidc?.clientId ||
-                  response.inboundProtocolConfiguration?.oidc?.clientId ||
-                  "",
-        name: data.applicationName || "My Application"
-    };
-
-    if (data.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION
-        || data.templateId === ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION) {
-        result.clientSecret = response.data?.inboundProtocolConfiguration?.oidc?.clientSecret ||
-                              response.inboundProtocolConfiguration?.oidc?.clientSecret;
-    }
-
-    return result;
 };
 
 /**

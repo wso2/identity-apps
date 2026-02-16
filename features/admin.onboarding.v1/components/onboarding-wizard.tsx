@@ -21,10 +21,12 @@ import useGetApplicationTemplate
     from "@wso2is/admin.application-templates.v1/api/use-get-application-template";
 import { ApplicationTemplateInterface } from "@wso2is/admin.application-templates.v1/models/templates";
 import { ApplicationTemplateIdTypes } from "@wso2is/admin.applications.v1/models/application";
+import { AppState } from "@wso2is/admin.core.v1/store";
 import useGetExtensionTemplates from "@wso2is/admin.template-core.v1/api/use-get-extension-templates";
 import { ExtensionTemplateListInterface, ResourceTypes } from "@wso2is/admin.template-core.v1/models/templates";
 import { getUsernameConfiguration } from "@wso2is/admin.users.v1/utils/user-management-utils";
 import { useValidationConfigData } from "@wso2is/admin.validation.v1/api";
+import { ValidationFormInterface } from "@wso2is/admin.validation.v1/models";
 import { resolveUserDisplayName } from "@wso2is/core/helpers";
 import { AlertLevels, IdentifiableComponentInterface, ProfileInfoInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -235,13 +237,13 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
     } = props;
 
     const dispatch: Dispatch = useDispatch();
-    const tenantDomain: string = useSelector((state: any) =>
+    const tenantDomain: string = useSelector((state: AppState) =>
         state?.auth?.tenantDomain || state?.config?.deployment?.tenant || "carbon.super"
     );
-    const asgardeoTryItURL: string = useSelector((state: any) =>
+    const asgardeoTryItURL: string = useSelector((state: AppState) =>
         state?.config?.deployment?.extensions?.asgardeoTryItURL as string || ""
     );
-    const profileInfo: ProfileInfoInterface = useSelector((state: any) => state.profile.profileInfo);
+    const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
     const greeting: string = resolveUserDisplayName(profileInfo) || "";
 
     // Restore wizard step from sessionStorage if available (survives page reloads within the same tab)
@@ -322,7 +324,7 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
             return true;
         }
 
-        const usernameConfig: any = getUsernameConfiguration(validationData);
+        const usernameConfig: ValidationFormInterface = getUsernameConfiguration(validationData);
 
         // Default to true unless explicitly disabled
         return usernameConfig?.enableValidator !== "false";
@@ -376,6 +378,11 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
             let result: CreatedApplicationResultInterface;
 
             if (isTourFlow) {
+                if (!asgardeoTryItURL || asgardeoTryItURL.trim() === "") {
+                    throw new Error(
+                        "Try It URL is not configured. Please check your deployment configuration."
+                    );
+                }
                 result = await createTryItApplication(onboardingData, tenantDomain, asgardeoTryItURL);
             } else {
                 result = await createOnboardingApplication(onboardingData, mergedTemplate);
@@ -420,9 +427,9 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
             }));
 
             setCurrentStep(OnboardingStep.SUCCESS);
-        } catch (error: any) {
-            const errorMessage: string = error?.response?.data?.description ||
-                                        error?.message ||
+        } catch (error: unknown) {
+            const errorMessage: string = (error as any)?.response?.data?.description ||
+                                        (error as any)?.message ||
                                         "Failed to create application. Please try again.";
 
             dispatch(addAlert({
