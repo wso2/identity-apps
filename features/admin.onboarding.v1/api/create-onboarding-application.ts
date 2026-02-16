@@ -187,7 +187,7 @@ const buildApplicationPayload = (
     let payload: ApplicationPayloadInterface;
 
     if (resolvedTemplateId === ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION) {
-        payload = buildMCPClientPayload(applicationName || "My Application");
+        return buildMCPClientPayload(applicationName || "My Application");
     } else if (resolvedTemplateId === ApplicationTemplateIdTypes.M2M_APPLICATION) {
         return buildM2MPayload(applicationName || "My Application");
     } else if (apiTemplate?.payload) {

@@ -38,6 +38,7 @@ interface ParticleInterface {
     x: number;
     y: number;
     rotation: number;
+    finalRotation: number;
     scale: number;
     color: string;
     shape: "circle" | "square";
@@ -90,17 +91,23 @@ const generateParticles: (count: number, primaryColor?: string) => ParticleInter
             ? [ primaryColor, ...CONFETTI_COLORS.slice(1) ]
             : CONFETTI_COLORS;
 
-        return Array.from({ length: count }, (_: unknown, i: number) => ({
-            color: colors[Math.floor(Math.random() * colors.length)],
-            delay: Math.random() * 0.3,
-            id: i,
-            rotation: Math.random() * 360,
-            scale: 0.6 + Math.random() * 0.6,
-            shape: Math.random() > 0.5 ? "circle" : "square",
-            size: 6 + Math.floor(Math.random() * 7),
-            x: (Math.random() - 0.5) * 500,
-            y: (Math.random() - 0.5) * 250
-        }));
+        return Array.from({ length: count }, (_: unknown, i: number) => {
+            const rotation: number = Math.random() * 360;
+            const extraRotation: number = Math.random() > 0.5 ? 180 : -180;
+
+            return {
+                color: colors[Math.floor(Math.random() * colors.length)],
+                delay: Math.random() * 0.3,
+                finalRotation: rotation + extraRotation,
+                id: i,
+                rotation,
+                scale: 0.6 + Math.random() * 0.6,
+                shape: Math.random() > 0.5 ? "circle" : "square",
+                size: 6 + Math.floor(Math.random() * 7),
+                x: (Math.random() - 0.5) * 500,
+                y: (Math.random() - 0.5) * 250
+            };
+        });
     };
 
 /**
@@ -138,7 +145,7 @@ const SuccessConfetti: FunctionComponent<SuccessConfettiPropsInterface> = (
                 <div
                     key={ particle.id }
                     style={ {
-                        "--r": `${particle.rotation + (Math.random() > 0.5 ? 180 : -180)}deg`,
+                        "--r": `${particle.finalRotation}deg`,
                         "--s": String(particle.scale),
                         "--x": `${particle.x}px`,
                         "--y": `${particle.y}px`,

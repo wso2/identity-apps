@@ -21,10 +21,10 @@ import Box from "@oxygen-ui/react/Box";
 import TextField from "@oxygen-ui/react/TextField";
 import { PlusIcon } from "@oxygen-ui/react-icons";
 import { IdentifiableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, memo, useCallback, useRef, useState } from "react";
+import React, { FunctionComponent, ReactElement, memo, useCallback, useEffect, useRef, useState } from "react";
 import Hint from "./hint";
 import { SectionLabel } from "./onboarding-styles";
-import { OnboardingComponentIds, PRESET_COLORS, isValidHexColor } from "../../constants";
+import { BrandingConstraints, OnboardingComponentIds, PRESET_COLORS, isValidHexColor } from "../../constants";
 
 /**
  * Props interface for ColorPicker component.
@@ -141,6 +141,13 @@ const ColorPicker: FunctionComponent<ColorPickerPropsInterface> = memo((
     const colorInputRef: React.RefObject<HTMLInputElement> = useRef<HTMLInputElement>(null);
     const [ customColor, setCustomColor ] = useState<string>(color);
 
+    // Sync internal state when color prop changes (e.g., when user selects preset color)
+    useEffect(() => {
+        if (color) {
+            setCustomColor(color);
+        }
+    }, [ color ]);
+
     const handleSwatchClick: (presetColor: string) => void = useCallback((presetColor: string): void => {
         onChange(presetColor);
         setCustomColor(presetColor);
@@ -180,6 +187,12 @@ const ColorPicker: FunctionComponent<ColorPickerPropsInterface> = memo((
         (preset: string) => preset.toLowerCase() === color.toLowerCase()
     );
 
+    // Sanitize color value for native input to prevent console warnings
+    // Native <input type="color"> requires valid #RRGGBB format
+    const sanitizedColor: string = isCustomColorValid
+        ? customColor
+        : BrandingConstraints.DEFAULT_PRIMARY_COLOR;
+
     return (
         <ColorPickerContainer data-componentid={ componentId }>
             <SectionLabel>{ label }</SectionLabel>
@@ -206,7 +219,7 @@ const ColorPicker: FunctionComponent<ColorPickerPropsInterface> = memo((
                         onChange={ handleNativeColorChange }
                         ref={ colorInputRef }
                         type="color"
-                        value={ customColor }
+                        value={ sanitizedColor }
                     />
                 </CustomColorButton>
                 <TextField

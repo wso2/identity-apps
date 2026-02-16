@@ -166,6 +166,34 @@ const getPreviousStep = (currentStep: OnboardingStep, data: OnboardingDataInterf
 };
 
 /**
+ * Validate if a step can be safely restored from session storage.
+ * Checks if required data exists for the given step.
+ *
+ * @param step - The step number to validate
+ * @param data - Current onboarding data
+ * @returns True if the step can be restored, false otherwise
+ */
+const validateStepRestoration = (step: number, data: OnboardingDataInterface): boolean => {
+    switch (step) {
+        case OnboardingStep.WELCOME:
+        case OnboardingStep.NAME_APPLICATION:
+            return true; // These steps don't require prior data
+        case OnboardingStep.SELECT_APPLICATION_TEMPLATE:
+            return !!data.applicationName;
+        case OnboardingStep.CONFIGURE_REDIRECT_URL:
+            return !!data.templateId;
+        case OnboardingStep.SIGN_IN_OPTIONS:
+            return !!data.redirectUrls?.length;
+        case OnboardingStep.DESIGN_LOGIN:
+            return !!data.signInOptions;
+        case OnboardingStep.SUCCESS:
+            return !!data.createdApplication;
+        default:
+            return false;
+    }
+};
+
+/**
  * Get button text based on current step.
  */
 const getNextButtonText = (currentStep: OnboardingStep, data: OnboardingDataInterface): string => {
@@ -258,6 +286,20 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
     });
     const [ isCreatingApp, setIsCreatingApp ] = useState<boolean>(false);
 
+    // Validate restored step on mount - ensure required data exists
+    useEffect(() => {
+        // Only validate if step was restored from session (not at WELCOME)
+        if (currentStep !== OnboardingStep.WELCOME) {
+            const canRestoreToStep: boolean = validateStepRestoration(currentStep, onboardingData);
+
+            if (!canRestoreToStep) {
+                // Data incomplete - reset to beginning
+                SessionStorageUtils.clearItemFromSessionStorage(WIZARD_STEP_STORAGE_KEY);
+                setCurrentStep(OnboardingStep.WELCOME);
+            }
+        }
+    }, []);
+
     // Generate random names once when wizard mounts - persists across step navigation
     const [ randomNames ] = useState<string[]>(() => generateRandomNames(RANDOM_NAME_COUNT));
 
@@ -276,14 +318,14 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
     // Get validation config to determine if alphanumeric username is enabled
     const { data: validationData, isLoading: isValidationDataLoading } = useValidationConfigData();
     const isAlphanumericUsername: boolean = useMemo(() => {
-
         if (!validationData || isValidationDataLoading) {
-            return false;
+            return true;
         }
 
         const usernameConfig: any = getUsernameConfiguration(validationData);
 
-        return usernameConfig?.enableValidator === "true";
+        // Default to true unless explicitly disabled
+        return usernameConfig?.enableValidator !== "false";
     }, [ validationData, isValidationDataLoading ]);
 
     const isM2M: boolean = useMemo(
@@ -355,7 +397,13 @@ const OnboardingWizard: FunctionComponent<OnboardingWizardPropsInterface> = (
                 try {
                     await updateApplicationBranding(result.applicationId, onboardingData.brandingConfig);
                 } catch (_brandingError) {
-                    // Silently handle - app was created successfully, branding is secondary
+                    // Application was created successfully, but branding failed.
+                    // Show warning to inform user but don't block the primary flow.
+                    dispatch(addAlert({
+                        description: "Application created successfully, but custom branding could not be applied.",
+                        level: AlertLevels.WARNING,
+                        message: "Branding Not Applied"
+                    }));
                 }
             }
 

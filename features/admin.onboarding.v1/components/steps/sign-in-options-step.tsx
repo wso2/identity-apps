@@ -228,7 +228,7 @@ const SignInOptionsStep: FunctionComponent<SignInOptionsStepPropsInterface> = (
                     </OptionSection>
                 </OptionsContainer>
                 { !validation.isValid && validation.errors.length > 0 && (
-                    <Alert severity="error">
+                    <Alert severity="error" sx={ { marginBottom: 1 } }>
                         { validation.errors[0] }
                     </Alert>
                 ) }
