@@ -220,6 +220,7 @@ export class ApplicationManagementConstants {
     public static readonly CODE_IDTOKEN: string = "code id_token";
     public static readonly CODE_IDTOKEN_TOKEN: string = "code id_token token";
     public static readonly  HYBRID_FLOW_ENABLE_CONFIG:string = "enable-hybrid-flow";
+    public static readonly CIBA_GRANT: string = "urn:openid:params:grant-type:ciba";
     public static readonly HYBRID_FLOW_RESPONSE_TYPE: string = "hybridFlowResponseType";
 
     /**
@@ -237,7 +238,8 @@ export class ApplicationManagementConstants {
         this.IWA_NTLM,
         this.DEVICE_GRANT,
         this.OAUTH2_TOKEN_EXCHANGE,
-        this.ACCOUNT_SWITCH_GRANT
+        this.ACCOUNT_SWITCH_GRANT,
+        this.CIBA_GRANT
     ];
 
     /**

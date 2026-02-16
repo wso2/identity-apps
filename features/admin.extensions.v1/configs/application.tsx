@@ -464,7 +464,8 @@ export const applicationConfig: ApplicationConfig = {
                 ApplicationManagementConstants.OAUTH2_TOKEN_EXCHANGE,
                 ApplicationManagementConstants.SAML2_BEARER,
                 ApplicationManagementConstants.JWT_BEARER,
-                ApplicationManagementConstants.IWA_NTLM
+                ApplicationManagementConstants.IWA_NTLM,
+                ApplicationManagementConstants.CIBA_GRANT
             ],
         [ "m2m-application" ]: [
             ApplicationManagementConstants.CLIENT_CREDENTIALS_GRANT
