@@ -198,5 +198,31 @@ export const customerDataService: CustomerDataServiceNS = {
             pageTitle: "Profiles",
             title: "Profiles"
         }
+    },
+    profileSchemaAttributes: {
+        page: {
+            title: "Profile Schema Attributes",
+            description: "Manage profile schema attributes here.",
+            backButton: "Go back",
+            addAttribute: "Add profile schema attribute",
+            sortByName: "Name",
+            sortByScope: "Scope",
+            noAttributes: {
+                title: "No Attributes Found",
+                subtitle: "Schema seems empty. Add a profile schema attribute to get started."
+            },
+            search: {
+                placeholder: "Search attribute name (e.g., email)",
+                attributeName: "Attribute Name",
+                startsWith :"Starts with",
+                contains: "Contains",
+                equals: "Equals"
+            },
+            errors: {
+                fetchFailed: "Failed to fetch profile schema.",
+                filterFailed: "Failed to filter schema.",
+                error: "Error"
+            }
+        }
     }
 };

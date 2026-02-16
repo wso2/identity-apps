@@ -223,4 +223,30 @@ export interface CustomerDataServiceNS {
             title:  string;
         },
     };
+    profileSchemaAttributes: {
+        page: {
+            title: string;
+            description: string;
+            backButton: string;
+            addAttribute: string;
+            sortByName: string;
+            sortByScope: string;
+            noAttributes: {
+                title: string;
+                subtitle: string;
+            },
+            search: {
+                placeholder: string;
+                attributeName: string;
+                startsWith :string;
+                contains: string;
+                equals: string;
+            },
+            errors: {
+                fetchFailed: string;
+                filterFailed: string;
+                error: string;
+            }
+        }
+    }
 }

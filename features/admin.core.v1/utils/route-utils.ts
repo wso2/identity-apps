@@ -526,6 +526,16 @@ export class RouteUtils {
                 parent: customerData
             },
             {
+                category: manage,
+                id: "profileAttributes",
+                parent: customerData
+            },
+            {
+                category: manage,
+                id: "unificationRules",
+                parent: customerData
+            },
+            {
                 category: preferences,
                 id: "notificationChannels",
                 selected: history.location.pathname === AppConstants.getPaths().get("EMAIL_PROVIDER") ||
