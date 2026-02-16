@@ -34,7 +34,13 @@ import {
     UserGroupIcon,
     WebhookIcon
 } from "@oxygen-ui/react-icons";
+import {
+    ReactComponent as UnificationRuleIcon 
+} from "@wso2is/admin.cds.v1/assets/images/icons/cds-profile-attributes.svg";
 import { ReactComponent as ProfilesIcon } from "@wso2is/admin.cds.v1/assets/images/icons/cds-profiles.svg";
+import {
+    ReactComponent as ProfileAttributesIcon 
+} from "@wso2is/admin.cds.v1/assets/images/icons/unification-rules.svg";
 import { getSidePanelIcons } from "@wso2is/admin.core.v1/configs/ui";
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
@@ -1694,6 +1700,52 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             name: "Profiles",
             order: 32,
             path: AppConstants.getPaths().get("PROFILES"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            category: "extensions:manage.sidePanel.categories.customerData",
+            children: [
+                {
+                    component: lazy(() => import("@wso2is/admin.cds.v1/components/profile-attribute")),
+                    exact: true,
+                    icon: {
+                        icon: getSidePanelIcons().childIcon
+                    },
+                    id: "customer-data-profile-attribute",
+                    name: "Profile Attribute View",
+                    path: AppConstants.getPaths().get("PROFILE_ATTRIBUTE"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() =>
+                import("@wso2is/admin.cds.v1/pages/profile-attributes")
+            ),
+            exact: true,
+            icon: {
+                icon: <ProfileAttributesIcon className="icon" fill="black" />
+            },
+            id: "profileAttributes",
+            name: "Profile Attributes",
+            order: 33,
+            path: AppConstants.getPaths().get("PROFILE_ATTRIBUTES"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            category: "extensions:manage.sidePanel.categories.customerData",
+            component: lazy(() =>
+                import("@wso2is/admin.cds.v1/pages/unification-rules")
+            ),
+            exact: true,
+            icon: {
+                icon: <UnificationRuleIcon className="icon" fill="black" />
+            },
+            id: "unificationRules",
+            name: "Unification Rules",
+            order: 34,
+            path: AppConstants.getPaths().get("UNIFICATION_RULES"),
             protected: true,
             showOnSidePanel: true
         },
