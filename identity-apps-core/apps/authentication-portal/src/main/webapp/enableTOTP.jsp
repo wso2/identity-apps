@@ -155,11 +155,48 @@
                             <input type="hidden" name="sessionDataKey" id="sessionDataKey"
                                 value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
 
-                            <div class="ui center aligned basic segment middle aligned pl-6">
-                                <form name="qrinp">
-                                    <input type="numeric" name="ECC" value="1" size="1" style="Display:none" id="ecc">
-                                    <canvas id="qrcanv">
+                            <div class="ui center aligned basic segment middle aligned" style="padding-left: 0; padding-right: 0;">
+                                <form name="qrinp" style="margin-bottom: 2rem;">
+                                    <input type="numeric" name="ECC" value="1" size="1" style="display:none" id="ecc">
+                                    <div style="display: flex; justify-content: center; height: 150px;">
+                                        <canvas id="qrcanv" style="height: 180px; width: 180px; margin-left:40px"></canvas>
+                                    </div>
                                 </form>
+                                <div class="ui horizontal divider" style="margin-bottom: 2rem;">
+                                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "or")%>
+                                </div>
+                                <div id="totpSecretContainer" style="display:none; margin-bottom: 2rem;">
+                                    <p style="text-align: center; margin-bottom: 1rem; font-size: 14px; color: #333;">
+                                        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.enroll.totp.secret.input.label")%>
+                                    </p>
+                                    <div style="display: flex; justify-content: center; align-items: stretch;">
+                                        <div class="ui action input" style="width: 100%; max-width: 100%;">
+                                            <input 
+                                                id="totpSecretCode" 
+                                                type="password" 
+                                                readonly
+                                                style="font-weight: bold; font-family: monospace; letter-spacing: 3px; font-size: 14px; text-align: center; padding: 0.75rem 1rem; background-color: #f5f5f5; flex: 1;">
+                                            <div
+                                                id="showTOTPSecretButton" 
+                                                class="ui icon button" 
+                                                data-tooltip="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.enroll.totp.secret.input.button.show.tooltip")%>" 
+                                                style="padding: 0.75rem 1rem;"
+                                                onclick="showTOTPSecret()"
+                                            >
+                                                <i id="password-eye" class="eye icon right-align password-toggle slash"></i>
+                                            </div>
+                                            <div 
+                                                id="totpSecretCopyButton" 
+                                                class="ui icon button" 
+                                                data-tooltip="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.enroll.totp.secret.input.button.copy.tooltip")%>"
+                                                onclick="copyTOTPSecret()" 
+                                                style="padding: 0.75rem 1rem;"
+                                            >
+                                                <i id="copyIcon" class="copy icon" style="margin: 0;"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div>
@@ -236,6 +273,7 @@
             var checkbox = $("#checkbox");
             var continueBtn = $("#continue");
             var pinForm = $("#pin_form");
+            var totpSecretField = $("#totpSecretCode");
 
             checkbox.click(function () {
                 if ($(this).is(":checked")) {
@@ -258,6 +296,39 @@
                 var key =  document.getElementById("ske").value;
                 if(key != null) {
                     loadQRCode(key);
+                    displayTOTPSecret(key);
+                }
+            }
+
+            function showTOTPSecret() {
+                if (totpSecretField.attr("type") === 'text') {
+                    totpSecretField.attr("type", "password")
+                    document.getElementById("password-eye").classList.add("slash");
+                    document.getElementById("showTOTPSecretButton").dataset.tooltip = '<%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.enroll.totp.secret.input.button.show.tooltip")%>';
+                } else {
+                    totpSecretField.attr("type", "text")
+                    document.getElementById("password-eye").classList.remove("slash");
+                    document.getElementById("showTOTPSecretButton").dataset.tooltip = '<%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.enroll.totp.secret.input.button.hide.tooltip")%>';
+                }
+            }
+
+            function copyTOTPSecret() {
+                var secret = document.getElementById("totpSecretCode").value.replace(/\s/g, '');
+                navigator.clipboard.writeText(secret).then(function() {
+                    document.getElementById("totpSecretCopyButton").dataset.tooltip = '<%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.enroll.totp.secret.input.button.copied.tooltip")%>';
+                    setTimeout(function() {
+                        document.getElementById("totpSecretCopyButton").dataset.tooltip = '<%=AuthenticationEndpointUtil.i18n(resourceBundle, "totp.enroll.totp.secret.input.button.copy.tooltip")%>';
+                    }, 2000);
+                });
+            }
+
+            function displayTOTPSecret(key) {
+                var decodedKey = atob(key);
+                var secretMatch = decodedKey.match(/[?&]secret=([^&]+)/);
+                if (secretMatch && secretMatch[1]) {
+                    var secret = secretMatch[1].toUpperCase();
+                    document.getElementById("totpSecretCode").value = secret.replace(/(.{4})/g, '$1 ').trim();
+                    document.getElementById("totpSecretContainer").style.display = "block";
                 }
             }
         </script>

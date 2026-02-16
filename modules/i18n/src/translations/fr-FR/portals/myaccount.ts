@@ -691,8 +691,12 @@ export const myAccount: MyAccountNS = {
                     scan: {
                         additionNote: "Le code QR a été ajouté avec succès à votre profil",
                         authenticatorApps: "Applications d'authentification",
+                        copiedToClipboard: "Copié !",
+                        copyToClipboard: "Copier dans le presse-papiers",
                         generate: "Générer un nouveau code",
                         heading: "Scannez ce code QR à l'aide d'une application d'authentification",
+                        hideSecretKey: "Cacher le secret",
+                        manualEntryLabel: "Entrez le code manuellement",
                         messageBody: "Vous pouvez utiliser une application d'authentification compatible dans " +
                             "cette liste :",
                         messageHeading: "Vous n'avez pas d'application d'authentification ?",
@@ -700,7 +704,8 @@ export const myAccount: MyAccountNS = {
                         regenerateWarning: {
                             extended: "Lorsque vous régénérez un nouveau code QR, vous devez le scanner et réinstaller votre application Authenticatrice.Vous ne pourrez plus vous connecter avec le code QR précédent.",
                             generic: "Lorsque vous régénérez un nouveau code QR, vous devez le scanner et réinstaller votre application Authenticatrice.Votre configuration précédente ne fonctionnera plus."
-                        }
+                        },
+                        showSecretKey: "Afficher le secret"
                     },
                     toolTip: "Vous n'avez pas d'application? Téléchargez une application d'authentification " +
                         "telle que Google Authenticator depuis <1>App Store</1> ou <3>Google Play</3>",
