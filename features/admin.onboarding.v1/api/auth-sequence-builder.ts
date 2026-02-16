@@ -56,6 +56,8 @@ export interface AuthenticationSequenceInterface {
  *
  * With password: Step 1 = BasicAuthenticator, Step 2 = other methods (optional).
  * Without password: Step 1 = IdentifierExecutor, Step 2 = selected methods as alternatives.
+ *
+ * @throws Error if no login methods are selected or if IdentifierFirst is used without Step 2
  */
 export const buildAuthSequence = (options: SignInOptionsConfigInterface): AuthenticationSequenceInterface => {
     const { loginMethods } = options;
@@ -100,6 +102,13 @@ export const buildAuthSequence = (options: SignInOptionsConfigInterface): Authen
     const step1Authenticator: string = loginMethods.password
         ? AuthNames.BASIC_AUTHENTICATOR_NAME
         : AuthNames.IDENTIFIER_FIRST_AUTHENTICATOR_NAME;
+
+    // Validate: IdentifierFirst requires at least one Step 2 method
+    if (!loginMethods.password && step2Options.length === 0) {
+        throw new Error(
+            "Invalid authentication configuration: Identifier-first flow requires at least one authentication method"
+        );
+    }
 
     const steps: AuthenticationStepInterface[] = [
         {

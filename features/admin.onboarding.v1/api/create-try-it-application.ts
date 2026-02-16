@@ -23,10 +23,15 @@ import {
 } from "@wso2is/admin.applications.v1/api/application";
 import TryItApplicationConstants from "@wso2is/admin.applications.v1/constants/try-it-constants";
 import LoginApplicationTemplate from "@wso2is/admin.applications.v1/data/try-it-application.json";
-import { ApplicationListInterface, MainApplicationInterface } from "@wso2is/admin.applications.v1/models/application";
+import {
+    ApplicationListInterface,
+    ApplicationListItemInterface,
+    MainApplicationInterface
+} from "@wso2is/admin.applications.v1/models/application";
 import getTryItClientId from "@wso2is/admin.applications.v1/utils/get-try-it-client-id";
-import cloneDeep from "lodash-es/cloneDeep";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AxiosResponse } from "axios";
+import cloneDeep from "lodash-es/cloneDeep";
 import { buildAuthSequence } from "./auth-sequence-builder";
 import { CreatedApplicationResultInterface, OnboardingDataInterface } from "../models";
 
@@ -47,67 +52,91 @@ export const createTryItApplication = async (
     tenantDomain: string,
     asgardeoTryItURL: string
 ): Promise<CreatedApplicationResultInterface> => {
-    const tryItClientId: string = getTryItClientId(tenantDomain);
-    const tryItUrl: string = `${asgardeoTryItURL}?client_id=${tryItClientId}&org=${tenantDomain}`;
+    try {
+        // Validate required parameters
+        if (!tenantDomain || tenantDomain.trim() === "") {
+            throw new Error("Tenant domain is required");
+        }
 
-    // Check if the Try It app already exists
-    const existingApps: ApplicationListInterface = await getApplicationList(
-        null, null, "clientId eq " + tryItClientId
-    );
+        if (!asgardeoTryItURL || asgardeoTryItURL.trim() === "") {
+            throw new Error("Try It URL is required");
+        }
 
-    if (existingApps?.applications?.length > 0) {
-        const existingApp: any = existingApps.applications[0];
+        const tryItClientId: string = getTryItClientId(tenantDomain);
+        const tryItUrl: string = `${asgardeoTryItURL}?client_id=${tryItClientId}&org=${tenantDomain}`;
 
-        // Update auth sequence on the existing app with user's sign-in options
-        if (data.signInOptions) {
-            try {
-                await updateAuthenticationSequence(existingApp.id, {
-                    authenticationSequence: buildAuthSequence(data.signInOptions)
-                });
-            } catch {
-                // Non-critical — the app still exists and can be previewed
+        // Check if the Try It app already exists
+        const existingApps: ApplicationListInterface = await getApplicationList(
+            null, null, `clientId eq ${tryItClientId}`
+        );
+
+        if (existingApps?.applications?.length > 0) {
+            const existingApp: ApplicationListItemInterface = existingApps.applications[0];
+
+            if (!existingApp?.id) {
+                throw new Error("Existing Try It application has no ID");
             }
+
+            // Update auth sequence on the existing app with user's sign-in options
+            if (data.signInOptions) {
+                try {
+                    await updateAuthenticationSequence(existingApp.id, {
+                        authenticationSequence: buildAuthSequence(data.signInOptions)
+                    });
+                } catch {
+                    // Non-critical — the app still exists and can be previewed
+                }
+            }
+
+            return {
+                applicationId: existingApp.id,
+                clientId: tryItClientId,
+                name: existingApp.name || TryItApplicationConstants.DISPLAY_NAME,
+                tryItUrl
+            };
+        }
+
+        // Create a new Try It app from the template
+        const appPayload: MainApplicationInterface = cloneDeep(
+            LoginApplicationTemplate.application
+        ) as unknown as MainApplicationInterface;
+
+        appPayload.inboundProtocolConfiguration.oidc.clientId = tryItClientId;
+        appPayload.inboundProtocolConfiguration.oidc.callbackURLs = [ asgardeoTryItURL ];
+        appPayload.inboundProtocolConfiguration.oidc.allowedOrigins = [ asgardeoTryItURL ];
+        appPayload.accessUrl = asgardeoTryItURL;
+
+        // Apply user's configured sign-in options
+        if (data.signInOptions) {
+            (appPayload as any).authenticationSequence = buildAuthSequence(data.signInOptions);
+        }
+
+        const response: AxiosResponse = await createApplication(appPayload);
+
+        const location: string = response.headers?.location || "";
+        const applicationId: string = location.substring(location.lastIndexOf("/") + 1);
+
+        if (!applicationId || applicationId.trim() === "") {
+            throw new Error(
+                "Failed to extract application ID from server response. " +
+                "The Location header may be missing or malformed."
+            );
         }
 
         return {
-            applicationId: existingApp.id,
+            applicationId,
             clientId: tryItClientId,
-            name: existingApp.name || TryItApplicationConstants.DISPLAY_NAME,
+            name: TryItApplicationConstants.DISPLAY_NAME,
             tryItUrl
         };
-    }
-
-    // Create a new Try It app from the template
-    const appPayload: MainApplicationInterface = cloneDeep(
-        LoginApplicationTemplate.application
-    ) as unknown as MainApplicationInterface;
-
-    appPayload.inboundProtocolConfiguration.oidc.clientId = tryItClientId;
-    appPayload.inboundProtocolConfiguration.oidc.callbackURLs = [ asgardeoTryItURL ];
-    appPayload.inboundProtocolConfiguration.oidc.allowedOrigins = [ asgardeoTryItURL ];
-    appPayload.accessUrl = asgardeoTryItURL;
-
-    // Apply user's configured sign-in options
-    if (data.signInOptions) {
-        (appPayload as any).authenticationSequence = buildAuthSequence(data.signInOptions);
-    }
-
-    const response: AxiosResponse = await createApplication(appPayload);
-
-    const location: string = response.headers?.location || "";
-    const applicationId: string = location.substring(location.lastIndexOf("/") + 1);
-
-    if (!applicationId || applicationId.trim() === "") {
-        throw new Error(
-            "Failed to extract application ID from server response. " +
-            "The Location header may be missing or malformed."
+    } catch (error) {
+        throw new IdentityAppsApiException(
+            "Failed to create Try It application",
+            error,
+            error?.response?.status,
+            error?.request,
+            error?.response,
+            error?.config
         );
     }
-
-    return {
-        applicationId,
-        clientId: tryItClientId,
-        name: TryItApplicationConstants.DISPLAY_NAME,
-        tryItUrl
-    };
 };

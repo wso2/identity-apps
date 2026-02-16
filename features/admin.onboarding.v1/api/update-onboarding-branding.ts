@@ -42,8 +42,7 @@ const DEFAULT_THEME: string = "default";
  * Get an axios instance.
  */
 const httpClient: HttpClientInstance = AsgardeoSPAClient.getInstance()
-    .httpRequest.bind(AsgardeoSPAClient.getInstance())
-    .bind(AsgardeoSPAClient.getInstance());
+    .httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
  * Get default branding preference structure.

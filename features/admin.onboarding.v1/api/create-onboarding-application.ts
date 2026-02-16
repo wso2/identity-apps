@@ -37,6 +37,11 @@ import { CreatedApplicationResultInterface, OnboardingDataInterface } from "../m
 import { extractOrigins } from "../utils/url-utils";
 
 /**
+ * Default application name when user does not provide one.
+ */
+const DEFAULT_APPLICATION_NAME: string = "My Application";
+
+/**
  * OIDC configuration for application creation.
  */
 interface OIDCConfigInterface {
@@ -48,9 +53,18 @@ interface OIDCConfigInterface {
         mandatory: boolean;
         supportPlainTransformAlgorithm: boolean;
     };
-    accessToken?: any;
-    refreshToken?: any;
-    [key: string]: any;
+    accessToken?: {
+        applicationAccessTokenExpiryInSeconds?: number;
+        type?: string;
+        bindingType?: string;
+        revokeTokensWhenIDPSessionTerminated?: boolean;
+        validateTokenBinding?: boolean;
+    };
+    refreshToken?: {
+        expiryInSeconds?: number;
+        renewRefreshToken?: boolean;
+    };
+    [key: string]: unknown;
 }
 
 /**
@@ -60,17 +74,26 @@ interface ApplicationPayloadInterface {
     name: string;
     templateId?: string;
     description?: string;
-    advancedConfigurations?: any;
+    advancedConfigurations?: {
+        discoverableByEndUsers?: boolean;
+        skipLoginConsent?: boolean;
+        skipLogoutConsent?: boolean;
+        [key: string]: unknown;
+    };
     associatedRoles?: {
         allowedAudience: string;
-        roles: any[];
+        roles: unknown[];
     };
     inboundProtocolConfiguration?: {
         oidc?: OIDCConfigInterface;
     };
     authenticationSequence?: ReturnType<typeof buildAuthSequence>;
-    claimConfiguration?: any;
-    [key: string]: any;
+    claimConfiguration?: {
+        [key: string]: unknown;
+    };
+    imageUrl?: string;
+    templateVersion?: string;
+    [key: string]: unknown;
 }
 
 /**
@@ -168,7 +191,7 @@ const buildM2MPayload = (name: string): ApplicationPayloadInterface => ({
         }
     },
     name,
-    templateId: "m2m-application"
+    templateId: ApplicationTemplateIdTypes.M2M_APPLICATION
 });
 
 /**
@@ -188,12 +211,12 @@ const buildApplicationPayload = (
     let payload: ApplicationPayloadInterface;
 
     if (resolvedTemplateId === ApplicationTemplateIdTypes.MCP_CLIENT_APPLICATION) {
-        return buildMCPClientPayload(applicationName || "My Application");
+        return buildMCPClientPayload(applicationName || DEFAULT_APPLICATION_NAME);
     } else if (resolvedTemplateId === ApplicationTemplateIdTypes.M2M_APPLICATION) {
-        return buildM2MPayload(applicationName || "My Application");
+        return buildM2MPayload(applicationName || DEFAULT_APPLICATION_NAME);
     } else if (apiTemplate?.payload) {
         payload = JSON.parse(JSON.stringify(apiTemplate.payload));
-        payload.name = applicationName || "My Application";
+        payload.name = applicationName || DEFAULT_APPLICATION_NAME;
 
         if (!payload.templateId) {
             payload.templateId = resolvedTemplateId;
@@ -217,7 +240,7 @@ const buildApplicationPayload = (
         }
 
         payload = JSON.parse(JSON.stringify(localTemplate.application));
-        payload.name = applicationName || "My Application";
+        payload.name = applicationName || DEFAULT_APPLICATION_NAME;
         payload.templateId = getTemplateUUID(resolvedTemplateId) || resolvedTemplateId;
     }
 
@@ -277,7 +300,7 @@ export const createOnboardingApplication = async (
             clientId: response.data?.inboundProtocolConfiguration?.oidc?.clientId ||
                       response.inboundProtocolConfiguration?.oidc?.clientId ||
                       "",
-            name: data.applicationName || "My Application"
+            name: data.applicationName || DEFAULT_APPLICATION_NAME
         };
 
         if (data.templateId === ApplicationTemplateIdTypes.M2M_APPLICATION
@@ -306,7 +329,7 @@ export const createOnboardingApplication = async (
  * @returns True if redirect URLs are required
  */
 export const requiresRedirectUrls = (templateId?: string): boolean => {
-    return templateId !== "m2m-application";
+    return templateId !== ApplicationTemplateIdTypes.M2M_APPLICATION;
 };
 
 /**
@@ -316,5 +339,5 @@ export const requiresRedirectUrls = (templateId?: string): boolean => {
  * @returns True if sign-in options are supported
  */
 export const supportsSignInOptions = (templateId?: string): boolean => {
-    return templateId !== "m2m-application";
+    return templateId !== ApplicationTemplateIdTypes.M2M_APPLICATION;
 };

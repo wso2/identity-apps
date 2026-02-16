@@ -22,6 +22,11 @@ import { TestUserCredentialsInterface } from "../models";
 import { generateSecurePassword } from "../utils/password-generator";
 
 /**
+ * Default username for test user creation.
+ */
+const DEFAULT_TEST_USERNAME: string = "testUser";
+
+/**
  * Test user creation result.
  */
 export interface TestUserCreationResultInterface {
@@ -39,7 +44,7 @@ export interface TestUserCreationResultInterface {
  * @returns Promise resolving to the creation result with credentials
  */
 export const createTestUser = async (email: string): Promise<TestUserCreationResultInterface> => {
-    const username: string = "testUser";
+    const username: string = DEFAULT_TEST_USERNAME;
     const password: string = generateSecurePassword(14);
 
     try {
