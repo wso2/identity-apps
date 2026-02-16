@@ -1,5 +1,18 @@
 # @wso2is/admin.applications.v1
 
+## 2.41.1
+
+### Patch Changes
+
+- [#9606](https://github.com/wso2/identity-apps/pull/9606) [`f9f713c5de2cb3e68c25ae09f7d09c7829a2df08`](https://github.com/wso2/identity-apps/commit/f9f713c5de2cb3e68c25ae09f7d09c7829a2df08) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add support for configurable first factor & second factor authenticators in login flow
+
+- Updated dependencies [[`f9f713c5de2cb3e68c25ae09f7d09c7829a2df08`](https://github.com/wso2/identity-apps/commit/f9f713c5de2cb3e68c25ae09f7d09c7829a2df08)]:
+  - @wso2is/admin.core.v1@2.51.1
+  - @wso2is/admin.branding.v1@2.32.88
+  - @wso2is/admin.roles.v2@2.27.302
+  - @wso2is/admin.server-configurations.v1@2.36.7
+  - @wso2is/admin.users.v1@2.36.107
+
 ## 2.41.0
 
 ### Minor Changes
