@@ -449,6 +449,11 @@ export interface MyAccountNS {
                             generic: string;
                         };
                         regenerateConfirmLabel: string;
+                        showSecretKey: string;
+                        hideSecretKey: string;
+                        manualEntryLabel: string;
+                        copyToClipboard: string;
+                        copiedToClipboard: string;
                     };
                     verify: {
                         heading: string;

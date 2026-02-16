@@ -657,15 +657,20 @@ export const myAccount: MyAccountNS = {
                     "scan": {
                         "additionNote": "¡El código QR se ha agregado con éxito a su perfil!",
                         "authenticatorApps": "Aplicaciones de autenticación",
+                        "copiedToClipboard": "¡Copiado!",
+                        "copyToClipboard": "Copiar al portapapeles",
                         "generate": "Generar un nuevo código",
                         "heading": "Escanee el código QR a continuación usando una aplicación de autenticación",
+                        "hideSecretKey": "Ocultar secreto",
+                        "manualEntryLabel": "Ingrese el código manualmente",
                         "messageBody": "Puede encontrar una lista de aplicaciones de autenticación disponibles aquí.",
                         "messageHeading": "¿No tienes instalada una aplicación de autenticación?",
                         "regenerateConfirmLabel": "Confirmar la regeneración de un nuevo código QR",
                         "regenerateWarning": {
                             "extended": "Cuando regenera un nuevo código QR, debe escanearlo y volver a configurar su aplicación de autenticación. Ya no podrá iniciar sesión con el código QR anterior.",
                             "generic": "Cuando regenera un nuevo código QR, debe escanearlo y volver a configurar su aplicación de autenticación. Su configuración anterior ya no funcionará."
-                        }
+                        },
+                        showSecretKey: "Mostrar secreto"
                     },
                     "toolTip": "¿No tienes una aplicación de autenticación? Descarga una aplicación de autenticación como Google Authenticator desde <1>App Store</1> o <3>>Google Play</3>",
                     "verify": {

@@ -657,15 +657,20 @@ export const myAccount: MyAccountNS = {
                     "scan": {
                         "additionNote": "Der QR-Code wurde Ihrem Profil erfolgreich hinzugefügt!",
                         "authenticatorApps": "Authentifizierungs-Apps",
+                        "copiedToClipboard": "Kopiert!",
+                        "copyToClipboard": "In die Zwischenablage kopieren",
                         "generate": "Generieren Sie einen neuen Code",
                         "heading": "Scannen Sie den QR-Code unten mit einer Authentifizierungs-App",
+                        "hideSecretKey": "Geheimen Schlüssel verbergen",
+                        "manualEntryLabel": "Geben Sie den Code manuell ein",
                         "messageBody": "Eine Liste der verfügbaren Authenticator-Apps finden Sie hier.",
                         "messageHeading": "Sie haben keine Authenticator-App installiert?",
                         "regenerateConfirmLabel": "Bestätigen Sie die Generierung eines neuen QR-Codes",
                         "regenerateWarning": {
                             "extended": "Wenn Sie einen neuen QR-Code regenerieren, müssen Sie ihn scannen und Ihre Authentifizierungs-App neu einrichten. Sie können sich nicht mehr mit dem vorherigen QR-Code anmelden.",
                             "generic": "Wenn Sie einen neuen QR-Code regenerieren, müssen Sie ihn scannen und Ihre Authentifizierungs-App neu einrichten. Ihre bisherige Einrichtung funktioniert nicht mehr."
-                        }
+                        },
+                        "showSecretKey": "Geheimen Schlüssel anzeigen"
                     },
                     "toolTip": "Sie haben keine Authentifizierungs-App? Laden Sie eine Authentifizierungs-App wie Google Authenticator aus dem <1>App Store herunter</1> oder <3>Google Play</3>",
                     "verify": {

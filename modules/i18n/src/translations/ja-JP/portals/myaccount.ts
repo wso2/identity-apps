@@ -657,15 +657,20 @@ export const myAccount: MyAccountNS = {
                     "scan": {
                         "additionNote": "QRコードはプロフィールに正常に追加されました！",
                         "authenticatorApps": "Authenticatorアプリ",
+                        "copiedToClipboard": "コピーしました！",
+                        "copyToClipboard": "クリップボードにコピー",
                         "generate": "新しいコードを生成します",
                         "heading": "Authenticatorアプリを使用して、以下のQRコードをスキャンします",
+                        "hideSecretKey": "シークレットを隠す",
+                        "manualEntryLabel": "コードを手動で入力する",
                         "messageBody": "ここでは、Authenticatorアプリのリストを見つけることができます。",
                         "messageHeading": "Authenticatorアプリをインストールしていませんか？",
                         "regenerateConfirmLabel": "新しいQRコードの再生を確認します",
                         "regenerateWarning": {
                             "extended": "新しいQRコードを再生するときは、スキャンして認証アプリを再設定する必要があります。以前のQRコードでログインすることはできません。",
                             "generic": "新しいQRコードを再生するときは、スキャンして認証アプリを再設定する必要があります。以前のセットアップはもう機能しません。"
-                        }
+                        },
+                        "showSecretKey": "シークレットを表示"
                     },
                     "toolTip": "Authenticatorアプリを持っていませんか？<1> App Storeまたは<3> Google PlayからGoogle Authenticatorのような認証アプリをダウンロードする",
                     "verify": {
