@@ -87,6 +87,7 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
     isReadOnly,
     actionTypeApiPath,
     isCreateFormState,
+    versionInfo,
     [ "data-componentid" ]: _componentId = "action-config-form"
 }: PreIssueAccessTokenActionConfigFormInterface): ReactElement => {
 
@@ -292,6 +293,7 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
                         isHasRule={ isHasRule }
                         setIsHasRule={ setIsHasRule }
                         data-componentid={ `${ _componentId }-rule` }
+                        version={ actionData?.version || versionInfo?.latestVersion }
                     />
                 ) }
             </>
@@ -304,6 +306,12 @@ const PreIssueAccessTokenActionConfigForm: FunctionComponent<PreIssueAccessToken
                 <RulesProvider
                     conditionExpressionsMetaData={ RuleExpressionsMetaData }
                     initialData={ actionData?.rule }
+                    hidden={ {
+                        values:
+                            ActionsConstants.__TEMPORARY__DISALLOWED_RULES[
+                                ActionsConstants.PRE_ISSUE_ACCESS_TOKEN_URL_PATH
+                            ]?.[actionData?.version || versionInfo?.latestVersion]
+                    } }
                 >
                     <FinalForm
                         onSubmit={ (values: ActionConfigFormPropertyInterface, form: any) => {
