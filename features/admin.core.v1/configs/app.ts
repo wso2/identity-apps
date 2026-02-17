@@ -16,7 +16,6 @@
  * under the License.
  */
 
-
 import { getAdministratorsResourceEndpoints } from "@wso2is/admin.administrators.v1/config/endpoints";
 import { getAgentsResourceEndpoints } from "@wso2is/admin.agents.v1/configs/endpoints";
 import { getAPIResourceEndpoints } from "@wso2is/admin.api-resources.v2/configs/endpoint";
