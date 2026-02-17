@@ -1668,7 +1668,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
-            category: "extensions:manage.sidePanel.categories.customerData",
+            category: "extensions:manage.sidePanel.categories.customerDataService",
             children: [
                 {
                     component: lazy(() => import("@wso2is/admin.cds.v1/components/profile")),
@@ -1687,12 +1687,12 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 import("@wso2is/admin.cds.v1/pages/profiles")
             ),
             exact: true,
-            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CUSTOMER_DATA_SERVICE,
+            featureFlagKey: FeatureFlagConstants.FEATURE_FLAG_KEY_MAP.CUSTOMER_DATA_PROFILES,
             icon: {
                 icon: <ProfilesIcon className="icon" fill="black" />
             },
-            id: "customerData",
-            name: "customerData",
+            id: "customerDataProfiles",
+            name: "Profiles",
             order: 32,
             path: AppConstants.getPaths().get("PROFILES"),
             protected: true,

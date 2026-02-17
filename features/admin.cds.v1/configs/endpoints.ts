@@ -27,6 +27,7 @@ import { CustomerDataServiceEndpointsInterface } from "../models/endpoints";
 export const getCustomerDataServiceEndpoints = (
     serverOrigin: string
 ): CustomerDataServiceEndpointsInterface => {
+    serverOrigin = "https://localhost:8900/t/carbon.super";
     return {
         cdsConfig: `${ serverOrigin }/cds/api/v1/config`,
         cdsProfileSchema: `${ serverOrigin }/cds/api/v1/profile-schema`,

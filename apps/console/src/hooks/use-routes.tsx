@@ -55,6 +55,7 @@ export type useRoutesInterface = {
 
 interface UseRoutesParams {
     isAgentManagementEnabledForOrg: boolean
+    isCustomerDataServiceEnabledForOrg: boolean
 }
 
 /**
@@ -136,6 +137,11 @@ const useRoutes = (params: UseRoutesParams): useRoutesInterface => {
                 additionalRoutes.push(AppConstants.AGENTS_ROUTE);
             }
 
+            if(!params.isCustomerDataServiceEnabledForOrg) {
+                // Skippinging routes if CDS is disabled for the organization.
+                additionalRoutes.push(AppConstants.CDS_PROFILES_ROUTES);
+            }
+
             // In on-premise Identity Server deployments, the Approvals tab is disabled in the Console.
             // For Asgardeo deployments, only Asgardeo Admins are allowed to access the Approvals tab.
             if (isPrivilegedUser) {
@@ -173,6 +179,8 @@ const useRoutes = (params: UseRoutesParams): useRoutesInterface => {
         ) {
             appRoutes[ 0 ] = appRoutes[ 0 ].filter((route: RouteInterface) => route.id === "404");
         }
+
+        console.log("Filtered app routes: ", appRoutes);
 
         dispatch(setFilteredDevelopRoutes(appRoutes));
         dispatch(setSanitizedDevelopRoutes(sanitizedAppRoutes));
