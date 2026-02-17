@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.33.1
+
+### Patch Changes
+
+- [#9611](https://github.com/wso2/identity-apps/pull/9611) [`90ccfd1696559082e98d7854884c3651bf1376f4`](https://github.com/wso2/identity-apps/commit/90ccfd1696559082e98d7854884c3651bf1376f4) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with Sift configuration update notification
+
 ## 2.33.0
 
 ### Minor Changes
