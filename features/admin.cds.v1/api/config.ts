@@ -29,22 +29,6 @@ const httpClient: HttpClientInstance =
     AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
 
 /**
- * GET /cds/api/v1/config
- * Returns the CDS configuration
- */
-export const fetchCDSConfig = async (): Promise<CDSConfig> => {
-    const requestConfig: RequestConfigInterface = {
-        headers: { "Content-Type": "application/json" },
-        method: HttpMethods.GET,
-        url: store.getState().config.endpoints.cdsConfig
-    };
-
-    const response: Awaited<ReturnType<typeof httpClient>> = await httpClient(requestConfig);
-
-    return response.data as CDSConfig;
-};
-
-/**
  * PATCH /cds/api/v1/config
  * Partially update the CDS configuration
  */

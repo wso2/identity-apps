@@ -16,9 +16,13 @@
  * under the License.
  */
 
-import { RequestErrorInterface } from "@wso2is/admin.core.v1/hooks/use-request";
-import useSWR, { KeyedMutator } from "swr";
-import { fetchCDSConfig } from "../api/config";
+import useRequest, {
+    RequestConfigInterface,
+    RequestErrorInterface,
+    RequestResultInterface
+} from "@wso2is/admin.core.v1/hooks/use-request";
+import { store } from "@wso2is/admin.core.v1/store";
+import { HttpMethods } from "@wso2is/core/models";
 import type { CDSConfig } from "../models/config";
 
 /**
@@ -30,48 +34,31 @@ const DEFAULT_CDS_CONFIG: CDSConfig = {
 };
 
 /**
- * Hook return type
- */
-export interface UseCDSConfigReturn {
-    /**
-     * CDS configuration data
-     */
-    data: CDSConfig;
-    /**
-     * Is the config being fetched
-     */
-    isLoading: boolean;
-    /**
-     * Is the config being revalidated
-     */
-    isValidating: boolean;
-
-    /**
-     * Error if any
-     */
-    error: RequestErrorInterface;
-    /**
-     * Mutate/refetch the config
-     */
-    mutate: KeyedMutator<CDSConfig>;
-}
-
-/**
  * Hook to fetch CDS configuration.
  *
  * @param shouldFetch - Should fetch the data.
- * @returns Hook return object containing data, error, isLoading, isValidating, mutate.
+ * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-const useCDSConfig = (shouldFetch: boolean = true): UseCDSConfigReturn => {
+const useCDSConfig = <Data = CDSConfig, Error = RequestErrorInterface>(
+    shouldFetch: boolean = true
+): RequestResultInterface<Data, Error> => {
 
-    const { data, error, isLoading, isValidating, mutate } = useSWR<CDSConfig, RequestErrorInterface>(
-        shouldFetch ? "cds-config" : null,
-        () => fetchCDSConfig(),
+    const requestConfig: RequestConfigInterface = {
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.cdsConfig
+    };
+
+    const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
+        shouldFetch ? requestConfig : null,
         { shouldRetryOnError: false }
     );
 
     return {
-        data: data ?? DEFAULT_CDS_CONFIG,
+        data: (data ?? DEFAULT_CDS_CONFIG) as Data,
         error,
         isLoading,
         isValidating,
