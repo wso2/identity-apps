@@ -1,6 +1,6 @@
 ---
-"@wso2is/console": major
-"@wso2is/i18n": major
+"@wso2is/console": patch
+"@wso2is/i18n": patch
 ---
 
-Fix issue with Sift configuration update notifcation
+Fix issue with Sift configuration update notification
