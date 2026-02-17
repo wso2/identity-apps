@@ -364,8 +364,8 @@ export class ApplicationManagementConstants {
         LocalAuthenticatorConstants.AUTHENTICATOR_IDS.ACTIVE_SESSION_LIMIT_HANDLER_AUTHENTICATOR_ID
     ];
 
-    // First factor authenticators.
-    public static readonly FIRST_FACTOR_AUTHENTICATORS: string[] = [
+    // Default first factor authenticators (used as fallback).
+    private static readonly DEFAULT_FIRST_FACTOR_AUTHENTICATORS: string[] = [
         LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.BASIC_AUTHENTICATOR_NAME,
         LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.FIDO_AUTHENTICATOR_NAME,
         LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.EMAIL_OTP_AUTHENTICATOR_NAME,
@@ -375,8 +375,20 @@ export class ApplicationManagementConstants {
         LocalAuthenticatorConstants.AUTHENTICATOR_IDS.SMS_OTP_AUTHENTICATOR_ID
     ];
 
-    // Second factor authenticators.
-    public static readonly SECOND_FACTOR_AUTHENTICATORS: string[] = [
+    /**
+     * First factor authenticators available in application login flow builder.
+     * Configurable via deployment.config.json (ui.loginFlowFirstFactorAuthenticators).
+     * Falls back to defaults if not configured.
+     */
+    public static get FIRST_FACTOR_AUTHENTICATORS(): string[] {
+        const configAuthenticators: string[] =
+            window?.[ "AppUtils" ]?.getConfig()?.ui?.loginFlowFirstFactorAuthenticators;
+
+        return configAuthenticators ?? ApplicationManagementConstants.DEFAULT_FIRST_FACTOR_AUTHENTICATORS;
+    }
+
+    // Default second factor authenticators (used as fallback).
+    private static readonly DEFAULT_SECOND_FACTOR_AUTHENTICATORS: string[] = [
         LocalAuthenticatorConstants.AUTHENTICATOR_NAMES.TOTP_AUTHENTICATOR_NAME,
         LocalAuthenticatorConstants.AUTHENTICATOR_IDS.TOTP_AUTHENTICATOR_ID,
         FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.IPROOV_AUTHENTICATOR_NAME,
@@ -386,6 +398,18 @@ export class ApplicationManagementConstants {
         FederatedAuthenticatorConstants.AUTHENTICATOR_NAMES.PASSWORD_RESET_ENFORCER_AUTHENTICATOR_NAME,
         FederatedAuthenticatorConstants.AUTHENTICATOR_IDS.PASSWORD_RESET_ENFORCER_AUTHENTICATOR_ID
     ];
+
+    /**
+     * Second factor authenticators available in application login flow builder.
+     * Configurable via deployment.config.json (ui.loginFlowSecondFactorAuthenticators).
+     * Falls back to defaults if not configured.
+     */
+    public static get SECOND_FACTOR_AUTHENTICATORS(): string[] {
+        const configAuthenticators: string[] =
+            window?.[ "AppUtils" ]?.getConfig()?.ui?.loginFlowSecondFactorAuthenticators;
+
+        return configAuthenticators ?? ApplicationManagementConstants.DEFAULT_SECOND_FACTOR_AUTHENTICATORS;
+    }
 
     // Known social authenticators.
     public static readonly SOCIAL_AUTHENTICATORS: string[] = [

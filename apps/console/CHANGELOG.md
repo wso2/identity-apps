@@ -1,5 +1,43 @@
 # @wso2is/console
 
+## 2.91.3
+
+### Patch Changes
+
+- [#9611](https://github.com/wso2/identity-apps/pull/9611) [`90ccfd1696559082e98d7854884c3651bf1376f4`](https://github.com/wso2/identity-apps/commit/90ccfd1696559082e98d7854884c3651bf1376f4) Thanks [@NipuniBhagya](https://github.com/NipuniBhagya)! - Fix issue with Sift configuration update notification
+
+* [#9612](https://github.com/wso2/identity-apps/pull/9612) [`2e45d2d8f372b339a88295182d526417ac272fba`](https://github.com/wso2/identity-apps/commit/2e45d2d8f372b339a88295182d526417ac272fba) Thanks [@shashimalcse](https://github.com/shashimalcse)! - Add Verifiable Credentials UI feature config
+
+* Updated dependencies [[`90ccfd1696559082e98d7854884c3651bf1376f4`](https://github.com/wso2/identity-apps/commit/90ccfd1696559082e98d7854884c3651bf1376f4)]:
+  - @wso2is/i18n@2.33.1
+
+## 2.91.2
+
+### Patch Changes
+
+- [#9606](https://github.com/wso2/identity-apps/pull/9606) [`f9f713c5de2cb3e68c25ae09f7d09c7829a2df08`](https://github.com/wso2/identity-apps/commit/f9f713c5de2cb3e68c25ae09f7d09c7829a2df08) Thanks [@JayaShakthi97](https://github.com/JayaShakthi97)! - Add support for configurable first factor & second factor authenticators in login flow
+
+- Updated dependencies [[`f9f713c5de2cb3e68c25ae09f7d09c7829a2df08`](https://github.com/wso2/identity-apps/commit/f9f713c5de2cb3e68c25ae09f7d09c7829a2df08)]:
+  - @wso2is/admin.applications.v1@2.41.1
+  - @wso2is/admin.core.v1@2.51.1
+  - @wso2is/admin.agents.v1@1.0.147
+  - @wso2is/admin.branding.v1@2.32.88
+  - @wso2is/admin.roles.v2@2.27.302
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.132
+  - @wso2is/admin.email-management.v1@2.25.296
+  - @wso2is/admin.flows.v1@1.0.101
+  - @wso2is/admin.home.v1@1.7.111
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.132
+  - @wso2is/admin.server-configurations.v1@2.36.7
+  - @wso2is/admin.users.v1@2.36.107
+  - @wso2is/admin.registration-flow-builder.v1@0.10.92
+
+## 2.91.1
+
+### Patch Changes
+
+- [#9603](https://github.com/wso2/identity-apps/pull/9603) [`b5e03e4d82a22a053b05ef8161d4758ee4bb144f`](https://github.com/wso2/identity-apps/commit/b5e03e4d82a22a053b05ef8161d4758ee4bb144f) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Onboard cds
+
 ## 2.91.0
 
 ### Minor Changes
