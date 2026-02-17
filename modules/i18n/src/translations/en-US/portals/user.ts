@@ -176,7 +176,7 @@ export const user: userNS = {
                     message: "You are about to share user roles with all organizations."
                 },
                 subTitle: "Configure how this user should be shared across organizations",
-                title: "Shared Access"
+                title: "Sharing Policy"
             }
         },
         userActionZoneGroup: {
