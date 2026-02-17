@@ -20,6 +20,7 @@ import { AsgardeoSPAClient, HttpClientInstance } from "@asgardeo/auth-react";
 import { RequestConfigInterface } from "@wso2is/admin.core.v1/hooks/use-request";
 import { store } from "@wso2is/admin.core.v1/store";
 import { HttpMethods } from "@wso2is/core/models";
+import { AxiosError, AxiosResponse } from "axios";
 import type { CDSConfig, CDSConfigUpdateRequest } from "../models/config";
 
 /**
@@ -32,17 +33,29 @@ const httpClient: HttpClientInstance =
  * PATCH /cds/api/v1/config
  * Partially update the CDS configuration
  */
-export const patchCDSConfig = async (
+export const patchCDSConfig = (
     patch: Partial<CDSConfigUpdateRequest>
 ): Promise<CDSConfig> => {
+
     const requestConfig: RequestConfigInterface = {
         data: patch,
-        headers: { "Content-Type": "application/json" },
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
         method: HttpMethods.PATCH,
         url: store.getState().config.endpoints.cdsConfig
     };
 
-    const response: Awaited<ReturnType<typeof httpClient>> = await httpClient(requestConfig);
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            if (response.status !== 200) {
+                return Promise.reject(new Error("Failed to update CDS configuration"));
+            }
 
-    return response.data as CDSConfig;
+            return Promise.resolve(response.data as CDSConfig);
+        })
+        .catch((error: AxiosError) => {
+            return Promise.reject(error);
+        });
 };
