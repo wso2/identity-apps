@@ -600,7 +600,7 @@ export class AppConstants {
     /**
      * Route id of the customer data service page.
      */
-    public static readonly CDS_PROFILES_ROUTES: string = "customerDataProfiles";
+    public static readonly CDS_PROFILES_ROUTE_ID: string = "customerDataProfiles";
 
     /**
      * Name of the root node

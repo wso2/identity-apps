@@ -138,8 +138,8 @@ const useRoutes = (params: UseRoutesParams): useRoutesInterface => {
             }
 
             if(!params.isCustomerDataServiceEnabledForOrg) {
-                // Skippinging routes if CDS is disabled for the organization.
-                additionalRoutes.push(AppConstants.CDS_PROFILES_ROUTES);
+                // Skipping routes if CDS is disabled for the organization.
+                additionalRoutes.push(AppConstants.CDS_PROFILES_ROUTE_ID);
             }
 
             // In on-premise Identity Server deployments, the Approvals tab is disabled in the Console.

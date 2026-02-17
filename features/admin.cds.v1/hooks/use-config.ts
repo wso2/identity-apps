@@ -37,12 +37,10 @@ export interface UseCDSConfigReturn {
      * CDS configuration data
      */
     data: CDSConfig;
-
     /**
      * Is the config being fetched
      */
     isLoading: boolean;
-
     /**
      * Is the config being revalidated
      */
@@ -52,7 +50,6 @@ export interface UseCDSConfigReturn {
      * Error if any
      */
     error: RequestErrorInterface;
-
     /**
      * Mutate/refetch the config
      */
@@ -73,8 +70,6 @@ const useCDSConfig = (shouldFetch: boolean = true): UseCDSConfigReturn => {
         { shouldRetryOnError: false }
     );
 
-    console.log("CDS config data: ", data);
-    
     return {
         data: data ?? DEFAULT_CDS_CONFIG,
         error,

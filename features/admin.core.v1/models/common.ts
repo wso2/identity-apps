@@ -20,11 +20,9 @@ import { LinkInterface } from "@wso2is/core/models";
 
 export interface AppComponentProps {
     onAgentManagementEnableStatusChange: (status: boolean) => void
-}
-
-export interface AppComponentProps {
     onCustomerDataServiceStatusChange: (status: boolean) => void
 }
+
 /**
  * Organization model interfaces.
  */
