@@ -11,6 +11,6 @@ reviews:
   auto_assign_reviewers: true
   poem: false
 knowledge_base:
-  - code_guidelines:
-      - enabled: true
-      - filePatterns: ["docs/write-code/CODE_QUALITY.md"]
+  code_guidelines:
+    enabled: true
+    filePatterns: ["docs/write-code/CODE_QUALITY.md"]
