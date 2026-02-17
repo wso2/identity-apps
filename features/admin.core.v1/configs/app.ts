@@ -345,7 +345,6 @@ export class Config {
             ...getInsightsResourceEndpoints(this.resolveServerHostFromConfig()),
             ...getExtensionTemplatesEndpoints(this.resolveServerHost()),
             ...getApplicationTemplatesResourcesEndpoints(this.resolveServerHost()),
-            ...getApplicationTemplatesResourcesEndpoints(this.resolveServerHost()),
             ...getRulesEndpoints(this.resolveServerHost()),
             ...getSmsTemplateResourceEndpoints(this.resolveServerHost()),
             ...getPolicyAdministrationResourceEndpoints(this.resolveServerHost()),
