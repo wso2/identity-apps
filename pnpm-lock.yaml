@@ -6012,9 +6012,6 @@ importers:
       '@wso2is/access-control':
         specifier: ^3.4.1
         version: link:../../modules/access-control
-      '@wso2is/admin.actions.v1':
-        specifier: ^1.15.1
-        version: link:../admin.actions.v1
       '@wso2is/admin.administrators.v1':
         specifier: ^2.29.208
         version: link:../admin.administrators.v1
@@ -6054,9 +6051,6 @@ importers:
       '@wso2is/admin.claims.v1':
         specifier: ^2.30.1
         version: link:../admin.claims.v1
-      '@wso2is/admin.connections.v1':
-        specifier: ^2.34.12
-        version: link:../admin.connections.v1
       '@wso2is/admin.console-settings.v1':
         specifier: ^2.26.6
         version: link:../admin.console-settings.v1
@@ -44086,8 +44080,6 @@ packages:
       webpack: '*'
     peerDependenciesMeta:
       webpack:
-        optional: true
-      webpack-sources:
         optional: true
     dependencies:
       webpack: 5.84.1(@swc/core@1.3.99)(esbuild@0.18.20)(webpack-cli@4.10.0)

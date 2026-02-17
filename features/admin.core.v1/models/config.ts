@@ -18,7 +18,6 @@
 
 import { ResponseMode, Storage } from "@asgardeo/auth-react";
 import { FeatureAccessConfigInterface } from "@wso2is/access-control";
-import { ActionsResourceEndpointsInterface } from "@wso2is/admin.actions.v1/models/endpoints";
 import { ApplicationsTemplatesEndpointsInterface } from "@wso2is/admin.application-templates.v1/models/endpoints";
 import {
     ApplicationTemplateLoadingStrategies
@@ -32,7 +31,6 @@ import { BrandingPreferenceResourceEndpointsInterface } from "@wso2is/admin.bran
 import { CustomerDataServiceEndpointsInterface } from "@wso2is/admin.cds.v1/models/endpoints";
 import { CertificatesResourceEndpointsInterface } from "@wso2is/admin.certificates.v1";
 import { ClaimResourceEndpointsInterface } from "@wso2is/admin.claims.v1/models/endpoints";
-import { ConnectionResourceEndpointsInterface } from "@wso2is/admin.connections.v1";
 import { FlowBuilderCoreResourceEndpointsInterface } from "@wso2is/admin.flow-builder-core.v1/models/endpoints";
 import { GroupsResourceEndpointsInterface } from "@wso2is/admin.groups.v1/models/endpoints";
 import { RemoteLoggingResourceEndpointsInterface } from "@wso2is/admin.logs.v1/models/endpoints";
@@ -735,7 +733,6 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     UserstoreResourceEndpointsInterface,
     RolesResourceEndpointsInterface,
     ApplicationsResourceEndpointsInterface,
-    ConnectionResourceEndpointsInterface,
     ScopesResourceEndpointsInterface,
     SecretsManagementEndpoints,
     OrganizationResourceEndpointsInterface,
@@ -746,7 +743,6 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     ExtensionTemplatesEndpointsInterface,
     ApplicationsTemplatesEndpointsInterface,
     SMSTemplateResourceEndpointsInterface,
-    ActionsResourceEndpointsInterface,
     PolicyAdministrationEndpointsInterface,
     WorkflowsResourceEndpointsInterface,
     WorkflowAssociationsResourceEndpointsInterface,
@@ -755,6 +751,15 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     RemoteLoggingResourceEndpointsInterface,
     FlowBuilderCoreResourceEndpointsInterface {
 
+    actions: string;
+    authenticatorTags: string;
+    authenticators: string;
+    customAuthenticators: string;
+    extensions: string;
+    fidoConfigs: string;
+    identityProviders: string;
+    localAuthenticators: string;
+    multiFactorAuthenticators: string;
     CORSOrigins: string;
     // TODO: Remove this endpoint and use ID token to get the details
     me: string;

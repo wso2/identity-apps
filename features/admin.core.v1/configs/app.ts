@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { getActionsResourceEndpoints } from "@wso2is/admin.actions.v1/configs/endpoints";
 import { getAdministratorsResourceEndpoints } from "@wso2is/admin.administrators.v1/config/endpoints";
 import { getAgentsResourceEndpoints } from "@wso2is/admin.agents.v1/configs/endpoints";
 import { getAPIResourceEndpoints } from "@wso2is/admin.api-resources.v2/configs/endpoint";
@@ -34,7 +33,6 @@ import { getCustomerDataServiceEndpoints } from "@wso2is/admin.cds.v1/configs/en
 import { getCertificatesResourceEndpoints } from "@wso2is/admin.certificates.v1";
 import { getClaimResourceEndpoints } from "@wso2is/admin.claims.v1/configs/endpoints";
 import { ClaimManagementConstants } from "@wso2is/admin.claims.v1/constants/claim-management-constants";
-import { getConnectionResourceEndpoints } from "@wso2is/admin.connections.v1";
 import { getEmailTemplatesResourceEndpoints } from "@wso2is/admin.email-templates.v1";
 import { getExtendedFeatureResourceEndpoints } from "@wso2is/admin.extensions.v1/configs/endpoints";
 import { getFeatureGateResourceEndpoints } from "@wso2is/admin.feature-gate.v1/configs/endpoints";
@@ -331,7 +329,6 @@ export class Config {
             ...getCertificatesResourceEndpoints(this.resolveServerHostFromConfig()),
             ...getIDVPResourceEndpoints(this.resolveServerHost()),
             ...getEmailTemplatesResourceEndpoints(this.resolveServerHost()),
-            ...getConnectionResourceEndpoints(this.resolveServerHost()),
             ...getRolesResourceEndpoints(this.resolveServerHost(), this.resolveServerHostFromConfig()),
             ...getServerConfigurationsResourceEndpoints(this.resolveServerHost()),
             ...getUsersResourceEndpoints(this.resolveServerHost()),
@@ -348,7 +345,6 @@ export class Config {
             ...getInsightsResourceEndpoints(this.resolveServerHostFromConfig()),
             ...getExtensionTemplatesEndpoints(this.resolveServerHost()),
             ...getApplicationTemplatesResourcesEndpoints(this.resolveServerHost()),
-            ...getActionsResourceEndpoints(this.resolveServerHost()),
             ...getRulesEndpoints(this.resolveServerHost()),
             ...getSmsTemplateResourceEndpoints(this.resolveServerHost()),
             ...getPolicyAdministrationResourceEndpoints(this.resolveServerHost()),
@@ -368,9 +364,18 @@ export class Config {
             ...getVCTemplateEndpoints(this.resolveServerHost()),
             ...getCustomerDataServiceEndpoints(this.resolveServerHost()),
             CORSOrigins: `${ this.resolveServerHostFromConfig() }/api/server/v1/cors/origins`,
+            actions: "",
             asyncStatus: `${ this.resolveServerHost(false, true) }/api/server/v1/async-operations`,
+            authenticatorTags: "",
+            authenticators: "",
+            customAuthenticators: "",
+            extensions: "",
+            fidoConfigs: "",
+            identityProviders: "",
+            localAuthenticators: "",
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${ this.getDeploymentConfig()?.serverHost }/scim2/Me`,
+            multiFactorAuthenticators: "",
             saml2Meta: `${ this.resolveServerHost(false, true) }/identity/metadata/saml2`,
             wellKnown: `${ this.resolveServerHost(false, true) }/oauth2/token/.well-known/openid-configuration`
         };
