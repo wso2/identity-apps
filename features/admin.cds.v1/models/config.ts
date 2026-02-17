@@ -17,7 +17,7 @@
  */
 
 /**
- * CDS Configuration response interface
+ * CDS Configuration response interface.
  */
 export interface CDSConfig {
     /**
@@ -26,13 +26,13 @@ export interface CDSConfig {
     cds_enabled: boolean;
 
     /**
-     * List of system application identifiers
+     * List of system application identifiers.
      */
     system_applications: string[];
 }
 
 /**
- * CDS Configuration update request interface
+ * CDS Configuration update request interface.
  */
 export interface CDSConfigUpdateRequest {
     /**
