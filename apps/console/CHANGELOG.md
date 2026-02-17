@@ -1,5 +1,29 @@
 # @wso2is/console
 
+## 2.92.0
+
+### Minor Changes
+
+- [#9608](https://github.com/wso2/identity-apps/pull/9608) [`b741e9f50c869949a986ef34fe6fde1539908d50`](https://github.com/wso2/identity-apps/commit/b741e9f50c869949a986ef34fe6fde1539908d50) Thanks [@VivekVinushanth](https://github.com/VivekVinushanth)! - Improve cds sidepanels
+
+### Patch Changes
+
+- Updated dependencies [[`b741e9f50c869949a986ef34fe6fde1539908d50`](https://github.com/wso2/identity-apps/commit/b741e9f50c869949a986ef34fe6fde1539908d50)]:
+  - @wso2is/admin.feature-gate.v1@1.8.0
+  - @wso2is/admin.core.v1@2.52.0
+  - @wso2is/admin.cds.v1@1.2.0
+  - @wso2is/admin.flows.v1@1.0.102
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.133
+  - @wso2is/admin.branding.v1@2.32.89
+  - @wso2is/admin.email-management.v1@2.25.297
+  - @wso2is/admin.home.v1@1.7.112
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.133
+  - @wso2is/admin.registration-flow-builder.v1@0.10.93
+  - @wso2is/admin.server-configurations.v1@2.36.8
+  - @wso2is/admin.users.v1@2.36.108
+  - @wso2is/admin.agents.v1@1.0.148
+  - @wso2is/admin.roles.v2@2.27.303
+
 ## 2.91.3
 
 ### Patch Changes
