@@ -2393,21 +2393,21 @@
                 }
             },
             {% endif %}
-            {% if console.verifiableCredentials is defined %}
+            {% if console.verifiable_credentials is defined %}
             "verifiableCredentials": {
                 "disabledFeatures": [
-                    {% if console.verifiableCredentials.disabled_features is defined %}
-                    {% for feature in console.verifiableCredentials.disabled_features %}
+                    {% if console.verifiable_credentials.disabled_features is defined %}
+                    {% for feature in console.verifiable_credentials.disabled_features %}
                     "{{ feature }}"{{ "," if not loop.last }}
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {% if console.verifiableCredentials.enabled is defined %} {{ console.verifiableCredentials.enabled }},
+                "enabled": {% if console.verifiable_credentials.enabled is defined %} {{ console.verifiable_credentials.enabled }},
                 {% else %} true,
                 {% endif %}
                 "scopes": {
-                    {% if console.verifiableCredentials.scopes is defined %}
-                    {% for operation, scopes in console.verifiableCredentials.scopes.items() %}
+                    {% if console.verifiable_credentials.scopes is defined %}
+                    {% for operation, scopes in console.verifiable_credentials.scopes.items() %}
                     "{{ operation }}": [
                         {% for scope in scopes %}
                             "{{ scope }}"{{ "," if not loop.last }}
