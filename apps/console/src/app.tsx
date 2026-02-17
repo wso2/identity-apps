@@ -18,6 +18,7 @@
 
 import { BasicUserInfo, DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
 import { AccessControlProvider, AllFeatureInterface, FeatureGateInterface } from "@wso2is/access-control";
+import  useCDSConfig  from "@wso2is/admin.cds.v1/hooks/use-config";
 import { PreLoader } from "@wso2is/admin.core.v1/components/pre-loader";
 import { ProtectedRoute } from "@wso2is/admin.core.v1/components/protected-route";
 import { Config } from "@wso2is/admin.core.v1/configs/app";
@@ -80,7 +81,8 @@ import DecoratedApp from "./decorated-app";
 import "./app.scss";
 
 const Base = ({
-    onAgentManagementEnableStatusChange
+    onAgentManagementEnableStatusChange,
+    onCustomerDataServiceStatusChange
 }: AppComponentProps) => {
     /**
      * Listen for base name changes and updated the routes.
@@ -101,6 +103,12 @@ const Base = ({
         onAgentManagementEnableStatusChange(isAgentManagementEnabledForOrg);
 
     }, [ userStoresList, isUserStoresListFetchRequestLoading ]);
+
+    const { data: cdsConfig } = useCDSConfig(true);
+
+    useEffect(() => {
+        onCustomerDataServiceStatusChange(cdsConfig?.cds_enabled ?? false);
+    }, [ cdsConfig ]);
 
     return (
         <Switch>
@@ -152,7 +160,8 @@ const Base = ({
  * @returns App Root component.
  */
 export const App = ({
-    onAgentManagementEnableStatusChange
+    onAgentManagementEnableStatusChange,
+    onCustomerDataServiceStatusChange
 }: AppComponentProps): ReactElement => {
     const featureGateConfigUpdated : FeatureGateInterface = { ...featureGateConfig };
 
@@ -571,6 +580,9 @@ export const App = ({
                                                 <Base
                                                     onAgentManagementEnableStatusChange={
                                                         onAgentManagementEnableStatusChange
+                                                    }
+                                                    onCustomerDataServiceStatusChange={
+                                                        onCustomerDataServiceStatusChange
                                                     }
                                                 />
                                             </UserStoresProvider>

@@ -118,9 +118,11 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
     const [ routesFiltered, setRoutesFiltered ] = useState<boolean>(false);
     const [ isUserTenantless, setIsUserTenantless ] = useState(undefined);
     const [ isAgentManagementEnabledForOrg ,setIsAgentManagementEnabledForOrg ] = useState(false);
+    const [ isCustomerDataServiceEnabledForOrg ,setIsCustomerDataServiceEnabledForOrg ] = useState(false);
 
     const { filterRoutes } = useRoutes({
-        isAgentManagementEnabledForOrg
+        isAgentManagementEnabledForOrg,
+        isCustomerDataServiceEnabledForOrg
     });
 
     useEffect(() => {
@@ -432,6 +434,9 @@ export const ProtectedApp: FunctionComponent<AppPropsInterface> = (): ReactEleme
                     { renderApp && routesFiltered ? (<App
                         onAgentManagementEnableStatusChange={ (status: boolean) => {
                             setIsAgentManagementEnabledForOrg(status);
+                        } }
+                        onCustomerDataServiceStatusChange={ (status: boolean) => {
+                            setIsCustomerDataServiceEnabledForOrg(status);
                         } }
                     />) : <PreLoader /> }
                 </SubscriptionProvider>

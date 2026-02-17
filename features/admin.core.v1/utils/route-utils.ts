@@ -292,7 +292,7 @@ export class RouteUtils {
 
         const customerData: Omit<RouteInterface, "showOnSidePanel"> = {
             icon: CustomerDataIcon,
-            id: "customerData",
+            id: "customerDataService",
             name: "Customer Data",
             order: 8
         };
@@ -345,7 +345,7 @@ export class RouteUtils {
 
         const settings: NavCategory = {
             id: "settings",
-            order: 8
+            order: 9
         };
 
         const loginAndRegPathsToCheck: string[] = [
@@ -522,7 +522,7 @@ export class RouteUtils {
             },
             {
                 category: manage,
-                id: "profiles",
+                id: "customerDataProfiles",
                 parent: customerData
             },
             {
