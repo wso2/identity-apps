@@ -16,12 +16,8 @@
  * under the License.
  */
 
-import { IdentityAppsApiException } from "@wso2is/core/exceptions";
-import { AlertLevels } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
-import { useCallback, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { Dispatch } from "redux";
+import { RequestErrorInterface } from "@wso2is/admin.core.v1/hooks/use-request";
+import useSWR, { KeyedMutator } from "swr";
 import { fetchCDSConfig } from "../api/config";
 import type { CDSConfig } from "../models/config";
 
@@ -38,9 +34,9 @@ const DEFAULT_CDS_CONFIG: CDSConfig = {
  */
 export interface UseCDSConfigReturn {
     /**
-     * CDS configuration data (always non-null, defaults to cds_enabled: false)
+     * CDS configuration data
      */
-    config: CDSConfig;
+    data: CDSConfig;
 
     /**
      * Is the config being fetched
@@ -48,117 +44,44 @@ export interface UseCDSConfigReturn {
     isLoading: boolean;
 
     /**
+     * Is the config being revalidated
+     */
+    isValidating: boolean;
+
+    /**
      * Error if any
      */
-    error: string | null;
+    error: RequestErrorInterface;
 
     /**
-     * Fetch the config
+     * Mutate/refetch the config
      */
-    fetchConfig: () => Promise<void>;
-
-    /**
-     * Refetch the config
-     */
-    refetch: () => Promise<void>;
+    mutate: KeyedMutator<CDSConfig>;
 }
 
 /**
- * Hook options
- */
-export interface UseCDSConfigOptions {
-    /**
-     * Should fetch on mount
-     */
-    fetchOnMount?: boolean;
-
-    /**
-     * Success callback
-     */
-    onSuccess?: (config: CDSConfig) => void;
-
-    /**
-     * Error callback
-     */
-    onError?: (error: string) => void;
-
-    /**
-     * Show alerts on error
-     */
-    showAlerts?: boolean;
-}
-
-/**
- * Hook to fetch CDS configuration
+ * Hook to fetch CDS configuration.
  *
- * @param options - Hook options
- * @returns Hook return object
+ * @param shouldFetch - Should fetch the data.
+ * @returns Hook return object containing data, error, isLoading, isValidating, mutate.
  */
-export const useCDSConfig = (options?: UseCDSConfigOptions): UseCDSConfigReturn => {
-    const {
-        fetchOnMount = true,
-        onSuccess,
-        onError,
-        showAlerts = true
-    } = options ?? {};
+const useCDSConfig = (shouldFetch: boolean = true): UseCDSConfigReturn => {
 
-    const dispatch: Dispatch = useDispatch();
+    const { data, error, isLoading, isValidating, mutate } = useSWR<CDSConfig, RequestErrorInterface>(
+        shouldFetch ? "cds-config" : null,
+        () => fetchCDSConfig(),
+        { shouldRetryOnError: false }
+    );
 
-    const [ config, setConfig ] = useState<CDSConfig>(DEFAULT_CDS_CONFIG);
-    const [ isLoading, setIsLoading ] = useState<boolean>(false);
-    const [ error, setError ] = useState<string | null>(null);
-
-    /**
-     * Fetch the CDS config
-     */
-    const fetchConfig: () => Promise<void> = useCallback(async (): Promise<void> => {
-        setIsLoading(true);
-        setError(null);
-
-        try {
-            const response: CDSConfig = await fetchCDSConfig();
-
-            setConfig(response);
-            onSuccess?.(response);
-        } catch (err) {
-            const errorMessage: string = err instanceof IdentityAppsApiException
-                ? err.message
-                : "An error occurred while fetching the CDS configuration";
-
-            setError(errorMessage);
-            onError?.(errorMessage);
-
-            // Set default config on error to ensure routes work
-            setConfig(DEFAULT_CDS_CONFIG);
-
-            if (showAlerts) {
-                dispatch(
-                    addAlert({
-                        description: errorMessage,
-                        level: AlertLevels.ERROR,
-                        message: "Error fetching CDS configuration"
-                    })
-                );
-            }
-        } finally {
-            setIsLoading(false);
-        }
-    }, [ dispatch, onSuccess, onError, showAlerts ]);
-
-    /**
-     * Fetch config on mount if enabled
-     */
-    useEffect(() => {
-        if (fetchOnMount) {
-            fetchConfig();
-        }
-    }, [ fetchOnMount, fetchConfig ]);
-
+    console.log("CDS config data: ", data);
+    
     return {
-        config,
+        data: data ?? DEFAULT_CDS_CONFIG,
         error,
-        fetchConfig,
         isLoading,
-        refetch: fetchConfig
+        isValidating,
+        mutate
     };
 };
+
+export default useCDSConfig;

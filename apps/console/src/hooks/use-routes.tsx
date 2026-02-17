@@ -180,8 +180,6 @@ const useRoutes = (params: UseRoutesParams): useRoutesInterface => {
             appRoutes[ 0 ] = appRoutes[ 0 ].filter((route: RouteInterface) => route.id === "404");
         }
 
-        console.log("Filtered app routes: ", appRoutes);
-
         dispatch(setFilteredDevelopRoutes(appRoutes));
         dispatch(setSanitizedDevelopRoutes(sanitizedAppRoutes));
 

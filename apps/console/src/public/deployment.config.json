@@ -239,7 +239,7 @@
     "i18nResourcePath": "",
     "idpConfigs": {
         "authorizeEndpointURL": "${serverOrigin}/oauth2/authorize",
-        "baseUrls": ["https://localhost:8900"],
+        "baseUrls": [],
         "clockTolerance": 300,
         "enableOIDCSessionManagement": true,
         "logoutEndpointURL": "${serverOrigin}/oidc/logout",
@@ -839,18 +839,22 @@
             "customerDataProfiles": {
                 "disabledFeatures": [],
                 "enabled": true,
-                "featureFlags": [
-                    {
-                        "feature": "customerDataProfiles",
-                        "flag": "PREVIEW"
-                    }
-                ],
+                "featureFlags": [],
                 "scopes": {
-                    "create": [],
-                    "delete": [],
+                    "create": [
+                        "internal_cds_profile_create"
+                    ],
+                    "delete": [
+                        "internal_cds_profile_delete"
+                    ],
                     "feature": [],
-                    "read": [],
-                    "update": []
+                    "read": [
+                        "internal_cds_admin_config_view",
+                        "internal_cds_profile_view"
+                    ],
+                    "update": [
+                        "internal_cds_profile_update"
+                    ]
                 }
             },
             "dynamicClientRegistration": {

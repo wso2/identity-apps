@@ -18,7 +18,7 @@
 
 import { BasicUserInfo, DecodedIDTokenPayload, useAuthContext } from "@asgardeo/auth-react";
 import { AccessControlProvider, AllFeatureInterface, FeatureGateInterface } from "@wso2is/access-control";
-import { useCDSConfig } from "@wso2is/admin.cds.v1/hooks/use-config";
+import  useCDSConfig  from "@wso2is/admin.cds.v1/hooks/use-config";
 import { PreLoader } from "@wso2is/admin.core.v1/components/pre-loader";
 import { ProtectedRoute } from "@wso2is/admin.core.v1/components/protected-route";
 import { Config } from "@wso2is/admin.core.v1/configs/app";
@@ -104,12 +104,15 @@ const Base = ({
 
     }, [ userStoresList, isUserStoresListFetchRequestLoading ]);
 
-    const { config: cdsConfig } = useCDSConfig({ showAlerts: false });
+    const { data: cdsConfig } = useCDSConfig(true);
 
     useEffect(() => {
+        if (!cdsConfig) {
+            return;
+        }
         onCustomerDataServiceStatusChange(cdsConfig.cds_enabled);
 
-    }, [ cdsConfig.cds_enabled ]);
+    }, [ cdsConfig ]);
 
     return (
         <Switch>
@@ -585,7 +588,6 @@ export const App = ({
                                                     onCustomerDataServiceStatusChange={
                                                         onCustomerDataServiceStatusChange
                                                     }
-
                                                 />
                                             </UserStoresProvider>
                                         </>

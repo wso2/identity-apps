@@ -24,7 +24,6 @@ import {
 } from "@oxygen-ui/react-icons";
 import { FeatureStatus } from "@wso2is/access-control";
 import { ReactComponent as CustomerDataIcon } from "@wso2is/admin.cds.v1/assets/images/icons/customer-data.svg";
-import { useCDSConfig } from "@wso2is/admin.cds.v1/hooks/use-config";
 import FeatureGateConstants from "@wso2is/admin.feature-gate.v1/constants/feature-gate-constants";
 import { NavCategory, NavRouteInterface, RouteInterface } from "@wso2is/core/models";
 import groupBy from "lodash-es/groupBy";
@@ -344,11 +343,6 @@ export class RouteUtils {
             order: 7
         };
 
-        const customerDataService: NavCategory = {
-            id: "customerDataService",
-            order: 8
-        };
-
         const settings: NavCategory = {
             id: "settings",
             order: 9
@@ -527,7 +521,7 @@ export class RouteUtils {
                 selected: loginAndRegPathsToCheck.some((path: string) => history.location.pathname.startsWith(path))
             },
             {
-                category: customerDataService,
+                category: manage,
                 id: "customerDataProfiles",
                 parent: customerData
             },
