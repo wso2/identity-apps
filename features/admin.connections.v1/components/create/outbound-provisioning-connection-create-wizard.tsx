@@ -186,10 +186,9 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
      */
     useEffect(() => {
         if (currentWizardStep === 0) {
-            // When on step 1, start with disabled state (validation will enable it)
             setNextShouldBeDisabled(true);
         }
-    }, [ currentWizardStep, wizardSteps.length ]);
+    }, [ currentWizardStep ]);
 
     /**
      * Get wizard steps configuration.
@@ -289,16 +288,6 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
         getOutboundProvisioningConnectorMetadata(selectedConnectorId)
             .then((response: OutboundProvisioningConnectorMetaInterface) => {
                 setConnectorMetaData(response);
-
-                // Check if all mandatory fields have default values to determine initial button state
-                const hasMandatoryFieldsWithoutDefaults: boolean = response.properties?.some(
-                    (property: CommonPluggableComponentMetaPropertyInterface) =>
-                        property?.isMandatory && !property?.defaultValue && !property?.isConfidential
-                ) ?? false;
-
-                // If there are mandatory fields without defaults, keep next button disabled
-                // Otherwise, enable it (validation will update this as user interacts)
-                setNextShouldBeDisabled(hasMandatoryFieldsWithoutDefaults);
             })
             .catch((error: AxiosError) => {
                 handleGetOutboundProvisioningConnectorMetadataError(error);
@@ -550,10 +539,6 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
                                     });
                                 }
 
-                                if (!isUserInputIdpNameAlreadyTaken && FormValidation.isValidResourceName(value)) {
-                                    setNextShouldBeDisabled(false);
-                                }
-
                                 return undefined;
                             } }
                         />
@@ -790,9 +775,6 @@ export const OutboundProvisioningConnectionCreateWizard: FC<
         </ModalWithSidePanel>
     );
 };
-
-// Validation functions.
-// FIXME: These will be removed in the future when form module validation gets to a stable state.
 
 /**
  * Given a {@link FormErrors} object, it will check whether

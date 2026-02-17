@@ -1095,7 +1095,7 @@ export const authenticationProvider:AuthenticationProviderNS = {
         },
         outboundProvisioningGroups: {
             heading: "Outbound Provisioning Groups",
-            hint: "Select and add outbound provisioning groups",
+            hint: "Select groups to automatically provision users when they are added, and deprovision them when they are removed.",
             label: "Group",
             placeHolder: "Select Group",
             popup: {
