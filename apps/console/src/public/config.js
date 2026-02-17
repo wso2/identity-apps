@@ -17,5 +17,8 @@
  */
 
 window.__WSO2_IS_RUNTIME_CONFIG__ = {
+    server: {
+        proxyContextPath: ""
+    },
     updates: window.__WSO2_IS_UPDATE_CONFIG__
 };
