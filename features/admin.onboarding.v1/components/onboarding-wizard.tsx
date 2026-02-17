@@ -214,7 +214,7 @@ const getNextButtonText = (currentStep: OnboardingStep, data: OnboardingDataInte
             return "Finish";
 
         case OnboardingStep.SUCCESS:
-            return "Go to Console";
+            return "Go to Application";
 
         default:
             return "Next";

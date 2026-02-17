@@ -124,10 +124,21 @@ const OnboardingPage: FunctionComponent<OnboardingPageProps> = (props: Onboardin
         }
     }, [ isLoading, shouldShowOnboarding, hasRequiredCreateScopes ]);
 
-    const handleComplete: (_data: OnboardingDataInterface) => void = useCallback(
-        (_data: OnboardingDataInterface): void => {
+    const handleComplete: (data: OnboardingDataInterface) => void = useCallback(
+        (data: OnboardingDataInterface): void => {
             markOnboardingComplete();
-            history.push(AppConstants.getAppHomePath());
+
+            const applicationId: string | undefined = data.createdApplication?.applicationId;
+
+            if (applicationId) {
+                history.push(
+                    AppConstants.getPaths()
+                        .get("APPLICATION_EDIT")
+                        .replace(":id", applicationId)
+                );
+            } else {
+                history.push(AppConstants.getAppHomePath());
+            }
         },
         [ markOnboardingComplete ]
     );
