@@ -26,14 +26,6 @@ import { HttpMethods } from "@wso2is/core/models";
 import type { CDSConfig } from "../models/config";
 
 /**
- * Default CDS configuration
- */
-const DEFAULT_CDS_CONFIG: CDSConfig = {
-    cds_enabled: false,
-    system_applications: []
-};
-
-/**
  * Hook to fetch CDS configuration.
  *
  * @param shouldFetch - Should fetch the data.
@@ -58,7 +50,7 @@ const useCDSConfig = <Data = CDSConfig, Error = RequestErrorInterface>(
     );
 
     return {
-        data: (data ?? DEFAULT_CDS_CONFIG) as Data,
+        data: (data) as Data,
         error,
         isLoading,
         isValidating,

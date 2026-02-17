@@ -107,11 +107,7 @@ const Base = ({
     const { data: cdsConfig } = useCDSConfig(true);
 
     useEffect(() => {
-        if (!cdsConfig) {
-            return;
-        }
-        onCustomerDataServiceStatusChange(cdsConfig.cds_enabled);
-
+        onCustomerDataServiceStatusChange(cdsConfig?.cds_enabled ?? false);
     }, [ cdsConfig ]);
 
     return (
