@@ -59,7 +59,7 @@ const LogoGrid: typeof Box = styled(Box)(({ theme }: { theme: Theme }) => ({
     alignItems: "center",
     display: "flex",
     flexWrap: "wrap",
-    gap: theme.spacing(1.5),
+    gap: theme.spacing(1.5)
 }));
 
 /**
