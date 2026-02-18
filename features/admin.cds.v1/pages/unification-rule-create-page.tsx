@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import Autocomplete from "@oxygen-ui/react/Autocomplete";
+import Autocomplete, { AutocompleteRenderInputParams } from "@oxygen-ui/react/Autocomplete";
 import Button from "@oxygen-ui/react/Button";
 import CircularProgress from "@oxygen-ui/react/CircularProgress";
 import FormControlLabel from "@oxygen-ui/react/FormControlLabel";
@@ -127,11 +127,7 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
          }, []);
 
     const rulesArray: UnificationRuleModel[] = useMemo(() => {
-        if (!existingRules) return [];
-
-        return Array.isArray(existingRules)
-            ? existingRules
-            : (existingRules as any).rules ?? [];
+        return existingRules ?? [];
     }, [ existingRules ]);
 
     const usedPropertyNames: Set<string> = useMemo(() => new Set(
@@ -316,8 +312,8 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
         const value: ScopeValue = event.target.value as ScopeValue;
 
         setFormData((prev: FormData) => ({
-            attribute: "",
             ...prev,
+            attribute: "",
             scope: value
         }));
 
@@ -358,7 +354,7 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
         setFormData((prev: FormData) => ({ ...prev, priority }));
 
         setErrors((prev: Partial<Record<keyof FormData, string>>) => {
-            const next: any = { ...prev };
+            const next:  Partial<Record<keyof FormData, string>>  = { ...prev };
 
             if (priority < 1) {
                 next.priority = t("customerDataService:unificationRules.create.fields.priority.errors.min");
@@ -554,7 +550,7 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
                                 noOptionsText={
                                     t("customerDataService:unificationRules.create.fields.attribute.noOptions")
                                 }
-                                renderInput={ (params: any) => (
+                                renderInput={ (params: AutocompleteRenderInputParams) => (
                                     <TextField
                                         { ...params }
                                         placeholder={

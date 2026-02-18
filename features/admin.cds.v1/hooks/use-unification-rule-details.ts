@@ -16,6 +16,7 @@
  * under the License.
  */
 
+
 import useRequest, {
     RequestConfigInterface,
     RequestErrorInterface,
@@ -26,12 +27,14 @@ import { HttpMethods } from "@wso2is/core/models";
 import type { UnificationRuleModel } from "../models/unification-rules";
 
 /**
- * Hook to fetch all unification rules.
+ * Hook to fetch a single unification rule by ID.
  *
+ * @param ruleId - The ID of the unification rule to fetch.
  * @param shouldFetch - Should fetch the data.
  * @returns SWR response object containing the data, error, isLoading, isValidating, mutate.
  */
-export const useUnificationRules = <Data = UnificationRuleModel[], Error = RequestErrorInterface>(
+export const useUnificationRuleDetails = <Data = UnificationRuleModel, Error = RequestErrorInterface>(
+    ruleId: string,
     shouldFetch: boolean = true
 ): RequestResultInterface<Data, Error> => {
 
@@ -41,11 +44,11 @@ export const useUnificationRules = <Data = UnificationRuleModel[], Error = Reque
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.cdsUnificationRules
+        url: `${store.getState().config.endpoints.cdsUnificationRules}/${ruleId}`
     };
 
     const { data, error, isLoading, isValidating, mutate } = useRequest<Data, Error>(
-        shouldFetch ? requestConfig : null,
+        shouldFetch && ruleId ? requestConfig : null,
         { shouldRetryOnError: false }
     );
 

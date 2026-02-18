@@ -340,6 +340,7 @@ export interface CustomerDataServiceNS {
                     subtitle1: string;
                     subtitle2: string;
                 };
+                search: string;
             };
             labels: {
                 scope: {
@@ -390,6 +391,10 @@ export interface CustomerDataServiceNS {
                         description: string;
                     };
                     error: {
+                        message: string;
+                        description: string;
+                    };
+                    rollbackError: {
                         message: string;
                         description: string;
                     };

@@ -37,18 +37,11 @@ import { UnificationRulesList } from "../components/unification-rule-list";
 import { useUnificationRules } from "../hooks/use-unification-rules";
 import { DEFAULT_PAGE_SIZE } from "../models/constants";
 import { UnificationRuleModel } from "../models/unification-rules";
+import { getPropertyScope } from "../utils/profile-attribute-utils";
 
 interface EnrichedRule extends UnificationRuleModel {
     property_scope: string;
 }
-
-const getPropertyScope = (propertyName: string): string => {
-    if (propertyName?.startsWith("identity_attributes.")) return "Identity Attribute";
-    if (propertyName?.startsWith("application_data.")) return "Application Data";
-    if (propertyName?.startsWith("traits.")) return "Trait";
-
-    return "Default";
-};
 
 const extractSearchTerm = (query: string | null | undefined): string => {
     if (!query) return "";
@@ -225,7 +218,7 @@ const ProfileUnificationRulePage: React.FC = () => {
                                 disableSearchFilterDropdown={ true }
                                 onFilter={ handleRuleSearch }
                                 filterAttributeOptions={ [] }
-                                placeholder="Search by Rule Name or Attribute Name"
+                                placeholder= { t("customerDataService:unificationRules.list.placeholders.search") }
                                 defaultSearchAttribute="rule_name"
                                 defaultSearchOperator="co"
                                 triggerClearQuery={ triggerClearQuery }

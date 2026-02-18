@@ -344,6 +344,10 @@ export const customerDataService: CustomerDataServiceNS = {
                         description: "Failed to update priority.",
                         message: "Unification rule Update Failed"
                     },
+                    rollbackError: {
+                        description: "Failed to rollback priority after update failure.",
+                        message: "Rollback Failed"
+                    },
                     success: {
                         description: "\"{{ruleName}}\" priority has been {{direction}}.",
                         message: "Unification rule Priority Updated"
@@ -385,7 +389,8 @@ export const customerDataService: CustomerDataServiceNS = {
                     subtitle1: "No unification rules match your search \"{{ruleFilter}} \".",
                     subtitle2: "Try adjusting your search criteria.",
                     title: "No Results Found"
-                }
+                },
+                search: "Search by Rule Name or Attribute Name"
             }
         }
     }

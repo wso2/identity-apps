@@ -66,3 +66,11 @@ export const toAttributeDropdownOptions = (
         };
     });
 };
+
+export const getPropertyScope = (propertyName: string): string => {
+    if (propertyName?.startsWith("identity_attributes.")) return "Identity Attribute";
+    if (propertyName?.startsWith("application_data.")) return "Application Data";
+    if (propertyName?.startsWith("traits.")) return "Trait";
+
+    return "Default";
+};

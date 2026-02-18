@@ -72,8 +72,8 @@ export interface ProfileSchemaCoreAttribute {
 }
 
 interface CanonicalValues {
-  value: string;
-  label: string;
+    value: string;
+    label: string;
 }
 
 export interface ProfileSchemaFullResponse {

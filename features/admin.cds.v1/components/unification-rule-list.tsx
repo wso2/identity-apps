@@ -39,6 +39,7 @@ import { Header, Icon, Label } from "semantic-ui-react";
 import { deleteUnificationRule, updateUnificationRule } from "../api/unification-rules";
 import { TEMP_PRIORITY } from "../models/constants";
 import { UnificationRuleModel } from "../models/unification-rules";
+import { getPropertyScope } from "../utils/profile-attribute-utils";
 
 interface UnificationRulesListProps {
     rules: UnificationRuleModel[];
@@ -49,22 +50,6 @@ interface UnificationRulesListProps {
     searchQuery?: string;
     mutate?: () => void;
 }
-
-const getPropertyScope = (propertyName: string): string => {
-    if (propertyName?.startsWith("identity_attributes.")) return "Identity Attribute";
-    if (propertyName?.startsWith("application_data.")) return "Application Data";
-    if (propertyName?.startsWith("traits.")) return "Trait";
-
-    return "Default";
-};
-
-const getPropertySuffix = (propertyName: string): string => {
-    if (propertyName?.startsWith("identity_attributes.")) return propertyName.replace("identity_attributes.", "");
-    if (propertyName?.startsWith("application_data.")) return propertyName.replace("application_data.", "");
-    if (propertyName?.startsWith("traits.")) return propertyName.replace("traits.", "");
-
-    return propertyName || "";
-};
 
 export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> = ({
     rules,
@@ -110,6 +95,14 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
     const [ showToggleModal, setShowToggleModal ] = useState(false);
     const [ isToggleInProgress, setIsToggleInProgress ] = useState(false);
 
+    const getPropertySuffix = (propertyName: string): string => {
+        if (propertyName?.startsWith("identity_attributes.")) return propertyName.replace("identity_attributes.", "");
+        if (propertyName?.startsWith("application_data.")) return propertyName.replace("application_data.", "");
+        if (propertyName?.startsWith("traits.")) return propertyName.replace("traits.", "");
+
+        return propertyName || "";
+    };
+
     const canMoveUp = (rule: UnificationRuleModel): boolean => {
         const idx: number = sortedRules.findIndex((r: UnificationRuleModel) => r.rule_id === rule.rule_id);
 
@@ -137,7 +130,7 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
      */
     const handlePriorityMove = async (
         rule: UnificationRuleModel,
-        direction: "up" | "down"
+        direction: "increased" | "reduced"
     ): Promise<void> => {
         if (isSwapping) return;
 
@@ -145,7 +138,7 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
 
         if (currentIndex === -1) return;
 
-        const swapIndex: number = direction === "up" ? currentIndex - 1 : currentIndex + 1;
+        const swapIndex: number = direction === "increased" ? currentIndex - 1 : currentIndex + 1;
 
         if (swapIndex < 0 || swapIndex >= sortedRules.length) return;
 
@@ -174,6 +167,22 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
             // Re-fetch the rules list.
             mutate?.();
         } catch (error) {
+            try {
+                await updateUnificationRule(rule.rule_id, { priority: originalPriority });
+            } catch (rollbackError) {
+                dispatch(addAlert({
+                    description: t(
+                        "customerDataService:unificationRules.list.notifications.priorityUpdated" +
+                        ".rollbackError.description",
+                        { ruleName: rule.rule_name }
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "customerDataService:unificationRules.list.notifications.priorityUpdated" +
+                        ".rollbackError.message"
+                    )
+                }));
+            }
             dispatch(addAlert({
                 description: error?.message ||
                     t("customerDataService:unificationRules.list.notifications.priorityUpdated" +
@@ -345,7 +354,7 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
                             <span>
                                 <IconButton
                                     size="small"
-                                    onClick={ () => handlePriorityMove(rule, "up") }
+                                    onClick={ () => handlePriorityMove(rule, "increased") }
                                     disabled={ moveUpDisabled }
                                     sx={ {
                                         color: moveUpDisabled ? "action.disabled" : "text.secondary",
@@ -362,7 +371,7 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
                             <span>
                                 <IconButton
                                     size="small"
-                                    onClick={ () => handlePriorityMove(rule, "down") }
+                                    onClick={ () => handlePriorityMove(rule, "reduced") }
                                     disabled={ moveDownDisabled }
                                     sx={ {
                                         color: moveDownDisabled ? "action.disabled" : "text.secondary",

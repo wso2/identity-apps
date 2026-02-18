@@ -262,7 +262,6 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
             return;
         }
 
-        // Reset and close
         resetAll();
         onClose?.();
     };
