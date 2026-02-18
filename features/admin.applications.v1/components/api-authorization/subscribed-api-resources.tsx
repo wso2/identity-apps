@@ -184,8 +184,10 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
      */
     useEffect(() => {
         if (allAuthorizedScopes) {
-            setCopyScopesValue(allAuthorizedScopes.map(
-                (scope: AuthorizedPermissionListItemInterface) => scope.name).join(" ")
+            setCopyScopesValue(
+                [ ...new Set(allAuthorizedScopes.map(
+                    (scope: AuthorizedPermissionListItemInterface) => scope.name
+                )) ].sort().join(" ")
             );
         }
     }, [ allAuthorizedScopes ]);
@@ -576,10 +578,7 @@ export const SubscribedAPIResources: FunctionComponent<SubscribedAPIResourcesPro
                                             <Form.Field>
                                                 <CopyInputField
                                                     className="copy-input spaced"
-                                                    value={
-                                                        copyScopesValue
-                                                            ? [ ...new Set(copyScopesValue.split(" ")) ]
-                                                                .sort().join(" ") : "" }
+                                                    value={ copyScopesValue }
                                                     data-componentid={ `${ componentId }-selected-scope-area` }
                                                 />
                                                 <Hint>
