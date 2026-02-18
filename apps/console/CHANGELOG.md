@@ -1,5 +1,40 @@
 # @wso2is/console
 
+## 2.93.0
+
+### Minor Changes
+
+- [#9587](https://github.com/wso2/identity-apps/pull/9587) [`d375e3117837c9109d51fc85950df4d7cd40b4e1`](https://github.com/wso2/identity-apps/commit/d375e3117837c9109d51fc85950df4d7cd40b4e1) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for defining a maximum session timeout for a user session
+
+* [#9594](https://github.com/wso2/identity-apps/pull/9594) [`4ccde0b53f0d28c2645429562989d20f7958de55`](https://github.com/wso2/identity-apps/commit/4ccde0b53f0d28c2645429562989d20f7958de55) Thanks [@savindi7](https://github.com/savindi7)! - Add the user onboarding console feature and related improvements.
+
+### Patch Changes
+
+- [#9599](https://github.com/wso2/identity-apps/pull/9599) [`df8c66342cee446bed3b04b9d29a18c7d529bd8f`](https://github.com/wso2/identity-apps/commit/df8c66342cee446bed3b04b9d29a18c7d529bd8f) Thanks [@mpmadhavig](https://github.com/mpmadhavig)! - Template console proxyContextPath in config.js.j2.
+
+- Updated dependencies [[`d375e3117837c9109d51fc85950df4d7cd40b4e1`](https://github.com/wso2/identity-apps/commit/d375e3117837c9109d51fc85950df4d7cd40b4e1), [`4ccde0b53f0d28c2645429562989d20f7958de55`](https://github.com/wso2/identity-apps/commit/4ccde0b53f0d28c2645429562989d20f7958de55)]:
+  - @wso2is/admin.session-management.v1@2.26.0
+  - @wso2is/admin.server-configurations.v1@2.37.0
+  - @wso2is/admin.extensions.v1@2.40.20
+  - @wso2is/admin.feature-gate.v1@1.8.1
+  - @wso2is/i18n@2.33.2
+  - @wso2is/access-control@3.5.1
+  - @wso2is/admin.template-core.v1@1.5.161
+  - @wso2is/admin.applications.v1@2.41.2
+  - @wso2is/admin.branding.v1@2.32.90
+  - @wso2is/admin.core.v1@2.52.1
+  - @wso2is/theme@2.9.1
+  - @wso2is/admin.onboarding.v1@1.0.0
+  - @wso2is/admin.flows.v1@1.0.103
+  - @wso2is/admin.agents.v1@1.0.149
+  - @wso2is/admin.ask-password-flow-builder.v1@1.1.134
+  - @wso2is/admin.email-management.v1@2.25.298
+  - @wso2is/admin.home.v1@1.7.113
+  - @wso2is/admin.password-recovery-flow-builder.v1@1.1.134
+  - @wso2is/admin.registration-flow-builder.v1@0.10.94
+  - @wso2is/admin.users.v1@2.36.109
+  - @wso2is/admin.roles.v2@2.27.304
+
 ## 2.92.0
 
 ### Minor Changes

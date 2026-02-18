@@ -1,5 +1,11 @@
 # @wso2is/i18n
 
+## 2.33.2
+
+### Patch Changes
+
+- [#9587](https://github.com/wso2/identity-apps/pull/9587) [`d375e3117837c9109d51fc85950df4d7cd40b4e1`](https://github.com/wso2/identity-apps/commit/d375e3117837c9109d51fc85950df4d7cd40b4e1) Thanks [@DilshanSenarath](https://github.com/DilshanSenarath)! - Add support for defining a maximum session timeout for a user session
+
 ## 2.33.1
 
 ### Patch Changes
