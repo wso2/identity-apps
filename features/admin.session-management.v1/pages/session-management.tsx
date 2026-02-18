@@ -92,7 +92,7 @@ export const SessionManagementSettingsPage: FunctionComponent<SessionManagementS
 
         setSessionManagementConfig({
             enableMaximumSessionTimeout:
-                originalSessionManagementConfig.enableMaximumSessionTimeoutPeriod === "true",
+                originalSessionManagementConfig.enableMaximumSessionTimeoutPeriod ?? false,
             idleSessionTimeout: parseInt(originalSessionManagementConfig.idleSessionTimeoutPeriod),
             maximumSessionTimeout: parseInt(originalSessionManagementConfig.maximumSessionTimeoutPeriod),
             rememberMePeriod: parseInt(originalSessionManagementConfig.rememberMePeriod)

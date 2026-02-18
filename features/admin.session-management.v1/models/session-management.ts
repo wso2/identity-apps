@@ -42,7 +42,7 @@ export interface SessionManagementConfigFormErrorValidationsInterface {
 export interface SessionManagementConfigAPIResponseInterface {
     idleSessionTimeoutPeriod?: string;
     rememberMePeriod?: string;
-    enableMaximumSessionTimeoutPeriod?: string;
+    enableMaximumSessionTimeoutPeriod?: boolean;
     maximumSessionTimeoutPeriod?: string;
 }
 
