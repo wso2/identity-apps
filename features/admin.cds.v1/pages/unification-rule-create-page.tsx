@@ -111,7 +111,7 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
              if (!raw) return "";
 
              if (raw.startsWith(`${scope}.`)) {
-                 return raw.toLowerCase();
+                 return raw;
              }
 
              // Strip only if the raw starts with a known scope.
@@ -123,8 +123,7 @@ const UnificationRuleCreatePage: FunctionComponent<UnificationRuleCreatePageProp
 
              const suffix: string = otherScope ? raw.slice(otherScope.length + 1) : raw;
 
-             // Always attach selected scope.
-             return `${scope}.${suffix}`.toLowerCase();
+             return `${scope}.${suffix}`;
          }, []);
 
     const rulesArray: UnificationRuleModel[] = useMemo(() => {

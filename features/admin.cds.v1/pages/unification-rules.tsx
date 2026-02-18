@@ -20,6 +20,7 @@ import { getEmptyPlaceholderIllustrations } from "@wso2is/admin.core.v1/configs/
 import { AppConstants } from "@wso2is/admin.core.v1/constants/app-constants";
 import { history } from "@wso2is/admin.core.v1/helpers/history";
 import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import {
     EmptyPlaceholder,
     LinkButton,
@@ -28,8 +29,9 @@ import {
     PrimaryButton,
     useConfirmationModalAlert
 } from "@wso2is/react-components";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { Dispatch, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import { Icon } from "semantic-ui-react";
 import { UnificationRulesList } from "../components/unification-rule-list";
 import { useUnificationRules } from "../hooks/use-unification-rules";
@@ -75,11 +77,12 @@ const ProfileUnificationRulePage: React.FC = () => {
     const { t } = useTranslation();
 
     const { data, error, isLoading, mutate } = useUnificationRules();
-    const [ _alert, setAlert, alertComponent ] = useConfirmationModalAlert();
+    const [ _alert, _setAlert, alertComponent ] = useConfirmationModalAlert();
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ activePage, setActivePage ] = useState<number>(1);
+    const dispatch: Dispatch<any> = useDispatch();
 
     const enrichedRules: EnrichedRule[] = useMemo(() => {
         if (!data) return [];
@@ -146,11 +149,11 @@ const ProfileUnificationRulePage: React.FC = () => {
 
     const handleRuleDeleted = (): void => {
         mutate();
-        setAlert({
+        dispatch(addAlert({
             description: t("customerDataService:unificationRules.common.notifications.deleted.description"),
             level: AlertLevels.SUCCESS,
             message: t("customerDataService:unificationRules.common.notifications.deleted.message")
-        });
+        }));
     };
 
     const hasRules: boolean = enrichedRules.length > 0;

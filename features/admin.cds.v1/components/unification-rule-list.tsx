@@ -243,12 +243,6 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
 
         try {
             await deleteUnificationRule(deletingRule.rule_id);
-            dispatch(addAlert({
-                description: t("customerDataService:unificationRules.common.notifications" +
-                    ".deleted.description"),
-                level: AlertLevels.SUCCESS,
-                message: t("customerDataService:unificationRules.common.notifications.deleted.message")
-            }));
             onDelete?.();
             // Re-fetch the rules list.
             mutate?.();
