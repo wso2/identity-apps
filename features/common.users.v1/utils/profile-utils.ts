@@ -270,8 +270,22 @@ export const getFlattenedInitialValues = (
                      * }
                      * ```
                      */
-                    const primaryEmail: string = (preparedInitialValues[schemaNameParts[0]] as unknown[])?.find(
-                        (email: unknown): email is string => typeof email === "string");
+                    const emails: unknown[] = (preparedInitialValues[schemaNameParts[0]] as unknown[]) ?? [];
+                    const primaryEmail: string = Array.isArray(emails)
+                        ? emails
+                            .map((email: unknown): string | undefined => {
+                                if (typeof email === "string") {
+                                    return email;
+                                }
+
+                                if (typeof email === "object" && email !== null && email["primary"] === true) {
+                                    return email["value"] as string;
+                                }
+
+                                return undefined;
+                            })
+                            .filter(Boolean)[0]
+                        : undefined;
 
                     _flattenedInitialValues[schemaNameParts[0]] = primaryEmail;
                 }

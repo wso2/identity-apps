@@ -198,13 +198,23 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (
     const setEmailAddress = (response: BasicProfileInterface) => {
         let emailAddress: string = "";
 
-        if (response.emails) {
-            if (typeof response.emails[0] === "object" && response.emails[0] !== null) {
-                emailAddress = response.emails[0].value;
-                emailType = response.emails[0].type;
-            } else {
-                emailAddress = response.emails[0] as string;
+        if (response.emails && Array.isArray(response.emails) && response.emails.length > 0) {
+            // First, check if we have a string email
+            const stringEmail = response.emails.find((email: any) => typeof email === "string");
+            
+            if (stringEmail) {
+                emailAddress = stringEmail as string;
                 emailType = "array";
+            } else {
+                // Look for the primary email in object format
+                const primaryEmail = response.emails.find((email: any) => 
+                    typeof email === "object" && email !== null && email.primary === true
+                );
+                
+                if (primaryEmail) {
+                    emailAddress = primaryEmail.value;
+                    emailType = primaryEmail.type;
+                }
             }
         }
         setEmail(emailAddress);

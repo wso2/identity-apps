@@ -135,13 +135,13 @@ const TextFieldForm: FunctionComponent<TextFieldFormPropsInterface> = ({
         } else if (
             [
                 SCIMExtensionConfigs.scimUserSchema.emailsWork,
+                SCIMExtensionConfigs.scimUserSchema.emailsHome,
                 SCIMExtensionConfigs.scimUserSchema.emailsOther
             ].some(
                 (email: string) => !isEmpty(email) && email === schema.schemaUri
             )
         ) {
             const schemaNames: string[] = schema.name.split(".");
-
             modifiedSchemaName = `${schemaNames[0]}#${schemaNames[1]}.value`;
 
         // Special handling for Phone Number Schemas.

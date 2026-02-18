@@ -324,19 +324,19 @@ const MultiEmailFieldForm: FunctionComponent<MultiEmailFieldFormPropsInterface> 
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
-        const updatedEmailsList: (string | MultiValue)[] = [];
+        const updatedEmailsList: (string | Record<string, any>)[] = [];
 
         for (const emailAddress of profileDetails?.profileInfo?.emails) {
-            if (typeof emailAddress === "object") {
+            if (typeof emailAddress === "object" && emailAddress.primary !== true) {
                 updatedEmailsList.push(emailAddress);
             }
         }
-        updatedEmailsList.push(emailAddress);
+        updatedEmailsList.push({ primary: true, value: emailAddress });
 
         data.Operations.push({
             op: "replace",
             value: {
-                [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")]: updatedEmailsList
+                [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")]: updatedEmailsList as any
             }
         });
 
@@ -357,6 +357,7 @@ const MultiEmailFieldForm: FunctionComponent<MultiEmailFieldFormPropsInterface> 
     const handleAddEmailAddress = (values: Record<string, string>): void => {
         setIsProfileUpdating(true);
 
+        console.log(values);
         const emailAddress: string = values["emailAddresses"];
         const data: PatchOperationRequest<ProfilePatchOperationValue> = {
             Operations: [],
@@ -365,19 +366,19 @@ const MultiEmailFieldForm: FunctionComponent<MultiEmailFieldFormPropsInterface> 
 
         // If the email address list is empty, add the new email address as the primary.
         if (sortedEmailAddressesList.length === 0) {
-            const updatedEmailsList: (string | MultiValue)[] = [];
+            const updatedEmailsList: (string | Record<string, any>)[] = [];
 
             for (const emailAddress of profileDetails?.profileInfo?.emails) {
                 if (typeof emailAddress === "object") {
                     updatedEmailsList.push(emailAddress);
                 }
             }
-            updatedEmailsList.push(emailAddress);
+            updatedEmailsList.push({ primary: true, value: emailAddress });
 
             data.Operations.push({
                 op: "replace",
                 value: {
-                    [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")]: updatedEmailsList
+                    [ProfileConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")]: updatedEmailsList as any
                 }
             });
         }

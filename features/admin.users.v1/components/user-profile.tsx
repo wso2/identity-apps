@@ -367,8 +367,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
                             if(ProfileUtils.isStringArray(userInfo[emailSchema])) {
                                 const emails: any[] = userInfo[emailSchema];
-                                const primaryEmail: string = emails.find((subAttribute: any) =>
-                                    typeof subAttribute === "string");
+                                const primaryEmail: string | undefined = getPrimaryEmail(emails);
 
                                 // Set the primary email value.
                                 tempProfileInfo.set(schema.name, primaryEmail);
@@ -535,9 +534,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
                             if(ProfileUtils.isStringArray(userInfo[emailSchema])) {
                                 const emails: string[] | MultiValueAttributeInterface[] = userInfo[emailSchema];
-                                const primaryEmail: string = (emails as string[]).find((subAttribute: string) => {
-                                    return typeof subAttribute === "string";
-                                });
+                                const primaryEmail: string | undefined = getPrimaryEmail(emails);
 
                                 // Set the primary email value.
                                 tempProfileInfo.set(schema.name, primaryEmail);
@@ -695,6 +692,26 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         ".message")
                 });
             });
+    };
+
+    /**
+     * Extracts the primary email from an array of email objects or strings.
+     *
+     * @param emails - Array of email strings or email objects with primary flag.
+     * @returns The primary email address or undefined if not found.
+     */
+    const getPrimaryEmail = (emails: any[]): string | undefined => {
+        return emails
+            .map((email: any) => {
+                if (typeof email === "string") {
+                    return email;
+                }
+                if (typeof email === "object" && email !== null && email.primary === true) {
+                    return email.value;
+                }
+                return undefined;
+            })
+            .filter(Boolean)[0];
     };
 
     /**
