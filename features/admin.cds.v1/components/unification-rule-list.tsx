@@ -30,13 +30,12 @@ import {
     AppAvatar,
     ConfirmationModal,
     DataTable,
-    TableActionsInterface,
     TableColumnInterface
 } from "@wso2is/react-components";
 import React, { Dispatch, FunctionComponent, ReactElement, SyntheticEvent, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Header, Label, SemanticICONS } from "semantic-ui-react";
+import { Header, Icon, Label } from "semantic-ui-react";
 import { deleteUnificationRule, updateUnificationRule } from "../api/unification-rules";
 import { TEMP_PRIORITY } from "../models/constants";
 import { UnificationRuleModel } from "../models/unification-rules";
@@ -382,11 +381,12 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
             width: 2
         },
         {
-            dataIndex: "is_active",
-            id: "is_active",
-            key: "is_active",
+            allowToggleVisibility: false,
+            dataIndex: "action",
+            id: "action",
+            key: "action",
             render: (rule: UnificationRuleModel) => (
-                <Box sx={ { alignItems: "center", display: "flex", justifyContent: "center" } }>
+                <Box sx={ { alignItems: "center", display: "flex", gap: "4px", justifyContent: "flex-end" } }>
                     <Tooltip
                         title={ rule.is_active
                             ? t("customerDataService:unificationRules.list.actions.disable")
@@ -401,35 +401,26 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
                             color="primary"
                         />
                     </Tooltip>
+                    { rule.property_name !== "user_id" && !isSwapping && (
+                        <Tooltip
+                            title={ t("customerDataService:unificationRules.list.actions.delete") }>
+                            <IconButton
+                                size="small"
+                                onClick={ (e: SyntheticEvent) => {
+                                    e.stopPropagation();
+                                    setDeletingRule(rule);
+                                    setShowDeleteModal(true);
+                                } }
+                            >
+                                <Icon name="trash alternate" fitted />
+                            </IconButton>
+                        </Tooltip>
+                    ) }
                 </Box>
             ),
-            textAlign: "center",
-            title: t("customerDataService:unificationRules.list.columns.enabled"),
-            width: 2
-        },
-        {
-            allowToggleVisibility: false,
-            dataIndex: "action",
-            id: "action",
-            key: "action",
             textAlign: "right",
             title: "",
             width: 1
-        }
-    ];
-
-    const actions: TableActionsInterface[] = [
-        {
-            hidden: (rule: UnificationRuleModel) =>
-                rule.property_name === "user_id" || isSwapping,
-            icon: (): SemanticICONS => "trash alternate",
-            onClick: (_: SyntheticEvent, rule: UnificationRuleModel): void => {
-                setDeletingRule(rule);
-                setShowDeleteModal(true);
-            },
-            popupText: (): string =>
-                t("customerDataService:unificationRules.list.actions.delete"),
-            renderer: "semantic-icon"
         }
     ];
 
@@ -439,7 +430,6 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
                 isLoading={ isLoading }
                 columns={ columns }
                 data={ sortedRules }
-                actions={ actions }
                 showHeader={ true }
                 showActions={ true }
                 onRowClick={ () => {} }

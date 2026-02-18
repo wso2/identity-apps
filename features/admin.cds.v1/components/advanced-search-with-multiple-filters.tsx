@@ -261,13 +261,6 @@ export const AdvancedSearchWithMultipleFilters: FunctionComponent<AdvancedSearch
         if (isSearchInput) {
             return;
         }
-        // const isResultsClick: boolean =
-        //     target.closest(".cds-profiles-list-surface") !== null;
-
-        // if (isResultsClick) {
-
-        //     return;
-        // }
 
         // Reset and close
         resetAll();

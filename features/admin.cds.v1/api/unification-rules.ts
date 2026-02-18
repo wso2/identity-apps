@@ -29,7 +29,7 @@ import {
 } from "../models/unification-rules";
 
 /**
- * Initialize an auth-aware Http client.
+ * Initialize an Http client.
  */
 const httpClient: HttpClientInstance =
     AsgardeoSPAClient.getInstance().httpRequest.bind(AsgardeoSPAClient.getInstance());
