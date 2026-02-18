@@ -111,8 +111,8 @@ const SuccessIcon: typeof CheckIcon = styled(CheckIcon)(({ theme }: { theme: The
  */
 const Title: typeof Typography = styled(Typography)(({ theme }: { theme: Theme }) => ({
     color: theme.palette.text.primary,
-    fontWeight: 600,
     fontSize: "28px",
+    fontWeight: 600,
     lineHeight: 1.3
 }));
 
