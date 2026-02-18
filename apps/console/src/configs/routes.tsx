@@ -1695,7 +1695,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 icon: <ProfilesIcon className="icon" fill="black" />
             },
             id: "customerDataProfiles",
-            name: "Profiles",
+            name: "customerData:sidePanel.Profiles",
             order: 32,
             path: AppConstants.getPaths().get("PROFILES"),
             protected: true,
@@ -1726,7 +1726,7 @@ export const getAppViewRoutes = (): RouteInterface[] => {
                 icon: <UnificationRuleIcon className="icon" fill="black" />
             },
             id: "customerDataUnificationRules",
-            name: "Unification Rules",
+            name: "customerData:sidePanel.UnificationRules",
             order: 34,
             path: AppConstants.getPaths().get("UNIFICATION_RULES"),
             protected: true,

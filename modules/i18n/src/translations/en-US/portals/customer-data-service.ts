@@ -199,6 +199,10 @@ export const customerDataService: CustomerDataServiceNS = {
             title: "Profiles"
         }
     },
+    sidePanel: {
+        Profiles: "Profiles",
+        UnificationRules: "Unification Rules"
+    },
     unificationRules: {
         common: {
             notifications: {

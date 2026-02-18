@@ -35,6 +35,7 @@ import {
 import React, { Dispatch, FunctionComponent, ReactElement, SyntheticEvent, useMemo, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { AnyAction } from "redux";
 import { Header, Icon, Label } from "semantic-ui-react";
 import { deleteUnificationRule, updateUnificationRule } from "../api/unification-rules";
 import { TEMP_PRIORITY } from "../models/constants";
@@ -59,7 +60,7 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
     mutate
 }: UnificationRulesListProps): ReactElement => {
 
-    const dispatch: Dispatch<any> = useDispatch();
+    const dispatch: Dispatch<AnyAction> = useDispatch();
     const { t } = useTranslation();
     const filteredRules: UnificationRuleModel[] = useMemo(() => {
         if (!searchQuery?.trim()) return rules;
@@ -87,13 +88,13 @@ export const UnificationRulesList: FunctionComponent<UnificationRulesListProps> 
     );
 
     const [ deletingRule, setDeletingRule ] = useState<UnificationRuleModel | null>(null);
-    const [ showDeleteModal, setShowDeleteModal ] = useState(false);
-    const [ isDeleting, setIsDeleting ] = useState(false);
-    const [ isSwapping, setIsSwapping ] = useState(false);
     const [ togglingRule, setTogglingRule ] = useState<UnificationRuleModel | null>(null);
     const [ pendingToggleState, setPendingToggleState ] = useState<boolean>(false);
-    const [ showToggleModal, setShowToggleModal ] = useState(false);
-    const [ isToggleInProgress, setIsToggleInProgress ] = useState(false);
+    const [ showToggleModal, setShowToggleModal ] = useState<boolean>(false);
+    const [ showDeleteModal, setShowDeleteModal ] = useState(false);
+    const [ isDeleting, setIsDeleting ] = useState<boolean>(false);
+    const [ isSwapping, setIsSwapping ] = useState<boolean>(false);
+    const [ isToggleInProgress, setIsToggleInProgress ] = useState<boolean>(false);
 
     const getPropertySuffix = (propertyName: string): string => {
         if (propertyName?.startsWith("identity_attributes.")) return propertyName.replace("identity_attributes.", "");

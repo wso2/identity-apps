@@ -223,6 +223,10 @@ export interface CustomerDataServiceNS {
             title:  string;
         },
     };
+    sidePanel: {
+        Profiles: string;
+        UnificationRules: string;
+    };
     unificationRules: {
         common: {
             notifications: {
