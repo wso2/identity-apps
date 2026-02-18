@@ -26,6 +26,10 @@ const Theme: OxygenTheme = extendTheme({
     colorSchemes: {
         dark: {
             palette: {
+                action: {
+                    border: "#E6E6E6",
+                    hover: "#D3D3D3"
+                },
                 customComponents: {
                     Navbar: {
                         collapsibleItemBackground: "#E7E4E2"
@@ -44,6 +48,10 @@ const Theme: OxygenTheme = extendTheme({
         },
         light: {
             palette: {
+                action: {
+                    border: "#E6E6E6",
+                    hover: "#D3D3D3"
+                },
                 customComponents: {
                     AppShell: {
                         Main: {
@@ -145,6 +153,11 @@ const Theme: OxygenTheme = extendTheme({
             properties: {
                 "chip-background-color": "#a333c8",
                 "chip-color": "var(--oxygen-palette-primary-contrastText)"
+            }
+        },
+        Onboarding: {
+            properties: {
+                background: "#F6F4F2"
             }
         }
     },

@@ -575,6 +575,9 @@ importers:
       '@wso2is/admin.oidc-scopes.v1':
         specifier: ^2.26.2
         version: link:../../features/admin.oidc-scopes.v1
+      '@wso2is/admin.onboarding.v1':
+        specifier: workspace:^
+        version: link:../../features/admin.onboarding.v1
       '@wso2is/admin.org-insights.v1':
         specifier: ^2.25.206
         version: link:../../features/admin.org-insights.v1
@@ -11661,6 +11664,190 @@ importers:
       ts-jest:
         specifier: ^26.4.0
         version: 26.5.6(jest@26.6.3)(typescript@4.9.5)
+      typescript:
+        specifier: ^4.6.4
+        version: 4.9.5
+
+  features/admin.onboarding.v1:
+    dependencies:
+      '@asgardeo/auth-react':
+        specifier: ^5.1.2
+        version: 5.2.3(@babel/runtime-corejs3@7.26.7)(react-dom@18.3.1)(react@18.3.1)
+      '@emotion/react':
+        specifier: ^11.11.0
+        version: 11.14.0(@types/react@18.0.18)(react@18.3.1)
+      '@emotion/styled':
+        specifier: ^11.11.0
+        version: 11.14.0(@emotion/react@11.14.0)(@types/react@18.0.18)(react@18.3.1)
+      '@mui/material':
+        specifier: 5.13.0
+        version: 5.13.0(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@types/react@18.0.18)(react-dom@18.3.1)(react@18.3.1)
+      '@oxygen-ui/react':
+        specifier: ^2.4.6
+        version: 2.4.6(@emotion/react@11.14.0)(@emotion/styled@11.14.0)(@mui/icons-material@5.16.14)(@mui/lab@5.0.0-alpha.110)(@mui/material@5.13.0)(@mui/system@5.18.0)(@mui/utils@5.17.1)(@types/react@18.0.18)(dayjs@1.11.18)(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+      '@oxygen-ui/react-icons':
+        specifier: ^2.4.6
+        version: 2.4.6(react-dom@18.3.1)(react@18.3.1)(typescript@4.9.5)
+      '@wso2is/access-control':
+        specifier: ^3.3.20
+        version: link:../../modules/access-control
+      '@wso2is/admin.application-templates.v1':
+        specifier: workspace:^
+        version: link:../admin.application-templates.v1
+      '@wso2is/admin.applications.v1':
+        specifier: workspace:^
+        version: link:../admin.applications.v1
+      '@wso2is/admin.branding.v1':
+        specifier: workspace:^
+        version: link:../admin.branding.v1
+      '@wso2is/admin.claims.v1':
+        specifier: workspace:^
+        version: link:../admin.claims.v1
+      '@wso2is/admin.connections.v1':
+        specifier: workspace:^
+        version: link:../admin.connections.v1
+      '@wso2is/admin.core.v1':
+        specifier: ^2.49.104
+        version: link:../admin.core.v1
+      '@wso2is/admin.extensions.v1':
+        specifier: workspace:^
+        version: link:../admin.extensions.v1
+      '@wso2is/admin.organizations.v1':
+        specifier: workspace:^
+        version: link:../admin.organizations.v1
+      '@wso2is/admin.server-configurations.v1':
+        specifier: workspace:^
+        version: link:../admin.server-configurations.v1
+      '@wso2is/admin.template-core.v1':
+        specifier: workspace:^
+        version: link:../admin.template-core.v1
+      '@wso2is/admin.users.v1':
+        specifier: workspace:^
+        version: link:../admin.users.v1
+      '@wso2is/admin.validation.v1':
+        specifier: workspace:^
+        version: link:../admin.validation.v1
+      '@wso2is/common.branding.v1':
+        specifier: workspace:^
+        version: link:../common.branding.v1
+      '@wso2is/core':
+        specifier: ^2.12.6
+        version: link:../../modules/core
+      '@wso2is/i18n':
+        specifier: ^2.30.57
+        version: link:../../modules/i18n
+      human-id:
+        specifier: ^4.0.0
+        version: 4.1.3
+      lodash-es:
+        specifier: ^4.17.21
+        version: 4.17.21
+      react:
+        specifier: ^18.2.0
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.3.1(react@18.3.1)
+      react-i18next:
+        specifier: ^11.18.5
+        version: 11.18.6(i18next@21.10.0)(react-dom@18.3.1)(react@18.3.1)
+      react-redux:
+        specifier: ^7.2.9
+        version: 7.2.9(react-dom@18.3.1)(react@18.3.1)
+      react-router-dom:
+        specifier: ^4.3.1
+        version: 4.3.1(react@18.3.1)
+      redux:
+        specifier: ^4.0.4
+        version: 4.2.1
+    devDependencies:
+      '@rollup/plugin-commonjs':
+        specifier: ^25.0.7
+        version: 25.0.8(rollup@4.34.4)
+      '@rollup/plugin-dynamic-import-vars':
+        specifier: ^2.1.2
+        version: 2.1.5(rollup@4.34.4)
+      '@rollup/plugin-image':
+        specifier: ^3.0.3
+        version: 3.0.3(rollup@4.34.4)
+      '@rollup/plugin-json':
+        specifier: ^6.1.0
+        version: 6.1.0(rollup@4.34.4)
+      '@rollup/plugin-node-resolve':
+        specifier: ^15.2.3
+        version: 15.3.1(rollup@4.34.4)
+      '@rollup/plugin-typescript':
+        specifier: ^11.1.6
+        version: 11.1.6(rollup@4.34.4)(tslib@2.8.1)(typescript@4.9.5)
+      '@svgr/rollup':
+        specifier: ^6.2.1
+        version: 6.5.1
+      '@svgr/webpack':
+        specifier: 4.3.2
+        version: 4.3.2
+      '@types/lodash-es':
+        specifier: ^4.17.4
+        version: 4.17.12
+      '@types/node':
+        specifier: ^13.9.2
+        version: 13.13.52
+      '@types/react':
+        specifier: 18.0.18
+        version: 18.0.18
+      '@types/react-dom':
+        specifier: ^18.0.6
+        version: 18.3.5(@types/react@18.0.18)
+      '@types/react-redux':
+        specifier: ^7.1.25
+        version: 7.1.34
+      '@types/react-router':
+        specifier: ^5.1.18
+        version: 5.1.20
+      '@types/react-router-dom':
+        specifier: ^5.1.3
+        version: 5.3.3
+      '@types/webpack-env':
+        specifier: ^1.16.0
+        version: 1.18.8
+      '@typescript-eslint/eslint-plugin':
+        specifier: ^6.5.0
+        version: 6.5.0(@typescript-eslint/parser@6.5.0)(eslint@8.46.0)(typescript@4.9.5)
+      '@typescript-eslint/parser':
+        specifier: ^6.5.0
+        version: 6.5.0(eslint@8.46.0)(typescript@4.9.5)
+      eslint:
+        specifier: 8.46.0
+        version: 8.46.0
+      eslint-plugin-import:
+        specifier: ^2.20.2
+        version: 2.31.0(@typescript-eslint/parser@6.5.0)(eslint@8.46.0)
+      eslint-plugin-react:
+        specifier: 7.30.0
+        version: 7.30.0(eslint@8.46.0)
+      eslint-plugin-react-hooks:
+        specifier: ^4.0.0
+        version: 4.6.2(eslint@8.46.0)
+      rollup:
+        specifier: ^4.17.2
+        version: 4.34.4
+      rollup-plugin-dts:
+        specifier: ^6.1.1
+        version: 6.1.1(rollup@4.34.4)(typescript@4.9.5)
+      rollup-plugin-generate-package-json:
+        specifier: ^3.2.0
+        version: 3.2.0(rollup@4.34.4)
+      rollup-plugin-polyfill-node:
+        specifier: ^0.13.0
+        version: 0.13.0(rollup@4.34.4)
+      rollup-plugin-scss:
+        specifier: ^4.0.0
+        version: 4.0.1
+      rollup-plugin-styles:
+        specifier: ^4.0.0
+        version: 4.0.0(rollup@4.34.4)
+      rollup-plugin-svg:
+        specifier: ^2.0.0
+        version: 2.0.0
       typescript:
         specifier: ^4.6.4
         version: 4.9.5
@@ -22851,7 +23038,7 @@ importers:
         version: 4.17.21
       react-i18next:
         specifier: ^11.18.5
-        version: 11.18.6(i18next@21.10.0)(react-dom@18.3.1)(react@18.3.1)
+        version: 11.18.6(i18next@21.10.0)(react@18.3.1)
     devDependencies:
       '@types/i18next':
         specifier: 8.4.3
@@ -40626,7 +40813,7 @@ packages:
   /glob@8.1.0:
     resolution: {integrity: sha512-r8hpEjiQEYlF2QU0df3dS+nxxSIreXQS1qRhMJM0Q5NDdR386C7jb7Hwwod8Fgiuex+k0GFjgft18yvxm5XoCQ==}
     engines: {node: '>=12'}
-    deprecated: Glob versions prior to v9 are no longer supported
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
     dependencies:
       fs.realpath: 1.0.0
       inflight: 1.0.6
@@ -41418,6 +41605,11 @@ packages:
   /human-id@1.0.2:
     resolution: {integrity: sha512-UNopramDEhHJD+VR+ehk8rOslwSfByxPIZyJRfV739NDhN5LF1fa1MqnzKm2lGTQRjNrjK19Q5fhkgIfjlVUKw==}
     dev: true
+
+  /human-id@4.1.3:
+    resolution: {integrity: sha512-tsYlhAYpjCKa//8rXZ9DqKEawhPoSytweBC2eNvcaDK+57RZLHGqNs3PZTQO6yekLFSuvA6AlnAfrw1uBvtb+Q==}
+    hasBin: true
+    dev: false
 
   /human-signals@1.1.1:
     resolution: {integrity: sha512-SEQu7vl8KjNL2eoGBLF3+wAjpsNfA9XMlXAYj/3EdaNfAlxKthD1xjEQfGOUhllCGGJVNY34bRr6lPINhNjyZw==}
@@ -48326,6 +48518,25 @@ packages:
       i18next: 21.10.0
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
+    dev: false
+
+  /react-i18next@11.18.6(i18next@21.10.0)(react@18.3.1):
+    resolution: {integrity: sha512-yHb2F9BiT0lqoQDt8loZ5gWP331GwctHz9tYQ8A2EIEUu+CcEdjBLQWli1USG3RdWQt3W+jqQLg/d4rrQR96LA==}
+    peerDependencies:
+      i18next: '>= 19.0.0'
+      react: '>= 16.8.0'
+      react-dom: '*'
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.28.2
+      html-parse-stringify: 3.0.1
+      i18next: 21.10.0
+      react: 18.3.1
     dev: false
 
   /react-infinite-scroll-component@6.1.0(react@18.3.1):

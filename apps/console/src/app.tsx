@@ -43,6 +43,7 @@ import { EventPublisher } from "@wso2is/admin.core.v1/utils/event-publisher";
 import { commonConfig } from "@wso2is/admin.extensions.v1";
 import { featureGateConfig } from "@wso2is/admin.extensions.v1/configs/feature-gate";
 import useGetAllFeatures from "@wso2is/admin.feature-gate.v1/api/use-get-all-features";
+import { useOnboardingStatus } from "@wso2is/admin.onboarding.v1/hooks/use-onboarding-status";
 import { AGENT_USERSTORE_ID } from "@wso2is/admin.userstores.v1/constants/user-store-constants";
 import useUserStores from "@wso2is/admin.userstores.v1/hooks/use-user-stores";
 import { UserStoreListItem } from "@wso2is/admin.userstores.v1/models/user-stores";
@@ -163,6 +164,7 @@ export const App = ({
     onAgentManagementEnableStatusChange,
     onCustomerDataServiceStatusChange
 }: AppComponentProps): ReactElement => {
+
     const featureGateConfigUpdated : FeatureGateInterface = { ...featureGateConfig };
 
     const dispatch: Dispatch<any> = useDispatch();
@@ -191,6 +193,34 @@ export const App = ({
         data: allFeatures,
         error: featureGateAPIException
     } = useGetAllFeatures();
+
+    const { shouldShowOnboarding, isLoading: isOnboardingStatusLoading } = useOnboardingStatus();
+
+    /**
+     * Redirect to onboarding page if user should see onboarding.
+     */
+    useEffect(() => {
+        if (isOnboardingStatusLoading) {
+            return;
+        }
+
+        if (shouldShowOnboarding) {
+            const onboardingPath: string = AppConstants.getPaths().get("ONBOARDING");
+            const currentPath: string = window.location.pathname;
+
+            // Don't redirect from critical auth/error routes
+            const excludedPaths: string[] = [
+                AppConstants.getPaths().get("UNAUTHORIZED"),
+                AppConstants.getPaths().get("CREATE_TENANT"),
+                AppConstants.getPaths().get("STORING_DATA_DISABLED"),
+                AppConstants.getAppLogoutPath()
+            ];
+
+            if (currentPath !== onboardingPath && !excludedPaths.includes(currentPath)) {
+                history.push(onboardingPath);
+            }
+        }
+    }, [ shouldShowOnboarding, isOnboardingStatusLoading ]);
 
     /**
      * Set the deployment configs in redux state.

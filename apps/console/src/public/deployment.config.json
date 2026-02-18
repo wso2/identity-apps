@@ -1268,6 +1268,26 @@
                     ]
                 }
             },
+            "onboarding": {
+                "disabledFeatures": [],
+                "enabled": false,
+                "featureFlags": [],
+                "scopes": {
+                    "create": [
+                        "internal_application_mgt_create",
+                        "internal_branding_preference_update",
+                        "internal_governance_update"
+                    ],
+                    "delete": [],
+                    "feature": [
+                        "console:applications",
+                        "console:branding",
+                        "console:loginAndRegistration"
+                    ],
+                    "read": [],
+                    "update": []
+                }
+            },
             "organizationDiscovery": {
                 "disabledFeatures": [],
                 "enabled": true,
