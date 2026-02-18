@@ -109,6 +109,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 /**
  * Next.js application integration guide.
  */
+/* eslint-disable max-len */
 const NEXTJS_INTEGRATION: FrameworkIntegrationGuideInterface = {
     buttonCode: `"use client";
 
@@ -165,6 +166,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     sdk: "@asgardeo/nextjs",
     yarnCommand: "yarn add @asgardeo/nextjs"
 };
+/* eslint-enable max-len */
 
 /**
  * Angular application integration guide.
