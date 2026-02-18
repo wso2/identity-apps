@@ -22,9 +22,16 @@
         grid-template-columns: repeat(2, 1fr);
         column-gap: 50px;
 
-        // Divider should be in a separate row spanning across all columns.
-        > :nth-child(3) {
+        > * {
             grid-column: 1 / -1;
+        }
+
+        > :nth-child(4), > :nth-child(5) {
+            grid-column: auto;
+        }
+
+        .ui.input {
+            max-width: 500px;
         }
     }
 
@@ -41,7 +48,7 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
     .session-mgt-form-container {
         .ui.grid {
             grid-template-columns: 1fr;
